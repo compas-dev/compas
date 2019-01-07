@@ -48,7 +48,7 @@ class BlenderCurve(BlenderGeometry):
         middle = [list(i.co) for i in points]
         left   = [list(i.handle_left) for i in points]
         right  = [list(i.handle_right) for i in points]
-        
+
         return middle, left, right
 
 
@@ -94,10 +94,9 @@ class BlenderCurve(BlenderGeometry):
 
     def divide(self, number_of_segments):
 
-        middle, left, right = self.control_point_coordinates()
-        n = number_of_segments + 1
-        points = [list(i) for i in interpolate_bezier(middle[0], right[0], left[1], middle[1], n)]
-        
+        m, l, r = self.control_point_coordinates()
+        points  = [list(i) for i in interpolate_bezier(m[0], r[0], l[1], m[1], number_of_segments + 1)]
+
         return [add_vectors(self.location, point) for point in points]
 
 
@@ -114,26 +113,26 @@ class BlenderCurve(BlenderGeometry):
     def closest_points(self, points, maxdist=None):
 
         raise NotImplementedError
-        
+
 
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == '__main__':
-    
+
     from compas_blender.utilities import xdraw_points
     from compas_blender.utilities import get_object_by_name
-    
-    
-    object = get_object_by_name(name='BezierCurve')
-    
-    curve = BlenderCurve(object=object)
-    
-    print(curve)
 
+
+    object = get_object_by_name(name='BezierCurve')
+
+    curve = BlenderCurve(object=object)
+
+    print(curve)
+    print(curve.control_points())
     print(curve.control_point_coordinates())
 
-    points = [{'pos': i, 'radius': 0.1 } for i in curve.divide(number_of_segments=5)]
-    
+    points = [{'pos': i, 'radius': 0.1} for i in curve.divide(number_of_segments=5)]
+
     xdraw_points(points=points)

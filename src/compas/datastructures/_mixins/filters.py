@@ -1,7 +1,6 @@
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 
 __all__ = [
@@ -12,6 +11,8 @@ __all__ = [
 
 
 class VertexFilter(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def vertices_where(self, conditions, data=False):
         """Get vertices for which a certain condition or set of conditions is true.
@@ -80,6 +81,8 @@ class VertexFilter(object):
 
 class EdgeFilter(object):
 
+    __module__ = 'compas.datastructures._mixins'
+
     def edges_where(self, conditions, data=False):
         """Get edges for which a certain condition or set of conditions is true.
 
@@ -141,6 +144,8 @@ class EdgeFilter(object):
 
 
 class FaceFilter(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def faces_where(self, conditions, data=False):
         for fkey, attr in self.faces(True):

@@ -3,6 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas_blender.utilities import set_objects_show_names
+from compas_blender.utilities import xdraw_mesh
+
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
@@ -19,24 +22,44 @@ class FaceArtist(object):
 
     __module__ = "compas_blender.artists.mixins"
 
+
     def clear_faces(self, keys=None):
 
-        raise NotImplementedError
+        pass
 
 
-    def clear_facelabels(self, keys=None):
+    def clear_facelabels(self):
 
-        raise NotImplementedError
+        set_objects_show_names(objects=self.face_objects, show=False)
 
 
-    def draw_faces(self, keys=None, color=None, join_faces=False):
+    def draw_faces(self, keys=None, colors=None):
 
-        raise NotImplementedError
+        self.clear_faces()
+        self.clear_facelabels()
+
+        keys    = keys or list(self.datastructure.faces())
+        objects = [0] * len(keys)
+
+        if colors is None:
+            colors = {key: self.defaults['color.face'] for key in keys}
+
+        for c, key in enumerate(keys):
+
+            objects[c] = xdraw_mesh(
+                vertices = [self.datastructure.vertex_coordinates(i) for i in self.datastructure.face[key]],
+                layer    = self.layer,
+                faces    = [list(range(len(self.datastructure.face[key])))],
+                color    = colors[key],
+                name     = 'F{0}'.format(key),
+            )
+
+        self.face_objects = objects
 
 
     def draw_facelabels(self, text=None, color=None):
 
-        raise NotImplementedError
+        set_objects_show_names(objects=self.face_objects, show=True)
 
 
 # ==============================================================================

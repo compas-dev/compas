@@ -8,12 +8,6 @@ except NameError:
     basestring = str
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'is_sequence_of_str',
     'is_sequence_of_int',
@@ -28,6 +22,8 @@ __all__ = [
 
     'coerce_sequence_of_tuple',
     'coerce_sequence_of_list',
+
+    'coerce_json'
 ]
 
 
@@ -106,7 +102,7 @@ def coerce_sequence_of_list(sequence):
     for item in sequence:
         if not isinstance(item, list):
             if not is_item_iterable(item):
-                item = [item, ]
+                item = [item]
             else:
                 item = list(item)
         items.append(item)
@@ -115,6 +111,14 @@ def coerce_sequence_of_list(sequence):
 
 def coerce_sequence_of_dict(sequence):
     raise NotImplementedError
+
+
+def coerce_json(path):
+    parts = path.split('.')
+    if parts[-1] != 'json':
+        parts.append('json')
+        path = ".".join(parts)
+    return path
 
 
 # ==============================================================================

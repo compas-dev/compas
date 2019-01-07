@@ -6,32 +6,18 @@ import struct
 from compas.utilities import geometric_key
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
 __all__ = [
-    'parse_stl_data',
-    'STLReader'
+    'STL',
+    'STLReader',
+    'STLParser',
 ]
 
 
-def parse_stl_data(facets, header=None):
-    gkey_index = {}
-    vertices = []
-    faces = []
-    for facet in facets:
-        face = []
-        for xyz in facet['vertices']:
-            gkey = geometric_key(xyz)
-            if gkey not in gkey_index:
-                gkey_index[gkey] = len(vertices)
-                vertices.append(xyz)
-            face.append(gkey_index[gkey])
-        faces.append(face)
-    return vertices, faces
+class STL(object):
+
+    def __init__(self, filepath, precision=None):
+        self.reader = STLReader(filepath)
+        self.parser = STLParser(self.reader, precision=precision)
 
 
 class STLReader(object):
@@ -48,6 +34,7 @@ class STLReader(object):
         self.file = None
         self.header = None
         self.facets = []
+        self.read()
 
     def read(self):
         is_binary = False
@@ -57,10 +44,19 @@ class STLReader(object):
                 is_binary = False
             else:
                 is_binary = True
-        if is_binary:
+
+        try:
+            if not is_binary:
+                self.read_ascii()
+            else:
+                self.read_binary()
+        except Exception:
+            # raise if it was already detected as binary, but failed anyway
+            if is_binary: raise
+
+            # else, ascii parsing failed, try binary
+            is_binary = True
             self.read_binary()
-        else:
-            self.read_ascii()
 
     # ==========================================================================
     # ascii
@@ -91,6 +87,7 @@ class STLReader(object):
 
         while True:
             line = self.file.readline().strip()
+
             if not line:
                 break
 
@@ -102,34 +99,32 @@ class STLReader(object):
                 else:
                     name = 'solid'
                 solids[name] = []
-                continue
 
-            if parts[0] == 'endsolid':
+            elif parts[0] == 'endsolid':
                 name = None
-                continue
 
-            if parts[0] == 'facet':
+            elif parts[0] == 'facet':
                 facet = {'normal': None, 'vertices': None, 'attributes': None}
                 if parts[1] == 'normal':
                     facet['normal'] = [float(parts[i]) for i in range(2, 5)]
-                    continue
 
-            if parts[0] == 'outer' and parts[1] == 'loop':
+            elif parts[0] == 'outer' and parts[1] == 'loop':
                 vertices = []
-                continue
 
-            if parts[0] == 'vertex':
+            elif parts[0] == 'vertex':
                 xyz = [float(parts[i]) for i in range(1, 4)]
                 vertices.append(xyz)
-                continue
 
-            if parts[0] == 'endloop':
+            elif parts[0] == 'endloop':
                 facet['vertices'] = vertices
-                continue
 
-            if parts[0] == 'endfacet':
+            elif parts[0] == 'endfacet':
                 solids[name].append(facet)
                 facets.append(facet)
+
+            # no known line start matches, maybe not ascii
+            elif not parts[0].isalnum():
+                raise RuntimeError('File is not ASCII')
 
         return facets
 
@@ -215,6 +210,34 @@ class STLReader(object):
             facets.append(self.read_facet_binary())
         return facets
 
+
+class STLParser(object):
+    """"""
+
+    def __init__(self, reader, precision=None):
+        self.precision = precision
+        self.reader    = reader
+        self.vertices  = None
+        self.faces     = None
+        self.parse()
+
+    def parse(self):
+        gkey_index = {}
+        vertices = []
+        faces = []
+        for facet in self.reader.facets:
+            face = []
+            for xyz in facet['vertices']:
+                gkey = geometric_key(xyz, self.precision)
+                if gkey not in gkey_index:
+                    gkey_index[gkey] = len(vertices)
+                    vertices.append(xyz)
+                face.append(gkey_index[gkey])
+            faces.append(face)
+        self.vertices = vertices
+        self.faces = faces
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -226,23 +249,41 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     from compas.viewers import MeshViewer
-    from compas.plotters import MeshPlotter
+    from compas.utilities import download_file_from_remote
+    from compas.topology import connected_components
 
-    filepath = os.path.join(compas.DATA, 'cube_ascii.stl')
 
-    reader = STLReader(filepath)
-    reader.read()
+    source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
+    filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
 
-    vertices, faces = parse_stl_data(reader.facets)
+    download_file_from_remote(source, filepath, overwrite=False)
 
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    stl = STL(filepath, precision='6f')
+
+    mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
+
+    vertexgroups = connected_components(mesh.halfedge)
+    facegroups = [[] for _ in range(len(vertexgroups))]
+
+    vertexsets = list(map(set, vertexgroups))
+
+    for fkey in mesh.faces():
+        vertices = set(mesh.face_vertices(fkey))
+
+        for i, vertexset in enumerate(vertexsets):
+            if vertices.issubset(vertexset):
+                facegroups[i].append(fkey)
+                break
+
+    meshes = []
+
+    for vertexgroup, facegroup in zip(vertexgroups, facegroups):
+        key_index = {key: index for index, key in enumerate(vertexgroup)}
+        vertices = mesh.get_vertices_attributes('xyz', keys=vertexgroup)
+        faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in facegroup]
+
+        meshes.append(Mesh.from_vertices_and_faces(vertices, faces))
 
     viewer = MeshViewer()
-    viewer.mesh = mesh
+    viewer.mesh = meshes[0]
     viewer.show()
-
-    # plotter = MeshPlotter(mesh)
-    # # plotter.draw_vertices()
-    # plotter.draw_edges()
-    # plotter.draw_faces()
-    # plotter.show()

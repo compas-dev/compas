@@ -3,18 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 import sys
+import compas
 
 try:
     import System
 except ImportError:
-    if 'ironpython' in sys.version.lower():
-        raise
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = ['MatlabClient']

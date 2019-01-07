@@ -1,9 +1,9 @@
 """
 ********************************************************************************
-conduits
+compas_rhino.conduits
 ********************************************************************************
 
-.. module:: compas_rhino.conduits
+.. currentmodule:: compas_rhino.conduits
 
 
 Definition of display conduits.
@@ -12,18 +12,21 @@ Definition of display conduits.
 .. autosummary::
     :toctree: generated/
 
-    FacesConduit
-    LabelsConduit
-    LinesConduit
     MeshConduit
+    FacesConduit
+    LinesConduit
     PointsConduit
-    SplinesConduit
+    LabelsConduit
 
 """
 
 from __future__ import print_function
+from __future__ import absolute_import
 
+import time
 from contextlib import contextmanager
+
+import compas
 
 try:
     import Rhino
@@ -31,9 +34,7 @@ try:
     from Rhino.Display import DisplayConduit
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
     class DisplayConduit(object):
         pass
@@ -61,24 +62,33 @@ class Conduit(DisplayConduit):
     def disable(self):
         self.Enabled = False
 
-    def redraw(self, k=0):
+    def redraw(self, k=0, pause=None):
         if k % self.refreshrate == 0:
             sc.doc.Views.Redraw()
         Rhino.RhinoApp.Wait()
+        if pause:
+            time.sleep(pause)
 
 
+from .mesh import *
 from .faces import *
 from .labels import *
 from .lines import *
-from .mesh import *
 from .points import *
-from .splines import *
+# from .splines import *
 
-from .faces import __all__ as a
-from .labels import __all__ as b
-from .lines import __all__ as c
-from .mesh import __all__ as d
-from .points import __all__ as f
-from .splines import __all__ as g
+from . import mesh
+from . import faces
+from . import labels
+from . import lines
+from . import points
+# from . import splines
 
-__all__ = a + b + c + d + f + g
+__all__ = []
+
+__all__ += mesh.__all__
+__all__ += faces.__all__
+__all__ += labels.__all__
+__all__ += lines.__all__
+__all__ += points.__all__
+# __all__ += splines.__all__

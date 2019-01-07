@@ -25,25 +25,25 @@ CONFIG = {
                                 {
                                     'text'    : 'Perspective',
                                     'action'  : 'set_view',
-                                    'args'    : [View.VIEW_PERSPECTIVE, ],
+                                    'args'    : [View.VIEW_PERSPECTIVE],
                                     'checked' : True
                                 },
                                 {
                                     'text'    : 'Front',
                                     'action'  : 'set_view',
-                                    'args'    : [View.VIEW_FRONT, ],
+                                    'args'    : [View.VIEW_FRONT],
                                     'checked' : False
                                 },
                                 {
                                     'text'    : 'Left',
                                     'action'  : 'set_view',
-                                    'args'    : [View.VIEW_LEFT, ],
+                                    'args'    : [View.VIEW_LEFT],
                                     'checked' : False
                                 },
                                 {
                                     'text'    : 'Top',
                                     'action'  : 'set_view',
-                                    'args'    : [View.VIEW_TOP, ],
+                                    'args'    : [View.VIEW_TOP],
                                     'checked' : False
                                 },
                             ]
@@ -112,19 +112,19 @@ CONFIG = {
                         {
                             'text'    : 'Version 2.1',
                             'action'  : 'opengl_set_version',
-                            'args'    : [(2, 1), ],
+                            'args'    : [(2, 1)],
                             'checked' : True
                         },
                         {
                             'text'    : 'Version 3.3',
                             'action'  : 'opengl_set_version',
-                            'args'    : [(3, 3), ],
+                            'args'    : [(3, 3)],
                             'checked' : False
                         },
                         {
                             'text'    : 'Version 4.1',
                             'action'  : 'opengl_set_version',
-                            'args'    : [(4, 1), ],
+                            'args'    : [(4, 1)],
                             'checked' : False
                         }
                     ]
@@ -315,5 +315,5 @@ padding-left: 4px;
 from .app import MeshViewer
 
 
-__all__ = ['MeshViewer', ]
+__all__ = ['MeshViewer']
 

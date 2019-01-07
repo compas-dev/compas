@@ -3,13 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
-__all__ = ['MatlabEngine', ]
+__all__ = ['MatlabEngine']
 
 
 class MatlabEngineError(Exception):
@@ -17,7 +11,11 @@ class MatlabEngineError(Exception):
     def __init__(self, message=None):
         if not message:
             message = """Could not start the Matlab engine.
-Note that the Matlab engine for Python is only available since R2014b.
+
+Note that the Matlab engine is only available since R2014b.
+
+Python 3 is only supported since R2017b...
+
 For older versions of Matlab, use *MatlabProcess* instead.
 On Windows, *MatlabClient* is also available.
 See <https://ch.mathworks.com/help/matlab/matlab-engine-for-python.html?s_tid=gn_loc_drop>

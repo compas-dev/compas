@@ -1,5 +1,5 @@
-from .volmesh import VolMesh
-from .operations import *
-from .operations import __all__ as a
+from __future__ import absolute_import, division, print_function
 
-__all__ = ['VolMesh'] + a
+from .volmesh import *
+
+__all__ = [name for name in dir() if not name.startswith('_')]

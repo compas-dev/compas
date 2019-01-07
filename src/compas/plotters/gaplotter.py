@@ -8,11 +8,6 @@ import math
 import os
 import matplotlib.pyplot as plt
 
-__author__     = ['Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__  = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'mtomas@ethz.ch'
-
 
 __all__ = ['GaPlotter']
 
@@ -255,7 +250,7 @@ def visualize_evolution(input_path,
                         y_bounds=[None, None],
                         plot_avg=True,
                         plot_max=True):
-    vis = Ga_Plotter()
+    vis = GaPlotter()
     vis.input_path = input_path
     vis.output_path = output_path
     vis.conversion_function = conversion_function

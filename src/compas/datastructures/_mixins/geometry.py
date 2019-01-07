@@ -1,15 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from compas.geometry import distance_point_point
 from compas.geometry import midpoint_line
 from compas.geometry import normalize_vector
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -20,10 +18,12 @@ __all__ = [
 
 
 class VertexGeometry(object):
-    pass
+    __module__ = 'compas.datastructures._mixins'
 
 
 class EdgeGeometry(object):
+
+    __module__ = 'compas.datastructures._mixins'
 
     def edge_coordinates(self, u, v, axes='xyz'):
         """Return the coordinates of the start and end point of an edge.
@@ -147,7 +147,8 @@ class EdgeGeometry(object):
 
 
 class FaceGeometry(object):
-    pass
+
+    __module__ = 'compas.datastructures._mixins'
 
 
 # ==============================================================================

@@ -61,10 +61,10 @@ class BlenderPoint(BlenderGeometry):
 if __name__ == "__main__":
 
     from compas_blender.utilities import get_object_by_name
-    
-    
+
+
     object = get_object_by_name(name='Empty')
-    
+
     point = BlenderPoint(object=object)
-    
+
     print(point.xyz)

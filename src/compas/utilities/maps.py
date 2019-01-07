@@ -3,68 +3,49 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+import compas
 
 
-__all__ = [
-    'geometric_key', 'geometric_key2', 'normalize_values'
-]
+__all__ = ['geometric_key', 'reverse_geometric_key', 'geometric_key2', 'normalize_values', 'remap_values']
 
 
-# class GeometricKey(object):
-
-#     __instance = None
-
-#     def __new__(cls, precision='3f', tolerance=1e-9, sanitize=True):
-#         if GeometricKey.__instance is None:
-#             GeometricKey.__instance = object.__new__(cls)
-#             GeometricKey.__instance.precision = precision
-#             GeometricKey.__instance.tolerance = tolerance
-#             GeometricKey.__instance.sanitize = sanitize
-
-#         return GeometricKey.__instance
-
-#     def __call__(self, xyz):
-#         return geometric_key(xyz, self.precision, self.tolerance, self.sanitize)
-
-#     @staticmethod
-#     def set_precision(precision):
-#         GeometricKey.__instance.precision = precision
-
-
-def geometric_key(xyz, precision='3f', sanitize=True):
+def geometric_key(xyz, precision=None, sanitize=True):
     """Convert XYZ coordinates to a string that can be used as a dict key.
 
-    Parameters:
-        xyz (sequence of float): The XYZ coordinates.
-        precision (str): Optional.
-            A formatting option that specifies the precision of the
-            individual numbers in the string.
-            Supported values are any float precision, or decimal integer (``'d'``).
-            Default is ``'3f'``.
-        sanitize (bool): Optional.
-            Flag that indicates whether or not the input should be cleaned up.
-            Default is ``True``.
+    Parameters
+    ----------
+    xyz : list of float
+        The XYZ coordinates.
+    precision : str, optional
+        A formatting option that specifies the precision of the
+        individual numbers in the string.
+        Supported values are any float precision, or decimal integer (``'d'``).
+        Default is ``None``, inwhich case the global precision setting will be used (``compas.PRECISION``).
+    sanitize : {True, False}, optional
+        Flag that indicates whether or not the input should be cleaned up.
+        Default is ``True``.
 
-    Returns:
-        str: the string representation of the given coordinates.
+    Returns
+    -------
+    str
+        The string representation of the given coordinates.
 
-    Example:
+    Example
+    -------
+    .. code-block:: python
 
-        .. code-block:: python
+        from math import pi
+        from compas.utilities import geometric_key
 
-            from math import pi
-            from compas.utilities import geometric_key
+        print(geometric_key([pi, pi / 2.0, 2.0 * pi]))
 
-            print(geometric_key([pi, pi / 2.0, 2.0 * pi], '3f'))
-
-            # 3.142,3.142,3.142
+        # 3.142,3.142,3.142
 
     """
     x, y, z = xyz
+
+    if not precision:
+        precision = compas.PRECISION
 
     if precision == 'd':
         return '{0},{1},{2}'.format(int(x), int(y), int(z))
@@ -81,10 +62,19 @@ def geometric_key(xyz, precision='3f', sanitize=True):
 
     return '{0:.{3}},{1:.{3}},{2:.{3}}'.format(x, y, z, precision)
 
+def reverse_geometric_key(string):
+    """Reverse a geometric key string into xyz coordinates."""
 
-def geometric_key2(xy, precision='3f', sanitize=True):
+    xyz = string.split(',')
+
+    return [float(i) for i in xyz]
+    
+def geometric_key2(xy, precision=None, sanitize=True):
     """Convert XY coordinates to a string that can be used as a dict key."""
     x, y = xy
+
+    if not precision:
+        precision = compas.PRECISION
 
     if precision == 'd':
         return '{0},{1}'.format(int(x), int(y))
@@ -102,8 +92,8 @@ def geometric_key2(xy, precision='3f', sanitize=True):
 
 def normalize_values(values, new_min=0.0, new_max=1.0):
     """Normalize a list of numbers to the range between new_min and new_max."""
-    old_max = max(l)
-    old_min = min(l)
+    old_max = max(values)
+    old_min = min(values)
     old_range = (old_max - old_min)
     new_range = (new_max - new_min)
     return [(((value - old_min) * new_range) / old_range) + new_min for value in values]
@@ -163,9 +153,15 @@ if __name__ == "__main__":
 
     # GeometricKey.set_precision('3f')
 
-    print(geometric_key([pi, pi, pi], '3f'))
+    print(geometric_key([1.0, 0.2, 0], '3f'))
+
+    print(geometric_key([pi, pi, pi]))
     print(geometric_key([-0.00001, +0.00001, 0.00001], '3f'))
     print(geometric_key2([-0.00001, +0.00001], '3f'))
+
+    a = geometric_key([3.4, 0.0, 38.023])
+    print(a)
+    print(reverse_geometric_key(a))
 
     # print(geometric_key((1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))
     # print(geometric_key((-1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))

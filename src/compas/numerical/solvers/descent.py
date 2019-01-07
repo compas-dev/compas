@@ -1,8 +1,9 @@
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import sys
+import compas
 
 try:
     from numpy import array
@@ -19,25 +20,18 @@ try:
     from numpy import zeros
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
+
 else:
     eps = finfo(float64).eps
     e = sqrt(eps)
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
-__all__ = [
-    'descent'
-]
+__all__ = ['descent']
 
 
 def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=()):
+
     """A gradient descent optimisation solver.
 
     Parameters
@@ -45,13 +39,13 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
     x0 : array-like
         n x 1 starting guess of x.
     fn : obj
-        The objective function to minimise.
+        The objective function to minimize.
     iterations : int
         Maximum number of iterations.
     gtol : float
         Mean residual of the gradient for convergence.
     bounds : list
-        List of lower and upper bound pairs [lb, ub], None=unconstrained.
+        List of lower and upper bound pairs [[lb, ub], ...], None=unconstrained.
     limit : float
         Value of the objective function for which to terminate optimisation.
     args : tuple
@@ -65,9 +59,10 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
         Values of x at the found local minimum.
 
     """
-    r = 0.5
-    c = 0.0001
-    n = len(x0)
+
+    r  = 0.5
+    c  = 0.0001
+    n  = len(x0)
     x0 = reshape(array(x0), (n, 1))
 
     if bounds:
@@ -79,37 +74,43 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
         ub = ones((n, 1)) * +10**20
 
     zn = zeros((n, 1))
-    g = zeros((n, 1))
-    v = eye(n) * e
+    g  = zeros((n, 1))
+    v  = eye(n) * e
 
     def phi(x, mu, *args):
         p = mu * (sum(maximum(lb - x, zn)) + sum(maximum(x - ub, zn)))**2
         return fn(x, *args) + p
 
-    i = 0
+    i  = 0
     mu = 1
+
     while i < iterations:
 
         p0 = phi(x0, mu, *args)
+
         for j in range(n):
             vj = v[:, j][:, newaxis]
             g[j, 0] = (phi(x0 + vj, mu, *args) - p0) / e
+
         D = sum(-g * g)
 
-        a = 1
+        a  = 1
         x1 = x0 - a * g
+
         while phi(x1, mu, *args) > p0 + c * a * D:
             a *= r
             x1 = x0 - a * g
+
         x0 -= a * g
 
-        mu *= 10
+        mu  *= 10
         res = mean(abs(g))
-        i += 1
-        f1 = phi(x0, mu, *args)
+        i   += 1
+        f1  = phi(x0, mu, *args)
 
         if f1 < limit:
             break
+
         if res < gtol:
             break
 
@@ -125,13 +126,17 @@ def descent(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=(
 if __name__ == "__main__":
 
     def fn(u, *args):
+
         # Booth's function, fopt=0, uopt=(1, 3)
+
         x = u[0]
         y = u[1]
         z = (x + 2 * y - 7)**2 + (2 * x + y - 5)**2
+
         return float(z)
 
     x0 = [-6., -6.]
     bounds = [[0, 2], [2, 4]]
     fopt, uopt = descent(x0, fn, gtol=10**(-4), bounds=bounds)
+
     print(uopt)

@@ -1,28 +1,17 @@
 from __future__ import print_function
 
+import compas
+
 try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
-
-
-__author__     = ['Matthias Rippmann', ]
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'rippmann@ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = [
     'uv_points_from_surface',
 ]
-
-
-# ==============================================================================
-# Functions
-# ==============================================================================
 
 
 def uv_points_from_surface(srf, u_div, v_div):
@@ -56,3 +45,11 @@ def uv_points_from_surface(srf, u_div, v_div):
             uv_points[u][v] = rs.EvaluateSurface(srf, uv[0] , uv[1])
 
     return uv_points
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+    pass

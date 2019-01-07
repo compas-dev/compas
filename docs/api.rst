@@ -1,18 +1,11 @@
 ********************************************************************************
-API
+API Reference
 ********************************************************************************
-
-Definition
-==========
-
-Reference
-=========
 
 .. toctree::
     :maxdepth: 1
-    :glob:
 
-    reference/compas
-..    reference/compas_rhino
-..    reference/compas_blender
-..    reference/compas_maya
+    api/compas
+    api/compas_rhino
+    api/compas_blender
+    api/compas_ghpython

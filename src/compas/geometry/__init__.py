@@ -3,85 +3,7 @@
 compas.geometry
 ********************************************************************************
 
-.. module:: compas.geometry
-
-This package provides functionality for working with geometry outside
-independent of CAD software.
-
-
-Primitives
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Vector
-    Point
-    Line
-    Polyline
-    Polygon
-    Polyhedron
-
-
-XForms
-======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Frame
-    Transformation
-    Rotation
-    Translation
-    Scale
-    Reflection
-    Projection
-    Shear
-
-
-.. .. autosummary::
-..     :toctree: generated/
-..     :nosignatures:
-.. 
-..     KDTree
-
-
-Algorithms
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    bestfit_plane
-    bestfit_plane_numpy
-    bestfit_circle_numpy
-    bounding_box
-    bounding_box_xy
-    convex_hull
-    convex_hull_xy
-    convex_hull_numpy
-    convex_hull_xy_numpy
-    discrete_coons_patch
-    flatness
-    mesh_contours_numpy
-    mesh_cull_duplicate_vertices
-    mesh_flatness
-    mesh_isolines_numpy
-    mesh_planarize_faces
-    mesh_planarize_faces_shapeop
-    mesh_smooth_centroid
-    network_parallelise_edges
-    network_smooth_centroid
-    oriented_bounding_box_numpy
-    oriented_bounding_box_xy_numpy
-    planarize_faces
-    scalarfield_contours_numpy
-    smooth_area
-    smooth_centroid
-    smooth_centerofmass
+.. currentmodule:: compas.geometry
 
 
 Functions
@@ -117,7 +39,7 @@ Basic
     normalize_vector_xy
     normalize_vectors
     normalize_vectors_xy
-    orthonormalise_vectors
+    orthonormalize_vectors
     power_vector
     power_vectors
     scale_vector
@@ -182,8 +104,8 @@ Average
     :toctree: generated/
     :nosignatures:
 
-    center_of_mass_polygon
-    center_of_mass_polygon_xy
+    centroid_polygon
+    centroid_polygon_xy
     center_of_mass_polyhedron
     centroid_points
     centroid_points_xy
@@ -191,9 +113,11 @@ Average
     midpoint_line_xy
     midpoint_point_point
     midpoint_point_point_xy
+    tween_points
+    tween_points_distance
 
-Orientation
------------
+Normals
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -275,73 +199,13 @@ Transformations
     :toctree: generated/
     :nosignatures:
 
-    transform
-    transform_numpy
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    homogenize
-    dehomogenize
-    homogenize_numpy
-    dehomogenize_numpy
-    local_axes
-    local_coords_numpy
-    global_coords_numpy
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    determinant
-    inverse
-    identity_matrix
-    matrix_from_frame
-    matrix_from_euler_angles
-    euler_angles_from_matrix
-    matrix_from_axis_and_angle
-    matrix_from_axis_angle_vector
-    axis_and_angle_from_matrix
-    axis_angle_vector_from_matrix
-    matrix_from_quaternion
-    quaternion_from_matrix
-    matrix_from_basis_vectors
-    basis_vectors_from_matrix
-    matrix_from_translation
-    translation_from_matrix
-    matrix_from_orthogonal_projection
-    matrix_from_parallel_projection
-    matrix_from_perspective_projection
-    matrix_from_perspective_entries
-    matrix_from_shear_entries
-    matrix_from_shear
-    matrix_from_scale_factors
-    compose_matrix
-    decompose_matrix
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mirror_point_line
-    mirror_point_line_xy
-    mirror_point_plane
-    mirror_point_point
-    mirror_point_point_xy
+    mesh_transform
+    mesh_transformed
     mirror_points_line
     mirror_points_line_xy
     mirror_points_plane
     mirror_points_point
     mirror_points_point_xy
-    mirror_vector_vector
-    offset_line
-    offset_polyline
-    offset_polygon
-    orient_points
-    project_point_line
-    project_point_line_xy
-    project_point_plane
     project_points_line
     project_points_line_xy
     project_points_plane
@@ -350,53 +214,111 @@ Transformations
     rotate_points
     rotate_points_xy
     scale_points
-    translate_lines
-    translate_lines_xy
     translate_points
     translate_points_xy
 
-"""
 
-# level 0
+Objects
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Vector
+    Point
+    Line
+    Polyline
+    Polygon
+    Plane
+    Frame
+    Circle
+
+
+XForms
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Transformation
+    Rotation
+    Translation
+    Scale
+    Reflection
+    Projection
+    Shear
+
+
+Spatial
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    KDTree
+
+
+Algorithms
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    bestfit_plane
+    bestfit_plane_numpy
+    bestfit_circle_numpy
+    bounding_box
+    bounding_box_xy
+    convex_hull
+    convex_hull_xy
+    convex_hull_numpy
+    convex_hull_xy_numpy
+    discrete_coons_patch
+    flatness
+    mesh_contours_numpy
+    mesh_cull_duplicate_vertices
+    mesh_flatness
+    mesh_isolines_numpy
+    mesh_planarize_faces
+    mesh_smooth_centroid
+    network_parallelise_edges
+    network_smooth_centroid
+    offset_line
+    offset_polyline
+    offset_polygon
+    oriented_bounding_box_numpy
+    oriented_bounding_box_xy_numpy
+    planarize_faces
+    scalarfield_contours_numpy
+    smooth_area
+    smooth_centroid
+    smooth_centerofmass
+
+"""
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .basic import *
-from .basic import __all__ as a
-
-# level 1
-
 from .distance import *
 from .angles import *
 from .average import *
-
-from .distance import __all__ as b
-from .angles import __all__ as c
-from .average import __all__ as d
-
-# level 2
-
-from .orientation import *
+from .normals import *
 from .queries import *
 from .intersections import *
-
-from .orientation import __all__ as h
-from .intersections import __all__ as i
-from .queries import __all__ as j
-
-# level 3
-
 from .size import *
+
 from .transformations import *
 
-from .size import __all__ as k
-from .transformations import __all__ as l
-
-# level 4
-
 from .objects import *
+from .spatial import *
+from .xforms import *
+
 from .algorithms import *
 
-from .objects import __all__ as m
-from .algorithms import __all__ as n
+__all__ = [name for name in dir() if not name.startswith('_')]
 
-
-__all__ = a + b + c + d + h + i + j + k + l + m + n

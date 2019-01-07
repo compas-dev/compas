@@ -3,13 +3,7 @@
 compas.viewers
 ********************************************************************************
 
-.. module:: compas.viewers
-
-This package wraps `PyOpenGL`_ and `PySide`_ to provide three-dimensional
-viewers with basic visualization and user interaction capabilities.
-
-.. _PyOpenGL: http://pyopengl.sourceforge.net
-.. _PySide: http://pyside.github.io/docs/pyside/index.html
+.. currentmodule:: compas.viewers
 
 
 Classes
@@ -23,21 +17,15 @@ Classes
     MeshViewer
 
 """
-
-from compas.viewers import viewer
-from compas.viewers import meshviewer
-from compas.viewers import vtkviewer
-from compas.viewers import vtkvoxels
+from __future__ import absolute_import, division, print_function
 
 from .core import *
 from .viewer import *
 from .meshviewer import *
-from .vtkviewer import *
-from .vtkvoxels import *
 
+try:
+    from .vtkviewer import *
+except:
+    pass
 
-__all__ = [] 
-__all__ += viewer.__all__
-__all__ += meshviewer.__all__
-__all__ += vtkviewer.__all__
-__all__ += vtkvoxels.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

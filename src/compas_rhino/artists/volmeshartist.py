@@ -1,6 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import time
 
+import compas
 import compas_rhino
+
+from compas_rhino.artists import Artist
 
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
@@ -10,45 +17,50 @@ try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = ['VolMeshArtist']
 
 
-class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
-    """"""
+class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
+    """A volmesh artist defines functionality for visualising COMPAS volmeshes in Rhino.
+
+    Parameters
+    ----------
+    volmesh : compas.datastructures.VolMesh
+        A COMPAS volmesh.
+    layer : str, optional
+        The name of the layer that will contain the volmesh.
+
+    Attributes
+    ----------
+    defaults : dict
+        Default settings for color, scale, tolerance, ...
+
+    """
+
+    __module__ = "compas_rhino.artists"
 
     def __init__(self, volmesh, layer=None):
+        super(VolMeshArtist, self).__init__(layer=layer)
+        self.volmesh = volmesh
+        self.defaults.update({
+
+        })
+
+    @property
+    def volmesh(self):
+        """compas.datastructures.VolMesh: The volmesh that should be painted."""
+        return self.datastructure
+
+    @volmesh.setter
+    def volmesh(self, volmesh):
         self.datastructure = volmesh
-        self.layer = layer
-        self.defaults = {
-            'color.vertex' : (255, 0, 0),
-            'color.face'   : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
-        }
-
-    def redraw(self, timeout=None):
-        """Redraw the Rhino view."""
-        if timeout:
-            time.sleep(timeout)
-        rs.EnableRedraw(True)
-        rs.Redraw()
-
-    def clear_layer(self):
-        """Clear the main layer of the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
 
     def clear(self):
+        """Clear the vertices, faces and edges of the volmesh, without clearing the
+        other elements in the layer."""
         self.clear_vertices()
         self.clear_faces()
         self.clear_edges()

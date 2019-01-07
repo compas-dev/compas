@@ -1,6 +1,13 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import time
 
+import compas
 import compas_rhino
+
+from compas_rhino.artists import Artist
 
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
@@ -10,50 +17,94 @@ try:
     import rhinoscriptsyntax as rs
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
-
-
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = ['MeshArtist']
 
 
-class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
-    """"""
+class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
+    """A mesh artist defines functionality for visualising COMPAS meshes in Rhino.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A COMPAS mesh.
+    layer : str, optional
+        The name of the layer that will contain the mesh.
+
+    Attributes
+    ----------
+    defaults : dict
+        Default settings for color, scale, tolerance, ...
+
+    Examples
+    --------
+    .. code-block:: python
+        
+        import compas
+        from compas.datastructures import Mesh
+        from compas_rhino.artists import MeshArtist
+
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+        artist = MeshArtist(mesh, layer='COMPAS::MeshArtist')
+        artist.clear_layer()
+        artist.draw_faces(join_faces=True)
+        artist.draw_vertices(color={key: '#ff0000' for key in mesh.vertices_on_boundary()})
+        artist.draw_edges()
+        artist.redraw()
+
+    """
+
+    __module__ = "compas_rhino.artists"
 
     def __init__(self, mesh, layer=None):
-        self.datastructure = mesh
-        self.layer = layer
+        super(MeshArtist, self).__init__(layer=layer)
+        self.mesh = mesh
+        self.defaults.update({
+            'color.vertex' : (255, 255, 255),
+            'color.edge'   : (0, 0, 0),
+            'color.face'   : (210, 210, 210),
+        })
 
     @property
-    def layer(self):
-        return self.datastructure.attributes.get('layer')
+    def mesh(self):
+        """Mesh: The mesh that should be painted."""
+        return self.datastructure
 
-    @layer.setter
-    def layer(self, value):
-        self.datastructure.attributes['layer'] = value
+    @mesh.setter
+    def mesh(self, mesh):
+        self.datastructure = mesh
 
-    def redraw(self, timeout=None):
-        """Redraw the Rhino view."""
-        if timeout:
-            time.sleep(timeout)
-        rs.EnableRedraw(True)
-        rs.Redraw()
+    def draw(self):
+        """Draw the mesh as a consolidated RhinoMesh.
 
-    def clear_layer(self):
-        """Clear the main layer of the artist."""
-        if self.layer:
-            compas_rhino.clear_layer(self.layer)
-        else:
-            compas_rhino.clear_current_layer()
+        Notes
+        -----
+        The mesh should be a valid Rhino Mesh object, which means it should have
+        only triangular or quadrilateral faces.
+
+        """
+        key_index = self.mesh.key_index()
+        vertices = self.mesh.get_vertices_attributes('xyz')
+        faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
+        new_faces = []
+        for face in faces:
+            l = len(face)
+            if l == 3:
+                new_faces.append(face + face[-1:])
+            elif l == 4:
+                new_faces.append(face)
+        layer = self.layer
+        name = "{}.mesh".format(self.mesh.name)
+        return compas_rhino.xdraw_mesh(vertices, new_faces, layer=layer, name=name)
 
     def clear(self):
+        """Clear the vertices, faces and edges of the mesh, without clearing the
+        other elements in the layer.
+
+        """
         self.clear_vertices()
         self.clear_faces()
         self.clear_edges()
@@ -64,6 +115,8 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 # ==============================================================================
 
 if __name__ == "__main__":
+    
+    import os
 
     from compas.datastructures import Mesh
     from compas.geometry import Polyhedron
@@ -95,3 +148,5 @@ if __name__ == "__main__":
 
     artist.draw_edgelabels()
     artist.redraw(1.0)
+
+    print(artist.save(os.path.join(compas.TEMP, 'test4.png')))

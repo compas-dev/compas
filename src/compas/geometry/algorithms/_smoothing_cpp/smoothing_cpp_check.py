@@ -13,7 +13,7 @@ mesh = Mesh.from_obj(compas.get('faces.obj'))
 # extract numerical data from the datastructure
 
 vertices  = mesh.get_vertices_attributes(('x', 'y', 'z'))
-adjacency = [mesh.vertex_neighbours(key) for key in mesh.vertices()]
+adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
 fixed     = [int(mesh.vertex_degree(key) == 2) for key in mesh.vertices()]
 
 slider = list(mesh.vertices_where({'x': (-0.1, 0.1), 'y': (9.9, 10.1)}))[0]

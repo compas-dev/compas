@@ -3,12 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__author__     = ['Tom Van Mele <vanmelet@ethz.ch>', ]
-__copyright__  = 'Copyright 2014, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
-
-
 class MatlabSessionError(Exception):
     def __init__(self, message=None):
         if not message:

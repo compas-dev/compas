@@ -1,8 +1,8 @@
 ********************************************************************************
-Using callbacks
+Callbacks
 ********************************************************************************
 
-**compas** implements a *callback* mechanism that provides a consistent way to
+**COMPAS** implements a *callback* mechanism that provides a consistent way to
 customise algorithms, apply constraints, visualise progress of iterative algorithms, ...
 
 .. note::
@@ -58,8 +58,8 @@ the callback has access to the variable ``text``, even though that ariable was d
 in a different context that the one in which the callback is called.
 
 
-Dynamic visualisation
-=====================
+Dynamic plotting
+================
 
 Throughout the main library, callbacks are often used in combination with the plotters
 to visualise intermediate steps of an algorithm, or to visualise the progress of
@@ -69,7 +69,7 @@ For example, from :mod:`compas.geometry`, an code snippet visualising the progre
 of an iterative smoothing algorithm (:func:`compas.geometry.mesh_smooth_centroid`).
 
 .. code-block:: python
-    
+
     import compas
 
     from compas.datastructures import Mesh
@@ -113,7 +113,7 @@ of an iterative smoothing algorithm (:func:`compas.geometry.mesh_smooth_centroid
 We use a mesh plotter as visualisation tool.
 
 .. code-block:: python
-    
+
     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
 
@@ -121,7 +121,7 @@ First, as a reference, we plot a set of lines corresponding to the original
 configuration of the mesh.
 
 .. code-block:: python
-    
+
     lines = []
     for u, v in mesh.edges():
         lines.append({
@@ -158,7 +158,7 @@ current iteration as firs and second parameter, and then any additional paramete
 that were passed to the algorithm.
 
 .. code-block:: python
-    
+
     def callback(mesh, k, args):
         print(k)
         plotter.update_vertices()
@@ -172,7 +172,7 @@ that were passed to the algorithm.
 Finally, we make sure that the plotting window remains active and visible.
 
 .. code-block:: python
-    
+
     plotter.show()
 
 
@@ -181,6 +181,12 @@ The result shpould be something like this.
 .. figure:: /_images/tutorial_callbacks_smoothing.gif
     :figclass: figure
     :class: figure-img img-fluid
+
+
+Dynamic visualisation in Rhino with conduits
+============================================
+
+
 
 
 Applying constraints

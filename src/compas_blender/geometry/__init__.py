@@ -29,11 +29,11 @@ class BlenderGeometry(object):
 
     def __init__(self, obj):
 
-        self.name       = obj.name
         self.object     = obj
+        self.name       = obj.name
         self.geometry   = obj.data
-        self.attributes = {}
         self.otype      = obj.type
+        self.attributes = {}
 
 
     @property
@@ -44,8 +44,14 @@ class BlenderGeometry(object):
 
     @classmethod
     def from_selection(cls):
-       
+
         raise NotImplementedError
+
+
+    @classmethod
+    def from_name(cls, name):
+
+        return BlenderGeometry(obj=bpy.data.objects[name])
 
 
     @staticmethod
@@ -56,6 +62,7 @@ class BlenderGeometry(object):
 
     @staticmethod
     def refresh():
+
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 

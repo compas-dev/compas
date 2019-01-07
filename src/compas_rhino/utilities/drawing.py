@@ -2,7 +2,9 @@ from __future__ import print_function
 
 from functools import wraps
 
-from compas.geometry import center_of_mass_polygon
+import compas
+
+from compas.geometry import centroid_polygon
 
 from compas_rhino.utilities import create_layers_from_path
 from compas_rhino.utilities import clear_layer
@@ -46,21 +48,13 @@ try:
     TOL = sc.doc.ModelAbsoluteTolerance
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 else:
     try:
         find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
     except SystemError:
         find_layer_by_fullpath = None
-
-
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -80,7 +74,7 @@ __all__ = [
 # ==============================================================================
 # Extended drawing
 #
-# these functions are optimised for speed,
+# these functions are optimized for speed,
 # but potential error checking has been removed
 # perhaps a good middle ground would be better...
 # ==============================================================================
@@ -106,7 +100,7 @@ def wrap_xdrawfunc(f):
                 clear_layer(layer)
 
         rs.EnableRedraw(False)
-        res = f(*args)
+        res = f(*args, **kwargs)
 
         if redraw:
             rs.EnableRedraw(True)
@@ -119,7 +113,7 @@ def wrap_xdrawfunc(f):
 
 
 @wrap_xdrawfunc
-def xdraw_labels(labels):
+def xdraw_labels(labels, **kwargs):
     """Draw labels as text dots and optionally set individual name and color."""
     guids = []
     for l in iter(labels):
@@ -146,7 +140,7 @@ def xdraw_labels(labels):
 
 
 @wrap_xdrawfunc
-def xdraw_points(points):
+def xdraw_points(points, **kwargs):
     """Draw points and optionally set individual name, layer, and color properties.
     """
     guids = []
@@ -178,7 +172,7 @@ def xdraw_points(points):
 
 
 @wrap_xdrawfunc
-def xdraw_lines(lines):
+def xdraw_lines(lines, **kwargs):
     """Draw lines and optionally set individual name, color, arrow, layer, and
     width properties.
     """
@@ -221,7 +215,7 @@ def xdraw_lines(lines):
 
 
 @wrap_xdrawfunc
-def xdraw_geodesics(geodesics):
+def xdraw_geodesics(geodesics, **kwargs):
     """Draw geodesic lines on specified surfaces, and optionally set individual
     name, color, arrow, and layer properties.
     """
@@ -262,7 +256,7 @@ def xdraw_geodesics(geodesics):
 
 
 @wrap_xdrawfunc
-def xdraw_polylines(polylines):
+def xdraw_polylines(polylines, **kwargs):
     """Draw polylines, and optionally set individual name, color, arrow, and
     layer properties.
     """
@@ -302,7 +296,7 @@ def xdraw_polylines(polylines):
 
 
 @wrap_xdrawfunc
-def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0):
+def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
     """
@@ -356,7 +350,7 @@ def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0
 
 
 @wrap_xdrawfunc
-def xdraw_cylinders(cylinders, cap=False):
+def xdraw_cylinders(cylinders, cap=False, **kwargs):
     guids = []
     for c in iter(cylinders):
         start  = c['start']
@@ -402,7 +396,7 @@ def xdraw_cylinders(cylinders, cap=False):
 
 
 @wrap_xdrawfunc
-def xdraw_pipes(pipes, cap=2, fit=1.0):
+def xdraw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     guids = []
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
@@ -444,7 +438,7 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
 
 
 # @wrap_xdrawfunc
-# def xdraw_forces(forces, color):
+# def xdraw_forces(forces, color, **kwargs):
 #     guids = []
 #     for c in iter(cylinders):
 #         start  = c['start']
@@ -490,7 +484,7 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
 
 
 @wrap_xdrawfunc
-def xdraw_spheres(spheres):
+def xdraw_spheres(spheres, **kwargs):
     guids = []
     for s in iter(spheres):
         pos    = s['pos']
@@ -523,7 +517,7 @@ def xdraw_spheres(spheres):
 
 
 @wrap_xdrawfunc
-def xdraw_mesh(vertices, faces, color, name):
+def xdraw_mesh(vertices, faces, name=None, color=None, **kwargs):
     guid = rs.AddMesh(vertices, faces)
     if color:
         rs.ObjectColor(guid, color)
@@ -533,12 +527,13 @@ def xdraw_mesh(vertices, faces, color, name):
 
 
 @wrap_xdrawfunc
-def xdraw_faces(faces):
+def xdraw_faces(faces, **kwargs):
     guids = []
     for face in iter(faces):
-        points = face['points']
+        points = face['points'][:]
         name   = face.get('name')
         color  = face.get('color')
+        vertexcolors = face.get('vertexcolors')
 
         v = len(points)
 
@@ -550,8 +545,21 @@ def xdraw_faces(faces):
             mfaces = [[0, 1, 2, 3]]
         else:
             mfaces = _face_to_max_quad(points, range(v))
+            if vertexcolors:
+                r, g, b = [sum(component) / v for component in zip(*vertexcolors)]
+                r = int(min(max(0, r), 255))
+                g = int(min(max(0, g), 255))
+                b = int(min(max(0, b), 255))
+                vertexcolors.append((r, g, b))
 
-        guid = xdraw_mesh(points, mfaces, color, name, clear=False, redraw=False, layer=None)
+        guid = xdraw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
+
+        if vertexcolors:
+            try:
+                compas_rhino.set_mesh_vertex_colors(guid, vertexcolors)
+            except Exception:
+                pass
+
         guids.append(guid)
 
     return guids
@@ -560,7 +568,7 @@ def xdraw_faces(faces):
 def _face_to_max_quad(points, face):
     faces = []
     c = len(points)
-    points.append(center_of_mass_polygon(points))
+    points.append(centroid_polygon(points))
     for i in range(-1, len(face) - 1):
         a = face[i]
         b = face[i + 1]

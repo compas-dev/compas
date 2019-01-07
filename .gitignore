@@ -105,8 +105,7 @@ ENV/
 # ------------------------------------------------------------------------------
 
 docs/__build/
-docs/_images/*.gif
-docs/reference/generated/
+docs/api/generated/
 
 *.3dmbak
 *.rhl
@@ -125,9 +124,13 @@ data/ctralie
 *.ply
 *.tar.gz
 
-docs/reference/generated/
+data/models
+data/ctralie
+
+docs/api/generated/
 docs/__build
-*.gif
 
 *.pickle
+
+.DS_Store
 

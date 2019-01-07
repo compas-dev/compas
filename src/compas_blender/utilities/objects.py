@@ -3,8 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
-
 try:
     import bpy
 except ImportError:
@@ -20,17 +18,18 @@ __email__     = 'liew@arch.ethz.ch'
 __all__ = [
     'delete_object',
     'delete_objects',
+    'delete_object_by_name',
     'delete_objects_by_names',
-    'purge_objects',
     'get_object_by_name',
+    'get_objects_by_names',
     'get_objects',
     'get_object_name',
     'get_objects_names',
     'get_objects_layers',
     'get_objects_types',
     'get_objects_coordinates',
-    'get_object_attributes',
-    'get_objects_attributes',
+    'get_object_property',
+    'get_objects_property',
     'get_points',
     'get_curves',
     'get_meshes',
@@ -54,6 +53,8 @@ __all__ = [
     'set_objects_scales',
     'set_objects_show_names',
     'set_objects_visible',
+    'set_object_property',
+    'set_objects_property',
 ]
 
 
@@ -63,9 +64,17 @@ __all__ = [
 
 def delete_object(object):
 
-    set_deselct(object=object)
-    bpy.data.objects.remove(object)
-    # crashes 2.80
+    set_deselect(objects=[object])
+
+    try:
+        mesh = bpy.data.meshes[object.name]
+        bpy.data.meshes.remove(mesh)
+        return
+    except:
+        pass
+
+    # bpy.data.objects.remove(object) crashes if you then hover over layers
+    # find how to delete empty, curve etc
 
 
 def delete_objects(objects):
@@ -74,30 +83,36 @@ def delete_objects(objects):
         delete_object(object=object)
 
 
+def delete_object_by_name(name):
+
+    object = get_object_by_name(name)
+    delete_object(object=object)
+
+
 def delete_objects_by_names(names):
 
-    objects = [bpy.data.objects[name] for name in names]
+    objects = get_objects_by_names(names)
     delete_objects(objects=objects)
 
 
-def purge_objects(objects):
-    
-    raise NotImplementedError
-
-
 # ==============================================================================
-# Objects
+# Get
 # ==============================================================================
 
 def get_object_by_name(name):
-    
+
     return bpy.data.objects[name]
 
-    
+
+def get_objects_by_names(names):
+
+    return [bpy.data.objects[name] for name in names]
+
+
 def get_objects(names=None, color=None, layer=None, type=None):
 
     if names:
-        objects = [bpy.data.objects[name] for name in names]
+        objects = get_objects_by_names(names)
 
     elif color:
         raise NotImplementedError
@@ -116,45 +131,40 @@ def get_objects(names=None, color=None, layer=None, type=None):
 
 def get_object_name(object):
 
-    return object.name.split('.')[0]
+    return object.name
 
 
 def get_objects_names(objects):
 
-    return [get_object_name(i) for i in objects]
+    return [get_object_name(object) for object in objects]
 
 
 def get_objects_layers(objects):
 
-    return [i.users_collection for i in objects]
+    return [object.users_collection for object in objects]
 
 
 def get_objects_types(objects):
 
-    return [i.type for i in objects]
+    return [object.type for object in objects]
 
 
 def get_objects_coordinates(objects):
 
-    return [list(i.location) for i in objects]
+    return [list(object.location) for object in objects]
 
 
-def get_object_attributes(object):
-
-    name = object.name.replace("'", '"')
-    
-    if name[-5:-3] == '}.':
-        name = name[:-4]
+def get_object_property(object, property):
 
     try:
-        return json.loads(name)
+        return object[property]
     except:
-        return
+        return None
 
 
-def get_objects_attributes(objects):
-    
-    return [get_object_attributes(i) for i in objects]
+def get_objects_property(objects, property):
+
+    return [get_object_property(object, property) for object in objects]
 
 
 def select_object(message="Select an object."):
@@ -173,7 +183,15 @@ def select_objects(message='Select objects.'):
 
 def get_points(layer=None):
 
-    return [i for i in get_objects(layer=layer) if i.type == 'EMPTY']
+    return [object for object in get_objects(layer=layer) if object.type == 'EMPTY']
+
+
+def get_points_coordinates(objects=None):
+
+    if objects is None:
+        objects = get_points()
+
+    return [list(object.location) for object in objects if object.type == 'EMPTY']
 
 
 def select_point(message='Select a point.'):
@@ -186,18 +204,9 @@ def select_points(message='Select points.'):
     raise NotImplementedError
 
 
-def get_points_coordinates(objects):
-
-    return [list(i.location) for i in objects if i.type == 'EMPTY']
-
-
 # ==============================================================================
 # Curves
 # ==============================================================================
-
-def get_curves(layer=None):
-
-    return [i for i in get_objects(layer=layer) if i.type == 'CURVE']
 
 
 def select_curve(message='Select curve.'):
@@ -210,6 +219,11 @@ def select_curves(message='Select curves.'):
     raise NotImplementedError
 
 
+def get_curves(layer=None):
+
+    return [object for object in get_objects(layer=layer) if object.type == 'CURVE']
+
+
 def get_curves_coordinates(objects):
 
     raise NotImplementedError
@@ -219,11 +233,6 @@ def get_curves_coordinates(objects):
 # Meshes
 # ==============================================================================
 
-def get_meshes(layer=None):
-
-    return [i for i in get_objects(layer=layer) if i.type == 'MESH']
-
-
 def select_mesh(message='Select a mesh.'):
 
     raise NotImplementedError
@@ -232,6 +241,11 @@ def select_mesh(message='Select a mesh.'):
 def select_meshes(message='Select meshes.'):
 
     raise NotImplementedError
+
+
+def get_meshes(layer=None):
+
+    return [object for object in get_objects(layer=layer) if object.type == 'MESH']
 
 
 # ==============================================================================
@@ -305,6 +319,17 @@ def set_objects_visible(objects, visible=True):
         i.hide_viewport = not visible
 
 
+def set_object_property(object, property, value):
+
+        object[property] = value
+
+
+def set_objects_property(objects, property, value):
+
+    for object in objects:
+        object[property] = value
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -312,34 +337,37 @@ def set_objects_visible(objects, visible=True):
 if __name__ == '__main__':
 
     objects = get_objects(layer='Collection 1')
+    delete_objects(objects=objects)
+    # delete_objects(['Cube', 'Cylinder'])
+    # points  = get_points()
 
-    #print(get_objects(names=['Plane', 'Sphere']))
-    #print(get_objects(layer='Collection 2'))
-    #print(get_objects(type='Mesh'))
-    
-    #print(get_object_name(object=objects[1]))
-    #print(get_objects_names(objects=objects))
-    #print(get_objects_types(objects=objects))
-    #print(get_objects_coordinates(objects=objects))
-    #print(get_objects_layers(objects=objects))
-    
-    #print(get_points())
-    #print(get_curves())
-    #print(get_meshes())
+    # print(get_objects(names=['Plane', 'Sphere']))
+    # print(get_object_by_name(name='Plane'))
+    # print(get_objects_by_names(names=['Plane', 'Sphere']))
+    # print(get_objects(layer='Collection 1'))
+    # print(get_objects(type='Mesh'))
 
-    #a = get_objects_attributes(objects=objects)
-    
-    #set_deselect()
-    #set_deselect(objects=objects)
+    # print(get_object_name(object=objects[0]))
+    # print(get_objects_names(objects=objects))
+    # print(get_objects_layers(objects=objects))
+    # print(get_objects_types(objects=objects))
+    # print(get_objects_coordinates(objects=objects))
+    # print(get_object_property(object=objects[0], property='ex'))
+    # print(get_objects_property(objects=objects, property='ex'))
 
-    #for i in dir(objects[0]):
-    #    print(i)
+    # print(get_points_coordinates())
+    # print(get_curves())
+    # print(get_meshes())
 
-    #set_objects_coordinates(objects=objects, coords=[[0, 0, 3], [0, 0, 4]])
-    #set_objects_rotations(objects=objects, rotations=[[2, 0, 0], [0, 0, 2]])
-    #set_objects_scales(objects=objects, scales=[[2, 2, 2], [3, 3, 3]])
+    # set_select(points)
+    # set_deselect(points)
 
-    #set_objects_show_names(objects=objects, show=1)
-    #set_objects_visible(objects=objects, visible=1)
-    
-    #delete_object(object=objects[0])
+    # set_objects_coordinates(objects=objects[:2], coords=[[0, 0, 3], [0, 0, 4]])
+    # set_objects_rotations(objects=objects[:2], rotations=[[2, 0, 0], [0, 2, 2]])
+    # set_objects_scales(objects=objects[:2], scales=[[2, 2, 2], [3, 3, 3]])
+
+    # set_objects_show_names(objects=objects, show=0)
+    # set_objects_visible(objects=objects, visible=1)
+
+    # set_object_property(object=objects[1], property='ex', value=[1, 2, 3])
+    # set_objects_property(objects=objects, property='ex', value=[1, 2, 3])

@@ -2,25 +2,25 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
+
 from compas.utilities import geometric_key
 
 from compas_rhino.artists import VolMeshArtist
 
-from compas_rhino.helpers.selectors import VertexSelector
-from compas_rhino.helpers.selectors import EdgeSelector
-from compas_rhino.helpers.selectors import FaceSelector
+from compas_rhino.selectors import VertexSelector
+from compas_rhino.selectors import EdgeSelector
+from compas_rhino.selectors import FaceSelector
 
 try:
     import Rhino
     import scriptcontext as sc
 
 except ImportError:
-    import sys
-    if 'ironpython' in sys.version.lower():
-        raise
+    compas.raise_if_ironpython()
 
 
-__author__    = ['Tom Van Mele', ]
+__author__    = ['Tom Van Mele']
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
@@ -29,11 +29,13 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = [
     'volmesh_from_polysurfaces',
     'volmesh_from_wireframe',
+
     'volmesh_draw',
     'volmesh_draw_vertices',
     'volmesh_draw_edges',
     'volmesh_draw_faces',
     'volmesh_draw_cells',
+
     'volmesh_select_vertex',
     'volmesh_select_vertices',
     'volmesh_select_edge',
@@ -151,7 +153,7 @@ def volmesh_draw(volmesh,
 
     See Also
     --------
-    * compas_rhino.helpers.VolMeshArtist
+    * compas_rhino.VolMeshArtist
 
     """
     artist = VolMeshArtist(volmesh)
@@ -205,7 +207,7 @@ def volmesh_draw_vertices(volmesh,
 
     See Also
     --------
-    * compas_rhino.helpers.VolMeshArtist
+    * compas_rhino.VolMeshArtist
 
     """
     artist = VolMeshArtist(volmesh)
@@ -258,7 +260,7 @@ def volmesh_draw_edges(volmesh,
 
     See Also
     --------
-    * compas_rhino.helpers.VolMeshArtist
+    * compas_rhino.VolMeshArtist
 
     """
     artist = VolMeshArtist(volmesh)
@@ -311,7 +313,7 @@ def volmesh_draw_faces(volmesh,
 
     See Also
     --------
-    * compas_rhino.helpers.VolMeshArtist
+    * compas_rhino.VolMeshArtist
 
     """
     artist = VolMeshArtist(volmesh)
@@ -426,9 +428,9 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import VolMesh
-    from compas_rhino.helpers import volmesh_draw
-    from compas_rhino.helpers import volmesh_select_vertex
-    # from compas_rhino.helpers import volmesh_move_vertex
+    from compas_rhino import volmesh_draw
+    from compas_rhino import volmesh_select_vertex
+    # from compas_rhino import volmesh_move_vertex
 
     volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 

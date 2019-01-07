@@ -3,6 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas_blender.utilities import set_objects_show_names
+from compas_blender.utilities import xdraw_lines
+
 
 __author__    = ['Andrew Liew <liew@arch.ethz.ch>']
 __copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
@@ -19,24 +22,44 @@ class EdgeArtist(object):
 
     __module__ = "compas_blender.artists.mixins"
 
+
     def clear_edges(self, keys=None):
 
-        raise NotImplementedError
+        pass
 
 
-    def clear_edgelabels(self, keys=None):
+    def clear_edgelabels(self):
 
-        raise NotImplementedError
-
-
-    def draw_edges(self, keys=None, color=None):
-
-        raise NotImplementedError
+        set_objects_show_names(objects=self.edge_objects, show=False)
 
 
-    def draw_edgelabels(self, text=None, color=None):
+    def draw_edges(self, width=0.05, keys=None, colors=None):
 
-        raise NotImplementedError
+        self.clear_edges()
+        self.clear_edgelabels()
+
+        keys  = keys or list(self.datastructure.edges())
+        lines = [0] * len(keys)
+
+        if colors is None:
+            colors = {key: self.defaults['color.line'] for key in keys}
+
+        for c, (u, v) in enumerate(keys):
+            lines[c] = {
+                'start': self.datastructure.vertex_coordinates(u),
+                'end':   self.datastructure.vertex_coordinates(v),
+                'layer': self.layer,
+                'color': colors[(u, v)],
+                'width': width,
+                'name':  'E{}-{}'.format(u, v),
+            }
+
+        self.edge_objects = xdraw_lines(lines=lines)
+
+
+    def draw_edgelabels(self):
+
+        set_objects_show_names(objects=self.edge_objects, show=True)
 
 
 # ==============================================================================

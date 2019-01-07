@@ -12,18 +12,18 @@ __email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
+    'get_tolerance',
+    'screenshot_current_view',
+    'wait',
+    'browse_for_folder',
+    'browse_for_file',
     'display_message',
     'display_text',
     'display_image',
     'display_html',
-    'browse_for_file',
-    'browse_for_folder',
-    'get_tolerance',
-    'screenshot_current_view',
     'update_settings',
     'update_attributes',
     'update_named_values',
-    'wait',
 ]
 
 
@@ -50,11 +50,9 @@ def wait():
 # File system
 # ==============================================================================
 
-
 def browse_for_folder():
 
     raise NotImplementedError
-
 
 
 def browse_for_file():

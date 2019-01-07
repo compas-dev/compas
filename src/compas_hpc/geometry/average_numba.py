@@ -211,7 +211,7 @@ def center_of_mass_polyhedron_numba(vertices, faces):
     Return
     ------
     array
-        The XYZ coordinates of the polyhedron edges' centre of mass.
+        The XYZ coordinates of the polyhedron edges' center of mass.
 
     """
 
