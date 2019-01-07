@@ -1,4 +1,4 @@
-sphinx_compas_theme
+sphinx_compas_theme>=0.1.2
 sphinx>=1.6
 ipython==5.8
 invoke>=0.14
