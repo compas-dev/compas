@@ -6,27 +6,6 @@ compas.numerical
 .. currentmodule:: compas.numerical
 
 
-Algorithms
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    DynamicRelaxation
-    DynamicRelaxationX
-    ForceDensity
-
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    pca_numpy
-    topop2d_numpy
-    topop3d_numpy
-
-
 Solvers
 =======
 
@@ -36,14 +15,21 @@ Solvers
 
     descent
     devo_numpy
+    dr
+    dr_numpy
+    drx_numpy
+    fd_numpy
     ga
+    lma
+    mma
     moga
+    pca_numpy
+    topop2d_numpy
+    topop3d_numpy
 
 
-Functions
-=========
-
-**linalg**
+Linalg
+======
 
 .. autosummary::
     :toctree: generated/
@@ -67,7 +53,8 @@ Functions
     spsolve_with_known
 
 
-**matrices**
+Matrices
+========
 
 .. autosummary::
     :toctree: generated/
@@ -80,19 +67,10 @@ Functions
     face_matrix
     mass_matrix
     equilibrium_matrix
-    network_adjacency_matrix
-    network_degree_matrix
-    network_connectivity_matrix
-    network_laplacian_matrix
-    mesh_adjacency_matrix
-    mesh_degree_matrix
-    mesh_face_matrix
-    mesh_connectivity_matrix
-    mesh_laplacian_matrix
-    trimesh_cotangent_laplacian_matrix
 
 
-**operators**
+Operators
+=========
 
 .. autosummary::
     :toctree: generated/

@@ -49,9 +49,10 @@ def area_polygon(polygon):
     .. plot::
         :include-source:
 
+        from compas.geometry import area_polygon
         from compas.plotters import Plotter
 
-        plotter = Plotters()
+        plotter = Plotter()
 
         polygon = [
             [0.0, 0.0, 0.0],
@@ -70,9 +71,10 @@ def area_polygon(polygon):
     .. plot::
         :include-source:
 
+        from compas.geometry import area_polygon
         from compas.plotters import Plotter
 
-        plotter = Plotters()
+        plotter = Plotter()
 
         polygon = [
             [0.0, 0.0, 0.0],

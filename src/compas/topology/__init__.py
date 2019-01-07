@@ -6,7 +6,7 @@ compas.topology
 .. currentmodule:: compas.topology
 
 conway_operators
--------------
+----------------
 
 .. autosummary::
     :toctree: generated/
@@ -27,7 +27,7 @@ conway_operators
     conway_bevel
 
 connectivity
--------------
+------------
 
 .. autosummary::
     :toctree: generated/
@@ -35,7 +35,7 @@ connectivity
 
     adjacency_from_edges
     connectivity_from_edges
-    join_lines_to_polylines
+    join_lines
 
 combinatorics
 -------------
@@ -50,7 +50,7 @@ combinatorics
     network_is_connected
 
 complementarity
--------------
+---------------
 
 .. autosummary::
     :toctree: generated/
@@ -77,7 +77,7 @@ orientation
     :nosignatures:
 
     face_adjacency
-    flip_cycles
+    unify_cycles
     mesh_face_adjacency
     mesh_flip_cycles
     mesh_unify_cycles

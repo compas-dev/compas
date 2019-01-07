@@ -22,6 +22,8 @@ __all__ = ['RhinoPoint']
 class RhinoPoint(RhinoGeometry):
     """"""
 
+    __module__ = 'compas_rhino.geometry'
+
     def __init__(self, guid):
         super(RhinoPoint, self).__init__(guid)
 

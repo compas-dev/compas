@@ -104,17 +104,20 @@ Average
     :toctree: generated/
     :nosignatures:
 
-    centroid_polygon
-    centroid_polygon_xy
-    center_of_mass_polyhedron
     centroid_points
     centroid_points_xy
-    midpoint_line
-    midpoint_line_xy
+    centroid_polygon
+    centroid_polygon_xy
+    centroid_polygon_vertices
+    centroid_polygon_vertices_xy
+    centroid_polygon_edges
+    centroid_polygon_edges_xy
+    centroid_polyhedron
     midpoint_point_point
     midpoint_point_point_xy
-    tween_points
-    tween_points_distance
+    midpoint_line
+    midpoint_line_xy
+    weighted_centroid_points
 
 Normals
 -------
@@ -269,8 +272,6 @@ Algorithms
     :nosignatures:
 
     bestfit_plane
-    bestfit_plane_numpy
-    bestfit_circle_numpy
     bounding_box
     bounding_box_xy
     convex_hull

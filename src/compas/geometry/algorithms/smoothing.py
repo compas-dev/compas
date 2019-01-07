@@ -700,16 +700,14 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
 if __name__ == "__main__":
 
     import compas
-
     from compas.datastructures import Mesh
+    from compas.geometry import smooth_centerofmass
     from compas.plotters import MeshPlotter
-    from compas.geometry import smooth_area
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     vertices  = mesh.get_vertices_attributes('xyz')
-    faces     = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
-    adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
+    neighbors = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
     fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
     lines = []
@@ -721,14 +719,14 @@ if __name__ == "__main__":
             'width': 1.0,
         })
 
-    smooth_centroid(vertices, adjacency, fixed=fixed, kmax=100)
+    smooth_centerofmass(vertices, neighbors, fixed=fixed, kmax=100)
 
     for key, attr in mesh.vertices(True):
         attr['x'] = vertices[key][0]
         attr['y'] = vertices[key][1]
         attr['z'] = vertices[key][2]
 
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
+    plotter = MeshPlotter(mesh)
 
     plotter.draw_lines(lines)
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})

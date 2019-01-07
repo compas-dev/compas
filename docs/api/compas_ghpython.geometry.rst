@@ -1,2 +1,2 @@
 
-.. automodule:: compas_ghpython.geometries
+.. automodule:: compas_ghpython.geometry

@@ -35,7 +35,7 @@ ssh
     :nosignatures:
 
     SSH
-    Euler
+    EulerSSH
 
 """
 from __future__ import absolute_import

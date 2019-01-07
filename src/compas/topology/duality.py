@@ -99,67 +99,30 @@ def mesh_dual(mesh, cls=None):
 def network_dual(network, cls=None):
     """Construct the dual of a network.
 
-    Parameters:
-        network (compas.datastructures.network.Network): The network object.
-        cls (compas.datastructures.network.Network):
-            Optional.
-            The class of the dual.
-            Default is ``None``.
-            If ``None``, the cls is inferred from the type of the provided network
-            object.
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        The network object.
+    cls : compas.datastructures.Network, optional
+        The class of the dual.
+        Default is ``None``.
+        If ``None``, the cls is inferred from the type of the provided network object.
 
-    Warning:
-        A network (or a graph) has a dual if, and only if, it is planar.
-        Constructing the dual relies on the information about the faces of the
-        network, or, in other words, about the ordering of neighboring vertices
-        around a vertex. To determine the faces of the network (using :func:`find_network_faces`)
-        the network should be embedded in the plane, i.e drawn such that it is a
-        proper cell decomposition of the plane (it divides the plane in non-overlapping
-        spaces).
+    Warning
+    -------
+    A network (or a graph) has a dual if, and only if, it is planar.
+    Constructing the dual relies on the information about the faces of the
+    network, or, in other words, about the ordering of neighboring vertices
+    around a vertex. To determine the faces of the network (using :func:`find_network_faces`)
+    the network should be embedded in the plane, i.e drawn such that it is a
+    proper cell decomposition of the plane (it divides the plane in non-overlapping
+    spaces).
 
-    Example:
+    Examples
+    --------
+    .. code-block:: python
 
-        .. plot::
-            :include-source:
-
-            import compas
-
-            from compas.topology import FaceNetwork
-            from compas.topology import network_find_faces
-            from compas.topology import network_dual
-            from compas.plotters import NetworkPlotter
-
-            network = FaceNetwork.from_obj(compas.get('grid_irregular.obj'))
-
-            network_find_faces(network, breakpoints=network.leaves())
-
-            dual = network_dual(network)
-
-            plotter = NetworkPlotter(dual)
-
-            lines = []
-            for u, v in network.edges():
-                lines.append({
-                    'start': network.vertex_coordinates(u, 'xy'),
-                    'end': network.vertex_coordinates(v, 'xy'),
-                    'color': '#cccccc'
-                })
-
-            points = []
-            for key in network.vertices():
-                points.append({
-                    'pos': network.vertex_coordinates(key, 'xy'),
-                    'facecolor': '#ff0000',
-                    'edgecolor': '#000000',
-                    'radius': 0.075,
-                })
-
-            plotter.draw_lines(lines)
-            plotter.draw_points(points)
-            plotter.draw_vertices(radius=0.15, facecolor='#ffffff', edgecolor='#444444', text={key: key for key in network.vertices()})
-            plotter.draw_edges()
-
-            plotter.show()
+        pass
 
     """
     if not cls:
@@ -186,105 +149,65 @@ def network_dual(network, cls=None):
 def network_find_faces(network, breakpoints=None):
     """Find the faces of a network.
 
-    Parameters:
-        network (compas.datastructures.network.Network): The network object.
-        breakpoints (list): Optional.
-            The vertices at which to break the found faces.
-            Default is ``None``.
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        The network object.
+    breakpoints : list, optional
+        The vertices at which to break the found faces.
+        Default is ``None``.
 
-    Notes:
-        ``breakpoints`` are primarily used to break up the outside face in between
-        specific vertices. For example, in structural applications involving dual
-        diagrams, any vertices where external forces are applied (loads or reactions)
-        should be input as breakpoints.
+    Notes
+    -----
+    ``breakpoints`` are primarily used to break up the outside face in between
+    specific vertices. For example, in structural applications involving dual
+    diagrams, any vertices where external forces are applied (loads or reactions)
+    should be input as breakpoints.
 
+    Warning
+    -------
+    This algorithms is essentially a wall follower (a type of maze-solving algorithm).
+    It relies on the geometry of the network to be repesented as a planar,
+    straight-line embedding. It determines an ordering of the neighboring vertices
+    around each vertex, and then follows the *walls* of the network, always
+    taking turns in the same direction.
 
-    Warning:
-        This algorithms is essentially a wall follower (a type of maze-solving algorithm).
-        It relies on the geometry of the network to be repesented as a planar,
-        straight-line embedding. It determines an ordering of the neighboring vertices
-        around each vertex, and then follows the *walls* of the network, always
-        taking turns in the same direction.
+    Examples
+    --------
+    .. plot::
+        :include-source:
 
-    Example:
+        import compas
 
-        Compare the faces on the plots of the same network, with and without
-        breakpoints at the leaves.
+        from compas.topology import network_find_faces
+        from compas.datastructures import Network
+        from compas.datastructures import Mesh
+        from compas.plotters import MeshPlotter
 
-        Note that with the breakpoints, face ``0`` (the outside face) no longer exists.
-        Breaking up the face at the breakpoints happens after all faces have been
-        found. Therefore, numbering of the faces replacing the outside face starts
-        from the highest number of the faces found initially.
+        network = Network.from_obj(compas.get('lines.obj'))
 
+        mesh = Mesh()
 
-        .. plot::
-            :include-source:
+        for key, attr in network.vertices(True):
+            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=attr['z'])
 
-            # no breakpoints
+        mesh.halfedge = network.halfedge
 
-            import compas
-            from compas.topology import FaceNetwork
-            from compas.topology import network_find_faces
-            from compas.plotters import FaceNetworkPlotter
+        network_find_faces(mesh)
 
-            network = FaceNetwork.from_obj(compas.get('grid_irregular.obj'))
+        mesh.delete_face(0)
 
-            network_find_faces(network)
+        plotter = MeshPlotter(mesh)
 
-            plotter = FaceNetworkPlotter(network)
+        plotter.draw_vertices()
+        plotter.draw_edges()
+        plotter.draw_faces()
 
-            plotter.draw_vertices(
-                radius=0.075,
-                facecolor={key: '#cccccc' for key in network.leaves()}
-            )
-            plotter.draw_edges(
-                color={(u, v): '#cccccc' for u, v in network.edges()}
-            )
-            plotter.draw_faces(
-                facecolor={fkey: '#eeeeee' for fkey in network.faces()},
-                text={fkey: fkey for fkey in network.faces()}
-            )
-
-            plotter.show()
-
-        .. plot::
-            :include-source:
-
-            # leaves as breakpoints
-
-            import compas
-            from compas.topology import FaceNetwork
-            from compas.topology import network_find_faces
-            from compas.plotters import FaceNetworkPlotter
-
-            network = FaceNetwork.from_obj(compas.get('grid_irregular.obj'))
-
-            network_find_faces(network, breakpoints=network.leaves())
-
-            plotter = FaceNetworkPlotter(network)
-
-            plotter.draw_vertices(
-                radius=0.075,
-                facecolor={key: '#cccccc' for key in network.leaves()}
-            )
-            plotter.draw_edges(
-                color={(u, v): '#cccccc' for u, v in network.edges()}
-            )
-            plotter.draw_faces(
-                facecolor={fkey: '#eeeeee' for fkey in network.faces()},
-                text={fkey: fkey for fkey in network.faces()}
-            )
-
-            plotter.show()
+        plotter.show()
 
     """
     if not breakpoints:
         breakpoints = []
-
-    # network.clear_facedict()
-    # network.clear_halfedgedict()
-
-    # network.halfedge = {key: {} for key in network.vertices()}
 
     for u, v in network.edges():
         network.halfedge[u][v] = None
@@ -428,50 +351,4 @@ def _break_faces(network, breakpoints):
 
 if __name__ == '__main__':
 
-    from numpy import random
-    from numpy import hstack
-    from numpy import zeros
-
-    from compas.datastructures import Mesh
-    from compas.datastructures import FaceNetwork
-
-    from compas.topology import mesh_dual
-    from compas.topology import network_dual
-    from compas.topology import delaunay_from_points
-    from compas.topology import trimesh_remesh
-
-    from compas.plotters import MeshPlotter
-
-    points = hstack((10.0 * random.random_sample((10, 2)), zeros((10, 1)))).tolist()
-    faces = delaunay_from_points(points)
-    mesh = Mesh.from_vertices_and_faces(points, faces)
-
-    trimesh_remesh(mesh, 1.0, allow_boundary_split=True)
-
-    points = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    faces = delaunay_from_points(points)
-    mesh = Mesh.from_vertices_and_faces(points, faces)
-
-    dual = mesh_dual(mesh)
-
-    # network = FaceNetwork.from_vertices_and_faces(points, faces)
-    # network_find_faces(network)
-    # dual = network_dual(network)
-
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start': mesh.vertex_coordinates(u, 'xy'),
-            'end'  : mesh.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
-            'width': 0.5
-        })
-
-    plotter = MeshPlotter(dual, figsize=(10, 7))
-
-    plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolor='#eeeeee', edgecolor='#000000', radius=0.05)
-    plotter.draw_faces(facecolor='#eeeeee', edgecolor='#eeeeee', text='key')
-    plotter.draw_edges()
-
-    plotter.show()
+    pass

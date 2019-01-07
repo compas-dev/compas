@@ -28,6 +28,8 @@ __all__ = ['RhinoMesh']
 class RhinoMesh(RhinoGeometry):
     """"""
 
+    __module__ = 'compas_rhino.geometry'
+
     def __init__(self, guid):
         super(RhinoMesh, self).__init__(guid)
 
