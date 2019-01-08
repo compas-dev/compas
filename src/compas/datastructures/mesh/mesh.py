@@ -1566,7 +1566,7 @@ class Mesh(FromToPickle,
         """
         edges = set()
 
-        for u in sorted(self.halfedge.keys(), key=int):
+        for u in self.halfedge:
             for v in self.halfedge[u]:
 
                 if (u, v) in edges or (v, u) in edges:
