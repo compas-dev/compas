@@ -23,6 +23,9 @@ from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import cross_vectors
 from compas.geometry import length_vector
+from compas.geometry import scale_vector
+from compas.geometry import add_vectors
+from compas.geometry import sum_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
@@ -2296,7 +2299,7 @@ class Mesh(FromToPickle,
             The area.
         """
 
-        return sum([self.face_area(fkey) for fkey in self.faces()])
+        return sum(self.face_area(fkey) for fkey in self.faces())
 
     def centroid(self):
         """Calculate the mesh centroid.
@@ -2309,8 +2312,16 @@ class Mesh(FromToPickle,
         list
             The coordinates of the mesh centroid.
         """
-
-        return scale_vector(1. / self.area(), add_vectors([scale_vector(self.face_area(fkey), self.face_centroid(fkey)) for fkey in mesh.faces()]))
+        A = 0
+        cx, cy, cz = 0.0, 0.0, 0.0
+        for fkey in self.faces():
+            a = self.face_area(fkey)
+            x, y, z = self.face_centroid(fkey)
+            cx += a * x
+            cy += a * y
+            cz += a * z
+            A += a
+        return [cx / A, cy / A, cz / A]
 
     def normal(self):
         """Calculate the average mesh normal.
@@ -2324,7 +2335,7 @@ class Mesh(FromToPickle,
             The coordinates of the mesh normal.
         """
 
-        return scale_vector(1. / self.area(), add_vectors([scale_vector(self.face_area(fkey), self.face_normal(fkey)) for fkey in mesh.faces()]))
+        return scale_vector(1. / self.area(), add_vectors([scale_vector(self.face_area(fkey), self.face_normal(fkey)) for fkey in self.faces()]))
 
     # --------------------------------------------------------------------------
     # vertex geometry
