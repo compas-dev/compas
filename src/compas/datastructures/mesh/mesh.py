@@ -1580,7 +1580,7 @@ class Mesh(FromToPickle,
                 elif (v, u) in self.edgedata:
                     attr = self.edgedata[u, v] = self.edgedata[v, u]
                 else:
-                    attr = self.edgedata[u, v] = self.default_edge_attributes.copy()
+                    attr = self.edgedata[u, v] = self.edgedata[v, u] = self.default_edge_attributes.copy()
 
                 # if (u, v) not in self.edgedata:
                 #     self.edgedata[u, v] = self.default_edge_attributes.copy()
