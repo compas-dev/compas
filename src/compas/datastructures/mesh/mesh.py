@@ -1566,7 +1566,7 @@ class Mesh(FromToPickle,
         """
         edges = set()
 
-        for u in self.halfedge:
+        for u in sorted(self.halfedge.keys(), key=int):
             for v in self.halfedge[u]:
 
                 if (u, v) in edges or (v, u) in edges:
@@ -1575,17 +1575,24 @@ class Mesh(FromToPickle,
                 edges.add((u, v))
                 edges.add((v, u))
 
-                if (u, v) not in self.edgedata:
-                    self.edgedata[u, v] = self.default_edge_attributes.copy()
+                if (u, v) in self.edgedata:
+                    attr = self.edgedata[v, u] = self.edgedata[u, v]
+                elif (v, u) in self.edgedata:
+                    attr = self.edgedata[u, v] = self.edgedata[v, u]
+                else:
+                    attr = self.edgedata[u, v] = self.default_edge_attributes.copy()
 
-                    if (v, u) in self.edgedata:
-                        self.edgedata[u, v].update(self.edgedata[v, u])
-                        del self.edgedata[v, u]
+                # if (u, v) not in self.edgedata:
+                #     self.edgedata[u, v] = self.default_edge_attributes.copy()
 
-                    self.edgedata[v, u] = self.edgedata[u, v]
+                #     if (v, u) in self.edgedata:
+                #         self.edgedata[u, v].update(self.edgedata[v, u])
+                #         del self.edgedata[v, u]
+
+                #     self.edgedata[v, u] = self.edgedata[u, v]
 
                 if data:
-                    yield u, v, self.edgedata[u, v]
+                    yield u, v, attr
                 else:
                     yield u, v
 
@@ -3035,6 +3042,8 @@ if __name__ == '__main__':
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
+    mesh.update_default_edge_attributes({'q': 1.0})
+
     # vertices = [
     #     [0, 0, 0],
     #     [1, 1, 0],
@@ -3064,8 +3073,11 @@ if __name__ == '__main__':
 
     # # mesh.add_face([a, b, c, d, e, f, g, h])
 
-    for k in mesh.face:
+    for k in mesh.faces():
         print(k, mesh.is_face_on_boundary(k))
+
+
+    print(list(mesh.edges(True)))
 
 
     plotter = MeshPlotter(mesh)
