@@ -31,7 +31,7 @@ from .utilities import *
 from . import utilities
 
 
-__version__ = '0.3.5'
+__version__ = '0.3.6'
 
 
 PURGE_ON_DELETE = True

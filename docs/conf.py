@@ -17,7 +17,7 @@ project          = 'COMPAS'
 copyright        = '2017, Block Research Group - ETH Zurich'
 author           = 'Tom Van Mele'
 
-release = '0.3.5'
+release = '0.3.6'
 version = '.'.join(release.split('.')[0:2])
 
 master_doc       = 'index'
