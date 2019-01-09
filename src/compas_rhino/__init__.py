@@ -58,4 +58,4 @@ def _get_ironpython_lib_path(version):
     return ironpython_lib_path
 
 
-__all__ = ['__version__'] + [name for name in dir() if not name.startswith('_')]
+__all__ = [name for name in dir() if not name.startswith('_')]
