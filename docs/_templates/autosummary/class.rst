@@ -5,8 +5,6 @@
 
 .. currentmodule:: {{ module }}
 
-.. .. inheritance-diagram:: {{ objname }}
-
 .. autoclass:: {{ objname }}
 
    {% block methods %}

@@ -14,7 +14,7 @@ import sphinx_compas_theme
 # -- General configuration ------------------------------------------------
 
 project          = 'COMPAS'
-copyright        = '2017, Block Research Group - ETH Zurich'
+copyright        = 'Block Research Group - ETH Zurich'
 author           = 'Tom Van Mele'
 
 release = '0.3.6'
