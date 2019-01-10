@@ -41,6 +41,10 @@ __all__ = [
     'xdraw_faces',
     'xdraw_pointcloud',
     'xdraw_texts',
+    'draw_cylinder',
+    'draw_plane',
+    'draw_text',
+    'draw_line',
 ]
 
 
@@ -282,6 +286,107 @@ def xdraw_texts(texts):
     return _link_objects(objects, copy)
 
 
+def draw_cylinder(start, end, radius=1, color=[1, 1, 1], layer=None, div=10, **kwargs):
+
+    bpy.ops.mesh.primitive_cylinder_add(radius=1, depth=1, vertices=div, location=[0, 0, 0])
+    object = bpy.context.object
+
+    L      = distance_point_point(start, end)
+    pos    = centroid_points([start, end])
+
+    object.name = 'cylinder'
+    object.rotation_euler[1] = acos((end[2] - start[2]) / L)
+    object.rotation_euler[2] = atan2(end[1] - start[1], end[0] - start[0])
+    object.location = pos
+    object.scale = ((radius, radius, L))
+    object.data.materials.append(create_material(color=color))
+    # layer
+
+    return object
+
+
+def draw_plane(Lx=1, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 1, 1]):
+
+    """ Create a plane mesh in x-y.
+
+    Parameters
+    ----------
+    Lx : float
+        Length of the plane in x.
+    Ly : float
+        Length of the plane in y.
+    dx : float
+        Spacing in x direction.
+    dy : float
+        Spacing in y direction.
+    name : str
+        Name for the plane.
+    layer : str
+        Layer to draw the plane on.
+    color : list
+        Material color.
+
+    Returns
+    -------
+    obj
+        Created plane mesh object.
+
+    """
+
+    nx = int(Lx / dx)
+    ny = int(Ly / dy)
+    x  = [i * dx for i in range(nx + 1)]
+    y  = [i * dy for i in range(ny + 1)]
+
+    vertices = [[xi, yi, 0] for yi in y for xi in x]
+    faces    = [[(j + 0) * (nx + 1) + i + 0, (j + 0) * (nx + 1) + i + 1,
+                 (j + 1) * (nx + 1) + i + 1, (j + 1) * (nx + 1) + i + 0]
+                for i in range(nx) for j in range(ny)]
+
+    return xdraw_mesh(name=name, vertices=vertices, faces=faces, layer=layer, color=color, centroid=False)
+
+
+def draw_text(radius=1, pos=[0, 0, 0], text='text', layer=None, color=[1, 1, 1]):
+
+    bpy.ops.object.text_add(view_align=False)
+    object = bpy.context.object
+
+    object.scale    *= radius
+    object.location  = pos
+    object.data.body = text
+    object.data.materials.append(create_material(color=color))
+    # layer
+
+    return object
+
+
+def draw_line(start=[0, 0, 0], end=[1, 1, 1], width=0.05, centroid=True, name='line', color=[1, 1, 1], **kwargs):
+
+    mp = centroid_points([start, end]) if centroid else [0, 0, 0]
+
+    curve = bpy.data.curves.new(name, type='CURVE')
+    curve.dimensions = '3D'
+    object = bpy.data.objects.new(name, curve)
+    object.location = mp
+
+    spline = curve.splines.new('NURBS')
+    spline.points.add(2)
+    spline.points[0].co = list(subtract_vectors(start, mp)) + [1]
+    spline.points[1].co = list(subtract_vectors(end, mp)) + [1]
+    spline.order_u = 1
+
+    object.data.fill_mode = 'FULL'
+    object.data.bevel_depth = width
+    object.data.bevel_resolution = 0
+    object.data.resolution_u = 2
+    object.data.materials.append(create_material(color=color))
+    # layer
+
+    bpy.context.collection.objects.link(object)
+
+    return object
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -314,6 +419,8 @@ if __name__ == '__main__':
     # xdraw_texts(texts=texts)
 
     print('Time: ', time() - tic)
+
+    draw_plane(Lx=2, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 0, 1])
 
     # vertices = [[-1, 0, 1], [-2, 0, 2], [-2, 1, 1], [-1, 1, 0]]
     # faces    = [[0, 1, 2], [2, 3, 0]]
