@@ -226,6 +226,10 @@ def get_points(layer=None):
 
 
 def get_point_coordinates(guids):
+    if isinstance(guids, System.Guid):
+        point = rs.PointCoordinates(guids)
+        if point:
+            return map(float, point)
     points = []
     for guid in guids:
         point = rs.PointCoordinates(guid)
