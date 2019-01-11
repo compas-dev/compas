@@ -189,6 +189,30 @@ class Robot(object):
             # If None, it's not a link
             if link:
                 yield link
+    
+    def iter_joint_chain(self, link_start_name=None, link_end_name=None):
+        """Iterator over the chain of joints between a pair of start and end links.
+
+        Args:
+            link_start_name: Name of the starting link of the chain,
+                or ``None`` to start at root.
+            link_end_name: Name of the final link of the chain,
+                or ``None`` to try to identify the last link.
+
+        Returns:
+            Iterator of the chain of joints.
+
+        .. note::
+            This method differs from :meth:`iter_joints` in that it returns the 
+            chain respecting the tree structure, hence if one link branches into
+            two or more joints, only the branch matching the end link will be
+            returned.
+        """
+        chain = self.iter_chain(link_start_name, link_end_name)
+        for joint in map(self.get_joint_by_name, chain):
+            # If None, it's not a joint
+            if joint:
+                yield joint
 
     def iter_chain(self, start=None, end=None):
         """Iterator over the chain of all elements between a pair of start and end elements.
