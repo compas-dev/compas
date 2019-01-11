@@ -1035,6 +1035,42 @@ class Network(FromToJson,
         """
         return len(self.vertex_neighbors(key))
 
+    def vertex_min_degree(self):
+        """Compute the minimum degree of all vertices.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        int
+            The lowest degree of all vertices.
+
+        """
+        if not self.vertex:
+            return 0
+        return min(self.vertex_degree(key) for key in self.vertices())
+
+    def vertex_max_degree(self):
+        """Compute the maximum degree of all vertices.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the vertex.
+
+        Returns
+        -------
+        int
+            The highest degree of all vertices.
+
+        """
+        if not self.vertex:
+            return 0
+        return max(self.vertex_degree(key) for key in self.vertices())
+
     def vertex_degree_out(self, key):
         """Return the number of outgoing neighbors of a vertex.
 

@@ -1,4 +1,4 @@
-# Contributions
+# Contributing
 
 Contributions are welcome and very much appreciated!
 
@@ -19,7 +19,7 @@ In short, this is how that works.
 3. Install development dependencies:
 
 ```bash
-$ pip install -r requirements-dev.txt
+    $ pip install -r requirements-dev.txt
 ```
 
 4. Make sure all tests pass:
@@ -65,10 +65,9 @@ When [reporting a bug](https://github.com/compas-dev/compas/issues) please inclu
 >
 
 
-## Feature requests and feedback
+## Feature requests
 
-The best way to send feedback is to file an issue on [Github](https://github.com/compas-dev/compas/issues).
-If you are proposing a feature:
+When [proposing a new feature](https://github.com/compas-dev/compas/issues) please include:
 
 * Explain in detail how it would work.
 * Keep the scope as narrow as possible, to make it easier to implement.
