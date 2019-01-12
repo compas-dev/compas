@@ -36,7 +36,7 @@ deploy:
   skip_cleanup: true
   keep-history: true
   github_token: $GITHUB_TOKEN
-  repo: compas-dev/compas-dev.github.io
+  repo: compas-dev/main
   name: COMPAS doc bot
   target-branch: master
   local_dir: dist/docs
