@@ -18,10 +18,11 @@ from compas.geometry.basic import allclose
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
-from compas.geometry.transformations import identity_matrix
 
 
 __all__ = [
+    'identity_matrix',
+
     'matrix_from_frame',
     'matrix_from_euler_angles',
     'matrix_from_axis_and_angle',
@@ -44,6 +45,10 @@ __all__ = [
     'basis_vectors_from_matrix',
     'translation_from_matrix',
 ]
+
+
+def identity_matrix(dim):
+    return [[1. if i == j else 0. for i in range(dim)] for j in range(dim)]
 
 
 # ==============================================================================

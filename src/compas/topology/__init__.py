@@ -34,8 +34,6 @@ connectivity
     :nosignatures:
 
     adjacency_from_edges
-    connectivity_from_edges
-    join_lines
 
 combinatorics
 -------------
@@ -46,28 +44,6 @@ combinatorics
 
     vertex_coloring
     connected_components
-    mesh_is_connected
-    network_is_connected
-
-complementarity
----------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    network_complement
-
-duality
--------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mesh_dual
-    network_dual
-    network_find_faces
 
 orientation
 -----------
@@ -78,39 +54,6 @@ orientation
 
     face_adjacency
     unify_cycles
-    mesh_face_adjacency
-    mesh_flip_cycles
-    mesh_unify_cycles
-
-planarity
----------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    network_is_crossed
-    network_count_crossings
-    network_find_crossings
-    network_is_xy
-    network_is_planar
-    network_is_planar_embedding
-    network_embed_in_plane
-
-subdivision
------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mesh_subdivide
-    mesh_subdivide_tri
-    mesh_subdivide_corner
-    mesh_subdivide_quad
-    mesh_subdivide_catmullclark
-    mesh_subdivide_doosabin
-    trimesh_subdivide_loop   
 
 traversal
 ---------
@@ -128,33 +71,17 @@ traversal
     dijkstra_distances
     dijkstra_path
 
-triangulation
--------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    delaunay_from_points
-    voronoi_from_delaunay
-    mesh_quads_to_triangles
-    trimesh_remesh
-
-
 """
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+
 from .traversal import *
 from .combinatorics import *
-from .duality import *
 from .orientation import *
-from .planarity import *
-from .subdivision import *
-from .triangulation import *
 from .connectivity import *
 from .conway import *
-from .complementarity import *
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

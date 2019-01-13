@@ -8,8 +8,8 @@ import compas
 try:
     import ctypes
 
-    from compas.interop.cpp.xdarray import Array2D
-    from compas.interop.cpp.xdarray import Array1D
+    from compas.interop.cpp import Array2D
+    from compas.interop.cpp import Array1D
 
 except (ImportError, SystemError):
     compas.raise_if_not_ironpython()
@@ -30,8 +30,6 @@ def fd_cpp(vertices, edges, fixed, q, loads, **kwargs):
         try:
             lib = ctypes.cdll.LoadLibrary(DLL)
         except Exception:
-            print(SO)
-            print(DLL)
             raise
 
     free = [i for i in range(len(vertices)) if i not in fixed]

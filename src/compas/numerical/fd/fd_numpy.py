@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import sys
 import compas
 
 try:
@@ -17,60 +16,7 @@ from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 
 
-__all__ = [
-    'fd_numpy',
-    'network_fd_numpy',
-    'mesh_fd_numpy'
-]
-
-
-def network_fd_numpy_xfunc(data):
-    from compas.datastructures import Network
-    network = Network.from_data(data)
-    network_fd_numpy(network)
-    return network.to_data()
-
-
-def network_fd_numpy(network):
-    key_index = network.key_index()
-    vertices = network.get_vertices_attributes('xyz')
-    edges = [(key_index[u], key_index[v]) for u, v in network.edges()]
-    fixed = [key_index[key] for key in network.vertices_where({'is_fixed': True})]
-    q = network.get_edges_attribute('q', 1.0)
-    loads = network.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
-    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
-    for key, attr in network.vertices(True):
-        index = key_index[key]
-        attr['x'] = xyz[index][0]
-        attr['y'] = xyz[index][1]
-        attr['z'] = xyz[index][2]
-        attr['rx'] = r[index][0]
-        attr['ry'] = r[index][1]
-        attr['rz'] = r[index][2]
-    for index, (u, v, attr) in enumerate(network.edges(True)):
-        attr['f'] = f[index][0]
-        attr['l'] = l[index][0]
-
-
-def mesh_fd_numpy(mesh):
-    key_index = mesh.key_index()
-    vertices = mesh.get_vertices_attributes('xyz')
-    edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
-    fixed = [key_index[key] for key in mesh.vertices_where({'is_fixed': True})]
-    q = mesh.get_edges_attribute('q', 1.0)
-    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
-    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
-    for key, attr in mesh.vertices(True):
-        index = key_index[key]
-        attr['x'] = xyz[index][0]
-        attr['y'] = xyz[index][1]
-        attr['z'] = xyz[index][2]
-        attr['rx'] = r[index][0]
-        attr['ry'] = r[index][1]
-        attr['rz'] = r[index][2]
-    for index, (u, v, attr) in enumerate(mesh.edges(True)):
-        attr['f'] = f[index][0]
-        attr['l'] = l[index][0]
+__all__ = ['fd_numpy']
 
 
 def fd_numpy(vertices, edges, fixed, q, loads, **kwargs):
@@ -204,34 +150,4 @@ def fd_numpy(vertices, edges, fixed, q, loads, **kwargs):
 
 if __name__ == '__main__':
 
-    import compas
-
-    from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
-    from compas.utilities import i_to_rgb
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    mesh.update_default_vertex_attributes({'is_fixed': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})
-    mesh.update_default_edge_attributes({'q': 1.0})
-
-    for key, attr in mesh.vertices(True):
-        attr['is_fixed'] = mesh.vertex_degree(key) == 2
-
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    plotter.draw_as_lines(color='#cccccc', width=0.5)
-
-    network_fd_numpy(mesh)
-
-    zmax = max(mesh.get_vertices_attribute('z'))
-    fmax = max(mesh.get_edges_attribute('f'))
-
-    plotter.draw_vertices()
-    plotter.draw_faces()
-    plotter.draw_edges(
-        width={(u, v): 10 * attr['f'] / fmax for u, v, attr in mesh.edges(True)},
-        color={(u, v): i_to_rgb(attr['f'] / fmax) for u, v, attr in mesh.edges(True)},
-    )
-
-    plotter.show()
+    pass

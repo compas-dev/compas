@@ -134,7 +134,6 @@ class Mesh(FromToPickle,
     split_edge_tri    = trimesh_split_edge
     swap_edge_tri     = trimesh_swap_edge
 
-
     def __init__(self):
         super(Mesh, self).__init__()
         self._key_to_str = False
@@ -576,8 +575,8 @@ class Mesh(FromToPickle,
             mesh = Mesh.from_lines(lines)
 
         """
-        from compas.topology import network_find_faces
         from compas.datastructures import Network
+        from compas.datastructures import network_find_faces
 
         network = Network.from_lines(lines, precision=precision)
 
@@ -1435,7 +1434,7 @@ class Mesh(FromToPickle,
         V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
         E = self.number_of_edges()
         F = self.number_of_faces()
-        
+
         return V - E + F
 
     def genus(self):
@@ -1460,7 +1459,7 @@ class Mesh(FromToPickle,
 
         # each boundary must be taken into account as if it was one face
         B = len(self.boundaries())
-        
+
         if mesh.is_orientable:
             return (2 - (X + B)) / 2
         else:
@@ -2030,7 +2029,7 @@ class Mesh(FromToPickle,
                 boundary_edges.pop(boundary[-2])
 
             boundaries.append(boundary[: -1])
-        
+
         return boundaries
 
     # --------------------------------------------------------------------------
@@ -2736,7 +2735,7 @@ class Mesh(FromToPickle,
         """
 
         boundary_edges =  [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
-        
+
         if not oriented:
             return boundary_edges
 

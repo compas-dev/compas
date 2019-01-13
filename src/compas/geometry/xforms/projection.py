@@ -29,8 +29,8 @@ class Projection(Transformation):
         defined by point and normal.
 
         Args:
-            point(:obj:`list` of :obj:`float`)
-            normal(:obj:`list` of :obj:`float`)
+            point(list of float)
+            normal(list of float)
 
         Example:
             >>> point = [0, 0, 0]
@@ -46,9 +46,9 @@ class Projection(Transformation):
         by point, normal and direction.
 
         Args:
-            point(:obj:`list` of :obj:`float`)
-            normal(:obj:`list` of :obj:`float`)
-            direction(:obj:`list` of :obj:`float`)
+            point(list of float)
+            normal(list of float)
+            direction(list of float)
 
         Example:
             >>> point = [0, 0, 0]
@@ -65,9 +65,9 @@ class Projection(Transformation):
         defined by point, normal and perspective.
 
         Args:
-            point(:obj:`list` of :obj:`float`)
-            normal(:obj:`list` of :obj:`float`)
-            perspective(:obj:`list` of :obj:`float`)
+            point(list of float)
+            normal(list of float)
+            perspective(list of float)
 
         Example:
             >>> point = [0, 0, 0]
@@ -84,7 +84,7 @@ class Projection(Transformation):
         of a matrix.
 
         Args:
-            perspective_entries(:obj:`list` of :obj:`float`): The 4 perspective
+            perspective_entries(list of float): The 4 perspective
                 entries of a matrix.
         """
         M = matrix_from_perspective_entries(perspective_entries)
@@ -102,5 +102,5 @@ if __name__ == "__main__":
     persp1 = [0.3, 0.1, 0.1, 1]
     P1 = Projection.from_entries(persp1)
     S2, Sh, R2, T2, P = P1.decompose()
-    
+
     print(P)

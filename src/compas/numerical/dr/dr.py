@@ -3,9 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from copy import deepcopy
-
-from compas.geometry import norm_vectors
-
+from math import sqrt
 
 __all__ = ['dr']
 
@@ -23,6 +21,50 @@ class Coeff():
         self.c = c
         self.a = (1 - c * 0.5) / (1 + c * 0.5)
         self.b = 0.5 * (1 + self.a)
+
+
+def norm_vector(vector):
+    """
+    Calculate the length of a vector.
+
+    Parameters
+    ----------
+    vector : list
+        XYZ components of the vector.
+
+    Returns
+    -------
+    float
+        The L2 norm, or *length* of the vector.
+
+    Examples
+    --------
+    >>>
+
+    """
+    return sqrt(sum(axis ** 2 for axis in vector))
+
+
+def norm_vectors(vectors):
+    """
+    Calculate the norm of each vector in a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors
+
+    Returns
+    -------
+    list
+        A list with the lengths of all vectors.
+
+    Examples
+    --------
+    >>>
+
+    """
+    return [norm_vector(vector) for vector in vectors]
 
 
 def adjacency_from_edges(edges):

@@ -22,12 +22,12 @@ from OpenGL.GLUT import *
 import compas
 
 from compas.datastructures import Mesh
+from compas.datastructures import mesh_flip_cycles
+from compas.datastructures import mesh_subdivide
 
 from compas.geometry import centroid_points
 from compas.utilities import hex_to_rgb
 from compas.utilities import flatten
-from compas.topology import mesh_flip_cycles
-from compas.topology import mesh_subdivide
 
 from compas.viewers import core
 from compas.viewers.meshviewer.model import MeshView
@@ -374,7 +374,7 @@ class Controller(core.controller.Controller):
 
     # implement as toggle?
     # if 'on' the orginal is shown as control mesh (edges only)
-    # and the subdivision surface up to the specified level 
+    # and the subdivision surface up to the specified level
     def subdivide(self, scheme, k):
         self.mesh = mesh_subdivide(self.mesh, scheme=scheme, k=k)
         self.view.make_buffers()

@@ -6,22 +6,28 @@ compas.numerical
 .. currentmodule:: compas.numerical
 
 
-Solvers
-=======
+Backends
+========
+
+* Numpy/Scipy
+* Alglib
+* C++
+
+
+Algorithms
+==========
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    descent
+    descent_numpy
     devo_numpy
     dr
     dr_numpy
     drx_numpy
     fd_numpy
     ga
-    lma
-    mma
     moga
     pca_numpy
     topop2d_numpy
@@ -101,11 +107,15 @@ from .matrices import *
 from .operators import *
 from .utilities import *
 
-from .solvers import *
-from .algorithms import *
-
+from .descent import *
+from .devo import *
 from .dr import *
 from .drx import *
 from .fd import *
+from .ga import *
+# from .lma import *
+# from .mma import *
+from .pca import *
+from .topop import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

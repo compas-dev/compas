@@ -2,6 +2,28 @@
 Contributions
 ********************************************************************************
 
+Bug reports
+===========
+
+When `reporting a bug <https://github.com/compas-dev/compas/issues>`_
+please include:
+
+    * Operating system name and version.
+    * Any details about your local setup that might be helpful in troubleshooting.
+    * Detailed steps to reproduce the bug.
+
+
+Feature requests and feedback
+=============================
+
+The best way to send feedback is to file an issue on
+`Github <https://github.com/compas-dev/compas/issues>`_.
+If you are proposing a feature:
+
+* Explain in detail how it would work.
+* Keep the scope as narrow as possible, to make it easier to implement.
+
+
 Code contributions
 ==================
 
@@ -32,7 +54,7 @@ In short, this is how that works.
     $ invoke test
 
 
-7. Add yourself to ``CONTRIBUTORS.md``.
+7. Add yourself to ``AUTHORS.md``.
 8. Commit your changes and push your branch to GitHub.
 9. Create a `pull request <https://help.github.com/articles/about-pull-requests/>`_ through the GitHub website.
 
@@ -45,25 +67,3 @@ command line to ease recurring operations:
 * ``invoke docs``: Generate documentation.
 * ``invoke test``: Run all tests and checks in one swift command.
 * ``invoke``: Show available tasks.
-
-
-Bug reports
-===========
-
-When `reporting a bug <https://github.com/compas-dev/compas/issues>`_
-please include:
-
-    * Operating system name and version.
-    * Any details about your local setup that might be helpful in troubleshooting.
-    * Detailed steps to reproduce the bug.
-
-
-Feature requests and feedback
-=============================
-
-The best way to send feedback is to file an issue on
-`Github <https://github.com/compas-dev/compas/issues>`_.
-If you are proposing a feature:
-
-* Explain in detail how it would work.
-* Keep the scope as narrow as possible, to make it easier to implement.

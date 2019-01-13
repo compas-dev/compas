@@ -158,8 +158,8 @@ to something like this:
     import compas
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
-    from compas.interop.core.cpp.xdarray import Array1D
-    from compas.interop.core.cpp.xdarray import Array2D
+    from compas.interop.cpp import Array1D
+    from compas.interop.cpp import Array2D
 
     # get the C++ smoothing library
 
@@ -376,8 +376,8 @@ Putting it all together, we get the following script. Simply copy-paste it and r
     import compas
     from compas.datastructures import Mesh
     from compas.plotters import MeshPlotter
-    from compas.interop.core.cpp.xdarray import Array1D
-    from compas.interop.core.cpp.xdarray import Array2D
+    from compas.interop.cpp import Array1D
+    from compas.interop.cpp import Array2D
 
 
     # get the C++ smoothing library

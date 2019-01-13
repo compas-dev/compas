@@ -8,84 +8,96 @@ import compas
 from copy import deepcopy
 from functools import partial
 
-from compas.geometry import cross_vectors
-from compas.geometry import length_vector
-from compas.geometry import centroid_points
-
 try:
-    from compas.numerical.alglib.core import xalglib
+    from compas.numerical._alglib._core import xalglib
 except ImportError:
     compas.raise_if_ironpython()
 
 
-__all__ = ['mesh_fd_alglib']
+__all__ = ['fd_alglib']
 
 
-def mesh_fd_alglib(mesh, density=1.0, kmax=10):
-    key_index = {key: index for index, key in enumerate(mesh.vertices())}
+def cross_vectors(u, v):
+    return [u[1] * v[2] - u[2] * v[1],
+            u[2] * v[0] - u[0] * v[2],
+            u[0] * v[1] - u[1] * v[0]]
 
-    xyz     = mesh.get_vertices_attributes('xyz')
-    loads   = mesh.get_vertices_attributes(('px', 'py', 'pz'))
-    n       = mesh.number_of_vertices()
-    anchors = [key_index[key] for key, attr in mesh.vertices(True) if attr['is_anchor']]
-    fixed   = []
-    fixed   = list(set(anchors + fixed))
-    free    = list(set(range(n)) - set(fixed))
-    ni      = len(free)
-    nf      = len(fixed)
-    xyzf    = [xyz[i] for i in fixed]
 
-    selfweight = _selfweight_calculator(mesh, density=density)
+def length_vector(vector):
+    return sqrt(vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2)
 
-    adjacency = {key_index[key]: [key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()}
 
-    ij_q = {uv: mesh.get_edge_attribute(uv, 'q', 1.0) for uv in mesh.edges()}
-    ij_q.update({(v, u): q for (u, v), q in ij_q.items()})
+def centroid_points(points):
+    p = len(points)
+    x, y, z = zip(*points)
+    return [sum(x) / p, sum(y) / p, sum(z) / p]
 
-    for u, v in ij_q:
-        if mesh.halfedge[u][v] is None or mesh.halfedge[v][u] is None:
-            ij_q[u, v] = 0.0
 
-    ij_q = {(key_index[u], key_index[v]): ij_q[u, v] for u, v in ij_q}
+# def mesh_fd_alglib(mesh, density=1.0, kmax=10):
+#     key_index = {key: index for index, key in enumerate(mesh.vertices())}
 
-    nonzero_fixed, nonzero_free = _nonzero(adjacency, fixed, free)
+#     xyz     = mesh.get_vertices_attributes('xyz')
+#     loads   = mesh.get_vertices_attributes(('px', 'py', 'pz'))
+#     n       = mesh.number_of_vertices()
+#     anchors = [key_index[key] for key, attr in mesh.vertices(True) if attr['is_anchor']]
+#     fixed   = []
+#     fixed   = list(set(anchors + fixed))
+#     free    = list(set(range(n)) - set(fixed))
+#     ni      = len(free)
+#     nf      = len(fixed)
+#     xyzf    = [xyz[i] for i in fixed]
 
-    CtQC = xalglib.sparsecreate(n, n)
-    CitQCi = xalglib.sparsecreate(ni, ni)
-    CitQCf = xalglib.sparsecreate(ni, nf)
+#     selfweight = _selfweight_calculator(mesh, density=density)
 
-    s = xalglib.linlsqrcreate(ni, ni)
+#     adjacency = {key_index[key]: [key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()}
 
-    _update_matrices(adjacency, free, nonzero_fixed, nonzero_free, CtQC, CitQCf, CitQCi, ij_q)
+#     ij_q = {uv: mesh.get_edge_attribute(uv, 'q', 1.0) for uv in mesh.edges()}
+#     ij_q.update({(v, u): q for (u, v), q in ij_q.items()})
 
-    for k in range(kmax):
-        _compute_xyz_free(s, xyz, xyzf, loads, free, ni, CitQCf, CitQCi, selfweight=selfweight)
+#     for u, v in ij_q:
+#         if mesh.halfedge[u][v] is None or mesh.halfedge[v][u] is None:
+#             ij_q[u, v] = 0.0
 
-    p  = deepcopy(loads)
-    sw = selfweight(xyz)
+#     ij_q = {(key_index[u], key_index[v]): ij_q[u, v] for u, v in ij_q}
 
-    for i in range(len(p)):
-        p[i][2] -= sw[i]
+#     nonzero_fixed, nonzero_free = _nonzero(adjacency, fixed, free)
 
-    rx, ry, rz = _compute_residuals(xyz, p, n, CtQC)
+#     CtQC = xalglib.sparsecreate(n, n)
+#     CitQCi = xalglib.sparsecreate(ni, ni)
+#     CitQCf = xalglib.sparsecreate(ni, nf)
 
-    for key, attr in mesh.vertices(True):
-        index = key_index[key]
+#     s = xalglib.linlsqrcreate(ni, ni)
 
-        mesh.vertex[key]['x']  = xyz[index][0]
-        mesh.vertex[key]['y']  = xyz[index][1]
-        mesh.vertex[key]['z']  = xyz[index][2]
-        mesh.vertex[key]['rx'] = rx[index]
-        mesh.vertex[key]['ry'] = ry[index]
-        mesh.vertex[key]['rz'] = rz[index]
+#     _update_matrices(adjacency, free, nonzero_fixed, nonzero_free, CtQC, CitQCf, CitQCi, ij_q)
 
-    for u, v in mesh.edges():
-        i, j = key_index[u], key_index[v]
+#     for k in range(kmax):
+#         _compute_xyz_free(s, xyz, xyzf, loads, free, ni, CitQCf, CitQCi, selfweight=selfweight)
 
-        q = ij_q[i, j]
-        l = mesh.edge_length(u, v)
-        f = q * l
-        mesh.set_edge_attributes((u, v), ('q', 'f', 'l'), (q, f, l))
+#     p  = deepcopy(loads)
+#     sw = selfweight(xyz)
+
+#     for i in range(len(p)):
+#         p[i][2] -= sw[i]
+
+#     rx, ry, rz = _compute_residuals(xyz, p, n, CtQC)
+
+#     for key, attr in mesh.vertices(True):
+#         index = key_index[key]
+
+#         mesh.vertex[key]['x']  = xyz[index][0]
+#         mesh.vertex[key]['y']  = xyz[index][1]
+#         mesh.vertex[key]['z']  = xyz[index][2]
+#         mesh.vertex[key]['rx'] = rx[index]
+#         mesh.vertex[key]['ry'] = ry[index]
+#         mesh.vertex[key]['rz'] = rz[index]
+
+#     for u, v in mesh.edges():
+#         i, j = key_index[u], key_index[v]
+
+#         q = ij_q[i, j]
+#         l = mesh.edge_length(u, v)
+#         f = q * l
+#         mesh.set_edge_attributes((u, v), ('q', 'f', 'l'), (q, f, l))
 
 
 def fd_alglib(vertices, edges, fixed, q, loads, **kwargs):

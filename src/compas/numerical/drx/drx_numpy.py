@@ -1,7 +1,8 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+
+import compas
 
 try:
     from numpy import arccos
@@ -20,9 +21,7 @@ try:
     from scipy.sparse import find
 
 except ImportError:
-    import sys
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import mass_matrix

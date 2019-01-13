@@ -3,6 +3,29 @@
 Contributions are welcome and very much appreciated!
 
 
+## Bug reports
+
+When [reporting a bug](https://github.com/compas-dev/compas/issues) please include:
+
+* Operating system name and version.
+* Any details about your local setup that might be helpful in troubleshooting.
+* Detailed steps to reproduce the bug.
+
+> **NOTE**
+>
+> Please don't use the issue tracker to ask questions about **COMPAS**.
+> There is a [forum](https://forum.compas-framework.org) for that!
+>
+
+
+## Feature requests
+
+When [proposing a new feature](https://github.com/compas-dev/compas/issues) please include:
+
+* Explain in detail how it would work.
+* Keep the scope as narrow as possible, to make it easier to implement.
+
+
 ## Code contributions
 
 We accept code contributions through pull requests.
@@ -48,26 +71,3 @@ command line to ease recurring operations:
 * `invoke docs`: Generate documentation.
 * `invoke test`: Run all tests and checks in one swift command.
 * `invoke`: Show available tasks.
-
-
-## Bug reports
-
-When [reporting a bug](https://github.com/compas-dev/compas/issues) please include:
-
-* Operating system name and version.
-* Any details about your local setup that might be helpful in troubleshooting.
-* Detailed steps to reproduce the bug.
-
-> **NOTE**
->
-> Please don't use the issue tracker to ask questions about **COMPAS**.
-> There is a [forum](https://forum.compas-framework.org) for that!
->
-
-
-## Feature requests
-
-When [proposing a new feature](https://github.com/compas-dev/compas/issues) please include:
-
-* Explain in detail how it would work.
-* Keep the scope as narrow as possible, to make it easier to implement.
