@@ -93,8 +93,8 @@ def trimesh_remesh(mesh,
         :include-source:
 
         from compas.datastructures import Mesh
+        from compas.datastructures import trimesh_remesh
         from compas.plotters import MeshPlotter
-        from compas.topology import trimesh_remesh
 
         vertices = [
             (0.0, 0.0, 0.0),

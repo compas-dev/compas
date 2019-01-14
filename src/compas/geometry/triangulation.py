@@ -284,7 +284,8 @@ def voronoi_from_points_numpy(points):
 
     Examples
     --------
-    .. code-block:: python
+    .. plot::
+        :include-source:
 
         from compas.datastructures import Mesh
         from compas.plotters import MeshPlotter
@@ -344,7 +345,7 @@ def voronoi_from_points_numpy(points):
                 })
 
 
-        plotter = MeshPlotter(mesh, figsize=(10, 7))
+        plotter = MeshPlotter(mesh)
         plotter.draw_points(points)
         plotter.draw_lines(lines)
         plotter.draw_arrows(arrows)
@@ -400,7 +401,7 @@ def voronoi_from_delaunay(delaunay):
         faces = delaunay_from_points(points)
         delaunay = Mesh.from_vertices_and_faces(points, faces)
 
-        voronoi  = voronoi_from_delaunay(delaunay)
+        voronoi = voronoi_from_delaunay(delaunay)
 
         lines = []
         for u, v in voronoi.edges():
@@ -410,7 +411,7 @@ def voronoi_from_delaunay(delaunay):
                 'width': 1.0
             })
 
-        plotter = MeshPlotter(delaunay, figsize=(10, 6))
+        plotter = MeshPlotter(delaunay)
 
         plotter.draw_lines(lines)
 
@@ -441,63 +442,5 @@ def voronoi_from_delaunay(delaunay):
 
 if __name__ == "__main__":
 
-    import compas
-    import os
-    from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
-    from compas.utilities import pairwise
+    pass
 
-    from triangle import triangulate
-
-    points = [
-        [2.994817685045075, 10.855606612493078, 0.0],
-        [4.185204599300653, 9.527867361977242, 0.0],
-        [4.414125159734419, 10.718254276232818, 0.0],
-        [5.925000858597267, 9.344730913630228, 0.0],
-        [8.900968144236211, 10.809822500406325, 0.0],
-        [9.496161601363999, 8.566401008155429, 0.0],
-        [7.710581229980631, 7.9254234389408875, 0.0],
-        [7.847933566240888, 6.414547740078039, 0.0],
-        [3.9104999267801377, 4.9036720412151915, 0.0],
-        [5.2909301507195865, 6.342692886748852, 0.0]
-    ]
-
-    points = [
-        [0.0, 0.0, 0.0],
-        [1.0, 0.0, 0.0],
-        [1.0, 1.0, 0.0],
-        [2.0, 1.0, 0.0],
-        [3.0, 1.0, 0.0],
-        [4.0, 1.0, 0.0],
-        [5.0, 1.0, 0.0],
-        [6.0, 1.0, 0.0],
-        [7.0, 1.0, 0.0],
-        [8.0, 1.0, 0.0],
-        [9.0, 1.0, 0.0],
-        [10.0, 1.0, 0.0],
-        [10.0, 0.0, 0.0],
-        [11.0, 0.0, 0.0],
-        [11.0, 1.0, 0.0],
-        [10.5, 1.0, 0.0],
-        [10.5, 2.0, 0.0],
-        [5.5, 2.0, 0.0],
-        [0.5, 2.0, 0.0],
-        [0.5, 1.0, 0.0],
-        [0.0, 1.0, 0.0]
-    ]
-
-    data = {
-        'vertices': [point[0:2] for point in points],
-        'segments': list(pairwise(list(range(len(points))) + [0]))
-    }
-
-    res = triangulate(data, opts='p')
-
-    faces = res['triangles']
-
-    mesh = Mesh.from_vertices_and_faces(points, faces)
-
-    plotter = MeshPlotter(mesh)
-    plotter.draw_faces()
-    plotter.draw_vertices(text='key')
-    plotter.save(os.path.join(compas.TEMP, 'anjali.png'))

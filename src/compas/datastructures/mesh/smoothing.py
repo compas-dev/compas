@@ -45,8 +45,8 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
         import compas
 
         from compas.datastructures import Mesh
+        from compas.datastructures import mesh_smooth_centroid
         from compas.plotters import MeshPlotter
-        from compas.geometry import mesh_smooth_centroid
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
         fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
@@ -123,8 +123,8 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
         import compas
 
         from compas.datastructures import Mesh
+        from compas.datastructures import mesh_smooth_centerofmass
         from compas.plotters import MeshPlotter
-        from compas.geometry import mesh_smooth_centerofmass
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
         fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
@@ -160,7 +160,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = centroid_polygon([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key)])
+            cx, cy, cz = centroid_polygon([key_xyz[nbr] for nbr in mesh.vertex_neighbors(key, ordered=True)])
 
             attr['x'] += damping * (cx - x)
             attr['y'] += damping * (cy - y)
@@ -201,8 +201,8 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
         import compas
 
         from compas.datastructures import Mesh
+        from compas.datastructures import mesh_smooth_area
         from compas.plotters import MeshPlotter
-        from compas.geometry import mesh_smooth_area
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
         fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]

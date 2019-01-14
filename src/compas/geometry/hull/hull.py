@@ -44,6 +44,10 @@ def convex_hull(points):
 
     Examples
     --------
+    .. warning::
+
+        This examples only works in Rhino.
+
     .. code-block:: python
 
         import math

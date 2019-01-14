@@ -11,6 +11,7 @@ Object-oriented convenience wrappers for native Rhino geometry.
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     RhinoCurve
     RhinoMesh
@@ -19,11 +20,11 @@ Object-oriented convenience wrappers for native Rhino geometry.
 
 """
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import compas
 import compas_rhino
-
-from compas_rhino.utilities import select_object
 
 try:
     import rhinoscriptsyntax as rs
@@ -67,7 +68,7 @@ class RhinoGeometry(object):
             #
 
         """
-        guid = select_object()
+        guid = compas_rhino.select_object()
         return cls(guid)
 
     @staticmethod
@@ -250,10 +251,10 @@ class RhinoGeometry(object):
         raise NotImplementedError
 
 
-from .point import RhinoPoint
-from .curve import RhinoCurve
-from .mesh import RhinoMesh
-from .surface import RhinoSurface
+from .point import *
+from .curve import *
+from .mesh import *
+from .surface import *
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

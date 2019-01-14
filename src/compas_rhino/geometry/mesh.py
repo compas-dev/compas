@@ -8,8 +8,6 @@ import compas_rhino
 from compas_rhino.geometry import RhinoGeometry
 
 try:
-    from System.Collections.Generic import List
-
     import Rhino
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
@@ -33,22 +31,10 @@ class RhinoMesh(RhinoGeometry):
     def __init__(self, guid):
         super(RhinoMesh, self).__init__(guid)
 
-    # ==========================================================================
-    # constructors
-    # ==========================================================================
-
     @classmethod
     def from_selection(cls):
         guid = compas_rhino.select_mesh()
         return cls(guid)
-
-    # ==========================================================================
-    # conversion
-    # ==========================================================================
-
-    # ==========================================================================
-    # methods
-    # ==========================================================================
 
     def get_vertex_coordinates(self):
         return [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]
@@ -160,7 +146,7 @@ class RhinoMesh(RhinoGeometry):
     #     return findices
 
     def get_face_vertex_indices(guid):
-        findex = get_mesh_face_index(guid)
+        findex = compas_rhino.get_mesh_face_index(guid)
         if findex is None:
             return
         mobj = sc.doc.Objects.Find(guid)

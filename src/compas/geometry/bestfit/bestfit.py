@@ -45,10 +45,6 @@ def bestfit_plane(points):
 
         #
 
-    See also
-    --------
-    :func:`bestfit_plane_numpy` : Variation using NumPy.
-
     """
     centroid = centroid_points(points)
 

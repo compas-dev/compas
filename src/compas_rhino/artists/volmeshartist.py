@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import time
-
 import compas
 import compas_rhino
 
@@ -75,7 +73,7 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import VolMesh
-    from compas_rhino.artists.volmeshartist import VolMeshArtist
+    from compas_rhino.artists import VolMeshArtist
 
     volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 

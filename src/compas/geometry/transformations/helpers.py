@@ -196,7 +196,7 @@ def determinant(M, check=True):
 
     Returns
     -------
-    :obj:`float`
+    float
         The determinant.
 
     """
@@ -246,7 +246,7 @@ def inverse(M):
 
     Returns
     -------
-    :obj:`list` of :obj:`list` of :obj:`float`
+   list of list of float
         The inverted matrix.
 
     Examples

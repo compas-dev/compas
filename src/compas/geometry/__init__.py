@@ -9,11 +9,10 @@ compas.geometry
 Functions
 =========
 
-The functions in this section take various geometric primitives and objects as input parameters.
-These primitives and objects may be passed into those functions as instances of the
-corresponding classes defined in :mod:`compas.geometry` or as an equivalent representation
-using (combinations of) built-in Python objects.
-The following table defines those representations.
+The functions in this section take various geometric primitives as input parameters.
+These primitives may be passed into those functions as instances of the
+corresponding classes or as an equivalent representation using (combinations of)
+built-in Python objects. The following table defines those equivalent representations.
 
 .. rst-class:: table table-responsive table-bordered
 
@@ -31,6 +30,12 @@ plane       2-tuple of origin (point) and normal (vector).
 frame       3-tuple of origin (point), U axis (vector) and V axis (vector).
 circle      3-tuple of center (point), normal (vector) and radius (float).
 =========== ====================================================================
+
+.. note::
+
+    Many functions have a `_xy` variant. These variants ignore the Z-component of
+    the input parameters and return a result in the XY plane (with `z = 0`).
+
 
 Linalg
 ------
@@ -77,7 +82,7 @@ Linalg
     vector_component
     vector_component_xy
 
----
+-------
 
 Angles
 ------

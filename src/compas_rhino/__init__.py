@@ -14,7 +14,6 @@ compas_rhino
     compas_rhino.forms
     compas_rhino.geometry
     compas_rhino.helpers
-    compas_rhino.inspectors
     compas_rhino.modifiers
     compas_rhino.selectors
     compas_rhino.ui

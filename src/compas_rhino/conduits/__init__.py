@@ -11,6 +11,7 @@ Definition of display conduits.
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     MeshConduit
     FacesConduit

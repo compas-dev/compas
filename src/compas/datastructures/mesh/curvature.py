@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-__all__ = []
+__all__ = ['trimesh_mean_curvature']
 
 
 def trimesh_mean_curvature(mesh):
@@ -17,7 +17,7 @@ def trimesh_mean_curvature(mesh):
 if __name__ == "__main__":
 
     from numpy import array
-    
+
     import compas
 
     from compas.datastructures import Mesh
@@ -67,4 +67,4 @@ if __name__ == "__main__":
 
     plotter.draw_arrows(lines)
 
-    plotter.show()    
+    plotter.show()

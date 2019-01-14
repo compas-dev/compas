@@ -7,7 +7,7 @@ from math import pi
 
 from compas.geometry import centroid_points
 
-from compas.datastructures.mesh.mesh import Mesh
+from compas.datastructures.mesh._mesh import Mesh
 
 
 __all__ = [
@@ -243,7 +243,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         :include-source:
 
         from compas.datastructures import Mesh
-        from compas.topology import mesh_subdivide_catmullclark
+        from compas.datastructures import mesh_subdivide_catmullclark
         from compas.plotters import MeshPlotter
 
         vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
@@ -264,7 +264,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         :include-source:
 
         from compas.datastructures import Mesh
-        from compas.topology import mesh_subdivide_catmullclark
+        from compas.datastructures import mesh_subdivide_catmullclark
         from compas.plotters import MeshPlotter
 
         vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
@@ -284,8 +284,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     .. code-block:: python
 
         from compas.datastructures import Mesh
-
-        from compas.topology import mesh_subdivide_catmullclark
+        from compas.datastructures import mesh_subdivide_catmullclark
         from compas.geometry import Polyhedron
         from compas.viewers import SubdMeshViewer
 
@@ -552,7 +551,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
     .. code-block:: python
 
         from compas.datastructures import Mesh
-        from compas.topology import mesh_flip_cycle_directions
+        from compas.datastructures import mesh_flip_cycle_directions
         from compas.plotters import SubdMeshViewer
 
         mesh = Mesh.from_polyhedron(4)

@@ -1,23 +1,31 @@
-from __future__ import print_function, division, absolute_import
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
-import compas
+from ._mesh import *
 
-from .mesh import *
+from .matrices import *
 
 from .clean import *
+from .combinatorics import *
+from .contours import *
+from .curvature import *
+from .descent import *
+from .duality import *
+from .geodesics import *
 from .join import *
-
-from .triangulation import *
-
-# if not compas.IPY:
-#     from .matrices import *
-#     from .contours import *
-#     from .geodesics import *
-
+from .laplacian import *
+from .offset import *
 from .orientation import *
+from .planarisation import *
+
 from .smoothing import *
 from .remesh import *
+
 from .subdivision import *
+from .transformations import *
+from .triangulation import *
+from .trimming import *
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

@@ -7,6 +7,7 @@ compas_rhino.ui
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
 
 """

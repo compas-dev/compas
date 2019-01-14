@@ -6,16 +6,16 @@ from compas.files import URDF
 from compas.files import URDFParser
 from compas.geometry.xforms import Transformation
 
-from .geometry import Box
-from .geometry import Capsule
-from .geometry import Color
-from .geometry import Cylinder
-from .geometry import Geometry
-from .geometry import Material
-from .geometry import MeshDescriptor
-from .geometry import Origin
-from .geometry import Sphere
-from .geometry import Texture
+from compas.robots.model.geometry import Box
+from compas.robots.model.geometry import Capsule
+from compas.robots.model.geometry import Color
+from compas.robots.model.geometry import Cylinder
+from compas.robots.model.geometry import Geometry
+from compas.robots.model.geometry import Material
+from compas.robots.model.geometry import MeshDescriptor
+from compas.robots.model.geometry import Origin
+from compas.robots.model.geometry import Sphere
+from compas.robots.model.geometry import Texture
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 

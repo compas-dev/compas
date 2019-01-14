@@ -3,12 +3,13 @@ from __future__ import division
 from __future__ import print_function
 
 
-from .network import *
+from ._network import *
 
+from .combinatorics import *
 from .complementarity import *
 from .duality import *
 from .parallelisation import *
-from .planarity import *
+from ._planarity import *
 from .smoothing import *
 
 

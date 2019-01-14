@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from compas.geometry import Frame
 from compas.geometry import Transformation
-from compas.utilities.colors import hex_to_rgb
+from compas.utilities import hex_to_rgb
 
 __all__ = ['Geometry',
            'Box',

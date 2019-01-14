@@ -47,10 +47,6 @@ def flatness(vertices, faces, maxdev=0.02):
     -------
     This function only works as expected for quadrilateral faces.
 
-    See Also
-    --------
-    * :func:`compas.geometry.mesh_flatness`
-
     """
     dev = []
     for face in faces:
@@ -89,11 +85,6 @@ def planarize_faces(vertices,
         A user-defined callback that is called after every iteration.
     callback_args : list, optional [None]
         A list of arguments to be passed to the callback function.
-
-    See Also
-    --------
-    * :func:`compas.geometry.mesh_planarize_faces`
-    * :func:`compas.geometry.mesh_planarize_faces_shapeop`
 
     """
     if callback:

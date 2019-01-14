@@ -7,7 +7,8 @@ import os
 import sys
 from shutil import rmtree
 
-from invoke import Collection, Exit, task
+from invoke import Exit
+from invoke import task
 
 try:
     input = raw_input
@@ -72,12 +73,18 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
         ctx.run('python setup.py clean')
 
     if bytecode:
-        for root, dirs, files in os.walk(BASE_FOLDER):
-            for f in files:
-                if f.endswith('.pyc'):
-                    os.remove(os.path.join(root, f))
-            if '.git' in dirs:
-                dirs.remove('.git')
+        # for root, dirs, files in os.walk(BASE_FOLDER):
+        #     for f in files:
+        #         if f.endswith('.pyc'):
+        #             os.remove(os.path.join(root, f))
+        #     if '.git' in dirs:
+        #         dirs.remove('.git')
+        files = glob.glob('src/**/*.pyc', recursive=True)
+        for path in files:
+            try:
+                os.remove(file)
+            except Exception:
+                pass
 
     folders = []
 
@@ -86,9 +93,8 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
 
     folders.append('dist/')
 
-    # TODO: Add other packages
     if bytecode:
-        folders.append('src/compas/__pycache__')
+        folders.extend(glob.glob('src/**/__pycache__', recursive=True))
 
     if builds:
         folders.append('build/')
@@ -108,12 +114,12 @@ def docs(ctx, doctest=False, rebuild=True, check_links=False):
         clean(ctx)
 
     if doctest:
-        ctx.run('sphinx-build -b doctest docs dist/docs')
+        ctx.run('sphinx-build -E -b doctest docs dist/docs')
 
-    ctx.run('sphinx-build -b html docs dist/docs')
+    ctx.run('sphinx-build -E -b html docs dist/docs')
 
     if check_links:
-        ctx.run('sphinx-build -b linkcheck docs dist/docs')
+        ctx.run('sphinx-build -E -b linkcheck docs dist/docs')
 
 
 @task()

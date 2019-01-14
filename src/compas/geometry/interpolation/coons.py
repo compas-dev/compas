@@ -62,10 +62,6 @@ def discrete_coons_patch(ab, bc, dc, ad):
 
         #
 
-    See Also
-    --------
-    * :func:`compas.datastructures.mesh_cull_duplicate_vertices`
-
     """
     if not ab:
         ab = [ad[0]] * len(dc)

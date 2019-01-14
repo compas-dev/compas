@@ -11,6 +11,7 @@ Windows forms for ...
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     BrowserForm
     ChartForm

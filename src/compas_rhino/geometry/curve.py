@@ -6,7 +6,6 @@ import compas
 import compas_rhino
 
 from compas_rhino.geometry import RhinoGeometry
-from compas_rhino.utilities import select_curve
 
 try:
     import Rhino
@@ -23,7 +22,30 @@ __all__ = ['RhinoCurve']
 
 
 class RhinoCurve(RhinoGeometry):
-    """"""
+    """Wrapper for Rhino curves.
+
+    Parameters
+    ----------
+    guid : str or System.Guid
+        The GUID of the Rhino curve object.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        import compas_rhino
+
+        from compas_rhino.geometry import RhinoCurve
+
+        curve = RhinoCurve(guid)
+
+        points = curve.divide(10)
+        tangents = curve.tangents(points)
+
+        for point, vector in zip(points, tangents):
+            print point, tangent
+
+    """
 
     __module__ = 'compas_rhino.geometry'
 
@@ -40,16 +62,8 @@ class RhinoCurve(RhinoGeometry):
             A convenience wrapper around the Rhino curve object.
 
         """
-        guid = select_curve()
+        guid = compas_rhino.select_curve()
         return cls(guid)
-
-    # @classmethod
-    # def from_points(cls, points, degree=None):
-    #     points = [list(point) for point in points]
-    #     if not degree:
-    #         degree = len(points) - 1
-    #     guid = rs.AddCurve([Point3d(* point) for point in points], degree)
-    #     return cls(guid)
 
     def is_line(self):
         """Determine if the curve is a line.
@@ -88,9 +102,25 @@ class RhinoCurve(RhinoGeometry):
                 len(rs.CurvePoints(self.guid)) > 2)
 
     def control_points(self):
+        """Get the control points of a curve.
+
+        Returns
+        -------
+        list
+            Control point objects.
+
+        """
         return self.object.GetGrips()
 
     def control_point_coordinates(self):
+        """Get the coordinates of the control points of a curve.
+
+        Returns
+        -------
+        list
+            Control point coordinates.
+
+        """
         return [control.CurrentLocation for control in self.control_points()]
 
     def control_points_on(self):
@@ -153,7 +183,7 @@ class RhinoCurve(RhinoGeometry):
             for point in points:
                 param = rs.CurveClosestPoint(self.guid, point)
                 vector = list(rs.CurveTangent(self.guid, param))
-                tangents.append((point, vector))
+                tangents.append(vector)
         else:
             raise Exception('Object is not a curve.')
         return tangents
@@ -162,7 +192,7 @@ class RhinoCurve(RhinoGeometry):
         tangents = self.tangents(points)
         tangents = [
             (point, vector) if vector[2] < 0 else (point, [-v for v in vector])
-            for point, vector in tangents
+            for point, vector in zip(points, tangents)
         ]
         return tangents
 
@@ -195,7 +225,7 @@ class RhinoCurve(RhinoGeometry):
         return x, y, z, t
 
     def closest_points(self, points, maxdist=None):
-        return [self.closest_point(point, maxdist) for point in points]        
+        return [self.closest_point(point, maxdist) for point in points]
 
 
 # ==============================================================================

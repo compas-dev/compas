@@ -7,6 +7,7 @@ compas_rhino.inspectors
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     MeshVertexInspector
 
@@ -14,6 +15,5 @@ compas_rhino.inspectors
 from __future__ import absolute_import
 
 from .meshinspector import *
-from .networkinspector import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

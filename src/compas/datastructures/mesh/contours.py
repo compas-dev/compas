@@ -2,15 +2,28 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from numpy import asarray
-from numpy import meshgrid
-from numpy import linspace
-from numpy import amax
-from numpy import amin
+import compas
 
-from scipy.interpolate import griddata
+try:
+    from numpy import asarray
+    from numpy import meshgrid
+    from numpy import linspace
+    from numpy import amax
+    from numpy import amin
 
-import matplotlib.pyplot as plt
+    from scipy.interpolate import griddata
+
+    import matplotlib.pyplot as plt
+
+except ImportError:
+    compas.raise_if_not_ironpython()
+
+try:
+    import pymesh
+except ImportError:
+    pass
+
+from compas.geometry import scalarfield_contours_numpy
 
 
 __all__ = [
@@ -133,8 +146,6 @@ def mesh_contours_vtk(mesh, levels=None, density=100):
 
 
 def mesh_contours_pymesh(mesh, levels=None, density=100):
-    import pymesh
-
     vertices, faces = mesh.to_vertices_and_faces()
     m = pymesh.form_mesh(vertices, faces)
 

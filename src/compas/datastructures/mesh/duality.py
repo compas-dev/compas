@@ -5,9 +5,7 @@ from __future__ import division
 from math import pi
 
 
-__all__ = [
-    'mesh_dual',
-]
+__all__ = ['mesh_dual']
 
 
 PI2 = 2.0 * pi
@@ -36,7 +34,7 @@ def mesh_dual(mesh, cls=None):
 
         import compas
         from compas.datastructures import Mesh
-        from compas.topology import mesh_dual
+        from compas.datastructures import mesh_dual
         from compas.plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))

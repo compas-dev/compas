@@ -25,30 +25,36 @@ __all__ = [
 def offset_line(line, distance, normal=[0., 0., 1.]):
     """Offset a line by a distance.
 
-    Parameters:
-        line (tuple): Two points defining the line.
-        distances (float or tuples of floats): The offset distance as float.
-            A single value determines a constant offset. Alternatively, two
-            offset values for the start and end point of the line can be used to
-            a create variable offset.
-        normal (tuple): The normal of the offset plane.
+    Parameters
+    ----------
+    line : tuple
+        Two points defining the line.
+    distances : float or tuples of floats
+        The offset distance as float.
+        A single value determines a constant offset. Alternatively, two
+        offset values for the start and end point of the line can be used to
+        a create variable offset.
+    normal : tuple
+        The normal of the offset plane.
 
-    Returns:
-        offset line (tuple): Two points defining the offset line.
+    Returns
+    -------
+    offset line (tuple)
+        Two points defining the offset line.
 
-    Examples:
+    Examples
+    --------
+    .. code-block:: python
 
-        .. code-block:: python
+        line = [(0.0, 0.0, 0.0), (3.0, 3.0, 0.0)]
 
-            line = [(0.0, 0.0, 0.0), (3.0, 3.0, 0.0)]
+        distance = 0.2 # constant offset
+        line_offset = offset_line(line, distance)
+        print(line_offset)
 
-            distance = 0.2 # constant offset
-            line_offset = offset_line(line, distance)
-            print(line_offset)
-
-            distance = [0.2, 0.1] # variable offset
-            line_offset = offset_line(line, distance)
-            print(line_offset)
+        distance = [0.2, 0.1] # variable offset
+        line_offset = offset_line(line, distance)
+        print(line_offset)
 
     """
     pt1, pt2 = line[0], line[1]
@@ -70,48 +76,54 @@ def offset_line(line, distance, normal=[0., 0., 1.]):
 def offset_polygon(polygon, distance):
     """Offset a polygon (closed) by a distance.
 
-    Parameters:
-        polygon (sequence of sequence of floats): The XYZ coordinates of the
-            corners of the polygon. The first and last coordinates must be identical.
-        distance (float or list of tuples of floats): The offset distance as float.
-            A single value determines a constant offset globally. Alternatively, pairs of local
-            offset values per line segment can be used to create variable offsets.
-            Distance > 0: offset to the outside, distance < 0: offset to the inside
+    Parameters
+    ----------
+    polygon : list of point
+        The XYZ coordinates of the corners of the polygon.
+        The first and last coordinates must be identical.
+    distance : float or list of tuples of floats
+        The offset distance as float.
+        A single value determines a constant offset globally.
+        Alternatively, pairs of local offset values per line segment can be used to create variable offsets.
+        Distance > 0: offset to the outside, distance < 0: offset to the inside.
 
-    Returns:
-        offset polygon (sequence of sequence of floats): The XYZ coordinates of the
-            corners of the offset polygon. The first and last coordinates are identical.
+    Returns
+    -------
+    offset polygon : list of point
+        The XYZ coordinates of the corners of the offset polygon.
+        The first and last coordinates are identical.
 
-    Notes:
-        The offset direction is determined by the normal of the polygon. The
-        algorithm works also for spatial polygons that do not perfectly fit a plane.
+    Notes
+    -----
+    The offset direction is determined by the normal of the polygon.
+    The algorithm works also for spatial polygons that do not perfectly fit a plane.
 
-    Examples:
+    Examples
+    --------
+    .. code-block:: python
 
-        .. code-block:: python
+        polygon = [
+            (0.0, 0.0, 0.0),
+            (3.0, 0.0, 1.0),
+            (3.0, 3.0, 2.0),
+            (1.5, 1.5, 2.0),
+            (0.0, 3.0, 1.0),
+            (0.0, 0.0, 0.0)
+            ]
 
-            polygon = [
-                (0.0, 0.0, 0.0),
-                (3.0, 0.0, 1.0),
-                (3.0, 3.0, 2.0),
-                (1.5, 1.5, 2.0),
-                (0.0, 3.0, 1.0),
-                (0.0, 0.0, 0.0)
-                ]
+        distance = 0.5 # constant offset
+        polygon_offset = offset_polygon(polygon, distance)
+        print(polygon_offset)
 
-            distance = 0.5 # constant offset
-            polygon_offset = offset_polygon(polygon, distance)
-            print(polygon_offset)
-
-            distance = [
-                (0.1, 0.2),
-                (0.2, 0.3),
-                (0.3, 0.4),
-                (0.4, 0.3),
-                (0.3, 0.1)
-                ] # variable offset
-            polygon_offset = offset_polygon(polygon, distance)
-            print(polygon_offset)
+        distance = [
+            (0.1, 0.2),
+            (0.2, 0.3),
+            (0.3, 0.4),
+            (0.4, 0.3),
+            (0.3, 0.1)
+            ] # variable offset
+        polygon_offset = offset_polygon(polygon, distance)
+        print(polygon_offset)
 
     """
     normal = normal_polygon(polygon)
@@ -145,17 +157,22 @@ def offset_polygon(polygon, distance):
 def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
     """Offset a polyline by a distance.
 
-    Parameters:
-        polyline (sequence of sequence of floats): The XYZ coordinates of the
-            vertices of a polyline.
-        distance (float or list of tuples of floats): The offset distance as float.
-            A single value determines a constant offset globally. Alternatively, pairs of local
-            offset values per line segment can be used to create variable offsets.
-            Distance > 0: offset to the "left", distance < 0: offset to the "right"
-        normal (tuple): The normal of the offset plane.
+    Parameters
+    ----------
+    polyline : list of point
+        The XYZ coordinates of the vertices of a polyline.
+    distance : float or list of tuples of floats
+        The offset distance as float.
+        A single value determines a constant offset globally.
+        Alternatively, pairs of local offset values per line segment can be used to create variable offsets.
+        Distance > 0: offset to the "left", distance < 0: offset to the "right".
+    normal : tuple
+        The normal of the offset plane.
 
-    Returns:
-        offset polyline (sequence of sequence of floats): The XYZ coordinates of the resulting polyline.
+    Returns
+    -------
+    offset polyline : list of point
+        The XYZ coordinates of the resulting polyline.
 
     """
 

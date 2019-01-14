@@ -2,11 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from copy import deepcopy
+
 from compas.utilities import geometric_key
 
 from compas.datastructures.mesh.clean import mesh_delete_duplicate_vertices
-
-from copy import deepcopy
 
 
 __all__ = [

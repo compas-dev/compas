@@ -192,19 +192,21 @@ def network_is_planar(network):
         import compas
 
         from compas.datastructures import Network
-        from compas.topology import network_is_planar
-        from compas.topology import network_find_crossings
+        from compas.datastructures import network_is_planar
+        from compas.datastructures import network_find_crossings
         from compas.plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('lines.obj'))
 
-        network.add_edge(21, 29)
-        network.add_edge(17, 28)
+        network.add_edge(6, 15)
 
         if not network_is_planar(network):
+            print('here')
             crossings = network_find_crossings(network)
         else:
             crossings = []
+
+        print(crossings)
 
         plotter = NetworkPlotter(network)
 
@@ -219,7 +221,7 @@ def network_is_planar(network):
     except ImportError:
         print("Planarity is not installed. Get Planarity at https://github.com/hagberg/planarity.")
         raise
-    return planarity.is_planar(network.edges())
+    return planarity.is_planar(list(network.edges()))
 
 
 def network_is_planar_embedding(network):
@@ -277,7 +279,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
         import compas
 
         from compas.datastructures import Network
-        from compas.topology import network_embed_in_plane
+        from compas.datastructures import network_embed_in_plane
         from compas.plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('fink.obj'))
@@ -382,43 +384,25 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Network
+    from compas.datastructures import network_is_planar
+    from compas.datastructures import network_find_crossings
     from compas.plotters import NetworkPlotter
 
-    network = Network.from_obj(compas.get('fink.obj'))
+    network = Network.from_obj(compas.get('lines.obj'))
 
-    # crossings = network_find_crossings(network)
+    network.add_edge(6, 15)
 
-    # print(network_count_crossings(network))
-    # print(crossings)
-    # print(len(crossings))
+    if not network_is_planar(network):
+        print('here')
+        crossings = network_find_crossings(network)
+    else:
+        crossings = []
 
-    # ecolor = {}
-    # for e1, e2 in crossings:
-    #     ecolor[e1] = '#ff0000'
-    #     ecolor[e2] = '#ff0000'
+    print(crossings)
 
-    # plotter = NetworkPlotter(network, figsize=(10, 7))
+    plotter = NetworkPlotter(network)
 
-    # plotter.draw_vertices()
-    # plotter.draw_edges(color=ecolor)
-    # plotter.show()
+    plotter.draw_vertices(radius=0.15, text={key: key for key in network.vertices()})
+    plotter.draw_edges(color={edge: '#ff0000' for edges in crossings for edge in edges})
 
-    embedding = network.copy()
-
-    fix = (9, 6)
-
-    if network_embed_in_plane(embedding, fix=fix):
-
-        plotter = NetworkPlotter(embedding, figsize=(10, 7))
-
-        plotter.draw_lines([{'start': network.vertex_coordinates(u, 'xy'),
-                              'end': network.vertex_coordinates(v, 'xy'),
-                              'color': '#cccccc'} for u, v in network.edges()])
-
-        plotter.draw_vertices(radius=0.3,
-                              text={key: key for key in embedding.vertices()},
-                              facecolor={key: '#ff0000' for key in fix})
-
-        plotter.draw_edges()
-
-        plotter.show()
+    plotter.show()

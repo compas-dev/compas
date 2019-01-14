@@ -2,28 +2,34 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from numpy import array
-from numpy import cross
-from numpy import bincount
-from numpy import zeros
-from numpy import mean
-from numpy import tan
-from numpy import arccos
-from numpy import sum
-from numpy import empty
-from numpy import append
-from numpy import ones
+import compas
 
-from scipy.sparse import spdiags
-from scipy.sparse import csr_matrix
-from scipy.sparse.linalg import splu
-from scipy.sparse.linalg import spsolve
-from scipy.linalg import solve
+try:
+    from numpy import array
+    from numpy import cross
+    from numpy import bincount
+    from numpy import zeros
+    from numpy import mean
+    from numpy import tan
+    from numpy import arccos
+    from numpy import sum
+    from numpy import empty
+    from numpy import append
+    from numpy import ones
+
+    from scipy.sparse import spdiags
+    from scipy.sparse import csr_matrix
+    from scipy.sparse.linalg import splu
+    from scipy.sparse.linalg import spsolve
+    from scipy.linalg import solve
+
+except ImportError:
+    compas.raise_if_not_ironpython()
+
 
 from compas.numerical import normrow
 from compas.numerical import normalizerow
-
-from compas.geometry import scalarfield_isolines_numpy
+from compas.geometry import scalarfield_contours_numpy
 
 from compas.datastructures.mesh.matrices import trimesh_cotangent_laplacian_matrix
 
@@ -33,7 +39,7 @@ __all__ = ['mesh_geodesic_distances']
 
 # def mesh_geodesic_distance_isolines(mesh, sources, m=1.0):
 #     distances = mesh_geodesic_distances(mesh, sources, m=m)
-#     levels, isolines = scalarfield_isolines_numpy(xy, distances)    
+#     levels, isolines = scalarfield_isolines_numpy(xy, distances)
 
 
 def mesh_geodesic_distances(mesh, sources, m=1.0):
@@ -161,7 +167,7 @@ def mesh_geodesic_distances(mesh, sources, m=1.0):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     import compas
 
     from compas.datastructures import Mesh
@@ -216,4 +222,4 @@ if __name__ == "__main__":
     # plotter.draw_edges()
     plotter.draw_faces()
 
-    plotter.show()    
+    plotter.show()

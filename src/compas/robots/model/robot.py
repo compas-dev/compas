@@ -8,13 +8,14 @@ from compas.files import URDF
 from compas.files import URDFParser
 from compas.geometry import Frame
 from compas.geometry import Transformation
-from compas.robots.resources import DefaultMeshLoader
 from compas.topology import shortest_path
 
-from .geometry import Color
-from .geometry import Material
-from .geometry import Texture
-from .joint import Joint
+from compas.robots.model.geometry import Color
+from compas.robots.model.geometry import Material
+from compas.robots.model.geometry import Texture
+from compas.robots.model.joint import Joint
+from compas.robots.resources import DefaultMeshLoader
+
 
 __all__ = ['Robot']
 
@@ -189,7 +190,7 @@ class Robot(object):
             # If None, it's not a link
             if link:
                 yield link
-    
+
     def iter_joint_chain(self, link_start_name=None, link_end_name=None):
         """Iterator over the chain of joints between a pair of start and end links.
 
@@ -203,7 +204,7 @@ class Robot(object):
             Iterator of the chain of joints.
 
         .. note::
-            This method differs from :meth:`iter_joints` in that it returns the 
+            This method differs from :meth:`iter_joints` in that it returns the
             chain respecting the tree structure, hence if one link branches into
             two or more joints, only the branch matching the end link will be
             returned.
@@ -329,7 +330,7 @@ class Robot(object):
             if joint.axis:
                 axes.append(joint.axis.vector)
         return axes
-        
+
     def __str__(self):
         """Generate a readable representation of the robot."""
         return 'Robot name={}, Links={}, Joints={} ({} configurable)'.format(
