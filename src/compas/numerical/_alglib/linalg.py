@@ -6,9 +6,9 @@ import sys
 import compas
 
 try:
-    from _core import Array
-    from _core import Zeros
-    from _core import xalglib
+    from compas.numerical._alglib._core import Array
+    from compas.numerical._alglib._core import Zeros
+    from compas.numerical._alglib._core import xalglib
 
 except ImportError:
     compas.raise_if_ironpython()

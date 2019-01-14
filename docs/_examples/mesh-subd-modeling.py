@@ -9,7 +9,7 @@ from __future__ import print_function
 from __future__ import division
 
 from compas.datastructures import Mesh
-from compas.topology import mesh_subdivide
+from compas.datastructures import mesh_subdivide
 
 from compas_rhino.artists import MeshArtist
 from compas_rhino.selectors import VertexSelector

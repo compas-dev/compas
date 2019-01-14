@@ -9,9 +9,10 @@ import compas
 from compas.utilities import flatten
 
 try:
-    from _array import Array
-    from _array import Zeros
-    import xalglib
+    from compas.numerical._alglib._core import xalglib
+
+    from compas.numerical._alglib._core._array import Array
+    from compas.numerical._alglib._core._array import Zeros
 
 except ImportError:
     compas.raise_if_ironpython()

@@ -9,7 +9,7 @@ import compas
 from compas.utilities import flatten
 
 try:
-    import xalglib
+    from compas.numerical._alglib._core import xalglib
 
 except ImportError:
     compas.raise_if_ironpython()

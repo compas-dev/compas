@@ -6,35 +6,30 @@ from compas.topology import breadth_first_traverse
 
 
 __all__ = [
-    'mesh_is_connected'
+    'network_is_connected'
 ]
 
 
-def mesh_is_connected(mesh):
-    """Verify that the mesh is connected.
-
-    Parameters
-    ----------
-    mesh : compas.datastructures.Mesh
-        A mesh data structure.
+def network_is_connected(network):
+    """Verify that the network is connected.
 
     Returns
     -------
     bool
-        True, if the mesh is connected.
+        True, if the network is connected.
         False, otherwise.
 
     Notes
     -----
-    A mesh is connected if for every two vertices a path exists connecting them.
+    A network is connected if for every two vertices a path exists connecting them.
 
     """
-    if not mesh.vertex:
+    if not network.vertex:
         return False
 
-    nodes = breadth_first_traverse(mesh.adjacency, mesh.get_any_vertex())
+    nodes = breadth_first_traverse(network.adjacency, network.get_any_vertex())
 
-    return len(nodes) == mesh.number_of_vertices()
+    return len(nodes) == network.number_of_vertices()
 
 
 # ==============================================================================

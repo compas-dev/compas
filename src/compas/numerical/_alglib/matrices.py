@@ -6,20 +6,19 @@ import sys
 import compas
 
 try:
-    from _core import Array
-    from _core import Zeros
-    from _core import Diagonal
+    from compas.numerical._alglib._core import Array
+    from compas.numerical._alglib._core import Zeros
+    from compas.numerical._alglib._core import Diagonal
+    from compas.numerical._alglib._core import SparseArray
 
-    from _core import SparseArray
-
-    from _core.xalglib import sparsecreate
-    from _core.xalglib import sparseset
-    from _core.xalglib import sparseget
-    from _core.xalglib import sparsegetnrows
-    from _core.xalglib import sparsegetncols
-    from _core.xalglib import sparseconverttocrs
-    from _core.xalglib import sparseconverttohash
-    from _core.xalglib import sparseishash
+    from compas.numerical._alglib._core.xalglib import sparsecreate
+    from compas.numerical._alglib._core.xalglib import sparseset
+    from compas.numerical._alglib._core.xalglib import sparseget
+    from compas.numerical._alglib._core.xalglib import sparsegetnrows
+    from compas.numerical._alglib._core.xalglib import sparsegetncols
+    from compas.numerical._alglib._core.xalglib import sparseconverttocrs
+    from compas.numerical._alglib._core.xalglib import sparseconverttohash
+    from compas.numerical._alglib._core.xalglib import sparseishash
 
 except ImportError:
     compas.raise_if_ironpython()

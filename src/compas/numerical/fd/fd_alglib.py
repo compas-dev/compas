@@ -2,11 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
-import compas
-
+from math import sqrt
 from copy import deepcopy
 from functools import partial
+
+import compas
 
 try:
     from compas.numerical._alglib._core import xalglib

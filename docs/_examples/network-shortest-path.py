@@ -5,7 +5,7 @@ email  : van.mele@arch.ethz.ch
 
 """
 
-from random import sample
+from random import choice
 
 import compas
 
@@ -24,8 +24,10 @@ network = Network.from_obj(compas.get('grid_irregular.obj'))
 
 leaves = list(network.vertices_where({'vertex_degree': 1}))
 
-start, end = sample(leaves, 2)
-
+start = end = 0
+while start == end:
+    start = choice(leaves)
+    end = choice(leaves)
 
 # construc an adjacency dict
 # add weight to the edges corresponding to their length

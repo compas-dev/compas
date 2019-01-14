@@ -328,6 +328,18 @@ Transformations
     translate_points
     translate_points_xy
 
+Triangulation
+-------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    delaunay_from_points
+    delaunay_from_points_numpy
+    voronoi_from_points_numpy
+    voronoi_from_delaunay
+
 
 Classes
 =======
@@ -389,8 +401,6 @@ from .size import *
 
 from .transformations import *
 
-from ._primitives import *
-
 from .bbox import *
 from .bestfit import *
 from .hull import *
@@ -400,6 +410,9 @@ from .offset import *
 from .planarisation import *
 from .smoothing import *
 from .spatial import *
+from .triangulation import *
+
+from ._primitives import *
 from .xforms import *
 
 
