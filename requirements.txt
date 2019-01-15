@@ -1,7 +1,9 @@
+cython; sys_platform != 'win32'
 matplotlib
 networkx
 numba
 numpy
 pillow
+planarity; sys_platform != 'win32'
 scipy
 sympy
