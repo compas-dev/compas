@@ -9,9 +9,11 @@ compas
 .. toctree::
     :maxdepth: 1
 
+    compas.com
     compas.datastructures
     compas.files
     compas.geometry
+    compas.interop
     compas.numerical
     compas.plotters
     compas.robots

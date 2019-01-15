@@ -1,9 +1,9 @@
-Cython
-matplotlib
+cython
+matplotlib>=3.0
 networkx
 numba
 numpy
-Pillow
-planarity
+pillow
+pyopengl
 scipy
 sympy
