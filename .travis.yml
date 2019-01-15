@@ -16,9 +16,11 @@ before_install:
     conda info -a;
     conda create -y -q -n compas_3x -c conda-forge python=3.6;
     source ~/miniconda/bin/activate compas_3x;
+    pip install Cython --install-option="--no-cython-compile";
     pip install -r requirements-dev.txt;
   else
     sudo apt-get update -qq;
+    pip install Cython --install-option="--no-cython-compile";
     pip install -r requirements-dev.txt;
   fi
 
