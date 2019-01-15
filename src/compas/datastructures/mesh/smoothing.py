@@ -49,7 +49,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
         from compas.plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
-        fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+        fixed = list(mesh.vertices_where({'vertex_degree': 2}))
 
         mesh_smooth_centroid(mesh, fixed=fixed)
 
@@ -60,10 +60,6 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
         plotter.draw_edges()
 
         plotter.show()
-
-    See Also
-    --------
-    * :func:`mesh_smooth_area`
 
     """
     if callback:
@@ -139,10 +135,6 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
         plotter.show()
 
-    See Also
-    --------
-    * :func:`mesh_smooth_area`
-
     """
     if callback:
         if not callable(callback):
@@ -216,10 +208,6 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
         plotter.draw_edges()
 
         plotter.show()
-
-    See Also
-    --------
-    * :func:`mesh_smooth_centroid`
 
     """
     if callback:

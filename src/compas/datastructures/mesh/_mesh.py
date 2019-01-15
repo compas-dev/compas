@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 import pickle
-import pprint
 import json
 
 from copy import deepcopy
@@ -25,13 +24,10 @@ from compas.geometry import cross_vectors
 from compas.geometry import length_vector
 from compas.geometry import scale_vector
 from compas.geometry import add_vectors
-from compas.geometry import sum_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
-from compas.geometry import bestfit_plane
 from compas.geometry import flatness
-
 from compas.geometry import Polyhedron
 
 from compas.datastructures import Datastructure
@@ -39,9 +35,7 @@ from compas.datastructures import Datastructure
 from compas.datastructures._mixins import VertexAttributesManagement
 from compas.datastructures._mixins import VertexHelpers
 from compas.datastructures._mixins import VertexFilter
-from compas.datastructures._mixins import VertexCoordinatesDescriptors
 
-from compas.datastructures._mixins import EdgeAttributesManagement
 from compas.datastructures._mixins import EdgeHelpers
 from compas.datastructures._mixins import EdgeGeometry
 from compas.datastructures._mixins import EdgeFilter
@@ -59,9 +53,6 @@ from compas.datastructures._mixins import EdgeMappings
 from compas.datastructures._mixins import FaceMappings
 
 from compas.datastructures.mesh.operations import mesh_collapse_edge
-from compas.datastructures.mesh.operations import trimesh_collapse_edge
-from compas.datastructures.mesh.operations import trimesh_split_edge
-from compas.datastructures.mesh.operations import trimesh_swap_edge
 
 from compas.datastructures.mesh.operations import mesh_split_face
 from compas.datastructures.mesh.operations import mesh_split_edge
@@ -105,6 +96,46 @@ class Mesh(FromToPickle,
            Datastructure):
     """Definition of a mesh.
 
+    Attributes
+    ----------
+    attributes : dict
+        A dictionary of general mesh attributes.
+        The following items are built in:
+
+        * ``'name'`` : ``'Mesh'``
+
+    default_vertex_attributes : dict
+        The default data attributes assigned to every new vertex.
+        The following items are built in:
+
+        * ``'x'`` : ``0.0``,
+        * ``'y'`` : ``0.0``,
+        * ``'z'`` : ``0.0``,
+
+    default_edge_attributes : dict
+        The default data attributes assigned to every new edge.
+    default_face_attributes : dict
+        The default data attributes assigned to every new face.
+    name : str
+        The name of the mesh.
+        Shorthand for ``mesh.attributes['name'] = 'Mesh'``
+    adjacency : dict, **read-only**
+        The vertex adjacency dictionary.
+    data : dict
+        The data representing the mesh.
+        The dict has the following structure:
+
+        * 'attributes'   => dict
+        * 'dva'          => dict
+        * 'dea'          => dict
+        * 'dfa'          => dict
+        * 'vertex'       => dict
+        * 'face'         => dict
+        * 'facedata'     => dict
+        * 'edgedata'     => dict
+        * 'max_int_key'  => int
+        * 'max_int_fkey' => int
+
     Examples
     --------
     .. plot::
@@ -130,23 +161,17 @@ class Mesh(FromToPickle,
     split_edge      = mesh_split_edge
     unweld_vertices = mesh_unweld_vertices
 
-    collapse_edge_tri = trimesh_collapse_edge
-    split_edge_tri    = trimesh_split_edge
-    swap_edge_tri     = trimesh_swap_edge
-
     def __init__(self):
         super(Mesh, self).__init__()
         self._key_to_str = False
         self._max_int_key = -1
         self._max_int_fkey = -1
-        self.attributes = {
-            'name' : 'Mesh',
-        }
         self.vertex = {}
         self.halfedge = {}
         self.face = {}
         self.facedata = {}
         self.edgedata = {}
+        self.attributes = {'name' : 'Mesh'}
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
@@ -164,14 +189,11 @@ class Mesh(FromToPickle,
         numv = self.number_of_vertices()
         nume = self.number_of_edges()
         numf = self.number_of_faces()
-
         vmin = self.vertex_min_degree()
         vmax = self.vertex_max_degree()
         fmin = self.face_min_degree()
         fmax = self.face_max_degree()
-
         s = TPL.format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
-
         print(s)
 
     # --------------------------------------------------------------------------
@@ -197,7 +219,7 @@ class Mesh(FromToPickle,
 
     @property
     def data(self):
-        """dict: A data dict representing the mesh data structure for serialisation.
+        """dict : A data dict representing the mesh data structure for serialisation.
 
         The dict has the following structure:
 
@@ -3020,16 +3042,6 @@ class Mesh(FromToPickle,
             text=facetext
         )
         plotter.show()
-
-
-# Mesh.collapse_edge = mesh_collapse_edge.__get__(None, Mesh)
-# Mesh.split_face = mesh_split_face.__get__(None, Mesh)
-# Mesh.split_edge = mesh_split_edge.__get__(None, Mesh)
-# Mesh.unweld_vertices = mesh_unweld_vertices.__get__(None, Mesh)
-
-# Mesh.collapse_edge_tri = trimesh_collapse_edge.__get__(None, Mesh)
-# Mesh.split_edge_tri = trimesh_split_edge.__get__(None, Mesh)
-# Mesh.swap_edge_tri = trimesh_swap_edge.__get__(None, Mesh)
 
 
 # ==============================================================================

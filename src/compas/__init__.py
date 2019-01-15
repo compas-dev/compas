@@ -53,14 +53,8 @@ PRECISION = '3f'
 
 
 __all__ = [
-    'license',
-    'version',
-    'help',
-    'copyright',
-    'credits',
-    'verify',
-    'installed',
-    'requirements',
+    'raise_if_windows',
+    'raise_if_not_windows',
     'raise_if_ironpython',
     'raise_if_not_ironpython',
 ]
@@ -80,6 +74,16 @@ def is_mono():
 
 def is_ironpython():
     return 'ironpython' in sys.version.lower()
+
+
+def raise_if_not_windows():
+    if not is_windows():
+        raise
+
+
+def raise_if_windows():
+    if is_windows():
+        raise
 
 
 def raise_if_not_ironpython():
@@ -219,89 +223,3 @@ def get_bunny(localstorage=None):
         print('Got it!\n')
 
     return bunny
-
-
-# ==============================================================================
-# meta data
-# ==============================================================================
-
-
-def license():
-    with open(os.path.join(HOME, 'LICENSE')) as fp:
-        return fp.read()
-
-
-def version():
-    return __version__
-
-
-def help():
-    return 'http://compas-dev.github.io'
-
-
-def copyright():
-    return __copyright__
-
-
-def verify():
-    requirements = [
-        'numpy',
-        'scipy',
-        'matplotlib',
-    ]
-    optional = [
-        'cvxopt',
-        'cvxpy',
-        'Cython',
-        'imageio',
-        'networkx',
-        'numba',
-        'pandas',
-        'paramiko',
-        'pycuda',
-        'PyOpenGL',
-        'PySide',
-        'Shapely',
-        'sympy',
-    ]
-    current = installed()
-
-    print('=' * 80)
-    print('Checking required packages...\n')
-    issues = []
-    for package in requirements:
-        if package not in current:
-            issues.append(package)
-    if issues:
-        print('The following required packages are not installed:')
-        for package in issues:
-            print('- {}'.format(package))
-    else:
-        print('All required packages are installed.')
-
-    print('\nChecking optional packages...\n')
-    issues = []
-    for package in optional:
-        if package not in current:
-            issues.append(package)
-    if issues:
-        print('The following optional packages are not installed:')
-        for package in issues:
-            print('- {}'.format(package))
-    else:
-        print('All optional packages are installed.')
-    print('=' * 80)
-    print()
-
-
-def installed():
-    import pkg_resources
-    installed_packages = pkg_resources.working_set
-    flat_installed_packages = [package.project_name for package in installed_packages]
-    return sorted(flat_installed_packages, key=str.lower)
-
-
-def requirements():
-    with open(os.path.join(HERE, '../requirements.txt')) as f:
-        for line in f:
-            print(line.strip())

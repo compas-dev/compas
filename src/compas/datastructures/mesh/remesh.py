@@ -6,6 +6,10 @@ import random
 
 from compas.datastructures.mesh.smoothing import mesh_smooth_area
 
+from compas.datastructures.mesh.operations import trimesh_collapse_edge
+from compas.datastructures.mesh.operations import trimesh_swap_edge
+from compas.datastructures.mesh.operations import trimesh_split_edge
+
 
 __all__ = [
     'trimesh_remesh',
@@ -82,11 +86,6 @@ def trimesh_remesh(mesh,
            Proceedings of the 2004 Eurographics/ACM SIGGRAPH symposium on Geometry processing - SGP '04, p.185.
            Available at: http://portal.acm.org/citation.cfm?doid=1057432.1057457.
 
-    Warning
-    -------
-    In the current implementation, allowing boundary collapses may lead to unexpected
-    results since it will not preserve the gometry of the original boundary.
-
     Examples
     --------
     .. plot::
@@ -99,7 +98,7 @@ def trimesh_remesh(mesh,
         vertices = [
             (0.0, 0.0, 0.0),
             (10.0, 0.0, 0.0),
-            (10.0, 10.0, 0.0),
+            (6.0, 10.0, 0.0),
             (0.0, 10.0, 0.0),
             (5.0, 5.0, 0.0)
         ]
@@ -119,6 +118,7 @@ def trimesh_remesh(mesh,
             kmax=300,
             allow_boundary_split=True,
             allow_boundary_swap=True,
+            allow_boundary_collapse=True,
             verbose=False
         )
 
@@ -186,7 +186,7 @@ def trimesh_remesh(mesh,
                 if verbose:
                     print('split edge: {0} - {1}'.format(u, v))
 
-                mesh.split_edge_tri(u, v, allow_boundary=allow_boundary_split)
+                trimesh_split_edge(mesh, u, v, allow_boundary=allow_boundary_split)
 
                 visited.add(u)
                 visited.add(v)
@@ -203,7 +203,7 @@ def trimesh_remesh(mesh,
                 if verbose:
                     print('collapse edge: {0} - {1}'.format(u, v))
 
-                mesh.collapse_edge_tri(u, v, allow_boundary=allow_boundary_collapse, fixed=fixed)
+                trimesh_collapse_edge(mesh, u, v, allow_boundary=allow_boundary_collapse, fixed=fixed)
 
                 visited.add(u)
                 visited.add(v)
@@ -253,7 +253,7 @@ def trimesh_remesh(mesh,
                 if verbose:
                     print('swap edge: {0} - {1}'.format(u, v))
 
-                mesh.swap_edge_tri(u, v, allow_boundary=allow_boundary_swap)
+                trimesh_swap_edge(mesh, u, v, allow_boundary=allow_boundary_swap)
 
                 visited.add(u)
                 visited.add(v)
@@ -291,7 +291,7 @@ if __name__ == "__main__":
     from compas.plotters import MeshPlotter
 
 
-    vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
+    vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (6.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
     faces = [[0, 1, 2, 3]]
 
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
@@ -310,11 +310,11 @@ if __name__ == "__main__":
 
     trimesh_remesh(
         mesh,
-        1.0,
+        0.5,
         kmax=200,
         allow_boundary_split=True,
         allow_boundary_swap=True,
-        allow_boundary_collapse=False,
+        allow_boundary_collapse=True,
         fixed=fixed,
         callback=callback)
 

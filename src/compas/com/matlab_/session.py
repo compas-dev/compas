@@ -20,7 +20,7 @@ class MatlabSession(object):
 
     Parameters
     ----------
-    name : str
+    session_name : str
         Name of a running Matlab session.
 
     Notes
@@ -43,10 +43,11 @@ class MatlabSession(object):
     >>> m.isprime(37)
     True
 
-    .. code-block:: python
+    Execute the following command to connect ot an existing session.
 
-        # execute `matlab -nosplash -r "matlab.engine.shareEngine('MATLAB_xxx')"`
-        # to connect to an existing named session
+    .. code-block:: bash
+
+        $ matlab -nosplash -r "matlab.engine.shareEngine('MATLAB_xxx')"
 
     >>> m = MatlabSession('MATLAB_xxx')
     >>> m.isprime(37)
@@ -54,14 +55,15 @@ class MatlabSession(object):
 
     """
 
-    def __init__(self, name=None):
+    def __init__(self, session_name=None):
         self.matlab = None
         self.engine = None
         self.session_name = None
         self.init()
-        self.connect(name)
+        self.connect(session_name)
 
     def init(self):
+        """Initialise the Matlab engine."""
         import matlab.engine
         self.matlab = matlab.engine
         self.engine = None
@@ -76,15 +78,37 @@ class MatlabSession(object):
             return wrapper
 
     def find_sessions(self):
+        """Find all available sessions.
+
+        Returns
+        -------
+        list of str
+            A list of available Matlab session names.
+
+        """
         return self.matlab.find_matlab()
 
-    def connect(self, name=None):
+    def connect(self, session_name=None):
+        """Connect to an existing session or start a new one if none is available.
+
+        Parameters
+        ----------
+        session_name : str, optional
+            The name of the session to connect to.
+            Default is to start a new session.
+
+        Notes
+        -----
+        If successful, the name of the session to which a connection was made is
+        stored in the attribute ``session_name``.
+
+        """
         sessions = self.find_sessions()
-        if name and name in sessions:
-            print('connecting to a shared session: {0}'.format(name))
-            self.engine = self.matlab.connect_matlab(name)
+        if session_name and session_name in sessions:
+            print('connecting to a shared session: {0}'.format(session_name))
+            self.engine = self.matlab.connect_matlab(session_name)
             if self.engine:
-                self.session_name = name
+                self.session_name = session_name
         else:
             print('starting a new matlab session. this may take a few seconds...')
             self.engine = self.matlab.connect_matlab()

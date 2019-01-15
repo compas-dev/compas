@@ -138,20 +138,19 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
         from compas.geometry import delaunay_from_points
         from compas.plotters import MeshPlotter
 
-        points = pointcloud_xy(10, (0, 10))
+        points = pointcloud_xy(20, (0, 50))
         faces = delaunay_from_points(points)
 
         delaunay = Mesh.from_vertices_and_faces(points, faces)
 
         plotter = MeshPlotter(delaunay)
-
         plotter.draw_vertices(radius=0.1)
         plotter.draw_faces()
-
         plotter.show()
 
     """
     from compas.datastructures import Mesh
+    from compas.datastructures import trimesh_swap_edge
 
     def super_triangle(coords):
         centpt = centroid_points(coords)
@@ -235,7 +234,7 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
                 circle = circle_from_points_xy(a, b, c)
 
                 if is_point_in_circle_xy(pt, circle):
-                    fkey, fkey_op = mesh.swap_edge_tri(u, v)
+                    fkey, fkey_op = trimesh_swap_edge(mesh, u, v)
                     newtris.append(fkey)
                     newtris.append(fkey_op)
 
@@ -262,7 +261,44 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
 
 def delaunay_from_points_numpy(points):
-    """"""
+    """Computes the delaunay triangulation for a list of points using Numpy.
+
+    Parameters
+    ----------
+    points : sequence of tuple
+        XYZ coordinates of the original points.
+    boundary : sequence of tuples
+        list of ordered points describing the outer boundary (optional)
+    holes : list of sequences of tuples
+        list of polygons (ordered points describing internal holes (optional)
+
+    Returns
+    -------
+    list
+        The faces of the triangulation.
+        Each face is a triplet of indices referring to the list of point coordinates.
+
+    Example
+    -------
+    .. plot::
+        :include-source:
+
+        from compas.datastructures import Mesh
+        from compas.geometry import pointcloud_xy
+        from compas.geometry import delaunay_from_points_numpy
+        from compas.plotters import MeshPlotter
+
+        points = pointcloud_xy(20, (0, 50))
+        faces = delaunay_from_points_numpy(points)
+
+        delaunay = Mesh.from_vertices_and_faces(points, faces)
+
+        plotter = MeshPlotter(delaunay)
+        plotter.draw_vertices(radius=0.1)
+        plotter.draw_faces()
+        plotter.show()
+
+    """
     from numpy import asarray
     from scipy.spatial import Delaunay
 
@@ -442,5 +478,20 @@ def voronoi_from_delaunay(delaunay):
 
 if __name__ == "__main__":
 
-    pass
+    from compas.datastructures import Mesh
+    from compas.geometry import pointcloud_xy
+    from compas.geometry import delaunay_from_points_numpy
+    from compas.plotters import MeshPlotter
+
+    points = pointcloud_xy(20, (0, 50))
+    faces = delaunay_from_points_numpy(points)
+
+    delaunay = Mesh.from_vertices_and_faces(points, faces)
+
+    plotter = MeshPlotter(delaunay, figsize=(12, 8))
+
+    plotter.draw_vertices(radius=0.1)
+    plotter.draw_faces()
+
+    plotter.show()
 

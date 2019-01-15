@@ -1,7 +1,9 @@
+cython
 matplotlib
 networkx
 numba
 numpy
 Pillow
+planarity
 scipy
 sympy

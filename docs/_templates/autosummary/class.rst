@@ -7,27 +7,54 @@
 
 .. autoclass:: {{ objname }}
 
-   {% block methods %}
-   {% if methods %}
-   .. rubric:: Methods
+    {% block attributes %}
+    {% if not attributes %}
 
-   .. autosummary::
-      :toctree:
+    .. rubric:: Attributes
 
-   {% for item in methods %}
-      ~{{ name }}.{{ item }}
-   {%- endfor %}
-   {% endif %}
-   {% endblock %}
+    .. autosummary::
+    {% for item in attributes %}
+    {%- if item not in inherited_members %}
+        ~{{ name }}.{{ item }}
+    {%- endif %}
+    {%- endfor %}
 
-   {% block attributes %}
-   {% if attributes %}
-   .. rubric:: Attributes
+    .. rubric:: Inherited Attributes
 
-   .. autosummary::
-   {% for item in attributes %}
-      ~{{ name }}.{{ item }}
-   {%- endfor %}
-   {% endif %}
-   {% endblock %}
+    .. autosummary::
+    {% for item in attributes %}
+    {%- if item in inherited_members %}
+        ~{{ name }}.{{ item }}
+    {%- endif %}
+    {%- endfor %}
 
+    {% endif %}
+    {% endblock %}
+
+    {% block methods %}
+    {% if methods %}
+
+    .. rubric:: Methods
+
+    .. autosummary::
+        :toctree:
+
+    {% for item in methods %}
+    {%- if item not in inherited_members %}
+        ~{{ name }}.{{ item }}
+    {%- endif %}
+    {%- endfor %}
+
+    .. rubric:: Inherited Methods
+
+    .. autosummary::
+        :toctree:
+
+    {% for item in methods %}
+    {%- if item in inherited_members %}
+        ~{{ name }}.{{ item }}
+    {%- endif %}
+    {%- endfor %}
+
+    {% endif %}
+    {% endblock %}

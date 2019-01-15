@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -10,8 +9,7 @@ __all__ = ['EulerSSH']
 
 
 class EulerSSH(SSH):
-
-    """ Initialse an EulerSSH object.
+    """Initialse an EulerSSH object.
 
     Parameters
     ----------
@@ -25,121 +23,61 @@ class EulerSSH(SSH):
     def __init__(self, username, server='euler.ethz.ch'):
         SSH.__init__(self, server=server, username=username)
 
-        pass
-
-
     def show_quotas(self):
-
-        """ Show the storage quotas for the Euler user.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
-
+        """Show the storage quotas for the Euler user.
         """
-
         self.server_command(command='quota -s')
 
-
     def available_modules(self, module=None):
-
-        """ Show the available Euler modules.
+        """Show the available Euler modules.
 
         Parameters
         ----------
         module : str
             Name of a specific module.
 
-        Returns
-        -------
-        None
-
         """
-
         if module:
             self.server_command(command='module avail {0}'.format(module))
-
         else:
             self.server_command(command='module avail')
 
-
     def show_module(self, module):
-
-        """ Show information on a specific Euler module.
+        """Show information on a specific Euler module.
 
         Parameters
         ----------
         module : str
             Module to inspect.
 
-        Returns
-        -------
-        None
-
         """
-
         self.server_command(command='module show {0}'.format(module))
 
-
     def load_module(self, module):
-
-        """ Load an Euler module.
+        """Load an Euler module.
 
         Parameters
         ----------
         module : str
             Module to load.
 
-        Returns
-        -------
-        None
-
         """
-
         self.server_command(command='module load {0} '.format(module))
 
-
     def loaded_modules(self):
-
-        """ List the currently loaded Euler modules.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
+        """List the currently loaded Euler modules.
 
         """
-
         self.server_command(command='module list')
 
-
     def unload_modules(self):
-
-        """ Unload all Euler modules.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
+        """Unload all Euler modules.
 
         """
-
         self.server_command(command='module purge')
 
-
     def submit_job(self, command, time='60', output='output.txt', memory=256, cpus=1):
-
-        """ Submit a job to Euler.
+        """Submit a job to Euler.
 
         Parameters
         ----------
@@ -154,25 +92,18 @@ class EulerSSH(SSH):
         cpus : int
             Number of CPUs to request.
 
-        Returns
-        -------
-        None
-
         Notes
         -----
         - If the output file already exists in /cluster/home/user/ it will be overwritten.
         - STRICTLY do not request more than 24 CPUs, make sure the job can use all those requested.
 
         """
-
         n = min([24, int(cpus)])
         cmd = 'bsub -R "rusage[mem={0}]" -n {1} -W {2} -oo {3} {4}'.format(memory, n, int(time), output, command)
         self.server_command(command=cmd)
 
-
     def show_jobs(self, type='user', job=None):
-
-        """ Show the Euler jobs in queue.
+        """Show the Euler jobs in queue.
 
         Parameters
         ----------
@@ -181,12 +112,7 @@ class EulerSSH(SSH):
         job : int
             Job number
 
-        Returns
-        -------
-        None
-
         """
-
         if type == 'all':
             self.server_command(command='bqueues')
 
@@ -196,75 +122,43 @@ class EulerSSH(SSH):
             else:
                 self.server_command(command='bbjobs')
 
-
     def show_resources(self):
-
-        """ Show the available Euler resources for the user.
-
-        Parameters
-        ----------
-        None
-
-        Returns
-        -------
-        None
+        """Show the available Euler resources for the user.
 
         """
-
         self.server_command(command='busers')
 
-
     def peek_job(self, job):
-
-        """ View the curent terminal output of a running job.
+        """View the curent terminal output of a running job.
 
         Parameters
         ----------
         job : int
             Job number
 
-        Returns
-        -------
-        None
-
         """
-
         self.server_command(command='bpeek {0}'.format(job))
 
-
     def cpu_load_job(self, job):
-
-        """ View the CPU load of a completed job.
+        """View the CPU load of a completed job.
 
         Parameters
         ----------
         job : int
             Job number
 
-        Returns
-        -------
-        None
-
         """
-
         self.server_command(command='lsf_load {0}'.format(job))
 
-
     def kill_job(self, job):
-
-        """ Kill a submitted job on Euler.
+        """Kill a submitted job on Euler.
 
         Parameters
         ----------
         job : int, str
             Job number, or 'all' jobs.
 
-        Returns
-        -------
-        None
-
         """
-
         if job == 'all':
             job = 0
         self.server_command(command='bkill {0}'.format(job))
@@ -289,8 +183,7 @@ if __name__ == '__main__':
     # euler_ssh.show_quotas()
 
     # euler_ssh.server_command(command='export OMP_NUM_THREADS=24')
-    # euler_ssh.submit_job(command='python /cluster/home/liewa/script.py', time='20', output='output.txt', memory=256,
-                         # cpus=4)
+    # euler_ssh.submit_job(command='python /cluster/home/liewa/script.py', time='20', output='output.txt', memory=256, cpus=4)
     # euler_ssh.show_jobs(type='user')
     # euler_ssh.show_jobs(type='all')
 

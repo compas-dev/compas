@@ -43,10 +43,6 @@ def mesh_flatness(mesh, maxdev=1.0):
     -------
     This function only works as expected for quadrilateral faces.
 
-    See Also
-    --------
-    * :func:`compas.geometry.flatness`
-
     """
     dev = []
     for fkey in mesh.faces():
@@ -84,11 +80,6 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
     Returns
     -------
     None
-
-    See Also
-    --------
-    * :func:`compas.geometry.planarize_faces`
-    * :func:`compas.geometry.mesh_planarize_faces_shapeop`
 
     """
     if callback:

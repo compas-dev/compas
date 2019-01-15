@@ -36,10 +36,6 @@ def mesh_transform(mesh, transformation):
     >>> viewer.mesh = tmesh  # this should be a list of meshes
     >>> viewer.show()
 
-    See Also
-    --------
-    :func:`mesh_transformed`
-
     """
     vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
     xyz = transform_points(vertices, transformation.matrix)
@@ -75,10 +71,6 @@ def mesh_transformed(mesh, transformation):
     >>> tmesh = mesh_transformed(mesh, T)
     >>> viewer.mesh = tmesh  # this should be a list of meshes
     >>> viewer.show()
-
-    See Also
-    --------
-    :func:`mesh_transform`
 
     """
     mesh_copy = mesh.copy()
