@@ -104,7 +104,7 @@ class STLReader(object):
                 name = None
 
             elif parts[0] == 'facet':
-                facet = {'normal': None, 'vertices': None, 'attributes': None}
+                facet = {'normal': None, 'vertices': None}
                 if parts[1] == 'normal':
                     facet['normal'] = [float(parts[i]) for i in range(2, 5)]
 
@@ -146,10 +146,6 @@ class STLReader(object):
     #
     # ==========================================================================
 
-    def _read_uint8(self):
-        bytes_ = self.file.read(1)
-        return struct.unpack('<B', bytes_)[0]
-
     def _read_uint16(self):
         bytes_ = self.file.read(2)
         return struct.unpack('<H', bytes_)[0]
@@ -157,10 +153,6 @@ class STLReader(object):
     def _read_uint32(self):
         bytes_ = self.file.read(4)
         return struct.unpack('<I', bytes_)[0]
-
-    def _read_float(self):
-        bytes_ = self.file.read(4)
-        return struct.unpack('<f', bytes_)[0]
 
     def read_binary(self):
         with open(self.filepath, 'rb') as file:
@@ -176,32 +168,20 @@ class STLReader(object):
     def read_number_of_facets_binary(self):
         return self._read_uint32()
 
-    def read_attribute_byte_count(self):
-        return self._read_uint16()
-
-    def read_vector_binary(self):
-        x = self._read_float()
-        y = self._read_float()
-        z = self._read_float()
-        return x, y, z
-
-    def read_normal_binary(self):
-        return self.read_vector_binary()
-
-    def read_vertices_binary(self):
-        return [self.read_vector_binary() for i in range(3)]
-
-    def read_attributes_binary(self):
-        count = self.read_attribute_byte_count()
-        if count > 0:
-            return self.file.read(count)
-        return None
-
     def read_facet_binary(self):
-        normal = self.read_normal_binary()
-        vertices = self.read_vertices_binary()
-        attributes = self.read_attributes_binary()
-        return {'normal': normal, 'vertices': vertices, 'attributes': attributes}
+        # Read full facet at once
+        # 4 bytes per float * 3 floats per vector/vertex * 4 items (1 vector + 3 vertices)
+        bytes_ = self.file.read(48)
+        floats_ = struct.unpack('<12f', bytes_)
+
+        normal = floats_[0:3]
+        vertices = (floats_[3:6], floats_[6:9], floats_[9:12])
+        keys = (bytes_[12:24], bytes_[24:36], bytes_[36:48])
+
+        # Skip two-byte attributes, it's not used anywhere (by anyone - on this planet)
+        self.file.seek(2, 1)
+
+        return {'normal': normal, 'vertices': vertices, 'keys': keys}
 
     def read_facets_binary(self):
         facets = []
@@ -227,8 +207,13 @@ class STLParser(object):
         faces = []
         for facet in self.reader.facets:
             face = []
-            for xyz in facet['vertices']:
-                gkey = geometric_key(xyz, self.precision)
+            facet_vertices = facet['vertices']
+            for i in range(3):
+                xyz = facet_vertices[i]
+                if 'keys' in facet:
+                    gkey = facet['keys'][i]
+                else:
+                    gkey = geometric_key(xyz, self.precision)
                 if gkey not in gkey_index:
                     gkey_index[gkey] = len(vertices)
                     vertices.append(xyz)
