@@ -1,5 +1,6 @@
 cython; sys_platform != 'win32'
-matplotlib>=2.0
+matplotlib >= 2.0; python_version == '3.6'
+matplotlib >= 2.0, < 3.0; python_version == '2.7'
 networkx
 numba
 numpy
