@@ -316,9 +316,3 @@ if __name__ == "__main__":
     plotter.draw_faces()
 
     plotter.show()
-
-
-    # A = network_adjacency_matrix(network)
-    # C = network_connectivity_matrix(network)
-    # L = network_laplacian_matrix(network, normalize=True, rtype='csr')
-    # D = network_degree_matrix(network)
