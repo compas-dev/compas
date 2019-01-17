@@ -647,10 +647,11 @@ class Mesh(FromToPickle,
 
         """
         mesh = cls()
-        for x, y, z in iter(vertices):
-            mesh.add_vertex(x=x, y=y, z=z)
-        for face in iter(faces):
-            mesh.add_face(face)
+        for vkey, vertex in enumerate(vertices):
+            x, y, z = vertex
+            mesh.add_vertex(key=vkey, x=x, y=y, z=z)
+        for fkey, face in enumerate(faces):
+            mesh.add_face(face, fkey=fkey)
         return mesh
 
     @classmethod
