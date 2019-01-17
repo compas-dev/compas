@@ -391,7 +391,7 @@ class MeshPlotter(Plotter):
 if __name__ == "__main__":
 
     import compas
-    from compas.datastructures.mesh import Mesh
+    from compas.datastructures import Mesh
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
