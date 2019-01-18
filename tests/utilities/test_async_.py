@@ -70,6 +70,16 @@ def test_many_positional_args_and_kwargs_callback():
     assert kw['retries'] == 5
 
 
+def test_async_fn_with_more_params():
+    def async_fn(values, other_stuff, callback):
+        def runner(cb):
+            cb(200)
+        Thread(target=runner, args=(callback, )).start()
+
+    result = await_callback(async_fn, values=[1, 2, 3], other_stuff=None)
+    assert result == 200
+
+
 def test_captured_exception_in_thread():
     def async_fn(callback):
         def runner(cb):
