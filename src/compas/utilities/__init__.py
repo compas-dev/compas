@@ -16,6 +16,16 @@ animation
     gif_from_images
 
 
+async
+=====
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    await_callback
+
+
 colors
 ======
 
@@ -157,6 +167,7 @@ def valuedict(keys, value, default):
 
 
 from .animation import *
+from .async_ import *
 from .coercing import *
 from .colors import *
 from .datetime_ import *
