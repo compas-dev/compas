@@ -1,10 +1,10 @@
-cython; sys_platform != 'win32'
+cython
 matplotlib >= 2.0; python_version == '3.6'
 matplotlib >= 2.0, < 3.0; python_version == '2.7'
 networkx
 numba
 numpy
 pillow
-planarity; sys_platform != 'win32'
+planarity
 scipy
 sympy
