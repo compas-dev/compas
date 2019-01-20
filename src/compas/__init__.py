@@ -40,6 +40,9 @@ __email__     = 'vanmelet@ethz.ch'
 __version__ = '0.4.2'
 
 
+PY3 = sys.version_info[0] == 3
+
+
 HERE = os.path.dirname(__file__)
 HOME = compas._os.absjoin(HERE, '../..')
 DATA = compas._os.absjoin(HERE, '../../data')
