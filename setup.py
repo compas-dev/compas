@@ -6,11 +6,16 @@ import io
 from os import path
 
 from setuptools import setup
-from setuptools.command.develop import develop
 from setuptools.command.install import install
 
 
 here = path.abspath(path.dirname(__file__))
+
+
+class CustomInstall(install):
+
+    def run(self):
+        install.run(self)
 
 
 def read(*names, **kwargs):
@@ -24,7 +29,7 @@ long_description = read('README.md')
 requirements = read('requirements.txt').split('\n')
 optional_requirements = {
     "viewers"      : ['PyOpenGL', 'PySide2', 'vtk'],
-    "optimisation" : ['cython', 'pyopencl', 'pycuda'],
+    "optimisation" : ['pyopencl', 'pycuda'],
     "robotics"     : ['roslibpy']
 }
 
@@ -74,5 +79,6 @@ setup(
     entry_points={
         'console_scripts': [],
     },
-    ext_modules=[]
+    ext_modules=[],
+    cmdclass={'install': CustomInstall}
 )
