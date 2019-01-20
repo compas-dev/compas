@@ -13,6 +13,7 @@ system = sys.platform
 if 'ironpython' in sys.version.lower() and os.name == 'nt':
     system = 'win32'
 
+
 def select_python(python):
     """Selects the most likely python interpreter to run.
 
@@ -78,6 +79,7 @@ def remove_symlink(link):
     else:
         os.unlink(link)
 
+
 # The following methods has been adapted from the appdirs package
 #
 # MIT license
@@ -85,6 +87,7 @@ def remove_symlink(link):
 #
 # Copyright (c) 2013 Eddy Petrișor
 # http://github.com/ActiveState/appdirs
+
 
 def user_data_dir(appname=None, appauthor=None, version=None, roaming=False):
     r"""Return full path to the user-specific data dir for this application.
@@ -141,17 +144,15 @@ def user_data_dir(appname=None, appauthor=None, version=None, roaming=False):
     return path
 
 
-#---- internal support stuff
-
 def _get_win_folder_from_registry(csidl_name):
     """This is a fallback technique at best. I'm not sure if using the
     registry for this guarantees us the correct answer for all CSIDL_*
     names.
     """
     if PY3:
-      import winreg as _winreg
+        import winreg as _winreg
     else:
-      import _winreg
+        import _winreg
 
     shell_folder_name = {
         "CSIDL_APPDATA": "AppData",

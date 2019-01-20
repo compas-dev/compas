@@ -10,7 +10,9 @@ import compas_rhino
 
 from compas._os import create_symlink
 
+
 __all__ = []
+
 
 INSTALLABLE_PACKAGES = ('compas', 'compas_ghpython', 'compas_rhino')
 
