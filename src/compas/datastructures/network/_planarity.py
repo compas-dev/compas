@@ -393,7 +393,6 @@ if __name__ == '__main__':
     network.add_edge(6, 15)
 
     if not network_is_planar(network):
-        print('here')
         crossings = network_find_crossings(network)
     else:
         crossings = []
