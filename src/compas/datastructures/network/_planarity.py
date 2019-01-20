@@ -182,7 +182,7 @@ def network_is_planar(network):
     Warning
     -------
     This function uses the python binding of the *edge addition planarity suite*.
-    It is available on GitHub: https://github.com/hagberg/planarity.
+    It is available on Anaconda: https://anaconda.org/conda-forge/python-planarity.
 
     Examples
     --------
@@ -219,7 +219,7 @@ def network_is_planar(network):
     try:
         import planarity
     except ImportError:
-        print("Planarity is not installed. Get Planarity at https://github.com/hagberg/planarity.")
+        print("Planarity is not installed. Install with: conda install python-planarity")
         raise
     return planarity.is_planar(list(network.edges()))
 
