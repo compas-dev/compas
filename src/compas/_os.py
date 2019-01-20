@@ -74,10 +74,10 @@ def create_symlink(source, link_name):
 
 
 def remove_symlink(link):
-    if os.path.isdir(link):
-        os.rmdir(link)
-    else:
-        os.unlink(link)
+    # if os.path.isdir(link):
+    #     os.rmdir(link)
+    # else:
+    os.unlink(link)
 
 
 # The following methods has been adapted from the appdirs package

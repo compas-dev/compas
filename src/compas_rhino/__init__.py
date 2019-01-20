@@ -24,8 +24,6 @@ from __future__ import absolute_import
 
 import os
 
-import compas
-
 from .utilities import *
 from . import utilities
 

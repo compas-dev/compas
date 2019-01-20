@@ -10,7 +10,8 @@ import compas_rhino.install
 
 from compas._os import remove_symlink
 
-__all__ = []
+
+__all__ = ['uninstall']
 
 
 def uninstall(version='6.0', packages=None):

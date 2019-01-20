@@ -72,7 +72,7 @@ setup(
     python_requires='>=2.7',
     extras_require=optional_requirements,
     entry_points={
-        'console_scripts': ['install_compas_rhino=compas_rhino.install:install'],
+        'console_scripts': [],
     },
     ext_modules=[]
 )
