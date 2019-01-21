@@ -67,7 +67,7 @@ setup(
         "Repository": "https://github.com/compas-dev/compas",
         "Issues": "https://github.com/compas-dev/compas/issues",
     },
-    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', ],
+    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', 'compas_rhinomac'],
     package_dir={'': 'src'},
     package_data={},
     data_files=[],

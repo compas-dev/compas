@@ -18,25 +18,21 @@ def install_plugin(plugin):
     ----------
     plugin : str
         The path to the plugin folder.
-        For example, ``'path/to/compas_rbe/ui/RhinoMac/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}'``.
+        For example, ``'path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}'``.
 
     Examples
     --------
     .. code-block:: bash
 
-        $ python
-
         >>> import compas_rhino
-        >>> compas_rhino.install_plugin('RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}')
+        >>> compas_rhinomac.install_plugin('path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}')
 
     .. code-block:: bash
 
-        $ cd path/to/compas_rbe/ui/RhinoMac
-        $ python -m compas_rhino.install_plugin RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}
+        $ python -m compas_rhinomac.install_plugin path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}
 
     """
     mac = 'Library/Application Support/McNeel/Rhinoceros/MacPlugIns/PythonPlugIns'
-    # win = ''
 
     source_parent_dir, plugin_name = os.path.split(plugin)
     if not source_parent_dir:
@@ -74,8 +70,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('plugin_name', help="The name of the plugin, including the GUID.")
+    parser.add_argument('plugin_path', help="The path to the plugin.")
 
     args = parser.parse_args()
 
-    install_plugin(args.plugin_name)
+    install_plugin(args.plugin_path)
