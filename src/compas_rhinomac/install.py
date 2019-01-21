@@ -49,22 +49,22 @@ def install(packages=None):
     results = []
     exit_code = 0
 
-    if packages:
-        for package in packages:
-            base_path = _get_package_path(importlib.import_module(package))
-            package_path = os.path.join(base_path, package)
-            symlink_path = os.path.join(ipylib_path, package)
+    for package in packages:
+        base_path = _get_package_path(importlib.import_module(package))
 
-            if os.path.exists(symlink_path):
-                results.append(
-                    (package, 'ERROR: Package "{}" already found in RhinoMac Lib, try uninstalling first'.format(package)))
-                continue
+        package_path = os.path.join(base_path, package)
+        symlink_path = os.path.join(ipylib_path, package)
 
-            try:
-                create_symlink(package_path, symlink_path)
-                results.append((package, 'OK'))
-            except OSError:
-                results.append((package, 'Cannot create symlink, try to run as administrator.'))
+        if os.path.exists(symlink_path):
+            results.append(
+                (package, 'ERROR: Package "{}" already found in RhinoMac Lib, try uninstalling first'.format(package)))
+            continue
+
+        try:
+            create_symlink(package_path, symlink_path)
+            results.append((package, 'OK'))
+        except OSError:
+            results.append((package, 'Cannot create symlink. You may not have permission.'))
 
     for _, status in results:
         if status is not 'OK':
@@ -73,7 +73,7 @@ def install(packages=None):
     if exit_code == -1:
         results.append(
             ('compas_bootstrapper',
-             'ERROR: One or more packages failed, will not install bootstrapper, try uninstalling first')
+             'ERROR: One or more packages failed, will not install bootstrapper. Try uninstalling first.')
         )
     else:
         conda_prefix = os.environ.get('CONDA_PREFIX', None)
@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-p', '--packages', nargs='+', help="The packages to install.")
+    parser.add_argument('packages', nargs='+', help="The packages to install.")
 
     args = parser.parse_args()
 
