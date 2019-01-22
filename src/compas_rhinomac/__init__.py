@@ -12,7 +12,7 @@ from __future__ import absolute_import
 import os
 
 
-__version__ = '0.4.4'
+__version__ = '0.4.5'
 
 
 def _get_ironpython_lib_path():
