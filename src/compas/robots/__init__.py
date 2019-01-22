@@ -28,7 +28,7 @@ The primary data representation for robot models is based on the Unified Robot D
 Model
 =====
 
-The root of the model is the :class:`Robot` class, which
+The root of the model is the :class:`RobotModel` class, which
 describes a robot consisting of a set of link elements, and a set of joint
 elements connecting the links together.
 
@@ -36,7 +36,7 @@ elements connecting the links together.
     :toctree: generated/
     :nosignatures:
 
-    Robot
+    RobotModel
     Joint
     Link
 

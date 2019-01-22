@@ -17,11 +17,11 @@ from compas.robots.model.joint import Joint
 from compas.robots.resources import DefaultMeshLoader
 
 
-__all__ = ['Robot']
+__all__ = ['RobotModel']
 
 
-class Robot(object):
-    """Robot is the root element of the model.
+class RobotModel(object):
+    """RobotModel is the root element of the model.
 
     Instances of this class represent an entire robot as defined in an URDF
     structure.
@@ -72,7 +72,7 @@ class Robot(object):
 
     @classmethod
     def from_urdf_file(cls, file):
-        """Construct a Robot model from a URDF file model description.
+        """Construct a robot model from a URDF file model description.
 
         Args:
             file: file name or file object.
@@ -85,7 +85,7 @@ class Robot(object):
 
     @classmethod
     def from_urdf_string(cls, text):
-        """Construct a Robot model from a URDF description as string.
+        """Construct a robot model from a URDF description as string.
 
         Args:
             text: string containing the XML URDF model.
@@ -340,7 +340,7 @@ class Robot(object):
             len(self.get_configurable_joints()),
         )
 
-URDFParser.install_parser(Robot, 'robot')
+URDFParser.install_parser(RobotModel, 'robot')
 URDFParser.install_parser(Material, 'robot/material')
 URDFParser.install_parser(Color, 'robot/material/color')
 URDFParser.install_parser(Texture, 'robot/material/texture')
