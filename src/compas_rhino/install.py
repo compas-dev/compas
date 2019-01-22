@@ -74,7 +74,9 @@ def install(version='6.0', packages=None):
 
     # Installing the bootstrapper rarely fails, so, only do it if no other package failed
     if exit_code == -1:
-        results.append(('compas_bootstrapper', 'ERROR: One or more packages failed, will not install bootstrapper, try uninstalling first'))
+        results.append(
+            ('compas_bootstrapper',
+             'ERROR: One or more packages failed, will not install bootstrapper, try uninstalling first'))
     else:
         conda_prefix = os.environ.get('CONDA_PREFIX', None)
         try:
@@ -83,7 +85,8 @@ def install(version='6.0', packages=None):
                 results.append(('compas_bootstrapper', 'OK'))
         except:
             results.append(
-                ('compas_bootstrapper', 'Could not create compas_bootstrapper to auto-determine Python environment'))
+                ('compas_bootstrapper',
+                 'Could not create compas_bootstrapper to auto-determine Python environment'))
 
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))

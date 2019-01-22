@@ -49,6 +49,10 @@ def install_plugin(plugin):
         raise Exception('The plugin does not contain plugin info.')
 
     destination_parent_dir = os.path.join(os.environ['HOME'], mac)
+
+    if not os.path.exists(destination_parent_dir):
+        os.mkdir(destination_parent_dir)
+
     destination = os.path.join(destination_parent_dir, plugin_name)
 
     print('Installing PlugIn {} to RhinoMac PythonPlugIns.'.format(plugin_name))

@@ -14,11 +14,8 @@ from compas._os import create_symlink
 __all__ = ['install']
 
 
-DEFAULT_PACKAGES = ['compas', 'compas_rhino']
-
-
 def _get_package_path(package):
-    return os.path.abspath(os.path.join(os.path.dirname(package.__file__), '..'))
+    return os.path.abspath(os.path.dirname(package.__file__))
 
 
 def install(packages=None):
@@ -50,21 +47,21 @@ def install(packages=None):
     exit_code = 0
 
     for package in packages:
-        base_path = _get_package_path(importlib.import_module(package))
-
-        package_path = os.path.join(base_path, package)
+        package_path = _get_package_path(importlib.import_module(package))
         symlink_path = os.path.join(ipylib_path, package)
 
         if os.path.exists(symlink_path):
             results.append(
-                (package, 'ERROR: Package "{}" already found in RhinoMac Lib, try uninstalling first'.format(package)))
+                (package,
+                 'WARNING: Package "{}" already found in RhinoMac Lib, try uninstalling first'.format(package)))
+
             continue
 
         try:
             create_symlink(package_path, symlink_path)
             results.append((package, 'OK'))
         except OSError:
-            results.append((package, 'Cannot create symlink. You may not have permission.'))
+            results.append((package, 'ERROR: Cannot create symlink. You may not have permission.'))
 
     for _, status in results:
         if status is not 'OK':
@@ -81,9 +78,10 @@ def install(packages=None):
             with open(os.path.join(ipylib_path, 'compas_bootstrapper.py'), 'w') as f:
                 f.write('CONDA_PREFIX = r"{0}"'.format(conda_prefix))
                 results.append(('compas_bootstrapper', 'OK'))
+
         except:
             results.append(
-                ('compas_bootstrapper', 'Could not create compas_bootstrapper to auto-determine Python environment'))
+                ('compas_bootstrapper', 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))
 
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))

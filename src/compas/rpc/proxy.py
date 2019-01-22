@@ -6,14 +6,21 @@ import os
 import time
 import json
 
+import compas
+
 try:
     from xmlrpclib import ServerProxy
 except ImportError:
     from xmlrpc.client import ServerProxy
 
-from subprocess import Popen, PIPE, STDOUT
+try:
+    from subprocess import Popen, PIPE, STDOUT
+except ImportError:
+    try:
+        from System.Diagnostics import Process
+    except ImportError:
+        compas.raise_if_ironpython()
 
-import compas
 import compas._os
 
 from compas.utilities import DataEncoder
@@ -111,14 +118,16 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753):
+    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None):
         self._package = None
         self._python = compas._os.select_python(python)
         self._url = url
         self._port = port
+        self._service = None
         self._process = None
         self._function = None
         self._profile = None
+        self.service = service
         self.package = package
         self._server = self.try_reconnect()
         if self._server is None:
@@ -152,6 +161,17 @@ class Proxy(object):
     def package(self, package):
         self._package = package
 
+    @property
+    def service(self):
+        return self._service
+
+    @service.setter
+    def service(self, service):
+        if not service:
+            self._service = 'compas.rpc.services.default'
+        else:
+            self._service = service
+
     def try_reconnect(self):
         """Try and reconnect to an existing proxy server.
 
@@ -184,9 +204,21 @@ class Proxy(object):
 
         """
         python = self._python
-        args = [python, '-m', 'compas.rpc.services.default', str(self._port)]
 
-        self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
+        try:
+            Popen
+        except NameError:
+            self._process = Process()
+            self._process.StartInfo.UseShellExecute = False
+            self._process.StartInfo.RedirectStandardOutput = True
+            self._process.StartInfo.RedirectStandardError = True
+            self._process.StartInfo.FileName = python
+            self._process.StartInfo.Arguments = '-m {0} {1}'.format(self.service, str(self._port))
+            self._process.Start()
+        else:
+            args = [python, '-m', self.service, str(self._port)]
+            self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
+
         server = ServerProxy(self.address)
 
         success = False

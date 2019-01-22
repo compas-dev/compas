@@ -15,9 +15,9 @@ except ImportError:
         from io import StringIO
 
 try:
-    import cProfile as Profile
+    from cProfile import Profile
 except ImportError:
-    import profile as Profile
+    from profile import Profile
 
 import pstats
 import traceback
@@ -67,7 +67,7 @@ class Dispatcher(object):
                     "API methods require a single JSON encoded dictionary as input.\n"
                     "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})")
             else:
-                self._call(function, idict, odict)
+                self._call_wrapped(function, idict, odict)
 
         return json.dumps(odict, cls=DataEncoder)
 
@@ -82,18 +82,18 @@ class Dispatcher(object):
         else:
             odict['data'] = data
 
-    def _call_wrapped(self, method, idict, odict):
+    def _call_wrapped(self, function, idict, odict):
         args = idict['args']
         kwargs = odict['kwargs']
 
         try:
-            profile = cProfile.Profile()
+            profile = Profile()
             profile.enable()
 
             data = function(*args, **kwargs)
 
             profile.disable()
-            stream = cStringIO.StringIO()
+            stream = StringIO()
             stats = pstats.Stats(profile, stream=stream)
             stats.strip_dirs()
             stats.sort_stats(1)
