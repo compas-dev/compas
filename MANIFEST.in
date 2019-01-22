@@ -1,8 +1,8 @@
 graft src
+graft bin
 
 prune .github
 
-prunt bin
 prune data
 prune docs
 prune libs
