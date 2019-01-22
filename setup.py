@@ -80,5 +80,8 @@ setup(
         'console_scripts': [],
     },
     ext_modules=[],
-    cmdclass={'install': CustomInstall}
+    cmdclass={'install': CustomInstall},
+    scripts=[
+        'bin/install_compas_sublime',
+    ]
 )

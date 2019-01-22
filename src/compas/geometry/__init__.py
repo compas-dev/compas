@@ -33,8 +33,12 @@ circle      3-tuple of center (point), normal (vector) and radius (float).
 
 .. note::
 
-    Many functions have an ``_xy`` variant. These variants ignore the Z-component of
-    the input parameters and return a result in the XY plane (with ``z = 0``).
+    Many functions have an ``_xy`` variant.
+    These variants ignore the Z-component of the input parameters.
+    Therefore, they also accept 2D representations of geometric objects.
+    However, always return a 3D result in the XY plane (with ``z = 0``).
+    For example, ``scale_vector_xy`` accepts both 2D and 3D vectors,
+    but always returns a 3D vector with the Z-component set to zero.
 
 
 Angles

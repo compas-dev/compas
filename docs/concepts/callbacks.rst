@@ -187,8 +187,6 @@ Dynamic visualisation in Rhino with conduits
 ============================================
 
 
-
-
 Applying constraints
 ====================
 

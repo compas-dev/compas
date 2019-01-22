@@ -24,7 +24,7 @@ Making a network
 
     import compas
     from compas.datastructures import Network
-    
+
     network = Network()
 
 
@@ -234,13 +234,13 @@ To change the default attributes associated with vertices and edges, do:
 .. code:: ipython3
 
     network.update_default_vertex_attributes({'z': 10}, is_fixed=False)
-    
+
     # or network.update_default_vertex_attributes(z=10, is_fixed=False)
 
 .. code:: ipython3
 
     network.update_default_edge_attributes({'weight': 0.0})
-    
+
     # or network.update_default_edge_attributes(weight=0.0)
 
 .. note::
@@ -322,7 +322,7 @@ Using constructors
     # network = Network.from_lines([([], []), ([], [])])
     # network = Network.from_json('network.json')
     # network = Network.from_pickle('network.pickle')
-    
+
     network = Network.from_obj(compas.get('lines.obj'))
 
 

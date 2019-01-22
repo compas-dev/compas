@@ -1,17 +1,10 @@
 ********************************************************************************
-The main library of COMPAS
+Tutorials
 ********************************************************************************
 
 .. toctree::
-   :maxdepth: 3
-   :titlesonly:
+    :maxdepth: 1
+    :titlesonly:
+    :glob:
 
-   overview
-   gettingstarted
-   environments
-   examples
-   tutorials
-   api
-   contributions
-   citing
-   license
+    tutorials/*
