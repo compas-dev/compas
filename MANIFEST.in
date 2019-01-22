@@ -1,18 +1,20 @@
 graft src
 
+prune .github
+
+prunt bin
 prune data
 prune docs
 prune libs
 prune tests
 prune temp
-prune .github
 
 include LICENSE
 include README.md
 include AUTHORS.md
 include requirements.txt
 
-exclude requirements-dev.txt 
+exclude requirements-dev.txt
 exclude pytest.ini .bumpversion.cfg .editorconfig
 exclude tasks.py
 exclude CODE_OF_CONDUCT.md CONTRIBUTING.md
