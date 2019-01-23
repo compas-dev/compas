@@ -44,7 +44,7 @@ class ThreadExceptHookHandler(object):
         threading.Thread.__init__ = self._original_init
 
 
-def await_callback(async_func, callback_name='callback', *args, **kwargs):
+def await_callback(async_func, callback_name='callback', errback_name=None, *args, **kwargs):
     """Wait for the completion of an asynchronous code that uses callbacks to signal completion.
 
     This helper function turns an async function into a synchronous one,
@@ -61,6 +61,9 @@ def await_callback(async_func, callback_name='callback', *args, **kwargs):
     callback_name : string, optional
         Name of the callback parameter of ``async_func``.
         Default is `callback`.
+    errback_name : string, optional
+        Name of the error handling callback parameter of ``async_func``.
+        Default is None.
 
     Notes
     -----
@@ -103,6 +106,15 @@ def await_callback(async_func, callback_name='callback', *args, **kwargs):
             wait_event.set()
 
     kwargs['callback'] = inner_callback
+    if errback_name:
+        def inner_errback(error):
+            if isinstance(error, Exception):
+                call_results['exception'] = error
+            else:
+                call_results['exception'] = Exception(str(error))
+            wait_event.set()
+
+        kwargs[errback_name] = inner_errback
 
     def unhandled_exception_handler(type, value, traceback):
         call_results['exception'] = value
