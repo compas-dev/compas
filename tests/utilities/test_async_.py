@@ -89,3 +89,14 @@ def test_captured_exception_in_thread():
 
     with pytest.raises(ValueError):
         await_callback(async_fn)
+
+
+def test_errback():
+    def async_fn(callback, errback):
+        def runner(cb, eb):
+            eb(ValueError('exception via errback'))
+
+        Thread(target=runner, args=(callback, errback)).start()
+
+    with pytest.raises(ValueError):
+        await_callback(async_fn, errback_name='errback')

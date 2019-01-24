@@ -1,7 +1,7 @@
 # The COMPAS framework
 
 [![Travis - Build Status](https://travis-ci.com/compas-dev/compas.svg?branch=master)](https://travis-ci.com/compas-dev/compas)
-[![GitHub - License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/compas-dev/compas)
+[![GitHub - License](https://img.shields.io/github/license/compas-dev/compas.svg)](https://github.com/compas-dev/compas)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/COMPAS.svg)](https://pypi.python.org/project/COMPAS)
 [![PyPI - Latest Release](https://img.shields.io/pypi/v/COMPAS.svg)](https://pypi.python.org/project/COMPAS)
 [![Conda - Latest Release](https://anaconda.org/conda-forge/compas/badges/version.svg)](https://anaconda.org/conda-forge/compas)
