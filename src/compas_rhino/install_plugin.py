@@ -4,7 +4,7 @@ from __future__ import division
 
 import os
 
-import compas_rhinomac
+import compas_rhino
 
 from compas._os import create_symlink
 from compas._os import remove_symlink
@@ -13,8 +13,8 @@ from compas._os import remove_symlink
 __all__ = ['install_plugin']
 
 
-def install_plugin(plugin):
-    """Install a Python plugin for RhinoMac.
+def install_plugin(plugin, version=None):
+    """Install a Python plugin for Rhino.
 
     Parameters
     ----------
@@ -26,14 +26,17 @@ def install_plugin(plugin):
     --------
     .. code-block:: bash
 
-        >>> import compas_rhinomac
-        >>> compas_rhinomac.install_plugin('path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}')
+        >>> import compas_rhino
+        >>> compas_rhino.install_plugin('path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}')
 
     .. code-block:: bash
 
-        $ python -m compas_rhinomac.install_plugin path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}
+        $ python -m compas_rhino.install_plugin path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}
 
     """
+    if version not in ('5.0', '6.0'):
+        version = '5.0'
+
     plugin_path, plugin_name = os.path.split(plugin)
     if not plugin_path:
         plugin_path = os.getcwd()
@@ -48,7 +51,7 @@ def install_plugin(plugin):
     if not os.path.isfile(os.path.join(source, 'dev', '__plugin__.py')):
         raise Exception('The plugin does not contain plugin info.')
 
-    python_plugins_path = compas_rhinomac._get_python_plugins_path()
+    python_plugins_path = compas_rhino._get_python_plugins_path(version)
 
     if not os.path.exists(python_plugins_path):
         os.mkdir(python_plugins_path)

@@ -14,6 +14,9 @@ from compas._os import create_symlink
 __all__ = ['install']
 
 
+INSTALLABLE_PACKAGES = ('compas', 'compas_rhino')
+
+
 def _get_package_path(package):
     return os.path.abspath(os.path.dirname(package.__file__))
 
@@ -38,6 +41,8 @@ def install(packages=None):
         $ python -m compas_rhino.install 6.0
 
     """
+    if not packages:
+        packages = INSTALLABLE_PACKAGES
 
     print('Installing COMPAS packages to RhinoMac IronPython Lib.')
 
@@ -81,7 +86,8 @@ def install(packages=None):
 
         except:
             results.append(
-                ('compas_bootstrapper', 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))
+                ('compas_bootstrapper',
+                 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))
 
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
@@ -103,8 +109,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('packages', nargs='+', help="The packages to install.")
+    parser.add_argument('-p', '--packages', nargs='+', help="The packages to install.")
 
     args = parser.parse_args()
 
-    install(args.packages)
+    install(packages=args.packages)
