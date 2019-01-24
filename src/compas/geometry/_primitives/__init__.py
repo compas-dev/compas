@@ -13,5 +13,7 @@ from .polygon import Polygon
 from .polyhedron import Polyhedron
 from .circle import Circle
 
+from .box import Box
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

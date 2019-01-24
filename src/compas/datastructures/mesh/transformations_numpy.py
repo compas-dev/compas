@@ -87,7 +87,6 @@ def mesh_transformed(mesh, transformation):
 if __name__ == "__main__":
 
     from math import pi
-
     from compas.utilities import print_profile
     from compas.geometry import Box
     from compas.geometry import matrix_from_translation
@@ -95,7 +94,6 @@ if __name__ == "__main__":
     from compas.geometry import Rotation
     from compas.datastructures import Mesh
     from compas.datastructures import mesh_transform
-
 
     mesh_transform = print_profile(mesh_transform)
 

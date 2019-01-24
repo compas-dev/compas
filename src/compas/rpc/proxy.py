@@ -172,6 +172,14 @@ class Proxy(object):
         else:
             self._service = service
 
+    @property
+    def python(self):
+        return self._python
+
+    @python.setter
+    def python(self, python):
+        self._python = python
+
     def try_reconnect(self):
         """Try and reconnect to an existing proxy server.
 
@@ -203,7 +211,7 @@ class Proxy(object):
             100 contact attempts (*pings*).
 
         """
-        python = self._python
+        python = self.python
 
         try:
             Popen

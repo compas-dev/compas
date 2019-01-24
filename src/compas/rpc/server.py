@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import socket
 import threading
 
 try:
@@ -65,7 +64,6 @@ class Server(SimpleXMLRPCServer):
 
     def _shutdown_thread(self):
         self.shutdown()
-
 
 
 # ==============================================================================

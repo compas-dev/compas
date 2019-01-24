@@ -366,6 +366,7 @@ Primitives
     Plane
     Frame
     Circle
+    Box
 
 XForms
 ------
