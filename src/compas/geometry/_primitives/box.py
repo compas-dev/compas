@@ -73,13 +73,25 @@ class Box(object):
 
         faces = [
             [0, 1, 2, 3],
-            [0, 4, 5, 6],
-            [3, 2, 6, 7],
+            [0, 3, 5, 4],
+            [3, 2, 6, 5],
             [2, 1, 7, 6],
-            [4, 7, 1, 0],
+            [1, 0, 4, 7],
             [4, 5, 6, 7]
         ]
         return cls(vertices, faces)
+
+    @classmethod
+    def from_bounding_box(cls, bbox):
+        faces = [
+            [0, 1, 2, 3],
+            [0, 3, 5, 4],
+            [3, 2, 6, 5],
+            [2, 1, 7, 6],
+            [1, 0, 4, 7],
+            [4, 5, 6, 7]
+        ]
+        return cls(bbox, faces)
 
     @classmethod
     def from_corner_corner_height(cls, corner1, corner2, height):
@@ -132,10 +144,10 @@ class Box(object):
 
         faces = [
             [0, 1, 2, 3],
-            [0, 4, 5, 6],
-            [3, 2, 6, 7],
+            [0, 3, 5, 4],
+            [3, 2, 6, 5],
             [2, 1, 7, 6],
-            [4, 7, 1, 0],
+            [1, 0, 4, 7],
             [4, 5, 6, 7]
         ]
         return cls(vertices, faces)
@@ -183,10 +195,10 @@ class Box(object):
 
         faces = [
             [0, 1, 2, 3],
-            [0, 4, 5, 6],
-            [3, 2, 6, 7],
+            [0, 3, 5, 4],
+            [3, 2, 6, 5],
             [2, 1, 7, 6],
-            [4, 7, 1, 0],
+            [1, 0, 4, 7],
             [4, 5, 6, 7]
         ]
         return cls(vertices, faces)

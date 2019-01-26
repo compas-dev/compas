@@ -28,12 +28,13 @@ def pca_numpy(data):
 
     Returns
     -------
-    list
-        A list of principle directions. The number of principle directions
-        is equal to the dimensionality of the problem(?!).
-        For example, if the data points are locations in 3D space, three
-        principle components will be returned. If the data points are
-        locations in 2D space, only two principle components will be returned.
+    tuple
+        * The ``mean of the data points``
+        * The principle directions.
+          The number of principle directions is equal to the dimensionality of the data.
+          For example, if the data points are locations in 3D space, three principle components will be returned.
+          If the data points are locations in 2D space, only two principle components will be returned.
+        * The *spread* of the data along the principle directions.
 
     Notes
     -----

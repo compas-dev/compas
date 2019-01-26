@@ -11,6 +11,7 @@ try:
     from numpy import argmin
     from numpy import dot
     from numpy import ptp
+    from numpy import sum
 
     from scipy.spatial import ConvexHull
 
@@ -42,8 +43,10 @@ def oriented_bounding_box_numpy(points):
 
     Returns
     -------
-    list
-        The XYZ coordinates of the corners of the bounding box.
+    3-tuple
+        1. The convex hull of the points.
+        2. The coordinates of the bounding box.
+        3. The volume of the box.
 
     Examples
     --------
@@ -180,8 +183,9 @@ def oriented_bounding_box_xy_numpy(points):
 
     Returns
     -------
-    list
-        The coordinates of the corners of the bounding box.
+    2-tuple
+        1. The coordinates of the corners of the bounding box.
+        2. The area of the box.
 
     Examples
     --------

@@ -139,6 +139,16 @@ class Bezier(object):
             point += p * b
         return point
 
+    # def compute_tangent(self, t):
+    #     n = self.degree
+    #     point = Point(0, 0, 0)
+    #     for i, p in enumerate(self.points):
+    #         a = bernstein(n - 1, i - 1, t)
+    #         b = bernstein(n - 1, i, t)
+    #         c = n * (a - b)
+    #         point += p * c
+    #     return point
+
     def compute_locus(self, resolution=100):
         """Compute the locus of all points on the curve.
 
@@ -160,11 +170,13 @@ class Bezier(object):
             locus.append(self.compute_point(t))
         return locus
 
-    def draw(self):
+    def draw(self, t=None):
         import matplotlib.pyplot as plt
         locus = self.compute_locus()
         x, y, _ = zip(*locus)
         plt.plot(x, y)
+        x, y, _ = zip(* self.points)
+        plt.plot(x, y, 'o')
         ax = plt.gca()
         ax.set_aspect('equal')
         plt.show()
@@ -176,5 +188,7 @@ class Bezier(object):
 
 if __name__ == '__main__':
 
-    curve = Bezier([[0, 0, 0], [1, -3, 0], [2, +3, 0], [3, 0, 0]])
-    curve.draw()
+    curve = Bezier([[0, 0, 0], [1, -1, 0], [2, +1, 0], [3, 0, 0]])
+    curve.draw(t=0.5)
+
+
