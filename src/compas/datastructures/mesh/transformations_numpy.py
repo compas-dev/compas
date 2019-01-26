@@ -3,17 +3,16 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-from compas.geometry import transform_points
+from compas.geometry import transform_points_numpy
 
 
 __all__ = [
-    'mesh_transform',
-    'mesh_transformed',
+    'mesh_transform_numpy',
+    'mesh_transformed_numpy',
 ]
 
 
-# TODO: this is really slow
-def mesh_transform(mesh, transformation):
+def mesh_transform_numpy(mesh, transformation):
     """Transform a mesh.
 
     Parameters
@@ -38,15 +37,14 @@ def mesh_transform(mesh, transformation):
 
     """
     vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    xyz = transform_points(vertices, transformation)
+    xyz = transform_points_numpy(vertices, transformation)
     for index, (key, attr) in enumerate(mesh.vertices(True)):
         attr['x'] = xyz[index][0]
         attr['y'] = xyz[index][1]
         attr['z'] = xyz[index][2]
 
 
-# TODO: this is really slow
-def mesh_transformed(mesh, transformation):
+def mesh_transformed_numpy(mesh, transformation):
     """Transform a copy of ``mesh``.
 
     Parameters
@@ -76,7 +74,7 @@ def mesh_transformed(mesh, transformation):
 
     """
     mesh_copy = mesh.copy()
-    mesh_transform(mesh_copy, transformation)
+    mesh_transform_numpy(mesh_copy, transformation)
     return mesh_copy
 
 
@@ -86,24 +84,29 @@ def mesh_transformed(mesh, transformation):
 
 if __name__ == "__main__":
 
+    from numpy import array
+
     from math import pi
     from compas.utilities import print_profile
     from compas.geometry import Box
-    from compas.geometry import matrix_from_translation
     from compas.geometry import Translation
     from compas.geometry import Rotation
     from compas.datastructures import Mesh
-    from compas.datastructures import mesh_transform
+    from compas.datastructures import mesh_transform_numpy
 
-    mesh_transform = print_profile(mesh_transform)
+    mesh_transform_numpy = print_profile(mesh_transform_numpy)
 
     box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
     mesh = Mesh.from_vertices_and_faces(box.vertices, box.faces)
 
-    T = matrix_from_translation([-2.0, 0.0, 3.0])
     T = Translation([-2.0, 0.0, 3.0])
     R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], pi / 2)
 
-    mesh_transform(mesh, R)
+    T = array(T)
+    R = array(R)
+
+    M = R.dot(T)
+
+    mesh_transform_numpy(mesh, M)
 
     print(mesh.get_vertices_attribute('x'))

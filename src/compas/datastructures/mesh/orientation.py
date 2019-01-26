@@ -39,11 +39,13 @@ def mesh_face_adjacency(mesh):
     index_fkey = {index: fkey for index, fkey in enumerate(mesh.faces())}
     points     = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
 
+    k = min(mesh.number_of_faces(), 10)
+
     try:
         from scipy.spatial import cKDTree
 
         tree = cKDTree(points)
-        _, closest = tree.query(points, k=10, n_jobs=-1)
+        _, closest = tree.query(points, k=k, n_jobs=-1)
 
     except Exception:
         try:
@@ -53,7 +55,7 @@ def mesh_face_adjacency(mesh):
             from compas.geometry import KDTree
 
             tree = KDTree(points)
-            closest = [tree.nearest_neighbors(point, 10) for point in points]
+            closest = [tree.nearest_neighbors(point, k) for point in points]
             closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
 
         else:

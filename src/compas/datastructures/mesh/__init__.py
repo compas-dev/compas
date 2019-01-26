@@ -7,6 +7,7 @@ from ._mesh import *
 from .operations import *
 from .matrices import *
 from .transformations import *
+from .transformations_numpy import *
 
 from .clean import *
 

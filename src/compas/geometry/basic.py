@@ -992,6 +992,8 @@ def multiply_matrices(A, B):
     [[4.0, 0.0, 0.0], [0.0, 4.0, 0.0], [0.0, 0.0, 4.0]]
 
     """
+    A = list(A)
+    B = list(B)
     n = len(B)     # number of rows in B
     o = len(B[0])  # number of cols in B
     if not all(len(row) == o for row in B):
