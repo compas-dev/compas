@@ -13,15 +13,17 @@ __all__ = [
 ]
 
 
-def face_adjacency(xyz, faces):
+def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
     """"""
     points = [centroid_points([xyz[index] for index in face]) for face in faces]
+
+    k = min(len(faces), nmax)
 
     try:
         from scipy.spatial import cKDTree
 
         tree = cKDTree(points)
-        _, closest = tree.query(points, k=10, n_jobs=-1)
+        _, closest = tree.query(points, k=nmax, n_jobs=-1)
 
     except Exception:
         try:
@@ -31,7 +33,7 @@ def face_adjacency(xyz, faces):
             from compas.geometry import KDTree
 
             tree = KDTree(points)
-            closest = [tree.nearest_neighbors(point, 10) for point in points]
+            closest = [tree.nearest_neighbors(point, nmax) for point in points]
             closest = [[index for _, index, _ in nnbrs] for nnbrs in closest]
 
         else:
@@ -49,7 +51,7 @@ def face_adjacency(xyz, faces):
 
             closest = []
             for i, point in enumerate(points):
-                sphere = Sphere(Point3d(* point), 2.0)
+                sphere = Sphere(Point3d(* point), radius)
                 data = []
                 tree.Search(sphere, callback, data)
                 closest.append(data)
@@ -64,6 +66,45 @@ def face_adjacency(xyz, faces):
 
         for u, v in pairwise(vertices + vertices[0:1]):
             for nbr in nnbrs:
+
+                if nbr == face:
+                    continue
+                if nbr in found:
+                    continue
+
+                for a, b in pairwise(faces[nbr] + faces[nbr][0:1]):
+                    if v == a and u == b:
+                        nbrs.append(nbr)
+                        found.add(nbr)
+                        break
+
+                for a, b in pairwise(faces[nbr] + faces[nbr][0:1]):
+                    if u == a and v == b:
+                        nbrs.append(nbr)
+                        found.add(nbr)
+                        break
+
+        adjacency[face] = nbrs
+
+    return adjacency
+
+
+def face_adjacency(xyz, faces):
+    f = len(faces)
+
+    print(f)
+
+    if f > 100:
+        return _face_adjacency(xyz, faces)
+
+    adjacency  = {}
+
+    for face, vertices in enumerate(faces):
+        nbrs  = []
+        found = set()
+
+        for u, v in pairwise(vertices + vertices[0:1]):
+            for nbr, _ in enumerate(faces):
 
                 if nbr == face:
                     continue

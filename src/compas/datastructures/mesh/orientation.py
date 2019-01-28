@@ -14,32 +14,12 @@ __all__ = [
 ]
 
 
-def mesh_face_adjacency(mesh):
-    """Build a face adjacency dict.
-
-    Parameters
-    ----------
-    mesh : Mesh
-        A mesh object.
-
-    Returns
-    -------
-    dict
-        A dictionary mapping face identifiers (keys) to lists of neighboring faces.
-
-    Notes
-    -----
-    This algorithm is used primarily to unify the cycle directions of a given mesh.
-    Therefore, the premise is that the topological information of the mesh is corrupt
-    and cannot be used to construct the adjacency structure. The algorithm is thus
-    purely geometrical, but uses a spatial indexing tree to speed up the search.
-
-    """
+def _mesh_face_adjacency(mesh, nmax=10, radius=2.0):
     fkey_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
     index_fkey = {index: fkey for index, fkey in enumerate(mesh.faces())}
     points     = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
 
-    k = min(mesh.number_of_faces(), 100)
+    k = min(mesh.number_of_faces(), nmax)
 
     try:
         from scipy.spatial import cKDTree
@@ -73,7 +53,7 @@ def mesh_face_adjacency(mesh):
 
             closest = []
             for i, point in enumerate(points):
-                sphere = Sphere(Point3d(* point), 4.0)
+                sphere = Sphere(Point3d(* point), radius)
                 data = []
                 tree.Search(sphere, callback, data)
                 closest.append(data)
@@ -91,6 +71,63 @@ def mesh_face_adjacency(mesh):
             for index in nnbrs:
                 nbr = index_fkey[index]
 
+                if nbr == fkey:
+                    continue
+                if nbr in found:
+                    continue
+
+                for a, b in mesh.face_halfedges(nbr):
+                    if v == a and u == b:
+                        nbrs.append(nbr)
+                        found.add(nbr)
+                        break
+
+                for a, b in mesh.face_halfedges(nbr):
+                    if u == a and v == b:
+                        nbrs.append(nbr)
+                        found.add(nbr)
+                        break
+
+        adjacency[fkey] = nbrs
+
+    return adjacency
+
+
+def mesh_face_adjacency(mesh):
+    """Build a face adjacency dict.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        A mesh object.
+
+    Returns
+    -------
+    dict
+        A dictionary mapping face identifiers (keys) to lists of neighboring faces.
+
+    Notes
+    -----
+    This algorithm is used primarily to unify the cycle directions of a given mesh.
+    Therefore, the premise is that the topological information of the mesh is corrupt
+    and cannot be used to construct the adjacency structure. The algorithm is thus
+    purely geometrical, but uses a spatial indexing tree to speed up the search.
+
+    """
+    f = mesh.number_of_faces()
+
+    if f > 100:
+        return _mesh_face_adjacency(mesh)
+
+    adjacency  = {}
+    faces = list(mesh.faces())
+
+    for fkey in mesh.faces():
+        nbrs  = []
+        found = set()
+
+        for u, v in mesh.face_halfedges(fkey):
+            for nbr in faces:
                 if nbr == fkey:
                     continue
                 if nbr in found:
@@ -191,6 +228,6 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
 
-    mesh = Mesh.from_obj(compas.get('faces_big.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     mesh_unify_cycles(mesh)
