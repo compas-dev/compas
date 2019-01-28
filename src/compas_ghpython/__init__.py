@@ -18,7 +18,7 @@ from .utilities import *
 from .helpers import *
 
 
-__version__ = '0.4.7'
+__version__ = '0.4.8'
 
 
 __all__ = []
