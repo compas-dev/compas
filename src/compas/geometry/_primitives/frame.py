@@ -572,25 +572,25 @@ class Frame(object):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    def represent_in_local_coordinates(self, point):
+    def represent_point_in_local_coordinates(self, point):
         """Represents a point in the frame's local coordinate system.
 
         Parameters
         ----------
-        point : :obj:`list` of :obj:`float`
+        point : :obj:`list` of :obj:`float` or :class:`Point`
             A point in world XY.
 
         Returns
         -------
-        :obj:`list` of :obj:`float`
+        :class:`Point`
             A point in the local coordinate system of the frame.
 
         Examples
         --------
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw1 = [2, 2, 2]
-        >>> pf = f.represent_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_in_global_coordinates(pf)
+        >>> pf = f.represent_point_in_local_coordinates(pw1)
+        >>> pw2 = f.represent_point_in_global_coordinates(pf)
         >>> allclose(pw1, pw2)
         True
 
@@ -600,25 +600,25 @@ class Frame(object):
         pt.transform(T)
         return pt
 
-    def represent_in_global_coordinates(self, point):
+    def represent_point_in_global_coordinates(self, point):
         """Represents a point from local coordinates in the world coordinate system.
 
         Parameters
         ----------
-        point : :obj:`list` of :obj:`float`
+        point : :obj:`list` of :obj:`float` or :class:`Point` 
             A point in local coordinates.
 
         Returns
         -------
-        :obj:`list` of :obj:`float`
+        :class:`Point`
             A point in the world coordinate system.
 
         Examples
         --------
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw1 = [2, 2, 2]
-        >>> pf = f.represent_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_in_global_coordinates(pf)
+        >>> pf = f.represent_point_in_local_coordinates(pw1)
+        >>> pw2 = f.represent_point_in_global_coordinates(pf)
         >>> allclose(pw1, pw2)
         True
 
@@ -627,6 +627,127 @@ class Frame(object):
         pt = Point(*point)
         pt.transform(T)
         return pt
+    
+    def represent_vector_in_local_coordinates(self, vector):
+        """Represents a vector in the frame's local coordinate system.
+
+        Parameters
+        ----------
+        vector : :obj:`list` of :obj:`float` or :class:`Vector`
+            A vector in world XY.
+
+        Returns
+        -------
+        :class:`Vector`
+            A vector in the local coordinate system of the frame.
+
+        Examples
+        --------
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> pw1 = [2, 2, 2]
+        >>> pf = f.represent_vector_in_local_coordinates(pw1)
+        >>> pw2 = f.represent_vector_in_global_coordinates(pf)
+        >>> allclose(pw1, pw2)
+        True
+
+        """
+        T = inverse(matrix_from_basis_vectors(self.xaxis, self.yaxis))
+        vec = Vector(*vector)
+        vec.transform(T)
+        return vec
+
+    def represent_vector_in_global_coordinates(self, vector):
+        """Represents a vector in local coordinates in the world coordinate system.
+
+        Parameters
+        ----------
+        vector: :obj:`list` of :obj:`float` or :class:`Vector`
+            A vector in local coordinates.
+
+        Returns
+        -------
+        :class:`Vector`
+            A vector in the world coordinate system.
+
+        Examples
+        --------
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> pw1 = [2, 2, 2]
+        >>> pf = f.represent_vector_in_local_coordinates(pw1)
+        >>> pw2 = f.represent_vector_in_global_coordinates(pf)
+        >>> allclose(pw1, pw2)
+        True
+
+        """
+        T = matrix_from_frame(self)
+        vec = Vector(*vector)
+        vec.transform(T)
+        return vec
+    
+
+    def represent_frame_in_local_coordinates(self, frame):
+        """Represents another frame in the frame's local coordinate system.
+
+        Parameters
+        ----------
+        frame: :class:`Frame`
+            A frame in the world coordinate system.
+
+        Returns
+        -------
+        :class:`Frame`
+            A frame in the frame's local coordinate system.
+
+        Examples
+        --------
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
+        >>> pf = f.represent_frame_in_local_coordinates(pw1)
+        >>> pw2 = f.represent_frame_in_global_coordinates(pf)
+        >>> allclose(pw1.point, pw2.point)
+        True
+        >>> allclose(pw1.xaxis, pw2.xaxis)
+        True
+        >>> allclose(pw1.yaxis, pw2.yaxis)
+        True
+        """
+        T = Transformation.from_frame(self).inverse()
+        f = frame.copy()
+        f.transform(T)
+        return f
+
+    def represent_frame_in_global_coordinates(self, frame):
+        """Represents another frame in the local coordinate system in the world
+            coordinate system.
+
+        Parameters
+        ----------
+        frame: :class:`Frame`
+            A frame in the local coordinate system.
+
+        Returns
+        -------
+        :class:`Frame`
+            A frame in the world coordinate system.
+
+        Examples
+        --------
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
+        >>> pf = f.represent_frame_in_local_coordinates(pw1)
+        >>> pw2 = f.represent_frame_in_global_coordinates(pf)
+        >>> allclose(pw1.point, pw2.point)
+        True
+        >>> allclose(pw1.xaxis, pw2.xaxis)
+        True
+        >>> allclose(pw1.yaxis, pw2.yaxis)
+        True
+        """
+        T = Transformation.from_frame(self)
+        f = frame.copy()
+        f.transform(T)
+        return f
+
 
     # ==========================================================================
     # transformations
@@ -732,6 +853,20 @@ if __name__ == '__main__':
     f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     pw1 = [2, 2, 2]
     pw1 = Point(*pw1)
-    pf = f.represent_in_local_coordinates(pw1)
-    pw2 = f.represent_in_global_coordinates(pf)
+    pf = f.represent_point_in_local_coordinates(pw1)
+    pw2 = f.represent_point_in_global_coordinates(pf)
     print(allclose(pw1, pw2))
+
+    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    pw1 = [2, 2, 2]
+    pf = f.represent_vector_in_local_coordinates(pw1)
+    pw2 = f.represent_vector_in_global_coordinates(pf)
+    allclose(pw1, pw2)
+
+    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
+    pf = f.represent_frame_in_local_coordinates(pw1)
+    pw2 = f.represent_frame_in_global_coordinates(pf)
+    allclose(pw1.point, pw2.point)
+    allclose(pw1.xaxis, pw2.xaxis)
+    allclose(pw1.yaxis, pw2.yaxis)
