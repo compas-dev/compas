@@ -39,7 +39,7 @@ def mesh_face_adjacency(mesh):
     index_fkey = {index: fkey for index, fkey in enumerate(mesh.faces())}
     points     = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
 
-    k = min(mesh.number_of_faces(), 10)
+    k = min(mesh.number_of_faces(), 100)
 
     try:
         from scipy.spatial import cKDTree

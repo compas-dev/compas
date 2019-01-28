@@ -88,9 +88,10 @@ class Plotter(object):
         plotter.show()
 
     """
-    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, tight=True, **kwargs):
+    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, tight=True, axes=None, **kwargs):
         """Initialises a plotter object"""
         self._axes = None
+        self.axes = axes
         self.tight = tight
         # use descriptors for these
         # to help the user set these attributes in the right format
@@ -154,6 +155,10 @@ class Plotter(object):
             )
 
         return self._axes
+
+    @axes.setter
+    def axes(self, axes):
+        self._axes = axes
 
     @property
     def figure(self):

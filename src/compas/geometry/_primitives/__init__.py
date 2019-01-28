@@ -12,6 +12,7 @@ from .polyline import Polyline
 from .polygon import Polygon
 from .polyhedron import Polyhedron
 from .circle import Circle
+from .curve import Bezier
 
 from .box import Box
 

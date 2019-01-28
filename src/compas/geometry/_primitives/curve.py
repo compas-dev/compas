@@ -4,7 +4,13 @@ from __future__ import division
 
 from math import factorial
 
+from compas.geometry.basic import scale_vector
+from compas.geometry.basic import normalize_vector
+from compas.geometry.basic import add_vectors
+from compas.geometry.basic import subtract_vectors
+
 from compas.geometry._primitives import Point
+from compas.geometry._primitives import Vector
 
 
 __all__ = ['Bezier']
@@ -61,6 +67,10 @@ def bernstein(n, k, t):
         The value of the Bernstein basis polynomial at `t`.
 
     """
+    if k < 0:
+        return 0
+    if k > n:
+        return 0
     return binomial(n, k) * t ** k * (1 - t) ** (n - k)
 
 
@@ -139,15 +149,16 @@ class Bezier(object):
             point += p * b
         return point
 
-    # def compute_tangent(self, t):
-    #     n = self.degree
-    #     point = Point(0, 0, 0)
-    #     for i, p in enumerate(self.points):
-    #         a = bernstein(n - 1, i - 1, t)
-    #         b = bernstein(n - 1, i, t)
-    #         c = n * (a - b)
-    #         point += p * c
-    #     return point
+    def compute_tangent(self, t):
+        n = self.degree
+        v = Vector(0, 0, 0)
+        for i, p in enumerate(self.points):
+            a = bernstein(n - 1, i - 1, t)
+            b = bernstein(n - 1, i, t)
+            c = n * (a - b)
+            v += p * c
+        v.unitize()
+        return v
 
     def compute_locus(self, resolution=100):
         """Compute the locus of all points on the curve.
@@ -170,13 +181,20 @@ class Bezier(object):
             locus.append(self.compute_point(t))
         return locus
 
-    def draw(self, t=None):
+    def draw(self, params=None):
         import matplotlib.pyplot as plt
         locus = self.compute_locus()
         x, y, _ = zip(*locus)
-        plt.plot(x, y)
+        plt.plot(x, y, '-b')
         x, y, _ = zip(* self.points)
-        plt.plot(x, y, 'o')
+        plt.plot(x, y, 'ro')
+        if params is not None:
+            for t in params:
+                p0 = self.compute_point(t)
+                v = self.compute_tangent(t)
+                p1 = p0 + v
+                plt.plot([p0[0], p1[0]], [p0[1], p1[1]], '-k')
+                plt.plot([p0[0]], [p0[1]], 'ok')
         ax = plt.gca()
         ax.set_aspect('equal')
         plt.show()
@@ -189,6 +207,4 @@ class Bezier(object):
 if __name__ == '__main__':
 
     curve = Bezier([[0, 0, 0], [1, -1, 0], [2, +1, 0], [3, 0, 0]])
-    curve.draw(t=0.5)
-
-
+    curve.draw(params=[0.1, 0.2, 0.3, 0.4, 0.5])
