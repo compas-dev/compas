@@ -23,7 +23,7 @@ def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
         from scipy.spatial import cKDTree
 
         tree = cKDTree(points)
-        _, closest = tree.query(points, k=nmax, n_jobs=-1)
+        _, closest = tree.query(points, k=k, n_jobs=-1)
 
     except Exception:
         try:
