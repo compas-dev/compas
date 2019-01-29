@@ -137,6 +137,6 @@ if __name__ == "__main__":
 
     x0 = [-6., -6.]
     bounds = [[0, 2], [2, 4]]
-    fopt, uopt = descent(x0, fn, gtol=10**(-4), bounds=bounds)
+    fopt, uopt = descent_numpy(x0, fn, gtol=10**(-4), bounds=bounds)
 
     print(uopt)

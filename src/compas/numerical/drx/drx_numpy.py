@@ -399,8 +399,8 @@ if __name__ == "__main__":
     # structure.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
 
     # data = {
-    #     'vertices': {i: structure.vertex_coordinates(i) for i in structure.vertices()},
-    #     'edges':    [{'u': u, 'v': v} for u, v in structure.edges()]
+    #     'vertices': [structure.vertex_coordinates(i) for i in structure.vertices()],
+    #     'edges':    [{'vertices': uv} for uv in structure.edges()]
     # }
 
 
