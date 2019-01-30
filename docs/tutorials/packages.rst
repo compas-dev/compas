@@ -2,51 +2,27 @@
 Making a Package
 ********************************************************************************
 
-Using ``conda``, the **COMPAS** ``cookiecutter`` template, and ``sphinx_compas_theme``,
-we are going to set up a package named ``compas_awesome``.
+Using the **COMPAS** ``cookiecutter`` template we are going to set up a package named ``compas_awesome``.
 
-
-Create a virtual environment
-============================
-
-.. code-block:: bash
-
-    $ conda config --add channels conda-forge
-    $ conda create -n compas_awesome python=3.6 COMPAS
 
 .. note::
 
-    You can use any name for the conda environment.
+    It is a good idea to create an isolated environment for your package development.
+    With ``conda``, managing virtual environments is easy.
 
 
-Activate the environment
+Install the cookiecutter
 ========================
 
 .. code-block:: bash
 
-    $ source activate compas_awesome
-
-
-Install stuff
-=============
-
-.. code-block:: bash
-
     $ pip install cookiecutter
-    $ pip install sphinx_compas_theme
-
-
-Make a base folder for all your packages
-========================================
-
-.. code-block:: bash
-
-    $ mkdir ~/Code/COMPAS-packages
-    $ cd ~/Code/COMPAS-packages
 
 
 Use the cookiecutter
 ====================
+
+Navigate to the folder where you want to create your package.
 
 .. code-block:: bash
 
@@ -54,12 +30,6 @@ Use the cookiecutter
 
 And then just follow the instructions.
 Provide ``compas_awesome`` when asked for the *project_slug*.
-
-
-Verify the template
-===================
-
-If all went well, the cookiecutter
 
 
 Install your package

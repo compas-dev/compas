@@ -35,7 +35,6 @@ __all__ = ['drx_numpy']
 
 
 def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=False, callback=None, **kwargs):
-
     """Run dynamic relaxation analysis.
 
     Parameters

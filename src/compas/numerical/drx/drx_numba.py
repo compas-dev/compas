@@ -3,21 +3,29 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from numpy import arccos
-from numpy import array
-from numpy import isnan
-from numpy import mean
-from numpy import sin
-from numpy import sqrt
-from numpy import sum
-from numpy import zeros
+import compas
 
-from numba import guvectorize
-from numba import f8
-from numba import i4
-from numba import i8
+try:
+    from numpy import arccos
+    from numpy import array
+    from numpy import isnan
+    from numpy import mean
+    from numpy import sin
+    from numpy import sqrt
+    from numpy import sum
+    from numpy import zeros
+
+    from numba import guvectorize
+    from numba import f8
+    from numba import i4
+    from numba import i8
+
+except ImportError:
+    compas.raise_if_not_ironpython()
+
 
 from compas.numerical import uvw_lengths
+
 from compas.numerical.drx.drx_numpy import _beam_data
 from compas.numerical.drx.drx_numpy import _create_arrays
 
@@ -51,7 +59,6 @@ def _args(network, factor, summary, steps, tol):
 
 
 def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False):
-
     """ Run Numba accelerated dynamic relaxation analysis.
 
     Parameters
