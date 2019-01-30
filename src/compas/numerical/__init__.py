@@ -29,14 +29,14 @@ Solvers
     dr
     dr_numpy
     drx_numpy
+    drx_numba
     fd_alglib
     fd_cpp
     fd_numpy
     ga
     moga
     pca_numpy
-    topop2d_numpy
-    topop3d_numpy
+    topop_numpy
 
 
 Linalg

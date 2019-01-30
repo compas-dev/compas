@@ -20,16 +20,6 @@ numerical and topological functions and algorithms. The package is built around
     For now, don't use it for anything important :)
 
 
-algorithms
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    drx_numba
-
-
 linalg
 ======
 
@@ -182,14 +172,12 @@ spatial_numba
 
 """
 
-from .algorithms import *
 from .geometry import *
 from .core import *
 from .linalg import *
 
-from .algorithms import __all__ as a
 from .geometry import __all__ as b
 from .core import __all__ as c
-from .linalg import __all__ as d
+from .linalg import __all__ as a
 
-__all__ = a + b + c + d
+__all__ = b + c + a

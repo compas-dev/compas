@@ -18,7 +18,6 @@ try:
     from numpy import min
     from numpy import minimum
     from numpy import int64
-    from numpy import isnan
     from numpy import newaxis
     from numpy import ones
     from numpy import ravel
@@ -37,10 +36,10 @@ except ImportError:
     compas.raise_if_not_ironpython()
 
 
-__all__ = ['topop2d_numpy']
+__all__ = ['topop_numpy']
 
 
-def topop2d_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, callback=None):
+def topop_numpy(nelx, nely, loads, supports, volfrac=0.5, penal=3, rmin=1.5, callback=None):
 
     """ Topology optimisation in 2D using NumPy and SciPy.
 
@@ -265,7 +264,8 @@ if __name__ == "__main__":
     #     '400-0': [0, 1],
     # }
 
-    # x = topop2d_numpy(nelx=nelx, nely=nely, loads=loads, supports=supports, volfrac=0.5, callback=callback)
+    # x = topop_numpy(nelx=nelx, nely=nely, loads=loads, supports=supports, volfrac=0.5, callback=callback)
+
 
     # ==============================================================================
     # 2D Example 2
@@ -297,4 +297,4 @@ if __name__ == "__main__":
         '100-0': [1, 1],
     }
 
-    x = topop2d_numpy(nelx=nelx, nely=nely, loads=loads, supports=supports, volfrac=0.3, callback=callback)
+    x = topop_numpy(nelx=nelx, nely=nely, loads=loads, supports=supports, volfrac=0.3, callback=callback)
