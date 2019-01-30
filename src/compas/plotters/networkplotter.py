@@ -37,6 +37,17 @@ class NetworkPlotter(Plotter):
     defaults : dict
         Dictionary containing default attributes for vertices and edges.
 
+        * vertex.radius    : ``0.1``
+        * vertex.facecolor : ``'#ffffff``
+        * vertex.edgecolor : ``'#000000'``
+        * vertex.edgewidth : ``0.5``
+        * vertex.textcolor : ``'#000000'``
+        * vertex.fontsize  : ``10``
+        * edge.width       : ``1.0``
+        * edge.color       : ``'#000000'``
+        * edge.textcolor   : ``'#000000'``
+        * edge.fontsize    : ``10``
+
     Notes
     -----
     For more info, see [1]_.

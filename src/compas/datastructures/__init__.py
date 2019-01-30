@@ -14,6 +14,15 @@ It is meant for the representation of polygonal *"surface"* meshes. A mesh can b
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
 
+Classes
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Mesh
+
 Functions
 ---------
 
@@ -22,6 +31,8 @@ Functions
     :nosignatures:
 
     mesh_adjacency_matrix
+    mesh_bounding_box
+    mesh_bounding_box_xy
     mesh_connectivity_matrix
     mesh_contours_numpy
     mesh_contours_pymesh
@@ -49,21 +60,13 @@ Functions
     mesh_transform
     mesh_transformed
     mesh_unify_cycles
+
     trimesh_cotangent_laplacian_matrix
+    trimesh_gaussian_curvature
     trimesh_mean_curvature
     trimesh_remesh
     trimesh_subdivide_loop
     trimesh_vertexarea_matrix
-
-Classes
--------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Mesh
-
 
 Network
 =======
@@ -72,6 +75,15 @@ The network is a connectivity graph.
 It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
+
+Classes
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Network
 
 Functions
 ---------
@@ -93,16 +105,6 @@ Functions
     network_is_xy
     network_smooth_centroid
 
-Classes
--------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Network
-
-
 VolMesh
 =======
 
@@ -110,12 +112,21 @@ The volmesh is a cellular mesh. It is implemented as
 a half-plane, the three-dimensional equivalent of a half-edge. It can, for example,
 be used for the representation of subdivided/partitioned polyhedra.
 
+Classes
+-------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     VolMesh
+
+Functions
+---------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
 """
 

@@ -7,13 +7,13 @@ from ._mesh import *
 from .operations import *
 from .matrices import *
 from .transformations import *
-from .transformations_numpy import *
 
 from .clean import *
 
 from .combinatorics import *
 from .contours import *
 from .curvature import *
+from .bbox import *
 from .descent import *
 from .duality import *
 from .geodesics import *

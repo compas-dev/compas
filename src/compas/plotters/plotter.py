@@ -42,6 +42,31 @@ class Plotter(object):
         Default is ``True``.
     fontsize : int, optional
         The size of the font used in labels. Default is ``10``.
+    axes : matplotlib.axes.Axes, optional
+        An instance of ``matplotlib`` ``Axes``.
+        For example to share the axes of a figure between different plotters.
+        Default is ``None`` in which case the plotter will make its own axes.
+
+    Attributes
+    ----------
+    defaults : dict
+        Dictionary containing default attributes for vertices and edges.
+
+        * point.radius      : ``0.1``
+        * point.facecolor   : ``'#ffffff'``
+        * point.edgecolor   : ``'#000000'``
+        * point.edgewidth   : ``0.5``
+        * point.textcolor   : ``'#000000'``
+        * point.fontsize    : ``10``
+        * line.width        : ``1.0``
+        * line.color        : ``'#000000'``
+        * line.textcolor    : ``'#000000'``
+        * line.fontsize     : ``10``
+        * polygon.facecolor : ``'#ffffff'``
+        * polygon.edgecolor : ``'#000000'``
+        * polygon.edgewidth : ``0.1``
+        * polygon.textcolor : ``'#000000'``
+        * polygon.fontsize  : ``10``
 
     Notes
     -----
