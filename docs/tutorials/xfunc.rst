@@ -125,7 +125,7 @@ directly in Rhino.
     from compas.geometry import bounding_box
 
 
-.. ccode-block:: python
+.. code-block:: python
 
     # no
 
