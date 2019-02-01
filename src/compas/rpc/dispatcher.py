@@ -67,7 +67,7 @@ class Dispatcher(object):
                     "API methods require a single JSON encoded dictionary as input.\n"
                     "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})")
             else:
-                self._call_wrapped(function, idict, odict)
+                self._call(function, idict, odict)
 
         return json.dumps(odict, cls=DataEncoder)
 
@@ -84,7 +84,7 @@ class Dispatcher(object):
 
     def _call_wrapped(self, function, idict, odict):
         args = idict['args']
-        kwargs = odict['kwargs']
+        kwargs = idict['kwargs']
 
         try:
             profile = Profile()

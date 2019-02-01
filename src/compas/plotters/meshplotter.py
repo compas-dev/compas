@@ -59,18 +59,12 @@ class MeshPlotter(Plotter):
         * face.textcolor   : ``'#000000'``
         * face.fontsize    : ``10``
 
-    Notes
-    -----
-    For more info, see [1]_.
-
-    References
-    ----------
-    .. [1] Hunter, J. D., 2007. *Matplotlib: A 2D graphics environment*.
-           Computing In Science & Engineering (9) 3, p.90-95.
-           Available at: http://ieeexplore.ieee.org/document/4160265/citations.
-
     Examples
     --------
+    This is a basic example using the default settings for all visualisation options.
+    For more detailed examples, see the documentation of the various drawing methods
+    listed below...
+
     .. plot::
         :include-source:
 
@@ -87,6 +81,16 @@ class MeshPlotter(Plotter):
         plotter.draw_faces()
 
         plotter.show()
+
+    Notes
+    -----
+    For more info about ``matplotlib``, see [1]_.
+
+    References
+    ----------
+    .. [1] Hunter, J. D., 2007. *Matplotlib: A 2D graphics environment*.
+           Computing In Science & Engineering (9) 3, p.90-95.
+           Available at: http://ieeexplore.ieee.org/document/4160265/citations.
 
     """
 
@@ -210,7 +214,26 @@ class MeshPlotter(Plotter):
             self.vertexcollection.remove()
 
     def update_vertices(self, radius=None):
-        """Updates the plotter vertex collection based on the mesh."""
+        """Updates the plotter vertex collection based on the current state of the mesh.
+
+        Parameters
+        ----------
+        radius : {float, dict}, optional
+            The vertex radius as a single value, which will be applied to all vertices,
+            or as a dictionary mapping vertex keys to specific radii.
+            Default is the value set in ``self.defaults``.
+
+        Note
+        ----
+        This function will only work as expected if all vertices were already present in the collection.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            pass
+
+        """
         radius = valuedict(self.mesh.vertices(), radius, self.defaults['vertex.radius'])
         circles = []
         for key in self.mesh.vertices():
@@ -220,8 +243,46 @@ class MeshPlotter(Plotter):
         self.vertexcollection.set_paths(circles)
 
     def draw_as_lines(self, color=None, width=None):
-        # if len(args) > 0:
-        #     return super(MeshPlotter, self).draw_lines(*args, **kwargs)
+        """Draw the mesh as a set of lines.
+
+        This function is useful for creating *before-after* plots.
+
+        Parameters
+        ----------
+        color : {rgb-tuple, hex-string}, optional
+            The color specification of the lines.
+            Default is to use the default line color as defined in ``self.defaults``.
+        width : float, optional
+            The width of the lines.
+            Default is to use the value specified in self.defaults.
+
+        Returns
+        -------
+        object
+            The ``matplotlib`` line collection object.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas
+            from compas.datastructures import Mesh
+            from compas.plotters import MeshPlotter
+
+            mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+            plotter = MeshPlotter(mesh)
+
+            plotter.draw_as_lines()
+
+            # do stuff to the mesh
+
+            plotter.draw_vertices()
+            plotter.draw_edges()
+
+            plotter.show()
+
+        """
         lines = []
         for u, v in self.mesh.edges():
             lines.append({
