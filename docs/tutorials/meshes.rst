@@ -2,7 +2,7 @@
 Working with Meshes
 ********************************************************************************
 
-**COMPAS** meshes are polygon meshes with support for n-sided polygonal
+COMPAS meshes are polygon meshes with support for n-sided polygonal
 faces. the meshes are presented using a half-edge data structure. In a
 half-edge data structure, each edge is composed of two half-edges with
 opposite orientation. Each half-edge is part of exactly one face, unless
@@ -23,7 +23,7 @@ Making a mesh
 
     import compas
     from compas.datastructures import Mesh
-    
+
     mesh = Mesh()
 
 
@@ -258,30 +258,30 @@ Traversal
 
     0 (neighbors) [6, 1]
     0 (faces) [0]
-    
+
     1 (neighbors) [0, 7, 2]
     1 (faces) [0, 1]
-    
+
     2 (neighbors) [1, 8, 3]
     2 (faces) [1, 2]
-    
+
     3 (neighbors) [2, 9, 4]
     3 (faces) [2, 3]
-    
+
     ...
-    
+
     32 (neighbors) [33, 26, 31]
     32 (faces) [22, 21]
-    
+
     33 (neighbors) [34, 27, 32]
     33 (faces) [23, 22]
-    
+
     34 (neighbors) [35, 28, 33]
     34 (faces) [24, 23]
-    
+
     35 (neighbors) [29, 34]
     35 (faces) [24]
-    
+
 
 .. code:: ipython3
 
@@ -297,37 +297,37 @@ Traversal
     0 (vertices) [0, 1, 7, 6]
     0 (half-edges) [(0, 1), (1, 7), (7, 6), (6, 0)]
     0 (neighbors) [1, 5]
-    
+
     1 (vertices) [1, 2, 8, 7]
     1 (half-edges) [(1, 2), (2, 8), (8, 7), (7, 1)]
     1 (neighbors) [2, 6, 0]
-    
+
     2 (vertices) [2, 3, 9, 8]
     2 (half-edges) [(2, 3), (3, 9), (9, 8), (8, 2)]
     2 (neighbors) [3, 7, 1]
-    
+
     3 (vertices) [3, 4, 10, 9]
     3 (half-edges) [(3, 4), (4, 10), (10, 9), (9, 3)]
     3 (neighbors) [4, 8, 2]
-    
+
     ...
-    
+
     21 (vertices) [25, 26, 32, 31]
     21 (half-edges) [(25, 26), (26, 32), (32, 31), (31, 25)]
     21 (neighbors) [16, 22, 20]
-    
+
     22 (vertices) [26, 27, 33, 32]
     22 (half-edges) [(26, 27), (27, 33), (33, 32), (32, 26)]
     22 (neighbors) [17, 23, 21]
-    
+
     23 (vertices) [27, 28, 34, 33]
     23 (half-edges) [(27, 28), (28, 34), (34, 33), (33, 27)]
     23 (neighbors) [18, 24, 22]
-    
+
     24 (vertices) [28, 29, 35, 34]
     24 (half-edges) [(28, 29), (29, 35), (35, 34), (34, 28)]
     24 (neighbors) [19, 23]
-    
+
 
 Attributes
 ==========
@@ -474,9 +474,9 @@ Visualisation
     from compas.plotters import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
-    
+
     plotter = MeshPlotter(mesh)
-    
+
     plotter.draw_vertices(
         facecolor={key: '#ff0000' for key in mesh.vertices_on_boundary()},
         radius={key: 0.3 for key in mesh.vertices_on_boundary()},
@@ -489,5 +489,5 @@ Visualisation
     plotter.draw_faces(
         text={key: str(key) for key in mesh.faces_on_boundary()}
     )
-    
+
     plotter.show()

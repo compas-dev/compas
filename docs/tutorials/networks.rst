@@ -2,7 +2,7 @@
 Working with Networks
 ********************************************************************************
 
-**COMPAS** networks are simple edge graphs: they consist of vertices
+COMPAS networks are simple edge graphs: they consist of vertices
 connected by edges. Not all vertices have to be connected by edges. A
 network without edges is a valid network. In fact, even a network
 without vertices and edges is a valid network, albeit a quite pointless

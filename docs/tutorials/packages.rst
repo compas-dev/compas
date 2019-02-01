@@ -2,7 +2,7 @@
 Making a Package
 ********************************************************************************
 
-Using the **COMPAS** ``cookiecutter`` template we are going to set up a package named ``compas_awesome``.
+Using the COMPAS ``cookiecutter`` template we are going to set up a package named "compas_awesome".
 
 
 .. note::
@@ -11,16 +11,16 @@ Using the **COMPAS** ``cookiecutter`` template we are going to set up a package 
     With ``conda``, managing virtual environments is easy.
 
 
-Install the cookiecutter
-========================
+Install cookiecutter
+====================
 
 .. code-block:: bash
 
     $ pip install cookiecutter
 
 
-Use the cookiecutter
-====================
+Use the cookiecutter template
+=============================
 
 Navigate to the folder where you want to create your package.
 
@@ -29,7 +29,7 @@ Navigate to the folder where you want to create your package.
     $ cookiecutter gh:BlockResearchGroup/cookiecutter-compas-package
 
 And then just follow the instructions.
-Provide ``compas_awesome`` when asked for the *project_slug*.
+Provide "compas_awesome" when asked for the *project_slug*.
 
 
 Install your package
