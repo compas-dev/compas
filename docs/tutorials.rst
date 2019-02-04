@@ -1,9 +1,9 @@
-********************************************************************************
+*********
 Tutorials
-********************************************************************************
+*********
 
 COMPAS
-------
+======
 
 .. toctree::
     :maxdepth: 1
@@ -13,10 +13,12 @@ COMPAS
     tutorials/networks
     tutorials/meshes
     tutorials/plotters
+    tutorials/callbacks
+    tutorials/geomaps
 
 
 Python
-------
+======
 
 .. toctree::
     :maxdepth: 1
@@ -28,7 +30,7 @@ Python
 
 
 Rhino
------
+=====
 
 .. toctree::
     :maxdepth: 1

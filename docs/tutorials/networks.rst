@@ -1,5 +1,5 @@
 ********************************************************************************
-Working with Networks
+Working with networks
 ********************************************************************************
 
 COMPAS networks are simple edge graphs: they consist of vertices

@@ -1,5 +1,5 @@
 ********************************************************************************
-Working with Meshes
+Working with meshes
 ********************************************************************************
 
 COMPAS meshes are polygon meshes with support for n-sided polygonal
