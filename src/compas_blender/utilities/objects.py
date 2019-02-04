@@ -3,6 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.datastructures import Mesh
+
 try:
     import bpy
 except ImportError:
@@ -55,6 +57,7 @@ __all__ = [
     'set_objects_visible',
     'set_object_property',
     'set_objects_property',
+    'mesh_from_bmesh',
 ]
 
 
@@ -246,6 +249,14 @@ def select_meshes(message='Select meshes.'):
 def get_meshes(layer=None):
 
     return [object for object in get_objects(layer=layer) if object.type == 'MESH']
+
+
+def mesh_from_bmesh(bmesh):
+
+    vertices = [list(vertex.co) for vertex in bmesh.data.vertices]
+    faces    = [list(face.vertices) for face in bmesh.data.polygons]
+
+    return Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
 
 
 # ==============================================================================
