@@ -22,12 +22,6 @@ except:
     has_pycuda = False
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'device_cuda',
     'rand_cuda',
@@ -140,6 +134,7 @@ def device_cuda():
 
     attrs = [(key, value) for key, value in dev.get_attributes().items()]
     attrs.sort()
+
     for attr, value in attrs:
         print('%s: %s' % (attr, value))
 
