@@ -29,7 +29,6 @@ Solvers
     dr
     dr_numpy
     drx_numpy
-    drx_numba
     fd_alglib
     fd_cpp
     fd_numpy

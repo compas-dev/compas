@@ -235,13 +235,13 @@ class Proxy(object):
             try:
                 server.ping()
             except:
-                time.sleep(0.01)
+                time.sleep(0.1)
                 count -= 1
             else:
                 success = True
                 break
         if not success:
-            raise RPCServerError("The server is no available.")
+            raise RPCServerError("The server is not available.")
 
         return server
 
