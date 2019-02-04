@@ -14,15 +14,17 @@ from compas._os import remove_symlink
 __all__ = ['uninstall']
 
 
-def uninstall(version='6.0', packages=None):
+def uninstall(version=None, packages=None):
     """Uninstall COMPAS from Rhino.
 
     Parameters
     ----------
-    version : {'5.0', '6.0'}
+    version : {'5.0', '6.0'}, optional
         The version number of Rhino.
-    packages : list of str
-        List of packages to uninstall or None to use default package list.
+        Default is ``'6.0'``.
+    packages : list of str, optional
+        List of packages to uninstall.
+        Default is to uninstall all COMPAS packages.
 
     Examples
     --------
@@ -36,6 +38,12 @@ def uninstall(version='6.0', packages=None):
         $ python -m compas_rhino.uninstall 6.0
 
     """
+    if version not in ('5.0', '6.0'):
+        version = '6.0'
+
+    if not packages:
+        # should this not default to all installed compas packages?
+        packages = compas_rhino.install.INSTALLABLE_PACKAGES
 
     print('Uninstalling COMPAS packages to Rhino {0} IronPython lib:'.format(version))
 
@@ -54,15 +62,14 @@ def uninstall(version='6.0', packages=None):
             remove_symlink(symlink_path)
             results.append((package, 'OK'))
         except OSError:
-            results.append(
-                (package, 'Cannot remove symlink, try to run as administrator.'))
+            results.append((package, 'ERROR: Cannot remove symlink, try to run as administrator.'))
 
     for _, status in results:
         if status is not 'OK':
             exit_code = -1
 
     if exit_code == -1:
-        results.append(('compas_bootstrapper', 'One or more packages failed, will not uninstall bootstrapper.'))
+        results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not uninstall bootstrapper.'))
     else:
         compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
         try:
@@ -70,13 +77,11 @@ def uninstall(version='6.0', packages=None):
                 os.remove(compas_bootstrapper)
                 results.append(('compas_bootstrapper', 'OK'))
         except:
-            results.append(
-                ('compas_bootstrapper', 'Could not delete compas_bootstrapper'))
+            results.append(('compas_bootstrapper', 'ERROR: Could not delete compas_bootstrapper'))
 
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
 
-        # Re-check just in case bootstrapper failed
         if status is not 'OK':
             exit_code = -1
 
@@ -90,19 +95,13 @@ def uninstall(version='6.0', packages=None):
 
 if __name__ == "__main__":
 
-    import sys
+    import argparse
 
-    print('\nusage: python -m compas_rhino.uninstall [version]\n')
-    print('  version       Rhino version (5.0 or 6.0)\n')
+    parser = argparse.ArgumentParser()
 
-    try:
-        version = sys.argv[1]
-    except IndexError:
-        version = '6.0'
-    else:
-        try:
-            version = str(version)
-        except Exception:
-            version = '6.0'
+    parser.add_argument('-v', '--version', choices=['5.0', '6.0'], default='5.0', help="The version of Rhino to install the packages in.")
+    parser.add_argument('-p', '--packages', nargs='+', help="The packages to uninstall.")
 
-    uninstall(version=version, packages=compas_rhino.install.INSTALLABLE_PACKAGES)
+    args = parser.parse_args()
+
+    uninstall(version=args.version, packages=args.packages)

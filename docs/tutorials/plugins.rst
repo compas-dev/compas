@@ -57,12 +57,3 @@ Install the plugin
     Just type the name of the plugin and then hit *TAB* to get the full name with the
     curly braces and guid.
 
-
-Build the docs
-==============
-
-.. code-block:: bash
-
-    $ invoke docs
-    $ open dist/docs/index.html
-

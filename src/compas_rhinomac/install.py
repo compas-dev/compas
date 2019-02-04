@@ -9,12 +9,13 @@ import sys
 import compas_rhinomac
 
 from compas._os import create_symlink
+from compas._os import remove_symlink
 
 
 __all__ = ['install']
 
 
-INSTALLABLE_PACKAGES = ('compas', 'compas_rhino')
+INSTALLABLE_PACKAGES = ['compas', 'compas_rhino']
 
 
 def _get_package_path(package):
@@ -26,19 +27,20 @@ def install(packages=None):
 
     Parameters
     ----------
-    packages : list of str
-        List of packages to install or None to use default package list.
+    packages : list of str, optional
+        List of packages to install.
+        Default is to install ``['compas', 'compas_rhino']``.
 
     Examples
     --------
     .. code-block:: python
 
         >>> import compas_rhino
-        >>> compas_rhino.install('6.0')
+        >>> compas_rhinomac.install()
 
     .. code-block:: python
 
-        $ python -m compas_rhino.install 6.0
+        $ python -m compas_rhinomac.install
 
     """
     if not packages:
@@ -56,11 +58,10 @@ def install(packages=None):
         symlink_path = os.path.join(ipylib_path, package)
 
         if os.path.exists(symlink_path):
-            results.append(
-                (package,
-                 'WARNING: Package "{}" already found in RhinoMac Lib, try uninstalling first'.format(package)))
-
-            continue
+            try:
+                remove_symlink(symlink_path)
+            except OSError:
+                results.append((package, 'ERROR: Cannot remove symlink, try to run as administrator.'))
 
         try:
             create_symlink(package_path, symlink_path)
@@ -73,21 +74,16 @@ def install(packages=None):
             exit_code = -1
 
     if exit_code == -1:
-        results.append(
-            ('compas_bootstrapper',
-             'ERROR: One or more packages failed, will not install bootstrapper. Try uninstalling first.')
-        )
+        results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not install bootstrapper. Try uninstalling first.'))
     else:
         conda_prefix = os.environ.get('CONDA_PREFIX', None)
+        compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
         try:
-            with open(os.path.join(ipylib_path, 'compas_bootstrapper.py'), 'w') as f:
+            with open(compas_bootstrapper, 'w') as f:
                 f.write('CONDA_PREFIX = r"{0}"'.format(conda_prefix))
                 results.append(('compas_bootstrapper', 'OK'))
-
         except:
-            results.append(
-                ('compas_bootstrapper',
-                 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))
+            results.append(('compas_bootstrapper', 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))
 
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
