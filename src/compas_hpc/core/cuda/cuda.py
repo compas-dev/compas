@@ -140,6 +140,7 @@ def device_cuda():
 
     attrs = [(key, value) for key, value in dev.get_attributes().items()]
     attrs.sort()
+
     for attr, value in attrs:
         print('%s: %s' % (attr, value))
 

@@ -29,15 +29,9 @@ __email__     = 'liew@arch.ethz.ch'
 
 __all__ = [
     'abs_cuda',
-    # 'argmax_cuda',
-    # 'argmin_cuda',
     'acos_cuda',
-    # 'acosh_cuda',
     'asin_cuda',
-#     # 'asinh_cuda',
     'atan_cuda',
-#     # 'atan2_cuda',
-#     # 'atanh_cuda',
     'ceil_cuda',
     'cos_cuda',
     'cosh_cuda',
@@ -45,9 +39,6 @@ __all__ = [
     'floor_cuda',
     'log_cuda',
     'log10_cuda',
-    # 'max_cuda',
-    # 'min_cuda',
-    # 'mean_cuda',
     'maximum_cuda',
     'minimum_cuda',
     'round_cuda',
@@ -166,66 +157,6 @@ def abs_cuda(a):
     return pycuda.cumath.fabs(a)
 
 
-# def argmax_cuda(a, axis):
-
-#     """ Location of maximum GPUArray elements.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with the elements to find maximum values.
-#     axis : int
-#         The dimension to evaluate through.
-
-#     Returns
-#     -------
-#     gpuarray
-#         Location of maximum values.
-
-#     Examples
-#     --------
-#     >>> a = argmax_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
-#     array([[2],
-#            [0]], dtype=uint32)
-
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
-
-#     """
-
-#     return skcuda.misc.argmax(a, axis, keepdims=True)
-
-
-# def argmin_cuda(a, axis):
-
-#     """ Location of minimum GPUArray elements.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with the elements to find minimum values.
-#     axis : int
-#         The dimension to evaluate through.
-
-#     Returns
-#     -------
-#     gpuarray
-#         Location of minimum values.
-
-#     Examples
-#     --------
-#     >>> a = argmin_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
-#     array([[0],
-#            [2]], dtype=uint32)
-
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
-
-#     """
-
-#     return skcuda.misc.argmin(a, axis, keepdims=True)
-
-
 def acos_cuda(a):
 
     """ Trigonometric arccosine of GPUArray elements.
@@ -251,10 +182,6 @@ def acos_cuda(a):
     """
 
     return pycuda.cumath.acos(a)
-
-
-# def acosh_cuda():
-#     raise NotImplementedError
 
 
 def asin_cuda(a):
@@ -284,10 +211,6 @@ def asin_cuda(a):
     return pycuda.cumath.asin(a)
 
 
-# def asinh_cuda():
-#     raise NotImplementedError
-
-
 def atan_cuda(a):
 
     """ Trigonometric arctangent of GPUArray elements.
@@ -313,14 +236,6 @@ def atan_cuda(a):
     """
 
     return pycuda.cumath.atan(a)
-
-
-# def atan2_cuda():
-#     raise NotImplementedError
-
-
-# def atanh_cuda():
-#     raise NotImplementedError
 
 
 def ceil_cuda(a):
@@ -512,66 +427,6 @@ def log10_cuda(a):
     return pycuda.cumath.log10(a)
 
 
-# def max_cuda(a, axis):
-
-#     """ Maximum values of GPUArray elements.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with the elements to find maximum values.
-#     axis : int
-#         The dimension to evaluate through.
-
-#     Returns
-#     -------
-#     gpuarray
-#         Maximum values.
-
-#     Examples
-#     --------
-#     >>> a = max_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
-#     array([[3],
-#            [6]])
-
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
-
-#     """
-
-#     return skcuda.misc.max(a, axis, keepdims=True)
-
-
-# def min_cuda(a, axis):
-
-#     """ Minimum values of GPUArray elements.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with the elements to find minimum values.
-#     axis : int
-#         The dimension to evaluate through.
-
-#     Returns
-#     -------
-#     gpuarray
-#         Minimum values.
-
-#     Examples
-#     --------
-#     >>> a = min_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
-#     array([[1],
-#            [4]])
-
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
-
-#     """
-
-#     return skcuda.misc.min(a, axis, keepdims=True)
-
-
 def maximum_cuda(a, b=None):
 
     """ Maximum values of two GPUArrays.
@@ -632,35 +487,6 @@ def minimum_cuda(a, b=None):
     if b is not None:
         return cuda_array.minimum(a, b)
     return cuda_array.min(a)
-
-
-# def mean_cuda(a, axis):
-
-#     """ Mean of GPUArray elements in a given axis direction.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
-#     axis : int
-#         Axis direction to mean average through.
-
-#     Returns
-#     -------
-#     gpuarray
-#         GPUArray mean through specified dimension.
-
-#     Examples
-#     --------
-#     >>> mean_cuda(give_cuda([[1, 2], [3, 4]]), axis=0)
-#     array([ 2.,  3.])
-
-#     >>> type(a)
-#     <class 'pycuda.gpuarray.GPUArray'>
-
-#     """
-
-#     return skcuda.misc.mean(a, axis)
 
 
 def round_cuda(a, dim=4):
@@ -882,9 +708,6 @@ if __name__ == "__main__":
     # a = maximum_cuda(give_cuda([1, 2, 3]), give_cuda([3, 2, 1]))
     # a = maximum_cuda(give_cuda([1, 2, 3]))
     # a = minimum_cuda(give_cuda([1, 2, 3]), give_cuda([3, 2, 1]))
-#     # a = minimum_cuda(give_cuda([1, 2, 3]))
-#     # b = argmax_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
-#     # c = argmin_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
     # a = acos_cuda(give_cuda([0.5, 1]))
     # a = asin_cuda(give_cuda([0.5, 1]))
     # a = atan_cuda(give_cuda([0.5, 1]))
@@ -895,13 +718,9 @@ if __name__ == "__main__":
     # a = floor_cuda(give_cuda([0.5, 0.1, 1.9]))
     # a = log_cuda(give_cuda([1, 10]))
     # a = log10_cuda(give_cuda([1, 10]))
-#     # k = max_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
-#     # l = min_cuda(give_cuda([[1, 2, 3], [6, 5, 4]]), axis=1)
-#     # m = mean_cuda(give_cuda([[1, 2], [3, 4]]), axis=0)
     # a = sin_cuda(give_cuda([0, pi/4]))
     # a = sinh_cuda(give_cuda([0, pi/4]))
     # a = sqrt_cuda(give_cuda([4, 9]))
-#     # a = sum_cuda(give_cuda([[1, 2], [3, 4]]), axis=None)
     # a = tan_cuda(give_cuda([0, pi/4]))
     # a = tanh_cuda(give_cuda([0, pi/4]))
     # a = round_cuda(give_cuda([1.4, 1.5, 1.6]))

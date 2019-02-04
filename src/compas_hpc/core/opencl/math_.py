@@ -25,15 +25,9 @@ __email__     = 'liew@arch.ethz.ch'
 
 __all__ = [
     'abs_cl',
-    # 'argmax_cl',
-    # 'argmin_cl',
     'acos_cl',
-#     'acosh_cl',
     'asin_cl',
-#     'asinh_cl',
     'atan_cl',
-#     'atan2_cl',
-#     'atanh_cl',
     'ceil_cl',
     'cos_cl',
     'cosh_cl',
@@ -41,9 +35,6 @@ __all__ = [
     'floor_cl',
     'log_cl',
     'log10_cl',
-#     # 'max_cl',
-#     # 'min_cl',
-#     # 'mean_cl',
     'maximum_cl',
     'minimum_cl',
     'round_cl',
@@ -83,14 +74,6 @@ def abs_cl(a):
     return pyopencl.clmath.fabs(a)
 
 
-# def argmax_cl():
-#     raise NotImplementedError
-
-
-# def argmin_cl():
-#     raise NotImplementedError
-
-
 def acos_cl(a):
 
     """ Trigonometric arccosine of GPUArray elements.
@@ -116,25 +99,6 @@ def acos_cl(a):
     """
 
     return pyopencl.clmath.acos(a)
-
-
-# def acosh_cl(a):
-
-#     """ Hyperbolic arccosh of GPUArray elements.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
-
-#     Returns
-#     -------
-#     gpuarray
-#         acosh(GPUArray)
-
-#     """
-
-#     return pyopencl.clmath.acosh(a)
 
 
 def asin_cl(a):
@@ -164,25 +128,6 @@ def asin_cl(a):
     return pyopencl.clmath.asin(a)
 
 
-# def asinh_cl(a):
-
-#     """ Hyperbolic arcsinh of GPUArray elements.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
-
-#     Returns
-#     -------
-#     gpuarray
-#         asinh(GPUArray)
-
-#     """
-
-#     return pyopencl.clmath.asinh(a)
-
-
 def atan_cl(a):
 
     """ Trigonometric arctangent of GPUArray elements.
@@ -208,46 +153,6 @@ def atan_cl(a):
     """
 
     return pyopencl.clmath.atan(a)
-
-
-# def atan2_cl(y, x):
-
-#     """ Trigonometric arctangent(2) of GPUArray elements.
-
-#     Parameters
-#     ----------
-#     y : gpuarray
-#         GPUArray with elements y.
-#     x : gpuarray
-#         GPUArray with elements x.
-
-#     Returns
-#     -------
-#     gpuarray
-#         atan2(GPUArray)
-
-#     """
-
-#     return pyopencl.clmath.atan2(y, x)
-
-
-# def atanh_cl(a):
-
-#     """ Hyperbolic arctanh of GPUArray elements.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray with elements to be operated on.
-
-#     Returns
-#     -------
-#     gpuarray
-#         atanh(GPUArray)
-
-#     """
-
-#     return pyopencl.clmath.atanh(a)
 
 
 def ceil_cl(a):
@@ -438,14 +343,6 @@ def log10_cl(a):
     return pyopencl.clmath.log10(a)
 
 
-# def max_cl():
-#     raise NotImplementedError
-
-
-# def min_cl():
-#     raise NotImplementedError
-
-
 def maximum_cl(a, b=None):
 
     """ Maximum values of two GPUArrays.
@@ -506,10 +403,6 @@ def minimum_cl(a, b=None):
     if b is not None:
         return cl_array.minimum(a, b)
     return cl_array.min(a)
-
-
-# def mean_cl():
-#     raise NotImplementedError
 
 
 def round_cl(a):
