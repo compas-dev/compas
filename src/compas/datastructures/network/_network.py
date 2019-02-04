@@ -985,6 +985,9 @@ class Network(FromToJson,
 
             i += 1
 
+        if key in nbrs:
+            nbrs.remove(key)
+
         return list(nbrs)
 
     def vertex_neighbors_out(self, key):
