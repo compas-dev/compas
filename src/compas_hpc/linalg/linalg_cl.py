@@ -17,21 +17,13 @@ except:
 
 try:
     import pyopencl as cl
-    import pyopencl.array as cl_array
 except:
     pass
-
-
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
 
 
 __all__ = [
     'diag_cl',
     'transpose_cl',
-#     # 'dot_cl',
     'eye_cl',
 ]
 
@@ -53,27 +45,6 @@ def transpose_cl(a):
     """
 
     return a.transpose()
-
-
-# def dot_cl(a, b):
-
-#     """ Matrix multiplication of two GPUArrays.
-
-#     Parameters
-#     ----------
-#     a : gpuarray
-#         GPUArray matrix 1 (m x n).
-#     b : gpuarray
-#         GPUArray matrix 2 (n x o).
-
-#     Returns
-#     -------
-#     gpuarray
-#         [c] = [a][b] of size (m x o)
-
-#     """
-
-#     return cl_array.dot(a, b)
 
 
 def diag_cl(queue, a):
@@ -134,7 +105,3 @@ if __name__ == "__main__":
     print(get_cl(diag_cl(queue, [0, 1, 2])))
     print(get_cl(eye_cl(queue, 3)))
     print(get_cl(transpose_cl(a_)))
-
-#     a = give_cl(queue, [[0, 1], [2, 3]])
-#     b = give_cl(queue, [[0, 1], [1, 0]])
-#     # c = get_cl(dot_cl(a, b))

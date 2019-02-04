@@ -12,12 +12,6 @@ from numpy import sqrt
 from numpy import zeros
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'distance_matrix_numba',
     'closest_distance_field_numba',

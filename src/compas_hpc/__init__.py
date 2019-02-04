@@ -55,6 +55,11 @@ linalg_cuda
     :toctree: generated/
     :nosignatures:
 
+    diag_cuda
+    transpose_cuda
+    dot_cuda
+    eye_cuda
+
 
 linalg_cl
 ---------
@@ -62,6 +67,10 @@ linalg_cl
 .. autosummary::
     :toctree: generated/
     :nosignatures:
+
+    diag_cl
+    transpose_cl
+    eye_cl
 
 
 core
