@@ -86,8 +86,10 @@ Bounding Box
     :toctree: generated/
     :nosignatures:
 
-    bbox
-    bbox_numpy
+    bounding_box
+    bounding_box_xy
+    oriented_bounding_box_numpy
+    oriented_bounding_box_xy_numpy
 
 Bestfit
 -------
