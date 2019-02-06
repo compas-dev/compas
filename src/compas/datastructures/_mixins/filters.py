@@ -95,8 +95,8 @@ class VertexFilter(object):
 
         Parameters
         ----------
-        predicate : function
-            The condition you want to evaluate. The function takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
+        predicate : callable
+            The condition you want to evaluate. The callable takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
         data : bool, optional
             Yield the vertices and their data attributes.
             Default is ``False``.
@@ -124,10 +124,10 @@ class VertexFilter(object):
             mesh.add_face([v0,v1,v3])
             mesh.add_face([v1,v2,v3])
 
-            for v_key in mesh.vertices_where_predicate(lambda key, attr: attr['x']==100.0):
+            for v_key in mesh.vertices_where_predicate(lambda key, attr: attr['x'] == 100.0):
                 print v_key
 
-            for v_key, v_data in mesh.vertices_where_predicate(lambda key, attr: 50.0<=attr['y']<=150.0, True):
+            for v_key, v_data in mesh.vertices_where_predicate(lambda key, attr: 50.0 <= attr['y'] <= 150.0, True):
                 print v_key, v_data
 
             for v_key in mesh.vertices_where_predicate(lambda key, attr: 'extra_attr2' in attr):
@@ -231,8 +231,8 @@ class EdgeFilter(object):
 
         Parameters
         ----------
-        predicate : function
-            The condition you want to evaluate. The function takes 3 parameters: ``u``, ``v``, ``attr`` and should return ``True`` or ``False``.
+        predicate : callable
+            The condition you want to evaluate. The callable takes 3 parameters: ``u``, ``v``, ``attr`` and should return ``True`` or ``False``.
         data : bool, optional
             Yield the vertices and their data attributes.
             Default is ``False``.
@@ -265,7 +265,7 @@ class EdgeFilter(object):
             mesh.set_edge_attributes(random_edge, ['extra_attr1', 'extra_attr2'], [2, [3,5,9]])
 
 
-            for u, v, e_data in mesh.edges_where_predicate(lambda u, v, attr: attr['extra_attr1']==2, True):
+            for u, v, e_data in mesh.edges_where_predicate(lambda u, v, attr: attr['extra_attr1'] == 2, True):
                 print u, v, e_data
 
             for u, v in mesh.edges_where_predicate(lambda u, v, attr: 'extra_attr1' in attr):
@@ -367,8 +367,8 @@ class FaceFilter(object):
 
         Parameters
         ----------
-        predicate : function
-            The condition you want to evaluate. The function takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
+        predicate : callable
+            The condition you want to evaluate. The callable takes 2 parameters: ``key``, ``attr`` and should return ``True`` or ``False``.
         data : bool, optional
             Yield the faces and their data attributes.
             Default is ``False``.
@@ -397,10 +397,10 @@ class FaceFilter(object):
             mesh.add_face([v1,v2,v3], extra_attr1=1, extra_attr2=[3,7,12])
 
 
-            for f_key in mesh.faces_where_predicate(lambda f_key, attr: attr['extra_attr1']==5):
+            for f_key in mesh.faces_where_predicate(lambda f_key, attr: attr['extra_attr1'] == 5):
                 print f_key
 
-            for f_key, f_data in mesh.faces_where_predicate(lambda f_key, attr: 3<=attr['extra_attr1']<=6, True):
+            for f_key, f_data in mesh.faces_where_predicate(lambda f_key, attr: 3 <= attr['extra_attr1'] <= 6, True):
                 print f_key, f_data
 
             for f_key in mesh.faces_where_predicate(lambda f_key, attr: 'extra_attr2' in attr):
