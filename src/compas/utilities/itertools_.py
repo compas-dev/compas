@@ -126,18 +126,24 @@ def repeatfunc(func, times=None, *args):
     return starmap(func, repeat(args, times))
 
 
-def pairwise(iterable):
+def pairwise(iterable, wrap=False):
     """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
+    iterable_type = type(iterable)
+    if wrap:
+        iterable = iterable + iterable_type(iterable[:1])
     a, b = tee(iterable)
     next(b, None)
     return zip(a, b)
 
 
-def window(seq, n=2):
+def window(seq, n=2, wrap=False):
     """Returns a sliding window (of width n) over data from the iterable.
 
     s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ...
     """
+    iterable_type = type(seq)
+    if wrap:
+        seq = seq + iterable_type(seq[:n - 1])
     it = iter(seq)
     result = tuple(islice(it, n))
     if len(result) == n:
