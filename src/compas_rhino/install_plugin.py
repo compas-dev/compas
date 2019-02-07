@@ -35,7 +35,7 @@ def install_plugin(plugin, version=None):
 
     """
     if version not in ('5.0', '6.0'):
-        version = '5.0'
+        version = '6.0'
 
     plugin_path, plugin_name = os.path.split(plugin)
     if not plugin_path:
@@ -58,7 +58,8 @@ def install_plugin(plugin, version=None):
 
     destination = os.path.join(python_plugins_path, plugin_name)
 
-    print('Installing PlugIn {} to RhinoMac PythonPlugIns.'.format(plugin_name))
+    print('Installing PlugIn {} to Rhino PythonPlugIns.'.format(plugin_name))
+    print('Destination: {}'.format(destination))
 
     if os.path.exists(destination):
         remove_symlink(destination)

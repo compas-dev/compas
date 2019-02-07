@@ -11,16 +11,10 @@ Working in Rhino
    * Creating toolbars
    * Using CPython packages
    * Using C/C++ code
-   * Warning: instructions fro RhinoMac coming soon
    * Warning: Rhino 5 vs. Rhino 6
 
 
 .. highlight:: bash
-
-.. warning::
-
-    All instructions on this page are for Rhino for Windows.
-    The instructions for Rhinomac are coming soon...
 
 
 *Installing* **COMPAS** for Rhino is very simple. Just open the *command prompt*

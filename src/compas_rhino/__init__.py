@@ -79,21 +79,39 @@ def _get_ironpython_lib_path_mac():
 
 
 def _get_python_plugins_path(version):
-    if version not in ('5.0', '6.0'):
-        version = '5.0'
-
-    appdata = os.getenv('APPDATA')
-    python_plugins_path = os.path.join(appdata,
-                                       'McNeel',
-                                       'Rhinoceros',
-                                       '{}'.format(version),
-                                       'Plug-ins',
-                                       'PythonPlugins')
-
-    if not os.path.exists(python_plugins_path):
-        raise Exception("The PythonPlugins folder does not exist in this location: {}".format(python_plugins_path))
+    if compas._os.system == 'win32':
+        python_plugins_path = _get_python_plugins_path_win32(version)
+    elif compas._os.system == 'darwin':
+        python_plugins_path = _get_python_plugins_path_mac()
+    else:
+        raise Exception('Unsupported platform')
 
     return python_plugins_path
+
+
+def _get_python_plugins_path_win32(version):
+    if version not in ('5.0', '6.0'):
+        version = '6.0'
+
+    appdata = os.getenv('APPDATA')
+    return os.path.join(appdata,
+                        'McNeel',
+                        'Rhinoceros',
+                        '{}'.format(version),
+                        'Plug-ins',
+                        'PythonPlugins')
+
+
+def _get_python_plugins_path_mac():
+    return os.path.join(
+        os.environ['HOME'],
+        'Library',
+        'Application Support',
+        'McNeel',
+        'Rhinoceros',
+        'MacPlugIns',
+        'PythonPlugIns'
+    )
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
