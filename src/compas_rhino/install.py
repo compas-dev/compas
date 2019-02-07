@@ -60,10 +60,6 @@ def install(version=None, packages=None):
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
-    _install_packages(packages, ipylib_path)
-
-
-def _install_packages(packages, ipylib_path):
     results = []
     exit_code = 0
 
