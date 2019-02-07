@@ -9,12 +9,6 @@ from compas_blender.artists.mixins import EdgeArtist
 from compas_blender.artists.mixins import FaceArtist
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'MeshArtist',
 ]
@@ -76,14 +70,14 @@ if __name__ == "__main__":
 
     # artist.clear()
 
-    # artist.draw_vertices(radius=0.01)
-    # artist.draw_vertexlabels()
+    artist.draw_vertices(radius=0.01)
+    artist.draw_vertexlabels()
     # artist.clear_vertexlabels()
 
     # artist.draw_edges(width=0.01)
     # artist.draw_edgelabels()
     # artist.clear_edgelabels()
 
-    artist.draw_faces()
+    # artist.draw_faces()
     # artist.draw_facelabels()
     # artist.clear_facelabels()

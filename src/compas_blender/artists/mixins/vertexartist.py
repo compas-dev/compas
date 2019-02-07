@@ -7,12 +7,6 @@ from compas_blender.utilities import set_objects_show_names
 from compas_blender.utilities import xdraw_points
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'VertexArtist',
 ]
@@ -63,4 +57,4 @@ class VertexArtist(object):
 
 if __name__ == "__main__":
 
-        pass
+    pass
