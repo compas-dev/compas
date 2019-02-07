@@ -371,6 +371,7 @@ Primitives
     Frame
     Circle
     Box
+    Bezier
 
 XForms
 ------

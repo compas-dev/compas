@@ -9,10 +9,54 @@ __all__ = ['Box']
 
 
 class Box(object):
+    """A box is a three-dimensional geometric shape with 8 vertices, 12 edges and 6 faces.
+
+    The edges of a box meet at its vertices at 90 degree angles.
+    The faces of a box are planar.
+    Faces which do not share an edge are parallel.
+
+    Parameters
+    ----------
+    vertices : list of point
+        The XYZ coordinates of the vertices of the box.
+    faces : list of list
+        The faces of the box defined as lists of vertex indices.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        pass
+
+    """
 
     def __init__(self, vertices, faces):
+        self._vertices = None
+        self._faces = None
         self.vertices = vertices
         self.faces = faces
+
+    @property
+    def vertices(self):
+        return self._vertices
+
+    @vertices.setter
+    def vertices(self, vertices):
+        if len(vertices) != 8:
+            raise Exception("A box must have exactly 8 vertices.")
+        self._vertices = vertices
+
+    @property
+    def faces(self):
+        return self._faces
+
+    @faces.setter
+    def faces(self, faces):
+        if len(faces) != 6:
+            raise Exception("A box must have exactly 6 faces.")
+        if any(len(face) != 4 for face in faces):
+            raise Exception("The faces of a box must all be quads.")
+        self._faces = faces
 
     @classmethod
     def from_width_height_depth(cls, width, height, depth):
