@@ -64,6 +64,17 @@ decorators
 
     memoize
 
+functions
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    fibonacci
+    avrg
+    var
+    st_dev
 
 itertools
 =========
