@@ -52,12 +52,6 @@ from compas.datastructures._mixins import VertexMappings
 from compas.datastructures._mixins import EdgeMappings
 from compas.datastructures._mixins import FaceMappings
 
-from compas.datastructures.mesh.operations import mesh_collapse_edge
-
-from compas.datastructures.mesh.operations import mesh_split_face
-from compas.datastructures.mesh.operations import mesh_split_edge
-from compas.datastructures.mesh.operations import mesh_unweld_vertices
-
 
 __all__ = ['Mesh']
 
@@ -155,13 +149,6 @@ class Mesh(FromToPickle,
     """
 
     __module__ = 'compas.datastructures'
-
-    # remove these over time
-    # check where still used
-    collapse_edge   = mesh_collapse_edge
-    split_face      = mesh_split_face
-    split_edge      = mesh_split_edge
-    unweld_vertices = mesh_unweld_vertices
 
     def __init__(self):
         super(Mesh, self).__init__()

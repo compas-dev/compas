@@ -3,6 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 
+from compas.datastructures.mesh.operations import mesh_split_face
+
+
 __all__ = [
     'mesh_quads_to_triangles',
 ]
@@ -14,7 +17,7 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
         vertices = mesh.face_vertices(fkey)
         if len(vertices) == 4:
             a, b, c, d = vertices
-            mesh.split_face(fkey, b, d)
+            mesh_split_face(mesh, fkey, b, d)
 
 
 # ==============================================================================

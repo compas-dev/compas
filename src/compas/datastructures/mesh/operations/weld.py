@@ -31,6 +31,7 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
         import compas
 
         from compas.datastructures import Mesh
+        from compas.datastructures import mesh_unweld_vertices
         from compas.plotters import MeshPlotter
         from compas.geometry import subtract_vectors
 
@@ -42,7 +43,7 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
         where = mesh.face_vertices(fkey)[0:1]
         centroid = mesh.face_centroid(fkey)
 
-        face = mesh.unweld_vertices(fkey, where)
+        face = mesh_unweld_vertices(mesh, fkey, where)
 
         for key in face:
             if key in vertices:
@@ -89,6 +90,7 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
+    from compas.datastructures import mesh_unweld_vertices
     from compas.plotters import MeshPlotter
     from compas.geometry import subtract_vectors
 
@@ -100,7 +102,7 @@ if __name__ == "__main__":
     where = mesh.face_vertices(fkey)[0:2]
     centroid = mesh.face_centroid(fkey)
 
-    face = mesh.unweld_vertices(fkey, where)
+    face = mesh_unweld_vertices(mesh, fkey, where)
 
     for key in face:
         if key in vertices:

@@ -346,8 +346,10 @@ Triangulation
 
     delaunay_from_points
     delaunay_from_points_numpy
+    delaunay_triangle
+    constrained_delaunay_triangle
+    conforming_delaunay_triangle
     voronoi_from_points_numpy
-    voronoi_from_delaunay
 
 
 Classes

@@ -11,6 +11,7 @@ import compas
 
 from compas.datastructures import Mesh
 from compas.datastructures import mesh_quads_to_triangles
+from compas.datastructures import trimesh_collapse_edge
 from compas.plotters import MeshPlotter
 
 
@@ -37,7 +38,7 @@ while True:
 
     for v in nbrs:
         if mesh.vertex_degree(u):
-            if mesh.collapse_edge_tri(u, v, t=0.0, allow_boundary=True):
+            if trimesh_collapse_edge(mesh, u, v, t=0.0, allow_boundary=True):
                 plotter.update_vertices()
                 plotter.update_faces()
                 plotter.update_edges()
