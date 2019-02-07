@@ -5,6 +5,7 @@ from __future__ import division
 import os
 import time
 import json
+import sys
 
 import compas
 
