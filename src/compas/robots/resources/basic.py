@@ -10,6 +10,7 @@ __all__ = [
     'AbstractMeshLoader',
     'DefaultMeshLoader',
     'LocalPackageMeshLoader',
+    'LocalFolderMeshLoader'
 ]
 
 try:
@@ -68,8 +69,9 @@ class DefaultMeshLoader(AbstractMeshLoader):
         #  - a one-letter scheme in Windows
         #  - file scheme
         is_local_file = len(scheme) in (0, 1) or scheme == 'file'
+        is_existing_file = os.path.isfile(url)
 
-        if is_local_file:
+        if is_local_file and is_existing_file:
             return True
 
         # Only OBJ loader supports remote files atm
@@ -167,6 +169,34 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
     def _get_local_path(self, url):
         _prefix, path = url.split(self.schema_prefix)
         return self.build_path(*path.split('/'))
+
+
+class LocalFolderMeshLoader(AbstractMeshLoader):
+    """Loads mesh resources stored locally via a relative path, 
+    and which do not point to a xacro package.
+
+    Attributes
+    ----------
+    filepath : str
+        Relative path where the package is stored locally.
+    url : str
+        Directory that contains URDF and Meshes. 
+    """
+
+    def __init__(self, filepath):
+        super(LocalFolderMeshLoader, self).__init__()
+        self.filepath = os.path.dirname(filepath)
+        self.url = None
+
+    def can_load_mesh(self, url):
+        self.url = os.path.join(self.filepath, url)
+        is_existing_file = os.path.isfile(self.url)
+
+        if is_existing_file:
+            return True
+
+    def load_mesh(self, url):
+        return _mesh_import(self.url, self.url)
 
 
 def _mesh_import(name, file):
