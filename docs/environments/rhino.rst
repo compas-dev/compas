@@ -32,7 +32,7 @@ and type the following
 
 
 Optionally, you could provide a Rhino version number (``5.0, 6.0``).
-The default is ``5.0``.
+The default is ``6.0``.
 
 ::
 

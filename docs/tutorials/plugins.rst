@@ -37,15 +37,6 @@ Provide "AwesomePlugIn" when asked for the *plugin_name*.
 Install the plugin
 ==================
 
-**for Rhino on Mac**
-
-.. code-block:: bash
-
-    $ python -m compas_rhinomac.install_plugin <full plugin_name>
-
-
-**for Rhino**
-
 .. code-block:: bash
 
     $ python -m compas_rhino.install_plugin <full plugin_name>
