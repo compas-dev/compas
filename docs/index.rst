@@ -3,7 +3,7 @@ The main library of COMPAS
 ********************************************************************************
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 3
    :titlesonly:
 
    overview
