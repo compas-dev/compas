@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import io
 import importlib
 import os
 import sys
@@ -24,6 +25,18 @@ if system == 'win32':
 
 def _get_package_path(package):
     return os.path.abspath(os.path.dirname(package.__file__))
+
+
+def _get_bootstrapper_data(compas_bootstrapper):
+    data = {}
+
+    try:
+        content = io.open(compas_bootstrapper, encoding='utf8').read()
+        exec(content, data)
+    except FileNotFoundError:
+        pass
+
+    return data
 
 
 def install(version=None, packages=None):
@@ -86,11 +99,20 @@ def install(version=None, packages=None):
     if exit_code == -1:
         results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not install bootstrapper, try uninstalling first'))
     else:
-        conda_prefix = os.environ.get('CONDA_PREFIX', None)
+        # Take either the CONDA environment directory or the current Python executable's directory
+        python_directory = os.environ.get('CONDA_PREFIX', None) or os.path.dirname(sys.executable)
+        environment_name = os.environ.get('CONDA_DEFAULT_ENV', '')
         compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+
         try:
+            bootstrapper_data = _get_bootstrapper_data(compas_bootstrapper)
+            installed_packages = bootstrapper_data.get('INSTALLED_PACKAGES', [])
+            installed_packages = list(set(installed_packages + list(packages)))
+
             with open(compas_bootstrapper, 'w') as f:
-                f.write('CONDA_PREFIX = r"{0}"'.format(conda_prefix))
+                f.write('ENVIRONMENT_NAME = r"{}"\n'.format(environment_name))
+                f.write('PYTHON_DIRECTORY = r"{}"\n'.format(python_directory))
+                f.write('INSTALLED_PACKAGES = {}'.format(repr(installed_packages)))
                 results.append(('compas_bootstrapper', 'OK'))
         except:
             results.append(('compas_bootstrapper', 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))

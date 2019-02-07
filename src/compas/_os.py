@@ -14,34 +14,46 @@ if 'ironpython' in sys.version.lower() and os.name == 'nt':
     system = 'win32'
 
 
-def select_python(python):
+def select_python(python_executable):
     """Selects the most likely python interpreter to run.
 
     This function detects if there is a conda environment we can use,
-    or if we need to default to a system-wide python interpreter instead."""
-    python = python or 'pythonw'
+    or if we need to default to a system-wide python interpreter instead.
+
+    Parameters
+    ----------
+    python_executable : str
+        Select which python executable you want to use,
+        either `python` or `pythonw`.
+    """
+    python_executable = python_executable or 'pythonw'
 
     try:
-        from compas_bootstrapper import CONDA_PREFIX
+        from compas_bootstrapper import PYTHON_DIRECTORY
     except:
-        CONDA_PREFIX = None
+        # We re-map CONDA_PREFIX for backwards compatibility reasons
+        # In a few releases down the line, we can get rid of this bit
+        try:
+            from compas_bootstrapper import CONDA_PREFIX as PYTHON_DIRECTORY
+        except:
+            PYTHON_DIRECTORY = None
 
-    if CONDA_PREFIX and os.path.exists(CONDA_PREFIX):
-        conda_python = os.path.join(CONDA_PREFIX, python)
+    if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
+        python = os.path.join(PYTHON_DIRECTORY, python_executable)
 
-        if os.path.exists(conda_python):
-            return conda_python
+        if os.path.exists(python):
+            return python
 
-        conda_python = os.path.join(CONDA_PREFIX, '{0}.exe'.format(python))
+        python = os.path.join(PYTHON_DIRECTORY, '{0}.exe'.format(python_executable))
 
-        if os.path.exists(conda_python):
-            return conda_python
+        if os.path.exists(python):
+            return python
 
-        if conda_python:
-            return conda_python
+        if python:
+            return python
 
     # Assume a system-wide install exists
-    return python
+    return python_executable
 
 
 def absjoin(*parts):
