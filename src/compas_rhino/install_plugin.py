@@ -59,13 +59,14 @@ def install_plugin(plugin, version=None):
     destination = os.path.join(python_plugins_path, plugin_name)
 
     print('Installing PlugIn {} to Rhino PythonPlugIns.'.format(plugin_name))
-    print('Destination: {}'.format(destination))
 
     if os.path.exists(destination):
         remove_symlink(destination)
     create_symlink(source, destination)
 
     print('PlugIn {} Installed.'.format(plugin_name))
+    print()
+    print('Restart Rhino and open the Python editor at least once to make it available.')
 
 
 # ==============================================================================
