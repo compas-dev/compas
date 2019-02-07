@@ -10,16 +10,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Constrained and conforming Delaunay triangulations based on Triangle.
+- Predicate-based filtering of vertices and edges.
 
 ### Changed
 
-- 
-
 ### Removed
+
+- Bound mesh operations.
 
 ## [0.4.8] - 2019-01-28
 
 ### Added
+
+- Curve tangent at parameter.
+- Box shape.
+- Numpy-based mesh transformations.
+- Option to share axes among plotters.
 
 ### Changed
 
