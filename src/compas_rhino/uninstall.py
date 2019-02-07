@@ -35,17 +35,17 @@ def uninstall(version=None, packages=None):
 
     .. code-block:: python
 
-        $ python -m compas_rhino.uninstall 6.0
+        $ python -m compas_rhino.uninstall -v 6.0
 
     """
     if version not in ('5.0', '6.0'):
         version = '6.0'
 
+    print('Uninstalling COMPAS packages to Rhino {0} IronPython lib:'.format(version))
+
     if not packages:
         # should this not default to all installed compas packages?
         packages = compas_rhino.install.INSTALLABLE_PACKAGES
-
-    print('Uninstalling COMPAS packages to Rhino {0} IronPython lib:'.format(version))
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
