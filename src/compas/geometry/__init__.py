@@ -6,6 +6,52 @@ geometry
 .. currentmodule:: compas.geometry
 
 
+Classes
+=======
+
+Primitives
+----------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Vector
+    Point
+    Line
+    Polyline
+    Polygon
+    Plane
+    Frame
+    Circle
+    Box
+    Bezier
+
+XForms
+------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Transformation
+    Rotation
+    Translation
+    Scale
+    Reflection
+    Projection
+    Shear
+
+Other
+-----
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    KDTree
+
+
 Functions
 =========
 
@@ -350,52 +396,6 @@ Triangulation
     constrained_delaunay_triangle
     conforming_delaunay_triangle
     voronoi_from_points_numpy
-
-
-Classes
-=======
-
-Primitives
-----------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Vector
-    Point
-    Line
-    Polyline
-    Polygon
-    Plane
-    Frame
-    Circle
-    Box
-    Bezier
-
-XForms
-------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Transformation
-    Rotation
-    Translation
-    Scale
-    Reflection
-    Projection
-    Shear
-
-Other
------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    KDTree
 
 
 """
