@@ -8,6 +8,10 @@ import json
 from copy import deepcopy
 from ast import literal_eval
 
+from math import pi
+
+#from compas.utilities import avrg
+
 from compas.files import OBJ
 from compas.files import PLY
 from compas.files import STL
@@ -24,11 +28,16 @@ from compas.geometry import cross_vectors
 from compas.geometry import length_vector
 from compas.geometry import scale_vector
 from compas.geometry import add_vectors
+from compas.geometry import sum_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import normal_polygon
 from compas.geometry import area_polygon
 from compas.geometry import flatness
 from compas.geometry import Polyhedron
+from compas.geometry import angle_points
+from compas.geometry import bestfit_plane
+from compas.geometry import distance_point_plane
+from compas.geometry import distance_point_point
 
 from compas.datastructures import Datastructure
 
@@ -76,7 +85,6 @@ Mesh summary
 
 ================================================================================
 """
-
 
 class Mesh(FromToPickle,
            FromToJson,
@@ -2336,16 +2344,8 @@ class Mesh(FromToPickle,
         list
             The coordinates of the mesh centroid.
         """
-        A = 0
-        cx, cy, cz = 0.0, 0.0, 0.0
-        for fkey in self.faces():
-            a = self.face_area(fkey)
-            x, y, z = self.face_centroid(fkey)
-            cx += a * x
-            cy += a * y
-            cz += a * z
-            A += a
-        return [cx / A, cy / A, cz / A]
+        
+        return scale_vector(sum_vectors([scale_vector(self.face_centroid(fkey), self.face_area(fkey)) for fkey in self.faces()]), 1. / self.area())
 
     def normal(self):
         """Calculate the average mesh normal.
@@ -2359,7 +2359,7 @@ class Mesh(FromToPickle,
             The coordinates of the mesh normal.
         """
 
-        return scale_vector(1. / self.area(), add_vectors([scale_vector(self.face_area(fkey), self.face_normal(fkey)) for fkey in self.faces()]))
+        return scale_vector(sum_vectors([scale_vector(self.face_normal(fkey), self.face_area(fkey)) for fkey in self.faces()]), 1. / self.area())
 
     # --------------------------------------------------------------------------
     # vertex geometry
@@ -2495,6 +2495,29 @@ class Mesh(FromToPickle,
         vectors = [self.face_normal(fkey, False) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
 
+    def vertex_curvature(self, vkey):
+        """Dimensionless vertex curvature.
+
+        Parameters
+        ----------
+        fkey : Key
+            The face key.
+
+        Returns
+        -------
+        float
+            The dimensionless curvature.
+
+        References
+        ----------
+        .. [1] Botsch, Mario, et al. *Polygon mesh processing.* AK Peters/CRC Press, 2010.
+
+        """
+
+
+
+        return 2 * pi - sum([angle_points(mesh.vertex_coordinates(vkey), mesh.vertex_coordinates(u), mesh.vertex_coordinates(v)) for u, v in pairwise(self.vertex_neighbors(vkey, ordered = True), wrap = True)])
+
     # --------------------------------------------------------------------------
     # edge geometry
     # --------------------------------------------------------------------------
@@ -2619,6 +2642,78 @@ class Mesh(FromToPickle,
         vertices = self.face_coordinates(fkey)
         face = range(len(self.face_vertices(fkey)))
         return flatness(vertices, [face])[0]
+
+    def face_aspect_ratio(self, fkey):
+        """Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.
+
+        Parameters
+        ----------
+        fkey : Key
+            The face key.
+
+        Returns
+        -------
+        float
+            The aspect ratio.
+          
+         References
+        ----------
+        .. [1] Wikipedia. *Types of mesh*.
+               Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
+
+        """
+
+        face_edge_lengths = [self.edge_length(u, v) for u, v in self.face_halfedges(fkey)]
+        return max(face_edge_lengths) / min(face_edge_lengths)
+
+    def face_skewness(self, fkey):
+        """Face skewness as the maximum absolute angular deviation from the ideal polygon angle.
+
+        Parameters
+        ----------
+        fkey : Key
+            The face key.
+
+        Returns
+        -------
+        float
+            The skewness.
+          
+         References
+        ----------
+        .. [1] Wikipedia. *Types of mesh*.
+               Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
+
+        """
+
+        ideal_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
+        
+        angles = [angle_points(self.vertex_coordinates(v), self.vertex_coordinates(u), self.vertex_coordinates(w), deg = True) for u, v, w in window(self.face_vertices(fkey), n = 3, wrap = True)]
+
+        return max((max(angles) - ideal_angle) / (180 - ideal_angle), (ideal_angle - min(angles)) / ideal_angle)
+
+    def face_curvature(self, fkey):
+        """Dimensionless face curvature as the maximum face vertex deviation from the best-fit plane of the face vertices divided by the average lengths of the face vertices to the face centroid.
+
+        Parameters
+        ----------
+        fkey : Key
+            The face key.
+
+        Returns
+        -------
+        float
+            The dimensionless curvature.
+
+        """
+
+        plane = bestfit_plane([self.vertex_coordinates(vkey) for vkey in self.vertices()])
+
+        max_deviation = max([distance_point_plane(self.vertex_coordinates(vkey), plane) for vkey in self.vertices()])
+
+        average_distances = avrg([distance_point_point(self.vertex_coordinates(vkey), self.face_centroid(fkey)) for vkey in self.vertices()])
+
+        return max_deviation / average_distances
 
     # def face_circle(self, fkey):
     #     pass
@@ -3057,7 +3152,7 @@ if __name__ == '__main__':
     from compas.plotters import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
-
+    
     mesh.update_default_edge_attributes({'q': 1.0})
 
     # vertices = [
