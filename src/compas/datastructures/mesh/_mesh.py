@@ -10,7 +10,7 @@ from ast import literal_eval
 
 from math import pi
 
-#from compas.utilities import avrg
+from compas.utilities import avrg
 
 from compas.files import OBJ
 from compas.files import PLY
