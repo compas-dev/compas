@@ -34,7 +34,6 @@ connectivity
     :nosignatures:
 
     adjacency_from_edges
-    join_lines
 
 combinatorics
 -------------
