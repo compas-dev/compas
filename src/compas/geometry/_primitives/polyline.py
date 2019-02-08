@@ -161,7 +161,7 @@ class Polyline(object):
 
             dx = line_length / polyline_length
 
-            if x + dx >= t:
+            if x + dx > t:
 
                 if snap:
                     if t - x < x + dx - t:
