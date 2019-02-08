@@ -22,6 +22,7 @@ from itertools import tee
 from itertools import cycle
 # from itertools import filterfalse
 from itertools import combinations
+from itertools import chain
 
 
 __all__ = [
@@ -128,22 +129,23 @@ def repeatfunc(func, times=None, *args):
 
 def pairwise(iterable, wrap=False):
     """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
-    iterable_type = type(iterable)
     if wrap:
-        iterable = iterable + iterable_type(iterable[:1])
+        iterable_1 = tuple(iterable)
+        iterable_2 = iterable_1[: 1]
+        iterable = chain(iterable_1, iterable_2)
     a, b = tee(iterable)
     next(b, None)
     return zip(a, b)
-
 
 def window(seq, n=2, wrap=False):
     """Returns a sliding window (of width n) over data from the iterable.
 
     s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ...
     """
-    iterable_type = type(seq)
     if wrap:
-        seq = seq + iterable_type(seq[:n - 1])
+        seq_1 = tuple(seq)
+        seq_2 = seq_1[: n - 1]
+        seq = chain(seq_1, seq_2)
     it = iter(seq)
     result = tuple(islice(it, n))
     if len(result) == n:
@@ -289,3 +291,4 @@ if __name__ == "__main__":
 
     for u, v, w in window(s + s[0:2], 3):
         print(u, v, w)
+        
