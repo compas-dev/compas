@@ -72,9 +72,6 @@ functions
     :nosignatures:
 
     fibonacci
-    avrg
-    var
-    st_dev
 
 itertools
 =========
@@ -152,6 +149,18 @@ profiling
     print_profile
 
 
+statistics
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    average
+    variance
+    standard_deviation
+
+
 xfunc
 =====
 
@@ -194,5 +203,6 @@ from .sorting import *
 from .xfunc import *
 from .xscript import *
 from .functions import *
+from .statistics import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

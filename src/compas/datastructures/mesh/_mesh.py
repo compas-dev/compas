@@ -10,7 +10,7 @@ from ast import literal_eval
 
 from math import pi
 
-from compas.utilities import avrg
+from compas.utilities import average
 
 from compas.files import OBJ
 from compas.files import PLY
@@ -2514,8 +2514,6 @@ class Mesh(FromToPickle,
 
         """
 
-
-
         return 2 * pi - sum([angle_points(mesh.vertex_coordinates(vkey), mesh.vertex_coordinates(u), mesh.vertex_coordinates(v)) for u, v in pairwise(self.vertex_neighbors(vkey, ordered = True), wrap = True)])
 
     # --------------------------------------------------------------------------
@@ -2711,7 +2709,7 @@ class Mesh(FromToPickle,
 
         max_deviation = max([distance_point_plane(self.vertex_coordinates(vkey), plane) for vkey in self.vertices()])
 
-        average_distances = avrg([distance_point_point(self.vertex_coordinates(vkey), self.face_centroid(fkey)) for vkey in self.vertices()])
+        average_distances = average([distance_point_point(self.vertex_coordinates(vkey), self.face_centroid(fkey)) for vkey in self.vertices()])
 
         return max_deviation / average_distances
 
