@@ -24,7 +24,7 @@ def uninstall(version=None, packages=None):
         Default is ``'6.0'``.
     packages : list of str, optional
         List of packages to uninstall.
-        Default is to uninstall all COMPAS packages.
+        Default is to uninstall all packages installed by the COMPAS installer.
 
     Examples
     --------
@@ -35,19 +35,33 @@ def uninstall(version=None, packages=None):
 
     .. code-block:: python
 
-        $ python -m compas_rhino.uninstall 6.0
+        $ python -m compas_rhino.uninstall -v 6.0
 
     """
     if version not in ('5.0', '6.0'):
         version = '6.0'
 
-    if not packages:
-        # should this not default to all installed compas packages?
-        packages = compas_rhino.install.INSTALLABLE_PACKAGES
-
-    print('Uninstalling COMPAS packages to Rhino {0} IronPython lib:'.format(version))
+    print('Uninstalling COMPAS packages from Rhino {0} IronPython lib:'.format(version))
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+
+    compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+    bootstrapper_data = compas_rhino.install._get_bootstrapper_data(compas_bootstrapper)
+
+    if not packages:
+        try:
+            packages = bootstrapper_data.get('INSTALLED_PACKAGES', None)
+        except:
+            pass
+
+        # No info, fall back to installable packages list
+        if packages is None:
+            packages = compas_rhino.install.INSTALLABLE_PACKAGES
+
+
+    environment_name = bootstrapper_data.get('ENVIRONMENT_NAME', '')
+    if environment_name:
+        print('Packages installed from environment: {}'.format(environment_name))
 
     results = []
     exit_code = 0

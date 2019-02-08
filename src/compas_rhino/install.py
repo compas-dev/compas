@@ -2,12 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import io
 import importlib
 import os
 import sys
 
 import compas_rhino
 
+from compas._os import system
 from compas._os import remove_symlink
 from compas._os import create_symlink
 
@@ -15,11 +17,26 @@ from compas._os import create_symlink
 __all__ = ['install']
 
 
-INSTALLABLE_PACKAGES = ['compas', 'compas_rhino', 'compas_ghpython']
+INSTALLABLE_PACKAGES = ['compas', 'compas_rhino']
+
+if system == 'win32':
+    INSTALLABLE_PACKAGES.append('compas_ghpython')
 
 
 def _get_package_path(package):
-    return os.path.abspath(os.path.join(os.path.dirname(package.__file__), '..'))
+    return os.path.abspath(os.path.dirname(package.__file__))
+
+
+def _get_bootstrapper_data(compas_bootstrapper):
+    data = {}
+
+    try:
+        content = io.open(compas_bootstrapper, encoding='utf8').read()
+        exec(content, data)
+    except FileNotFoundError:
+        pass
+
+    return data
 
 
 def install(version=None, packages=None):
@@ -43,16 +60,16 @@ def install(version=None, packages=None):
 
     .. code-block:: python
 
-        $ python -m compas_rhino.install 6.0
+        $ python -m compas_rhino.install -v 6.0
 
     """
     if version not in ('5.0', '6.0'):
         version = '6.0'
 
+    print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
+
     if not packages:
         packages = INSTALLABLE_PACKAGES
-
-    print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
@@ -60,12 +77,7 @@ def install(version=None, packages=None):
     exit_code = 0
 
     for package in packages:
-        # why is this necessary?
-        # why does the package path return the path to the parent
-        # only to concatenate it here with the package name again
-        base_path = _get_package_path(importlib.import_module(package))
-
-        package_path = os.path.join(base_path, package)
+        package_path = _get_package_path(importlib.import_module(package))
         symlink_path = os.path.join(ipylib_path, package)
 
         if os.path.exists(symlink_path):
@@ -87,11 +99,20 @@ def install(version=None, packages=None):
     if exit_code == -1:
         results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not install bootstrapper, try uninstalling first'))
     else:
-        conda_prefix = os.environ.get('CONDA_PREFIX', None)
+        # Take either the CONDA environment directory or the current Python executable's directory
+        python_directory = os.environ.get('CONDA_PREFIX', None) or os.path.dirname(sys.executable)
+        environment_name = os.environ.get('CONDA_DEFAULT_ENV', '')
         compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+
         try:
+            bootstrapper_data = _get_bootstrapper_data(compas_bootstrapper)
+            installed_packages = bootstrapper_data.get('INSTALLED_PACKAGES', [])
+            installed_packages = list(set(installed_packages + list(packages)))
+
             with open(compas_bootstrapper, 'w') as f:
-                f.write('CONDA_PREFIX = r"{0}"'.format(conda_prefix))
+                f.write('ENVIRONMENT_NAME = r"{}"\n'.format(environment_name))
+                f.write('PYTHON_DIRECTORY = r"{}"\n'.format(python_directory))
+                f.write('INSTALLED_PACKAGES = {}'.format(repr(installed_packages)))
                 results.append(('compas_bootstrapper', 'OK'))
         except:
             results.append(('compas_bootstrapper', 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))
@@ -116,7 +137,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-v', '--version', choices=['5.0', '6.0'], default='5.0', help="The version of Rhino to install the packages in.")
+    parser.add_argument('-v', '--version', choices=['5.0', '6.0'], default='6.0', help="The version of Rhino to install the packages in.")
     parser.add_argument('-p', '--packages', nargs='+', help="The packages to install.")
 
     args = parser.parse_args()
