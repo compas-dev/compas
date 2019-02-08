@@ -4,7 +4,6 @@ from __future__ import division
 
 from compas.utilities import pairwise
 
-
 __all__ = [
     'mesh_unweld_vertices',
 ]
@@ -79,7 +78,6 @@ def mesh_unweld_vertices(mesh, fkey, where=None):
     mesh.add_face(face, fkey=fkey)
 
     return face
-
 
 # ==============================================================================
 # Main
