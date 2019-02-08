@@ -88,7 +88,6 @@ itertools
     window
     roundrobin
     powerset
-    unique_everseen
     unique_justseen
     iter_except
     first_true
