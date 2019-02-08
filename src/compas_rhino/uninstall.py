@@ -8,6 +8,7 @@ import sys
 import compas_rhino
 import compas_rhino.install
 
+from compas._os import system
 from compas._os import remove_symlink
 
 
@@ -41,7 +42,10 @@ def uninstall(version=None, packages=None):
     if version not in ('5.0', '6.0'):
         version = '6.0'
 
-    print('Uninstalling COMPAS packages from Rhino {0} IronPython lib:'.format(version))
+    if system == 'win32':
+        print('Uninstalling COMPAS packages from Rhino {0} IronPython lib:'.format(version))
+    elif system == 'darwin':
+        print('Uninstalling COMPAS packages from Rhino IronPython lib.')
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
@@ -57,7 +61,6 @@ def uninstall(version=None, packages=None):
         # No info, fall back to installable packages list
         if packages is None:
             packages = compas_rhino.install.INSTALLABLE_PACKAGES
-
 
     environment_name = bootstrapper_data.get('ENVIRONMENT_NAME', '')
     if environment_name:
@@ -113,7 +116,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-v', '--version', choices=['5.0', '6.0'], default='5.0', help="The version of Rhino to install the packages in.")
+    parser.add_argument('-v', '--version', choices=['5.0', '6.0'], default='6.0', help="The version of Rhino to install the packages in.")
     parser.add_argument('-p', '--packages', nargs='+', help="The packages to uninstall.")
 
     args = parser.parse_args()

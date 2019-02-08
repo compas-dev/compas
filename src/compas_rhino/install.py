@@ -66,7 +66,10 @@ def install(version=None, packages=None):
     if version not in ('5.0', '6.0'):
         version = '6.0'
 
-    print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
+    if system == 'win32':
+        print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
+    elif system == 'darwin':
+        print('Installing COMPAS packages to Rhino IronPython lib.')
 
     if not packages:
         packages = INSTALLABLE_PACKAGES
