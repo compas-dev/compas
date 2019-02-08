@@ -5,7 +5,7 @@ from __future__ import print_function
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 
-from compas.datastructures.mesh.orientation import mesh_flip_cycles
+from compas.datastructures.mesh import mesh_flip_cycles
 from compas.datastructures.mesh import meshes_join
 
 __all__ = [
