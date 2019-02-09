@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from math import fabs
 
-from compas.utilities import window
+from compas.utilities import pairwise
 
 from compas.geometry.basic import add_vectors
 from compas.geometry.basic import subtract_vectors
@@ -17,6 +17,7 @@ from compas.geometry.basic import cross_vectors_xy
 from compas.geometry.basic import vector_from_points
 from compas.geometry.basic import scale_vector
 from compas.geometry.basic import sum_vectors
+from compas.geometry.basic import normalize_vector
 from compas.geometry.distance import distance_point_point
 
 
@@ -163,10 +164,11 @@ def weighted_centroid_points(points, weights):
     list
         The coordinates of the weighted centroid.
     """
-    
+
     vectors = [scale_vector(point, weight) for point, weight in zip(points, weights)]
     vector = scale_vector(sum_vectors(vectors), 1. / sum(weights))
     return vector
+
 
 def centroid_points_xy(points):
     """Compute the centroid of a set of points lying in the XY-plane.
@@ -263,7 +265,7 @@ def centroid_polygon(polygon):
 
     Warning
     -------
-    The polygon need not be convex. 
+    The polygon need not be convex.
 
     The polygon need not be flat. However, it is unclear what the meaning of the
     centroid is in that case.
@@ -389,7 +391,7 @@ def centroid_polygon_xy(polygon):
 
     Warning
     -------
-    The polygon need not be convex. 
+    The polygon need not be convex.
 
     The polygon may be self-intersecting. However, it is unclear what the meaning
     of the centroid is in that case.
@@ -551,9 +553,9 @@ def centroid_polyhedron(polyhedron):
             triangles = [face]
         else:
             centroid = centroid_points([vertices[index] for index in face])
+            w = len(vertices)
             vertices.append(centroid)
-            w = len(vertices) - 1
-            triangles = [[u, v, w] for u, v in window(face + face[0:1], 2)]
+            triangles = [[w, u, v] for u, v in pairwise(face + face[0:1])]
 
         for triangle in triangles:
             a  = vertices[triangle[0]]
@@ -563,22 +565,45 @@ def centroid_polyhedron(polyhedron):
             ac = subtract_vectors(c, a)
             n  = cross_vectors(ab, ac)
             V += dot_vectors(a, n)
+
             nx = dot_vectors(n, ex)
             ny = dot_vectors(n, ey)
             nz = dot_vectors(n, ez)
 
-            for j in (-1, 0, 1):
-                ab = add_vectors(vertices[triangle[j]], vertices[triangle[j + 1]])
-                x += nx * dot_vectors(ab, ex) ** 2
-                y += ny * dot_vectors(ab, ey) ** 2
-                z += nz * dot_vectors(ab, ez) ** 2
+            ab = add_vectors(a, b)
+            bc = add_vectors(b, c)
+            ca = add_vectors(c, a)
+
+            ab_x2 = dot_vectors(ab, ex) ** 2
+            bc_x2 = dot_vectors(bc, ex) ** 2
+            ca_x2 = dot_vectors(ca, ex) ** 2
+
+            x += nx * (ab_x2 + bc_x2 + ca_x2)
+
+            ab_y2 = dot_vectors(ab, ey) ** 2
+            bc_y2 = dot_vectors(bc, ey) ** 2
+            ca_y2 = dot_vectors(ca, ey) ** 2
+
+            y += ny * (ab_y2 + bc_y2 + ca_y2)
+
+            ab_z2 = dot_vectors(ab, ez) ** 2
+            bc_z2 = dot_vectors(bc, ez) ** 2
+            ca_z2 = dot_vectors(ca, ez) ** 2
+
+            z += nz * (ab_z2 + bc_z2 + ca_z2)
+
+            # for j in (-1, 0, 1):
+            #     ab = add_vectors(vertices[triangle[j]], vertices[triangle[j + 1]])
+            #     x += nx * dot_vectors(ab, ex) ** 2
+            #     y += ny * dot_vectors(ab, ey) ** 2
+            #     z += nz * dot_vectors(ab, ez) ** 2
+
+    V = V / 6.0
 
     if V < 1e-9:
-        V = 0.0
-        d = 1.0 / 48.0
+        d = 1.0 / (2 * 24)
     else:
-        V = V / 6.0
-        d = 1.0 / 48.0 / V
+        d = 1.0 / (2 * 24 * V)
 
     x *= d
     y *= d
@@ -598,11 +623,35 @@ if __name__ == "__main__":
     from compas.geometry import midpoint_point_point
     from compas.geometry import centroid_points
 
-    points = [[0.0, 0.0, 0.0], [0.1, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.1, 0.0]]
+    m1v = [
+        [1.0, 1.0, 2.0],
+        [0.0, 0.0, 0.0],
+        [1.0, 0.0, 2.0],
+        [1.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [1.0, 1.0, 0.0],
+        [0.0, 1.0, 1.0],
+        [0.0, 0.0, 1.0]
+    ]
 
-    centroid = centroid_points(points)
+    m1f = [
+        [4, 6, 7, 1],
+        [5, 0, 6, 4],
+        [4, 1, 3, 5],
+        [3, 2, 0, 5],
+        [1, 7, 2, 3],
+        [6, 0, 2, 7]
+    ]
 
-    print(centroid)
+    m1f = [face[::-1] for face in m1f]
+
+    print(centroid_polyhedron((m1v, m1f)))
+
+    # points = [[0.0, 0.0, 0.0], [0.1, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.1, 0.0]]
+
+    # centroid = centroid_points(points)
+
+    # print(centroid)
 
     # polygon = [
     #     [0.0, 0.0, 0.0],

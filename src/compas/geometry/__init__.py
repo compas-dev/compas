@@ -20,6 +20,7 @@ Primitives
     Point
     Line
     Polyline
+    Polyhedron
     Polygon
     Plane
     Frame

@@ -14,6 +14,17 @@ interop
 C++
 ===
 
+Classes
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    cpp.Array1D
+    cpp.Array2D
+    cpp.Array3D
+
 Functions
 ---------
 
@@ -25,18 +36,6 @@ Functions
     cpp.zeros
     cpp.ones
     cpp.eye
-
-
-Classes
--------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    cpp.Array1D
-    cpp.Array2D
-    cpp.Array3D
 
 """
 

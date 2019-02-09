@@ -4,6 +4,8 @@ from __future__ import division
 
 from math import fabs
 
+from compas.utilities import pairwise
+
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import subtract_vectors_xy
 from compas.geometry.basic import length_vector
@@ -221,9 +223,12 @@ def volume_polyhedron(polyhedron):
         if len(vertices) == 3:
             triangles = [vertices]
         else:
+            centroid = centroid_points([xyz[i] for i in vertices])
+            i = len(xyz)
+            xyz.append(centroid)
             triangles = []
-            for i in range(1, len(vertices) - 1):
-                triangles.append(vertices[0:1] + vertices[i:i + 2])
+            for u, v in pairwise(vertices + vertices[0:1]):
+                triangles.append([i, u, v])
 
         for u, v, w in triangles:
             a  = xyz[u]
@@ -241,26 +246,39 @@ def volume_polyhedron(polyhedron):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     from compas.plotters import Plotter
+    from compas.geometry import Polyhedron
+    from compas.geometry import length_vector
+    from compas.geometry import subtract_vectors
+    from compas.geometry import centroid_polyhedron
 
-    plotter = Plotter(figsize=(10, 7))
+    cube = Polyhedron.generate(6)
 
-    polygon = [
-        [0, 0, 0],
-        [1.0, 0, 0],
-        [1.0, 1.0, 0],
-        [0.5, 0.0, 0],
-        [0, 1.0, 0]
-    ]
+    L = length_vector(subtract_vectors(cube.vertices[0], cube.vertices[1]))
 
-    print(area_polygon(polygon[::-1]))
+    print(L * L * L)
 
-    polygons = [{
-        'points' : polygon
-    }]
+    print(volume_polyhedron((cube.vertices, cube.faces)))
+    print(centroid_polyhedron((cube.vertices, cube.faces)))
 
-    plotter.draw_polygons(polygons)
+    # plotter = Plotter(figsize=(10, 7))
 
-    plotter.show()
+    # polygon = [
+    #     [0, 0, 0],
+    #     [1.0, 0, 0],
+    #     [1.0, 1.0, 0],
+    #     [0.5, 0.0, 0],
+    #     [0, 1.0, 0]
+    # ]
+
+    # print(area_polygon(polygon[::-1]))
+
+    # polygons = [{
+    #     'points' : polygon
+    # }]
+
+    # plotter.draw_polygons(polygons)
+
+    # plotter.show()
 

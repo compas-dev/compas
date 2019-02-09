@@ -152,6 +152,8 @@ if __name__ == "__main__":
     from compas.geometry import distance_point_point
 
     from compas.datastructures import Mesh
+    from compas.datastructures import mesh_unify_cycles
+    from compas.datastructures import mesh_flip_cycles
     from compas.viewers import MeshViewer
 
     from compas.topology import unify_cycles
@@ -177,9 +179,12 @@ if __name__ == "__main__":
 
     vertices = [points[index] for index in vertices]
     faces = [[i_index[i] for i in face] for face in faces]
-    faces = unify_cycles(vertices, faces)
+    # faces = unify_cycles(vertices, faces)
 
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+    mesh_unify_cycles(mesh)
+    # mesh_flip_cycles(mesh)
 
     viewer = MeshViewer()
 

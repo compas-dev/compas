@@ -123,6 +123,13 @@ def mesh_face_adjacency(mesh):
     faces = list(mesh.faces())
 
     for fkey in mesh.faces():
+        # faces = []
+        # for key in mesh.face_vertices(fkey):
+        #     for nbr in mesh.halfedge[key]:
+        #         fnbr = mesh.halfedge[key][nbr]
+        #         if fnbr is not None:
+        #             faces.append(fnbr)
+
         nbrs  = []
         found = set()
 
@@ -226,8 +233,11 @@ if __name__ == "__main__":
 
     import compas
 
+    from compas.utilities import print_profile
     from compas.datastructures import Mesh
+
+    unify = print_profile(mesh_unify_cycles)
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    mesh_unify_cycles(mesh)
+    unify(mesh)

@@ -89,7 +89,7 @@ class Proxy(object):
 
         numerical = Proxy('compas.numerical')
 
-        mesh = Mesh.from_obj(compas.get('faces_big.obj'))
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
         mesh.update_default_edge_attributes({'q': 1.0})
@@ -338,10 +338,6 @@ if __name__ == "__main__":
     from compas.rpc import Proxy
 
     from compas_rhino.artists import MeshArtist
-
-    # this is not how a server proxy should be used
-    # the server should be started somewhere independently
-    # and then used in real-time
 
     numerical = Proxy('compas.numerical')
 
