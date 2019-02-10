@@ -259,9 +259,19 @@ class Plane(object):
 
 if __name__ == '__main__':
 
-    base = Point(1.0, 0.0, 0.0)
-    normal = Vector(1.0, 1.0, 1.0)
+    base = Point(0.0, 0.0, 0.0)
+    normal = Vector(1.0, 0.0, 0.0)
 
     plane = Plane(base, normal)
 
     print(plane)
+    print(plane.d)
+
+    a, b, c = normal
+
+    p = [1.0, 0.0, 1.0]
+
+    d = a * p[0] + b * p[1] + c * p[2]
+
+    print(d)
+    print(d <= plane.d)

@@ -4,17 +4,23 @@ from math import pi
 
 from compas.geometry import angle_vectors
 from compas.geometry import angles_vectors
+from compas.geometry import length_vector
+from compas.geometry import subtract_vectors
 
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_polyhedron
+from compas.geometry import volume_polyhedron
+
+from compas.geometry import Polyhedron
+
 
 # ==============================================================================
 # angles
 # ==============================================================================
 
-@pytest.mark.parametrize(
-    ("u", "v", "angle"),
+
+@pytest.mark.parametrize(("u", "v", "angle"),
     [
         pytest.param([0.0, 0.0, 0.0], [0.0, 0.0, 0.0], 0.0, marks=pytest.mark.xfail(raises=ZeroDivisionError)),
         pytest.param([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], 0.0, marks=pytest.mark.xfail(raises=ZeroDivisionError)),
@@ -36,8 +42,7 @@ def test_angle_vectors(u, v, angle):
     assert angle_vectors(u, v) == pytest.approx(angle)
 
 
-@pytest.mark.parametrize(
-    ("u", "v", "angles"),
+@pytest.mark.parametrize(("u", "v", "angles"),
     [
         pytest.param([0.0, 0.0, 0.0], [0.0, 0.0, 0.0], (0.0, 0.0), marks=pytest.mark.xfail(raises=ZeroDivisionError)),
         pytest.param([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], (0.0, 0.0), marks=pytest.mark.xfail(raises=ZeroDivisionError)),
@@ -59,12 +64,13 @@ def test_angles_vectors(u, v, angles):
     a, b = angles
     assert angles_vectors(u, v) == (pytest.approx(a), pytest.approx(b))
 
+
 # ==============================================================================
 # average
 # ==============================================================================
 
-@pytest.mark.parametrize(
-    ("points", "centroid"),
+
+@pytest.mark.parametrize(("points", "centroid"),
     [
         pytest.param([0.0, 0.0, 0.0], None, marks=pytest.mark.xfail(raises=TypeError)),
         pytest.param([[0.0, 0.0, 0.0], [0.0, 0.0]], None, marks=pytest.mark.xfail(raises=ValueError)),
@@ -86,6 +92,35 @@ def test_centroid_points(points, centroid):
     else:
         x, y, z = centroid
     assert centroid_points(points) == [pytest.approx(x, 0.001), pytest.approx(y, 0.001), pytest.approx(z, 0.001)]
+
+
+@pytest.mark.parametrize(("polyhedron", "centroid"),
+    [
+        (Polyhedron.generate(6), [0.0, 0.0, 0.0]),
+    ]
+)
+def test_centroid_polyhedron(polyhedron, centroid):
+    x, y, z = centroid
+    assert centroid_polyhedron(polyhedron) == [pytest.approx(x, 0.001), pytest.approx(y, 0.001), pytest.approx(z, 0.001)]
+
+
+# ==============================================================================
+# size
+# ==============================================================================
+
+
+@pytest.mark.parametrize(("polyhedron", "volume"),
+    [
+        (Polyhedron.generate(6), None)
+    ]
+)
+def test_volume_polyhedron(polyhedron, volume):
+    if volume is None:
+        L = length_vector(subtract_vectors(polyhedron.vertices[0], polyhedron.vertices[1]))
+        volume = L * L * L
+    V = volume_polyhedron(polyhedron)
+    assert V == pytest.approx(volume, 0.001)
+
 
 # ==============================================================================
 # queries

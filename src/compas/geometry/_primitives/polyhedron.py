@@ -42,6 +42,59 @@ class Polyhedron(object):
             return Icosahedron()
         raise Exception
 
+    @classmethod
+    def from_platonicsolid(cls, fcount):
+        """Generate a polyhedron from one of the Platonic solids.
+
+        Parameters
+        ----------
+        fcount : {4, 6, 8, 12, 20}
+            The number of faces of the Platonic solid.
+
+        Returns
+        -------
+        Polyhedron
+            The resulting polyhedron.
+
+        """
+        return cls.generate(fcount)
+
+    @classmethod
+    def from_vertices_and_faces(cls, vertices, faces):
+        """Construct a polyhedron from a given set of vertices and faces.
+
+        Parameters
+        ----------
+        vertices : list
+            The vertices of the polyhedron.
+        faces : list
+            The faces of the polyhedron.
+
+        Returns
+        -------
+        Polyhedron
+            The resulting polyhedron.
+
+        """
+        p = cls()
+        p.vertices = vertices
+        p.faces = faces
+        return p
+
+    def __iter__(self):
+        return iter([self.vertices, self.faces])
+
+    def is_convex(self):
+        pass
+
+    def is_positive(self):
+        pass
+
+
+# ==============================================================================
+# Platonic solids
+# ==============================================================================
+
 
 class Tetrahedron(Polyhedron):
     """
@@ -250,4 +303,5 @@ class Icosahedron(Polyhedron):
 # ==============================================================================
 
 if __name__ == '__main__':
+
     pass

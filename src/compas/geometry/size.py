@@ -210,6 +210,11 @@ def volume_polyhedron(polyhedron):
               &= \frac{1}{6} \sum_{i=0}^{N-1} a_{i} \cdot \hat n_{i}
         \end{align}
 
+    Warning
+    -------
+    The volume computed by this funtion is only correct if the polyhedron is convex,
+    has planar faces, and is positively oriented (all face normals point outwards).
+
     References
     ----------
     .. [1] Nurnberg, R. *Calculating the area and centroid of a polygon in 2d*.
@@ -257,10 +262,10 @@ if __name__ == "__main__":
 
     L = length_vector(subtract_vectors(cube.vertices[0], cube.vertices[1]))
 
-    print(L * L * L)
+    V1 = L * L * L
+    V2 = volume_polyhedron(cube)
 
-    print(volume_polyhedron((cube.vertices, cube.faces)))
-    print(centroid_polyhedron((cube.vertices, cube.faces)))
+    print(V1 - V2 <= 1e-6)
 
     # plotter = Plotter(figsize=(10, 7))
 

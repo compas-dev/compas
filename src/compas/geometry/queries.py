@@ -286,6 +286,14 @@ def is_polygon_convex_xy(polygon, colinear=False):
     return True
 
 
+# def is_polyhedron_convex(polyhedron):
+#     pass
+
+
+# def is_polyhedron_positive(polyhedron):
+#     pass
+
+
 def is_point_on_plane(point, plane, tol=0.0):
     """Determine if a point lies in a plane.
 
@@ -326,7 +334,6 @@ def is_point_infront_plane(point, plane):
 
     """
     return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > 0.0
-
 
 
 def is_point_on_line(point, line, tol=0.0):
@@ -669,7 +676,8 @@ def is_point_in_polygon_xy(point, polygon):
     point : sequence of float
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
     polygon : sequence
-        A sequence of XY(Z) coordinates of 2D or 3D points (Z will be ignored) representing the locations of the corners of a polygon.
+        A sequence of XY(Z) coordinates of 2D or 3D points (Z will be ignored)
+        representing the locations of the corners of a polygon.
         The vertices are assumed to be in order.
         The polygon is assumed to be closed.
         The first and last vertex in the sequence should not be the same.

@@ -530,12 +530,18 @@ def centroid_polyhedron(polyhedron):
     list
         XYZ coordinates of the center of mass.
 
+    Warning
+    -------
+    This function assumes that the vertex cycles of the faces are such that the
+    face normals are consistently pointing outwards, resulting in a *positive*
+    polyhedron.
+
     Examples
     --------
     >>> from compas.geometry import Polyhedron
     >>> p = Polyhedron.generate(6)
-    >>> center_of_mass_polyhedron((p.vertices, p.faces))
-    (-4.206480876464043e-17, -4.206480876464043e-17, -4.206480876464043e-17)
+    >>> centroid_polyhedron(p)
+    [0.0, 0.0, 0.0]
 
     """
     vertices, faces = polyhedron
@@ -622,8 +628,13 @@ if __name__ == "__main__":
     from compas.geometry import intersection_line_line
     from compas.geometry import midpoint_point_point
     from compas.geometry import centroid_points
+    from compas.geometry import Polyhedron
 
-    m1v = [
+    polyhedron = Polyhedron.generate(6)
+
+    print(centroid_polyhedron(polyhedron))
+
+    vertices = [
         [1.0, 1.0, 2.0],
         [0.0, 0.0, 0.0],
         [1.0, 0.0, 2.0],
@@ -634,7 +645,7 @@ if __name__ == "__main__":
         [0.0, 0.0, 1.0]
     ]
 
-    m1f = [
+    faces = [
         [4, 6, 7, 1],
         [5, 0, 6, 4],
         [4, 1, 3, 5],
@@ -643,9 +654,11 @@ if __name__ == "__main__":
         [6, 0, 2, 7]
     ]
 
-    m1f = [face[::-1] for face in m1f]
+    faces[:] = [face[::-1] for face in faces]
 
-    print(centroid_polyhedron((m1v, m1f)))
+    polyhedron = Polyhedron.from_vertices_and_faces(vertices, faces)
+
+    print(centroid_polyhedron(polyhedron))
 
     # points = [[0.0, 0.0, 0.0], [0.1, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.1, 0.0]]
 
