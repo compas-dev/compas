@@ -12,6 +12,7 @@ prune temp
 include LICENSE
 include README.md
 include AUTHORS.md
+include CHANGELOG.md
 include requirements.txt
 
 exclude requirements-dev.txt
