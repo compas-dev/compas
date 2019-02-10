@@ -14,24 +14,39 @@ __all__ = ['install_plugin']
 
 
 def install_plugin(plugin, version=None):
-    """Install a Python plugin for Rhino.
+    """Install a Rhino Python Command Plugin.
 
     Parameters
     ----------
     plugin : str
         The path to the plugin folder.
-        For example, ``'path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}'``.
+    version : str, optional
+        The version of Rhino for which the plugin should be installed.
+        Default is ``'6.0'``.
+
+    Notes
+    -----
+    The version info is only relevant for Rhino on Windows.
+
+    The function creates an *editable install*, which means that the plugin
+    folder is *symlinked* into the correct location so Rhino can find and load it.
+    The contents of the source folder can still be edited and next time you start
+    Rhino those canges will be reflected in the loaded plugin.
 
     Examples
     --------
+    Assuming the plugin folder is at the following location on your computer
+
+    .. code-block:: none
+
+        ~/Code/compas_xxx/ui/XXX{520ddb34-e56d-4a37-9c58-1da10edd1d62}
+
+    It can be installed with the following command
+
     .. code-block:: bash
 
-        >>> import compas_rhino
-        >>> compas_rhino.install_plugin('path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}')
-
-    .. code-block:: bash
-
-        $ python -m compas_rhino.install_plugin path/to/RBE{520ddb34-e56d-4a37-9c58-1da10edd1d62}
+        $ cd ~/Code/compas_xxx/ui
+        $ python -m compas_rhino.install_plugin XXX{520ddb34-e56d-4a37-9c58-1da10edd1d62}
 
     """
     if version not in ('5.0', '6.0'):
@@ -79,8 +94,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('plugin_path', help="The path to the plugin.")
+    parser.add_argument('plugin', help="The path to the plugin.")
+    parser.add_argument('-v', '--version', help="The version of Rhino.")
 
     args = parser.parse_args()
 
-    install_plugin(args.plugin_path)
+    install_plugin(args.plugin, version=args.version)

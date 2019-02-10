@@ -45,10 +45,10 @@ class VertexFilter(object):
                     val = method(key)
 
                     if isinstance(val, list):
-                       if value not in val:
-                          is_match = False
-                          break
-                       break
+                        if value not in val:
+                            is_match = False
+                            break
+                        break
 
                     if isinstance(value, (tuple, list)):
                         minval, maxval = value
@@ -67,10 +67,10 @@ class VertexFilter(object):
                         break
 
                     if isinstance(attr[name], list):
-                       if value not in attr[name]:
-                          is_match = False
-                          break
-                       break
+                        if value not in attr[name]:
+                            is_match = False
+                            break
+                        break
 
                     if isinstance(value, (tuple, list)):
                         minval, maxval = value
@@ -181,10 +181,10 @@ class EdgeFilter(object):
                     val = method(u, v)
 
                     if isinstance(val, list):
-                       if value not in val:
-                          is_match = False
-                          break
-                       break
+                        if value not in val:
+                            is_match = False
+                            break
+                        break
 
                     if isinstance(value, (tuple, list)):
                         minval, maxval = value
@@ -203,10 +203,10 @@ class EdgeFilter(object):
                         break
 
                     if isinstance(attr[name], list):
-                       if value not in attr[name]:
-                          is_match = False
-                          break
-                       break
+                        if value not in attr[name]:
+                            is_match = False
+                            break
+                        break
 
                     if isinstance(value, (tuple, list)):
                         minval, maxval = value
@@ -247,6 +247,7 @@ class EdgeFilter(object):
         Examples
         --------
         .. code-block:: python
+
             from compas.datastructures import Mesh
 
             mesh = Mesh()
@@ -317,10 +318,10 @@ class FaceFilter(object):
                     val = method(fkey)
 
                     if isinstance(val, list):
-                       if value not in val:
-                          is_match = False
-                          break
-                       break
+                        if value not in val:
+                            is_match = False
+                            break
+                        break
 
                     if isinstance(value, (tuple, list)):
                         minval, maxval = value
@@ -339,10 +340,10 @@ class FaceFilter(object):
                         break
 
                     if isinstance(attr[name], list):
-                       if value not in attr[name]:
-                          is_match = False
-                          break
-                       break
+                        if value not in attr[name]:
+                            is_match = False
+                            break
+                        break
 
                     if isinstance(value, (tuple, list)):
                         minval, maxval = value
