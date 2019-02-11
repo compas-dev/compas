@@ -2514,7 +2514,7 @@ class Mesh(FromToPickle,
 
         """
 
-        return 2 * pi - sum([angle_points(mesh.vertex_coordinates(vkey), mesh.vertex_coordinates(u), mesh.vertex_coordinates(v)) for u, v in pairwise(self.vertex_neighbors(vkey, ordered = True), wrap = True)])
+        return 2 * pi - sum([angle_points(mesh.vertex_coordinates(vkey), mesh.vertex_coordinates(u), mesh.vertex_coordinates(v)) for u, v in pairwise(self.vertex_neighbors(vkey, ordered = True) + self.vertex_neighbors(vkey, ordered = True)[:1])])
 
     # --------------------------------------------------------------------------
     # edge geometry
@@ -2686,7 +2686,7 @@ class Mesh(FromToPickle,
 
         ideal_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
         
-        angles = [angle_points(self.vertex_coordinates(v), self.vertex_coordinates(u), self.vertex_coordinates(w), deg = True) for u, v, w in window(self.face_vertices(fkey), n = 3, wrap = True)]
+        angles = [angle_points(self.vertex_coordinates(v), self.vertex_coordinates(u), self.vertex_coordinates(w), deg = True) for u, v, w in window(self.face_vertices(fkey) + self.face_vertices(fkey)[:2], n = 3)]
 
         return max((max(angles) - ideal_angle) / (180 - ideal_angle), (ideal_angle - min(angles)) / ideal_angle)
 
