@@ -2,10 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from copy import deepcopy
-
-from compas.utilities import pairwise
-
 from compas.utilities import geometric_key
 from compas.utilities import reverse_geometric_key
 
@@ -15,7 +11,7 @@ __all__ = [
     'meshes_join_and_weld'
 ]
 
-def meshes_join(meshes, cls = None):
+def meshes_join(meshes, cls=None):
     """Join meshes without welding.
     Parameters
     ----------
@@ -43,7 +39,7 @@ def meshes_join(meshes, cls = None):
 
     return cls.from_vertices_and_faces(vertices, faces)
 
-def mesh_weld(mesh, precision = None, cls = None):
+def mesh_weld(mesh, precision=None, cls=None):
     """Weld vertices of a mesh within some precision distance.
     Parameters
     ----------
@@ -71,7 +67,7 @@ def mesh_weld(mesh, precision = None, cls = None):
 
     return cls.from_vertices_and_faces(vertices, faces)
 
-def meshes_join_and_weld(meshes, precision = None, cls = None):
+def meshes_join_and_weld(meshes, precision=None, cls=None):
     """Join and and weld meshes within some precision distance.
     Parameters
     ----------
