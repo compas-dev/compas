@@ -96,7 +96,7 @@ Constructors
 ============
 
 Meshes can be constructed from data contained in files. Currently, the
-following formats are supported: ``obj``, ``ply``, ``stl``. **COMPAS**
+following formats are supported: ``obj``, ``ply``, ``stl``. COMPAS
 provides a set of sample files that can be used to develop new
 functionality, or simply to make examples like the ones in this
 tutorial.

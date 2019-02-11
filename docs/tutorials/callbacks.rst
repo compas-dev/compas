@@ -2,7 +2,7 @@
 Using callbacks
 ********************************************************************************
 
-**COMPAS** implements a *callback* mechanism that provides a consistent way to
+COMPAS implements a *callback* mechanism that provides a consistent way to
 customise algorithms, apply constraints, visualise progress of iterative algorithms, ...
 
 .. note::

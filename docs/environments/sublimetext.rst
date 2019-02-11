@@ -1,5 +1,5 @@
 ********************************************************************************
-Working in Sublime Text
+Sublime Text
 ********************************************************************************
 
 * `Sublime Text Official Documentation <https://www.sublimetext.com/docs/3/>`_
@@ -53,10 +53,10 @@ To install the above packages go to
 and then type ``Package Control`` to see all possible commands related to that.
 Select ``Package Control: Install Package`` and hit enter.
 
-
 .. figure:: /_images/sublimetext_packagecontrol.png
      :figclass: figure
      :class: figure-img img-fluid
+
 
 
 A list with available packages will appear.

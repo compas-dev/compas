@@ -2,7 +2,7 @@
 Citing
 ********************************************************************************
 
-If you use the main library of **COMPAS** in a project, please refer to the GitHub repository.
+If you use the main library of COMPAS in a project, please refer to the GitHub repository.
 
 .. code-block:: none
 

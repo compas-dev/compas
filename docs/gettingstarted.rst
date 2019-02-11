@@ -7,7 +7,7 @@ Getting started
 Installation
 ============
 
-The recommended way to install **COMPAS** is to use `Anaconda/conda <https://conda.io/docs/>`_
+The recommended way to install COMPAS is to use `Anaconda/conda <https://conda.io/docs/>`_
 
 ::
 
@@ -41,7 +41,7 @@ To install the *bleeding edge version* directly from the GitHub repo
 Updates
 =======
 
-**COMPAS** is still under very active development, with new versions being released
+COMPAS is still under very active development, with new versions being released
 frequently. Updating your installation to the latest version is easy.
 
 Using conda
@@ -85,7 +85,7 @@ Create an environment with a specific version of Python
     $ conda create -n my-project python=2.7
 
 
-Install **COMPAS** (or other packages) for this environment
+Install COMPAS (or other packages) for this environment
 
 ::
 

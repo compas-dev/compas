@@ -89,6 +89,11 @@ Simply create and run the following script to verify everything is working prope
     artist.draw_faces()
 
 
+.. figure:: /_images/blender_verify.png
+     :figclass: figure
+     :class: figure-img img-fluid
+
+
 Install Python packages
 =======================
 

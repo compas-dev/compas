@@ -17,7 +17,7 @@ Working in Rhino
 .. highlight:: bash
 
 
-*Installing* **COMPAS** for Rhino is very simple. Just open the *command prompt*
+*Installing* COMPAS for Rhino is very simple. Just open the *command prompt*
 and type the following
 
 ::
@@ -97,4 +97,20 @@ And add
 .. note::
 
     Restart Rhino and check the version info as before.
+
+
+Install COMPAS packages
+=======================
+
+
+Working with virtual environments
+=================================
+
+
+Installing plugins
+==================
+
+
+XFunc and RPC
+=============
 
