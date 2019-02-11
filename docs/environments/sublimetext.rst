@@ -18,20 +18,19 @@ Install Packages
 
 *   `Conda <https://packagecontrol.io/packages/Conda>`_
 
-    "Plugin that allows users to work with conda directly within Sublime Text.
-    Features include creating and removing conda environments, activating and deactivating conda environments, and installing and removing conda packages."
+    *Plugin that allows users to work with conda directly within Sublime Text. Features include creating and removing conda environments, activating and deactivating conda environments, and installing and removing conda packages.*
 
 *   `SideBarEnhancements <https://packagecontrol.io/packages/SideBarEnhancements>`_
 
-    "Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text."
+    *Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text.*
 
 *   `SublimeLinter <https://packagecontrol.io/packages/SublimeLinter>`_
 
-    "The code linting framework for Sublime Text 3. No linters included: get them via Package Control."
+    *The code linting framework for Sublime Text 3. No linters included: get them via Package Control.*
 
 *   `SublimeLinter-flake8 <https://packagecontrol.io/packages/SublimeLinter-flake8>`_
 
-    This linter plugin for SublimeLinter provides an interface to flake8.
+    *This linter plugin for SublimeLinter provides an interface to flake8.*
 
 
 **Optional**
@@ -43,20 +42,19 @@ Install Packages
 * Terminal
 
 
-To install the above packages go to
+To install the above packages open the Command Palette.
 
 .. code-block:: none
 
     Tools > Command Palette
 
 
-and then type ``Package Control`` to see all possible commands related to that.
+Type ``Package Control`` to see all possible commands related to that.
 Select ``Package Control: Install Package`` and hit enter.
 
 .. figure:: /_images/sublimetext_packagecontrol.png
      :figclass: figure
      :class: figure-img img-fluid
-
 
 
 A list with available packages will appear.
@@ -86,6 +84,7 @@ To define a build system with a Python version of your choosing, do
 
     Tools > Build System > New Build System
 
+
 This will open a new ``untitled.sublime-build`` file with the following snippet
 
 .. code-block:: python
@@ -93,6 +92,7 @@ This will open a new ``untitled.sublime-build`` file with the following snippet
     {
         "shell_cmd" : "make"
     }
+
 
 Change this to
 
@@ -104,11 +104,10 @@ Change this to
         "shell_cmd": "\"python\" -u \"$file\""
     }
 
+
 Specify whatever Python you want to use.
 You can use a system-wide Python excutable, or specify the absolute path to a specific one.
-
 Save the file and use as filename whatever name you want to give the builder.
-
 For example,
 
 .. code-block:: none
@@ -123,6 +122,11 @@ If you are using ``conda`` to manage your virtual environments, and you installe
 the Conda package as described above, you can do all environment management dirtectly
 from Sublime Text. Simply launch the Command Palette and type ``Conda`` to see all
 available options.
+
+.. figure:: /_images/sublimetext_conda.png
+     :figclass: figure
+     :class: figure-img img-fluid
+
 
 Choose ``Conda: Activate Environment`` and the select the environment you want to activate.
 Then select ``Conda`` as the build system to use the Python installation of the
