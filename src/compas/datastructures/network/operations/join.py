@@ -45,7 +45,7 @@ def network_join_edges(network, key):
     # set attributes based on average of two joining edges?
     network.add_edge(a, b)
 
-def network_polylines(network, splits = []):
+def network_polylines(network, splits=None):
     """Join network edges into polylines.
     The polylines stop at points with a valency different from 2 in the network of line.
     Optional splits can be included.
@@ -54,8 +54,8 @@ def network_polylines(network, splits = []):
     ----------
     network : Network
         A network.
-    splits : list
-        List of point coordinates for optional splits.
+    splits : list, None
+        List of point coordinates for optional splits. Default is None.
 
     Returns
     -------
@@ -91,6 +91,8 @@ def network_polylines(network, splits = []):
 
     """
     # geometric keys of split points
+    if splits is None:
+        splits = []
     stop_geom_keys = set([geometric_key(xyz) for xyz in splits])
 
     polylines = []
