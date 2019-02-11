@@ -16,10 +16,23 @@ Install Packages
 
 **Highly recommended**
 
-* Conda
-* SideBarEnhancements
-* SublimeLinter
-* SublimeLinter-flake8
+*   `Conda <https://packagecontrol.io/packages/Conda>`_
+
+    "Plugin that allows users to work with conda directly within Sublime Text.
+    Features include creating and removing conda environments, activating and deactivating conda environments, and installing and removing conda packages."
+
+*   `SideBarEnhancements <https://packagecontrol.io/packages/SideBarEnhancements>`_
+
+    "Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text."
+
+*   `SublimeLinter <https://packagecontrol.io/packages/SublimeLinter>`_
+
+    "The code linting framework for Sublime Text 3. No linters included: get them via Package Control."
+
+*   `SublimeLinter-flake8 <https://packagecontrol.io/packages/SublimeLinter-flake8>`_
+
+    This linter plugin for SublimeLinter provides an interface to flake8.
+
 
 **Optional**
 
@@ -37,23 +50,27 @@ To install the above packages go to
     Tools > Command Palette
 
 
+and then type ``Package Control`` to see all possible commands related to that.
+Select ``Package Control: Install Package`` and hit enter.
+
+
+.. figure:: /_images/sublimetext_packagecontrol.png
+     :figclass: figure
+     :class: figure-img img-fluid
+
+
+A list with available packages will appear.
+Type one of the names listed above, select the corresponding package and hit enter again.
+The package will be installed automatically.
+There is no need to restart Sublime Text.
+
 .. note::
 
     Sublime Text is keyboard-oriented editor.
-    It is really worth getting familiar with some of the keyboard shortcuts.
+    Therefore, it is worth getting familiar with some of the keyboard shortcuts.
     One of the most import shortcuts is the one that launches the Command Palette.
 
-    On Windows: ``Shift + Control + P``
-
-    On Mac: ``Shift + Command + P``
-
-
-and then type ``install``.
-One of the first entries in the dropdown will be ``Package Control: Install Package``.
-Select it and hit enter.
-
-A list with available packages will appear.
-Type one of the names listed above, select the corresponding package and hit enter.
+    On Windows: ``Shift + Control + P``. On Mac: ``Shift + Command + P``.
 
 
 Run scripts
@@ -71,7 +88,7 @@ To define a build system with a Python version of your choosing, do
 
 This will open a new ``untitled.sublime-build`` file with the following snippet
 
-.. code-block:: javascript
+.. code-block:: python
 
     {
         "shell_cmd" : "make"
@@ -79,7 +96,7 @@ This will open a new ``untitled.sublime-build`` file with the following snippet
 
 Change this to
 
-.. code-block:: javascript
+.. code-block:: python
 
     {
         "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
@@ -110,3 +127,12 @@ available options.
 Choose ``Conda: Activate Environment`` and the select the environment you want to activate.
 Then select ``Conda`` as the build system to use the Python installation of the
 activated environment.
+
+
+Sublime-Text-COMPAS plugin
+==========================
+
+
+Snippets repo
+=============
+
