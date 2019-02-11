@@ -54,8 +54,9 @@ def network_polylines(network, splits=None):
     ----------
     network : Network
         A network.
-    splits : list, None
-        List of point coordinates for optional splits. Default is None.
+    splits : list, optional
+        List of point coordinates for optional splits.
+        Default is ''None''.
 
     Returns
     -------
