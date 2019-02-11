@@ -22,6 +22,7 @@ from itertools import tee
 from itertools import cycle
 # from itertools import filterfalse
 from itertools import combinations
+from itertools import chain
 
 
 __all__ = [
@@ -131,7 +132,6 @@ def pairwise(iterable):
     a, b = tee(iterable)
     next(b, None)
     return zip(a, b)
-
 
 def window(seq, n=2):
     """Returns a sliding window (of width n) over data from the iterable.
@@ -283,3 +283,4 @@ if __name__ == "__main__":
 
     for u, v, w in window(s + s[0:2], 3):
         print(u, v, w)
+        
