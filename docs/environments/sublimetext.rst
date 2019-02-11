@@ -18,39 +18,51 @@ Install Packages
 
 *   `Conda <https://packagecontrol.io/packages/Conda>`_
 
-    *Plugin that allows users to work with conda directly within Sublime Text. Features include creating and removing conda environments, activating and deactivating conda environments, and installing and removing conda packages.*
+    *Plugin that allows users to work with conda directly within Sublime Text*
 
 *   `SideBarEnhancements <https://packagecontrol.io/packages/SideBarEnhancements>`_
 
-    *Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text.*
+    *Provides enhancements to the operations on Sidebar of Files and Folders for Sublime Text*
 
 *   `SublimeLinter <https://packagecontrol.io/packages/SublimeLinter>`_
 
-    *The code linting framework for Sublime Text 3. No linters included: get them via Package Control.*
+    *The code linting framework for Sublime Text 3. No linters included: get them via Package Control*
 
-*   `SublimeLinter-flake8 <https://packagecontrol.io/packages/SublimeLinter-flake8>`_
+*   `SublimeLinter flake8 <https://packagecontrol.io/packages/SublimeLinter-flake8>`_
 
-    *This linter plugin for SublimeLinter provides an interface to flake8.*
+    *This linter plugin for SublimeLinter provides an interface to flake8*
 
 
 **Optional**
 
-* GitGutter
-* MarkdownPreview
-* One Dark Color Scheme
-* requirementstxt
-* Terminal
+*   `GitGutter <https://packagecontrol.io/packages/GitGutter>`_
+
+    *Plug-in to show information about files in a git repository*
+
+*   `MarkdownPreview <https://packagecontrol.io/packages/MarkdownPreview>`_
+
+    *Markdown preview and build plugin for Sublime Text*
+
+*   `Terminal <https://packagecontrol.io/packages/Terminal>`_
+
+    *Launch terminals from the current file or the root project folder*
 
 
-To install the above packages open the Command Palette.
+**Even more optional**
+
+*   `One Dark Color Scheme <https://packagecontrol.io/packages/One%20Dark%20Color%20Scheme>`_
+
+    *A port of the One Dark color scheme from Github's Atom editor*
+
+
+To install the above packages open the Command Palette,
+and type ``Package Control`` to see all possible commands related to that.
+Select ``Package Control: Install Package`` and hit enter.
 
 .. code-block:: none
 
     Tools > Command Palette
 
-
-Type ``Package Control`` to see all possible commands related to that.
-Select ``Package Control: Install Package`` and hit enter.
 
 .. figure:: /_images/sublimetext_packagecontrol.png
      :figclass: figure
