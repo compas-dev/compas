@@ -17,12 +17,6 @@ from compas.geometry import subtract_vectors
 from compas_blender.geometry import BlenderGeometry
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, Block Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'BlenderMesh',
 ]

@@ -40,13 +40,10 @@ class FaceArtist(object):
 
         for c, key in enumerate(keys):
 
-            objects[c] = xdraw_mesh(
-                vertices = [self.datastructure.vertex_coordinates(i) for i in self.datastructure.face[key]],
-                layer    = self.layer,
-                faces    = [list(range(len(self.datastructure.face[key])))],
-                color    = colors[key],
-                name     = 'F{0}'.format(key),
-            )
+            vertices   = [self.datastructure.vertex_coordinates(i) for i in self.datastructure.face[key]]
+            faces      = [list(range(len(self.datastructure.face[key])))]
+            name       = 'F{0}'.format(key)
+            objects[c] = xdraw_mesh(vertices=vertices, layer=self.layer, faces=faces, color=colors[key], name=name)
 
         self.face_objects = objects
 
