@@ -444,8 +444,8 @@ class Network(FromToJson,
 
         Parameters
         ----------
-        vertices : list of list of float
-            A list of vertex coordinates.
+        vertices : list , dict
+            A list of vertex coordinates or a dictionary of keys pointing to vertex coordinates to specify keys.
         edges : list of tuple of int
 
         Returns
@@ -461,8 +461,14 @@ class Network(FromToJson,
 
         """
         network = cls()
-        for x, y, z in vertices:
-            network.add_vertex(x=x, y=y, z=z)
+
+        if type(vertices) == list:
+            for x, y, z in vertices:
+                network.add_vertex(x=x, y=y, z=z)
+        if type(vertices) == dict:
+            for key, xyz in vertices.items():
+                network.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
+        
         for u, v in edges:
             network.add_edge(u, v)
         return network
@@ -1337,4 +1343,16 @@ if __name__ == '__main__':
     plotter.draw_vertices(text='key', radius=0.2)
     plotter.draw_edges()
 
+    plotter.show()
+
+    vertices = {44: [0.0, 0.0, 0.0], 38: [1.0, 0.0, 0.0], 2: [2.0, 0.0, 0.0]}
+    edges = [(44, 38), (38, 2)]
+
+    network = Network.from_vertices_and_edges(vertices, edges)
+    print(network)
+
+    plotter = NetworkPlotter(network, figsize=(10, 7))
+    plotter.defaults['vertex.fontsize'] = 8
+    plotter.draw_vertices(text='key', radius=0.2)
+    plotter.draw_edges()
     plotter.show()

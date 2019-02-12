@@ -619,11 +619,10 @@ class Mesh(FromToPickle,
 
         Parameters
         ----------
-        vertices : list
-            A list of vertices, represented by their XYZ coordinates.
-        faces : list
-            A list of faces.
-            Each face is a list of indices referencing the list of vertex coordinates.
+        vertices : list, dict
+            A list of vertices, represented by their XYZ coordinates, or a dictionary of vertex keys pointing to their XYZ coordinates.
+        faces : list, dict
+            A list of faces, represented by a list of indices referencing the list of vertex coordinates, or a dictionary of face keys pointing to a list of indices referencing the list of vertex coordinates.
 
         Returns
         -------
@@ -644,11 +643,21 @@ class Mesh(FromToPickle,
 
         """
         mesh = cls()
-        for vkey, vertex in enumerate(vertices):
-            x, y, z = vertex
-            mesh.add_vertex(key=vkey, x=x, y=y, z=z)
-        for fkey, face in enumerate(faces):
-            mesh.add_face(face, fkey=fkey)
+
+        if type(vertices) == list:
+            for x, y, z in iter(vertices):
+                mesh.add_vertex(x=x, y=y, z=z)
+        elif type(vertices) == dict:
+            for key, xyz in vertices.items():
+                mesh.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
+        
+        if type(faces) == list:
+            for face in iter(faces):
+                mesh.add_face(face)
+        elif type(faces) == dict:
+            for fkey, vertices in faces.items():
+                mesh.add_face(vertices, fkey)
+
         return mesh
 
     @classmethod
@@ -3189,4 +3198,23 @@ if __name__ == '__main__':
     # print(mesh.get_edges_attribute('q', 1.0))
     # print(mesh.get_edges_attributes('qf', (1.0, 2.0)))
 
+    vertices = {
+        0: [0, 0, 0],
+        1: [1, 1, 0],
+        2: [1, -1, 0],
+        3: [-1, -1, 0],
+        18: [-1, 1, 0]
+    }
+    faces = {
+        0: [0, 2, 1],
+        45: [0, 18, 3]
+    }
+
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+    plotter = MeshPlotter(mesh)
+    plotter.draw_vertices()
+    plotter.draw_edges()
+    plotter.draw_faces(text='key')
+    plotter.show()
 
