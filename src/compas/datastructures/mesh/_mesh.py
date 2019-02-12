@@ -4,6 +4,7 @@ from __future__ import division
 
 import pickle
 import json
+import collections
 
 from copy import deepcopy
 from ast import literal_eval
@@ -644,17 +645,17 @@ class Mesh(FromToPickle,
         """
         mesh = cls()
 
-        if type(vertices) == list:
+        if isinstance(vertices, collections.MutableSequence):
             for x, y, z in iter(vertices):
                 mesh.add_vertex(x=x, y=y, z=z)
-        elif type(vertices) == dict:
+        elif isinstance(vertices, collections.Mapping):
             for key, xyz in vertices.items():
                 mesh.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
         
-        if type(faces) == list:
+        if isinstance(faces, collections.MutableSequence):
             for face in iter(faces):
                 mesh.add_face(face)
-        elif type(faces) == dict:
+        elif isinstance(faces, collections.Mapping):
             for fkey, vertices in faces.items():
                 mesh.add_face(vertices, fkey)
 
@@ -3178,19 +3179,19 @@ if __name__ == '__main__':
 
     # # mesh.add_face([a, b, c, d, e, f, g, h])
 
-    for k in mesh.faces():
-        print(k, mesh.is_face_on_boundary(k))
+    # for k in mesh.faces():
+    #     print(k, mesh.is_face_on_boundary(k))
 
 
-    print(list(mesh.edges(True)))
+    # print(list(mesh.edges(True)))
 
 
-    plotter = MeshPlotter(mesh)
+    # plotter = MeshPlotter(mesh)
 
-    plotter.draw_vertices()
-    plotter.draw_edges()
-    plotter.draw_faces(text='key')
-    plotter.show()
+    # plotter.draw_vertices()
+    # plotter.draw_edges()
+    # plotter.draw_faces(text='key')
+    # plotter.show()
 
     # print(mesh.get_vertices_attribute('x'))
     # print(mesh.get_vertices_attributes('xy'))
@@ -3213,8 +3214,27 @@ if __name__ == '__main__':
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
     plotter = MeshPlotter(mesh)
-    plotter.draw_vertices()
+    plotter.draw_vertices(text='key')
     plotter.draw_edges()
     plotter.draw_faces(text='key')
     plotter.show()
 
+    vertices = [
+        [0, 0, 0],
+        [1, 1, 0],
+        [1, -1, 0],
+        [-1, -1, 0],
+        [-1, 1, 0]
+    ]
+    faces = [
+        [0, 2, 1],
+        [0, 4, 3]
+    ]
+
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+    plotter = MeshPlotter(mesh)
+    plotter.draw_vertices(text='key')
+    plotter.draw_edges()
+    plotter.draw_faces(text='key')
+    plotter.show()

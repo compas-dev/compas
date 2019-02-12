@@ -5,6 +5,7 @@ from __future__ import division
 import pickle
 import pprint
 import json
+import collections
 
 from copy import deepcopy
 from ast import literal_eval
@@ -462,10 +463,10 @@ class Network(FromToJson,
         """
         network = cls()
 
-        if type(vertices) == list:
+        if isinstance(vertices, collections.MutableSequence):
             for x, y, z in vertices:
                 network.add_vertex(x=x, y=y, z=z)
-        if type(vertices) == dict:
+        elif isinstance(vertices, collections.Mapping):
             for key, xyz in vertices.items():
                 network.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
         
@@ -1356,3 +1357,16 @@ if __name__ == '__main__':
     plotter.draw_vertices(text='key', radius=0.2)
     plotter.draw_edges()
     plotter.show()
+
+    vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0]]
+    edges = [(0, 1), (1, 2)]
+
+    network = Network.from_vertices_and_edges(vertices, edges)
+    print(network)
+
+    plotter = NetworkPlotter(network, figsize=(10, 7))
+    plotter.defaults['vertex.fontsize'] = 8
+    plotter.draw_vertices(text='key', radius=0.2)
+    plotter.draw_edges()
+    plotter.show()
+
