@@ -16,6 +16,7 @@ from .curvature import *
 from .bbox import *
 from .descent import *
 from .duality import *
+from .explode import *
 from .geodesics import *
 from .join import *
 from .laplacian import *
