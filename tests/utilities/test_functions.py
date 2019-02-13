@@ -13,7 +13,5 @@ from compas.utilities import binomial
 	pytest.param(2, -1, 0, marks=pytest.mark.xfail(raises=ValueError)),
 	]
 )
-
-
 def test_binomial(n, k, result):
     assert binomial(n, k) == pytest.approx(result)
