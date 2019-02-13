@@ -54,4 +54,4 @@ if __name__ == "__main__":
 
     print(fibonacci(100))
 
-    print(binomial(10, 4))
+    print(binomial_coefficient(10, 4))

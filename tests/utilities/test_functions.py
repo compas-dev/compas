@@ -1,6 +1,6 @@
 import pytest
 
-from compas.utilities import binomial
+from compas.utilities import binomial_coefficient
 
 
 @pytest.mark.parametrize(("n", "k", "result"),
@@ -14,4 +14,4 @@ from compas.utilities import binomial
 	]
 )
 def test_binomial(n, k, result):
-    assert binomial(n, k) == pytest.approx(result)
+    assert binomial_coefficient(n, k) == pytest.approx(result)
