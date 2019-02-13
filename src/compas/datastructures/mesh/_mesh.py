@@ -2255,8 +2255,35 @@ class Mesh(FromToPickle,
         i = self.face[fkey].index(key)
         return self.face[fkey][i + 1]
 
-    def face_adjacency_halfedges(self, f1, f2):
-        """Find the half-edges over which two faces are adjacent.
+    def face_adjacency_halfedge(self, f1, f2):
+        """Find one half-edge over which two faces are adjacent.
+
+        Parameters
+        ----------
+        f1 : hashable
+            The identifier of the first face.
+        f2 : hashable
+            The identifier of the second face.
+
+        Returns
+        -------
+        tuple
+            The half-edge separating face 1 from face 2.
+        None
+            If the faces are not adjacent.
+
+        Note
+        ----
+        For use in form-finding algorithms, that rely on form-force duality information,
+        further checks relating to the orientation of the corresponding are required.
+
+        """
+        for u, v in self.face_halfedges(f1):
+            if self.halfedge[v][u] == f2:
+                return u, v
+
+    def face_adjacency_vertices(self, f1, f2):
+        """Find all vertices over which two faces are adjacent.
 
         Parameters
         ----------
@@ -2268,17 +2295,13 @@ class Mesh(FromToPickle,
         Returns
         -------
         list
-            The half-edges separating face 1 from face 2.
+            The vertices separating face 1 from face 2.
         None
             If the faces are not adjacent.
 
-        Note
-        ----
-        For use in form-finding algorithms, that rely on form-force duality information,
-        further checks relating to the orientation of the corresponding are required.
-
         """
-        return [(u, v) for u, v in self.face_halfedges(f1) if self.halfedge[v][u] == f2]
+        
+        return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
 
     def is_face_on_boundary(self, key):
         """Verify that a face is on a boundary.
