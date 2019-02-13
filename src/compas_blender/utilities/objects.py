@@ -61,35 +61,27 @@ __all__ = [
 
 def delete_object(object):
 
-    set_deselect(objects=[object])
+    bpy.data.objects.remove(object)
 
-    try:
-        mesh = bpy.data.meshes[object.name]
-        bpy.data.meshes.remove(mesh)
-        return
-    except:
-        pass
-
-    # bpy.data.objects.remove(object) crashes if you then hover over layers
-    # find how to delete empty, curve etc
+    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
 def delete_objects(objects):
 
     for object in objects:
-        delete_object(object=object)
+        bpy.data.objects.remove(object)
+
+    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
 def delete_object_by_name(name):
 
-    object = get_object_by_name(name)
-    delete_object(object=object)
+    delete_object(object=get_object_by_name(name))
 
 
 def delete_objects_by_names(names):
 
-    objects = get_objects_by_names(names)
-    delete_objects(objects=objects)
+    delete_objects(objects=get_objects_by_names(names))
 
 
 # ==============================================================================
@@ -289,9 +281,14 @@ def set_deselect(objects=None):
         bpy.ops.object.select_all(action='DESELECT')
 
 
-def set_objects_layer(objects):
+def set_objects_layer(objects, layer):
 
-    raise NotImplementedError
+    for object in objects:
+
+        for collection in object.users_collection:
+            collection.objects.unlink(object)
+
+        bpy.data.collections[layer].objects.link(object)
 
 
 def set_objects_coordinates(objects, coords):

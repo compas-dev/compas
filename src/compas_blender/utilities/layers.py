@@ -32,8 +32,8 @@ __all__ = [
 
 def create_layer(layer):
 
-    pass
-    #bpy.data.collections.new(layer)
+    collection = bpy.data.collections.new(layer)
+    bpy.context.scene.collection.children.link(collection)
 
 
 def create_layers(layers):
@@ -84,7 +84,13 @@ def clear_current_layer():
 
 def delete_layer(layer):
 
-    raise NotImplementedError
+    collection = bpy.data.collections[layer]
+    bpy.context.scene.collection.children.unlink(collection)
+
+    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+    collection = bpy.data.collections[layer]
+    bpy.data.collections.remove(collection)
 
 
 def delete_layers(layers):
