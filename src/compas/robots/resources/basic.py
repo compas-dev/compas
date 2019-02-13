@@ -9,8 +9,7 @@ from compas.datastructures import Mesh
 __all__ = [
     'AbstractMeshLoader',
     'DefaultMeshLoader',
-    'LocalPackageMeshLoader',
-    'LocalFolderMeshLoader'
+    'LocalPackageMeshLoader'
 ]
 
 try:
@@ -56,12 +55,34 @@ class AbstractMeshLoader(object):
 
 
 class DefaultMeshLoader(AbstractMeshLoader):
-    """Handles basic mesh loader tasks, mostly from local files."""
+    """Handles basic mesh loader tasks, mostly from local files.
 
-    def __init__(self):
+    Attributes
+    ----------
+    kwargs (optional): dict
+        Additional keyword arguments.
+    """
+
+    def __init__(self, **kwargs):
         super(DefaultMeshLoader, self).__init__()
+        self.attr = dict() or kwargs
 
     def can_load_mesh(self, url):
+        """Determine whether this loader can load a given mesh URL.
+
+        Parameters
+        ----------
+        url : str
+            Mesh URL.
+
+        Returns
+        -------
+        bool
+            ``True`` if the URL points to a local and valid file.
+            Otherwise ``False``.
+        """
+
+        url = self._get_local_path(url) or url
         scheme = urlparse(url).scheme
 
         # Local files have either:
@@ -69,20 +90,50 @@ class DefaultMeshLoader(AbstractMeshLoader):
         #  - a one-letter scheme in Windows
         #  - file scheme
         is_local_file = len(scheme) in (0, 1) or scheme == 'file'
-        is_existing_file = os.path.isfile(url)
 
-        if is_local_file and is_existing_file:
-            return True
+        if is_local_file:
+            if os.path.isfile(url):
+                return True
 
         # Only OBJ loader supports remote files atm
         is_obj = _get_file_format(url) == 'obj'
         return scheme in ('http', 'https') and is_obj
 
     def load_mesh(self, url):
+        """Loads a mesh from local storage.
+
+        Parameters
+        ----------
+        url : str
+            Mesh location
+
+        Returns
+        -------
+        :class:`Mesh`
+            Instance of a mesh.
+        """
         if url.startswith('file:///'):
             url = url[8:]
 
         return _mesh_import(url, url)
+
+    def _get_local_path(self, url):
+        """Concatenates filepath directory to URL only if defined in the keyword arguments.
+
+        Parameters
+        ----------
+        url : str
+            Mesh location.
+
+        Returns
+        -------
+        url: str
+            Extended mesh location if filepath in kwargs. 
+            Else, ir returns None. 
+        """
+        filepath = self.attr.get('filepath') 
+        if filepath:
+            return os.path.join(filepath, url)
 
 
 def _get_file_format(url):
@@ -169,34 +220,6 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
     def _get_local_path(self, url):
         _prefix, path = url.split(self.schema_prefix)
         return self.build_path(*path.split('/'))
-
-
-class LocalFolderMeshLoader(AbstractMeshLoader):
-    """Loads mesh resources stored locally via a relative path, 
-    and which do not point to a xacro package.
-
-    Attributes
-    ----------
-    filepath : str
-        Relative path where the package is stored locally.
-    url : str
-        Directory that contains URDF and Meshes. 
-    """
-
-    def __init__(self, filepath):
-        super(LocalFolderMeshLoader, self).__init__()
-        self.filepath = os.path.dirname(filepath)
-        self.url = None
-
-    def can_load_mesh(self, url):
-        self.url = os.path.join(self.filepath, url)
-        is_existing_file = os.path.isfile(self.url)
-
-        if is_existing_file:
-            return True
-
-    def load_mesh(self, url):
-        return _mesh_import(self.url, self.url)
 
 
 def _mesh_import(name, file):

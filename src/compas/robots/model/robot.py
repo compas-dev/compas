@@ -290,7 +290,7 @@ class RobotModel(object):
         force = kwargs.get('force', False)
 
         loaders = list(resource_loaders)
-        loaders.append(DefaultMeshLoader())
+        loaders.insert(0, DefaultMeshLoader())
 
         for link in self.links:
             for element in itertools.chain(link.collision, link.visual):
