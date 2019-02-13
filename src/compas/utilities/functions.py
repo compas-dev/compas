@@ -6,7 +6,7 @@ from math import factorial
 
 __all__ = [
     'fibonacci',
-    'binomial'
+    'binomial_coefficient'
 ]
 
 
@@ -21,7 +21,7 @@ def fibonacci(n, memo={}):
         memo[n] = fibonacci(n - 2, memo) + fibonacci(n - 1, memo)
     return memo[n]
 
-def binomial(n, k):
+def binomial_coefficient(n, k):
     """Returns the binomial coefficient of the :math:`x^k` term in the
     polynomial expansion of the binmoial power :math:`(1 + x)^n` [wikipedia2017j]_.
 

@@ -10,7 +10,7 @@ from compas.geometry.basic import subtract_vectors
 from compas.geometry._primitives import Point
 from compas.geometry._primitives import Vector
 
-from compas.utilities import binomial
+from compas.utilities import binomial_coefficient
 
 __all__ = ['Bezier']
 
@@ -44,7 +44,7 @@ def bernstein(n, k, t):
         return 0
     if k > n:
         return 0
-    return binomial(n, k) * t ** k * (1 - t) ** (n - k)
+    return binomial_coefficient(n, k) * t ** k * (1 - t) ** (n - k)
 
 
 class BezierException(Exception):
