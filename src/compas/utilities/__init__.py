@@ -72,6 +72,7 @@ functions
     :nosignatures:
 
     fibonacci
+    binomial_coefficient
 
 itertools
 =========

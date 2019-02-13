@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from math import factorial
-
 from compas.geometry.basic import scale_vector
 from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import add_vectors
@@ -12,34 +10,9 @@ from compas.geometry.basic import subtract_vectors
 from compas.geometry._primitives import Point
 from compas.geometry._primitives import Vector
 
+from compas.utilities import binomial_coefficient
 
 __all__ = ['Bezier']
-
-
-def binomial(n, k):
-    """Returns the binomial coefficient of the :math:`x^k` term in the
-    polynomial expansion of the binmoial power :math:`(1 + x)^n` [wikipedia2017j]_.
-
-    Notes
-    -----
-    Arranging binomial coefficients into rows for successive values of `n`,
-    and in which `k` ranges from 0 to `n`, gives a triangular array known as
-    Pascal's triangle.
-
-    Parameters
-    ----------
-    n : int
-        The number of terms.
-    k : int
-        The index of the coefficient.
-
-    Returns
-    -------
-    int
-        The coefficient.
-
-    """
-    return factorial(n) / float(factorial(k) * factorial(n - k))
 
 
 def bernstein(n, k, t):
@@ -71,7 +44,7 @@ def bernstein(n, k, t):
         return 0
     if k > n:
         return 0
-    return binomial(n, k) * t ** k * (1 - t) ** (n - k)
+    return binomial_coefficient(n, k) * t ** k * (1 - t) ** (n - k)
 
 
 class BezierException(Exception):
