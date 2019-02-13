@@ -4,6 +4,7 @@ from __future__ import division
 
 import pickle
 import json
+import collections
 
 from copy import deepcopy
 from ast import literal_eval
@@ -619,11 +620,10 @@ class Mesh(FromToPickle,
 
         Parameters
         ----------
-        vertices : list
-            A list of vertices, represented by their XYZ coordinates.
-        faces : list
-            A list of faces.
-            Each face is a list of indices referencing the list of vertex coordinates.
+        vertices : list, dict
+            A list of vertices, represented by their XYZ coordinates, or a dictionary of vertex keys pointing to their XYZ coordinates.
+        faces : list, dict
+            A list of faces, represented by a list of indices referencing the list of vertex coordinates, or a dictionary of face keys pointing to a list of indices referencing the list of vertex coordinates.
 
         Returns
         -------
@@ -644,11 +644,21 @@ class Mesh(FromToPickle,
 
         """
         mesh = cls()
-        for vkey, vertex in enumerate(vertices):
-            x, y, z = vertex
-            mesh.add_vertex(key=vkey, x=x, y=y, z=z)
-        for fkey, face in enumerate(faces):
-            mesh.add_face(face, fkey=fkey)
+
+        if isinstance(vertices, collections.Sequence):
+            for x, y, z in iter(vertices):
+                mesh.add_vertex(x=x, y=y, z=z)
+        elif isinstance(vertices, collections.Mapping):
+            for key, xyz in vertices.items():
+                mesh.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
+        
+        if isinstance(faces, collections.Sequence):
+            for face in iter(faces):
+                mesh.add_face(face)
+        elif isinstance(faces, collections.Mapping):
+            for fkey, vertices in faces.items():
+                mesh.add_face(vertices, fkey)
+
         return mesh
 
     @classmethod
@@ -2256,7 +2266,7 @@ class Mesh(FromToPickle,
         return self.face[fkey][i + 1]
 
     def face_adjacency_halfedge(self, f1, f2):
-        """Find the half-edge over which tow faces are adjacent.
+        """Find one half-edge over which two faces are adjacent.
 
         Parameters
         ----------
@@ -2281,6 +2291,27 @@ class Mesh(FromToPickle,
         for u, v in self.face_halfedges(f1):
             if self.halfedge[v][u] == f2:
                 return u, v
+
+    def face_adjacency_vertices(self, f1, f2):
+        """Find all vertices over which two faces are adjacent.
+
+        Parameters
+        ----------
+        f1 : hashable
+            The identifier of the first face.
+        f2 : hashable
+            The identifier of the second face.
+
+        Returns
+        -------
+        list
+            The vertices separating face 1 from face 2.
+        None
+            If the faces are not adjacent.
+
+        """
+        
+        return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
 
     def is_face_on_boundary(self, key):
         """Verify that a face is on a boundary.
@@ -3169,19 +3200,19 @@ if __name__ == '__main__':
 
     # # mesh.add_face([a, b, c, d, e, f, g, h])
 
-    for k in mesh.faces():
-        print(k, mesh.is_face_on_boundary(k))
+    # for k in mesh.faces():
+    #     print(k, mesh.is_face_on_boundary(k))
 
 
-    print(list(mesh.edges(True)))
+    # print(list(mesh.edges(True)))
 
 
-    plotter = MeshPlotter(mesh)
+    # plotter = MeshPlotter(mesh)
 
-    plotter.draw_vertices()
-    plotter.draw_edges()
-    plotter.draw_faces(text='key')
-    plotter.show()
+    # plotter.draw_vertices()
+    # plotter.draw_edges()
+    # plotter.draw_faces(text='key')
+    # plotter.show()
 
     # print(mesh.get_vertices_attribute('x'))
     # print(mesh.get_vertices_attributes('xy'))
@@ -3189,4 +3220,42 @@ if __name__ == '__main__':
     # print(mesh.get_edges_attribute('q', 1.0))
     # print(mesh.get_edges_attributes('qf', (1.0, 2.0)))
 
+    vertices = {
+        0: [0, 0, 0],
+        1: [1, 1, 0],
+        2: [1, -1, 0],
+        3: [-1, -1, 0],
+        18: [-1, 1, 0]
+    }
+    faces = {
+        0: [0, 2, 1],
+        45: [0, 18, 3]
+    }
 
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+    plotter = MeshPlotter(mesh)
+    plotter.draw_vertices(text='key')
+    plotter.draw_edges()
+    plotter.draw_faces(text='key')
+    plotter.show()
+
+    vertices = [
+        [0, 0, 0],
+        [1, 1, 0],
+        [1, -1, 0],
+        [-1, -1, 0],
+        [-1, 1, 0]
+    ]
+    faces = [
+        [0, 2, 1],
+        [0, 4, 3]
+    ]
+
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+
+    plotter = MeshPlotter(mesh)
+    plotter.draw_vertices(text='key')
+    plotter.draw_edges()
+    plotter.draw_faces(text='key')
+    plotter.show()
