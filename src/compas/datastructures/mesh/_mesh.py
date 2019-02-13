@@ -2266,7 +2266,7 @@ class Mesh(FromToPickle,
         return self.face[fkey][i + 1]
 
     def face_adjacency_halfedge(self, f1, f2):
-        """Find the half-edge over which tow faces are adjacent.
+        """Find one half-edge over which two faces are adjacent.
 
         Parameters
         ----------
@@ -2291,6 +2291,27 @@ class Mesh(FromToPickle,
         for u, v in self.face_halfedges(f1):
             if self.halfedge[v][u] == f2:
                 return u, v
+
+    def face_adjacency_vertices(self, f1, f2):
+        """Find all vertices over which two faces are adjacent.
+
+        Parameters
+        ----------
+        f1 : hashable
+            The identifier of the first face.
+        f2 : hashable
+            The identifier of the second face.
+
+        Returns
+        -------
+        list
+            The vertices separating face 1 from face 2.
+        None
+            If the faces are not adjacent.
+
+        """
+        
+        return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
 
     def is_face_on_boundary(self, key):
         """Verify that a face is on a boundary.
