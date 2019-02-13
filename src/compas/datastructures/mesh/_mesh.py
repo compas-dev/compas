@@ -645,14 +645,14 @@ class Mesh(FromToPickle,
         """
         mesh = cls()
 
-        if isinstance(vertices, collections.MutableSequence):
+        if isinstance(vertices, collections.Sequence):
             for x, y, z in iter(vertices):
                 mesh.add_vertex(x=x, y=y, z=z)
         elif isinstance(vertices, collections.Mapping):
             for key, xyz in vertices.items():
                 mesh.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
         
-        if isinstance(faces, collections.MutableSequence):
+        if isinstance(faces, collections.Sequence):
             for face in iter(faces):
                 mesh.add_face(face)
         elif isinstance(faces, collections.Mapping):

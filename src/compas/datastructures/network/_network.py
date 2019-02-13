@@ -463,7 +463,7 @@ class Network(FromToJson,
         """
         network = cls()
 
-        if isinstance(vertices, collections.MutableSequence):
+        if isinstance(vertices, collections.Sequence):
             for x, y, z in vertices:
                 network.add_vertex(x=x, y=y, z=z)
         elif isinstance(vertices, collections.Mapping):
