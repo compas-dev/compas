@@ -10,6 +10,7 @@ __all__ = [
     'network_explode'
 ]
 
+
 def network_disconnected_vertices(network):
     """Get the disconnected vertex groups in a network.
 
@@ -26,6 +27,7 @@ def network_disconnected_vertices(network):
     """
 
     return connected_components(network.adjacency)
+
 
 def network_disconnected_edges(network):
     """Get the disconnected edge groups in a network.
@@ -81,7 +83,6 @@ def network_explode(network, cls=None):
         exploded_networks.append(cls.from_vertices_and_edges(vertices, edges))
 
     return exploded_networks
-
 
 
 # ==============================================================================

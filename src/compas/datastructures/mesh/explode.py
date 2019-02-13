@@ -10,6 +10,7 @@ __all__ = [
     'mesh_explode',
 ]
 
+
 def mesh_disconnected_vertices(mesh):
     """Get the disconnected vertex groups in a mesh.
 
@@ -26,6 +27,7 @@ def mesh_disconnected_vertices(mesh):
     """
 
     return connected_components(mesh.adjacency)
+
 
 def mesh_disconnected_faces(mesh):
     """Get the disconnected face groups in a mesh.
@@ -45,6 +47,7 @@ def mesh_disconnected_faces(mesh):
     parts = mesh_disconnected_vertices(mesh)
 
     return [set([fkey for vkey in part for fkey in mesh.vertex_faces(vkey)]) for part in parts]
+
 
 def mesh_explode(mesh, cls=None):
     """Explode a mesh into its disconnected parts.
@@ -79,6 +82,7 @@ def mesh_explode(mesh, cls=None):
         exploded_meshes.append(cls.from_vertices_and_faces(vertices, faces))
 
     return exploded_meshes
+
 
 # ==============================================================================
 # Main
