@@ -9,7 +9,8 @@ before_install:
 
 install:
 # This works because requirements-dev.txt ends with "-e ." to install COMPAS itself
-- pip install --process-dependency-links --no-cache-dir -r requirements-dev.txt
+- pip install --no-cache-dir -r requirements-dev.txt
+
 
 script:
 - invoke test
