@@ -44,7 +44,7 @@ def binomial(n, k):
         The coefficient.
 
     """
-    return factorial(n) / float(factorial(k) * factorial(n - k))
+    return int(factorial(n) / float(factorial(k) * factorial(n - k)))
 
 # ==============================================================================
 # Main
@@ -54,4 +54,4 @@ if __name__ == "__main__":
 
     print(fibonacci(100))
 
-    print(binomial(5, 3))
+    print(binomial(10, 4))
