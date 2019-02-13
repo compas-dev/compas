@@ -3,7 +3,7 @@ import pytest
 from compas.utilities import binomial
 
 
-@pytest.mark.parameterize(("n", "k", "result"),
+@pytest.mark.parametrize(("n", "k", "result"),
 	[
 	pytest.param(3, 1, 3),
 	pytest.param(21, 10, 352716),
