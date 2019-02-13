@@ -23,7 +23,7 @@ def fibonacci(n, memo={}):
 
 def binomial_coefficient(n, k):
     """Returns the binomial coefficient of the :math:`x^k` term in the
-    polynomial expansion of the binmoial power :math:`(1 + x)^n` [wikipedia2017j]_.
+    polynomial expansion of the binomial power :math:`(1 + x)^n` [wikipedia2017j]_.
 
     Notes
     -----
