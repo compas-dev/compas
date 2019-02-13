@@ -621,9 +621,11 @@ class Mesh(FromToPickle,
         Parameters
         ----------
         vertices : list, dict
-            A list of vertices, represented by their XYZ coordinates, or a dictionary of vertex keys pointing to their XYZ coordinates.
+            A list of vertices, represented by their XYZ coordinates,
+            or a dictionary of vertex keys pointing to their XYZ coordinates.
         faces : list, dict
-            A list of faces, represented by a list of indices referencing the list of vertex coordinates, or a dictionary of face keys pointing to a list of indices referencing the list of vertex coordinates.
+            A list of faces, represented by a list of indices referencing the list of vertex coordinates,
+            or a dictionary of face keys pointing to a list of indices referencing the list of vertex coordinates.
 
         Returns
         -------
@@ -645,19 +647,19 @@ class Mesh(FromToPickle,
         """
         mesh = cls()
 
-        if isinstance(vertices, collections.Sequence):
-            for x, y, z in iter(vertices):
-                mesh.add_vertex(x=x, y=y, z=z)
-        elif isinstance(vertices, collections.Mapping):
+        if isinstance(vertices, collections.Mapping):
             for key, xyz in vertices.items():
                 mesh.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
-        
-        if isinstance(faces, collections.Sequence):
-            for face in iter(faces):
-                mesh.add_face(face)
-        elif isinstance(faces, collections.Mapping):
+        else:
+            for x, y, z in iter(vertices):
+                mesh.add_vertex(x=x, y=y, z=z)
+
+        if isinstance(faces, collections.Mapping):
             for fkey, vertices in faces.items():
                 mesh.add_face(vertices, fkey)
+        else:
+            for face in iter(faces):
+                mesh.add_face(face)
 
         return mesh
 
@@ -2310,7 +2312,7 @@ class Mesh(FromToPickle,
             If the faces are not adjacent.
 
         """
-        
+
         return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
 
     def is_face_on_boundary(self, key):
@@ -2362,7 +2364,7 @@ class Mesh(FromToPickle,
         list
             The coordinates of the mesh centroid.
         """
-        
+
         return scale_vector(sum_vectors([scale_vector(self.face_centroid(fkey), self.face_area(fkey)) for fkey in self.faces()]), 1. / self.area())
 
     def normal(self):
@@ -2671,7 +2673,7 @@ class Mesh(FromToPickle,
         -------
         float
             The aspect ratio.
-          
+
          References
         ----------
         .. [1] Wikipedia. *Types of mesh*.
@@ -2694,7 +2696,7 @@ class Mesh(FromToPickle,
         -------
         float
             The skewness.
-          
+
          References
         ----------
         .. [1] Wikipedia. *Types of mesh*.
@@ -2703,7 +2705,7 @@ class Mesh(FromToPickle,
         """
 
         ideal_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
-        
+
         angles = [angle_points(self.vertex_coordinates(v), self.vertex_coordinates(u), self.vertex_coordinates(w), deg = True) for u, v, w in window(self.face_vertices(fkey) + self.face_vertices(fkey)[:2], n = 3)]
 
         return max((max(angles) - ideal_angle) / (180 - ideal_angle), (ideal_angle - min(angles)) / ideal_angle)
@@ -3168,7 +3170,7 @@ if __name__ == '__main__':
     from compas.plotters import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
-    
+
     mesh.update_default_edge_attributes({'q': 1.0})
 
     # vertices = [
