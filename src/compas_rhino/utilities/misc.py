@@ -235,6 +235,7 @@ def update_named_values(names, values, message='', title='Update named values', 
                 values[i] = value
     return values
 
+
 def unload_modules(top_level_module_name):
     """Unloads all modules named starting with the specified string.
 

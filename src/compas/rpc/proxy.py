@@ -5,15 +5,23 @@ from __future__ import division
 import os
 import time
 import json
+import sys
+
+import compas
 
 try:
     from xmlrpclib import ServerProxy
 except ImportError:
     from xmlrpc.client import ServerProxy
 
-from subprocess import Popen, PIPE, STDOUT
+try:
+    from subprocess import Popen, PIPE, STDOUT
+except ImportError:
+    try:
+        from System.Diagnostics import Process
+    except ImportError:
+        compas.raise_if_ironpython()
 
-import compas
 import compas._os
 
 from compas.utilities import DataEncoder
@@ -28,6 +36,12 @@ __all__ = ['Proxy']
 class Proxy(object):
     """Create a proxy object as intermediary between client code and remote functionality.
 
+    This class is a context manager, so when used in a ``with`` statement,
+    it ensures the remote proxy server is stopped and disposed correctly.
+
+    However, if the proxy server is left open, it can be re-used for a follow-up connection,
+    saving start up time.
+
     Parameters
     ----------
     package : string, optional
@@ -35,27 +49,36 @@ class Proxy(object):
         Default is `None`, in which case a full path to function calls should be provided.
     python : string, optional
         The python executable that should be used to execute the code.
-        Default is `'pythonw'`.
+        Default is ``'pythonw'``.
     url : string, optional
         The server address.
-        Default is `'http://127.0.0.1'`.
+        Default is ``'http://127.0.0.1'``.
     port : int, optional
         The port number on the remote server.
-        Default is `1753`.
-
-    Attributes
-    ----------
-    profile : string
-        A time profile of the executed code.
+        Default is ``1753``.
 
     Notes
     -----
     If the server is your *localhost*, which will often be the case, it is better
-    to specify the address explicitly (`'http://127.0.0.1'`) because resolving
+    to specify the address explicitly (``'http://127.0.0.1'``) because resolving
     *localhost* takes a surprisingly significant amount of time.
 
     Examples
     --------
+
+    Minimal example showing connection to the proxy server, and ensuring the
+    server is disposed after using it:
+
+    .. code-block:: python
+
+        from compas.rpc import Proxy
+
+        with Proxy('compas.numerical') as numerical:
+            pass
+
+    Complete example demonstrating use of the force density method in the
+    numerical package to compute equilibrium of axial force networks.
+
     .. code-block:: python
 
         import compas
@@ -66,7 +89,7 @@ class Proxy(object):
 
         numerical = Proxy('compas.numerical')
 
-        mesh = Mesh.from_obj(compas.get('faces_big.obj'))
+        mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
         mesh.update_default_edge_attributes({'q': 1.0})
@@ -96,23 +119,91 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753):
-        self._package = package
+    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None):
+        self._package = None
         self._python = compas._os.select_python(python)
         self._url = url
         self._port = port
+        self._service = None
         self._process = None
-        self._server = None
         self._function = None
-        self.profile = None
-        self.stop_server()
-        self.start_server()
+        self._profile = None
+        self.service = service
+        self.package = package
+        self._server = self.try_reconnect()
+        if self._server is None:
+            self._server = self.start_server()
 
-    def __del__(self):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
         self.stop_server()
+
+    @property
+    def address(self):
+        return "{}:{}".format(self._url, self._port)
+
+    @property
+    def profile(self):
+        """A profile of the executed code."""
+        return self._profile
+
+    @profile.setter
+    def profile(self, profile):
+        self._profile = profile
+
+    @property
+    def package(self):
+        """The base package from which functionality will be called."""
+        return self._package
+
+    @package.setter
+    def package(self, package):
+        self._package = package
+
+    @property
+    def service(self):
+        return self._service
+
+    @service.setter
+    def service(self, service):
+        if not service:
+            self._service = 'compas.rpc.services.default'
+        else:
+            self._service = service
+
+    @property
+    def python(self):
+        return self._python
+
+    @python.setter
+    def python(self, python):
+        self._python = python
+
+    def try_reconnect(self):
+        """Try and reconnect to an existing proxy server.
+
+        Returns
+        -------
+        ServerProxy
+            Instance of the proxy if reconnection succeeded,
+            otherwise ``None``.
+        """
+        server = ServerProxy(self.address)
+        try:
+            server.ping()
+        except:
+            return None
+        return server
 
     def start_server(self):
         """Start the remote server.
+
+        Returns
+        -------
+        ServerProxy
+            Instance of the proxy, if the connection was successful.
 
         Raises
         ------
@@ -121,26 +212,39 @@ class Proxy(object):
             100 contact attempts (*pings*).
 
         """
-        python = self._python
-        args = [python, '-m', 'compas.rpc.services.default', str(self._port)]
-        address = "{}:{}".format(self._url, self._port)
+        python = self.python
 
-        self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
-        self._server = ServerProxy(address)
+        try:
+            Popen
+        except NameError:
+            self._process = Process()
+            self._process.StartInfo.UseShellExecute = False
+            self._process.StartInfo.RedirectStandardOutput = True
+            self._process.StartInfo.RedirectStandardError = True
+            self._process.StartInfo.FileName = python
+            self._process.StartInfo.Arguments = '-m {0} {1}'.format(self.service, str(self._port))
+            self._process.Start()
+        else:
+            args = [python, '-m', self.service, str(self._port)]
+            self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
+
+        server = ServerProxy(self.address)
 
         success = False
         count = 100
         while count:
             try:
-                self._server.ping()
+                server.ping()
             except:
-                time.sleep(0.01)
+                time.sleep(0.1)
                 count -= 1
             else:
                 success = True
                 break
         if not success:
-            raise RPCServerError("The server is no available.")
+            raise RPCServerError("The server is not available.")
+
+        return server
 
     def stop_server(self):
         """Stop the remote server and terminate/kill the python process that was used to start it.
@@ -149,6 +253,17 @@ class Proxy(object):
             self._server.remote_shutdown()
         except:
             pass
+        self._terminate_process()
+
+    def _terminate_process(self):
+        """Attempts to terminate the python process hosting the proxy server.
+
+        The process reference might not be present, e.g. in the case
+        of reusing an existing connection. In that case, this is a no-op.
+        """
+        if not self._process:
+            return
+
         try:
             self._process.terminate()
         except:
@@ -159,8 +274,8 @@ class Proxy(object):
             pass
 
     def __getattr__(self, name):
-        if self._package:
-            name = "{}.{}".format(self._package, name)
+        if self.package:
+            name = "{}.{}".format(self.package, name)
         try:
             self._function = getattr(self._server, name)
         except:
@@ -220,7 +335,6 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas.utilities import print_profile
     from compas.rpc import Proxy
 
     from compas_rhino.artists import MeshArtist
@@ -261,5 +375,3 @@ if __name__ == "__main__":
     artist.draw_faces()
 
     artist.redraw()
-
-    numerical.stop_server()

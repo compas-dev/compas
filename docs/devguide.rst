@@ -2,13 +2,18 @@
 Developer Guide
 ********************************************************************************
 
+.. TODO
+
+   * Move to Github Wiki
+
+
 .. warning::
 
     Under construction...
 
 
 This guide provides basic information about setting up a development environment
-and writing code for the **COMPAS** framework.
+and writing code for the COMPAS framework.
 
 For instructions on how to submit contributions, see `Contributions <https://compas-dev.github.io/main/contributions.html>`_
 

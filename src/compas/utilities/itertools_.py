@@ -22,6 +22,7 @@ from itertools import tee
 from itertools import cycle
 # from itertools import filterfalse
 from itertools import combinations
+from itertools import chain
 
 
 __all__ = [
@@ -41,7 +42,7 @@ __all__ = [
     'window',
     'roundrobin',
     'powerset',
-    'unique_everseen',
+    # 'unique_everseen',
     'unique_justseen',
     'iter_except',
     'first_true',
@@ -132,7 +133,6 @@ def pairwise(iterable):
     next(b, None)
     return zip(a, b)
 
-
 def window(seq, n=2):
     """Returns a sliding window (of width n) over data from the iterable.
 
@@ -181,22 +181,22 @@ def powerset(iterable):
     return chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
 
 
-def unique_everseen(iterable, key=None):
-    """List unique elements, preserving order. Remember all elements ever seen."""
-    # unique_everseen('AAAABBBCCDAABBB') --> A B C D
-    # unique_everseen('ABBCcAD', str.lower) --> A B C D
-    seen = set()
-    seen_add = seen.add
-    if key is None:
-        for element in filterfalse(seen.__contains__, iterable):
-            seen_add(element)
-            yield element
-    else:
-        for element in iterable:
-            k = key(element)
-            if k not in seen:
-                seen_add(k)
-                yield element
+# def unique_everseen(iterable, key=None):
+#     """List unique elements, preserving order. Remember all elements ever seen."""
+#     # unique_everseen('AAAABBBCCDAABBB') --> A B C D
+#     # unique_everseen('ABBCcAD', str.lower) --> A B C D
+#     seen = set()
+#     seen_add = seen.add
+#     if key is None:
+#         for element in filterfalse(seen.__contains__, iterable):
+#             seen_add(element)
+#             yield element
+#     else:
+#         for element in iterable:
+#             k = key(element)
+#             if k not in seen:
+#                 seen_add(k)
+#                 yield element
 
 
 def unique_justseen(iterable, key=None):
@@ -283,3 +283,4 @@ if __name__ == "__main__":
 
     for u, v, w in window(s + s[0:2], 3):
         print(u, v, w)
+        

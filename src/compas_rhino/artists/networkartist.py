@@ -2,12 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import time
-
 import compas
 import compas_rhino
-
-from compas.utilities import color_to_colordict
 
 from compas_rhino.artists import Artist
 
@@ -75,7 +71,7 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Network
-    from compas_rhino.artists.networkartist import NetworkArtist
+    from compas_rhino.artists import NetworkArtist
 
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 

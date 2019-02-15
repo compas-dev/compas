@@ -11,7 +11,7 @@ from __future__ import division
 
 from compas.datastructures import Network
 from compas.plotters import NetworkPlotter
-from compas.numerical.drx.drx_numpy import drx_numpy
+from compas.numerical import drx_numpy
 
 from numpy import linspace
 

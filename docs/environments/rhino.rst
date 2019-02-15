@@ -2,15 +2,22 @@
 Working in Rhino
 ********************************************************************************
 
+.. TODO
+
+   * Running scripts
+   * Running scripts from an external editor
+   * Adding custom commands
+   * Making plug-ins
+   * Creating toolbars
+   * Using CPython packages
+   * Using C/C++ code
+   * Warning: Rhino 5 vs. Rhino 6
+
+
 .. highlight:: bash
 
-.. warning::
 
-    All instructions on this page are for Rhino for Windows.
-    The instructions for Rhinomac are coming soon...
-
-
-*Installing* **COMPAS** for Rhino is very simple. Just open the *command prompt*
+*Installing* COMPAS for Rhino is very simple. Just open the *command prompt*
 and type the following
 
 ::
@@ -19,11 +26,11 @@ and type the following
 
 
 Optionally, you could provide a Rhino version number (``5.0, 6.0``).
-The default is ``5.0``.
+The default is ``6.0``.
 
 ::
 
-    $ python -m compas_rhino.install 6.0
+    $ python -m compas_rhino.install -v 6.0
 
 
 
@@ -35,7 +42,7 @@ that comes with it, such that everything works properly.
 
 To check your IronPython version in Rhino, go to the PythonScript Editor
 
-::
+.. code-block:: none
 
     Tools > PythonScript > Edit
 
@@ -55,7 +62,7 @@ There, run the following snippet.
 
 This will display something like
 
-::
+.. code-block:: none
 
     sys.version_info(major=2, minor=7, micro=5, releaselevel='final', serial=0)
 
@@ -73,14 +80,14 @@ and let Rhino know where it is by adding it to the Rhino Python Editor search pa
 
 In the Rhino Python Editor, go to
 
-::
+.. code-block:: none
 
     Tools > Options
 
 
 And add
 
-::
+.. code-block:: none
 
     C:\path\to\IronPython275
     C:\path\to\IronPython275\Lib
@@ -90,4 +97,20 @@ And add
 .. note::
 
     Restart Rhino and check the version info as before.
+
+
+Install COMPAS packages
+=======================
+
+
+Working with virtual environments
+=================================
+
+
+Installing plugins
+==================
+
+
+XFunc and RPC
+=============
 

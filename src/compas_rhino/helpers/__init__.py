@@ -19,6 +19,7 @@ mesh
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     mesh_from_guid
     mesh_from_surface
@@ -49,6 +50,7 @@ network
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     network_draw
     network_draw_vertices
@@ -71,6 +73,7 @@ volmesh
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     volmesh_from_polysurfaces
     volmesh_from_wireframe
@@ -94,8 +97,4 @@ from .mesh import *
 from .network import *
 from .volmesh import *
 
-from . import mesh
-from . import network
-from . import volmesh
-
-__all__ = mesh.__all__ + network.__all__ + volmesh.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

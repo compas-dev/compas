@@ -7,7 +7,7 @@ compas_hpc
 
 This package provides GPU-accelerated and compiled versions of many geometry,
 numerical and topological functions and algorithms. The package is built around
-`Numba`_, `PyCuda`_ and `PyOpenCL`_.
+`Numba`_, `PyCUDA`_ and `PyOpenCL`_.
 
 .. _Numba: https://numba.pydata.org/
 .. _PyCuda: https://mathema.tician.de/software/pycuda/
@@ -18,16 +18,6 @@ numerical and topological functions and algorithms. The package is built around
 
     The functionality of this package is experimental and subject to frequent change.
     For now, don't use it for anything important :)
-
-
-algorithms
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    drx_numba
 
 
 linalg
@@ -65,6 +55,11 @@ linalg_cuda
     :toctree: generated/
     :nosignatures:
 
+    diag_cuda
+    transpose_cuda
+    dot_cuda
+    eye_cuda
+
 
 linalg_cl
 ---------
@@ -72,6 +67,10 @@ linalg_cl
 .. autosummary::
     :toctree: generated/
     :nosignatures:
+
+    diag_cl
+    transpose_cl
+    eye_cl
 
 
 core
@@ -84,13 +83,37 @@ cuda
     :toctree: generated/
     :nosignatures:
 
-    rand_cuda
     device_cuda
+    rand_cuda
     give_cuda
     get_cuda
     ones_cuda
     zeros_cuda
     tile_cuda
+    hstack_cuda
+    vstack_cuda
+
+    abs_cuda
+    acos_cuda
+    asin_cuda
+    atan_cuda
+    ceil_cuda
+    cos_cuda
+    cosh_cuda
+    exp_cuda
+    floor_cuda
+    log_cuda
+    log10_cuda
+    maximum_cuda
+    minimum_cuda
+    round_cuda
+    sin_cuda
+    sinh_cuda
+    sqrt_cuda
+    sum_cuda
+    tan_cuda
+    tanh_cuda
+
 
 opencl
 ------
@@ -104,7 +127,30 @@ opencl
     get_cl
     ones_cl
     zeros_cl
+    tile_cl
+    hstack_cl
     vstack_cl
+
+    abs_cl
+    acos_cl
+    asin_cl
+    atan_cl
+    ceil_cl
+    cos_cl
+    cosh_cl
+    exp_cl
+    floor_cl
+    log_cl
+    log10_cl
+    maximum_cl
+    minimum_cl
+    round_cl
+    sin_cl
+    sinh_cl
+    sqrt_cl
+    sum_cl
+    tan_cl
+    tanh_cl
 
 
 geometry
@@ -182,14 +228,12 @@ spatial_numba
 
 """
 
-from .algorithms import *
 from .geometry import *
 from .core import *
 from .linalg import *
 
-from .algorithms import __all__ as a
 from .geometry import __all__ as b
 from .core import __all__ as c
-from .linalg import __all__ as d
+from .linalg import __all__ as a
 
-__all__ = a + b + c + d
+__all__ = b + c + a

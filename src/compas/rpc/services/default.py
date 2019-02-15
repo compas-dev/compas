@@ -1,10 +1,3 @@
-import os
-import inspect
-import json
-import socket
-
-import compas
-
 from compas.rpc import Server
 from compas.rpc import Service
 
@@ -12,6 +5,10 @@ from compas.rpc import Service
 class DefaultService(Service):
     pass
 
+
+# ==============================================================================
+# main
+# ==============================================================================
 
 if __name__ == '__main__':
 

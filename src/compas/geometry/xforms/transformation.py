@@ -14,8 +14,8 @@ import math
 
 from compas.geometry.basic import multiply_matrices
 
-from compas.geometry.objects import Point
-from compas.geometry.objects import Vector
+from compas.geometry._primitives import Point
+from compas.geometry._primitives import Vector
 
 from compas.geometry.transformations import inverse
 from compas.geometry.transformations import identity_matrix
@@ -88,7 +88,7 @@ class Transformation(object):
             return True
         except BaseException:
             raise TypeError("Wrong input type.")
-    
+
     def copy(self):
         """Returns a copy of the transformation.
         """
@@ -96,15 +96,10 @@ class Transformation(object):
         return cls.from_matrix(self.matrix)
 
     def __repr__(self):
-        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10)
-                                   for n in self.matrix[0]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
-                                    for n in self.matrix[1]])
-        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10)
-                                    for n in self.matrix[2]])
-        s += " [%s]]" % ",".join([("%.4f" % n).rjust(10)
-                                  for n in self.matrix[3]])
-        s += "\n"
+        s  = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[1]])
+        s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[2]])
+        s += " [%s]]\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[3]])
         return s
 
     def __len__(self):

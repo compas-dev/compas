@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-compas.utilities
+utilities
 ********************************************************************************
 
 .. currentmodule:: compas.utilities
@@ -14,6 +14,16 @@ animation
     :nosignatures:
 
     gif_from_images
+
+
+async
+=====
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    await_callback
 
 
 colors
@@ -54,6 +64,15 @@ decorators
 
     memoize
 
+functions
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    fibonacci
+    binomial_coefficient
 
 itertools
 =========
@@ -78,7 +97,6 @@ itertools
     window
     roundrobin
     powerset
-    unique_everseen
     unique_justseen
     iter_except
     first_true
@@ -131,6 +149,18 @@ profiling
     print_profile
 
 
+statistics
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    average
+    variance
+    standard_deviation
+
+
 xfunc
 =====
 
@@ -141,7 +171,9 @@ xfunc
     XFunc
 
 """
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 
 def valuedict(keys, value, default):
@@ -155,6 +187,7 @@ def valuedict(keys, value, default):
 
 
 from .animation import *
+from .async_ import *
 from .coercing import *
 from .colors import *
 from .datetime_ import *
@@ -170,5 +203,6 @@ from .sorting import *
 from .xfunc import *
 from .xscript import *
 from .functions import *
+from .statistics import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

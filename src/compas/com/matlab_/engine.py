@@ -10,16 +10,13 @@ class MatlabEngineError(Exception):
 
     def __init__(self, message=None):
         if not message:
-            message = """Could not start the Matlab engine.
-
+            message = """
+Could not start the Matlab engine.
 Note that the Matlab engine is only available since R2014b.
-
 Python 3 is only supported since R2017b...
-
 For older versions of Matlab, use *MatlabProcess* instead.
 On Windows, *MatlabClient* is also available.
-See <https://ch.mathworks.com/help/matlab/matlab-engine-for-python.html?s_tid=gn_loc_drop>
-for instructions.
+See <https://ch.mathworks.com/help/matlab/matlab-engine-for-python.html?s_tid=gn_loc_drop> for instructions.
 """
         super(MatlabEngineError, self).__init__(message)
 
@@ -29,9 +26,6 @@ class MatlabEngine(object):
 
     Attributes
     ----------
-    engine : ...
-        An instance of the Matlab engine.
-        The Matlab engine exposes Matlab functions as methods.
     session_name : str
         The name of the current Matlab session.
 
@@ -113,8 +107,10 @@ class MatlabEngine(object):
         if self._matlab:
             if hasattr(self._matlab, name):
                 method = getattr(self._matlab, name)
+
                 def wrapper(*args, **kwargs):
                     return method(*args, **kwargs)
+
                 return wrapper
             else:
                 raise AttributeError()

@@ -7,7 +7,6 @@ import math
 from copy import deepcopy
 
 from compas.geometry.basic import normalize_vector
-from compas.geometry.basic import normalize_vector_xy
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import multiply_matrix_vector
@@ -16,6 +15,12 @@ from compas.geometry.basic import transpose_matrix
 from compas.geometry.basic import norm_vector
 
 from compas.geometry.transformations import _EPS
+
+from compas.geometry.transformations.matrices import matrix_from_perspective_entries
+from compas.geometry.transformations.matrices import matrix_from_translation
+from compas.geometry.transformations.matrices import matrix_from_euler_angles
+from compas.geometry.transformations.matrices import matrix_from_shear_entries
+from compas.geometry.transformations.matrices import matrix_from_scale_factors
 
 
 __all__ = [
@@ -36,14 +41,9 @@ __all__ = [
 
     'determinant',
     'inverse',
-    'identity_matrix',
 
     'compose_matrix',
     'decompose_matrix',
-
-    'mesh_transform',
-    'mesh_transformed',
-
 ]
 
 
@@ -179,10 +179,6 @@ def global_coords_numpy(o, uvw, rst):
     return xyz.T
 
 
-def identity_matrix(dim):
-    return [[1. if i == j else 0. for i in range(dim)] for j in range(dim)]
-
-
 def determinant(M, check=True):
     """Calculates the determinant of a square matrix M.
 
@@ -200,7 +196,7 @@ def determinant(M, check=True):
 
     Returns
     -------
-    :obj:`float`
+    float
         The determinant.
 
     """
@@ -250,7 +246,7 @@ def inverse(M):
 
     Returns
     -------
-    :obj:`list` of :obj:`list` of :obj:`float`
+   list of list of float
         The inverted matrix.
 
     Examples
@@ -346,7 +342,7 @@ def decompose_matrix(M):
     .. [1] Slabaugh, 1999. *Computing Euler angles from a rotation matrix*.
            Available at: http://www.gregslabaugh.net/publications/euler.pdf
     """
-    
+
     detM = determinant(M)  # raises ValueError if matrix is not squared
 
     if detM == 0:
@@ -400,33 +396,32 @@ def decompose_matrix(M):
         scale = [-x for x in scale]
         row = [[-x for x in y] for y in row]
 
-    # angles   
+    # angles
     if row[0][2] != -1. and row[0][2] != 1.:
 
         beta1 = math.asin(-row[0][2])
         beta2 = math.pi - beta1
-        
-        alpha1 = math.atan2(row[1][2]/math.cos(beta1), row[2][2]/math.cos(beta1))
-        alpha2 = math.atan2(row[1][2]/math.cos(beta2), row[2][2]/math.cos(beta2))
 
-        gamma1 = math.atan2(row[0][1]/math.cos(beta1), row[0][0]/math.cos(beta1))
-        gamma2 = math.atan2(row[0][1]/math.cos(beta2), row[0][0]/math.cos(beta2))
+        alpha1 = math.atan2(row[1][2] / math.cos(beta1), row[2][2] / math.cos(beta1))
+        alpha2 = math.atan2(row[1][2] / math.cos(beta2), row[2][2] / math.cos(beta2))
+
+        gamma1 = math.atan2(row[0][1] / math.cos(beta1), row[0][0] / math.cos(beta1))
+        gamma2 = math.atan2(row[0][1] / math.cos(beta2), row[0][0] / math.cos(beta2))
 
         angles = [alpha1, beta1, gamma1]
         # TODO: check for alpha2, beta2, gamma2 needed?
     else:
         gamma = 0.
         if row[0][2] == -1.:
-            beta = math.pi/2.
+            beta = math.pi / 2.
             alpha = gamma + math.atan2(row[1][0], row[2][0])
-        else: # row[0][2] == 1
-            beta = -math.pi/2.
+        else:  # row[0][2] == 1
+            beta = -math.pi / 2.
             alpha = -gamma + math.atan2(-row[1][0], -row[2][0])
         angles = [alpha, beta, gamma]
 
     # perspective
-    if math.fabs(Mt[0][3]) > _EPS and math.fabs(Mt[1][3]) > _EPS and \
-            math.fabs(Mt[2][3]) > _EPS:
+    if math.fabs(Mt[0][3]) > _EPS and math.fabs(Mt[1][3]) > _EPS and math.fabs(Mt[2][3]) > _EPS:
         P = deepcopy(Mt)
         P[0][3], P[1][3], P[2][3], P[3][3] = 0.0, 0.0, 0.0, 1.0
         Ptinv = inverse(transpose_matrix(P))
@@ -491,80 +486,6 @@ def compose_matrix(scale=None, shear=None, angles=None,
         for j in range(4):
             M[i][j] /= M[3][3]
     return M
-
-
-# TODO: this is really slow
-def mesh_transform(mesh, transformation):
-    """Transform a mesh.
-    
-    Parameters
-    ----------
-    mesh : Mesh
-        The mesh.
-    transformation : Transformation
-        The transformation.
-
-    Notes
-    -----
-    The mesh is modified in-place.
-
-    Examples
-    --------
-    >>> mesh = Mesh.from_obj(compas.get('cube.obj'))
-    >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
-    >>> tmesh = mesh.copy()
-    >>> mesh_transform(tmesh, T)
-    >>> viewer.mesh = tmesh  # this should be a list of meshes
-    >>> viewer.show()
-
-    See Also
-    --------
-    :func:`mesh_transformed`
-
-    """
-    vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    xyz = transform_points(vertices, transformation.matrix)
-    for i in range(len(xyz)):
-        mesh.vertex[i].update({'x': xyz[i][0], 'y': xyz[i][1], 'z': xyz[i][2]})
-
-
-# TODO: this is really slow
-def mesh_transformed(mesh, transformation):
-    """Transform a copy of ``mesh``.
-    
-    Parameters
-    ----------
-    mesh : Mesh
-        The mesh.
-    transformation : Transformation
-        The transformation.
-
-    Returns
-    -------
-    Mesh
-        A transformed independent copy of ``mesh``.
-
-    Notes
-    -----
-    The original mesh is not modified.
-    Instead a transformed independent copy is returned.
-
-    Examples
-    --------
-    >>> mesh = Mesh.from_obj(compas.get('cube.obj'))
-    >>> T = matrix_from_axis_and_angle([0, 0, 1], pi / 4)
-    >>> tmesh = mesh_transformed(mesh, T)
-    >>> viewer.mesh = tmesh  # this should be a list of meshes
-    >>> viewer.show()
-
-    See Also
-    --------
-    :func:`mesh_transform`
-
-    """
-    mesh_copy = mesh.copy()
-    mesh_transform(mesh_copy, transformation)
-    return mesh_copy
 
 
 # ==============================================================================

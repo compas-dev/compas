@@ -53,12 +53,6 @@ class MatlabClient(object):
     >>> print(R)
     >>> print(jb)
 
-    See Also
-    --------
-    compas.com.mlab.MatlabEngine
-    compas.com.mlab.MatlabSession
-    compas.com.mlab.MatlabProcess
-
     """
 
     def __init__(self, verbose=False, interactive=False, workspace='base'):

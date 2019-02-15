@@ -425,7 +425,7 @@ if __name__ == '__main__':
     from compas.utilities import XFunc
     from compas_rhino.artists import MeshArtist
 
-    dr = XFunc('compas.numerical.dr.dr_numpy.dr_numpy')
+    dr = XFunc('compas.numerical.dr_numpy')
 
     dva = {
         'is_fixed': False,

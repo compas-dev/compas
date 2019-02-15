@@ -18,24 +18,29 @@ __all__ = ['Artist']
 
 
 class Artist(object):
-    """A mesh artist defines functionality for visualising COMPAS meshes in Rhino.
+    """The base ``Artist`` defines functionality for drawing geometric primitives in Rhino.
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
-        A COMPAS mesh.
     layer : str, optional
         The name of the layer that will contain the mesh.
 
     Attributes
     ----------
+    layer : str
+        The layer that will contain the drawing results.
     defaults : dict
-        Default settings for color, scale, tolerance, ...
+        Default values for the representation of primitives.
+        The following defaults are built in.
+
+        * ``'color.point'`` : (255, 255, 255)
+        * ``'color.line'`` : (0, 0, 0)
+        * ``'color.polygon'`` : (210, 210, 210)
 
     Examples
     --------
     .. code-block:: python
-        
+
         import compas
         from compas.datastructures import Mesh
         from compas_rhino.artists import MeshArtist
@@ -164,7 +169,7 @@ class Artist(object):
         Returns
         -------
         list of guid
-            The GUIDs of the points.
+            The GUIDs of the point objects.
 
         """
         layer = layer or self.layer
@@ -190,7 +195,7 @@ class Artist(object):
         Returns
         -------
         list of guid
-            The GUIDs of the points.
+            The GUIDs of the line objects.
 
         """
         layer = layer or self.layer
@@ -216,15 +221,11 @@ class Artist(object):
         Returns
         -------
         list of guid
-            The GUIDs of the points.
+            The GUIDs of the polygon objects.
 
         """
         layer = layer or self.layer
         return compas_rhino.xdraw_polygons(polygons, layer=layer, clear=clear_layer, redraw=redraw)
-
-    # ==========================================================================
-    # dynamic drawing functions
-    # ==========================================================================
 
 
 # ==============================================================================

@@ -1,11 +1,16 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import compas
+
 try:
     from Grasshopper import DataTree as Tree
     from Grasshopper.Kernel.Data import GH_Path as Path
     from System import Array
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
+    compas.raise_if_ironpython()
+
 
 __all__ = [
     'list_to_ghtree',

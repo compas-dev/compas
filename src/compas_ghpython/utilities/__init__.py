@@ -52,7 +52,11 @@ utilities
 
     unload_modules
 """
+from __future__ import absolute_import
+
 from .drawing import *
 from .misc import *
 from .sets import *
 from .timer import *
+
+__all__ = [name for name in dir() if not name.startswith('_')]

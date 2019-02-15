@@ -22,12 +22,6 @@ from numba import jit
 from numpy import array
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'centroid_points_numba',
     'centroid_points_xy_numba',

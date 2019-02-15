@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
 import time
 import compas
 
@@ -37,6 +36,12 @@ class MatlabProcess(object):
         Workspace data to be loaded at startup. Defaults to an empty dict.
     ws_filename : str, optional
         Filename for workspace storage. Defaults to ``'./workspace.mat'``.
+    timeout : int, optional
+        Number of seconds to wait for Matlab to respond before a timeout is triggered.
+        Default is ``20``.
+    verbose : bool, optional
+        Run all communication in `verbose` mode.
+        Default is ``True``.
 
     Examples
     --------
@@ -64,7 +69,6 @@ class MatlabProcess(object):
     """
 
     def __init__(self, matlab_exec=None, ws_data=None, ws_filename=None, timeout=None, verbose=True):
-        """"""
         self.matlab_exec    = matlab_exec or 'matlab'
         self.matlab_options = ['-nosplash']
         self.ws_data        = ws_data or {}
@@ -79,13 +83,16 @@ class MatlabProcess(object):
     def start(self, options=None):
         """Start the subprocess.
 
-        Parameters:
-            options (list, optional) : A list of command line options for the Matlab
-                executable. Available options:
+        Parameters
+        ----------
+        options : list, optional
+            A list of command line options for the Matlab executable.
+            Available options:
 
-                    * -nosplash
-                    * -wait (Windows)
-                    * ...
+            * -nosplash
+            * -wait (Windows)
+            * ...
+
         """
         options = options or self.matlab_options
         if self.verbose:
@@ -112,6 +119,7 @@ class MatlabProcess(object):
                 return
 
     def stop(self):
+        """Stop the subprocess."""
         if self.verbose:
             print('=' * 79)
             print('stopping Matlab process...')
@@ -126,10 +134,19 @@ class MatlabProcess(object):
     def run_command(self, command, ivars=None, ovars=None):
         """Run a command in Matlab.
 
-        Parameters:
-            command (str) : The command string.
-            ivars (dict, optional) : A dictionary of pairs of variable names and
-                values to write to the Matlab workspace.
+        Parameters
+        ----------
+        command : str
+            The command string.
+        ivars : dict, optional
+            A dictionary of named input variables to write to the Matlab workspace.
+        ovars : dict, optional
+            A dictionary of named output variables to retrieve from the Matlab workspace.
+
+        Returns
+        -------
+        ovars : dict
+            The named output variables as provided as input to this function.
 
         """
         if self.verbose:
@@ -143,14 +160,39 @@ class MatlabProcess(object):
         if ovars:
             for name, value in ovars.items():
                 ovars[name] = self.read_value(name, value)
-            return ovars
+        return ovars
 
     def write_value(self, name, value):
+        """Write a named variable to the Matlab workspace.
+
+        Parameters
+        ----------
+        name : str
+            The name of the variable.
+        value : object
+            The value of the variable.
+
+        """
         if self.verbose:
             print('write Matlab value: {0} => {1}'.format(name, value))
         self.process.stdin.write("{0}={1};\n".format(name, value))
 
     def read_value(self, name, default=None):
+        """Read the value of a named variable from the Matlab workspace.
+
+        Parameters
+        ----------
+        name : str
+            The name of the variable.
+        default : object, optional
+            The default value of the variable.
+
+        Returns
+        -------
+        value : object
+            The value of the variable.
+
+        """
         if self.verbose:
             print('read Matlab value: {0}'.format(name))
         self.process.stdin.write("save('{0}', '{1}');\n".format(self.ws_filename, name))
@@ -162,6 +204,7 @@ class MatlabProcess(object):
         return default
 
     def write_workspace(self):
+        """Write all local workspace data to Matlab through a workspace file."""
         if not self.ws_data:
             return
         if self.verbose:
@@ -171,6 +214,7 @@ class MatlabProcess(object):
         self._wait_until('__LOADED__')
 
     def read_workspace(self):
+        """Read all workspace data from Matlab into a workspace file."""
         if self.verbose:
             print('read Matlab workspace.')
         self.process.stdin.write("save('{0}');\n".format(self.ws_filename))

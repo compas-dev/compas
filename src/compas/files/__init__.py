@@ -1,31 +1,13 @@
 """
 ********************************************************************************
-compas.files
+files
 ********************************************************************************
 
 .. currentmodule:: compas.files
 
 
-amf
-===
-
-*Under construction...*
-
-
-dxf
-===
-
-*Under construction...*
-
-
-las
-===
-
-*Under construction...*
-
-
-obj
-===
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
@@ -34,50 +16,14 @@ obj
     OBJ
     OBJReader
     OBJParser
-
-
-ply
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     PLY
     PLYReader
     PLYParser
-
-
-stl
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     STL
     STLReader
     STLParser
-
-
-urdf
-====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     URDF
     URDFParser
-
-
-xml
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     XML
     XMLReader
 

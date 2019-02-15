@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-compas.robots
+robots
 ********************************************************************************
 
 .. currentmodule:: compas.robots
@@ -28,7 +28,7 @@ The primary data representation for robot models is based on the Unified Robot D
 Model
 =====
 
-The root of the model is the :class:`Robot` class, which
+The root of the model is the :class:`RobotModel` class, which
 describes a robot consisting of a set of link elements, and a set of joint
 elements connecting the links together.
 
@@ -36,7 +36,7 @@ elements connecting the links together.
     :toctree: generated/
     :nosignatures:
 
-    Robot
+    RobotModel
     Joint
     Link
 
@@ -113,7 +113,9 @@ the processing of these resources.
 
 """
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .model import *
 from .resources import *

@@ -1,5 +1,6 @@
 sphinx>=1.6
-ipython==5.8
+sphinx_compas_theme>=0.1.10
+ipython>=5.8
 invoke>=0.14
 bumpversion>=0.5
 check-manifest>=0.36

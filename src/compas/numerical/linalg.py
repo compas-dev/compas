@@ -38,7 +38,10 @@ except ImportError:
 else:
     old_settings = seterr(all='ignore')
 
-from subprocess import Popen
+try:
+    from subprocess import Popen
+except ImportError:
+    compas.raise_if_not_ironpython()
 
 
 __all__ = [
@@ -389,15 +392,13 @@ def rref_matlab(A, ifile, ofile, tol=None):
      [0 0 0 0]]
 
     """
-    import platform
-
     A = atleast_2d(asarray(A, dtype=float))
 
     idict = {'A': A}
     savemat(ifile, idict)
 
     matlab = ['matlab']
-    if platform.system() == 'Windows':
+    if compas.is_windows():
         options = ['-nosplash', '-wait', '-r']
     else:
         options = ['-nosplash', '-r']

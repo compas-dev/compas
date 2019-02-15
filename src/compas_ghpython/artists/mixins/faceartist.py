@@ -9,7 +9,7 @@ from compas.utilities import color_to_colordict
 import compas_ghpython
 
 try:
-    import rhinoscriptsyntax as rs
+    import Rhino
 except ImportError:
     compas.raise_if_ironpython()
 
@@ -60,10 +60,13 @@ class FaceArtist(object):
                 'layer' : self.datastructure.get_face_attribute(fkey, 'layer', None)
             })
 
-        guids = compas_ghpython.xdraw_faces(faces)
+        meshes = compas_ghpython.xdraw_faces(faces)
         if not join_faces:
-            return guids
-        return rs.JoinMeshes(guids, delete_input=True)
+            return meshes
+        else:
+            joined_mesh = Rhino.Geometry.Mesh()
+            [joined_mesh.Append(mesh) for mesh in meshes]
+            return joined_mesh
 
     def draw_facelabels(self, text=None, color=None):
         """Draw labels for a selection of faces.

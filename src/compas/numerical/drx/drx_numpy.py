@@ -1,7 +1,8 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+
+import compas
 
 try:
     from numpy import arccos
@@ -20,9 +21,7 @@ try:
     from scipy.sparse import find
 
 except ImportError:
-    import sys
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import mass_matrix
@@ -36,7 +35,6 @@ __all__ = ['drx_numpy']
 
 
 def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=False, callback=None, **kwargs):
-
     """Run dynamic relaxation analysis.
 
     Parameters
@@ -400,8 +398,8 @@ if __name__ == "__main__":
     # structure.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
 
     # data = {
-    #     'vertices': {i: structure.vertex_coordinates(i) for i in structure.vertices()},
-    #     'edges':    [{'u': u, 'v': v} for u, v in structure.edges()]
+    #     'vertices': [structure.vertex_coordinates(i) for i in structure.vertices()],
+    #     'edges':    [{'vertices': uv} for uv in structure.edges()]
     # }
 
 

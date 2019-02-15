@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import time
-
 import compas
 import compas_rhino
 
@@ -41,7 +39,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     Examples
     --------
     .. code-block:: python
-        
+
         import compas
         from compas.datastructures import Mesh
         from compas_rhino.artists import MeshArtist
@@ -115,13 +113,13 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     import os
 
     from compas.datastructures import Mesh
     from compas.geometry import Polyhedron
 
-    from compas_rhino.artists.meshartist import MeshArtist
+    from compas_rhino.artists import MeshArtist
 
     poly = Polyhedron.generate(12)
 

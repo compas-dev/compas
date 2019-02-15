@@ -35,54 +35,38 @@ class Plotter(object):
     Other Parameters
     ----------------
     dpi : float, optional
-        The resolution of the plot. Default is ``100.0``.
+        The resolution of the plot.
+        Default is ``100.0``.
     tight : bool, optional
-        Produce a plot with limited padding between the plot and the edge of the
-        figure. Default is ``False``.
+        Produce a plot with limited padding between the plot and the edge of the figure.
+        Default is ``True``.
     fontsize : int, optional
         The size of the font used in labels. Default is ``10``.
+    axes : matplotlib.axes.Axes, optional
+        An instance of ``matplotlib`` ``Axes``.
+        For example to share the axes of a figure between different plotters.
+        Default is ``None`` in which case the plotter will make its own axes.
 
     Attributes
     ----------
-    figure_size : tuple
-        The size of the plot in inches (width, length).
-    figure_dpi : float
-        The resolution of the plot.
-    figure_bgcolor : str, tuple, dict
-        The color specififcation for the figure background.
-        Colors should be specified in the form of a string (hex colors) or
-        as a tuple of RGB components.
-    axes_xlabel : str
-        The label on the X axis of the plot.
-    axes_ylabel : str
-        The label on the Y axis of the plot.
     defaults : dict
-        Dictionary containing default attributes for points, lines and polygons.
+        Dictionary containing default attributes for vertices and edges.
 
-        Default point attributes:
-
-        * 'point.radius'    : 0.1
-        * 'point.facecolor' : '#ffffff'
-        * 'point.edgecolor' : '#000000'
-        * 'point.edgewidth' : 0.5
-        * 'point.textcolor' : '#000000'
-        * 'point.fontsize'  : 10
-
-        Default line attributes:
-
-        * 'line.width'    : 1.0
-        * 'line.color'    : '#000000'
-        * 'line.textcolor': '#000000'
-        * 'line.fontsize' : 10
-
-        Default polygon attributes:
-
-        * 'polygon.facecolor' : '#ffffff'
-        * 'polygon.edgecolor' : '#000000'
-        * 'polygon.edgewidth' : 0.1
-        * 'polygon.textcolor' : '#000000'
-        * 'polygon.fontsize'  : 10
-
+        * point.radius      : ``0.1``
+        * point.facecolor   : ``'#ffffff'``
+        * point.edgecolor   : ``'#000000'``
+        * point.edgewidth   : ``0.5``
+        * point.textcolor   : ``'#000000'``
+        * point.fontsize    : ``10``
+        * line.width        : ``1.0``
+        * line.color        : ``'#000000'``
+        * line.textcolor    : ``'#000000'``
+        * line.fontsize     : ``10``
+        * polygon.facecolor : ``'#ffffff'``
+        * polygon.edgecolor : ``'#000000'``
+        * polygon.edgewidth : ``0.1``
+        * polygon.textcolor : ``'#000000'``
+        * polygon.fontsize  : ``10``
 
     Notes
     -----
@@ -129,9 +113,10 @@ class Plotter(object):
         plotter.show()
 
     """
-    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, tight=False, **kwargs):
+    def __init__(self, figsize=(16.0, 12.0), dpi=100.0, tight=True, axes=None, **kwargs):
         """Initialises a plotter object"""
         self._axes = None
+        self.axes = axes
         self.tight = tight
         # use descriptors for these
         # to help the user set these attributes in the right format
@@ -195,6 +180,10 @@ class Plotter(object):
             )
 
         return self._axes
+
+    @axes.setter
+    def axes(self, axes):
+        self._axes = axes
 
     @property
     def figure(self):

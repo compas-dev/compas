@@ -8,10 +8,10 @@ email  : van.mele@arch.ethz.ch
 from __future__ import print_function
 
 from compas.datastructures import Mesh
+from compas.datastructures import trimesh_remesh
+from compas.datastructures import mesh_quads_to_triangles
 from compas.geometry import centroid_points
 from compas.geometry import smooth_centroid
-from compas.topology import trimesh_remesh
-from compas.topology import mesh_quads_to_triangles
 
 import compas_rhino
 

@@ -1,6 +1,10 @@
+from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
 
 from functools import wraps
+
+import compas
 
 try:
     import rhinoscriptsyntax as rs
@@ -15,8 +19,6 @@ try:
     from Rhino.Geometry import Vector3d
     from Rhino.Geometry import Line
     from Rhino.Geometry import Polyline
-    from Rhino.Geometry import PolylineCurve
-    from Rhino.Geometry import GeometryBase
     from Rhino.Geometry import Brep
     from Rhino.Geometry import Cylinder
     from Rhino.Geometry import Circle
@@ -27,15 +29,12 @@ try:
     from Rhino.Geometry import Mesh
     from Rhino.Geometry import Vector3f, Point2f
 
+    from compas_rhino.utilities.drawing import _face_to_max_quad
+
     TOL = sc.doc.ModelAbsoluteTolerance
 
 except ImportError:
-    import platform
-    if platform.python_implementation() == 'IronPython':
-        raise
-
-__author__ = ['Romana Rust']
-__email__ = 'rust@arch.ethz.ch'
+    compas.raise_if_ironpython()
 
 
 __all__ = [
@@ -96,9 +95,9 @@ def xdraw_geodesics(geodesics, **kwargs):
     """
     rg_geodesics = []
     for g in iter(geodesics):
-        sp    = g['start']
-        ep    = g['end']
-        srf   = g['srf']
+        sp = g['start']
+        ep = g['end']
+        srf = g['srf']
         curve = srf.ShortPath(Point3d(*sp), Point3d(*ep), TOL)
         rg_geodesics.append(curve)
     return rg_geodesics
@@ -116,26 +115,40 @@ def xdraw_polylines(polylines):
     return rg_polylines
 
 
-def xdraw_faces(faces, srf=None, u=10, v=10, trim=True, tangency=True,
-                spacing=0.1, flex=1.0, pull=1.0):
-    """Draw polygonal faces as Breps.
+def xdraw_faces(faces, **kwargs):
+    """Draw polygonal faces as Meshes.
     """
-    rg_breps = []
-    for f in iter(faces):
-        points = f['points']
-        corners = [Point3d(*point) for point in points]
-        if len(points) in [3, 4]:
-            args = corners + [TOL]
-            brep = Brep.CreateFromCornerPoints(*args)
-        else:
-            pcurve = PolylineCurve(corners)
-            geo = List[GeometryBase](1)
-            geo.Add(pcurve)
-            brep = Brep.CreatePatch(geo, u, v, TOL)
-        if not brep:
+    meshes = []
+    for face in iter(faces):
+        points = face['points'][:]
+        name = face.get('name')
+        color = face.get('color')
+        vertexcolors = face.get('vertexcolors')
+
+        v = len(points)
+
+        if v < 3:
             continue
-        rg_breps.append(brep)
-    return rg_breps
+        if v == 3:
+            mfaces = [[0, 1, 2, 2]]
+        elif v == 4:
+            mfaces = [[0, 1, 2, 3]]
+        else:
+            mfaces = _face_to_max_quad(points, range(v))
+            if vertexcolors:
+                r, g, b = [sum(component) / v for component in zip(*vertexcolors)]
+                r = int(min(max(0, r), 255))
+                g = int(min(max(0, g), 255))
+                b = int(min(max(0, b), 255))
+                vertexcolors.append((r, g, b))
+
+        if vertexcolors:
+            mesh = xdraw_mesh(points, mfaces, color=vertexcolors)
+        else:
+            mesh = xdraw_mesh(points, mfaces)
+        meshes.append(mesh)
+
+    return meshes
 
 
 def xdraw_cylinders(cylinders, cap=False):
@@ -178,6 +191,7 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
                                 ang_tol)
         for brep in breps:
             yield brep
+
 
 def xdraw_spheres(spheres):
     rg_sheres = []

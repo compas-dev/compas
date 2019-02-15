@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-compas.interop
+interop
 ********************************************************************************
 
 .. currentmodule:: compas.interop
@@ -14,33 +14,28 @@ compas.interop
 C++
 ===
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    cpp.xdarray.Array1D
-    cpp.xdarray.Array2D
-    cpp.xdarray.Array3D
-    cpp.xdarray.shape
-    cpp.xdarray.zeros
-    cpp.xdarray.ones
-    cpp.xdarray.eye
-
-
-CSharp
-======
+Classes
+-------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
+    cpp.Array1D
+    cpp.Array2D
+    cpp.Array3D
 
-Fortran
-=======
+Functions
+---------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
+
+    cpp.shape
+    cpp.zeros
+    cpp.ones
+    cpp.eye
 
 """
 

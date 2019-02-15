@@ -62,13 +62,15 @@ def geometric_key(xyz, precision=None, sanitize=True):
 
     return '{0:.{3}},{1:.{3}},{2:.{3}}'.format(x, y, z, precision)
 
+
 def reverse_geometric_key(string):
     """Reverse a geometric key string into xyz coordinates."""
 
     xyz = string.split(',')
 
     return [float(i) for i in xyz]
-    
+
+
 def geometric_key2(xy, precision=None, sanitize=True):
     """Convert XY coordinates to a string that can be used as a dict key."""
     x, y = xy
@@ -146,28 +148,8 @@ def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, orig
 if __name__ == "__main__":
 
     from math import pi
+    import compas
 
-    # gkey1 = GeometricKey(precision='1f')
-    # gkey2 = GeometricKey(precision='2f')
-    # gkey3 = GeometricKey(precision='3f')
+    compas.PRECISION = '6f'
 
-    # GeometricKey.set_precision('3f')
-
-    print(geometric_key([1.0, 0.2, 0], '3f'))
-
-    print(geometric_key([pi, pi, pi]))
-    print(geometric_key([-0.00001, +0.00001, 0.00001], '3f'))
-    print(geometric_key2([-0.00001, +0.00001], '3f'))
-
-    a = geometric_key([3.4, 0.0, 38.023])
-    print(a)
-    print(reverse_geometric_key(a))
-
-    # print(geometric_key((1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))
-    # print(geometric_key((-1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774), '3f', tolerance=1e-9))
-
-    # print(gkey1([pi, pi, pi]))
-    # print(gkey2([-0.00001, +0.00001, 0.00001]))
-
-    # print(gkey3((1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774)))
-    # print(gkey1((-1.1102230246251565e-16, -1.1102230246251565e-16, -1.7320508075688774)))
+    print(geometric_key([1.76000, pi, pi]))

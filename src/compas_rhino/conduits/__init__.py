@@ -11,6 +11,7 @@ Definition of display conduits.
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     MeshConduit
     FacesConduit
@@ -77,18 +78,4 @@ from .lines import *
 from .points import *
 # from .splines import *
 
-from . import mesh
-from . import faces
-from . import labels
-from . import lines
-from . import points
-# from . import splines
-
-__all__ = []
-
-__all__ += mesh.__all__
-__all__ += faces.__all__
-__all__ += labels.__all__
-__all__ += lines.__all__
-__all__ += points.__all__
-# __all__ += splines.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

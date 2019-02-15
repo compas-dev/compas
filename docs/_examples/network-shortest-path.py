@@ -5,6 +5,8 @@ email  : van.mele@arch.ethz.ch
 
 """
 
+from random import choice
+
 import compas
 
 from compas.utilities import pairwise
@@ -13,13 +15,19 @@ from compas.topology import dijkstra_path
 from compas.plotters import NetworkPlotter
 
 
-start, end = 21, 22
-
-
 # make a network from a sample file
 
 network = Network.from_obj(compas.get('grid_irregular.obj'))
 
+
+# start and end
+
+leaves = list(network.vertices_where({'vertex_degree': 1}))
+
+start = end = 0
+while start == end:
+    start = choice(leaves)
+    end = choice(leaves)
 
 # construc an adjacency dict
 # add weight to the edges corresponding to their length

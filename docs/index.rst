@@ -10,7 +10,7 @@ The main library of COMPAS
    gettingstarted
    environments
    examples
-   tutorial
+   tutorials
    api
    contributions
    citing

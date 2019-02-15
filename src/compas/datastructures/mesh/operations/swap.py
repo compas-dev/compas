@@ -6,7 +6,7 @@ from __future__ import division
 __all__ = ['trimesh_swap_edge']
 
 
-def trimesh_swap_edge(self, u, v, allow_boundary=True):
+def trimesh_swap_edge(mesh, u, v, allow_boundary=True):
     """Replace an edge of the mesh by an edge connecting the opposite
     vertices of the adjacent faces.
 
@@ -24,38 +24,41 @@ def trimesh_swap_edge(self, u, v, allow_boundary=True):
 
     # check legality of the swap
     # swapping on the boundary is not allowed
-    fkey_uv = self.halfedge[u][v]
-    fkey_vu = self.halfedge[v][u]
+    fkey_uv = mesh.halfedge[u][v]
+    fkey_vu = mesh.halfedge[v][u]
 
-    if fkey_uv is None or fkey_vu is None:
-        return
+    u_on = mesh.is_vertex_on_boundary(u)
+    v_on = mesh.is_vertex_on_boundary(v)
+
+    if u_on and v_on:
+        return False
 
     if not allow_boundary:
-        if self.is_vertex_on_boundary(u) or self.is_vertex_on_boundary(v):
-            return
+        if mesh.is_vertex_on_boundary(u) or mesh.is_vertex_on_boundary(v):
+            return False
 
     # swapping to a half-edge that already exists is not allowed
-    uv = self.face[fkey_uv]
-    vu = self.face[fkey_vu]
+    uv = mesh.face[fkey_uv]
+    vu = mesh.face[fkey_vu]
 
     o_uv = uv[uv.index(u) - 1]
     o_vu = vu[vu.index(v) - 1]
 
-    if o_uv in self.halfedge[o_vu] and o_vu in self.halfedge[o_uv]:
-        return
+    if o_uv in mesh.halfedge[o_vu] and o_vu in mesh.halfedge[o_uv]:
+        return False
 
     # swap
     # delete the current half-edge
-    del self.halfedge[u][v]
-    del self.halfedge[v][u]
+    del mesh.halfedge[u][v]
+    del mesh.halfedge[v][u]
 
     # delete the adjacent faces
-    del self.face[fkey_uv]
-    del self.face[fkey_vu]
+    del mesh.face[fkey_uv]
+    del mesh.face[fkey_vu]
 
     # add the faces created by the swap
-    a = self.add_face([o_uv, o_vu, v])
-    b = self.add_face([o_vu, o_uv, u])
+    a = mesh.add_face([o_uv, o_vu, v])
+    b = mesh.add_face([o_vu, o_uv, u])
 
     return a, b
 

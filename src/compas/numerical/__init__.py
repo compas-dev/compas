@@ -1,30 +1,20 @@
 """
 ********************************************************************************
-compas.numerical
+numerical
 ********************************************************************************
 
 .. currentmodule:: compas.numerical
 
+.. note::
 
-Algorithms
-==========
+    For many functions, multiple implementations are available using various backends.
+    If no backend is specified, the function is assumed to be implemented in pure Python.
+    The suffix `_numpy` indicates that the function uses Numpy and/or Scipy.
+    Some of the other possibilities are `_alglib`, `_cpp`, `_matlab`, `_sympy`.
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    DynamicRelaxation
-    DynamicRelaxationX
-    ForceDensity
-
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    pca_numpy
-    topop2d_numpy
-    topop3d_numpy
+    On most platforms, all variants are directly available.
+    In Rhino, only the pure Python and the `_alglib` variants can be used directly.
+    All others have to be accessed through an `XFunc` or an `RPC` service.
 
 
 Solvers
@@ -34,16 +24,22 @@ Solvers
     :toctree: generated/
     :nosignatures:
 
-    descent
+    descent_numpy
     devo_numpy
+    dr
+    dr_numpy
+    drx_numpy
+    fd_alglib
+    fd_cpp
+    fd_numpy
     ga
     moga
+    pca_numpy
+    topop_numpy
 
 
-Functions
-=========
-
-**linalg**
+Linalg
+======
 
 .. autosummary::
     :toctree: generated/
@@ -67,7 +63,8 @@ Functions
     spsolve_with_known
 
 
-**matrices**
+Matrices
+========
 
 .. autosummary::
     :toctree: generated/
@@ -80,19 +77,10 @@ Functions
     face_matrix
     mass_matrix
     equilibrium_matrix
-    network_adjacency_matrix
-    network_degree_matrix
-    network_connectivity_matrix
-    network_laplacian_matrix
-    mesh_adjacency_matrix
-    mesh_degree_matrix
-    mesh_face_matrix
-    mesh_connectivity_matrix
-    mesh_laplacian_matrix
-    trimesh_cotangent_laplacian_matrix
 
 
-**operators**
+Operators
+=========
 
 .. autosummary::
     :toctree: generated/
@@ -114,18 +102,24 @@ Utilities
 
 
 """
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .linalg import *
 from .matrices import *
 from .operators import *
 from .utilities import *
 
-from .solvers import *
-from .algorithms import *
-
+from .descent import *
+from .devo import *
 from .dr import *
 from .drx import *
 from .fd import *
+from .ga import *
+# from .lma import *
+# from .mma import *
+from .pca import *
+from .topop import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

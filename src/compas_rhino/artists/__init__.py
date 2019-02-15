@@ -11,7 +11,9 @@ Artists for visualising (painting) COMPAS data structures in Rhino.
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
+    Artist
     MeshArtist
     NetworkArtist
     VolMeshArtist
@@ -24,9 +26,4 @@ from .meshartist import *
 from .networkartist import *
 from .volmeshartist import *
 
-from . import artist
-from . import meshartist
-from . import networkartist
-from . import volmeshartist
-
-__all__ = artist.__all__ + meshartist.__all__ + networkartist.__all__ + volmeshartist.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

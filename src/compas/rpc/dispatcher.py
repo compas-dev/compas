@@ -15,9 +15,9 @@ except ImportError:
         from io import StringIO
 
 try:
-    import cProfile as Profile
+    from cProfile import Profile
 except ImportError:
-    import profile as Profile
+    from profile import Profile
 
 import pstats
 import traceback
@@ -82,18 +82,18 @@ class Dispatcher(object):
         else:
             odict['data'] = data
 
-    def _call_wrapped(self, method, idict, odict):
+    def _call_wrapped(self, function, idict, odict):
         args = idict['args']
-        kwargs = odict['kwargs']
+        kwargs = idict['kwargs']
 
         try:
-            profile = cProfile.Profile()
+            profile = Profile()
             profile.enable()
 
             data = function(*args, **kwargs)
 
             profile.disable()
-            stream = cStringIO.StringIO()
+            stream = StringIO()
             stats = pstats.Stats(profile, stream=stream)
             stats.strip_dirs()
             stats.sort_stats(1)

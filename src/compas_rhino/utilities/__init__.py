@@ -15,6 +15,7 @@ document
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     get_document_name
     get_document_filename
@@ -27,6 +28,7 @@ layers
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     create_layers
     clear_layers
@@ -51,6 +53,7 @@ objects
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     get_objects
     get_object_names
@@ -101,6 +104,7 @@ misc
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     wait
     get_tolerance
@@ -124,6 +128,7 @@ drawing
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     xdraw_labels
     xdraw_points
@@ -141,6 +146,7 @@ geometry
 
 .. autosummary::
     :toctree: generated/
+    :nosignatures:
 
     uv_points_from_surface
 
@@ -155,20 +161,4 @@ from .drawing import *
 from .geometry import *
 from .xfunc import *
 
-from . import document
-from . import layers
-from . import objects
-from . import misc
-from . import drawing
-from . import geometry
-from . import xfunc
-
-__all__ = []
-
-__all__ += document.__all__
-__all__ += layers.__all__
-__all__ += objects.__all__
-__all__ += misc.__all__
-__all__ += drawing.__all__
-__all__ += geometry.__all__
-__all__ += xfunc.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

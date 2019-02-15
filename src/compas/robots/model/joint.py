@@ -4,13 +4,14 @@ from __future__ import print_function
 
 from compas.files import URDFParser
 from compas.geometry import Vector
-from compas.geometry.transformations import transform_vectors
-from compas.geometry.xforms import Rotation
-from compas.geometry.xforms import Transformation
-from compas.geometry.xforms import Translation
+from compas.geometry import transform_vectors
+from compas.geometry import Rotation
+from compas.geometry import Transformation
+from compas.geometry import Translation
 
-from .geometry import Origin
-from .geometry import _parse_floats
+from compas.robots.model.geometry import Origin
+from compas.robots.model.geometry import _parse_floats
+
 
 __all__ = [
     'Joint',
@@ -220,7 +221,7 @@ class Joint(object):
             return Transformation.from_frame(self.init_origin)
         else:
             return Transformation()
-    
+
     @property
     def reset_transformation(self):
         return self.init_transformation * self.current_transformation.inverse()
@@ -236,7 +237,7 @@ class Joint(object):
             self.origin.transform(transformation)
         if self.axis:
             self.axis.transform(transformation)
-    
+
     def create(self, transformation):
         if self.origin:
             self.origin.transform(transformation)

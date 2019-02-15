@@ -23,8 +23,4 @@ from .meshartist import *
 from .networkartist import *
 from .volmeshartist import *
 
-from . import meshartist
-from . import networkartist
-from . import volmeshartist
-
-__all__ = meshartist.__all__ + networkartist.__all__ + volmeshartist.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

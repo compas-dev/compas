@@ -12,12 +12,6 @@ from numpy import sin
 from numpy import zeros
 
 
-__author__    = ['Andrew Liew <liew@arch.ethz.ch>', 'Tomas Mendez Echenagucia <mtomas@ethz.ch>']
-__copyright__ = 'Copyright 2018, BLOCK Research Group - ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'liew@arch.ethz.ch'
-
-
 __all__ = [
     'rotate_x_numba',
     'rotate_y_numba',

@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+import os
+import sys
+import argparse
+
+import compas
+
+HOME = os.environ['HOME']
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('plugin_path', help="The path to the plugin source.")
+    args = parser.parse_args()
+
+    plugin_path = args.plugin_path
+
+    parent, name = os.path.split(plugin_path)
+
+    if not os.path.exists(plugin_path):
+        raise Exception('Cannot find the plugin at this location: {}'.format(plugin_path))
+
+    if not os.path.isdir(plugin_path):
+        raise Exception('The provided path is not a plugin source dir: {}'.format(plugin_path))
+
+    symlink_path = os.path.join(HOME, 'Library', 'Application Support', 'Sublime Text 3', 'Packages', name)
+
+    if os.path.exists(symlink_path):
+        compas._os.remove_symlink(symlink_path)
+
+    compas._os.create_symlink(plugin_path, symlink_path)
+
+    print("\nSuccess: ST3 plugin installed!\n")
+
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    main()
