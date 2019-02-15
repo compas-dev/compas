@@ -172,10 +172,12 @@ def get_object_attributes(guids):
     return attrs
 
 
-def get_object_attributes_from_name(guids):
+def get_object_attributes_from_name(guids, prefix=None):
     attrs = []
     for name in get_object_names(guids):
         try:
+            if prefix:
+                name = name.lstrip(prefix)
             attr = literal_eval(name)
         except (ValueError, TypeError):
             attr = {}
