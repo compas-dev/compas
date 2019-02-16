@@ -1,7 +1,11 @@
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 from compas.geometry import add_vectors
 
 from compas_blender.geometry import BlenderGeometry
-from compas_blender.utilities import select_curve
 
 try:
     import bpy
@@ -10,90 +14,99 @@ except ImportError:
     pass
 
 
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
-
-
-__all__ = ['BlenderCurve']
+__all__ = [
+    'BlenderCurve',
+]
 
 
 class BlenderCurve(BlenderGeometry):
-    """"""
 
     def __init__(self, object):
-        self.guid = object.name
-        self.curve = object
-        self.geometry = self.curve.data
-        self.attributes = {}
-        self.type = self.curve.type
+        super(BlenderCurve, self).__init__(object)
+
 
     @classmethod
-    def from_selection(cls):
-        object = select_curve()
-        return cls(object)
+    def from_points(cls, points, degree=None):
 
-    @property
-    def xyz(self):
-        return list(self.curve.location)
-
-    def hide(self):
-        self.curve.hide = True
-
-    def show(self):
-        self.curve.hide = False
-
-    def select(self):
-        self.curve.select = True
-
-    def unselect(self):
-        self.curve.select = False
-
-    def space(self, density):
         raise NotImplementedError
 
-    def heightfield(self, density):
-        raise NotImplementedError
 
-    def curvature(self):
-        raise NotImplementedError
+    def control_points(self):
 
-    def tangents(self, points):
-        raise NotImplementedError
+        return self.geometry.splines[0].bezier_points
 
-    def descent(self, points):
-        raise NotImplementedError
-        
-    def handles(self):
-        points = self.curve.data.splines[0].bezier_points
+
+    def control_point_coordinates(self):
+
+        points = self.control_points()
         middle = [list(i.co) for i in points]
-        left = [list(i.handle_left) for i in points]
-        right = [list(i.handle_right) for i in points]
+        left   = [list(i.handle_left) for i in points]
+        right  = [list(i.handle_right) for i in points]
+
         return middle, left, right
 
-    def divide(self, number_of_segments):
-        middle, left, right = self.handles()
-        n = number_of_segments + 1
-        points = [list(i) for i in interpolate_bezier(middle[0], right[0], left[1], middle[1], n)]
-        return [add_vectors(self.xyz, point) for point in points]
-        
-    def divide_length(self, length_of_segments):
+
+    def control_points_on(self):
+
         raise NotImplementedError
 
-    def closest_point(self, point, maxdist=None):
+
+    def control_points_off(self):
+
         raise NotImplementedError
+
+
+    def select_control_point(self):
+
+        raise NotImplementedError
+
+
+    def space(self, density):
+
+        raise NotImplementedError
+
+
+    def heightfield(self, density):
+
+        raise NotImplementedError
+
+
+    def curvature(self):
+
+        raise NotImplementedError
+
+
+    def tangents(self, points):
+
+        raise NotImplementedError
+
+
+    def descent(self, points):
+
+        raise NotImplementedError
+
+
+    def divide(self, number_of_segments):
+
+        m, l, r = self.control_point_coordinates()
+        points  = [list(i) for i in interpolate_bezier(m[0], r[0], l[1], m[1], number_of_segments + 1)]
+
+        return [add_vectors(self.location, point) for point in points]
+
+
+    def divide_length(self, length_of_segments):
+
+        raise NotImplementedError
+
+
+    def closest_point(self, point, maxdist=None, return_param=False):
+
+        raise NotImplementedError
+
 
     def closest_points(self, points, maxdist=None):
+
         raise NotImplementedError
-        
-    def to_bmesh(self, divisions=10):
-        self.curve.data.resolution_u = divisions
-        mesh = self.curve.to_mesh(bpy.context.scene, True, 'PREVIEW')
-        bmesh = bpy.data.objects.new(self.guid + '-bmesh', mesh)
-        bmesh.location = self.xyz
-        bpy.context.scene.objects.link(bmesh)
-        return bmesh
 
 
 # ==============================================================================
@@ -102,23 +115,18 @@ class BlenderCurve(BlenderGeometry):
 
 if __name__ == '__main__':
 
-    from compas_blender.utilities import draw_cuboid
+    from compas_blender.utilities import xdraw_points
+    from compas_blender.utilities import get_object_by_name
 
-    curve = BlenderCurve.from_selection()
 
-    print(curve.guid)
-    print(curve.curve)
-    print(curve.geometry)
-    print(curve.attributes)
-    print(curve.type)
-    print(curve.xyz)
-    
-    curve.hide()
-    curve.show()
-    curve.unselect()
-    curve.select()
-    curve.to_bmesh()
-    
-    points = curve.divide(number_of_segments=10)
-    for point in points:
-        draw_cuboid(Lx=0.1, Ly=0.1, Lz=0.1, pos=point)
+    object = get_object_by_name(name='BezierCurve')
+
+    curve = BlenderCurve(object=object)
+
+    print(curve)
+    print(curve.control_points())
+    print(curve.control_point_coordinates())
+
+    points = [{'pos': i, 'radius': 0.1} for i in curve.divide(number_of_segments=5)]
+
+    xdraw_points(points=points)

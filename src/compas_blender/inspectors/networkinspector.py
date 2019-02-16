@@ -5,15 +5,30 @@ from __future__ import print_function
 
 
 __all__ = [
-    'Button',
+    'NetworkInspector',
 ]
 
 
-class Button(object):
+class NetworkInspector(object):
 
     def __init__(self):
 
         pass
+
+
+    def DrawForeground(self, e):
+
+        raise NotImplementedError
+
+
+    def inspect_vertex(self, key):
+
+        raise NotImplementedError
+
+
+    def inspect_edge(self, key):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

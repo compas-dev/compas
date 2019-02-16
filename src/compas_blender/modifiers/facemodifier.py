@@ -5,15 +5,22 @@ from __future__ import print_function
 
 
 __all__ = [
-    'Button',
+    'FaceModifier',
 ]
 
 
-class Button(object):
+class FaceModifier(object):
 
-    def __init__(self):
+    @staticmethod
+    def move_face(self, key, constraint=None, allow_off=None):
 
-        pass
+        raise NotImplementedError
+
+
+    @staticmethod
+    def update_face_attributes(self, keys, names=None):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

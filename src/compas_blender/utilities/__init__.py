@@ -1,150 +1,157 @@
+
 """
 ********************************************************************************
 compas_blender.utilities
 ********************************************************************************
 
 .. currentmodule:: compas_blender.utilities
+<<<<<<< HEAD
+=======
 
+>>>>>>> origin/master
 
 This package contains many convenience functions for working and interacting
 with Blender.
 
 
 document
---------
+========
 
 .. autosummary::
     :toctree: generated/
+
+    get_document_name
+    get_document_filename
+    get_document_path
+    get_document_dirname
 
 
 layers
-------
+======
 
 .. autosummary::
     :toctree: generated/
 
+    create_layer
+    create_layers
+    create_layers_from_path
+    create_layers_from_paths
+    create_layers_from_dict
     clear_layer
     clear_layers
-    layer_mask
+    clear_current_layer
+    delete_layer
+    delete_layers
+
+
+misc
+====
+
+.. autosummary::
+    :toctree: generated/
+
+    get_tolerance
+    screenshot_current_view
+    wait
+    browse_for_folder
+    browse_for_file
+    display_message
+    display_text
+    display_image
+    display_html
+    update_settings
+    update_attributes
+    update_named_values
 
 
 objects
--------
+=======
 
 .. autosummary::
     :toctree: generated/
 
     delete_object
     delete_objects
-    delete_all_objects
+    delete_object_by_name
+    delete_objects_by_names
+    get_object_by_name
+    get_objects_by_names
     get_objects
     get_object_name
-    get_objects_name
-    get_object_attributes
-    get_objects_attributes
-    get_object_location
-    get_objects_location
+    get_objects_names
+    get_objects_layers
+    get_objects_types
+    get_objects_coordinates
+    get_object_property
+    get_objects_property
     get_points
     get_curves
     get_meshes
-    set_object_layer
-    set_objects_layer
-    set_object_show_name
-    set_objects_show_name
-    set_object_location
-    set_objects_location
-    set_object_rotation
-    set_objects_rotation
-    set_object_scale
-    set_objects_scale
-    join_objects
+    get_points_coordinates
+    get_curves_coordinates
+    select_object
+    select_objects
     select_point
     select_points
     select_curve
     select_curves
+    select_surface
+    select_surfaces
     select_mesh
     select_meshes
-    select_object
-    select_objects
-    select_all_objects
-    deselect_object
-    deselect_objects
-    deselect_all_objects
-    hide_object
-    hide_objects
-    show_object
-    show_objects
-
-
-misc
-----
-
-.. autosummary::
-    :toctree: generated/
+    set_select
+    set_deselect
+    set_objects_layer
+    set_objects_coordinates
+    set_objects_rotations
+    set_objects_scales
+    set_objects_show_names
+    set_objects_visible
+    set_object_property
+    set_objects_property
 
 
 drawing
--------
+=======
 
 .. autosummary::
     :toctree: generated/
 
-    delete_all_materials
     create_material
-    draw_cuboid
-    draw_cubes
-    draw_pipes
-    draw_plane
-    draw_spheres
-    draw_lines
-    draw_points
-    xdraw_cubes
-    xdraw_faces
-    xdraw_labels
-    xdraw_lines
-    xdraw_mesh
-    xdraw_pipes
-    xdraw_pointcloud
     xdraw_points
+    xdraw_lines
+    xdraw_geodesics
+    xdraw_breps
+    xdraw_cylinders
+    xdraw_pipes
+    xdraw_forces
     xdraw_spheres
+    xdraw_cubes
+    xdraw_mesh
+    xdraw_faces
+    xdraw_pointcloud
     xdraw_texts
 
-
-modifiers
----------
-
-.. autosummary::
-    :toctree: generated/
-
-    bevel
-    linear_array
-    subdivide
-    triangulate
-
-
 """
+
 from __future__ import absolute_import
 
-from .document import *
 from .objects import *
+from .document import *
+from .layers import *
 from .misc import *
 from .drawing import *
-from .modifiers import *
-from .layers import *
 
+from . import objects
 from . import document
 from . import layers
-from . import objects
 from . import misc
 from . import drawing
-from . import modifiers
 
 __all__ = []
 
+__all__ += objects.__all__
 __all__ += document.__all__
 __all__ += layers.__all__
-__all__ += objects.__all__
 __all__ += misc.__all__
 __all__ += drawing.__all__
-__all__ += modifiers.__all__
-

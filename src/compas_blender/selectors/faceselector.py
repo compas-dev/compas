@@ -5,15 +5,22 @@ from __future__ import print_function
 
 
 __all__ = [
-    'Button',
+    'FaceSelector',
 ]
 
 
-class Button(object):
+class FaceSelector(object):
 
-    def __init__(self):
+    @staticmethod
+    def select_face(self, message="Select a face."):
 
-        pass
+        raise NotImplementedError
+
+
+    @staticmethod
+    def select_faces(self, message="Select faces."):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

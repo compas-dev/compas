@@ -5,15 +5,22 @@ from __future__ import print_function
 
 
 __all__ = [
-    'Button',
+    'EdgeModifier'
 ]
 
 
-class Button(object):
+class EdgeModifier(object):
 
-    def __init__(self):
+    @staticmethod
+    def move_edge(self, key, constraint=None, allow_off=None):
 
-        pass
+        raise NotImplementedError
+
+
+    @staticmethod
+    def update_edge_attributes(self, keys, names=None):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

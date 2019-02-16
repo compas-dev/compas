@@ -5,15 +5,22 @@ from __future__ import print_function
 
 
 __all__ = [
-    'Button',
+    'EdgeSelector',
 ]
 
 
-class Button(object):
+class EdgeSelector(object):
 
-    def __init__(self):
+    @staticmethod
+    def select_edge(self, message="Select an edge."):
 
-        pass
+        raise NotImplementedError
+
+
+    @staticmethod
+    def select_edges(self, message="Select edges."):
+
+        raise NotImplementedError
 
 
 # ==============================================================================

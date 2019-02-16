@@ -1,665 +1,375 @@
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+from compas.datastructures import Mesh
+
 try:
     import bpy
 except ImportError:
     pass
 
-import json
-
-
-__author__     = ['Andrew Liew <liew@arch.ethz.ch>']
-__copyright__  = 'Copyright 2017, Block Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'liew@arch.ethz.ch'
-
 
 __all__ = [
     'delete_object',
     'delete_objects',
-    'delete_all_objects',
+    'delete_object_by_name',
+    'delete_objects_by_names',
+    'get_object_by_name',
+    'get_objects_by_names',
     'get_objects',
     'get_object_name',
-    'get_objects_name',
-    'get_object_attributes',
-    'get_objects_attributes',
-    'get_object_location',
-    'get_objects_location',
+    'get_objects_names',
+    'get_objects_layers',
+    'get_objects_types',
+    'get_objects_coordinates',
+    'get_object_property',
+    'get_objects_property',
     'get_points',
     'get_curves',
     'get_meshes',
-    'set_object_layer',
-    'set_objects_layer',
-    'set_object_show_name',
-    'set_objects_show_name',
-    'set_object_location',
-    'set_objects_location',
-    'set_object_rotation',
-    'set_objects_rotation',
-    'set_object_scale',
-    'set_objects_scale',
-    'join_objects',
+    'get_points_coordinates',
+    'get_curves_coordinates',
+    'select_object',
+    'select_objects',
     'select_point',
     'select_points',
     'select_curve',
     'select_curves',
+    'select_surface',
+    'select_surfaces',
     'select_mesh',
     'select_meshes',
-    'select_object',
-    'select_objects',
-    'select_all_objects',
-    'deselect_object',
-    'deselect_objects',
-    'deselect_all_objects',
-    'hide_object',
-    'hide_objects',
-    'show_object',
-    'show_objects'
+    'set_select',
+    'set_deselect',
+    'set_objects_layer',
+    'set_objects_coordinates',
+    'set_objects_rotations',
+    'set_objects_scales',
+    'set_objects_show_names',
+    'set_objects_visible',
+    'set_object_property',
+    'set_objects_property',
+    'mesh_from_bmesh',
 ]
 
 
 # ==============================================================================
-# Deleting
+# Delete
 # ==============================================================================
 
 def delete_object(object):
-    """ Delete an object.
 
-    Parameters:
-        object (object): Object to delete.
+    bpy.data.objects.remove(object)
 
-    Returns:
-        None
-    """
-    objs = bpy.data.objects
-    objs.remove(object, True)
+    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
 def delete_objects(objects):
-    """ Delete a list of objects.
 
-    Parameters:
-        objects (list): Objects to delete.
-
-    Returns:
-        None
-    """
-    objs = bpy.data.objects
     for object in objects:
-        objs.remove(object, True)
+        bpy.data.objects.remove(object)
+
+    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
 
-def delete_all_objects():
-    """ Delete all scene objects.
+def delete_object_by_name(name):
 
-     Parameters:
-        None
+    delete_object(object=get_object_by_name(name))
 
-    Returns:
-        None
-    """
-    for layer in range(20):
-        delete_objects(get_objects(layer=layer))
+
+def delete_objects_by_names(names):
+
+    delete_objects(objects=get_objects_by_names(names))
 
 
 # ==============================================================================
 # Get
 # ==============================================================================
 
-def get_objects(layer=None, name=None):
-    """ Retrieves the objects on a given layer or by its name.
+def get_object_by_name(name):
 
-    Parameters:
-        layer (int): Layer number.
-        name (str): Object name.
+    return bpy.data.objects[name]
 
-    Returns:
-        list: Objects in the layer or of given name.
-    """
-    if layer is not None:
-        objects = [object for object in bpy.data.objects if object.layers[layer]]
-    elif name:
-        try:
-            objects = bpy.data.objects[name]
-        except Exception:
-            objects = []
+
+def get_objects_by_names(names):
+
+    return [bpy.data.objects[name] for name in names]
+
+
+def get_objects(names=None, color=None, layer=None, type=None):
+
+    if names:
+        objects = get_objects_by_names(names)
+
+    elif color:
+        raise NotImplementedError
+
+    elif layer:
+        objects = list(bpy.data.collections[layer].objects)
+
+    elif type:
+        objects = [i for i in bpy.data.objects if i.type == type.upper()]
+
+    else:
+        objects = list(bpy.data.objects)
+
     return objects
 
 
-def get_object_location(object):
-    """ Retrieves the location of an object.
-
-    Parameters:
-        object (obj): Object to get location.
-
-    Returns:
-        list: Object location.
-    """
-    return list(object.location)
-
-
-def get_objects_location(objects):
-    """ Retrieves the location of objects.
-
-    Parameters:
-        objects (list): Objects to get locations.
-
-    Returns:
-        list: Object locations.
-    """
-    return [list(object.location) for object in objects]
-
-
 def get_object_name(object):
-    """ Retrieves the name of object.
 
-    Parameters:
-        object (obj): Object to get name.
-
-    Returns:
-        str: Object name.
-    """
-    if object.name[-5:-3] == '}.':
-        return object.name[:-4]
     return object.name
 
 
-def get_objects_name(objects):
-    """ Retrieves the names of objects.
+def get_objects_names(objects):
 
-    Parameters:
-        objects (list): Objects to get names.
-
-    Returns:
-        list: Object names.
-    """
-    names = []
-    for object in objects:
-        if object.name[-5:-3] == '}.':
-            names.append(object.name[:-4])
-        else:
-            names.append(object.name)
-    return names
+    return [get_object_name(object) for object in objects]
 
 
-def get_object_attributes(object):
-    """ Retrieves the attributes from the names of object.
+def get_objects_layers(objects):
 
-    Parameters:
-        object (obj): Object to get attributes.
+    return [object.users_collection for object in objects]
 
-    Returns:
-        dic: Object attributes.
-    """
-    name_ = get_object_name(object)
-    name = name_.replace("'", '"')
+
+def get_objects_types(objects):
+
+    return [object.type for object in objects]
+
+
+def get_objects_coordinates(objects):
+
+    return [list(object.location) for object in objects]
+
+
+def get_object_property(object, property):
+
     try:
-        return json.loads(name)
-    except Exception:
-        print('Error reading object names with JSON')
+        return object[property]
+    except:
+        return None
 
 
-def get_objects_attributes(objects):
-    """ Retrieves the attributes from the names of objects.
+def get_objects_property(objects, property):
 
-    Parameters:
-        objects (list): Objects to get attributes.
-
-    Returns:
-        list: Object attributes.
-    """
-    names = []
-    for name in get_objects_name(objects):
-        names.append(name.replace("'", '"'))
-    try:
-        return [json.loads(name) for name in names]
-    except Exception:
-        print('Error reading object names with JSON')
+    return [get_object_property(object, property) for object in objects]
 
 
-def get_points():
-    """ Retrieves all Empty objects in scene.
+def select_object(message="Select an object."):
 
-    Parameters:
-        None
-
-    Returns:
-        list: Empty objects.
-    """
-    objects = bpy.context.scene.objects
-    return [object for object in objects if object.type == 'EMPTY']
+    raise NotImplementedError
 
 
-def get_curves():
-    """ Retrieves all Curve objects in scene.
+def select_objects(message='Select objects.'):
 
-    Parameters:
-        None
-
-    Returns:
-        list: Curve objects.
-    """
-    objects = bpy.context.scene.objects
-    return [object for object in objects if object.type == 'CURVE']
-
-
-def get_meshes():
-    """ Retrieves all Mesh objects in scene.
-
-    Parameters:
-        None
-
-    Returns:
-        list: Mesh objects.
-    """
-    objects = bpy.context.scene.objects
-    return [object for object in objects if object.type == 'MESH']
+    raise NotImplementedError
 
 
 # ==============================================================================
-# Select
+# Points
 # ==============================================================================
 
-def select_point():
-    """ Select point (empty) object.
+def get_points(layer=None):
 
-    Parameters:
-        None
-
-    Returns:
-        obj: Empty object or None.
-    """
-    selected = bpy.context.selected_objects
-    if selected:
-        for object in selected:
-            if object.type == 'EMPTY':
-                return object
-    print('***** Point (empty) object was not selected *****')
-    return None
+    return [object for object in get_objects(layer=layer) if object.type == 'EMPTY']
 
 
-def select_points():
-    """ Select points (empty) objects.
+def get_points_coordinates(objects=None):
 
-    Parameters:
-        None
+    if objects is None:
+        objects = get_points()
 
-    Returns:
-        list: Empty objects or None.
-    """
-    selected = bpy.context.selected_objects
-    if selected:
-        return [object for object in selected if object.type == 'EMPTY']
-    print('***** Point (empty) objects were not selected *****')
-    return None
+    return [list(object.location) for object in objects if object.type == 'EMPTY']
 
 
-def select_curve():
-    """ Select curve object.
+def select_point(message='Select a point.'):
 
-    Parameters:
-        None
-
-    Returns:
-        obj: Curve object or None.
-    """
-    selected = bpy.context.selected_objects
-    if selected:
-        for object in selected:
-            if object.type == 'CURVE':
-                return object
-    print('***** Curve object was not selected *****')
-    return None
+    raise NotImplementedError
 
 
-def select_curves():
-    """ Select curve objects.
+def select_points(message='Select points.'):
 
-    Parameters:
-        None
-
-    Returns:
-        list: Curve objects or None.
-    """
-    selected = bpy.context.selected_objects
-    if selected:
-        return [object for object in selected if object.type == 'CURVE']
-    print('***** Curve objects were not selected *****')
-    return None
-
-
-def select_mesh():
-    """ Select Blender mesh object.
-
-    Parameters:
-        None
-
-    Returns:
-        obj: Blender mesh object or None.
-    """
-    selected = bpy.context.selected_objects
-    if selected:
-        for object in selected:
-            if object.type == 'MESH':
-                return object
-    print('***** Mesh object was not selected *****')
-    return None
-
-
-def select_meshes():
-    """ Select Blender mesh objects.
-
-    Parameters:
-        None
-
-    Returns:
-        list: Blender mesh objects or None.
-    """
-    selected = bpy.context.selected_objects
-    if selected:
-        return [object for object in selected if object.type == 'MESH']
-    print('***** Mesh objects were not selected *****')
-    return None
-
-
-def select_object(object):
-    """ Select specific object.
-
-    Parameters:
-        object (obj): Object to select.
-
-    Returns:
-        None
-    """
-    object.select = True
-
-
-def select_objects(objects):
-    """ Select specific objects.
-
-    Parameters:
-        objects (list): Objects to select.
-
-    Returns:
-        None
-    """
-    for object in objects:
-        object.select = True
-
-
-def select_all_objects():
-    """ Select all objects.
-
-    Parameters:
-        None
-
-    Returns:
-        None
-    """
-    objects = bpy.context.scene.objects
-    for object in objects:
-        object.select = True
-
-
-def deselect_object(object):
-    """ De-select a specific object.
-
-    Parameters:
-        object (obj): Object to de-select.
-
-    Returns:
-        None
-    """
-    object.select = False
-
-
-def deselect_objects(objects):
-    """ De-select specific objects.
-
-    Parameters:
-        objects (list): Objects to de-select.
-
-    Returns:
-        None
-    """
-    if not isinstance(objects, list):
-        objects = [objects]
-    for object in objects:
-        object.select = False
-
-
-def deselect_all_objects():
-    """ De-select all objects.
-
-    Parameters:
-        None
-
-    Returns:
-        None
-    """
-    deselect_objects(list(bpy.data.objects))
+    raise NotImplementedError
 
 
 # ==============================================================================
-# Visibility
+# Curves
 # ==============================================================================
 
-def hide_object(object):
-    """ Hide specific object.
 
-    Parameters:
-        object (obj): Object to hide.
+def select_curve(message='Select curve.'):
 
-    Returns:
-        None
-    """
-    object.hide = True
+    raise NotImplementedError
 
 
-def hide_objects(objects):
-    """ Hide specific objects.
+def select_curves(message='Select curves.'):
 
-    Parameters:
-        objects (list): Objects to hide.
-
-    Returns:
-        None
-    """
-    for object in objects:
-        object.hide = True
+    raise NotImplementedError
 
 
-def show_object(object):
-    """ Show specific object.
+def get_curves(layer=None):
 
-    Parameters:
-        object (obj): Object to show.
-
-    Returns:
-        None
-    """
-    object.hide = False
+    return [object for object in get_objects(layer=layer) if object.type == 'CURVE']
 
 
-def show_objects(objects):
-    """ Show specific objects.
+def get_curves_coordinates(objects):
 
-    Parameters:
-        objects (list): Objects to show.
-
-    Returns:
-        None
-    """
-    for object in objects:
-        object.hide = False
+    raise NotImplementedError
 
 
 # ==============================================================================
-# Set attributes
+# Meshes
 # ==============================================================================
 
-def set_object_layer(object, layer):
-    """ Changes the layer of the object.
+def select_mesh(message='Select a mesh.'):
 
-    Parameters:
-        object (obj): Object for layer change.
-        layer (int): Layer number.
+    raise NotImplementedError
 
-    Returns:
-        None
-    """
-    mask = tuple(i == layer for i in range(20))
-    object.layers = mask
+
+def select_meshes(message='Select meshes.'):
+
+    raise NotImplementedError
+
+
+def get_meshes(layer=None):
+
+    return [object for object in get_objects(layer=layer) if object.type == 'MESH']
+
+
+def mesh_from_bmesh(bmesh):
+
+    vertices = [list(vertex.co) for vertex in bmesh.data.vertices]
+    faces    = [list(face.vertices) for face in bmesh.data.polygons]
+
+    return Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
+
+
+# ==============================================================================
+# Surfaces
+# ==============================================================================
+
+def select_surface(message='Select a surface.'):
+
+    raise NotImplementedError
+
+
+def select_surfaces(message='Select surfaces.'):
+
+    raise NotImplementedError
+
+
+# ==============================================================================
+# Set
+# ==============================================================================
+
+def set_select(objects=None):
+
+    if objects:
+        for i in objects:
+            i.select_set(state=True)
+    else:
+        bpy.ops.object.select_all(action='SELECT')
+
+
+def set_deselect(objects=None):
+
+    if objects:
+        for i in objects:
+            i.select_set(state=False)
+    else:
+        bpy.ops.object.select_all(action='DESELECT')
 
 
 def set_objects_layer(objects, layer):
-    """ Changes the layer of the objects.
 
-    Parameters:
-        objects (list): Objects for layer change.
-        layer (int): Layer number.
-
-    Returns:
-        None
-    """
-    mask = tuple(i == layer for i in range(20))
     for object in objects:
-        object.layers = mask
+
+        for collection in object.users_collection:
+            collection.objects.unlink(object)
+
+        bpy.data.collections[layer].objects.link(object)
 
 
-def set_object_show_name(object, show=True):
-    """ Display the name of an object.
+def set_objects_coordinates(objects, coords):
 
-    Parameters:
-        object (obj): Object to display name.
-        show (bool): True or False.
-
-    Returns:
-        None
-    """
-    object.show_name = show
+    for i, j in zip(objects, coords):
+        i.location = j
 
 
-def set_objects_show_name(objects, show=True):
-    """ Display the name of objects.
+def set_objects_rotations(objects, rotations):
 
-    Parameters:
-        objects (list): Objects to display name.
-        show (bool): True or False.
+    for i, j in zip(objects, rotations):
+        i.rotation_euler = j
 
-    Returns:
-        None
-    """
+
+def set_objects_scales(objects, scales):
+
+    for i, j in zip(objects, scales):
+        i.scale = j
+
+
+def set_objects_show_names(objects, show=True):
+
+    for i in objects:
+        i.show_name = show
+
+
+def set_objects_visible(objects, visible=True):
+
+    for i in objects:
+        i.hide_viewport = not visible
+
+
+def set_object_property(object, property, value):
+
+        object[property] = value
+
+
+def set_objects_property(objects, property, value):
+
     for object in objects:
-        object.show_name = show
-
-
-def set_object_location(object, location):
-    """ Set the location of an object.
-
-    Parameters:
-        object (obj): Object to set location.
-        location (list): Location.
-
-    Returns:
-        None
-    """
-    object.location = location
-
-
-def set_objects_location(objects, locations):
-    """ Set the location of objects.
-
-    Parameters:
-        objects (list): Objects to set location.
-        locations (list): List of locations.
-
-    Returns:
-        None
-    """
-    for i, location in enumerate(locations):
-        objects[i].location = location
-
-
-def set_object_rotation(object, rotation):
-    """ Set the rotation of an object.
-
-    Parameters:
-        object (obj): Object to set rotation.
-        rotation (list): Rotation.
-
-    Returns:
-        None
-    """
-    object.rotation_euler = rotation
-
-
-def set_objects_rotation(objects, rotations):
-    """ Set the rotation of objects.
-
-    Parameters:
-        objects (list): Objects to set rotation.
-        rotations (list): List of rotations.
-
-    Returns:
-        None
-    """
-    for i, rotation in enumerate(rotations):
-        objects[i].rotation_euler = rotation
-
-
-def set_object_scale(object, scale):
-    """ Set the scale of an object.
-
-    Parameters:
-        object (obj): Object to set scale.
-        scale (list): Scale.
-
-    Returns:
-        None
-    """
-    object.scale = scale
-
-
-def set_objects_scale(objects, scales):
-    """ Set the scale of objects.
-
-    Parameters:
-        objects (list): Objects to set scale.
-        scales (list): List of scales.
-
-    Returns:
-        None
-    """
-    for i, scale in enumerate(scales):
-        objects[i].scale = scale
-
-
-# ==============================================================================
-# Misc
-# ==============================================================================
-
-def join_objects(objects):
-    """ Join a list of objects.
-
-    Notes:
-        - The first object in the list becomes the master object.
-
-    Parameters:
-        objects (list): Objects to join.
-
-    Returns:
-        obj: Joined object.
-    """
-    select_objects(objects=objects)
-    bpy.context.scene.objects.active = objects[0]
-    bpy.ops.object.join()
-    return objects[0]
+        object[property] = value
 
 
 # ==============================================================================
 # Main
 # ==============================================================================
 
-if __name__ == "__main__":
+if __name__ == '__main__':
 
-    objects = get_objects(layer=0)
-    object = objects[0]
+    objects = get_objects(layer='Collection 1')
+    delete_objects(objects=objects)
+    # delete_objects(['Cube', 'Cylinder'])
+    # points  = get_points()
+
+    # print(get_objects(names=['Plane', 'Sphere']))
+    # print(get_object_by_name(name='Plane'))
+    # print(get_objects_by_names(names=['Plane', 'Sphere']))
+    # print(get_objects(layer='Collection 1'))
+    # print(get_objects(type='Mesh'))
+
+    # print(get_object_name(object=objects[0]))
+    # print(get_objects_names(objects=objects))
+    # print(get_objects_layers(objects=objects))
+    # print(get_objects_types(objects=objects))
+    # print(get_objects_coordinates(objects=objects))
+    # print(get_object_property(object=objects[0], property='ex'))
+    # print(get_objects_property(objects=objects, property='ex'))
+
+    # print(get_points_coordinates())
+    # print(get_curves())
+    # print(get_meshes())
+
+    # set_select(points)
+    # set_deselect(points)
+
+    # set_objects_coordinates(objects=objects[:2], coords=[[0, 0, 3], [0, 0, 4]])
+    # set_objects_rotations(objects=objects[:2], rotations=[[2, 0, 0], [0, 2, 2]])
+    # set_objects_scales(objects=objects[:2], scales=[[2, 2, 2], [3, 3, 3]])
+
+    # set_objects_show_names(objects=objects, show=0)
+    # set_objects_visible(objects=objects, visible=1)
+
+    # set_object_property(object=objects[1], property='ex', value=[1, 2, 3])
+    # set_objects_property(objects=objects, property='ex', value=[1, 2, 3])

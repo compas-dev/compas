@@ -5,15 +5,22 @@ from __future__ import print_function
 
 
 __all__ = [
-    'Button',
+    'VertexSelector',
 ]
 
 
-class Button(object):
+class VertexSelector(object):
 
-    def __init__(self):
+    @staticmethod
+    def select_vertex(self, message="Select a vertex."):
 
-        pass
+        raise NotImplementedError
+
+
+    @staticmethod
+    def select_vertices(self, message="Select vertices."):
+
+        raise NotImplementedError
 
 
 # ==============================================================================
