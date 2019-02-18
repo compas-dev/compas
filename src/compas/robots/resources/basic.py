@@ -65,7 +65,7 @@ class DefaultMeshLoader(AbstractMeshLoader):
 
     def __init__(self, **kwargs):
         super(DefaultMeshLoader, self).__init__()
-        self.attr = dict() or kwargs
+        self.attr = kwargs or dict()
 
     def can_load_mesh(self, url):
         """Determine whether this loader can load a given mesh URL.
@@ -82,7 +82,7 @@ class DefaultMeshLoader(AbstractMeshLoader):
             Otherwise ``False``.
         """
 
-        url = self._get_local_path(url) or url
+        url = self._get_local_path(url)
         scheme = urlparse(url).scheme
 
         # Local files have either:
@@ -112,13 +112,14 @@ class DefaultMeshLoader(AbstractMeshLoader):
         :class:`Mesh`
             Instance of a mesh.
         """
-        if url.startswith('file:///'):
-            url = url[8:]
-
+        # if url.startswith('file:///'):
+        #     url = url[8:]
+        
+        url = self._get_local_path(url)
         return _mesh_import(url, url)
 
     def _get_local_path(self, url):
-        """Concatenates filepath directory to URL only if defined in the keyword arguments.
+        """Concatenates basepath directory to URL only if defined in the keyword arguments.
 
         Parameters
         ----------
@@ -128,12 +129,17 @@ class DefaultMeshLoader(AbstractMeshLoader):
         Returns
         -------
         url: str
-            Extended mesh location if filepath in kwargs. 
-            Else, ir returns None. 
+            Extended mesh location if basepath in kwargs. 
+            Else, it returns None. 
         """
-        filepath = self.attr.get('filepath') 
-        if filepath:
-            return os.path.join(filepath, url)
+        if url.startswith('file:///'):
+            url = url[8:]
+        
+        basepath = self.attr.get('basepath') 
+        if basepath:
+            return os.path.join(basepath, url)
+
+        return url
 
 
 def _get_file_format(url):
