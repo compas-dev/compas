@@ -87,6 +87,18 @@ circle      3-tuple of center (point), normal (vector) and radius (float).
     For example, ``scale_vector_xy`` accepts both 2D and 3D vectors,
     but always returns a 3D vector with the Z-component set to zero.
 
+Analytical
+----------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    circle_evaluate
+    ellipse_evaluate
+    archimedean_spiral_evaluate
+    logarithmic_spiral_evaluate
+    helix_evaluate
 
 Angles
 ------
