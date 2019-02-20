@@ -82,7 +82,7 @@ class DefaultMeshLoader(AbstractMeshLoader):
             Otherwise ``False``.
         """
 
-        url = self._get_local_path(url)
+        url = self._get_local_url(url)
         scheme = urlparse(url).scheme
 
         # Local files have either:
@@ -111,15 +111,13 @@ class DefaultMeshLoader(AbstractMeshLoader):
         -------
         :class:`Mesh`
             Instance of a mesh.
-        """
-        # if url.startswith('file:///'):
-        #     url = url[8:]
-        
-        url = self._get_local_path(url)
+        """        
+        url = self._get_local_url(url)
         return _mesh_import(url, url)
 
-    def _get_local_path(self, url):
+    def _get_local_url(self, url):
         """Concatenates basepath directory to URL only if defined in the keyword arguments.
+        It also strips out the scheme 'file:///' from the URL if present.
 
         Parameters
         ----------
@@ -130,7 +128,7 @@ class DefaultMeshLoader(AbstractMeshLoader):
         -------
         url: str
             Extended mesh location if basepath in kwargs. 
-            Else, it returns None. 
+            Else, it returns url. 
         """
         if url.startswith('file:///'):
             url = url[8:]
@@ -138,7 +136,6 @@ class DefaultMeshLoader(AbstractMeshLoader):
         basepath = self.attr.get('basepath') 
         if basepath:
             return os.path.join(basepath, url)
-
         return url
 
 
