@@ -42,6 +42,7 @@ mesh
     mesh_update_edge_attributes
     mesh_update_face_attributes
     mesh_move_vertex
+    mesh_move_vertices
     mesh_identify_vertices
 
 

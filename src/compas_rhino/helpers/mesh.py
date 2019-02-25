@@ -52,6 +52,7 @@ __all__ = [
     'mesh_update_edge_attributes',
     'mesh_update_face_attributes',
     'mesh_move_vertex',
+    'mesh_move_vertices',
     'mesh_identify_vertices',
 ]
 
@@ -890,6 +891,23 @@ def mesh_move_vertex(mesh, key, constraint=None, allow_off=False):
     """
     return VertexModifier.move_vertex(mesh, key, constraint=constraint, allow_off=allow_off)
 
+def mesh_move_vertices(mesh, keys):
+    """Move on vertices of the mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    keys : list
+        The vertices to move.
+    constraint : Rhino.Geometry (None)
+        A Rhino geometry object to constrain the movement to.
+        By default the movement is unconstrained.
+    allow_off : bool (False)
+        Allow the vertex to move off the constraint.
+
+    """
+    return VertexModifier.move_vertices(mesh, keys)
 
 def mesh_update_edge_attributes(mesh, keys, names=None):
     """Update the attributes of the edges of a mesh.
