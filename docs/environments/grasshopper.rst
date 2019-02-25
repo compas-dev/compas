@@ -13,7 +13,7 @@ Verify setup
 ============
 
 To verify that everything is working properly, simply create a GhPython 
-component on your Grasshopper canvas and paste following script:
+component on your Grasshopper canvas, paste following script and hit `OK`.
 
 .. code-block:: python
 
@@ -41,12 +41,13 @@ To refresh a changed python library, run the following code from any GhPython
 component on your canvas:
 
 .. code-block:: python
+
     from compas_ghpython import unload_modules
 
     unload_modules('compas')
 
 
-Differences to working in the Rhino PythonScript Editor
+Differences to the Rhino PythonScript Editor
 =======================================================
 
 
