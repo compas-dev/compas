@@ -37,7 +37,7 @@ component on your Grasshopper canvas, paste following script and hit `OK`.
 Reloading changed libraries
 ===========================
 
-To refresh a changed python library, run the following code from any GhPython
+To refresh a changed Python library, run the following code from any GhPython
 component on your canvas:
 
 .. code-block:: python
