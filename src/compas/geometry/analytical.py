@@ -10,6 +10,7 @@ __all__ = [
 	'helix_evaluate'
 ]
 
+
 def circle_evaluate(t, r, z=0):
 	"""Evalutes a circle at a parameter.
 
@@ -28,13 +29,14 @@ def circle_evaluate(t, r, z=0):
 
 	Returns
 	-------
-	tuple
+	list
 		The (x, y, z) coordinates.
 
 	"""
-	return (r * cos(t), r * sin(t), z)
+	return [r * cos(t), r * sin(t), z]
 
-def ellipse_evaluate(t, r, z=0):
+
+def ellipse_evaluate(t, a, b, z=0):
 	"""Evalutes an ellipse at a parameter.
 
 	Parameters
@@ -54,11 +56,12 @@ def ellipse_evaluate(t, r, z=0):
 
 	Returns
 	-------
-	tuple
+	list
 		The (x, y, z) coordinates.
 
 	"""
-	return (a * cos(t), b * sin(t), z)
+	return [a * cos(t), b * sin(t), z]
+
 
 def archimedean_spiral_evaluate(t, a, b, z=0):
 	"""Evalutes a spiral at a parameter. The analytical polar equation is r = a + b * theta.
@@ -76,7 +79,7 @@ def archimedean_spiral_evaluate(t, a, b, z=0):
 
 	Returns
 	-------
-	tuple
+	list
 		The (x, y, z) coordinates.
 
 	Notes
@@ -90,7 +93,8 @@ def archimedean_spiral_evaluate(t, a, b, z=0):
 	.. [1] GeoGebra. *Archimedean Spiral built by parametric equations*.
 		   Available at: https://www.geogebra.org/m/dZuH5hWa.
 	"""
-	return (b * t * cos(t + a), b * t * sin(t + a), z)
+	return [b * t * cos(t + a), b * t * sin(t + a), z]
+
 
 def logarithmic_spiral_evaluate(t, a, b, z=0):
 	"""Evalutes a logarithmic spiral at a parameter. The analytical polar equation is r = a * exp(b * theta).
@@ -108,7 +112,7 @@ def logarithmic_spiral_evaluate(t, a, b, z=0):
 
 	Returns
 	-------
-	tuple
+	list
 		The (x, y, z) coordinates.
 
 	References
@@ -116,7 +120,8 @@ def logarithmic_spiral_evaluate(t, a, b, z=0):
 	.. [1] GeoGebra. *An equiangular spiral - parametric equation*.
 		   Available at: https://www.geogebra.org/m/zsHgCvq7.
 	"""
-	return (a * exp(b * t) * cos(t), a * exp(b * t) * sin(t), z)
+	return [a * exp(b * t) * cos(t), a * exp(b * t) * sin(t), z]
+
 
 def helix_evaluate(t, a, b):
 	"""Evalutes an helix at a parameter.
@@ -134,21 +139,20 @@ def helix_evaluate(t, a, b):
 
 	Returns
 	-------
-	tuple
+	list
 		The (x, y, z) coordinates.
 
 	Notes
 	-----
-	An interpreatation of the constants a and b are:
-		- the radius of the helix is a, and
-		- the slope of the helix is b / a.
+	An interpretation of the constants a and b are the radius of the helix is a, and the slope of the helix is b / a.
 
 	References
 	----------
 	.. [1] Wolfram MathWorld. *Helix*.
 		   Available at: http://mathworld.wolfram.com/Helix.html.
 	"""
-	return (a * cos(t), a * sin(t), b * t)
+	return [a * cos(t), a * sin(t), b * t]
+
 
 # ==============================================================================
 # Main
