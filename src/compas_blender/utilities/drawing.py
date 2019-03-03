@@ -62,7 +62,7 @@ def create_material(color, alpha=1):
 
     if ckey not in names:
         material = bpy.data.materials.new(name=ckey)
-        material.diffuse_color = color
+        material.diffuse_color = color + [alpha]
         return material
     else:
         return bpy.data.materials[ckey]
