@@ -62,15 +62,16 @@ class SubdMesh(Mesh):
 # any subd algorithm should return a new subd mesh, leaving the control mesh intact
 
 
-def mesh_subdivide(mesh, scheme='tri', **options):
+def mesh_subdivide(mesh, scheme='catmullclark', **options):
     """Subdivide the input mesh.
 
     Parameters
     ----------
     mesh : Mesh
         A mesh object.
-    scheme : {'tri', 'corner', 'catmullclark', 'doosabin'}.
+    scheme : {'tri', 'corner', 'catmullclark', 'doosabin'}, optional
         The scheme according to which the mesh should be subdivided.
+        Default is ``'catmullclark'``.
     options : dict
         Optional additional keyword arguments.
 
