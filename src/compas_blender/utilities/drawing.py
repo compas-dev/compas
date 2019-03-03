@@ -42,24 +42,18 @@ __all__ = [
 
 
 def _link_objects(objects, copy=None, layer=None):
-
     for object in objects:
         bpy.context.collection.objects.link(object)
-
     if copy:
         delete_object(object=copy)
-
     if layer:
         set_objects_layer(objects=objects, layer=layer)
-
     return objects
 
 
 def create_material(color, alpha=1):
-
     ckey  = '-'.join(['{0:.2f}'.format(i) for i in color + [alpha]])
     names = [i.name for i in bpy.data.materials]
-
     if ckey not in names:
         material = bpy.data.materials.new(name=ckey)
         material.diffuse_color = color + [alpha]
@@ -69,20 +63,15 @@ def create_material(color, alpha=1):
 
 
 def xdraw_points(points, layer=None):
-
     bpy.ops.object.empty_add(type='SPHERE', radius=1, location=[0, 0, 0])
     copy = bpy.context.object
-
     objects = [0] * len(points)
-
     for c, data in enumerate(points):
-
         object          = copy.copy()
         object.scale   *= data.get('radius', 1)
         object.location = data.get('pos', [0, 0, 0])
         object.name     = data.get('name', 'point')
         objects[c]      = object
-
     return _link_objects(objects, copy, layer)
 
 

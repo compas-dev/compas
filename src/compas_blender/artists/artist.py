@@ -30,35 +30,25 @@ class Artist(object):
         self.edge_objects   = []
         self.face_objects   = []
 
-
     def redraw(self, timeout=None):
-
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
 
-
     def clear_layer(self):
-
         raise NotImplementedError
 
 
     def save(self, path, width=1920, height=1080, scale=1,
              draw_grid=False, draw_world_axes=False, draw_cplane_axes=False, background=False):
-
         raise NotImplementedError
 
 
     def draw_points(self, points, layer=None, clear_layer=False, redraw=False):
-
         raise NotImplementedError
-
 
     def draw_lines(self, lines, layer=None, clear_layer=False, redraw=False):
-
         raise NotImplementedError
 
-
     def draw_polygons(self, polygons, layer=None, clear_layer=False, redraw=False):
-
         raise NotImplementedError
 
 
