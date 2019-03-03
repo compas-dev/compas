@@ -5,6 +5,7 @@ from __future__ import division
 from matplotlib.patches import Circle
 
 from compas.utilities import valuedict
+from compas.utilities import pairwise
 from compas.plotters.plotter import Plotter
 
 try:
@@ -288,14 +289,23 @@ class NetworkPlotter(Plotter):
             segments.append([self.datastructure.vertex_coordinates(u, 'xy'), self.datastructure.vertex_coordinates(v, 'xy')])
         self.edgecollection.set_segments(segments)
 
+    # def draw_path(self, path):
+    #     edges = []
+    #     for u, v in pairwise(path):
+    #         if not network.has_edge(u, v):
+    #             u, v = v, u
+    #         edges.append((u, v))
+    #     self.draw_edges(
+    #         color={(u, v): '#ff0000' for u, v in edges},
+    #         width={(u, v): 5.0 for u, v in edges}
+    #     )
+
 
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    import seaborn
 
     import compas
 

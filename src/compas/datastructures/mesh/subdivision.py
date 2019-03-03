@@ -8,6 +8,7 @@ from math import pi
 from compas.geometry import centroid_points
 
 from compas.datastructures.mesh._mesh import Mesh
+from compas.datastructures.mesh.operations import mesh_split_edge
 
 
 __all__ = [
@@ -134,7 +135,7 @@ def mesh_subdivide_quad(mesh, k=1):
         subd = mesh.copy()
 
         for u, v in list(subd.edges()):
-            subd.split_edge(u, v, allow_boundary=True)
+            mesh_split_edge(subd, u, v, allow_boundary=True)
 
         for fkey in mesh.faces():
 
@@ -188,7 +189,7 @@ def mesh_subdivide_corner(mesh, k=1):
 
         # split every edge
         for u, v in list(subd.edges()):
-            subd.split_edge(u, v, allow_boundary=True)
+            mesh_split_edge(subd, u, v, allow_boundary=True)
 
         # create 4 new faces for every old face
         for fkey in mesh.faces():
@@ -337,7 +338,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         for u, v in mesh.edges():
 
-            w = subd.split_edge(u, v, allow_boundary=True)
+            w = mesh_split_edge(subd, u, v, allow_boundary=True)
 
             # document why this is necessary
             # everything else in this loop is just quad subdivision

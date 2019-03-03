@@ -5,6 +5,7 @@ from __future__ import print_function
 
 from ._network import *
 
+from .equilibrium import *
 from .combinatorics import *
 from .complementarity import *
 from .duality import *

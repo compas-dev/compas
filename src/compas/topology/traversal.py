@@ -8,7 +8,6 @@ from compas.utilities import pairwise
 
 __all__ = [
     'depth_first_ordering',
-    'depth_first_tree',
     'breadth_first_ordering',
     'breadth_first_traverse',
     'breadth_first_paths',
@@ -94,102 +93,102 @@ def depth_first_ordering(adjacency, root):
     return ordering
 
 
-def depth_first_tree(adjacency, root):
-    """Construct a spanning tree using a depth-first search.
+# def depth_first_tree(adjacency, root):
+#     """Construct a spanning tree using a depth-first search.
 
-    Parameters
-    ----------
-    adjacency : dict
-        An adjacency dictionary.
-    root : hashable
-        The identifier of the root node.
+#     Parameters
+#     ----------
+#     adjacency : dict
+#         An adjacency dictionary.
+#     root : hashable
+#         The identifier of the root node.
 
-    Returns
-    -------
-    list
-        List of nodes in depth-first order.
-    dict
-        Dictionary of predecessors for each of the nodes.
-    list
-        The depth-first paths.
+#     Returns
+#     -------
+#     list
+#         List of nodes in depth-first order.
+#     dict
+#         Dictionary of predecessors for each of the nodes.
+#     list
+#         The depth-first paths.
 
-    Examples
-    --------
-    .. plot::
-        :include-source:
+#     Examples
+#     --------
+#     .. plot::
+#         :include-source:
 
-        import compas
-        from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
-        from compas.topology import depth_first_tree
-        from compas.utilities import pairwise
+#         import compas
+#         from compas.datastructures import Mesh
+#         from compas.plotters import MeshPlotter
+#         from compas.topology import depth_first_tree
+#         from compas.utilities import pairwise
 
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
+#         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        edges = list(mesh.edges())
+#         edges = list(mesh.edges())
 
-        root = mesh.get_any_vertex()
+#         root = mesh.get_any_vertex()
 
-        ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
+#         ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
 
-        edgecolor = {}
-        edgewidth = {}
+#         edgecolor = {}
+#         edgewidth = {}
 
-        for u, v in pairwise(paths[0]):
-            if not mesh.has_edge(u, v):
-                u, v = v, u
-            edgecolor[(u, v)] = '#ff0000'
-            edgewidth[(u, v)] = 3.0
+#         for u, v in pairwise(paths[0]):
+#             if not mesh.has_edge(u, v):
+#                 u, v = v, u
+#             edgecolor[(u, v)] = '#ff0000'
+#             edgewidth[(u, v)] = 3.0
 
-        for path in paths[1:]:
-            parent = predecessors[path[0]]
-            for u, v in pairwise([parent] + path):
-                if not mesh.has_edge(u, v):
-                    u, v = v, u
-                edgecolor[(u, v)] = '#00ff00'
-                edgewidth[(u, v)] = 3.0
+#         for path in paths[1:]:
+#             parent = predecessors[path[0]]
+#             for u, v in pairwise([parent] + path):
+#                 if not mesh.has_edge(u, v):
+#                     u, v = v, u
+#                 edgecolor[(u, v)] = '#00ff00'
+#                 edgewidth[(u, v)] = 3.0
 
-        plotter = MeshPlotter(mesh, figsize=(10, 7))
+#         plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-        plotter.draw_vertices(text='key', facecolor={root: '#ff0000'}, radius=0.2)
-        plotter.draw_edges(color=edgecolor, width=edgewidth)
+#         plotter.draw_vertices(text='key', facecolor={root: '#ff0000'}, radius=0.2)
+#         plotter.draw_edges(color=edgecolor, width=edgewidth)
 
-        plotter.show()
+#         plotter.show()
 
-    """
-    adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
-    tovisit = [root]
-    visited = set()
-    ordering = []
-    predecessors = {}
-    paths = [[root]]
+#     """
+#     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
+#     tovisit = [root]
+#     visited = set()
+#     ordering = []
+#     predecessors = {}
+#     paths = [[root]]
 
-    while tovisit:
-        # pop the last added element from the stack
-        node = tovisit.pop()
+#     while tovisit:
+#         # pop the last added element from the stack
+#         node = tovisit.pop()
 
-        if node not in visited:
-            paths[-1].append(node)
+#         if node not in visited:
+#             paths[-1].append(node)
 
-            # mark the node as visited
-            visited.add(node)
-            ordering.append(node)
+#             # mark the node as visited
+#             visited.add(node)
+#             ordering.append(node)
 
-            # add the unvisited nbrs to the stack
-            nodes = adjacency[node] - visited
+#             # add the unvisited nbrs to the stack
+#             nodes = adjacency[node] - visited
 
-            if nodes:
-                for child in nodes:
-                    predecessors[child] = node
-            else:
-                paths.append([])
+#             if nodes:
+#                 for child in nodes:
+#                     predecessors[child] = node
+#             else:
+#                 paths.append([])
 
-            tovisit.extend(nodes)
+#             tovisit.extend(nodes)
 
-    if not len(paths[-1]):
-        del paths[-1]
+#     if not len(paths[-1]):
+#         del paths[-1]
 
-    return ordering, predecessors, paths
+#     return ordering, predecessors, paths
 
 
 # ==============================================================================
@@ -595,27 +594,27 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 # ==============================================================================
 
 
-def travel(adjacency, weights, start=None):
-    points = list(adjacency.keys())
-    start = start or points[0]
-    distance = dijkstra_distances(adjacency, weights, start)
+# def travel(adjacency, weights, start=None):
+#     points = list(adjacency.keys())
+#     start = start or points[0]
+#     distance = dijkstra_distances(adjacency, weights, start)
 
-    tovisit = set(adjacency.keys())
-    visited = set()
+#     tovisit = set(adjacency.keys())
+#     visited = set()
 
-    tovisit.remove(start)
-    visited.add(start)
+#     tovisit.remove(start)
+#     visited.add(start)
 
-    path = [start]
+#     path = [start]
 
-    while tovisit:
-        u = min(tovisit, key=lambda k: distance[k])
-        tovisit.remove(u)
-        visited.add(u)
+#     while tovisit:
+#         u = min(tovisit, key=lambda k: distance[k])
+#         tovisit.remove(u)
+#         visited.add(u)
 
-        path.append(u)
+#         path.append(u)
 
-    return path
+#     return path
 
 
 # ==============================================================================
@@ -624,48 +623,50 @@ def travel(adjacency, weights, start=None):
 
 if __name__ == '__main__':
 
-    testrun = 4
+    testrun = 2
 
     # ==========================================================================
     # testrun 1
     # ==========================================================================
 
-    if testrun == 1:
-        import compas
-        from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
+    # if testrun == 1:
+    #     import compas
+    #     from compas.datastructures import Mesh
+    #     from compas.plotters import MeshPlotter
 
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
+    #     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        edges = list(mesh.edges())
+    #     edges = list(mesh.edges())
 
-        root = mesh.get_any_vertex()
+    #     root = mesh.get_any_vertex()
 
-        ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
+    #     print(root)
 
-        edgecolor = {}
-        edgewidth = {}
+    #     ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
 
-        for u, v in pairwise(paths[0]):
-            if not mesh.has_edge(u, v):
-                u, v = v, u
-            edgecolor[(u, v)] = '#ff0000'
-            edgewidth[(u, v)] = 5.0
+    #     edgecolor = {}
+    #     edgewidth = {}
 
-        for path in paths[1:]:
-            parent = predecessors[path[0]]
-            for u, v in pairwise([parent] + path):
-                if not mesh.has_edge(u, v):
-                    u, v = v, u
-                edgecolor[(u, v)] = '#00ff00'
-                edgewidth[(u, v)] = 5.0
+    #     for u, v in pairwise(paths[0]):
+    #         if not mesh.has_edge(u, v):
+    #             u, v = v, u
+    #         edgecolor[(u, v)] = '#ff0000'
+    #         edgewidth[(u, v)] = 5.0
 
-        plotter = MeshPlotter(mesh, figsize=(10, 7))
+    #     for path in paths[1:]:
+    #         parent = predecessors[path[0]]
+    #         for u, v in pairwise([parent] + path):
+    #             if not mesh.has_edge(u, v):
+    #                 u, v = v, u
+    #             edgecolor[(u, v)] = '#00ff00'
+    #             edgewidth[(u, v)] = 5.0
 
-        plotter.draw_vertices(text='key', facecolor={key: '#ff0000' for key in (root, )}, radius=0.2)
-        plotter.draw_edges(color=edgecolor, width=edgewidth)
+    #     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-        plotter.show()
+    #     plotter.draw_vertices(text='key', facecolor={key: '#ff0000' for key in (root, )}, radius=0.2)
+    #     plotter.draw_edges(color=edgecolor, width=edgewidth)
+
+    #     plotter.show()
 
     # dynamic traversal to visualize the difference
     # between DFS and BFS
@@ -686,7 +687,7 @@ if __name__ == '__main__':
         adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
 
         start = 21
-        end = 22
+        end = 11
 
         path = shortest_path(adjacency, start, end)
 

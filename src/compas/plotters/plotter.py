@@ -312,7 +312,7 @@ class Plotter(object):
         """
         collection.remove()
 
-    def show(self, autoscale=True, tight=False):
+    def show(self, autoscale=True):
         """Displays the plot.
 
         """
@@ -605,6 +605,8 @@ class Plotter(object):
 
         """
         self.axes.autoscale()
+        if self.tight:
+            plt.tight_layout()
         plt.pause(pause)
 
     def update_pointcollection(self, collection, centers, radius=1.0):
