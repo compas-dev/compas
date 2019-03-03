@@ -1,14 +1,9 @@
-
 """
 ********************************************************************************
 compas_blender.utilities
 ********************************************************************************
 
 .. currentmodule:: compas_blender.utilities
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 
 This package contains many convenience functions for working and interacting
 with Blender.
@@ -133,8 +128,9 @@ drawing
     xdraw_texts
 
 """
-
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .objects import *
 from .document import *
@@ -142,16 +138,4 @@ from .layers import *
 from .misc import *
 from .drawing import *
 
-from . import objects
-from . import document
-from . import layers
-from . import misc
-from . import drawing
-
-__all__ = []
-
-__all__ += objects.__all__
-__all__ += document.__all__
-__all__ += layers.__all__
-__all__ += misc.__all__
-__all__ += drawing.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]

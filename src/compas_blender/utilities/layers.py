@@ -31,30 +31,25 @@ __all__ = [
 # ==============================================================================
 
 def create_layer(layer):
-
     collection = bpy.data.collections.new(layer)
     bpy.context.scene.collection.children.link(collection)
 
 
 def create_layers(layers):
-
     for layer in layers:
         create_layer(layer=layer)
 
 
 def create_layers_from_path(path, separator='::'):
-
     raise NotImplementedError
 
 
 def create_layers_from_paths(paths, separator='::'):
-
     for path in paths:
         create_layers_from_path(path=path)
 
 
 def create_layers_from_dict(layers):
-
     raise NotImplementedError
 
 
@@ -63,18 +58,15 @@ def create_layers_from_dict(layers):
 # ==============================================================================
 
 def clear_layer(layer):
-
     delete_objects(objects=get_objects(layer=layer))
 
 
 def clear_layers(layers):
-
     for layer in layers:
         clear_layer(layer=layer)
 
 
 def clear_current_layer():
-
     raise NotImplementedError
 
 
@@ -83,18 +75,14 @@ def clear_current_layer():
 # ==============================================================================
 
 def delete_layer(layer):
-
     collection = bpy.data.collections[layer]
     bpy.context.scene.collection.children.unlink(collection)
-
     bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
-
     collection = bpy.data.collections[layer]
     bpy.data.collections.remove(collection)
 
 
 def delete_layers(layers):
-
     for layer in layers:
         delete_layer(layer=layer)
 
