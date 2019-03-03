@@ -26,10 +26,10 @@ linter: open the ``Command Palette`` (``Ctrl+Shift+P``) and select the
 Run scripts
 ===========
 
-To run Python scripts from within VS Code, simply open the file press ``F5``. This will
-start the script with the debugger attached, which means you can add breakpoints
-(clicking on the gutter, next the the line numbers), inspect variables and step
-debug your code.
+To run Python scripts from within VS Code, simply open the file and press ``F5``.
+This will start the script with the debugger attached, which means you can add
+breakpoints (clicking on the gutter, next the the line numbers), inspect variables
+and step into your code for debugging.
 
 Alternatively, use ``Ctrl+F5`` to start the script without debugger.
 
