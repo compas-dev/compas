@@ -3,6 +3,7 @@ from numpy import argmax
 from numpy import argmin
 from numpy import zeros
 
+import matplotlib
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 from compas.plotters.core.utilities import assert_axes_dimension

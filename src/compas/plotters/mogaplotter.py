@@ -3,9 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import matplotlib
 import re
 import json
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 
