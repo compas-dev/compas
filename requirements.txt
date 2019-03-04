@@ -1,5 +1,5 @@
 cython
-matplotlib==2.1.0
+matplotlib
 networkx
 numba
 numpy
