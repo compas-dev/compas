@@ -3,7 +3,7 @@ matplotlib
 networkx
 numba
 numpy
-# pillow
+pillow
 planarity
 scipy
 sympy
