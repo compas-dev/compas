@@ -15,7 +15,7 @@ except ImportError:
     compas.raise_if_ironpython()
 
 try:
-    from propertylist import PropertyListForm
+    from compas_rhino.etoforms import PropertyListForm
 
 except:
     try:
