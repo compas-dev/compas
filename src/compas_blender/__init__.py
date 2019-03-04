@@ -27,7 +27,7 @@ from __future__ import print_function
 from .utilities import *
 
 
-__version__ = '0.4.15'
+__version__ = '0.4.16'
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
