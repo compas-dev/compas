@@ -128,8 +128,10 @@ class Proxy(object):
         self._process = None
         self._function = None
         self._profile = None
+
         self.service = service
         self.package = package
+
         self._server = self.try_reconnect()
         if self._server is None:
             self._server = self.start_server()

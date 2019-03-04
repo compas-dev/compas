@@ -14,8 +14,39 @@ try:
 except ImportError:
     compas.raise_if_ironpython()
 
+try:
+    from propertylist import PropertyListForm
+
+except:
+    try:
+        from Rhino.UI.Dialogs import ShowPropertyListBox
+
+    except ImportError:
+        compas.raise_if_ironpython()
+else:
+    try:
+        import clr
+        clr.AddReference('Rhino.UI')
+        import Rhino.UI
+
+    except ImportError:
+        compas.raise_if_ironpython()
+
 
 __all__ = ['VertexModifier']
+
+
+def rhino_update_named_values(names, values, message='', title='Update named values'):
+    try:
+        dialog = PropertyListForm(names, values)
+    except:
+        values = ShowPropertyListBox(message, title, names, values)
+    else:
+        if dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow):
+            values = dialog.values
+        else:
+            values = None
+    return values
 
 
 class VertexModifier(object):
@@ -115,6 +146,25 @@ class VertexModifier(object):
 
     @staticmethod
     def update_vertex_attributes(self, keys, names=None):
+        """Update the attributes of selected vertices of a given datastructure.
+
+        Parameters
+        ----------
+        self : compas.datastructures.Datastructure
+            The data structure.
+        keys : list
+            The keys of the vertices of which the attributes should be updated.
+        names : list, optional
+            The names of the attributes that should be updated.
+            Default is to update all available attributes.
+
+        Returns
+        -------
+        bool
+            True if the attributes were successfully updated.
+            False otherwise.
+
+        """
         if not names:
             names = self.default_vertex_attributes.keys()
         names = sorted(names)
@@ -126,7 +176,7 @@ class VertexModifier(object):
                         values[i] = '-'
                         break
         values = map(str, values)
-        values = compas_rhino.update_named_values(names, values)
+        values = rhino_update_named_values(names, values)
         if values:
             for name, value in zip(names, values):
                 if value != '-':
