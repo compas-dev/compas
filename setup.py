@@ -6,16 +6,9 @@ import io
 from os import path
 
 from setuptools import setup
-from setuptools.command.install import install
 
 
 here = path.abspath(path.dirname(__file__))
-
-
-class CustomInstall(install):
-
-    def run(self):
-        install.run(self)
 
 
 def read(*names, **kwargs):
@@ -76,12 +69,8 @@ setup(
     install_requires=requirements,
     python_requires='>=2.7',
     extras_require=optional_requirements,
-    entry_points={
-        'console_scripts': [],
-    },
+    entry_points={},
     ext_modules=[],
-    cmdclass={'install': CustomInstall},
-    scripts=[
-        'bin/install_compas_sublime',
-    ]
+    cmdclass={},
+    scripts=[]
 )
