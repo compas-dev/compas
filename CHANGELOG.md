@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for relative mesh references in URDF.
 
-## 0.4.16
+## 0.4.17
 
 ### Added
 
