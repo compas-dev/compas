@@ -40,12 +40,18 @@ def select_python(python_executable):
 
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
         python = os.path.join(PYTHON_DIRECTORY, python_executable)
-
         if os.path.exists(python):
             return python
 
         python = os.path.join(PYTHON_DIRECTORY, '{0}.exe'.format(python_executable))
+        if os.path.exists(python):
+            return python
 
+        python = os.path.join(PYTHON_DIRECTORY, 'bin', python_executable)
+        if os.path.exists(python):
+            return python
+
+        python = os.path.join(PYTHON_DIRECTORY, 'bin', '{0}.exe'.format(python_executable))
         if os.path.exists(python):
             return python
 
