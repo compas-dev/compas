@@ -14,8 +14,39 @@ try:
 except ImportError:
     compas.raise_if_ironpython()
 
+try:
+    from compas_rhino.etoforms import PropertyListForm
+
+except:
+    try:
+        from Rhino.UI.Dialogs import ShowPropertyListBox
+
+    except ImportError:
+        compas.raise_if_ironpython()
+else:
+    try:
+        import clr
+        clr.AddReference('Rhino.UI')
+        import Rhino.UI
+
+    except ImportError:
+        compas.raise_if_ironpython()
+
 
 __all__ = ['EdgeModifier']
+
+
+def rhino_update_named_values(names, values, message='', title='Update named values'):
+    try:
+        dialog = PropertyListForm(names, values)
+    except:
+        values = ShowPropertyListBox(message, title, names, values)
+    else:
+        if dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow):
+            values = dialog.values
+        else:
+            values = None
+    return values
 
 
 class EdgeModifier(object):
@@ -39,10 +70,8 @@ class EdgeModifier(object):
                     if values[i] != self.get_edge_attribute(key, name):
                         values[i] = '-'
                         break
-
         values = map(str, values)
-        values = compas_rhino.update_named_values(names, values)
-
+        values = rhino_update_named_values(names, values)
         if values:
             for name, value in zip(names, values):
                 if value != '-':
