@@ -648,8 +648,11 @@ class Mesh(FromToPickle,
         vertex_keys = [vkey for vkey in mesh.vertices() if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices]
         vertex_map = {vkey: i for i, vkey in enumerate(vertex_keys)}
         vertices = [mesh.vertex_coordinates(vkey) for vkey in vertex_keys]
-        faces = [[vertex_map[vkey] for vkey in mesh.face_vertices(fkey) if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices] for fkey in mesh.faces() if sum([geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices for vkey in mesh.face_vertices(fkey)])]
-
+        faces = []
+        for fkey in mesh.faces():
+            if sum([geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices for vkey in mesh.face_vertices(fkey)]):
+                faces.append([vertex_map[vkey] for vkey in mesh.face_vertices(fkey) if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices])
+        
         mesh.cull_vertices()
 
         return cls.from_vertices_and_faces(vertices, faces)
