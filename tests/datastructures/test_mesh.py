@@ -21,7 +21,7 @@ def polylines():
     return boundary_polylines, other_polylines
 
 
-def test_from_polylines():
+def test_from_polylines(polylines):
     boundary_polylines, other_polylines = polylines
     mesh = Mesh.from_polylines(boundary_polylines, other_polylines)
     assert mesh.number_of_vertices() == 6
