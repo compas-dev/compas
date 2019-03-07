@@ -243,9 +243,8 @@ class RhinoSurface(RhinoGeometry):
             The list of XYZ coordinates of surface boundary kinks.
 
         """
-
         kinks = []
-        borders = self.borders(type = 0)
+        borders = self.borders(type=0)
         
         for border in borders:
             border = RhinoCurve(border)
@@ -337,11 +336,10 @@ class RhinoSurface(RhinoGeometry):
             The XYZ coordinates of the closest point on the boundaries of the surface.
 
         """
-
-        borders = self.borders(type = 0)
+        borders = self.borders(type=0)
         proj_dist = {tuple(proj_xyz): distance_point_point(xyz, proj_xyz) for proj_xyz in [RhinoCurve(border).closest_point(xyz) for border in borders]}
         delete_objects(borders)
-        return min(proj_dist, key = proj_dist.get)
+        return min(proj_dist, key=proj_dist.get)
 
     def closest_points_on_boundaries(self, points):
         return [self.closest_point_on_boundaries(point) for point in points]
@@ -364,7 +362,6 @@ class RhinoSurface(RhinoGeometry):
             The UV(0) coordinates of the mapped point.
 
         """
-
         return rs.SurfaceClosestPoint(self.guid, xyz) + (0.,)
 
     def remap_xyz_point(self, uv):
@@ -381,7 +378,6 @@ class RhinoSurface(RhinoGeometry):
             The XYZ coordinates of the re-mapped point.
 
         """
-
         return tuple(rs.EvaluateSurface(self.guid, *uv))
 
     def remap_xyz_line(self, line):
@@ -398,7 +394,6 @@ class RhinoSurface(RhinoGeometry):
             The list of XYZ coordinates of the re-mapped line.
 
         """
-
         return (self.remap_xyz_point(line[0][:2]), self.remap_xyz_point(line[1][:2]))
 
     def remap_xyz_polyline(self, polyline):
@@ -415,7 +410,6 @@ class RhinoSurface(RhinoGeometry):
             The list of XYZ coordinates of the re-mapped polyline.
 
         """
-
         return [self.remap_xyz_point(vertex[:2]) for vertex in polyline]
 
     def remap_xyz_mesh(self, mesh, cls=None):
@@ -432,7 +426,6 @@ class RhinoSurface(RhinoGeometry):
             The re-mapped mesh.
 
         """
-
         if cls is None:
             cls = type(mesh)
 
