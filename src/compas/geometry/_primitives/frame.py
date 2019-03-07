@@ -3,7 +3,6 @@ from __future__ import print_function
 import math
 
 from compas.geometry.basic import cross_vectors
-from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import allclose
 
@@ -421,7 +420,14 @@ class Frame(object):
 
     @property
     def data(self):
-        """:obj:`dict` : The data dictionary that represents the frame."""
+        """Returns the data dictionary that represents the frame.
+
+        Returns
+        -------
+        dict
+            The frame data.
+
+        """
         return {'point': list(self.point),
                 'xaxis': list(self.xaxis),
                 'yaxis': list(self.yaxis)}
@@ -433,7 +439,7 @@ class Frame(object):
         self.yaxis = data['yaxis']
 
     def to_data(self):
-        """Return the data dictionary that represents the frame.
+        """Returns the data dictionary that represents the frame.
 
         Returns
         -------
@@ -605,7 +611,7 @@ class Frame(object):
 
         Parameters
         ----------
-        point : :obj:`list` of :obj:`float` or :class:`Point` 
+        point : :obj:`list` of :obj:`float` or :class:`Point`
             A point in local coordinates.
 
         Returns
@@ -627,7 +633,7 @@ class Frame(object):
         pt = Point(*point)
         pt.transform(T)
         return pt
-    
+
     def represent_vector_in_local_coordinates(self, vector):
         """Represents a vector in the frame's local coordinate system.
 
@@ -683,7 +689,6 @@ class Frame(object):
         vec = Vector(*vector)
         vec.transform(T)
         return vec
-    
 
     def represent_frame_in_local_coordinates(self, frame):
         """Represents another frame in the frame's local coordinate system.
@@ -747,7 +752,6 @@ class Frame(object):
         f = frame.copy()
         f.transform(T)
         return f
-
 
     # ==========================================================================
     # transformations
