@@ -348,72 +348,72 @@ class RhinoSurface(RhinoGeometry):
     # mapping
     # --------------------------------------------------------------------------
 
-    def map_uv0(self, xyz):
-        """Return the UV(0) point from the mapping of a XYZ point based on the UV parameterisation of the surface.
+    def point_xyz_to_uv(self, xyz):
+        """Return the UV point from the mapping of a XYZ point based on the UV parameterisation of the surface.
 
         Parameters
         ----------
         xyz : list
-            XYZ coordinates.
+            (x, y, z) coordinates.
 
         Returns
         -------
         list
-            The UV(0) coordinates of the mapped point.
+            The (u, v, 0) coordinates of the mapped point.
 
         """
         return rs.SurfaceClosestPoint(self.guid, xyz) + (0.,)
 
-    def remap_xyz_point(self, uv):
-        """Return the XYZ point from the re-mapping of a UV point based on the UV parameterisation of the surface.
+    def point_uv_to_xyz(self, uv):
+        """Return the XYZ point from the inverse mapping of a UV point based on the UV parameterisation of the surface.
 
         Parameters
         ----------
         uv : list
-            UV(0) coordinates.
+            (u, v, 0) coordinates.
 
         Returns
         -------
         list
-            The XYZ coordinates of the re-mapped point.
+            The (x, y, z) coordinates of the inverse-mapped point.
 
         """
         return tuple(rs.EvaluateSurface(self.guid, *uv))
 
-    def remap_xyz_line(self, line):
-        """Return the XYZ points from the re-mapping of a UV line based on the UV parameterisation of the surface.
+    def line_uv_to_xyz(self, line):
+        """Return the XYZ points from the inverse mapping of a UV line based on the UV parameterisation of the surface.
 
         Parameters
         ----------
         uv : list
-            List of UV(0) coordinates.
+            List of (u, v, 0) coordinates.
 
         Returns
         -------
         list
-            The list of XYZ coordinates of the re-mapped line.
+            The list of XYZ coordinates of the inverse-mapped line.
 
         """
-        return (self.remap_xyz_point(line[0][:2]), self.remap_xyz_point(line[1][:2]))
+        return (self.point_uv_to_xyz(line[0][:2]), self.point_uv_to_xyz(line[1][:2]))
 
-    def remap_xyz_polyline(self, polyline):
-        """Return the XYZ points from the re-mapping of a UV polyline based on the UV parameterisation of the surface.
+    def polyline_uv_to_xyz(self, polyline):
+        """Return the XYZ points from the inverse mapping of a UV polyline based on the UV parameterisation of the surface.
 
         Parameters
         ----------
         uv : list
-            List of UV(0) coordinates.
+            List of (u, v, 0) coordinates.
 
         Returns
         -------
         list
-            The list of XYZ coordinates of the re-mapped polyline.
+            The list of (x, y, z) coordinates of the inverse-mapped polyline.
 
         """
-        return [self.remap_xyz_point(vertex[:2]) for vertex in polyline]
+        return [self.point_uv_to_xyz(vertex[:2]) for vertex in polyline]
 
-    def remap_xyz_mesh(self, mesh, cls=None):
-        """Return the mesh from the re-mapping of a UV mesh based on the UV parameterisation of the surface.
+    def mesh_uv_to_xyz(self, mesh, cls=None):
+        """Return the mesh from the inverse mapping of a UV mesh based on the UV parameterisation of the surface.
 
         Parameters
         ----------
@@ -423,14 +423,14 @@ class RhinoSurface(RhinoGeometry):
         Returns
         -------
         Mesh, cls
-            The re-mapped mesh.
+            The inverse-mapped mesh.
 
         """
         if cls is None:
             cls = type(mesh)
 
         vertices, faces = mesh.to_vertices_and_faces()
-        vertices = [self.remap_xyz_point(uv0[:2]) for uv0 in vertices]
+        vertices = [self.point_uv_to_xyz(uv0[:2]) for uv0 in vertices]
         return cls.from_vertices_and_faces(vertices, faces)
  
 # ==============================================================================
@@ -438,7 +438,7 @@ class RhinoSurface(RhinoGeometry):
 # ==============================================================================
 
 if __name__ == '__main__':
-
+    
     surface = RhinoSurface.from_selection()
 
     points = []
