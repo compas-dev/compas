@@ -26,4 +26,4 @@ def test_from_polylines(polylines):
     mesh = Mesh.from_polylines(boundary_polylines, other_polylines)
     assert mesh.number_of_vertices() == 6
     assert mesh.number_of_faces() == 2
-    assert network.number_of_edges() == 7
+    assert mesh.number_of_edges() == 7
