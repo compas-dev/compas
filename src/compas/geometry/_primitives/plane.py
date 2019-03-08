@@ -305,14 +305,16 @@ class Plane(object):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f)
-        >>> plane = Plane.worldXY()
-        >>> plane.transform(T)
-        >>> print(plane)
+            .. code-block:: python
+
+            from compas.geometry import Frame
+            from compas.geometry import Transformation
+            from compas.geometry import Plane
+            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            T = Transformation.from_frame(f)
+            plane = Plane.worldXY()
+            plane.transform(T)
+            print(plane)
 
         """
         self.point.transform(transformation)
@@ -333,14 +335,16 @@ class Plane(object):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f)
-        >>> plane = Plane.worldXY()
-        >>> plane_transformed = plane.transformed(T)
-        >>> print(plane_transformed)
+            .. code-block:: python
+
+            from compas.geometry import Frame
+            from compas.geometry import Transformation
+            from compas.geometry import Plane
+            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            T = Transformation.from_frame(f)
+            plane = Plane.worldXY()
+            plane_transformed = plane.transformed(T)
+            print(plane_transformed)
 
         """
         plane = self.copy()

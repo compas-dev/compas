@@ -42,10 +42,12 @@ class Frame(object):
 
     Examples
     --------
-    >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
-    >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
-    >>> f = Frame.from_euler_angles([0.5, 1., 0.2])
-    >>> f = Frame.worldXY()
+    .. code-block:: python
+
+        f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
+        f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
+        f = Frame.from_euler_angles([0.5, 1., 0.2])
+        f = Frame.worldXY()
 
     Notes
     -----
@@ -122,7 +124,9 @@ class Frame(object):
 
         Examples
         --------
-        >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
+        .. code-block:: python
+
+            f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
 
         """
         xaxis = subtract_vectors(point_xaxis, point)
@@ -149,11 +153,12 @@ class Frame(object):
 
         Examples
         --------
-        >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> R = Rotation.from_frame(f1)
-        >>> f2 = Frame.from_rotation(R, point = f1.point)
-        >>> f1 == f2
-        True
+        .. code-block:: python
+
+            f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            R = Rotation.from_frame(f1)
+            f2 = Frame.from_rotation(R, point = f1.point)
+            print(f1 == f2)
 
         """
         xaxis, yaxis = rotation.basis_vectors
@@ -176,11 +181,12 @@ class Frame(object):
 
         Examples
         --------
-        >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f1)
-        >>> f2 = Frame.from_transformation(T)
-        >>> f1 == f2
-        True
+        .. code-block:: python
+
+            f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            T = Transformation.from_frame(f1)
+            f2 = Frame.from_transformation(T)
+            print(f1 == f2)
 
         """
         xaxis, yaxis = transformation.basis_vectors
@@ -203,12 +209,13 @@ class Frame(object):
 
         Examples
         --------
-        >>> ea1 = [0.5, 0.4, 0.8]
-        >>> M = matrix_from_euler_angles(ea1)
-        >>> f = Frame.from_matrix(M)
-        >>> ea2 = f.euler_angles()
-        >>> allclose(ea1, ea2)
-        True
+        .. code-block:: python
+
+            ea1 = [0.5, 0.4, 0.8]
+            M = matrix_from_euler_angles(ea1)
+            f = Frame.from_matrix(M)
+            ea2 = f.euler_angles()
+            print(allclose(ea1, ea2))
 
         """
         sc, sh, a, point, p = decompose_matrix(matrix)
@@ -237,7 +244,9 @@ class Frame(object):
 
         Examples
         --------
-        >>> f = Frame.from_list([-1.0,  0.0,  0.0, 8110,
+        .. code-block:: python
+
+            f = Frame.from_list([-1.0,  0.0,  0.0, 8110,
                                   0.0,  0.0, -1.0, 7020,
                                   0.0, -1.0,  0.0, 1810])
 
@@ -281,11 +290,12 @@ class Frame(object):
 
         Examples
         --------
-        >>> q1 = [0.945, -0.021, -0.125, 0.303]
-        >>> f = Frame.from_quaternion(q1, point = [1., 1., 1.])
-        >>> q2 = f.quaternion
-        >>> allclose(q1, q2, tol=1e-03)
-        True
+        .. code-block:: python
+
+            q1 = [0.945, -0.021, -0.125, 0.303]
+            f = Frame.from_quaternion(q1, point = [1., 1., 1.])
+            q2 = f.quaternion
+            print(allclose(q1, q2, tol=1e-03))
 
         """
         R = matrix_from_quaternion(quaternion)
@@ -312,11 +322,12 @@ class Frame(object):
 
         Examples
         --------
-        >>> aav1 = [-0.043, -0.254, 0.617]
-        >>> f = Frame.from_axis_angle_vector(aav1, point = [0, 0, 0])
-        >>> aav2 = f.axis_angle_vector
-        >>> allclose(aav1, aav2)
-        True
+        .. code-block:: python
+
+            aav1 = [-0.043, -0.254, 0.617]
+            f = Frame.from_axis_angle_vector(aav1, point = [0, 0, 0])
+            aav2 = f.axis_angle_vector
+            print(allclose(aav1, aav2))
 
         """
         R = matrix_from_axis_angle_vector(axis_angle_vector)
@@ -350,11 +361,12 @@ class Frame(object):
 
         Examples
         --------
-        >>> ea1 = 1.4, 0.5, 2.3
-        >>> f = Frame.from_euler_angles(ea1, static = True, axes = 'xyz')
-        >>> ea2 = f.euler_angles(static = True, axes = 'xyz')
-        >>> allclose(ea1, ea2)
-        True
+        .. code-block:: python
+
+            ea1 = 1.4, 0.5, 2.3
+            f = Frame.from_euler_angles(ea1, static = True, axes = 'xyz')
+            ea2 = f.euler_angles(static = True, axes = 'xyz')
+            print(allclose(ea1, ea2))
 
         """
         R = matrix_from_euler_angles(euler_angles, static, axes)
@@ -568,11 +580,12 @@ class Frame(object):
 
         Examples
         --------
-        >>> ea1 = 1.4, 0.5, 2.3
-        >>> f = Frame.from_euler_angles(ea1, static = True, axes = 'xyz')
-        >>> ea2 = f.euler_angles(static = True, axes = 'xyz')
-        >>> allclose(ea1, ea2)
-        True
+        .. code-block:: python
+
+            ea1 = 1.4, 0.5, 2.3
+            f = Frame.from_euler_angles(ea1, static = True, axes = 'xyz')
+            ea2 = f.euler_angles(static = True, axes = 'xyz')
+            print(allclose(ea1, ea2))
 
         """
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
@@ -593,12 +606,13 @@ class Frame(object):
 
         Examples
         --------
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = [2, 2, 2]
-        >>> pf = f.represent_point_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_point_in_global_coordinates(pf)
-        >>> allclose(pw1, pw2)
-        True
+        .. code-block:: python
+
+            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            pw1 = [2, 2, 2]
+            pf = f.represent_point_in_local_coordinates(pw1)
+            pw2 = f.represent_point_in_global_coordinates(pf)
+            print(allclose(pw1, pw2))
 
         """
         pt = Point(*subtract_vectors(point, self.point))
@@ -621,12 +635,13 @@ class Frame(object):
 
         Examples
         --------
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = [2, 2, 2]
-        >>> pf = f.represent_point_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_point_in_global_coordinates(pf)
-        >>> allclose(pw1, pw2)
-        True
+        .. code-block:: python
+
+            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            pw1 = [2, 2, 2]
+            pf = f.represent_point_in_local_coordinates(pw1)
+            pw2 = f.represent_point_in_global_coordinates(pf)
+            print(allclose(pw1, pw2))
 
         """
         T = matrix_from_frame(self)
@@ -649,12 +664,13 @@ class Frame(object):
 
         Examples
         --------
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = [2, 2, 2]
-        >>> pf = f.represent_vector_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_vector_in_global_coordinates(pf)
-        >>> allclose(pw1, pw2)
-        True
+        .. code-block:: python
+
+            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            pw1 = [2, 2, 2]
+            pf = f.represent_vector_in_local_coordinates(pw1)
+            pw2 = f.represent_vector_in_global_coordinates(pf)
+            print(allclose(pw1, pw2))
 
         """
         T = inverse(matrix_from_basis_vectors(self.xaxis, self.yaxis))
@@ -677,12 +693,13 @@ class Frame(object):
 
         Examples
         --------
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = [2, 2, 2]
-        >>> pf = f.represent_vector_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_vector_in_global_coordinates(pf)
-        >>> allclose(pw1, pw2)
-        True
+        .. code-block:: python
+
+            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            pw1 = [2, 2, 2]
+            pf = f.represent_vector_in_local_coordinates(pw1)
+            pw2 = f.represent_vector_in_global_coordinates(pf)
+            print(allclose(pw1, pw2))
 
         """
         T = matrix_from_frame(self)
@@ -705,16 +722,16 @@ class Frame(object):
 
         Examples
         --------
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
-        >>> pf = f.represent_frame_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_frame_in_global_coordinates(pf)
-        >>> allclose(pw1.point, pw2.point)
-        True
-        >>> allclose(pw1.xaxis, pw2.xaxis)
-        True
-        >>> allclose(pw1.yaxis, pw2.yaxis)
-        True
+        .. code-block:: python
+
+            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
+            pf = f.represent_frame_in_local_coordinates(pw1)
+            pw2 = f.represent_frame_in_global_coordinates(pf)
+            print(allclose(pw1.point, pw2.point))
+            print(allclose(pw1.xaxis, pw2.xaxis))
+            print(allclose(pw1.yaxis, pw2.yaxis))
+
         """
         T = Transformation.from_frame(self).inverse()
         f = frame.copy()
@@ -737,16 +754,16 @@ class Frame(object):
 
         Examples
         --------
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
-        >>> pf = f.represent_frame_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_frame_in_global_coordinates(pf)
-        >>> allclose(pw1.point, pw2.point)
-        True
-        >>> allclose(pw1.xaxis, pw2.xaxis)
-        True
-        >>> allclose(pw1.yaxis, pw2.yaxis)
-        True
+        .. code-block:: python
+
+            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
+            pf = f.represent_frame_in_local_coordinates(pw1)
+            pw2 = f.represent_frame_in_global_coordinates(pf)
+            print(allclose(pw1.point, pw2.point))
+            print(allclose(pw1.xaxis, pw2.xaxis))
+            print(allclose(pw1.yaxis, pw2.yaxis))
+
         """
         T = Transformation.from_frame(self)
         f = frame.copy()
@@ -767,12 +784,13 @@ class Frame(object):
 
         Examples
         --------
-        >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f1)
-        >>> f2 = Frame.worldXY()
-        >>> f2.transform(T)
-        >>> f1 == f2
-        True
+        .. code-block:: python
+
+            f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            T = Transformation.from_frame(f1)
+            f2 = Frame.worldXY()
+            f2.transform(T)
+            print(f1 == f2)
 
         """
         T = transformation * Transformation.from_frame(self)
@@ -797,11 +815,12 @@ class Frame(object):
 
         Examples
         --------
-        >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f1)
-        >>> f2 = Frame.worldXY()
-        >>> f1 == f2.transformed(T)
-        True
+        .. code-block:: python
+
+            f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            T = Transformation.from_frame(f1)
+            f2 = Frame.worldXY()
+            print(f1 == f2.transformed(T))
 
         """
         frame = self.copy()

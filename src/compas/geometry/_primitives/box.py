@@ -11,8 +11,7 @@ __all__ = ['Box']
 
 
 class Box(object):
-    """A box is defined by a frame and its dimensions along the frame's x-, y-
-        and z-axes.
+    """A box is defined by a frame and its dimensions along the frame's x-, y- and z-axes.
 
     The bottom left corner of the box is positioned at the origin of the
     coordinate system defined by the frame. The box is axis-aligned to the frame.
