@@ -5,14 +5,13 @@ from __future__ import print_function
 from compas.geometry._primitives import Vector
 from compas.geometry._primitives import Frame
 from compas.geometry import subtract_vectors
-from compas.geometry import add_vectors
 
 
 __all__ = ['Box']
 
 
 class Box(object):
-    """A box is a three-dimensional geometric shape with 8 vertices, 12 edges 
+    """A box is a three-dimensional geometric shape with 8 vertices, 12 edges
         and 6 faces.
 
     The edges of a box meet at its vertices at 90 degree angles.
@@ -47,7 +46,7 @@ class Box(object):
     # ==========================================================================
     # descriptors
     # ==========================================================================
-    
+
     @property
     def frame(self):
         """Frame: The box's frame."""
@@ -56,38 +55,38 @@ class Box(object):
     @frame.setter
     def frame(self, frame):
         self._frame = Frame(frame[0], frame[1], frame[2])
-        
+
     @property
     def xsize(self):
         """float: The size of the box in the box frame's x direction."""
         return self._xsize
-    
+
     @xsize.setter
     def xsize(self, xsize):
         self._xsize = float(xsize)
-    
+
     @property
     def ysize(self):
         """float: The size of the box in the box frame's y direction."""
         return self._ysize
-    
+
     @ysize.setter
     def ysize(self, ysize):
         self._ysize = float(ysize)
-    
+
     @property
     def zsize(self):
         """float: The size of the box in the box frame's z direction."""
         return self._zsize
-    
+
     @zsize.setter
     def zsize(self, zsize):
         self._zsize = float(zsize)
-    
+
     @property
     def width(self):
         return self.xsize
-    
+
     @property
     def depth(self):
         return self.ysize
@@ -174,7 +173,6 @@ class Box(object):
 
         return cls(Frame.worldXY(), width, depth, height)
 
-
     @classmethod
     def from_bounding_box(cls, bbox):
         a = bbox[0]
@@ -217,7 +215,7 @@ class Box(object):
         """
         if height == 0:
             raise Exception('The box should have a height.')
-    
+
         x1, y1, z1 = corner1
         x2, y2, z2 = corner2
 
@@ -260,14 +258,14 @@ class Box(object):
 
         if z1 == z2:
             raise Exception('The box has no height.')
-        
+
         xaxis = Vector(x2 - x1, 0, 0)
         yaxis = Vector(0, y2 - y1, 0)
         zaxis = Vector(0, 0,  z2 - z1)
         width = xaxis.length
         depth = yaxis.length
         height = zaxis.length
-        
+
         frame = Frame(d1, xaxis, yaxis)
         return cls(frame, width, depth, height)
 
@@ -279,12 +277,11 @@ class Box(object):
 
 if __name__ == '__main__':
 
-    from compas.geometry import Box
     from compas.datastructures import Mesh
 
     box = Box.from_diagonal([0.0, 0.0, 0.0], [1.0, 1.0, 1.0])
     box = Box.from_corner_corner_height([0., 0., 0.], [1., 1., 0.], 4.0)
-    #box = Box.from_width_height_depth(5, 4, 6)
+    box = Box.from_width_height_depth(5, 4, 6)
     print(box.vertices)
 
     mesh = Mesh.from_vertices_and_faces(box.vertices, box.faces)
