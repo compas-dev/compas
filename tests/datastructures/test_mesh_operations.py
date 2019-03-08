@@ -42,7 +42,7 @@ def test_mesh_substitute_vertex_in_faces(mesh_0):
     assert 0 not in mesh_0.face_vertices(0)
     assert 4 in mesh_0.face_vertices(1)
     assert 0 not in mesh_0.face_vertices(1)
-    mesh_substitute_vertex_in_faces(mesh_0, 4, 0, 1)
+    mesh_substitute_vertex_in_faces(mesh_0, 4, 0, [1])
     assert 4 in mesh_0.face_vertices(0)
     assert 0 not in mesh_0.face_vertices(0)
     assert 0 in mesh_0.face_vertices(1)
