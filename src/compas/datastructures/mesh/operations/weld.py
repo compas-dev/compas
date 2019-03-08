@@ -92,15 +92,16 @@ def mesh_unweld_edges(mesh, edges):
     Parameters
     ----------
     mesh : Mesh
+        A mesh.
     edges: list
         List of edges as tuples of vertex keys.
 
     """
 
     # set of vertices in edges to unweld
-    vertices =  set([i for edge in edges for i in edge])
+    vertices = set([i for edge in edges for i in edge])
 
-    # to store changes to do all at once 
+    # to store changes to do all at once
     vertex_changes = {}
 
     for vkey in vertices:
@@ -109,10 +110,13 @@ def mesh_unweld_edges(mesh, edges):
         old_to_new = {nbr: i for i, nbr in enumerate(mesh.vertex_faces(vkey))}
         new_to_old = {i: nbr for i, nbr in enumerate(mesh.vertex_faces(vkey))}
 
-        # get adjacency network of faces around the vertex excluding adjacency through the edges to unweld
-        network_vertices = [mesh.face_centroid(fkey) for fkey in mesh.vertex_faces(vkey)]
-        network_edges = [(old_to_new[mesh.halfedge[vkey][nbr]], old_to_new[mesh.halfedge[nbr][vkey]]) for nbr in mesh.vertex_neighbors(vkey) if not mesh.is_edge_on_boundary(vkey, nbr) and (vkey, nbr) not in edges and (nbr, vkey) not in edges]
-        
+        # get adjacency network of faces around the vertex excluding adjacency
+        # through the edges to unweld
+        network_vertices = [mesh.face_centroid(
+            fkey) for fkey in mesh.vertex_faces(vkey)]
+        network_edges = [(old_to_new[mesh.halfedge[vkey][nbr]], old_to_new[mesh.halfedge[nbr][vkey]]) for nbr in mesh.vertex_neighbors(
+            vkey) if not mesh.is_edge_on_boundary(vkey, nbr) and (vkey, nbr) not in edges and (nbr, vkey) not in edges]
+
         adjacency = adjacency_from_edges(network_edges)
         for key, values in adjacency.items():
             adjacency[key] = {value: None for value in values}
@@ -121,14 +125,17 @@ def mesh_unweld_edges(mesh, edges):
         for i in range(len(mesh.vertex_faces(vkey))):
             if i not in edge_vertices:
                 adjacency[i] = {}
-        
+
         # collect the disconnected parts around the vertex due to unwelding
-        vertex_changes[vkey] = [[new_to_old[key] for key in part] for part in connected_components(adjacency)]
-        
+        vertex_changes[vkey] = [[new_to_old[key] for key in part]
+                                for part in connected_components(adjacency)]
+
     for vkey, changes in vertex_changes.items():
-        # for each disconnected part replace the vertex by a new vertex in the faces of the part
+        # for each disconnected part replace the vertex by a new vertex in the
+        # faces of the part
         for change in changes:
-            mesh_substitute_vertex_in_faces(mesh, vkey, mesh.add_vertex(attr_dict = mesh.vertex[vkey]), change)
+            mesh_substitute_vertex_in_faces(
+                mesh, vkey, mesh.add_vertex(attr_dict=mesh.vertex[vkey]), change)
 
         # delete old vertices
         mesh.delete_vertex(vkey)
@@ -151,7 +158,7 @@ if __name__ == "__main__":
 
     vertices = set(mesh.vertices())
 
-    fkey  = 12
+    fkey = 12
     where = mesh.face_vertices(fkey)[0:2]
     centroid = mesh.face_centroid(fkey)
 
