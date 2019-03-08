@@ -11,25 +11,35 @@ __all__ = ['Box']
 
 
 class Box(object):
-    """A box is a three-dimensional geometric shape with 8 vertices, 12 edges
-        and 6 faces.
+    """A box is defined by a frame and its dimensions along the frame's x-, y-
+        and z-axes.
+    
+    The bottom left corner of the box is positioned at the origin of the
+    coordinate system defined by the frame. The box is axis-aligned to the frame.
 
-    The edges of a box meet at its vertices at 90 degree angles.
-    The faces of a box are planar.
-    Faces which do not share an edge are parallel.
+    A box is a three-dimensional geometric shape with 8 vertices, 12 edges and 6
+    faces. The edges of a box meet at its vertices at 90 degree angles. The
+    faces of a box are planar. Faces which do not share an edge are parallel.
 
     Parameters
     ----------
-    vertices : list of point
-        The XYZ coordinates of the vertices of the box.
-    faces : list of list
-        The faces of the box defined as lists of vertex indices.
+    frame : :class:`compas.geometry.Frame`
+        The frame of the box.
+    xsize : float
+        The size of the box in the box frame's x direction.
+    ysize : float
+        The size of the box in the box frame's y direction.
+    zsize : float
+        The size of the box in the box frame's z direction.
 
     Examples
     --------
     .. code-block:: python
 
-        pass
+        from compas.geometry import Frame
+        from compas.geometry import Box
+
+        box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
 
     """
 
@@ -96,7 +106,17 @@ class Box(object):
         return self.zsize
 
     @property
+    def diagonal(self):
+        vertices = self.vertices
+        return vertices[0], vertices[-2]
+    
+    @property
+    def dimensions(self):
+        return [self.xsize, self.ysize, self.zsize]
+
+    @property
     def vertices(self):
+        """list of point: The XYZ coordinates of the vertices of the box."""
         point = self.frame.point
         xaxis = self.frame.xaxis
         yaxis = self.frame.yaxis
@@ -117,6 +137,7 @@ class Box(object):
 
     @property
     def faces(self):
+        """list of list: The faces of the box defined as lists of vertex indices."""
         return [[0, 1, 2, 3],
                 [0, 3, 5, 4],
                 [3, 2, 6, 5],
@@ -127,6 +148,31 @@ class Box(object):
     # ==========================================================================
     # factory
     # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a box from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
+
+        Returns
+        -------
+        Box
+            The constructed box.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box
+        >>> from compas.geometry import Frame
+        >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
+        >>> box = Box.from_data(data)
+        """
+        box = cls(Frame.worldXY(), 1, 1, 1)
+        box.data = data
+        return box
 
     @classmethod
     def from_width_height_depth(cls, width, height, depth):
@@ -155,6 +201,7 @@ class Box(object):
         --------
         .. code-block:: python
 
+            from compas.geometry import Box
             box = Box.from_width_height_depth(1.0, 2.0, 3.0)
 
         """
@@ -210,6 +257,7 @@ class Box(object):
         --------
         .. code-block:: python
 
+            from compas.geometry import Box
             box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
 
         """
@@ -248,7 +296,10 @@ class Box(object):
         --------
         .. code-block:: python
 
-            box = Box.from_diagonal([0.0, 0.0, 0.0], [1.0, 1.0, 1.0])
+            from compas.geometry import Box
+            diagonal = [0.0, 0.0, 0.0], [1.0, 1.0, 1.0]
+            box = Box.from_diagonal(diagonal)
+            print(box.diagonal)
 
         """
         d1, d2 = diagonal
@@ -268,6 +319,160 @@ class Box(object):
 
         frame = Frame(d1, xaxis, yaxis)
         return cls(frame, width, depth, height)
+    
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the box.
+
+        Returns
+        -------
+        dict
+            The box data.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box
+        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+        >>> print(box.data)
+
+        """
+        return {'frame': self.frame.data,
+                'xsize': self.xsize,
+                'ysize': self.ysize,
+                'zsize': self.zsize}
+
+    @data.setter
+    def data(self, data):
+        self.frame = Frame.from_data(data['frame'])
+        self.xsize = data['xsize']
+        self.ysize = data['ysize']
+        self.zsize = data['zsize']
+
+    def to_data(self):
+        """Returns the data dictionary that represents the box.
+
+        Returns
+        -------
+        dict
+            The box data.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box
+        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+        >>> print(box.to_data())
+
+        """
+        return self.data
+
+    # ==========================================================================
+    # representation
+    # ==========================================================================
+
+    def __repr__(self):
+        return 'Box({0}, {1}, {2}, {3})'.format(self.frame, self.xsize, self.ysize, self.zsize)
+
+    def __len__(self):
+        return 4
+
+    # ==========================================================================
+    # access
+    # ==========================================================================
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.point
+        elif key == 1:
+            return self.radius
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.point = value
+        elif key == 1:
+            self.radius = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.point, self.radius])
+
+    # ==========================================================================
+    # helpers
+    # ==========================================================================
+
+    def copy(self):
+        """Makes a copy of this ``Box``.
+
+        Returns
+        -------
+        Box
+            The copy.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box
+        >>> from compas.geometry import Frame
+        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+        >>> box.copy()
+
+        """
+        cls = type(self)
+        return cls(self.frame.copy(), self.xsize, self.ysize, self.zsize)
+
+    # ==========================================================================
+    # transformations
+    # ==========================================================================
+
+    def transform(self, transformation):
+        """Transform the box.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the Box.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Sphere
+        >>> sphere = Sphere(Point(1, 1, 1), 5)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(frame)
+        >>> sphere.transform(T)
+
+        """
+        self.point.transform(transformation)
+
+    def transformed(self, transformation):
+        """Returns a transformed copy of the current sphere.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the Sphere.
+
+        Returns
+        -------
+        :class:`Sphere`
+            The transformed sphere.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Sphere
+        >>> sphere = Sphere(Point(1, 1, 1), 5)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(frame)
+        >>> sphere_transformed = sphere.transformed(T)
+
+        """
+        sphere = self.copy()
+        sphere.transform(transformation)
+        return sphere
 
 
 # ==============================================================================
@@ -279,11 +484,17 @@ if __name__ == '__main__':
 
     from compas.datastructures import Mesh
 
-    box = Box.from_diagonal([0.0, 0.0, 0.0], [1.0, 1.0, 1.0])
+    box = Box.from_diagonal(([0.0, 0.0, 0.0], [1.0, 1.0, 1.0]))
     box = Box.from_corner_corner_height([0., 0., 0.], [1., 1., 0.], 4.0)
     box = Box.from_width_height_depth(5, 4, 6)
     print(box.vertices)
 
     mesh = Mesh.from_vertices_and_faces(box.vertices, box.faces)
 
-    print(mesh)
+    #print(mesh)
+    box = Box.from_diagonal(([0.0, 0.0, 0.0], [1.0, 1.0, 1.0]))
+    print(box)
+    print(box.diagonal)
+    dia = box.diagonal
+    print(Box.from_diagonal(dia))
+    print(box.data)
