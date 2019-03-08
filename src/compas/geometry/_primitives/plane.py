@@ -23,7 +23,9 @@ class Plane(object):
 
     Examples
     --------
-    >>>
+    .. code-block:: python
+        from compas.geometry import Plane
+        plane = Plane([0,0,0], [0,0,1])
 
     Notes
     -----
@@ -305,7 +307,7 @@ class Plane(object):
 
         Examples
         --------
-            .. code-block:: python
+        .. code-block:: python
 
             from compas.geometry import Frame
             from compas.geometry import Transformation
@@ -335,7 +337,7 @@ class Plane(object):
 
         Examples
         --------
-            .. code-block:: python
+        .. code-block:: python
 
             from compas.geometry import Frame
             from compas.geometry import Transformation

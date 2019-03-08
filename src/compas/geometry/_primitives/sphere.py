@@ -96,7 +96,7 @@ class Sphere(object):
 
         Examples
         --------
-            .. code-block:: python
+        .. code-block:: python
 
             from compas.geometry import Sphere
             sphere = Sphere(Point(1, 1, 1), 5)
@@ -121,7 +121,7 @@ class Sphere(object):
 
         Examples
         --------
-            .. code-block:: python
+        .. code-block:: python
 
             from compas.geometry import Sphere
             sphere = Sphere(Point(1, 1, 1), 5)
@@ -177,7 +177,7 @@ class Sphere(object):
 
         Examples
         --------
-            .. code-block:: python
+        .. code-block:: python
 
             from compas.geometry import Sphere
             sphere = Sphere(Point(1, 1, 1), 5)
@@ -201,7 +201,7 @@ class Sphere(object):
 
         Examples
         --------
-            .. code-block:: python
+        .. code-block:: python
 
             from compas.geometry import Frame
             from compas.geometry import Transformation
@@ -229,7 +229,7 @@ class Sphere(object):
 
         Examples
         --------
-            .. code-block:: python
+        .. code-block:: python
 
             from compas.geometry import Frame
             from compas.geometry import Transformation
