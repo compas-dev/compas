@@ -22,6 +22,11 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
 		List of face keys where to subsitute the old vertex by the new one.
 		Default is to subsitute in all faces.
 
+	Returns
+	-------
+	fkeys : list
+		The list of modified faces.
+
 	"""
 
 	# apply to all faces if there is none chosen
@@ -33,6 +38,8 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
 		face_vertices = [new_vkey if key == old_vkey else key for key in mesh.face_vertices(fkey)]
 		mesh.delete_face(fkey)
 		mesh.add_face(face_vertices, fkey)
+
+	return fkeys
 
 
 # ==============================================================================
