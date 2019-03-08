@@ -43,10 +43,10 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
 
     # add new vertex if there is none or if vkey not in vertices
     if vkey is None:
-        mesh.add_vertex(attr_dict={attr: xyz for attr, xyz in zip(
+        vkey = mesh.add_vertex(attr_dict={attr: xyz for attr, xyz in zip(
             ['x', 'y', 'z'], mesh.edge_midpoint(u, v))})
     elif vkey not in list(mesh.vertices()):
-        mesh.add_vertex(key=vkey, attr_dict={attr: xyz for attr, xyz in zip(
+        vkey = mesh.add_vertex(key=vkey, attr_dict={attr: xyz for attr, xyz in zip(
             ['x', 'y', 'z'], mesh.edge_midpoint(u, v))})
 
     # insert vertex
@@ -70,22 +70,25 @@ if __name__ == "__main__":
     from compas.plotters import MeshPlotter
 
     vertices = [
-        [0, 0, 0],
-        [1, 0, 0],
-        [1, 1, 0],
-        [0, 1, 0],
-        [2, 2, 0],
-        [2, 0, 0]
+        [1.0, 0.0, 0.0], 
+        [1.0, 2.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [2.0, 1.0, 0.0],
+        [0.0, 0.0, 0.0]
     ]
     faces = [
-            [0, 1, 2, 3],
-            [1, 4, 2]
+        [0, 1, 2],
+        [0, 3, 1]
     ]
 
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    print(mesh.face_vertices(0), mesh.face_vertices(1))
 
     mesh_insert_vertex_on_edge(mesh, 0, 1)
-    mesh_insert_vertex_on_edge(mesh, 1, 4, 5)
+    print(mesh.face_vertices(0), mesh.face_vertices(1))
+
+    mesh_insert_vertex_on_edge(mesh, 0, 2, 4)
+    print(mesh.face_vertices(0), mesh.face_vertices(1))
 
     plotter = MeshPlotter(mesh)
     plotter.draw_vertices(text='key')
