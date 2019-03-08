@@ -13,7 +13,7 @@ __all__ = ['Box']
 class Box(object):
     """A box is defined by a frame and its dimensions along the frame's x-, y-
         and z-axes.
-    
+
     The bottom left corner of the box is positioned at the origin of the
     coordinate system defined by the frame. The box is axis-aligned to the frame.
 
@@ -109,7 +109,7 @@ class Box(object):
     def diagonal(self):
         vertices = self.vertices
         return vertices[0], vertices[-2]
-    
+
     @property
     def dimensions(self):
         return [self.xsize, self.ysize, self.zsize]
@@ -165,10 +165,12 @@ class Box(object):
 
         Examples
         --------
-        >>> from compas.geometry import Box
-        >>> from compas.geometry import Frame
-        >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
-        >>> box = Box.from_data(data)
+        .. code-block:: python
+
+            from compas.geometry import Box
+            from compas.geometry import Frame
+            data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
+            box = Box.from_data(data)
         """
         box = cls(Frame.worldXY(), 1, 1, 1)
         box.data = data
@@ -319,7 +321,7 @@ class Box(object):
 
         frame = Frame(d1, xaxis, yaxis)
         return cls(frame, width, depth, height)
-    
+
     @property
     def data(self):
         """Returns the data dictionary that represents the box.
@@ -331,9 +333,11 @@ class Box(object):
 
         Examples
         --------
-        >>> from compas.geometry import Box
-        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-        >>> print(box.data)
+        .. code-block:: python
+
+            from compas.geometry import Box
+            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+            print(box.data)
 
         """
         return {'frame': self.frame.data,
@@ -358,9 +362,11 @@ class Box(object):
 
         Examples
         --------
-        >>> from compas.geometry import Box
-        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-        >>> print(box.to_data())
+        .. code-block:: python
+
+            from compas.geometry import Box
+            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+            print(box.to_data())
 
         """
         return self.data
@@ -412,10 +418,12 @@ class Box(object):
 
         Examples
         --------
-        >>> from compas.geometry import Box
-        >>> from compas.geometry import Frame
-        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-        >>> box.copy()
+        .. code-block:: python
+
+            from compas.geometry import Box
+            from compas.geometry import Frame
+            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+            box.copy()
 
         """
         cls = type(self)
@@ -435,44 +443,48 @@ class Box(object):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Sphere
-        >>> sphere = Sphere(Point(1, 1, 1), 5)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> sphere.transform(T)
+        .. code-block:: python
+
+            from compas.geometry import Frame
+            from compas.geometry import Transformation
+            from compas.geometry import Box
+            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+            frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            T = Transformation.from_frame(frame)
+            box.transform(T)
 
         """
         self.point.transform(transformation)
 
     def transformed(self, transformation):
-        """Returns a transformed copy of the current sphere.
+        """Returns a transformed copy of the current box.
 
         Parameters
         ----------
         transformation : :class:`Transformation`
-            The transformation used to transform the Sphere.
+            The transformation used to transform the box.
 
         Returns
         -------
-        :class:`Sphere`
-            The transformed sphere.
+        :class:`Box`
+            The transformed box.
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Sphere
-        >>> sphere = Sphere(Point(1, 1, 1), 5)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> sphere_transformed = sphere.transformed(T)
+        .. code-block:: python
+
+            from compas.geometry import Frame
+            from compas.geometry import Transformation
+            from compas.geometry import Box
+            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+            frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            T = Transformation.from_frame(frame)
+            box_transformed = box.transformed(T)
 
         """
-        sphere = self.copy()
-        sphere.transform(transformation)
-        return sphere
+        box = self.copy()
+        box.transform(transformation)
+        return box
 
 
 # ==============================================================================
@@ -491,10 +503,7 @@ if __name__ == '__main__':
 
     mesh = Mesh.from_vertices_and_faces(box.vertices, box.faces)
 
-    #print(mesh)
+    print(mesh)
     box = Box.from_diagonal(([0.0, 0.0, 0.0], [1.0, 1.0, 1.0]))
-    print(box)
-    print(box.diagonal)
     dia = box.diagonal
     print(Box.from_diagonal(dia))
-    print(box.data)
