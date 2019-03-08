@@ -37,7 +37,7 @@ def test__insert_vertex_on_edge(mesh_0):
 
 
 def test_mesh_substitute_vertex_in_faces(mesh_0):
-    mesh_substitute_vertex_in_faces(0, 4)
+    mesh_substitute_vertex_in_faces(mesh, 0, 4)
     assert 4 in mesh.face_vertices(0)
     assert 0 not in mesh.face_vertices(0)
     assert 4 in mesh.face_vertices(1)
