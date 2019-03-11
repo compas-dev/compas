@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.basic import orthonormalize_vectors
-
 from compas.geometry._primitives import Vector
 from compas.geometry._primitives import Point
 
@@ -23,7 +21,7 @@ class Plane(object):
 
     Examples
     --------
-    .. code-block:: python
+    >>>
         from compas.geometry import Plane
         plane = Plane([0,0,0], [0,0,1])
 
@@ -307,16 +305,13 @@ class Plane(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Frame
-            from compas.geometry import Transformation
-            from compas.geometry import Plane
-            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            T = Transformation.from_frame(f)
-            plane = Plane.worldXY()
-            plane.transform(T)
-            print(plane)
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Plane
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(f)
+        >>> plane = Plane.worldXY()
+        >>> plane.transform(T)
 
         """
         self.point.transform(transformation)
@@ -337,16 +332,13 @@ class Plane(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Frame
-            from compas.geometry import Transformation
-            from compas.geometry import Plane
-            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            T = Transformation.from_frame(f)
-            plane = Plane.worldXY()
-            plane_transformed = plane.transformed(T)
-            print(plane_transformed)
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Plane
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(f)
+        >>> plane = Plane.worldXY()
+        >>> plane_transformed = plane.transformed(T)
 
         """
         plane = self.copy()
@@ -389,3 +381,6 @@ if __name__ == '__main__':
     data = {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}
     plane = Plane.from_data(data)
     print(plane)
+
+    import doctest
+    doctest.testmod()
