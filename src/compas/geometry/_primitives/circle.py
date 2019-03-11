@@ -19,12 +19,11 @@ class Circle(object):
 
     Examples
     --------
-    .. code-block:: python
+    >>> from compas.geometry import Plane
+    >>> from compas.geometry import Circle
+    >>> plane = Plane([0, 0, 0], [0, 0, 1])
+    >>> circle = Circle(plane, 5)
 
-        from compas.geometry import Plane
-        from compas.geometry import Circle
-        plane = Plane([0, 0, 0], [0, 0, 1])
-        circle = Circle(plane, 5)
     """
 
     __slots__ = ['_plane', '_radius']
@@ -51,12 +50,11 @@ class Circle(object):
 
         Examples
         --------
-        .. code-block:: python
+        >>> from compas.geometry import Circle
+        >>> from compas.geometry import Plane
+        >>> data = {'plane': Plane.worldXY().data, 'radius': 5.}
+        >>> circle = Circle.from_data(data)
 
-            from compas.geometry import Circle
-            from compas.geometry import Plane
-            data = {'plane': Plane.worldXY().data, 'radius': 5.}
-            circle = Circle.from_data(data)
         """
         circle = cls(Plane.worldXY(), 1)
         circle.data = data
@@ -186,17 +184,14 @@ class Circle(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Frame
-            from compas.geometry import Transformation
-            from compas.geometry import Plane
-            from compas.geometry import Circle
-            circle = Circle(Plane.worldXY(), 5)
-            frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            T = Transformation.from_frame(frame)
-            circle.transform(T)
-            print(circle)
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Plane
+        >>> from compas.geometry import Circle
+        >>> circle = Circle(Plane.worldXY(), 5)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(frame)
+        >>> circle.transform(T)
 
         """
         self.plane.transform(transformation)
@@ -216,17 +211,14 @@ class Circle(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Frame
-            from compas.geometry import Transformation
-            from compas.geometry import Plane
-            from compas.geometry import Circle
-            circle = Circle(Plane.worldXY(), 5)
-            frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            T = Transformation.from_frame(frame)
-            circle_transformed = circle.transformed(T)
-            print(circle_transformed)
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Plane
+        >>> from compas.geometry import Circle
+        >>> circle = Circle(Plane.worldXY(), 5)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(frame)
+        >>> circle_transformed = circle.transformed(T)
 
         """
         circle = self.copy()
@@ -252,3 +244,6 @@ if __name__ == "__main__":
     data = {'plane': Plane.worldXY().data, 'radius': 5.}
     circle = Circle.from_data(data)
     print(circle)
+
+    import doctest
+    doctest.testmod()
