@@ -33,12 +33,9 @@ class Box(object):
 
     Examples
     --------
-    .. code-block:: python
-
-        from compas.geometry import Frame
-        from compas.geometry import Box
-
-        box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+    >>> from compas.geometry import Frame
+    >>> from compas.geometry import Box
+    >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
 
     """
 
@@ -164,12 +161,11 @@ class Box(object):
 
         Examples
         --------
-        .. code-block:: python
+        >>> from compas.geometry import Box
+        >>> from compas.geometry import Frame
+        >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
+        >>> box = Box.from_data(data)
 
-            from compas.geometry import Box
-            from compas.geometry import Frame
-            data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
-            box = Box.from_data(data)
         """
         box = cls(Frame.worldXY(), 1, 1, 1)
         box.data = data
@@ -200,10 +196,8 @@ class Box(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Box
-            box = Box.from_width_height_depth(1.0, 2.0, 3.0)
+        >>> from compas.geometry import Box
+        >>> box = Box.from_width_height_depth(1.0, 2.0, 3.0)
 
         """
         width = float(width)
@@ -256,10 +250,8 @@ class Box(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Box
-            box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+        >>> from compas.geometry import Box
+        >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
 
         """
         if height == 0:
@@ -295,12 +287,9 @@ class Box(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Box
-            diagonal = [0.0, 0.0, 0.0], [1.0, 1.0, 1.0]
-            box = Box.from_diagonal(diagonal)
-            print(box.diagonal)
+        >>> from compas.geometry import Box
+        >>> diagonal = [0.0, 0.0, 0.0], [1.0, 1.0, 1.0]
+        >>> box = Box.from_diagonal(diagonal)
 
         """
         d1, d2 = diagonal
@@ -332,11 +321,13 @@ class Box(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Box
-            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-            print(box.data)
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Box
+        >>> frame = Frame.worldXY()
+        >>> box = Box(frame, 1.0, 2.0, 3.0)
+        >>> bdict = {'frame': frame.data, 'xsize': 1.0, 'ysize': 2.0, 'zsize': 3.0}
+        >>> bdict == box.to_data()
+        True
 
         """
         return {'frame': self.frame.data,
@@ -361,12 +352,13 @@ class Box(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Box
-            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-            print(box.to_data())
-
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Box
+        >>> frame = Frame.worldXY()
+        >>> box = Box(frame, 1.0, 2.0, 3.0)
+        >>> bdict = {'frame': frame.data, 'xsize': 1.0, 'ysize': 2.0, 'zsize': 3.0}
+        >>> bdict == box.to_data()
+        True
         """
         return self.data
 
@@ -417,12 +409,10 @@ class Box(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Box
-            from compas.geometry import Frame
-            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-            box.copy()
+        >>> from compas.geometry import Box
+        >>> from compas.geometry import Frame
+        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+        >>> box_copy = box.copy()
 
         """
         cls = type(self)
@@ -442,18 +432,16 @@ class Box(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Frame
-            from compas.geometry import Transformation
-            from compas.geometry import Box
-            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-            frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            T = Transformation.from_frame(frame)
-            box.transform(T)
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Box
+        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(frame)
+        >>> box.transform(T)
 
         """
-        self.point.transform(transformation)
+        self.frame.transform(transformation)
 
     def transformed(self, transformation):
         """Returns a transformed copy of the current box.
@@ -470,15 +458,13 @@ class Box(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Frame
-            from compas.geometry import Transformation
-            from compas.geometry import Box
-            box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-            frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            T = Transformation.from_frame(frame)
-            box_transformed = box.transformed(T)
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Box
+        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(frame)
+        >>> box_transformed = box.transformed(T)
 
         """
         box = self.copy()
@@ -506,3 +492,6 @@ if __name__ == '__main__':
     box = Box.from_diagonal(([0.0, 0.0, 0.0], [1.0, 1.0, 1.0]))
     dia = box.diagonal
     print(Box.from_diagonal(dia))
+
+    import doctest
+    doctest.testmod()
