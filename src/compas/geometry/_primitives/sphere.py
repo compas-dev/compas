@@ -19,9 +19,12 @@ class Sphere(object):
 
     Examples
     --------
-    .. code-block:: python
+    >>> from compas.geometry import Point
+    >>> from compas.geometry import Sphere
+    >>> sphere1 = Sphere(Point(1, 1, 1), 5)
+    >>> sphere2 = Sphere((2, 4, 1), 2)
+    >>> sphere3 = Sphere([2, 4, 1], 2)
 
-        sphere = Sphere(Point(1,1,1), 5)
     """
 
     __slots__ = ['_point', '_radius']
@@ -48,11 +51,9 @@ class Sphere(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Sphere
-            data = {'point': [1., 2., 3.], 'radius': 4.}
-            sphere = Sphere.from_data(data)
+        >>> from compas.geometry import Sphere
+        >>> data = {'point': [1., 2., 3.], 'radius': 4.}
+        >>> sphere = Sphere.from_data(data)
 
         """
         sphere = cls([0, 0, 0], 1)
@@ -96,11 +97,12 @@ class Sphere(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Sphere
-            sphere = Sphere(Point(1, 1, 1), 5)
-            print(sphere.data)
+        >>> from compas.geometry import Point
+        >>> from compas.geometry import Sphere
+        >>> sphere = Sphere(Point(1, 1, 1), 5)
+        >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
+        >>> sdict == sphere.data
+        True
 
         """
         return {'point': list(self.point),
@@ -121,11 +123,12 @@ class Sphere(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Sphere
-            sphere = Sphere(Point(1, 1, 1), 5)
-            print(sphere.to_data())
+        >>> from compas.geometry import Point
+        >>> from compas.geometry import Sphere
+        >>> sphere = Sphere(Point(1, 1, 1), 5)
+        >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
+        >>> sdict == sphere.to_data()
+        True
 
         """
         return self.data
@@ -177,11 +180,9 @@ class Sphere(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Sphere
-            sphere = Sphere(Point(1, 1, 1), 5)
-            sphere.copy()
+        >>> from compas.geometry import Sphere
+        >>> sphere = Sphere(Point(1, 1, 1), 5)
+        >>> sphere_copy = sphere.copy()
 
         """
         cls = type(self)
@@ -201,15 +202,13 @@ class Sphere(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Frame
-            from compas.geometry import Transformation
-            from compas.geometry import Sphere
-            sphere = Sphere(Point(1, 1, 1), 5)
-            frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            T = Transformation.from_frame(frame)
-            sphere.transform(T)
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Sphere
+        >>> sphere = Sphere(Point(1, 1, 1), 5)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(frame)
+        >>> sphere.transform(T)
 
         """
         self.point.transform(transformation)
@@ -229,15 +228,13 @@ class Sphere(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            from compas.geometry import Frame
-            from compas.geometry import Transformation
-            from compas.geometry import Sphere
-            sphere = Sphere(Point(1, 1, 1), 5)
-            frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            T = Transformation.from_frame(frame)
-            sphere_transformed = sphere.transformed(T)
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Sphere
+        >>> sphere = Sphere(Point(1, 1, 1), 5)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(frame)
+        >>> sphere_transformed = sphere.transformed(T)
 
         """
         sphere = self.copy()
@@ -259,3 +256,6 @@ if __name__ == '__main__':
     print(sphere)
     sphere = Sphere.from_data(sphere.data)
     print(sphere)
+
+    import doctest
+    doctest.testmod()
