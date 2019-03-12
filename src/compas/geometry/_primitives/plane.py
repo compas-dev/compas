@@ -243,8 +243,8 @@ class Plane(object):
             The transformation matrix.
 
         """
-        point = transform_points([self.point], matrix)
-        normal = transform_vectors([self.normal], matrix)
+        point = transform_points([self.point], matrix)[0]
+        normal = transform_vectors([self.normal], matrix)[0]
         self.point.x = point[0]
         self.point.y = point[1]
         self.point.z = point[2]
