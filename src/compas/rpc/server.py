@@ -10,9 +10,6 @@ except ImportError:
     from xmlrpc.server import SimpleXMLRPCServer
 
 
-# socket.setdefaulttimeout(10)
-
-
 __all__ = ['Server']
 
 
@@ -26,12 +23,10 @@ class Server(SimpleXMLRPCServer):
         # service.py
 
         from compas.rpc import Server
-        from compas.rpc import Service
-        from compas.rpc import kill
-        from compas.rpc import ping
+        from compas.rpc import Dispatcher
 
 
-        class DefaultService(Service):
+        class DefaultService(Dispatcher):
             pass
 
 
@@ -39,12 +34,15 @@ class Server(SimpleXMLRPCServer):
 
             server = Server(("localhost", 8888))
 
-            server.register_function(ping)
-            server.register_function(kill)
-
+            server.register_function(server.ping)
+            server.register_function(server.remote_shutdown)
             server.register_instance(DefaultService())
-
             server.serve_forever()
+
+    Notes
+    -----
+    This class has to be used by a service to start the XMLRPC server in a way
+    that can be pinged to check if the server is live, and can be cleanly terminated.
 
     """
 

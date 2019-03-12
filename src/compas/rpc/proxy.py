@@ -63,9 +63,15 @@ class Proxy(object):
     to specify the address explicitly (``'http://127.0.0.1'``) because resolving
     *localhost* takes a surprisingly significant amount of time.
 
+    The service will make the correct (version of the requested) functionality available
+    even if that functionality is part of a virtual environment. This is because it
+    will use the specific python interpreter for which the functionality is installed to
+    start the server.
+
+    If possible, the proxy will try to reconnect to an already existing service
+
     Examples
     --------
-
     Minimal example showing connection to the proxy server, and ensuring the
     server is disposed after using it:
 
@@ -197,6 +203,8 @@ class Proxy(object):
             server.ping()
         except:
             return None
+        else:
+            print("Reconnecting to an existing server proxy.")
         return server
 
     def start_server(self):
@@ -232,6 +240,8 @@ class Proxy(object):
 
         server = ServerProxy(self.address)
 
+        print("Starting a new proxy server...")
+
         success = False
         count = 100
         while count:
@@ -240,17 +250,21 @@ class Proxy(object):
             except:
                 time.sleep(0.1)
                 count -= 1
+                print("    {} attempts left.".format(count))
             else:
                 success = True
                 break
         if not success:
             raise RPCServerError("The server is not available.")
+        else:
+            print("New proxy server started.")
 
         return server
 
     def stop_server(self):
         """Stop the remote server and terminate/kill the python process that was used to start it.
         """
+        print("Stopping the server proxy.")
         try:
             self._server.remote_shutdown()
         except:
@@ -337,11 +351,15 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
+    from compas.plotters import MeshPlotter
+
     from compas.rpc import Proxy
 
-    from compas_rhino.artists import MeshArtist
+    numerical = Proxy('compas.numerical', python='pythonw')
 
-    numerical = Proxy('compas.numerical')
+    print(numerical.python)
+    print(numerical.address)
+    print(numerical.service)
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -371,9 +389,8 @@ if __name__ == "__main__":
         attr['f'] = f[index][0]
         attr['l'] = l[index][0]
 
-    artist = MeshArtist(mesh)
-
-    artist.draw_vertices()
-    artist.draw_faces()
-
-    artist.redraw()
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
+    plotter.draw_vertices()
+    plotter.draw_faces()
+    plotter.draw_edges()
+    plotter.show()
