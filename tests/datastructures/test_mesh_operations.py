@@ -32,7 +32,7 @@ def test_insert_vertex_on_edge(mesh_0):
     assert mesh_0.face_vertex_descendant(1, 1) == 5
 
     mesh_insert_vertex_on_edge(mesh_0, 0, 2, 4)
-    assert mesh_0.face_degree(0) == 5
+    assert len(mesh_0.face_vertices(0)) == 5
     assert mesh_0.face_vertex_descendant(0, 2) == 4
 
 
