@@ -13,19 +13,43 @@ from compas_rhino.forms import TextForm
 from compas_rhino.forms import ImageForm
 
 try:
+    basestring
+except NameError:
+    basestring = str
+
+try:
+    import rhinoscriptsyntax as rs
     import System
     import Rhino
-    import rhinoscriptsyntax as rs
-    from Rhino.UI.Dialogs import ShowPropertyListBox
+
+except ImportError:
+    compas.raise_if_ironpython()
+
+# check if MessageBox is already available for Mac
+try:
     from Rhino.UI.Dialogs import ShowMessageBox
 
 except ImportError:
     compas.raise_if_ironpython()
 
+# replace PropertyListBox by Eto form on Mac and Rhino 6
 try:
-    basestring
-except NameError:
-    basestring = str
+    from compas_rhino.etoforms import PropertyListForm
+
+except:
+    try:
+        from Rhino.UI.Dialogs import ShowPropertyListBox
+
+    except ImportError:
+        compas.raise_if_ironpython()
+else:
+    try:
+        import clr
+        clr.AddReference('Rhino.UI')
+        import Rhino.UI
+
+    except ImportError:
+        compas.raise_if_ironpython()
 
 
 __all__ = [
@@ -41,7 +65,6 @@ __all__ = [
     'display_image',
     'display_html',
     'update_settings',
-    'update_attributes',
     'update_named_values',
     'screenshot_current_view',
     'select_folder',
@@ -79,38 +102,6 @@ def screenshot_current_view(path,
                         " _enter", False)
     rs.EnableRedraw(False)
     return result
-
-
-# def add_gui_helpers(helpers, overwrite=False, protected=False):
-#     def decorate(cls):
-#         # attr = {}
-#         for helper in helpers:
-#             # for name, value in helper.__dict__.items():
-#             for name, value in inspect.getmembers(helper):
-#                 # magic methods
-#                 if name.startswith('__') and name.endswith('__'):
-#                     continue
-#                 # protected / private methods
-#                 if not protected and name.startswith('_'):
-#                     continue
-#                 # existing methods
-#                 if not overwrite:
-#                     if hasattr(cls, name):
-#                         continue
-#                 # attr[name] = value
-#                 # try:
-#                 #     setattr(cls, name, value.__func__)
-#                 # except Exception:
-#                 #     setattr(cls, name, value)
-#                 # inspect.ismethoddescriptor
-#                 # inspect.isdatadescriptor
-#                 if inspect.ismethod(value):
-#                     setattr(cls, name, value.__func__)
-#                 else:
-#                     setattr(cls, name, value)
-#         # cls = type(cls.__name__, (cls, ), attr)
-#         return cls
-#     return decorate
 
 
 def wait():
@@ -202,27 +193,16 @@ def display_html():
 # ==============================================================================
 
 
-def update_settings(settings, message='', title='Update settings'):
-    names  = sorted(settings.keys())
-    values = [str(settings[name]) for name in names]
-    values = ShowPropertyListBox(message, title, names, values)
-    if values:
-        values = list(values)
-        for name, value in zip(names, values):
-            try:
-                settings[name] = ast.literal_eval(value)
-            except (TypeError, ValueError, SyntaxError):
-                settings[name] = value
-        return True
-    return False
-
-
-def update_attributes(names, values, message='', title='Update attributes'):
-    return ShowPropertyListBox(message, title, names, values)
-
-
 def update_named_values(names, values, message='', title='Update named values', evaluate=False):
-    values = ShowPropertyListBox(message, title, names, values)
+    try:
+        dialog = PropertyListForm(names, values)
+    except:
+        values = ShowPropertyListBox(message, title, names, values)
+    else:
+        if dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow):
+            values = dialog.values
+        else:
+            values = None
     if evaluate:
         if values:
             values = list(values)
@@ -234,6 +214,21 @@ def update_named_values(names, values, message='', title='Update named values', 
                     pass
                 values[i] = value
     return values
+
+
+def update_settings(settings, message='', title='Update settings'):
+    names  = sorted(settings.keys())
+    values = [str(settings[name]) for name in names]
+    values = update_named_values(names, values, message=message, title=title)
+    if values:
+        values = list(values)
+        for name, value in zip(names, values):
+            try:
+                settings[name] = ast.literal_eval(value)
+            except (TypeError, ValueError, SyntaxError):
+                settings[name] = value
+        return True
+    return False
 
 
 def unload_modules(top_level_module_name):
