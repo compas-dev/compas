@@ -2,11 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.basic import orthonormalize_vectors
-
-from compas.geometry.transformations import transform_points
-from compas.geometry.transformations import transform_vectors
-
 from compas.geometry._primitives import Vector
 from compas.geometry._primitives import Point
 
@@ -27,6 +22,8 @@ class Plane(object):
     Examples
     --------
     >>>
+        from compas.geometry import Plane
+        plane = Plane([0,0,0], [0,0,1])
 
     Notes
     -----
@@ -117,6 +114,41 @@ class Plane(object):
         """
         raise NotImplementedError
 
+    @classmethod
+    def worldXY(cls):
+        """Construct the world XY plane.
+
+        Returns
+        -------
+        Plane
+            The world XY plane.
+
+        """
+        return cls([0, 0, 0], [0, 0, 1])
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a plane from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
+
+        Returns
+        -------
+        Plane
+            The constructed plane.
+
+        Examples
+        --------
+        >>>
+
+        """
+        plane = cls.worldXY()
+        plane.data = data
+        return plane
+
     # ==========================================================================
     # descriptors
     # ==========================================================================
@@ -171,6 +203,35 @@ class Plane(object):
 
     def __len__(self):
         return 2
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the plane.
+
+        Returns
+        -------
+        dict
+            The plane data.
+
+        """
+        return {'point': list(self.point),
+                'normal': list(self.normal)}
+
+    @data.setter
+    def data(self, data):
+        self.point = data['point']
+        self.normal = data['normal']
+
+    def to_data(self):
+        """Returns the data dictionary that represents the plane.
+
+        Returns
+        -------
+        dict
+            The plane data.
+
+        """
+        return self.data
 
     # ==========================================================================
     # access
@@ -234,23 +295,55 @@ class Plane(object):
     # transformations
     # ==========================================================================
 
-    def transform(self, matrix):
-        """Transform this ``Plane`` using a given transformation matrix.
+    def transform(self, transformation):
+        """Transform this ``Plane`` using a given ``Transformation``.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        transformation : :class:`Transformation`
+            The transformation used to transform the plane.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Plane
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(f)
+        >>> plane = Plane.worldXY()
+        >>> plane.transform(T)
 
         """
-        point = transform_points([self.point], matrix)[0]
-        normal = transform_vectors([self.normal], matrix)[0]
-        self.point.x = point[0]
-        self.point.y = point[1]
-        self.point.z = point[2]
-        self.normal.x = normal[0]
-        self.normal.y = normal[1]
-        self.normal.z = normal[2]
+        self.point.transform(transformation)
+        self.normal.transform(transformation)
+
+    def transformed(self, transformation):
+        """Returns a transformed copy of the current plane.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the plane.
+
+        Returns
+        -------
+        :class:`Plane`
+            The transformed plane.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
+        >>> from compas.geometry import Plane
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(f)
+        >>> plane = Plane.worldXY()
+        >>> plane_transformed = plane.transformed(T)
+
+        """
+        plane = self.copy()
+        plane.transform(transformation)
+        return plane
 
 
 # ==============================================================================
@@ -258,6 +351,9 @@ class Plane(object):
 # ==============================================================================
 
 if __name__ == '__main__':
+
+    from compas.geometry import Frame
+    from compas.geometry import Transformation
 
     base = Point(0.0, 0.0, 0.0)
     normal = Vector(1.0, 0.0, 0.0)
@@ -275,3 +371,16 @@ if __name__ == '__main__':
 
     print(d)
     print(d <= plane.d)
+
+    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    T = Transformation.from_frame(f)
+    plane = Plane.worldXY()
+    plane.transform(T)
+    print(plane)
+
+    data = {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}
+    plane = Plane.from_data(data)
+    print(plane)
+
+    import doctest
+    doctest.testmod()
