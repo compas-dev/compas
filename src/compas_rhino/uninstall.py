@@ -72,7 +72,7 @@ def uninstall(version=None, packages=None):
     for package in packages:
         symlink_path = os.path.join(ipylib_path, package)
 
-        if not os.path.exists(symlink_path):
+        if not (os.path.exists(symlink_path) or os.path.islink(symlink_path)):
             continue
 
         try:
