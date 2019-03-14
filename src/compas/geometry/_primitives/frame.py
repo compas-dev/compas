@@ -3,7 +3,6 @@ from __future__ import print_function
 import math
 
 from compas.geometry.basic import cross_vectors
-from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import allclose
 
@@ -43,7 +42,11 @@ class Frame(object):
 
     Examples
     --------
+    >>> from compas.geometry import Frame
+    >>> from compas.geometry import Point
+    >>> from compas.geometry import Vector
     >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
+    >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
     >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
     >>> f = Frame.from_euler_angles([0.5, 1., 0.2])
     >>> f = Frame.worldXY()
@@ -123,6 +126,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
 
         """
@@ -150,6 +154,8 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Rotation
         >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> R = Rotation.from_frame(f1)
         >>> f2 = Frame.from_rotation(R, point = f1.point)
@@ -177,6 +183,8 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Rotation
         >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(f1)
         >>> f2 = Frame.from_transformation(T)
@@ -204,6 +212,8 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import matrix_from_euler_angles
         >>> ea1 = [0.5, 0.4, 0.8]
         >>> M = matrix_from_euler_angles(ea1)
         >>> f = Frame.from_matrix(M)
@@ -238,8 +248,9 @@ class Frame(object):
 
         Examples
         --------
-        >>> f = Frame.from_list([-1.0,  0.0,  0.0, 8110,
-                                  0.0,  0.0, -1.0, 7020,
+        >>> from compas.geometry import Frame
+        >>> f = Frame.from_list([-1.0,  0.0,  0.0, 8110,\
+                                  0.0,  0.0, -1.0, 7020,\
                                   0.0, -1.0,  0.0, 1810])
 
         Notes
@@ -282,6 +293,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> f = Frame.from_quaternion(q1, point = [1., 1., 1.])
         >>> q2 = f.quaternion
@@ -313,6 +325,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> aav1 = [-0.043, -0.254, 0.617]
         >>> f = Frame.from_axis_angle_vector(aav1, point = [0, 0, 0])
         >>> aav2 = f.axis_angle_vector
@@ -351,6 +364,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> ea1 = 1.4, 0.5, 2.3
         >>> f = Frame.from_euler_angles(ea1, static = True, axes = 'xyz')
         >>> ea2 = f.euler_angles(static = True, axes = 'xyz')
@@ -421,7 +435,14 @@ class Frame(object):
 
     @property
     def data(self):
-        """:obj:`dict` : The data dictionary that represents the frame."""
+        """Returns the data dictionary that represents the frame.
+
+        Returns
+        -------
+        dict
+            The frame data.
+
+        """
         return {'point': list(self.point),
                 'xaxis': list(self.xaxis),
                 'yaxis': list(self.yaxis)}
@@ -433,7 +454,7 @@ class Frame(object):
         self.yaxis = data['yaxis']
 
     def to_data(self):
-        """Return the data dictionary that represents the frame.
+        """Returns the data dictionary that represents the frame.
 
         Returns
         -------
@@ -562,6 +583,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> ea1 = 1.4, 0.5, 2.3
         >>> f = Frame.from_euler_angles(ea1, static = True, axes = 'xyz')
         >>> ea2 = f.euler_angles(static = True, axes = 'xyz')
@@ -587,6 +609,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw1 = [2, 2, 2]
         >>> pf = f.represent_point_in_local_coordinates(pw1)
@@ -605,7 +628,7 @@ class Frame(object):
 
         Parameters
         ----------
-        point : :obj:`list` of :obj:`float` or :class:`Point` 
+        point : :obj:`list` of :obj:`float` or :class:`Point`
             A point in local coordinates.
 
         Returns
@@ -615,6 +638,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw1 = [2, 2, 2]
         >>> pf = f.represent_point_in_local_coordinates(pw1)
@@ -627,7 +651,7 @@ class Frame(object):
         pt = Point(*point)
         pt.transform(T)
         return pt
-    
+
     def represent_vector_in_local_coordinates(self, vector):
         """Represents a vector in the frame's local coordinate system.
 
@@ -643,6 +667,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw1 = [2, 2, 2]
         >>> pf = f.represent_vector_in_local_coordinates(pw1)
@@ -671,6 +696,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw1 = [2, 2, 2]
         >>> pf = f.represent_vector_in_local_coordinates(pw1)
@@ -683,7 +709,6 @@ class Frame(object):
         vec = Vector(*vector)
         vec.transform(T)
         return vec
-    
 
     def represent_frame_in_local_coordinates(self, frame):
         """Represents another frame in the frame's local coordinate system.
@@ -710,6 +735,7 @@ class Frame(object):
         True
         >>> allclose(pw1.yaxis, pw2.yaxis)
         True
+
         """
         T = Transformation.from_frame(self).inverse()
         f = frame.copy()
@@ -732,6 +758,7 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
         >>> pf = f.represent_frame_in_local_coordinates(pw1)
@@ -742,12 +769,12 @@ class Frame(object):
         True
         >>> allclose(pw1.yaxis, pw2.yaxis)
         True
+
         """
         T = Transformation.from_frame(self)
         f = frame.copy()
         f.transform(T)
         return f
-
 
     # ==========================================================================
     # transformations
@@ -763,6 +790,8 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
         >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(f1)
         >>> f2 = Frame.worldXY()
@@ -793,6 +822,8 @@ class Frame(object):
 
         Examples
         --------
+        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Transformation
         >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(f1)
         >>> f2 = Frame.worldXY()
@@ -811,62 +842,5 @@ class Frame(object):
 
 if __name__ == '__main__':
 
-    f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    R = Rotation.from_frame(f1)
-    f2 = Frame.from_rotation(R, point=f1.point)
-    print(f1 == f2)
-
-    print(f2)
-
-    f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    T = Transformation.from_frame(f1)
-    f2 = Frame.from_transformation(T)
-    print(f1 == f2)
-
-    ea1 = [0.5, 0.4, 0.8]
-    M = matrix_from_euler_angles(ea1)
-    f = Frame.from_matrix(M)
-    ea2 = f.euler_angles()
-    print(allclose(ea1, ea2))
-
-    q1 = [0.945, -0.021, -0.125, 0.303]
-    f = Frame.from_quaternion(q1, point=[1., 1., 1.])
-    q2 = f.quaternion
-    print(allclose(q1, q2, tol=1e-03))
-
-    aav1 = [-0.043, -0.254, 0.617]
-    f = Frame.from_axis_angle_vector(aav1, point=[0, 0, 0])
-    aav2 = f.axis_angle_vector
-    print(allclose(aav1, aav2))
-
-    ea1 = 1.4, 0.5, 2.3
-    f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
-    ea2 = f.euler_angles(static=True, axes='xyz')
-    print(allclose(ea1, ea2))
-
-    f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    T = Transformation.from_frame(f1)
-    f2 = Frame.worldXY()
-    f2.transform(T)
-    print(f1 == f2)
-
-    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    pw1 = [2, 2, 2]
-    pw1 = Point(*pw1)
-    pf = f.represent_point_in_local_coordinates(pw1)
-    pw2 = f.represent_point_in_global_coordinates(pf)
-    print(allclose(pw1, pw2))
-
-    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    pw1 = [2, 2, 2]
-    pf = f.represent_vector_in_local_coordinates(pw1)
-    pw2 = f.represent_vector_in_global_coordinates(pf)
-    allclose(pw1, pw2)
-
-    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
-    pf = f.represent_frame_in_local_coordinates(pw1)
-    pw2 = f.represent_frame_in_global_coordinates(pf)
-    allclose(pw1.point, pw2.point)
-    allclose(pw1.xaxis, pw2.xaxis)
-    allclose(pw1.yaxis, pw2.yaxis)
+    import doctest
+    doctest.testmod()

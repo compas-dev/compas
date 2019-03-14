@@ -13,6 +13,7 @@ from .polygon import Polygon
 from .polyhedron import Polyhedron
 from .circle import Circle
 from .curve import Bezier
+from .sphere import Sphere
 
 from .box import Box
 
