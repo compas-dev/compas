@@ -66,8 +66,10 @@ def select_python(python_executable):
 def absjoin(*parts):
     return os.path.abspath(os.path.join(*parts))
 
+
 # Cache whatever symlink function works (native or polyfill)
 _os_symlink = None
+
 
 def create_symlink_polyfill():
     def symlink_ms(source, link_name):
@@ -75,6 +77,7 @@ def create_symlink_polyfill():
             ['mklink', '/D', link_name, source], stderr=subprocess.STDOUT, shell=True)
 
     return symlink_ms
+
 
 def create_symlink(source, link_name):
     """Create a symbolic link pointing to source named link_name.
@@ -107,6 +110,7 @@ def create_symlink(source, link_name):
 
         _os_symlink = create_symlink_polyfill()
         _os_symlink(source, link_name)
+
 
 def remove_symlink(link):
     if os.path.isdir(link):
