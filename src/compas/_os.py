@@ -5,7 +5,7 @@ Not intended to be used outside compas* packages.
 """
 import os
 import sys
-import subprocess
+
 
 PY3 = sys.version_info[0] == 3
 system = sys.platform
@@ -72,6 +72,7 @@ _os_symlink = None
 
 
 def create_symlink_polyfill():
+    import subprocess
     def symlink_ms(source, link_name):
         subprocess.check_output(
             ['mklink', '/D', link_name, source], stderr=subprocess.STDOUT, shell=True)
