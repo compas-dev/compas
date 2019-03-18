@@ -326,16 +326,26 @@ def _create_arrays(structure):
     ind_t = []
 
     uv_i = structure.uv_index()
+
     for ui, vi in structure.edges():
-        i = uv_i[(ui, vi)]
-        edge  = structure.edge[ui][vi]
-        E[i]  = edge.get('E', 0)
-        A[i]  = edge.get('A', 0)
-        l0[i] = edge.get('l0', structure.edge_length(ui, vi))
-        s0[i] = edge.get('s0', 0)
+
+        i    = uv_i[(ui, vi)]
+        E[i] = structure.get_edge_attribute(key=(ui, vi), name='E')
+        A[i] = structure.get_edge_attribute(key=(ui, vi), name='A')
+
+        if structure.get_edge_attribute(key=(ui, vi), name='l0'):
+            l0[i] = structure.get_edge_attribute(key=(ui, vi), name='l0')
+        else:
+            l0[i] = structure.edge_length(ui, vi)
+
+        if structure.get_edge_attribute(key=(ui, vi), name='s0'):
+            s0[i] = structure.get_edge_attribute(key=(ui, vi), name='s0')
+        else:
+            s0[i] = 0
+
         u[i]  = k_i[ui]
         v[i]  = k_i[vi]
-        ct = edge.get('ct', None)
+        ct = structure.get_edge_attribute(key=(ui, vi), name='ct')
         if ct == 'c':
             ind_c.append(i)
         elif ct == 't':
