@@ -94,7 +94,7 @@ def xdraw_lines(lines, centroid=True, layer=None):
         object.data.fill_mode = 'FULL'
         object.data.bevel_depth = data.get('width', 0.05)
         object.data.bevel_resolution = 0
-        object.data.resolution_u = 2
+        object.data.resolution_u = 20
         object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
         objects[c] = object
     return _link_objects(objects=objects, layer=layer)
@@ -273,7 +273,7 @@ def draw_line(start=[0, 0, 0], end=[1, 1, 1], width=0.05, centroid=True, name='l
     object.data.fill_mode = 'FULL'
     object.data.bevel_depth = width
     object.data.bevel_resolution = 0
-    object.data.resolution_u = 2
+    object.data.resolution_u = 20
     object.data.materials.append(create_material(color=color))
     bpy.context.collection.objects.link(object)
     if layer:
