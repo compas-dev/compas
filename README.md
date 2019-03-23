@@ -61,6 +61,11 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/contributions.html).
 
 
+## Changelog
+
+See changes between releases on the [changelog](https://compas-dev.github.io/main/changelog.html).
+
+
 ## License
 
 The main library of **COMPAS** is [released under the MIT license](https://compas-dev.github.io/main/license.html).
