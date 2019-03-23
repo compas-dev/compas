@@ -42,6 +42,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'matplotlib.sphinxext.plot_directive',
+    'm2r',
 ]
 
 # autodoc options

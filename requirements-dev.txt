@@ -1,11 +1,12 @@
-sphinx>=1.6
-sphinx_compas_theme>=0.1.10
-ipython>=5.8
-invoke>=0.14
 bumpversion>=0.5
 check-manifest>=0.36
 flake8
-pytest==3.2
+invoke>=0.14
+ipython>=5.8
 isort
+m2r
+pytest==3.2
+sphinx_compas_theme>=0.1.10
+sphinx>=1.6
 twine
 -e .
