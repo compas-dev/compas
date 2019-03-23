@@ -73,18 +73,12 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
         ctx.run('python setup.py clean')
 
     if bytecode:
-        # for root, dirs, files in os.walk(BASE_FOLDER):
-        #     for f in files:
-        #         if f.endswith('.pyc'):
-        #             os.remove(os.path.join(root, f))
-        #     if '.git' in dirs:
-        #         dirs.remove('.git')
-        files = glob.glob('src/**/*.pyc', recursive=True)
-        for path in files:
-            try:
-                os.remove(file)
-            except Exception:
-                pass
+        for root, dirs, files in os.walk(BASE_FOLDER):
+            for f in files:
+                if f.endswith('.pyc'):
+                    os.remove(os.path.join(root, f))
+            if '.git' in dirs:
+                dirs.remove('.git')
 
     folders = []
 
@@ -94,7 +88,8 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
     folders.append('dist/')
 
     if bytecode:
-        folders.extend(glob.glob('src/**/__pycache__', recursive=True))
+        for t in ('src', 'tests'):
+            folders.extend(glob.glob('{}/**/__pycache__'.format(t), recursive=True))
 
     if builds:
         folders.append('build/')
