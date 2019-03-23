@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-## 0.5.0
+## [0.5.0] 2019-03-15
 
 ### Added
 
@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix installer to remove old symlinks.
 - Fix RPC proxy server.
 
-## 0.4.22
+## [0.4.22] 2019-03-05
 
 ### Added
 
@@ -40,25 +40,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add remeshing based on `triangle`.
 - Add compatibility with ETO forms to `compas_rhino` edge modifiers.
 
-## 0.4.21
+## [0.4.21] 2019-03-04
 
 ### Changed
 
 - Fix import in `compas_rhino` vertex modifiers.
 
-## 0.4.20
+## [0.4.20] 2019-03-04
 
 ### Removed
 
 - Remove `download_image_from_remote` utility function.
 
-## 0.4.12
+## [0.4.12] 2019-03-04
 
 ### Changed
 
 - Small fixes on Rhino forms support.
 
-## 0.4.11
+## [0.4.11] 2019-03-03
 
 ### Added
 
@@ -82,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix material creation in `compas_blender`.
 - New default for subdivision: `catmullclark`.
 
-## 0.4.9
+## [0.4.9] 2019-02-10
 
 ### Added
 
@@ -100,7 +100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bound mesh operations.
 
-## 0.4.8 - 2019-01-28
+## [0.4.8] 2019-01-28
 
 ### Added
 
