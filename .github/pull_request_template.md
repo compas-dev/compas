@@ -5,8 +5,8 @@
 ### What type of change is this?
 
 - [ ] Bug fix in a **backwards-compatible** manner.
-- [ ] Add features in a **backwards-compatible** manner.
-- [ ] Breaking change: new feature or bug fix that involve incompatible API changes.
+- [ ] New feature in a **backwards-compatible** manner.
+- [ ] Breaking change: bug fix or new feature that involve incompatible API changes.
 
 ### Checklist
 
