@@ -21,25 +21,31 @@ __all__ = [
 ]
 
 
-def offset_line(line, distance, normal=[0., 0., 1.]):
+def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
     """Offset a line by a distance.
 
     Parameters
     ----------
     line : tuple
         Two points defining the line.
-    distances : float or tuples of floats
+    distances : float or list of floats
         The offset distance as float.
         A single value determines a constant offset. Alternatively, two
         offset values for the start and end point of the line can be used to
         a create variable offset.
-    normal : tuple
+    normal : vector
         The normal of the offset plane.
 
     Returns
     -------
-    offset line (tuple)
+    offset line : tuple
         Two points defining the offset line.
+
+    Notes
+    -----
+    The offset direction is chosen such that if the line were along the positve
+    X axis and the normal of the offset plane is along the positive Z axis, the
+    offset line is in the direction of the postive Y axis.
 
     Examples
     --------
@@ -56,20 +62,20 @@ def offset_line(line, distance, normal=[0., 0., 1.]):
         print(line_offset)
 
     """
-    pt1, pt2 = line[0], line[1]
-    vec = subtract_vectors(pt1, pt2)
-    dir_vec = normalize_vector(cross_vectors(vec, normal))
+    a, b = line
+    ab = subtract_vectors(b, a)
+    direction = normalize_vector(cross_vectors(normal, ab))
 
-    if isinstance(distance, list) or isinstance(distance, tuple):
+    if isinstance(distance, (list, tuple)):
         distances = distance
     else:
         distances = [distance, distance]
 
-    vec_pt1 = scale_vector(dir_vec, distances[0])
-    vec_pt2 = scale_vector(dir_vec, distances[1])
-    pt1_new = add_vectors(pt1, vec_pt1)
-    pt2_new = add_vectors(pt2, vec_pt2)
-    return pt1_new, pt2_new
+    u = scale_vector(direction, distances[0])
+    v = scale_vector(direction, distances[1])
+    c = add_vectors(a, u)
+    d = add_vectors(b, v)
+    return c, d
 
 
 def offset_polygon(polygon, distance):
@@ -80,7 +86,7 @@ def offset_polygon(polygon, distance):
     polygon : list of point
         The XYZ coordinates of the corners of the polygon.
         The first and last coordinates must not be identical.
-    distance : float or list of tuples of floats
+    distance : float or list of float
         The offset distance as float.
         A single value determines a constant offset globally.
         Alternatively, pairs of local offset values per line segment can be used to create variable offsets.
@@ -95,6 +101,10 @@ def offset_polygon(polygon, distance):
     Notes
     -----
     The offset direction is determined by the normal of the polygon.
+    If the polygon is in the XY plane and the normal is along the positive Z axis,
+    positive offset distances will result in an offset towards the inside of the
+    polygon.
+
     The algorithm works also for spatial polygons that do not perfectly fit a plane.
 
     Examples
@@ -133,7 +143,6 @@ def offset_polygon(polygon, distance):
         distances = [distance] * p
 
     d = len(distances)
-
     if d < p:
         distances.extend(distances[-1:] * (p - d))
 
@@ -154,7 +163,7 @@ def offset_polygon(polygon, distance):
     return points
 
 
-def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
+def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0]):
     """Offset a polyline by a distance.
 
     Parameters
@@ -166,7 +175,7 @@ def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
         A single value determines a constant offset globally.
         Alternatively, pairs of local offset values per line segment can be used to create variable offsets.
         Distance > 0: offset to the "left", distance < 0: offset to the "right".
-    normal : tuple
+    normal : vector
         The normal of the offset plane.
 
     Returns
@@ -176,29 +185,31 @@ def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
 
     """
 
-    if isinstance(distance, list) or isinstance(distance, tuple):
+    p = len(polyline)
+
+    if isinstance(distance, (list, tuple)):
         distances = distance
-        if len(distances) < len(polyline):
-            distances = distances + [distances[-1]] * (len(polyline) - len(distances) - 1)
     else:
-        distances = [[distance, distance]] * len(polyline)
+        distances = [distance] * p
 
-    lines = [polyline[i:i + 2] for i in range(len(polyline[:-1]))]
-    lines_offset = []
-    for i, line in enumerate(lines):
-        lines_offset.append(offset_line(line, distances[i], normal))
+    d = len(distances)
+    if d < p:
+        distances.extend(distances[-1:] * (p - d))
 
-    polyline_offset = []
-    polyline_offset.append(lines_offset[0][0])
-    for i in range(len(lines_offset[:-1])):
-        intx_pt1, intx_pt2 = intersection_line_line(lines_offset[i], lines_offset[i + 1])
+    offset = []
+    for line, distance in zip(pairwise(polyline), distances):
+        offset.append(offset_line(line, distance, normal))
 
-        if intx_pt1 and intx_pt2:
-            polyline_offset.append(centroid_points([intx_pt1, intx_pt2]))
+    points = [offset[0][0]]
+    for l1, l2 in pairwise(offset):
+        x1, x2 = intersection_line_line(l1, l2)
+        if x1 and x2:
+            points.append(centroid_points([x1, x2]))
         else:
-            polyline_offset.append(lines_offset[i][0])
-    polyline_offset.append(lines_offset[-1][1])
-    return polyline_offset
+            points.append(x1)
+    points.append(offset[-1][1])
+
+    return points
 
 
 # ==============================================================================
@@ -218,7 +229,7 @@ if __name__ == "__main__":
     lines = []
     for fkey in mesh.faces():
         points = mesh.face_coordinates(fkey)
-        offset = offset_polygon(points, 0.1)
+        offset = offset_polyline(points, 0.1)
         polygons.append({
             'points': offset,
             'edgecolor': '#ff0000'
@@ -232,6 +243,6 @@ if __name__ == "__main__":
 
     plotter = MeshPlotter(mesh)
     plotter.draw_faces()
-    plotter.draw_polygons(polygons)
+    plotter.draw_polylines(polygons)
     plotter.draw_lines(lines)
     plotter.show()
