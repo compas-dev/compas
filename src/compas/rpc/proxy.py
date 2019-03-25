@@ -229,7 +229,7 @@ class Proxy(object):
             Popen
         except NameError:
             self._process = Process()
-            self._process.StartInfo.EvironmentVariables = env
+            self._process.StartInfo.EnvironmentVariables = env
             self._process.StartInfo.UseShellExecute = False
             self._process.StartInfo.RedirectStandardOutput = True
             self._process.StartInfo.RedirectStandardError = True
