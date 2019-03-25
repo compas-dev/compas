@@ -6,6 +6,11 @@ Not intended to be used outside compas* packages.
 import os
 import sys
 
+try:
+    NotADirectoryError
+except NameError:
+    class NotADirectoryError(Exception):
+        pass
 
 PY3 = sys.version_info[0] == 3
 system = sys.platform
@@ -71,7 +76,7 @@ def prepare_environment():
     variables.
     """
     env = os.environ.copy()
-    
+
     if PYTHON_DIRECTORY:
         lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
         if os.path.exists(lib_bin):
