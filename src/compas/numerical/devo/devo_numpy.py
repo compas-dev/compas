@@ -23,8 +23,6 @@ try:
     from numpy.random import choice
     from numpy.random import rand
 
-    from matplotlib import pyplot as plt
-
     from scipy.optimize import fmin_l_bfgs_b
 
 except ImportError:
@@ -78,6 +76,8 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
         Values that give the optimum (minimized) function.
 
     """
+    if plot:
+        from matplotlib import pyplot as plt
 
     tic = time()
 
