@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix exception on Rhino Mac.
 - Fix missing import on `compas_rhino.geometry`.
+- Fix `compas.geometry.offset_polygon`.
+- Fix installation for Rhino, related to implicit import of `matplotlib`.
 
 ### Removed
 
