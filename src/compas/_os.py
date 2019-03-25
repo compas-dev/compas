@@ -80,7 +80,11 @@ def prepare_environment():
     if PYTHON_DIRECTORY:
         lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
         if os.path.exists(lib_bin):
-            env['PATH'] += ';' + lib_bin
+            env['PATH'] += os.pathsep + lib_bin
+
+        lib_bin = os.path.join(PYTHON_DIRECTORY, 'lib')
+        if os.path.exists(lib_bin):
+            env['PATH'] += os.pathsep + lib_bin
 
     return env
 
