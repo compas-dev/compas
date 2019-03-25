@@ -437,52 +437,6 @@ def xdraw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     return guids
 
 
-# @wrap_xdrawfunc
-# def xdraw_forces(forces, color, **kwargs):
-#     guids = []
-#     for c in iter(cylinders):
-#         start  = c['start']
-#         end    = c['end']
-#         radius = c['radius']
-#         name   = c.get('name', '')
-#         color  = c.get('color')
-#         layer  = c.get('layer')
-#         if radius < TOL:
-#             continue
-#         base     = Point3d(*start)
-#         normal   = Point3d(*end) - base
-#         height   = normal.Length
-#         if height < TOL:
-#             continue
-#         plane    = Plane(base, normal)
-#         circle   = Circle(plane, radius)
-#         cylinder = Cylinder(circle, height)
-#         brep     = cylinder.ToBrep(cap, cap)
-#         if not brep:
-#             continue
-#         guid = add_brep(brep)
-#         if not guid:
-#             continue
-#         obj = find_object(guid)
-#         if not obj:
-#             continue
-#         attr = obj.Attributes
-#         if color:
-#             attr.ObjectColor = FromArgb(*color)
-#             attr.ColorSource = ColorFromObject
-#         else:
-#             attr.ColorSource = ColorFromLayer
-#         if layer and find_layer_by_fullpath:
-#             index = find_layer_by_fullpath(layer, True)
-#             if index >= 0:
-#                 attr.LayerIndex = index
-#         attr.Name = name
-#         attr.WireDensity = -1
-#         obj.CommitChanges()
-#         guids.append(guid)
-#     return guids
-
-
 @wrap_xdrawfunc
 def xdraw_spheres(spheres, **kwargs):
     guids = []
