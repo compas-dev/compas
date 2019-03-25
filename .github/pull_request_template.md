@@ -4,7 +4,7 @@
 
 ### What type of change is this?
 
-- [ ] Bug fix is a **backwards-compatible** manner.
+- [ ] Bug fix in a **backwards-compatible** manner.
 - [ ] Add features in a **backwards-compatible** manner.
 - [ ] Breaking change: new feature or bug fix that involve incompatible API changes.
 
