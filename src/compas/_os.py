@@ -14,6 +14,16 @@ system = sys.platform
 if 'ironpython' in sys.version.lower() and os.name == 'nt':
     system = 'win32'
 
+try:
+    from compas_bootstrapper import PYTHON_DIRECTORY
+except:
+    # We re-map CONDA_PREFIX for backwards compatibility reasons
+    # In a few releases down the line, we can get rid of this bit
+    try:
+        from compas_bootstrapper import CONDA_PREFIX as PYTHON_DIRECTORY
+    except:
+        PYTHON_DIRECTORY = None
+
 
 def select_python(python_executable):
     """Selects the most likely python interpreter to run.
@@ -28,16 +38,6 @@ def select_python(python_executable):
         either `python` or `pythonw`.
     """
     python_executable = python_executable or 'pythonw'
-
-    try:
-        from compas_bootstrapper import PYTHON_DIRECTORY
-    except:
-        # We re-map CONDA_PREFIX for backwards compatibility reasons
-        # In a few releases down the line, we can get rid of this bit
-        try:
-            from compas_bootstrapper import CONDA_PREFIX as PYTHON_DIRECTORY
-        except:
-            PYTHON_DIRECTORY = None
 
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
         python = os.path.join(PYTHON_DIRECTORY, python_executable)
@@ -62,6 +62,22 @@ def select_python(python_executable):
     # Assume a system-wide install exists
     return python_executable
 
+
+def prepare_environment():
+    """Prepares an environment context to run Python on.
+
+    If Python is being used from a conda environment, this is roughly equivalent
+    to activating the conda environment by setting up the correct environment
+    variables.
+    """
+    env = os.environ.copy()
+    
+    if PYTHON_DIRECTORY:
+        lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
+        if os.path.exists(lib_bin):
+            env['PATH'] += ';' + lib_bin
+
+    return env
 
 def absjoin(*parts):
     return os.path.abspath(os.path.join(*parts))

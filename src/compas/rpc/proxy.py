@@ -236,7 +236,8 @@ class Proxy(object):
             self._process.Start()
         else:
             args = [python, '-m', self.service, str(self._port)]
-            self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
+            env = compas._os.prepare_environment()
+            self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=env)
 
         server = ServerProxy(self.address)
 
