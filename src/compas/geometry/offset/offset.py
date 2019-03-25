@@ -133,27 +133,25 @@ def offset_polygon(polygon, distance):
         distances = [distance] * p
 
     d = len(distances)
+
     if d < p:
         distances.extend(distances[-1:] * (p - d))
 
     normal = normal_polygon(polygon)
 
-    lines = pairwise(polygon + polygon[:1])
+    offset = []
+    for line, distance in zip(pairwise(polygon + polygon[:1]), distances):
+        offset.append(offset_line(line, distance, normal))
 
-    lines_offset = []
-    for line, distance in zip(lines, distances):
-        lines_offset.append(offset_line(line, distance, normal))
-
-    polygon_offset = []
-    for l1, l2 in pairwise(lines_offset + lines_offset[:1]):
+    points = []
+    for l1, l2 in pairwise(offset[-1:] + offset):
         x1, x2 = intersection_line_line(l1, l2)
-
         if x1 and x2:
-            polygon_offset.append(centroid_points([x1, x2]))
+            points.append(centroid_points([x1, x2]))
         else:
-            polygon_offset.append(x1)
+            points.append(x1)
 
-    return polygon_offset
+    return points
 
 
 def offset_polyline(polyline, distance, normal=[0., 0., 1.]):
@@ -216,10 +214,24 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    polygons = [{'points': offset_polygon(mesh.face_coordinates(fkey), 0.1), 'edgecolor': '#ff0000'} for fkey in mesh.faces()]
-    # polygons = [{'points': offset_polygon(mesh.face_coordinates(mesh.get_any_face()), -0.1), 'edgecolor': '#ff0000'}]
+    polygons = []
+    lines = []
+    for fkey in mesh.faces():
+        points = mesh.face_coordinates(fkey)
+        offset = offset_polygon(points, 0.1)
+        polygons.append({
+            'points': offset,
+            'edgecolor': '#ff0000'
+        })
+        for a, b in zip(points, offset):
+            lines.append({
+                'start': a,
+                'end': b,
+                'color': '#00ff00'
+            })
 
     plotter = MeshPlotter(mesh)
     plotter.draw_faces()
     plotter.draw_polygons(polygons)
+    plotter.draw_lines(lines)
     plotter.show()
