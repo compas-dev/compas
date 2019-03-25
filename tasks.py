@@ -69,39 +69,36 @@ def help(ctx):
     'builds': 'True to clean up build/packaging artifacts, otherwise False.'})
 def clean(ctx, docs=True, bytecode=True, builds=True):
     """Cleans the local copy from compiled artifacts."""
-    if builds:
-        ctx.run('python setup.py clean')
 
-    if bytecode:
-        # for root, dirs, files in os.walk(BASE_FOLDER):
-        #     for f in files:
-        #         if f.endswith('.pyc'):
-        #             os.remove(os.path.join(root, f))
-        #     if '.git' in dirs:
-        #         dirs.remove('.git')
-        files = glob.glob('src/**/*.pyc', recursive=True)
-        for path in files:
-            try:
-                os.remove(file)
-            except Exception:
-                pass
+    with chdir(BASE_FOLDER):
+        if builds:
+            ctx.run('python setup.py clean')
 
-    folders = []
+        if bytecode:
+            for root, dirs, files in os.walk(BASE_FOLDER):
+                for f in files:
+                    if f.endswith('.pyc'):
+                        os.remove(os.path.join(root, f))
+                if '.git' in dirs:
+                    dirs.remove('.git')
 
-    if docs:
-        folders.append('docs/api/generated')
+        folders = []
 
-    folders.append('dist/')
+        if docs:
+            folders.append('docs/api/generated')
 
-    if bytecode:
-        folders.extend(glob.glob('src/**/__pycache__', recursive=True))
+        folders.append('dist/')
 
-    if builds:
-        folders.append('build/')
-        folders.append('src/compas.egg-info/')
+        if bytecode:
+            for t in ('src', 'tests'):
+                folders.extend(glob.glob('{}/**/__pycache__'.format(t), recursive=True))
 
-    for folder in folders:
-        rmtree(os.path.join(BASE_FOLDER, folder), ignore_errors=True)
+        if builds:
+            folders.append('build/')
+            folders.append('src/compas.egg-info/')
+
+        for folder in folders:
+            rmtree(os.path.join(BASE_FOLDER, folder), ignore_errors=True)
 
 
 @task(help={
@@ -110,32 +107,36 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
       'check_links': 'True to check all web links in docs for validity, otherwise False.'})
 def docs(ctx, doctest=False, rebuild=True, check_links=False):
     """Builds package's HTML documentation."""
+
     if rebuild:
         clean(ctx)
 
-    if doctest:
-        ctx.run('sphinx-build -E -b doctest docs dist/docs')
+    with chdir(BASE_FOLDER):
+        if doctest:
+            ctx.run('sphinx-build -E -b doctest docs dist/docs')
 
-    ctx.run('sphinx-build -E -b html docs dist/docs')
+        ctx.run('sphinx-build -E -b html docs dist/docs')
 
-    if check_links:
-        ctx.run('sphinx-build -E -b linkcheck docs dist/docs')
+        if check_links:
+            ctx.run('sphinx-build -E -b linkcheck docs dist/docs')
 
 
 @task()
 def check(ctx):
     """Check the consistency of documentation, coding style and a few other things."""
-    log.write('Checking MANIFEST.in...')
-    ctx.run('check-manifest --ignore-bad-ideas=test.so,fd.so,smoothing.so,drx_c.so')
 
-    log.write('Checking metadata...')
-    ctx.run('python setup.py check --strict --metadata')
+    with chdir(BASE_FOLDER):
+        log.write('Checking MANIFEST.in...')
+        ctx.run('check-manifest --ignore-bad-ideas=test.so,fd.so,smoothing.so,drx_c.so')
 
-    # log.write('Running flake8 python linter...')
-    # ctx.run('flake8 src tests setup.py')
+        log.write('Checking metadata...')
+        ctx.run('python setup.py check --strict --metadata')
 
-    # log.write('Checking python imports...')
-    # ctx.run('isort --check-only --diff --recursive src tests setup.py')
+        # log.write('Running flake8 python linter...')
+        # ctx.run('flake8 src tests setup.py')
+
+        # log.write('Checking python imports...')
+        # ctx.run('isort --check-only --diff --recursive src tests setup.py')
 
 
 @task(help={
@@ -145,11 +146,29 @@ def test(ctx, checks=False, doctest=False):
     if checks:
         check(ctx)
 
-    cmd = ['pytest']
-    if doctest:
-        cmd.append('--doctest-modules')
+    with chdir(BASE_FOLDER):
+        cmd = ['pytest']
+        if doctest:
+            cmd.append('--doctest-modules')
 
-    ctx.run(' '.join(cmd))
+        ctx.run(' '.join(cmd))
+
+
+@task
+def prepare_changelog(ctx):
+    """Prepare changelog for next release."""
+    UNRELEASED_CHANGELOG_TEMPLATE = '## Unreleased\n\n### Added\n\n### Changed\n\n### Removed\n\n\n## '
+
+    with chdir(BASE_FOLDER):
+        # Preparing changelog for next release
+        with open('CHANGELOG.md', 'r+') as changelog:
+            content = changelog.read()
+            changelog.seek(0)
+            changelog.write(content.replace(
+                '## ', UNRELEASED_CHANGELOG_TEMPLATE, 1))
+
+        ctx.run('git add CHANGELOG.md && git commit -m "Prepare changelog for next release"')
+
 
 
 @task(help={
@@ -175,7 +194,20 @@ def release(ctx, release_type):
 
         if len(dist_files):
             ctx.run('twine upload --skip-existing %s' % dist_files)
+
+            prepare_changelog(ctx)
         else:
             raise Exit('No files found to release')
     else:
         raise Exit('Aborted release')
+
+
+@contextlib.contextmanager
+def chdir(dirname=None):
+    current_dir = os.getcwd()
+    try:
+        if dirname is not None:
+            os.chdir(dirname)
+        yield
+    finally:
+        os.chdir(current_dir)

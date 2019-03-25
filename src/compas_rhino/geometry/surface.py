@@ -12,7 +12,7 @@ from compas_rhino.utilities import delete_objects
 
 from compas.geometry import subtract_vectors
 from compas.geometry import angle_vectors
-
+from compas.geometry import distance_point_point
 
 try:
     import rhinoscriptsyntax as rs

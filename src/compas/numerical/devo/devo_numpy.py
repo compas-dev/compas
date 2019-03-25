@@ -97,7 +97,9 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
 
     # Population
 
-    agents     = (rand(k, population) * (ub - lb) + lb)
+    agents = (rand(k, population) * (ub - lb) + lb)
+    agents[:, :int(round(population * 0.05))] *= 0
+
     candidates = tile(array(range(population)), (1, population))
     candidates = reshape(delete(candidates, where(eye(population).ravel() == 1)), (population, population - 1))
 
@@ -185,7 +187,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
             data[min(fbin), ts, :] = [1, 0, 0]
             data[max(fbin), ts, :] = [0, 0, 1]
 
-            if ts % 10 == 0:
+            if ts % printout == 0:
                 plt.imshow(data, origin='lower', aspect=aspect)
                 plt.plot([generations * 0.5] * 2, [0, ydiv], ':k')
                 plt.yticks(yticks, ylabels, rotation='horizontal')
