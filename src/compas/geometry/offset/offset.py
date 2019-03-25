@@ -7,12 +7,11 @@ from compas.geometry import normalize_vector
 from compas.geometry import add_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import cross_vectors
-
 from compas.geometry import centroid_points
-
 from compas.geometry import intersection_line_line
-
 from compas.geometry import normal_polygon
+
+from compas.utilities import pairwise
 
 
 __all__ = [
@@ -80,7 +79,7 @@ def offset_polygon(polygon, distance):
     ----------
     polygon : list of point
         The XYZ coordinates of the corners of the polygon.
-        The first and last coordinates must be identical.
+        The first and last coordinates must not be identical.
     distance : float or list of tuples of floats
         The offset distance as float.
         A single value determines a constant offset globally.
@@ -126,31 +125,34 @@ def offset_polygon(polygon, distance):
         print(polygon_offset)
 
     """
+    p = len(polygon)
+
+    if isinstance(distance, (list, tuple)):
+        distances = distance
+    else:
+        distances = [distance] * p
+
+    d = len(distances)
+    if d < p:
+        distances.extend(distances[-1:] * (p - d))
+
     normal = normal_polygon(polygon)
 
-    if isinstance(distance, list) or isinstance(distance, tuple):
-        distances = distance
-        if len(distances) < len(polygon):
-            distances = distances + [distances[-1]] * (len(polygon) - len(distances) - 1)
-    else:
-        distances = [[distance, distance]] * len(polygon)
+    lines = pairwise(polygon + polygon[:1])
 
-    lines = [polygon[i:i + 2] for i in range(len(polygon[:-1]))]
     lines_offset = []
-    for i, line in enumerate(lines):
-        lines_offset.append(offset_line(line, distances[i], normal))
+    for line, distance in zip(lines, distances):
+        lines_offset.append(offset_line(line, distance, normal))
 
     polygon_offset = []
+    for l1, l2 in pairwise(lines_offset + lines_offset[:1]):
+        x1, x2 = intersection_line_line(l1, l2)
 
-    for i in range(len(lines_offset)):
-        intx_pt1, intx_pt2 = intersection_line_line(lines_offset[i - 1], lines_offset[i])
-
-        if intx_pt1 and intx_pt2:
-            polygon_offset.append(centroid_points([intx_pt1, intx_pt2]))
+        if x1 and x2:
+            polygon_offset.append(centroid_points([x1, x2]))
         else:
-            polygon_offset.append(lines_offset[i][0])
+            polygon_offset.append(x1)
 
-    polygon_offset.append(polygon_offset[0])
     return polygon_offset
 
 
@@ -209,32 +211,15 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.plotters import Plotter
-    from compas.utilities import pairwise
     from compas.plotters import MeshPlotter
-
     from compas.datastructures import Mesh
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    fkey = mesh.get_any_face()
-
-    polyline = mesh.face_coordinates(fkey)
-    polyline.append(polyline[0])
-
-    o = offset_polyline(polyline, 0.1)
-
-    lines = []
-    for a, b in pairwise(o):
-        lines.append({
-            'start' : a,
-            'end'   : b,
-            'color' : '#00ff00',
-            'width' : 0.5
-        })
-
+    polygons = [{'points': offset_polygon(mesh.face_coordinates(fkey), 0.1), 'edgecolor': '#ff0000'} for fkey in mesh.faces()]
+    # polygons = [{'points': offset_polygon(mesh.face_coordinates(mesh.get_any_face()), -0.1), 'edgecolor': '#ff0000'}]
 
     plotter = MeshPlotter(mesh)
-    plotter.draw_lines(lines)
     plotter.draw_faces()
+    plotter.draw_polygons(polygons)
     plotter.show()
