@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix `XFunc` and `RPC` environment activation.
 - Fix exception on Rhino Mac.
 - Fix missing import on `compas_rhino.geometry`.
 - Fix `compas.geometry.offset_polygon`.

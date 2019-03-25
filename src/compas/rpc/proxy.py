@@ -223,11 +223,13 @@ class Proxy(object):
 
         """
         python = self.python
+        env = compas._os.prepare_environment()
 
         try:
             Popen
         except NameError:
             self._process = Process()
+            self._process.StartInfo.EvironmentVariables = env
             self._process.StartInfo.UseShellExecute = False
             self._process.StartInfo.RedirectStandardOutput = True
             self._process.StartInfo.RedirectStandardError = True
@@ -236,7 +238,7 @@ class Proxy(object):
             self._process.Start()
         else:
             args = [python, '-m', self.service, str(self._port)]
-            self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
+            self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=env)
 
         server = ServerProxy(self.address)
 
