@@ -225,7 +225,7 @@ class Artist(object):
 
         """
         layer = layer or self.layer
-        return compas_rhino.xdraw_polygons(polygons, layer=layer, clear=clear_layer, redraw=redraw)
+        return compas_rhino.xdraw_polylines(polygons, layer=layer, clear=clear_layer, redraw=redraw)
 
 
 # ==============================================================================
