@@ -40,7 +40,6 @@ def print_profile(func):
 
             @print_profile
             def f(n):
-                \"\"\"Sum up all integers below n.\"\"\"
                 return sum(for i in range(n))
 
             print(f(100))
