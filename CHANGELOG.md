@@ -13,9 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- `xscript.py` from `compas.utilities`
 - `mixing.py` from `compas.utilities`
 - `singleton.py` from `compas.utilities`
+- `xscript.py` from `compas.utilities`
+
 - `xfunc.py` from `compas_rhino.utilities`
 
 
