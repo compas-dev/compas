@@ -38,8 +38,6 @@ def meshes_join(meshes, cls=None):
         # modify vertex indices in the faces
         faces += [ [vertex_map[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
-    faces = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
-
     return cls.from_vertices_and_faces(vertices, faces)
 
 def mesh_weld(mesh, precision=None, cls=None):
