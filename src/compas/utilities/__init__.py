@@ -51,8 +51,8 @@ datetime
     :toctree: generated/
     :nosignatures:
 
-
-.. timestamp
+    timestamp
+    now
 
 
 decorators
@@ -64,6 +64,7 @@ decorators
 
     memoize
 
+
 functions
 ==========
 
@@ -73,6 +74,7 @@ functions
 
     fibonacci
     binomial_coefficient
+
 
 itertools
 =========
@@ -118,17 +120,6 @@ maps
     normalize_values
 
 
-mixing
-======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mix_in_functions
-    mix_in_class_attributes
-
-
 names
 =====
 
@@ -147,6 +138,22 @@ profiling
     :nosignatures:
 
     print_profile
+
+
+remote
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+
+sorting
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
 
 
 statistics
@@ -169,6 +176,7 @@ xfunc
     :nosignatures:
 
     XFunc
+
 
 """
 from __future__ import absolute_import
@@ -193,16 +201,14 @@ from .colors import *
 from .datetime_ import *
 from .decorators import *
 from .encoders import *
+from .functions import *
 from .itertools_ import *
 from .maps import *
-from .mixing import *
 from .names import *
 from .profiling import *
 from .remote import *
 from .sorting import *
-from .xfunc import *
-from .xscript import *
-from .functions import *
 from .statistics import *
+from .xfunc import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
