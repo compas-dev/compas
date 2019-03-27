@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.5.1] 2019-03-26
+
+### Changed
+
+- Fix 'mesh_weld' and 'meshes_join_and_weld' against consecutive duplicates in face vertices.
+
 ## [0.5.0] 2019-03-15
 
 ### Added
