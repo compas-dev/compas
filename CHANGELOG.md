@@ -11,14 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix 'mesh_weld' and 'meshes_join_and_weld' against consecutive duplicates in face vertices.
+
 ### Removed
 
 - `mixing.py` from `compas.utilities`
 - `singleton.py` from `compas.utilities`
 - `xscript.py` from `compas.utilities`
-
 - `xfunc.py` from `compas_rhino.utilities`
-
 
 ## [0.5.1] 2019-03-25
 
@@ -31,7 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix missing import on `compas_rhino.geometry`.
 - Fix `compas.geometry.offset_polygon`.
 - Fix installation for Rhino, related to implicit import of `matplotlib`.
-- Fix 'mesh_weld' and 'meshes_join_and_weld' against consecutive duplicates in face vertices.
 
 ### Removed
 
