@@ -10,5 +10,5 @@
 
 ### Checklist
 
-1. [ ] Add the change to the `CHANGELOG.md` file.
+1. [ ] Add the change to the `CHANGELOG.md` file in the `Unreleased` section under the heading that best fits your change (e.g. `Added`, `Changed`, `Removed`).
 1. [ ] Run all tests on your computer (i.e. `invoke test`).
