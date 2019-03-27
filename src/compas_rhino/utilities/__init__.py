@@ -159,6 +159,5 @@ from .objects import *
 from .misc import *
 from .drawing import *
 from .geometry import *
-from .xfunc import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

@@ -27,6 +27,7 @@ def average(list):
 
     return sum(list) / float(len(list))
 
+
 def variance(list):
     """Variance of a list.
 
@@ -46,6 +47,7 @@ def variance(list):
 
     return (sum([(i - m) ** 2 for i in list]) / float(len(list))) ** .5
 
+
 def standard_deviation(list):
     """Standard deviation of a list.
 
@@ -62,6 +64,7 @@ def standard_deviation(list):
     """
 
     return variance(list) ** .5
+
 
 # ==============================================================================
 # Main

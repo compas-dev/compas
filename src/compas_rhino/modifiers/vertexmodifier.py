@@ -67,10 +67,9 @@ class VertexModifier(object):
         gp.DynamicDraw += OnDynamicDraw
 
         if constraint:
-            if allow_off is not None:
-                gp.Constrain(constraint, allow_off)
-            else:
-                gp.Constrain(constraint)
+            gp.Constrain(constraint, allow_off)
+        else:
+            gp.Constrain(constraint)
 
         gp.Get()
 

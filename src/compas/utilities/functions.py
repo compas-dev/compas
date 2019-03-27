@@ -4,6 +4,7 @@ from __future__ import division
 
 from math import factorial
 
+
 __all__ = [
     'fibonacci',
     'binomial_coefficient'
@@ -20,6 +21,7 @@ def fibonacci(n, memo={}):
     if n not in memo:
         memo[n] = fibonacci(n - 2, memo) + fibonacci(n - 1, memo)
     return memo[n]
+
 
 def binomial_coefficient(n, k):
     """Returns the binomial coefficient of the :math:`x^k` term in the
@@ -45,6 +47,7 @@ def binomial_coefficient(n, k):
 
     """
     return int(factorial(n) / float(factorial(k) * factorial(n - k)))
+
 
 # ==============================================================================
 # Main

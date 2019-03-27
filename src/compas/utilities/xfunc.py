@@ -376,7 +376,8 @@ class XFunc(object):
                         self.opath,
                         self.serializer]
 
-        process = Popen(process_args, stderr=PIPE, stdout=PIPE)
+        env = compas._os.prepare_environment()
+        process = Popen(process_args, stderr=PIPE, stdout=PIPE, env=env)
 
         while process.poll() is None:
             line = process.stdout.readline().strip()
