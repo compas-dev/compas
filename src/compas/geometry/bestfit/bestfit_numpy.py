@@ -15,9 +15,12 @@ try:
     from numpy import sqrt
     from numpy import mean
     from numpy import sum
+    from numpy import zeros
+    from numpy.linalg import lstsq
 
     from scipy.linalg import svd
     from scipy.optimize import leastsq
+
 
 except ImportError:
     compas.raise_if_not_ironpython()
@@ -26,6 +29,7 @@ except ImportError:
 __all__ = [
     'bestfit_plane_numpy',
     'bestfit_circle_numpy',
+    'bestfit_sphere_numpy',
 ]
 
 
@@ -171,12 +175,12 @@ def bestfit_circle_numpy(points):
         Ri = dist(*c)
         return Ri - Ri.mean()
 
-    xm     = mean(x)
-    ym     = mean(y)
-    c0     = xm, ym
+    xm = mean(x)
+    ym = mean(y)
+    c0 = xm, ym
     c, ier = leastsq(f, c0)
-    Ri     = dist(*c)
-    R      = Ri.mean()
+    Ri = dist(*c)
+    R = Ri.mean()
     residu = sum((Ri - R) ** 2)
 
     print(residu)
@@ -189,10 +193,64 @@ def bestfit_circle_numpy(points):
     return o, w, R
 
 
+def bestfit_sphere_numpy(points):
+    """Returns the sphere's center and radius that fits best through a set of points.
+
+    Parameters
+    ----------
+    points: list of points
+        XYZ coordinates of the points.
+
+    Returns
+    -------
+    tuple: center, radius
+        sphere center (XYZ coordinates) and sphere radius.
+
+    Notes
+    -----
+    For more information see [1]_.
+
+    References
+    ----------
+    .. [1] Least Squares Sphere Fit.
+           Available at: https://jekel.me/2015/Least-Squares-Sphere-Fit/.
+
+    Examples
+    --------
+    >>> from compas.geometry import bestfit_sphere_numpy
+    >>> points = [(291.580, -199.041, 120.194), (293.003, -52.379, 33.599),\
+                  (514.217, 26.345, 29.143), (683.253, 26.510, -6.194),\
+                  (683.247, -327.154, 179.113), (231.606, -430.659, 115.458),\
+                  (87.278, -419.178, -18.863), (24.731, -340.222, -127.158)]
+    >>> center, radius = bestfit_sphere_numpy(points)
+    """
+
+    # Assemble the A matrix
+    spX = asarray([p[0] for p in points])
+    spY = asarray([p[1] for p in points])
+    spZ = asarray([p[2] for p in points])
+    A = zeros((len(spX), 4))
+    A[:, 0] = spX*2
+    A[:, 1] = spY*2
+    A[:, 2] = spZ*2
+    A[:, 3] = 1
+
+    # Assemble the f matrix
+    f = zeros((len(spX), 1))
+    f[:, 0] = (spX*spX) + (spY*spY) + (spZ*spZ)
+    C, residules, rank, singval = lstsq(A, f)
+
+    # solve for the radius
+    t = (C[0]*C[0]) + (C[1]*C[1]) + (C[2]*C[2]) + C[3]
+    radius = sqrt(t)
+    return [float(C[0][0]), float(C[1][0]), float(C[2][0])], radius
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod()
