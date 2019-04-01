@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix `mesh_uv_to_xyz`in `RhinoSurface`.
+
 ### Removed
 
 - Removed `mixing.py` from `compas.utilities`.
