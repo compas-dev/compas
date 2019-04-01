@@ -430,7 +430,7 @@ class RhinoSurface(RhinoGeometry):
             cls = type(mesh)
 
         vertices, faces = mesh.to_vertices_and_faces()
-        vertices = [self.point_uv_to_xyz(uv0[:2]) for uv0 in vertices]
+        vertices = {vkey: self.point_uv_to_xyz(uv0[:2]) for vkey, uv0 in vertices.items()}
         return cls.from_vertices_and_faces(vertices, faces)
  
 # ==============================================================================
