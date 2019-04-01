@@ -120,16 +120,6 @@ maps
     normalize_values
 
 
-names
-=====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    random_name
-
-
 profiling
 =========
 
@@ -142,14 +132,6 @@ profiling
 
 remote
 ======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-
-sorting
-=======
 
 .. autosummary::
     :toctree: generated/
@@ -204,10 +186,8 @@ from .encoders import *
 from .functions import *
 from .itertools_ import *
 from .maps import *
-from .names import *
 from .profiling import *
 from .remote import *
-from .sorting import *
 from .statistics import *
 from .xfunc import *
 

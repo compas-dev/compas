@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `mixing.py` from `compas.utilities`.
 - Removed `singleton.py` from `compas.utilities`.
 - Removed `xscript.py` from `compas.utilities`.
+- Removed `sorting.py` from `compas.utilities`.
+- Removed `names.py` from `compas.utilities`.
 - Removed `xfunc.py` from `compas_rhino.utilities`, use `compas.utilities.XFunc` instead.
 
 
