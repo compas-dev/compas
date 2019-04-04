@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix setting of environment variables in `System.Diagnostics.Process`-based subprocess for `XFunc` and `RPC`.
+- Fix `XFunc` on RhinoMac.
+
 ### Removed
 
 - Removed `mixing.py` from `compas.utilities`.
