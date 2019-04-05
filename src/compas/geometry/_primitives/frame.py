@@ -23,7 +23,7 @@ from compas.geometry.transformations import matrix_from_frame
 
 from compas.geometry._primitives import Point
 from compas.geometry._primitives import Vector
-
+from compas.geometry._primitives import Plane
 
 __all__ = ['Frame']
 
@@ -398,6 +398,59 @@ class Frame(object):
         frame = cls.worldXY()
         frame.data = data
         return frame
+
+    @classmethod
+    def from_plane(cls, plane):
+        """Constructs a frame from a plane.
+
+        Xaxis and yaxis are arbitrarily selected based on the plane's normal.
+
+        Parameters
+        ----------
+        plane : :class:`compas.geometry.Plane`
+            A plane.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            The constructed frame.
+
+        Examples
+        --------
+        >>> plane = Plane([0,0,0], [0,0,1])
+        >>> frame = Frame.from_plane(plane)
+        >>> allclose(frame.normal, plane.normal)
+        True
+        """
+
+        # plane equation: a*x + b*y + c*z = d
+        d = Vector(*plane.point).dot(plane.normal)
+
+        # select 2 arbitrary points in the plane from which we create the xaxis
+
+        coeffs = list(plane.normal)  # a, b, c
+        # select a coeff with a value != 0
+        coeffs_abs = [math.fabs(x) for x in coeffs]
+        idx = coeffs_abs.index(max(coeffs_abs))
+
+        # first point
+        coords = [0, 0, 0]  # x, y, z
+        # z = (d - a*0 + b*0)/c, if idx == 2
+        v = d/coeffs[idx]
+        coords[idx] = v
+        pt1_in_plane = Point(*coords)
+
+        # second point
+        coords = [1, 1, 1]  # x, y, z
+        coords[idx] = 0
+        # z = (d - a*1 + b*1)/c, if idx == 2
+        v = (d - sum([a*x for a, x in zip(coeffs, coords)]))/coeffs[idx]
+        coords[idx] = v
+        pt2_in_plane = Point(*coords)
+
+        xaxis = pt2_in_plane - pt1_in_plane
+        yaxis = plane.normal.cross(xaxis)
+        return cls(plane.point, xaxis, yaxis)
 
     # ==========================================================================
     # descriptors

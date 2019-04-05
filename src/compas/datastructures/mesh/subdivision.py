@@ -579,52 +579,88 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
     subd = mesh.copy()
 
     for _ in range(k):
-        key_xyz       = {key: subd.vertex_coordinates(key) for key in subd}
-        fkey_vertices = {fkey: subd.face_vertices(fkey, ordered=True) for fkey in subd.face}
-        uv_w          = {(u, v): subd.face[subd.halfedge[u][v]][v] for u in subd.halfedge for v in subd.halfedge[u]}
-        edgepoints    = {}
+        key_xyz       = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
+        fkey_vertices = {fkey: subd.face_vertices(fkey)[:] for fkey in subd.faces()}
+        uv_w = {(u, v): subd.face_vertex_ancestor(fkey, u) for fkey in subd.faces() for u, v in subd.face_halfedges(fkey)}
+        boundary = set(subd.vertices_on_boundary())
 
-        for key in subd:
+        for key in subd.vertices():
             nbrs = subd.vertex_neighbors(key)
-            n = len(nbrs)
 
-            if n == 3:
-                a = 3. / 16.
+            if key in boundary:
+                xyz = key_xyz[key]
+
+                x = 0.75 * xyz[0]
+                y = 0.75 * xyz[1]
+                z = 0.75 * xyz[2]
+
+                for n in nbrs:
+                    if subd.halfedge[key][n] is None or subd.halfedge[n][key] is None:
+                        xyz = key_xyz[n]
+
+                        x += 0.125 * xyz[0]
+                        y += 0.125 * xyz[1]
+                        z += 0.125 * xyz[2]
+                        
             else:
-                a = (5. / 8. - (3. / 8. + 0.25 * cos(2 * pi / n)) ** 2) / n
+                n = len(nbrs)
 
-            nbrs = [key_xyz[nbr] for nbr in nbrs]
-            nbrs = [sum(axis) for axis in zip(*nbrs)]
-            xyz = key_xyz[key]
-            xyz = [(1. - n * a) * xyz[i] + a * nbrs[i] for i in range(3)]
-            subd.vertex[key]['x'] = xyz[0]
-            subd.vertex[key]['y'] = xyz[1]
-            subd.vertex[key]['z'] = xyz[2]
+                if n == 3:
+                    a = 3. / 16.
+                else:
+                    a = 3. / (8 * n)
 
+                xyz = key_xyz[key]
+
+                nbrs = [key_xyz[nbr] for nbr in nbrs]
+                nbrs = [sum(axis) for axis in zip(*nbrs)]
+
+                x = (1. - n * a) * xyz[0] + a * nbrs[0]
+                y = (1. - n * a) * xyz[1] + a * nbrs[1]
+                z = (1. - n * a) * xyz[2] + a * nbrs[2]
+
+            subd.vertex[key]['x'] = x
+            subd.vertex[key]['y'] = y
+            subd.vertex[key]['z'] = z
+
+        edgepoints = {}
+
+        # odd vertices
         for u, v in list(subd.edges()):
 
-            w = subd.split_edge(u, v, allow_boundary=True)
+            w = mesh_split_edge(subd, u, v, allow_boundary=True)
 
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w
-            v1 = key_xyz[u]
-            v2 = key_xyz[v]
-            vl = key_xyz[uv_w[(u, v)]]
-            vr = key_xyz[uv_w[(v, u)]]
-            xyz = [3. * (v1[i] + v2[i]) / 8. + (vl[i] + vr[i]) / 8. for i in range(3)]
+
+            a = key_xyz[u]
+            b = key_xyz[v]
+
+            if (u, v) in uv_w and (v, u) in uv_w:
+                c = key_xyz[uv_w[(u, v)]]
+                d = key_xyz[uv_w[(v, u)]]
+                xyz = [(3.0 / 8.0) * (a[i] + b[i]) + (1.0 / 8.0) * (c[i] + d[i]) for i in range(3)]
+            
+            else:
+                xyz = [0.5 * (a[i] + b[i]) for i in range(3)]
+
             subd.vertex[w]['x'] = xyz[0]
             subd.vertex[w]['y'] = xyz[1]
             subd.vertex[w]['z'] = xyz[2]
 
+        # new faces
         for fkey, vertices in fkey_vertices.items():
             u, v, w = vertices
+
             uv = edgepoints[(u, v)]
             vw = edgepoints[(v, w)]
             wu = edgepoints[(w, u)]
+
             subd.add_face([wu, u, uv])
             subd.add_face([uv, v, vw])
             subd.add_face([vw, w, wu])
             subd.add_face([uv, vw, wu])
+
             del subd.face[fkey]
 
     return subd
@@ -642,15 +678,27 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     from compas.utilities import print_profile
-    from compas.viewers import MeshViewer
+    from compas.plotters import MeshPlotter
 
-    mesh = Mesh.from_polyhedron(6)
+    #mesh = Mesh.from_polyhedron(6)
     # fixed = [mesh.get_any_vertex()]
     # print(fixed)
 
-    subdivide = partial(mesh_subdivide_catmullclark)
-    subd = subdivide(mesh, k=4)
+    #subdivide = partial(mesh_subdivide_catmullclark)
+    #subd = subdivide(mesh, k=4)
+        
+    vertices = [
+        [0.5, 0.0, 0.0],
+        [0.0, 1.0, 0.0],
+        [-0.5, 0.0, 0.0]
+    ]
+    faces =[
+        [0, 1, 2]
+    ]
 
-    viewer = MeshViewer()
-    viewer.mesh = subd
-    viewer.show()
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    subd = trimesh_subdivide_loop(mesh, k=3)
+
+    plotter = MeshPlotter(subd)
+    plotter.draw_edges()
+    plotter.show()

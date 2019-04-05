@@ -12,12 +12,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Fix 'mesh_weld' and 'meshes_join_and_weld' against consecutive duplicates in face vertices.
+- Fix setting of environment variables in `System.Diagnostics.Process`-based subprocess for `XFunc` and `RPC`.
+- Fix `XFunc` on RhinoMac.
+- Fix `trimesh_subdivide_loop` from `compas.datastructures`.
 
 ### Removed
 
 - Removed `mixing.py` from `compas.utilities`.
 - Removed `singleton.py` from `compas.utilities`.
 - Removed `xscript.py` from `compas.utilities`.
+- Removed `sorting.py` from `compas.utilities`.
+- Removed `names.py` from `compas.utilities`.
 - Removed `xfunc.py` from `compas_rhino.utilities`, use `compas.utilities.XFunc` instead.
 
 ## [0.5.1] 2019-03-25

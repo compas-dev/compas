@@ -68,8 +68,8 @@ class VertexModifier(object):
 
         if constraint:
             gp.Constrain(constraint, allow_off)
-        else:
-            gp.Constrain(constraint)
+        # else:
+        #     gp.Constrain(constraint)
 
         gp.Get()
 

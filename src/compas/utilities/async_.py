@@ -11,6 +11,7 @@ __all__ = [
     'await_callback',
 ]
 
+
 class ThreadExceptHookHandler(object):
     """Workaround to deal with a bug in the Python interpreter (!).
 
