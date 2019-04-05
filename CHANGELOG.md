@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Fix `mesh_uv_to_xyz`in `RhinoSurface`.
+- Fix 'mesh_weld' and 'meshes_join_and_weld' against consecutive duplicates in face vertices.
 - Fix setting of environment variables in `System.Diagnostics.Process`-based subprocess for `XFunc` and `RPC`.
 - Fix `XFunc` on RhinoMac.
 - Fix `trimesh_subdivide_loop` from `compas.datastructures`.
@@ -24,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `sorting.py` from `compas.utilities`.
 - Removed `names.py` from `compas.utilities`.
 - Removed `xfunc.py` from `compas_rhino.utilities`, use `compas.utilities.XFunc` instead.
-
 
 ## [0.5.1] 2019-03-25
 
@@ -113,6 +113,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New class methods for `Polyhedron`: `from_platonicsolid` and `from_vertices_and_faces`.
 - Constrained and conforming Delaunay triangulations based on Triangle.
 - Predicate-based filtering of vertices and edges.
+- `mesh.geometry`for geometry-specific functions.
+- `trimesh_face_circle` in `mesh.geometry`.
 
 ### Changed
 
