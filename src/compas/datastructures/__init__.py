@@ -62,6 +62,7 @@ Functions
     mesh_unify_cycles
 
     trimesh_cotangent_laplacian_matrix
+    trimesh_face_circle
     trimesh_gaussian_curvature
     trimesh_mean_curvature
     trimesh_remesh

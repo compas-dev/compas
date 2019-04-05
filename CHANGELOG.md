@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Constrained and conforming Delaunay triangulations based on Triangle.
 - Predicate-based filtering of vertices and edges.
+- `mesh.geometry`for geometry-specific functions.
+- `trimesh_face_circle` in `mesh.geometry`.
 
 ### Changed
 

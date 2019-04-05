@@ -18,6 +18,7 @@ from .descent import *
 from .duality import *
 from .explode import *
 from .geodesics import *
+from .geometry import *
 from .join import *
 from .laplacian import *
 from .offset import *

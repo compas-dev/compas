@@ -2632,33 +2632,7 @@ class Mesh(FromToPickle,
 
         """
         return area_polygon(self.face_coordinates(fkey))
-
-    def face_circle(self, fkey):
-        """Get data on circumcentre of triangular face.
-
-        Parameters
-        ----------
-        fkey : Key
-            The face key.
-
-        Returns
-        -------
-        list, None
-            The centre coordinates, the radius value and the normal vector of the circle.
-            None if the face is not a triangle
-
-        """
-
-        face_vertices = self.face_vertices(fkey)
-
-        # return None if not a triangle (possible improvement with best-fit circle)
-        if len(face_vertices) != 3:
-            return None
-        
-        a, b, c = face_vertices
-
-        return circle_from_points(self.vertex_coordinates(a), self.vertex_coordinates(b), self.vertex_coordinates(c))
-        
+      
     def face_flatness(self, fkey):
         """Compute the flatness of the mesh face.
 
