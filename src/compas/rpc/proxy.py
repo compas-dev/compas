@@ -222,22 +222,27 @@ class Proxy(object):
             100 contact attempts (*pings*).
 
         """
-        python = self.python
         env = compas._os.prepare_environment()
 
         try:
             Popen
         except NameError:
             self._process = Process()
-            self._process.StartInfo.EnvironmentVariables = env
+
+            for name in env:
+                if self._process.StartInfo.EnvironmentVariables.ContainsKey(name):
+                    self._process.StartInfo.EnvironmentVariables[name] = env[name]
+                else:
+                    self._process.StartInfo.EnvironmentVariables.Add(name, env[name])
+
             self._process.StartInfo.UseShellExecute = False
             self._process.StartInfo.RedirectStandardOutput = True
             self._process.StartInfo.RedirectStandardError = True
-            self._process.StartInfo.FileName = python
+            self._process.StartInfo.FileName = self.python
             self._process.StartInfo.Arguments = '-m {0} {1}'.format(self.service, str(self._port))
             self._process.Start()
         else:
-            args = [python, '-m', self.service, str(self._port)]
+            args = [self.python, '-m', self.service, str(self._port)]
             self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=env)
 
         server = ServerProxy(self.address)
@@ -353,8 +358,8 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
-    # from compas_rhino.artists import MeshArtist
+    # from compas.plotters import MeshPlotter
+    from compas_rhino.artists import MeshArtist
 
     from compas.rpc import Proxy
 
@@ -392,14 +397,14 @@ if __name__ == "__main__":
         attr['f'] = f[index][0]
         attr['l'] = l[index][0]
 
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-    plotter.draw_vertices()
-    plotter.draw_faces()
-    plotter.draw_edges()
-    plotter.show()
+    # plotter = MeshPlotter(mesh, figsize=(10, 7))
+    # plotter.draw_vertices()
+    # plotter.draw_faces()
+    # plotter.draw_edges()
+    # plotter.show()
 
-    # artist = MeshArtist(mesh)
-    # artist.draw_vertices()
-    # artist.draw_edges()
-    # artist.draw_faces()
-    # artist.redraw()
+    artist = MeshArtist(mesh)
+    artist.draw_vertices()
+    artist.draw_edges()
+    artist.draw_faces()
+    artist.redraw()

@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Fix `mesh_uv_to_xyz`in `RhinoSurface`.
+- Fix setting of environment variables in `System.Diagnostics.Process`-based subprocess for `XFunc` and `RPC`.
+- Fix `XFunc` on RhinoMac.
+- Fix `trimesh_subdivide_loop` from `compas.datastructures`.
 
 ### Removed
 
