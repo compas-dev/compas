@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add `astar_shortest_path` to `compas.topology.traversal`.
+
 ### Changed
 
 - Fix 'mesh_weld' and 'meshes_join_and_weld' against consecutive duplicates in face vertices.
