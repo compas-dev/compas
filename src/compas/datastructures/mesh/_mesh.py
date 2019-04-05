@@ -2632,7 +2632,7 @@ class Mesh(FromToPickle,
 
         """
         return area_polygon(self.face_coordinates(fkey))
-
+      
     def face_flatness(self, fkey):
         """Compute the flatness of the mesh face.
 
