@@ -30,6 +30,7 @@ __all__ = [
 
 BASE16  = '0123456789abcdef'
 
+
 try:
     HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
 except Exception:

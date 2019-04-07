@@ -201,13 +201,39 @@ class Artist(object):
         layer = layer or self.layer
         return compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer, redraw=redraw)
 
+    def draw_polylines(self, polylines, layer=None, clear_layer=False, redraw=False):
+        """Draw a collection of polygons.
+
+        Parameters
+        ----------
+        polylines : list of dict
+            The polylines to draw.
+        layer : str, optional
+            The layer to draw the points in.
+            Default is ``None``.
+        clear_layer : bool, optional
+            Clear the specified layer.
+            Default is ``False``.
+        redraw : bool, optional
+            Redraw the Rhino view.
+            Default is ``False``.
+
+        Returns
+        -------
+        list of guid
+            The GUIDs of the polyline objects.
+
+        """
+        layer = layer or self.layer
+        return compas_rhino.xdraw_polylines(polygons, layer=layer, clear=clear_layer, redraw=redraw)
+
     def draw_polygons(self, polygons, layer=None, clear_layer=False, redraw=False):
         """Draw a collection of polygons.
 
         Parameters
         ----------
-        points : list of dict
-            The points to draw.
+        polylines : list of dict
+            The polygons to draw.
         layer : str, optional
             The layer to draw the points in.
             Default is ``None``.
