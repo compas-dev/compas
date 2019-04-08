@@ -225,7 +225,7 @@ class Artist(object):
 
         """
         layer = layer or self.layer
-        return compas_rhino.xdraw_polylines(polygons, layer=layer, clear=clear_layer, redraw=redraw)
+        return compas_rhino.xdraw_polylines(polylines, layer=layer, clear=clear_layer, redraw=redraw)
 
     def draw_polygons(self, polygons, layer=None, clear_layer=False, redraw=False):
         """Draw a collection of polygons.

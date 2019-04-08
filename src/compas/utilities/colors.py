@@ -24,8 +24,30 @@ __all__ = [
     'rgb_to_rgb',
     'is_color_rgb',
     'is_color_hex',
-    'is_color_light'
+    'is_color_light',
+
+    'red',
+    'green',
+    'blue',
+    'yellow',
+    'cyan',
+    'white',
+    'black',
 ]
+
+
+red = 255, 0, 0
+orange = 255, 125, 0
+yellow = 255, 255, 0
+yellowish = 125, 255, 0
+green = 0, 255, 0
+greenish = 0, 255, 125
+cyan = 0, 255, 255
+cyanish = 0, 125, 255
+blue = 0, 0, 255
+
+white = 255, 255, 255
+black = 0, 0, 0
 
 
 BASE16  = '0123456789abcdef'
