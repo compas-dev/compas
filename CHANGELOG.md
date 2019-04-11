@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added `draw_polylines` to `compas_rhino.artists.Artist`.
-- Added `color` argument to `compas_rhino.artists.MeshArtist.draw_mesh`
+- Added `color` argument to `compas_rhino.artists.MeshArtist.draw_mesh`.
+- Added named colors to `compas.utilities.colors.py`.
 
 ### Changed
 

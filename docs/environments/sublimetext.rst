@@ -80,51 +80,20 @@ There is no need to restart Sublime Text.
     Therefore, it is worth getting familiar with some of the keyboard shortcuts.
     One of the most import shortcuts is the one that launches the Command Palette.
 
-    On Windows: ``Shift + Control + P``. On Mac: ``Shift + Command + P``.
+    On Windows: ``Shift + Ctrl + P``. On Mac: ``Shift + Command + P``.
 
 
 Run scripts
 ===========
 
-To run Python scripts from within Sublime Text, you need to (define and) select
-a build system. There should be a default Python builder available. This default
-builder will use whatever system-wide Python it can find.
-
-To define a build system with a Python version of your choosing, do
+To run scripts from within Sublime Text, you need to select a build system.
+Please use ``Conda``:
 
 .. code-block:: none
 
-    Tools > Build System > New Build System
+    Tools > Build System > Conda
 
-
-This will open a new ``untitled.sublime-build`` file with the following snippet
-
-.. code-block:: python
-
-    {
-        "shell_cmd" : "make"
-    }
-
-
-Change this to
-
-.. code-block:: python
-
-    {
-        "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-        "selector": "source.python",
-        "shell_cmd": "\"python\" -u \"$file\""
-    }
-
-
-Specify whatever Python you want to use.
-You can use a system-wide Python excutable, or specify the absolute path to a specific one.
-Save the file and use as filename whatever name you want to give the builder.
-For example,
-
-.. code-block:: none
-
-    Anaconda.sublime-build
+To run the current script, use ``Ctrl + B`` (Windows) or ``Command + B`` (Mac).
 
 
 Virtual environments
@@ -143,12 +112,3 @@ available options.
 Choose ``Conda: Activate Environment`` and the select the environment you want to activate.
 Then select ``Conda`` as the build system to use the Python installation of the
 activated environment.
-
-
-Sublime-Text-COMPAS plugin
-==========================
-
-
-Snippets repo
-=============
-
