@@ -25,8 +25,8 @@ if __name__ == '__main__':
     except:
         port = 1753
 
-    with open('rpc.txt', 'w') as f:
-        f.write(str(sys.version_info))
+    # with open('rpc.txt', 'w') as f:
+    #     f.write(str(sys.version_info))
 
     print('Starting default RPC service on port {0}...'.format(port))
 
