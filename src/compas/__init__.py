@@ -39,7 +39,6 @@ __email__     = 'vanmelet@ethz.ch'
 
 __version__ = '0.5.2'
 
-print('hello')
 
 PY3 = sys.version_info[0] == 3
 
