@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix setting of environment variables in `System.Diagnostics.Process`-based subprocess for `XFunc` and `RPC`.
 - Fix `XFunc` on RhinoMac.
 - Fix `trimesh_subdivide_loop` from `compas.datastructures`.
+- Changed Numpy and Scipy version requirements to allow for Python 3.5.x.
 
 ### Removed
 
