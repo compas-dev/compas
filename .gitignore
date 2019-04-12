@@ -135,3 +135,5 @@ docs/__build
 .DS_Store
 
 .vscode
+
+rpc.txt

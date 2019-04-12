@@ -224,6 +224,8 @@ class Proxy(object):
         """
         env = compas._os.prepare_environment()
 
+        print(env)
+
         try:
             Popen
         except NameError:
@@ -356,14 +358,20 @@ class Proxy(object):
 if __name__ == "__main__":
 
     import compas
+    import sys
 
     from compas.datastructures import Mesh
-    # from compas.plotters import MeshPlotter
-    from compas_rhino.artists import MeshArtist
+    from compas.plotters import MeshPlotter
+    # from compas_rhino.artists import MeshArtist
 
     from compas.rpc import Proxy
 
     numerical = Proxy('compas.numerical')
+
+    # numerical.stop_server()
+    # numerical.start_server()
+
+    print(sys.version_info)
 
     print(numerical.python)
     print(numerical.address)
@@ -397,14 +405,14 @@ if __name__ == "__main__":
         attr['f'] = f[index][0]
         attr['l'] = l[index][0]
 
-    # plotter = MeshPlotter(mesh, figsize=(10, 7))
-    # plotter.draw_vertices()
-    # plotter.draw_faces()
-    # plotter.draw_edges()
-    # plotter.show()
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
+    plotter.draw_vertices()
+    plotter.draw_faces()
+    plotter.draw_edges()
+    plotter.show()
 
-    artist = MeshArtist(mesh)
-    artist.draw_vertices()
-    artist.draw_edges()
-    artist.draw_faces()
-    artist.redraw()
+    # artist = MeshArtist(mesh)
+    # artist.draw_vertices()
+    # artist.draw_edges()
+    # artist.draw_faces()
+    # artist.redraw()
