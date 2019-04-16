@@ -121,6 +121,11 @@ class Circle(object):
         """
         return self.data
 
+    @property
+    def center(self):
+        """Point: The center of the circle."""
+        return self.plane.point
+
     # ==========================================================================
     # representation
     # ==========================================================================
