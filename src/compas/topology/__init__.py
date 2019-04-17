@@ -67,6 +67,7 @@ traversal
     breadth_first_traverse
     breadth_first_paths
     shortest_path
+    astar_shortest_path
     dijkstra_distances
     dijkstra_path
 
