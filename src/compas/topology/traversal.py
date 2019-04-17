@@ -2,10 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+try:
+    from queue import PriorityQueue
+except ImportError:
+    from Queue import PriorityQueue
+
 from collections import deque
+
 from compas.utilities import pairwise
 from compas.geometry import distance_point_point
-from queue import PriorityQueue
 
 
 __all__ = [
@@ -381,6 +386,8 @@ def shortest_path(adjacency, root, goal):
 # ==============================================================================
 # A*
 # ==============================================================================
+
+
 def reconstruct_path(came_from, current):
     total_path = [current]
     while current in came_from:
@@ -392,7 +399,6 @@ def reconstruct_path(came_from, current):
 
 def astar_shortest_path(network, root, goal):
     """Find the shortest path between two vertices of a network using the A* search algorithm.
-       ( https://en.wikipedia.org/wiki/A*_search_algorithm )
 
     Parameters
     ----------
@@ -406,10 +412,15 @@ def astar_shortest_path(network, root, goal):
     -------
     list, None
         The path from root to goal, or None, if no path exists between the vertices.
+
+    References
+    ----------
+    https://en.wikipedia.org/wiki/A*_search_algorithm
+
     """
     root_coords = network.vertex_coordinates(root)
     goal_coords = network.vertex_coordinates(goal)
-    
+
     # The set of nodes already evaluated
     visited_set = set()
 
@@ -423,7 +434,7 @@ def astar_shortest_path(network, root, goal):
     # If a node can be reached from many nodes, came_from will eventually contain the
     # most efficient previous step.
     came_from = dict()
-    
+
     # g_score is a dict mapping node index to the cost of getting from the root node to that node.
     # The default value is Infinity.
     # The cost of going from start to start is zero.
@@ -431,17 +442,17 @@ def astar_shortest_path(network, root, goal):
 
     for v in network.vertices():
         g_score[v] = float("inf")
-    
+
     g_score[root] = 0
 
     # For each node, the total cost of getting from the start node to the goal
     # by passing by that node. That value is partly known, partly heuristic.
-    # The default value of f_score is Infinity   
+    # The default value of f_score is Infinity
     f_score = dict()
 
     for v in network.vertices():
         f_score[v] = float("inf")
-        
+
     # For the first node, that value is completely heuristic.
     f_score[root] = distance_point_point(root_coords, goal_coords)
 
@@ -469,6 +480,7 @@ def astar_shortest_path(network, root, goal):
             new_fscore = g_score[neighbor] + distance_point_point(neighbor_coords, goal_coords)
             f_score[neighbor] = new_fscore
             best_candidate_heap.put((new_fscore, neighbor))
+
 
 def dijkstra_distances(adjacency, weight, target):
     """Compute Dijkstra distances from all vertices in a connected set to one target vertex.
