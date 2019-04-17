@@ -16,19 +16,13 @@ class EdgeArtist(object):
 
     __module__ = "compas_blender.artists.mixins"
 
-
     def clear_edges(self, keys=None):
-
         pass
 
-
     def clear_edgelabels(self):
-
         set_objects_show_names(objects=self.edge_objects, show=False)
 
-
     def draw_edges(self, width=0.05, keys=None, colors=None):
-
         self.clear_edges()
         self.clear_edgelabels()
 
@@ -50,9 +44,7 @@ class EdgeArtist(object):
 
         self.edge_objects = xdraw_lines(lines=lines)
 
-
     def draw_edgelabels(self):
-
         set_objects_show_names(objects=self.edge_objects, show=True)
 
 

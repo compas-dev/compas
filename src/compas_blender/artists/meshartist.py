@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -36,7 +35,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     def mesh(self, mesh):
         self.datastructure = mesh
 
-    def draw(self):
+    def draw_mesh(self):
         raise NotImplementedError
 
     def clear(self):
