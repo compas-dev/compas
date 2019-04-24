@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -19,7 +18,6 @@ class Artist(object):
     __module__ = "compas_blender.artists"
 
     def __init__(self, layer=None):
-
         self.layer = layer
         self.defaults = {
             'color.point':   [255, 255, 255],
@@ -36,11 +34,9 @@ class Artist(object):
     def clear_layer(self):
         raise NotImplementedError
 
-
     def save(self, path, width=1920, height=1080, scale=1,
              draw_grid=False, draw_world_axes=False, draw_cplane_axes=False, background=False):
         raise NotImplementedError
-
 
     def draw_points(self, points, layer=None, clear_layer=False, redraw=False):
         raise NotImplementedError

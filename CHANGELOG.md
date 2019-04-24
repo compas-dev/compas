@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 - Added `center` property getter to `compas.geometry.Cirle` primitive
+
+- Add `astar_shortest_path` to `compas.topology.traversal`.
+
 ### Changed
 
 ### Removed
 
+- Removed support for Python 3.5.x by setting the minimum requirements for Numpy and Scipy to `1.16` and `1.2`, respectively.
 
 ## [0.5.2] 2019-04-12
 

@@ -80,28 +80,33 @@ class Color(object):
         pass
 
 
-def i_to_rgb(i):
+def i_to_rgb(i, normalize=False):
     i  = max(i, 0.0)
     i  = min(i, 1.0)
     if i == 0.0:
-        return 0, 0, 255
-    if 0.0 < i < 0.25:
-        return 0, int(255 * (4 * i)), 255
-    if i == 0.25:
-        return 0, 255, 255
-    if 0.25 < i < 0.5:
-        return 0, 255, int(255 - 255 * 4 * (i - 0.25))
-    if i == 0.5:
-        return 0, 255, 0
-    if 0.5 < i < 0.75:
-        return int(0 + 255 * 4 * (i - 0.5)), 255, 0
-    if i == 0.75:
-        return 255, 255, 0
-    if 0.75 < i < 1.0:
-        return 255, int(255 - 255 * 4 * (i - 0.75)), 0
-    if i == 1.0:
-        return 255, 0, 0
-    return 0, 0, 0
+        r, g, b = 0, 0, 255
+    elif 0.0 < i < 0.25:
+        r, g, b = 0, int(255 * (4 * i)), 255
+    elif i == 0.25:
+        r, g, b = 0, 255, 255
+    elif 0.25 < i < 0.5:
+        r, g, b = 0, 255, int(255 - 255 * 4 * (i - 0.25))
+    elif i == 0.5:
+        r, g, b = 0, 255, 0
+    elif 0.5 < i < 0.75:
+        r, g, b = int(0 + 255 * 4 * (i - 0.5)), 255, 0
+    elif i == 0.75:
+        r, g, b = 255, 255, 0
+    elif 0.75 < i < 1.0:
+        r, g, b,  = 255, int(255 - 255 * 4 * (i - 0.75)), 0
+    elif i == 1.0:
+        r, g, b = 255, 0, 0
+    else:
+        r, g, b = 0, 0, 0
+    if not normalize:
+        return [r, g, b]
+    else:
+        return [r / 255.0, g / 255.0, b / 255.0]
 
 
 def i_to_red(i):
