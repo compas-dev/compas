@@ -2632,7 +2632,7 @@ class Mesh(FromToPickle,
 
         """
         return area_polygon(self.face_coordinates(fkey))
-      
+
     def face_flatness(self, fkey):
         """Compute the flatness of the mesh face.
 
@@ -2856,7 +2856,7 @@ class Mesh(FromToPickle,
                     faces[self.halfedge[nbr][key]] = 1
         return faces.keys()
 
-    def edges_on_boundary(self, oriented = True):
+    def edges_on_boundary(self, oriented=True):
         """Find the edges on the boundary.
 
         Parameters
@@ -2871,14 +2871,12 @@ class Mesh(FromToPickle,
 
 
         """
-
         boundary_edges =  [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
         if not oriented:
             return boundary_edges
-
         else:
-            return [(v, u) if self.halfedge[u][v] is not None else (u, v) for u, v in boundary_edges]
+            return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]
 
 
     # --------------------------------------------------------------------------
