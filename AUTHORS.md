@@ -17,4 +17,5 @@
 - Kathrin Dörfler <<doerfler@arch.ethz.ch>> [@Kathrin3010](https://github.com/Kathrin3010)
 - Robin Oval <<oval@arch.ethz.ch>> [@robin-oval](https://github.com/robin-oval)
 - Rafael Pastrana <<pastrana@arch.ethz.ch>> [@arpastrana](https://github.com/arpastrana)
+- Achilleas Xydis <<xydis@arch.ethz.ch>> [@Achillx](https://github.com/Achillx)
 - Elitsa Dimitrova <<e.dimitrova77@gmail.com>> [@elidim](https://github.com/elidim)

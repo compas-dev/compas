@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from math import pi
+
 from compas.geometry._primitives import Plane
 
 __all__ = ['Circle']
@@ -120,6 +122,25 @@ class Circle(object):
 
         """
         return self.data
+
+    @property
+    def center(self):
+        """Point: The center of the circle."""
+        return self.plane.point
+
+    @center.setter
+    def center(self, point):
+        self.plane.point = point
+
+    @property
+    def area(self):
+        """Float: The area of the circle."""
+        return pi * (self.radius**2)
+
+    @property
+    def circumference(self):
+        """Float: The circumference of the circle."""
+        return 2 * pi * self.radius
 
     # ==========================================================================
     # representation
