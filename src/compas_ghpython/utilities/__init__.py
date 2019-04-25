@@ -13,16 +13,16 @@ drawing
 .. autosummary::
     :toctree: generated/
 
-    xdraw_frame
-    xdraw_points
-    xdraw_lines
-    xdraw_polylines
-    xdraw_faces
-    xdraw_cylinders
-    xdraw_pipes
-    xdraw_spheres
-    xdraw_mesh
-    xdraw_network
+    draw_frame
+    draw_points
+    draw_lines
+    draw_polylines
+    draw_faces
+    draw_cylinders
+    draw_pipes
+    draw_spheres
+    draw_mesh
+    draw_network
 
 
 sets

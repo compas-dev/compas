@@ -130,15 +130,15 @@ drawing
     :toctree: generated/
     :nosignatures:
 
-    xdraw_labels
-    xdraw_points
-    xdraw_lines
-    xdraw_polylines
-    xdraw_faces
-    xdraw_cylinders
-    xdraw_pipes
-    xdraw_spheres
-    xdraw_mesh
+    draw_labels
+    draw_points
+    draw_lines
+    draw_polylines
+    draw_faces
+    draw_cylinders
+    draw_pipes
+    draw_spheres
+    draw_mesh
 
 
 geometry

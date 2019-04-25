@@ -21,19 +21,19 @@ from math import atan2
 
 __all__ = [
     'create_material',
-    'xdraw_points',
-    'xdraw_lines',
-    'xdraw_geodesics',
-    'xdraw_breps',
-    'xdraw_cylinders',
-    'xdraw_pipes',
-    'xdraw_forces',
-    'xdraw_spheres',
-    'xdraw_cubes',
-    'xdraw_mesh',
-    'xdraw_faces',
-    'xdraw_pointcloud',
-    'xdraw_texts',
+    'draw_points',
+    'draw_lines',
+    'draw_geodesics',
+    'draw_breps',
+    'draw_cylinders',
+    'draw_pipes',
+    'draw_forces',
+    'draw_spheres',
+    'draw_cubes',
+    'draw_mesh',
+    'draw_faces',
+    'draw_pointcloud',
+    'draw_texts',
     'draw_cylinder',
     'draw_plane',
     'draw_text',
@@ -62,7 +62,7 @@ def create_material(color, alpha=1):
         return bpy.data.materials[ckey]
 
 
-def xdraw_points(points, layer=None):
+def draw_points(points, layer=None):
     bpy.ops.object.empty_add(type='SPHERE', radius=1, location=[0, 0, 0])
     copy = bpy.context.object
     objects = [0] * len(points)
@@ -75,7 +75,7 @@ def xdraw_points(points, layer=None):
     return _link_objects(objects, copy, layer)
 
 
-def xdraw_lines(lines, centroid=True, layer=None):
+def draw_lines(lines, centroid=True, layer=None):
     objects = [0] * len(lines)
     for c, data in enumerate(lines):
         name = data.get('name', 'line')
@@ -100,15 +100,15 @@ def xdraw_lines(lines, centroid=True, layer=None):
     return _link_objects(objects=objects, layer=layer)
 
 
-def xdraw_geodesics(geodesics, **kwargs):
+def draw_geodesics(geodesics, **kwargs):
     raise NotImplementedError
 
 
-def xdraw_breps(faces, **kwargs):
+def draw_breps(faces, **kwargs):
     raise NotImplementedError
 
 
-def xdraw_cylinders(cylinders, div=10, layer=None):
+def draw_cylinders(cylinders, div=10, layer=None):
     bpy.ops.mesh.primitive_cylinder_add(radius=1, depth=1, vertices=div, location=[0, 0, 0])
     copy = bpy.context.object
     objects = [0] * len(cylinders)
@@ -129,15 +129,15 @@ def xdraw_cylinders(cylinders, div=10, layer=None):
     return _link_objects(objects=objects, copy=copy, layer=layer)
 
 
-def xdraw_pipes(pipes, **kwargs):
+def draw_pipes(pipes, **kwargs):
     raise NotImplementedError
 
 
-def xdraw_forces(forces, **kwargs):
+def draw_forces(forces, **kwargs):
     raise NotImplementedError
 
 
-def xdraw_spheres(spheres, div=10, layer=None):
+def draw_spheres(spheres, div=10, layer=None):
     bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=[0, 0, 0], ring_count=div, segments=div)
     copy = bpy.context.object
     objects = [0] * len(spheres)
@@ -151,7 +151,7 @@ def xdraw_spheres(spheres, div=10, layer=None):
     return _link_objects(objects=objects, layer=layer, copy=copy)
 
 
-def xdraw_cubes(cubes, layer):
+def draw_cubes(cubes, layer):
     bpy.ops.mesh.primitive_cube_add(size=1, location=[0, 0, 0])
     copy = bpy.context.object
     objects = [0] * len(cubes)
@@ -165,7 +165,7 @@ def xdraw_cubes(cubes, layer):
     return _link_objects(objects=objects, layer=layer, copy=copy)
 
 
-def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], centroid=True, layer=None, **kwargs):
+def draw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], centroid=True, layer=None, **kwargs):
     edges = [] if not edges else edges
     faces = [] if not faces else faces
     mp       = centroid_points(vertices) if centroid else [0, 0, 0]
@@ -183,20 +183,20 @@ def xdraw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], c
     return object
 
 
-def xdraw_faces(faces, **kwargs):
+def draw_faces(faces, **kwargs):
     for face in faces:
         name    = face.get('name', 'face')
         points  = face.get('points')
         layer   = face.get('layer', None)
         color   = face.get('color', [1, 1, 1])
         indices = [list(range(len(points)))]
-        xdraw_mesh(name=name, vertices=points, faces=indices, color=color, layer=layer)
+        draw_mesh(name=name, vertices=points, faces=indices, color=color, layer=layer)
 
 
-def xdraw_pointcloud(points, layer=None):
+def draw_pointcloud(points, layer=None):
     objects = [0] * len(points)
     for c, data in enumerate(points):
-        object = xdraw_mesh(name=data.get('name', 'pt'), vertices=[[0, 0, 0]])
+        object = draw_mesh(name=data.get('name', 'pt'), vertices=[[0, 0, 0]])
         object.location = data['pos']
         objects[c] = object
     if layer:
@@ -204,7 +204,7 @@ def xdraw_pointcloud(points, layer=None):
     return objects
 
 
-def xdraw_texts(texts, layer=None):
+def draw_texts(texts, layer=None):
     bpy.ops.object.text_add(view_align=True)
     copy = bpy.context.object
     objects = [0] * len(texts)
@@ -244,7 +244,7 @@ def draw_plane(Lx=1, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 1
     faces    = [[(j + 0) * (nx + 1) + i + 0, (j + 0) * (nx + 1) + i + 1,
                  (j + 1) * (nx + 1) + i + 1, (j + 1) * (nx + 1) + i + 0]
                 for i in range(nx) for j in range(ny)]
-    return xdraw_mesh(name=name, vertices=vertices, faces=faces, layer=layer, color=color, centroid=False)
+    return draw_mesh(name=name, vertices=vertices, faces=faces, layer=layer, color=color, centroid=False)
 
 
 def draw_text(radius=1, pos=[0, 0, 0], text='text', layer=None, color=[1, 1, 1]):
@@ -305,18 +305,18 @@ if __name__ == '__main__':
     draw_line(start=[2, 2, 2], end=[1, 1, 1], width=0.05, name='line', color=[1, 1, 0])
     draw_text(radius=1, pos=[0, 0, 0], text='text', layer='Collection 2', color=[1, 0, 0])
 
-    xdraw_points(points=points)
-    xdraw_lines(lines=lines, layer='Collection 2')
-    xdraw_cylinders(cylinders=cyls, layer='Collection 2')
-    xdraw_spheres(spheres=spheres)
-    xdraw_cubes(cubes=cubes, layer='Collection 2')
-    xdraw_texts(texts=texts, layer='Collection 2')
+    draw_points(points=points)
+    draw_lines(lines=lines, layer='Collection 2')
+    draw_cylinders(cylinders=cyls, layer='Collection 2')
+    draw_spheres(spheres=spheres)
+    draw_cubes(cubes=cubes, layer='Collection 2')
+    draw_texts(texts=texts, layer='Collection 2')
 
     draw_plane(Lx=2, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 0, 1])
 
     vertices = [[-1, 0, 1], [-2, 0, 2], [-2, 1, 1], [-1, 1, 0]]
     faces    = [[0, 1, 2], [2, 3, 0]]
-    mesh     = xdraw_mesh(name='mesh', vertices=vertices, faces=faces, layer='Collection 2', color=[1, 0, 1])
+    mesh     = draw_mesh(name='mesh', vertices=vertices, faces=faces, layer='Collection 2', color=[1, 0, 1])
 
-    objects = xdraw_pointcloud(points=points)
+    objects = draw_pointcloud(points=points)
     set_objects_show_names(objects=objects, show=True)

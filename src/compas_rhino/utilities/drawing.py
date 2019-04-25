@@ -58,30 +58,21 @@ else:
 
 
 __all__ = [
-    'xdraw_labels',
-    'xdraw_points',
-    'xdraw_lines',
-    'xdraw_geodesics',
-    'xdraw_polylines',
-    'xdraw_faces',
-    'xdraw_cylinders',
-    'xdraw_pipes',
-    'xdraw_spheres',
-    'xdraw_mesh',
+    'draw_labels',
+    'draw_points',
+    'draw_lines',
+    'draw_geodesics',
+    'draw_polylines',
+    'draw_faces',
+    'draw_cylinders',
+    'draw_pipes',
+    'draw_spheres',
+    'draw_mesh',
 ]
 
 
-# ==============================================================================
-# Extended drawing
-#
-# these functions are optimized for speed,
-# but potential error checking has been removed
-# perhaps a good middle ground would be better...
-# ==============================================================================
-
-
-def wrap_xdrawfunc(f):
-    """Wraps all ``xdraw_`` functions with support for recurring keyword arguments."""
+def wrap_drawfunc(f):
+    """Wraps all ``draw_`` functions with support for recurring keyword arguments."""
     @wraps(f)
     def wrapper(*args, **kwargs):
         layer  = kwargs.get('layer', None)
@@ -112,8 +103,8 @@ def wrap_xdrawfunc(f):
     return wrapper
 
 
-@wrap_xdrawfunc
-def xdraw_labels(labels, **kwargs):
+@wrap_drawfunc
+def draw_labels(labels, **kwargs):
     """Draw labels as text dots and optionally set individual name and color."""
     guids = []
     for l in iter(labels):
@@ -139,8 +130,8 @@ def xdraw_labels(labels, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_points(points, **kwargs):
+@wrap_drawfunc
+def draw_points(points, **kwargs):
     """Draw points and optionally set individual name, layer, and color properties.
     """
     guids = []
@@ -171,8 +162,8 @@ def xdraw_points(points, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_lines(lines, **kwargs):
+@wrap_drawfunc
+def draw_lines(lines, **kwargs):
     """Draw lines and optionally set individual name, color, arrow, layer, and
     width properties.
     """
@@ -214,8 +205,8 @@ def xdraw_lines(lines, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_geodesics(geodesics, **kwargs):
+@wrap_drawfunc
+def draw_geodesics(geodesics, **kwargs):
     """Draw geodesic lines on specified surfaces, and optionally set individual
     name, color, arrow, and layer properties.
     """
@@ -255,8 +246,8 @@ def xdraw_geodesics(geodesics, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_polylines(polylines, **kwargs):
+@wrap_drawfunc
+def draw_polylines(polylines, **kwargs):
     """Draw polylines, and optionally set individual name, color, arrow, and
     layer properties.
     """
@@ -295,8 +286,8 @@ def xdraw_polylines(polylines, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
+@wrap_drawfunc
+def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
     """
@@ -349,8 +340,8 @@ def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_cylinders(cylinders, cap=False, **kwargs):
+@wrap_drawfunc
+def draw_cylinders(cylinders, cap=False, **kwargs):
     guids = []
     for c in iter(cylinders):
         start  = c['start']
@@ -395,8 +386,8 @@ def xdraw_cylinders(cylinders, cap=False, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_pipes(pipes, cap=2, fit=1.0, **kwargs):
+@wrap_drawfunc
+def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     guids = []
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
@@ -437,8 +428,8 @@ def xdraw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_spheres(spheres, **kwargs):
+@wrap_drawfunc
+def draw_spheres(spheres, **kwargs):
     guids = []
     for s in iter(spheres):
         pos    = s['pos']
@@ -470,8 +461,8 @@ def xdraw_spheres(spheres, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_mesh(vertices, faces, name=None, color=None, **kwargs):
+@wrap_drawfunc
+def draw_mesh(vertices, faces, name=None, color=None, **kwargs):
     guid = rs.AddMesh(vertices, faces)
     if color:
         rs.ObjectColor(guid, color)
@@ -480,8 +471,8 @@ def xdraw_mesh(vertices, faces, name=None, color=None, **kwargs):
     return guid
 
 
-@wrap_xdrawfunc
-def xdraw_faces(faces, **kwargs):
+@wrap_drawfunc
+def draw_faces(faces, **kwargs):
     guids = []
     for face in iter(faces):
         points = face['points'][:]
@@ -506,7 +497,7 @@ def xdraw_faces(faces, **kwargs):
                 b = int(min(max(0, b), 255))
                 vertexcolors.append((r, g, b))
 
-        guid = xdraw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
+        guid = draw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
 
         if vertexcolors:
             try:
@@ -591,27 +582,27 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    xdraw_faces(faces, layer='Default', clear=True)
+    draw_faces(faces, layer='Default', clear=True)
 
     t1 = time.time()
 
-    xdraw_lines(lines, layer='Layer 01', clear=True)
+    draw_lines(lines, layer='Layer 01', clear=True)
 
     t2 = time.time()
 
-    xdraw_polylines(polylines, layer='Layer 02', clear=True)
+    draw_polylines(polylines, layer='Layer 02', clear=True)
 
     t3 = time.time()
 
-    xdraw_cylinders(cylinders, layer='Layer 03', clear=True)
+    draw_cylinders(cylinders, layer='Layer 03', clear=True)
 
     t4 = time.time()
 
-    xdraw_pipes(pipes, layer='Layer 04', clear=True)
+    draw_pipes(pipes, layer='Layer 04', clear=True)
 
     t5 = time.time()
 
-    xdraw_spheres(spheres, layer='Layer 05', clear=True)
+    draw_spheres(spheres, layer='Layer 05', clear=True)
 
     t6 = time.time()
 

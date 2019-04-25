@@ -127,7 +127,7 @@ class FaceArtist(object):
                 'layer' : self.datastructure.get_face_attribute(fkey, 'layer', None)
             })
 
-        guids = compas_rhino.xdraw_faces(faces, layer=self.layer, clear=False, redraw=False)
+        guids = compas_rhino.draw_faces(faces, layer=self.layer, clear=False, redraw=False)
         if not join_faces:
             return guids
         guid = rs.JoinMeshes(guids, delete_input=True)
@@ -182,7 +182,7 @@ class FaceArtist(object):
                 'text'  : textdict[key],
                 'layer' : self.datastructure.get_face_attribute(key, 'layer', None)
             })
-        return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_facenormals(self, color=None):
         """Draw the normals of the faces.
@@ -217,7 +217,7 @@ class FaceArtist(object):
                 'color' : color,
                 'arrow' : 'end'
             })
-        return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
 
 

@@ -9,9 +9,9 @@ from compas.geometry import centroid_points
 
 from compas.viewers.viewer import Viewer
 
-from compas.viewers.core.drawing import xdraw_polygons
-from compas.viewers.core.drawing import xdraw_lines
-from compas.viewers.core.drawing import xdraw_points
+from compas.viewers.core.drawing import draw_polygons
+from compas.viewers.core.drawing import draw_lines
+from compas.viewers.core.drawing import draw_points
 
 
 __author__     = 'Tom Van Mele'
@@ -90,8 +90,8 @@ class SubdMeshViewer(Viewer):
                            'color' : (0.0, 1.0, 0.0),
                            'size'  : 10.0})
 
-        xdraw_lines(lines)
-        xdraw_points(points)
+        draw_lines(lines)
+        draw_points(points)
 
         if self.subd:
             xyz   = {key: self.subd.vertex_coordinates(key) for key in self.subd.vertices()}
@@ -111,8 +111,8 @@ class SubdMeshViewer(Viewer):
                               'color': (0.1, 0.1, 0.1),
                               'width': 1.})
 
-            xdraw_polygons(poly)
-            xdraw_lines(lines)
+            draw_polygons(poly)
+            draw_lines(lines)
 
     def keypress(self, key, x, y):
         key = key.decode("utf-8")

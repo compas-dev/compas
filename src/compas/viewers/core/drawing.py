@@ -22,12 +22,12 @@ __all__ = [
     'draw_lines',
     'draw_faces',
     'draw_sphere',
-    'xdraw_points',
-    'xdraw_lines',
-    'xdraw_polygons',
-    'xdraw_cylinders',
-    'xdraw_spheres',
-    'xdraw_texts',
+    'draw_points',
+    'draw_lines',
+    'draw_polygons',
+    'draw_cylinders',
+    'draw_spheres',
+    'draw_texts',
 ]
 
 
@@ -115,7 +115,7 @@ def draw_line_array(vertices, indices, colors):
 #                       'color.back'  : back})
 #     self.view.faces = glGenLists(1)
 #     glNewList(self.view.faces, GL_COMPILE)
-#     xdraw_polygons(faces)
+#     draw_polygons(faces)
 #     glEndList()
 
 # def _make_edges_list(self, key_xyz):
@@ -129,7 +129,7 @@ def draw_line_array(vertices, indices, colors):
 #                       'width' : width})
 #     self.view.edges = glGenLists(1)
 #     glNewList(self.view.edges, GL_COMPILE)
-#     xdraw_cylinders(lines)
+#     draw_cylinders(lines)
 #     glEndList()
 
 # def _make_vertices_list(self, key_xyz):
@@ -142,7 +142,7 @@ def draw_line_array(vertices, indices, colors):
 #                        'size'  : size})
 #     self.view.vertices = glGenLists(1)
 #     glNewList(self.view.vertices, GL_COMPILE)
-#     xdraw_spheres(points)
+#     draw_spheres(points)
 #     glEndList()
 
 
@@ -228,11 +228,11 @@ def draw_circle(circle, color=None, n=100):
 
 
 # ==============================================================================
-# xdraw
+# draw
 # ==============================================================================
 
 
-def xdraw_points(points):
+def draw_points(points):
     for attr in points:
         pos   = attr['pos']
         color = attr['color']
@@ -245,7 +245,7 @@ def xdraw_points(points):
         pass
 
 
-def xdraw_lines(lines):
+def draw_lines(lines):
     for attr in lines:
         start = attr['start']
         end   = attr['end']
@@ -259,7 +259,7 @@ def xdraw_lines(lines):
         glEnd()
 
 
-def xdraw_polygons(polygons):
+def draw_polygons(polygons):
     for attr in polygons:
         points      = attr['points']
         color_front = attr['color.front']
@@ -296,7 +296,7 @@ def xdraw_polygons(polygons):
             glEnd()
 
 
-def xdraw_texts(texts):
+def draw_texts(texts):
     for attr in texts:
         text  = attr['text']
         pos   = attr['pos']
@@ -309,7 +309,7 @@ def xdraw_texts(texts):
             glutBitmapCharacter(font, ord(char))
 
 
-def xdraw_spheres(spheres):
+def draw_spheres(spheres):
     for attr in spheres:
         glPushMatrix()
         glTranslatef(* attr['pos'])
@@ -318,7 +318,7 @@ def xdraw_spheres(spheres):
         glPopMatrix()
 
 
-def xdraw_cylinders(cylinders):
+def draw_cylinders(cylinders):
     for attr in cylinders:
         points = [attr['start'], attr['start'], attr['end'], attr['end']]
         colors = [attr['color'], attr['color'], attr['color'], attr['color']]

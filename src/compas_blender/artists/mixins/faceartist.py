@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas_blender.utilities import set_objects_show_names
-from compas_blender.utilities import xdraw_mesh
+from compas_blender.utilities import draw_mesh
 
 
 __all__ = [
@@ -33,7 +33,7 @@ class FaceArtist(object):
             vertices   = [self.datastructure.vertex_coordinates(i) for i in self.datastructure.face[key]]
             faces      = [list(range(len(self.datastructure.face[key])))]
             name       = 'F{0}'.format(key)
-            objects[c] = xdraw_mesh(vertices=vertices, layer=self.layer, faces=faces, color=colors[key], name=name)
+            objects[c] = draw_mesh(vertices=vertices, layer=self.layer, faces=faces, color=colors[key], name=name)
         self.face_objects = objects
 
     def draw_facelabels(self, text=None, color=None):

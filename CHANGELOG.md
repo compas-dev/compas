@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated configuration instructions for Blender.
+- Changed naming convention for drawing functions from `xdraw_` to `draw_`.
 
 ### Removed
 

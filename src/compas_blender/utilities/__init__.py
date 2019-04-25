@@ -113,19 +113,19 @@ drawing
     :toctree: generated/
 
     create_material
-    xdraw_points
-    xdraw_lines
-    xdraw_geodesics
-    xdraw_breps
-    xdraw_cylinders
-    xdraw_pipes
-    xdraw_forces
-    xdraw_spheres
-    xdraw_cubes
-    xdraw_mesh
-    xdraw_faces
-    xdraw_pointcloud
-    xdraw_texts
+    draw_points
+    draw_lines
+    draw_geodesics
+    draw_breps
+    draw_cylinders
+    draw_pipes
+    draw_forces
+    draw_spheres
+    draw_cubes
+    draw_mesh
+    draw_faces
+    draw_pointcloud
+    draw_texts
 
 """
 from __future__ import absolute_import

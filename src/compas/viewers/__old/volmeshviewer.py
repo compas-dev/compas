@@ -7,9 +7,9 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 
 from compas.viewers.viewer import Viewer
-from compas.viewers.core.drawing import xdraw_polygons
-from compas.viewers.core.drawing import xdraw_lines
-from compas.viewers.core.drawing import xdraw_points
+from compas.viewers.core.drawing import draw_polygons
+from compas.viewers.core.drawing import draw_lines
+from compas.viewers.core.drawing import draw_points
 
 
 __author__     = 'Tom Van Mele'
@@ -57,9 +57,9 @@ class VolMeshViewer(Viewer):
                 'size'  : 10.,
                 'color' : (0.0, 1.0, 0.0),
             })
-        xdraw_polygons(polygons)
-        xdraw_lines(lines)
-        xdraw_points(points)
+        draw_polygons(polygons)
+        draw_lines(lines)
+        draw_points(points)
 
     def keypress(self, key, x, y):
         """

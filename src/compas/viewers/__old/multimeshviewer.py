@@ -7,9 +7,9 @@ import compas
 
 from compas.viewers.viewer import Viewer
 
-from compas.viewers.core.drawing import xdraw_polygons
-from compas.viewers.core.drawing import xdraw_lines
-from compas.viewers.core.drawing import xdraw_points
+from compas.viewers.core.drawing import draw_polygons
+from compas.viewers.core.drawing import draw_lines
+from compas.viewers.core.drawing import draw_points
 
 
 __author__     = 'Tom Van Mele'
@@ -48,8 +48,8 @@ class MultiMeshViewer(Viewer):
                               'color': (0.1, 0.1, 0.1),
                               'width': 1.})
 
-            xdraw_polygons(polygons)
-            xdraw_lines(lines)
+            draw_polygons(polygons)
+            draw_lines(lines)
 
     def keypress(self, key, x, y):
         pass

@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas_blender.utilities import set_objects_show_names
-from compas_blender.utilities import xdraw_lines
+from compas_blender.utilities import draw_lines
 
 
 __all__ = [
@@ -42,7 +42,7 @@ class EdgeArtist(object):
                 'name':  'E{}-{}'.format(u, v),
             }
 
-        self.edge_objects = xdraw_lines(lines=lines)
+        self.edge_objects = draw_lines(lines=lines)
 
     def draw_edgelabels(self):
         set_objects_show_names(objects=self.edge_objects, show=True)
