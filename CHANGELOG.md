@@ -10,10 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added `center` property getter to `compas.geometry.Cirle` primitive
-
 - Add `astar_shortest_path` to `compas.topology.traversal`.
 
 ### Changed
+
+- Updated configuration instructions for Blender.
 
 ### Removed
 
