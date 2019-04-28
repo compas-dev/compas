@@ -11,6 +11,9 @@ from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
 from compas_rhino.artists.mixins import FaceArtist
 
+from compas.utilities import pairwise
+from compas.geometry import centroid_polygon
+
 try:
     import rhinoscriptsyntax as rs
 
@@ -94,6 +97,13 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
                 new_faces.append(face + face[-1:])
             elif l == 4:
                 new_faces.append(face)
+            elif l > 4:
+                centroid = len(vertices)
+                vertices.append(centroid_polygon([vertices[index] for index in face]))
+                for a, b in pairwise(face + face[0:1]):
+                    new_faces.append([centroid, a, b, b])
+            else:
+                continue
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)
         return compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color)

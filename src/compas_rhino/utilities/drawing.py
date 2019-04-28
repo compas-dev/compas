@@ -463,7 +463,16 @@ def draw_spheres(spheres, **kwargs):
 
 @wrap_drawfunc
 def draw_mesh(vertices, faces, name=None, color=None, **kwargs):
-    guid = rs.AddMesh(vertices, faces)
+    points = []
+    facets = []
+    for keys in faces:
+        i = len(points)
+        facet = [j + i for j in range(len(keys))]
+        for key in keys:
+            points.append(vertices[key])
+        facets.append(facet)
+
+    guid = rs.AddMesh(points, facets)
     if color:
         rs.ObjectColor(guid, color)
     if name:

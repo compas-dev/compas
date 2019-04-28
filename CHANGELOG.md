@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated configuration instructions for Blender.
 - Changed naming convention for drawing functions from `xdraw_` to `draw_`.
+- Changed mesh drawing in Rhino to use separate mesh vertices per face. This makes the mesh look more "as expected" in *Shaded* view.
 
 ### Removed
 
