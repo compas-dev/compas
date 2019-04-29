@@ -224,8 +224,6 @@ class Proxy(object):
         """
         env = compas._os.prepare_environment()
 
-        print(env)
-
         try:
             Popen
         except NameError:

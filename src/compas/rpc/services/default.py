@@ -9,7 +9,9 @@ from compas.rpc import Dispatcher
 
 
 class DefaultService(Dispatcher):
-    pass
+
+    def __init__(self):
+        super(DefaultService, self).__init__()
 
 
 # ==============================================================================
