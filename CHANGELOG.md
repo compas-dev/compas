@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fixed bug in RPC. The services cannot have a `pass` statement as class body.
+
 ### Removed
 
 
