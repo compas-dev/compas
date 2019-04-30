@@ -468,13 +468,17 @@ def draw_mesh(vertices, faces, name=None, color=None, **kwargs):
     points = []
     facets = []
     mesh = Mesh()
-    for keys in faces:
-        i = len(points)
-        facet = [j + i for j in range(len(keys))]
-        for key in keys:
-            x, y, z = vertices[key]
-            mesh.Vertices.Add(x, y, z)
-        mesh.Faces.AddFace(*facet)
+    # for keys in faces:
+    #     i = len(points)
+    #     facet = [j + i for j in range(len(keys))]
+    #     for key in keys:
+    #         x, y, z = vertices[key]
+    #         mesh.Vertices.Add(x, y, z)
+    #     mesh.Faces.AddFace(*facet)
+    for x, y, z in vertices:
+        mesh.Vertices.Add(x, y, z)
+    for face in faces:
+        mesh.Faces.AddFace(*face)
     mesh.Normals.ComputeNormals()
     mesh.Compact()
     guid = add_mesh(mesh)
