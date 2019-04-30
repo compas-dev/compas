@@ -2,23 +2,11 @@
 Working in Rhino
 ********************************************************************************
 
-.. TODO
-
-   * Running scripts
-   * Running scripts from an external editor
-   * Adding custom commands
-   * Making plug-ins
-   * Creating toolbars
-   * Using CPython packages
-   * Using C/C++ code
-   * Warning: Rhino 5 vs. Rhino 6
-
-
 .. highlight:: bash
 
 
-*Installing* COMPAS for Rhino is very simple. Just open the *command prompt*
-and type the following
+*Installing* COMPAS for Rhino is very simple.
+Just type the following on the command line
 
 ::
 
@@ -32,6 +20,17 @@ The default is ``6.0``.
 
     $ python -m compas_rhino.install -v 6.0
 
+
+.. note::
+
+    On Windows, use the "Anaconda Prompt" instead of the "Command Prompt", and make
+    sure to run it as administrator.
+
+    On Mac, use the Terminal.
+
+If you installed COMPAS using ``conda``, which is highly recommended, make sure
+that the environment in which you installed COMPAS is active when you issue the
+above commands.
 
 
 IronPython

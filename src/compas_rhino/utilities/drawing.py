@@ -30,6 +30,7 @@ try:
     from Rhino.Geometry import Curve
     from Rhino.Geometry import Sphere
     from Rhino.Geometry import TextDot
+    from Rhino.Geometry import Mesh
     from Rhino.DocObjects.ObjectColorSource import ColorFromObject
     from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
     from Rhino.DocObjects.ObjectDecoration import EndArrowhead
@@ -44,6 +45,7 @@ try:
     add_polyline = sc.doc.Objects.AddPolyline
     add_brep = sc.doc.Objects.AddBrep
     add_sphere = sc.doc.Objects.AddSphere
+    add_mesh = sc.doc.Objects.AddMesh
 
     TOL = sc.doc.ModelAbsoluteTolerance
 
@@ -465,18 +467,28 @@ def draw_spheres(spheres, **kwargs):
 def draw_mesh(vertices, faces, name=None, color=None, **kwargs):
     points = []
     facets = []
+    mesh = Mesh()
     for keys in faces:
         i = len(points)
         facet = [j + i for j in range(len(keys))]
         for key in keys:
-            points.append(vertices[key])
-        facets.append(facet)
-
-    guid = rs.AddMesh(points, facets)
-    if color:
-        rs.ObjectColor(guid, color)
-    if name:
-        rs.ObjectName(guid, name)
+            x, y, z = vertices[key]
+            mesh.Vertices.Add(x, y, z)
+        mesh.Faces.AddFace(*facet)
+    mesh.Normals.ComputeNormals()
+    mesh.Compact()
+    guid = add_mesh(mesh)
+    if guid:
+        obj = find_object(guid)
+        attr = obj.Attributes
+        if color:
+            attr.ObjectColor = FromArgb(*color)
+            attr.ColorSource = ColorFromObject
+        else:
+            attr.ColorSource = ColorFromLayer
+        if name:
+            attr.Name = name
+        obj.CommitChanges()
     return guid
 
 
