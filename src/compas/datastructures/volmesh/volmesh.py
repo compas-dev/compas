@@ -389,10 +389,13 @@ class VolMesh(FromToData,
 
         """
         volmesh = cls()
+
         for x, y, z in vertices:
             volmesh.add_vertex(x=x, y=y, z=z)
+
         for halffaces in cells:
             volmesh.add_cell(halffaces)
+
         return volmesh
 
     @classmethod
