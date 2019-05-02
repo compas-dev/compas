@@ -406,6 +406,9 @@ class VolMesh(FromToData,
         cls = type(self)
         return cls.from_data(deepcopy(self.data))
 
+    def dummy(self):
+        pass
+
     def clear(self):
         del self.vertex
         del self.cell
