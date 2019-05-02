@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 from ast import literal_eval as _eval
-from math import sqrt
 from copy import deepcopy
 
 from compas.files.obj import OBJ
@@ -30,23 +29,6 @@ from compas.datastructures._mixins import FromToJson
 
 
 __all__ = ['VolMesh']
-
-
-def center_of_mass(edges, sqrt=sqrt):
-    L  = 0
-    cx = 0
-    cy = 0
-    cz = 0
-    for sp, ep in edges:
-        l   = sqrt(sum((sp[axis] - ep[axis]) ** 2 for axis in range(3)))
-        cx += l * 0.5 * (sp[0] + ep[0])
-        cy += l * 0.5 * (sp[1] + ep[1])
-        cz += l * 0.5 * (sp[2] + ep[2])
-        L  += l
-    cx = cx / L
-    cy = cy / L
-    cz = cz / L
-    return cx, cy, cz
 
 
 class VolMesh(FromToData,
@@ -117,25 +99,27 @@ class VolMesh(FromToData,
         self._max_int_fkey = -1
         self._max_int_ckey = -1
         self._key_to_str   = False
+
         self.vertex   = {}
-        self.plane    = {}
+        self.edge     = {}
         self.halfface = {}
         self.cell     = {}
-        self.edge     = {}
-        self.attributes = {
-            'name'                : 'VolMesh',
-            'color.vertex'        : (255, 255, 255),
-            'color.edge'          : (0, 0, 0),
-            'color.face'          : (200, 200, 200),
-            'color.normal:vertex' : (0, 255, 0),
-            'color.normal:face'   : (0, 255, 0),
-        }
-        self.default_vertex_attributes = {
-            'x': 0.0,
-            'y': 0.0,
-            'z': 0.0
-        }
-        self.default_edge_attributes = {}
+        self.plane    = {}
+
+        self.facedata = {}
+        self.celldata = {}
+
+        self.attributes = {'name'                : 'VolMesh',
+                           'color.vertex'        : (255, 255, 255),
+                           'color.edge'          : (0, 0, 0),
+                           'color.face'          : (200, 200, 200),
+                           'color.normal:vertex' : (0, 255, 0),
+                           'color.normal:face'   : (0, 255, 0)}
+
+        self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
+        self.default_edge_attributes   = {}
+        self.default_face_attributes   = {}
+        self.default_cell_attributes   = {}
 
     # --------------------------------------------------------------------------
     # customisation
@@ -177,19 +161,49 @@ class VolMesh(FromToData,
 
     @property
     def data(self):
-        """The data representing the mesh."""
+        """dict: A data dict representing the volmesh data structure for serialisation.
+
+        The dict has the following structure:
+
+        * 'attributes'   => dict
+        * 'dva'          => dict
+        * 'dea'          => dict
+        * 'dfa'          => dict
+        * 'vertex'       => dict
+        * 'edge'         => dict
+        * 'halfface'     => dict
+        * 'cell'         => dict
+        * 'plane'        => dict
+        * 'edgedata'     => dict
+        * 'facedata'     => dict
+        * 'celldata'     => dict
+        * 'max_int_key'  => int
+        * 'max_int_fkey' => int
+        * 'max_int_ckey' => int
+
+        Note
+        ----
+        All dictionary keys are converted to their representation value (``repr(key)``)
+        to ensure compatibility of all allowed key types with the JSON serialisation
+        format, which only allows for dict keys that are strings.
+
+        """
         data = {
-            'attributes'               : self.attributes,
-            'default_vertex_attributes': self.default_vertex_attributes,
-            'default_edge_attributes'  : self.default_edge_attributes,
-            'vertex'                   : {},
-            'cell'                     : {},
-            'halfface'                 : {},
-            'plane'                    : {},
-            'edge'                     : {},
-            'max_int_key'              : self._max_int_key,
-            'max_int_fkey'             : self._max_int_fkey,
-            'max_int_ckey'             : self._max_int_ckey, }
+            'attributes'  : self.attributes,
+            'dva'         : self.default_vertex_attributes,
+            'dea'         : self.default_edge_attributes,
+            'dfa'         : self.default_face_attributes,
+            'dca'         : self.default_cell_attributes,
+            'vertex'      : {},
+            'edge'        : {},
+            'halfface'    : {},
+            'cell'        : {},
+            'plane'       : {},
+            'facedata'    : {},
+            'celldata'    : {},
+            'max_int_key' : self._max_int_key,
+            'max_int_fkey': self._max_int_fkey,
+            'max_int_ckey': self._max_int_ckey, }
 
         key_rkey = {}
 
@@ -237,22 +251,31 @@ class VolMesh(FromToData,
                     _f = repr(f)
                     data['cell'][_c][_u][_v] = _f
 
+        for fkey in self.facedata:
+            data['facedata'][repr(fkey)] = self.facedata[fkey]
+
+        for ckey in self.celldata:
+            data['celldata'][repr(ckey)] = self.celldata[ckey]
+
         return data
 
     @data.setter
     def data(self, data):
-        """"""
-        attributes                = data.get('attributes') or {}
-        default_vertex_attributes = data.get('default_vertex_attributes') or {}
-        default_edge_attributes   = data.get('default_edge_attributes') or {}
-        vertex                    = data.get('vertex') or {}
-        cell                      = data.get('cell') or {}
-        halfface                  = data.get('halfface') or {}
-        plane                     = data.get('plane') or {}
-        edge                      = data.get('edge') or {}
-        max_int_key               = data.get('max_int_key', - 1)
-        max_int_fkey              = data.get('max_int_fkey', - 1)
-        max_int_ckey              = data.get('max_int_ckey', - 1)
+        attributes   = data.get('attributes') or {}
+        dva          = data.get('dva') or {}
+        dea          = data.get('dea') or {}
+        dfa          = data.get('dfa') or {}
+        dca          = data.get('dca') or {}
+        vertex       = data.get('vertex') or {}
+        edge         = data.get('edge') or {}
+        halfface     = data.get('halfface') or {}
+        cell         = data.get('cell') or {}
+        plane        = data.get('plane') or {}
+        facedata     = data.get('facedata') or {}
+        celldata     = data.get('celldata') or {}
+        max_int_key  = data.get('max_int_key', - 1)
+        max_int_fkey = data.get('max_int_fkey', - 1)
+        max_int_ckey = data.get('max_int_ckey', - 1)
 
         if not vertex or not edge or not plane or not halfface or not cell:
             return
@@ -260,8 +283,10 @@ class VolMesh(FromToData,
         self.clear()
 
         self.attributes.update(attributes)
-        self.default_vertex_attributes.update(default_vertex_attributes)
-        self.default_edge_attributes.update(default_edge_attributes)
+        self.default_vertex_attributes.update(dva)
+        self.default_edge_attributes.update(dea)
+        self.default_face_attributes.update(dfa)
+        self.default_cell_attributes.update(dca)
 
         for _k, attr in vertex.iteritems():
             k = _eval(_k)
@@ -311,6 +336,12 @@ class VolMesh(FromToData,
                     f = _eval(_f)
                     self.cell[c][u][v] = f
 
+        for fkey, attr in iter(facedata.items()):
+            self.facedata[_eval(fkey)] = attr or {}
+
+        for ckey, attr in iter(celldata.items()):
+            self.celldata[_eval(ckey)] = attr or {}
+
         self._max_int_key = max_int_key
         self._max_int_fkey = max_int_fkey
         self._max_int_ckey = max_int_ckey
@@ -321,6 +352,9 @@ class VolMesh(FromToData,
 
     @classmethod
     def from_obj(cls, filepath):
+        """Construct a volmesh object from the data described in an OBJ file.
+
+        """
         obj = OBJ(filepath)
         vertices = obj.parser.vertices
         faces = obj.parser.faces
@@ -339,12 +373,27 @@ class VolMesh(FromToData,
 
     @classmethod
     def from_vertices_and_cells(cls, vertices, cells):
-        mesh = cls()
+        """Construct a volmesh object from vertices and cells.
+
+        Parameters
+        ----------
+        vertices : list
+            Ordered list of vertices, represented by their XYZ coordinates.
+        cells : lists of lists
+            List of halffaces (list of vertices).
+
+        Returns
+        -------
+        Volmesh
+            A volmesh object.
+
+        """
+        volmesh = cls()
         for x, y, z in vertices:
-            mesh.add_vertex(x=x, y=y, z=z)
+            volmesh.add_vertex(x=x, y=y, z=z)
         for halffaces in cells:
-            mesh.add_cell(halffaces)
-        return mesh
+            volmesh.add_cell(halffaces)
+        return volmesh
 
     @classmethod
     def from_vertices_and_edges(cls, vertices, edges):
@@ -403,21 +452,34 @@ class VolMesh(FromToData,
         return ckey
 
     def copy(self):
+        """Make an independent copy of the volmesh object.
+
+        Returns
+        -------
+        VolMesh
+            A separate, but identical volmesh object.
+
+        """
         cls = type(self)
         return cls.from_data(deepcopy(self.data))
 
     def clear(self):
+        """Clear all the volmesh data."""
         del self.vertex
+        del self.edge
         del self.cell
         del self.halfface
         del self.plane
-        del self.edge
-        self.vertex = {}
-        self.cell = {}
-        self.halfface = {}
-        self.plane = {}
-        self.edge = {}
-        self._max_int_key = -1
+        del self.facedata
+        del self.celldata
+        self.vertex        = {}
+        self.cell          = {}
+        self.halfface      = {}
+        self.plane         = {}
+        self.edge          = {}
+        self.facedata      = {}
+        self.celldata      = {}
+        self._max_int_key  = -1
         self._max_int_fkey = -1
         self._max_int_ckey = -1
 
@@ -432,24 +494,86 @@ class VolMesh(FromToData,
     # find unique faces by comparing string versions of sorted vertex lists
 
     def add_vertex(self, vkey=None, attr_dict=None, **kwattr):
-        attr = self.default_vertex_attributes.copy()
+        """Add a vertex to the volmesh object.
 
+        Parameters
+        ----------
+        key : int
+            An identifier for the vertex.
+            Defaults to None.
+            The key is converted to a string before it is used.
+        attr_dict : dict, optional
+            Vertex attributes.
+        kwattr : dict, optional
+            Additional named vertex attributes.
+            Named vertex attributes overwrite corresponding attributes in the
+            attribute dict (``attr_dict``).
+
+        Returns
+        -------
+        int
+            The key of the vertex.
+            If no key was provided, this is always an integer.
+        hashable
+            The key of the vertex.
+            Any hashable object may be provided as identifier for the vertex.
+            Provided keys are returned unchanged.
+
+        """
+        vkey = self._get_vertex_key(vkey)
+
+        attr = self.default_vertex_attributes.copy()
         if attr_dict:
             attr.update(attr_dict)
-
         attr.update(kwattr)
-
-        vkey = self._get_vertex_key(vkey)
 
         if vkey not in self.vertex:
             self.vertex[vkey] = attr
-            self.plane[vkey] = {}
-            self.edge[vkey] = {}
-        # else:
-        #     self.vertex[vkey].update(attr)
+            self.plane[vkey]  = {}
+            self.edge[vkey]   = {}
+
         return vkey
 
     def add_halfface(self, vertices, fkey=None):
+        """Add a halfface to the volmesh object.
+
+        Parameters
+        ----------
+        vertices : list
+            A list of ordered vertex keys representing the halfface.
+            For every vertex that does not yet exist, a new vertex is created.
+        attr_dict : dict, optional
+            Halfface attributes.
+        kwattr : dict, optional
+            Additional named halfface attributes.
+            Named halfface attributes overwrite corresponding attributes in the
+            attribute dict (``attr_dict``).
+
+        Returns
+        -------
+        int
+            The key of the halfface.
+            The key is an integer, if no key was provided.
+        hashable
+            The key of the halfface.
+            Any hashable object may be provided as identifier for the halfface.
+            Provided keys are returned unchanged.
+
+        Raises
+        ------
+        TypeError
+            If the provided halfface key is of an unhashable type.
+
+        Notes
+        -----
+        If no key is provided for the halfface, one is generated
+        automatically. An automatically generated key is an integer that increments
+        the highest integer value of any key used so far by 1.
+
+        If a key with an integer value is provided that is higher than the current
+        highest integer key value, then the highest integer value is updated accordingly.
+
+        """
         if vertices[0] == vertices[-1]:
             vertices = vertices[:-1]
         if vertices[-2] == vertices[-1]:
@@ -459,8 +583,10 @@ class VolMesh(FromToData,
             raise Exception('Corrupt halfface.')
 
         fkey = self._get_face_key(fkey)
+        self.halfface[fkey] = vertices
+        self.facedata[fkey] = self.default_face_attributes
 
-        self.halfface[fkey] = {}
+        edge_attr = self.default_edge_attributes
 
         for i in range(-2, len(vertices) - 2):
             u = vertices[i]
@@ -470,9 +596,6 @@ class VolMesh(FromToData,
             self.add_vertex(vkey=u)
             self.add_vertex(vkey=v)
             self.add_vertex(vkey=w)
-
-            self.halfface[fkey][u] = v
-            self.halfface[fkey][v] = w
 
             if v not in self.plane[u]:
                 self.plane[u][v] = {}
@@ -485,30 +608,66 @@ class VolMesh(FromToData,
                 self.plane[w][v][u] = None
 
             if v not in self.edge[u] and u not in self.edge[v]:
-                self.edge[u][v] = {}
+                self.edge[u][v] = edge_attr
             if w not in self.edge[v] and v not in self.edge[w]:
-                self.edge[v][w] = {}
+                self.edge[v][w] = edge_attr
 
         u = vertices[-1]
         v = vertices[0]
 
         if v not in self.edge[u] and u not in self.edge[v]:
-            self.edge[u][v] = {}
+            self.edge[u][v] = edge_attr
 
         return fkey
 
-    def add_cell(self, halffaces, ckey=None):
+    def add_cell(self, halffaces, ckey=None, attr_dict=None, **kwattr):
+        """Add a cell to the volmesh object.
+
+        Parameters
+        ----------
+        halffaces : list of lists
+            list of lists of vertex keys defining the halffaces of the cell.
+        attr_dict : dict, optional
+            cell attributes.
+        kwattr : dict, optional
+            Additional named cell attributes.
+            Named cell attributes overwrite corresponding attributes in the
+            attribute dict (``attr_dict``).
+
+        Returns
+        -------
+        int
+            The key of the cell.
+            The key is an integer, if no key was provided.
+        hashable
+            The key of the cell.
+            Any hashable object may be provided as identifier for the cell.
+            Provided keys are returned unchanged.
+
+        Raises
+        ------
+        TypeError
+            If the provided halfface key is of an unhashable type.
+
+        """
         ckey = self._get_cellkey(ckey)
 
-        self.cell[ckey] = {}
+        self.cell[ckey]     = {}
+        self.celldata[ckey] = self.default_cell_attributes
 
         for vertices in halffaces:
             fkey = self.add_halfface(vertices)
-            for u in self.halfface[fkey]:
-                v = self.halfface[fkey][u]
-                w = self.halfface[fkey][v]
+
+            vertices = self.halfface[fkey]
+
+            for i in range(-2, len(vertices) - 2):
+                u = vertices[i]
+                v = vertices[i + 1]
+                w = vertices[i + 2]
+
                 if u not in self.cell[ckey]:
                     self.cell[ckey][u] = {}
+
                 self.cell[ckey][u][v] = fkey
                 self.plane[u][v][w] = ckey
 
@@ -567,19 +726,8 @@ class VolMesh(FromToData,
                 else:
                     yield u, v
 
-    # this should return "uique" halfface keys
-    # uniqueness is determined based on string comparison of sorted vertex lists
     def faces(self):
-        # faces = []
-        # seen = set()
-        # for ckey in self.cells():
-        #     for fkey in self.cell_halffaces(ckey):
-        #         vertices = self.halfface_vertices(fkey, ordered=True)
-        #         vset = frozenset(vertices)
-        #         if vset not in seen:
-        #             faces.append(vertices)
-        #         seen.add(vset)
-        # return faces
+        """"Return unique" halfface keys."""
         seen = set()
         faces = []
         for fkey in self.halfface:
@@ -601,26 +749,17 @@ class VolMesh(FromToData,
     # halfface topology
     # --------------------------------------------------------------------------
 
+    def halfface_vertices(self, fkey):
+        return self.halfface[fkey]
+
     def halfface_cell(self, fkey):
-        u = self.halfface[fkey].iterkeys().next()
-        v = self.halfface[fkey][u]
-        w = self.halfface[fkey][v]
+        u = self.halfface[fkey][0]
+        v = self.halfface[fkey][1]
+        w = self.halfface[fkey][2]
         return self.plane[u][v][w]
 
-    def halfface_vertices(self, fkey, ordered=False):
-        if not ordered:
-            return self.halfface[fkey].keys()
-        u = self.halfface[fkey].iterkeys().next()
-        vertices = [u]
-        while True:
-            u = self.halfface[fkey][u]
-            if u == vertices[0]:
-                break
-            vertices.append(u)
-        return vertices
-
     def halfface_edges(self, fkey):
-        vertices = self.halfface_vertices(fkey, ordered=True)
+        vertices = self.halfface[fkey]
         edges = []
         for i in range(-1, len(vertices) - 1):
             edges.append((vertices[i], vertices[i + 1]))
@@ -636,9 +775,7 @@ class VolMesh(FromToData,
     def cell_neighbors(self, ckey):
         nbrs = []
         for fkey in self.cell_halffaces(ckey):
-            u   = self.halfface[fkey].iterkeys().next()
-            v   = self.halfface[fkey][u]
-            w   = self.halfface[fkey][v]
+            u, v, w = self.halfface[fkey][0:3]
             nbr = self.plane[w][v][u]
             if nbr is not None:
                 nbrs.append(nbr)
@@ -670,7 +807,7 @@ class VolMesh(FromToData,
         fkeys = self.cell_halffaces(ckey)
         vkey_vindex = dict((vkey, index) for index, vkey in enumerate(vkeys))
         vertices = [self.vertex_coordinates(vkey) for vkey in vkeys]
-        halffaces = [[vkey_vindex[vkey] for vkey in self.halfface_vertices(fkey, ordered=True)] for fkey in fkeys]
+        halffaces = [[vkey_vindex[vkey] for vkey in self.halfface[fkey]] for fkey in fkeys]
         return vertices, halffaces
 
     def cell_adjacency(self):
@@ -703,7 +840,7 @@ class VolMesh(FromToData,
     # --------------------------------------------------------------------------
 
     def face_coordinates(self, fkey, axes='xyz'):
-        vertices = self.halfface_vertices(fkey, ordered=True)
+        vertices = self.halfface[fkey]
         return [self.vertex_coordinates(key, axes=axes) for key in vertices]
 
     # --------------------------------------------------------------------------
