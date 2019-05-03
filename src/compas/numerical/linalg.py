@@ -157,9 +157,9 @@ def dof(A, tol=0.001, condition=False):
     ----------
     A : array-like
         Matrix A represented as an array or list.
-    tol : float
+    tol : float (0.001)
         Tolerance.
-    condition : bool
+    condition : bool (False)
         Return the condition number of the matrix.
 
     Returns
@@ -206,7 +206,8 @@ def pivots(U, tol=None):
 
     Notes
     -----
-    The pivots are the non-zero leading coefficients of each row.
+    If the matrix U is in Reduced Row Echelon Form,
+    the pivots are the columns with leading non-zero coefficients per row.
 
     Examples
     --------
@@ -243,7 +244,8 @@ def nonpivots(U, tol=None):
 
     Notes
     -----
-    The non-pivots are where there are no non-zero leading coefficients in a row.
+    If the matrix U is in Reduced Row Echelon Form,
+    the nonpivots are the columns with non-zero coefficients that are not leading their row.
 
     Examples
     --------
@@ -265,8 +267,6 @@ def rref(A, tol=None):
     ----------
     A : array-like
         Matrix A represented as an array or list.
-    algo : str
-        Algorithm to use: 'qr', 'sympy', 'matlab'.
     tol : float
         Tolerance.
 
@@ -277,8 +277,7 @@ def rref(A, tol=None):
 
     Notes
     -----
-    A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
-    result is independent of the method/algorithm used.
+    A matrix is in reduced row-echelon form after Gauss-Jordan elimination.
 
     Examples
     --------

@@ -101,6 +101,13 @@ And add
 Install COMPAS packages
 =======================
 
+The procedure for installing a COMPAS package in Rhino is similar to installing
+COMPAS itself.
+
+.. code-block:: bash
+
+
+
 
 Working with virtual environments
 =================================

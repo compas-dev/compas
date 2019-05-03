@@ -150,6 +150,12 @@ select_folder = browse_for_folder
 
 
 def browse_for_file(title=None, folder=None, filter=None):
+    if filter == 'json':
+        filter = 'JSON files (*.json)|*.json||'
+    elif filter == 'obj':
+        filter = 'OBJ files (*.obj)|*.obj||'
+    else:
+        pass
     return rs.OpenFileName(title, filter=filter, folder=folder)
 
 
