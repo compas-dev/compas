@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Filter shorthand for selecting OBJ, JSON files in Rhino.
+
 ### Changed
 
 ### Removed
@@ -19,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+
+- Based mesh drawing for Rhino on RhinoCommon rather than Rhinoscriptsyntax.
+- Fixed mesh drawing for Rhino 6
 
 ### Removed
 
