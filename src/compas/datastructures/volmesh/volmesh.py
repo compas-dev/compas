@@ -132,7 +132,7 @@ class VolMesh(FromToPickle,
     __module__ = 'compas.datastructures'
 
     def __init__(self):
-        self._max_int_key  = -1
+        self._max_int_vkey = -1
         self._max_int_fkey = -1
         self._max_int_ckey = -1
         self._key_to_str   = False
