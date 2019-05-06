@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
-- Various updates to `compas.datastructure.VolMesh`.
+- Various updates to `compas.datastructures.VolMesh`.
 
 ### Removed
 
