@@ -4,7 +4,6 @@ The server address is *localhost* and it listens to requests on port *1753*
 
 """
 
-from compas.rpc import Server
 from compas.rpc import Dispatcher
 
 
@@ -21,6 +20,7 @@ class DefaultService(Dispatcher):
 if __name__ == '__main__':
 
     import sys
+    from compas.rpc import Server
 
     try:
         port = int(sys.argv[3])
