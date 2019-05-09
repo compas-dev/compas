@@ -7,7 +7,7 @@
 ## Main Developers
 
 - Gonzalo Casas <<casas@arch.ethz.ch>> [@gonzalocasas](https://github.com/gonzalocasas)
-- Andrew Liew <<andrewliew@protonmail.com>> [@andrewliew](https://github.com/andrewliew)
+- Andrew Liew <<a.liew@sheffield.ac.uk>> [@andrewliew](https://github.com/andrewliew)
 - Tomás Méndez Echenagucia <<mendez@arch.ethz.ch>> [@tmsmendez](https://github.com/tmsmendez)
 - Matthias Rippmann <<rippmann@arch.ethz.ch>> [@Rippmann](https://github.com/Rippmann)
 - Romana Rust <<rust@arch.ethz.ch>> [@romanarust](https://github.com/romanarust)
