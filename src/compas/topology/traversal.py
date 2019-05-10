@@ -127,7 +127,7 @@ def depth_first_ordering(adjacency, root):
 
 #         import compas
 #         from compas.datastructures import Mesh
-#         from compas.plotters import MeshPlotter
+#         from compas_plotters import MeshPlotter
 #         from compas.topology import depth_first_tree
 #         from compas.utilities import pairwise
 
@@ -342,7 +342,7 @@ def shortest_path(adjacency, root, goal):
 
         from compas.datastructures import Network
         from compas.topology import shortest_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -512,7 +512,7 @@ def dijkstra_distances(adjacency, weight, target):
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_distances
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
@@ -598,7 +598,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -643,7 +643,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -740,7 +740,7 @@ if __name__ == '__main__':
     # if testrun == 1:
     #     import compas
     #     from compas.datastructures import Mesh
-    #     from compas.plotters import MeshPlotter
+    #     from compas_plotters import MeshPlotter
 
     #     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -788,7 +788,7 @@ if __name__ == '__main__':
 
         from compas.datastructures import Network
         from compas.topology import shortest_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -831,7 +831,7 @@ if __name__ == '__main__':
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_distances
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
@@ -869,7 +869,7 @@ if __name__ == '__main__':
         import compas
 
         from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         from compas.topology import dijkstra_path
 

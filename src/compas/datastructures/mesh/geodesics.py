@@ -174,9 +174,10 @@ if __name__ == "__main__":
     from compas.datastructures import mesh_quads_to_triangles
     from compas.datastructures import mesh_flip_cycles
 
-    from compas.plotters import MeshPlotter
     from compas.utilities import i_to_blue
     from compas.geometry import scale_points
+
+    from compas_plotters import MeshPlotter
 
 
     # mesh = Mesh.from_obj(compas.get('models/head-poses/head-reference.obj'))

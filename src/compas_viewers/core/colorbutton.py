@@ -14,7 +14,7 @@ else:
     from PySide2 import QtWidgets
 
 
-from compas.viewers.core.qcolorbutton import QColorButton
+from compas_viewers.core.qcolorbutton import QColorButton
 
 
 __all__ = ['ColorButton']

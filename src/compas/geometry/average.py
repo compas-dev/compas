@@ -624,7 +624,7 @@ def centroid_polyhedron(polyhedron):
 
 if __name__ == "__main__":
 
-    from compas.plotters import Plotter
+    from compas_plotters import Plotter
     from compas.geometry import intersection_line_line
     from compas.geometry import midpoint_point_point
     from compas.geometry import centroid_points

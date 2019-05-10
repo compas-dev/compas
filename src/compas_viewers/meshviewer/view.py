@@ -11,9 +11,9 @@ from OpenGL.GLUT import *
 import compas
 from compas.utilities import hex_to_rgb
 from compas.utilities import flatten
-from compas.viewers.core import GLWidget
-from compas.viewers.core import Grid
-from compas.viewers.core import Axes
+from compas_viewers.core import GLWidget
+from compas_viewers.core import Grid
+from compas_viewers.core import Axes
 
 
 __all__ = ['MeshViewer']

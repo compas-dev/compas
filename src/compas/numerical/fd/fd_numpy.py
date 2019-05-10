@@ -65,7 +65,7 @@ def fd_numpy(vertices, edges, fixed, q, loads, **kwargs):
         import compas
 
         from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
         from compas.numerical import fd_numpy
         from compas.utilities import i_to_black
 
@@ -153,7 +153,7 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
     from compas.numerical import fd_numpy
     from compas.utilities import i_to_black
 

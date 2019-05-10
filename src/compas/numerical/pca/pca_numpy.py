@@ -53,10 +53,10 @@ def pca_numpy(data):
         from compas.geometry import matrix_from_axis_and_angle
         from compas.geometry import transform_points_numpy
 
-        from compas.plotters import Axes3D
-        from compas.plotters import Cloud3D
-        from compas.plotters import Bounds
-        from compas.plotters import create_axes_3d
+        from compas_plotters import Axes3D
+        from compas_plotters import Cloud3D
+        from compas_plotters import Bounds
+        from compas_plotters import create_axes_3d
 
         from compas.numerical import pca_numpy
 
@@ -151,10 +151,10 @@ if __name__ == "__main__":
     from compas.geometry import matrix_from_axis_and_angle
     from compas.geometry import transform_points_numpy
 
-    from compas.plotters import Axes3D
-    from compas.plotters import Cloud3D
-    from compas.plotters import Bounds
-    from compas.plotters import create_axes_3d
+    from compas_plotters import Axes3D
+    from compas_plotters import Cloud3D
+    from compas_plotters import Bounds
+    from compas_plotters import create_axes_3d
 
     data = random.rand(300, 3)
     data[:, 0] *= 10.0

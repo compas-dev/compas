@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
     import compas
     from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
     from compas.datastructures import network_dr
     from compas.utilities import i_to_rgb
 

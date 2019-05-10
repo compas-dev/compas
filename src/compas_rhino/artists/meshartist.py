@@ -78,7 +78,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     def mesh(self, mesh):
         self.datastructure = mesh
 
-    def draw_mesh(self, color=None):
+    def draw_mesh(self, color=None, disjoint=False):
         """Draw the mesh as a consolidated RhinoMesh.
 
         Notes
@@ -106,7 +106,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
                 continue
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)
-        return compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color)
+        return compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
 
     def clear_mesh(self):
         compas_rhino.delete_objects(compas_rhino.get_objects(name="{}.mesh".format(self.mesh.name)))

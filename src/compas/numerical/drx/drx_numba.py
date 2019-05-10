@@ -359,7 +359,7 @@ if __name__ == "__main__":
     # ==========================================================================
 
     from compas.datastructures import Network
-    from compas.viewers import VtkViewer
+    from compas_viewers import VtkViewer
 
 
     m = 150

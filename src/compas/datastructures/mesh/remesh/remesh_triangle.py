@@ -44,7 +44,7 @@ def trimesh_remesh_triangle(mesh, target, boundary=None, holes=None):
 if __name__ == '__main__':
 
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
 
     vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (6.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
     faces = [[0, 1, 2, 3]]

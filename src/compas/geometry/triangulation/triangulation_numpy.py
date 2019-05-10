@@ -45,7 +45,7 @@ def delaunay_from_points_numpy(points):
         from compas.datastructures import Mesh
         from compas.geometry import pointcloud_xy
         from compas.geometry import delaunay_from_points_numpy
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         points = pointcloud_xy(20, (0, 50))
         faces = delaunay_from_points_numpy(points)
@@ -80,7 +80,7 @@ def voronoi_from_points_numpy(points):
         :include-source:
 
         from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
         from compas.geometry import closest_point_on_line_xy
         from compas.geometry import voronoi_from_points_numpy
 
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.geometry import pointcloud_xy
     from compas.geometry import delaunay_from_points_numpy
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
 
     points = pointcloud_xy(20, (0, 50))
     faces = delaunay_from_points_numpy(points)

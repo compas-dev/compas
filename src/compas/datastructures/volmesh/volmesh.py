@@ -863,8 +863,8 @@ class VolMesh(FromToData,
 if __name__ == '__main__':
 
     import compas
-    # from compas.viewers import VolMeshViewer
-    from compas.viewers import Viewer
+    # from compas_viewers import VolMeshViewer
+    from compas_viewers import Viewer
 
     mesh = VolMesh.from_obj(compas.get('boxes.obj'))
 

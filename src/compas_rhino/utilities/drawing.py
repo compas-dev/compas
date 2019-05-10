@@ -464,21 +464,25 @@ def draw_spheres(spheres, **kwargs):
 
 
 @wrap_drawfunc
-def draw_mesh(vertices, faces, name=None, color=None, **kwargs):
+def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
     points = []
     facets = []
     mesh = Mesh()
-    # for keys in faces:
-    #     i = len(points)
-    #     facet = [j + i for j in range(len(keys))]
-    #     for key in keys:
-    #         x, y, z = vertices[key]
-    #         mesh.Vertices.Add(x, y, z)
-    #     mesh.Faces.AddFace(*facet)
-    for x, y, z in vertices:
-        mesh.Vertices.Add(x, y, z)
-    for face in faces:
-        mesh.Faces.AddFace(*face)
+    if disjoint:
+        for keys in faces:
+            i = len(points)
+            facet = [j + i for j in range(len(keys))]
+            for key in keys:
+                point = vertices[key]
+                points.append(point)
+                x, y, z = point
+                mesh.Vertices.Add(x, y, z)
+            mesh.Faces.AddFace(*facet)
+    else:
+        for x, y, z in vertices:
+            mesh.Vertices.Add(x, y, z)
+        for face in faces:
+            mesh.Faces.AddFace(*face)
     mesh.Normals.ComputeNormals()
     mesh.Compact()
     guid = add_mesh(mesh)

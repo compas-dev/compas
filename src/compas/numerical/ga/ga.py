@@ -909,7 +909,7 @@ if __name__ == '__main__':
 
     import os
     import compas
-    from compas.plotters.gaplotter import visualize_evolution
+    from compas_plotters.gaplotter import visualize_evolution
     from math import cos
     from math import pi
 

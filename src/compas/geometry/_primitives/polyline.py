@@ -264,7 +264,7 @@ if __name__ == '__main__':
     from math import pi
 
     from compas.geometry import matrix_from_axis_and_angle
-    from compas.plotters import Plotter
+    from compas_plotters import Plotter
 
 
     M = matrix_from_axis_and_angle([0, 0, 1.0], pi / 2)

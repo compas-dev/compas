@@ -54,7 +54,7 @@ def smooth_centroid(vertices,
         import compas
         from compas.datastructures import Mesh
         from compas.geometry import smooth_centroid
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -158,7 +158,7 @@ def smooth_centerofmass(vertices,
         import compas
         from compas.datastructures import Mesh
         from compas.geometry import smooth_centerofmass
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -258,7 +258,7 @@ def smooth_area(vertices,
         import compas
 
         from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
         from compas.geometry import smooth_area
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
@@ -341,7 +341,7 @@ if __name__ == "__main__":
     import compas
     from compas.datastructures import Mesh
     from compas.geometry import smooth_centerofmass
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 

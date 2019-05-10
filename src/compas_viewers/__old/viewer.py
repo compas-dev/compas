@@ -8,10 +8,10 @@ from OpenGL.GLUT import *
 
 from PIL import Image
 
-from compas.viewers.core.helpers import Camera
-from compas.viewers.core.helpers import Mouse
-from compas.viewers.core.helpers import Grid
-from compas.viewers.core.helpers import Axes
+from compas_viewers.core.helpers import Camera
+from compas_viewers.core.helpers import Mouse
+from compas_viewers.core.helpers import Grid
+from compas_viewers.core.helpers import Axes
 
 
 __author__     = ['Tom Van Mele <vanmelet@ethz.ch>',
