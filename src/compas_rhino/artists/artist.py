@@ -253,6 +253,32 @@ class Artist(object):
         layer = layer or self.layer
         return compas_rhino.draw_polylines(polygons, layer=layer, clear=clear_layer, redraw=redraw)
 
+    def draw_circles(self, circles, layer=None, clear_layer=False, redraw=False):
+        """Draw a collection of circles.
+
+        Parameters
+        ----------
+        circles : list of dict
+            The circles to draw.
+        layer : str, optional
+            The layer to draw the points in.
+            Default is ``None``.
+        clear_layer : bool, optional
+            Clear the specified layer.
+            Default is ``False``.
+        redraw : bool, optional
+            Redraw the Rhino view.
+            Default is ``False``.
+
+        Returns
+        -------
+        list of guid
+            The GUIDs of the polygon objects.
+
+        """
+        layer = layer or self.layer
+        return compas_rhino.draw_circles(circles, layer=layer, clear=clear_layer, redraw=redraw)
+
 
 # ==============================================================================
 # Main

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added filter shorthand for selecting OBJ, JSON files in Rhino.
 - Added `compas_plotters`
 - Added `compas_viewers`
+- Added `compas_rhino.draw_circles` and the equivalent Artist method
 
 ### Changed
 

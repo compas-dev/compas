@@ -27,8 +27,10 @@ if __name__ == '__main__':
     except:
         port = 1753
 
-    # with open('rpc.txt', 'w') as f:
-    #     f.write(str(sys.version_info))
+    # with open('/Users/vanmelet/Code/compas-dev/compas/src/compas/rpc/services/rpc.txt', 'w') as f:
+    #     f.write(str(sys.version_info) + "\n")
+    #     for name in sys.path:
+    #         f.write(name + "\n")
 
     print('Starting default RPC service on port {0}...'.format(port))
 
