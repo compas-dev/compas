@@ -299,7 +299,6 @@ def breadth_first_paths(adjacency, root, goal):
     """
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
     tovisit = deque([(root, [root])])
-    print (adjacency)
 
     while tovisit:
         node, path = tovisit.popleft()
