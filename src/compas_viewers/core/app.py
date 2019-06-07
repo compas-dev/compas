@@ -17,9 +17,9 @@ else:
     from PySide2 import QtGui
     from PySide2 import QtWidgets
 
-from compas.viewers.core import ColorButton
-from compas.viewers.core import Slider
-from compas.viewers.core import TextEdit
+from compas_viewers.core import ColorButton
+from compas_viewers.core import Slider
+from compas_viewers.core import TextEdit
 
 
 __all__ = ['App']

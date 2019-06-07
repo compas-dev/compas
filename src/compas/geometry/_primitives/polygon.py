@@ -286,7 +286,7 @@ class Polygon(object):
 
 if __name__ == '__main__':
 
-    from compas.plotters import Plotter
+    from compas_plotters import Plotter
 
     polygon = Polygon([[1, 1, 0], [0, 1, 0], [0, 0, 0], [1, 0, 0]])
 

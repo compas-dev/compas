@@ -42,7 +42,7 @@ def tween_points(points1, points2, num):
         :include-source:
 
         from compas.geometry import tween_points
-        from compas.plotters import Plotter
+        from compas_plotters import Plotter
 
         points1 = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0]]
         points2 = [[0.0, 0.0, 0.0], [1.0, 3.0, 0.0], [2.0, 1.0, 0.0], [3.0, 0.0, 0.0]]
@@ -115,7 +115,7 @@ def tween_points_distance(points1, points2, dist, index=None):
 
 if __name__ == "__main__":
 
-    from compas.plotters import Plotter
+    from compas_plotters import Plotter
 
     points1 = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0]]
     points2 = [[0.0, 0.0, 0.0], [1.0, 3.0, 0.0], [2.0, 1.0, 0.0], [3.0, 0.0, 0.0]]

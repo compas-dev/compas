@@ -3,6 +3,7 @@ from __future__ import print_function
 from functools import wraps
 
 import compas
+import compas_rhino
 
 from compas.geometry import centroid_polygon
 
@@ -19,6 +20,7 @@ try:
     from System.Enum import ToObject
 
     from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Vector3d
     from Rhino.Geometry import Polyline
     from Rhino.Geometry import PolylineCurve
     from Rhino.Geometry import GeometryBase
@@ -30,7 +32,7 @@ try:
     from Rhino.Geometry import Curve
     from Rhino.Geometry import Sphere
     from Rhino.Geometry import TextDot
-    from Rhino.Geometry import Mesh
+    from Rhino.Geometry import Mesh as RhinoMesh
     from Rhino.DocObjects.ObjectColorSource import ColorFromObject
     from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
     from Rhino.DocObjects.ObjectDecoration import EndArrowhead
@@ -46,6 +48,7 @@ try:
     add_brep = sc.doc.Objects.AddBrep
     add_sphere = sc.doc.Objects.AddSphere
     add_mesh = sc.doc.Objects.AddMesh
+    add_circle = sc.doc.Objects.AddCircle
 
     TOL = sc.doc.ModelAbsoluteTolerance
 
@@ -70,6 +73,7 @@ __all__ = [
     'draw_pipes',
     'draw_spheres',
     'draw_mesh',
+    'draw_circles',
 ]
 
 
@@ -464,21 +468,24 @@ def draw_spheres(spheres, **kwargs):
 
 
 @wrap_drawfunc
-def draw_mesh(vertices, faces, name=None, color=None, **kwargs):
+def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
     points = []
-    facets = []
-    mesh = Mesh()
-    # for keys in faces:
-    #     i = len(points)
-    #     facet = [j + i for j in range(len(keys))]
-    #     for key in keys:
-    #         x, y, z = vertices[key]
-    #         mesh.Vertices.Add(x, y, z)
-    #     mesh.Faces.AddFace(*facet)
-    for x, y, z in vertices:
-        mesh.Vertices.Add(x, y, z)
-    for face in faces:
-        mesh.Faces.AddFace(*face)
+    mesh = RhinoMesh()
+    if disjoint:
+        for keys in faces:
+            i = len(points)
+            facet = [j + i for j in range(len(keys))]
+            for key in keys:
+                point = vertices[key]
+                points.append(point)
+                x, y, z = point
+                mesh.Vertices.Add(x, y, z)
+            mesh.Faces.AddFace(*facet)
+    else:
+        for x, y, z in vertices:
+            mesh.Vertices.Add(x, y, z)
+        for face in faces:
+            mesh.Faces.AddFace(*face)
     mesh.Normals.ComputeNormals()
     mesh.Compact()
     guid = add_mesh(mesh)
@@ -546,95 +553,43 @@ def _face_to_max_quad(points, face):
     return faces
 
 
+@wrap_drawfunc
+def draw_circles(circles, **kwargs):
+    guids = []
+    for data in iter(circles):
+        point, normal = data['plane']
+        radius = data['radius']
+        name = data.get('name', '')
+        color = data.get('color')
+        layer = data.get('layer')
+        circle = Circle(Plane(Point3d(*point), Vector3d(*normal)), radius)
+        guid = add_circle(circle)
+        if not guid:
+            continue
+        obj = find_object(guid)
+        if not obj:
+            continue
+        attr = obj.Attributes
+        if color:
+            attr.ObjectColor = FromArgb(*color)
+            attr.ColorSource = ColorFromObject
+        else:
+            attr.ColorSource = ColorFromLayer
+        if layer and find_layer_by_fullpath:
+            index = find_layer_by_fullpath(layer, True)
+            if index >= 0:
+                attr.LayerIndex = index
+        attr.Name = name
+        attr.WireDensity = -1
+        obj.CommitChanges()
+        guids.append(guid)
+    return guids
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == '__main__':
 
-    from random import randint
-    import time
-
-    points = [(randint(0, 100), randint(0, 100), randint(0, 100)) for i in range(10000)]
-
-    faces = []
-    faces.append({
-        'points' : [[0, 0, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0], [0, 0, 0]],
-        'color'  : (255, 0, 0),
-    })
-
-    lines = []
-    for i in range(10 - 1):
-        lines.append({
-            'start' : points[i],
-            'end'   : points[i + 1],
-            'name'  : 'test',
-            'color' : (0, 255, 0),
-            'arrow' : 'end',
-        })
-
-    polylines = []
-    polylines.append({
-        'points' : points[:10],
-        'color'  : (0, 255, 255),
-        'arrow'  : 'start',
-    })
-
-    cylinders = []
-    for i in range(10 - 1):
-        cylinders.append({
-            'start'  : points[i],
-            'end'    : points[i + 1],
-            'radius' : 3,
-            'name'   : 'test',
-            'color'  : (0, 255, 0),
-        })
-
-    pipes = []
-    pipes.append({
-        'points' : points[:10],
-        'color'  : (0, 255, 255),
-        'radius' : [3, 5],
-    })
-
-    spheres = []
-    for i in range(10):
-        spheres.append({
-            'pos'    : points[i],
-            'radius' : 3,
-            'color'  : (0, 0, 255),
-        })
-
-    t0 = time.time()
-
-    draw_faces(faces, layer='Default', clear=True)
-
-    t1 = time.time()
-
-    draw_lines(lines, layer='Layer 01', clear=True)
-
-    t2 = time.time()
-
-    draw_polylines(polylines, layer='Layer 02', clear=True)
-
-    t3 = time.time()
-
-    draw_cylinders(cylinders, layer='Layer 03', clear=True)
-
-    t4 = time.time()
-
-    draw_pipes(pipes, layer='Layer 04', clear=True)
-
-    t5 = time.time()
-
-    draw_spheres(spheres, layer='Layer 05', clear=True)
-
-    t6 = time.time()
-
-    print()
-    print('faces', t1 - t0)
-    print('lines', t2 - t1)
-    print('polylines', t3 - t2)
-    print('cylinders', t4 - t3)
-    print('pipes', t5 - t4)
-    print('spheres', t6 - t5)
+    pass

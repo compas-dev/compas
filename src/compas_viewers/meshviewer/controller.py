@@ -29,8 +29,8 @@ from compas.geometry import centroid_points
 from compas.utilities import hex_to_rgb
 from compas.utilities import flatten
 
-from compas.viewers import core
-from compas.viewers.meshviewer.model import MeshView
+from compas_viewers import core
+from compas_viewers.meshviewer.model import MeshView
 
 
 __all__ = ['Controller']

@@ -379,7 +379,7 @@ if __name__ == "__main__":
     # ==========================================================================
 
     # from compas.datastructures import Network
-    # from compas.viewers import VtkViewer
+    # from compas_viewers import VtkViewer
 
 
     # m = 70
@@ -437,7 +437,7 @@ if __name__ == "__main__":
     # import compas
 
     # from compas.datastructures import Network
-    # from compas.plotters import NetworkPlotter
+    # from compas_plotters import NetworkPlotter
 
 
     # structure = Network.from_obj(compas.get('lines.obj'))
@@ -481,7 +481,7 @@ if __name__ == "__main__":
     from numpy import sign
 
     from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
 
 
     L  = 2.5

@@ -8,8 +8,8 @@ from OpenGL.GL import *
 
 from compas.utilities import flatten
 
-from compas.viewers.core.buffers import make_vertex_buffer
-from compas.viewers.core.buffers import make_index_buffer
+from compas_viewers.core.buffers import make_vertex_buffer
+from compas_viewers.core.buffers import make_index_buffer
 
 
 __all__ = ['Grid']

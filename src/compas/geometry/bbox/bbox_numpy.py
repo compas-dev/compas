@@ -58,10 +58,10 @@ def oriented_bounding_box_numpy(points):
 
         import matplotlib.pyplot as plt
 
-        from compas.plotters import Bounds
-        from compas.plotters import Cloud3D
-        from compas.plotters import Box
-        from compas.plotters import create_axes_3d
+        from compas_plotters import Bounds
+        from compas_plotters import Cloud3D
+        from compas_plotters import Box
+        from compas_plotters import create_axes_3d
         from compas.geometry import matrix_from_axis_and_angle
         from compas.geometry import transform_points
         from compas.geometry import oriented_bounding_box_numpy

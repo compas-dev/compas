@@ -42,7 +42,7 @@ def select_python(python_executable):
         Select which python executable you want to use,
         either `python` or `pythonw`.
     """
-    python_executable = python_executable or 'pythonw'
+    python_executable = python_executable or 'python'
 
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
         python = os.path.join(PYTHON_DIRECTORY, python_executable)

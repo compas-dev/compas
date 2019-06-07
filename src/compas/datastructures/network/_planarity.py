@@ -194,7 +194,7 @@ def network_is_planar(network):
         from compas.datastructures import Network
         from compas.datastructures import network_is_planar
         from compas.datastructures import network_find_crossings
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('lines.obj'))
 
@@ -280,7 +280,7 @@ def network_embed_in_plane(network, fix=None, straightline=True):
 
         from compas.datastructures import Network
         from compas.datastructures import network_embed_in_plane
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('fink.obj'))
 
@@ -386,7 +386,7 @@ if __name__ == '__main__':
     from compas.datastructures import Network
     from compas.datastructures import network_is_planar
     from compas.datastructures import network_find_crossings
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
 
     network = Network.from_obj(compas.get('lines.obj'))
 

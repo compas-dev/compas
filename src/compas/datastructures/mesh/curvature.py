@@ -93,7 +93,7 @@ if __name__ == "__main__":
     from compas.geometry import subtract_vectors
     from compas.numerical import normrow
 
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
 
 
     # mesh = Mesh.from_polyhedron(8)

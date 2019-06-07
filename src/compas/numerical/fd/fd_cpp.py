@@ -75,7 +75,7 @@ def fd_cpp(vertices, edges, fixed, q, loads, **kwargs):
 if __name__ == "__main__":
 
     from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
     from compas.utilities import i_to_red
 
     network = Network.from_obj(compas.get('saddle.obj'))

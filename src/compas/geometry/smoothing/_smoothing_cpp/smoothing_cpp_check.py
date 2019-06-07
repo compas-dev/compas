@@ -1,6 +1,6 @@
 import compas
 from compas.datastructures import Mesh
-from compas.plotters import MeshPlotter
+from compas_plotters import MeshPlotter
 from compas.geometry import smooth_centroid_cpp
 
 kmax = 50

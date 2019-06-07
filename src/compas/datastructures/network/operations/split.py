@@ -39,7 +39,7 @@ def network_split_edge(network, u, v, t=0.5):
 
         import compas
         from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('lines.obj'))
 
@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
 
     network = Network.from_obj(compas.get('lines.obj'))
 

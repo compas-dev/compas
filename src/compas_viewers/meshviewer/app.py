@@ -2,13 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.viewers.core import App
+from compas_viewers.core import App
 
-from compas.viewers.meshviewer.view import View
-from compas.viewers.meshviewer.controller import Controller
+from compas_viewers.meshviewer.view import View
+from compas_viewers.meshviewer.controller import Controller
 
-from compas.viewers.meshviewer import CONFIG
-from compas.viewers.meshviewer import STYLE
+from compas_viewers.meshviewer import CONFIG
+from compas_viewers.meshviewer import STYLE
 
 
 __all__ = ['MeshViewer']

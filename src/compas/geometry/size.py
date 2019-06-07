@@ -52,7 +52,7 @@ def area_polygon(polygon):
         :include-source:
 
         from compas.geometry import area_polygon
-        from compas.plotters import Plotter
+        from compas_plotters import Plotter
 
         plotter = Plotter()
 
@@ -74,7 +74,7 @@ def area_polygon(polygon):
         :include-source:
 
         from compas.geometry import area_polygon
-        from compas.plotters import Plotter
+        from compas_plotters import Plotter
 
         plotter = Plotter()
 
@@ -252,7 +252,7 @@ def volume_polyhedron(polyhedron):
 
 if __name__ == "__main__":
 
-    from compas.plotters import Plotter
+    from compas_plotters import Plotter
     from compas.geometry import Polyhedron
     from compas.geometry import length_vector
     from compas.geometry import subtract_vectors

@@ -22,8 +22,8 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-from compas.viewers.core import Camera
-from compas.viewers.core import Mouse
+from compas_viewers.core import Camera
+from compas_viewers.core import Mouse
 
 
 __all__ = ['GLWidget']

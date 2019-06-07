@@ -30,13 +30,13 @@ from compas.utilities import hex_to_rgb
 from compas.utilities import flatten
 from compas.utilities import pairwise
 
-from compas.viewers.core import Camera
-from compas.viewers.core import Mouse
-from compas.viewers.core import Grid
-from compas.viewers.core import Axes
-from compas.viewers.core import GLWidget
-from compas.viewers.core import Controller
-from compas.viewers.core import App
+from compas_viewers.core import Camera
+from compas_viewers.core import Mouse
+from compas_viewers.core import Grid
+from compas_viewers.core import Axes
+from compas_viewers.core import GLWidget
+from compas_viewers.core import Controller
+from compas_viewers.core import App
 
 
 __author__     = ['Tom Van Mele']

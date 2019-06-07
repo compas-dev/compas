@@ -124,7 +124,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
         import compas
         from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
         from compas.numerical import dr_numpy
 
         dva = {
@@ -346,7 +346,7 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
     from compas.utilities import i_to_rgb
 
     dva = {

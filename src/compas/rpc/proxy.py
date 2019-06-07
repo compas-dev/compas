@@ -359,21 +359,11 @@ if __name__ == "__main__":
     import sys
 
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
-    # from compas_rhino.artists import MeshArtist
-
     from compas.rpc import Proxy
 
+    # from compas_rhino.artists import MeshArtist
+
     numerical = Proxy('compas.numerical')
-
-    # numerical.stop_server()
-    # numerical.start_server()
-
-    print(sys.version_info)
-
-    print(numerical.python)
-    print(numerical.address)
-    print(numerical.service)
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -402,12 +392,6 @@ if __name__ == "__main__":
     for index, (u, v, attr) in enumerate(mesh.edges(True)):
         attr['f'] = f[index][0]
         attr['l'] = l[index][0]
-
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-    plotter.draw_vertices()
-    plotter.draw_faces()
-    plotter.draw_edges()
-    plotter.show()
 
     # artist = MeshArtist(mesh)
     # artist.draw_vertices()

@@ -246,7 +246,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         from compas.datastructures import Mesh
         from compas.datastructures import mesh_subdivide_catmullclark
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
         faces = [[0, 1, 2, 3]]
@@ -267,7 +267,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         from compas.datastructures import Mesh
         from compas.datastructures import mesh_subdivide_catmullclark
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
         faces = [[0, 1, 2, 3]]
@@ -288,7 +288,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
         from compas.datastructures import Mesh
         from compas.datastructures import mesh_subdivide_catmullclark
         from compas.geometry import Polyhedron
-        from compas.viewers import SubdMeshViewer
+        from compas_viewers import SubdMeshViewer
 
         cube = Polyhedron.generate(6)
 
@@ -554,7 +554,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
         from compas.datastructures import Mesh
         from compas.datastructures import mesh_flip_cycle_directions
-        from compas.plotters import SubdMeshViewer
+        from compas_plotters import SubdMeshViewer
 
         mesh = Mesh.from_polyhedron(4)
         mesh_flip_cycle_directions(mesh)
@@ -601,7 +601,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
                         x += 0.125 * xyz[0]
                         y += 0.125 * xyz[1]
                         z += 0.125 * xyz[2]
-                        
+
             else:
                 n = len(nbrs)
 
@@ -640,7 +640,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
                 c = key_xyz[uv_w[(u, v)]]
                 d = key_xyz[uv_w[(v, u)]]
                 xyz = [(3.0 / 8.0) * (a[i] + b[i]) + (1.0 / 8.0) * (c[i] + d[i]) for i in range(3)]
-            
+
             else:
                 xyz = [0.5 * (a[i] + b[i]) for i in range(3)]
 
@@ -678,7 +678,8 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     from compas.utilities import print_profile
-    from compas.plotters import MeshPlotter
+
+    from compas_plotters import MeshPlotter
 
     #mesh = Mesh.from_polyhedron(6)
     # fixed = [mesh.get_any_vertex()]
@@ -686,7 +687,7 @@ if __name__ == "__main__":
 
     #subdivide = partial(mesh_subdivide_catmullclark)
     #subd = subdivide(mesh, k=4)
-        
+
     vertices = [
         [0.5, 0.0, 0.0],
         [0.0, 1.0, 0.0],
