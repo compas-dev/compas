@@ -441,6 +441,6 @@ from .triangulation import *
 from ._primitives import *
 from .xforms import *
 
-from analytical import *
+from .analytical import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
