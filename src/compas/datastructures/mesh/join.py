@@ -9,8 +9,49 @@ from compas.utilities import reverse_geometric_key
 __all__ = [
     'mesh_weld',
     'meshes_join',
-    'meshes_join_and_weld'
+    'meshes_join_and_weld',
+    'meshes_join_inherit_face_attr'
 ]
+
+
+def meshes_join_inherit_face_attr(meshes, cls=None):
+    """Join meshes without welding.
+    Parameters
+    ----------
+    meshes : list
+        A list of meshes.
+    Returns
+    -------
+    mesh
+        The joined mesh.
+    """
+
+    if cls is None:
+        cls = type(meshes[0])
+
+    joined_mesh = meshes_join(meshes, cls)
+
+    original_faces_attributes = {}
+
+    # store all attributes from each face
+    faces_attributes = {geometric_key(mesh.face_centroid(fkey))+geometric_key(mesh.face_normal(fkey)): mesh.get_all_face_attributes(fkey, data=True) for mesh in meshes for fkey in mesh.faces()}
+
+    # create face map based on geometric keys in dictionary
+    joined_mesh_face_map = {geometric_key(joined_mesh.face_centroid(fkey))+geometric_key(joined_mesh.face_normal(fkey)): fkey for fkey in joined_mesh.faces()}
+
+    # Copy the attributes
+    for geom_key, fkey in joined_mesh_face_map.items():
+        attributes = faces_attributes.get(geom_key)
+        names = []
+        values = []
+        for key, value in attributes.items():
+            names.append(key)
+            values.append(value)
+        print(fkey, attributes)
+        joined_mesh.set_face_attributes(fkey, names, values)
+
+    return joined_mesh
+
 
 def meshes_join(meshes, cls=None):
     """Join meshes without welding.
@@ -31,12 +72,12 @@ def meshes_join(meshes, cls=None):
     faces = []
 
     for mesh in meshes:
-        # create vertex map based on geometric keys in dictionary with duplicates
-        vertex_map = ({vkey: len(vertices) + i for i, vkey in enumerate(mesh.vertices())})
+        # create vertex map based on keys in dictionary with duplicates
+        vertex_map = {vkey: len(vertices) + i for i, vkey in enumerate(mesh.vertices())}
         # list vertices with coordinates
         vertices += [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()]
         # modify vertex indices in the faces
-        faces += [ [vertex_map[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+        faces += [[vertex_map[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
     return cls.from_vertices_and_faces(vertices, faces)
 
