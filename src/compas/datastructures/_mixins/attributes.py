@@ -768,6 +768,37 @@ class FaceAttributesManagement(object):
         temp = list(zip(names, values))
         return [[self.get_face_attribute(fkey, name, value) for name, value in temp] for fkey in fkeys]
 
+    def get_all_face_attributes(self, key, data=False):
+        """Get all attributes of one face.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the face.
+        data : bool, optional
+            Yield the attributes and their values.
+            Default is ``False``.
+
+        Returns
+        ------
+        attributes: list
+            A list of all attribute keys.
+        dict
+            The dictionary containing all attributes and their values, if ``data=True``.
+
+        See Also
+        --------
+        * :meth:`get_face_attribute`
+        * :meth:`get_face_attributes`
+        * :meth:`get_faces_attribute`
+        * :meth:`get_faces_attributes`
+
+        """
+        if data:
+            return self.facedata[key]
+        else:
+            return self.facedata[key].keys()
+
 
 # ==============================================================================
 # Main
