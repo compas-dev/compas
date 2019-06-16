@@ -14,7 +14,7 @@ from compas.utilities import valuedict
 from compas.utilities import color_to_rgb
 from compas.utilities import pairwise
 
-from compas.plotters.plotter import Plotter
+from compas_plotters.plotter import Plotter
 
 
 __all__ = ['MeshPlotter']
@@ -70,7 +70,7 @@ class MeshPlotter(Plotter):
 
         import compas
         from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -267,7 +267,7 @@ class MeshPlotter(Plotter):
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 

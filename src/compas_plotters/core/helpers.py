@@ -6,7 +6,7 @@ from numpy import zeros
 import matplotlib
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-from compas.plotters.core.utilities import assert_axes_dimension
+from compas_plotters.core.utilities import assert_axes_dimension
 
 
 __all__ = [
