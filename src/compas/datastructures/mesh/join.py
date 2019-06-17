@@ -32,12 +32,12 @@ def meshes_join(meshes, cls=None):
     faces = []
 
     for mesh in meshes:
-        # create vertex map based on keys in dictionary with duplicates
-        vertex_map = {vkey: len(vertices) + i for i, vkey in enumerate(mesh.vertices())}
+        # create vertex map based on geometric keys in dictionary with duplicates
+        vertex_map = ({vkey: len(vertices) + i for i, vkey in enumerate(mesh.vertices())})
         # list vertices with coordinates
         vertices += [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()]
         # modify vertex indices in the faces
-        faces += [[vertex_map[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+        faces += [ [vertex_map[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
     return cls.from_vertices_and_faces(vertices, faces)
 
