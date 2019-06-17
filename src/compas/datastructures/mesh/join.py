@@ -12,7 +12,6 @@ __all__ = [
     'meshes_join_and_weld'
 ]
 
-
 def meshes_join(meshes, cls=None):
     """Join meshes without welding.
     Parameters
