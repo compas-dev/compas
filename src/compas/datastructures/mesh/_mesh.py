@@ -2165,6 +2165,44 @@ class Mesh(FromToPickle,
                 nbrs.append(nbr)
         return nbrs
 
+    def face_neighborhood(self, key, ring=1):
+        """Return the faces in the neighborhood of a face.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the face.
+        ring : int, optional
+            The size of the neighborhood.
+            Default is ``1``.
+
+        Returns
+        -------
+        list
+            A list of face identifiers.
+
+        """
+
+        nbrs = set(self.face_neighbors(key))
+
+        i = 1
+        while True:
+            if i == ring:
+                break
+
+            temp = []
+            for key in nbrs:
+                temp += self.face_neighbors(key)
+
+            nbrs.update(temp)
+
+            i += 1
+
+        if key in nbrs:
+            nbrs.remove(key)
+
+        return list(nbrs)
+
     def face_degree(self, fkey):
         """Count the neighbors of a face.
 
