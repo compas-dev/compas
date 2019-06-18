@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Restructure halffaces as lists in `compas.datastructures.VolMesh`.
+- Correctly handle `python-net` module presence during IronPython imports.
 
 ### Removed
 
