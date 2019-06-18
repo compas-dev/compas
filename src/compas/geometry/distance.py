@@ -368,7 +368,12 @@ def distance_point_plane(point, plane):
     """
     base, normal = plane
     vector = subtract_vectors(point, base)
-    return fabs(dot_vectors(vector, normal))
+    #return fabs(dot_vectors(vector, normal))
+    # not return absolute distance
+    # but positive distance when point is in normal direction
+    # and negative distance when point is in opposite direction
+    # useful for signed distance field (SDF) in compas_vol
+    return dot_vectors(vector, normal)
 
 
 def distance_line_line(l1, l2, tol=0.0):
