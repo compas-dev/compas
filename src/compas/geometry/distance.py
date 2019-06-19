@@ -366,9 +366,7 @@ def distance_point_plane(point, plane):
     >>>
 
     """
-    base, normal = plane
-    vector = subtract_vectors(point, base)
-    return fabs(dot_vectors(vector, normal))
+    return fabs(distance_point_plane_signed(point, plane))
 
 
 def distance_point_plane_signed(point, plane):
@@ -921,5 +919,3 @@ def closest_line_to_point(point, lines):
 
 if __name__ == "__main__":
     pass
-
-
