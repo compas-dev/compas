@@ -315,7 +315,7 @@ def distance_point_line_sqrd_xy(point, line):
 
 
 def distance_point_plane(point, plane):
-    r"""Compute the distance from a point to a plane defined by three points.
+    """Compute the distance from a point to a plane defined by three points.
 
     Parameters
     ----------
@@ -331,7 +331,7 @@ def distance_point_plane(point, plane):
 
     Notes
     -----
-    The distance from a pioint to a planbe can be computed from the coefficients
+    The distance from a point to a plane can be computed from the coefficients
     of the equation of the plane and the coordinates of the point [1]_.
 
     The equation of a plane is
@@ -368,11 +368,63 @@ def distance_point_plane(point, plane):
     """
     base, normal = plane
     vector = subtract_vectors(point, base)
-    #return fabs(dot_vectors(vector, normal))
-    # not return absolute distance
-    # but positive distance when point is in normal direction
-    # and negative distance when point is in opposite direction
-    # useful for signed distance field (SDF) in compas_vol
+    return fabs(dot_vectors(vector, normal))
+
+
+def distance_point_plane_signed(point, plane):
+    """Compute the distance from a point to a plane defined by three points.
+
+    Parameters
+    ----------
+    point : list
+        Point coordinates.
+    plane : tuple
+        A point and a vector defining a plane.
+
+    Returns
+    -------
+    d : float
+        Distance between point and plane.
+
+    Notes
+    -----
+    The distance from a point to a plane can be computed from the coefficients
+    of the equation of the plane and the coordinates of the point [1]_.
+
+    The equation of a plane is
+
+    .. math::
+
+        Ax + By + Cz + D = 0
+
+    where
+
+    .. math::
+        :nowrap:
+
+        \begin{align}
+            D &= - Ax_0 - Bx_0 - Cz_0 \\
+            Q &= (x_0, y_0, z_0) \\
+            N &= (A, B, C)
+        \end{align}
+
+    with :math:`Q` a point on the plane, and :math:`N` the normal vector at
+    that point. The distance of any point :math:`P` to a plane is the
+    value of the dot product of the vector from :math:`Q` to :math:`P`
+    and the normal at :math:`Q`.
+
+    References
+    ----------
+    .. [1] Nykamp, D. *Distance from point to plane*.
+           Available at: http://mathinsight.org/distance_point_plane.
+
+    Examples
+    --------
+    >>>
+
+    """
+    base, normal = plane
+    vector = subtract_vectors(point, base)
     return dot_vectors(vector, normal)
 
 
