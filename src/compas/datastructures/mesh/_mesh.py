@@ -2198,9 +2198,6 @@ class Mesh(FromToPickle,
 
             i += 1
 
-        if key in nbrs:
-            nbrs.remove(key)
-
         return list(nbrs)
 
     def face_degree(self, fkey):
