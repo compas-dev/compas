@@ -768,7 +768,7 @@ class FaceAttributesManagement(object):
         temp = list(zip(names, values))
         return [[self.get_face_attribute(fkey, name, value) for name, value in temp] for fkey in fkeys]
 
-    def get_face_all_attributes(self, key, data=True):
+    def get_face_attributes_all(self, key, data=True):
         """Get all attributes of one face.
 
         Parameters
@@ -782,7 +782,7 @@ class FaceAttributesManagement(object):
         Returns
         ------
         dict
-            The dictionary containing all attributes and their values, if ``data=True``.
+            A copy of the dictionary containing all attributes and their values, if ``data=True``.
         list
             A list of all attribute keys, if ``data=False`.
 
@@ -796,11 +796,11 @@ class FaceAttributesManagement(object):
 
         """
         if data:
-            return self.facedata[key]
+            return self.facedata[key].copy()
         else:
             return list(self.facedata[key].keys())
 
-    def get_faces_all_attributes(self, keys, data=True):
+    def get_faces_attributes_all(self, keys, data=True):
         """Get all attributes of multiple faces.
 
         Parameters
