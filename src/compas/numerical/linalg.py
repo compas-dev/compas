@@ -3,45 +3,36 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
-import compas
 
 from functools import wraps
 
-try:
-    from numpy import array
-    from numpy import asarray
-    from numpy import atleast_2d
-    from numpy import nan_to_num
-    from numpy import nonzero
-    from numpy import seterr
-    from numpy import sum
-    from numpy import zeros
-    from numpy import absolute
-    from numpy.linalg import cond
+from numpy import array
+from numpy import asarray
+from numpy import atleast_2d
+from numpy import nan_to_num
+from numpy import nonzero
+from numpy import seterr
+from numpy import sum
+from numpy import zeros
+from numpy import absolute
+from numpy.linalg import cond
 
-    from scipy import cross
-    from scipy.linalg import cho_factor
-    from scipy.linalg import cho_solve
-    from scipy.linalg import lstsq
-    from scipy.linalg import lu
-    from scipy.linalg import qr
-    from scipy.linalg import solve
-    from scipy.linalg import svd
-    from scipy.io import loadmat
-    from scipy.io import savemat
-    from scipy.sparse.linalg import factorized
-    from scipy.sparse.linalg import spsolve
+from scipy import cross
+from scipy.linalg import cho_factor
+from scipy.linalg import cho_solve
+from scipy.linalg import lstsq
+from scipy.linalg import lu
+from scipy.linalg import qr
+from scipy.linalg import solve
+from scipy.linalg import svd
+from scipy.io import loadmat
+from scipy.io import savemat
+from scipy.sparse.linalg import factorized
+from scipy.sparse.linalg import spsolve
 
-except ImportError:
-    compas.raise_if_not_ironpython()
+old_settings = seterr(all='ignore')
 
-else:
-    old_settings = seterr(all='ignore')
-
-try:
-    from subprocess import Popen
-except ImportError:
-    compas.raise_if_not_ironpython()
+from subprocess import Popen
 
 
 __all__ = [

@@ -2,6 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from numpy import asarray
+from numpy import meshgrid
+from numpy import linspace
+from numpy import amax
+from numpy import amin
+from scipy.interpolate import griddata
+import matplotlib.pyplot as plt
+
 
 __all__ = [
     'scalarfield_contours_numpy',
@@ -82,14 +90,6 @@ def scalarfield_contours_numpy(xy, s, levels=50, density=100):
     .. _contours function: http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.contour.html#matplotlib.axes.Axes.contour
 
     """
-    from numpy import asarray
-    from numpy import meshgrid
-    from numpy import linspace
-    from numpy import amax
-    from numpy import amin
-    from scipy.interpolate import griddata
-    import matplotlib.pyplot as plt
-
     xy = asarray(xy)
     s = asarray(s)
     x = xy[:, 0]

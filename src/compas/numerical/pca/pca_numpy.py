@@ -2,14 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
-try:
-    from numpy import asarray
-    from scipy.linalg import svd
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from numpy import asarray
+from scipy.linalg import svd
 
 
 __all__ = ['pca_numpy']
@@ -20,7 +14,8 @@ def pca_numpy(data):
 
     Parameters
     ----------
-    data : list
+    data : listpython
+
         A list of `m` observations, measuring `n` variables.
         For example, if the data are points in 2D space, the data parameter
         should contain `m` nested lists of `2` variables, the `x` and `y`

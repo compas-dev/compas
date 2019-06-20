@@ -3,30 +3,24 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import array
+from numpy import argsort
+from numpy import argmin
+from numpy import delete
+from numpy import eye
+from numpy import floor
+from numpy import max
+from numpy import min
+from numpy import newaxis
+from numpy import ones
+from numpy import reshape
+from numpy import tile
+from numpy import where
+from numpy import zeros
+from numpy.random import choice
+from numpy.random import rand
 
-try:
-    from numpy import array
-    from numpy import argsort
-    from numpy import argmin
-    from numpy import delete
-    from numpy import eye
-    from numpy import floor
-    from numpy import max
-    from numpy import min
-    from numpy import newaxis
-    from numpy import ones
-    from numpy import reshape
-    from numpy import tile
-    from numpy import where
-    from numpy import zeros
-    from numpy.random import choice
-    from numpy.random import rand
-
-    from scipy.optimize import fmin_l_bfgs_b
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from scipy.optimize import fmin_l_bfgs_b
 
 from time import time
 

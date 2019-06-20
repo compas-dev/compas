@@ -14,27 +14,32 @@ except ImportError:
 
 
 __all__ = [
-    'get_document_name',
+    'get_document_basename',
     'get_document_filename',
-    'get_document_path',
+    'get_document_extension',
+    'get_document_filepath',
     'get_document_dirname'
 ]
 
 
-def get_document_name():
+def get_document_basename():
     return rs.DocumentName()
 
 
 def get_document_filename():
-    return os.path.splitext(get_document_name())[0]
+    return os.path.splitext(get_document_basename())[0]
 
 
-def get_document_path():
+def get_document_extension():
+    return os.path.splitext(get_document_basename())[1]
+
+
+def get_document_filepath():
     return rs.DocumentPath()
 
 
 def get_document_dirname():
-    return os.path.dirname(get_document_path())
+    return os.path.dirname(get_document_filepath())
 
 
 # ==============================================================================

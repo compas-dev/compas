@@ -2,26 +2,20 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import arccos
+from numpy import array
+from numpy import cross
+from numpy import float64
+from numpy import int32
+from numpy import isnan
+from numpy import mean
+from numpy import newaxis
+from numpy import sin
+from numpy import sum
+from numpy import tile
+from numpy import zeros
 
-try:
-    from numpy import arccos
-    from numpy import array
-    from numpy import cross
-    from numpy import float64
-    from numpy import int32
-    from numpy import isnan
-    from numpy import mean
-    from numpy import newaxis
-    from numpy import sin
-    from numpy import sum
-    from numpy import tile
-    from numpy import zeros
-
-    from scipy.sparse import find
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from scipy.sparse import find
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import mass_matrix
