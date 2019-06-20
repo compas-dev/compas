@@ -14,10 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `compas_viewers`
 - Added `compas_rhino.draw_circles` and the equivalent Artist method
 - Add class functions to `compas.datastructures.VolMesh`.
+- Added `face_neighborhood` class function to `compas.datastructures.Mesh`.
 
 ### Changed
 
 - Restructure halffaces as lists in `compas.datastructures.VolMesh`.
+- Correctly handle `python-net` module presence during IronPython imports.
 
 ### Removed
 
