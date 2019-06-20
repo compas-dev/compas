@@ -14,8 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `compas_viewers`
 - Added `compas_rhino.draw_circles` and the equivalent Artist method
 - Add class functions to `compas.datastructures.VolMesh`.
-- Added `get_face_all_attributes` to `compas.datastructures._mixins.attributes`.
-- Added `get_faces_all_attributes` to `compas.datastructures._mixins.attributes`.
+- Added `face_neighborhood` class function to `compas.datastructures.Mesh`.
+- Added `get_face_attributes_all` to `compas.datastructures._mixins.attributes`.
+- Added `get_faces_attributes_all` to `compas.datastructures._mixins.attributes`.
 
 ### Changed
 
