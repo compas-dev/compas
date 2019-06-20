@@ -14,12 +14,12 @@ import matplotlib.pyplot as plt
 
 from matplotlib.patches import Circle
 
-from compas.plotters.core.drawing import create_axes_xy
-from compas.plotters.core.drawing import draw_xpoints_xy
-from compas.plotters.core.drawing import draw_xlines_xy
-from compas.plotters.core.drawing import draw_xpolylines_xy
-from compas.plotters.core.drawing import draw_xpolygons_xy
-from compas.plotters.core.drawing import draw_xarrows_xy
+from compas_plotters.core.drawing import create_axes_xy
+from compas_plotters.core.drawing import draw_xpoints_xy
+from compas_plotters.core.drawing import draw_xlines_xy
+from compas_plotters.core.drawing import draw_xpolylines_xy
+from compas_plotters.core.drawing import draw_xpolygons_xy
+from compas_plotters.core.drawing import draw_xarrows_xy
 
 
 __all__ = ['Plotter']
@@ -87,7 +87,7 @@ class Plotter(object):
         import compas
 
         from compas.datastructures import Mesh
-        from compas.plotters import Plotter
+        from compas_plotters import Plotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -479,7 +479,7 @@ class Plotter(object):
 
         See Also
         --------
-        :func:`compas.plotters.core.draw_xpoints_xy`
+        :func:`compas_plotters.core.draw_xpoints_xy`
 
         Examples
         --------
@@ -512,7 +512,7 @@ class Plotter(object):
 
         See Also
         --------
-        :func:`compas.plotters.core.draw_xlines_xy`
+        :func:`compas_plotters.core.draw_xlines_xy`
 
         """
         return draw_xlines_xy(lines, self.axes)
@@ -591,7 +591,7 @@ class Plotter(object):
 
         See Also
         --------
-        :func:`compas.plotters.core.draw_xarrows_xy`
+        :func:`compas_plotters.core.draw_xarrows_xy`
 
         """
         return draw_xarrows_xy(arrows, self.axes)

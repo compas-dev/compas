@@ -7,7 +7,7 @@ from matplotlib.patches import Circle
 
 from compas.utilities import valuedict
 from compas.utilities import pairwise
-from compas.plotters.plotter import Plotter
+from compas_plotters.plotter import Plotter
 
 try:
     basestring
@@ -67,7 +67,7 @@ class NetworkPlotter(Plotter):
 
         import compas
         from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('lines.obj'))
 
@@ -311,7 +311,7 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
 
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 
