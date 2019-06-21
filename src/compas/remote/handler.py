@@ -6,9 +6,13 @@ import time
 from compas.utilities import DataDecoder
 from compas.utilities import DataEncoder
 
-# this should be handled in a try-except
-# to ensure compatibility with py27
-from http.server import BaseHTTPRequestHandler
+try:
+    from http.server import BaseHTTPRequestHandler
+except ImportError:
+    from BaseHTTPServer import BaseHTTPRequestHandler
+
+
+__all__ = ['RequestHandler']
 
 
 class RequestHandler(BaseHTTPRequestHandler):

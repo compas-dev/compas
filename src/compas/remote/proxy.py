@@ -2,27 +2,35 @@ import json
 import time
 import compas
 
-from subprocess import Popen
-from subprocess import PIPE
-from subprocess import STDOUT
+if compas.IPY:
+    from System.Diagnostics import Process
+    import compas_rhino
 
-if compas.PY3:
+else:
+    from subprocess import Popen
+    from subprocess import PIPE
+    from subprocess import STDOUT
+
+try:
     from urllib.request import urlopen
     from urllib.request import urlretrieve
     from urllib.parse import urlencode
     from urllib.request import Request
 
-else:
+except ImportError:
     from urllib2 import urlopen
     from urllib import urlretrieve
     from urllib import urlencode
     from urllib2 import Request
 
-from server import ThreadedServer
-from server import ThreadedServerError
+from compas.remote import ThreadedServer
+from compas.remote import ThreadedServerError
 
 from compas.utilities import DataDecoder
 from compas.utilities import DataEncoder
+
+
+__all__ = ['Proxy']
 
 
 class Proxy(object):
@@ -88,7 +96,7 @@ class Proxy(object):
         """The address (including the port) of the server host."""
         return "{}:{}".format(self._url, self._port)
 
-    def ping_server(self, attempts=100):
+    def ping_server(self, attempts=10):
         """Ping the server to check if it is available at the provided address.
 
         Parameters
@@ -108,7 +116,6 @@ class Proxy(object):
             try:
                 result = self.send_request('ping_server')
             except Exception as e:
-                print(e)
                 result = 0
                 time.sleep(0.1)
                 attempts -= 1
@@ -136,7 +143,18 @@ class Proxy(object):
             return
 
         if compas.IPY:
-            pass
+            self._process = Process()
+            for name in self._env:
+                if self._process.StartInfo.EnvironmentVariables.ContainsKey(name):
+                    self._process.StartInfo.EnvironmentVariables[name] = self._env[name]
+                else:
+                    self._process.StartInfo.EnvironmentVariables.Add(name, self._env[name])
+            self._process.StartInfo.UseShellExecute = False
+            self._process.StartInfo.RedirectStandardOutput = True
+            self._process.StartInfo.RedirectStandardError = True
+            self._process.StartInfo.FileName = self._python
+            self._process.StartInfo.Arguments = '-m {0} {1}'.format('compas.remote.server', str(self._port))
+            self._process.Start()
 
         else:
             args = [self._python, '-m', 'compas.remote.server']
@@ -144,7 +162,6 @@ class Proxy(object):
 
         if not self.ping_server():
             raise ThreadedServerError("The server could not be reached at {}...".format(self.address))
-
         print("Started new server at {}...".format(self.address))
 
     def send_request(self, function, module=None, args=None, kwargs=None):
@@ -188,7 +205,7 @@ class Proxy(object):
         request = Request(self.address, ibody)
         request.add_header('Content-Type', 'application/json; charset=utf-8')
         request.add_header('Content-Length', len(ibody))
-        response = urlopen(request)
+        response = urlopen(request, timeout=20)
         obody = response.read().decode('utf-8')
         odata = json.loads(obody, cls=DataDecoder)
         self.profile = odata['profile']

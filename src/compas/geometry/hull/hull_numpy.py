@@ -2,14 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
-try:
-    from numpy import asarray
-    from scipy.spatial import ConvexHull
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from numpy import asarray
+from scipy.spatial import ConvexHull
 
 
 __all__ = [

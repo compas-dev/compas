@@ -15,7 +15,10 @@ except ImportError:
     from xmlrpc.client import ServerProxy
 
 try:
-    from subprocess import Popen, PIPE, STDOUT
+    from subprocess import Popen
+    from subprocess import PIPE
+    from subprocess import STDOUT
+
 except ImportError:
     try:
         from System.Diagnostics import Process

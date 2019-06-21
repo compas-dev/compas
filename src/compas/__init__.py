@@ -14,6 +14,7 @@ compas
     compas.geometry
     compas.interop
     compas.numerical
+    compas.remote
     compas.robots
     compas.rpc
     compas.topology

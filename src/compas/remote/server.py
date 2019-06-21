@@ -1,6 +1,14 @@
 import threading
-from http.server import HTTPServer
-from handler import RequestHandler
+
+try:
+    from http.server import HTTPServer
+except ImportError:
+    from BaseHTTPServer import HTTPServer
+
+from compas.remote import RequestHandler
+
+
+__all__ = ['ThreadedServerError', 'ThreadedServer']
 
 
 class ThreadedServerError(Exception):

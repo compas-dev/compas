@@ -2,7 +2,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import asarray
+from numpy import ones
+from numpy import zeros
+from numpy import cross
+from numpy import bincount
+
+from scipy.sparse import coo_matrix
+from scipy.sparse import spdiags
 
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
@@ -14,19 +21,6 @@ from compas.numerical import degree_matrix
 from compas.numerical import connectivity_matrix
 from compas.numerical import laplacian_matrix
 from compas.numerical import face_matrix
-
-try:
-    from numpy import asarray
-    from numpy import ones
-    from numpy import zeros
-    from numpy import cross
-    from numpy import bincount
-
-    from scipy.sparse import coo_matrix
-    from scipy.sparse import spdiags
-
-except ImportError:
-    compas.raise_if_not_ironpython()
 
 
 __all__ = [
