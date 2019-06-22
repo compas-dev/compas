@@ -101,8 +101,7 @@ _os_symlink = None
 
 def _create_symlink_win_polyfill():
     def symlink_ms(source, link_name):
-        ret = _run_as_admin(['cmd.exe', '/c', 'mklink', '/D', link_name, source])
-        print(ret)
+        _run_as_admin(['cmd.exe', '/c', 'mklink', '/D', link_name, source])
 
     return symlink_ms
 
