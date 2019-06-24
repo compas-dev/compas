@@ -3,10 +3,10 @@ Collapse mesh to a single vertex
 ********************************************************************************
 
 
-.. figure:: /_images/example-mesh-collapse.gif
+.. figure:: mesh-collapse.gif
     :figclass: figure
     :class: figure-img img-fluid
 
 
-.. literalinclude:: /_examples/mesh-collapse.py
+.. literalinclude:: mesh-collapse.py
     :language: python

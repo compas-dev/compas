@@ -8,6 +8,7 @@ The main library of COMPAS
 
    overview
    gettingstarted
+   knownissues
    environments
    examples
    tutorials

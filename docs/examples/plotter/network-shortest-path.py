@@ -12,7 +12,7 @@ import compas
 from compas.utilities import pairwise
 from compas.datastructures import Network
 from compas.topology import dijkstra_path
-from compas.plotters import NetworkPlotter
+from compas_plotters import NetworkPlotter
 
 
 # make a network from a sample file

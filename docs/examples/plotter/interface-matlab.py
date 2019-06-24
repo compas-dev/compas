@@ -26,7 +26,7 @@ from compas.com import MatlabEngine
 from compas.datastructures import Network
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
-from compas.plotters import NetworkPlotter
+from compas_plotters import NetworkPlotter
 
 
 __author__    = ['Tom Van Mele', ]
@@ -60,10 +60,6 @@ C = matlab.double(C)
 
 # compute coordinate differences in Matlab
 
-# # using an engine function
-# uv = matlab.engine.mtimes(C, xyz)
-
-# using workspace data
 matlab.engine.workspace['C'] = C
 matlab.engine.workspace['xyz'] = xyz
 

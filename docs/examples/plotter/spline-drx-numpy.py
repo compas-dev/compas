@@ -10,7 +10,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.datastructures import Network
-from compas.plotters import NetworkPlotter
+from compas_plotters import NetworkPlotter
 from compas.numerical import drx_numpy
 
 from numpy import linspace

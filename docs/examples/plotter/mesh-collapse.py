@@ -1,18 +1,10 @@
-"""Collapse a mesh to a single vertex.
-
-author : Tom Van Mele
-email  : van.mele@arch.ethz.ch
-
-"""
-
 from __future__ import print_function
 
 import compas
-
 from compas.datastructures import Mesh
 from compas.datastructures import mesh_quads_to_triangles
 from compas.datastructures import trimesh_collapse_edge
-from compas.plotters import MeshPlotter
+from compas_plotters import MeshPlotter
 
 
 mesh = Mesh.from_obj(compas.get('faces.obj'))

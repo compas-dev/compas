@@ -28,6 +28,7 @@ Navigate to the folder where you want to create your package.
 
     $ cookiecutter gh:BlockResearchGroup/cookiecutter-compas-package
 
+
 And then just follow the instructions.
 Provide "compas_awesome" when asked for the *project_slug*.
 
@@ -39,6 +40,7 @@ Install your package
 
     $ cd compas_awesome
     $ pip install -r requirements-dev.txt
+
 
 .. note::
 

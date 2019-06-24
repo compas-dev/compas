@@ -20,7 +20,7 @@ from scipy.sparse import block_diag
 from scipy.sparse.linalg import spsolve
 
 from compas.datastructures import Mesh
-from compas.plotters import MeshPlotter
+from compas_plotters import MeshPlotter
 
 
 # make a *stanford bunny* mesh
