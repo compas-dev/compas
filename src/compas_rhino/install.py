@@ -75,6 +75,8 @@ def install(version=None, packages=None):
         packages = INSTALLABLE_PACKAGES
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+    print('IronPython location: {}'.format(ipylib_path))
+    print()
 
     results = []
     symlinks = []
