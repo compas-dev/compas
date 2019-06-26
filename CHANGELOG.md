@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Restructure halffaces as lists in `compas.datastructures.VolMesh`.
 - Correctly handle `python-net` module presence during IronPython imports.
 - Switched to `compas.IPY` check instead of `try-except` for preventing non IronPython friendly imports.
+- Changed installation of compas packages to Rhino to support non-admin user accounts on Windows.
 
 ### Removed
 
