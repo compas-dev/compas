@@ -3,7 +3,6 @@ language: python
 python:
   - "2.7"
   - "3.6"
-  - "3.7"
 
 before_install:
 - pip install Cython --install-option="--no-cython-compile"
@@ -15,7 +14,7 @@ install:
 
 script:
 - invoke test
-- if [[ "$TRAVIS_PYTHON_VERSION" == "3.7" ]]; then
+- if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
     invoke docs;
   fi
 
@@ -30,4 +29,4 @@ deploy:
   local_dir: dist/docs
   on:
     branch: master
-    condition: $TRAVIS_PYTHON_VERSION = 3.7
+    condition: $TRAVIS_PYTHON_VERSION = 3.6
