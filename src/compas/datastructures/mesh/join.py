@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.utilities import pairwise
 from compas.utilities import geometric_key
 from compas.utilities import reverse_geometric_key
 
@@ -64,6 +65,7 @@ def mesh_weld(mesh, precision=None, cls=None):
     vertex_map = {geom_key: i for i, geom_key in enumerate(vertex_map.keys())}
     # modify vertex indices in the faces
     faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    faces = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
 
     return cls.from_vertices_and_faces(vertices, faces)
 
@@ -92,6 +94,7 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
     vertex_map = {geom_key: i for i, geom_key in enumerate(vertex_map.keys())}
     # modify vertex indices in the faces
     faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for mesh in meshes for fkey in mesh.faces()]
+    faces = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
 
     return cls.from_vertices_and_faces(vertices, faces)
 

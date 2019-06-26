@@ -2,21 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+from numpy import asarray
+from numpy import meshgrid
+from numpy import linspace
+from numpy import amax
+from numpy import amin
 
-try:
-    from numpy import asarray
-    from numpy import meshgrid
-    from numpy import linspace
-    from numpy import amax
-    from numpy import amin
+from scipy.interpolate import griddata
 
-    from scipy.interpolate import griddata
-
-    import matplotlib.pyplot as plt
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+import matplotlib.pyplot as plt
 
 try:
     import pymesh
@@ -133,27 +127,26 @@ def mesh_contours_numpy(mesh, levels=None, density=100):
     return levels, contours
 
 
-def mesh_contours_skimage(mesh, levels=None, density=100):
-    pass
+# def mesh_contours_skimage(mesh, levels=None, density=100):
+#     pass
 
 
-def mesh_contours_opencv(mesh, levels=None, density=100):
-    pass
+# def mesh_contours_opencv(mesh, levels=None, density=100):
+#     pass
 
 
-def mesh_contours_vtk(mesh, levels=None, density=100):
-    pass
+# def mesh_contours_vtk(mesh, levels=None, density=100):
+#     pass
 
 
 def mesh_contours_pymesh(mesh, levels=None, density=100):
     vertices, faces = mesh.to_vertices_and_faces()
     m = pymesh.form_mesh(vertices, faces)
-
     return pymesh.slice_mesh(m, [0, 0, 1], 50)
 
 
-def mesh_contours_igl(mesh, levels=None, density=100):
-    pass
+# def mesh_contours_igl(mesh, levels=None, density=100):
+#     pass
 
 
 # ==============================================================================

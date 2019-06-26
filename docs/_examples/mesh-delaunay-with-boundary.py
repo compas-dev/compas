@@ -38,5 +38,5 @@ mesh = Mesh.from_vertices_and_faces(points, faces)
 # draw the result
 
 artist = MeshArtist(mesh)
-artist.draw_faces(join_faces=True)
+artist.draw_mesh()
 artist.redraw()

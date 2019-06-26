@@ -42,7 +42,7 @@ def delaunay_triangle(points):
 
         from compas.datastructures import Mesh
         from compas.geometry import delaunay_triangle
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         points = [
             [2.994817685045075, 10.855606612493078, 0.0],
@@ -109,7 +109,7 @@ def constrained_delaunay_triangle(points, segments):
 
         from compas.datastructures import Mesh
         from compas.geometry import constrained_delaunay_triangle
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         points = [
             [2.994817685045075, 10.855606612493078, 0.0],
@@ -177,7 +177,7 @@ def conforming_delaunay_triangle(points, segments):
 
         from compas.datastructures import Mesh
         from compas.geometry import conforming_delaunay_triangle
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         points = [
             [2.994817685045075, 10.855606612493078, 0.0],
@@ -218,7 +218,7 @@ if __name__ == '__main__':
 
     from compas.datastructures import Mesh
     from compas.geometry import conforming_delaunay_triangle
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
 
     points = [
         [2.994817685045075, 10.855606612493078, 0.0],

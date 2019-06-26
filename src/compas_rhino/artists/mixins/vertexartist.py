@@ -92,7 +92,7 @@ class VertexArtist(object):
                 'color' : colordict[key],
                 'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
-        return compas_rhino.xdraw_points(points, layer=self.layer, clear=False, redraw=False)
+        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_vertexlabels(self, text=None, color=None):
         """Draw labels for a selection vertices.
@@ -141,7 +141,7 @@ class VertexArtist(object):
                 'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
 
-        return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
 
 # ==============================================================================

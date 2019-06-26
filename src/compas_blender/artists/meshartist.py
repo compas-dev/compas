@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -28,26 +27,18 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
             'color.face':   [110, 110, 110],
         })
 
-
     @property
     def mesh(self):
-
         return self.datastructure
-
 
     @mesh.setter
     def mesh(self, mesh):
-
         self.datastructure = mesh
 
-
-    def draw(self):
-
+    def draw_mesh(self):
         raise NotImplementedError
 
-
     def clear(self):
-
         self.clear_vertices()
         self.clear_faces()
         self.clear_edges()
@@ -62,7 +53,6 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-
 
     mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
 

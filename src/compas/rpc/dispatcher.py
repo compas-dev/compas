@@ -32,13 +32,53 @@ __all__ = ['Dispatcher']
 class Dispatcher(object):
     """Base class for remote services.
 
+    Examples
+    --------
+    .. code-block:: python
+
+        class Service(Dipatcher):
+
+            pass
+
+
     Notes
     -----
-    ...
+    This object is used to dispatch API calls to the corresponding functions or methods.
+    Since it is run on the server side, all errors are intercepted and their
+    message strings assigned to the `'error'` key of the output dictionary
+    such that the errors can be rethrown on the client side.
 
     """
 
     def _dispatch(self, name, args):
+        """Dispatcher method for XMLRPC API calls.
+
+        This method is automatically called by the XMLRPC server if an instance
+        of the dispatcher is registered with the server and the API call dies not
+        correspond to a method of the server itself, or of an explicilty registered\
+        function.
+
+        Parameters
+        ----------
+        name : str
+            Name of the function.
+        args : list
+            List of positional arguments.
+            The first argument in the list should be the JSON serialised string
+            representation of the input dictionary. The structure of the input
+            dictionary is defined by the caller.
+
+        Returns
+        -------
+        str
+            A JSON serialised string representation of the output dictionary.
+            The output dicmtionary has the following structure:
+
+            * `'data'`    : The returned result of the function call.
+            * `'error'`   : The error message of any error that may have been thrown in the processes of dispatching to or execution of the API function.
+            * `'profile'` : A profile of the function execution.
+
+        """
         odict = {
             'data'    : None,
             'error'   : None,
@@ -72,6 +112,22 @@ class Dispatcher(object):
         return json.dumps(odict, cls=DataEncoder)
 
     def _call(self, function, idict, odict):
+        """Method that handles tha actual call to the function corresponding to the API call.
+
+        Parameters
+        ----------
+        function : callable
+            The callable object corresponding to the requested API call.
+        idict : dict
+            The input dictionary.
+        odict : dict
+            The output dictionary.
+
+        Notes
+        -----
+        The output dictionary will be modified in place.
+
+        """
         args = idict['args']
         kwargs = idict['kwargs']
 
@@ -103,36 +159,6 @@ class Dispatcher(object):
         else:
             odict['data']    = data
             odict['profile'] = stream.getvalue()
-
-
-# def list_methods_wrapper(dispatcher):
-#     def list_methods():
-#         def is_public_method(member):
-#             return inspect.ismethod(member) and not member.__name__.startswith('_')
-#         members = inspect.getmembers(dispatcher, is_public_method)
-#         return [member[0] for member in members]
-#     return list_methods
-
-
-# def method_help_wrapper(dispatcher):
-#     def method_help(name):
-#         if not hasattr(dispatcher, name):
-#             return 'Not a registered API method: {0}'.format(name)
-#         method = getattr(dispatcher, name)
-#         return inspect.getdoc(method)
-#     return method_help
-
-
-# def method_signature_wrapper(dispatcher):
-#     def method_signature(name):
-#         if not hasattr(dispatcher, name):
-#             return 'Not a registered API method: {0}'.format(name)
-#         method = getattr(dispatcher, name)
-#         spec = inspect.getargspec(method)
-#         args = spec.args
-#         defaults = spec.defaults
-#         return args[1:], defaults
-#     return method_signature
 
 
 # ==============================================================================

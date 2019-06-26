@@ -2,26 +2,20 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import arccos
+from numpy import array
+from numpy import cross
+from numpy import float64
+from numpy import int32
+from numpy import isnan
+from numpy import mean
+from numpy import newaxis
+from numpy import sin
+from numpy import sum
+from numpy import tile
+from numpy import zeros
 
-try:
-    from numpy import arccos
-    from numpy import array
-    from numpy import cross
-    from numpy import float64
-    from numpy import int32
-    from numpy import isnan
-    from numpy import mean
-    from numpy import newaxis
-    from numpy import sin
-    from numpy import sum
-    from numpy import tile
-    from numpy import zeros
-
-    from scipy.sparse import find
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from scipy.sparse import find
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import mass_matrix
@@ -326,16 +320,26 @@ def _create_arrays(structure):
     ind_t = []
 
     uv_i = structure.uv_index()
+
     for ui, vi in structure.edges():
-        i = uv_i[(ui, vi)]
-        edge  = structure.edge[ui][vi]
-        E[i]  = edge.get('E', 0)
-        A[i]  = edge.get('A', 0)
-        l0[i] = edge.get('l0', structure.edge_length(ui, vi))
-        s0[i] = edge.get('s0', 0)
+
+        i    = uv_i[(ui, vi)]
+        E[i] = structure.get_edge_attribute(key=(ui, vi), name='E')
+        A[i] = structure.get_edge_attribute(key=(ui, vi), name='A')
+
+        if structure.get_edge_attribute(key=(ui, vi), name='l0'):
+            l0[i] = structure.get_edge_attribute(key=(ui, vi), name='l0')
+        else:
+            l0[i] = structure.edge_length(ui, vi)
+
+        if structure.get_edge_attribute(key=(ui, vi), name='s0'):
+            s0[i] = structure.get_edge_attribute(key=(ui, vi), name='s0')
+        else:
+            s0[i] = 0
+
         u[i]  = k_i[ui]
         v[i]  = k_i[vi]
-        ct = edge.get('ct', None)
+        ct = structure.get_edge_attribute(key=(ui, vi), name='ct')
         if ct == 'c':
             ind_c.append(i)
         elif ct == 't':
@@ -369,7 +373,7 @@ if __name__ == "__main__":
     # ==========================================================================
 
     # from compas.datastructures import Network
-    # from compas.viewers import VtkViewer
+    # from compas_viewers import VtkViewer
 
 
     # m = 70
@@ -427,7 +431,7 @@ if __name__ == "__main__":
     # import compas
 
     # from compas.datastructures import Network
-    # from compas.plotters import NetworkPlotter
+    # from compas_plotters import NetworkPlotter
 
 
     # structure = Network.from_obj(compas.get('lines.obj'))
@@ -471,7 +475,7 @@ if __name__ == "__main__":
     from numpy import sign
 
     from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
 
 
     L  = 2.5

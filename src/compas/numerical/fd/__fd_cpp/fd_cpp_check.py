@@ -6,7 +6,7 @@ import ctypes
 import compas
 
 from compas.datastructures import Network
-from compas.plotters import NetworkPlotter
+from compas_plotters import NetworkPlotter
 from compas.utilities import i_to_red
 
 from compas.interop.cpp.xdarray import Array2D

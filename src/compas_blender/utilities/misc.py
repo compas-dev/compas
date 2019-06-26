@@ -26,17 +26,14 @@ __all__ = [
 # ==============================================================================
 
 def get_tolerance():
-
     raise NotImplementedError
 
 
 def screenshot_current_view():
-
     raise NotImplementedError
 
 
 def wait():
-
     raise NotImplementedError
 
 
@@ -45,12 +42,10 @@ def wait():
 # ==============================================================================
 
 def browse_for_folder():
-
     raise NotImplementedError
 
 
 def browse_for_file():
-
     raise NotImplementedError
 
 
@@ -59,22 +54,18 @@ def browse_for_file():
 # ==============================================================================
 
 def display_message():
-
     raise NotImplementedError
 
 
 def display_text():
-
     raise NotImplementedError
 
 
 def display_image():
-
     raise NotImplementedError
 
 
 def display_html():
-
     raise NotImplementedError
 
 
@@ -83,17 +74,14 @@ def display_html():
 # ==============================================================================
 
 def update_settings():
-
     raise NotImplementedError
 
 
 def update_attributes():
-
     raise NotImplementedError
 
 
 def update_named_values():
-
     raise NotImplementedError
 
 

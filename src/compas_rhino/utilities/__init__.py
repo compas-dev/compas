@@ -17,9 +17,9 @@ document
     :toctree: generated/
     :nosignatures:
 
-    get_document_name
+    get_document_basename
     get_document_filename
-    get_document_path
+    get_document_filepath
     get_document_dirname
 
 
@@ -130,15 +130,15 @@ drawing
     :toctree: generated/
     :nosignatures:
 
-    xdraw_labels
-    xdraw_points
-    xdraw_lines
-    xdraw_polylines
-    xdraw_faces
-    xdraw_cylinders
-    xdraw_pipes
-    xdraw_spheres
-    xdraw_mesh
+    draw_labels
+    draw_points
+    draw_lines
+    draw_polylines
+    draw_faces
+    draw_cylinders
+    draw_pipes
+    draw_spheres
+    draw_mesh
 
 
 geometry
@@ -159,6 +159,5 @@ from .objects import *
 from .misc import *
 from .drawing import *
 from .geometry import *
-from .xfunc import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

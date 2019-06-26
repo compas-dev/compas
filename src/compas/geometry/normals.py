@@ -141,7 +141,7 @@ if __name__ == "__main__":
     
     from compas.geometry import area_polygon
     from compas.geometry import centroid_points
-    from compas.plotters import Plotter
+    from compas_plotters import Plotter
 
     plotter = Plotter(figsize=(10, 7))
 

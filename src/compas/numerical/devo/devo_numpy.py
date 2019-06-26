@@ -3,32 +3,24 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import array
+from numpy import argsort
+from numpy import argmin
+from numpy import delete
+from numpy import eye
+from numpy import floor
+from numpy import max
+from numpy import min
+from numpy import newaxis
+from numpy import ones
+from numpy import reshape
+from numpy import tile
+from numpy import where
+from numpy import zeros
+from numpy.random import choice
+from numpy.random import rand
 
-try:
-    from numpy import array
-    from numpy import argsort
-    from numpy import argmin
-    from numpy import delete
-    from numpy import eye
-    from numpy import floor
-    from numpy import max
-    from numpy import min
-    from numpy import newaxis
-    from numpy import ones
-    from numpy import reshape
-    from numpy import tile
-    from numpy import where
-    from numpy import zeros
-    from numpy.random import choice
-    from numpy.random import rand
-
-    from matplotlib import pyplot as plt
-
-    from scipy.optimize import fmin_l_bfgs_b
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from scipy.optimize import fmin_l_bfgs_b
 
 from time import time
 
@@ -78,6 +70,8 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
         Values that give the optimum (minimized) function.
 
     """
+    if plot:
+        from matplotlib import pyplot as plt
 
     tic = time()
 
@@ -97,7 +91,9 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
 
     # Population
 
-    agents     = (rand(k, population) * (ub - lb) + lb)
+    agents = (rand(k, population) * (ub - lb) + lb)
+    agents[:, :int(round(population * 0.05))] *= 0
+
     candidates = tile(array(range(population)), (1, population))
     candidates = reshape(delete(candidates, where(eye(population).ravel() == 1)), (population, population - 1))
 
@@ -185,7 +181,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
             data[min(fbin), ts, :] = [1, 0, 0]
             data[max(fbin), ts, :] = [0, 0, 1]
 
-            if ts % 10 == 0:
+            if ts % printout == 0:
                 plt.imshow(data, origin='lower', aspect=aspect)
                 plt.plot([generations * 0.5] * 2, [0, ydiv], ':k')
                 plt.yticks(yticks, ylabels, rotation='horizontal')

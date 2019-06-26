@@ -6,8 +6,13 @@ import compas
 import compas_rhino
 
 from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.geometry import RhinoCurve
+
+from compas_rhino.utilities import delete_objects
 
 from compas.geometry import subtract_vectors
+from compas.geometry import angle_vectors
+from compas.geometry import distance_point_point
 
 try:
     import rhinoscriptsyntax as rs
@@ -229,6 +234,32 @@ class RhinoSurface(RhinoGeometry):
         curves = rs.ExplodeCurves(border, delete_input=True)
         return curves
 
+    def kinks(self, threshold=1e-3):
+        """Return the XYZ coordinates of kinks, i.e. tangency discontinuities, along the surface's boundaries.
+
+        Returns
+        -------
+        list
+            The list of XYZ coordinates of surface boundary kinks.
+
+        """
+        kinks = []
+        borders = self.borders(type=0)
+        
+        for border in borders:
+            border = RhinoCurve(border)
+            extremities = map(lambda x: rs.EvaluateCurve(border.guid, rs.CurveParameter(border.guid, x)), [0., 1.])
+        
+            if border.is_closed():
+                start_tgt, end_tgt = border.tangents(extremities)
+                if angle_vectors(start_tgt, end_tgt) > threshold:
+                    kinks += extremities 
+        
+            else:
+                kinks += extremities
+
+        return list(set(kinks))
+
     def project_point(self, point, direction=(0, 0, 1)):
         projections = rs.ProjectPointToSurface(point, self.guid, direction)
         if not projections:
@@ -241,13 +272,6 @@ class RhinoSurface(RhinoGeometry):
             return self.closest_points(points)
         projections[:] = [self.closest_point(point) if not point else point for point in projections]
         return map(list, projections)
-
-    def closest_point(self, point, maxdist=None):
-        point = self.geometry.ClosestPoint(Point3d(*point))
-        return list(point)
-
-    def closest_points(self, points, maxdist=None):
-        return [self.closest_point(point) for point in points]
 
     def pull_point(self, point):
         pass
@@ -278,13 +302,143 @@ class RhinoSurface(RhinoGeometry):
     def pull_meshes(self, meshes):
         pass
 
+    def closest_point(self, xyz):
+        """Return the XYZ coordinates of the closest point on the surface from input XYZ-coordinates.
+    
+        Parameters
+        ----------
+        xyz : list
+            XYZ coordinates.
 
+        Returns
+        -------
+        list
+            The XYZ coordinates of the closest point on the surface.
+
+        """
+
+        return rs.EvaluateSurface(self.guid, *rs.SurfaceClosestPoint(self.guid, xyz))
+
+    def closest_points(self, points):
+        return [self.closest_point(point) for point in points]
+
+    def closest_point_on_boundaries(self, xyz):
+        """Return the XYZ coordinates of the closest point on the boundaries of the surface from input XYZ-coordinates.
+    
+        Parameters
+        ----------
+        xyz : list
+            XYZ coordinates.
+
+        Returns
+        -------
+        list
+            The XYZ coordinates of the closest point on the boundaries of the surface.
+
+        """
+        borders = self.borders(type=0)
+        proj_dist = {tuple(proj_xyz): distance_point_point(xyz, proj_xyz) for proj_xyz in [RhinoCurve(border).closest_point(xyz) for border in borders]}
+        delete_objects(borders)
+        return min(proj_dist, key=proj_dist.get)
+
+    def closest_points_on_boundaries(self, points):
+        return [self.closest_point_on_boundaries(point) for point in points]
+
+    # --------------------------------------------------------------------------
+    # mapping
+    # --------------------------------------------------------------------------
+
+    def point_xyz_to_uv(self, xyz):
+        """Return the UV point from the mapping of a XYZ point based on the UV parameterisation of the surface.
+
+        Parameters
+        ----------
+        xyz : list
+            (x, y, z) coordinates.
+
+        Returns
+        -------
+        list
+            The (u, v, 0) coordinates of the mapped point.
+
+        """
+        return rs.SurfaceClosestPoint(self.guid, xyz) + (0.,)
+
+    def point_uv_to_xyz(self, uv):
+        """Return the XYZ point from the inverse mapping of a UV point based on the UV parameterisation of the surface.
+
+        Parameters
+        ----------
+        uv : list
+            (u, v, 0) coordinates.
+
+        Returns
+        -------
+        list
+            The (x, y, z) coordinates of the inverse-mapped point.
+
+        """
+        return tuple(rs.EvaluateSurface(self.guid, *uv))
+
+    def line_uv_to_xyz(self, line):
+        """Return the XYZ points from the inverse mapping of a UV line based on the UV parameterisation of the surface.
+
+        Parameters
+        ----------
+        uv : list
+            List of (u, v, 0) coordinates.
+
+        Returns
+        -------
+        list
+            The list of XYZ coordinates of the inverse-mapped line.
+
+        """
+        return (self.point_uv_to_xyz(line[0][:2]), self.point_uv_to_xyz(line[1][:2]))
+
+    def polyline_uv_to_xyz(self, polyline):
+        """Return the XYZ points from the inverse mapping of a UV polyline based on the UV parameterisation of the surface.
+
+        Parameters
+        ----------
+        uv : list
+            List of (u, v, 0) coordinates.
+
+        Returns
+        -------
+        list
+            The list of (x, y, z) coordinates of the inverse-mapped polyline.
+
+        """
+        return [self.point_uv_to_xyz(vertex[:2]) for vertex in polyline]
+
+    def mesh_uv_to_xyz(self, mesh, cls=None):
+        """Return the mesh from the inverse mapping of a UV mesh based on the UV parameterisation of the surface.
+
+        Parameters
+        ----------
+        mesh : Mesh
+            A mesh.
+
+        Returns
+        -------
+        Mesh, cls
+            The inverse-mapped mesh.
+
+        """
+        if cls is None:
+            cls = type(mesh)
+
+        vertices, faces = mesh.to_vertices_and_faces()
+        vertices = [self.point_uv_to_xyz(uv0[:2]) for uv0 in vertices]
+        return cls.from_vertices_and_faces(vertices, faces)
+ 
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == '__main__':
-
+    
     surface = RhinoSurface.from_selection()
 
     points = []
@@ -295,4 +449,4 @@ if __name__ == '__main__':
             'color' : (0, 255, 0),
         })
 
-    compas_rhino.xdraw_points(points, layer='Layer 01', clear=True, redraw=True)
+    compas_rhino.draw_points(points, layer='Layer 01', clear=True, redraw=True)

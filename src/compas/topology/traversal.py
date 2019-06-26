@@ -2,17 +2,24 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+try:
+    from queue import PriorityQueue
+except ImportError:
+    from Queue import PriorityQueue
+
 from collections import deque
+
 from compas.utilities import pairwise
+from compas.geometry import distance_point_point
 
 
 __all__ = [
     'depth_first_ordering',
-    'depth_first_tree',
     'breadth_first_ordering',
     'breadth_first_traverse',
     'breadth_first_paths',
     'shortest_path',
+    'astar_shortest_path',
     'dijkstra_distances',
     'dijkstra_path'
 ]
@@ -94,102 +101,102 @@ def depth_first_ordering(adjacency, root):
     return ordering
 
 
-def depth_first_tree(adjacency, root):
-    """Construct a spanning tree using a depth-first search.
+# def depth_first_tree(adjacency, root):
+#     """Construct a spanning tree using a depth-first search.
 
-    Parameters
-    ----------
-    adjacency : dict
-        An adjacency dictionary.
-    root : hashable
-        The identifier of the root node.
+#     Parameters
+#     ----------
+#     adjacency : dict
+#         An adjacency dictionary.
+#     root : hashable
+#         The identifier of the root node.
 
-    Returns
-    -------
-    list
-        List of nodes in depth-first order.
-    dict
-        Dictionary of predecessors for each of the nodes.
-    list
-        The depth-first paths.
+#     Returns
+#     -------
+#     list
+#         List of nodes in depth-first order.
+#     dict
+#         Dictionary of predecessors for each of the nodes.
+#     list
+#         The depth-first paths.
 
-    Examples
-    --------
-    .. plot::
-        :include-source:
+#     Examples
+#     --------
+#     .. plot::
+#         :include-source:
 
-        import compas
-        from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
-        from compas.topology import depth_first_tree
-        from compas.utilities import pairwise
+#         import compas
+#         from compas.datastructures import Mesh
+#         from compas_plotters import MeshPlotter
+#         from compas.topology import depth_first_tree
+#         from compas.utilities import pairwise
 
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
+#         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        edges = list(mesh.edges())
+#         edges = list(mesh.edges())
 
-        root = mesh.get_any_vertex()
+#         root = mesh.get_any_vertex()
 
-        ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
+#         ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
 
-        edgecolor = {}
-        edgewidth = {}
+#         edgecolor = {}
+#         edgewidth = {}
 
-        for u, v in pairwise(paths[0]):
-            if not mesh.has_edge(u, v):
-                u, v = v, u
-            edgecolor[(u, v)] = '#ff0000'
-            edgewidth[(u, v)] = 3.0
+#         for u, v in pairwise(paths[0]):
+#             if not mesh.has_edge(u, v):
+#                 u, v = v, u
+#             edgecolor[(u, v)] = '#ff0000'
+#             edgewidth[(u, v)] = 3.0
 
-        for path in paths[1:]:
-            parent = predecessors[path[0]]
-            for u, v in pairwise([parent] + path):
-                if not mesh.has_edge(u, v):
-                    u, v = v, u
-                edgecolor[(u, v)] = '#00ff00'
-                edgewidth[(u, v)] = 3.0
+#         for path in paths[1:]:
+#             parent = predecessors[path[0]]
+#             for u, v in pairwise([parent] + path):
+#                 if not mesh.has_edge(u, v):
+#                     u, v = v, u
+#                 edgecolor[(u, v)] = '#00ff00'
+#                 edgewidth[(u, v)] = 3.0
 
-        plotter = MeshPlotter(mesh, figsize=(10, 7))
+#         plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-        plotter.draw_vertices(text='key', facecolor={root: '#ff0000'}, radius=0.2)
-        plotter.draw_edges(color=edgecolor, width=edgewidth)
+#         plotter.draw_vertices(text='key', facecolor={root: '#ff0000'}, radius=0.2)
+#         plotter.draw_edges(color=edgecolor, width=edgewidth)
 
-        plotter.show()
+#         plotter.show()
 
-    """
-    adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
-    tovisit = [root]
-    visited = set()
-    ordering = []
-    predecessors = {}
-    paths = [[root]]
+#     """
+#     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
+#     tovisit = [root]
+#     visited = set()
+#     ordering = []
+#     predecessors = {}
+#     paths = [[root]]
 
-    while tovisit:
-        # pop the last added element from the stack
-        node = tovisit.pop()
+#     while tovisit:
+#         # pop the last added element from the stack
+#         node = tovisit.pop()
 
-        if node not in visited:
-            paths[-1].append(node)
+#         if node not in visited:
+#             paths[-1].append(node)
 
-            # mark the node as visited
-            visited.add(node)
-            ordering.append(node)
+#             # mark the node as visited
+#             visited.add(node)
+#             ordering.append(node)
 
-            # add the unvisited nbrs to the stack
-            nodes = adjacency[node] - visited
+#             # add the unvisited nbrs to the stack
+#             nodes = adjacency[node] - visited
 
-            if nodes:
-                for child in nodes:
-                    predecessors[child] = node
-            else:
-                paths.append([])
+#             if nodes:
+#                 for child in nodes:
+#                     predecessors[child] = node
+#             else:
+#                 paths.append([])
 
-            tovisit.extend(nodes)
+#             tovisit.extend(nodes)
 
-    if not len(paths[-1]):
-        del paths[-1]
+#     if not len(paths[-1]):
+#         del paths[-1]
 
-    return ordering, predecessors, paths
+#     return ordering, predecessors, paths
 
 
 # ==============================================================================
@@ -334,7 +341,7 @@ def shortest_path(adjacency, root, goal):
 
         from compas.datastructures import Network
         from compas.topology import shortest_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -375,6 +382,105 @@ def shortest_path(adjacency, root, goal):
         return None
 
 
+# ==============================================================================
+# A*
+# ==============================================================================
+
+
+def reconstruct_path(came_from, current):
+    total_path = [current]
+    while current in came_from:
+        current = came_from[current]
+        total_path.append(current)
+    total_path.reverse()
+    return total_path
+
+
+def astar_shortest_path(network, root, goal):
+    """Find the shortest path between two vertices of a network using the A* search algorithm.
+
+    Parameters
+    ----------
+    network : instance of the Network class
+    root : hashable
+        The identifier of the starting node.
+    goal : hashable
+        The identifier of the ending node.
+
+    Returns
+    -------
+    list, None
+        The path from root to goal, or None, if no path exists between the vertices.
+
+    References
+    ----------
+    https://en.wikipedia.org/wiki/A*_search_algorithm
+
+    """
+    root_coords = network.vertex_coordinates(root)
+    goal_coords = network.vertex_coordinates(goal)
+
+    # The set of nodes already evaluated
+    visited_set = set()
+
+    # The set of currently discovered nodes that are not evaluated yet.
+    # Initially, only the start node is known.
+    candidates_set = {root}
+    best_candidate_heap = PriorityQueue()
+    best_candidate_heap.put((0, root))
+
+    # For each node, which node it can most efficiently be reached from.
+    # If a node can be reached from many nodes, came_from will eventually contain the
+    # most efficient previous step.
+    came_from = dict()
+
+    # g_score is a dict mapping node index to the cost of getting from the root node to that node.
+    # The default value is Infinity.
+    # The cost of going from start to start is zero.
+    g_score = dict()
+
+    for v in network.vertices():
+        g_score[v] = float("inf")
+
+    g_score[root] = 0
+
+    # For each node, the total cost of getting from the start node to the goal
+    # by passing by that node. That value is partly known, partly heuristic.
+    # The default value of f_score is Infinity
+    f_score = dict()
+
+    for v in network.vertices():
+        f_score[v] = float("inf")
+
+    # For the first node, that value is completely heuristic.
+    f_score[root] = distance_point_point(root_coords, goal_coords)
+
+    while not best_candidate_heap.empty():
+        _, current = best_candidate_heap.get()
+        if current == goal:
+            return reconstruct_path(came_from, current)
+        visited_set.add(current)
+        current_coords = network.vertex_coordinates(current)
+        for neighbor in network.vertex_neighbors(current):
+            if neighbor in visited_set:
+                continue	# Ignore the neighbor which is already evaluated.
+
+            # The distance from start to a neighbor
+            neighbor_coords = network.vertex_coordinates(neighbor)
+            tentative_gScore = g_score[current] + distance_point_point(current_coords, neighbor_coords)
+            if neighbor not in candidates_set:	# Discover a new node
+                candidates_set.add(neighbor)
+            elif tentative_gScore >= g_score[neighbor]:
+                continue
+
+            # This path is the best until now. Record it!
+            came_from[neighbor] = current
+            g_score[neighbor] = tentative_gScore
+            new_fscore = g_score[neighbor] + distance_point_point(neighbor_coords, goal_coords)
+            f_score[neighbor] = new_fscore
+            best_candidate_heap.put((new_fscore, neighbor))
+
+
 def dijkstra_distances(adjacency, weight, target):
     """Compute Dijkstra distances from all vertices in a connected set to one target vertex.
 
@@ -405,7 +511,7 @@ def dijkstra_distances(adjacency, weight, target):
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_distances
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
@@ -491,7 +597,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -536,7 +642,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -595,27 +701,27 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 # ==============================================================================
 
 
-def travel(adjacency, weights, start=None):
-    points = list(adjacency.keys())
-    start = start or points[0]
-    distance = dijkstra_distances(adjacency, weights, start)
+# def travel(adjacency, weights, start=None):
+#     points = list(adjacency.keys())
+#     start = start or points[0]
+#     distance = dijkstra_distances(adjacency, weights, start)
 
-    tovisit = set(adjacency.keys())
-    visited = set()
+#     tovisit = set(adjacency.keys())
+#     visited = set()
 
-    tovisit.remove(start)
-    visited.add(start)
+#     tovisit.remove(start)
+#     visited.add(start)
 
-    path = [start]
+#     path = [start]
 
-    while tovisit:
-        u = min(tovisit, key=lambda k: distance[k])
-        tovisit.remove(u)
-        visited.add(u)
+#     while tovisit:
+#         u = min(tovisit, key=lambda k: distance[k])
+#         tovisit.remove(u)
+#         visited.add(u)
 
-        path.append(u)
+#         path.append(u)
 
-    return path
+#     return path
 
 
 # ==============================================================================
@@ -624,48 +730,50 @@ def travel(adjacency, weights, start=None):
 
 if __name__ == '__main__':
 
-    testrun = 4
+    testrun = 2
 
     # ==========================================================================
     # testrun 1
     # ==========================================================================
 
-    if testrun == 1:
-        import compas
-        from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
+    # if testrun == 1:
+    #     import compas
+    #     from compas.datastructures import Mesh
+    #     from compas_plotters import MeshPlotter
 
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
+    #     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        edges = list(mesh.edges())
+    #     edges = list(mesh.edges())
 
-        root = mesh.get_any_vertex()
+    #     root = mesh.get_any_vertex()
 
-        ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
+    #     print(root)
 
-        edgecolor = {}
-        edgewidth = {}
+    #     ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
 
-        for u, v in pairwise(paths[0]):
-            if not mesh.has_edge(u, v):
-                u, v = v, u
-            edgecolor[(u, v)] = '#ff0000'
-            edgewidth[(u, v)] = 5.0
+    #     edgecolor = {}
+    #     edgewidth = {}
 
-        for path in paths[1:]:
-            parent = predecessors[path[0]]
-            for u, v in pairwise([parent] + path):
-                if not mesh.has_edge(u, v):
-                    u, v = v, u
-                edgecolor[(u, v)] = '#00ff00'
-                edgewidth[(u, v)] = 5.0
+    #     for u, v in pairwise(paths[0]):
+    #         if not mesh.has_edge(u, v):
+    #             u, v = v, u
+    #         edgecolor[(u, v)] = '#ff0000'
+    #         edgewidth[(u, v)] = 5.0
 
-        plotter = MeshPlotter(mesh, figsize=(10, 7))
+    #     for path in paths[1:]:
+    #         parent = predecessors[path[0]]
+    #         for u, v in pairwise([parent] + path):
+    #             if not mesh.has_edge(u, v):
+    #                 u, v = v, u
+    #             edgecolor[(u, v)] = '#00ff00'
+    #             edgewidth[(u, v)] = 5.0
 
-        plotter.draw_vertices(text='key', facecolor={key: '#ff0000' for key in (root, )}, radius=0.2)
-        plotter.draw_edges(color=edgecolor, width=edgewidth)
+    #     plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-        plotter.show()
+    #     plotter.draw_vertices(text='key', facecolor={key: '#ff0000' for key in (root, )}, radius=0.2)
+    #     plotter.draw_edges(color=edgecolor, width=edgewidth)
+
+    #     plotter.show()
 
     # dynamic traversal to visualize the difference
     # between DFS and BFS
@@ -679,14 +787,14 @@ if __name__ == '__main__':
 
         from compas.datastructures import Network
         from compas.topology import shortest_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
         adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
 
         start = 21
-        end = 22
+        end = 11
 
         path = shortest_path(adjacency, start, end)
 
@@ -722,7 +830,7 @@ if __name__ == '__main__':
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_distances
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
@@ -760,7 +868,7 @@ if __name__ == '__main__':
         import compas
 
         from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         from compas.topology import dijkstra_path
 

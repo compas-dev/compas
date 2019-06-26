@@ -1077,7 +1077,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1099,7 +1099,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1165,7 +1165,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1208,7 +1208,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1578,7 +1578,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1716,7 +1716,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1805,7 +1805,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1922,7 +1922,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -2138,7 +2138,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -2164,6 +2164,41 @@ class Mesh(FromToPickle,
             if nbr is not None:
                 nbrs.append(nbr)
         return nbrs
+
+    def face_neighborhood(self, key, ring=1):
+        """Return the faces in the neighborhood of a face.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the face.
+        ring : int, optional
+            The size of the neighborhood.
+            Default is ``1``.
+
+        Returns
+        -------
+        list
+            A list of face identifiers.
+
+        """
+
+        nbrs = set(self.face_neighbors(key))
+
+        i = 1
+        while True:
+            if i == ring:
+                break
+
+            temp = []
+            for key in nbrs:
+                temp += self.face_neighbors(key)
+
+            nbrs.update(temp)
+
+            i += 1
+
+        return list(nbrs)
 
     def face_degree(self, fkey):
         """Count the neighbors of a face.
@@ -2425,7 +2460,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -2856,7 +2891,7 @@ class Mesh(FromToPickle,
                     faces[self.halfedge[nbr][key]] = 1
         return faces.keys()
 
-    def edges_on_boundary(self, oriented = True):
+    def edges_on_boundary(self, oriented=True):
         """Find the edges on the boundary.
 
         Parameters
@@ -2871,14 +2906,12 @@ class Mesh(FromToPickle,
 
 
         """
-
         boundary_edges =  [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
         if not oriented:
             return boundary_edges
-
         else:
-            return [(v, u) if self.halfedge[u][v] is not None else (u, v) for u, v in boundary_edges]
+            return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]
 
 
     # --------------------------------------------------------------------------
@@ -3093,72 +3126,6 @@ class Mesh(FromToPickle,
 
         return [self.get_edge_attributes(key, names, values) for key in keys]
 
-    # --------------------------------------------------------------------------
-    # visualisation
-    # --------------------------------------------------------------------------
-
-    def plot(self,
-             vertexcolor=None,
-             edgecolor=None,
-             facecolor=None,
-             vertexsize=None,
-             edgewidth=None,
-             vertextext=None,
-             edgetext=None,
-             facetext=None):
-        """Plot a 2D representation of the mesh.
-
-        Parameters
-        ----------
-        vertexcolor : dict, optional
-            A dictionary mapping vertex identifiers to colors.
-        edgecolor : dict, optional
-            A dictionary mapping edge identifiers to colors.
-        facecolor : dict, optional
-            A dictionary mapping face identifiers to colors.
-        vertexsize : dict, optional
-            A dictionary mapping vertex identifiers to sizes.
-        edgewidth : dict, optional
-            A dictionary mapping edge identifiers to widths.
-        vertextext : dict, optional
-            A dictionary mappping vertex identifiers to labels.
-        edgetext : dict, optional
-            A dictionary mappping edge identifiers to labels.
-        facetext : dict, optional
-            A dictionary mappping face identifiers to labels.
-
-        Examples
-        --------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            mesh.plot()
-
-        """
-        from compas.plotters import MeshPlotter
-
-        plotter = MeshPlotter(self)
-        plotter.draw_vertices(
-            facecolor=vertexcolor,
-            radius=vertexsize,
-            text=vertextext
-        )
-        plotter.draw_edges(
-            color=edgecolor,
-            width=edgewidth,
-            text=edgetext
-        )
-        plotter.draw_faces(
-            facecolor=facecolor,
-            text=facetext
-        )
-        plotter.show()
-
 
 # ==============================================================================
 # Main
@@ -3167,7 +3134,8 @@ class Mesh(FromToPickle,
 if __name__ == '__main__':
 
     import compas
-    from compas.plotters import MeshPlotter
+
+    from compas_plotters import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 

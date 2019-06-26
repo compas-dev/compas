@@ -19,14 +19,12 @@ except ImportError:
     import pickle
 
 try:
-    from subprocess import Popen
-    from subprocess import PIPE
-
+    from subprocess import Popen, PIPE, STDOUT
 except ImportError:
-    if compas.is_windows():
-        compas.raise_if_not_ironpython()
-    elif not compas.is_mono():
-        raise
+    try:
+        from System.Diagnostics import Process
+    except ImportError:
+        compas.raise_if_ironpython()
 
 
 __all__ = ['XFunc']
@@ -366,24 +364,50 @@ class XFunc(object):
         with open(self.opath, 'w+') as fh:
             fh.write('')
 
-        process_args = [self.python,
-                        '-u',
-                        '-c',
-                        WRAPPER,
-                        self.basedir,
-                        self.funcname,
-                        self.ipath,
-                        self.opath,
-                        self.serializer]
+        env = compas._os.prepare_environment()
+        args = [WRAPPER, self.basedir, self.funcname, self.ipath, self.opath, self.serializer]
 
-        process = Popen(process_args, stderr=PIPE, stdout=PIPE)
+        try:
+            Popen
 
-        while process.poll() is None:
-            line = process.stdout.readline().strip()
-            if self.callback:
-                self.callback(line, self.callback_args)
-            if self.verbose:
-                print(line)
+        except NameError:
+            process = Process()
+            for name in env:
+                if process.StartInfo.EnvironmentVariables.ContainsKey(name):
+                    process.StartInfo.EnvironmentVariables[name] = env[name]
+                else:
+                    process.StartInfo.EnvironmentVariables.Add(name, env[name])
+            process.StartInfo.UseShellExecute = False
+            process.StartInfo.RedirectStandardOutput = True
+            process.StartInfo.RedirectStandardError = True
+            process.StartInfo.FileName = self.python
+            process.StartInfo.Arguments = '-u -c "{0}" {1} {2} {3} {4} {5}'.format(*args)
+            process.Start()
+            process.WaitForExit()
+
+            while True:
+                line = process.StandardOutput.ReadLine()
+                if not line:
+                    break
+                line = line.strip()
+                if self.callback:
+                    self.callback(line, self.callback_args)
+                if self.verbose:
+                    print(line)
+
+            # stderr = p.StandardError.ReadToEnd()
+
+        else:
+            process_args = [self.python, '-u', '-c'] + args
+
+            process = Popen(process_args, stderr=PIPE, stdout=PIPE, env=env)
+
+            while process.poll() is None:
+                line = process.stdout.readline().strip()
+                if self.callback:
+                    self.callback(line, self.callback_args)
+                if self.verbose:
+                    print(line)
 
         if self.serializer == 'json':
             with open(self.opath, 'r') as fo:
@@ -450,6 +474,9 @@ if __name__ == '__main__':
     }
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    print('mesh')
+    print(mesh.number_of_vertices())
 
     mesh.update_default_vertex_attributes(dva)
     mesh.update_default_edge_attributes(dea)

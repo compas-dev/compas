@@ -3,13 +3,8 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
-import compas
 
-try:
-    from numpy import set_printoptions
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from numpy import set_printoptions
 
 
 __all__ = [

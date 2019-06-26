@@ -30,11 +30,11 @@ def _get_package_path(package):
 def _get_bootstrapper_data(compas_bootstrapper):
     data = {}
 
-    try:
-        content = io.open(compas_bootstrapper, encoding='utf8').read()
-        exec(content, data)
-    except FileNotFoundError:
-        pass
+    if not os.path.exists(compas_bootstrapper):
+        return data
+
+    content = io.open(compas_bootstrapper, encoding='utf8').read()
+    exec(content, data)
 
     return data
 
@@ -83,7 +83,8 @@ def install(version=None, packages=None):
         package_path = _get_package_path(importlib.import_module(package))
         symlink_path = os.path.join(ipylib_path, package)
 
-        if os.path.exists(symlink_path):
+        # Broken links return False on .exists(), so we need to check .islink() as well
+        if os.path.islink(symlink_path) or os.path.exists(symlink_path):
             try:
                 remove_symlink(symlink_path)
             except OSError:

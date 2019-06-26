@@ -104,7 +104,7 @@ if __name__ == "__main__":
     from numpy import meshgrid
     from numpy import newaxis
 
-    from compas.viewers import VtkViewer
+    from compas_viewers import VtkViewer
 
 
     # Grid

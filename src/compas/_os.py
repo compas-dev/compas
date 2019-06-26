@@ -6,12 +6,28 @@ Not intended to be used outside compas* packages.
 import os
 import sys
 
+try:
+    NotADirectoryError
+except NameError:
+    class NotADirectoryError(Exception):
+        pass
+
 PY3 = sys.version_info[0] == 3
 system = sys.platform
 
 # IronPython support (OMG)
 if 'ironpython' in sys.version.lower() and os.name == 'nt':
     system = 'win32'
+
+try:
+    from compas_bootstrapper import PYTHON_DIRECTORY
+except:
+    # We re-map CONDA_PREFIX for backwards compatibility reasons
+    # In a few releases down the line, we can get rid of this bit
+    try:
+        from compas_bootstrapper import CONDA_PREFIX as PYTHON_DIRECTORY
+    except:
+        PYTHON_DIRECTORY = None
 
 
 def select_python(python_executable):
@@ -26,26 +42,22 @@ def select_python(python_executable):
         Select which python executable you want to use,
         either `python` or `pythonw`.
     """
-    python_executable = python_executable or 'pythonw'
-
-    try:
-        from compas_bootstrapper import PYTHON_DIRECTORY
-    except:
-        # We re-map CONDA_PREFIX for backwards compatibility reasons
-        # In a few releases down the line, we can get rid of this bit
-        try:
-            from compas_bootstrapper import CONDA_PREFIX as PYTHON_DIRECTORY
-        except:
-            PYTHON_DIRECTORY = None
+    python_executable = python_executable or 'python'
 
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
         python = os.path.join(PYTHON_DIRECTORY, python_executable)
-
         if os.path.exists(python):
             return python
 
         python = os.path.join(PYTHON_DIRECTORY, '{0}.exe'.format(python_executable))
+        if os.path.exists(python):
+            return python
 
+        python = os.path.join(PYTHON_DIRECTORY, 'bin', python_executable)
+        if os.path.exists(python):
+            return python
+
+        python = os.path.join(PYTHON_DIRECTORY, 'bin', '{0}.exe'.format(python_executable))
         if os.path.exists(python):
             return python
 
@@ -56,8 +68,41 @@ def select_python(python_executable):
     return python_executable
 
 
+def prepare_environment():
+    """Prepares an environment context to run Python on.
+
+    If Python is being used from a conda environment, this is roughly equivalent
+    to activating the conda environment by setting up the correct environment
+    variables.
+    """
+    env = os.environ.copy()
+
+    if PYTHON_DIRECTORY:
+        lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
+        if os.path.exists(lib_bin):
+            env['PATH'] += os.pathsep + lib_bin
+
+        lib_bin = os.path.join(PYTHON_DIRECTORY, 'lib')
+        if os.path.exists(lib_bin):
+            env['PATH'] += os.pathsep + lib_bin
+
+    return env
+
 def absjoin(*parts):
     return os.path.abspath(os.path.join(*parts))
+
+
+# Cache whatever symlink function works (native or polyfill)
+_os_symlink = None
+
+
+def create_symlink_polyfill():
+    import subprocess
+    def symlink_ms(source, link_name):
+        subprocess.check_output(
+            ['mklink', '/D', link_name, source], stderr=subprocess.STDOUT, shell=True)
+
+    return symlink_ms
 
 
 def create_symlink(source, link_name):
@@ -71,18 +116,26 @@ def create_symlink(source, link_name):
         This function is a polyfill of the native ``os.symlink``
         for Python 2.x on Windows platforms.
     """
-    os_symlink = getattr(os, 'symlink', None)
+    global _os_symlink
+    enable_retry_with_polyfill = False
 
-    if not callable(os_symlink) and os.name == 'nt':
-        import subprocess
+    if not _os_symlink:
+        _os_symlink = getattr(os, 'symlink', None)
 
-        def symlink_ms(source, link_name):
-            subprocess.check_output(
-                ['mklink', '/D', link_name, source], stderr=subprocess.STDOUT, shell=True)
+        if os.name == 'nt':
+            if not callable(_os_symlink):
+                _os_symlink = create_symlink_polyfill()
+            else:
+                enable_retry_with_polyfill = True
 
-        os_symlink = symlink_ms
+    try:
+        _os_symlink(source, link_name)
+    except OSError:
+        if not enable_retry_with_polyfill:
+            raise
 
-    os_symlink(source, link_name)
+        _os_symlink = create_symlink_polyfill()
+        _os_symlink(source, link_name)
 
 
 def remove_symlink(link):

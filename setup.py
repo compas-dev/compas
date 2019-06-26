@@ -6,16 +6,9 @@ import io
 from os import path
 
 from setuptools import setup
-from setuptools.command.install import install
 
 
 here = path.abspath(path.dirname(__file__))
-
-
-class CustomInstall(install):
-
-    def run(self):
-        install.run(self)
 
 
 def read(*names, **kwargs):
@@ -28,14 +21,14 @@ def read(*names, **kwargs):
 long_description = read('README.md')
 requirements = read('requirements.txt').split('\n')
 optional_requirements = {
-    "viewers"      : ['PyOpenGL', 'PySide2', 'vtk'],
-    "optimisation" : ['pyopencl', 'pycuda'],
-    "robotics"     : ['roslibpy']
+    "viewers"  : ['PyOpenGL', 'PySide2', 'vtk'],
+    "hpc"      : ['pyopencl', 'pycuda'],
+    "robotics" : ['roslibpy']
 }
 
 setup(
     name='COMPAS',
-    version='0.4.10',
+    version='0.6.2',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -76,12 +69,8 @@ setup(
     install_requires=requirements,
     python_requires='>=2.7',
     extras_require=optional_requirements,
-    entry_points={
-        'console_scripts': [],
-    },
+    entry_points={},
     ext_modules=[],
-    cmdclass={'install': CustomInstall},
-    scripts=[
-        'bin/install_compas_sublime',
-    ]
+    cmdclass={},
+    scripts=[]
 )

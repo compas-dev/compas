@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -17,36 +16,26 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
 
     __module__ = "compas_blender.artists"
 
-
     def __init__(self, network, layer=None):
         super(NetworkArtist, self).__init__(layer=layer)
-
         self.network = network
         self.defaults.update({
             'color.vertex': [255, 255, 255],
             'color.edge':   [0, 0, 0],
         })
 
-
     @property
     def network(self):
-
         return self.datastructure
-
 
     @network.setter
     def network(self, network):
-
         self.datastructure = network
 
-
     def draw(self):
-
         raise NotImplementedError
 
-
     def clear(self):
-
         self.clear_vertices()
         self.clear_edges()
 

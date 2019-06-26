@@ -7,14 +7,8 @@ simple to replace it with the one you have COMPAS installed on.
 
 .. note::
 
-    The following instructions are for Blender 2.79 which ships with
-    **Pyhton 3.5.3**, for other versions, update the python version accordingly.
-
-.. warning::
-
-    We currently do not yet support Blender 2.8 with any of the released versions
-    of COMPAS. There is, however, a feature branch with some support for Blender
-    2.8 available directly from the Github repo.
+    The latest releases of COMPAS only support Blender 2.8. This version of Blender
+    requires Python `3.7.x`.
 
 
 Replace Python
@@ -32,15 +26,15 @@ environment with COMPAS:
 .. code-block:: bash
 
     $ conda config --add channels conda-forge
-    $ conda create -n blender-279 python=3.5.3 COMPAS
-    $ activate blender-279
+    $ conda create -n blender python=3.7 COMPAS
+    $ conda activate blender
 
 
 Now configure Blender to use the newly installed environment:
 
 .. code-block:: bash
 
-    $ cd %PROGRAMFILES%\Blender Foundation\Blender\2.79
+    $ cd %PROGRAMFILES%\Blender Foundation\Blender\2.80
     $ ren python original_python
     $ mklink /j python %CONDA_PREFIX%
 
@@ -53,15 +47,15 @@ environment with COMPAS:
 .. code-block:: bash
 
     $ conda config --add channels conda-forge
-    $ conda create -n blender-279 python=3.5.3 COMPAS
-    $ source activate blender-279
+    $ conda create -n blender python=3.7 COMPAS
+    $ conda activate blender
 
 
 Now configure Blender to use the newly installed environment:
 
 .. code-block:: bash
 
-    $ cd /Applications/blender.app/Contents/Resources/2.79
+    $ cd /Applications/blender.app/Contents/Resources/2.80
     $ mv python original_python
     $ ln -s $CONDA_PREFIX python
 
@@ -107,7 +101,7 @@ Otherwise, the changes will not have any effect.
 
 .. code-block:: bash
 
-    $ activate blender-279
+    $ conda activate blender
     $ conda install ...
 
 
@@ -115,34 +109,34 @@ Otherwise, the changes will not have any effect.
 
 .. code-block:: bash
 
-    $ source activate blender-279
+    $ conda activate blender
     $ conda install ...
 
 
 Miscellaneous
 =============
 
-For whatever reason, on Mac, the info bar that usually displays text output and
-and error and info messages, will not produce any output of scripts.
-To see the output of scripts, you have to start Blender from the Terminal such that
-the output can be directed there...
+Both on Windows and Mac (for different reasons) Blender should be started from the command line.
+By adding the Blender executable to the `PATH` variable this is really simple.
 
-To avoid having to navigate to the Blender executable evey time you want to do this,
-you could add the path to the executable to your system ``PATH`` variable.
-In your ``~/.bash_profile`` add the following.
+**On Mac**
 
+Add the following to your .bash_profile
 
 .. code-block:: bash
 
     export PATH="/Applications/blender.app/Contents/MacOS:$PATH"
 
+**On Windows**
+
+Add the path to the Blender executable to your PATH in Environment Variables.
+
+.. code-block::
+
+    %PROGRAMFILES%\Blender Foundation\Blender\2.80
 
 After that starting Blender from the command line is much simpler.
-
 
 .. code-block:: bash
 
     $ blender
-
-
-And all output from the scripts you run will appear in the Terminal window...

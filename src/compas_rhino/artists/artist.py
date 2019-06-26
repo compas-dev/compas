@@ -173,7 +173,7 @@ class Artist(object):
 
         """
         layer = layer or self.layer
-        return compas_rhino.xdraw_points(points, layer=layer, clear=clear_layer, redraw=redraw)
+        return compas_rhino.draw_points(points, layer=layer, clear=clear_layer, redraw=redraw)
 
     def draw_lines(self, lines, layer=None, clear_layer=False, redraw=False):
         """Draw a collection of lines.
@@ -199,15 +199,41 @@ class Artist(object):
 
         """
         layer = layer or self.layer
-        return compas_rhino.xdraw_lines(lines, layer=layer, clear=clear_layer, redraw=redraw)
+        return compas_rhino.draw_lines(lines, layer=layer, clear=clear_layer, redraw=redraw)
+
+    def draw_polylines(self, polylines, layer=None, clear_layer=False, redraw=False):
+        """Draw a collection of polygons.
+
+        Parameters
+        ----------
+        polylines : list of dict
+            The polylines to draw.
+        layer : str, optional
+            The layer to draw the points in.
+            Default is ``None``.
+        clear_layer : bool, optional
+            Clear the specified layer.
+            Default is ``False``.
+        redraw : bool, optional
+            Redraw the Rhino view.
+            Default is ``False``.
+
+        Returns
+        -------
+        list of guid
+            The GUIDs of the polyline objects.
+
+        """
+        layer = layer or self.layer
+        return compas_rhino.draw_polylines(polylines, layer=layer, clear=clear_layer, redraw=redraw)
 
     def draw_polygons(self, polygons, layer=None, clear_layer=False, redraw=False):
         """Draw a collection of polygons.
 
         Parameters
         ----------
-        points : list of dict
-            The points to draw.
+        polylines : list of dict
+            The polygons to draw.
         layer : str, optional
             The layer to draw the points in.
             Default is ``None``.
@@ -225,7 +251,33 @@ class Artist(object):
 
         """
         layer = layer or self.layer
-        return compas_rhino.xdraw_polygons(polygons, layer=layer, clear=clear_layer, redraw=redraw)
+        return compas_rhino.draw_polylines(polygons, layer=layer, clear=clear_layer, redraw=redraw)
+
+    def draw_circles(self, circles, layer=None, clear_layer=False, redraw=False):
+        """Draw a collection of circles.
+
+        Parameters
+        ----------
+        circles : list of dict
+            The circles to draw.
+        layer : str, optional
+            The layer to draw the points in.
+            Default is ``None``.
+        clear_layer : bool, optional
+            Clear the specified layer.
+            Default is ``False``.
+        redraw : bool, optional
+            Redraw the Rhino view.
+            Default is ``False``.
+
+        Returns
+        -------
+        list of guid
+            The GUIDs of the polygon objects.
+
+        """
+        layer = layer or self.layer
+        return compas_rhino.draw_circles(circles, layer=layer, clear=clear_layer, redraw=redraw)
 
 
 # ==============================================================================

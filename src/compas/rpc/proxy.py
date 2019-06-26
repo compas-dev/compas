@@ -15,7 +15,10 @@ except ImportError:
     from xmlrpc.client import ServerProxy
 
 try:
-    from subprocess import Popen, PIPE, STDOUT
+    from subprocess import Popen
+    from subprocess import PIPE
+    from subprocess import STDOUT
+
 except ImportError:
     try:
         from System.Diagnostics import Process
@@ -63,9 +66,15 @@ class Proxy(object):
     to specify the address explicitly (``'http://127.0.0.1'``) because resolving
     *localhost* takes a surprisingly significant amount of time.
 
+    The service will make the correct (version of the requested) functionality available
+    even if that functionality is part of a virtual environment. This is because it
+    will use the specific python interpreter for which the functionality is installed to
+    start the server.
+
+    If possible, the proxy will try to reconnect to an already existing service
+
     Examples
     --------
-
     Minimal example showing connection to the proxy server, and ensuring the
     server is disposed after using it:
 
@@ -128,8 +137,10 @@ class Proxy(object):
         self._process = None
         self._function = None
         self._profile = None
+
         self.service = service
         self.package = package
+
         self._server = self.try_reconnect()
         if self._server is None:
             self._server = self.start_server()
@@ -195,6 +206,8 @@ class Proxy(object):
             server.ping()
         except:
             return None
+        else:
+            print("Reconnecting to an existing server proxy.")
         return server
 
     def start_server(self):
@@ -212,23 +225,32 @@ class Proxy(object):
             100 contact attempts (*pings*).
 
         """
-        python = self.python
+        env = compas._os.prepare_environment()
 
         try:
             Popen
         except NameError:
             self._process = Process()
+
+            for name in env:
+                if self._process.StartInfo.EnvironmentVariables.ContainsKey(name):
+                    self._process.StartInfo.EnvironmentVariables[name] = env[name]
+                else:
+                    self._process.StartInfo.EnvironmentVariables.Add(name, env[name])
+
             self._process.StartInfo.UseShellExecute = False
             self._process.StartInfo.RedirectStandardOutput = True
             self._process.StartInfo.RedirectStandardError = True
-            self._process.StartInfo.FileName = python
+            self._process.StartInfo.FileName = self.python
             self._process.StartInfo.Arguments = '-m {0} {1}'.format(self.service, str(self._port))
             self._process.Start()
         else:
-            args = [python, '-m', self.service, str(self._port)]
-            self._process = Popen(args, stdout=PIPE, stderr=STDOUT)
+            args = [self.python, '-m', self.service, str(self._port)]
+            self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=env)
 
         server = ServerProxy(self.address)
+
+        print("Starting a new proxy server...")
 
         success = False
         count = 100
@@ -238,17 +260,21 @@ class Proxy(object):
             except:
                 time.sleep(0.1)
                 count -= 1
+                print("    {} attempts left.".format(count))
             else:
                 success = True
                 break
         if not success:
             raise RPCServerError("The server is not available.")
+        else:
+            print("New proxy server started.")
 
         return server
 
     def stop_server(self):
         """Stop the remote server and terminate/kill the python process that was used to start it.
         """
+        print("Stopping the server proxy.")
         try:
             self._server.remote_shutdown()
         except:
@@ -333,6 +359,7 @@ class Proxy(object):
 if __name__ == "__main__":
 
     import compas
+    import sys
 
     from compas.datastructures import Mesh
     from compas.rpc import Proxy
@@ -370,8 +397,7 @@ if __name__ == "__main__":
         attr['l'] = l[index][0]
 
     artist = MeshArtist(mesh)
-
     artist.draw_vertices()
+    artist.draw_edges()
     artist.draw_faces()
-
     artist.redraw()

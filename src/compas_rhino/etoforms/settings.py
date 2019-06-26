@@ -11,6 +11,10 @@ try:
     clr.AddReference("Eto")
     clr.AddReference("Rhino.UI")
 
+except:
+    compas.raise_if_ironpython()
+
+try:
     import Rhino
     import Rhino.UI
     import Eto

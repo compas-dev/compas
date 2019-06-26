@@ -265,7 +265,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
         import compas
 
         from compas.datastructures import Mesh
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -284,7 +284,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
         from compas.datastructures import Mesh
         from compas.datastructures import mesh_quads_to_triangles
         from compas.datastructures import trimesh_collapse_edge
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -416,7 +416,7 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.datastructures import mesh_quads_to_triangles
     from compas.datastructures import trimesh_collapse_edge
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 

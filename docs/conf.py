@@ -18,7 +18,7 @@ project          = 'COMPAS'
 copyright        = 'Block Research Group - ETH Zurich'
 author           = 'Tom Van Mele'
 
-release = '0.4.10'
+release = '0.6.2'
 version = '.'.join(release.split('.')[0:2])
 
 master_doc       = 'index'
@@ -42,6 +42,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'matplotlib.sphinxext.plot_directive',
+    'm2r',
 ]
 
 # autodoc options

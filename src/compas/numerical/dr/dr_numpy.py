@@ -2,19 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
-
-try:
-    from numpy import array
-    from numpy import isnan
-    from numpy import isinf
-    from numpy import ones
-    from numpy import zeros
-    from scipy.linalg import norm
-    from scipy.sparse import diags
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from numpy import array
+from numpy import isnan
+from numpy import isinf
+from numpy import ones
+from numpy import zeros
+from scipy.linalg import norm
+from scipy.sparse import diags
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
@@ -124,7 +118,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
         import compas
         from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
         from compas.numerical import dr_numpy
 
         dva = {
@@ -346,7 +340,7 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
     from compas.utilities import i_to_rgb
 
     dva = {

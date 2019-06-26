@@ -20,22 +20,18 @@ __all__ = [
 
 
 def get_document_name():
-
     raise NotImplementedError
 
 
 def get_document_filename():
-
     raise NotImplementedError
 
 
 def get_document_path():
-
     raise NotImplementedError
 
 
 def get_document_dirname():
-
     raise NotImplementedError
 
 

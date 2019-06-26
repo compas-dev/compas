@@ -63,11 +63,11 @@ traversal
     :nosignatures:
 
     depth_first_ordering
-    depth_first_tree
     breadth_first_ordering
     breadth_first_traverse
     breadth_first_paths
     shortest_path
+    astar_shortest_path
     dijkstra_distances
     dijkstra_path
 

@@ -92,7 +92,7 @@ class FromToJson(object):
         graph.data = data
         return graph
 
-    def to_json(self, filepath):
+    def to_json(self, filepath, pretty=False):
         """Serialise the structured data representing the data structure to json.
 
         Parameters
@@ -102,7 +102,10 @@ class FromToJson(object):
 
         """
         with open(filepath, 'w+') as fp:
-            json.dump(self.data, fp)
+            if pretty:
+                json.dump(self.data, fp, sort_keys=True, indent=4)
+            else:
+                json.dump(self.data, fp)
 
 
 class FromToPickle(object):

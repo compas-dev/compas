@@ -5,6 +5,7 @@
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/COMPAS.svg)](https://pypi.python.org/project/COMPAS)
 [![PyPI - Latest Release](https://img.shields.io/pypi/v/COMPAS.svg)](https://pypi.python.org/project/COMPAS)
 [![Conda - Latest Release](https://anaconda.org/conda-forge/compas/badges/version.svg)](https://anaconda.org/conda-forge/compas)
+[![DOI](https://zenodo.org/badge/104857648.svg)](https://zenodo.org/badge/latestdoi/104857648)
 
 The **COMPAS** framework is an open-source, Python-based framework for computational research and collaboration in architecture, engineering and digital fabrication.
 
@@ -58,6 +59,11 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 ## Contributing
 
 If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/contributions.html).
+
+
+## Changelog
+
+See changes between releases on the [changelog](https://compas-dev.github.io/main/changelog.html).
 
 
 ## License

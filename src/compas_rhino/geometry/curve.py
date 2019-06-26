@@ -65,6 +65,17 @@ class RhinoCurve(RhinoGeometry):
         guid = compas_rhino.select_curve()
         return cls(guid)
 
+    def length(self):
+        """Return the length of the curve.
+
+        Returns
+        -------
+        float
+            The curve's length.
+
+        """
+        return rs.CurveLength(self.guid)
+
     def is_line(self):
         """Determine if the curve is a line.
 
@@ -100,6 +111,18 @@ class RhinoCurve(RhinoGeometry):
         return (rs.IsPolyline(self.guid) and
                 rs.CurveDegree(self.guid) == 1 and
                 len(rs.CurvePoints(self.guid)) > 2)
+
+    def is_closed(self):
+        """Assess if the curve is closed.
+
+        Returns
+        -------
+        bool
+            True if the curve is closed. False otherwise.
+
+        """
+
+        return rs.IsCurveClosed(self.guid)
 
     def control_points(self):
         """Get the control points of a curve.

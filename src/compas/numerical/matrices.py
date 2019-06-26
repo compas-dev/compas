@@ -2,21 +2,15 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import abs
+from numpy import array
+from numpy import asarray
+from numpy import tile
 
-try:
-    from numpy import abs
-    from numpy import array
-    from numpy import asarray
-    from numpy import tile
-
-    from scipy.sparse import coo_matrix
-    from scipy.sparse import csr_matrix
-    from scipy.sparse import diags
-    from scipy.sparse import vstack as svstack
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from scipy.sparse import coo_matrix
+from scipy.sparse import csr_matrix
+from scipy.sparse import diags
+from scipy.sparse import vstack as svstack
 
 
 __all__ = [
