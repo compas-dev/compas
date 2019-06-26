@@ -4,7 +4,9 @@ These are internal functions of the framework.
 Not intended to be used outside compas* packages.
 """
 import os
+import subprocess
 import sys
+import tempfile
 
 try:
     NotADirectoryError
@@ -15,18 +17,50 @@ except NameError:
 PY3 = sys.version_info[0] == 3
 system = sys.platform
 
+if os.name == 'nt':
+    import ctypes
+    import ctypes.wintypes
+
+    class ShellExecuteInfo(ctypes.Structure):
+        _fields_ = [
+            ('cbSize',       ctypes.wintypes.DWORD),
+            ('fMask',        ctypes.c_ulong),
+            ('hwnd',         ctypes.wintypes.HWND),
+            ('lpVerb',       ctypes.c_char_p),
+            ('lpFile',       ctypes.c_char_p),
+            ('lpParameters', ctypes.c_char_p),
+            ('lpDirectory',  ctypes.c_char_p),
+            ('nShow',        ctypes.c_int),
+            ('hInstApp',     ctypes.wintypes.HINSTANCE),
+            ('lpIDList',     ctypes.c_void_p),
+            ('lpClass',      ctypes.c_char_p),
+            ('hKeyClass',    ctypes.wintypes.HKEY),
+            ('dwHotKey',     ctypes.wintypes.DWORD),
+            ('hIcon',        ctypes.wintypes.HANDLE),
+            ('hProcess',     ctypes.wintypes.HANDLE)]
+
+        def __init__(self, **kw):
+            super(ShellExecuteInfo, self).__init__()
+            self.cbSize = ctypes.sizeof(self)
+            for field_name, field_value in kw.items():
+                setattr(self, field_name, field_value)
+
+    SEE_MASK_NOCLOSEPROCESS = 0x00000040
+    SEE_MASK_NO_CONSOLE = 0x00008000
+    INFINITE = -1
+
 # IronPython support (OMG)
 if 'ironpython' in sys.version.lower() and os.name == 'nt':
     system = 'win32'
 
 try:
     from compas_bootstrapper import PYTHON_DIRECTORY
-except:
+except:  # noqa: E722
     # We re-map CONDA_PREFIX for backwards compatibility reasons
     # In a few releases down the line, we can get rid of this bit
     try:
         from compas_bootstrapper import CONDA_PREFIX as PYTHON_DIRECTORY
-    except:
+    except:  # noqa: E722
         PYTHON_DIRECTORY = None
 
 
@@ -88,6 +122,7 @@ def prepare_environment():
 
     return env
 
+
 def absjoin(*parts):
     return os.path.abspath(os.path.join(*parts))
 
@@ -96,56 +131,218 @@ def absjoin(*parts):
 _os_symlink = None
 
 
-def create_symlink_polyfill():
-    import subprocess
-    def symlink_ms(source, link_name):
-        subprocess.check_output(
-            ['mklink', '/D', link_name, source], stderr=subprocess.STDOUT, shell=True)
+def _polyfill_symlinks(symlinks, raise_on_error):
+    """Create multiple symlinks using the polyfill implementation."""
+    _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
 
-    return symlink_ms
+    with open(temp_path, 'w') as mklink_cmd:
+        mklink_cmd.write('@echo off' + os.linesep)
+        mklink_cmd.write('SET /A symlink_result=0' + os.linesep)
+        mklink_cmd.write('ECHO ret=%symlink_result%' + os.linesep)
+        for i, (source, link_name) in enumerate(symlinks):
+            mklink_cmd.write("mklink /D {}{}".format(subprocess.list2cmdline([link_name, source]), os.linesep))
+            mklink_cmd.write('IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} {}'.format(2 ** i, os.linesep))
+
+        mklink_cmd.write('EXIT /B %symlink_result%' + os.linesep)
+
+    ret_value = _run_as_admin([temp_path])
+
+    # The error level integer (ret_value) reflects the success/failure of
+    # each of the symlink operations, so we do a bit of bitwise-arithmetic
+    # on it to figure out which symlinks worked and which ones failed.
+
+    result = []
+    for i in range(len(symlinks)):
+        success = ret_value & 2 ** i != 0
+        result.append(success)
+
+    return result
+
+
+def _native_symlinks(symlinks, raise_on_error):
+    """Create multiple symlinks using the native implementation."""
+    result = []
+
+    for source, link_name in symlinks:
+        try:
+            os.symlink(source, link_name)
+            result.append(True)
+        except OSError:
+            if raise_on_error:
+                raise
+
+            result.append(False)
+
+    return result
+
+
+def _set_symlink_function(fn):
+    global _os_symlink
+    _os_symlink = fn
+
+
+def _get_symlink_function():
+    global _os_symlink
+    allow_polyfill_retry = False
+
+    if not _os_symlink:
+        if getattr(os, 'symlink', None):
+            _os_symlink = _native_symlinks
+
+        if os.name == 'nt':
+            if not callable(_os_symlink):
+                _os_symlink = _polyfill_symlinks
+            else:
+                allow_polyfill_retry = True
+
+    return _os_symlink, allow_polyfill_retry
 
 
 def create_symlink(source, link_name):
     """Create a symbolic link pointing to source named link_name.
 
-    Parameters:
-        source: Source of the link
-        link_name: Link name.
+    Parameters
+    ----------
+    source: str
+        Source of the link
+    link_name: str
+        Link name.
 
-    Note:
-        This function is a polyfill of the native ``os.symlink``
-        for Python 2.x on Windows platforms.
+    Note
+    ----
+    This function is a polyfill of the native ``os.symlink``
+    for Python 2.x on Windows platforms.
     """
-    global _os_symlink
-    enable_retry_with_polyfill = False
+    create_symlinks([(source, link_name)], raise_on_error=True)
 
-    if not _os_symlink:
-        _os_symlink = getattr(os, 'symlink', None)
 
-        if os.name == 'nt':
-            if not callable(_os_symlink):
-                _os_symlink = create_symlink_polyfill()
-            else:
-                enable_retry_with_polyfill = True
+def create_symlinks(symlinks, raise_on_error=False):
+    """Create multiple symbolic links in one call.
+
+    Parameters
+    ----------
+    symlinks: list of string tuples
+        List of ``source`` and ``link_name`` of the symlinks as tuples.
+    """
+    symlink, allow_polyfill_retry = _get_symlink_function()
 
     try:
-        _os_symlink(source, link_name)
+        return symlink(symlinks, raise_on_error=True)
     except OSError:
-        if not enable_retry_with_polyfill:
+        if raise_on_error:
             raise
 
-        _os_symlink = create_symlink_polyfill()
-        _os_symlink(source, link_name)
+        _set_symlink_function(_polyfill_symlinks)
+        return _polyfill_symlinks(symlinks, raise_on_error=False)
 
 
-def remove_symlink(link):
-    if os.path.isdir(link):
+def remove_symlink(symlink):
+    """Remove a symlink from the file system.
+
+    Parameters
+    ----------
+    symlink : :obj:`str`
+        Symlink to remove.
+    """
+    # Broken links return False on .exists(), so we need to check .islink() as well
+    if not (os.path.islink(symlink) or os.path.exists(symlink)):
+        return
+
+    if os.path.isdir(symlink):
         try:
-            os.rmdir(link)
+            os.rmdir(symlink)
         except NotADirectoryError:
-            os.unlink(link)
+            os.unlink(symlink)
     else:
-        os.unlink(link)
+        os.unlink(symlink)
+
+
+def remove_symlinks(symlinks, raise_on_error=False):
+    """Remove one or more symlinks.
+
+    Parameters
+    ----------
+    links
+        Sequence of symlinks to remove.
+    raise_on_error : bool
+        ``False`` to continue removing even on error,
+        otherwise ``True``.
+
+    Returns
+    -------
+    list
+        If ``raise_on_error`` is ``False``, returns a list
+        of bools indicating which links were successfully removed.
+    """
+    result = []
+
+    for symlink in symlinks:
+        try:
+            remove_symlink(symlink)
+            result.append(True)
+        except OSError:
+            if raise_on_error:
+                raise
+
+            result.append(False)
+
+    return result
+
+
+def is_admin():
+    """Determines whether the current user has admin rights.
+
+    Returns
+    -------
+    bool
+        True if the user is administrator, otherwise False.
+    """
+    if os.name != 'nt':
+        return os.getuid() == 0
+
+    try:
+        return bool(ctypes.windll.shell32.IsUserAnAdmin())
+    except:  # noqa: E722
+        return False
+
+
+def _run_as_admin(command):
+    """Run the specified command as an admin.
+
+    Paramters
+    ---------
+    command : :obj:`list` of :obj:`str`
+        List of strings of the command to run.
+
+    Returns
+    -------
+    int
+        Exit code of the process.
+    """
+
+    if os.name != 'nt':
+        raise RuntimeError('Only supported on Windows')
+
+    command_file, command_args = command[0], command[1:]
+
+    params = ShellExecuteInfo(
+        nShow=int(False),
+        fMask=SEE_MASK_NOCLOSEPROCESS | SEE_MASK_NO_CONSOLE,
+        lpVerb=b'runas',
+        lpFile=command_file.encode('cp1252'),
+        lpParameters=subprocess.list2cmdline(command_args).encode('cp1252'))
+
+    if not ctypes.windll.shell32.ShellExecuteExA(ctypes.byref(params)):
+        raise RuntimeError('Failed to run command "%s" as admin', command_file)
+
+    process_handle = params.hProcess
+    ctypes.windll.kernel32.WaitForSingleObject(process_handle, INFINITE)
+
+    ret = ctypes.wintypes.DWORD()
+    if ctypes.windll.kernel32.GetExitCodeProcess(process_handle, ctypes.byref(ret)) == 0:
+        raise RuntimeError('Failed to retrieve exit code')
+
+    return ret.value
 
 
 # The following methods has been adapted from the appdirs package
@@ -264,8 +461,6 @@ def _get_win_folder_with_pywin32(csidl_name):
 
 
 def _get_win_folder_with_ctypes(csidl_name):
-    import ctypes
-
     csidl_const = {
         "CSIDL_APPDATA": 26,
         "CSIDL_COMMON_APPDATA": 35,
@@ -304,8 +499,13 @@ if system == "win32":
 
 __all__ = [
     'absjoin',
+    'system',
     'create_symlink',
+    'create_symlinks',
     'remove_symlink',
+    'remove_symlinks',
     'user_data_dir',
-    'select_python'
+    'select_python',
+    'prepare_environment',
+    'is_admin'
 ]

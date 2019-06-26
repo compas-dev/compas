@@ -23,8 +23,7 @@ The default is ``6.0``.
 
 .. note::
 
-    On Windows, use the "Anaconda Prompt" instead of the "Command Prompt", and make
-    sure to run it as administrator.
+    On Windows, use the "Anaconda Prompt" instead of the "Command Prompt".
 
     On Mac, use the Terminal.
 
