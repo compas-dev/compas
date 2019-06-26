@@ -24,7 +24,6 @@ class ThreadedServer(object):
         self.thread = threading.Thread(target=self.server.serve_forever)
         self.thread.daemon = False
 
-
     def start(self):
         self.thread.start()
 
@@ -32,6 +31,10 @@ class ThreadedServer(object):
         self.server.shutdown()
         self.server.server_close()
 
+
+# ==============================================================================
+# Main
+# ==============================================================================
 
 if __name__ == '__main__':
 

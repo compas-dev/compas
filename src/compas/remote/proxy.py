@@ -114,7 +114,7 @@ class Proxy(object):
         """
         while attempts:
             try:
-                result = self.send_request('ping_server')
+                result = self.send_request('ping')
             except Exception as e:
                 result = 0
                 time.sleep(0.1)
@@ -139,7 +139,7 @@ class Proxy(object):
 
         """
         if self.ping_server():
-            print("Reconnecting to {}...".format(self.address))
+            print("Server running at {}...".format(self.address))
             return
 
         if compas.IPY:
@@ -153,16 +153,17 @@ class Proxy(object):
             self._process.StartInfo.RedirectStandardOutput = True
             self._process.StartInfo.RedirectStandardError = True
             self._process.StartInfo.FileName = self._python
-            self._process.StartInfo.Arguments = '-m {0} {1}'.format('compas.remote.server', str(self._port))
+            self._process.StartInfo.Arguments = '-m {0} {1}'.format('compas.remote.service', str(self._port))
             self._process.Start()
 
         else:
-            args = [self._python, '-m', 'compas.remote.server']
+            args = [self._python, '-m', 'compas.remote.service']
             self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=self._env)
 
         if not self.ping_server():
-            raise ThreadedServerError("The server could not be reached at {}...".format(self.address))
-        print("Started new server at {}...".format(self.address))
+            raise ThreadedServerError("Server unavailable at {}...".format(self.address))
+
+        print("Started server at {}...".format(self.address))
 
     def send_request(self, function, module=None, args=None, kwargs=None):
         """Send a request to the server.
@@ -232,6 +233,9 @@ class Proxy(object):
         The process reference might not be present, e.g. in the case
         of reusing an existing connection. In that case, this is a no-op.
         """
+        # find the process listening to port 1753?
+        # kill that process instead?
+
         if not self._process:
             return
         try:

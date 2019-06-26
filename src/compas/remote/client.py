@@ -1,9 +1,9 @@
 import compas
 from compas.datastructures import Mesh
-from proxy import Proxy
+from compas.remote import Proxy
 import time
 
-numerical = Proxy('compas.numerical', python='python')
+numerical = Proxy('compas.numerical')
 
 # a proxy starts a server (server.py run as a subprocess)
 # the server runs in the background
