@@ -2738,11 +2738,15 @@ class Mesh(FromToPickle,
                Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
 
         """
-
         ideal_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
-
-        angles = [angle_points(self.vertex_coordinates(v), self.vertex_coordinates(u), self.vertex_coordinates(w), deg = True) for u, v, w in window(self.face_vertices(fkey) + self.face_vertices(fkey)[:2], n = 3)]
-
+        angles = []
+        vertices = self.face_vertices(fkey)
+        for u, v, w in window(vertices + vertices[:2], n=3):
+            o = self.vertex_coordinates(v)
+            a = self.vertex_coordinates(u)
+            b = self.vertex_coordinates(w)
+            angle = angle_points(o, a, b, deg=True)
+            angles.append(angle)
         return max((max(angles) - ideal_angle) / (180 - ideal_angle), (ideal_angle - min(angles)) / ideal_angle)
 
     def face_curvature(self, fkey):
@@ -2759,20 +2763,13 @@ class Mesh(FromToPickle,
             The dimensionless curvature.
 
         """
-
-        plane = bestfit_plane([self.vertex_coordinates(vkey) for vkey in self.vertices()])
-
-        max_deviation = max([distance_point_plane(self.vertex_coordinates(vkey), plane) for vkey in self.vertices()])
-
-        average_distances = average([distance_point_point(self.vertex_coordinates(vkey), self.face_centroid(fkey)) for vkey in self.vertices()])
-
+        vertices = self.face_vertices(fkey)
+        points = [self.vertex_coordinates(key) for key in vertices]
+        centroid = self.face_centroid(fkey)
+        plane = bestfit_plane(points)
+        max_deviation = max([distance_point_plane(point, plane) for point in points])
+        average_distances = average([distance_point_point(point, centroid) for point in points])
         return max_deviation / average_distances
-
-    # def face_circle(self, fkey):
-    #     pass
-
-    # def face_frame(self, fkey):
-    #     pass
 
     # --------------------------------------------------------------------------
     # boundary
@@ -2904,7 +2901,6 @@ class Mesh(FromToPickle,
         boundary_edges : list
             The boundary edges.
 
-
         """
         boundary_edges =  [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
@@ -2912,7 +2908,6 @@ class Mesh(FromToPickle,
             return boundary_edges
         else:
             return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]
-
 
     # --------------------------------------------------------------------------
     # attributes
@@ -3133,99 +3128,4 @@ class Mesh(FromToPickle,
 
 if __name__ == '__main__':
 
-    import compas
-
-    from compas_plotters import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    mesh.update_default_edge_attributes({'q': 1.0})
-
-    # vertices = [
-    #     [0, 0, 0],
-    #     [1, 1, 0],
-    #     [1, -1, 0],
-    #     [-1, -1, 0],
-    #     [-1, 1, 0]
-    # ]
-    # faces = [
-    #     [0, 2, 1],
-    #     [0, 4, 3]
-    # ]
-
-    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    # print(mesh.is_manifold())
-
-    # # mesh = Mesh()
-
-    # # a = mesh.add_vertex(x=0, y=0)
-    # # b = mesh.add_vertex(x=0.5, y=0.1)
-    # # c = mesh.add_vertex(x=1, y=0)
-    # # d = mesh.add_vertex(x=0.9, y=0.5)
-    # # e = mesh.add_vertex(x=0.9, y=1)
-    # # f = mesh.add_vertex(x=0.5, y=1)
-    # # g = mesh.add_vertex(x=0, y=1)
-    # # h = mesh.add_vertex(x=0, y=0.5)
-
-    # # mesh.add_face([a, b, c, d, e, f, g, h])
-
-    # for k in mesh.faces():
-    #     print(k, mesh.is_face_on_boundary(k))
-
-
-    # print(list(mesh.edges(True)))
-
-
-    # plotter = MeshPlotter(mesh)
-
-    # plotter.draw_vertices()
-    # plotter.draw_edges()
-    # plotter.draw_faces(text='key')
-    # plotter.show()
-
-    # print(mesh.get_vertices_attribute('x'))
-    # print(mesh.get_vertices_attributes('xy'))
-
-    # print(mesh.get_edges_attribute('q', 1.0))
-    # print(mesh.get_edges_attributes('qf', (1.0, 2.0)))
-
-    vertices = {
-        0: [0, 0, 0],
-        1: [1, 1, 0],
-        2: [1, -1, 0],
-        3: [-1, -1, 0],
-        18: [-1, 1, 0]
-    }
-    faces = {
-        0: [0, 2, 1],
-        45: [0, 18, 3]
-    }
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices(text='key')
-    plotter.draw_edges()
-    plotter.draw_faces(text='key')
-    plotter.show()
-
-    vertices = [
-        [0, 0, 0],
-        [1, 1, 0],
-        [1, -1, 0],
-        [-1, -1, 0],
-        [-1, 1, 0]
-    ]
-    faces = [
-        [0, 2, 1],
-        [0, 4, 3]
-    ]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices(text='key')
-    plotter.draw_edges()
-    plotter.draw_faces(text='key')
-    plotter.show()
+    pass
