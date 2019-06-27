@@ -1,23 +1,19 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division, print_function
 
 from math import pi
 
-from compas.geometry import Plane
+from compas.geometry import Circle, Plane
 
 __all__ = ['Cylinder']
 
 
 class Cylinder(object):
-    """A cylinder is defined by a plane, a radius and a height.
+    """A cylinder is defined by a circle and a height.
 
     Attributes
     ----------
-    plane: :class:`compas.geometry.Plane`
-        The plane of the cylinder.
-    radius: float
-        The radius of the cylinder.
+    circle: :class:`compas.geometry.Circle`
+        The circle of the cylinder.
     height: float
         The height of the cylinder.
 
@@ -26,18 +22,17 @@ class Cylinder(object):
     >>> from compas.geometry import Plane
     >>> from compas.geometry import Cylinder
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
-    >>> cylinder = Cylinder(plane, 5, 7)
+    >>> circle = Circle(plane, 5)
+    >>> cylinder = Cylinder(circle, 7)
 
     """
 
-    __slots__ = ['_plane', '_radius', '_height']
+    __slots__ = ['_circle', '_height']
 
-    def __init__(self, plane, radius, height):
-        self._plane = None
-        self._radius = None
+    def __init__(self, circle, height):
+        self._circle = None
         self._height = None
-        self.plane = plane
-        self.radius = radius
+        self.circle = circle
         self.height = height
 
     @classmethod
@@ -57,12 +52,13 @@ class Cylinder(object):
         Examples
         --------
         >>> from compas.geometry import Cylinder
+        >>> from compas.geometry import Circle
         >>> from compas.geometry import Plane
-        >>> data = {'plane': Plane.worldXY().data, 'radius': 5., 'height': 7.}
+        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
         >>> cylinder = Cylinder.from_data(data)
 
         """
-        cylinder = cls(Plane.worldXY(), 1, 1)
+        cylinder = cls(Circle(Plane.worldXY(), 1), 1)
         cylinder.data = data
         return cylinder
 
@@ -73,20 +69,29 @@ class Cylinder(object):
     @property
     def plane(self):
         """Plane: The plane of the cylinder."""
-        return self._plane
+        return self.circle.plane
 
     @plane.setter
     def plane(self, plane):
-        self._plane = Plane(plane[0], plane[1])
+        self.circle.plane = Plane(plane[0], plane[1])
+    
+    @property
+    def circle(self):
+        """float: The circle of the cylinder."""
+        return self._circle
+
+    @circle.setter
+    def circle(self, circle):
+        self._circle = circle
 
     @property
     def radius(self):
         """float: The radius of the cylinder."""
-        return self._radius
+        return self.circle.radius
 
     @radius.setter
     def radius(self, radius):
-        self._radius = float(radius)
+        self.circle.radius = float(radius)
     
     @property
     def height(self):
@@ -105,7 +110,7 @@ class Cylinder(object):
     @property
     def diameter(self):
         """float: The diameter of the cylinder."""
-        return self.radius * 2
+        return self.circle.diameter
 
     @property
     def data(self):
@@ -117,13 +122,12 @@ class Cylinder(object):
             The cylinder data.
 
         """
-        return {'plane': self.plane.data,
-                'radius': self.radius}
+        return {'circle': self.circle.data,
+                'height': self.height}
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data['plane'])
-        self.radius = data['radius']
+        self.circle = Circle.from_data(data['circle'])
         self.height = data['height']
 
     def to_data(self):
@@ -140,16 +144,16 @@ class Cylinder(object):
     @property
     def center(self):
         """Point: The center of the cylinder."""
-        return self.plane.point
+        return self.circle.center
 
     @center.setter
     def center(self, point):
-        self.plane.point = point
+        self.circle.center = point
 
     @property
     def area(self):
-        """Float: The area of the cylinder."""
-        return (pi * (self.radius**2) * 2) + (2 * pi * self.radius * self.height)
+        """Float: The surface area of the cylinder."""
+        return (self.circle.area * 2) + (self.circle.circumference * self.height)
 
     @property
     def circumference(self):
@@ -159,17 +163,17 @@ class Cylinder(object):
     @property
     def volume(self):
         """Float: The volume of the cylinder."""
-        return pi * (self.radius**2) * self.height
+        return self.circle.area * self.height
 
     # ==========================================================================
     # representation
     # ==========================================================================
 
     def __repr__(self):
-        return 'Cylinder({0}, {1}, {2})'.format(self.plane, self.radius, self.height)
+        return 'Cylinder({0}, {1})'.format(self.circle, self.height)
 
     def __len__(self):
-        return 3
+        return 2
 
     # ==========================================================================
     # access
@@ -177,26 +181,22 @@ class Cylinder(object):
 
     def __getitem__(self, key):
         if key == 0:
-            return self.plane
+            return self.circle
         elif key == 1:
-            return self.radius
-        elif key == 2:
             return self.height
         else:
             raise KeyError
 
     def __setitem__(self, key, value):
         if key == 0:
-            self.plane = value
+            self.circle = value
         elif key == 1:
-            self.radius = value
-        elif key == 2:
             self.height = value
         else:
             raise KeyError
 
     def __iter__(self):
-        return iter([self.plane, self.radius, self.height])
+        return iter([self.circle, self.height])
 
     # ==========================================================================
     # helpers
@@ -212,7 +212,7 @@ class Cylinder(object):
 
         """
         cls = type(self)
-        return cls(self.plane.copy(), self.radius, self.height)
+        return cls(self.circle.copy(), self.height)
 
     # ==========================================================================
     # transformations
@@ -238,7 +238,7 @@ class Cylinder(object):
         >>> cylinder.transform(T)
 
         """
-        self.plane.transform(transformation)
+        self.circle.transform(transformation)
 
     def transformed(self, transformation):
         """Returns a transformed copy of the current cylinder.
@@ -258,8 +258,9 @@ class Cylinder(object):
         >>> from compas.geometry import Frame
         >>> from compas.geometry import Transformation
         >>> from compas.geometry import Plane
+        >>> from compas.geometry import Circle
         >>> from compas.geometry import Cylinder
-        >>> cylinder = Cylinder(Plane.worldXY(), 5, 7)
+        >>> cylinder = Cylinder(Circle(Plane.worldXY(), 5), 7)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> circle_transformed = cylinder.transformed(T)
@@ -277,7 +278,9 @@ class Cylinder(object):
 if __name__ == "__main__":
     from compas.geometry import Frame
     from compas.geometry import Transformation
-    cylinder = Cylinder(Plane.worldXY(), 5, 7)
+    from compas.geometry import Circle
+    
+    cylinder = Cylinder(Circle(Plane.worldXY(), 5), 7)
     frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     print(frame.normal)
     T = Transformation.from_frame(frame)
@@ -285,7 +288,7 @@ if __name__ == "__main__":
     print(cylinder)
 
     print(Plane.worldXY().data)
-    data = {'plane': Plane.worldXY().data, 'radius': 5., 'height': 7.}
+    data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
     cylinder = Cylinder.from_data(data)
     print(cylinder)
 

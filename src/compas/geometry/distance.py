@@ -315,7 +315,7 @@ def distance_point_line_sqrd_xy(point, line):
 
 
 def distance_point_plane(point, plane):
-    """Compute the distance from a point to a plane defined by three points.
+    r"""Compute the distance from a point to a plane defined by origin point and normal.
 
     Parameters
     ----------
@@ -370,7 +370,7 @@ def distance_point_plane(point, plane):
 
 
 def distance_point_plane_signed(point, plane):
-    """Compute the distance from a point to a plane defined by three points.
+    r"""Compute the signed distance from a point to a plane defined by origin point and normal.
 
     Parameters
     ----------

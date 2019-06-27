@@ -1,6 +1,8 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
+
+from math import pi
 
 from compas.geometry import Plane
 
@@ -14,9 +16,9 @@ class Torus(object):
     ----------
     plane : :class:`compas.geometry.Plane`
         The plane of the torus.
-    radius1: float
+    radius_axis: float
         The radius of the axis.
-    radius2: float
+    radius_pipe: float
         The radius of the pipe.
 
     Examples
@@ -27,15 +29,15 @@ class Torus(object):
 
     """
 
-    __slots__ = ['_plane', '_radius1', '_radius2']
+    __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
 
-    def __init__(self, plane, radius1, radius2):
+    def __init__(self, plane, radius_axis, radius_pipe):
         self._plane = None
-        self._radius1 = None
-        self._radius2 = None
+        self._radius_axis = None
+        self._radius_pipe = None
         self.plane = plane
-        self.radius1 = radius1
-        self.radius2 = radius2
+        self.radius_axis = radius_axis
+        self.radius_pipe = radius_pipe
 
     @classmethod
     def from_data(cls, data):
@@ -54,7 +56,7 @@ class Torus(object):
         Examples
         --------
         >>> from compas.geometry import Torus
-        >>> data = {'plane': Plane.worldXY().data, 'radius1': 4., 'radius2': 1.}
+        >>> data = {'plane': Plane.worldXY().data, 'radius_axis': 4., 'radius_pipe': 1.}
         >>> torus = Torus.from_data(data)
 
         """
@@ -76,26 +78,36 @@ class Torus(object):
         self._plane = Plane(plane[0], plane[1])
 
     @property
-    def radius1(self):
+    def radius_axis(self):
         """float: The radius of the axis."""
-        return self._radius1
+        return self._radius_axis
 
-    @radius1.setter
-    def radius1(self, radius):
-        self._radius1 = float(radius)
+    @radius_axis.setter
+    def radius_axis(self, radius):
+        self._radius_axis = float(radius)
     
     @property
-    def radius2(self):
+    def radius_pipe(self):
         """float: The radius of the pipe."""
-        return self._radius2
+        return self._radius_pipe
 
-    @radius2.setter
-    def radius2(self, radius):
-        self._radius2 = float(radius)
+    @radius_pipe.setter
+    def radius_pipe(self, radius):
+        self._radius_pipe = float(radius)
 
     @property
     def center(self):
         return self.plane
+    
+    @property
+    def area(self):
+        """Float: The surface area of the torus."""
+        return (2 * pi * self.radius_pipe) * (2 * pi * self.radius_axis)
+
+    @property
+    def volume(self):
+        """Float: The volume of the torus."""
+        return (pi * self.radius_pipe**2) * (2 * pi * self.radius_axis)
 
     @property
     def data(self):
@@ -111,20 +123,20 @@ class Torus(object):
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Torus
         >>> torus = Torus(Plane.worldXY(), 5, 2)
-        >>> sdict = {'plane': Plane.worldXY().data, 'radius1': 5., 'radius2': 2.}
+        >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
         >>> sdict == torus.data
         True
 
         """
         return {'plane': Plane.worldXY(),
-                'radius1': self.radius1,
-                'radius2': self.radius2}
+                'radius_axis': self.radius_axis,
+                'radius_pipe': self.radius_pipe}
 
     @data.setter
     def data(self, data):
-        self.plane = data['plane']
-        self.radius1 = data['radius1']
-        self.radius2 = data['radius2']
+        self.plane = Plane.from_data(data['plane'])
+        self.radius_axis = data['radius_axis']
+        self.radius_pipe = data['radius_pipe']
 
     def to_data(self):
         """Returns the data dictionary that represents the torus.
@@ -139,7 +151,7 @@ class Torus(object):
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Torus
         >>> torus = Torus(Plane.worldXY(), 5, 2)
-        >>> sdict = {'plane': Plane.worldXY().data, 'radius1': 5., 'radius2': 2.}
+        >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
         >>> sdict == torus.to_data()
         True
 
@@ -151,7 +163,7 @@ class Torus(object):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Torus({0}, {1}, {2})'.format(self.plane, self.radius1, self.radius2)
+        return 'Torus({0}, {1}, {2})'.format(self.plane, self.radius_axis, self.radius_pipe)
 
     def __len__(self):
         return 3
@@ -164,9 +176,9 @@ class Torus(object):
         if key == 0:
             return self.plane
         elif key == 1:
-            return self.radius1
+            return self.radius_axis
         elif key == 2:
-            return self.radius2
+            return self.radius_pipe
         else:
             raise KeyError
 
@@ -174,14 +186,14 @@ class Torus(object):
         if key == 0:
             self.plane = value
         elif key == 1:
-            self.radius1 = value
+            self.radius_axis = value
         elif key == 2:
-            self.radius2 = value
+            self.radius_pipe = value
         else:
             raise KeyError
 
     def __iter__(self):
-        return iter([self.plane, self.radius1, self.radius2])
+        return iter([self.plane, self.radius_axis, self.radius_pipe])
 
     # ==========================================================================
     # helpers
@@ -203,7 +215,7 @@ class Torus(object):
 
         """
         cls = type(self)
-        return cls(self.plane.copy(), self.radius1, self.radius2)
+        return cls(self.plane.copy(), self.radius_axis, self.radius_pipe)
 
     # ==========================================================================
     # transformations
@@ -265,6 +277,7 @@ if __name__ == '__main__':
     from compas.geometry import Frame
     from compas.geometry import Plane
     from compas.geometry import Transformation
+
     torus = Torus(Plane.worldXY(), 5, 2)
     frame = Frame([5, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     T = Transformation.from_frame(frame)
