@@ -35,6 +35,8 @@ def conway_dual(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -67,6 +69,8 @@ def conway_join(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -105,6 +109,8 @@ def conway_ambo(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -129,6 +135,8 @@ def conway_kis(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -164,6 +172,8 @@ def conway_needle(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -188,6 +198,8 @@ def conway_zip(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -212,6 +224,8 @@ def conway_truncate(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -236,6 +250,8 @@ def conway_ortho(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -260,6 +276,8 @@ def conway_expand(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -284,6 +302,8 @@ def conway_gyro(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -327,6 +347,8 @@ def conway_snub(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -351,6 +373,8 @@ def conway_meta(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
@@ -375,6 +399,8 @@ def conway_bevel(mesh):
 
     References
     ----------
+    Based on [1]_ and [2]_.
+
     .. [1] Wikipedia. *Conway polyhedron notation*.
            Available at: https://en.wikipedia.org/wiki/Conway_polyhedron_notation.
     .. [2] Hart, George. *Conway Notation for Polyhedron*.

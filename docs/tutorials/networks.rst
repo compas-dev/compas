@@ -339,5 +339,5 @@ To create a 2D representation of a network, use a plotter.
 
 .. code-block:: python
 
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
 

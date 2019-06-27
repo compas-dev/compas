@@ -1,11 +1,10 @@
 ********************************************************************************
-Remeshing 3D
+Remeshing 2D
 ********************************************************************************
 
-.. figure:: mesh-remeshing-on-mesh.gif
+.. figure:: mesh-remeshing.gif
     :figclass: figure
     :class: figure-img img-fluid
-
 
 .. raw:: html
 
@@ -13,14 +12,12 @@ Remeshing 3D
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`mesh-remeshing-on-mesh.3dm <mesh-remeshing-on-mesh.3dm>`
+* :download:`mesh-remeshing.3dm <mesh-remeshing.3dm>`
 
 .. raw:: html
 
     </div>
     </div>
 
-
-.. literalinclude:: mesh-remeshing-on-mesh.py
-    :language: python
+.. literalinclude:: mesh-remeshing.py
 

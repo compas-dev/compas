@@ -20,15 +20,6 @@ class RequestHandler(BaseHTTPRequestHandler):
     def ping_server(self):
         return 1
 
-    # def _stop_server(self):
-    #     time.sleep(0.2)
-    #     self.server.shutdown()
-    #     self.server.server_close()
-
-    # def stop_server(self):
-    #     thread = threading.Thread(target=self._stop_server)
-    #     thread.start()
-
     def do_POST(self):
         odata = {}
         odata['data'] = None

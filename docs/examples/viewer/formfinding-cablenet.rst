@@ -1,11 +1,10 @@
 ********************************************************************************
-Subd mesh modeling
+Network equilibrium
 ********************************************************************************
 
-.. figure:: mesh-subd-modeling.*
+.. figure:: formfinding-cablenet.jpg
     :figclass: figure
     :class: figure-img img-fluid
 
 
-.. literalinclude:: mesh-subd-modeling.py
-    :language: python
+.. literalinclude:: network-equilibrium.py

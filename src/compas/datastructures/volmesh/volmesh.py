@@ -1964,8 +1964,8 @@ class VolMesh(FromToPickle,
     def scale(self, factor=1.0):
         """Scale the entire volmesh object.
 
-        Parameter
-        ---------
+        Parameters
+        ----------
         factor : float
             Scaling factor.
 

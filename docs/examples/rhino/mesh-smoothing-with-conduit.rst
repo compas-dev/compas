@@ -1,11 +1,10 @@
 ********************************************************************************
-Remeshing 3D
+Visualising mesh smoothing with a conduit
 ********************************************************************************
 
-.. figure:: mesh-remeshing-on-mesh.gif
+.. figure:: mesh-smoothing-with-conduit.gif
     :figclass: figure
     :class: figure-img img-fluid
-
 
 .. raw:: html
 
@@ -13,14 +12,12 @@ Remeshing 3D
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`mesh-remeshing-on-mesh.3dm <mesh-remeshing-on-mesh.3dm>`
+* :download:`mesh-smoothing.3dm <mesh-smoothing.3dm>`
 
 .. raw:: html
 
     </div>
     </div>
 
-
-.. literalinclude:: mesh-remeshing-on-mesh.py
-    :language: python
+.. literalinclude:: mesh-smoothing-with-conduit.py
 

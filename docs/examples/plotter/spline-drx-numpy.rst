@@ -1,11 +1,11 @@
 ********************************************************************************
-Subd mesh modeling
+Spline relaxation
 ********************************************************************************
 
-.. figure:: mesh-subd-modeling.*
+.. figure:: spline-drx-numpy.gif
     :figclass: figure
     :class: figure-img img-fluid
 
 
-.. literalinclude:: mesh-subd-modeling.py
-    :language: python
+.. literalinclude:: spline-drx-numpy.py
+

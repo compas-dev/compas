@@ -1,12 +1,10 @@
 ********************************************************************************
-Getting started
+Editors
 ********************************************************************************
 
 .. toctree::
     :maxdepth: 1
+    :titlesonly:
     :glob:
 
-    gettingstarted/installation
-    gettingstarted/editors
-    gettingstarted/cad
-    gettingstarted/knownissues
+    editors/*

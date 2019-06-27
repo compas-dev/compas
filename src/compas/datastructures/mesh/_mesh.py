@@ -141,19 +141,6 @@ class Mesh(FromToPickle,
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-        from compas.datastructures import Mesh
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        mesh.plot(
-            vertextext={key: key for key in mesh.vertices()},
-            vertexcolor={key: '#ff0000' for key in mesh.vertices_where({'vertex_degree': 2})},
-            vertexsize=0.2
-        )
 
     """
 
@@ -2565,6 +2552,8 @@ class Mesh(FromToPickle,
 
         References
         ----------
+        Based on [1]_
+
         .. [1] Botsch, Mario, et al. *Polygon mesh processing.* AK Peters/CRC Press, 2010.
 
         """

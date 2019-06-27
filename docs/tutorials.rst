@@ -24,7 +24,6 @@ Python
     :titlesonly:
     :glob:
 
-    tutorials/venvs
     tutorials/packages
 
 

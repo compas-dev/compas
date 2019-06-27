@@ -1,11 +1,9 @@
 ********************************************************************************
-Subd mesh modeling
+Shortest network paths
 ********************************************************************************
 
-.. figure:: mesh-subd-modeling.*
-    :figclass: figure
-    :class: figure-img img-fluid
+.. plot:: examples/plotter/network-shortest-path.py
 
 
-.. literalinclude:: mesh-subd-modeling.py
+.. literalinclude:: network-shortest-path.py
     :language: python

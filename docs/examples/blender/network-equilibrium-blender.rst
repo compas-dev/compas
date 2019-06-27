@@ -1,11 +1,11 @@
 ********************************************************************************
-Subd mesh modeling
+Network equilibrium in Blender
 ********************************************************************************
 
-.. figure:: mesh-subd-modeling.*
+.. figure:: network-equilibrium-blender.png
     :figclass: figure
     :class: figure-img img-fluid
 
 
-.. literalinclude:: mesh-subd-modeling.py
-    :language: python
+.. literalinclude:: network-equilibrium-blender.py
+

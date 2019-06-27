@@ -2,9 +2,47 @@
 Examples
 ********************************************************************************
 
+Blender
+=======
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :glob:
 
-    examples/*
+    examples/blender/*
+
+GHPython
+========
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    examples/gh/*
+
+Plotters
+========
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    examples/plotter/*
+
+Rhino
+=====
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    examples/rhino/*
+
+Viewers
+=======
+
+.. toctree::
+    :maxdepth: 1
+    :glob:
+
+    examples/viewer/*

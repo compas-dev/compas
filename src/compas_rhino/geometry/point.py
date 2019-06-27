@@ -20,7 +20,7 @@ __all__ = ['RhinoPoint']
 
 
 class RhinoPoint(RhinoGeometry):
-    """"""
+    """Convenience wrapper for a Rhino point object."""
 
     __module__ = 'compas_rhino.geometry'
 

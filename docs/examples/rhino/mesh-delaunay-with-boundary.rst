@@ -1,10 +1,14 @@
 ********************************************************************************
-Remeshing 3D
+Delaunay triangulation with boundary
 ********************************************************************************
 
-.. figure:: mesh-remeshing-on-mesh.gif
+
+.. figure:: mesh-delaunay-with-boundary.jpg
     :figclass: figure
     :class: figure-img img-fluid
+
+    A plain delaunay triangulation will always form a convex boundary and a continuous mesh without 'holes'.
+    The following code shows how to include specific boundaries.
 
 
 .. raw:: html
@@ -13,7 +17,7 @@ Remeshing 3D
     <div class="card-body">
     <div class="card-title">Downloads</div>
 
-* :download:`mesh-remeshing-on-mesh.3dm <mesh-remeshing-on-mesh.3dm>`
+* :download:`mesh-delaunay.3dm <mesh-delaunay.3dm>`
 
 .. raw:: html
 
@@ -21,6 +25,6 @@ Remeshing 3D
     </div>
 
 
-.. literalinclude:: mesh-remeshing-on-mesh.py
+.. literalinclude:: mesh-delaunay-with-boundary.py
     :language: python
 

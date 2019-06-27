@@ -8,12 +8,10 @@ The main library of COMPAS
 
    overview
    gettingstarted
-   knownissues
-   environments
    examples
    tutorials
    api
-   contributions
-   changelog
+   contributing
    citing
+   changelog
    license
