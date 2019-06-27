@@ -118,7 +118,6 @@ misc
     display_image
     display_html
     update_settings
-    update_attributes
     update_named_values
     screenshot_current_view
 

@@ -1,10 +1,3 @@
-
-try:
-    import bpy
-except ImportError:
-    pass
-
-
 """
 ********************************************************************************
 compas_blender.geometry
@@ -23,6 +16,10 @@ Object-oriented convenience wrappers for native Blender geometry.
     BlenderSurface
 
 """
+try:
+    import bpy
+except ImportError:
+    pass
 
 
 class BlenderGeometry(object):

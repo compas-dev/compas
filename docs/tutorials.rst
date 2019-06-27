@@ -14,7 +14,6 @@ COMPAS
     tutorials/meshes
     tutorials/plotters
     tutorials/callbacks
-    tutorials/geomaps
 
 
 Python
@@ -25,7 +24,6 @@ Python
     :titlesonly:
     :glob:
 
-    tutorials/vens
     tutorials/packages
 
 

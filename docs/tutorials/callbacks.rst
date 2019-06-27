@@ -17,45 +17,65 @@ customise algorithms, apply constraints, visualise progress of iterative algorit
 
 
 In principle, the mechanism can be summarised with the following snippets.
+Let's assume we have an interative algorithm defined in some module ``algorithm.py``.
+We want to use the algorithm in a script called ``script.py``, but instead of running the
+algorithm as-is, we want to print a message at the end of every 10th iteration.
 
 .. code-block:: python
 
     # algorithm.py
 
-    def algo(..., callback=None):
-
+    def algo(kmax=100, callback=None):
         if callback:
             if not callable(callback):
                 raise Exception('The callback function is not callable.')
 
-        # stuff
-
         for k in range(kmax):
-            # stuffs
+            # this is where the main algorithm stuff happens
+            # ...
 
+            # at the end of every iteration the callback is called if it was provided.
             if callback:
                 callback(k)
 
-        # more stuffs
-
 .. code-block:: python
 
-    # somescript.py
+    # script.py
 
     from algorithm import algo
 
-    text = 'iteration number:'
+    iterations = []
 
-    def callback(k):
-        print(text, k)
+    def print_iterations(k):
+        if k % 5 == 0:
+            iterations.append(k)
+        if k % 10 == 0:
+            print("iteration", k)
 
-    algo(..., callback=callback)
+    algo(callback=print_iterations)
+    print(iterations)
 
 
-In this case, the result would be a bit boring, because the callback would simply
-print the number of the current iteration of the algorithm. Note, however, that
-the callback has access to the variable ``text``, even though that ariable was defined
-in a different context that the one in which the callback is called.
+The result of running the script is the following
+
+.. parsed-literal::
+
+    iteration 0
+    iteration 10
+    iteration 20
+    iteration 30
+    iteration 40
+    iteration 50
+    iteration 60
+    iteration 70
+    iteration 80
+    iteration 90
+    [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]
+
+
+Note that in addition to modifying the behaviour of the algorithm, without actually rewriting the algorithm,
+the callback has access to variables defined in the context of the calling script.
+This creates all sorts of interesting possibilities.
 
 
 Dynamic plotting
@@ -65,132 +85,135 @@ Throughout the main library, callbacks are often used in combination with the pl
 to visualise intermediate steps of an algorithm, or to visualise the progress of
 an iterative algorithm. Both can be very useful mechanisms for debugging.
 
-For example, from :mod:`compas.geometry`, an code snippet visualising the progress
-of an iterative smoothing algorithm (:func:`compas.geometry.mesh_smooth_centroid`).
+For example, using a callback, we can easily visualise the iterative process of a smoothing algorithm.
 
 .. code-block:: python
 
     import compas
-
     from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
     from compas.geometry import mesh_smooth_centroid
+    from compas_plotters import MeshPlotter
 
+    # make a mesh from a sample file
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+    # identify the vertices that should stay fixed during smoothing
+    fixed = list(mesh.vertices_where({'vertex_degree': 2}))
 
+    # make a plotter and pause for 1s to visualise the initial state before smoothing
     plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start' : mesh.vertex_coordinates(u, 'xy'),
-            'end'   : mesh.vertex_coordinates(v, 'xy'),
-            'color' : '#cccccc',
-            'width' : 0.5
-        })
-    plotter.draw_lines(lines)
-
     plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
     plotter.draw_faces()
     plotter.draw_edges()
-
     plotter.update(pause=1.0)
 
-    def callback(mesh, k, args):
-        print(k)
+    # define the callback function that will update the plot during smoothing
+    def plot_progress(mesh, k, args):
         plotter.update_vertices()
         plotter.update_faces()
         plotter.update_edges()
         plotter.update(pause=0.001)
 
-    mesh_smooth_centroid(mesh, kmax=50, fixed=fixed, callback=callback)
+    # run the smoothing algorithm
+    mesh_smooth_centroid(mesh, kmax=50, fixed=fixed, callback=plot_progress)
 
+    # keep the plotting window open after smoothing is done
     plotter.show()
 
 
-We use a mesh plotter as visualisation tool.
+In the above snippet, the callback function will update the vertices, faces, and edges
+of the mesh at every iteration and pause briefly before continuing with the next iteration.
+Note that we don't have to pass the plotter explicitly to the callback, because it has access
+to the variables available in the context where it was defined.
 
 .. code-block:: python
 
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
+    def plot_progress(mesh, k, args):
+        plotter.update_vertices()
+        plotter.update_faces()
+        plotter.update_edges()
+        plotter.update(pause=0.001)
 
-
-First, as a reference, we plot a set of lines corresponding to the original
-configuration of the mesh.
-
-.. code-block:: python
-
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start' : mesh.vertex_coordinates(u, 'xy'),
-            'end'   : mesh.vertex_coordinates(v, 'xy'),
-            'color' : '#cccccc',
-            'width' : 0.5
-        })
-    plotter.draw_lines(lines)
-
-
-Then we initialise the vertices, edges and faces that will be updated at every
-iteration to visualise the process. We also tell the plotter to pause for a second,
-to be able to digest the orginal configuration before the smoothing starts.
-
-.. code-block:: python
-
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
-    plotter.draw_faces()
-    plotter.draw_edges()
-
-    plotter.update(pause=1.0)
-
-
-The next step is to define the callback function that will update the plotter.
-The plotter has dedicated functions for this. They update the geometry of the
-collections of vertices, edges and faces while keeping the style attributes as they
-were set by the original calls to the draw functions. With a call to the general
-update function we update the drawing.
 
 The callback is handed off to the smoothing algorithm, which will call it at every
 iteration. By default, the callback receives the mesh object and the number of the
 current iteration as firs and second parameter, and then any additional parameters
-that were passed to the algorithm.
+that were passed to the algorithm as ``callback_args``.
 
 .. code-block:: python
 
-    def callback(mesh, k, args):
-        print(k)
-        plotter.update_vertices()
-        plotter.update_faces()
-        plotter.update_edges()
-        plotter.update(pause=0.001)
-
-    mesh_smooth_centroid(mesh, kmax=50, fixed=fixed, callback=callback)
+    mesh_smooth_centroid(mesh, kmax=50, fixed=fixed, callback=plot_progress)
 
 
-Finally, we make sure that the plotting window remains active and visible.
-
-.. code-block:: python
-
-    plotter.show()
-
-
-The result shpould be something like this.
+The result should be something like this.
 
 .. figure:: /_images/tutorial_callbacks_smoothing.gif
     :figclass: figure
     :class: figure-img img-fluid
 
 
-Dynamic visualisation in Rhino with conduits
-============================================
+Dynamic visualisation in Rhino
+==============================
+
+.. code-block:: python
+
+    import compas
+    from compas.datastructures import Mesh
+    from compas.geometry import mesh_smooth_area
+    from compas_rhino.artists import MeshArtist
+
+    # make a mesh datastructure from a Rhino mesh object
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    # make an artist for visualization
+    artist = MeshArtist(mesh, refreshrate=5)
+
+    # make a callback for updating the conduit
+    def callback(k, args):
+        artist.redraw(k)
+
+    # run the smoothing algorithm with the conduit enabled
+    with artist.conduit.enabled():
+        mesh_smooth_area(mesh, fixed=fixed, kmax=100, callback=callback)
+
+    # draw the final result
+    artist.draw_mesh()
 
 
 Applying constraints
 ====================
 
+.. code-block:: python
 
-Live interaction
-================
+    import compas_rhino
+    from compas.datastructures import Mesh
+    from compas.geometry import smooth_area
+    from compas_rhino.helpers import mesh_from_guid
+    from compas_rhino.conduits import MeshConduit
+    from compas_rhino.geometry import RhinoSurface
+    from compas_rhino.artists import MeshArtist
 
+    # make a mesh datastructure from a Rhino mesh object
+    guid = compas_rhino.select_mesh()
+    mesh = mesh_from_guid(Mesh, guid)
+
+    # make a target surface from a Rhino NURBS surface
+    guid = compas_rhino.select_surface()
+    target = RhinoSurface(guid)
+
+    # make a conduit for visualization
+    conduit = MeshConduit(mesh, refreshrate=5)
+
+    # make a callback for updating the conduit
+    # and for pulling the free vertices back to the surface at every iteration
+    def callback(k, args):
+        target.pull_mesh(mesh, fixed)
+        conduit.redraw(k)
+
+    # run the smoothing algorithm with the conduit enabled
+    with conduit.enabled():
+        mesh_smooth_area(mesh, fixed=fixed, kmax=100, callback=callback)
+
+    # draw the final result
+    artist = MeshArtist(mesh)
+    artist.draw_mesh()

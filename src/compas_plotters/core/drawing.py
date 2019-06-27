@@ -512,7 +512,7 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
                           ha='center',
                           va='center',
                           color=color_to_rgb(textcolor, normalize=True))
-            t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
+            t.set_bbox({'color': '#ffffff', 'alpha': 1.0})
     coll = LineCollection(
         fromto,
         linewidths=widths,

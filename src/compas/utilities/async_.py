@@ -19,6 +19,7 @@ class ThreadExceptHookHandler(object):
     Discussion: https://stackoverflow.com/a/31622038/269335
     PR (not yet merged): https://github.com/python/cpython/pull/8610
     Disclaimer (!): https://news.ycombinator.com/item?id=11090814
+
     """
     def __enter__(self):
         original_init = threading.Thread.__init__
@@ -75,7 +76,7 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
     Examples
     --------
 
-    The following example shows how to await an async function (``do_sync_stuff` in
+    The following example shows how to await an async function (``do_sync_stuff`` in
     the example), using this utility:
 
     .. code-block:: python
