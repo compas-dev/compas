@@ -4,7 +4,6 @@ These are internal functions of the framework.
 Not intended to be used outside compas* packages.
 """
 import os
-import subprocess
 import sys
 import tempfile
 
@@ -18,6 +17,7 @@ PY3 = sys.version_info[0] == 3
 system = sys.platform
 
 if os.name == 'nt':
+    import subprocess
     import ctypes
     import ctypes.wintypes
 
@@ -76,7 +76,7 @@ def select_python(python_executable):
         Select which python executable you want to use,
         either `python` or `pythonw`.
     """
-    python_executable = python_executable or 'python'
+    python_executable = python_executable or 'pythonw'
 
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
         python = os.path.join(PYTHON_DIRECTORY, python_executable)

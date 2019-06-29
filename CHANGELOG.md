@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Include `compas_plotters` and `compas_viewers` in the build instructions.
+- Moved import of `subprocess` to Windows-specific situations.
+- Fixed document functions failing when document name is `None`.
+- Downgraded `numpy` requirements.
+- Loosened `scipy` requirements.
+- Default Python to `pythonw`.
+
 ### Removed
 
 
