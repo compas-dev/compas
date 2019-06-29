@@ -60,7 +60,7 @@ def distance_point_point(a, b):
 
     Returns
     -------
-    d : float
+    float
         Distance bewteen a and b.
 
     Examples
@@ -180,7 +180,7 @@ def distance_point_line(point, line):
 
     Returns
     -------
-    d : float
+    float
         The distance between the point and the line.
 
     Notes
@@ -326,7 +326,7 @@ def distance_point_plane(point, plane):
 
     Returns
     -------
-    d : float
+    float
         Distance between point and plane.
 
     Notes
@@ -381,7 +381,7 @@ def distance_point_plane_signed(point, plane):
 
     Returns
     -------
-    d : float
+    float
         Distance between point and plane.
 
     Notes
@@ -438,7 +438,7 @@ def distance_line_line(l1, l2, tol=0.0):
 
     Returns
     -------
-    d : float
+    float
         The distance between the two lines.
 
     Notes

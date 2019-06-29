@@ -156,11 +156,6 @@ class Cylinder(object):
         return (self.circle.area * 2) + (self.circle.circumference * self.height)
 
     @property
-    def circumference(self):
-        """Float: The circumference of the cylinder."""
-        return 2 * pi * self.radius
-    
-    @property
     def volume(self):
         """Float: The volume of the cylinder."""
         return self.circle.area * self.height
