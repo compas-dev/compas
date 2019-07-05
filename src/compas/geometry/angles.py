@@ -87,8 +87,9 @@ def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
 
     Returns
     -------
-    float
+    float, None
         The signed angle in radians (in degrees if deg == True).
+        None if a vector has a null length.
 
     Examples
     --------
@@ -96,6 +97,8 @@ def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
     >>> angle_vectors_signed([0.0, 1.0, 0.0], [1.0, 0.0, 0.0], normal)
     """
     angle = angle_vectors(u, v)
+    if angle is None:
+        return None
     normal_uv = cross_vectors(u, v)
 
     if length_vector(normal_uv) > threshold:
@@ -124,15 +127,18 @@ def angle_vectors_xy(u, v, deg=False):
 
     Returns
     -------
-    float
+    float, None
         The smallest angle between the vectors in radians (in degrees if deg == True).
         The angle is always positive.
+        None if a vector has a null length in the xy plane.
 
     Examples
     --------
     >>>
 
     """
+    if length_vector_xy(u) == 0 or length_vector_xy(v) == 0:
+        return None
     a = dot_vectors_xy(u, v) / (length_vector_xy(u) * length_vector_xy(v))
     a = max(min(a, 1), -1)
     if deg:
@@ -231,6 +237,7 @@ def angles_vectors(u, v, deg=False):
     tuple
         The smallest angle between the vectors in radians (in degrees if deg == True).
         The smallest angle is returned first.
+        (None, None) if a vector has a null length.
 
     Examples
     --------
@@ -239,8 +246,12 @@ def angles_vectors(u, v, deg=False):
     """
     if deg:
         a = angle_vectors(u, v, deg)
+        if a is None:
+            return None, None
         return a, 360. - a
     a = angle_vectors(u, v)
+    if a is None:
+        return None, None
     return a, pi * 2 - a
 
 
@@ -261,6 +272,7 @@ def angles_vectors_xy(u, v, deg=False):
     tuple
         The smallest angle between the vectors in radians (in degrees if deg == True).
         The smallest angle is returned first.
+        (None, None) if a vector has a null length in the xy plane.
 
     Notes
     -----
@@ -273,8 +285,12 @@ def angles_vectors_xy(u, v, deg=False):
     """
     if deg:
         a = angle_vectors_xy(u, v, deg)
+        if a is None:
+            return None, None
         return a, 360. - a
     a = angle_vectors_xy(u, v)
+    if a is None:
+        return None, None
     return a, pi * 2 - a
 
 

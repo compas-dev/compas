@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Complete `angle_vectors` to output None if zero-length vector.
+- Complete `angle_vectors` and other related functions to output None if zero-length vector.
 
 ### Removed
 
