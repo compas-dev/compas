@@ -44,15 +44,20 @@ def angle_vectors(u, v, deg=False):
 
     Returns
     -------
-    float
+    float, None
         The smallest angle in radians (in degrees if deg == True).
         The angle is always positive.
+        None if a vector has a null length.
 
     Examples
     --------
     >>> angle_vectors([0.0, 1.0, 0.0], [1.0, 0.0, 0.0])
 
     """
+
+    if length_vector(u) == 0 or length_vector(v) == 0:
+        return None
+
     a = dot_vectors(u, v) / (length_vector(u) * length_vector(v))
     a = max(min(a, 1), -1)
 
