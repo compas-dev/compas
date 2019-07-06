@@ -64,9 +64,7 @@ class RhinoPoint(RhinoGeometry):
 
         Examples
         --------
-        .. code-block:: python
-
-            #
+        >>>
 
         """
         return self.xyz
@@ -89,9 +87,7 @@ class RhinoPoint(RhinoGeometry):
 
         Examples
         --------
-        .. code-block:: python
-
-            #
+        >>>
 
         """
         return [self.closest_point(point, maxdist) for point in points]

@@ -6,5 +6,5 @@ numba
 numpy ==1.15.4
 pillow
 planarity
-scipy >=1.0
+scipy >=1.1
 sympy
