@@ -1479,7 +1479,7 @@ class Mesh(FromToPickle,
         # each boundary must be taken into account as if it was one face
         B = len(self.boundaries())
 
-        if mesh.is_orientable:
+        if self.is_orientable():
             return (2 - (X + B)) / 2
         else:
             return 2 - (X + B)
