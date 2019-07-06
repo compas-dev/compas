@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix mesh genus in `compas.datastructures`.
 - Fixed missing import in `compas_rhino.geometry`.
 - Removed circular imports from `compas_rhino.geometry`.
 
