@@ -863,8 +863,14 @@ class Mesh(FromToPickle,
     def _cycle_keys(self, keys):
         return pairwise(keys + keys[0:1])
 
-    def copy(self):
+    def copy(self, cls=None):
         """Make an independent copy of the mesh object.
+
+        Parameters
+        ----------
+        cls : compas.datastructures.Mesh, optional
+            The type of mesh to return.
+            Defaults to the type of the current mesh.
 
         Returns
         -------
@@ -872,7 +878,8 @@ class Mesh(FromToPickle,
             A separate, but identical mesh object.
 
         """
-        cls = type(self)
+        if not cls:
+            cls = type(self)
         return cls.from_data(deepcopy(self.data))
 
     def clear(self):
