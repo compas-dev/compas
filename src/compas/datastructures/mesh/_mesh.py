@@ -602,6 +602,49 @@ class Mesh(FromToPickle,
         return mesh
 
     @classmethod
+    def from_polylines(cls, boundary_polylines, other_polylines):
+        """Construct mesh from polylines.
+
+        Based on construction from_lines,
+        with removal of vertices that are not polyline extremities
+        and of faces that represent boundaries.
+
+        This specific method is useful to get the mesh connectivity from a set of (discretised) curves,
+        that could overlap and yield a wrong connectivity if using from_lines based on the polyline extremities only.
+
+        Parameters
+        ----------
+        boundary_polylines : list
+            List of polylines representing boundaries as lists of vertex coordinates.
+        other_polylines : list
+            List of the other polylines as lists of vertex coordinates.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+            
+        """
+
+        corner_vertices = [geometric_key(xyz) for polyline in boundary_polylines + other_polylines for xyz in [polyline[0], polyline[-1]]]
+        boundary_vertices = [geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline]
+
+        mesh = cls.from_lines([(u, v) for polyline in boundary_polylines + other_polylines for u, v in pairwise(polyline)])
+
+        # remove the vertices that are not from the polyline extremities and the faces with all their vertices on the boundary
+        vertex_keys = [vkey for vkey in mesh.vertices() if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices]
+        vertex_map = {vkey: i for i, vkey in enumerate(vertex_keys)}
+        vertices = [mesh.vertex_coordinates(vkey) for vkey in vertex_keys]
+        faces = []
+        for fkey in mesh.faces():
+            if sum([geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices for vkey in mesh.face_vertices(fkey)]):
+                faces.append([vertex_map[vkey] for vkey in mesh.face_vertices(fkey) if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices])
+        
+        mesh.cull_vertices()
+
+        return cls.from_vertices_and_faces(vertices, faces)
+
+    @classmethod
     def from_vertices_and_faces(cls, vertices, faces):
         """Construct a mesh object from a list of vertices and faces.
 
