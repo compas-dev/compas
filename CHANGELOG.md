@@ -9,7 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `compas_rhino.geometry.RhinoGeometry` to the docs.
+
 ### Changed
+
+- Fix mesh genus in `compas.datastructures`.
+- Fixed missing import in `compas_rhino.geometry`.
+- Removed circular imports from `compas_rhino.geometry`.
+
+### Removed
+
+
+## [0.7.1] 2019-06-29
+
+### Added
+
+### Changed
+
+- Include `compas_plotters` and `compas_viewers` in the build instructions.
+- Moved import of `subprocess` to Windows-specific situations.
+- Fixed document functions failing when document name is `None`.
+- Downgraded `numpy` requirements.
+- Loosened `scipy` requirements.
+- Default Python to `pythonw`.
 
 ### Removed
 

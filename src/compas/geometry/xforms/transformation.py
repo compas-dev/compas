@@ -181,7 +181,8 @@ class Transformation(object):
             >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
             >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.from_frame_to_frame(f1, f2)
-            >>> f1 == f1.transform(T)
+            >>> f1.transform(T)
+            >>> f1 == f2
             True
         """
         T1 = matrix_from_frame(frame_from)
@@ -287,54 +288,9 @@ class Transformation(object):
 # ==============================================================================
 
 if __name__ == "__main__":
+    from compas.geometry import Translation
+    from compas.geometry import Rotation
+    from compas.geometry import Scale
 
-    from compas.geometry import Point
-    from compas.geometry import Frame
-    from compas.geometry import allclose
-    from compas.geometry import matrix_from_translation
-    from compas.geometry import matrix_from_scale_factors
-    from compas.geometry import transform_points
-
-    from numpy import asarray
-
-
-    f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    T = Transformation.from_frame(f1)
-    f2 = Frame.from_transformation(T)
-    print(f1 == f2)
-
-    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    T = Transformation.from_frame(f)
-    Tinv = T.inverse()
-    I = Transformation()
-    print(I == T * Tinv)
-
-    f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
-    f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    T = Transformation.from_frame_to_frame(f1, f2)
-    f1.transform(T)
-    print(f1 == f2)
-
-    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    T = Transformation.from_frame(f)
-    p = Point(0, 0, 0)
-    p.transform(T)
-    print(allclose(f.point, p))
-
-    f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    T = Transformation.from_frame(f1)
-    points = [[1.0, 1.0, 1.0], [1.68, 1.68, 1.27], [0.33, 1.73, 0.85]]
-    points = transform_points(points, T)
-
-    trans1 = [1, 2, 3]
-    angle1 = [-2.142, 1.141, -0.142]
-    scale1 = [0.123, 2, 0.5]
-    T = matrix_from_translation(trans1)
-    R = matrix_from_euler_angles(angle1)
-    S = matrix_from_scale_factors(scale1)
-    M = multiply_matrices(multiply_matrices(T, R), S)
-    # M = compose_matrix(scale1, None, angle1, trans1, None)
-    scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
-    print(allclose(scale1, scale2))
-    print(allclose(angle1, angle2))
-    print(allclose(trans1, trans2))
+    import doctest
+    doctest.testmod(globs=globals())

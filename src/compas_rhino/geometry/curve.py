@@ -31,19 +31,7 @@ class RhinoCurve(RhinoGeometry):
 
     Examples
     --------
-    .. code-block:: python
-
-        import compas_rhino
-
-        from compas_rhino.geometry import RhinoCurve
-
-        curve = RhinoCurve(guid)
-
-        points = curve.divide(10)
-        tangents = curve.tangents(points)
-
-        for point, vector in zip(points, tangents):
-            print point, tangent
+    >>>
 
     """
 

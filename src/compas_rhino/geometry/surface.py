@@ -245,16 +245,16 @@ class RhinoSurface(RhinoGeometry):
         """
         kinks = []
         borders = self.borders(type=0)
-        
+
         for border in borders:
             border = RhinoCurve(border)
             extremities = map(lambda x: rs.EvaluateCurve(border.guid, rs.CurveParameter(border.guid, x)), [0., 1.])
-        
+
             if border.is_closed():
                 start_tgt, end_tgt = border.tangents(extremities)
                 if angle_vectors(start_tgt, end_tgt) > threshold:
-                    kinks += extremities 
-        
+                    kinks += extremities
+
             else:
                 kinks += extremities
 
@@ -304,7 +304,7 @@ class RhinoSurface(RhinoGeometry):
 
     def closest_point(self, xyz):
         """Return the XYZ coordinates of the closest point on the surface from input XYZ-coordinates.
-    
+
         Parameters
         ----------
         xyz : list
@@ -324,7 +324,7 @@ class RhinoSurface(RhinoGeometry):
 
     def closest_point_on_boundaries(self, xyz):
         """Return the XYZ coordinates of the closest point on the boundaries of the surface from input XYZ-coordinates.
-    
+
         Parameters
         ----------
         xyz : list
@@ -432,13 +432,13 @@ class RhinoSurface(RhinoGeometry):
         vertices, faces = mesh.to_vertices_and_faces()
         vertices = [self.point_uv_to_xyz(uv0[:2]) for uv0 in vertices]
         return cls.from_vertices_and_faces(vertices, faces)
- 
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == '__main__':
-    
+
     surface = RhinoSurface.from_selection()
 
     points = []
