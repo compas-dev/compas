@@ -103,6 +103,24 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
     yields the two new faces
     face_1 = [a, e, b, c] and
     face_2 = [b, e, a, d].
+    
+    Examples
+    --------
+    >>> from compas.datastructures import Mesh
+    >>> from compas.plotters import MeshPlotter
+    >>> vertices = [[1.0, 0.0, 0.0], [1.0, 2.0, 0.0], [0.0, 1.0, 0.0], [2.0, 1.0, 0.0], [0.0, 0.0, 0.0]]
+    >>> faces = [[0, 1, 2], [0, 3, 1]]
+    >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
+    >>> mesh_insert_vertex_on_edge(mesh, 0, 1)
+    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
+    >>> mesh_insert_vertex_on_edge(mesh, 0, 2, 4)
+    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
+    >>> plotter = MeshPlotter(mesh)
+    >>> plotter.draw_vertices(text='key')
+    >>> plotter.draw_edges()
+    >>> plotter.draw_faces(text='key')
+    >>> plotter.show()
 
     """
 
@@ -131,33 +149,4 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
 
 if __name__ == "__main__":
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
-
-    vertices = [
-        [1.0, 0.0, 0.0], 
-        [1.0, 2.0, 0.0],
-        [0.0, 1.0, 0.0],
-        [2.0, 1.0, 0.0],
-        [0.0, 0.0, 0.0]
-    ]
-    faces = [
-        [0, 1, 2],
-        [0, 3, 1]
-    ]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-    print(mesh.face_vertices(0), mesh.face_vertices(1))
-
-    mesh_insert_vertex_on_edge(mesh, 0, 1)
-    print(mesh.face_vertices(0), mesh.face_vertices(1))
-
-    mesh_insert_vertex_on_edge(mesh, 0, 2, 4)
-    print(mesh.face_vertices(0), mesh.face_vertices(1))
-
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices(text='key')
-    plotter.draw_edges()
-    plotter.draw_faces(text='key')
-    plotter.show()
+    pass
