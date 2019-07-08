@@ -27,6 +27,23 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
     fkeys : list
         The list of modified faces.
 
+    Examples
+    --------
+    >>> from compas.datastructures import Mesh
+    >>> from compas.plotters import MeshPlotter
+    >>> vertices = [[1.0, 0.0, 0.0], [1.0, 2.0, 0.0], [0.0, 1.0, 0.0], [2.0, 1.0, 0.0], [0.0, 0.0, 0.0]]
+    >>> faces = [[0, 1, 2], [0, 3, 1]]
+    >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    >>> mesh_substitute_vertex_in_faces(mesh, 0, 4)
+    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
+    >>> mesh_substitute_vertex_in_faces(mesh, 4, 0, [1])
+    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
+    >>> plotter = MeshPlotter(mesh)
+    >>> plotter.draw_vertices(text='key')
+    >>> plotter.draw_edges()
+    >>> plotter.draw_faces(text='key')
+    >>> plotter.show()
+
     """
 
     # apply to all faces if there is none chosen
@@ -48,41 +65,4 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
 
 if __name__ == "__main__":
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
-
-    vertices = [
-        [1.0, 0.0, 0.0], 
-        [1.0, 2.0, 0.0],
-        [0.0, 1.0, 0.0],
-        [2.0, 1.0, 0.0],
-        [0.0, 0.0, 0.0]
-    ]
-    faces = [
-        [0, 1, 2],
-        [0, 3, 1]
-    ]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    mesh_substitute_vertex_in_faces(mesh, 0, 4)
-    print(mesh.face_vertices(0), mesh.face_vertices(1))
-    # assert 4 in mesh.face_vertices(0)
-    # assert 0 not in mesh.face_vertices(0)
-    # assert 4 in mesh.face_vertices(1)
-    # assert 0 not in mesh.face_vertices(1)
-    mesh_substitute_vertex_in_faces(mesh, 4, 0, [1])
-    print(mesh.face_vertices(0), mesh.face_vertices(1))
-    # assert 4 in mesh.face_vertices(0)
-    # assert 0 not in mesh.face_vertices(0)
-    # assert 0 in mesh.face_vertices(1)
-    # assert 4 not in mesh.face_vertices(1)
-
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices(text='key')
-    plotter.draw_edges()
-    plotter.draw_faces(text='key')
-    plotter.show()
-
-
+    pass
