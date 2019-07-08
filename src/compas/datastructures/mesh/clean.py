@@ -17,7 +17,7 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
     ----------
     mesh : Mesh
         A mesh object.
-    precision (str): Optional.
+    precision : str (None)
         A formatting option that specifies the precision of the
         individual numbers in the string (truncation after the decimal point).
         Supported values are any float precision, or decimal integer (``'d'``).

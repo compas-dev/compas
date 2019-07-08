@@ -40,6 +40,11 @@ class Frame(object):
     yaxis : vector
         The y-axis of the frame.
 
+    Notes
+    -----
+    All input vectors are orthonormalized when creating a frame, with the first
+    vector as starting point.
+
     Examples
     --------
     >>> from compas.geometry import Frame
@@ -50,11 +55,6 @@ class Frame(object):
     >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
     >>> f = Frame.from_euler_angles([0.5, 1., 0.2])
     >>> f = Frame.worldXY()
-
-    Notes
-    -----
-    All input vectors are orthonormalized when creating a frame, with the first
-    vector as starting point.
 
     """
 

@@ -141,6 +141,7 @@ class Mesh(FromToPickle,
 
     Examples
     --------
+    >>>
 
     """
 

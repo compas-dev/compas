@@ -62,6 +62,7 @@ def mesh_thicken(mesh, thickness=1.0, cls=None):
     -------
     thickened_mesh : Mesh
         The thickened mesh.
+
     """
     if cls is None:
         cls = type(mesh)
