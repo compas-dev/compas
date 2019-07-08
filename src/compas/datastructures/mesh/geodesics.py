@@ -2,30 +2,23 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+from numpy import array
+from numpy import cross
+from numpy import bincount
+from numpy import zeros
+from numpy import mean
+from numpy import tan
+from numpy import arccos
+from numpy import sum
+from numpy import empty
+from numpy import append
+from numpy import ones
 
-try:
-    from numpy import array
-    from numpy import cross
-    from numpy import bincount
-    from numpy import zeros
-    from numpy import mean
-    from numpy import tan
-    from numpy import arccos
-    from numpy import sum
-    from numpy import empty
-    from numpy import append
-    from numpy import ones
-
-    from scipy.sparse import spdiags
-    from scipy.sparse import csr_matrix
-    from scipy.sparse.linalg import splu
-    from scipy.sparse.linalg import spsolve
-    from scipy.linalg import solve
-
-except ImportError:
-    compas.raise_if_not_ironpython()
-
+from scipy.sparse import spdiags
+from scipy.sparse import csr_matrix
+from scipy.sparse.linalg import splu
+from scipy.sparse.linalg import spsolve
+from scipy.linalg import solve
 
 from compas.numerical import normrow
 from compas.numerical import normalizerow
@@ -174,9 +167,10 @@ if __name__ == "__main__":
     from compas.datastructures import mesh_quads_to_triangles
     from compas.datastructures import mesh_flip_cycles
 
-    from compas.plotters import MeshPlotter
     from compas.utilities import i_to_blue
     from compas.geometry import scale_points
+
+    from compas_plotters import MeshPlotter
 
 
     # mesh = Mesh.from_obj(compas.get('models/head-poses/head-reference.obj'))

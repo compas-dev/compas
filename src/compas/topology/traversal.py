@@ -2,8 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+try:
+    from queue import PriorityQueue
+except ImportError:
+    from Queue import PriorityQueue
+
 from collections import deque
+
 from compas.utilities import pairwise
+from compas.geometry import distance_point_point
 
 
 __all__ = [
@@ -12,6 +19,7 @@ __all__ = [
     'breadth_first_traverse',
     'breadth_first_paths',
     'shortest_path',
+    'astar_shortest_path',
     'dijkstra_distances',
     'dijkstra_path'
 ]
@@ -119,7 +127,7 @@ def depth_first_ordering(adjacency, root):
 
 #         import compas
 #         from compas.datastructures import Mesh
-#         from compas.plotters import MeshPlotter
+#         from compas_plotters import MeshPlotter
 #         from compas.topology import depth_first_tree
 #         from compas.utilities import pairwise
 
@@ -333,7 +341,7 @@ def shortest_path(adjacency, root, goal):
 
         from compas.datastructures import Network
         from compas.topology import shortest_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -374,6 +382,105 @@ def shortest_path(adjacency, root, goal):
         return None
 
 
+# ==============================================================================
+# A*
+# ==============================================================================
+
+
+def reconstruct_path(came_from, current):
+    total_path = [current]
+    while current in came_from:
+        current = came_from[current]
+        total_path.append(current)
+    total_path.reverse()
+    return total_path
+
+
+def astar_shortest_path(network, root, goal):
+    """Find the shortest path between two vertices of a network using the A* search algorithm.
+
+    Parameters
+    ----------
+    network : instance of the Network class
+    root : hashable
+        The identifier of the starting node.
+    goal : hashable
+        The identifier of the ending node.
+
+    Returns
+    -------
+    list, None
+        The path from root to goal, or None, if no path exists between the vertices.
+
+    References
+    ----------
+    https://en.wikipedia.org/wiki/A*_search_algorithm
+
+    """
+    root_coords = network.vertex_coordinates(root)
+    goal_coords = network.vertex_coordinates(goal)
+
+    # The set of nodes already evaluated
+    visited_set = set()
+
+    # The set of currently discovered nodes that are not evaluated yet.
+    # Initially, only the start node is known.
+    candidates_set = {root}
+    best_candidate_heap = PriorityQueue()
+    best_candidate_heap.put((0, root))
+
+    # For each node, which node it can most efficiently be reached from.
+    # If a node can be reached from many nodes, came_from will eventually contain the
+    # most efficient previous step.
+    came_from = dict()
+
+    # g_score is a dict mapping node index to the cost of getting from the root node to that node.
+    # The default value is Infinity.
+    # The cost of going from start to start is zero.
+    g_score = dict()
+
+    for v in network.vertices():
+        g_score[v] = float("inf")
+
+    g_score[root] = 0
+
+    # For each node, the total cost of getting from the start node to the goal
+    # by passing by that node. That value is partly known, partly heuristic.
+    # The default value of f_score is Infinity
+    f_score = dict()
+
+    for v in network.vertices():
+        f_score[v] = float("inf")
+
+    # For the first node, that value is completely heuristic.
+    f_score[root] = distance_point_point(root_coords, goal_coords)
+
+    while not best_candidate_heap.empty():
+        _, current = best_candidate_heap.get()
+        if current == goal:
+            return reconstruct_path(came_from, current)
+        visited_set.add(current)
+        current_coords = network.vertex_coordinates(current)
+        for neighbor in network.vertex_neighbors(current):
+            if neighbor in visited_set:
+                continue	# Ignore the neighbor which is already evaluated.
+
+            # The distance from start to a neighbor
+            neighbor_coords = network.vertex_coordinates(neighbor)
+            tentative_gScore = g_score[current] + distance_point_point(current_coords, neighbor_coords)
+            if neighbor not in candidates_set:	# Discover a new node
+                candidates_set.add(neighbor)
+            elif tentative_gScore >= g_score[neighbor]:
+                continue
+
+            # This path is the best until now. Record it!
+            came_from[neighbor] = current
+            g_score[neighbor] = tentative_gScore
+            new_fscore = g_score[neighbor] + distance_point_point(neighbor_coords, goal_coords)
+            f_score[neighbor] = new_fscore
+            best_candidate_heap.put((new_fscore, neighbor))
+
+
 def dijkstra_distances(adjacency, weight, target):
     """Compute Dijkstra distances from all vertices in a connected set to one target vertex.
 
@@ -404,7 +511,7 @@ def dijkstra_distances(adjacency, weight, target):
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_distances
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
@@ -490,7 +597,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -535,7 +642,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -632,7 +739,7 @@ if __name__ == '__main__':
     # if testrun == 1:
     #     import compas
     #     from compas.datastructures import Mesh
-    #     from compas.plotters import MeshPlotter
+    #     from compas_plotters import MeshPlotter
 
     #     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -680,7 +787,7 @@ if __name__ == '__main__':
 
         from compas.datastructures import Network
         from compas.topology import shortest_path
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
 
@@ -723,7 +830,7 @@ if __name__ == '__main__':
 
         from compas.datastructures import Network
         from compas.topology import dijkstra_distances
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
         from compas.utilities import i_to_red
 
         network = Network.from_obj(compas.get('grid_irregular.obj'))
@@ -761,7 +868,7 @@ if __name__ == '__main__':
         import compas
 
         from compas.datastructures import Network
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         from compas.topology import dijkstra_path
 

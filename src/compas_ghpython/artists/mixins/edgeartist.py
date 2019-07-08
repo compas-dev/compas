@@ -53,7 +53,7 @@ class EdgeArtist(object):
                 'name' : self.datastructure.edge_name(u, v),
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
-        return compas_ghpython.xdraw_lines(lines)
+        return compas_ghpython.draw_lines(lines)
 
     def draw_edgelabels(self, text=None, color=None):
         """Draw labels for a selection of edges.
@@ -102,7 +102,7 @@ class EdgeArtist(object):
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
 
-        return compas_ghpython.xdraw_labels(labels)
+        return compas_ghpython.draw_labels(labels)
 
 
 # ==============================================================================

@@ -4,6 +4,7 @@ from __future__ import division
 
 from math import cos
 from math import pi
+from copy import deepcopy
 
 from compas.geometry import centroid_points
 
@@ -22,10 +23,23 @@ __all__ = [
 ]
 
 
-class SubdMesh(Mesh):
+def mesh_fast_copy(other):
+    subd = SubdMesh()
+    subd.attributes = deepcopy(other.attributes)
+    subd.default_vertex_attributes = deepcopy(other.default_vertex_attributes)
+    subd.default_face_attributes = deepcopy(other.default_face_attributes)
+    subd.default_edge_attributes = deepcopy(other.default_edge_attributes)
+    subd.vertex = deepcopy(other.vertex)
+    subd.face = deepcopy(other.face)
+    subd.edgedata = deepcopy(other.edgedata)
+    subd.facedata = deepcopy(other.facedata)
+    subd.halfedge = deepcopy(other.halfedge)
+    subd._max_int_key = other._max_int_key
+    subd._max_int_fkey = other._max_int_fkey
+    return subd
 
-    # def vertex_coordinates(self, key):
-    #     return self.vertex[key]
+
+class SubdMesh(Mesh):
 
     def add_vertex(self, x, y, z):
         key = self._max_int_key = self._max_int_key + 1
@@ -116,46 +130,37 @@ def mesh_subdivide_tri(mesh, k=1):
         A new subdivided mesh.
 
     """
-
     for _ in range(k):
         subd = mesh.copy()
-
         for fkey in mesh.faces():
             subd.insert_vertex(fkey)
-
         mesh = subd
-
     return mesh
 
 
 def mesh_subdivide_quad(mesh, k=1):
     """Subdivide a mesh such that all faces are quads.
     """
-
+    # cls = type(mesh)
     for _ in range(k):
+        # subd = mesh_fast_copy(mesh)
         subd = mesh.copy()
-
         for u, v in list(subd.edges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
-
         for fkey in mesh.faces():
-
             descendant = {i: j for i, j in subd.face_halfedges(fkey)}
             ancestor = {j: i for i, j in subd.face_halfedges(fkey)}
-
             x, y, z = mesh.face_centroid(fkey)
             c = subd.add_vertex(x=x, y=y, z=z)
-
             for key in mesh.face_vertices(fkey):
                 a = ancestor[key]
                 d = descendant[key]
                 subd.add_face([a, key, d, c])
-
             del subd.face[fkey]
-
         mesh = subd
-
-    return mesh
+    # subd = cls()
+    # subd.data = mesh.data
+    return subd
 
 
 def mesh_subdivide_corner(mesh, k=1):
@@ -241,76 +246,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_subdivide_catmullclark
-        from compas.plotters import MeshPlotter
-
-        vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
-        faces = [[0, 1, 2, 3]]
-
-        mesh = Mesh.from_vertices_and_faces(vertices, faces)
-        subd = mesh_subdivide_catmullclark(mesh, k=3, fixed=mesh.vertices())
-
-        plotter = MeshPlotter(subd)
-
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
-        plotter.draw_faces()
-
-        plotter.show()
-
-
-    .. plot::
-        :include-source:
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_subdivide_catmullclark
-        from compas.plotters import MeshPlotter
-
-        vertices = [[0., 0., 0.], [1., 0., 0.], [1., 1., 0.], [0., 1.0, 0.]]
-        faces = [[0, 1, 2, 3]]
-
-        mesh = Mesh.from_vertices_and_faces(vertices, faces)
-        subd = mesh_subdivide_catmullclark(mesh, k=3, fixed=None)
-
-        plotter = MeshPlotter(subd)
-
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in mesh.vertices()}, radius=0.01)
-        plotter.draw_faces()
-
-        plotter.show()
-
-
-    .. code-block:: python
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_subdivide_catmullclark
-        from compas.geometry import Polyhedron
-        from compas.viewers import SubdMeshViewer
-
-        cube = Polyhedron.generate(6)
-
-        mesh = Mesh.from_vertices_and_faces(cube.vertices, cube.faces)
-
-        viewer = SubdMeshViewer(mesh, subdfunc=mesh_subdivide_catmullclark, width=1440, height=900)
-
-        viewer.axes_on = False
-        viewer.grid_on = False
-
-        for _ in range(10):
-           viewer.camera.zoom_in()
-
-        viewer.subdivide(k=4)
-
-        viewer.setup()
-        viewer.show()
-
-
-    .. figure:: /_images/subdivide_mesh_catmullclark-screenshot.*
-        :figclass: figure
-        :class: figure-img img-fluid
+    >>>
 
     """
     if not fixed:
@@ -554,7 +490,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
         from compas.datastructures import Mesh
         from compas.datastructures import mesh_flip_cycle_directions
-        from compas.plotters import SubdMeshViewer
+        from compas_plotters import SubdMeshViewer
 
         mesh = Mesh.from_polyhedron(4)
         mesh_flip_cycle_directions(mesh)
@@ -601,7 +537,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
                         x += 0.125 * xyz[0]
                         y += 0.125 * xyz[1]
                         z += 0.125 * xyz[2]
-                        
+
             else:
                 n = len(nbrs)
 
@@ -640,7 +576,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
                 c = key_xyz[uv_w[(u, v)]]
                 d = key_xyz[uv_w[(v, u)]]
                 xyz = [(3.0 / 8.0) * (a[i] + b[i]) + (1.0 / 8.0) * (c[i] + d[i]) for i in range(3)]
-            
+
             else:
                 xyz = [0.5 * (a[i] + b[i]) for i in range(3)]
 
@@ -678,7 +614,8 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     from compas.utilities import print_profile
-    from compas.plotters import MeshPlotter
+
+    from compas_plotters import MeshPlotter
 
     #mesh = Mesh.from_polyhedron(6)
     # fixed = [mesh.get_any_vertex()]
@@ -686,7 +623,7 @@ if __name__ == "__main__":
 
     #subdivide = partial(mesh_subdivide_catmullclark)
     #subd = subdivide(mesh, k=4)
-        
+
     vertices = [
         [0.5, 0.0, 0.0],
         [0.0, 1.0, 0.0],

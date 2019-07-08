@@ -48,7 +48,7 @@ class VertexArtist(object):
                 'color' : colordict[key],
                 'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
-        return compas_ghpython.xdraw_points(points)
+        return compas_ghpython.draw_points(points)
 
     def draw_vertexlabels(self, text=None, color=None):
         """Draw labels for a selection vertices.
@@ -97,7 +97,7 @@ class VertexArtist(object):
                 'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
 
-        return compas_ghpython.xdraw_labels(labels)
+        return compas_ghpython.draw_labels(labels)
 
 
 # ==============================================================================

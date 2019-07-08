@@ -3,45 +3,36 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
-import compas
 
 from functools import wraps
 
-try:
-    from numpy import array
-    from numpy import asarray
-    from numpy import atleast_2d
-    from numpy import nan_to_num
-    from numpy import nonzero
-    from numpy import seterr
-    from numpy import sum
-    from numpy import zeros
-    from numpy import absolute
-    from numpy.linalg import cond
+from numpy import array
+from numpy import asarray
+from numpy import atleast_2d
+from numpy import nan_to_num
+from numpy import nonzero
+from numpy import seterr
+from numpy import sum
+from numpy import zeros
+from numpy import absolute
+from numpy.linalg import cond
 
-    from scipy import cross
-    from scipy.linalg import cho_factor
-    from scipy.linalg import cho_solve
-    from scipy.linalg import lstsq
-    from scipy.linalg import lu
-    from scipy.linalg import qr
-    from scipy.linalg import solve
-    from scipy.linalg import svd
-    from scipy.io import loadmat
-    from scipy.io import savemat
-    from scipy.sparse.linalg import factorized
-    from scipy.sparse.linalg import spsolve
+from scipy import cross
+from scipy.linalg import cho_factor
+from scipy.linalg import cho_solve
+from scipy.linalg import lstsq
+from scipy.linalg import lu
+from scipy.linalg import qr
+from scipy.linalg import solve
+from scipy.linalg import svd
+from scipy.io import loadmat
+from scipy.io import savemat
+from scipy.sparse.linalg import factorized
+from scipy.sparse.linalg import spsolve
 
-except ImportError:
-    compas.raise_if_not_ironpython()
+old_settings = seterr(all='ignore')
 
-else:
-    old_settings = seterr(all='ignore')
-
-try:
-    from subprocess import Popen
-except ImportError:
-    compas.raise_if_not_ironpython()
+from subprocess import Popen
 
 
 __all__ = [
@@ -157,9 +148,9 @@ def dof(A, tol=0.001, condition=False):
     ----------
     A : array-like
         Matrix A represented as an array or list.
-    tol : float
+    tol : float (0.001)
         Tolerance.
-    condition : bool
+    condition : bool (False)
         Return the condition number of the matrix.
 
     Returns
@@ -206,7 +197,8 @@ def pivots(U, tol=None):
 
     Notes
     -----
-    The pivots are the non-zero leading coefficients of each row.
+    If the matrix U is in Reduced Row Echelon Form,
+    the pivots are the columns with leading non-zero coefficients per row.
 
     Examples
     --------
@@ -243,7 +235,8 @@ def nonpivots(U, tol=None):
 
     Notes
     -----
-    The non-pivots are where there are no non-zero leading coefficients in a row.
+    If the matrix U is in Reduced Row Echelon Form,
+    the nonpivots are the columns with non-zero coefficients that are not leading their row.
 
     Examples
     --------
@@ -265,8 +258,6 @@ def rref(A, tol=None):
     ----------
     A : array-like
         Matrix A represented as an array or list.
-    algo : str
-        Algorithm to use: 'qr', 'sympy', 'matlab'.
     tol : float
         Tolerance.
 
@@ -277,8 +268,7 @@ def rref(A, tol=None):
 
     Notes
     -----
-    A matrix is in reduced row-echelon form after Gauss-Jordan elimination, the
-    result is independent of the method/algorithm used.
+    A matrix is in reduced row-echelon form after Gauss-Jordan elimination.
 
     Examples
     --------

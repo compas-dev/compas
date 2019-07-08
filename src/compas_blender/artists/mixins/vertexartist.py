@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas_blender.utilities import set_objects_show_names
-from compas_blender.utilities import xdraw_points
+from compas_blender.utilities import draw_points
 
 
 __all__ = [
@@ -34,7 +34,7 @@ class VertexArtist(object):
                 'name'   : 'V{0}'.format(key),
                 'radius' : radius
             }
-        self.vertex_objects = xdraw_points(points=points)
+        self.vertex_objects = draw_points(points=points)
 
     def draw_vertexlabels(self):
         set_objects_show_names(objects=self.vertex_objects, show=True)

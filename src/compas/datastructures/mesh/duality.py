@@ -35,7 +35,7 @@ def mesh_dual(mesh, cls=None):
         import compas
         from compas.datastructures import Mesh
         from compas.datastructures import mesh_dual
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 

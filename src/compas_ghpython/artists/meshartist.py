@@ -70,7 +70,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
                 new_faces.append(face + [face[-1]])
             elif l == 4:
                 new_faces.append(face)
-        return compas_ghpython.xdraw_mesh(vertices, new_faces, color)
+        return compas_ghpython.draw_mesh(vertices, new_faces, color)
 
 
 # ==============================================================================

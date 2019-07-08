@@ -3,19 +3,14 @@ from __future__ import division
 from __future__ import print_function
 
 import sys
-import compas
 
-try:
-    from numpy import arange
-    from numpy import divide
-    from numpy import hstack
-    from numpy import tile
+from numpy import arange
+from numpy import divide
+from numpy import hstack
+from numpy import tile
 
-    from scipy import cross
-    from scipy.sparse import coo_matrix
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from scipy import cross
+from scipy.sparse import coo_matrix
 
 from compas.numerical.linalg import normrow
 from compas.numerical.linalg import normalizerow

@@ -9,7 +9,7 @@ import compas_rhino
 import compas_rhino.install
 
 from compas._os import system
-from compas._os import remove_symlink
+from compas._os import remove_symlinks
 
 
 __all__ = ['uninstall']
@@ -55,7 +55,7 @@ def uninstall(version=None, packages=None):
     if not packages:
         try:
             packages = bootstrapper_data.get('INSTALLED_PACKAGES', None)
-        except:
+        except:  # noqa: E722
             pass
 
         # No info, fall back to installable packages list
@@ -67,23 +67,20 @@ def uninstall(version=None, packages=None):
         print('Packages installed from environment: {}'.format(environment_name))
 
     results = []
+    symlinks = []
     exit_code = 0
 
     for package in packages:
-        symlink_path = os.path.join(ipylib_path, package)
+        symlinks.append(os.path.join(ipylib_path, package))
 
-        if not (os.path.exists(symlink_path) or os.path.islink(symlink_path)):
-            continue
+    removal_results = remove_symlinks(symlinks)
 
-        try:
-            remove_symlink(symlink_path)
-            results.append((package, 'OK'))
-        except OSError:
-            results.append((package, 'ERROR: Cannot remove symlink, try to run as administrator.'))
+    for package, success in zip(packages, removal_results):
+        result = 'OK' if success else 'ERROR: Cannot remove symlink, try to run as administrator.'
+        results.append((package, result))
 
-    for _, status in results:
-        if status is not 'OK':
-            exit_code = -1
+    if not all(removal_results):
+        exit_code = -1
 
     if exit_code == -1:
         results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not uninstall bootstrapper.'))
@@ -93,13 +90,13 @@ def uninstall(version=None, packages=None):
             if os.path.exists(compas_bootstrapper):
                 os.remove(compas_bootstrapper)
                 results.append(('compas_bootstrapper', 'OK'))
-        except:
+        except:  # noqa: E722
             results.append(('compas_bootstrapper', 'ERROR: Could not delete compas_bootstrapper'))
 
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
 
-        if status is not 'OK':
+        if status != 'OK':
             exit_code = -1
 
     print('\nCompleted.')

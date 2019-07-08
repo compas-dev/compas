@@ -2,14 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
-try:
-    from numpy import asarray
-    from scipy.spatial import ConvexHull
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from numpy import asarray
+from scipy.spatial import ConvexHull
 
 
 __all__ = [
@@ -51,7 +45,7 @@ def convex_hull_numpy(points):
         from compas.geometry import convex_hull_numpy
         from compas.topology import unify_cycles
 
-        from compas.viewers import MeshViewer
+        from compas_viewers import MeshViewer
 
         radius = 5
         origin = (0., 0., 0.)
@@ -154,7 +148,7 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.datastructures import mesh_unify_cycles
     from compas.datastructures import mesh_flip_cycles
-    from compas.viewers import MeshViewer
+    from compas_viewers import MeshViewer
 
     from compas.topology import unify_cycles
 

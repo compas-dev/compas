@@ -10,8 +10,8 @@ import sys
 import compas_rhino
 
 from compas._os import system
-from compas._os import remove_symlink
-from compas._os import create_symlink
+from compas._os import remove_symlinks
+from compas._os import create_symlinks
 
 
 __all__ = ['install']
@@ -75,30 +75,32 @@ def install(version=None, packages=None):
         packages = INSTALLABLE_PACKAGES
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+    print('IronPython location: {}'.format(ipylib_path))
+    print()
 
     results = []
+    symlinks = []
     exit_code = 0
 
     for package in packages:
         package_path = _get_package_path(importlib.import_module(package))
         symlink_path = os.path.join(ipylib_path, package)
+        symlinks.append((package_path, symlink_path))
 
-        # Broken links return False on .exists(), so we need to check .islink() as well
-        if os.path.islink(symlink_path) or os.path.exists(symlink_path):
-            try:
-                remove_symlink(symlink_path)
-            except OSError:
-                results.append((package, 'ERROR: Cannot remove symlink, try to run as administrator.'))
+    removal_results = remove_symlinks([link[1] for link in symlinks])
 
-        try:
-            create_symlink(package_path, symlink_path)
-            results.append((package, 'OK'))
-        except OSError:
-            results.append((package, 'ERROR: Cannot create symlink, try to run as administrator.'))
+    for package, success in zip(packages, removal_results):
+        if not success:
+            results.append((package, 'ERROR: Cannot remove symlink, try to run as administrator.'))
 
-    for _, status in results:
-        if status is not 'OK':
-            exit_code = -1
+    create_results = create_symlinks(symlinks)
+
+    for package, success in zip(packages, create_results):
+        result = 'OK' if success else 'ERROR: Cannot create symlink, try to run as administrator.'
+        results.append((package, result))
+
+    if not all(create_results):
+        exit_code = -1
 
     if exit_code == -1:
         results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not install bootstrapper, try uninstalling first'))
@@ -118,13 +120,13 @@ def install(version=None, packages=None):
                 f.write('PYTHON_DIRECTORY = r"{}"\n'.format(python_directory))
                 f.write('INSTALLED_PACKAGES = {}'.format(repr(installed_packages)))
                 results.append(('compas_bootstrapper', 'OK'))
-        except:
+        except:  # noqa: E722
             results.append(('compas_bootstrapper', 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))
 
     for package, status in results:
         print('   {} {}'.format(package.ljust(20), status))
 
-        if status is not 'OK':
+        if status != 'OK':
             exit_code = -1
 
     print('\nCompleted.')

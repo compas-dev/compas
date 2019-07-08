@@ -9,6 +9,107 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `compas_rhino.geometry.RhinoGeometry` to the docs.
+
+### Changed
+
+- Fix mesh genus in `compas.datastructures`.
+- Fixed missing import in `compas_rhino.geometry`.
+- Removed circular imports from `compas_rhino.geometry`.
+
+### Removed
+
+
+## [0.7.1] 2019-06-29
+
+### Added
+
+### Changed
+
+- Include `compas_plotters` and `compas_viewers` in the build instructions.
+- Moved import of `subprocess` to Windows-specific situations.
+- Fixed document functions failing when document name is `None`.
+- Downgraded `numpy` requirements.
+- Loosened `scipy` requirements.
+- Default Python to `pythonw`.
+
+### Removed
+
+
+## [0.7.0] 2019-06-27
+
+### Added
+
+- Added filter shorthand for selecting OBJ, JSON files in Rhino.
+- Added `compas_plotters`
+- Added `compas_viewers`
+- Added `compas_rhino.draw_circles` and the equivalent Artist method
+- Add class functions to `compas.datastructures.VolMesh`.
+- Added `face_neighborhood` class function to `compas.datastructures.Mesh`.
+- Added `compas.remote` package for making HTTP based Remote Procedure Calls.
+
+### Changed
+
+- Restructure halffaces as lists in `compas.datastructures.VolMesh`.
+- Correctly handle `python-net` module presence during IronPython imports.
+- Switched to `compas.IPY` check instead of `try-except` for preventing non IronPython friendly imports.
+- Changed installation of compas packages to Rhino to support non-admin user accounts on Windows.
+- Copy facedata in `mesh_quads_to_triangles`
+- Added non-imported service for `compas.remote` for starting the subprocess that runs the server.
+
+### Removed
+
+- Removed `compas.plotters`
+- Removed `compas.viewers`
+
+## [0.6.2] 2019-04-30
+
+### Added
+
+### Changed
+
+- Based mesh drawing for Rhino on RhinoCommon rather than Rhinoscriptsyntax.
+- Fixed mesh drawing for Rhino 6
+
+### Removed
+
+
+## [0.6.1] 2019-04-29
+
+### Added
+
+### Changed
+
+- Fixed bug in RPC. The services cannot have a `pass` statement as class body.
+
+### Removed
+
+
+## [0.6.0] 2019-04-29
+
+### Added
+
+- Added `center` property getter to `compas.geometry.Cirle` primitive
+- Add `astar_shortest_path` to `compas.topology.traversal`.
+
+### Changed
+
+- Updated configuration instructions for Blender.
+- Changed naming convention for drawing functions from `xdraw_` to `draw_`.
+- Changed mesh drawing in Rhino to use separate mesh vertices per face. This makes the mesh look more "as expected" in *Shaded* view.
+
+### Removed
+
+- Removed support for Python 3.5.x by setting the minimum requirements for Numpy and Scipy to `1.16` and `1.2`, respectively.
+
+## [0.5.2] 2019-04-12
+
+### Added
+
+- Added `draw_polylines` to `compas_rhino.artists.Artist`.
+- Added `color` argument to `compas_rhino.artists.MeshArtist.draw_mesh`.
+- Added named colors to `compas.utilities.colors.py`.
+
 ### Changed
 
 - Fix `mesh_uv_to_xyz` in `RhinoSurface`.
@@ -16,6 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix setting of environment variables in `System.Diagnostics.Process`-based subprocess for `XFunc` and `RPC`.
 - Fix `XFunc` on RhinoMac.
 - Fix `trimesh_subdivide_loop` from `compas.datastructures`.
+- Changed Numpy and Scipy version requirements to allow for Python 3.5.x.
 
 ### Removed
 

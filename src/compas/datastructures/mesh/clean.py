@@ -22,6 +22,7 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
         individual numbers in the string (truncation after the decimal point).
         Supported values are any float precision, or decimal integer (``'d'``).
         Default is ``'3f'``.
+
     """
     key_gkey = {key: geometric_key(mesh.vertex_coordinates(key), precision=precision) for key in mesh.vertices()}
     gkey_key = {gkey: key for key, gkey in iter(key_gkey.items())}
@@ -58,24 +59,4 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
 
 if __name__ == "__main__":
 
-    from compas.datastructures import Mesh
-    from compas.plotters import MeshPlotter
-
-    vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0), (5.0, 5.0, 0.0), (5.0, 5.0, 0.0)]
-    faces = [[0, 1, 4], [1, 2, 4], [2, 3, 4], [3, 0, 5]]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    plotter.draw_edges(width=0.5)
-
-    print("Original mesh:")
-    print(mesh)
-
-    mesh_delete_duplicate_vertices(mesh)
-
-    print("Mesh with duplicate vertices deleted:")
-    print(mesh)
-
-    plotter.show()
+    pass

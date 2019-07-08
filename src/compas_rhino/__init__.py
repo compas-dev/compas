@@ -23,14 +23,11 @@ compas_rhino
 from __future__ import absolute_import
 
 import os
-
 import compas._os
-
 from .utilities import *
-from . import utilities
 
 
-__version__ = '0.5.1'
+__version__ = '0.7.1'
 
 
 PURGE_ON_DELETE = True

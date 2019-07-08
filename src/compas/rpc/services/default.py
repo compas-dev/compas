@@ -4,12 +4,13 @@ The server address is *localhost* and it listens to requests on port *1753*
 
 """
 
-from compas.rpc import Server
 from compas.rpc import Dispatcher
 
 
 class DefaultService(Dispatcher):
-    pass
+
+    def __init__(self):
+        super(DefaultService, self).__init__()
 
 
 # ==============================================================================
@@ -19,11 +20,17 @@ class DefaultService(Dispatcher):
 if __name__ == '__main__':
 
     import sys
+    from compas.rpc import Server
 
     try:
         port = int(sys.argv[3])
     except:
         port = 1753
+
+    # with open('/Users/vanmelet/Code/compas-dev/compas/src/compas/rpc/services/rpc.txt', 'w') as f:
+    #     f.write(str(sys.version_info) + "\n")
+    #     for name in sys.path:
+    #         f.write(name + "\n")
 
     print('Starting default RPC service on port {0}...'.format(port))
 

@@ -3,6 +3,7 @@ from __future__ import print_function
 from functools import wraps
 
 import compas
+import compas_rhino
 
 from compas.geometry import centroid_polygon
 
@@ -19,6 +20,7 @@ try:
     from System.Enum import ToObject
 
     from Rhino.Geometry import Point3d
+    from Rhino.Geometry import Vector3d
     from Rhino.Geometry import Polyline
     from Rhino.Geometry import PolylineCurve
     from Rhino.Geometry import GeometryBase
@@ -30,6 +32,7 @@ try:
     from Rhino.Geometry import Curve
     from Rhino.Geometry import Sphere
     from Rhino.Geometry import TextDot
+    from Rhino.Geometry import Mesh as RhinoMesh
     from Rhino.DocObjects.ObjectColorSource import ColorFromObject
     from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
     from Rhino.DocObjects.ObjectDecoration import EndArrowhead
@@ -44,6 +47,8 @@ try:
     add_polyline = sc.doc.Objects.AddPolyline
     add_brep = sc.doc.Objects.AddBrep
     add_sphere = sc.doc.Objects.AddSphere
+    add_mesh = sc.doc.Objects.AddMesh
+    add_circle = sc.doc.Objects.AddCircle
 
     TOL = sc.doc.ModelAbsoluteTolerance
 
@@ -58,30 +63,22 @@ else:
 
 
 __all__ = [
-    'xdraw_labels',
-    'xdraw_points',
-    'xdraw_lines',
-    'xdraw_geodesics',
-    'xdraw_polylines',
-    'xdraw_faces',
-    'xdraw_cylinders',
-    'xdraw_pipes',
-    'xdraw_spheres',
-    'xdraw_mesh',
+    'draw_labels',
+    'draw_points',
+    'draw_lines',
+    'draw_geodesics',
+    'draw_polylines',
+    'draw_faces',
+    'draw_cylinders',
+    'draw_pipes',
+    'draw_spheres',
+    'draw_mesh',
+    'draw_circles',
 ]
 
 
-# ==============================================================================
-# Extended drawing
-#
-# these functions are optimized for speed,
-# but potential error checking has been removed
-# perhaps a good middle ground would be better...
-# ==============================================================================
-
-
-def wrap_xdrawfunc(f):
-    """Wraps all ``xdraw_`` functions with support for recurring keyword arguments."""
+def wrap_drawfunc(f):
+    """Wraps all ``draw_`` functions with support for recurring keyword arguments."""
     @wraps(f)
     def wrapper(*args, **kwargs):
         layer  = kwargs.get('layer', None)
@@ -112,8 +109,8 @@ def wrap_xdrawfunc(f):
     return wrapper
 
 
-@wrap_xdrawfunc
-def xdraw_labels(labels, **kwargs):
+@wrap_drawfunc
+def draw_labels(labels, **kwargs):
     """Draw labels as text dots and optionally set individual name and color."""
     guids = []
     for l in iter(labels):
@@ -139,8 +136,8 @@ def xdraw_labels(labels, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_points(points, **kwargs):
+@wrap_drawfunc
+def draw_points(points, **kwargs):
     """Draw points and optionally set individual name, layer, and color properties.
     """
     guids = []
@@ -171,8 +168,8 @@ def xdraw_points(points, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_lines(lines, **kwargs):
+@wrap_drawfunc
+def draw_lines(lines, **kwargs):
     """Draw lines and optionally set individual name, color, arrow, layer, and
     width properties.
     """
@@ -214,8 +211,8 @@ def xdraw_lines(lines, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_geodesics(geodesics, **kwargs):
+@wrap_drawfunc
+def draw_geodesics(geodesics, **kwargs):
     """Draw geodesic lines on specified surfaces, and optionally set individual
     name, color, arrow, and layer properties.
     """
@@ -255,8 +252,8 @@ def xdraw_geodesics(geodesics, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_polylines(polylines, **kwargs):
+@wrap_drawfunc
+def draw_polylines(polylines, **kwargs):
     """Draw polylines, and optionally set individual name, color, arrow, and
     layer properties.
     """
@@ -295,8 +292,8 @@ def xdraw_polylines(polylines, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
+@wrap_drawfunc
+def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
     """
@@ -349,8 +346,8 @@ def xdraw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_cylinders(cylinders, cap=False, **kwargs):
+@wrap_drawfunc
+def draw_cylinders(cylinders, cap=False, **kwargs):
     guids = []
     for c in iter(cylinders):
         start  = c['start']
@@ -395,8 +392,8 @@ def xdraw_cylinders(cylinders, cap=False, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_pipes(pipes, cap=2, fit=1.0, **kwargs):
+@wrap_drawfunc
+def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     guids = []
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
@@ -437,8 +434,8 @@ def xdraw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_spheres(spheres, **kwargs):
+@wrap_drawfunc
+def draw_spheres(spheres, **kwargs):
     guids = []
     for s in iter(spheres):
         pos    = s['pos']
@@ -470,18 +467,44 @@ def xdraw_spheres(spheres, **kwargs):
     return guids
 
 
-@wrap_xdrawfunc
-def xdraw_mesh(vertices, faces, name=None, color=None, **kwargs):
-    guid = rs.AddMesh(vertices, faces)
-    if color:
-        rs.ObjectColor(guid, color)
-    if name:
-        rs.ObjectName(guid, name)
+@wrap_drawfunc
+def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
+    points = []
+    mesh = RhinoMesh()
+    if disjoint:
+        for keys in faces:
+            i = len(points)
+            facet = [j + i for j in range(len(keys))]
+            for key in keys:
+                point = vertices[key]
+                points.append(point)
+                x, y, z = point
+                mesh.Vertices.Add(x, y, z)
+            mesh.Faces.AddFace(*facet)
+    else:
+        for x, y, z in vertices:
+            mesh.Vertices.Add(x, y, z)
+        for face in faces:
+            mesh.Faces.AddFace(*face)
+    mesh.Normals.ComputeNormals()
+    mesh.Compact()
+    guid = add_mesh(mesh)
+    if guid:
+        obj = find_object(guid)
+        attr = obj.Attributes
+        if color:
+            attr.ObjectColor = FromArgb(*color)
+            attr.ColorSource = ColorFromObject
+        else:
+            attr.ColorSource = ColorFromLayer
+        if name:
+            attr.Name = name
+        obj.CommitChanges()
     return guid
 
 
-@wrap_xdrawfunc
-def xdraw_faces(faces, **kwargs):
+@wrap_drawfunc
+def draw_faces(faces, **kwargs):
     guids = []
     for face in iter(faces):
         points = face['points'][:]
@@ -506,7 +529,7 @@ def xdraw_faces(faces, **kwargs):
                 b = int(min(max(0, b), 255))
                 vertexcolors.append((r, g, b))
 
-        guid = xdraw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
+        guid = draw_mesh(points, mfaces, color=color, name=name, clear=False, redraw=False, layer=None)
 
         if vertexcolors:
             try:
@@ -530,95 +553,43 @@ def _face_to_max_quad(points, face):
     return faces
 
 
+@wrap_drawfunc
+def draw_circles(circles, **kwargs):
+    guids = []
+    for data in iter(circles):
+        point, normal = data['plane']
+        radius = data['radius']
+        name = data.get('name', '')
+        color = data.get('color')
+        layer = data.get('layer')
+        circle = Circle(Plane(Point3d(*point), Vector3d(*normal)), radius)
+        guid = add_circle(circle)
+        if not guid:
+            continue
+        obj = find_object(guid)
+        if not obj:
+            continue
+        attr = obj.Attributes
+        if color:
+            attr.ObjectColor = FromArgb(*color)
+            attr.ColorSource = ColorFromObject
+        else:
+            attr.ColorSource = ColorFromLayer
+        if layer and find_layer_by_fullpath:
+            index = find_layer_by_fullpath(layer, True)
+            if index >= 0:
+                attr.LayerIndex = index
+        attr.Name = name
+        attr.WireDensity = -1
+        obj.CommitChanges()
+        guids.append(guid)
+    return guids
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == '__main__':
 
-    from random import randint
-    import time
-
-    points = [(randint(0, 100), randint(0, 100), randint(0, 100)) for i in range(10000)]
-
-    faces = []
-    faces.append({
-        'points' : [[0, 0, 0], [100, 0, 0], [100, 100, 0], [0, 100, 0], [0, 0, 0]],
-        'color'  : (255, 0, 0),
-    })
-
-    lines = []
-    for i in range(10 - 1):
-        lines.append({
-            'start' : points[i],
-            'end'   : points[i + 1],
-            'name'  : 'test',
-            'color' : (0, 255, 0),
-            'arrow' : 'end',
-        })
-
-    polylines = []
-    polylines.append({
-        'points' : points[:10],
-        'color'  : (0, 255, 255),
-        'arrow'  : 'start',
-    })
-
-    cylinders = []
-    for i in range(10 - 1):
-        cylinders.append({
-            'start'  : points[i],
-            'end'    : points[i + 1],
-            'radius' : 3,
-            'name'   : 'test',
-            'color'  : (0, 255, 0),
-        })
-
-    pipes = []
-    pipes.append({
-        'points' : points[:10],
-        'color'  : (0, 255, 255),
-        'radius' : [3, 5],
-    })
-
-    spheres = []
-    for i in range(10):
-        spheres.append({
-            'pos'    : points[i],
-            'radius' : 3,
-            'color'  : (0, 0, 255),
-        })
-
-    t0 = time.time()
-
-    xdraw_faces(faces, layer='Default', clear=True)
-
-    t1 = time.time()
-
-    xdraw_lines(lines, layer='Layer 01', clear=True)
-
-    t2 = time.time()
-
-    xdraw_polylines(polylines, layer='Layer 02', clear=True)
-
-    t3 = time.time()
-
-    xdraw_cylinders(cylinders, layer='Layer 03', clear=True)
-
-    t4 = time.time()
-
-    xdraw_pipes(pipes, layer='Layer 04', clear=True)
-
-    t5 = time.time()
-
-    xdraw_spheres(spheres, layer='Layer 05', clear=True)
-
-    t6 = time.time()
-
-    print()
-    print('faces', t1 - t0)
-    print('lines', t2 - t1)
-    print('polylines', t3 - t2)
-    print('cylinders', t4 - t3)
-    print('pipes', t5 - t4)
-    print('spheres', t6 - t5)
+    pass

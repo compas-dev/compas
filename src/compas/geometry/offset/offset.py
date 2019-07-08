@@ -220,7 +220,7 @@ if __name__ == "__main__":
 
     import compas
 
-    from compas.plotters import MeshPlotter
+    from compas_plotters import MeshPlotter
     from compas.datastructures import Mesh
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))

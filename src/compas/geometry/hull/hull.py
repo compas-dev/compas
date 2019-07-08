@@ -194,7 +194,7 @@ if __name__ == "__main__":
     # todo: distinguish between vertices of hull and internal vertices
 
     # from compas.geometry import pointcloud_xy
-    # from compas.plotters import Plotter
+    # from compas_plotters import Plotter
     # from compas.utilities import pairwise
 
     # cloud = pointcloud_xy(50, (0, 100), (0, 100))
@@ -230,7 +230,7 @@ if __name__ == "__main__":
     from compas.geometry import distance_point_point
 
     from compas.datastructures import Mesh
-    from compas.viewers import MeshViewer
+    from compas_viewers import MeshViewer
 
     from compas.topology import unify_cycles
 

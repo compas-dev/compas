@@ -24,11 +24,34 @@ __all__ = [
     'rgb_to_rgb',
     'is_color_rgb',
     'is_color_hex',
-    'is_color_light'
+    'is_color_light',
+
+    'red',
+    'green',
+    'blue',
+    'yellow',
+    'cyan',
+    'white',
+    'black',
 ]
 
 
+red = 255, 0, 0
+orange = 255, 125, 0
+yellow = 255, 255, 0
+yellowish = 125, 255, 0
+green = 0, 255, 0
+greenish = 0, 255, 125
+cyan = 0, 255, 255
+cyanish = 0, 125, 255
+blue = 0, 0, 255
+
+white = 255, 255, 255
+black = 0, 0, 0
+
+
 BASE16  = '0123456789abcdef'
+
 
 try:
     HEX_DEC = {v: int(v, base=16) for v in [x + y for x in BASE16 for y in BASE16]}
@@ -57,28 +80,33 @@ class Color(object):
         pass
 
 
-def i_to_rgb(i):
+def i_to_rgb(i, normalize=False):
     i  = max(i, 0.0)
     i  = min(i, 1.0)
     if i == 0.0:
-        return 0, 0, 255
-    if 0.0 < i < 0.25:
-        return 0, int(255 * (4 * i)), 255
-    if i == 0.25:
-        return 0, 255, 255
-    if 0.25 < i < 0.5:
-        return 0, 255, int(255 - 255 * 4 * (i - 0.25))
-    if i == 0.5:
-        return 0, 255, 0
-    if 0.5 < i < 0.75:
-        return int(0 + 255 * 4 * (i - 0.5)), 255, 0
-    if i == 0.75:
-        return 255, 255, 0
-    if 0.75 < i < 1.0:
-        return 255, int(255 - 255 * 4 * (i - 0.75)), 0
-    if i == 1.0:
-        return 255, 0, 0
-    return 0, 0, 0
+        r, g, b = 0, 0, 255
+    elif 0.0 < i < 0.25:
+        r, g, b = 0, int(255 * (4 * i)), 255
+    elif i == 0.25:
+        r, g, b = 0, 255, 255
+    elif 0.25 < i < 0.5:
+        r, g, b = 0, 255, int(255 - 255 * 4 * (i - 0.25))
+    elif i == 0.5:
+        r, g, b = 0, 255, 0
+    elif 0.5 < i < 0.75:
+        r, g, b = int(0 + 255 * 4 * (i - 0.5)), 255, 0
+    elif i == 0.75:
+        r, g, b = 255, 255, 0
+    elif 0.75 < i < 1.0:
+        r, g, b,  = 255, int(255 - 255 * 4 * (i - 0.75)), 0
+    elif i == 1.0:
+        r, g, b = 255, 0, 0
+    else:
+        r, g, b = 0, 0, 0
+    if not normalize:
+        return [r, g, b]
+    else:
+        return [r / 255.0, g / 255.0, b / 255.0]
 
 
 def i_to_red(i):

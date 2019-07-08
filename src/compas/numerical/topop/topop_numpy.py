@@ -3,37 +3,31 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import abs
+from numpy import asarray
+from numpy import array
+from numpy import ceil
+from numpy import dot
+from numpy import hstack
+from numpy import kron
+from numpy import max
+from numpy import maximum
+from numpy import min
+from numpy import minimum
+from numpy import int64
+from numpy import newaxis
+from numpy import ones
+from numpy import ravel
+from numpy import reshape
+from numpy import sqrt
+from numpy import squeeze
+from numpy import sum
+from numpy import tile
+from numpy import vstack
+from numpy import zeros
 
-try:
-    from numpy import abs
-    from numpy import asarray
-    from numpy import array
-    from numpy import ceil
-    from numpy import dot
-    from numpy import hstack
-    from numpy import kron
-    from numpy import max
-    from numpy import maximum
-    from numpy import min
-    from numpy import minimum
-    from numpy import int64
-    from numpy import newaxis
-    from numpy import ones
-    from numpy import ravel
-    from numpy import reshape
-    from numpy import sqrt
-    from numpy import squeeze
-    from numpy import sum
-    from numpy import tile
-    from numpy import vstack
-    from numpy import zeros
-
-    from scipy.sparse import coo_matrix
-    from scipy.sparse.linalg import spsolve
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from scipy.sparse import coo_matrix
+from scipy.sparse.linalg import spsolve
 
 
 __all__ = ['topop_numpy']

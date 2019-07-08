@@ -2,26 +2,20 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import arccos
+from numpy import array
+from numpy import cross
+from numpy import float64
+from numpy import int32
+from numpy import isnan
+from numpy import mean
+from numpy import newaxis
+from numpy import sin
+from numpy import sum
+from numpy import tile
+from numpy import zeros
 
-try:
-    from numpy import arccos
-    from numpy import array
-    from numpy import cross
-    from numpy import float64
-    from numpy import int32
-    from numpy import isnan
-    from numpy import mean
-    from numpy import newaxis
-    from numpy import sin
-    from numpy import sum
-    from numpy import tile
-    from numpy import zeros
-
-    from scipy.sparse import find
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from scipy.sparse import find
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import mass_matrix
@@ -379,7 +373,7 @@ if __name__ == "__main__":
     # ==========================================================================
 
     # from compas.datastructures import Network
-    # from compas.viewers import VtkViewer
+    # from compas_viewers import VtkViewer
 
 
     # m = 70
@@ -437,7 +431,7 @@ if __name__ == "__main__":
     # import compas
 
     # from compas.datastructures import Network
-    # from compas.plotters import NetworkPlotter
+    # from compas_plotters import NetworkPlotter
 
 
     # structure = Network.from_obj(compas.get('lines.obj'))
@@ -481,7 +475,7 @@ if __name__ == "__main__":
     from numpy import sign
 
     from compas.datastructures import Network
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
 
 
     L  = 2.5

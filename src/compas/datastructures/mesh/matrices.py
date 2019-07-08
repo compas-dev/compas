@@ -2,7 +2,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import asarray
+from numpy import ones
+from numpy import zeros
+from numpy import cross
+from numpy import bincount
+
+from scipy.sparse import coo_matrix
+from scipy.sparse import spdiags
 
 from compas.geometry import dot_vectors
 from compas.geometry import length_vector
@@ -14,19 +21,6 @@ from compas.numerical import degree_matrix
 from compas.numerical import connectivity_matrix
 from compas.numerical import laplacian_matrix
 from compas.numerical import face_matrix
-
-try:
-    from numpy import asarray
-    from numpy import ones
-    from numpy import zeros
-    from numpy import cross
-    from numpy import bincount
-
-    from scipy.sparse import coo_matrix
-    from scipy.sparse import spdiags
-
-except ImportError:
-    compas.raise_if_not_ironpython()
 
 
 __all__ = [
@@ -161,7 +155,7 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
     The :math:`n \times n` uniform Laplacian matrix :math:`\mathbf{L}` of a mesh
     with vertices :math:`\mathbf{V}` and edges :math:`\mathbf{E}` is defined as
-    follows [Nealen]_
+    follows [1]_
 
     .. math::
 
@@ -202,7 +196,7 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
         from compas.datastructures import Mesh
         from compas.datastructures import mesh_laplacian_matrix
         from compas.geometry import add_vectors
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -234,7 +228,7 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
     References
     ----------
-    .. [Nealen] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
     data, rows, cols = [], [], []
@@ -337,7 +331,7 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
     The :math:`n \times n` cotangent Laplacian matrix :math:`\mathbf{L}` of a mesh
     with vertices :math:`\mathbf{V}` and edges :math:`\mathbf{E}` is defined as
-    follows [Nealen]_
+    follows [1]_
 
     .. math::
 
@@ -367,48 +361,6 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        from random import choice
-        from numpy import array
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import trimesh_cotangent_laplacian_matrix
-        from compas.datastructures import mesh_quads_to_triangles
-        from compas.geometry import add_vectors
-        from compas.plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-        mesh_quads_to_triangles(mesh)
-
-        key = choice(list(set(mesh.vertices()) - set(mesh.vertices_on_boundary())))
-
-        mesh.vertex[key]['x'] += 0.3
-        mesh.vertex[key]['y'] += 0.3
-
-        V = array(mesh.get_vertices_attributes('xyz'))
-        L = trimesh_cotangent_laplacian_matrix(mesh)
-        d = L.dot(V)
-
-        plotter = MeshPlotter(mesh, tight=True)
-
-        plotter.draw_vertices()
-        plotter.draw_edges()
-        plotter.draw_faces()
-
-        arrows = []
-        for start, vector in zip(V, d):
-            arrows.append({
-                'start' : start,
-                'end'   : add_vectors(start, vector),
-                'color' : '#ff0000'
-            })
-
-        plotter.draw_arrows(arrows)
-        plotter.show()
 
     Notes
     -----
@@ -419,7 +371,7 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
     References
     ----------
-    .. [Nealen] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
     key_index = mesh.key_index()
@@ -490,7 +442,7 @@ def trimesh_vertexarea_matrix(mesh):
         from compas.datastructures import Mesh
         from compas.datastructures import mesh_quads_to_triangles
         from compas.datastructures import trimesh_vertexarea_matrix
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -530,43 +482,4 @@ def trimesh_vertexarea_matrix(mesh):
 
 if __name__ == "__main__":
 
-    from random import choice
-    from numpy import array
-
-    import compas
-
-    from compas.datastructures import Mesh
-    from compas.datastructures import mesh_quads_to_triangles
-    from compas.geometry import add_vectors
-
-    from compas.plotters import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    key = choice(list(set(mesh.vertices()) - set(mesh.vertices_on_boundary())))
-
-    mesh.vertex[key]['x'] += 0.3
-    mesh.vertex[key]['y'] += 0.3
-
-    mesh_quads_to_triangles(mesh)
-    L = trimesh_cotangent_laplacian_matrix(mesh)
-    # L = mesh_laplacian_matrix(mesh)
-    xyz = array(mesh.get_vertices_attributes('xyz'))
-    d = L.dot(xyz)
-
-    plotter = MeshPlotter(mesh, tight=True)
-
-    plotter.draw_vertices()
-    plotter.draw_edges()
-    plotter.draw_faces()
-
-    arrows = []
-    for start, vector in zip(xyz, d):
-        arrows.append({
-            'start' : start,
-            'end'   : add_vectors(start, vector),
-            'color' : '#ff0000'
-        })
-    plotter.draw_arrows(arrows)
-
-    plotter.show()
+    pass

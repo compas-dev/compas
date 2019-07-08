@@ -115,7 +115,7 @@ class BlenderCurve(BlenderGeometry):
 
 if __name__ == '__main__':
 
-    from compas_blender.utilities import xdraw_points
+    from compas_blender.utilities import draw_points
     from compas_blender.utilities import get_object_by_name
 
 
@@ -129,4 +129,4 @@ if __name__ == '__main__':
 
     points = [{'pos': i, 'radius': 0.1} for i in curve.divide(number_of_segments=5)]
 
-    xdraw_points(points=points)
+    draw_points(points=points)

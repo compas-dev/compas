@@ -1307,7 +1307,7 @@ class Network(FromToJson,
             network.plot()
 
         """
-        from compas.plotters import NetworkPlotter
+        from compas_plotters import NetworkPlotter
 
         plotter = NetworkPlotter(self)
         plotter.draw_vertices(
@@ -1331,7 +1331,7 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
 
     network = Network.from_obj(compas.get('lines.obj'))
 

@@ -141,19 +141,6 @@ class Mesh(FromToPickle,
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-        from compas.datastructures import Mesh
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        mesh.plot(
-            vertextext={key: key for key in mesh.vertices()},
-            vertexcolor={key: '#ff0000' for key in mesh.vertices_where({'vertex_degree': 2})},
-            vertexsize=0.2
-        )
 
     """
 
@@ -615,6 +602,49 @@ class Mesh(FromToPickle,
         return mesh
 
     @classmethod
+    def from_polylines(cls, boundary_polylines, other_polylines):
+        """Construct mesh from polylines.
+
+        Based on construction from_lines,
+        with removal of vertices that are not polyline extremities
+        and of faces that represent boundaries.
+
+        This specific method is useful to get the mesh connectivity from a set of (discretised) curves,
+        that could overlap and yield a wrong connectivity if using from_lines based on the polyline extremities only.
+
+        Parameters
+        ----------
+        boundary_polylines : list
+            List of polylines representing boundaries as lists of vertex coordinates.
+        other_polylines : list
+            List of the other polylines as lists of vertex coordinates.
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+            
+        """
+
+        corner_vertices = [geometric_key(xyz) for polyline in boundary_polylines + other_polylines for xyz in [polyline[0], polyline[-1]]]
+        boundary_vertices = [geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline]
+
+        mesh = cls.from_lines([(u, v) for polyline in boundary_polylines + other_polylines for u, v in pairwise(polyline)])
+
+        # remove the vertices that are not from the polyline extremities and the faces with all their vertices on the boundary
+        vertex_keys = [vkey for vkey in mesh.vertices() if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices]
+        vertex_map = {vkey: i for i, vkey in enumerate(vertex_keys)}
+        vertices = [mesh.vertex_coordinates(vkey) for vkey in vertex_keys]
+        faces = []
+        for fkey in mesh.faces():
+            if sum([geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices for vkey in mesh.face_vertices(fkey)]):
+                faces.append([vertex_map[vkey] for vkey in mesh.face_vertices(fkey) if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices])
+        
+        mesh.cull_vertices()
+
+        return cls.from_vertices_and_faces(vertices, faces)
+
+    @classmethod
     def from_vertices_and_faces(cls, vertices, faces):
         """Construct a mesh object from a list of vertices and faces.
 
@@ -876,8 +906,14 @@ class Mesh(FromToPickle,
     def _cycle_keys(self, keys):
         return pairwise(keys + keys[0:1])
 
-    def copy(self):
+    def copy(self, cls=None):
         """Make an independent copy of the mesh object.
+
+        Parameters
+        ----------
+        cls : compas.datastructures.Mesh, optional
+            The type of mesh to return.
+            Defaults to the type of the current mesh.
 
         Returns
         -------
@@ -885,7 +921,8 @@ class Mesh(FromToPickle,
             A separate, but identical mesh object.
 
         """
-        cls = type(self)
+        if not cls:
+            cls = type(self)
         return cls.from_data(deepcopy(self.data))
 
     def clear(self):
@@ -1077,7 +1114,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1099,7 +1136,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1165,7 +1202,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1208,7 +1245,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1492,7 +1529,7 @@ class Mesh(FromToPickle,
         # each boundary must be taken into account as if it was one face
         B = len(self.boundaries())
 
-        if mesh.is_orientable:
+        if self.is_orientable():
             return (2 - (X + B)) / 2
         else:
             return 2 - (X + B)
@@ -1578,7 +1615,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1716,7 +1753,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1805,7 +1842,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -1922,7 +1959,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -2138,7 +2175,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -2164,6 +2201,41 @@ class Mesh(FromToPickle,
             if nbr is not None:
                 nbrs.append(nbr)
         return nbrs
+
+    def face_neighborhood(self, key, ring=1):
+        """Return the faces in the neighborhood of a face.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the face.
+        ring : int, optional
+            The size of the neighborhood.
+            Default is ``1``.
+
+        Returns
+        -------
+        list
+            A list of face identifiers.
+
+        """
+
+        nbrs = set(self.face_neighbors(key))
+
+        i = 1
+        while True:
+            if i == ring:
+                break
+
+            temp = []
+            for key in nbrs:
+                temp += self.face_neighbors(key)
+
+            nbrs.update(temp)
+
+            i += 1
+
+        return list(nbrs)
 
     def face_degree(self, fkey):
         """Count the neighbors of a face.
@@ -2425,7 +2497,7 @@ class Mesh(FromToPickle,
 
             import compas
             from compas.datastructures import Mesh
-            from compas.plotters import MeshPlotter
+            from compas_plotters import MeshPlotter
 
             mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -2530,6 +2602,8 @@ class Mesh(FromToPickle,
 
         References
         ----------
+        Based on [1]_
+
         .. [1] Botsch, Mario, et al. *Polygon mesh processing.* AK Peters/CRC Press, 2010.
 
         """
@@ -2632,7 +2706,7 @@ class Mesh(FromToPickle,
 
         """
         return area_polygon(self.face_coordinates(fkey))
-      
+
     def face_flatness(self, fkey):
         """Compute the flatness of the mesh face.
 
@@ -2703,11 +2777,15 @@ class Mesh(FromToPickle,
                Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
 
         """
-
         ideal_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
-
-        angles = [angle_points(self.vertex_coordinates(v), self.vertex_coordinates(u), self.vertex_coordinates(w), deg = True) for u, v, w in window(self.face_vertices(fkey) + self.face_vertices(fkey)[:2], n = 3)]
-
+        angles = []
+        vertices = self.face_vertices(fkey)
+        for u, v, w in window(vertices + vertices[:2], n=3):
+            o = self.vertex_coordinates(v)
+            a = self.vertex_coordinates(u)
+            b = self.vertex_coordinates(w)
+            angle = angle_points(o, a, b, deg=True)
+            angles.append(angle)
         return max((max(angles) - ideal_angle) / (180 - ideal_angle), (ideal_angle - min(angles)) / ideal_angle)
 
     def face_curvature(self, fkey):
@@ -2724,20 +2802,13 @@ class Mesh(FromToPickle,
             The dimensionless curvature.
 
         """
-
-        plane = bestfit_plane([self.vertex_coordinates(vkey) for vkey in self.vertices()])
-
-        max_deviation = max([distance_point_plane(self.vertex_coordinates(vkey), plane) for vkey in self.vertices()])
-
-        average_distances = average([distance_point_point(self.vertex_coordinates(vkey), self.face_centroid(fkey)) for vkey in self.vertices()])
-
+        vertices = self.face_vertices(fkey)
+        points = [self.vertex_coordinates(key) for key in vertices]
+        centroid = self.face_centroid(fkey)
+        plane = bestfit_plane(points)
+        max_deviation = max([distance_point_plane(point, plane) for point in points])
+        average_distances = average([distance_point_point(point, centroid) for point in points])
         return max_deviation / average_distances
-
-    # def face_circle(self, fkey):
-    #     pass
-
-    # def face_frame(self, fkey):
-    #     pass
 
     # --------------------------------------------------------------------------
     # boundary
@@ -2856,7 +2927,7 @@ class Mesh(FromToPickle,
                     faces[self.halfedge[nbr][key]] = 1
         return faces.keys()
 
-    def edges_on_boundary(self, oriented = True):
+    def edges_on_boundary(self, oriented=True):
         """Find the edges on the boundary.
 
         Parameters
@@ -2869,17 +2940,13 @@ class Mesh(FromToPickle,
         boundary_edges : list
             The boundary edges.
 
-
         """
-
         boundary_edges =  [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
         if not oriented:
             return boundary_edges
-
         else:
-            return [(v, u) if self.halfedge[u][v] is not None else (u, v) for u, v in boundary_edges]
-
+            return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]
 
     # --------------------------------------------------------------------------
     # attributes
@@ -3093,72 +3160,6 @@ class Mesh(FromToPickle,
 
         return [self.get_edge_attributes(key, names, values) for key in keys]
 
-    # --------------------------------------------------------------------------
-    # visualisation
-    # --------------------------------------------------------------------------
-
-    def plot(self,
-             vertexcolor=None,
-             edgecolor=None,
-             facecolor=None,
-             vertexsize=None,
-             edgewidth=None,
-             vertextext=None,
-             edgetext=None,
-             facetext=None):
-        """Plot a 2D representation of the mesh.
-
-        Parameters
-        ----------
-        vertexcolor : dict, optional
-            A dictionary mapping vertex identifiers to colors.
-        edgecolor : dict, optional
-            A dictionary mapping edge identifiers to colors.
-        facecolor : dict, optional
-            A dictionary mapping face identifiers to colors.
-        vertexsize : dict, optional
-            A dictionary mapping vertex identifiers to sizes.
-        edgewidth : dict, optional
-            A dictionary mapping edge identifiers to widths.
-        vertextext : dict, optional
-            A dictionary mappping vertex identifiers to labels.
-        edgetext : dict, optional
-            A dictionary mappping edge identifiers to labels.
-        facetext : dict, optional
-            A dictionary mappping face identifiers to labels.
-
-        Examples
-        --------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            mesh.plot()
-
-        """
-        from compas.plotters import MeshPlotter
-
-        plotter = MeshPlotter(self)
-        plotter.draw_vertices(
-            facecolor=vertexcolor,
-            radius=vertexsize,
-            text=vertextext
-        )
-        plotter.draw_edges(
-            color=edgecolor,
-            width=edgewidth,
-            text=edgetext
-        )
-        plotter.draw_faces(
-            facecolor=facecolor,
-            text=facetext
-        )
-        plotter.show()
-
 
 # ==============================================================================
 # Main
@@ -3166,98 +3167,4 @@ class Mesh(FromToPickle,
 
 if __name__ == '__main__':
 
-    import compas
-    from compas.plotters import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    mesh.update_default_edge_attributes({'q': 1.0})
-
-    # vertices = [
-    #     [0, 0, 0],
-    #     [1, 1, 0],
-    #     [1, -1, 0],
-    #     [-1, -1, 0],
-    #     [-1, 1, 0]
-    # ]
-    # faces = [
-    #     [0, 2, 1],
-    #     [0, 4, 3]
-    # ]
-
-    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    # print(mesh.is_manifold())
-
-    # # mesh = Mesh()
-
-    # # a = mesh.add_vertex(x=0, y=0)
-    # # b = mesh.add_vertex(x=0.5, y=0.1)
-    # # c = mesh.add_vertex(x=1, y=0)
-    # # d = mesh.add_vertex(x=0.9, y=0.5)
-    # # e = mesh.add_vertex(x=0.9, y=1)
-    # # f = mesh.add_vertex(x=0.5, y=1)
-    # # g = mesh.add_vertex(x=0, y=1)
-    # # h = mesh.add_vertex(x=0, y=0.5)
-
-    # # mesh.add_face([a, b, c, d, e, f, g, h])
-
-    # for k in mesh.faces():
-    #     print(k, mesh.is_face_on_boundary(k))
-
-
-    # print(list(mesh.edges(True)))
-
-
-    # plotter = MeshPlotter(mesh)
-
-    # plotter.draw_vertices()
-    # plotter.draw_edges()
-    # plotter.draw_faces(text='key')
-    # plotter.show()
-
-    # print(mesh.get_vertices_attribute('x'))
-    # print(mesh.get_vertices_attributes('xy'))
-
-    # print(mesh.get_edges_attribute('q', 1.0))
-    # print(mesh.get_edges_attributes('qf', (1.0, 2.0)))
-
-    vertices = {
-        0: [0, 0, 0],
-        1: [1, 1, 0],
-        2: [1, -1, 0],
-        3: [-1, -1, 0],
-        18: [-1, 1, 0]
-    }
-    faces = {
-        0: [0, 2, 1],
-        45: [0, 18, 3]
-    }
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices(text='key')
-    plotter.draw_edges()
-    plotter.draw_faces(text='key')
-    plotter.show()
-
-    vertices = [
-        [0, 0, 0],
-        [1, 1, 0],
-        [1, -1, 0],
-        [-1, -1, 0],
-        [-1, 1, 0]
-    ]
-    faces = [
-        [0, 2, 1],
-        [0, 4, 3]
-    ]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices(text='key')
-    plotter.draw_edges()
-    plotter.draw_faces(text='key')
-    plotter.show()
+    pass

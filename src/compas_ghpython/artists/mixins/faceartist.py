@@ -60,7 +60,7 @@ class FaceArtist(object):
                 'layer' : self.datastructure.get_face_attribute(fkey, 'layer', None)
             })
 
-        meshes = compas_ghpython.xdraw_faces(faces)
+        meshes = compas_ghpython.draw_faces(faces)
         if not join_faces:
             return meshes
         else:
@@ -115,7 +115,7 @@ class FaceArtist(object):
                 'text'  : textdict[key],
                 'layer' : self.datastructure.get_face_attribute(key, 'layer', None)
             })
-        return compas_ghpython.xdraw_labels(labels)
+        return compas_ghpython.draw_labels(labels)
 
 
 # ==============================================================================

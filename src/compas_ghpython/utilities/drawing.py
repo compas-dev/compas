@@ -38,29 +38,29 @@ except ImportError:
 
 
 __all__ = [
-    'xdraw_labels',
-    'xdraw_frame',
-    'xdraw_points',
-    'xdraw_lines',
-    'xdraw_geodesics',
-    'xdraw_polylines',
-    'xdraw_faces',
-    'xdraw_cylinders',
-    'xdraw_pipes',
-    'xdraw_spheres',
-    'xdraw_mesh',
-    'xdraw_network',
+    'draw_labels',
+    'draw_frame',
+    'draw_points',
+    'draw_lines',
+    'draw_geodesics',
+    'draw_polylines',
+    'draw_faces',
+    'draw_cylinders',
+    'draw_pipes',
+    'draw_spheres',
+    'draw_mesh',
+    'draw_network',
 ]
 
 
-def xdraw_labels(labels):
+def draw_labels(labels):
     # This is not yet possible through GhPython. Using Text Tag from ghpythonlib
     # (only Windows) would be an option, but ghpythonlib.components.TextTag does
     # not return anything.
     raise NotImplementedError
 
 
-def xdraw_frame(frame):
+def draw_frame(frame):
     """Draw frame.
     """
     pt = Point3d(*iter(frame.point))
@@ -69,7 +69,7 @@ def xdraw_frame(frame):
     return Plane(pt, xaxis, yaxis)
 
 
-def xdraw_points(points):
+def draw_points(points):
     """Draw points.
     """
     rg_points = []
@@ -79,7 +79,7 @@ def xdraw_points(points):
     return rg_points
 
 
-def xdraw_lines(lines):
+def draw_lines(lines):
     """Draw lines.
     """
     rg_lines = []
@@ -90,7 +90,7 @@ def xdraw_lines(lines):
     return rg_lines
 
 
-def xdraw_geodesics(geodesics, **kwargs):
+def draw_geodesics(geodesics, **kwargs):
     """Draw geodesic lines on specified surfaces.
     """
     rg_geodesics = []
@@ -103,7 +103,7 @@ def xdraw_geodesics(geodesics, **kwargs):
     return rg_geodesics
 
 
-def xdraw_polylines(polylines):
+def draw_polylines(polylines):
     """Draw polylines.
     """
     rg_polylines = []
@@ -115,7 +115,7 @@ def xdraw_polylines(polylines):
     return rg_polylines
 
 
-def xdraw_faces(faces, **kwargs):
+def draw_faces(faces, **kwargs):
     """Draw polygonal faces as Meshes.
     """
     meshes = []
@@ -143,15 +143,15 @@ def xdraw_faces(faces, **kwargs):
                 vertexcolors.append((r, g, b))
 
         if vertexcolors:
-            mesh = xdraw_mesh(points, mfaces, color=vertexcolors)
+            mesh = draw_mesh(points, mfaces, color=vertexcolors)
         else:
-            mesh = xdraw_mesh(points, mfaces)
+            mesh = draw_mesh(points, mfaces)
         meshes.append(mesh)
 
     return meshes
 
 
-def xdraw_cylinders(cylinders, cap=False):
+def draw_cylinders(cylinders, cap=False):
     rg_cylinders = []
     for c in iter(cylinders):
         start = c['start']
@@ -174,7 +174,7 @@ def xdraw_cylinders(cylinders, cap=False):
     return rg_cylinders
 
 
-def xdraw_pipes(pipes, cap=2, fit=1.0):
+def draw_pipes(pipes, cap=2, fit=1.0):
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
     for p in pipes:
@@ -193,7 +193,7 @@ def xdraw_pipes(pipes, cap=2, fit=1.0):
             yield brep
 
 
-def xdraw_spheres(spheres):
+def draw_spheres(spheres):
     rg_sheres = []
     for s in iter(spheres):
         pos = s['pos']
@@ -202,7 +202,7 @@ def xdraw_spheres(spheres):
     return rg_sheres
 
 
-def xdraw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordinates=None):
+def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordinates=None):
     """Draw mesh in Grasshopper.
     """
     mesh = Mesh()
@@ -238,7 +238,7 @@ def xdraw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordin
     return mesh
 
 
-def xdraw_network(network):
+def draw_network(network):
     """Draw a network in Grasshopper.
     """
     points = []
@@ -254,8 +254,8 @@ def xdraw_network(network):
             'end': network.vertex_coordinates(v),
         })
 
-    points_rg = xdraw_points(points)
-    lines_rg = xdraw_lines(lines)
+    points_rg = draw_points(points)
+    lines_rg = draw_lines(lines)
 
     return points_rg, lines_rg
 

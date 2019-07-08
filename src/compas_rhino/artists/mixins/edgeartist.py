@@ -98,7 +98,7 @@ class EdgeArtist(object):
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
 
-        return compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
         """Draw labels for a selection of edges.
@@ -147,7 +147,7 @@ class EdgeArtist(object):
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
 
-        return compas_rhino.xdraw_labels(labels, layer=self.layer, clear=False, redraw=False)
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
 
 # ==============================================================================
