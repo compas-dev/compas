@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix mesh genus in `compas.datastructures`.
 - Fixed missing import in `compas_rhino.geometry`.
 - Removed circular imports from `compas_rhino.geometry`.
+- fix duplicate hfkeys in `compas.datastructures.volmesh.halffaces_on_boundary`.
 
 ### Removed
 
