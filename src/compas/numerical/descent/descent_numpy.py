@@ -3,28 +3,21 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import array
+from numpy import eye
+from numpy import finfo
+from numpy import float64
+from numpy import maximum
+from numpy import mean
+from numpy import newaxis
+from numpy import ones
+from numpy import reshape
+from numpy import sqrt
+from numpy import sum
+from numpy import zeros
 
-try:
-    from numpy import array
-    from numpy import eye
-    from numpy import finfo
-    from numpy import float64
-    from numpy import maximum
-    from numpy import mean
-    from numpy import newaxis
-    from numpy import ones
-    from numpy import reshape
-    from numpy import sqrt
-    from numpy import sum
-    from numpy import zeros
-
-except ImportError:
-    compas.raise_if_not_ironpython()
-
-else:
-    eps = finfo(float64).eps
-    e = sqrt(eps)
+eps = finfo(float64).eps
+e = sqrt(eps)
 
 
 __all__ = ['descent_numpy']

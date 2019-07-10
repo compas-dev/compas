@@ -28,7 +28,7 @@ optional_requirements = {
 
 setup(
     name='COMPAS',
-    version='0.6.2',
+    version='0.7.1',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -60,7 +60,7 @@ setup(
         "Repository": "https://github.com/compas-dev/compas",
         "Issues": "https://github.com/compas-dev/compas/issues",
     },
-    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython'],
+    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', 'compas_plotters', 'compas_viewers'],
     package_dir={'': 'src'},
     package_data={},
     data_files=[],

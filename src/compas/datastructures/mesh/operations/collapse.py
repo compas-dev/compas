@@ -76,32 +76,34 @@ def is_collapse_legal(mesh, u, v, allow_boundary=False):
 
 
 def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
-    """Collapse an edge to its first or second vertex, or to an intermediate
-    point.
+    """Collapse an edge to its first or second vertex, or to an intermediate point.
 
-    Notes:
-        An edge can only be collapsed if the collapse is `legal`. A collapse is
-        legal if it meets the following requirements:
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        Instance of a mesh.
+    u : str
+        The first vertex of the (half-) edge.
+    v : str
+        The second vertex of the (half-) edge.
+    t : float (0.5)
+        Determines where to collapse to.
+        If `t == 0.0` collapse to `u`.
+        If `t == 1.0` collapse to `v`.
+        If `0.0 < t < 1.0`, collapse to a point between `u` and `v`.
+    allow_boundary : bool (False)
+        Allow collapses involving boundary vertices.
+    fixed : list (None)
+        A list of identifiers of vertices that should stay fixed.
+    
+    Returns
+    -------
+    None
 
-            * any vertex `w` that is a neighbor of both `u` and `v` is a face
-              of the mesh
-            * `u` and `v` are not on the boundary
-            * ...
-
-        See [] for a detailed explanation of these requirements.
-
-    Parameters:
-        u (str): The first vertex of the (half-) edge.
-        v (str): The second vertex of the (half-) edge.
-        t (float): Determines where to collapse to. If `t == 0.0` collapse
-            to `u`. If `t == 1.0` collapse to `v`. If `0.0 < t < 1.0`,
-            collapse to a point between `u` and `v`.
-
-    Returns:
-        None
-
-    Raises:
-        ValueError: If `u` and `v` are not neighbors.
+    Raises
+    ------
+    ValueError
+        If `u` and `v` are not neighbors.
 
     """
     if t < 0.0:
@@ -229,24 +231,29 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
     An edge can only be collapsed if the collapse is `legal`. A collapse is
     legal if it meets the following requirements:
 
-        * any vertex `w` that is a neighbor of both `u` and `v` is a face
-          of the mesh
-        * `u` and `v` are not on the boundary
-        * ...
+    * any vertex `w` that is a neighbor of both `u` and `v` is a face of the mesh
+    * `u` and `v` are not on the boundary
+    * ...
 
     See [] for a detailed explanation of these requirements.
 
     Parameters
     ----------
+    mesh : compas.datastructures.Mesh
+        Instance of a mesh.
     u : str
         The first vertex of the (half-) edge.
     v : str
         The second vertex of the (half-) edge.
-    t : float
+    t : float (0.5)
         Determines where to collapse to.
         If `t == 0.0` collapse to `u`.
         If `t == 1.0` collapse to `v`.
         If `0.0 < t < 1.0`, collapse to a point between `u` and `v`.
+    allow_boundary : bool (False)
+        Allow collapses involving vertices on the boundary.
+    fixed : list (None)
+        Identifiers of the vertices that should stay fixed.
 
     Returns
     -------
@@ -259,47 +266,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas_plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        plotter = MeshPlotter(mesh)
-
-        plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2)
-        plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
-
-        plotter.show()
-
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_quads_to_triangles
-        from compas.datastructures import trimesh_collapse_edge
-        from compas_plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        mesh_quads_to_triangles(mesh)
-
-        u, v = mesh.get_any_edge()
-
-        trimesh_collapse_edge(mesh, u, v)
-
-        plotter = MeshPlotter(mesh)
-
-        plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2)
-        plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
-
-        plotter.show()
+    >>> 
 
     """
     if t < 0.0:
@@ -411,24 +378,4 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
 if __name__ == "__main__":
 
-    import compas
-
-    from compas.datastructures import Mesh
-    from compas.datastructures import mesh_quads_to_triangles
-    from compas.datastructures import trimesh_collapse_edge
-    from compas_plotters import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    mesh_quads_to_triangles(mesh)
-
-    trimesh_collapse_edge(mesh, 21, 27)
-    trimesh_collapse_edge(mesh, 0, 6, allow_boundary=True)
-    trimesh_collapse_edge(mesh, 1, 7, allow_boundary=True)
-
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2)
-    plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
-
-    plotter.show()
+    pass

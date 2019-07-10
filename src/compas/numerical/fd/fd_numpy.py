@@ -2,15 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
-
-try:
-    from numpy import asarray
-    from scipy.sparse import diags
-    from scipy.sparse.linalg import spsolve
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+from numpy import asarray
+from scipy.sparse import diags
+from scipy.sparse.linalg import spsolve
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow

@@ -9,15 +9,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `compas_rhino.geometry.RhinoGeometry` to the docs.
+
+### Changed
+
+- Fix mesh genus in `compas.datastructures`.
+- Fixed missing import in `compas_rhino.geometry`.
+- Removed circular imports from `compas_rhino.geometry`.
+- fix duplicate hfkeys in `compas.datastructures.volmesh.halffaces_on_boundary`.
+
+### Removed
+
+
+## [0.7.1] 2019-06-29
+
+### Added
+
+### Changed
+
+- Include `compas_plotters` and `compas_viewers` in the build instructions.
+- Moved import of `subprocess` to Windows-specific situations.
+- Fixed document functions failing when document name is `None`.
+- Downgraded `numpy` requirements.
+- Loosened `scipy` requirements.
+- Default Python to `pythonw`.
+
+### Removed
+
+
+## [0.7.0] 2019-06-27
+
+### Added
+
 - Added filter shorthand for selecting OBJ, JSON files in Rhino.
 - Added `compas_plotters`
 - Added `compas_viewers`
 - Added `compas_rhino.draw_circles` and the equivalent Artist method
 - Add class functions to `compas.datastructures.VolMesh`.
+- Added `face_neighborhood` class function to `compas.datastructures.Mesh`.
+- Added `compas.remote` package for making HTTP based Remote Procedure Calls.
 
 ### Changed
 
 - Restructure halffaces as lists in `compas.datastructures.VolMesh`.
+- Correctly handle `python-net` module presence during IronPython imports.
+- Switched to `compas.IPY` check instead of `try-except` for preventing non IronPython friendly imports.
+- Changed installation of compas packages to Rhino to support non-admin user accounts on Windows.
+- Copy facedata in `mesh_quads_to_triangles`
+- Added non-imported service for `compas.remote` for starting the subprocess that runs the server.
 
 ### Removed
 

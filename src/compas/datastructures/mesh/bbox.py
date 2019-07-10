@@ -23,14 +23,12 @@ def mesh_bounding_box(mesh):
 
     Returns
     -------
-    box
-        The bounding box of the mesh.
+    list
+        The bounding box of the mesh as a list of corner vertex coordinates.
 
     Examples
     --------
-    .. code-block:: python
-
-        pass
+    >>>
 
     """
     xyz = mesh.get_vertices_attributes('xyz')
@@ -52,9 +50,7 @@ def mesh_bounding_box_xy(mesh):
 
     Examples
     --------
-    .. code-block:: python
-
-        pass
+    >>>
 
     """
     xyz = mesh.get_vertices_attributes('xyz')

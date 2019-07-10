@@ -5,17 +5,27 @@ compas_rhino.geometry
 
 .. currentmodule:: compas_rhino.geometry
 
+Object-oriented convenience wrappers for Rhino geometry objects.
 
-Object-oriented convenience wrappers for native Rhino geometry.
-
+Base class
+==========
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
+    RhinoGeometry
+
+Specific wrappers
+=================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    RhinoPoint
     RhinoCurve
     RhinoMesh
-    RhinoPoint
     RhinoSurface
 
 """
@@ -63,9 +73,7 @@ class RhinoGeometry(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            #
+        >>>
 
         """
         guid = compas_rhino.select_object()
@@ -93,29 +101,7 @@ class RhinoGeometry(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            import compas_rhino
-
-            from compas.datastructures import Mesh
-            from compas_rhino.geometry import RhinoGeometry
-
-            mesh = Mesh.from_json(...)
-
-            mesh.update_default_vertex_attributes(constraint=None)
-
-            # interesting stuff happens here
-
-            for key, attr in mesh.vertices(True):
-                name = attr['constraint']
-
-                if name:
-                    constraint = RhinoGeometry.from_name(name)
-                    xyz = constraint.closest_point(mesh.get_vertex_attributes(key, 'xyz'))
-                    mesh.set_vertex_attributes(key, 'xyz', xyz)
-
-            # more interesting stuff happens here
+        >>>
 
         """
         guids = compas_rhino.get_objects(name=name)
@@ -146,31 +132,14 @@ class RhinoGeometry(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            import compas_rhino
-
-            from compas.datastructures import Mesh
-            from compas_rhino.geometry import RhinoGeometry
-
-            mesh = Mesh.from_json(...)
-
-            mesh.update_default_vertex_attributes(constraint=None)
-
-            # interesting stuff happens here
-
-            for key, attr in mesh.vertices(True):
-                guid = attr['constraint']
-
-                if guid:
-                    constraint = RhinoGeometry.from_guid(guid)
-                    xyz = constraint.closest_point(mesh.get_vertex_attributes(key, 'xyz'))
-                    mesh.set_vertex_attributes(key, 'xyz', xyz)
-
-            # more interesting stuff happens here
+        >>>
 
         """
+        from compas_rhino.geometry import RhinoPoint
+        from compas_rhino.geometry import RhinoCurve
+        from compas_rhino.geometry import RhinoMesh
+        from compas_rhino.geometry import RhinoSurface
+
         otype = rs.ObjectType(guid)
 
         if otype == rs.filter.point:
@@ -201,9 +170,7 @@ class RhinoGeometry(object):
 
         Examples
         --------
-        .. code-block:: python
-
-            #
+        >>>
 
         """
         return find_object(guid)

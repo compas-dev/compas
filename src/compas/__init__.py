@@ -12,8 +12,8 @@ compas
     compas.datastructures
     compas.files
     compas.geometry
-    compas.interop
     compas.numerical
+    compas.remote
     compas.robots
     compas.rpc
     compas.topology
@@ -34,11 +34,10 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
-__version__ = '0.6.2'
+__version__ = '0.7.1'
 
 
 PY3 = sys.version_info[0] == 3
-
 
 HERE = os.path.dirname(__file__)
 HOME = compas._os.absjoin(HERE, '../..')
@@ -63,35 +62,47 @@ def is_windows():
     return os.name == 'nt'
 
 
+WINDOWS = is_windows()
+
+
 def is_linux():
     return os.name == 'posix'
+
+
+LINUX = is_linux()
 
 
 def is_mono():
     return 'mono' in sys.version.lower()
 
 
+MONO = is_mono()
+
+
 def is_ironpython():
     return 'ironpython' in sys.version.lower()
 
 
+IPY = is_ironpython()
+
+
 def raise_if_not_windows():
-    if not is_windows():
+    if not WINDOWS:
         raise
 
 
 def raise_if_windows():
-    if is_windows():
+    if WINDOWS:
         raise
 
 
 def raise_if_not_ironpython():
-    if not is_ironpython():
+    if not IPY:
         raise
 
 
 def raise_if_ironpython():
-    if is_ironpython():
+    if IPY:
         raise
 
 

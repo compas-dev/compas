@@ -15,7 +15,10 @@ except ImportError:
     from xmlrpc.client import ServerProxy
 
 try:
-    from subprocess import Popen, PIPE, STDOUT
+    from subprocess import Popen
+    from subprocess import PIPE
+    from subprocess import STDOUT
+
 except ImportError:
     try:
         from System.Diagnostics import Process
@@ -361,7 +364,7 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.rpc import Proxy
 
-    # from compas_rhino.artists import MeshArtist
+    from compas_rhino.artists import MeshArtist
 
     numerical = Proxy('compas.numerical')
 
@@ -393,8 +396,8 @@ if __name__ == "__main__":
         attr['f'] = f[index][0]
         attr['l'] = l[index][0]
 
-    # artist = MeshArtist(mesh)
-    # artist.draw_vertices()
-    # artist.draw_edges()
-    # artist.draw_faces()
-    # artist.redraw()
+    artist = MeshArtist(mesh)
+    artist.draw_vertices()
+    artist.draw_edges()
+    artist.draw_faces()
+    artist.redraw()

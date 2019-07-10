@@ -25,6 +25,9 @@ import os
 import clr
 import System
 
+if 'AddReferenceToFileAndPath' not in dir(clr):
+    raise ImportError
+
 DT_BOOL = 1
 DT_INT = 2
 DT_REAL = 3

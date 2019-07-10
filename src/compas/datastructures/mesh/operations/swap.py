@@ -10,16 +10,19 @@ def trimesh_swap_edge(mesh, u, v, allow_boundary=True):
     """Replace an edge of the mesh by an edge connecting the opposite
     vertices of the adjacent faces.
 
-    Parameters:
-        u (str): The key of one of the vertices of the edge.
-        v (str): The key of the other vertex of the edge.
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        Instance of mesh.
+    u : str
+        The key of one of the vertices of the edge.
+    v : str
+        The key of the other vertex of the edge.
 
-    Returns:
-        None
+    Returns
+    -------
+    None
 
-    Raises:
-        ValueError: If `u` and `v` are not neighbors.
-        TriMeshError: If one of the half-edges does not exist.
     """
 
     # check legality of the swap
