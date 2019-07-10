@@ -116,6 +116,8 @@ class Proxy(object):
             try:
                 result = self.send_request('ping')
             except Exception as e:
+                if compas.IPY:
+                    compas_rhino.wait()
                 result = 0
                 time.sleep(0.1)
                 attempts -= 1
@@ -206,7 +208,7 @@ class Proxy(object):
         request = Request(self.address, ibody)
         request.add_header('Content-Type', 'application/json; charset=utf-8')
         request.add_header('Content-Length', len(ibody))
-        response = urlopen(request, timeout=20)
+        response = urlopen(request)
         obody = response.read().decode('utf-8')
         odata = json.loads(obody, cls=DataDecoder)
         self.profile = odata['profile']

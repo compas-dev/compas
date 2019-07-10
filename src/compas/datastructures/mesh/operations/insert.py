@@ -35,10 +35,6 @@ def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
     >>> points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.5, 0.0, 0.0]]
     >>> faces = [[0, 1, 2, 3]]
     >>> mesh = Mesh.from_vertices_and_faces(points, faces)
-    >>> mesh.number_of_vertices()
-    5
-    >>> mesh.number_of_faces()
-    1
     >>> mesh.face_degree(0)
     4
     >>> mesh.vertex_degree(4)

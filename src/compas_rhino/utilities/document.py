@@ -27,11 +27,17 @@ def get_document_basename():
 
 
 def get_document_filename():
-    return os.path.splitext(get_document_basename())[0]
+    basename = get_document_basename()
+    if not basename:
+        return None
+    return os.path.splitext(basename)[0]
 
 
 def get_document_extension():
-    return os.path.splitext(get_document_basename())[1]
+    basename = get_document_basename()
+    if not basename:
+        return None
+    return os.path.splitext(basename)[1]
 
 
 def get_document_filepath():
@@ -39,7 +45,10 @@ def get_document_filepath():
 
 
 def get_document_dirname():
-    return os.path.dirname(get_document_filepath())
+    filepath = get_document_filepath()
+    if not filepath:
+        return None
+    return os.path.dirname(filepath)
 
 
 # ==============================================================================

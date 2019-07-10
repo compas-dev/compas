@@ -29,8 +29,6 @@ Solvers
     dr
     dr_numpy
     drx_numpy
-    fd_alglib
-    fd_cpp
     fd_numpy
     ga
     moga

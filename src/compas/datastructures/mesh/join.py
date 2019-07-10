@@ -12,48 +12,26 @@ __all__ = [
     'meshes_join_and_weld'
 ]
 
-def meshes_join(meshes, cls=None):
-    """Join meshes without welding.
-    Parameters
-    ----------
-    meshes : list
-        A list of meshes.
-    Returns
-    -------
-    mesh
-        The joined mesh.
-    """
-
-    if cls is None:
-        cls = type(meshes[0])
-
-    vertices = []
-    faces = []
-
-    for mesh in meshes:
-        # create vertex map based on geometric keys in dictionary with duplicates
-        vertex_map = ({vkey: len(vertices) + i for i, vkey in enumerate(mesh.vertices())})
-        # list vertices with coordinates
-        vertices += [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()]
-        # modify vertex indices in the faces
-        faces += [ [vertex_map[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
-
-    return cls.from_vertices_and_faces(vertices, faces)
 
 def mesh_weld(mesh, precision=None, cls=None):
     """Weld vertices of a mesh within some precision distance.
+
     Parameters
     ----------
     mesh : Mesh
         A mesh.
-    precision: str
+    precision: str (None)
         Tolerance distance for welding.
+    cls : type (None)
+        Type of the welded mesh.
+        This defaults to the type of the first mesh in the list.
+
     Returns
     -------
     mesh
         The welded mesh.
-    """
 
+    """
     if cls is None:
         cls = type(mesh)
 
@@ -69,20 +47,54 @@ def mesh_weld(mesh, precision=None, cls=None):
 
     return cls.from_vertices_and_faces(vertices, faces)
 
+
+def meshes_join(meshes, cls=None):
+    """Join meshes without welding.
+
+    Parameters
+    ----------
+    meshes : list
+        A list of meshes.
+    cls : type (None)
+        The type of the joined mesh.
+        This defaults to the type of the first mesh in the list.
+
+    Returns
+    -------
+    mesh
+        The joined mesh.
+
+    """
+    if cls is None:
+        cls = type(meshes[0])
+
+    vertices = []
+    faces = []
+
+    for mesh in meshes:
+        key_index = ({key: len(vertices) + i for i, key in enumerate(mesh.vertices())})
+        vertices += [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+        faces += [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+
+    return cls.from_vertices_and_faces(vertices, faces)
+
+
 def meshes_join_and_weld(meshes, precision=None, cls=None):
     """Join and and weld meshes within some precision distance.
+
     Parameters
     ----------
     meshes : list
         A list of meshes.
     precision: str
         Tolerance distance for welding.
+
     Returns
     -------
     mesh
         The joined and welded mesh.
-    """
 
+    """
     if cls is None:
         cls = type(meshes[0])
 
@@ -97,6 +109,7 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
     faces = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
 
     return cls.from_vertices_and_faces(vertices, faces)
+
 
 # ==============================================================================
 # Main

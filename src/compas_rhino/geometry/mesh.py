@@ -24,7 +24,7 @@ __all__ = ['RhinoMesh']
 
 
 class RhinoMesh(RhinoGeometry):
-    """"""
+    """Wrapper for Rhino mesh objects."""
 
     __module__ = 'compas_rhino.geometry'
 

@@ -39,8 +39,8 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
 
     Parameters
     ----------
-    mesh : obj
-        Mesh datastructure object to get data from.
+    mesh : compas.datastructures.Mesh
+        Instance of mesh.
     rtype : {'array', 'csc', 'csr', 'coo', 'list'}
         Format of the result.
 
@@ -60,8 +60,8 @@ def mesh_connectivity_matrix(mesh, rtype='array'):
 
     Parameters
     ----------
-    mesh : obj
-        Mesh datastructure object to get data from.
+    mesh : compas.datastructures.Mesh
+        Instance of mesh.
     rtype : {'array', 'csc', 'csr', 'coo', 'list'}
         Format of the result.
 
@@ -81,8 +81,8 @@ def mesh_degree_matrix(mesh, rtype='array'):
 
     Parameters
     ----------
-    mesh : obj
-        Mesh datastructure object to get data from.
+    mesh : compas.datastructures.Mesh
+        Instance of mesh.
     rtype : {'array', 'csc', 'csr', 'coo', 'list'}
         Format of the result.
 
@@ -102,8 +102,8 @@ def mesh_face_matrix(mesh, rtype='csr'):
 
     Parameters
     ----------
-    mesh : obj
-        Mesh datastructure object to get data from.
+    mesh : compas.datastructures.Mesh
+        Instance of mesh.
     rtype : {'array', 'csc', 'csr', 'coo', 'list'}
         Format of the result.
 
@@ -132,17 +132,7 @@ def mesh_face_matrix(mesh, rtype='csr'):
 
     Examples
     --------
-    .. code-block:: python
-
-        import compas
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_face_matrix
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        F   = mesh_face_matrix(mesh)
-        xyz = array([mesh.vertex_coordinates(key) for key in mesh.vertices()])
-        c   = F.dot(xyz) / normrow(F)
+    >>>
 
     """
     key_index = {key: index for index, key in enumerate(mesh.vertices())}
@@ -153,9 +143,23 @@ def mesh_face_matrix(mesh, rtype='csr'):
 def mesh_laplacian_matrix(mesh, rtype='csr'):
     r"""Construct a Laplacian matrix with uniform weights from a mesh data structure.
 
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        Instance of mesh.
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+        Format of the result.
+
+    Returns
+    -------
+    array-like
+        The Laplacian matrix.
+
+    Notes
+    -----
     The :math:`n \times n` uniform Laplacian matrix :math:`\mathbf{L}` of a mesh
     with vertices :math:`\mathbf{V}` and edges :math:`\mathbf{E}` is defined as
-    follows [Nealen]_
+    follows [1]_
 
     .. math::
 
@@ -171,64 +175,13 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
     Therefore, the uniform Laplacian of a vertex :math:`\mathbf{v}_{i}` points to
     the centroid of its neighboring vertices.
 
-    Parameters
-    ----------
-    mesh : obj
-        Mesh datastructure object to get data from.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
-        Format of the result.
-
-    Returns
-    -------
-    array-like
-        The Laplacian matrix.
-
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        from random import choice
-        from numpy import array
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_laplacian_matrix
-        from compas.geometry import add_vectors
-        from compas_plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        key = choice(list(set(mesh.vertices()) - set(mesh.vertices_on_boundary())))
-
-        mesh.vertex[key]['x'] += 0.3
-        mesh.vertex[key]['y'] += 0.3
-
-        V = array(mesh.get_vertices_attributes('xyz'))
-        L = mesh_laplacian_matrix(mesh)
-        d = L.dot(V)
-
-        plotter = MeshPlotter(mesh, tight=True)
-
-        plotter.draw_vertices()
-        plotter.draw_edges()
-        plotter.draw_faces()
-
-        arrows = []
-        for start, vector in zip(V, d):
-            arrows.append({
-                'start' : start,
-                'end'   : add_vectors(start, vector),
-                'color' : '#ff0000'
-            })
-
-        plotter.draw_arrows(arrows)
-        plotter.show()
+    >>>
 
     References
     ----------
-    .. [Nealen] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
     data, rows, cols = [], [], []
@@ -267,7 +220,7 @@ def trimesh_edge_cotangent(mesh, u, v):
     Parameters
     ----------
     mesh : compas.datastructures.Mesh
-        The triangle mesh data structure.
+        Instance of mesh.
     u : int
         The identifier of the first vertex of the halfedge.
     v : int
@@ -280,9 +233,7 @@ def trimesh_edge_cotangent(mesh, u, v):
 
     Examples
     --------
-    .. code-block:: python
-
-        pass
+    >>>
 
     """
     fkey = mesh.halfedge[u][v]
@@ -303,7 +254,7 @@ def trimesh_edge_cotangents(mesh, u, v):
     Parameters
     ----------
     mesh : compas.datastructures.Mesh
-        The triangle mesh data structure.
+        Instance of mesh.
     u : int
         The identifier of the first vertex of the edge.
     v : int
@@ -316,9 +267,7 @@ def trimesh_edge_cotangents(mesh, u, v):
 
     Examples
     --------
-    .. code-block:: python
-
-        pass
+    >>>
 
     """
     a = trimesh_edge_cotangent(mesh, u, v)
@@ -329,9 +278,26 @@ def trimesh_edge_cotangents(mesh, u, v):
 def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
     r"""Construct the Laplacian of a triangular mesh with cotangent weights.
 
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        Instance of mesh.
+
+    Returns
+    -------
+    array
+        The Laplacian matrix with cotangent weights.
+
+    Notes
+    -----
+    The cotangent laplacian of a vertex :math:`\mathbf{v}_{i}` points from the vertex
+    to the projection of the vertex into the 1-ring plane.
+    The cotangent laplacian vectors of a mesh thus provide an approximation of the
+    per-vertex normals.
+
     The :math:`n \times n` cotangent Laplacian matrix :math:`\mathbf{L}` of a mesh
     with vertices :math:`\mathbf{V}` and edges :math:`\mathbf{E}` is defined as
-    follows [Nealen]_
+    follows [1]_
 
     .. math::
 
@@ -348,72 +314,13 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
          w_{ij} = \frac{\omega_{ij}}{\sum_{(i, k) \in \mathbf{E}_{i}} \omega_{ik}}
 
-
-    Parameters
-    ----------
-    mesh : obj
-        The triangular Mesh datastructure object.
-
-    Returns
-    -------
-    array
-        The Laplacian matrix with cotangent weights.
-
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        from random import choice
-        from numpy import array
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import trimesh_cotangent_laplacian_matrix
-        from compas.datastructures import mesh_quads_to_triangles
-        from compas.geometry import add_vectors
-        from compas_plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-        mesh_quads_to_triangles(mesh)
-
-        key = choice(list(set(mesh.vertices()) - set(mesh.vertices_on_boundary())))
-
-        mesh.vertex[key]['x'] += 0.3
-        mesh.vertex[key]['y'] += 0.3
-
-        V = array(mesh.get_vertices_attributes('xyz'))
-        L = trimesh_cotangent_laplacian_matrix(mesh)
-        d = L.dot(V)
-
-        plotter = MeshPlotter(mesh, tight=True)
-
-        plotter.draw_vertices()
-        plotter.draw_edges()
-        plotter.draw_faces()
-
-        arrows = []
-        for start, vector in zip(V, d):
-            arrows.append({
-                'start' : start,
-                'end'   : add_vectors(start, vector),
-                'color' : '#ff0000'
-            })
-
-        plotter.draw_arrows(arrows)
-        plotter.show()
-
-    Notes
-    -----
-    The cotangent laplacian of a vertex :math:`\mathbf{v}_{i}` points from the vertex
-    to the projection of the vertex into the 1-ring plane.
-    The cotangent laplacian vectors of a mesh thus provide an approximation of the
-    per-vertex normals.
+    >>>
 
     References
     ----------
-    .. [Nealen] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
     key_index = mesh.key_index()
@@ -524,43 +431,4 @@ def trimesh_vertexarea_matrix(mesh):
 
 if __name__ == "__main__":
 
-    from random import choice
-    from numpy import array
-
-    import compas
-
-    from compas.datastructures import Mesh
-    from compas.datastructures import mesh_quads_to_triangles
-    from compas.geometry import add_vectors
-
-    from compas_plotters import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    key = choice(list(set(mesh.vertices()) - set(mesh.vertices_on_boundary())))
-
-    mesh.vertex[key]['x'] += 0.3
-    mesh.vertex[key]['y'] += 0.3
-
-    mesh_quads_to_triangles(mesh)
-    L = trimesh_cotangent_laplacian_matrix(mesh)
-    # L = mesh_laplacian_matrix(mesh)
-    xyz = array(mesh.get_vertices_attributes('xyz'))
-    d = L.dot(xyz)
-
-    plotter = MeshPlotter(mesh, tight=True)
-
-    plotter.draw_vertices()
-    plotter.draw_edges()
-    plotter.draw_faces()
-
-    arrows = []
-    for start, vector in zip(xyz, d):
-        arrows.append({
-            'start' : start,
-            'end'   : add_vectors(start, vector),
-            'color' : '#ff0000'
-        })
-    plotter.draw_arrows(arrows)
-
-    plotter.show()
+    pass

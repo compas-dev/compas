@@ -20,7 +20,7 @@ functionality: :class:`compas.datastructures.Network`.
 Making a network
 ================
 
-.. code:: ipython3
+.. code-block:: python
 
     import compas
     from compas.datastructures import Network
@@ -31,7 +31,7 @@ Making a network
 Adding vertices and edges
 =========================
 
-.. code:: ipython3
+.. code-block:: python
 
     a = network.add_vertex()
     b = network.add_vertex(x=1.0)
@@ -40,7 +40,7 @@ Adding vertices and edges
     e = network.add_vertex(y==1.0)
 
 
-.. code:: ipython3
+.. code-block:: python
 
     network.add_edge(a, b)
     network.add_edge(a, c)
@@ -65,7 +65,7 @@ Other types keys may be specified as well, as long as their value is
 *hashable*.
 
 
-.. code:: ipython3
+.. code-block:: python
 
     print(a, type(a))
 
@@ -75,7 +75,7 @@ Other types keys may be specified as well, as long as their value is
     0 <class 'int'>
 
 
-.. code:: ipython3
+.. code-block:: python
 
     b == a + 1
 
@@ -85,7 +85,7 @@ Other types keys may be specified as well, as long as their value is
     True
 
 
-.. code:: ipython3
+.. code-block:: python
 
     f = network.add_vertex(key=7)
     f == e + 1
@@ -96,7 +96,7 @@ Other types keys may be specified as well, as long as their value is
     False
 
 
-.. code:: ipython3
+.. code-block:: python
 
     g = network.add_vertex()
     g == f + 1
@@ -107,7 +107,7 @@ Other types keys may be specified as well, as long as their value is
     True
 
 
-.. code:: ipython3
+.. code-block:: python
 
     network.add_vertex(key='compas')
 
@@ -117,7 +117,7 @@ Other types keys may be specified as well, as long as their value is
     'compas'
 
 
-.. code:: ipython3
+.. code-block:: python
 
     network.add_vertex()
 
@@ -133,7 +133,7 @@ Data
 Iteration
 ---------
 
-.. code:: ipython3
+.. code-block:: python
 
     network.vertices()
 
@@ -143,7 +143,7 @@ Iteration
     <dict_keyiterator at 0x6193a2958>
 
 
-.. code:: ipython3
+.. code-block:: python
 
     network.edges()
 
@@ -153,7 +153,7 @@ Iteration
     <generator object Network.edges at 0x61560f678>
 
 
-.. code:: ipython3
+.. code-block:: python
 
     for key in network.vertices():
         print(key)
@@ -172,7 +172,7 @@ Iteration
     9
 
 
-.. code:: ipython3
+.. code-block:: python
 
     for u, v in network.edges():
         print(u, v)
@@ -189,7 +189,7 @@ Iteration
 Lists
 -----
 
-.. code:: ipython3
+.. code-block:: python
 
     list(network.vertices())
 
@@ -199,7 +199,7 @@ Lists
     [0, 1, 2, 3, 4, 7, 8, 'compas', 9]
 
 
-.. code:: ipython3
+.. code-block:: python
 
     list(network.edges())
 
@@ -212,7 +212,7 @@ Lists
 Filtering
 ---------
 
-.. code:: ipython3
+.. code-block:: python
 
     network.vertices_where({'x': 0.0})
 
@@ -231,13 +231,13 @@ default vertex attributes are xyz coordinates, with ``x=0``, ``y=0`` and
 
 To change the default attributes associated with vertices and edges, do:
 
-.. code:: ipython3
+.. code-block:: python
 
     network.update_default_vertex_attributes({'z': 10}, is_fixed=False)
 
     # or network.update_default_vertex_attributes(z=10, is_fixed=False)
 
-.. code:: ipython3
+.. code-block:: python
 
     network.update_default_edge_attributes({'weight': 0.0})
 
@@ -259,7 +259,7 @@ To change the default attributes associated with vertices and edges, do:
 Getting attributes
 ------------------
 
-.. code:: ipython3
+.. code-block:: python
 
     network.get_vertex_attribute(a, 'is_fixed')
 
@@ -269,7 +269,7 @@ Getting attributes
     False
 
 
-.. code:: ipython3
+.. code-block:: python
 
     network.get_vertices_attribute('x')
 
@@ -279,7 +279,7 @@ Getting attributes
     [0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
 
-.. code:: ipython3
+.. code-block:: python
 
     network.get_vertices_attributes('xyz')
 
@@ -300,15 +300,15 @@ Getting attributes
 Setting attributes
 ------------------
 
-.. code:: ipython3
+.. code-block:: python
 
     network.set_vertex_attribute(a, 'is_fixed', True)
 
-.. code:: ipython3
+.. code-block:: python
 
     network.set_vertices_attribute('is_fixed', True)
 
-.. code:: ipython3
+.. code-block:: python
 
     network.set_vertices_attributes(('z', 'is_fixed'), (3, False))
 
@@ -316,7 +316,7 @@ Setting attributes
 Using constructors
 ==================
 
-.. code:: ipython3
+.. code-block:: python
 
     # network = Network.from_data(data)
     # network = Network.from_lines([([], []), ([], [])])
@@ -337,7 +337,7 @@ Visualisation
 
 To create a 2D representation of a network, use a plotter.
 
-.. code:: ipython3
+.. code-block:: python
 
-    from compas.plotters import NetworkPlotter
+    from compas_plotters import NetworkPlotter
 

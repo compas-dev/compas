@@ -43,8 +43,7 @@ def uninstall_plugin(plugin, version=None):
 
     print('Uninstalling PlugIn {} from Rhino PythonPlugIns.'.format(plugin))
 
-    if os.path.exists(destination):
-        remove_symlink(destination)
+    remove_symlink(destination)
 
     print('PlugIn {} Uninstalled.'.format(plugin))
 

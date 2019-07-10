@@ -19,21 +19,21 @@ def trimesh_face_circle(mesh, fkey):
 
     Returns
     -------
-    list, None
+    list
         The centre coordinates, the radius value and the normal vector of the circle.
-        None if the face is not a triangle
+    None
+        If the face is not a triangle.
 
     """
-
-    face_vertices = mesh.face_vertices(fkey)
-
+    vertices = mesh.face_vertices(fkey)
     # return None if not a triangle (possible improvement with best-fit circle)
-    if len(face_vertices) != 3:
+    if len(vertices) != 3:
         return None
-    
-    a, b, c = face_vertices
-
-    return circle_from_points(mesh.vertex_coordinates(a), mesh.vertex_coordinates(b), mesh.vertex_coordinates(c))
+    u, v, w = vertices
+    a = mesh.vertex_coordinates(u)
+    b = mesh.vertex_coordinates(v)
+    c = mesh.vertex_coordinates(w)
+    return circle_from_points(a, b, c)
   
 
 # ==============================================================================
@@ -42,18 +42,4 @@ def trimesh_face_circle(mesh, fkey):
 
 if __name__ == '__main__':
 
-    import compas
-    from compas.datastructures import Mesh
-
-    vertices = [
-        [0.0, 0.0, 0.0],
-        [1.0, 0.0, 0.0],
-        [0.0, 1.0, 0.0]
-    ]
-
-    faces = [
-        [0, 1, 2]
-    ]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-    print(trimesh_face_circle(mesh, 0))
+    pass

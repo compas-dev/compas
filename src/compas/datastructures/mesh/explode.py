@@ -25,7 +25,6 @@ def mesh_disconnected_vertices(mesh):
         The list of disconnected vertex groups.
 
     """
-
     return connected_components(mesh.adjacency)
 
 
@@ -43,9 +42,7 @@ def mesh_disconnected_faces(mesh):
         The list of disconnected face groups.
 
     """
-
     parts = mesh_disconnected_vertices(mesh)
-
     return [set([fkey for vkey in part for fkey in mesh.vertex_faces(vkey)]) for part in parts]
 
 
@@ -63,7 +60,6 @@ def mesh_explode(mesh, cls=None):
         The list of the meshes from the exploded mesh parts.
 
     """
-
     if cls is None:
         cls = type(mesh)
 
@@ -90,29 +86,4 @@ def mesh_explode(mesh, cls=None):
 
 if __name__ == '__main__':
 
-    from compas.datastructures import Mesh
-
-    vertices = [
-        [0.0, 0.0, 0.0],
-        [1.0, 0.0, 0.0],
-        [2.0, 0.0, 0.0],
-        [2.0, 0.0, 0.0],
-        [3.0, 0.0, 0.0],
-        [0.0, 1.0, 0.0],
-        [1.0, 1.0, 0.0],
-        [2.0, 1.0, 0.0],
-        [2.0, 1.0, 0.0],
-        [3.0, 1.0, 0.0],
-    ]
-
-    faces = [
-        [0, 1, 6, 5],
-        [1, 2, 7, 6],
-        [3, 4, 9, 8]
-        ]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    print(mesh_disconnected_vertices(mesh))
-    print(mesh_disconnected_faces(mesh))
-    print(mesh_explode(mesh))
+    pass
