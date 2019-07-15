@@ -133,7 +133,7 @@ Add the path to the Blender executable to your PATH in Environment Variables.
 
 .. code-block::
 
-    %PROGRAMFILES%\Blender Foundation\Blender\2.80
+    %PROGRAMFILES%\Blender Foundation\Blender
 
 After that starting Blender from the command line is much simpler.
 
