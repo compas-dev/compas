@@ -18,7 +18,22 @@ It is recommended to create a new ``conda`` environment to make sure the python
 version matches exactly what Blender expects.
 
 
-**On Windows**
+.. raw:: html
+
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#windows">Windows</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#mac">Mac</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content">
+                <div class="tab-pane active" id="windows">
 
 Open the command prompt and type the following to install a new python
 environment with COMPAS:
@@ -38,8 +53,10 @@ Now configure Blender to use the newly installed environment:
     $ ren python original_python
     $ mklink /j python %CONDA_PREFIX%
 
+.. raw:: html
 
-**On Mac**
+    </div>
+    <div class="tab-pane" id="mac">
 
 Open the Terminal and type the following to install a new python
 environment with COMPAS:
@@ -50,7 +67,6 @@ environment with COMPAS:
     $ conda create -n blender python=3.7 COMPAS
     $ conda activate blender
 
-
 Now configure Blender to use the newly installed environment:
 
 .. code-block:: bash
@@ -59,6 +75,12 @@ Now configure Blender to use the newly installed environment:
     $ mv python original_python
     $ ln -s $CONDA_PREFIX python
 
+.. raw:: html
+
+    </div>
+    </div>
+    </div>
+    </div>
 
 Verify setup
 ============
