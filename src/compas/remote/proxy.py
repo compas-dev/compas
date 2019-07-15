@@ -80,8 +80,9 @@ class Proxy(object):
 
     """
 
-    def __init__(self, module=None, python=None, url='http://127.0.0.1', port=1753):
+    def __init__(self, module=None, python=None, url='http://127.0.0.1', port=1753, service='default'):
         self._process = None
+        self._service = service
         self._python = compas._os.select_python(python)  # change to pythonw == True
         self._env = compas._os.prepare_environment()
         self._url = url
@@ -155,11 +156,11 @@ class Proxy(object):
             self._process.StartInfo.RedirectStandardOutput = True
             self._process.StartInfo.RedirectStandardError = True
             self._process.StartInfo.FileName = self._python
-            self._process.StartInfo.Arguments = '-m {0} {1}'.format('compas.remote.service', str(self._port))
+            self._process.StartInfo.Arguments = '-m {0} {1}'.format('compas.remote.services.{}'.format(self._service), str(self._port))
             self._process.Start()
 
         else:
-            args = [self._python, '-m', 'compas.remote.service']
+            args = [self._python, '-m', 'compas.remote.services.{}'.format(self._service)]
             self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=self._env)
 
         if not self.ping_server():

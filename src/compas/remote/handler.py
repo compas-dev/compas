@@ -2,6 +2,7 @@ import json
 import importlib
 import threading
 import time
+import traceback
 
 from compas.utilities import DataDecoder
 from compas.utilities import DataEncoder
@@ -48,12 +49,13 @@ class RequestHandler(BaseHTTPRequestHandler):
             result = function(*args, **kwargs)
             odata['data'] = result
 
-        except Exception as e:
-            odata['error'] = str(e)
+        except:
+            odata['error'] = traceback.format_exc()
 
         finally:
             response = json.dumps(odata, cls=DataEncoder).encode('utf-8')
             self.send_response(200)
+            self.send_header('Access-Control-Allow-Origin', '*')
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.send_header('Content-Length', len(response))
             self.end_headers()

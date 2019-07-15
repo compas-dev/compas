@@ -247,7 +247,8 @@ class Network(FromToJson,
 
             for v, fkey in iter(nbrs.items()):
                 v = literal_eval(v)
-                fkey = literal_eval(fkey)
+                # fkey = literal_eval(fkey)
+                fkey = None
 
                 self.halfedge[u][v] = fkey
 
@@ -469,7 +470,7 @@ class Network(FromToJson,
         elif isinstance(vertices, collections.Mapping):
             for key, xyz in vertices.items():
                 network.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
-        
+
         for u, v in edges:
             network.add_edge(u, v)
         return network
