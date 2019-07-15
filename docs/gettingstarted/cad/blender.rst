@@ -17,23 +17,25 @@ Replace Python
 It is recommended to create a new ``conda`` environment to make sure the python
 version matches exactly what Blender expects.
 
-
 .. raw:: html
 
     <div class="card">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#windows">Windows</a>
+                    <a class="nav-link active" data-toggle="tab" href="#replace_python_windows">Windows</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#mac">Mac</a>
+                    <a class="nav-link" data-toggle="tab" href="#replace_python_osx">OSX</a>
                 </li>
             </ul>
         </div>
         <div class="card-body">
             <div class="tab-content">
-                <div class="tab-pane active" id="windows">
+
+.. raw:: html
+
+    <div class="tab-pane active" id="replace_python_windows">
 
 Open the command prompt and type the following to install a new python
 environment with COMPAS:
@@ -43,7 +45,6 @@ environment with COMPAS:
     $ conda config --add channels conda-forge
     $ conda create -n blender python=3.7 COMPAS
     $ conda activate blender
-
 
 Now configure Blender to use the newly installed environment:
 
@@ -56,7 +57,7 @@ Now configure Blender to use the newly installed environment:
 .. raw:: html
 
     </div>
-    <div class="tab-pane" id="mac">
+    <div class="tab-pane" id="replace_python_osx">
 
 Open the Terminal and type the following to install a new python
 environment with COMPAS:
@@ -78,16 +79,19 @@ Now configure Blender to use the newly installed environment:
 .. raw:: html
 
     </div>
+
+.. raw:: html
+
     </div>
     </div>
     </div>
+
 
 Verify setup
 ============
 
 In Blender, you should now be able to use COMPAS packages without any problems.
 Simply create and run the following script to verify everything is working properly.
-
 
 .. code-block:: python
 
@@ -119,16 +123,6 @@ before using Blender. However, when you want to update the installed packages,
 or add more packages, make sure you do it for the Python in the virtual environment.
 Otherwise, the changes will not have any effect.
 
-**On Windows**
-
-.. code-block:: bash
-
-    $ conda activate blender
-    $ conda install ...
-
-
-**On Mac**
-
 .. code-block:: bash
 
     $ conda activate blender
@@ -141,7 +135,36 @@ Start Blender
 Both on Windows and Mac (for different reasons) Blender should be started from the command line.
 By adding the Blender executable to the `PATH` variable this is really simple.
 
-**On Mac**
+.. raw:: html
+
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#blender_start_windows">Windows</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#blender_start_osx">OSX</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content">
+
+.. raw:: html
+
+    <div class="tab-pane active" id="blender_start_windows">
+
+Add the path to the Blender executable to your PATH in Environment Variables.
+
+.. code-block::
+
+    %PROGRAMFILES%\Blender Foundation\Blender
+
+.. raw:: html
+
+    </div>
+    <div class="tab-pane" id="blender_start_osx">
 
 Add the following to your .bash_profile
 
@@ -149,13 +172,15 @@ Add the following to your .bash_profile
 
     export PATH="/Applications/blender.app/Contents/MacOS:$PATH"
 
-**On Windows**
+.. raw:: html
 
-Add the path to the Blender executable to your PATH in Environment Variables.
+    </div>
 
-.. code-block::
+.. raw:: html
 
-    %PROGRAMFILES%\Blender Foundation\Blender
+    </div>
+    </div>
+    </div>
 
 After that starting Blender from the command line is much simpler.
 

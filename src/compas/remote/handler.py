@@ -1,4 +1,5 @@
 import json
+import os
 import importlib
 import threading
 import time
@@ -9,17 +10,41 @@ from compas.utilities import DataEncoder
 
 try:
     from http.server import BaseHTTPRequestHandler
+    from http.server import SimpleHTTPRequestHandler
 except ImportError:
     from BaseHTTPServer import BaseHTTPRequestHandler
+    from SimpleHTTPServer import SimpleHTTPRequestHandler
+
+
+HERE = os.path.realpath(os.path.dirname(__file__))
 
 
 __all__ = ['RequestHandler']
 
 
-class RequestHandler(BaseHTTPRequestHandler):
+class RequestHandler(SimpleHTTPRequestHandler):
 
     def ping(self):
         return 1
+
+    # def do_GET(self):
+    #     self.send_response(200)
+    #     self.send_header('Content-type', 'text/html')
+    #     self.send_header('Content-Length', os.path.getsize(self.getPath()))
+    #     self.end_headers()
+    #     self.wfile.write(self.getContent(self.getPath()))
+
+    # def getPath(self):
+    #     if self.path == '/':
+    #         content_path = os.path.join(HERE, 'index.html')
+    #     else:
+    #         content_path = os.path.join(HERE, str(self.path))
+    #     return content_path
+
+    # def getContent(self, content_path):
+    #     with open(content_path, mode='r', encoding='utf-8') as f:
+    #         content = f.read()
+    #     return bytes(content, 'utf-8')
 
     def do_POST(self):
         odata = {}

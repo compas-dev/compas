@@ -4,38 +4,41 @@ Installation
 
 .. highlight:: bash
 
-
 The recommended way to install COMPAS is with `conda <https://conda.io/docs/>`_.
+The following commands have to issued on the command line.
+On Windows, use the Anaconda Prompt and NOT the Command Prompt.
+On OSX, just use the Terminal app.
 
-Add the ``conda-forge`` package channel.
+COMPAS is distributed via the ``conda-forge`` package channel.
+Therefore, first add ``conda-forge`` to the list of channels where ``conda`` looks for packages.
 
 ::
 
     $ conda config --add channels conda-forge
 
 
-Install COMPAS in the current environment
+Install COMPAS in the current environment.
 
 ::
 
     $ conda install COMPAS
 
 
-Install a specific version of COMPAS
+Install a specific version of COMPAS.
 
 ::
 
     $ conda install COMPAS=0.7.0
 
 
-Install COMPAS in a separate environment
+Install COMPAS in a separate environment.
 
 ::
 
     $ conda create -n compas-dev COMPAS
 
 
-Install COMPAS in a separate environment with a specific version of Python
+Install COMPAS in a separate environment with a specific version of Python.
 
 ::
 
