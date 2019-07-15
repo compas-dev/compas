@@ -60,7 +60,7 @@ def distance_point_point(a, b):
 
     Returns
     -------
-    d : float
+    float
         Distance bewteen a and b.
 
     Examples
@@ -180,7 +180,7 @@ def distance_point_line(point, line):
 
     Returns
     -------
-    d : float
+    float
         The distance between the point and the line.
 
     Notes
@@ -315,7 +315,7 @@ def distance_point_line_sqrd_xy(point, line):
 
 
 def distance_point_plane(point, plane):
-    r"""Compute the distance from a point to a plane defined by three points.
+    r"""Compute the distance from a point to a plane defined by origin point and normal.
 
     Parameters
     ----------
@@ -326,12 +326,12 @@ def distance_point_plane(point, plane):
 
     Returns
     -------
-    d : float
+    float
         Distance between point and plane.
 
     Notes
     -----
-    The distance from a pioint to a planbe can be computed from the coefficients
+    The distance from a point to a plane can be computed from the coefficients
     of the equation of the plane and the coordinates of the point [1]_.
 
     The equation of a plane is
@@ -366,9 +366,64 @@ def distance_point_plane(point, plane):
     >>>
 
     """
+    return fabs(distance_point_plane_signed(point, plane))
+
+
+def distance_point_plane_signed(point, plane):
+    r"""Compute the signed distance from a point to a plane defined by origin point and normal.
+
+    Parameters
+    ----------
+    point : list
+        Point coordinates.
+    plane : tuple
+        A point and a vector defining a plane.
+
+    Returns
+    -------
+    float
+        Distance between point and plane.
+
+    Notes
+    -----
+    The distance from a point to a plane can be computed from the coefficients
+    of the equation of the plane and the coordinates of the point [1]_.
+
+    The equation of a plane is
+
+    .. math::
+
+        Ax + By + Cz + D = 0
+
+    where
+
+    .. math::
+        :nowrap:
+
+        \begin{align}
+            D &= - Ax_0 - Bx_0 - Cz_0 \\
+            Q &= (x_0, y_0, z_0) \\
+            N &= (A, B, C)
+        \end{align}
+
+    with :math:`Q` a point on the plane, and :math:`N` the normal vector at
+    that point. The distance of any point :math:`P` to a plane is the
+    value of the dot product of the vector from :math:`Q` to :math:`P`
+    and the normal at :math:`Q`.
+
+    References
+    ----------
+    .. [1] Nykamp, D. *Distance from point to plane*.
+           Available at: http://mathinsight.org/distance_point_plane.
+
+    Examples
+    --------
+    >>>
+
+    """
     base, normal = plane
     vector = subtract_vectors(point, base)
-    return fabs(dot_vectors(vector, normal))
+    return dot_vectors(vector, normal)
 
 
 def distance_line_line(l1, l2, tol=0.0):
@@ -383,7 +438,7 @@ def distance_line_line(l1, l2, tol=0.0):
 
     Returns
     -------
-    d : float
+    float
         The distance between the two lines.
 
     Notes
@@ -864,5 +919,3 @@ def closest_line_to_point(point, lines):
 
 if __name__ == "__main__":
     pass
-
-
