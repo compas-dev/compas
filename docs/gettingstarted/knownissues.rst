@@ -2,12 +2,14 @@
 Known Issues
 ********************************************************************************
 
+.. highlight:: bash
+
 Installing Planarity
 --------------------
 
 **Problem** The installation of ``Cython`` fails.
 
-**Solution** Install ```Cython`` separately using pip.
+Install ```Cython`` separately using pip.
 
 ::
 
@@ -58,13 +60,11 @@ anything involving a `Plotter` (or even just `matplotlib`)
     Abort trap: 6
 
 
-From https://matplotlib.org/faq/osx_framework.html:
-
 The default python provided in (Ana)conda is not a framework build.
 However, a framework build can easily be installed,
 both in the main environment and in conda envs:
 install python.app (``conda install python.app``)
-and use ``pythonw`` rather than ``python``.
+and use ``pythonw`` rather than ``python`` (https://matplotlib.org/faq/osx_framework.html).
 
 To install python.app when you create an environment do
 

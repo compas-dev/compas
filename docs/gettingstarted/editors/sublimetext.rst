@@ -2,10 +2,9 @@
 Sublime Text
 ********************************************************************************
 
-Install Package Control
-=======================
+.. note::
 
-To install packages in Sublime Text, first install Package Control (https://packagecontrol.io/installation).
+    To install packages in Sublime Text, first install Package Control (https://packagecontrol.io/installation).
 
 
 Install Packages
