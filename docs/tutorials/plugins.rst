@@ -2,11 +2,6 @@
 Making a Rhino plugin
 ********************************************************************************
 
-.. warning::
-
-    These instructions are a *work in progress* and may not yet perform as advertised :)
-
-
 Using the COMPAS ``cookiecutter`` template for Rhino Python PlugIns we are going
 to set up a plugin named "AwesomePlugIn".
 
@@ -28,7 +23,7 @@ Use the cookiecutter template
 
 .. code-block:: bash
 
-    $ cookiecutter gh:BlockResearchGroup/cookiecutter-compas-package
+    $ cookiecutter gh:compas-dev/cookiecutter-compas-package
 
 And then just follow the instructions.
 Provide "AwesomePlugIn" when asked for the *plugin_name*.

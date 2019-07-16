@@ -14,13 +14,7 @@ Install Packages
 Packages are installed using Package Control.
 Open the Command Palette and type "Package Control" to see all related commands.
 Select ``Package Control: Install Package``.
-
-To open the Command Palette, hit key combination ``SHIFT + CTRL + P`` (on Windows) or ``SHIFT + COMMAND + P`` (on Mac).
-
-.. figure:: /_images/sublimetext_packagecontrol.png
-     :figclass: figure
-     :class: figure-img img-fluid
-
+To open the Command Palette, do ``SHIFT+CTRL+P`` (on Windows) or ``SHIFT+COMMAND+P`` (on Mac).
 
 A list with available packages will appear.
 Select a package and it will be installed automatically.
@@ -36,14 +30,8 @@ Run scripts
 ===========
 
 To run scripts from within Sublime Text, you need to select a build system.
-Please use ``Conda``:
-
-::
-
-    Tools > Build System > Conda
-
-
-To run the current script, use ``Ctrl + B`` (Windows) or ``Command + B`` (Mac).
+Please use ``Conda``.
+Once a build system is selected you can run the current script with ``Ctrl+B`` (Windows) or ``Command+B`` (Mac).
 
 
 Virtual environments
@@ -54,12 +42,6 @@ the Conda package as described above, you can do all environment management dirt
 from Sublime Text. Simply launch the Command Palette and type ``Conda`` to see all
 available options.
 
-.. figure:: /_images/sublimetext_conda.png
-     :figclass: figure
-     :class: figure-img img-fluid
-
-
 Choose ``Conda: Activate Environment`` and the select the environment you want to activate.
 Then select ``Conda`` as the build system to use the Python installation of the
 activated environment.
-
