@@ -8,4 +8,4 @@ Network equilibrium in Blender
 
 
 .. literalinclude:: network-equilibrium-blender.py
-
+    :language: python
