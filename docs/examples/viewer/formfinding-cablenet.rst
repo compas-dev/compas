@@ -8,3 +8,4 @@ Network equilibrium
 
 
 .. literalinclude:: network-equilibrium.py
+    :language: python

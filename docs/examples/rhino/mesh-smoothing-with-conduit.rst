@@ -20,4 +20,5 @@ Visualising mesh smoothing with a conduit
     </div>
 
 .. literalinclude:: mesh-smoothing-with-conduit.py
+    :language: python
 

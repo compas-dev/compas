@@ -1,22 +1,6 @@
-"""Cablenet equilibrium.
-
-- make a network from sample data
-- set default vertex and edge attributes
-- identify *anchored* vertices
-- convert network data to numerical data
-- use a *key-index map* to reference items in the numerical data
-- run the force density method
-- update the network
-- make a viewer and display the result
-
-"""
-
 import compas
-
 from compas_blender.helpers import NetworkArtist
-
 from compas.datastructures import Network
-
 from compas.numerical import fd_numpy
 
 

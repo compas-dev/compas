@@ -8,6 +8,7 @@ The Stanford Bunny
 
 
 .. literalinclude:: mesh-stanford-bunny.py
+    :language: python
 
 .. code-block:: none
 
