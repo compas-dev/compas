@@ -27,4 +27,4 @@ Delaunay triangulation
 
 .. literalinclude:: mesh-delaunay-from-points.py
     :language: python
-
+    :class: line-numbers

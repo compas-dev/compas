@@ -1,24 +1,13 @@
-"""Smooth a mesh.
-"""
-
 from compas.datastructures import Mesh
 from compas.geometry import smooth_area
 
 import compas_rhino
-
-
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
-
 
 # select a Rhino mesh
 # and make it into a mesh datastructure
 
 guid = compas_rhino.select_mesh()
 mesh = compas_rhino.mesh_from_guid(Mesh, guid)
-
 
 # extract the data needed by the smoothing algorithm
 # identify the boundary as fixed
@@ -27,7 +16,6 @@ vertices  = mesh.get_vertices_attributes('xyz')
 faces     = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
 adjacency = [mesh.vertex_faces(key, ordered=True) for key in mesh.vertices()]
 fixed     = mesh.vertices_on_boundary()
-
 
 # run the smoothing algorithm
 # update the mesh

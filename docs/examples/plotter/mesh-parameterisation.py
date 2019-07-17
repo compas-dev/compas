@@ -1,15 +1,3 @@
-"""Parameterisation of a triangle mesh.
-
-author : Tom Van Mele
-email  : van.mele@arch.ethz.ch
-
-For more info see:
-
-- http://www.ctralie.com/Teaching/LapMesh/
-
-"""
-from __future__ import print_function
-
 import compas
 
 from numpy import zeros

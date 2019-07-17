@@ -7,3 +7,4 @@ Shortest network paths
 
 .. literalinclude:: network-shortest-path.py
     :language: python
+    :class: line-numbers

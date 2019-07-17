@@ -5,17 +5,6 @@ import time
 
 numerical = Proxy('compas.numerical')
 
-# a proxy starts a server (server.py run as a subprocess)
-# the server runs in the background
-# to make requests
-# send individual POST requests to the address of the background server
-# always provide module, function, args, kwargs
-# upon creation a proxy object attempts to
-# reconnect to a running server if available at the provided address
-# otherwise start a new server at the provided address
-# ? stop the server when address is changed ?
-#
-
 mesh = Mesh.from_obj(compas.get('faces.obj'))
 
 mesh.update_default_vertex_attributes({'is_anchor': False, 'px': 0.0, 'py': 0.0, 'pz': 0.0})

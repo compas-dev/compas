@@ -6,6 +6,6 @@ Network equilibrium in Blender
     :figclass: figure
     :class: figure-img img-fluid
 
-
 .. literalinclude:: network-equilibrium-blender.py
     :language: python
+    :class: line-numbers

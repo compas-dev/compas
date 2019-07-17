@@ -13,7 +13,7 @@ The following commands have to issued on the command line.
     On OSX, just use the Terminal app.
 
 
-First add ``conda-forge`` to the list of channels where ``conda`` looks for packages.
+Add ``conda-forge`` to the list of channels where ``conda`` looks for packages.
 
 ::
 

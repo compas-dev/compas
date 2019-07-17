@@ -27,4 +27,4 @@ Delaunay triangulation with boundary
 
 .. literalinclude:: mesh-delaunay-with-boundary.py
     :language: python
-
+    :class: line-numbers

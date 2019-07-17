@@ -42,17 +42,17 @@ environment with COMPAS:
 
 .. code-block:: bash
 
-    $ conda config --add channels conda-forge
-    $ conda create -n blender python=3.7 COMPAS
-    $ conda activate blender
+    conda config --add channels conda-forge
+    conda create -n blender python=3.7 COMPAS
+    conda activate blender
 
 Now configure Blender to use the newly installed environment:
 
 .. code-block:: bash
 
-    $ cd %PROGRAMFILES%\Blender Foundation\Blender\2.80
-    $ ren python original_python
-    $ mklink /j python %CONDA_PREFIX%
+    cd %PROGRAMFILES%\Blender Foundation\Blender\2.80
+    ren python original_python
+    mklink /j python %CONDA_PREFIX%
 
 .. raw:: html
 
@@ -64,9 +64,9 @@ environment with COMPAS:
 
 .. code-block:: bash
 
-    $ conda config --add channels conda-forge
-    $ conda create -n blender python=3.7 COMPAS
-    $ conda activate blender
+    conda config --add channels conda-forge
+    conda create -n blender python=3.7 COMPAS
+    conda activate blender
 
 Now configure Blender to use the newly installed environment:
 
@@ -186,4 +186,4 @@ After that starting Blender from the command line is much simpler.
 
 .. code-block:: bash
 
-    $ blender
+    blender

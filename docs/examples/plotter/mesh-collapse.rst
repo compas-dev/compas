@@ -9,3 +9,4 @@ Collapse mesh to a single vertex
 
 .. literalinclude:: mesh-collapse.py
     :language: python
+    :class: line-numbers

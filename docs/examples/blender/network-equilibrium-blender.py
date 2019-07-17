@@ -3,13 +3,6 @@ from compas_blender.helpers import NetworkArtist
 from compas.datastructures import Network
 from compas.numerical import fd_numpy
 
-
-__author__    = ['Tom Van Mele', 'Andrew Liew']
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
-
-
 # make a network from sample data
 
 network = Network.from_obj(compas.get_data('saddle.obj'))

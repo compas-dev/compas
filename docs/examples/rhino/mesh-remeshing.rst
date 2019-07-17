@@ -21,4 +21,4 @@ Remeshing 2D
 
 .. literalinclude:: mesh-remeshing.py
     :language: python
-
+    :class: line-numbers
