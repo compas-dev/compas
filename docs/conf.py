@@ -11,7 +11,6 @@ from sphinx.ext.napoleon.docstring import NumpyDocstring
 
 import sphinx_compas_theme
 
-
 # -- General configuration ------------------------------------------------
 
 project          = 'COMPAS'

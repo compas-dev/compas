@@ -2,24 +2,24 @@
 Known Issues
 ********************************************************************************
 
+.. highlight:: bash
+
 Installing Planarity
 --------------------
 
 **Problem** The installation of ``Cython`` fails.
 
-**Solution** Install ```Cython`` separately using pip.
+Install ```Cython`` separately using pip.
 
 ::
 
-    $ pip install Cython --install-option="--no-cython-compile"
+    pip install Cython --install-option="--no-cython-compile"
 
 
 Microsoft Visual C++ Build Tools
 --------------------------------
 
 **Problem** Microsoft Visual C++ Build Tools are missing.
-
-**Solution** Install Microsoft Visual C++ Build Tools.
 
 To install the Microsoft Visual C++ Build Tools choose one of the options provided
 here: https://www.scivision.dev/python-windows-visual-c-14-required/
@@ -59,26 +59,23 @@ anything involving a `Plotter` (or even just `matplotlib`)
     libc++abi.dylib: terminating with uncaught exception of type NSException
     Abort trap: 6
 
-**Solution** Install python.app
-
-From https://matplotlib.org/faq/osx_framework.html:
 
 The default python provided in (Ana)conda is not a framework build.
 However, a framework build can easily be installed,
 both in the main environment and in conda envs:
 install python.app (``conda install python.app``)
-and use ``pythonw`` rather than ``python``.
+and use ``pythonw`` rather than ``python`` (https://matplotlib.org/faq/osx_framework.html).
 
 To install python.app when you create an environment do
 
 ::
 
-    $ conda create -n compas-dev -c conda-forge python=3.7 python.app COMPAS
+    conda create -n compas-dev -c conda-forge python=3.7 python.app COMPAS
 
 
 To install python.app in an already existing environment
 
 ::
 
-    $ conda activate compas-dev
-    $ conda install python.app
+    conda activate compas-dev
+    conda install python.app

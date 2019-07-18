@@ -20,4 +20,5 @@ Remeshing 2D
     </div>
 
 .. literalinclude:: mesh-remeshing.py
-
+    :language: python
+    :class: line-numbers

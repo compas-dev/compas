@@ -4,7 +4,6 @@ Visual Studio Code
 
 `Visual Studio Code <https://code.visualstudio.com/>`_ is a free and open source text
 editor with very good support for Python programming.
-
 We recommend installing the following VS Code extensions:
 
 * `Python <https://marketplace.visualstudio.com/items?itemName=ms-python.python>`_
@@ -23,6 +22,7 @@ By default, VS Code will use ``PyLint`` to verify your code. To select a differe
 linter: open the ``Command Palette`` (``Ctrl+Shift+P``) and select the
 ``Python: Select Linter`` command.
 
+
 Run scripts
 ===========
 
@@ -33,6 +33,7 @@ and step into your code for debugging.
 
 Alternatively, use ``Ctrl+F5`` to start the script without debugger.
 
+
 Virtual environments
 ====================
 
@@ -42,6 +43,7 @@ support for them. When a ``.py`` file is open on VS Code, the bottom left side o
 Click on it and a list of all available interpreters including all environments
 will be shown. Select one, and the next time you run a script, the newly selected
 interpreter will be used.
+
 
 More features
 =============

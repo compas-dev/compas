@@ -1,30 +1,9 @@
-"""
-Compute the equilibrium shape of an unloaded hypar using the force density method.
-
-- make a mesh from a sample obj
-- fix the corners and set the force densities
-- run the fd method
-- visualize the result
-
-Note
-----
-This examples requires PyOpenGL for visualization.
-
-"""
-
 import compas
 
 from compas.datastructures import Mesh
 from compas.viewers import MeshViewer
 
 from compas.numerical import fd_numpy
-
-
-__author__    = 'Tom Van Mele'
-__copyright__ = 'Copyright 2016, Block Research Group - ETH Zurich'
-__license__   = 'MIT license'
-__email__     = 'vanmelet@ethz.ch'
-
 
 # make a mesh from an orthogonal grid of faces
 # with two high corners and two low corners
@@ -38,7 +17,6 @@ dea = {'q': 1.0}
 mesh.update_default_vertex_attributes(dva)
 mesh.update_default_edge_attributes(dea)
 
-
 # mark the corners of the mesh as anchors
 # i.e. they can take reaction forces
 # increase the force density along the boundaries
@@ -46,7 +24,6 @@ mesh.update_default_edge_attributes(dea)
 
 mesh.set_vertices_attribute('is_anchor', True, keys=mesh.vertices_where({'vertex_degree': 2}))
 mesh.set_edges_attribute('q', 10.0, keys=mesh.edges_on_boundary())
-
 
 # extract the structural data required for form finding
 # run the force density method
@@ -62,7 +39,6 @@ q     = mesh.get_edges_attribute('q')
 
 res = fd_numpy(xyz, edges, fixed, q, loads)
 xyz = res[0]
-
 
 # update the mesh coordinates
 # and display the result

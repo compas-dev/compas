@@ -86,12 +86,13 @@ def archimedean_spiral_evaluate(t, a, b, z=0):
 	-----
 	The radius between turns is equal to 2 * pi * b.
 	The angle of the tangent at the beginning is equal to a.
-	The length of an arc of the spiral from 0 t is equal to L(t) = b / 2 * t ** 2.
+	The length of an arc of the spiral from 0 t is equal to L(t) = b / 2 * t ** 2 [1]_.
 
 	References
 	----------
 	.. [1] GeoGebra. *Archimedean Spiral built by parametric equations*.
 		   Available at: https://www.geogebra.org/m/dZuH5hWa.
+
 	"""
 	return [b * t * cos(t + a), b * t * sin(t + a), z]
 

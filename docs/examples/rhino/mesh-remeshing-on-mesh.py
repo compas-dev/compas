@@ -1,10 +1,3 @@
-"""Remesh a 3D mesh.
-
-author : Tom Van Mele, Matthias Rippmann
-email  : van.mele@arch.ethz.ch
-
-"""
-
 from __future__ import print_function
 
 from compas.datastructures import Mesh
@@ -23,52 +16,10 @@ from compas_rhino.conduits import MeshConduit
 from compas_rhino.artists import MeshArtist
 
 
-# set the remeshing parameters
-
-length = 0.25
-kmax = 300
-
-
-# select the original mesh
-# select the border
-# select the fixed points
-
-guid_target = compas_rhino.select_mesh()
-guid_border = compas_rhino.select_polyline()
-guid_points = compas_rhino.select_points()
-
-
-# wrap the Rhino mesh object for convenience
-# wrap the Rhino curve object for convenience
-# get the point coordinates
-
-target = RhinoMesh(guid_target)
-border = RhinoCurve(guid_border)
-points = compas_rhino.get_point_coordinates(guid_points)
-
-
-# make a mesh datastructure from the Rhino mesh
-# triangulate the mesh
-
-mesh = mesh_from_guid(Mesh, guid_target)
-mesh_quads_to_triangles(mesh)
-
-
-# identify the fixed vertices
-# by matching the coordinates of the selected points
-# up to a precision
-
-keys  = mesh_identify_vertices(mesh, points, '1f')
-fixed = set(keys)
-
-
-# create a conduit for visualisation
 # define a callback
 # for updating the conduit
 # and for pulling the mesh back to the original during remeshing
 # and for keeping the boundary on the boundary curve
-
-conduit = MeshConduit(mesh, refreshrate=2)
 
 def callback(mesh, k, args):
     boundary = set(mesh.vertices_on_boundary())
@@ -90,6 +41,45 @@ def callback(mesh, k, args):
 
     conduit.redraw(k)
 
+
+# set the remeshing parameters
+
+length = 0.25
+kmax = 300
+
+
+# select the original mesh
+# select the border
+# select the fixed points
+
+guid_target = compas_rhino.select_mesh()
+guid_border = compas_rhino.select_polyline()
+guid_points = compas_rhino.select_points()
+
+# wrap the Rhino mesh object for convenience
+# wrap the Rhino curve object for convenience
+# get the point coordinates
+
+target = RhinoMesh(guid_target)
+border = RhinoCurve(guid_border)
+points = compas_rhino.get_point_coordinates(guid_points)
+
+# make a mesh datastructure from the Rhino mesh
+# triangulate the mesh
+
+mesh = mesh_from_guid(Mesh, guid_target)
+mesh_quads_to_triangles(mesh)
+
+# identify the fixed vertices
+# by matching the coordinates of the selected points
+# up to a precision
+
+keys  = mesh_identify_vertices(mesh, points, '1f')
+fixed = set(keys)
+
+# create a conduit for visualisation
+
+conduit = MeshConduit(mesh, refreshrate=2)
 
 # run the remeshing algorithm
 # draw the result

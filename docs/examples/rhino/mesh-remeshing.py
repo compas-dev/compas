@@ -1,5 +1,3 @@
-"""Remeshing a 2D mesh."""
-
 from __future__ import print_function
 from __future__ import division
 
@@ -14,10 +12,10 @@ from compas.topology import trimesh_remesh
 from compas_rhino.conduits import MeshConduit
 
 
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
+# define a callback for updating the conduit
+
+def callback(mesh, k, args):
+    conduit.redraw(k)
 
 
 # get the boundary curve
@@ -27,7 +25,6 @@ boundary = rs.GetObject("Select Boundary Curve", 4)
 length   = rs.GetReal("Select Edge Target Length", 2.0)
 points   = rs.DivideCurve(boundary, rs.CurveLength(boundary) / length)
 
-
 # generate a delaunay triangulation
 # from the points on the boundary
 
@@ -36,13 +33,8 @@ mesh = Mesh.from_vertices_and_faces(points, faces)
 
 
 # make a conduit for visualization
-# and a callback for updating the conduit
 
 conduit = MeshConduit(mesh, refreshrate=2)
-
-def callback(mesh, k, args):
-    conduit.redraw(k)
-
 
 # run the remeshing algorithm
 # and draw the result

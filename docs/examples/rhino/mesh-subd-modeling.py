@@ -1,10 +1,3 @@
-"""Mesh subdivision.
-
-author : Tom Van Mele
-email  : van.mele@arch.ethz.ch
-
-"""
-
 from __future__ import print_function
 from __future__ import division
 
@@ -19,13 +12,11 @@ from compas_rhino.modifiers import VertexModifier
 
 mesh = Mesh.from_polyhedron(6)
 
-
 # give it a name
 # and set default vertex attributes
 
 mesh.attributes['name'] = 'Control'
 mesh.update_default_vertex_attributes({'is_fixed': False})
-
 
 # make a drawing function for the control mesh
 
@@ -37,11 +28,9 @@ def draw():
     artist.draw_edges()
     artist.redraw()
 
-
 # draw the control mesh
 
 draw()
-
 
 # allow the user to change the attributes of the vertices
 # note: the interaction loop exits
@@ -54,7 +43,6 @@ while True:
     VertexModifier.update_vertex_attributes(mesh, keys)
     draw()
 
-
 # make a subd mesh (using catmullclark)
 # keep the vertices fixed
 # as indicated by the user
@@ -62,11 +50,9 @@ while True:
 fixed = mesh.vertices_where({'is_fixed': True})
 subd = mesh_subdivide(mesh, scheme='catmullclark', k=5, fixed=fixed)
 
-
 # give the mesh a (different) name
 
 subd.attributes['name'] = 'Mesh'
-
 
 # draw the result
 

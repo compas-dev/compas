@@ -13,5 +13,4 @@ The main library of COMPAS
    api
    contributing
    citing
-   changelog
    license

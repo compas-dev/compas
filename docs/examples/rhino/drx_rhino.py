@@ -1,11 +1,9 @@
-
 from compas.datastructures import Network
 from compas.utilities import geometric_key
 from compas.utilities import XFunc
-from compas_rhino.artists.networkartist import NetworkArtist
+from compas_rhino.artists import NetworkArtist
 
 import rhinoscriptsyntax as rs
-
 
 drx_numpy = XFunc('compas.numerical.drx_numpy')
 

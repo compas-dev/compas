@@ -6,7 +6,7 @@ ipython>=5.8
 isort
 m2r
 pytest==3.2
-sphinx_compas_theme>=0.2.0
+sphinx_compas_theme==0.2.11
 sphinx>=1.6
 twine
 -e .

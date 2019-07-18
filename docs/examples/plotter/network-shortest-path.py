@@ -1,10 +1,3 @@
-"""Shortest path in a network
-
-author : Tom Van Mele
-email  : van.mele@arch.ethz.ch
-
-"""
-
 from random import choice
 
 import compas

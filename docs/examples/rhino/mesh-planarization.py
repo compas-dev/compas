@@ -18,39 +18,6 @@ from compas.geometry import planarize_faces
 from compas.geometry import flatness
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
-
-
-# select an input surface and convert it to a mesh
-
-guid = compas_rhino.select_surface('Select an input surface.')
-mesh = compas_rhino.mesh_from_surface_heightfield(Mesh, guid, density=(20, 10))
-
-
-# create a surface constraint
-
-surf = RhinoSurface(guid)
-
-
-# vertices and faces
-
-key_index = mesh.key_index()
-
-vertices_0 = mesh.get_vertices_attributes('xyz')
-vertices_1 = deepcopy(vertices_0)
-
-faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
-fixed = [key_index[key] for key in mesh.vertices_where({'z': (-0.5, 0.1)})]
-
-
-# planarize with a conduit for visualization
-
-conduit = FacesConduit(vertices_1, faces, refreshrate=5)
-
-
 # define a callback to visualise the planarisation process
 
 def callback(k, args):
@@ -64,6 +31,29 @@ def callback(k, args):
         conduit.redraw()
 
 
+# select an input surface and convert it to a mesh
+
+guid = compas_rhino.select_surface('Select an input surface.')
+mesh = compas_rhino.mesh_from_surface_heightfield(Mesh, guid, density=(20, 10))
+
+# create a surface constraint
+
+surf = RhinoSurface(guid)
+
+# vertices and faces
+
+key_index = mesh.key_index()
+
+vertices_0 = mesh.get_vertices_attributes('xyz')
+vertices_1 = deepcopy(vertices_0)
+
+faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+fixed = [key_index[key] for key in mesh.vertices_where({'z': (-0.5, 0.1)})]
+
+# planarize with a conduit for visualization
+
+conduit = FacesConduit(vertices_1, faces, refreshrate=5)
+
 with conduit.enabled():
     planarize_faces(
         vertices_1,
@@ -71,12 +61,10 @@ with conduit.enabled():
         kmax=500,
         callback=callback)
 
-
 # compute the *flatness*
 
 dev0 = flatness(vertices_0, faces, 0.02)
 dev1 = flatness(vertices_1, faces, 0.02)
-
 
 # draw the original
 
@@ -86,7 +74,6 @@ compas_rhino.mesh_draw_faces(
     clear_layer=True,
     color={fkey: i_to_rgb(dev0[index]) for index, fkey in enumerate(mesh.faces())}
 )
-
 
 # draw the result
 

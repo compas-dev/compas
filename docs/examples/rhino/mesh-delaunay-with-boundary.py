@@ -1,17 +1,9 @@
-"""Delaunay triangulation with boundary.
-
-author : Matthias Rippmann
-email  : rippmann@arch.ethz.ch
-
-"""
-
 import compas_rhino
 
 from compas.datastructures import Mesh
 from compas.geometry import delaunay_from_points
 
 from compas_rhino.artists import MeshArtist
-
 
 # select the points
 # select the boundary

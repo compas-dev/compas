@@ -8,8 +8,10 @@ The Stanford Bunny
 
 
 .. literalinclude:: mesh-stanford-bunny.py
+    :language: python
+    :class: line-numbers
 
-.. code-block:: none
+::
 
     ply
     format ascii 1.0

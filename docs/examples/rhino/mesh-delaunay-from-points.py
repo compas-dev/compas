@@ -1,18 +1,9 @@
-"""Delaunay triangulation from points"""
-
 import compas_rhino
 
 from compas.datastructures import Mesh
 from compas.topology import delaunay_from_points
 
 from compas_rhino.artists import MeshArtist
-
-
-__author__    = ['Tom Van Mele', 'Matthias Rippmann']
-__copyright__ = 'Copyright 2017, BRG - ETH Zurich',
-__license__   = 'MIT'
-__email__     = 'van.mele@arch.ethz.ch'
-
 
 # select the points
 # and get their coordinates
