@@ -5,6 +5,7 @@ from __future__ import division
 import compas
 
 from compas.geometry import add_vectors
+from compas.geometry import scale_vector
 from compas.utilities import color_to_colordict
 
 import compas_rhino
@@ -112,7 +113,7 @@ class FaceArtist(object):
 
         """
         keys = keys or list(self.datastructure.faces())
-        
+
         colordict = color_to_colordict(color,
                                        keys,
                                        default=self.defaults.get('color.face'),
@@ -184,7 +185,7 @@ class FaceArtist(object):
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
-    def draw_facenormals(self, color=None):
+    def draw_facenormals(self, color=None, scale=1.0):
         """Draw the normals of the faces.
 
         Parameters
@@ -209,7 +210,7 @@ class FaceArtist(object):
         for fkey, attr in self.datastructure.faces(True):
             n = self.datastructure.face_normal(fkey)
             sp = self.datastructure.face_centroid(fkey)
-            ep = add_vectors(sp, n)
+            ep = add_vectors(sp, scale_vector(n, scale))
             lines.append({
                 'start' : sp,
                 'end'   : ep,

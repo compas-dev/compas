@@ -2,21 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+from numpy import asarray
+from numpy import meshgrid
+from numpy import linspace
+from numpy import amax
+from numpy import amin
 
-try:
-    from numpy import asarray
-    from numpy import meshgrid
-    from numpy import linspace
-    from numpy import amax
-    from numpy import amin
+from scipy.interpolate import griddata
 
-    from scipy.interpolate import griddata
-
-    import matplotlib.pyplot as plt
-
-except ImportError:
-    compas.raise_if_not_ironpython()
+import matplotlib.pyplot as plt
 
 try:
     import pymesh
@@ -29,7 +23,6 @@ from compas.geometry import scalarfield_contours_numpy
 __all__ = [
     'mesh_isolines_numpy',
     'mesh_contours_numpy',
-    'mesh_contours_pymesh'
 ]
 
 
@@ -42,7 +35,7 @@ def mesh_isolines_numpy(mesh, attr_name, N=50):
         A mesh object.
     attr_name : str
         The name of the vertex attribute.
-    N : int, optional
+    N : int (50)
         The density of the isolines.
         Default is ``50``.
 
@@ -63,11 +56,6 @@ def mesh_isolines_numpy(mesh, attr_name, N=50):
 def mesh_contours_numpy(mesh, levels=None, density=100):
     """Compute the contours of the mesh.
 
-    Notes
-    -----
-    The contours are defined as the isolines of the z-coordinates of the vertices
-    of the mesh.
-
     Parameters
     ----------
     mesh : Mesh
@@ -84,16 +72,14 @@ def mesh_contours_numpy(mesh, levels=None, density=100):
         The list of levels contains the z-values at each of the contours.
         Each contour is a list of paths, and each path is a list polygons.
 
+    Notes
+    -----
+    The contours are defined as the isolines of the z-coordinates of the vertices
+    of the mesh.
+
     Examples
     --------
-    .. code-block:: python
-
-        import compas
-        from compas.datastructures import Mesh
-        from compas.geometry import mesh_contours_numpy
-
-        mesh = Mesh.from_obj(compas.get('hypar.obj'))
-        print(mesh_contours_numpy(mesh))
+    >>>
 
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
@@ -133,49 +119,10 @@ def mesh_contours_numpy(mesh, levels=None, density=100):
     return levels, contours
 
 
-# def mesh_contours_skimage(mesh, levels=None, density=100):
-#     pass
-
-
-# def mesh_contours_opencv(mesh, levels=None, density=100):
-#     pass
-
-
-# def mesh_contours_vtk(mesh, levels=None, density=100):
-#     pass
-
-
-def mesh_contours_pymesh(mesh, levels=None, density=100):
-    vertices, faces = mesh.to_vertices_and_faces()
-    m = pymesh.form_mesh(vertices, faces)
-    return pymesh.slice_mesh(m, [0, 0, 1], 50)
-
-
-# def mesh_contours_igl(mesh, levels=None, density=100):
-#     pass
-
-
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas.datastructures import mesh_contours_numpy
-
-    mesh = Mesh.from_obj(compas.get('saddle.obj'))
-
-    # res = mesh_contours_pymesh(mesh)
-    # print(res)
-
-    levels, contours = mesh_contours_numpy(mesh)
-
-    for i in range(len(contours)):
-        level = levels[i]
-        contour = contours[i]
-        print(level)
-        for path in contour:
-            for polygon in path:
-                print([point.tolist() for point in polygon])
+    pass

@@ -55,16 +55,6 @@ datetime
     now
 
 
-decorators
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    memoize
-
-
 functions
 ==========
 
@@ -128,14 +118,6 @@ profiling
     :nosignatures:
 
     print_profile
-
-
-remote
-======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
 
 
 statistics

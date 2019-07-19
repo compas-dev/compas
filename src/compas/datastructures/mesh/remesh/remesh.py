@@ -2,10 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import random
-
 from compas.datastructures.mesh.smoothing import mesh_smooth_area
-
 from compas.datastructures.mesh.operations import trimesh_collapse_edge
 from compas.datastructures.mesh.operations import trimesh_swap_edge
 from compas.datastructures.mesh.operations import trimesh_split_edge
@@ -88,51 +85,7 @@ def trimesh_remesh(mesh,
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import trimesh_remesh
-        from compas_plotters import MeshPlotter
-
-        vertices = [
-            (0.0, 0.0, 0.0),
-            (10.0, 0.0, 0.0),
-            (6.0, 10.0, 0.0),
-            (0.0, 10.0, 0.0),
-            (5.0, 5.0, 0.0)
-        ]
-        faces = [
-            (0, 1, 4),
-            (1, 2, 4),
-            (2, 3, 4),
-            (3, 0, 4)
-        ]
-
-        mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-        trimesh_remesh(
-            mesh,
-            target=0.5,
-            tol=0.05,
-            kmax=300,
-            allow_boundary_split=True,
-            allow_boundary_swap=True,
-            allow_boundary_collapse=True,
-            verbose=False
-        )
-
-        plotter = MeshPlotter(mesh)
-
-        plotter.draw_vertices(radius=0.03)
-        plotter.draw_faces()
-        plotter.draw_edges()
-
-        plotter.show()
-
-    See Also
-    --------
-    * :func:`compas.geometry.smooth_area`
+    >>> 
 
     """
     if verbose:
@@ -285,41 +238,4 @@ def trimesh_remesh(mesh,
 
 if __name__ == "__main__":
 
-    from compas.datastructures import Mesh
-    from compas.datastructures import mesh_smooth_area
-
-    from compas_plotters import MeshPlotter
-
-
-    vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (6.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
-    faces = [[0, 1, 2, 3]]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
-    key = mesh.insert_vertex(0)
-    fixed = [key]
-
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    plotter.draw_edges(width=0.5)
-
-    def callback(mesh, k, args):
-        print(k)
-        plotter.update_edges()
-        plotter.update()
-
-    trimesh_remesh(
-        mesh,
-        0.5,
-        kmax=200,
-        allow_boundary_split=True,
-        allow_boundary_swap=True,
-        allow_boundary_collapse=True,
-        fixed=fixed,
-        callback=callback)
-
-    mesh_smooth_area(mesh, fixed=mesh.vertices_on_boundary())
-
-    plotter.update_edges()
-    plotter.update(pause=2.0)
-    plotter.show()
+    pass

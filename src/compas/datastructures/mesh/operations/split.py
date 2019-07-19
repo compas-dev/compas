@@ -10,15 +10,13 @@ __all__ = [
 ]
 
 
-def mesh_split(mesh):
-    pass
-
-
 def mesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
     """Split and edge by inserting a vertex along its length.
 
     Parameters
     ----------
+    mesh : compas.datastructures.Mesh
+        Instance of a mesh.
     u : str
         The key of the first vertex of the edge.
     v : str
@@ -88,6 +86,8 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
     Parameters
     ----------
+    mesh : compas.datastructures.Mesh
+        Instance of a mesh.
     u : hashable
         Identifier of the first vertex.
     v : hashable
@@ -104,31 +104,7 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_quads_to_triangles
-        from compas.datastructures import trimesh_split_edge
-        from compas_plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        mesh_quads_to_triangles(mesh)
-
-        u, v = mesh.get_any_edge()
-
-        split = trimesh_split_edge(mesh, u, v)
-
-        facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
-
-        plotter = MeshPlotter(mesh)
-
-        plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2, facecolor=facecolor)
-        plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
-
-        plotter.show()
+    >>>
 
     """
     if t <= 0.0:
@@ -184,10 +160,16 @@ def trimesh_split_edge(mesh, u, v, t=0.5, allow_boundary=False):
 def mesh_split_face(mesh, fkey, u, v):
     """Split a face by inserting an edge between two specified vertices.
 
-    Parameters:
-        fkey (str) : The face key.
-        u (str) : The key of the first split vertex.
-        v (str) : The key of the second split vertex.
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        Instance of a mesh
+    fkey : str
+        The face key.
+    u : str
+        The key of the first split vertex.
+    v : str
+        The key of the second split vertex.
 
     """
     if u not in mesh.face[fkey] or v not in mesh.face[fkey]:
@@ -222,25 +204,4 @@ def mesh_split_face(mesh, fkey, u, v):
 
 if __name__ == "__main__":
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas_plotters import MeshPlotter
-    from compas.datastructures import mesh_quads_to_triangles
-    from compas.datastructures import trimesh_split_edge
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    mesh_quads_to_triangles(mesh)
-
-    u, v = mesh.get_any_edge()
-
-    split = trimesh_split_edge(mesh, u, v, allow_boundary=True)
-
-    facecolor = {key: '#cccccc' if key != split else '#ff0000' for key in mesh.vertices()}
-
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    plotter.draw_vertices(text={key: key for key in mesh.vertices()}, radius=0.2, facecolor=facecolor)
-    plotter.draw_faces(text={fkey: fkey for fkey in mesh.faces()})
-
-    plotter.show()
+    pass

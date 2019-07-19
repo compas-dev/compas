@@ -1944,18 +1944,13 @@ class VolMesh(FromToPickle,
             The halffaces on the boundary.
 
         """
-        hfkeys = []
+        hfkeys = set()
 
-        for ckey in self.cell:
-            cell_hfkeys = self.cell_halffaces(ckey)
+        for hfkey in self.faces():
+            if self.is_halfface_on_boundary(hfkey):
+                hfkeys.add(hfkey)
 
-            for hfkey in cell_hfkeys:
-                u, v, w = self.halfface[hfkey][0:3]
-
-                if self.plane[w][v][u] is None:
-                    hfkeys.append(hfkey)
-
-        return hfkeys
+        return list(hfkeys)
 
     # --------------------------------------------------------------------------
     # geometric operations
@@ -1964,8 +1959,8 @@ class VolMesh(FromToPickle,
     def scale(self, factor=1.0):
         """Scale the entire volmesh object.
 
-        Parameter
-        ---------
+        Parameters
+        ----------
         factor : float
             Scaling factor.
 

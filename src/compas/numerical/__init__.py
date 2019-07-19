@@ -29,8 +29,6 @@ Solvers
     dr
     dr_numpy
     drx_numpy
-    fd_alglib
-    fd_cpp
     fd_numpy
     ga
     moga
@@ -106,10 +104,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .linalg import *
-from .matrices import *
-from .operators import *
-from .utilities import *
+import compas
+
+if not compas.IPY:
+    from .linalg import *
+    from .matrices import *
+    from .operators import *
+    from .utilities import *
 
 from .descent import *
 from .devo import *

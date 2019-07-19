@@ -119,7 +119,6 @@ directly in Rhino.
 
     from compas.datastructures import Mesh
     from compas.datastructures import mesh_transform
-    from compas.datastructures import mesh_planarize_faces
 
     from compas.numerical import dr
     from compas.geometry import bounding_box
@@ -133,7 +132,6 @@ directly in Rhino.
 
     from compas.datastructures import Mesh
     from compas.datastructures import mesh_transform_numpy
-    from compas.datastructures import mesh_planarize_faces_igl
 
     from compas.numerical import dr_numpy
     from compas.geometry import bounding_box_numpy
@@ -166,7 +164,6 @@ Limitations
 The input and output of XFuncs have to be native Python objects.
 If the wrapped function returns Numpy arrays, these will be converted automatically
 to lists.
-
 
 .. code-block:: python
 
@@ -225,16 +222,7 @@ Examples
 Basic usage
 -----------
 
-.. code-block:: python
-
-    pass
-
 
 Usage with data structures
 --------------------------
-
-.. code-block:: python
-
-    pass
-
 

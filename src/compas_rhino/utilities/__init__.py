@@ -17,9 +17,9 @@ document
     :toctree: generated/
     :nosignatures:
 
-    get_document_name
+    get_document_basename
     get_document_filename
-    get_document_path
+    get_document_filepath
     get_document_dirname
 
 
@@ -118,7 +118,6 @@ misc
     display_image
     display_html
     update_settings
-    update_attributes
     update_named_values
     screenshot_current_view
 

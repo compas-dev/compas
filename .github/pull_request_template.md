@@ -12,3 +12,6 @@
 
 1. [ ] Add the change to the `CHANGELOG.md` file in the `Unreleased` section under the most fitting heading: `Added`, `Changed`, `Removed`.
 1. [ ] Run all tests on your computer (i.e. `invoke test`).
+1. [ ] If you add new functions/classes, check that:
+   1. [ ] Are available on a second-level import, e.g. `compas.datastructures.Mesh`.
+   1. [ ] Add unit tests (especially important for algorithm implementations).

@@ -9,6 +9,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `compas_rhino.geometry.RhinoGeometry` to the docs.
+- Added `compas.remote.services`.
+- Added `compas.remote.services.network.py` service for handling requests for a browser-based network viewer.
+
+### Changed
+
+- Fix mesh genus in `compas.datastructures`.
+- Fixed missing import in `compas_rhino.geometry`.
+- Removed circular imports from `compas_rhino.geometry`.
+- Fix duplicate hfkeys in `compas.datastructures.volmesh.halffaces_on_boundary`.
+- Moved `compas.remote.service.py` to `compas.remote.services.default.py`.
+- Removed processing of face keys from data getter and setter in `compas.datastructures.Network`.
+- Using `SimpleHTTPRequestHandler` instead of `BaseHTTPRequestHandler` to provide basic support for serving files via `GET`.
+
+### Removed
+
+
+## [0.7.1] 2019-06-29
+
+### Added
+
+### Changed
+
+- Include `compas_plotters` and `compas_viewers` in the build instructions.
+- Moved import of `subprocess` to Windows-specific situations.
+- Fixed document functions failing when document name is `None`.
+- Downgraded `numpy` requirements.
+- Loosened `scipy` requirements.
+- Default Python to `pythonw`.
+
+### Removed
+
+
+## [0.7.0] 2019-06-27
+
+### Added
+
 - Added filter shorthand for selecting OBJ, JSON files in Rhino.
 - Added `compas_plotters`
 - Added `compas_viewers`
@@ -17,11 +54,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `face_neighborhood` class function to `compas.datastructures.Mesh`.
 - Added `get_face_attributes_all` to `compas.datastructures._mixins.attributes`.
 - Added `get_faces_attributes_all` to `compas.datastructures._mixins.attributes`.
+- Added `compas.remote` package for making HTTP based Remote Procedure Calls.
 
 ### Changed
 
 - Restructure halffaces as lists in `compas.datastructures.VolMesh`.
 - Correctly handle `python-net` module presence during IronPython imports.
+- Switched to `compas.IPY` check instead of `try-except` for preventing non IronPython friendly imports.
+- Changed installation of compas packages to Rhino to support non-admin user accounts on Windows.
+- Copy facedata in `mesh_quads_to_triangles`
+- Added non-imported service for `compas.remote` for starting the subprocess that runs the server.
 
 ### Removed
 

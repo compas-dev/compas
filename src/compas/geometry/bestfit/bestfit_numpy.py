@@ -2,28 +2,21 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+from numpy import asarray
+from numpy import sqrt
+from numpy import mean
+from numpy import sum
+from numpy import zeros
+from numpy.linalg import lstsq
+
+from scipy.linalg import svd
+from scipy.optimize import leastsq
 
 # should this not be defined in a different location?
 from compas.geometry import local_coords_numpy
 from compas.geometry import global_coords_numpy
 
 from compas.numerical import pca_numpy
-
-try:
-    from numpy import asarray
-    from numpy import sqrt
-    from numpy import mean
-    from numpy import sum
-    from numpy import zeros
-    from numpy.linalg import lstsq
-
-    from scipy.linalg import svd
-    from scipy.optimize import leastsq
-
-
-except ImportError:
-    compas.raise_if_not_ironpython()
 
 
 __all__ = [
@@ -49,12 +42,6 @@ def bestfit_plane_numpy(points):
     -------
     tuple
         A point on the plane, and the normal vector.
-
-    See also
-    --------
-    :func:`bestfit_plane_numpy2`
-    :func:`bestfit_plane_numpy3`
-    :func:`bestfit_plane_numpy4`
 
     Examples
     --------

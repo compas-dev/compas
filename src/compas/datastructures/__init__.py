@@ -35,7 +35,6 @@ Functions
     mesh_bounding_box_xy
     mesh_connectivity_matrix
     mesh_contours_numpy
-    mesh_contours_pymesh
     mesh_degree_matrix
     mesh_delete_duplicate_vertices
     mesh_dual

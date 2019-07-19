@@ -20,7 +20,7 @@ __all__ = ['RhinoPoint']
 
 
 class RhinoPoint(RhinoGeometry):
-    """"""
+    """Convenience wrapper for a Rhino point object."""
 
     __module__ = 'compas_rhino.geometry'
 
@@ -64,9 +64,7 @@ class RhinoPoint(RhinoGeometry):
 
         Examples
         --------
-        .. code-block:: python
-
-            #
+        >>>
 
         """
         return self.xyz
@@ -89,9 +87,7 @@ class RhinoPoint(RhinoGeometry):
 
         Examples
         --------
-        .. code-block:: python
-
-            #
+        >>>
 
         """
         return [self.closest_point(point, maxdist) for point in points]

@@ -3,26 +3,19 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from numpy import arccos
+from numpy import array
+from numpy import isnan
+from numpy import mean
+from numpy import sin
+from numpy import sqrt
+from numpy import sum
+from numpy import zeros
 
-try:
-    from numpy import arccos
-    from numpy import array
-    from numpy import isnan
-    from numpy import mean
-    from numpy import sin
-    from numpy import sqrt
-    from numpy import sum
-    from numpy import zeros
-
-    from numba import guvectorize
-    from numba import f8
-    from numba import i4
-    from numba import i8
-
-except ImportError:
-    compas.raise_if_not_ironpython()
-
+from numba import guvectorize
+from numba import f8
+from numba import i4
+from numba import i8
 
 from compas.numerical import uvw_lengths
 

@@ -75,8 +75,7 @@ def install_plugin(plugin, version=None):
 
     print('Installing PlugIn {} to Rhino PythonPlugIns.'.format(plugin_name))
 
-    if os.path.exists(destination):
-        remove_symlink(destination)
+    remove_symlink(destination)
     create_symlink(source, destination)
 
     print('PlugIn {} Installed.'.format(plugin_name))
