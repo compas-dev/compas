@@ -768,6 +768,67 @@ class FaceAttributesManagement(object):
         temp = list(zip(names, values))
         return [[self.get_face_attribute(fkey, name, value) for name, value in temp] for fkey in fkeys]
 
+    def get_face_attributes_all(self, key, data=True):
+        """Get all attributes of one face.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the face.
+        data : bool, optional
+            Returns the attributes and their values.
+            Default is ``True``.
+
+        Returns
+        ------
+        dict
+            A copy of the dictionary containing all attributes and their values, if ``data=True``.
+        list
+            A list of all attribute keys, if ``data=False`.
+
+        See Also
+        --------
+        * :meth:`get_face_attribute`
+        * :meth:`get_face_attributes`
+        * :meth:`get_faces_attribute`
+        * :meth:`get_faces_attributes`
+        * :meth:'get_faces_all_attributes'
+
+        """
+        if data:
+            return self.facedata[key].copy()
+        else:
+            return list(self.facedata[key].keys())
+
+    def get_faces_attributes_all(self, keys, data=True):
+        """Get all attributes of multiple faces.
+
+        Parameters
+        ----------
+        keys : list of hashable
+            A list of face identifiers.
+        data : bool, optional
+            Returns the attributes and their values.
+            Default is ``True``.
+
+        Returns
+        ------
+        list of dict
+            A list of dictionaries containing all attributes and their values, if ``data=True``.
+        list of list
+            A list of all attribute keys for each specified face key, if ``data=False`.
+
+        See Also
+        --------
+        * :meth:`get_face_attribute`
+        * :meth:`get_face_attributes`
+        * :meth:`get_faces_attribute`
+        * :meth:`get_faces_attributes`
+        * :meth:'get_face_all_attributes'
+
+        """
+        return [self.get_face_all_attributes(key, data) for key in keys]
+
 
 # ==============================================================================
 # Main
