@@ -34,6 +34,7 @@ __all__ = [
     'distance_point_line_sqrd',
     'distance_point_line_sqrd_xy',
     'distance_point_plane',
+    'distance_point_plane_signed',
     'distance_line_line',
     'closest_point_in_cloud',
     'closest_point_in_cloud_xy',

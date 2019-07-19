@@ -16,6 +16,8 @@ from .curve import Bezier
 from .sphere import Sphere
 
 from .box import Box
-
+from .cone import Cone
+from .torus import Torus
+from .cylinder import Cylinder
 
 __all__ = [name for name in dir() if not name.startswith('_')]
