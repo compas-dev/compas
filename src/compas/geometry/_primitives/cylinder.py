@@ -4,8 +4,8 @@ from __future__ import print_function
 
 from math import pi
 
-from compas.geometry import Circle
-from compas.geometry import Plane
+from compas.geometry._primitives import Circle
+from compas.geometry._primitives import Plane
 
 __all__ = ['Cylinder']
 
@@ -77,7 +77,7 @@ class Cylinder(object):
     @plane.setter
     def plane(self, plane):
         self.circle.plane = Plane(plane[0], plane[1])
-    
+
     @property
     def circle(self):
         """float: The circle of the cylinder."""
@@ -95,7 +95,7 @@ class Cylinder(object):
     @radius.setter
     def radius(self, radius):
         self.circle.radius = float(radius)
-    
+
     @property
     def height(self):
         """float: The height of the cylinder."""
@@ -277,7 +277,7 @@ if __name__ == "__main__":
     from compas.geometry import Frame
     from compas.geometry import Transformation
     from compas.geometry import Circle
-    
+
     cylinder = Cylinder(Circle(Plane.worldXY(), 5), 7)
     frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     print(frame.normal)
