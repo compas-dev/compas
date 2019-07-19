@@ -72,9 +72,9 @@ Now configure Blender to use the newly installed environment:
 
 .. code-block:: bash
 
-    $ cd /Applications/blender.app/Contents/Resources/2.80
-    $ mv python original_python
-    $ ln -s $CONDA_PREFIX python
+    cd /Applications/blender.app/Contents/Resources/2.80
+    mv python original_python
+    ln -s $CONDA_PREFIX python
 
 .. raw:: html
 
@@ -125,8 +125,8 @@ Otherwise, the changes will not have any effect.
 
 .. code-block:: bash
 
-    $ conda activate blender
-    $ conda install ...
+    conda activate blender
+    conda install ...
 
 
 Start Blender
