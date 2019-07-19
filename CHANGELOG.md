@@ -120,6 +120,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix `mesh_uv_to_xyz` in `RhinoSurface`.
 - Fix 'mesh_weld' and 'meshes_join_and_weld' against consecutive duplicates in face vertices.
 - Fix setting of environment variables in `System.Diagnostics.Process`-based subprocess for `XFunc` and `RPC`.
 - Fix `XFunc` on RhinoMac.
