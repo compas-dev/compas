@@ -413,7 +413,7 @@ class RhinoSurface(RhinoGeometry):
         """
         return [self.point_uv_to_xyz(vertex) for vertex in polyline]
 
-    def mesh_uv_to_xyz(self, mesh, cls=None):
+    def mesh_uv_to_xyz(self, mesh):
         """Return the mesh from the inverse mapping of a UV mesh based on the UV parameterisation of the surface.
         The third coordinate of the mesh vertices is discarded.
 
@@ -424,16 +424,17 @@ class RhinoSurface(RhinoGeometry):
 
         Returns
         -------
-        Mesh, cls
-            The inverse-mapped mesh.
+        mesh : Mesh
+            The mesh once mapped back to the surface.
 
         """
-        if cls is None:
-            cls = type(mesh)
 
-        vertices, faces = mesh.to_vertices_and_faces()
-        vertices = {vkey: self.point_uv_to_xyz(uv[:2]) for vkey, uv in vertices.items()}
-        return cls.from_vertices_and_faces(vertices, faces)
+        for vkey in mesh.vertices():
+            x, y, z = self.point_uv_to_xyz(mesh.vertex_coordinates(vkey)[:2])
+            mesh.vertex[vkey]['x'] = x
+            mesh.vertex[vkey]['y'] = y
+            mesh.vertex[vkey]['z'] = z
+        return mesh
 
       
 # ==============================================================================

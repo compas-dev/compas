@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved `compas.remote.service.py` to `compas.remote.services.default.py`.
 - Removed processing of face keys from data getter and setter in `compas.datastructures.Network`.
 - Using `SimpleHTTPRequestHandler` instead of `BaseHTTPRequestHandler` to provide basic support for serving files via `GET`.
+- Mesh mapping on surface without creating new mesh to keep attributes in `compas_rhino.geometry.surface.py`.
 
 ### Removed
 
