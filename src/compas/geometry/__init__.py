@@ -42,6 +42,7 @@ XForms
     Reflection
     Projection
     Shear
+    Quaternion
 
 Other
 -----
