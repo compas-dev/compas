@@ -60,7 +60,7 @@ ATOL = 1e-16  # absolute tolerance
 RTOL = 1e-3  # relative tolerance
 
 
-def isclose(a, b, atol=ATOL, rtol=RTOL):
+def isclose(a, b, rtol=RTOL, atol=ATOL):
     # https://docs.scipy.org/doc/numpy/reference/generated/numpy.isclose.html#numpy.isclose
     # absolute(a - b) <= (atol + rtol * absolute(b))
 
