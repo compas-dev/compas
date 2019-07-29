@@ -1,27 +1,3 @@
-from compas.geometry.transformations import quaternion_from_matrix
-from compas.geometry.transformations import matrix_from_quaternion
-from compas.geometry.transformations import euler_angles_from_matrix
-from compas.geometry.transformations import matrix_from_euler_angles
-from compas.geometry.transformations import axis_and_angle_from_matrix
-from compas.geometry.transformations import matrix_from_axis_and_angle
-
-#from compas.geometry.basic import allclose
-import math
-
-
-__all__ = [
-    'quaternion_norm',
-    'quaternion_unitize',
-    'quaternion_is_unit',
-    'quaternion_multiply',
-    'quaternion_canonic',
-    'quaternion_conjugate',
-    'quaternion_from_euler_angles',
-    'euler_angles_from_quaternion',
-    'quaternion_from_axis_angle',
-    'axis_angle_from_quaternion']
-
-
 """
 This module contains functions that operate on and/or return quaternions.
 
@@ -52,8 +28,31 @@ References
 ----------
 .. https://github.com/matthew-brett/transforms3d/blob/master/transforms3d/quaternions.py
 .. http://mathworld.wolfram.com/Quaternion.html
-
 """
+
+from compas.geometry.transformations import quaternion_from_matrix
+from compas.geometry.transformations import matrix_from_quaternion
+from compas.geometry.transformations import euler_angles_from_matrix
+from compas.geometry.transformations import matrix_from_euler_angles
+from compas.geometry.transformations import axis_and_angle_from_matrix
+from compas.geometry.transformations import matrix_from_axis_and_angle
+
+#from compas.geometry.basic import allclose
+import math
+
+
+__all__ = [
+    'quaternion_norm',
+    'quaternion_unitize',
+    'quaternion_is_unit',
+    'quaternion_multiply',
+    'quaternion_canonic',
+    'quaternion_conjugate',
+    'quaternion_from_euler_angles',
+    'euler_angles_from_quaternion',
+    'quaternion_from_axis_angle',
+    'axis_angle_from_quaternion']
+
 
 # ----------------------------------------------------------------------
 ATOL = 1e-16  # absolute tolerance
@@ -158,7 +157,7 @@ def quaternion_multiply(r, q):
     return [pw, px, py, pz]
 
 
-def quaternion_canonic(q):
+def quaternion_canonize(q):
     """Converts a quaternion into a canonic form if needed.
 
     Parameters

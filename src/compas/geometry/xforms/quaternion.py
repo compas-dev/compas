@@ -10,12 +10,10 @@ __all__ = ['Quaternion']
 class Quaternion(object):
     def __init__(self, w,x,y,z):
 
-        # TODO: add checks for value type
-
-        self.w = w
-        self.x = x
-        self.y = y
-        self.z = z
+        self.w = float(w)
+        self.x = float(x)
+        self.y = float(y)
+        self.z = float(z)
 
     def __iter__(self):
         return iter([self.w, self.x, self.y, self.z])
@@ -28,15 +26,13 @@ class Quaternion(object):
 
         Parameters
         ----------
-        R
-            First argument, a Quaternion object.
-        Q
-            Second argument, a Quaternion object.
+        other
+            A Quaternion object.
 
         Returns
         -------
         Quaternion
-            P = R * Q
+            The product P = R * Q of this quaternion (R) multiplied by other quaternion (Q).
 
         Examples
         --------
