@@ -310,7 +310,9 @@ def axis_angle_from_quaternion(q):
     -------
     >>> q = [1,1,0,0]
     >>> axis,angle = axis_angle_from_quaternion(q)
-    >>> print("axis = ", axis, " angle = ", angle)
+    >>> allclose(axis, [1., 0., 0.])
+    True
+    >>> isclose(angle, 1.57079, 1e-5)
     axis =  [1.0, 0.0, 0.0]  angle =  1.5707963267948966
     """
 
