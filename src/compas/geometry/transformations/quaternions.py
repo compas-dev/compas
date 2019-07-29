@@ -231,7 +231,7 @@ def quaternion_from_euler_angles(e, static=True, axes='xyz'):
         Quaternion [qw,qx,qy,qz] as a list of four real values.
     """
 
-    m = matrix_from_euler_angles(e, static=True, axes='xyz')
+    m = matrix_from_euler_angles(e, static, axes)
     q = quaternion_from_matrix(m)
     return q
 
