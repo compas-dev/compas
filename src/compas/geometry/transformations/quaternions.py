@@ -59,7 +59,7 @@ ATOL = 1e-16  # absolute tolerance
 RTOL = 1e-3  # relative tolerance
 
 
-def isclose(a, b, atol=ATOL, rtol=RTOL):
+def isclose(a, b, rtol=RTOL, atol=ATOL):
     # https://docs.scipy.org/doc/numpy/reference/generated/numpy.isclose.html#numpy.isclose
     # absolute(a - b) <= (atol + rtol * absolute(b))
 
@@ -309,7 +309,9 @@ def axis_angle_from_quaternion(q):
     -------
     >>> q = [1,1,0,0]
     >>> axis,angle = axis_angle_from_quaternion(q)
-    >>> print("axis = ", axis, " angle = ", angle)
+    >>> allclose(axis, [1., 0., 0.])
+    True
+    >>> isclose(angle, 1.57079, 1e-5)
     axis =  [1.0, 0.0, 0.0]  angle =  1.5707963267948966
     """
 
