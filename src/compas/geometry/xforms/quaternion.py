@@ -26,8 +26,8 @@ class Quaternion(object):
 
     Examples
     --------
-    >>> Q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized
-    >>> R = Quaternion(0.0,-0.1, 0.2,-0.3).unitized
+    >>> Q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized()
+    >>> R = Quaternion(0.0,-0.1, 0.2,-0.3).unitized()
     >>> P = R*Q
     >>> P.is_unit
     True
@@ -113,8 +113,8 @@ class Quaternion(object):
 
         Examples
         --------
-        >>> Q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized
-        >>> R = Quaternion(0.0,-0.1, 0.2,-0.3).unitized
+        >>> Q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized()
+        >>> R = Quaternion(0.0,-0.1, 0.2,-0.3).unitized()
         >>> P = R*Q
         >>> P.is_unit
         True
@@ -125,8 +125,8 @@ class Quaternion(object):
         provided that both R and Q are unit-length.
         The result is also unit-length.
         Multiplication of quaternions is not commutative!
-
         """
+
         p = quaternion_multiply(list(self), list(other))
         return Quaternion(*p)
 
@@ -149,7 +149,7 @@ class Quaternion(object):
         >>> q = [1., -2., 3., -4.]
         >>> F = Frame.from_quaternion(q)
         >>> Q = Quaternion.from_frame(F)
-        >>> allclose(list(Q.canonized), quaternion_canonize(quaternion_unitize(q)))
+        >>> allclose(list(Q.canonized()), quaternion_canonize(quaternion_unitize(q)))
         True
         """
 
@@ -170,19 +170,12 @@ class Quaternion(object):
         """
         return [self.x, self.y, self.z, self.w]
 
-    def conjugate(self):
+    @property
+    def norm(self):
         """
-        Returns a conjugate :obj:`Quaternion`.
+        Returns the length (euclidean norm) of the quaternion.
         """
-        qc = quaternion_conjugate(list(self))
-        return Quaternion(*qc)
-
-    def unitize(self):
-        """
-        Scales the quaternion to make it unit-length.
-        """
-        qu = quaternion_unitize(list(self))
-        self.w, self.x, self.y, self.z = qu
+        return quaternion_norm(list(self))
 
     @property
     def is_unit(self):
@@ -190,6 +183,13 @@ class Quaternion(object):
         Returns ``True`` if the quaternion is unit-length or ``False`` if otherwise.
         """
         return quaternion_is_unit(list(self))
+
+    def unitize(self):
+        """
+        Scales the quaternion to make it unit-length.
+        """
+        qu = quaternion_unitize(list(self))
+        self.w, self.x, self.y, self.z = qu
 
     def unitized(self):
         """
@@ -212,12 +212,12 @@ class Quaternion(object):
         qc = quaternion_canonize(list(self))
         return Quaternion(*qc)
 
-    @property
-    def norm(self):
+    def conjugate(self):
         """
-        Returns the length (euclidean norm) of the quaternion.
+        Returns a conjugate :obj:`Quaternion`.
         """
-        return quaternion_norm(list(self))
+        qc = quaternion_conjugate(list(self))
+        return Quaternion(*qc)
 
 
 if __name__ == "__main__":
