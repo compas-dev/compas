@@ -37,12 +37,12 @@ XForms
 
     Transformation
     Rotation
+    Quaternion
     Translation
     Scale
     Reflection
     Projection
     Shear
-    Quaternion
 
 Other
 -----
@@ -399,7 +399,23 @@ Triangulation
     conforming_delaunay_triangle
     voronoi_from_points_numpy
 
+Quaternions
+-----------
 
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    quaternion_norm
+    quaternion_unitize
+    quaternion_is_unit
+    quaternion_multiply
+    quaternion_canonize
+    quaternion_conjugate
+    quaternion_from_euler_angles
+    euler_angles_from_quaternion
+    quaternion_from_axis_angle
+    axis_angle_from_quaternion
 """
 from __future__ import absolute_import
 from __future__ import division

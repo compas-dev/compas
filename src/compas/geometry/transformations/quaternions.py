@@ -1,33 +1,53 @@
 """
 This module contains functions that operate on and/or return quaternions.
 
-Default convention to represent a quaternion in this module is a list of four real values [qw, qx, qy, qz].
-The first value qw is the scalar (real) part, and qx,qy,qz form the vector (complex, imaginary) part, so that:
-q = qw + qx*i + qy*j + qz*k,
-where i,j,k are basis components.
+Notes
+-----
+The default convention to represent a quaternion :math:`q` in this module is by four real values **w**, **x**, **y**, **z**.
+The first value **w** is the scalar (real) part, and **x**, **y**, **z** form the vector (complex, imaginary) part [1]_, so that:
 
-Quaternion algebra basics:
-i*i = j*j = k*k = i*j*k = -1
-i*j = k    j*i = -k
-j*k = i    k*j = -i
-k*i = j    i*k = -j
+:math:`q = w + xi + yj + zk`
 
-Quaternion as rotation:
-A rotation through an angle theta around an axis defined by a euclidean unit vector u = ux*i + uy*j + uz*k
+where :math:`i, j, k` are basis components with following multiplication rules [2]_:
+
+:math:`ii = jj = kk = ijk = -1`
+
+:math:`ij = k,\\qquad ji = -k`
+
+:math:`jk = i,\\qquad kj = -i`
+
+:math:`ki = j,\\qquad ik = -j`
+
+Quaternions are associative but not commutative.
+
+
+**Quaternion as rotation.**
+A rotation through an angle :math:`\\theta` around an axis defined by a euclidean unit vector :math:`u = u_{x}i + u_{y}j + u_{z}k`
 can be represented as a quaternion:
-q = cos(theta/2) + sin(theta/2) * [ux*i + uy*j + uz*k]
+
+:math:`q = cos(\\frac{\\theta}{2}) + sin(\\frac{\\theta}{2})  [u_{x}i + u_{y}j + u_{z}k]`
+
 i.e.:
-qw = cos(theta/2)
-qx = sin(theta/2) * ux
-qy = sin(theta/2) * uy
-qz = sin(theta/2) * uz
+
+:math:`w = cos(\\frac{\\theta}{2})`
+
+:math:`x = sin(\\frac{\\theta}{2})  u_{x}`
+
+:math:`y = sin(\\frac{\\theta}{2})  u_{y}`
+
+:math:`z = sin(\\frac{\\theta}{2})  u_{z}`
 
 For a quaternion to represent a rotation or orientation, it must be unit-length.
+A quaternion representing a rotation :math:`p` resulting from applying a rotation :math:`r` to a rotation :math:`q`, i.e.:
+:math:`p = rq`,
+is also unit-length.
+
 
 References
 ----------
-.. https://github.com/matthew-brett/transforms3d/blob/master/transforms3d/quaternions.py
-.. http://mathworld.wolfram.com/Quaternion.html
+.. [1] http://mathworld.wolfram.com/Quaternion.html
+.. [2] http://mathworld.wolfram.com/HamiltonsRules.html
+.. [3] https://github.com/matthew-brett/transforms3d/blob/master/transforms3d/quaternions.py
 """
 
 from compas.geometry.transformations import quaternion_from_matrix
@@ -54,7 +74,7 @@ __all__ = [
     'quaternion_from_axis_angle',
     'axis_angle_from_quaternion']
 
-ATOL = 1e-8  # absolute tolerance
+ATOL = 1e-6  # absolute tolerance
 
 
 def quaternion_norm(q):
@@ -63,7 +83,7 @@ def quaternion_norm(q):
     Parameters
     ----------
     q : list
-        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+        Quaternion as a list of four real values ``[w, x, y, z]``.
 
     Returns
     -------
@@ -84,12 +104,12 @@ def quaternion_unitize(q):
     Parameters
     ----------
     q : list
-        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+        Quaternion as a list of four real values ``[w, x, y, z]``.
 
     Returns
     -------
     list
-        A quaternion of length 1.0.
+        Quaternion of length 1 as a list of four real values ``[nw, nx, ny, nz]``.
     """
     n = quaternion_norm(q)
     if allclose([n], [0.0], ATOL):
@@ -104,7 +124,9 @@ def quaternion_is_unit(q, tol=ATOL):
     Parameters
     ----------
     q : list
-        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+        Quaternion as a list of four real values ``[w, x, y, z]``.
+    tol : float, optional
+        Requested decimal precision.
 
     Returns
     -------
@@ -121,19 +143,19 @@ def quaternion_multiply(r, q):
     Parameters
     ----------
     r : list
-        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+        Quaternion as a list of four real values ``[rw, rx, ry, rz]``.
     q : list
         Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
 
     Returns
     -------
-    list of float
-        A quaternion p = r*q.
+    list
+        Quaternion :math:`p = rq` as a list of four real values ``[pw, px, py, pz]``.
 
     Notes
     -----
-    Multiplication of two quaternions r * q can be interpreted as applying rotation r to an orientation q,
-    provided both r and q are unit-length.
+    Multiplication of two quaternions :math:`p = rq` can be interpreted as applying rotation :math:`r` to an orientation :math:`q`,
+    provided that both :math:`r` and :math:`q` are unit-length.
     The result is also unit-length.
     Multiplication of quaternions is not commutative!
 
@@ -157,12 +179,12 @@ def quaternion_canonize(q):
     Parameters
     ----------
     q : list
-        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+        Quaternion as a list of four real values ``[w, x, y, z]``.
 
     Returns
     -------
     list
-        A quaternion in a canonic form.
+        Quaternion in a canonic form as a list of four real values ``[cw, cx, cy, cz]``.
 
     Notes
     -----
@@ -181,12 +203,12 @@ def quaternion_conjugate(q):
     Parameters
     ----------
     q : list
-        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+        Quaternion as a list of four real values ``[w, x, y, z]``.
 
     Returns
     -------
     list
-        A conjugate quaternion.
+        Conjugate quaternion as a list of four real values ``[cw, cx, cy, cz]``.
 
     References
     ----------
@@ -208,7 +230,7 @@ def quaternion_from_euler_angles(e, static=True, axes='xyz'):
 
     Parameters
     ----------
-    euler_angles : list of float
+    euler_angles : list
         Three numbers that represent the angles of rotations about the specified axes.
     static : bool, optional
         If ``True``, the rotations are applied to a static frame.
@@ -220,8 +242,8 @@ def quaternion_from_euler_angles(e, static=True, axes='xyz'):
 
     Returns
     -------
-    list of float
-        Quaternion ``[qw, qx, qy, qz]`` as a list of four real values.
+    list
+        Quaternion as a list of four real values ``[w, x, y, z]``.
     """
 
     m = matrix_from_euler_angles(e, static, axes)
@@ -234,8 +256,8 @@ def euler_angles_from_quaternion(q, static=True, axes='xyz'):
 
     Parameters
     ----------
-    quaternion : list of float
-        Quaternion ``[qw, qx, qy, qz]`` as a list of four real values.
+    quaternion : list
+        Quaternion as a list of four real values ``[w, x, y, z]``.
     static : bool, optional
         If ``True``, the rotations are applied to a static frame.
         If ``False``, the rotations are applied to a rotational frame.
@@ -246,8 +268,8 @@ def euler_angles_from_quaternion(q, static=True, axes='xyz'):
 
     Returns
     -------
-    list of float
-        Three Euler angles.
+    list
+        Euler angles as a list of three real values ``[a, b, c]``.
     """
     m = matrix_from_quaternion(q)
     e = euler_angles_from_matrix(m, static, axes)
@@ -260,14 +282,14 @@ def quaternion_from_axis_angle(axis, angle):
     Parameters
     ----------
     axis : list
-        Coordinates ``[x,y,z]`` of the rotation axis vector.
+        Coordinates ``[x, y, z]`` of the rotation axis vector.
     angle : float
         Angle of rotation in radians.
 
     Returns
     -------
-    quaternion : list
-        Quaternion ``[qw, qx, qy, qz]`` as a list of four real values.
+    list
+        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
 
     Example
     -------
@@ -277,33 +299,33 @@ def quaternion_from_axis_angle(axis, angle):
     >>> allclose(q, [math.sqrt(2)/2, math.sqrt(2)/2, 0, 0])
     True
     """
-    m = matrix_from_axis_and_angle(axis, angle, point, rtype)
+    m = matrix_from_axis_and_angle(axis, angle, None, 'list')
     q = quaternion_from_matrix(m)
     return q
 
 
 def axis_angle_from_quaternion(q):
-    """Returns an axis and angle of rotation from the given quaternion.
+    """Returns an axis and an angle of rotation from the given quaternion.
 
     Parameters
     ----------
-    quaternion : list
-        Quaternion ``[qw, qx, qy, qz]`` as a list of four real values.
+    q : list
+        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
 
     Returns
     -------
-    axis : list of float
-        Coordinates ``[x,y,z]`` of the rotation axis vector.
+    axis : list
+        Coordinates ``[x, y, z]`` of the rotation axis vector.
     angle : float
         Angle of rotation in radians.
 
     Example
     -------
-    >>> q = [1,1,0,0]
-    >>> axis,angle = axis_angle_from_quaternion(q)
+    >>> q = [1., 1., 0., 0.]
+    >>> axis, angle = axis_angle_from_quaternion(q)
     >>> allclose(axis, [1., 0., 0.])
     True
-    >>> allclose([angle], [math.pi/2], 1e-5)
+    >>> allclose([angle], [math.pi/2], 1e-6)
     True
     """
 
