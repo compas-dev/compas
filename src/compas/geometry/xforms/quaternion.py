@@ -170,7 +170,6 @@ class Quaternion(object):
         """
         return [self.x, self.y, self.z, self.w]
 
-    @property
     def conjugate(self):
         """
         Returns a conjugate :obj:`Quaternion`.
@@ -192,7 +191,6 @@ class Quaternion(object):
         """
         return quaternion_is_unit(list(self))
 
-    @property
     def unitized(self):
         """
         Returns a :obj:`Quaternion` with a unit-length.
@@ -207,7 +205,6 @@ class Quaternion(object):
         qc = quaternion_canonize(list(self))
         self.w, self.x, self.y, self.z = qc
 
-    @property
     def canonized(self):
         """
         Returns a :obj:`Quaternion` in a canonic form.
@@ -226,5 +223,3 @@ class Quaternion(object):
 if __name__ == "__main__":
     import doctest
     doctest.testmod(globs=globals())
-
-
