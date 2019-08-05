@@ -5,7 +5,7 @@ invoke>=0.14
 ipykernel
 ipython>=5.8
 isort
-jsonschema>=17.4
+attrs>=17.4
 m2r
 nbsphinx
 pytest==3.2
