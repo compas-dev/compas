@@ -11,6 +11,7 @@ from .rotation import Rotation
 from .scale import Scale
 from .shear import Shear
 from .translation import Translation
+from .quaternion import Quaternion
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
