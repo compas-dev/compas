@@ -93,20 +93,7 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
         The joined and welded mesh.
 
     """
-    if cls is None:
-        cls = type(meshes[0])
-
-    # create vertex map based on geometric keys in dictionary without duplicates
-    vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), precision): vkey for mesh in meshes for vkey in mesh.vertices()}
-    # list vertices with coordinates
-    vertices = [reverse_geometric_key(geom_key) for geom_key in vertex_map.keys()]
-    # reorder vertex keys in vertex map
-    vertex_map = {geom_key: i for i, geom_key in enumerate(vertex_map.keys())}
-    # modify vertex indices in the faces
-    faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for mesh in meshes for fkey in mesh.faces()]
-    faces = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
-
-    return cls.from_vertices_and_faces(vertices, faces)
+    return mesh_weld(meshes_join(meshes, cls=cls), precision=precision)
 
 
 # ==============================================================================
