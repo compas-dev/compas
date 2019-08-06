@@ -4,8 +4,8 @@ from __future__ import print_function
 
 from math import pi
 
-from compas.geometry._primitives import Circle
 from compas.geometry._primitives import Plane
+from compas.geometry._primitives import Circle
 
 __all__ = ['Cylinder']
 
@@ -277,6 +277,7 @@ if __name__ == "__main__":
     from compas.geometry import Frame
     from compas.geometry import Transformation
     from compas.geometry import Circle
+    from compas.geometry import Cylinder
 
     cylinder = Cylinder(Circle(Plane.worldXY(), 5), 7)
     frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
