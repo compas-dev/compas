@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Using `SimpleHTTPRequestHandler` instead of `BaseHTTPRequestHandler` to provide basic support for serving files via `GET`.
 - Mesh mapping on surface without creating new mesh to keep attributes in `compas_rhino.geometry.surface.py`.
 - Fix exception of null-area polygon of centroid polygon in `compas.geometry.average.py`.
+- Fix loss of precision during mesh welding in `compas.datastructures.mesh_weld`.
 
 ### Removed
 
