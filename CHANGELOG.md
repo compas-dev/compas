@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `compas_rhino.geometry.RhinoGeometry` to the docs.
 - Added `compas.remote.services`.
 - Added `compas.remote.services.network.py` service for handling requests for a browser-based network viewer.
+- Added `compas.set_precision` function for the setting the global precision used by COMPAS as a floating point number.
 
 ### Changed
 
