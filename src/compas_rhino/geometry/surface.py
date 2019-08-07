@@ -359,10 +359,10 @@ class RhinoSurface(RhinoGeometry):
         Returns
         -------
         list
-            The (u, v, 0) coordinates of the mapped point.
+            The (u, v) coordinates of the mapped point.
 
         """
-        return rs.SurfaceClosestPoint(self.guid, xyz) + (0.,)
+        return rs.SurfaceClosestPoint(self.guid, xyz)
 
     def point_uv_to_xyz(self, uv):
         """Return the XYZ point from the inverse mapping of a UV point based on the UV parameterisation of the surface.
@@ -370,7 +370,7 @@ class RhinoSurface(RhinoGeometry):
         Parameters
         ----------
         uv : list
-            (u, v, 0) coordinates.
+            (u, v) coordinates.
 
         Returns
         -------
@@ -378,6 +378,7 @@ class RhinoSurface(RhinoGeometry):
             The (x, y, z) coordinates of the inverse-mapped point.
 
         """
+        u, v = uv
         return tuple(rs.EvaluateSurface(self.guid, *uv))
 
     def line_uv_to_xyz(self, line):
@@ -386,7 +387,7 @@ class RhinoSurface(RhinoGeometry):
         Parameters
         ----------
         uv : list
-            List of (u, v, 0) coordinates.
+            List of (u, v) coordinates.
 
         Returns
         -------
@@ -394,7 +395,7 @@ class RhinoSurface(RhinoGeometry):
             The list of XYZ coordinates of the inverse-mapped line.
 
         """
-        return (self.point_uv_to_xyz(line[0][:2]), self.point_uv_to_xyz(line[1][:2]))
+        return (self.point_uv_to_xyz(line[0]), self.point_uv_to_xyz(line[1]))
 
     def polyline_uv_to_xyz(self, polyline):
         """Return the XYZ points from the inverse mapping of a UV polyline based on the UV parameterisation of the surface.
@@ -402,7 +403,7 @@ class RhinoSurface(RhinoGeometry):
         Parameters
         ----------
         uv : list
-            List of (u, v, 0) coordinates.
+            List of (u, v) coordinates.
 
         Returns
         -------
@@ -410,10 +411,11 @@ class RhinoSurface(RhinoGeometry):
             The list of (x, y, z) coordinates of the inverse-mapped polyline.
 
         """
-        return [self.point_uv_to_xyz(vertex[:2]) for vertex in polyline]
+        return [self.point_uv_to_xyz(vertex) for vertex in polyline]
 
-    def mesh_uv_to_xyz(self, mesh, cls=None):
+    def mesh_uv_to_xyz(self, mesh):
         """Return the mesh from the inverse mapping of a UV mesh based on the UV parameterisation of the surface.
+        The third coordinate of the mesh vertices is discarded.
 
         Parameters
         ----------
@@ -422,17 +424,19 @@ class RhinoSurface(RhinoGeometry):
 
         Returns
         -------
-        Mesh, cls
-            The inverse-mapped mesh.
+        mesh : Mesh
+            The mesh once mapped back to the surface.
 
         """
-        if cls is None:
-            cls = type(mesh)
 
-        vertices, faces = mesh.to_vertices_and_faces()
-        vertices = [self.point_uv_to_xyz(uv0[:2]) for uv0 in vertices]
-        return cls.from_vertices_and_faces(vertices, faces)
+        for vkey in mesh.vertices():
+            x, y, z = self.point_uv_to_xyz(mesh.vertex_coordinates(vkey)[:2])
+            mesh.vertex[vkey]['x'] = x
+            mesh.vertex[vkey]['y'] = y
+            mesh.vertex[vkey]['z'] = z
+        return mesh
 
+      
 # ==============================================================================
 # Main
 # ==============================================================================

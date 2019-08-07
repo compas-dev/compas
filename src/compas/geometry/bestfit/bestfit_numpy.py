@@ -43,12 +43,6 @@ def bestfit_plane_numpy(points):
     tuple
         A point on the plane, and the normal vector.
 
-    See also
-    --------
-    :func:`bestfit_plane_numpy2`
-    :func:`bestfit_plane_numpy3`
-    :func:`bestfit_plane_numpy4`
-
     Examples
     --------
     .. code-block:: python

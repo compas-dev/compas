@@ -319,6 +319,9 @@ def centroid_polygon(polygon):
         cy += a2 * y
         cz += a2 * z
 
+    if A2 == 0:
+        return polygon[0]
+
     return [cx / A2, cy / A2, cz / A2]
 
 

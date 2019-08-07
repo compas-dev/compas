@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Moved `compas.remote.service.py` to `compas.remote.services.default.py`.
 - Removed processing of face keys from data getter and setter in `compas.datastructures.Network`.
 - Using `SimpleHTTPRequestHandler` instead of `BaseHTTPRequestHandler` to provide basic support for serving files via `GET`.
+- Mesh mapping on surface without creating new mesh to keep attributes in `compas_rhino.geometry.surface.py`.
+- Fix exception of null-area polygon of centroid polygon in `compas.geometry.average.py`.
+- Fix loss of precision during mesh welding in `compas.datastructures.mesh_weld`.
 
 ### Removed
 
@@ -52,6 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `compas_rhino.draw_circles` and the equivalent Artist method
 - Add class functions to `compas.datastructures.VolMesh`.
 - Added `face_neighborhood` class function to `compas.datastructures.Mesh`.
+- Added `get_face_attributes_all` to `compas.datastructures._mixins.attributes`.
+- Added `get_faces_attributes_all` to `compas.datastructures._mixins.attributes`.
 - Added `compas.remote` package for making HTTP based Remote Procedure Calls.
 
 ### Changed
@@ -118,6 +123,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fix `mesh_uv_to_xyz` in `RhinoSurface`.
 - Fix 'mesh_weld' and 'meshes_join_and_weld' against consecutive duplicates in face vertices.
 - Fix setting of environment variables in `System.Diagnostics.Process`-based subprocess for `XFunc` and `RPC`.
 - Fix `XFunc` on RhinoMac.

@@ -35,15 +35,13 @@ def mesh_weld(mesh, precision=None, cls=None):
     if cls is None:
         cls = type(mesh)
 
-    # create vertex map based on geometric keys in dictionary without duplicates
-    vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), precision): vkey for vkey in mesh.vertices()}
-    # list vertices with coordinates
-    vertices = [reverse_geometric_key(geom_key) for geom_key in vertex_map.keys()]
-    # reorder vertex keys in vertex map
-    vertex_map = {geom_key: i for i, geom_key in enumerate(vertex_map.keys())}
-    # modify vertex indices in the faces
-    faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
-    faces = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
+    geo = geometric_key
+    key_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+    gkey_key = {geo(xyz, precision): key for key, xyz in key_xyz.items()}
+    gkey_index = {gkey: index for index, gkey in enumerate(gkey_key)}
+    vertices = [key_xyz[key] for gkey, key in gkey_key.items()]
+    faces = [[gkey_index[geo(key_xyz[key], precision)] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    faces[:] = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
 
     return cls.from_vertices_and_faces(vertices, faces)
 
@@ -95,20 +93,7 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
         The joined and welded mesh.
 
     """
-    if cls is None:
-        cls = type(meshes[0])
-
-    # create vertex map based on geometric keys in dictionary without duplicates
-    vertex_map = {geometric_key(mesh.vertex_coordinates(vkey), precision): vkey for mesh in meshes for vkey in mesh.vertices()}
-    # list vertices with coordinates
-    vertices = [reverse_geometric_key(geom_key) for geom_key in vertex_map.keys()]
-    # reorder vertex keys in vertex map
-    vertex_map = {geom_key: i for i, geom_key in enumerate(vertex_map.keys())}
-    # modify vertex indices in the faces
-    faces = [ [vertex_map[geometric_key(mesh.vertex_coordinates(vkey), precision)] for vkey in mesh.face_vertices(fkey)] for mesh in meshes for fkey in mesh.faces()]
-    faces = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
-
-    return cls.from_vertices_and_faces(vertices, faces)
+    return mesh_weld(meshes_join(meshes, cls=cls), precision=precision)
 
 
 # ==============================================================================
@@ -117,4 +102,17 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
 
 if __name__ == "__main__":
 
-    import compas
+    from compas.datastructures import Mesh
+    from compas.datastructures import mesh_weld
+    from compas_plotters import MeshPlotter
+
+    vertices = [[0, 0, 0], [0.04, 0, 0], [1.0, 0, 0], [1.0, 1.0, 0], [0, 1.0, 0]]
+    faces = [[0, 1, 2, 3, 4]]
+
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    mesh = mesh_weld(mesh, precision='1f')
+
+    plotter = MeshPlotter(mesh, figsize=(10, 7))
+    plotter.draw_vertices(text={key: "{:.3f}".format(mesh.vertex[key]['x']) for key in mesh.vertices()}, radius=0.03)
+    plotter.draw_edges()
+    plotter.show()

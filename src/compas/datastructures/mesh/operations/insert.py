@@ -4,7 +4,8 @@ from __future__ import division
 
 
 __all__ = [
-    'mesh_add_vertex_to_face_edge'
+    'mesh_add_vertex_to_face_edge',
+    'mesh_insert_vertex_on_edge'
 ]
 
 
@@ -67,9 +68,81 @@ def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
         del mesh.edgedata[v, u]
 
 
+def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
+    """Insert a vertex in the faces adjacent to an edge, between the two edge vertices.
+    
+    If no vertex key is specified or if the key does not exist yet, a vertex is added and located at the edge midpoint.
+    If the vertex key exists, the position is not modified.
+
+    Parameters
+    ----------
+    u: hashable
+        The first edge vertex.
+    v: hashable
+        The second edge vertex.
+    vkey: hashable, optional
+        The vertex key to insert.
+        Default is add a new vertex at mid-edge.
+
+    Returns
+    -------
+    vkey : hashable
+        The new vertex key.
+
+    Notes
+    -----
+    For two faces adjacent to an edge (a, b)
+    face_1 = [a, b, c] and
+    face_2 = [b, a, d]
+    applying
+    mesh_insert_vertex_on_edge(mesh, a, b, e)
+    yields the two new faces
+    face_1 = [a, e, b, c] and
+    face_2 = [b, e, a, d].
+    
+    Examples
+    --------
+    >>> from compas.datastructures import Mesh
+    >>> from compas.plotters import MeshPlotter
+    >>> vertices = [[1.0, 0.0, 0.0], [1.0, 2.0, 0.0], [0.0, 1.0, 0.0], [2.0, 1.0, 0.0], [0.0, 0.0, 0.0]]
+    >>> faces = [[0, 1, 2], [0, 3, 1]]
+    >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
+    >>> mesh_insert_vertex_on_edge(mesh, 0, 1)
+    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
+    >>> mesh_insert_vertex_on_edge(mesh, 0, 2, 4)
+    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
+    >>> plotter = MeshPlotter(mesh)
+    >>> plotter.draw_vertices(text='key')
+    >>> plotter.draw_edges()
+    >>> plotter.draw_faces(text='key')
+    >>> plotter.show()
+
+    """
+
+    # add new vertex if there is none or if vkey not in vertices
+    if vkey is None:
+        vkey = mesh.add_vertex(attr_dict={attr: xyz for attr, xyz in zip(
+            ['x', 'y', 'z'], mesh.edge_midpoint(u, v))})
+    elif vkey not in list(mesh.vertices()):
+        vkey = mesh.add_vertex(key=vkey, attr_dict={attr: xyz for attr, xyz in zip(
+            ['x', 'y', 'z'], mesh.edge_midpoint(u, v))})
+
+    # insert vertex
+    for fkey, halfedge in zip(mesh.edge_faces(u, v), [(u, v), (v, u)]):
+        if fkey is not None:
+            face_vertices = mesh.face_vertices(fkey)[:]
+            face_vertices.insert(face_vertices.index(halfedge[-1]), vkey)
+            mesh.delete_face(fkey)
+            mesh.add_face(face_vertices, fkey)
+
+    return vkey
+  
+  
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
+
     pass

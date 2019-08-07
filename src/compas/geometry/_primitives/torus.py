@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from math import pi
 
-from compas.geometry import Plane
+from compas.geometry._primitives import Plane
 
 __all__ = ['Torus']
 
@@ -85,7 +85,7 @@ class Torus(object):
     @radius_axis.setter
     def radius_axis(self, radius):
         self._radius_axis = float(radius)
-    
+
     @property
     def radius_pipe(self):
         """float: The radius of the pipe."""
@@ -98,7 +98,7 @@ class Torus(object):
     @property
     def center(self):
         return self.plane
-    
+
     @property
     def area(self):
         """Float: The surface area of the torus."""

@@ -23,7 +23,7 @@ version = '.'.join(release.split('.')[0:2])
 master_doc       = 'index'
 source_suffix    = ['.rst', ]
 templates_path   = ['_templates', ]
-exclude_patterns = ['__build', '**.ipynb_checkpoints', '_notebooks']
+exclude_patterns = ['_build', '**.ipynb_checkpoints', '_notebooks']
 
 pygments_style   = 'sphinx'
 show_authors     = True
@@ -41,7 +41,9 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'matplotlib.sphinxext.plot_directive',
-    'm2r',
+    # 'm2r',
+    'nbsphinx',
+    'sphinx.ext.viewcode'
 ]
 
 # autodoc options
