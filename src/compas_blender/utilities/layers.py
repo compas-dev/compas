@@ -26,6 +26,10 @@ __all__ = [
 ]
 
 
+def redraw():
+    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
+
 # ==============================================================================
 # create
 # ==============================================================================
@@ -58,7 +62,9 @@ def create_layers_from_dict(layers):
 # ==============================================================================
 
 def clear_layer(layer):
-    delete_objects(objects=get_objects(layer=layer))
+    objects = get_objects(layer=layer)
+    if objects:
+        delete_objects(objects=objects)
 
 
 def clear_layers(layers):
@@ -77,7 +83,7 @@ def clear_current_layer():
 def delete_layer(layer):
     collection = bpy.data.collections[layer]
     bpy.context.scene.collection.children.unlink(collection)
-    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+    redraw()
     collection = bpy.data.collections[layer]
     bpy.data.collections.remove(collection)
 
