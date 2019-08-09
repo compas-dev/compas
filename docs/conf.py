@@ -11,6 +11,8 @@ from sphinx.ext.napoleon.docstring import NumpyDocstring
 
 import sphinx_compas_theme
 
+sys.path.insert(0, os.path.abspath('../src'))
+
 # -- General configuration ------------------------------------------------
 
 project          = 'COMPAS'
@@ -41,7 +43,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'matplotlib.sphinxext.plot_directive',
-    # 'm2r',
+    'm2r',
     'nbsphinx',
     'sphinx.ext.viewcode'
 ]
