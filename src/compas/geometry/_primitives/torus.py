@@ -97,7 +97,7 @@ class Torus(object):
 
     @property
     def center(self):
-        return self.plane
+        return self.plane.center
 
     @property
     def area(self):
