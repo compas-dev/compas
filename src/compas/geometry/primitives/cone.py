@@ -5,8 +5,8 @@ from __future__ import print_function
 from math import pi
 from math import sqrt
 
-from compas.geometry._primitives import Circle
-from compas.geometry._primitives import Plane
+from compas.geometry.primitives import Circle
+from compas.geometry.primitives import Plane
 
 __all__ = ['Cone']
 

@@ -8,8 +8,8 @@ from compas.geometry.transformations import transform_points
 
 from compas.geometry.distance import distance_point_point
 
-from compas.geometry._primitives import Point
-from compas.geometry._primitives import Line
+from compas.geometry.primitives import Point
+from compas.geometry.primitives import Line
 
 
 __all__ = ['Polyline']

@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from math import pi
 
-from compas.geometry._primitives import Plane
+from compas.geometry.primitives import Plane
 
 __all__ = ['Torus']
 

@@ -24,6 +24,5 @@ _NEXT_SPEC = [1, 2, 0, 1]
 from .helpers import *
 from .matrices import *
 from .transformations import *
-from .quaternions import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

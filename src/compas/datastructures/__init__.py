@@ -14,9 +14,6 @@ It is meant for the representation of polygonal *"surface"* meshes. A mesh can b
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
 
-Classes
--------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -76,9 +73,6 @@ It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
 
-Classes
--------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -111,9 +105,6 @@ VolMesh
 The volmesh is a cellular mesh. It is implemented as
 a half-plane, the three-dimensional equivalent of a half-edge. It can, for example,
 be used for the representation of subdivided/partitioned polyhedra.
-
-Classes
--------
 
 .. autosummary::
     :toctree: generated/

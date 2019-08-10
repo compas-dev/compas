@@ -21,9 +21,9 @@ from compas.geometry.transformations import decompose_matrix
 from compas.geometry.transformations import inverse
 from compas.geometry.transformations import matrix_from_frame
 
-from compas.geometry._primitives import Point
-from compas.geometry._primitives import Vector
-from compas.geometry._primitives import Plane
+from compas.geometry.primitives import Point
+from compas.geometry.primitives import Vector
+from compas.geometry.primitives import Plane
 
 __all__ = ['Frame']
 

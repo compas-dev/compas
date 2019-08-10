@@ -7,8 +7,8 @@ from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import add_vectors
 from compas.geometry.basic import subtract_vectors
 
-from compas.geometry._primitives import Point
-from compas.geometry._primitives import Vector
+from compas.geometry.primitives import Point
+from compas.geometry.primitives import Vector
 
 from compas.utilities import binomial_coefficient
 

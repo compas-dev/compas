@@ -2,8 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.geometry._primitives import Vector
-from compas.geometry._primitives import Frame
+from compas.geometry.primitives import Vector
+from compas.geometry.primitives import Frame
 from compas.geometry import subtract_vectors
 
 

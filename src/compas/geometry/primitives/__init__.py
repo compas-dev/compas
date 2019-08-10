@@ -20,4 +20,6 @@ from .cylinder import Cylinder
 from .cone import Cone
 from .torus import Torus
 
+from .quaternion import Quaternion
+
 __all__ = [name for name in dir() if not name.startswith('_')]

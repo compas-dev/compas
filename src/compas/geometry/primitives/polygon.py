@@ -12,9 +12,9 @@ from compas.geometry.size import area_polygon
 from compas.geometry.queries import is_coplanar
 from compas.geometry.queries import is_polygon_convex
 
-from compas.geometry._primitives import Point
-from compas.geometry._primitives import Vector
-from compas.geometry._primitives import Line
+from compas.geometry.primitives import Point
+from compas.geometry.primitives import Vector
+from compas.geometry.primitives import Line
 
 
 __all__ = ['Polygon']

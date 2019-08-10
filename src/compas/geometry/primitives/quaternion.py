@@ -1,20 +1,17 @@
+from compas.geometry import quaternion_multiply
+from compas.geometry import quaternion_conjugate
+from compas.geometry import quaternion_unitize
+from compas.geometry import quaternion_canonize
+from compas.geometry import quaternion_norm
+from compas.geometry import quaternion_is_unit
 
-
-from compas.geometry.transformations import quaternion_multiply
-from compas.geometry.transformations import quaternion_conjugate
-from compas.geometry.transformations import quaternion_unitize
-from compas.geometry.transformations import quaternion_canonize
-from compas.geometry.transformations import quaternion_norm
-from compas.geometry.transformations import quaternion_is_unit
-
-from compas.geometry.basic import allclose
+from compas.geometry import allclose
 
 __all__ = ['Quaternion']
 
 
 class Quaternion(object):
-
-    """Creates a ``Quaternion`` object.
+    r"""Creates a ``Quaternion`` object.
 
     Parameters
     ----------
@@ -34,45 +31,49 @@ class Quaternion(object):
 
     Notes
     -----
-    The default convention to represent a quaternion :math:`q` in this module is by four real values **w**, **x**, **y**, **z**.
-    The first value **w** is the scalar (real) part, and **x**, **y**, **z** form the vector (complex, imaginary) part [1]_, so that:
+    The default convention to represent a quaternion :math:`q` in this module is by four real values :math:`w`, :math:`x`, :math:`y`, :math:`z`.
+    The first value :math:`w` is the scalar (real) part, and :math:`x`, :math:`y`, :math:`z` form the vector (complex, imaginary) part [1]_, so that:
 
-    :math:`q = w + xi + yj + zk`
+    .. math::
+
+        q = w + xi + yj + zk
 
     where :math:`i, j, k` are basis components with following multiplication rules [2]_:
 
-    :math:`ii = jj = kk = ijk = -1`
+    .. math::
 
-    :math:`ij = k,\\qquad ji = -k`
-
-    :math:`jk = i,\\qquad kj = -i`
-
-    :math:`ki = j,\\qquad ik = -j`
+        \begin{align}
+        ii &= jj = kk = ijk = -1 \\
+        ij &= k, \quad ji = -k \\
+        jk &= i, \quad kj = -i \\
+        ki &= j, \quad ik = -j
+        \end{align}
 
     Quaternions are associative but not commutative.
 
-
     **Quaternion as rotation.**
-    A rotation through an angle :math:`\\theta` around an axis defined by a euclidean unit vector :math:`u = u_{x}i + u_{y}j + u_{z}k`
+
+    A rotation through an angle :math:`\theta` around an axis defined by a euclidean unit vector :math:`u = u_{x}i + u_{y}j + u_{z}k`
     can be represented as a quaternion:
 
-    :math:`q = cos(\\frac{\\theta}{2}) + sin(\\frac{\\theta}{2})  [u_{x}i + u_{y}j + u_{z}k]`
+    .. math::
+
+        q = cos(\frac{\theta}{2}) + sin(\frac{\theta}{2}) [u_{x}i + u_{y}j + u_{z}k]
 
     i.e.:
 
-    :math:`w = cos(\\frac{\\theta}{2})`
+    .. math::
 
-    :math:`x = sin(\\frac{\\theta}{2})  u_{x}`
-
-    :math:`y = sin(\\frac{\\theta}{2})  u_{y}`
-
-    :math:`z = sin(\\frac{\\theta}{2})  u_{z}`
+        \begin{align}
+        w = cos(\frac{\theta}{2})
+        x = sin(\frac{\theta}{2}) u_{x}
+        y = sin(\frac{\theta}{2}) u_{y}
+        z = sin(\frac{\theta}{2}) u_{z}
 
     For a quaternion to represent a rotation or orientation, it must be unit-length.
     A quaternion representing a rotation :math:`p` resulting from applying a rotation :math:`r` to a rotation :math:`q`, i.e.:
     :math:`p = rq`,
     is also unit-length.
-
 
     References
     ----------
@@ -158,67 +159,62 @@ class Quaternion(object):
 
     @property
     def wxyz(self):
-        """
-        Returns the quaternion as a list of float in the "wxyz" convention.
+        """list of float : Quaternion as a list of float in the "wxyz" convention.
         """
         return [self.w, self.x, self.y, self.z]
 
     @property
     def xyzw(self):
-        """
-        Returns the quaternion as a list of float in the "xyzw" convention.
+        """list of float : Quaternion as a list of float in the "xyzw" convention.
         """
         return [self.x, self.y, self.z, self.w]
 
     @property
     def norm(self):
+        """float : The length (euclidean norm) of the quaternion.
         """
-        Returns the length (euclidean norm) of the quaternion.
-        """
-        return quaternion_norm(list(self))
+        return quaternion_norm(self)
 
     @property
     def is_unit(self):
+        """bool : ``True`` if the quaternion is unit-length or ``False`` if otherwise.
         """
-        Returns ``True`` if the quaternion is unit-length or ``False`` if otherwise.
-        """
-        return quaternion_is_unit(list(self))
+        return quaternion_is_unit(self)
 
     def unitize(self):
+        """Scales the quaternion to make it unit-length.
         """
-        Scales the quaternion to make it unit-length.
-        """
-        qu = quaternion_unitize(list(self))
+        qu = quaternion_unitize(self)
         self.w, self.x, self.y, self.z = qu
 
     def unitized(self):
+        """Returns a :obj:`Quaternion` with a unit-length.
         """
-        Returns a :obj:`Quaternion` with a unit-length.
-        """
-        qu = quaternion_unitize(list(self))
+        qu = quaternion_unitize(self)
         return Quaternion(*qu)
 
     def canonize(self):
+        """Makes the quaternion canonic.
         """
-        Makes the quaternion canonic.
-        """
-        qc = quaternion_canonize(list(self))
+        qc = quaternion_canonize(self)
         self.w, self.x, self.y, self.z = qc
 
     def canonized(self):
+        """Returns a :obj:`Quaternion` in a canonic form.
         """
-        Returns a :obj:`Quaternion` in a canonic form.
-        """
-        qc = quaternion_canonize(list(self))
+        qc = quaternion_canonize(self)
         return Quaternion(*qc)
 
     def conjugate(self):
+        """Returns a conjugate :obj:`Quaternion`.
         """
-        Returns a conjugate :obj:`Quaternion`.
-        """
-        qc = quaternion_conjugate(list(self))
+        qc = quaternion_conjugate(self)
         return Quaternion(*qc)
 
+
+# ==============================================================================
+# Main
+# ==============================================================================
 
 if __name__ == "__main__":
     import doctest

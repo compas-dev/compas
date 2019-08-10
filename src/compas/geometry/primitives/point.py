@@ -18,7 +18,7 @@ from compas.geometry.queries import is_point_in_convex_polygon_xy
 
 from compas.geometry.transformations import transform_points
 
-from compas.geometry._primitives import Vector
+from compas.geometry.primitives import Vector
 
 
 

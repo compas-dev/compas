@@ -5,64 +5,12 @@ geometry
 
 .. currentmodule:: compas.geometry
 
-
-Classes
-=======
-
-Primitives
-----------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Vector
-    Point
-    Line
-    Polyline
-    Polyhedron
-    Polygon
-    Plane
-    Frame
-    Circle
-    Box
-    Bezier
-
-XForms
-------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Transformation
-    Rotation
-    Quaternion
-    Translation
-    Scale
-    Reflection
-    Projection
-    Shear
-
-Other
------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    KDTree
-
-
-Functions
-=========
-
-The functions in this section take various geometric primitives as input parameters.
+The functions of this package take various geometric primitives as input parameters.
 These primitives may be passed into those functions as instances of the
 corresponding classes or as an equivalent representation using (combinations of)
 built-in Python objects. The following table defines those equivalent representations.
 
-.. rst-class:: table table-responsive table-bordered
+.. rst-class:: table longtable table-responsive table-bordered
 
 =========== ====================================================================
 parameter   representation
@@ -79,14 +27,100 @@ frame       3-tuple of origin (point), U axis (vector) and V axis (vector).
 circle      3-tuple of center (point), normal (vector) and radius (float).
 =========== ====================================================================
 
-.. note::
+Many functions also have an ``_xy`` variant.
+These variants ignore the Z-component of the input parameters.
+Therefore, they also accept 2D representations of geometric objects.
+However, they always return a 3D result in the XY plane (with ``z = 0``).
+For example, ``scale_vector_xy`` accepts both 2D and 3D vectors,
+but always returns a 3D vector with the Z-component set to zero.
 
-    Many functions have an ``_xy`` variant.
-    These variants ignore the Z-component of the input parameters.
-    Therefore, they also accept 2D representations of geometric objects.
-    However, always return a 3D result in the XY plane (with ``z = 0``).
-    For example, ``scale_vector_xy`` accepts both 2D and 3D vectors,
-    but always returns a 3D vector with the Z-component set to zero.
+
+Primitives
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Bezier
+    Box
+    Circle
+    Cone
+    Cylinder
+    Frame
+    Line
+    Plane
+    Point
+    Polygon
+    Polyhedron
+    Polyline
+    Quaternion
+    Sphere
+    Torus
+    Vector
+
+XForms
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Projection
+    Reflection
+    Rotation
+    Scale
+    Shear
+    Transformation
+    Translation
+
+Linalg
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    add_vectors
+    add_vectors_xy
+    cross_vectors
+    cross_vectors_xy
+    divide_vectors
+    divide_vectors_xy
+    dot_vectors
+    dot_vectors_xy
+    length_vector
+    length_vector_xy
+    length_vector_sqrd
+    length_vector_sqrd_xy
+    multiply_matrices
+    multiply_matrix_vector
+    multiply_vectors
+    multiply_vectors_xy
+    norm_vector
+    norm_vectors
+    normalize_vector
+    normalize_vector_xy
+    normalize_vectors
+    normalize_vectors_xy
+    orthonormalize_vectors
+    power_vector
+    power_vectors
+    scale_vector
+    scale_vector_xy
+    scale_vectors
+    scale_vectors_xy
+    square_vector
+    square_vectors
+    subtract_vectors
+    subtract_vectors_xy
+    sum_vectors
+    transpose_matrix
+    vector_component
+    vector_component_xy
+
+Other functions
+===============
 
 Analytical
 ----------
@@ -95,11 +129,11 @@ Analytical
     :toctree: generated/
     :nosignatures:
 
+    archimedean_spiral_evaluate
     circle_evaluate
     ellipse_evaluate
-    archimedean_spiral_evaluate
-    logarithmic_spiral_evaluate
     helix_evaluate
+    logarithmic_spiral_evaluate
 
 Angles
 ------
@@ -238,51 +272,6 @@ Isolines
 
     scalarfield_contours_numpy
 
-Linalg
-------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    add_vectors
-    add_vectors_xy
-    sum_vectors
-    cross_vectors
-    cross_vectors_xy
-    divide_vectors
-    divide_vectors_xy
-    dot_vectors
-    dot_vectors_xy
-    length_vector
-    length_vector_xy
-    length_vector_sqrd
-    length_vector_sqrd_xy
-    multiply_matrices
-    multiply_matrix_vector
-    multiply_vectors
-    multiply_vectors_xy
-    norm_vector
-    norm_vectors
-    normalize_vector
-    normalize_vector_xy
-    normalize_vectors
-    normalize_vectors_xy
-    orthonormalize_vectors
-    power_vector
-    power_vectors
-    scale_vector
-    scale_vector_xy
-    scale_vectors
-    scale_vectors_xy
-    square_vector
-    square_vectors
-    subtract_vectors
-    subtract_vectors_xy
-    transpose_matrix
-    vector_component
-    vector_component_xy
-
 Normals
 -------
 
@@ -397,6 +386,34 @@ Transformations
     translate_points
     translate_points_xy
 
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    'axis_and_angle_from_matrix',
+    'axis_angle_vector_from_matrix',
+    'axis_angle_from_quaternion',
+    'basis_vectors_from_matrix',
+    'euler_angles_from_matrix',
+    'euler_angles_from_quaternion',
+    'matrix_from_frame',
+    'matrix_from_euler_angles',
+    'matrix_from_axis_and_angle',
+    'matrix_from_axis_angle_vector',
+    'matrix_from_basis_vectors',
+    'matrix_from_translation',
+    'matrix_from_orthogonal_projection',
+    'matrix_from_parallel_projection',
+    'matrix_from_perspective_projection',
+    'matrix_from_perspective_entries',
+    'matrix_from_shear_entries',
+    'matrix_from_shear',
+    'matrix_from_scale_factors',
+    'matrix_from_quaternion',
+    'quaternion_from_matrix',
+    'quaternion_from_euler_angles',
+    'quaternion_from_axis_angle',
+
 Triangulation
 -------------
 
@@ -406,9 +423,6 @@ Triangulation
 
     delaunay_from_points
     delaunay_from_points_numpy
-    delaunay_triangle
-    constrained_delaunay_triangle
-    conforming_delaunay_triangle
     voronoi_from_points_numpy
 
 Quaternions
@@ -424,16 +438,15 @@ Quaternions
     quaternion_multiply
     quaternion_canonize
     quaternion_conjugate
-    quaternion_from_euler_angles
-    euler_angles_from_quaternion
-    quaternion_from_axis_angle
-    axis_angle_from_quaternion
+
 """
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
 from .basic import *
+
+from .analytical import *
 from .distance import *
 from .angles import *
 from .average import *
@@ -441,6 +454,7 @@ from .normals import *
 from .queries import *
 from .intersections import *
 from .size import *
+from .quaternions import *
 
 from .transformations import *
 
@@ -455,9 +469,7 @@ from .smoothing import *
 from .spatial import *
 from .triangulation import *
 
-from ._primitives import *
+from .primitives import *
 from .xforms import *
-
-from .analytical import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

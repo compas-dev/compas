@@ -5,7 +5,7 @@ from __future__ import division
 from compas.geometry.transformations import transform_points
 from compas.geometry.transformations import transform_vectors
 
-from compas.geometry._primitives import Point
+from compas.geometry.primitives import Point
 
 
 __all__ = ['Line']
