@@ -49,6 +49,16 @@ def mesh_adjacency_matrix(mesh, rtype='array'):
     array-like
         Constructed adjacency matrix.
 
+    Examples
+    --------
+    >>> A = mesh_adjacency_matrix(mesh)
+    >>> type(A)
+    <class 'numpy.ndarray'>
+
+    >>> A = mesh_adjacency_matrix(mesh, rtype='csr')
+    >>> type(A)
+    <class 'scipy.sparse.csr.csr_matrix'>
+
     """
     key_index = mesh.key_index()
     adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
@@ -69,6 +79,20 @@ def mesh_connectivity_matrix(mesh, rtype='array'):
     -------
     array-like
         Constructed connectivity matrix.
+
+    Examples
+    --------
+    >>> C = mesh_connectivity_matrix(mesh)
+    >>> type(C)
+    <class 'numpy.ndarray'>
+
+    >>> C = mesh_connectivity_matrix(mesh, rtype='csr')
+    >>> type(C)
+    <class 'scipy.sparse.csr.csr_matrix'>
+
+    >>> xyz = asarray(mesh.get_vertices_attributes('xyz'))
+    >>> C = mesh_connectivity_matrix(mesh, rtype='csr')
+    >>> uv = C.dot(xyz)
 
     """
     key_index = mesh.key_index()
@@ -91,13 +115,29 @@ def mesh_degree_matrix(mesh, rtype='array'):
     array-like
         Constructed vertex degree matrix.
 
+    Examples
+    --------
+    >>> D = mesh_degree_matrix(mesh)
+    >>> type(D)
+    <class 'numpy.ndarray'>
+
+    >>> D = mesh_degree_matrix(mesh, rtype='csr')
+    >>> type(D)
+    <class 'scipy.sparse.csr.csr_matrix'>
+
+    >>> D = mesh_degree_matrix(mesh)
+    >>> D.diagonal()
+    array([2., 3., 3., 3., 3., 2., 3., 4., 4., 4., 4., 3., 3., 4., 4., 4., 4.,
+           3., 3., 4., 4., 4., 4., 3., 3., 4., 4., 4., 4., 3., 2., 3., 3., 3.,
+           3., 2.])
+
     """
     key_index = mesh.key_index()
     adjacency = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
-def mesh_face_matrix(mesh, rtype='csr'):
+def mesh_face_matrix(mesh, rtype='array'):
     r"""Construct the face matrix from a Mesh datastructure.
 
     Parameters
@@ -132,7 +172,21 @@ def mesh_face_matrix(mesh, rtype='csr'):
 
     Examples
     --------
-    >>>
+    >>> F = mesh_face_matrix(mesh)
+    >>> type(F)
+    <class 'numpy.ndarray'>
+
+    >>> F = mesh_face_matrix(mesh, rtype='csr')
+    >>> type(F)
+    <class 'scipy.sparse.csr.csr_matrix'>
+
+    >>> from numpy import allclose
+    >>> xyz = asarray(mesh.get_vertices_attributes('xyz'))
+    >>> F = mesh_face_matrix(mesh, rtype='csr')
+    >>> c1 = F.dot(xyz) / F.sum(axis=1)
+    >>> c2 = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
+    >>> allclose(c1, c2)
+    True
 
     """
     key_index = {key: index for index, key in enumerate(mesh.vertices())}
@@ -177,7 +231,17 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
     Examples
     --------
-    >>>
+    >>> L = mesh_laplacian_matrix(mesh)
+    >>> type(L)
+    <class 'numpy.ndarray'>
+
+    >>> L = mesh_face_matrix(mesh, rtype='csr')
+    >>> type(L)
+    <class 'scipy.sparse.csr.csr_matrix'>
+
+    >>> xyz = asarray(mesh.get_vertices_attributes('xyz'))
+    >>> L = mesh_laplacian_matrix(mesh)
+    >>> d = L.dot(xyz)
 
     References
     ----------
@@ -431,4 +495,11 @@ def trimesh_vertexarea_matrix(mesh):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+
+    import compas
+    from compas.datastructures import Mesh
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    doctest.testmod()

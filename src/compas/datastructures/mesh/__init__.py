@@ -30,7 +30,6 @@ if not compas.IPY:
 
 from .geometry import *
 from .join import *
-from .laplacian import *
 from .offset import *
 from .orientation import *
 from .planarisation import *

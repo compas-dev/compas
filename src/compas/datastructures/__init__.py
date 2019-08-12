@@ -33,27 +33,12 @@ Mesh matrices
     mesh_face_matrix
     mesh_laplacian_matrix
 
-**Triangle mesh matrices**
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     trimesh_cotangent_laplacian_matrix
     trimesh_vertexarea_matrix
-
-Mesh helpers
-------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mesh_delete_duplicate_vertices
-    mesh_face_adjacency
-    mesh_flip_cycles
-    mesh_is_connected
-    mesh_unify_cycles
 
 Mesh algorithms
 ---------------
@@ -81,8 +66,6 @@ Mesh algorithms
     mesh_transform
     mesh_transformed
 
-**Triangle mesh algorithms**
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -90,6 +73,19 @@ Mesh algorithms
     trimesh_gaussian_curvature
     trimesh_remesh
     trimesh_subdivide_loop
+
+Mesh helpers
+------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    mesh_delete_duplicate_vertices
+    mesh_face_adjacency
+    mesh_flip_cycles
+    mesh_is_connected
+    mesh_unify_cycles
 
 Network
 =======

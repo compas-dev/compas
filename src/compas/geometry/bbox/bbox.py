@@ -26,9 +26,8 @@ def bounding_box(points):
 
     Examples
     --------
-    .. code-block:: python
-
-        #
+    >>> from compas.geometry import pointcloud
+    >>> points = numpy.random
 
     """
     x, y, z = zip(*points)

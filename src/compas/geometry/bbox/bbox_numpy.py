@@ -30,7 +30,7 @@ def oriented_bounding_box_numpy(points):
 
     Parameters
     ----------
-    points : list
+    points : array-like
         XYZ coordinates of the points.
 
     Returns
@@ -45,10 +45,12 @@ def oriented_bounding_box_numpy(points):
 
     1. Compute the convex hull of the points.
     2. For each of the faces on the hull:
+
        1. Compute face frame.
        2. Compute coordinates of other points in face frame.
-       3. Find spread of point coordinates along local axes.
-       4. Compute volume of "spread" box.
+       3. Find "peak-to-peak" (PTP) values of point coordinates along local axes.
+       4. Compute volume of box formed with PTP values.
+
     3. Select the box with the smallest volume.
 
     Examples
@@ -58,7 +60,7 @@ def oriented_bounding_box_numpy(points):
     Add the corners of the box such that we now the volume is supposed to be :math:`30.0`.
 
     >>> points = numpy.random.rand(10000, 3)
-    >>> bottom = numpy.array([[0.0,0.0,0.0], [1.0,0.0,0.0], [0.0,1.0,0.0], [1.0,1.0,0.0]])
+    >>> bottom = numpy.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 1.0, 0.0]])
     >>> top = numpy.array([[0.0, 0.0, 1.0], [1.0, 0.0, 1.0], [0.0, 1.0, 1.0], [1.0, 1.0, 1.0]])
     >>> points = numpy.concatenate((points, bottom, top))
     >>> points[:, 0] *= 10
@@ -140,13 +142,15 @@ def oriented_bounding_box_xy_numpy(points):
 
     1. Compute the convex hull of the points.
     2. For each of the edges on the hull:
-        1. Compute the s-axis as the unit vector in the direction of the edge
-        2. Compute the othorgonal t-axis.
-        3. Use the start point of the edge as origin.
-        4. Compute the spread of the points along the s-axis. (dot product of the point vecor in local coordinates and the s-axis)
-        5. Compute the spread along the t-axis.
-        6. Determine the side of s on which the points are.
-        7. Compute and store the corners of the bbox and its area.
+
+       1. Compute the s-axis as the unit vector in the direction of the edge
+       2. Compute the othorgonal t-axis.
+       3. Use the start point of the edge as origin.
+       4. Compute the spread of the points along the s-axis. (dot product of the point vecor in local coordinates and the s-axis)
+       5. Compute the spread along the t-axis.
+       6. Determine the side of s on which the points are.
+       7. Compute and store the corners of the bbox and its area.
+
     3. Select the box with the smallest area.
 
     Examples

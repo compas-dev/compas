@@ -59,7 +59,6 @@ Primitives
     :toctree: generated/
     :nosignatures:
 
-    Bezier
     Box
     Circle
     Cone
@@ -203,43 +202,8 @@ Linear algebra
     vector_component
     vector_component_xy
 
-Queries
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    is_ccw_xy
-    is_colinear
-    is_colinear_xy
-    is_coplanar
-    is_intersection_line_line
-    is_intersection_line_line_xy
-    is_intersection_line_plane
-    is_intersection_line_triangle
-    is_intersection_plane_plane
-    is_intersection_segment_plane
-    is_intersection_segment_segment
-    is_intersection_segment_segment_xy
-    is_polygon_convex
-    is_polygon_convex_xy
-    is_point_in_circle
-    is_point_in_circle_xy
-    is_point_in_convex_polygon_xy
-    is_point_on_line
-    is_point_on_line_xy
-    is_point_on_plane
-    is_point_infront_plane
-    is_point_in_polygon_xy
-    is_point_on_polyline
-    is_point_on_segment
-    is_point_on_segment_xy
-    is_point_in_triangle
-    is_point_in_triangle_xy
-
-Quantities
-==========
+Points, Vectors, Lines, Planes
+==============================
 
 **Angles**
 
@@ -272,22 +236,6 @@ Quantities
     distance_point_point_xy
     distance_point_point_sqrd
     distance_point_point_sqrd_xy
-
-**Proximity**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    closest_point_in_cloud
-    closest_point_in_cloud_xy
-    closest_point_on_line
-    closest_point_on_line_xy
-    closest_point_on_plane
-    closest_point_on_polyline
-    closest_point_on_polyline_xy
-    closest_point_on_segment
-    closest_point_on_segment_xy
 
 **Centroids**
 
@@ -342,34 +290,6 @@ Polygons & Polyhedrons
     normal_triangle
     normal_triangle_xy
 
-Intersections
-=============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    intersection_circle_circle_xy
-    intersection_line_line
-    intersection_line_line_xy
-    intersection_line_plane
-    intersection_line_triangle
-    intersection_plane_plane
-    intersection_plane_plane_plane
-    intersection_segment_segment_xy
-    intersection_segment_plane
-
-Offsets
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    offset_line
-    offset_polyline
-    offset_polygon
-
 Pointclouds
 ===========
 
@@ -404,6 +324,86 @@ Pointclouds
     delaunay_from_points
     delaunay_from_points_numpy
     voronoi_from_points_numpy
+
+Queries
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    is_ccw_xy
+    is_colinear
+    is_colinear_xy
+    is_coplanar
+    is_intersection_line_line
+    is_intersection_line_line_xy
+    is_intersection_line_plane
+    is_intersection_line_triangle
+    is_intersection_plane_plane
+    is_intersection_segment_plane
+    is_intersection_segment_segment
+    is_intersection_segment_segment_xy
+    is_polygon_convex
+    is_polygon_convex_xy
+    is_point_in_circle
+    is_point_in_circle_xy
+    is_point_in_convex_polygon_xy
+    is_point_on_line
+    is_point_on_line_xy
+    is_point_on_plane
+    is_point_infront_plane
+    is_point_in_polygon_xy
+    is_point_on_polyline
+    is_point_on_segment
+    is_point_on_segment_xy
+    is_point_in_triangle
+    is_point_in_triangle_xy
+
+Proximity
+=========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    closest_point_in_cloud
+    closest_point_in_cloud_xy
+    closest_point_on_line
+    closest_point_on_line_xy
+    closest_point_on_plane
+    closest_point_on_polyline
+    closest_point_on_polyline_xy
+    closest_point_on_segment
+    closest_point_on_segment_xy
+
+Intersections
+=============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    intersection_circle_circle_xy
+    intersection_line_line
+    intersection_line_line_xy
+    intersection_line_plane
+    intersection_line_triangle
+    intersection_plane_plane
+    intersection_plane_plane_plane
+    intersection_segment_segment_xy
+    intersection_segment_plane
+
+Offsets
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    offset_line
+    offset_polyline
+    offset_polygon
 
 Optimisation
 ============
