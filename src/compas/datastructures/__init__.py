@@ -20,29 +20,54 @@ of only vertices.
 
     Mesh
 
-Functions
----------
+Mesh matrices
+-------------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     mesh_adjacency_matrix
+    mesh_connectivity_matrix
+    mesh_degree_matrix
+    mesh_face_matrix
+    mesh_laplacian_matrix
+
+**Triangle mesh matrices**
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    trimesh_cotangent_laplacian_matrix
+    trimesh_vertexarea_matrix
+
+Mesh helpers
+------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    mesh_delete_duplicate_vertices
+    mesh_face_adjacency
+    mesh_flip_cycles
+    mesh_is_connected
+    mesh_unify_cycles
+
+Mesh algorithms
+---------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     mesh_bounding_box
     mesh_bounding_box_xy
-    mesh_connectivity_matrix
     mesh_contours_numpy
-    mesh_degree_matrix
-    mesh_delete_duplicate_vertices
     mesh_dual
-    mesh_face_adjacency
-    mesh_face_matrix
-    mesh_flatness
-    mesh_flip_cycles
     mesh_geodesic_distances
-    mesh_is_connected
     mesh_isolines_numpy
-    mesh_laplacian_matrix
     mesh_planarize_faces
     mesh_quads_to_triangles
     mesh_smooth_centroid
@@ -55,15 +80,16 @@ Functions
     mesh_subdivide_doosabin
     mesh_transform
     mesh_transformed
-    mesh_unify_cycles
 
-    trimesh_cotangent_laplacian_matrix
-    trimesh_face_circle
+**Triangle mesh algorithms**
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     trimesh_gaussian_curvature
-    trimesh_mean_curvature
     trimesh_remesh
     trimesh_subdivide_loop
-    trimesh_vertexarea_matrix
 
 Network
 =======
@@ -79,8 +105,8 @@ or disconnected. A network with vertices only is also a valid network.
 
     Network
 
-Functions
----------
+Network algorithms
+------------------
 
 .. autosummary::
     :toctree: generated/
@@ -111,13 +137,6 @@ be used for the representation of subdivided/partitioned polyhedra.
     :nosignatures:
 
     VolMesh
-
-Functions
----------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
 
 """
 
