@@ -23,6 +23,19 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
         Supported values are any float precision, or decimal integer (``'d'``).
         Default is ``'3f'``.
 
+    Returns
+    -------
+    None
+        The mesh is modified in-place.
+
+    Examples
+    --------
+    >>> mesh.number_of_vertices()
+    41
+    >>> mesh_delete_duplicate_vertices(mesh)
+    >>> mesh.number_of_vertices()
+    36
+
     """
     key_gkey = {key: geometric_key(mesh.vertex_coordinates(key), precision=precision) for key in mesh.vertices()}
     gkey_key = {gkey: key for key, gkey in iter(key_gkey.items())}
@@ -59,4 +72,10 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    import compas
+    from compas.datastructures import Mesh
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    for x, y, z in mesh.get_vertices_attributes('xyz')[:5]:
+        mesh.add_vertex(x=x, y=y, z=z)
+    doctest.testmod()

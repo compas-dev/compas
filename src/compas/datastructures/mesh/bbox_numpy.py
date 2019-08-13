@@ -3,17 +3,17 @@ from __future__ import division
 from __future__ import print_function
 
 
-from compas.geometry import bounding_box
-from compas.geometry import bounding_box_xy
+from compas.geometry import oriented_bounding_box_numpy
+from compas.geometry import oriented_bounding_box_xy_numpy
 
 
 __all__ = [
-    'mesh_bounding_box',
-    'mesh_bounding_box_xy',
+    'mesh_oriented_bounding_box_numpy',
+    'mesh_oriented_bounding_box_xy_numpy',
 ]
 
 
-def mesh_bounding_box(mesh):
+def mesh_oriented_bounding_box_numpy(mesh):
     """Compute the (axis aligned) bounding box of a mesh.
 
     Parameters
@@ -23,20 +23,21 @@ def mesh_bounding_box(mesh):
 
     Returns
     -------
-    list of point
-        The 8 corners of the bounding box of the mesh.
+    list
+        The bounding box of the mesh as a list of corner vertex coordinates.
 
     Examples
     --------
-    >>> mesh_bounding_box(mesh)
-    [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
+    >>> box = mesh_oriented_bounding_box_numpy(hypar)
+    >>> len(box)
+    8
 
     """
     xyz = mesh.get_vertices_attributes('xyz')
-    return bounding_box(xyz)
+    return oriented_bounding_box_numpy(xyz)
 
 
-def mesh_bounding_box_xy(mesh):
+def mesh_oriented_bounding_box_xy_numpy(mesh):
     """Compute the (axis aligned) bounding box of a projection of the mesh in the XY plane.
 
     Parameters
@@ -46,17 +47,17 @@ def mesh_bounding_box_xy(mesh):
 
     Returns
     -------
-    list of point
-        The 4 corners of the bounding polygon in the XY plane.
+    box_xy
+        The bounding box.
 
     Examples
     --------
-    >>> mesh_bounding_box_xy(mesh)
-    [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
+    >>> mesh_oriented_bounding_box_xy_numpy(flatmesh)
+    [[10.0, 0.0], [0.0, 0.0], [0.0, 10.0], [10.0, 10.0]]
 
     """
     xyz = mesh.get_vertices_attributes('xyz')
-    return bounding_box_xy(xyz)
+    return oriented_bounding_box_xy_numpy(xyz)
 
 
 # ==============================================================================
@@ -69,6 +70,7 @@ if __name__ == '__main__':
     import compas
     from compas.datastructures import Mesh
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    hypar = Mesh.from_obj(compas.get('hypar.obj'))
+    flatmesh = Mesh.from_obj(compas.get('faces.obj'))
 
     doctest.testmod()

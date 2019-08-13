@@ -19,6 +19,9 @@ from .curvature import *
 from .bbox import *
 
 if not compas.IPY:
+    from .bbox_numpy import *
+
+if not compas.IPY:
     from .contours import *
 
 from .descent import *

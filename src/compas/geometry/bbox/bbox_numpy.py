@@ -13,6 +13,7 @@ from numpy import ptp
 from numpy import sum
 
 from scipy.spatial import ConvexHull
+# from scipy.spatial import QhullError
 
 from compas.geometry import local_axes
 from compas.geometry import local_coords_numpy
@@ -37,6 +38,11 @@ def oriented_bounding_box_numpy(points):
     -------
     array
         XYZ coordinates of 8 points defining a box.
+
+    Raises
+    ------
+    QhullError
+        If the data is essentially 2D.
 
     Notes
     -----
@@ -90,7 +96,16 @@ def oriented_bounding_box_numpy(points):
 
     points = points[:, :3]
 
+    # try:
+    #     hull = ConvexHull(points)
+    # except Exception as e:
+    #     if 'QH6154' in str(e):
+    #         hull = ConvexHull(points, qhull_options='Qb2:0B2:0')
+    #     else:
+    #         raise e
+
     hull = ConvexHull(points)
+
     volume = None
     bbox = []
 
@@ -214,7 +229,7 @@ def oriented_bounding_box_xy_numpy(points):
         boxes.append([[b0, b1, b2, b3], a[0]])
 
     # return the box with the smallest area
-    return min(boxes, key=lambda b: b[1])[0]
+    return [point.tolist() for point in min(boxes, key=lambda b: b[1])[0]]
 
 
 # ==============================================================================

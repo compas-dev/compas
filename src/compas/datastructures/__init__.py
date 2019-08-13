@@ -49,6 +49,8 @@ Mesh algorithms
 
     mesh_bounding_box
     mesh_bounding_box_xy
+    mesh_oriented_bounding_box_numpy
+    mesh_oriented_bounding_box_xy_numpy
     mesh_contours_numpy
     mesh_dual
     mesh_geodesic_distances
