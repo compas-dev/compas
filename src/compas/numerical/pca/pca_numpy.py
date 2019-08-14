@@ -14,7 +14,7 @@ def pca_numpy(data):
 
     Parameters
     ----------
-    data : listpython
+    data : list
 
         A list of `m` observations, measuring `n` variables.
         For example, if the data are points in 2D space, the data parameter
