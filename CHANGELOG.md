@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fixed import of `delaunay_from_points` in `Mesh.from_points`.
+
 ### Removed
 
 

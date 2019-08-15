@@ -120,7 +120,6 @@ from .fd import *
 from .ga import *
 
 from .pca import *
-from .icp import *
 
 from .topop import *
 

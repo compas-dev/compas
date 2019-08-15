@@ -624,7 +624,7 @@ class Mesh(FromToPickle,
         -------
         Mesh
             A mesh object.
-            
+
         """
 
         corner_vertices = [geometric_key(xyz) for polyline in boundary_polylines + other_polylines for xyz in [polyline[0], polyline[-1]]]
@@ -640,7 +640,7 @@ class Mesh(FromToPickle,
         for fkey in mesh.faces():
             if sum([geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices for vkey in mesh.face_vertices(fkey)]):
                 faces.append([vertex_map[vkey] for vkey in mesh.face_vertices(fkey) if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices])
-        
+
         mesh.cull_vertices()
 
         return cls.from_vertices_and_faces(vertices, faces)
@@ -744,7 +744,7 @@ class Mesh(FromToPickle,
             pass
 
         """
-        from compas.topology import delaunay_from_points
+        from compas.geometry import delaunay_from_points
         faces = delaunay_from_points(points, boundary=boundary, holes=holes)
         return cls.from_vertices_and_faces(points, faces)
 
