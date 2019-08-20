@@ -2290,8 +2290,8 @@ class Mesh(FromToPickle,
             return 0
         return max(self.face_degree(fkey) for fkey in self.faces())
 
-    def face_vertex_ancestor(self, fkey, key):
-        """Return the vertex before the specified vertex in a specific face.
+    def face_vertex_ancestor(self, fkey, key, n=1):
+        """Return the n-th vertex before the specified vertex in a specific face.
 
         Parameters
         ----------
@@ -2299,6 +2299,8 @@ class Mesh(FromToPickle,
             Identifier of the face.
         key : hashable
             The identifier of the vertex.
+        n : int, optional
+            The index of the vertex ancestor. Default is 1, meaning the previous vertex. 
 
         Returns
         -------
@@ -2312,10 +2314,10 @@ class Mesh(FromToPickle,
 
         """
         i = self.face[fkey].index(key)
-        return self.face[fkey][i - 1]
+        return self.face[fkey][(i - n) % len(self.face[fkey])]
 
-    def face_vertex_descendant(self, fkey, key):
-        """Return the vertex after the specified vertex in a specific face.
+    def face_vertex_descendant(self, fkey, key, n=1):
+        """Return the n-th vertex after the specified vertex in a specific face.
 
         Parameters
         ----------
@@ -2323,6 +2325,8 @@ class Mesh(FromToPickle,
             Identifier of the face.
         key : hashable
             The identifier of the vertex.
+        n : int, optional
+            The index of the vertex descendant. Default is 1, meaning the next vertex. 
 
         Returns
         -------
@@ -2335,10 +2339,8 @@ class Mesh(FromToPickle,
             If the vertex is not part of the face.
 
         """
-        if self.face[fkey][-1] == key:
-            return self.face[fkey][0]
         i = self.face[fkey].index(key)
-        return self.face[fkey][i + 1]
+        return self.face[fkey][(i + n) % len(self.face[fkey])]
 
     def face_adjacency_halfedge(self, f1, f2):
         """Find one half-edge over which two faces are adjacent.
