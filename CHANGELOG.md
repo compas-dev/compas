@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-
+- Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
 - Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
 
 ### Changed
