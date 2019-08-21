@@ -62,12 +62,22 @@ def _get_ironpython_lib_path_win32(version):
                         'lib')
 
 
-def _get_ironpython_lib_path_mac():
+def _get_ironpython_lib_path_mac(version):
+    lib_paths = {
+    '5.0': [''],
+    '6.0':  ['Frameworks', 'RhCore.framework', 'Versions', 'A']
+    }
+
+    lib_path = lib_paths.get(version)
+    if not lib_path:
+        raise Exception('Unsupported Rhino version: {}'.format(version))
+
     return os.path.join(
         '/',
         'Applications',
         'Rhinoceros.app',
         'Contents',
+        *lib_path,
         'Resources',
         'ManagedPlugIns',
         'RhinoDLR_Python.rhp',
