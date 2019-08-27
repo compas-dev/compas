@@ -75,21 +75,18 @@ def _get_ironpython_lib_path_win32(version):
 
 def _get_ironpython_lib_path_mac(version):
     lib_paths = {
-    '5.0': [''],
-    '6.0':  ['Frameworks', 'RhCore.framework', 'Versions', 'A']
+        '5.0': [''],
+        '6.0': ['Frameworks', 'RhCore.framework', 'Versions', 'A']
     }
-
-    return os.path.join(
-        '/',
-        'Applications',
-        'Rhinoceros.app',
-        'Contents',
-        *lib_paths.get(version),
-        'Resources',
-        'ManagedPlugIns',
-        'RhinoDLR_Python.rhp',
-        'Lib'
-    )
+    return os.path.join(*['/',
+                          'Applications',
+                          'Rhinoceros.app',
+                          'Contents']
+                        + lib_paths.get(version) +
+                        ['Resources',
+                         'ManagedPlugIns',
+                         'RhinoDLR_Python.rhp',
+                         'Lib'])
 
 
 def _get_python_plugins_path(version):
