@@ -4,7 +4,7 @@
         length: The target length of mesh edges
         start: Computes the solution if `True`.
     Output:
-        mesh: The Rhino mesh
+        mesh: A Rhino mesh
 """
 from __future__ import print_function
 from __future__ import division
