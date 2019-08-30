@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.geometry
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.utilities import hex_to_rgb
@@ -88,6 +89,7 @@ class Sphere(BaseShape):
     def __init__(self, radius):
         super(Sphere, self).__init__()
         self.radius = float(radius)
+        self.geometry = compas.geometry.Sphere((0, 0, 0), radius)
 
 
 class Capsule(BaseShape):
