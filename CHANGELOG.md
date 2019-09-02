@@ -8,10 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
-
+- Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
 - Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
 
 ### Changed
+
+- Fixed import of `delaunay_from_points` in `Mesh.from_points`.
+- Extension of `face_vertex_descendant` and `face_vertex_ancestor` in `Mesh`.
 
 ### Removed
 

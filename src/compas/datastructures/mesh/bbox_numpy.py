@@ -52,7 +52,7 @@ def mesh_oriented_bounding_box_xy_numpy(mesh):
 
     Examples
     --------
-    >>> mesh_oriented_bounding_box_xy_numpy(flatmesh)
+    >>> mesh_oriented_bounding_box_xy_numpy(mesh)
     [[10.0, 0.0], [0.0, 0.0], [0.0, 10.0], [10.0, 10.0]]
 
     """
@@ -71,6 +71,6 @@ if __name__ == '__main__':
     from compas.datastructures import Mesh
 
     hypar = Mesh.from_obj(compas.get('hypar.obj'))
-    flatmesh = Mesh.from_obj(compas.get('faces.obj'))
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     doctest.testmod()
