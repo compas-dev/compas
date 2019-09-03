@@ -87,7 +87,7 @@ class Transformation(object):
                         return False
             return True
         except BaseException:
-            raise TypeError("Wrong input type.")
+            return False
 
     def copy(self):
         """Returns a copy of the transformation.
