@@ -194,8 +194,6 @@ class Joint(object):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
-        self.init_origin = origin.copy() if origin else None
-        self.init_axis = axis.copy() if axis else None
 
         switcher = {
             Joint.REVOLUTE: self.calculate_revolute_transformation,
@@ -215,23 +213,6 @@ class Joint(object):
         else:
             return Transformation()
 
-    @property
-    def init_transformation(self):
-        if self.init_origin:
-            return Transformation.from_frame(self.init_origin)
-        else:
-            return Transformation()
-
-    @property
-    def reset_transformation(self):
-        return self.init_transformation * self.current_transformation.inverse()
-
-    def reset_transform(self):
-        if self.init_origin:
-            self.origin = self.init_origin.copy()
-        if self.init_axis:
-            self.axis = self.init_axis.copy()
-
     def transform(self, transformation):
         if self.origin:
             self.origin.transform(transformation)
@@ -241,10 +222,8 @@ class Joint(object):
     def create(self, transformation):
         if self.origin:
             self.origin.transform(transformation)
-            self.init_origin = self.origin.copy()
         if self.axis:
             self.axis.transform(self.current_transformation)
-            self.init_axis = self.axis.copy()
 
     def calculate_revolute_transformation(self, position):
         """Returns a transformation of a revolute joint.
@@ -324,7 +303,6 @@ class Joint(object):
 
     def scale(self, factor):
         self.origin.scale(factor)
-        self.init_origin.point *= factor
         if self.is_scalable():
             self.limit.scale(factor)
 
