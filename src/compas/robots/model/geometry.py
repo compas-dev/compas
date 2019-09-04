@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas.geometry
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.utilities import hex_to_rgb
@@ -61,6 +62,7 @@ class Origin(Frame):
 
 class BaseShape(object):
     """Base class for all 3D shapes."""
+
     def __init__(self):
         self.geometry = None
 
@@ -88,6 +90,7 @@ class Sphere(BaseShape):
     def __init__(self, radius):
         super(Sphere, self).__init__()
         self.radius = float(radius)
+        self.geometry = compas.geometry.Sphere((0, 0, 0), radius)
 
 
 class Capsule(BaseShape):
@@ -134,7 +137,7 @@ class Material(object):
         if self.name:
             if self.name in HTML4_NAMES_TO_HEX:
                 r, g, b = hex_to_rgb(HTML4_NAMES_TO_HEX[self.name])
-                return [r/255., g/255., b/255., 1.]
+                return [r / 255., g / 255., b / 255., 1.]
         if self.color:
             return self.color.rgba
         return None
