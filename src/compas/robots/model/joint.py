@@ -128,6 +128,11 @@ class Axis(object):
         self.y = xyz[0][1]
         self.z = xyz[0][2]
 
+    def transformed(self, transformation):
+        xyz = transform_vectors(
+            [[self.x, self.y, self.z]], transformation.matrix)
+        return Vector(xyz[0][0], xyz[0][1], xyz[0][2])
+
     @property
     def vector(self):
         return Vector(self.x, self.y, self.z)
