@@ -266,6 +266,14 @@ class RobotModel(object):
         joints = self.get_configurable_joints()
         return [j.name for j in joints]
 
+    def get_end_effector_link(self):
+        joints = self.get_configurable_joints()
+        clink = joints[-1].child_link
+        for j in clink.joints:
+            if j.type == Joint.FIXED:
+                return j.child_link
+        return clink
+
     def get_end_effector_link_name(self):
         joints = self.get_configurable_joints()
         clink = joints[-1].child_link
@@ -362,7 +370,7 @@ class RobotModel(object):
             parent_transformation = Transformation()
 
         for item in itertools.chain(link.visual, link.collision):
-            item.init_transform = parent_transformation
+            item.init_transformation = parent_transformation
 
         for child_joint in link.joints:
             child_joint.create(parent_transformation)
@@ -384,8 +392,8 @@ class RobotModel(object):
 
         Returns
         -------
-        list of :class:`Transformation`
-            The list of transformations to apply on frames or links.
+        dict of str: :class:`Transformation`
+            A dictionary with the joint names as keys and values are the joint's respective transformation.
 
         Example
         -------
@@ -399,7 +407,7 @@ class RobotModel(object):
         if parent_transformation is None:
             parent_transformation = Transformation()
 
-        transformations = []
+        transformations = {}
 
         for child_joint in link.joints:
             if child_joint.name in joint_state.keys():
@@ -407,11 +415,27 @@ class RobotModel(object):
                 transformation = parent_transformation * child_joint.calculate_transformation(position)
             else:
                 transformation = parent_transformation
-            transformations.append(transformation)
+            transformations.update({child_joint.name: transformation})
             # call function on child
-            transformations += self.compute_transformations(joint_state, child_joint.child_link, transformation)
+            transformations.update(self.compute_transformations(joint_state, child_joint.child_link, transformation))
 
         return transformations
+
+    def frames_transformed(self, joint_state):
+        """Returns the transformed frames based on the joint_state.
+
+        Parameters
+        ----------
+        joint_state : dict
+            A dictionary with the joint names as keys and values in radians and
+            meters (depending on the joint type).
+
+        Returns
+        -------
+        list of :class:`Frame`
+        """
+        transformations = self.compute_transformations(joint_state)
+        return [j.origin.transformed(transformations[j.name]) for j in self.iter_joints()]
 
     def forward_kinematics(self, joint_state, link_name=None):
         """Calculate the robot's forward kinematic.
@@ -423,12 +447,12 @@ class RobotModel(object):
             meters (depending on the joint type).
         link_name : str, optional
             The name of the link we want to calculate the forward kinematics for.
-            Defaults to <the end-effector link name.
+            Defaults to the end-effector link name.
 
         Returns
         -------
         :class:`Frame`
-            The link's frame.
+            The (ee) link's frame in the world coordinate system.
 
         Examples
         --------
@@ -437,14 +461,14 @@ class RobotModel(object):
         >>> joint_state = dict(zip(names, values))
         >>> frame_WCF = robot.forward_kinematics(joint_state)
         """
+        if link_name is None:
+            ee_link = self.get_end_effector_link()
+        else:
+            ee_link = self.get_link_by_name(link_name)
+        joint = ee_link.parent_joint
 
         transformations = self.compute_transformations(joint_state)
-
-        if link_name is None:
-            link_name = self.get_end_effector_link_name()
-
-        frame_dict = dict((joint.child.link, joint.origin.transformed(t)) for t, joint in zip(transformations, self.iter_joints()))
-        return frame_dict[link_name]
+        return joint.origin.transformed(transformations[joint.name])
 
 
 URDFParser.install_parser(RobotModel, 'robot')
