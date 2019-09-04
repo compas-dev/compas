@@ -421,7 +421,7 @@ class RobotModel(object):
 
         return transformations
 
-    def frames_transformed(self, joint_state):
+    def updated_frames(self, joint_state):
         """Returns the transformed frames based on the joint_state.
 
         Parameters
@@ -436,6 +436,22 @@ class RobotModel(object):
         """
         transformations = self.compute_transformations(joint_state)
         return [j.origin.transformed(transformations[j.name]) for j in self.iter_joints()]
+
+    def updated_axes(self, joint_state):
+        """Returns the transformed axes based on the joint_state.
+
+        Parameters
+        ----------
+        joint_state : dict
+            A dictionary with the joint names as keys and values in radians and
+            meters (depending on the joint type).
+
+        Returns
+        -------
+        list of :class:`Vector`
+        """
+        transformations = self.compute_transformations(joint_state)
+        return [j.axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.axis]
 
     def forward_kinematics(self, joint_state, link_name=None):
         """Calculate the robot's forward kinematic.
