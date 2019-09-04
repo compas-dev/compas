@@ -46,7 +46,7 @@ class RobotModel(object):
         self.attr = kwargs
         self.root = None
         self._rebuild_tree()
-        self._create()
+        self._create(self.root, Transformation())
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
@@ -349,25 +349,22 @@ class RobotModel(object):
             len(self.get_configurable_joints()),
         )
 
-    def _create(self, link=None, parent_transformation=None):
+    def _create(self, link, parent_transformation):
         """Private function called during initialisation to transform origins and axes.
 
         Parameters
         ----------
         link : :class:`compas.robots.Link`
-            Link instance to create. Defaults to the root link.
+            Link instance to create.
         parent_transformation : :class:`Transformation`
             Parent transformation to apply to the link when creating the structure.
-            Defaults to the identity transformation.
 
         Returns
         -------
         None
         """
-        if link is None:
-            link = self.root
-        if parent_transformation is None:
-            parent_transformation = Transformation()
+        if link is None:  # some urdfs would fail here otherwise
+            return
 
         for item in itertools.chain(link.visual, link.collision):
             item.init_transformation = parent_transformation
