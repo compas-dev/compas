@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `compas_rhino.geometry.RhinoGeometry` to the docs.
 - Added `compas.remote.services`.
 - Added `compas.remote.services.network.py` service for handling requests for a browser-based network viewer.
+- Possibility to call forward_kinematics on `compas.robots.RobotModel`
 
 ### Changed
 
@@ -23,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed processing of face keys from data getter and setter in `compas.datastructures.Network`.
 - Using `SimpleHTTPRequestHandler` instead of `BaseHTTPRequestHandler` to provide basic support for serving files via `GET`.
 - Mesh mapping on surface without creating new mesh to keep attributes in `compas_rhino.geometry.surface.py`.
+- Moving functionality from `compas_fab.artists.BaseRobotArtist` to `compas.robots.RobotModel`
 
 ### Removed
 
