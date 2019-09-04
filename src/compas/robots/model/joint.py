@@ -296,7 +296,7 @@ class Joint(object):
     def is_configurable(self):
         """Returns ``True`` if the joint can be configured, otherwise ``False``."""
         return self.type != Joint.FIXED
-    
+
     def is_scalable(self):
         """Returns ``True`` if the joint can be scaled, otherwise ``False``."""
         return self.type in [Joint.PLANAR, Joint.PRISMATIC]
@@ -305,7 +305,6 @@ class Joint(object):
         self.origin.scale(factor)
         if self.is_scalable():
             self.limit.scale(factor)
-
 
 
 URDFParser.install_parser(Joint, 'robot/joint')
