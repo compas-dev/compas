@@ -18,6 +18,8 @@ GHPython
     :maxdepth: 1
     :glob:
 
+    examples/gh/*
+
 
 Plotters
 ========
