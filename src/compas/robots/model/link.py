@@ -82,8 +82,9 @@ class Visual(object):
         self.material = material
         self.attr = kwargs
 
-    def draw(self):
-        return self.geometry.draw()
+        self.init_transformation = None  # to store the init transformation
+        self.current_transformation = None  # to store the current transformation
+        self.native_geometry = None  # to store the link's CAD native geometry
 
     def get_color(self):
         if self.material:
@@ -109,8 +110,9 @@ class Collision(object):
         self.name = name
         self.attr = kwargs
 
-    def draw(self):
-        return self.geometry.draw()
+        self.init_transformation = None  # to store the init transformation
+        self.current_transformation = None  # to store the current transformation
+        self.native_geometry = None  # to store the link's CAD native geometry
 
 
 class Link(object):
@@ -137,8 +139,6 @@ class Link(object):
         self.attr = kwargs
         self.joints = []
         self.parent_joint = None
-
-
 
 
 URDFParser.install_parser(Link, 'robot/link')

@@ -46,6 +46,7 @@ class RobotModel(object):
         self.attr = kwargs
         self.root = None
         self._rebuild_tree()
+        self._create(self.root, Transformation())
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
@@ -265,12 +266,20 @@ class RobotModel(object):
         joints = self.get_configurable_joints()
         return [j.name for j in joints]
 
+    def get_end_effector_link(self):
+        joints = self.get_configurable_joints()
+        clink = joints[-1].child_link
+        for j in clink.joints:
+            if j.type == Joint.FIXED:
+                return j.child_link
+        return clink
+
     def get_end_effector_link_name(self):
         joints = self.get_configurable_joints()
         clink = joints[-1].child_link
         for j in clink.joints:
             if j.type == Joint.FIXED:
-                return j.child
+                return j.child.link
         return clink.name
 
     def get_base_link_name(self):
@@ -339,6 +348,141 @@ class RobotModel(object):
             len(self.joints),
             len(self.get_configurable_joints()),
         )
+
+    def _create(self, link, parent_transformation):
+        """Private function called during initialisation to transform origins and axes.
+
+        Parameters
+        ----------
+        link : :class:`compas.robots.Link`
+            Link instance to create.
+        parent_transformation : :class:`Transformation`
+            Parent transformation to apply to the link when creating the structure.
+
+        Returns
+        -------
+        None
+        """
+        if link is None:  # some urdfs would fail here otherwise
+            return
+
+        for item in itertools.chain(link.visual, link.collision):
+            item.init_transformation = parent_transformation
+
+        for child_joint in link.joints:
+            child_joint.create(parent_transformation)
+            # Recursively call creation
+            self._create(child_joint.child_link, child_joint.current_transformation)
+
+    def compute_transformations(self, joint_state, link=None, parent_transformation=None):
+        """Recursive function to calculate the transformations of each joint.
+
+        Parameters
+        ----------
+        joint_state : dict
+            A dictionary with the joint names as keys and values in radians and
+            meters (depending on the joint type).
+        link : :class:`compas.robots.Link`
+            Link instance to calculate the child joint's transformation.
+        parent_transformation : :class:`Transformation`
+            The transfomation of the parent joint.
+
+        Returns
+        -------
+        dict of str: :class:`Transformation`
+            A dictionary with the joint names as keys and values are the joint's respective transformation.
+
+        Example
+        -------
+        >>> names = robot.get_configurable_joint_names()
+        >>> values = [-2.238, -1.153, -2.174, 0.185, 0.667, 0.000]
+        >>> joint_state = dict(zip(names, values))
+        >>> transformations = robot.compute_transformations(joint_state)
+        """
+        if link is None:
+            link = self.root
+        if parent_transformation is None:
+            parent_transformation = Transformation()
+
+        transformations = {}
+
+        for child_joint in link.joints:
+            if child_joint.name in joint_state.keys():
+                position = joint_state[child_joint.name]
+                transformation = parent_transformation * child_joint.calculate_transformation(position)
+            else:
+                transformation = parent_transformation
+            transformations.update({child_joint.name: transformation})
+            # call function on child
+            transformations.update(self.compute_transformations(joint_state, child_joint.child_link, transformation))
+
+        return transformations
+
+    def updated_frames(self, joint_state):
+        """Returns the transformed frames based on the joint_state.
+
+        Parameters
+        ----------
+        joint_state : dict
+            A dictionary with the joint names as keys and values in radians and
+            meters (depending on the joint type).
+
+        Returns
+        -------
+        list of :class:`Frame`
+        """
+        transformations = self.compute_transformations(joint_state)
+        return [j.origin.transformed(transformations[j.name]) for j in self.iter_joints()]
+
+    def updated_axes(self, joint_state):
+        """Returns the transformed axes based on the joint_state.
+
+        Parameters
+        ----------
+        joint_state : dict
+            A dictionary with the joint names as keys and values in radians and
+            meters (depending on the joint type).
+
+        Returns
+        -------
+        list of :class:`Vector`
+        """
+        transformations = self.compute_transformations(joint_state)
+        return [j.axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.axis]
+
+    def forward_kinematics(self, joint_state, link_name=None):
+        """Calculate the robot's forward kinematic.
+
+        Parameters
+        ----------
+        joint_state : dict
+            A dictionary with the joint names as keys and values in radians and
+            meters (depending on the joint type).
+        link_name : str, optional
+            The name of the link we want to calculate the forward kinematics for.
+            Defaults to the end-effector link name.
+
+        Returns
+        -------
+        :class:`Frame`
+            The (ee) link's frame in the world coordinate system.
+
+        Examples
+        --------
+        >>> names = robot.get_configurable_joint_names()
+        >>> values = [-2.238, -1.153, -2.174, 0.185, 0.667, 0.000]
+        >>> joint_state = dict(zip(names, values))
+        >>> frame_WCF = robot.forward_kinematics(joint_state)
+        """
+        if link_name is None:
+            ee_link = self.get_end_effector_link()
+        else:
+            ee_link = self.get_link_by_name(link_name)
+        joint = ee_link.parent_joint
+
+        transformations = self.compute_transformations(joint_state)
+        return joint.origin.transformed(transformations[joint.name])
+
 
 URDFParser.install_parser(RobotModel, 'robot')
 URDFParser.install_parser(Material, 'robot/material')
