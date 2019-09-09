@@ -2300,7 +2300,7 @@ class Mesh(FromToPickle,
         key : hashable
             The identifier of the vertex.
         n : int, optional
-            The index of the vertex ancestor. Default is 1, meaning the previous vertex. 
+            The index of the vertex ancestor. Default is 1, meaning the previous vertex.
 
         Returns
         -------
@@ -2326,7 +2326,7 @@ class Mesh(FromToPickle,
         key : hashable
             The identifier of the vertex.
         n : int, optional
-            The index of the vertex descendant. Default is 1, meaning the next vertex. 
+            The index of the vertex descendant. Default is 1, meaning the next vertex.
 
         Returns
         -------
@@ -2930,13 +2930,15 @@ class Mesh(FromToPickle,
                     faces[self.halfedge[nbr][key]] = 1
         return faces.keys()
 
-    def edges_on_boundary(self, oriented=True):
+    def edges_on_boundary(self, chained=False):
         """Find the edges on the boundary.
 
         Parameters
         ----------
-        oriented : bool
-            Boolean whether the boundary edges should point outwards.
+        chained : bool (``False``)
+            Indicate whether the boundary edges should be chained head to tail.
+            Note that chaining the edges will essentially return half-edges that
+            point outwards to the space outside.
 
         Returns
         -------
@@ -2946,10 +2948,10 @@ class Mesh(FromToPickle,
         """
         boundary_edges =  [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
-        if not oriented:
+        if not chained:
             return boundary_edges
-        else:
-            return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]
+
+        return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]
 
     # --------------------------------------------------------------------------
     # attributes

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed import of `delaunay_from_points` in `Mesh.from_points`.
 - More control over drawing of text labels in Rhino.
 - Extension of `face_vertex_descendant` and `face_vertex_ancestor` in `Mesh`.
+- Changed the name and meaning of the parameter `oriented` in the function `Mesh.edges_on_boundary`.
 
 ### Removed
 
