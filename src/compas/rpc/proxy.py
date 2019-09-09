@@ -246,7 +246,7 @@ class Proxy(object):
             self._process.Start()
         else:
             args = [self.python, '-m', self.service, str(self._port)]
-            self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=env)
+            self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=env)
 
         server = ServerProxy(self.address)
 
