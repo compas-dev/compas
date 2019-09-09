@@ -111,14 +111,35 @@ def wrap_drawfunc(f):
 
 @wrap_drawfunc
 def draw_labels(labels, **kwargs):
-    """Draw labels as text dots and optionally set individual name and color."""
+    """Draw labels as text dots and optionally set individual font, fontsize, name and color.
+
+    Parameters
+    ----------
+    labels : list of dict
+        A list of labels dictionaries.
+        A label dictionary has the following structure:
+
+        .. code-block:: python
+
+            {
+                'pos'  : [x, y, z],
+                'text' : '',
+                'name' : ''
+            }
+
+    """
     guids = []
     for l in iter(labels):
         pos   = l['pos']
         text  = l['text']
         name  = l.get('name', '')
         color = l.get('color', None)
-        guid  = add_dot(TextDot(str(text), Point3d(*pos)))
+        size  = l.get('fontsize', 10)
+        font  = l.get('font', 'Arial Regular')
+        dot = TextDot(str(text), Point3d(*pos))
+        dot.FontHeight = size
+        dot.FontFace = font
+        guid  = add_dot(dot)
         if not guid:
             continue
         obj = find_object(guid)
