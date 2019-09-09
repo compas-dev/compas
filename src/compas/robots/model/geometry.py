@@ -62,6 +62,7 @@ class Origin(Frame):
 
 class BaseShape(object):
     """Base class for all 3D shapes."""
+
     def __init__(self):
         self.geometry = None
 
@@ -136,7 +137,7 @@ class Material(object):
         if self.name:
             if self.name in HTML4_NAMES_TO_HEX:
                 r, g, b = hex_to_rgb(HTML4_NAMES_TO_HEX[self.name])
-                return [r/255., g/255., b/255., 1.]
+                return [r / 255., g / 255., b / 255., 1.]
         if self.color:
             return self.color.rgba
         return None
