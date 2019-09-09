@@ -29,7 +29,7 @@ __all__ = ['devo_numpy']
 
 
 def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, CR=0.5, polish=False, args=(),
-               plot=False, frange=[], printout=10, **kwargs):
+               plot=False, frange=[], printout=10, neutrals=0.05, **kwargs):
 
     """ Call the Differential Evolution solver.
 
@@ -61,6 +61,8 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
         Minimum and maximum f value to plot.
     printout : int
         Print progress to screen.
+    neutrals : float
+        Fraction of neutral starting agents.
 
     Returns
     -------
@@ -92,7 +94,7 @@ def devo_numpy(fn, bounds, population, generations, limit=0, elites=0.2, F=0.8, 
     # Population
 
     agents = (rand(k, population) * (ub - lb) + lb)
-    agents[:, :int(round(population * 0.05))] *= 0
+    agents[:, :int(round(population * neutrals))] *= 0
 
     candidates = tile(array(range(population)), (1, population))
     candidates = reshape(delete(candidates, where(eye(population).ravel() == 1)), (population, population - 1))
@@ -278,6 +280,7 @@ if __name__ == "__main__":
         return z
 
     bounds = [(-10, 10), (-15, 15)]
-    res = devo_numpy(fn=fn, bounds=bounds, population=100, generations=100, polish=False, plot=True, frange=[0, 100])
+    res = devo_numpy(fn=fn, bounds=bounds, population=100, generations=100,
+                     polish=False, plot=True, frange=[0, 100], neutrals=0)
 
     print(res)

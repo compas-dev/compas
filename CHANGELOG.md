@@ -9,10 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
+- Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
+
+### Changed
+
+- Fixed import of `delaunay_from_points` in `Mesh.from_points`.
+- More control over drawing of text labels in Rhino.
+- Extension of `face_vertex_descendant` and `face_vertex_ancestor` in `Mesh`.
+
+### Removed
+
+
+## [0.7.2] 2019-08-09
+
+### Added
+
 - Added `compas_rhino.geometry.RhinoGeometry` to the docs.
 - Added `compas.remote.services`.
 - Added `compas.remote.services.network.py` service for handling requests for a browser-based network viewer.
 - Possibility to call forward_kinematics on `compas.robots.RobotModel`
+- Added `compas.set_precision` function for the setting the global precision used by COMPAS as a floating point number.
 
 ### Changed
 
@@ -25,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Using `SimpleHTTPRequestHandler` instead of `BaseHTTPRequestHandler` to provide basic support for serving files via `GET`.
 - Mesh mapping on surface without creating new mesh to keep attributes in `compas_rhino.geometry.surface.py`.
 - Moving functionality from `compas_fab.artists.BaseRobotArtist` to `compas.robots.RobotModel`
+- Fix exception of null-area polygon of centroid polygon in `compas.geometry.average.py`.
+- Fix loss of precision during mesh welding in `compas.datastructures.mesh_weld`.
 
 ### Removed
 

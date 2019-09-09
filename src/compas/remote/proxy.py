@@ -166,7 +166,7 @@ class Proxy(object):
         if not self.ping_server():
             raise ThreadedServerError("Server unavailable at {}...".format(self.address))
 
-        print("Started server at {}...".format(self.address))
+        print("Started {} service at {}...".format(self._service, self.address))
 
     def send_request(self, function, module=None, args=None, kwargs=None):
         """Send a request to the server.

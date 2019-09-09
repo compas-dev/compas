@@ -19,6 +19,9 @@ from .curvature import *
 from .bbox import *
 
 if not compas.IPY:
+    from .bbox_numpy import *
+
+if not compas.IPY:
     from .contours import *
 
 from .descent import *
@@ -30,7 +33,6 @@ if not compas.IPY:
 
 from .geometry import *
 from .join import *
-from .laplacian import *
 from .offset import *
 from .orientation import *
 from .planarisation import *

@@ -118,9 +118,9 @@ from .dr import *
 from .drx import *
 from .fd import *
 from .ga import *
-# from .lma import *
-# from .mma import *
+
 from .pca import *
+
 from .topop import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

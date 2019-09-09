@@ -56,12 +56,6 @@ class VertexAttributesManagement(object):
         value : object
             The value of the attribute.
 
-        See Also
-        --------
-        * :meth:`set_vertex_attributes`
-        * :meth:`set_vertices_attribute`
-        * :meth:`set_vertices_attributes`
-
         """
         self.vertex[key][name] = value
 
@@ -76,12 +70,6 @@ class VertexAttributesManagement(object):
             A list of attribute names.
         values : list
             A list of attribute values.
-
-        See Also
-        --------
-        * :meth:`set_vertex_attribute`
-        * :meth:`set_vertices_attribute`
-        * :meth:`set_vertices_attributes`
 
         """
         for name, value in zip(names, values):
@@ -98,12 +86,6 @@ class VertexAttributesManagement(object):
             The value of the attribute.
         keys : list of hashable, optional
             Defaults to all vertices.
-
-        See Also
-        --------
-        * :meth:`set_vertex_attribute`
-        * :meth:`set_vertex_attributes`
-        * :meth:`set_vertices_attributes`
 
         """
         if not keys:
@@ -123,12 +105,6 @@ class VertexAttributesManagement(object):
         keys : list of hashable, optional
             A list of vertex identifiers.
             Defaults to all vertices.
-
-        See Also
-        --------
-        * :meth:`set_vertex_attribute`
-        * :meth:`set_vertex_attributes`
-        * :meth:`set_vertices_attribute`
 
         """
         for name, value in zip(names, values):
@@ -151,12 +127,6 @@ class VertexAttributesManagement(object):
         value
             The value of the attribute,
             or the default value if the attribute does not exist.
-
-        See Also
-        --------
-        * :meth:`get_vertex_attributes`
-        * :meth:`get_vertices_attribute`
-        * :meth:`get_vertices_attributes`
 
         """
         return self.vertex[key].get(name, value)
@@ -181,12 +151,6 @@ class VertexAttributesManagement(object):
             Every attribute that does not exist is replaced by the corresponding
             default value.
 
-        See Also
-        --------
-        * :meth:`get_vertex_attribute`
-        * :meth:`get_vertices_attribute`
-        * :meth:`get_vertices_attributes`
-
         """
         if not values:
             values = [None] * len(names)
@@ -210,12 +174,6 @@ class VertexAttributesManagement(object):
         -------
         values : list
             A list of values of the named attribute of the specified vertices.
-
-        See Also
-        --------
-        * :meth:`get_vertex_attribute`
-        * :meth:`get_vertex_attributes`
-        * :meth:`get_vertices_attributes`
 
         """
         if not keys:
@@ -242,12 +200,6 @@ class VertexAttributesManagement(object):
             The values of the attributes of the specified vertices.
             If an attribute does not exist for a specific vertex, it is replaced
             by the default value.
-
-        See Also
-        --------
-        * :meth:`get_vertex_attribute`
-        * :meth:`get_vertex_attributes`
-        * :meth:`get_vertices_attribute`
 
         """
         if not values:
@@ -307,12 +259,6 @@ class EdgeAttributesManagement(object):
         Exception
             If the edge does not exist in the data structure.
 
-        See Also
-        --------
-        * :meth:`set_edge_attributes`
-        * :meth:`set_edges_attribute`
-        * :meth:`set_edges_attributes`
-
         """
         u, v = key
         if u in self.edge and v in self.edge[u]:
@@ -334,12 +280,6 @@ class EdgeAttributesManagement(object):
         values : list of object
             The new values of the attributes.
 
-        See Also
-        --------
-        * :meth:`set_edge_attribute`
-        * :meth:`set_edges_attribute`
-        * :meth:`set_edges_attributes`
-
         """
         for name, value in zip(names, values):
             self.set_edge_attribute(key, name, value)
@@ -357,12 +297,6 @@ class EdgeAttributesManagement(object):
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
             Defaults to ``None``, in which case all edges will be modified.
-
-        See Also
-        --------
-        * :meth:`set_edge_attribute`
-        * :meth:`set_edge_attributes`
-        * :meth:`set_edges_attributes`
 
         """
         if not keys:
@@ -383,12 +317,6 @@ class EdgeAttributesManagement(object):
             A list of edge identifiers.
             Each edge identifier is a pair of vertex identifiers.
             Defaults to ``None``, in which case all edges will be modified.
-
-        See Also
-        --------
-        * :meth:`set_edge_attribute`
-        * :meth:`set_edge_attributes`
-        * :meth:`set_edges_attribute`
 
         """
         for name, value in zip(names, values):
@@ -412,12 +340,6 @@ class EdgeAttributesManagement(object):
         value
             The value of the attribute,
             or the default value if the attribute does not exist.
-
-        See Also
-        --------
-        * :meth:`get_edge_attributes`
-        * :meth:`get_edges_attribute`
-        * :meth:`get_edges_attributes`
 
         """
         u, v = key
@@ -445,12 +367,6 @@ class EdgeAttributesManagement(object):
             Every attribute that does not exist is replaced by the corresponding
             default value.
 
-        See Also
-        --------
-        * :meth:`get_edge_attribute`
-        * :meth:`get_edges_attribute`
-        * :meth:`get_edges_attributes`
-
         """
         if not values:
             values = [None] * len(names)
@@ -476,12 +392,6 @@ class EdgeAttributesManagement(object):
         -------
         values : list
             A list of values of the named attribute of the specified edges.
-
-        See Also
-        --------
-        * :meth:`get_edge_attribute`
-        * :meth:`get_edge_attributes`
-        * :meth:`get_edges_attributes`
 
         """
         if not keys:
@@ -510,12 +420,6 @@ class EdgeAttributesManagement(object):
             The values of the attributes of the specified edges.
             If an attribute does not exist for a specific edge, it is replaced
             by the default value.
-
-        See Also
-        --------
-        * :meth:`get_edge_attribute`
-        * :meth:`get_edge_attributes`
-        * :meth:`get_edges_attribute`
 
         """
         if not values:
@@ -569,12 +473,6 @@ class FaceAttributesManagement(object):
         value : object
             The value of the attribute.
 
-        See Also
-        --------
-        * :meth:`set_face_attributes`
-        * :meth:`set_faces_attribute`
-        * :meth:`set_faces_attributes`
-
         """
         if key not in self.facedata:
             self.facedata[key] = self.default_face_attributes.copy()
@@ -592,12 +490,6 @@ class FaceAttributesManagement(object):
         values : list of object
             The new values of the attributes.
 
-        See Also
-        --------
-        * :meth:`set_face_attribute`
-        * :meth:`set_faces_attribute`
-        * :meth:`set_faces_attributes`
-
         """
         for name, value in zip(names, values):
             self.set_face_attribute(key, name, value)
@@ -614,12 +506,6 @@ class FaceAttributesManagement(object):
         value : object
             The value of the attribute.
 
-        See Also
-        --------
-        * :meth:`set_face_attribute`
-        * :meth:`set_face_attributes`
-        * :meth:`set_faces_attributes`
-
         """
         for key in keys:
             self.set_face_attribute(key, name, value)
@@ -635,12 +521,6 @@ class FaceAttributesManagement(object):
             A list of attribute names,
         values : list of object
             The new values of the attributes.
-
-        See Also
-        --------
-        * :meth:`set_face_attribute`
-        * :meth:`set_face_attributes`
-        * :meth:`set_faces_attribute`
 
         """
         for name, value in zip(names, values):
@@ -664,12 +544,6 @@ class FaceAttributesManagement(object):
         value
             The value of the attribute,
             or the default value if the attribute does not exist.
-
-        See Also
-        --------
-        * :meth:`get_face_attributes`
-        * :meth:`get_faces_attribute`
-        * :meth:`get_faces_attributes`
 
         """
         if not self.facedata:
@@ -698,12 +572,6 @@ class FaceAttributesManagement(object):
             Every attribute that does not exist is replaced by the corresponding
             default value.
 
-        See Also
-        --------
-        * :meth:`get_face_attribute`
-        * :meth:`get_faces_attribute`
-        * :meth:`get_faces_attributes`
-
         """
         if not values:
             values = [None] * len(names)
@@ -726,12 +594,6 @@ class FaceAttributesManagement(object):
         -------
         values : list
             A list of values of the named attribute of the specified faces.
-
-        See Also
-        --------
-        * :meth:`get_face_attribute`
-        * :meth:`get_face_attributes`
-        * :meth:`get_faces_attributes`
 
         """
         return [self.get_face_attribute(key, name, value) for key in keys]
@@ -756,12 +618,6 @@ class FaceAttributesManagement(object):
             If an attribute does not exist for a specific face, it is replaced
             by the default value.
 
-        See Also
-        --------
-        * :meth:`get_face_attribute`
-        * :meth:`get_face_attributes`
-        * :meth:`get_faces_attribute`
-
         """
         if not values:
             values = [None] * len(names)
@@ -784,15 +640,7 @@ class FaceAttributesManagement(object):
         dict
             A copy of the dictionary containing all attributes and their values, if ``data=True``.
         list
-            A list of all attribute keys, if ``data=False`.
-
-        See Also
-        --------
-        * :meth:`get_face_attribute`
-        * :meth:`get_face_attributes`
-        * :meth:`get_faces_attribute`
-        * :meth:`get_faces_attributes`
-        * :meth:'get_faces_all_attributes'
+            A list of all attribute keys, if ``data=False``.
 
         """
         if data:
@@ -816,15 +664,7 @@ class FaceAttributesManagement(object):
         list of dict
             A list of dictionaries containing all attributes and their values, if ``data=True``.
         list of list
-            A list of all attribute keys for each specified face key, if ``data=False`.
-
-        See Also
-        --------
-        * :meth:`get_face_attribute`
-        * :meth:`get_face_attributes`
-        * :meth:`get_faces_attribute`
-        * :meth:`get_faces_attributes`
-        * :meth:'get_face_all_attributes'
+            A list of all attribute keys for each specified face key, if ``data=False``.
 
         """
         return [self.get_face_all_attributes(key, data) for key in keys]

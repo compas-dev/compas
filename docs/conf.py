@@ -11,13 +11,15 @@ from sphinx.ext.napoleon.docstring import NumpyDocstring
 
 import sphinx_compas_theme
 
+sys.path.insert(0, os.path.abspath('../src'))
+
 # -- General configuration ------------------------------------------------
 
 project          = 'COMPAS'
 copyright        = 'Block Research Group - ETH Zurich'
 author           = 'Tom Van Mele'
 
-release = '0.7.1'
+release = '0.7.2'
 version = '.'.join(release.split('.')[0:2])
 
 master_doc       = 'index'
@@ -41,7 +43,7 @@ extensions = [
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'matplotlib.sphinxext.plot_directive',
-    # 'm2r',
+    'm2r',
     'nbsphinx',
     'sphinx.ext.viewcode'
 ]

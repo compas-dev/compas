@@ -27,17 +27,31 @@ import compas._os
 from .utilities import *
 
 
-__version__ = '0.7.1'
+__version__ = '0.7.2'
 
 
 PURGE_ON_DELETE = True
 
 
+def _check_rhino_version(version):
+    supported_versions = ['5.0', '6.0']
+
+    if not version:
+        return '6.0'
+
+    if version not in supported_versions:
+        raise Exception('Unsupported Rhino version: {}'.format(version))
+
+    return version
+
+
 def _get_ironpython_lib_path(version):
+    version = _check_rhino_version(version)
+
     if compas._os.system == 'win32':
         ironpython_lib_path = _get_ironpython_lib_path_win32(version)
     elif compas._os.system == 'darwin':
-        ironpython_lib_path = _get_ironpython_lib_path_mac()
+        ironpython_lib_path = _get_ironpython_lib_path_mac(version)
     else:
         raise Exception('Unsupported platform')
 
@@ -48,9 +62,6 @@ def _get_ironpython_lib_path(version):
 
 
 def _get_ironpython_lib_path_win32(version):
-    if version not in ('5.0', '6.0'):
-        version = '5.0'
-
     appdata = os.getenv('APPDATA')
     return os.path.join(appdata,
                         'McNeel',
@@ -62,20 +73,25 @@ def _get_ironpython_lib_path_win32(version):
                         'lib')
 
 
-def _get_ironpython_lib_path_mac():
-    return os.path.join(
-        '/',
-        'Applications',
-        'Rhinoceros.app',
-        'Contents',
-        'Resources',
-        'ManagedPlugIns',
-        'RhinoDLR_Python.rhp',
-        'Lib'
-    )
+def _get_ironpython_lib_path_mac(version):
+    lib_paths = {
+        '5.0': [''],
+        '6.0': ['Frameworks', 'RhCore.framework', 'Versions', 'A']
+    }
+    return os.path.join(*['/',
+                          'Applications',
+                          'Rhinoceros.app',
+                          'Contents']
+                        + lib_paths.get(version) +
+                        ['Resources',
+                         'ManagedPlugIns',
+                         'RhinoDLR_Python.rhp',
+                         'Lib'])
 
 
 def _get_python_plugins_path(version):
+    version = _check_rhino_version(version)
+
     if compas._os.system == 'win32':
         python_plugins_path = _get_python_plugins_path_win32(version)
     elif compas._os.system == 'darwin':
@@ -87,9 +103,6 @@ def _get_python_plugins_path(version):
 
 
 def _get_python_plugins_path_win32(version):
-    if version not in ('5.0', '6.0'):
-        version = '6.0'
-
     appdata = os.getenv('APPDATA')
     return os.path.join(appdata,
                         'McNeel',

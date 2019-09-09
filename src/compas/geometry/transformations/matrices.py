@@ -36,12 +36,19 @@ __all__ = [
     'matrix_from_shear_entries',
     'matrix_from_shear',
     'matrix_from_scale_factors',
+    'matrix_from_quaternion',
 
     'euler_angles_from_matrix',
+    'euler_angles_from_quaternion',
+
     'axis_and_angle_from_matrix',
     'axis_angle_vector_from_matrix',
-    'matrix_from_quaternion',
+    'axis_angle_from_quaternion',
+
     'quaternion_from_matrix',
+    'quaternion_from_euler_angles',
+    'quaternion_from_axis_angle',
+
     'basis_vectors_from_matrix',
     'translation_from_matrix',
 ]
@@ -49,11 +56,6 @@ __all__ = [
 
 def identity_matrix(dim):
     return [[1. if i == j else 0. for i in range(dim)] for j in range(dim)]
-
-
-# ==============================================================================
-# xforms
-# ==============================================================================
 
 
 def matrix_from_frame(frame):
@@ -847,6 +849,115 @@ def matrix_from_scale_factors(scale_factors, rtype='list'):
         return asarray(M)
 
     raise NotImplementedError
+
+
+def quaternion_from_euler_angles(e, static=True, axes='xyz'):
+    """Returns a quaternion from Euler angles.
+
+    Parameters
+    ----------
+    euler_angles : list
+        Three numbers that represent the angles of rotations about the specified axes.
+    static : bool, optional
+        If ``True``, the rotations are applied to a static frame.
+        If ``False``, the rotations are applied to a rotational frame.
+        Defaults to ``True``.
+    axes : str, optional
+        A three-character string specifying the order of the axes.
+        Defaults to ``'xyz'``.
+
+    Returns
+    -------
+    list
+        Quaternion as a list of four real values ``[w, x, y, z]``.
+    """
+
+    m = matrix_from_euler_angles(e, static, axes)
+    q = quaternion_from_matrix(m)
+    return q
+
+
+def euler_angles_from_quaternion(q, static=True, axes='xyz'):
+    """Returns Euler angles from a quaternion.
+
+    Parameters
+    ----------
+    quaternion : list
+        Quaternion as a list of four real values ``[w, x, y, z]``.
+    static : bool, optional
+        If ``True``, the rotations are applied to a static frame.
+        If ``False``, the rotations are applied to a rotational frame.
+        Defaults to ``True``.
+    axes : str, optional
+        A three-character string specifying the order of the axes.
+        Defaults to ``'xyz'``.
+
+    Returns
+    -------
+    list
+        Euler angles as a list of three real values ``[a, b, c]``.
+    """
+    m = matrix_from_quaternion(q)
+    e = euler_angles_from_matrix(m, static, axes)
+    return e
+
+
+def quaternion_from_axis_angle(axis, angle):
+    """Returns a quaternion describing a rotation around the given axis by the given angle.
+
+    Parameters
+    ----------
+    axis : list
+        Coordinates ``[x, y, z]`` of the rotation axis vector.
+    angle : float
+        Angle of rotation in radians.
+
+    Returns
+    -------
+    list
+        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+
+    Example
+    -------
+    >>> axis =  [1.0, 0.0, 0.0]
+    >>> angle = math.pi/2
+    >>> q = quaternion_from_axis_angle(axis,angle)
+    >>> allclose(q, [math.sqrt(2)/2, math.sqrt(2)/2, 0, 0])
+    True
+    """
+    m = matrix_from_axis_and_angle(axis, angle, None, 'list')
+    q = quaternion_from_matrix(m)
+    return q
+
+
+def axis_angle_from_quaternion(q):
+    """Returns an axis and an angle of rotation from the given quaternion.
+
+    Parameters
+    ----------
+    q : list
+        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
+
+    Returns
+    -------
+    axis : list
+        Coordinates ``[x, y, z]`` of the rotation axis vector.
+    angle : float
+        Angle of rotation in radians.
+
+    Example
+    -------
+    >>> q = [1., 1., 0., 0.]
+    >>> axis, angle = axis_angle_from_quaternion(q)
+    >>> allclose(axis, [1., 0., 0.])
+    True
+    >>> allclose([angle], [math.pi/2], 1e-6)
+    True
+    """
+
+    m = matrix_from_quaternion(q)
+    axis, angle = axis_and_angle_from_matrix(m)
+    return axis, angle
 
 
 # ==============================================================================

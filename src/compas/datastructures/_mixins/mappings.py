@@ -25,10 +25,6 @@ class VertexMappings(object):
         dict
             A dictionary of key-index pairs.
 
-        See Also
-        --------
-        * :meth:`index_key`
-
         """
         return {key: index for index, key in enumerate(self.vertices())}
 
@@ -40,10 +36,6 @@ class VertexMappings(object):
         -------
         dict
             A dictionary of index-key pairs.
-
-        See Also
-        --------
-        * :meth:`key_index`
 
         """
         return dict(enumerate(self.vertices()))
@@ -61,11 +53,6 @@ class VertexMappings(object):
         -------
         dict
             A dictionary of key-geometric key pairs.
-
-        See Also
-        --------
-        * :meth:`gkey_key`
-        * :func:`compas.utilities.geometric_key`
 
         """
         gkey = geometric_key
@@ -86,11 +73,6 @@ class VertexMappings(object):
         dict
             A dictionary of geometric key-key pairs.
 
-        See Also
-        --------
-        * :meth:`key_gkey`
-        * :func:`compas.utilities.geometric_key`
-
         """
         gkey = geometric_key
         xyz = self.vertex_coordinates
@@ -110,10 +92,6 @@ class EdgeMappings(object):
         dict
             A dictionary of uv-index pairs.
 
-        See Also
-        --------
-        * :meth:`index_uv`
-
         """
         return {(u, v): index for index, (u, v) in enumerate(self.edges())}
 
@@ -125,10 +103,6 @@ class EdgeMappings(object):
         -------
         dict
             A dictionary of index-uv pairs.
-
-        See Also
-        --------
-        * :meth:`uv_index`
 
         """
         return dict(enumerate(self.edges()))

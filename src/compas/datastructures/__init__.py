@@ -14,38 +14,47 @@ It is meant for the representation of polygonal *"surface"* meshes. A mesh can b
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
 
-Classes
--------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     Mesh
 
-Functions
----------
+Mesh matrices
+-------------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     mesh_adjacency_matrix
+    mesh_connectivity_matrix
+    mesh_degree_matrix
+    mesh_face_matrix
+    mesh_laplacian_matrix
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    trimesh_cotangent_laplacian_matrix
+    trimesh_vertexarea_matrix
+
+Mesh algorithms
+---------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     mesh_bounding_box
     mesh_bounding_box_xy
-    mesh_connectivity_matrix
+    mesh_oriented_bounding_box_numpy
+    mesh_oriented_bounding_box_xy_numpy
     mesh_contours_numpy
-    mesh_degree_matrix
-    mesh_delete_duplicate_vertices
     mesh_dual
-    mesh_face_adjacency
-    mesh_face_matrix
-    mesh_flatness
-    mesh_flip_cycles
     mesh_geodesic_distances
-    mesh_is_connected
     mesh_isolines_numpy
-    mesh_laplacian_matrix
     mesh_planarize_faces
     mesh_quads_to_triangles
     mesh_smooth_centroid
@@ -58,15 +67,27 @@ Functions
     mesh_subdivide_doosabin
     mesh_transform
     mesh_transformed
-    mesh_unify_cycles
 
-    trimesh_cotangent_laplacian_matrix
-    trimesh_face_circle
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     trimesh_gaussian_curvature
-    trimesh_mean_curvature
     trimesh_remesh
     trimesh_subdivide_loop
-    trimesh_vertexarea_matrix
+
+Mesh helpers
+------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    mesh_delete_duplicate_vertices
+    mesh_face_adjacency
+    mesh_flip_cycles
+    mesh_is_connected
+    mesh_unify_cycles
 
 Network
 =======
@@ -76,17 +97,14 @@ It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
 
-Classes
--------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     Network
 
-Functions
----------
+Network algorithms
+------------------
 
 .. autosummary::
     :toctree: generated/
@@ -112,21 +130,11 @@ The volmesh is a cellular mesh. It is implemented as
 a half-plane, the three-dimensional equivalent of a half-edge. It can, for example,
 be used for the representation of subdivided/partitioned polyhedra.
 
-Classes
--------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     VolMesh
-
-Functions
----------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
 
 """
 

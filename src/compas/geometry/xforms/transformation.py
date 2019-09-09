@@ -14,8 +14,8 @@ import math
 
 from compas.geometry.basic import multiply_matrices
 
-from compas.geometry._primitives import Point
-from compas.geometry._primitives import Vector
+from compas.geometry.primitives import Point
+from compas.geometry.primitives import Vector
 
 from compas.geometry.transformations import inverse
 from compas.geometry.transformations import identity_matrix

@@ -9,8 +9,8 @@ from .triangulation import *
 if not compas.IPY:
     from .triangulation_numpy import *
 
-if not compas.IPY:
-    from .triangulation_triangle import *
+# if not compas.IPY:
+#     from .triangulation_triangle import *
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

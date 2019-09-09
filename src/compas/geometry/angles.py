@@ -359,20 +359,5 @@ def angles_points_xy(a, b, c, deg=False):
 
 if __name__ == "__main__":
 
-    deg = False
-
-    u = [1., 1., 0.]
-    v = [1., 1., 0.]
-    o = [0., 0., 0.]
-
-    print (angle_vectors(u, v, deg))
-    print (angle_vectors_xy(u, v, deg))
-
-    print (angle_points(o, u, v, deg))
-    print (angle_points_xy(o, u, v, deg))
-
-    print (angles_vectors(u, v, deg))
-    print (angles_vectors_xy(u, v, deg))
-
-    print (angles_points(o, u, v, deg))
-    print (angles_points_xy(o, u, v, deg))
+    import doctest
+    doctest.testmod()

@@ -95,7 +95,7 @@ def draw_lines(lines, centroid=True, layer=None):
         object.data.bevel_depth = data.get('width', 0.05)
         object.data.bevel_resolution = 0
         object.data.resolution_u = 20
-        object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
+        object.color = data.get('color', [1, 1, 1]) + [1]
         objects[c] = object
     return _link_objects(objects=objects, layer=layer)
 
@@ -124,7 +124,7 @@ def draw_cylinders(cylinders, div=10, layer=None):
         object.rotation_euler[2] = atan2(end[1] - start[1], end[0] - start[0])
         object.location = pos
         object.scale = ((radius, radius, L))
-        object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
+        object.color = data.get('color', [1, 1, 1]) + [1]
         objects[c] = object
     return _link_objects(objects=objects, copy=copy, layer=layer)
 
@@ -146,7 +146,7 @@ def draw_spheres(spheres, div=10, layer=None):
         object.name     = data.get('name', 'sphere')
         object.scale   *= data.get('radius', 1)
         object.location = data.get('pos', [0, 0, 0])
-        object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
+        object.color    = data.get('color', [1, 1, 1]) + [1]
         objects[c] = object
     return _link_objects(objects=objects, layer=layer, copy=copy)
 
@@ -160,7 +160,7 @@ def draw_cubes(cubes, layer):
         object.name     = data.get('name', 'cube')
         object.scale   *= data.get('radius', 1)
         object.location = data.get('pos', [0, 0, 0])
-        object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
+        object.color    = data.get('color', [1, 1, 1]) + [1]
         objects[c] = object
     return _link_objects(objects=objects, layer=layer, copy=copy)
 
@@ -175,7 +175,7 @@ def draw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], ce
     mesh.update(calc_edges=True)
     object = bpy.data.objects.new(name, mesh)
     object.show_wire = True
-    object.data.materials.append(create_material(color=color))
+    object.color = color + [1]
     object.location = mp
     bpy.context.collection.objects.link(object)
     if layer:
@@ -205,7 +205,7 @@ def draw_pointcloud(points, layer=None):
 
 
 def draw_texts(texts, layer=None):
-    bpy.ops.object.text_add(view_align=True)
+    bpy.ops.object.text_add()
     copy = bpy.context.object
     objects = [0] * len(texts)
     for c, data in enumerate(texts):
@@ -214,7 +214,7 @@ def draw_texts(texts, layer=None):
         object.location  = data.get('pos', [0, 0, 0])
         object.name      = data.get('name', 'text')
         object.data.body = data.get('text', 'text')
-        object.data.materials.append(create_material(color=data.get('color', [1, 1, 1])))
+        object.color     = data.get('color', [1, 1, 1]) + [1]
         objects[c] = object
     return _link_objects(objects=objects, layer=layer, copy=copy)
 
@@ -229,7 +229,7 @@ def draw_cylinder(start, end, radius=1, color=[1, 1, 1], layer=None, div=10, nam
     object.rotation_euler[2] = atan2(end[1] - start[1], end[0] - start[0])
     object.location = pos
     object.scale = ((radius, radius, L))
-    object.data.materials.append(create_material(color=color))
+    object.color = color + [1]
     if layer:
         set_objects_layer(objects=[object], layer=layer)
     return object
@@ -248,12 +248,12 @@ def draw_plane(Lx=1, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 1
 
 
 def draw_text(radius=1, pos=[0, 0, 0], text='text', layer=None, color=[1, 1, 1]):
-    bpy.ops.object.text_add(view_align=False)
+    bpy.ops.object.text_add()
     object           = bpy.context.object
     object.scale    *= radius
     object.location  = pos
     object.data.body = text
-    object.data.materials.append(create_material(color=color))
+    object.color     = color + [1]
     if layer:
         set_objects_layer(objects=[object], layer=layer)
     return object
@@ -274,7 +274,7 @@ def draw_line(start=[0, 0, 0], end=[1, 1, 1], width=0.05, centroid=True, name='l
     object.data.bevel_depth = width
     object.data.bevel_resolution = 0
     object.data.resolution_u = 20
-    object.data.materials.append(create_material(color=color))
+    object.color = color + [1]
     bpy.context.collection.objects.link(object)
     if layer:
         set_objects_layer(objects=[object], layer=layer)
@@ -290,7 +290,7 @@ if __name__ == '__main__':
     from compas_blender.utilities import clear_layers
     from compas_blender.utilities import set_objects_show_names
 
-    clear_layers(layers=['Collection 1', 'Collection 2'])
+    clear_layers(layers=['Collection'])
 
     n = 10
 
@@ -301,22 +301,22 @@ if __name__ == '__main__':
     cubes   = [{'pos': [4, 0, i], 'radius': 0.5, 'color': [0, 1, 1]} for i in range(n)]
     texts   = [{'text': 'text2', 'radius': 0.5, 'color': [1, 0, 1], 'pos': [5, 0, i]} for i in range(n)]
 
-    draw_cylinder(start=[0, 0, 0], end=[1, 1, 1], radius=0.1, color=[1, 0, 1], layer='Collection 2')
+    draw_cylinder(start=[0, 0, 0], end=[1, 1, 1], radius=0.1, color=[1, 0, 1], layer='Collection')
     draw_line(start=[2, 2, 2], end=[1, 1, 1], width=0.05, name='line', color=[1, 1, 0])
-    draw_text(radius=1, pos=[0, 0, 0], text='text', layer='Collection 2', color=[1, 0, 0])
+    draw_text(radius=1, pos=[0, 0, 0], text='text', layer='Collection', color=[1, 0, 0])
 
     draw_points(points=points)
-    draw_lines(lines=lines, layer='Collection 2')
-    draw_cylinders(cylinders=cyls, layer='Collection 2')
+    draw_lines(lines=lines, layer='Collection')
+    draw_cylinders(cylinders=cyls, layer='Collection')
     draw_spheres(spheres=spheres)
-    draw_cubes(cubes=cubes, layer='Collection 2')
-    draw_texts(texts=texts, layer='Collection 2')
+    draw_cubes(cubes=cubes, layer='Collection')
+    draw_texts(texts=texts, layer='Collection')
 
     draw_plane(Lx=2, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 0, 1])
 
     vertices = [[-1, 0, 1], [-2, 0, 2], [-2, 1, 1], [-1, 1, 0]]
     faces    = [[0, 1, 2], [2, 3, 0]]
-    mesh     = draw_mesh(name='mesh', vertices=vertices, faces=faces, layer='Collection 2', color=[1, 0, 1])
+    mesh     = draw_mesh(name='mesh', vertices=vertices, faces=faces, layer='Collection', color=[1, 0, 1])
 
     objects = draw_pointcloud(points=points)
     set_objects_show_names(objects=objects, show=True)

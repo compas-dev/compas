@@ -5,7 +5,7 @@ from __future__ import division
 from math import sqrt
 from math import fabs
 from random import sample
-
+from random import uniform
 
 __all__ = [
     'allclose',
@@ -62,11 +62,35 @@ __all__ = [
 def allclose(l1, l2, tol=1e-05):
     """Returns True if two lists are element-wise equal within a tolerance.
 
-    The function is similar to NumPy's *allclose* function.
+    Parameters
+    ----------
+    l1 : list of float
+        The first list of values.
+    l2 : list of float
+        The second list of values.
+    tol : float, optional
+        The tolerance for comparing values.
+        Default is ``1e-05``.
+
+    Notes
+    -----
+    The function is similar to NumPy's *allclose* function [1]_.
+
+    Examples
+    --------
+    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4])
+    True
+
+    >>> allclose([0.1, 0.2, 0.3, 0.4], [0.1, 0.20001, 0.3, 0.4], tol=1e-6)
+    False
+
+    References
+    ----------
+    .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
+
     """
-    for a, b in zip(l1, l2):
-        if fabs(a - b) > tol:
-            return False
+    if any(fabs(a - b) > tol for a, b in zip(l1, l2)):
+        return False
     return True
 
 
@@ -77,16 +101,15 @@ def allclose(l1, l2, tol=1e-05):
 
 
 def sum_vectors(vectors, axis=0):
-    """
-    Calculate the sum of a series of vectors along the specified axis.
+    """Calculate the sum of a series of vectors along the specified axis.
 
     Parameters
     ----------
     vectors : list
         A list of vectors.
     axis : int, optional
-        If ``axis == 0``, the sum is taken across each of the indices of the mesh.
-        If ``axis == 1``, the sum is taken across the individual vectors.
+        If ``axis == 0``, the sum is taken per column.
+        If ``axis == 1``, the sum is taken per row.
 
     Returns
     -------
@@ -96,11 +119,11 @@ def sum_vectors(vectors, axis=0):
 
     Examples
     --------
-    >>> vectors = [[1, 2, 3], [1, 2, 3], [1, 2, 3]]
+    >>> vectors = [[1.0, 2.0, 3.0], [1.0, 2.0, 3.0], [1.0, 2.0, 3.0]]
     >>> sum_vectors(vectors)
-    [3, 6, 9]
+    [3.0, 6.0, 9.0]
     >>> sum_vectors(vectors, axis=1)
-    [6, 6, 6]
+    [6.0, 6.0, 6.0]
 
     """
     if axis == 0:
@@ -109,8 +132,7 @@ def sum_vectors(vectors, axis=0):
 
 
 def norm_vector(vector):
-    """
-    Calculate the length of a vector.
+    """Calculate the length of a vector.
 
     Parameters
     ----------
@@ -124,7 +146,11 @@ def norm_vector(vector):
 
     Examples
     --------
-    >>>
+    >>> norm_vector([2.0, 0.0, 0.0])
+    2.0
+
+    >>> norm_vector([1.0, 1.0, 0.0]) == sqrt(2.0)
+    True
 
     """
     return sqrt(sum(axis ** 2 for axis in vector))
@@ -146,7 +172,8 @@ def norm_vectors(vectors):
 
     Examples
     --------
-    >>>
+    >>> norm_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0]])
+    [1.0, 2.0, 3.0]
 
     """
     return [norm_vector(vector) for vector in vectors]
@@ -165,13 +192,13 @@ def length_vector(vector):
     float
         The length of the vector.
 
-    See Also
-    --------
-    norm_vector
-
     Examples
     --------
-    >>>
+    >>> length_vector([2.0, 0.0, 0.0])
+    2.0
+
+    >>> length_vector([1.0, 1.0, 0.0]) == sqrt(2.0)
+    True
 
     """
     return sqrt(length_vector_sqrd(vector))
@@ -218,6 +245,11 @@ def length_vector_sqrd(vector):
     float
         The squared length.
 
+    Examples
+    --------
+    >>> length_vector_sqrd([1.0, 1.0, 0.0])
+    2.0
+
     """
     return vector[0] ** 2 + vector[1] ** 2 + vector[2] ** 2
 
@@ -234,6 +266,17 @@ def length_vector_sqrd_xy(vector):
     -------
     float
         The squared length.
+
+    Examples
+    --------
+    >>> length_vector_sqrd_xy([1.0, 1.0])
+    2.0
+
+    >>> length_vector_sqrd_xy([1.0, 1.0, 0.0])
+    2.0
+
+    >>> length_vector_sqrd_xy([1.0, 1.0, 1.0])
+    2.0
 
     """
     return vector[0] ** 2 + vector[1] ** 2
@@ -264,14 +307,16 @@ def scale_vector(vector, factor):
 
     Examples
     --------
-    >>>
+    >>> scale_vector([1.0, 2.0, 3.0], 2.0)
+    [2.0, 4.0, 6.0]
+
+    >>> v = [2.0, 0.0, 0.0]
+    >>> scale_vector(v, 1 / length_vector(v))
+    [1.0, 0.0, 0.0]
 
     """
     return [axis * factor for axis in vector]
 
-
-# does this even make sense?
-# should the Z-component not remain the same?
 
 def scale_vector_xy(vector, factor):
     """Scale a vector by a given factor, assuming it lies in the XY plane.
@@ -290,7 +335,8 @@ def scale_vector_xy(vector, factor):
 
     Examples
     --------
-    >>>
+    >>> scale_vector_xy([1.0, 2.0, 3.0], 2.0)
+    [2.0, 4.0, 0.0]
 
     """
     return [vector[0] * factor, vector[1] * factor, 0.0]
@@ -815,7 +861,7 @@ def dot_vectors(u, v):
     Examples
     --------
     >>> dot_vectors([1.0, 0, 0], [2.0, 0, 0])
-    2
+    2.0
 
     """
     return sum(a * b for a, b in zip(u, v))
@@ -879,8 +925,8 @@ def vector_component(u, v):
 
     Examples
     --------
-    >>> vector_component([1, 2, 3], [1, 0, 0])
-    [1, 0, 0]
+    >>> vector_component([1.0, 2.0, 3.0], [1.0, 0.0, 0.0])
+    [1.0, 0.0, 0.0]
 
     """
     l2 = length_vector_sqrd(v)
@@ -1073,7 +1119,7 @@ def homogenize_vectors(vectors, w=1.0):
     Examples
     --------
     >>> vectors = [[1.0, 0.0, 0.0]]
-    >>> homogenize(vectors)
+    >>> homogenize_vectors(vectors)
     [[1.0, 0.0, 0.0, 1.0]]
 
     Notes
@@ -1330,12 +1376,12 @@ def pointcloud(n, xbounds, ybounds=None, zbounds=None):
     ----------
     n : int
         The number of points in the cloud.
-    xbounds : 2-tuple of int
+    xbounds : 2-tuple of float
         The min/max values for the x-coordinates of the points in the cloud.
-    ybounds : 2-tuple of int, optional
+    ybounds : 2-tuple of float, optional
         The min/max values for the y-coordinates of the points in the cloud.
         If ``None``, defaults to the value of the ``xbounds``.
-    zbounds : 2-tuple of int, optional
+    zbounds : 2-tuple of float, optional
         The min/max values for the z-coordinates of the points in the cloud.
         If ``None``, defaults to the value of the ``xbounds``.
 
@@ -1346,25 +1392,26 @@ def pointcloud(n, xbounds, ybounds=None, zbounds=None):
 
     Examples
     --------
-    >>>
+    >>> cloud = pointcloud(10, (0.0, 1.0))
+    >>> all((0.0 < x < 1.0) and (0.0 < y < 1.0) and (0.0 < z < 1.0) for x, y, z in cloud)
+    True
+
+    >>> cloud = pointcloud(10, (5.0, 10.0), (0.0, 1.0), (-2.0, 3.0))
+    >>> all((5.0 < x < 10.0) and (0.0 < y < 1.0) and (-2.0 < z < 3.0) for x, y, z in cloud)
+    True
 
     """
     if ybounds is None:
         ybounds = xbounds
     if zbounds is None:
         zbounds = xbounds
-    xmin, xmax = map(int, xbounds)
-    ymin, ymax = map(int, ybounds)
-    zmin, zmax = map(int, zbounds)
-    assert xmax - xmin > n, 'The bounds do not permit taking a random sample of this size.'
-    assert ymax - ymin > n, 'The bounds do not permit taking a random sample of this size.'
-    assert zmax - zmin > n, 'The bounds do not permit taking a random sample of this size.'
-    x = sample(range(xmin, xmax), n)
-    y = sample(range(ymin, ymax), n)
-    z = sample(range(zmin, zmax), n)
-    return [[1.0 * x[i],
-             1.0 * y[i],
-             1.0 * z[i]] for i in range(n)]
+    xmin, xmax = map(float, xbounds)
+    ymin, ymax = map(float, ybounds)
+    zmin, zmax = map(float, zbounds)
+    x = [uniform(xmin, xmax) for i in range(n)]
+    y = [uniform(ymin, ymax) for i in range(n)]
+    z = [uniform(zmin, zmax) for i in range(n)]
+    return list(map(list, zip(x, y, z)))
 
 
 def pointcloud_xy(n, xbounds, ybounds=None):
@@ -1374,9 +1421,9 @@ def pointcloud_xy(n, xbounds, ybounds=None):
     ----------
     n : int
         The number of points in the cloud.
-    xbounds : 2-tuple of int
+    xbounds : 2-tuple of float
         The min/max values for the x-coordinates of the points in the cloud.
-    ybounds : 2-tuple of int, optional
+    ybounds : 2-tuple of float, optional
         The min/max values for the y-coordinates of the points in the cloud.
         If ``None``, defaults to the value of the ``xbounds``.
 
@@ -1387,19 +1434,23 @@ def pointcloud_xy(n, xbounds, ybounds=None):
 
     Examples
     --------
-    >>>
+    >>> cloud = pointcloud_xy(10, (0.0, 1.0))
+    >>> all((0.0 < x < 1.0) and (0.0 < y < 1.0) and z == 0.0 for x, y, z in cloud)
+    True
+
+    >>> cloud = pointcloud_xy(10, (5.0, 10.0), (0.0, 1.0))
+    >>> all((5.0 < x < 10.0) and (0.0 < y < 1.0) and z == 0.0 for x, y, z in cloud)
+    True
 
     """
     if ybounds is None:
         ybounds = xbounds
-    xmin, xmax = map(int, xbounds)
-    ymin, ymax = map(int, ybounds)
-    assert xmax - xmin >= n, 'The bounds do not permit taking a random sample of this size.'
-    assert ymax - ymin >= n, 'The bounds do not permit taking a random sample of this size.'
-    x = sample(range(xmin, xmax), n)
-    y = sample(range(ymin, ymax), n)
-    return [[1.0 * x[i],
-             1.0 * y[i], 0.0] for i in range(n)]
+    xmin, xmax = map(float, xbounds)
+    ymin, ymax = map(float, ybounds)
+    x = [uniform(xmin, xmax) for i in range(n)]
+    y = [uniform(ymin, ymax) for i in range(n)]
+    z = [0.0 for i in range(n)]
+    return list(map(list, zip(x, y, z)))
 
 
 # ==============================================================================
@@ -1408,4 +1459,5 @@ def pointcloud_xy(n, xbounds, ybounds=None):
 
 if __name__ == "__main__":
 
-    print(vector_component_xy([1, 2, 0], [1, 0, 0]))
+    import doctest
+    doctest.testmod()
