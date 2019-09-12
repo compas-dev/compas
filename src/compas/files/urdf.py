@@ -217,7 +217,8 @@ def get_metadata(type):
     if hasattr(type, 'from_urdf'):
         metadata['from_urdf'] = getattr(type, 'from_urdf')
     else:
-        argspec = inspect.getargspec(type.__init__)
+        # argspec = inspect.getargspec(type.__init__) # this is deprecated in python3
+        argspec = inspect.getfullargspec(type.__init__)
         args = {}
 
         required = len(argspec.args)
@@ -237,7 +238,8 @@ def get_metadata(type):
 
             args[argspec.args[i]] = data
 
-        metadata['keywords'] = argspec.keywords is not None
+        # TODO: make sure replacing keyword with kwonlyargs is correct, check at: https://docs.python.org/3/library/inspect.html#inspect.getargspec
+        metadata['keywords'] = argspec.kwonlyargs is not None
         metadata['init_args'] = args
 
     metadata['argument_map'] = getattr(type, 'argument_map', {})
