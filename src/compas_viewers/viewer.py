@@ -88,7 +88,7 @@ class MeshView(object):
     def mesh(self, mesh):
         self._mesh = mesh
 
-        xyz = mesh.get_vertices_attributes('xyz')
+        xyz = mesh.get_vertices_attributes('xyz', keys=sorted(list(mesh.vertices())))
         faces = []
         for fkey in mesh.faces():
             fvertices = mesh.face_vertices(fkey)
@@ -178,6 +178,7 @@ class Front(Controller):
         super(Front, self).__init__(app)
         self._mesh = None
         self._meshview = None
+
 
     @property
     def view(self):
