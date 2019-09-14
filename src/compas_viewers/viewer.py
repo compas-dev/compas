@@ -179,7 +179,6 @@ class Front(Controller):
         self._mesh = None
         self._meshview = None
 
-
     @property
     def view(self):
         return self.app.view

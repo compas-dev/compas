@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added compas rhino installer for Rhino Mac 6.0 `compas.__init__`.
+- Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
 - Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
 
 ### Changed
+- Fixed unsorted mesh vertex coordinates `xyz` in `compas_viewers.viewer.MeshView`
 - Changed stderr parameter from STDOUT to PIPE in `compas.rpc.Proxy` for Rhino Mac 6.0.
 - Fixed import of `delaunay_from_points` in `Mesh.from_points`.
 - More control over drawing of text labels in Rhino.
