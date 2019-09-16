@@ -78,7 +78,9 @@ class MeshView(object):
 
     @property
     def edges(self):
-        return self.mesh.edges()
+        key_index = self.mesh.key_index()
+        for u, v in self.mesh.edges():
+            yield key_index[u], key_index[v]
 
     @property
     def mesh(self):
@@ -89,7 +91,7 @@ class MeshView(object):
         self._mesh = mesh
 
         key_index = mesh.key_index()
-        xyz = mesh.get_vertices_attributes('xyz')
+        xyz = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
 
         faces = []
         for fkey in mesh.faces():
