@@ -62,6 +62,7 @@ from compas.datastructures._mixins import VertexMappings
 from compas.datastructures._mixins import EdgeMappings
 from compas.datastructures._mixins import FaceMappings
 
+import sys
 
 __all__ = ['Mesh']
 
@@ -678,14 +679,19 @@ class Mesh(FromToPickle,
         """
         mesh = cls()
 
-        if isinstance(vertices, collections.abc.Mapping):
+        if sys.version_info[0] < 3:
+            mapping = collections.Mapping
+        else:
+            mapping = collections.abc.Mapping
+
+        if isinstance(vertices, mapping):
             for key, xyz in vertices.items():
                 mesh.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
         else:
             for x, y, z in iter(vertices):
                 mesh.add_vertex(x=x, y=y, z=z)
 
-        if isinstance(faces, collections.abc.Mapping):
+        if isinstance(faces, mapping):
             for fkey, vertices in faces.items():
                 mesh.add_face(vertices, fkey)
         else:
