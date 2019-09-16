@@ -88,10 +88,12 @@ class MeshView(object):
     def mesh(self, mesh):
         self._mesh = mesh
 
-        xyz = mesh.get_vertices_attributes('xyz', keys=sorted(list(mesh.vertices())))
+        key_index = mesh.key_index()
+        xyz = mesh.get_vertices_attributes('xyz')
+
         faces = []
         for fkey in mesh.faces():
-            fvertices = mesh.face_vertices(fkey)
+            fvertices = [key_index[vkey] for vkey in mesh.face_vertices(fkey)]
             f = len(fvertices)
             if f < 3:
                 pass
