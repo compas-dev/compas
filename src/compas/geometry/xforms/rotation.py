@@ -14,6 +14,7 @@ from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import scale_vector
+from compas.geometry.basic import multiply_matrices
 
 from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import euler_angles_from_matrix
@@ -25,6 +26,7 @@ from compas.geometry.transformations import matrix_from_quaternion
 from compas.geometry.transformations import quaternion_from_matrix
 from compas.geometry.transformations import basis_vectors_from_matrix
 from compas.geometry.transformations import matrix_from_frame
+from compas.geometry.transformations import inverse
 
 from compas.geometry.xforms import Transformation
 
@@ -101,6 +103,31 @@ class Rotation(Transformation):
         R.matrix = matrix_from_frame(frame)
         R.matrix[0][3], R.matrix[1][3], R.matrix[2][3] = [0., 0., 0.]
         return R
+    
+    @classmethod
+    def from_frame_to_frame(cls, frame_from, frame_to):
+        """Computes a change of basis transformation between two frames.
+
+        This transformation maps geometry from one Cartesian coordinate system
+        defined by "frame_from" to the other Cartesian coordinate system
+        defined by "frame_to".
+
+        Args:
+            frame_from (:class:`Frame`): a frame defining the original
+                Cartesian coordinate system
+            frame_to (:class:`Frame`): a frame defining the targeted
+                Cartesian coordinate system
+
+        Example:
+            >>> from compas.geometry import Frame
+            >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
+            >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            >>> T = Rotation.from_frame_to_frame(f1, f2)
+        """
+        T1 = cls.from_frame(frame_from)
+        T2 = cls.from_frame(frame_to)
+
+        return cls(multiply_matrices(T2.matrix, inverse(T1.matrix)))
 
     @classmethod
     def from_quaternion(cls, quaternion):
