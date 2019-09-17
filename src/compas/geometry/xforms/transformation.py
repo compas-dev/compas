@@ -185,10 +185,10 @@ class Transformation(object):
             >>> f1 == f2
             True
         """
-        T1 = matrix_from_frame(frame_from)
-        T2 = matrix_from_frame(frame_to)
+        T1 = cls.from_frame(frame_from)
+        T2 = cls.from_frame(frame_to)
 
-        return cls(multiply_matrices(T2, inverse(T1)))
+        return cls(multiply_matrices(T2.matrix, inverse(T1.matrix)))
 
     def inverse(self):
         """Returns the inverse transformation.
