@@ -13,12 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
 
 ### Changed
+
 - Fixed unsorted mesh vertex coordinates `xyz` in `compas_viewers.viewer.MeshView`
 - Changed stderr parameter from STDOUT to PIPE in `compas.rpc.Proxy` for Rhino Mac 6.0.
 - Fixed import of `delaunay_from_points` in `Mesh.from_points`.
 - More control over drawing of text labels in Rhino.
 - Extension of `face_vertex_descendant` and `face_vertex_ancestor` in `Mesh`.
 - Changed the name and meaning of the parameter `oriented` in the function `Mesh.edges_on_boundary`.
+- Add `axis` and `origin` defaults to `compas.robots.Joint`
 
 ### Removed
 
