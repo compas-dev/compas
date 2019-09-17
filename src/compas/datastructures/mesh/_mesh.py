@@ -10,6 +10,7 @@ from copy import deepcopy
 from ast import literal_eval
 
 from math import pi
+from collections import OrderedDict
 
 from compas.utilities import average
 
@@ -2929,7 +2930,7 @@ class Mesh(FromToPickle,
             The faces on the boundary.
 
         """
-        faces = {}
+        faces = OrderedDict()
         for key, nbrs in iter(self.halfedge.items()):
             for nbr, fkey in iter(nbrs.items()):
                 if fkey is None:
