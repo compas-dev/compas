@@ -189,8 +189,8 @@ class Joint(object):
         self.type = Joint.SUPPORTED_TYPES.index(type)
         self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
         self.child = child if isinstance(child, ChildLink) else ChildLink(child)
-        self.origin = origin
-        self.axis = axis
+        self.origin = origin or Origin.from_euler_angles([0., 0., 0.])
+        self.axis = axis or Axis()
         self.calibration = calibration
         self.dynamics = dynamics
         self.limit = limit
@@ -239,6 +239,9 @@ class Joint(object):
         Args:
             position (float): the angle in radians
         """
+        if not self.limit:
+            raise ValueError('Revolute joints are required to define a limit')
+
         position = max(min(position, self.limit.upper), self.limit.lower)
         return self.calculate_continous_transformation(position)
 
@@ -262,6 +265,9 @@ class Joint(object):
         Args:
             position (float): the movement in meters.
         """
+        if not self.limit:
+            raise ValueError('Prismatic joints are required to define a limit')
+
         position = max(min(position, self.limit.upper), self.limit.lower)
         return Translation(self.axis.vector * position)
 
