@@ -157,12 +157,33 @@ def local_axes(a, b, c):
 # this should be defined somewhere else
 # and should have a python equivalent
 # there is an implementation available in frame
-def local_coords_numpy(o, uvw, xyz):
+def local_coords_numpy(origin, uvw, xyz):
+    """Convert global coordinates to local coordinates.
+
+    Parameters
+    ----------
+    origin : array-like
+        The global (XYZ) coordinates of the origin of the local coordinate system.
+    uvw : array-like
+        The global coordinate difference vectors of the axes of the local coordinate system.
+    xyz : array-like
+        The global coordinates of the points to convert.
+
+    Returns
+    -------
+    array
+        The coordinates of the given points in the local coordinate system.
+
+    Notes
+    -----
+    ``origin`` and ``uvw`` together form the frame of local coordinates.
+
+    """
     from numpy import asarray
     from scipy.linalg import solve
 
     uvw = asarray(uvw).T
-    xyz = asarray(xyz).T - asarray(o).reshape((-1, 1))
+    xyz = asarray(xyz).T - asarray(origin).reshape((-1, 1))
     rst = solve(uvw, xyz)
     return rst.T
 
@@ -170,12 +191,33 @@ def local_coords_numpy(o, uvw, xyz):
 # this should be defined somewhere else
 # and should have a python equivalent
 # there is an implementation available in frame
-def global_coords_numpy(o, uvw, rst):
+def global_coords_numpy(origin, uvw, rst):
+    """Convert local coordinates to global (world) coordinates.
+
+    Parameters
+    ----------
+    origin : array-like
+        The origin of the local coordinate system.
+    uvw : array-like
+        The coordinate axes of the local coordinate system.
+    rst : array-like
+        The coordinates of the points wrt the local coordinate system.
+
+    Returns
+    -------
+    array
+        The world coordinates of the given points.
+
+    Notes
+    -----
+    ``origin`` and ``uvw`` together form the frame of local coordinates.
+
+    """
     from numpy import asarray
 
     uvw = asarray(uvw).T
     rst = asarray(rst).T
-    xyz = uvw.dot(rst) + asarray(o).reshape((-1, 1))
+    xyz = uvw.dot(rst) + asarray(origin).reshape((-1, 1))
     return xyz.T
 
 
