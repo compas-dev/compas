@@ -291,6 +291,38 @@ if __name__ == "__main__":
     from compas.geometry import Translation
     from compas.geometry import Rotation
     from compas.geometry import Scale
+    from compas.geometry import Frame
+
+    # F1 = Frame([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+    # F2 = Frame([0.0, 0.0, 0.0], [1.0, -1.0, 0.0], [1.0, 1.0, 0.0])
+
+    # F3 = Frame([1.0, 1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+    # F4 = Frame([1.0, 1.0, 0.0], [1.0, -1.0, 0.0], [1.0, 1.0, 0.0])
+
+    # T1 = Transformation.from_frame(F1)
+    # T2 = Transformation.from_frame(F2)
+    # T3 = Transformation.from_frame(F3)
+    # T4 = Transformation.from_frame(F4)
+
+    # R1 = Rotation.from_frame(F1)
+    # R2 = Rotation.from_frame(F2)
+    # R3 = Rotation.from_frame(F3)
+    # R4 = Rotation.from_frame(F4)
+
+    # print(R1)
+    # print(R2)
+    # print(R3)
+    # print(R4)
+
+    # # print(T1)
+    # print(T2)
+    # # print(T3)
+    # print(T4)
+
+    # # print(T1.inverse())
+    # print(T2.inverse())
+    # # print(T3.inverse())
+    # print(T4.inverse())
 
     import doctest
     doctest.testmod(globs=globals())
