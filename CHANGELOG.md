@@ -9,11 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `tol` parameter to `queries.is_colinear`
 - Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
 - Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
 
 ### Changed
 
+- Extended `offset_polygon` and `offset_polyline` to handle colinear segments
 - Fixed unsorted mesh vertex coordinates `xyz` in `compas_viewers.viewer.MeshView`
 - Changed stderr parameter from STDOUT to PIPE in `compas.rpc.Proxy` for Rhino Mac 6.0.
 - Fixed import of `delaunay_from_points` in `Mesh.from_points`.
