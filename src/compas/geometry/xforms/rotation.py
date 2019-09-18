@@ -14,6 +14,7 @@ from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import scale_vector
+from compas.geometry.basic import multiply_matrices
 
 from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import euler_angles_from_matrix
