@@ -1340,7 +1340,7 @@ class Mesh(FromToPickle,
                 if self.halfedge[u][v] is None and self.halfedge[v][u] is None:
                     return False
                 fkey = self.halfedge[u][v]
-                if fkey or fkey == 0:
+                if fkey is not None:
                     if fkey not in self.face:
                         return False
 
