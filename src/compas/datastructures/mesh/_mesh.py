@@ -2618,7 +2618,11 @@ class Mesh(FromToPickle,
 
         """
 
-        return 2 * pi - sum([angle_points(self.vertex_coordinates(vkey), self.vertex_coordinates(u), self.vertex_coordinates(v)) for u, v in pairwise(self.vertex_neighbors(vkey, ordered = True) + self.vertex_neighbors(vkey, ordered = True)[:1])])
+        Sum = 0
+        for u, v in pairwise(self.vertex_neighbors(vkey, ordered=True) + self.vertex_neighbors(vkey, ordered=True)[:1]):
+            Sum += angle_points(self.vertex_coordinates(vkey), self.vertex_coordinates(u), self.vertex_coordinates(v))
+
+        return 2 * pi - Sum
 
     # --------------------------------------------------------------------------
     # edge geometry
