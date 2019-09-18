@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
 - Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
+- Added full testing functions for `compas.datastructures.mesh`
 
 ### Changed
 
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension of `face_vertex_descendant` and `face_vertex_ancestor` in `Mesh`.
 - Changed the name and meaning of the parameter `oriented` in the function `Mesh.edges_on_boundary`.
 - Add `axis` and `origin` defaults to `compas.robots.Joint`
+- Unified vertices and face import order for .obj files with python2 and 3
 
 ### Removed
 

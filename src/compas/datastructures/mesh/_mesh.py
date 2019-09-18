@@ -10,6 +10,7 @@ from copy import deepcopy
 from ast import literal_eval
 
 from math import pi
+from collections import OrderedDict
 
 from compas.utilities import average
 
@@ -1339,7 +1340,7 @@ class Mesh(FromToPickle,
                 if self.halfedge[u][v] is None and self.halfedge[v][u] is None:
                     return False
                 fkey = self.halfedge[u][v]
-                if fkey:
+                if fkey is not None:
                     if fkey not in self.face:
                         return False
 
@@ -2617,7 +2618,11 @@ class Mesh(FromToPickle,
 
         """
 
-        return 2 * pi - sum([angle_points(mesh.vertex_coordinates(vkey), mesh.vertex_coordinates(u), mesh.vertex_coordinates(v)) for u, v in pairwise(self.vertex_neighbors(vkey, ordered = True) + self.vertex_neighbors(vkey, ordered = True)[:1])])
+        Sum = 0
+        for u, v in pairwise(self.vertex_neighbors(vkey, ordered=True) + self.vertex_neighbors(vkey, ordered=True)[:1]):
+            Sum += angle_points(self.vertex_coordinates(vkey), self.vertex_coordinates(u), self.vertex_coordinates(v))
+
+        return 2 * pi - Sum
 
     # --------------------------------------------------------------------------
     # edge geometry
@@ -2929,7 +2934,7 @@ class Mesh(FromToPickle,
             The faces on the boundary.
 
         """
-        faces = {}
+        faces = OrderedDict()
         for key, nbrs in iter(self.halfedge.items()):
             for nbr, fkey in iter(nbrs.items()):
                 if fkey is None:
