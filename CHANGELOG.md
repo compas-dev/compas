@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `tol` parameter to `queries.is_colinear`
 - Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
 - Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
 - Added full testing functions for `compas.datastructures.mesh`
@@ -16,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Extended `offset_polygon` and `offset_polyline` to handle colinear segments
 - Fixed unsorted mesh vertex coordinates `xyz` in `compas_viewers.viewer.MeshView`
 - Changed stderr parameter from STDOUT to PIPE in `compas.rpc.Proxy` for Rhino Mac 6.0.
 - Fixed import of `delaunay_from_points` in `Mesh.from_points`.
@@ -24,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the name and meaning of the parameter `oriented` in the function `Mesh.edges_on_boundary`.
 - Add `axis` and `origin` defaults to `compas.robots.Joint`
 - Unified vertices and face import order for .obj files with python2 and 3
+- Changed python interpreter selection (e.g. RPC calls) to fallback to `python` if `pythonw` is not present on the system
 - Fixed `compas_ghpython.artists.MeshArtist` to support ngons.
 - Deprecate the method `draw` of `compas_ghpython.artists.MeshArtist` in favor of `draw_mesh`.
 - Fix icosahedron generation
