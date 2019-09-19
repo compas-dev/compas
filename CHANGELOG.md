@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
 - Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
 - Added full testing functions for `compas.datastructures.mesh`
+- Added `draw_mesh` to `compas_ghpython.artists.MeshArtist`
 
 ### Changed
 
@@ -26,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `axis` and `origin` defaults to `compas.robots.Joint`
 - Unified vertices and face import order for .obj files with python2 and 3
 - Changed python interpreter selection (e.g. RPC calls) to fallback to `python` if `pythonw` is not present on the system
+- Fixed `compas_ghpython.artists.MeshArtist` to support ngons.
+- Deprecate the method `draw` of `compas_ghpython.artists.MeshArtist` in favor of `draw_mesh`.
+- Fix icosahedron generation
 
 ### Removed
 
