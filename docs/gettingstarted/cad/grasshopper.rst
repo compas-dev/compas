@@ -26,7 +26,7 @@ component on your Grasshopper canvas, paste the following script and hit `OK`.
 
     artist = MeshArtist(mesh)
 
-    a = artist.draw()
+    a = artist.draw_mesh()
 
 
 .. figure:: /_images/gh_verify.jpg

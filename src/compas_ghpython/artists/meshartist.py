@@ -61,6 +61,12 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         self.datastructure = mesh
 
     def draw(self, color=None):
+        """Deprecated. Use ``draw_mesh()``"""
+        # NOTE: This warning should be triggered with warnings.warn(), not be a print statement, but GH completely ignores that
+        print('MeshArtist.draw() is deprecated: please use draw_mesh() instead')
+        return self.draw_mesh(color)
+
+    def draw_mesh(self, color=None):
         key_index = self.mesh.key_index()
         vertices = self.mesh.get_vertices_attributes('xyz')
         faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
