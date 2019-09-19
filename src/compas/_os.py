@@ -76,30 +76,28 @@ def select_python(python_executable):
         Select which python executable you want to use,
         either `python` or `pythonw`.
     """
-    python_executable = python_executable or 'pythonw'
-
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
-        python = os.path.join(PYTHON_DIRECTORY, python_executable)
-        if os.path.exists(python):
-            return python
+        python_executables = [python_executable] if python_executable else ['pythonw', 'python']
 
-        python = os.path.join(PYTHON_DIRECTORY, '{0}.exe'.format(python_executable))
-        if os.path.exists(python):
-            return python
+        for python_exe in python_executables:
+            python = os.path.join(PYTHON_DIRECTORY, python_exe)
+            if os.path.exists(python):
+                return python
 
-        python = os.path.join(PYTHON_DIRECTORY, 'bin', python_executable)
-        if os.path.exists(python):
-            return python
+            python = os.path.join(PYTHON_DIRECTORY, '{0}.exe'.format(python_exe))
+            if os.path.exists(python):
+                return python
 
-        python = os.path.join(PYTHON_DIRECTORY, 'bin', '{0}.exe'.format(python_executable))
-        if os.path.exists(python):
-            return python
+            python = os.path.join(PYTHON_DIRECTORY, 'bin', python_exe)
+            if os.path.exists(python):
+                return python
 
-        if python:
-            return python
+            python = os.path.join(PYTHON_DIRECTORY, 'bin', '{0}.exe'.format(python_exe))
+            if os.path.exists(python):
+                return python
 
     # Assume a system-wide install exists
-    return python_executable
+    return python_executable or 'pythonw'
 
 
 def prepare_environment():

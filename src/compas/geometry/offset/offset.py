@@ -10,6 +10,7 @@ from compas.geometry import cross_vectors
 from compas.geometry import centroid_points
 from compas.geometry import intersection_line_line
 from compas.geometry import normal_polygon
+from compas.geometry import is_colinear
 
 from compas.utilities import pairwise
 
@@ -62,14 +63,11 @@ def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
         print(line_offset)
 
     """
+
     a, b = line
     ab = subtract_vectors(b, a)
     direction = normalize_vector(cross_vectors(normal, ab))
-
-    if isinstance(distance, (list, tuple)):
-        distances = distance
-    else:
-        distances = [distance, distance]
+    distances = match_value_sequence(distance, line)
 
     u = scale_vector(direction, distances[0])
     v = scale_vector(direction, distances[1])
@@ -78,7 +76,7 @@ def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
     return c, d
 
 
-def offset_polygon(polygon, distance):
+def offset_polygon(polygon, distance, tol=1e-6):
     """Offset a polygon (closed) by a distance.
 
     Parameters
@@ -135,35 +133,20 @@ def offset_polygon(polygon, distance):
         print(polygon_offset)
 
     """
-    p = len(polygon)
-
-    if isinstance(distance, (list, tuple)):
-        distances = distance
-    else:
-        distances = [distance] * p
-
-    d = len(distances)
-    if d < p:
-        distances.extend(distances[-1:] * (p - d))
-
     normal = normal_polygon(polygon)
+    distances = match_value_sequence(distance, polygon)
+    polygon = polygon + polygon[:1]
+    segments = offset_segments(polygon, distances, normal)
 
     offset = []
-    for line, distance in zip(pairwise(polygon + polygon[:1]), distances):
-        offset.append(offset_line(line, distance, normal))
+    for s1, s2 in pairwise(segments[-1:] + segments):
+        point = intersect(s1, s2, tol)
+        offset.append(point)
 
-    points = []
-    for l1, l2 in pairwise(offset[-1:] + offset):
-        x1, x2 = intersection_line_line(l1, l2)
-        if x1 and x2:
-            points.append(centroid_points([x1, x2]))
-        else:
-            points.append(x1)
-
-    return points
+    return offset
 
 
-def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0]):
+def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
     """Offset a polyline by a distance.
 
     Parameters
@@ -185,32 +168,75 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0]):
 
     """
 
-    p = len(polyline)
+    distances = match_value_sequence(distance, polyline)
+    segments = offset_segments(polyline, distances, normal)
 
-    if isinstance(distance, (list, tuple)):
-        distances = distance
+    offset = [segments[0][0]]
+    for s1, s2 in pairwise(segments):
+        point = intersect(s1, s2, tol)
+        offset.append(point)
+    offset.append(segments[-1][1])
+
+    return offset
+
+
+def match_value_sequence(value, sequence):
+    """
+    """
+    p = len(sequence)
+    if isinstance(value, (list, tuple)):
+        values = value
     else:
-        distances = [distance] * p
+        values = [value] * p
 
-    d = len(distances)
+    d = len(values)
     if d < p:
-        distances.extend(distances[-1:] * (p - d))
+        values.extend(values[-1:] * (p - d))
 
-    offset = []
-    for line, distance in zip(pairwise(polyline), distances):
-        offset.append(offset_line(line, distance, normal))
+    return values
 
-    points = [offset[0][0]]
-    for l1, l2 in pairwise(offset):
-        x1, x2 = intersection_line_line(l1, l2)
-        if x1 and x2:
-            points.append(centroid_points([x1, x2]))
-        else:
-            points.append(x1)
-    points.append(offset[-1][1])
 
-    return points
+def intersect_lines(l1, l2, tol):
+    """
+    """
+    x1, x2 = intersection_line_line(l1, l2, tol)
+    if x1 and x2:
+        return centroid_points([x1, x2])
 
+
+def intersect_lines_colinear(l1, l2, tol):
+    """
+    """
+    def are_segments_colinear(l1, l2, tol):
+        a, b = l1
+        d, c = l2
+        return is_colinear(a, b, c, tol)
+
+    if are_segments_colinear(l1, l2, tol):
+        return centroid_points([l1[1], l2[0]])
+
+
+def intersect(l1, l2, tol):
+    """
+    """
+    supported_funcs = [intersect_lines, intersect_lines_colinear]
+
+    for func in supported_funcs:
+        point = func(l1, l2, tol)
+        if point:
+            return point
+
+    msg = "Intersection not found for line: {}, and line: {}".format(l1, l2)
+    raise ValueError(msg)
+
+
+def offset_segments(point_list, distances, normal):
+    """
+    """
+    segments = []
+    for line, distance in zip(pairwise(point_list), distances):
+        segments.append(offset_line(line, distance, normal))
+    return segments
 
 # ==============================================================================
 # Main
@@ -241,7 +267,7 @@ if __name__ == "__main__":
                 'color': '#00ff00'
             })
 
-    plotter = MeshPlotter(mesh)
+    plotter = MeshPlotter(mesh, figsize=(12, 9))
     plotter.draw_faces()
     plotter.draw_polylines(polygons)
     plotter.draw_lines(lines)

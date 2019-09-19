@@ -1,13 +1,14 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import compas_ghpython
-
-from compas_ghpython.artists.mixins import VertexArtist
 from compas_ghpython.artists.mixins import EdgeArtist
 from compas_ghpython.artists.mixins import FaceArtist
+from compas_ghpython.artists.mixins import VertexArtist
 
+from compas.geometry import centroid_polygon
+from compas.utilities import pairwise
 
 __all__ = ['MeshArtist']
 
@@ -60,6 +61,12 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         self.datastructure = mesh
 
     def draw(self, color=None):
+        """Deprecated. Use ``draw_mesh()``"""
+        # NOTE: This warning should be triggered with warnings.warn(), not be a print statement, but GH completely ignores that
+        print('MeshArtist.draw() is deprecated: please use draw_mesh() instead')
+        return self.draw_mesh(color)
+
+    def draw_mesh(self, color=None):
         key_index = self.mesh.key_index()
         vertices = self.mesh.get_vertices_attributes('xyz')
         faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
@@ -70,6 +77,14 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
                 new_faces.append(face + [face[-1]])
             elif l == 4:
                 new_faces.append(face)
+            elif l > 4:
+                centroid = len(vertices)
+                vertices.append(centroid_polygon(
+                    [vertices[index] for index in face]))
+                for a, b in pairwise(face + face[0:1]):
+                    new_faces.append([centroid, a, b, b])
+            else:
+                continue
         return compas_ghpython.draw_mesh(vertices, new_faces, color)
 
 
