@@ -276,24 +276,36 @@ class Icosahedron(Polyhedron):
         super(Icosahedron, self).__init__()
         self.compute()
 
-    # (    0,   +-1, +-phi)
-    # (  +-1, +-phi,     0)
-    # (+-phi,     0,   +-1)
     def compute(self):
         """"""
         phi = (1 + sqrt(5)) / 2.
-        vertices = []
-        faces = []
-        l = 2.
-        r = l * sqrt(phi * sqrt(5)) / 2.
-        c = 1. / r
-        for i in -1., +1.:
-            i *= c
-            for j in -1., +1.:
-                j *= c
-                vertices.append([     0.,       i, j * phi])
-                vertices.append([      i, j * phi,      0.])
-                vertices.append([j * phi,      0.,       i])
+        vertices = [
+            (-1, phi, 0),
+            (1, phi, 0),
+            (-1, -phi, 0),
+            (1, -phi, 0),
+
+            (0, -1, phi),
+            (0, 1, phi),
+            (0, -1, -phi),
+            (0, 1, -phi),
+
+            (phi, 0, -1),
+            (phi, 0, 1),
+            (-phi, 0, -1),
+            (-phi, 0, 1),
+        ]
+        faces = [
+            # 5 faces around point 0
+            [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11],
+            # Adjacent faces
+            [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8],
+            # 5 faces around 3
+            [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9],
+            # Adjacent faces
+            [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1],
+        ]
+
         self.vertices = vertices
         self.faces = faces
 
