@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the name and meaning of the parameter `oriented` in the function `Mesh.edges_on_boundary`.
 - Add `axis` and `origin` defaults to `compas.robots.Joint`
 - Unified vertices and face import order for .obj files with python2 and 3
+- Fixed `compas_ghpython.artists.MeshArtist` to support ngons.
 
 ### Removed
 

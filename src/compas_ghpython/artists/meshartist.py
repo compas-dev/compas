@@ -1,13 +1,14 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import compas_ghpython
-
-from compas_ghpython.artists.mixins import VertexArtist
 from compas_ghpython.artists.mixins import EdgeArtist
 from compas_ghpython.artists.mixins import FaceArtist
+from compas_ghpython.artists.mixins import VertexArtist
 
+from compas.geometry import centroid_polygon
+from compas.utilities import pairwise
 
 __all__ = ['MeshArtist']
 
@@ -70,6 +71,14 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
                 new_faces.append(face + [face[-1]])
             elif l == 4:
                 new_faces.append(face)
+            elif l > 4:
+                centroid = len(vertices)
+                vertices.append(centroid_polygon(
+                    [vertices[index] for index in face]))
+                for a, b in pairwise(face + face[0:1]):
+                    new_faces.append([centroid, a, b, b])
+            else:
+                continue
         return compas_ghpython.draw_mesh(vertices, new_faces, color)
 
 
