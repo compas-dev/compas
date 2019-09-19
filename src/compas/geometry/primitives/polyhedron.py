@@ -40,7 +40,7 @@ class Polyhedron(object):
             return Dodecahedron()
         if fcount == 20:
             return Icosahedron()
-        raise Exception
+        raise ValueError('Unsupported solid type. Supported face count values: 4, 6, 8, 12, 20')
 
     @classmethod
     def from_platonicsolid(cls, fcount):
