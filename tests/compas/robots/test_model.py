@@ -172,6 +172,16 @@ def test_get_joint_by_name(urdf_file):
     assert invalid_joint_name is None
 
 
+def test_get_end_effector_link(ur5_file):
+    r = RobotModel.from_urdf_file(ur5_file)
+    assert r.get_end_effector_link().name == 'ee_link'
+
+
+def test_get_end_effector_link_name(ur5_file):
+    r = RobotModel.from_urdf_file(ur5_file)
+    assert r.get_end_effector_link_name() == 'ee_link'
+
+
 def test_find_children_joints(urdf_file):
     r = RobotModel.from_urdf_file(urdf_file)
     link1 = r.get_link_by_name('panda_link1')

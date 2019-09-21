@@ -275,12 +275,8 @@ class RobotModel(object):
         return clink
 
     def get_end_effector_link_name(self):
-        joints = self.get_configurable_joints()
-        clink = joints[-1].child_link
-        for j in clink.joints:
-            if j.type == Joint.FIXED:
-                return j.child.link
-        return clink.name
+        link = self.get_end_effector_link()
+        return link.name
 
     def get_base_link_name(self):
         joints = self.get_configurable_joints()
@@ -358,10 +354,6 @@ class RobotModel(object):
             Link instance to create.
         parent_transformation : :class:`Transformation`
             Parent transformation to apply to the link when creating the structure.
-
-        Returns
-        -------
-        None
         """
         if link is None:  # some urdfs would fail here otherwise
             return

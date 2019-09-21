@@ -40,7 +40,7 @@ def mesh_draw(mesh, color=None):
     """
 
     artist = MeshArtist(mesh)
-    return artist.draw(color)
+    return artist.draw_mesh(color)
 
 
 def mesh_draw_vertices(mesh,

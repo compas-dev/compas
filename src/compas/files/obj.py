@@ -1,7 +1,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
+from collections import OrderedDict
 try:
     from urllib.request import urlopen
 except ImportError:
@@ -313,8 +313,8 @@ class OBJParser(object):
         self.parse()
 
     def parse(self):
-        index_key = {}
-        vertex = {}
+        index_key = OrderedDict()
+        vertex = OrderedDict()
 
         for i, xyz in enumerate(iter(self.reader.vertices)):
             key = geometric_key(xyz, self.precision)

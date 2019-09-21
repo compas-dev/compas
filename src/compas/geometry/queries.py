@@ -114,7 +114,7 @@ def is_ccw_xy(a, b, c, colinear=False):
     return ab_x * ac_y - ab_y  * ac_x > 0
 
 
-def is_colinear(a, b, c):
+def is_colinear(a, b, c, tol=1e-9):
     """Determine if three points are colinear.
 
     Parameters
@@ -125,15 +125,18 @@ def is_colinear(a, b, c):
         Point 2.
     c : tuple, list, Point
         Point 3.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-9``.
 
     Returns
     -------
     bool
-        ``True`` if the points are collinear
+        ``True`` if the points are colinear
         ``False`` otherwise.
 
     """
-    return area_triangle([a, b, c]) < 1e-9
+    return area_triangle([a, b, c]) < tol
 
 
 def is_colinear_xy(a, b, c):
@@ -151,7 +154,7 @@ def is_colinear_xy(a, b, c):
     Returns
     -------
     bool
-        ``True`` if the points are collinear
+        ``True`` if the points are colinear
         ``False`` otherwise.
 
     """
