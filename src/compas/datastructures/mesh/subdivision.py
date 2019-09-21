@@ -7,6 +7,9 @@ from math import pi
 from copy import deepcopy
 
 from compas.geometry import centroid_points
+from compas.geometry import offset_polygon
+
+from compas.utilities import pairwise
 
 from compas.datastructures.mesh._mesh import Mesh
 from compas.datastructures.mesh.operations import mesh_split_edge
@@ -19,6 +22,7 @@ __all__ = [
     'mesh_subdivide_quad',
     'mesh_subdivide_catmullclark',
     'mesh_subdivide_doosabin',
+    'mesh_subdivide_window',
     'trimesh_subdivide_loop',
 ]
 
@@ -465,6 +469,42 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
         mesh = subd
 
     return mesh
+
+
+def mesh_subdivide_window(mesh, distance, close=False):
+    """
+    """
+    subd = Mesh()
+
+    # add vertices
+    for vkey, attr in mesh.vertices(True):
+        xyz = mesh.vertex_coordinates(vkey)
+        attrs = {i: j for i, j in zip(['x', 'y', 'z'], xyz)}
+        subd.add_vertex(key=vkey, attr_dict=attrs)
+
+    # add faces
+    for fkey in mesh.faces():
+        face = mesh.face_vertices(fkey)
+        polygon = offset_polygon(mesh.face_coordinates(fkey), distance)
+
+        # add offset vertices
+        window = []
+        for xyz in polygon:
+            attrs = {i: j for i, j in zip(['x', 'y', 'z'], xyz)}
+            new_vkey = subd.add_vertex(attr_dict=attrs)
+            window.append(new_vkey)
+
+        # frame faces
+        face = face + face[:1]
+        window = window + window[:1]
+        for sa, sb in zip(pairwise(face), pairwise(window)):
+            subd.add_face([sa[0], sa[1], sb[1], sb[0]])
+
+        # window face
+        if close:
+            subd.add_face(window)
+
+    return subd
 
 
 def trimesh_subdivide_loop(mesh, k=1, fixed=None):
