@@ -13,7 +13,6 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    Plotter
     NetworkPlotter
     MeshPlotter
 

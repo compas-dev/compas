@@ -2093,7 +2093,7 @@ class Mesh(FromToPickle,
         boundaries = []
 
         # get all boundary edges pointing outwards
-        boundary_edges = {u: v for u, v in self.edges_on_boundary()}
+        boundary_edges = {u: v for u, v in self.edges_on_boundary(True)}
 
         # start new boundary
         while len(boundary_edges) > 0:
