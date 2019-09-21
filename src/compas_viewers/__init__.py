@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-Viewers
+compas_viewers
 ********************************************************************************
 
 .. currentmodule:: compas_viewers
@@ -12,6 +12,8 @@ Classes
 .. autosummary::
     :toctree: generated/
     :nosignatures:
+
+    MeshViewer
 
 """
 from __future__ import absolute_import
