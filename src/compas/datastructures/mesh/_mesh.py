@@ -2094,7 +2094,7 @@ class Mesh(FromToPickle,
         boundaries = []
 
         # get all boundary edges pointing outwards
-        boundary_edges = {u: v for u, v in self.edges_on_boundary()}
+        boundary_edges = OrderedDict([(u, v) for u, v in self.edges_on_boundary(True)])
 
         # start new boundary
         while len(boundary_edges) > 0:
@@ -2577,7 +2577,7 @@ class Mesh(FromToPickle,
             The coordinates of the centroid.
 
         """
-        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.neighbors(key)])
+        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)])
 
     def vertex_normal(self, key):
         """Return the normal vector at the vertex as the weighted average of the
@@ -2957,6 +2957,8 @@ class Mesh(FromToPickle,
             The boundary edges.
 
         """
+
+        # TODO: perhaps split into two functions
         boundary_edges =  [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
         if not chained:

@@ -378,10 +378,8 @@ def test_is_edge_on_boundary():
 # --------------------------------------------------------------------------
 
 def test_boundaries():
-    pass
-    # TODO: this function needs to be fixed
-    # mesh = Mesh.from_obj(compas.get('faces.obj'))
-    # mesh.boundaries()
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    assert mesh.boundaries() == [[34, 35, 29, 23, 17, 11, 5, 4, 3, 2, 1, 0, 6, 12, 18, 24, 30, 31, 32, 33]]
 
 
 # --------------------------------------------------------------------------
@@ -492,17 +490,16 @@ def test_vertex_area():
 
 
 def test_vertex_laplacian():
-    pass
-    # TODO: fix vertex_neighborhood_centroid first
-    # mesh = Mesh.from_obj(compas.get('faces.obj'))
-    # mesh.vertex_laplacian(0)
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    assert mesh.vertex_laplacian(0) == [1.0, 1.0, 0.0]
+    assert mesh.vertex_laplacian(1) == [0.0, 0.6666666666666666, 0.0]
 
 
 def test_vertex_neighborhood_centroid():
-    pass
-    # TODO: fix attribute error
-    # mesh = Mesh.from_obj(compas.get('faces.obj'))
-    # mesh.vertex_neighborhood_centroid(0)
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    assert mesh.vertex_neighborhood_centroid(0) == [1.0, 1.0, 0.0]
+    assert mesh.vertex_neighborhood_centroid(1) == [2.0, 0.6666666666666666, 0.0]
 
 
 def test_vertex_normal():

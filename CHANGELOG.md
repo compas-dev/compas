@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fixed `AttributeError: 'Mesh' object has no attribute 'neighbors'`
+- Fixed Key error with `Mesh.boundary()`
 - Extended `offset_polygon` and `offset_polyline` to handle colinear segments
 - Fixed unsorted mesh vertex coordinates `xyz` in `compas_viewers.viewer.MeshView`
 - Changed stderr parameter from STDOUT to PIPE in `compas.rpc.Proxy` for Rhino Mac 6.0.
