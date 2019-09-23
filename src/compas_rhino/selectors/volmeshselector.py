@@ -10,6 +10,7 @@ from compas_rhino.selectors import FaceSelector
 
 __all__ = [
     'volmesh_select_vertex',
+    'volmesh_select_vertices',
     'volmesh_select_edge',
     'volmesh_select_edges',
     'volmesh_select_face',
