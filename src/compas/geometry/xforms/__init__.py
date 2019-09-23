@@ -11,3 +11,4 @@ from .shear import Shear
 from .translation import Translation
 
 __all__ = [name for name in dir() if not name.startswith('_')]
+# TODO: add deprecation warning, any standard yet?

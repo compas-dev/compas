@@ -14,7 +14,7 @@ Ippoliti for providing code and documentation.
 from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import normalize_vector
 
-from compas.geometry.xforms import Transformation
+from compas.geometry.transformations import Transformation
 
 
 __all__ = ['Reflection']

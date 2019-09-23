@@ -224,11 +224,11 @@ class Transformation(object):
             >>> T1 == T
             True
         """
-        from compas.geometry.xforms import Scale
-        from compas.geometry.xforms import Shear
-        from compas.geometry.xforms import Rotation
-        from compas.geometry.xforms import Translation
-        from compas.geometry.xforms import Projection
+        from compas.geometry.transformations import Scale
+        from compas.geometry.transformations import Shear
+        from compas.geometry.transformations import Rotation
+        from compas.geometry.transformations import Translation
+        from compas.geometry.transformations import Projection
 
         sc, sh, a, t, p = decompose_matrix(self.matrix)
 
