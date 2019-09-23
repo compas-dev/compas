@@ -9,6 +9,7 @@ from compas_rhino.modifiers import FaceModifier
 
 
 __all__ = [
+    'mesh_update_attributes',
     'mesh_update_vertex_attributes',
     'mesh_update_edge_attributes',
     'mesh_update_face_attributes',
