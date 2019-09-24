@@ -501,6 +501,5 @@ from .spatial import *
 from .triangulation import *
 
 from .primitives import *
-from .xforms import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

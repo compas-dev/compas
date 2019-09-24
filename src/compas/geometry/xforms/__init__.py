@@ -11,4 +11,7 @@ from compas.geometry.transformations import Shear
 from compas.geometry.transformations import Translation
 
 __all__ = [name for name in dir() if not name.startswith('_')]
-# TODO: add deprecation warning, any standard yet?
+
+import warnings
+warnings.simplefilter('always', DeprecationWarning)
+warnings.warn('xforms has been merged into transorformations, use `from compas.geometry.transformations import *` instead', DeprecationWarning)
