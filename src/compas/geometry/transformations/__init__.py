@@ -25,4 +25,13 @@ from .helpers import *
 from .matrices import *
 from .transformations import *
 
+# migrated from xforms
+from .transformation import Transformation
+from .projection import Projection
+from .reflection import Reflection
+from .rotation import Rotation
+from .scale import Scale
+from .shear import Shear
+from .translation import Translation
+
 __all__ = [name for name in dir() if not name.startswith('_')]

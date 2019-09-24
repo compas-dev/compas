@@ -14,8 +14,8 @@ import math
 
 from compas.geometry.basic import multiply_matrices
 
-from compas.geometry.primitives import Point
-from compas.geometry.primitives import Vector
+# from compas.geometry.primitives import Point
+# from compas.geometry.primitives import Vector
 
 from compas.geometry.transformations import inverse
 from compas.geometry.transformations import identity_matrix
@@ -224,11 +224,11 @@ class Transformation(object):
             >>> T1 == T
             True
         """
-        from compas.geometry.xforms import Scale
-        from compas.geometry.xforms import Shear
-        from compas.geometry.xforms import Rotation
-        from compas.geometry.xforms import Translation
-        from compas.geometry.xforms import Projection
+        from compas.geometry.transformations import Scale
+        from compas.geometry.transformations import Shear
+        from compas.geometry.transformations import Rotation
+        from compas.geometry.transformations import Translation
+        from compas.geometry.transformations import Projection
 
         sc, sh, a, t, p = decompose_matrix(self.matrix)
 
@@ -258,6 +258,9 @@ class Transformation(object):
         """Returns the basis vectors from the ``Rotation`` component of the
             ``Transformation``.
         """
+        # this has to be here to avoid circular import
+        from compas.geometry.primitives import Vector
+
         sc, sh, a, t, p = decompose_matrix(self.matrix)
         R = matrix_from_euler_angles(a, static=True, axes='xyz')
         xv, yv = basis_vectors_from_matrix(R)
