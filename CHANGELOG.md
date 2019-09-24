@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added test section for `compas.geometry.transformations`
 - Added `tol` parameter to `queries.is_colinear`
 - Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
 - Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Merged `compas.geometry.xforms` into `compas.geometry.transformations`
 - Fixed `AttributeError: 'Mesh' object has no attribute 'neighbors'`
 - Fixed Key error with `Mesh.boundary()`
 - Extended `offset_polygon` and `offset_polyline` to handle colinear segments
