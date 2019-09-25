@@ -131,4 +131,4 @@ def test_orient_points():
 
     points = orient_points([point], tarplane, refplane)
 
-    assert points[0] == [0.57735, 0.57735, 0.57735]
+    assert np.allclose(points[0], [0.57735, 0.57735, 0.57735])
