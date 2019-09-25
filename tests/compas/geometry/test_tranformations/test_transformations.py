@@ -21,6 +21,7 @@ from compas.geometry.transformations import reflect_line_triangle
 from compas.geometry.transformations import orient_points
 
 from compas.geometry import intersection_segment_segment_xy
+import numpy as np
 
 
 def test_translate_points():
@@ -40,11 +41,11 @@ def test_scale_points_xy():
 
 
 def test_rotate_points():
-    assert rotate_points([[0, 1, 2]], 1) == [[-0.8414709848078965, 0.5403023058681398, 2.0]]
+    assert np.allclose(rotate_points([[0, 1, 2]], 1), [[-0.8414709848078965, 0.5403023058681398, 2.0]])
 
 
 def test_rotate_points_xy():
-    assert rotate_points_xy([[0, 1, 2]], 1) == [[-0.8414709848078965, 0.5403023058681398, 0.0]]
+    assert np.allclose(rotate_points_xy([[0, 1, 2]], 1), [[-0.8414709848078965, 0.5403023058681398, 0.0]])
 
 
 def test_mirror_vector_vector():
@@ -61,7 +62,7 @@ def test_mirror_points_point_xy():
 
 
 def test_mirror_points_line():
-    assert mirror_points_line([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])) == [[0.281134401972873, 1.281134401972873, 1.5561035758323052]]
+    assert np.allclose(mirror_points_line([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])), [[0.281134401972873, 1.281134401972873, 1.5561035758323052]])
 
 
 def test_mirror_points_line_xy():
@@ -69,19 +70,19 @@ def test_mirror_points_line_xy():
 
 
 def test_mirror_points_plane():
-    assert mirror_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])) == [[4.055651317409505, 7.231593203644422, 7.948288598867276]]
+    assert np.allclose(mirror_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])), [[4.055651317409505, 7.231593203644422, 7.948288598867276]])
 
 
 def test_project_point_plane():
-    assert project_point_plane([0, 2.5, 2], ([3, 4, 5], [6, 7, 8.8])) == [2.0278256587047525, 4.865796601822211, 4.974144299433638]
+    assert np.allclose(project_point_plane([0, 2.5, 2], ([3, 4, 5], [6, 7, 8.8])), [2.0278256587047525, 4.865796601822211, 4.974144299433638])
 
 
 def test_project_points_plane():
-    assert project_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])) == [[2.0278256587047525, 4.865796601822211, 4.974144299433638]]
+    assert np.allclose(project_points_plane([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])), [[2.0278256587047525, 4.865796601822211, 4.974144299433638]])
 
 
 def test_project_point_line():
-    assert project_point_line([0, 1, 2], ([3, 4, 5], [6, 7, 8.8])) == [0.281134401972873, 1.281134401972873, 1.5561035758323052]
+    assert np.allclose(project_point_line([0, 1, 2], ([3, 4, 5], [6, 7, 8.8])), [0.281134401972873, 1.281134401972873, 1.5561035758323052])
 
 
 def test_project_point_line_xy():
@@ -90,7 +91,7 @@ def test_project_point_line_xy():
 
 
 def test_project_points_line():
-    assert project_points_line([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])) == [[0.281134401972873, 1.281134401972873, 1.5561035758323052]]
+    assert np.allclose(project_points_line([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])), [[0.281134401972873, 1.281134401972873, 1.5561035758323052]])
 
 
 def test_project_points_line_xy():

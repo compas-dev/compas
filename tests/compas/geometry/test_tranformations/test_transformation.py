@@ -4,6 +4,7 @@ from compas.geometry.transformations import Rotation
 from compas.geometry.transformations import Scale
 from compas.geometry.primitives import Frame
 from compas.geometry.primitives import Vector
+import numpy as np
 
 
 def test_transformation():
@@ -57,7 +58,8 @@ def test_decompose():
 def test_rotation():
     angle1 = [-2.142, 1.141, -0.142]
     R = Rotation.from_euler_angles(angle1)
-    assert R.rotation.matrix == [[0.41249169135312663, -0.8335562904208867, -0.3674704277413451, 0.0], [-0.05897071585157175, -0.4269749553355485, 0.9023385407861949, 0.0], [-0.9090506362335324, -0.35053715668381935, -0.22527903264048646, 0.0], [0.0, 0.0, 0.0, 1.0]]
+    r = [[0.41249169135312663, -0.8335562904208867, -0.3674704277413451, 0.0], [-0.05897071585157175, -0.4269749553355485, 0.9023385407861949, 0.0], [-0.9090506362335324, -0.35053715668381935, -0.22527903264048646, 0.0], [0.0, 0.0, 0.0, 1.0]]
+    assert np.allclose(R, r)
 
 
 def test_translation():
@@ -75,9 +77,8 @@ def test_basis_vectors():
     S1 = Scale(scale1)
     M = (T1 * R1) * S1
     x, y = M.basis_vectors
-
-    assert x == Vector(0.41249169135312663, -0.05897071585157175, -0.9090506362335324)
-    assert y == Vector(-0.8335562904208867, -0.4269749553355485, -0.35053715668381935)
+    assert np.allclose(x, Vector(0.41249169135312663, -0.05897071585157175, -0.9090506362335324))
+    assert np.allclose(y, Vector(-0.8335562904208867, -0.4269749553355485, -0.35053715668381935))
 
 
 def test_list():
@@ -91,4 +92,4 @@ def concatenate():
     T1 = Translation(trans1)
     R1 = Rotation.from_euler_angles(angle1)
     M1 = T1.concatenate(R1)
-    assert M1 == T1 * R1
+    assert np.allclose(M1, T1 * R1)
