@@ -15,7 +15,7 @@ from compas.geometry.transformations import matrix_from_parallel_projection
 from compas.geometry.transformations import matrix_from_perspective_projection
 from compas.geometry.transformations import matrix_from_perspective_entries
 
-from compas.geometry.xforms import Transformation
+from compas.geometry.transformations import Transformation
 
 
 __all__ = ['Projection']

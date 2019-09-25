@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from compas.files import URDF
 from compas.files import URDFParser
-from compas.geometry.xforms import Transformation
+from compas.geometry import Transformation
 
 from compas.robots.model.geometry import Box
 from compas.robots.model.geometry import Capsule

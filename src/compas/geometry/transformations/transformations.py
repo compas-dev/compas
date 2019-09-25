@@ -51,6 +51,7 @@ __all__ = [
     'rotate_points',
     'rotate_points_xy',
 
+    'mirror_vector_vector',
     'mirror_points_point',
     'mirror_points_point_xy',
     'mirror_points_line',
@@ -433,7 +434,7 @@ def mirror_points_line(points, line):
     return [closest_point_on_line(point, line) for point in points]
 
 
-def mirror_points_line_xy(point, line):
+def mirror_points_line_xy(points, line):
     """Mirror a point about a line.
 
     Parameters
