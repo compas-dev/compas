@@ -12,7 +12,7 @@ Ippoliti for providing code and documentation.
 """
 from compas.geometry.transformations import matrix_from_translation
 
-from compas.geometry.xforms import Transformation
+from compas.geometry.transformations import Transformation
 
 
 __all__ = ['Translation']
