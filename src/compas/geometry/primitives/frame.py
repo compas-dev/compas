@@ -21,6 +21,7 @@ from compas.geometry.transformations import decompose_matrix
 from compas.geometry.transformations import inverse
 from compas.geometry.transformations import matrix_from_frame
 
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Plane
@@ -28,7 +29,7 @@ from compas.geometry.primitives import Plane
 __all__ = ['Frame']
 
 
-class Frame(object):
+class Frame(Primitive):
     """A frame is defined by a base point and two orthonormal base vectors.
 
     Parameters

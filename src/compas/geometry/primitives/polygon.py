@@ -12,6 +12,7 @@ from compas.geometry.size import area_polygon
 from compas.geometry.queries import is_coplanar
 from compas.geometry.queries import is_polygon_convex
 
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Line
@@ -20,7 +21,7 @@ from compas.geometry.primitives import Line
 __all__ = ['Polygon']
 
 
-class Polygon(object):
+class Polygon(Primitive):
     """An object representing an ordered collection of points in space connected
     by straight line segments forming a closed boundary around the interior space.
 
@@ -50,6 +51,7 @@ class Polygon(object):
     Polygons are not necessarily planar by construction; they can be warped.
 
     """
+
     def __init__(self, points):
         self._points = []
         self._lines = []
@@ -75,7 +77,7 @@ class Polygon(object):
         if points[-1] == points[0]:
             del points[-1]
         self._points = [Point(*xyz) for xyz in points]
-        self._lines  = [Line(self.points[i], self.points[i + 1]) for i in range(-1, len(points) - 1)]
+        self._lines = [Line(self.points[i], self.points[i + 1]) for i in range(-1, len(points) - 1)]
 
     @property
     def lines(self):
@@ -115,11 +117,11 @@ class Polygon(object):
         a2 = 0
         normals = []
         for i in range(-1, len(points) - 1):
-            p1  = points[i]
-            p2  = points[i + 1]
-            u   = [p1[_] - o[_] for _ in range(3)]
-            v   = [p2[_] - o[_] for _ in range(3)]
-            w   = cross_vectors(u, v)
+            p1 = points[i]
+            p2 = points[i + 1]
+            u = [p1[_] - o[_] for _ in range(3)]
+            v = [p2[_] - o[_] for _ in range(3)]
+            w = cross_vectors(u, v)
             a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
             normals.append(w)
         n = [sum(axis) / a2 for axis in zip(*normals)]

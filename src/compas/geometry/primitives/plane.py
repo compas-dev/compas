@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Point
 
@@ -9,7 +10,7 @@ from compas.geometry.primitives import Point
 __all__ = ['Plane']
 
 
-class Plane(object):
+class Plane(Primitive):
     """A plane is defined by a base point and a normal vector.
 
     Parameters
