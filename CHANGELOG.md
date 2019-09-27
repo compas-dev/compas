@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Generate sphinx documentation from markdown files in repo root for top level sections.
 - Merged `compas.geometry.xforms` into `compas.geometry.transformations`
 - Fixed `AttributeError: 'Mesh' object has no attribute 'neighbors'`
 - Fixed Key error with `Mesh.boundary()`
