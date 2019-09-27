@@ -436,7 +436,7 @@ class RobotModel(object):
 
         return transformations
 
-    def updated_frames(self, joint_state):
+    def transformed_frames(self, joint_state):
         """Returns the transformed frames based on the joint_state.
 
         Parameters
@@ -452,7 +452,7 @@ class RobotModel(object):
         transformations = self.compute_transformations(joint_state)
         return [j.origin.transformed(transformations[j.name]) for j in self.iter_joints()]
 
-    def updated_axes(self, joint_state):
+    def transformed_axes(self, joint_state):
         """Returns the transformed axes based on the joint_state.
 
         Parameters
