@@ -7,10 +7,12 @@ from math import pi
 from compas.geometry.primitives import Plane
 from compas.geometry.primitives import Circle
 
+from compas.geometry.primitives.shapes import Shape
+
 __all__ = ['Cylinder']
 
 
-class Cylinder(object):
+class Cylinder(Shape):
     """A cylinder is defined by a circle and a height.
 
     Attributes

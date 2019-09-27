@@ -4,11 +4,12 @@ from __future__ import division
 
 from math import sqrt
 
+from compas.geometry.primitives.shapes import Shape
 
 __all__ = ['Polyhedron']
 
 
-class Polyhedron(object):
+class Polyhedron(Shape):
     """Compute the vertices and faces of one of the Platonic solids.
 
     Notes

@@ -8,10 +8,12 @@ from math import sqrt
 from compas.geometry.primitives import Circle
 from compas.geometry.primitives import Plane
 
+from compas.geometry.primitives.shapes import Shape
+
 __all__ = ['Cone']
 
 
-class Cone(object):
+class Cone(Shape):
     """A cone is defined by a circle and a height.
 
     Attributes

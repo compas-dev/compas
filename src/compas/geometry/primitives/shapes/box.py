@@ -2,15 +2,18 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.geometry import subtract_vectors
+
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Frame
-from compas.geometry import subtract_vectors
+
+from compas.geometry.primitives.shapes import Shape
 
 
 __all__ = ['Box']
 
 
-class Box(object):
+class Box(Shape):
     """A box is defined by a frame and its dimensions along the frame's x-, y- and z-axes.
 
     The bottom left corner of the box is positioned at the origin of the
