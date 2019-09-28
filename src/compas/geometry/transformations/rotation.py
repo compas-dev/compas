@@ -27,7 +27,7 @@ from compas.geometry.transformations import quaternion_from_matrix
 from compas.geometry.transformations import basis_vectors_from_matrix
 from compas.geometry.transformations import matrix_from_frame
 
-from compas.geometry.xforms import Transformation
+from compas.geometry.transformations import Transformation
 
 
 __all__ = ['Rotation']

@@ -7,10 +7,12 @@ from compas.geometry import quaternion_is_unit
 
 from compas.geometry import allclose
 
+from compas.geometry.primitives import Primitive
+
 __all__ = ['Quaternion']
 
 
-class Quaternion(object):
+class Quaternion(Primitive):
     r"""Creates a ``Quaternion`` object.
 
     Parameters

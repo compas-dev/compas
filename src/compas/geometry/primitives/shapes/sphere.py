@@ -3,11 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.geometry.primitives import Point
+from compas.geometry.primitives.shapes import Shape
 
 __all__ = ['Sphere']
 
 
-class Sphere(object):
+class Sphere(Shape):
     """A sphere is defined by a point and a radius.
 
     Attributes
