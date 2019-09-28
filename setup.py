@@ -53,7 +53,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: Implementation :: CPython',
     ],
-    keywords=['architecture', 'fabrication', 'engineering'],
+    keywords=['architecture', 'engineering', 'fabrication', 'construction'],
     project_urls={
         "Documentation": "http://compas-dev.github.io",
         "Forum": "https://forum.compas-framework.org/",
