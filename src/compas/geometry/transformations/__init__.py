@@ -2,6 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas
+
 _EPS = 1e-16
 """epsilon for testing whether a number is close to zero"""
 
@@ -19,11 +21,7 @@ _SPEC2TUPLE = {
 _NEXT_SPEC = [1, 2, 0, 1]
 
 
-# todo: separate the numpy version inot separate modules
-
-from .helpers import *
 from .matrices import *
-from .transformations import *
 
 # migrated from xforms
 from .transformation import Transformation
@@ -33,5 +31,11 @@ from .rotation import Rotation
 from .scale import Scale
 from .shear import Shear
 from .translation import Translation
+
+from .transformations import *
+
+if not compas.IPY:
+    from .transformations_numpy import *
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

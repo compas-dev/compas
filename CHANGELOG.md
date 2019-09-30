@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deprecate the method `draw` of `compas_ghpython.artists.MeshArtist` in favor of `draw_mesh`.
 - Fix icosahedron generation
 - Base geometric primitives on `compas.geometry.Primitive` and `compas.geometry.Shape`
+- Separated `numpy` based tranformations into separate module.
 
 ### Removed
 

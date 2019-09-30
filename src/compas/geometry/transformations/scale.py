@@ -21,12 +21,14 @@ __all__ = ['Scale']
 class Scale(Transformation):
     """Creates a scaling transformation.
 
-    Args:
-        scale_factors (:obj:`list` of :obj:`float`): a list of 3 numbers
-            defining the scaling factors in x, y, and z respectively.
+    Parameters
+    ----------
+    scale_factors : :obj:`list` of :obj:`float`
+        A list of 3 numbers defining the scaling factors in x, y, and z respectively.
 
-    Example:
-        >>> S = Scale([1, 2, 3])
+    Examples
+    --------
+    >>> S = Scale([1, 2, 3])
     """
 
     def __init__(self, scale_factors):

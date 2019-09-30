@@ -24,17 +24,21 @@ class Reflection(Transformation):
     """Creates a ``Reflection`` that mirrors points at a plane, defined by
     point and normal vector.
 
-    Args:
-        point (:obj:`list` of :obj:`float`): The point of the mirror plane.
-        normal (:obj:`list` of :obj:`float`): The normal of the mirror plane.
+    Parameters
+    ----------
+    point : :obj:`list` of :obj:`float`
+        The point of the mirror plane.
+    normal : :obj:`list` of :obj:`float`
+        The normal of the mirror plane.
 
-    Example:
-        >>> point = [1, 1, 1]
-        >>> normal = [0, 0, 1]
-        >>> R1 = Reflection(point, normal)
-        >>> R2 = Transformation.from_matrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
-        >>> R1 == R2
-        True
+    Examples
+    --------
+    >>> point = [1, 1, 1]
+    >>> normal = [0, 0, 1]
+    >>> R1 = Reflection(point, normal)
+    >>> R2 = Transformation.from_matrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
+    >>> R1 == R2
+    True
 
     """
 
@@ -55,8 +59,10 @@ class Reflection(Transformation):
     def from_frame(cls, frame):
         """Creates a ``Reflection`` that mirrors at the ``Frame``.
 
-        Args:
-            frame(:class:`Frame`)
+        Parameters
+        ----------
+        frame : :class:`Frame`
+
         """
         return cls(frame.point, frame.normal)
 

@@ -18,7 +18,7 @@ from compas.geometry.transformations import matrix_from_axis_angle_vector
 from compas.geometry.transformations import euler_angles_from_matrix
 from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import inverse
+from compas.geometry.transformations import matrix_inverse
 from compas.geometry.transformations import matrix_from_frame
 
 from compas.geometry.primitives import Primitive

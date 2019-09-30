@@ -28,24 +28,30 @@ class Shear(Transformation):
     given by the angle of P-P'-P", where P' is the orthogonal projection
     of P onto the shear plane (defined by point and normal).
 
-    Args:
-        angle (:obj:`float`): The angle in radians.
-        direction (:obj:`list` of :obj:`float`): The direction vector as
-            list of 3 numbers. It must be orthogonal to the normal vector.
-        point (:obj:`list` of :obj:`float`): The point of the shear plane
-            as list of 3 numbers.
-        normal (:obj:`list` of :obj:`float`): The normal of the shear plane
-            as list of 3 numbers.
+    Parameters
+    ----------
+    angle : :obj:`float`
+        The angle in radians.
+    direction : :obj:`list` of :obj:`float`
+        The direction vector as list of 3 numbers.
+        It must be orthogonal to the normal vector.
+    point : :obj:`list` of :obj:`float`
+        The point of the shear plane as list of 3 numbers.
+    normal : :obj:`list` of :obj:`float`
+        The normal of the shear plane as list of 3 numbers.
 
-    Raises:
-        ValueError: If direction and normal are not orthogonal.
+    Raises
+    ------
+    ValueError
+        If direction and normal are not orthogonal.
 
-    Example:
-        >>> angle = 0.1
-        >>> direction = [0.1, 0.2, 0.3]
-        >>> point = [4, 3, 1]
-        >>> normal = cross_vectors(direction, [1, 0.3, -0.1])
-        >>> S = Shear(angle, direction, point, normal)
+    Examples
+    --------
+    >>> angle = 0.1
+    >>> direction = [0.1, 0.2, 0.3]
+    >>> point = [4, 3, 1]
+    >>> normal = cross_vectors(direction, [1, 0.3, -0.1])
+    >>> S = Shear(angle, direction, point, normal)
     """
 
     def __init__(self, angle=0., direction=[1, 0, 0],
@@ -57,12 +63,14 @@ class Shear(Transformation):
     def from_entries(cls, shear_entries):
         """Creates a ``Shear`` from the 3 factors for x-y, x-z, and y-z axes.
 
-        Args:
-            shear_factors (:obj:`list` of :obj:`float`): The 3 shear factors
-                for x-y, x-z, and y-z axes.
+        Parameters
+        ----------
+        shear_factors : :obj:`list` of :obj:`float`
+            The 3 shear factors for x-y, x-z, and y-z axes.
 
-        Example:
-            >>> S = Shear.from_entries([1, 2, 3])
+        Examples
+        --------
+        >>> S = Shear.from_entries([1, 2, 3])
         """
         M = matrix_from_shear_entries(shear_entries)
         return cls.from_matrix(M)

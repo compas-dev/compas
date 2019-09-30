@@ -21,6 +21,11 @@ from compas.geometry.transformations import _NEXT_SPEC
 
 
 __all__ = [
+    'matrix_determinant',
+    'matrix_inverse',
+    'decompose_matrix',
+    'compose_matrix',
+
     'identity_matrix',
 
     'matrix_from_frame',
@@ -52,6 +57,314 @@ __all__ = [
     'basis_vectors_from_matrix',
     'translation_from_matrix',
 ]
+
+def matrix_determinant(M, check=True):
+    """Calculates the determinant of a square matrix M.
+
+    Parameters
+    ----------
+    M : :obj:`list` of :obj:`list` of :obj:`float`
+        The square matrix of any dimension.
+    check : bool
+        If true checks if matrix is squared. Defaults to True.
+
+    Raises
+    ------
+    ValueError
+        If matrix is not a square matrix.
+
+    Returns
+    -------
+    float
+        The determinant.
+
+    """
+    dim = len(M)
+
+    if check:
+        for c in M:
+            if len(c) != dim:
+                raise ValueError("Not a square matrix")
+
+    if (dim == 2):
+        return M[0][0] * M[1][1] - M[0][1] * M[1][0]
+    else:
+        i = 1
+        t = 0
+        sum = 0
+        for t in range(dim):
+            d = {}
+            for t1 in range(1, dim):
+                m = 0
+                d[t1] = []
+                for m in range(dim):
+                    if (m != t):
+                        d[t1].append(M[t1][m])
+            M1 = [d[x] for x in d]
+            sum = sum + i * M[0][t] * matrix_determinant(M1, check=False)
+            i = i * (-1)
+        return sum
+
+
+def matrix_inverse(M):
+    """Calculates the inverse of a square matrix M.
+
+    Parameters
+    ----------
+    M : :obj:`list` of :obj:`list` of :obj:`float`
+        The square matrix of any dimension.
+
+    Raises
+    ------
+    ValueError
+        If the matrix is not squared
+    ValueError
+        If the matrix is singular.
+    ValueError
+        If the matrix is not invertible.
+
+    Returns
+    -------
+   list of list of float
+        The inverted matrix.
+
+    Examples
+    --------
+    >>> from compas.geometry import Frame
+    >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    >>> T = matrix_from_frame(f)
+    >>> I = multiply_matrices(T, matrix_inverse(T))
+    >>> I2 = identity_matrix(4)
+    >>> allclose(I[0], I2[0])
+    True
+    >>> allclose(I[1], I2[1])
+    True
+    >>> allclose(I[2], I2[2])
+    True
+    >>> allclose(I[3], I2[3])
+    True
+
+    """
+    def matrix_minor(m, i, j):
+        return [row[:j] + row[j + 1:] for row in (m[:i] + m[i + 1:])]
+
+    detM = matrix_determinant(M)  # raises ValueError if matrix is not squared
+
+    if detM == 0:
+        ValueError("The matrix is singular.")
+
+    if len(M) == 2:
+        return [[M[1][1] / detM, -1 * M[0][1] / detM],
+                [-1 * M[1][0] / detM, M[0][0] / detM]]
+    else:
+        cofactors = []
+        for r in range(len(M)):
+            cofactor_row = []
+            for c in range(len(M)):
+                minor = matrix_minor(M, r, c)
+                cofactor_row.append(((-1) ** (r + c)) * determinant(minor))
+            cofactors.append(cofactor_row)
+        cofactors = transpose_matrix(cofactors)
+        for r in range(len(cofactors)):
+            for c in range(len(cofactors)):
+                cofactors[r][c] = cofactors[r][c] / detM
+        return cofactors
+
+
+def decompose_matrix(M):
+    """Calculates the components of rotation, translation, scale, shear, and
+    perspective of a given transformation matrix M.
+
+    Parameters
+    ----------
+    M : :obj:`list` of :obj:`list` of :obj:`float`
+        The square matrix of any dimension.
+
+    Raises
+    ------
+    ValueError
+        If matrix is singular or degenerative.
+
+    Returns
+    -------
+    scale : :obj:`list` of :obj:`float`
+        The 3 scale factors in x-, y-, and z-direction.
+    shear : :obj:`list` of :obj:`float`
+        The 3 shear factors for x-y, x-z, and y-z axes.
+    angles : :obj:`list` of :obj:`float`
+        The rotation specified through the 3 Euler angles about static x, y, z axes.
+    translation : :obj:`list` of :obj:`float`
+        The 3 values of translation.
+    perspective : :obj:`list` of :obj:`float`
+        The 4 perspective entries of the matrix.
+
+    Examples
+    --------
+    >>> trans1 = [1, 2, 3]
+    >>> angle1 = [-2.142, 1.141, -0.142]
+    >>> scale1 = [0.123, 2, 0.5]
+    >>> T = matrix_from_translation(trans1)
+    >>> R = matrix_from_euler_angles(angle1)
+    >>> S = matrix_from_scale_factors(scale1)
+    >>> M = multiply_matrices(multiply_matrices(T, R), S)
+    >>> # M = compose_matrix(scale1, None, angle1, trans1, None)
+    >>> scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
+    >>> allclose(scale1, scale2)
+    True
+    >>> allclose(angle1, angle2)
+    True
+    >>> allclose(trans1, trans2)
+    True
+
+    References
+    ----------
+    .. [1] Slabaugh, 1999. *Computing Euler angles from a rotation matrix*.
+           Available at: http://www.gregslabaugh.net/publications/euler.pdf
+    """
+
+    detM = matrix_determinant(M)  # raises ValueError if matrix is not squared
+
+    if detM == 0:
+        ValueError("The matrix is singular.")
+
+    Mt = transpose_matrix(M)
+
+    if abs(Mt[3][3]) < _EPS:
+        raise ValueError('The element [3,3] of the matrix is zero.')
+
+    for i in range(4):
+        for j in range(4):
+            Mt[i][j] /= Mt[3][3]
+
+    translation = [M[0][3], M[1][3], M[2][3]]
+
+    # scale, shear, rotation
+    # copy Mt[:3, :3] into row
+    scale = [0.0, 0.0, 0.0]
+    shear = [0.0, 0.0, 0.0]
+    angles = [0.0, 0.0, 0.0]
+
+    row = [[0, 0, 0] for i in range(3)]
+    for i in range(3):
+        for j in range(3):
+            row[i][j] = Mt[i][j]
+
+    scale[0] = norm_vector(row[0])
+    for i in range(3):
+        row[0][i] /= scale[0]
+    shear[0] = dot_vectors(row[0], row[1])
+    for i in range(3):
+        row[1][i] -= row[0][i] * shear[0]
+    scale[1] = norm_vector(row[1])
+    for i in range(3):
+        row[1][i] /= scale[1]
+    shear[0] /= scale[1]
+    shear[1] = dot_vectors(row[0], row[2])
+    for i in range(3):
+        row[2][i] -= row[0][i] * shear[1]
+    shear[2] = dot_vectors(row[1], row[2])
+    for i in range(3):
+        row[2][i] -= row[0][i] * shear[2]
+    scale[2] = norm_vector(row[2])
+    for i in range(3):
+        row[2][i] /= scale[2]
+    shear[1] /= scale[2]
+    shear[2] /= scale[2]
+
+    if dot_vectors(row[0], cross_vectors(row[1], row[2])) < 0:
+        scale = [-x for x in scale]
+        row = [[-x for x in y] for y in row]
+
+    # angles
+    if row[0][2] != -1. and row[0][2] != 1.:
+
+        beta1 = math.asin(-row[0][2])
+        beta2 = math.pi - beta1
+
+        alpha1 = math.atan2(row[1][2] / math.cos(beta1), row[2][2] / math.cos(beta1))
+        alpha2 = math.atan2(row[1][2] / math.cos(beta2), row[2][2] / math.cos(beta2))
+
+        gamma1 = math.atan2(row[0][1] / math.cos(beta1), row[0][0] / math.cos(beta1))
+        gamma2 = math.atan2(row[0][1] / math.cos(beta2), row[0][0] / math.cos(beta2))
+
+        angles = [alpha1, beta1, gamma1]
+        # TODO: check for alpha2, beta2, gamma2 needed?
+    else:
+        gamma = 0.
+        if row[0][2] == -1.:
+            beta = math.pi / 2.
+            alpha = gamma + math.atan2(row[1][0], row[2][0])
+        else:  # row[0][2] == 1
+            beta = -math.pi / 2.
+            alpha = -gamma + math.atan2(-row[1][0], -row[2][0])
+        angles = [alpha, beta, gamma]
+
+    # perspective
+    if math.fabs(Mt[0][3]) > _EPS and math.fabs(Mt[1][3]) > _EPS and math.fabs(Mt[2][3]) > _EPS:
+        P = deepcopy(Mt)
+        P[0][3], P[1][3], P[2][3], P[3][3] = 0.0, 0.0, 0.0, 1.0
+        Ptinv = matrix_inverse(transpose_matrix(P))
+        perspective = multiply_matrix_vector(Ptinv, [Mt[0][3], Mt[1][3],
+                                                     Mt[2][3], Mt[3][3]])
+    else:
+        perspective = [0.0, 0.0, 0.0, 1.0]
+
+    return scale, shear, angles, translation, perspective
+
+
+def compose_matrix(scale=None, shear=None, angles=None,
+                   translation=None, perspective=None):
+    """Calculates a matrix from the components of scale, shear, euler_angles,
+    translation and perspective.
+
+    Parameters
+    ----------
+    scale : :obj:`list` of :obj:`float`
+        The 3 scale factors in x-, y-, and z-direction.
+    shear : :obj:`list` of :obj:`float`
+        The 3 shear factors for x-y, x-z, and y-z axes.
+    angles : :obj:`list` of :obj:`float`
+        The rotation specified through the 3 Euler angles about static x, y, z axes.
+    translation : :obj:`list` of :obj:`float`
+        The 3 values of translation.
+    perspective : :obj:`list` of :obj:`float`
+        The 4 perspective entries of the matrix.
+
+    Examples
+    --------
+    >>> trans1 = [1, 2, 3]
+    >>> angle1 = [-2.142, 1.141, -0.142]
+    >>> scale1 = [0.123, 2, 0.5]
+    >>> M = compose_matrix(scale1, None, angle1, trans1, None)
+    >>> scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
+    >>> allclose(scale1, scale2)
+    True
+    >>> allclose(angle1, angle2)
+    True
+    >>> allclose(trans1, trans2)
+    True
+
+    """
+    M = [[1. if i == j else 0. for i in range(4)] for j in range(4)]
+    if perspective is not None:
+        P = matrix_from_perspective_entries(perspective)
+        M = multiply_matrices(M, P)
+    if translation is not None:
+        T = matrix_from_translation(translation)
+        M = multiply_matrices(M, T)
+    if angles is not None:
+        R = matrix_from_euler_angles(angles, static=True, axes="xyz")
+        M = multiply_matrices(M, R)
+    if shear is not None:
+        Sh = matrix_from_shear_entries(shear)
+        M = multiply_matrices(M, Sh)
+    if scale is not None:
+        Sc = matrix_from_scale_factors(scale)
+        M = multiply_matrices(M, Sc)
+    for i in range(4):
+        for j in range(4):
+            M[i][j] /= M[3][3]
+    return M
 
 
 def identity_matrix(dim):
