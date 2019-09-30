@@ -50,7 +50,7 @@ class Rotation(Transformation):
         >>> Ry = Rotation.from_axis_and_angle(yaxis, beta)
         >>> Rz = Rotation.from_axis_and_angle(zaxis, gamma)
         >>> f2 = Frame.worldXY()
-        >>> f1 == f2.transform(Rx * Ry * Rz)
+        >>> f1 == f2.transformed(Rx * Ry * Rz)
         True
 
     """
@@ -299,49 +299,5 @@ if __name__ == "__main__":
     from compas.geometry import Frame
     from compas.geometry import allclose
 
-    xaxis = [0.68, 0.68, 0.27]
-    yaxis = [-0.67, 0.73, -0.15]
-    R = Rotation.from_basis_vectors(xaxis, yaxis)
-
-    q1 = [0.945, -0.021, -0.125, 0.303]
-    R = Rotation.from_quaternion(q1)
-    q2 = R.quaternion
-    print(allclose(q1, q2, tol=1e-3))
-
-    aav1 = [-0.043, -0.254, 0.617]
-    R = Rotation.from_axis_angle_vector(aav1)
-    aav2 = R.axis_angle_vector
-    print(allclose(aav1, aav2))
-
-    axis1 = normalize_vector([-0.043, -0.254, 0.617])
-    angle1 = 0.1
-    R = Rotation.from_axis_and_angle(axis1, angle1)
-    axis2, angle2 = R.axis_and_angle
-    print(allclose(axis1, axis2))
-    print(allclose([angle1], [angle2]))
-
-    ea1 = 1.4, 0.5, 2.3
-    args = False, 'xyz'
-    R1 = Rotation.from_euler_angles(ea1, *args)
-    ea2 = R1.euler_angles(*args)
-    print(allclose(ea1, ea2))
-
-    alpha, beta, gamma = ea1
-    origin, xaxis, yaxis, zaxis = [0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]
-    Rx = Rotation.from_axis_and_angle(xaxis, alpha)
-    Ry = Rotation.from_axis_and_angle(yaxis, beta)
-    Rz = Rotation.from_axis_and_angle(zaxis, gamma)
-    R2 = Rx * Ry * Rz
-    print(R1 == R2)
-
-    f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    R = Rotation.from_frame(f1)
-    args = False, 'xyz'
-    alpha, beta, gamma = R.euler_angles(*args)
-    xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
-    Rx = Rotation.from_axis_and_angle(xaxis, alpha)
-    Ry = Rotation.from_axis_and_angle(yaxis, beta)
-    Rz = Rotation.from_axis_and_angle(zaxis, gamma)
-    f2 = Frame.worldXY()
-    f2.transform(Rx * Ry * Rz)
-    print(f1 == f2)
+    import doctest
+    doctest.testmod(globs=globals())
