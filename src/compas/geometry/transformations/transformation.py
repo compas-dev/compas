@@ -182,11 +182,11 @@ class Transformation(object):
 
     @classmethod
     def from_frame_to_frame(cls, frame_from, frame_to):
-        """Computes a change of basis transformation between two frames.
+        """Computes a transformation between two frames.
 
-        This transformation maps geometry from one Cartesian coordinate system
-        defined by "frame_from" to the other Cartesian coordinate system
-        defined by "frame_to".
+        This transformation allows to transform geometry from one Cartesian
+        coordinate system defined by "frame_from" to another Cartesian
+        coordinate system defined by "frame_to".
 
         Parameters
         ----------
@@ -215,6 +215,39 @@ class Transformation(object):
         T2 = cls.from_frame(frame_to)
 
         return cls(multiply_matrices(T2.matrix, matrix_inverse(T1.matrix)))
+
+    @classmethod
+    def change_basis(cls, frame_from, frame_to):
+        """Computes a change of basis transformation between two frames.
+
+        A basis change is essentially a remapping of geometry from one
+        coordinate system to another.
+
+        Args:
+            frame_from (:class:`Frame`): a frame defining the original
+                Cartesian coordinate system
+            frame_to (:class:`Frame`): a frame defining the targeted
+                Cartesian coordinate system
+
+        Example:
+            >>> from compas.geometry import Point, Frame
+            >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
+            >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            >>> T = Transformation.change_basis(f1, f2)
+            >>> p_f1 = Point(1, 1, 1) # point in f1
+            >>> p_f2 = p_f1.transformed(T) # same point represented in f2
+            >>> p_w1 = f1.represent_point_in_global_coordinates(p_f1) # point in world coordinates
+            >>> p_w2 = f2.represent_point_in_global_coordinates(p_f2) # point in world coordinates
+            >>> print(p_w1)
+            Point(0.733, 2.492, 3.074)
+            >>> print(p_w2)
+            Point(0.733, 2.492, 3.074)
+        """
+
+        T1 = cls.from_frame(frame_from)
+        T2 = cls.from_frame(frame_to)
+
+        return cls(multiply_matrices(inverse(T2.matrix), T1.matrix))
 
     def inverse(self):
         """Returns the inverse transformation.
