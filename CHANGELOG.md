@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- Removed `compas_viewers` to separate repo.
+- Removed `compas_hpc` to separate repo.
 
 ## [0.7.2] 2019-08-09
 

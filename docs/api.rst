@@ -9,5 +9,4 @@ API Reference
     api/compas_rhino
     api/compas_blender
     api/compas_ghpython
-    api/compas_viewers
     api/compas_plotters
