@@ -14,6 +14,9 @@ from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import multiply_matrix_vector
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import allclose
+from compas.geometry.basic import transpose_matrix
+from compas.geometry.basic import multiply_matrices
+from compas.geometry.basic import norm_vector
 
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
@@ -162,7 +165,7 @@ def matrix_inverse(M):
             cofactor_row = []
             for c in range(len(M)):
                 minor = matrix_minor(M, r, c)
-                cofactor_row.append(((-1) ** (r + c)) * determinant(minor))
+                cofactor_row.append(((-1) ** (r + c)) * matrix_determinant(minor))
             cofactors.append(cofactor_row)
         cofactors = transpose_matrix(cofactors)
         for r in range(len(cofactors)):

@@ -1,3 +1,9 @@
+import pytest
+
+# from compas.geometry.transformations import homogenize
+# from compas.geometry.transformations import dehomogenize
+from compas.geometry.transformations import transform_points
+from compas.geometry.transformations import transform_vectors
 from compas.geometry.transformations import translate_points
 from compas.geometry.transformations import translate_points_xy
 from compas.geometry.transformations import scale_points
@@ -20,8 +26,41 @@ from compas.geometry.transformations import reflect_line_plane
 from compas.geometry.transformations import reflect_line_triangle
 from compas.geometry.transformations import orient_points
 
+from compas.geometry.transformations import Translation
+from compas.geometry.transformations import Rotation
+
 from compas.geometry import intersection_segment_segment_xy
 import numpy as np
+
+
+@pytest.fixture
+def T():
+    return Translation([1, 2, 3])
+
+
+@pytest.fixture
+def R():
+    return Rotation.from_euler_angles([90, 0, 0])
+
+
+def test_transform_points(T):
+    assert transform_points([[0, 0, 1], [1, 0, 0]], T) == [[1.0, 2.0, 4.0], [2.0, 2.0, 3.0]]
+
+
+def test_transform_vectors(R):
+    assert transform_vectors([[1, 2, 3], [5, 6, 7]], R) == [[1.0, -3.5781372230600135, 0.44377247881360526], [5.0, -8.946418341978926, 2.227464668699156]]
+
+
+# def test_homogenize():
+#     assert homogenize([[1, 2, 3]], 0.5) == [[0.5, 1.0, 1.5, 0.5]]
+
+
+# def test_dehomogenize():
+#     assert dehomogenize([[0.5, 1.0, 1.5, 0.5]]) == [[1, 2, 3]]
+
+
+# def test_local_axes():
+#     pass
 
 
 def test_translate_points():
