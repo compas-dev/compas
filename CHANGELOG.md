@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed `compas_ghpython.artists.MeshArtist` to support ngons.
 - Deprecate the method `draw` of `compas_ghpython.artists.MeshArtist` in favor of `draw_mesh`.
 - Fix icosahedron generation
+- Examples in docs updated to work with current codebase
 
 ### Removed
 
