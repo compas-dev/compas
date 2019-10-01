@@ -1,5 +1,5 @@
 ********************************************************************************
-Mesh subdivision in GhPython using the Catmull-Clark algorithm
+Mesh subdivision in GhPython
 ********************************************************************************
 
 .. figure:: mesh-subd-modeling.jpg
