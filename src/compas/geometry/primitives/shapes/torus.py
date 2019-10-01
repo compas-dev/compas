@@ -5,11 +5,12 @@ from __future__ import print_function
 from math import pi
 
 from compas.geometry.primitives import Plane
+from compas.geometry.primitives.shapes import Shape
 
 __all__ = ['Torus']
 
 
-class Torus(object):
+class Torus(Shape):
     """A torus is defined by a plane and two radii.
 
     Attributes

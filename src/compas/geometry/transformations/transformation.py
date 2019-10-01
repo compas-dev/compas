@@ -14,10 +14,7 @@ import math
 
 from compas.geometry.basic import multiply_matrices
 
-# from compas.geometry.primitives import Point
-# from compas.geometry.primitives import Vector
-
-from compas.geometry.transformations import inverse
+from compas.geometry.transformations import matrix_inverse
 from compas.geometry.transformations import identity_matrix
 from compas.geometry.transformations import matrix_from_frame
 from compas.geometry.transformations import matrix_from_euler_angles
@@ -43,16 +40,20 @@ class Transformation(object):
     x, y, z are in the right column of the matrix, i.e. ``M[0][3], M[1][3],
     M[2][3] = x, y, z``.
 
-    Attributes:
-        matrix (:obj:`list` of :obj:`list` of :obj:`float`): Square matrix.
+    Attributes
+    ----------
+    matrix : :obj:`list` of :obj:`list` of :obj:`float`
+        Square matrix.
 
-    Examples:
-        >>> from compas.geometry import Frame
-        >>> T = Transformation()
-        >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f1)
-        >>> Sc, Sh, R, Tl, P = T.decompose()
-        >>> Tinv = T.inverse()
+    Examples
+    --------
+    >>> from compas.geometry import Frame
+    >>> T = Transformation()
+    >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    >>> T = Transformation.from_frame(f1)
+    >>> Sc, Sh, R, Tl, P = T.decompose()
+    >>> Tinv = T.inverse()
+
     """
 
     def __init__(self, matrix=None):
@@ -107,11 +108,18 @@ class Transformation(object):
 
     @classmethod
     def from_matrix(cls, matrix):
-        """Creates a ``Transformation`` from a 4x4 two-dimensional list of \
-            numbers.
+        """Creates a ``Transformation`` from a 4x4 two-dimensional list of numbers.
 
-        Args:
-            matrix (:obj:`list` of :obj:`list` of `float`)
+        Parameters
+        ----------
+        matrix : :obj:`list` of :obj:`list` of `float`
+            The 4x4 transformation matrix.
+
+        Returns
+        -------
+        Transformation
+            A transformation object.
+
         """
         T = cls()
         for i in range(4):
@@ -123,16 +131,21 @@ class Transformation(object):
     def from_list(cls, numbers):
         """Creates a ``Transformation`` from a list of 16 numbers.
 
-        Note:
-            Since the transformation matrix follows the row-major order, the
-            translational components must be at the list's indices 3, 7, 11.
+        Parameters
+        ----------
+        numbers : :obj:`list` of :obj:`float`
+            A list of 16 numbers
 
-        Args:
-            numbers (:obj:`list` of :obj:`float`)
+        Examples
+        --------
+        >>> numbers = [1, 0, 0, 3, 0, 1, 0, 4, 0, 0, 1, 5, 0, 0, 0, 1]
+        >>> T = Transformation.from_list(numbers)
 
-        Example:
-            >>> numbers = [1, 0, 0, 3, 0, 1, 0, 4, 0, 0, 1, 5, 0, 0, 0, 1]
-            >>> T = Transformation.from_list(numbers)
+        Notes
+        -----
+        Since the transformation matrix follows the row-major order, the
+        translational components must be at the list's indices 3, 7, 11.
+
         """
         T = cls()
         for i in range(4):
@@ -144,19 +157,24 @@ class Transformation(object):
     def from_frame(cls, frame):
         """Computes a change of basis transformation from world XY to frame.
 
+        Parameters
+        ----------
+        frame : :class:`Frame`
+            A frame describing the targeted Cartesian coordinate system.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(f1)
+        >>> f2 = Frame.from_transformation(T)
+        >>> f1 == f2
+        True
+
+        Notes
+        -----
         It is the same as from_frame_to_frame(Frame.worldXY(), frame).
 
-        Args:
-            frame (:class:`Frame`): a frame describing the targeted Cartesian
-                coordinate system
-
-        Example:
-            >>> from compas.geometry import Frame
-            >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            >>> T = Transformation.from_frame(f1)
-            >>> f2 = Frame.from_transformation(T)
-            >>> f1 == f2
-            True
         """
         T = cls()
         T.matrix = matrix_from_frame(frame)
@@ -170,59 +188,81 @@ class Transformation(object):
         defined by "frame_from" to the other Cartesian coordinate system
         defined by "frame_to".
 
-        Args:
-            frame_from (:class:`Frame`): a frame defining the original
-                Cartesian coordinate system
-            frame_to (:class:`Frame`): a frame defining the targeted
-                Cartesian coordinate system
+        Parameters
+        ----------
+        frame_from : :class:`Frame`
+            A frame defining the original Cartesian coordinate system.
+        frame_to : :class:`Frame`
+            A frame defining the targeted Cartesian coordinate system.
 
-        Example:
-            >>> from compas.geometry import Frame
-            >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
-            >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            >>> T = Transformation.from_frame_to_frame(f1, f2)
-            >>> f1.transform(T)
-            >>> f1 == f2
-            True
+        Returns
+        -------
+        Transformation
+            The transformation representing a change of basis.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
+        >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame_to_frame(f1, f2)
+        >>> f1.transform(T)
+        >>> f1 == f2
+        True
+
         """
         T1 = cls.from_frame(frame_from)
         T2 = cls.from_frame(frame_to)
 
-        return cls(multiply_matrices(T2.matrix, inverse(T1.matrix)))
+        return cls(multiply_matrices(T2.matrix, matrix_inverse(T1.matrix)))
 
     def inverse(self):
         """Returns the inverse transformation.
 
-        Example:
-            >>> from compas.geometry import Frame
-            >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            >>> T = Transformation.from_frame(f)
-            >>> I = Transformation() # identity matrix
-            >>> I == T * T.inverse()
-            True
+        Returns
+        -------
+        Transformation
+            The inverse transformation.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(f)
+        >>> I = Transformation()
+        >>> I == T * T.inverse()
+        True
+
         """
         cls = type(self)
-        return cls(inverse(self.matrix))
+        return cls(matrix_inverse(self.matrix))
 
     def decompose(self):
-        """Decomposes the ``Transformation`` into ``Scale``, ``Shear``, \
-            ``Rotation``, ``Translation`` and ``Perspective``.
+        """Decomposes the ``Transformation`` into ``Scale``, ``Shear``, ``Rotation``, ``Translation`` and ``Perspective``.
 
-        Example:
-            >>> trans1 = [1, 2, 3]
-            >>> angle1 = [-2.142, 1.141, -0.142]
-            >>> scale1 = [0.123, 2, 0.5]
-            >>> T1 = Translation(trans1)
-            >>> R1 = Rotation.from_euler_angles(angle1)
-            >>> S1 = Scale(scale1)
-            >>> M = (T1 * R1) * S1
-            >>> Sc, Sh, R, T, P = M.decompose()
-            >>> S1 == Sc
-            True
-            >>> R1 == R
-            True
-            >>> T1 == T
-            True
+        Returns
+        -------
+        5-tuple of Transformation
+            The scale, shear, rotation, tranlation, and projection components
+            of the current transformation.
+
+        Examples
+        --------
+        >>> trans1 = [1, 2, 3]
+        >>> angle1 = [-2.142, 1.141, -0.142]
+        >>> scale1 = [0.123, 2, 0.5]
+        >>> T1 = Translation(trans1)
+        >>> R1 = Rotation.from_euler_angles(angle1)
+        >>> S1 = Scale(scale1)
+        >>> M = (T1 * R1) * S1
+        >>> Sc, Sh, R, T, P = M.decompose()
+        >>> S1 == Sc
+        True
+        >>> R1 == R
+        True
+        >>> T1 == T
+        True
+
         """
         from compas.geometry.transformations import Scale
         from compas.geometry.transformations import Shear
@@ -255,8 +295,7 @@ class Transformation(object):
 
     @property
     def basis_vectors(self):
-        """Returns the basis vectors from the ``Rotation`` component of the
-            ``Transformation``.
+        """Returns the basis vectors from the ``Rotation`` component of the ``Transformation``.
         """
         # this has to be here to avoid circular import
         from compas.geometry.primitives import Vector
@@ -275,9 +314,9 @@ class Transformation(object):
     def concatenate(self, other):
         """Concatenate two transformations into one ``Transformation``.
 
-        Note:
-            Rz * Ry * Rx means that Rx is first transformation, Ry second, and
-            Rz third.
+        Notes
+        -----
+        Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.
         """
         cls = type(self)
         if not isinstance(other, cls):
@@ -295,37 +334,6 @@ if __name__ == "__main__":
     from compas.geometry import Rotation
     from compas.geometry import Scale
     from compas.geometry import Frame
-
-    # F1 = Frame([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
-    # F2 = Frame([0.0, 0.0, 0.0], [1.0, -1.0, 0.0], [1.0, 1.0, 0.0])
-
-    # F3 = Frame([1.0, 1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
-    # F4 = Frame([1.0, 1.0, 0.0], [1.0, -1.0, 0.0], [1.0, 1.0, 0.0])
-
-    # T1 = Transformation.from_frame(F1)
-    # T2 = Transformation.from_frame(F2)
-    # T3 = Transformation.from_frame(F3)
-    # T4 = Transformation.from_frame(F4)
-
-    # R1 = Rotation.from_frame(F1)
-    # R2 = Rotation.from_frame(F2)
-    # R3 = Rotation.from_frame(F3)
-    # R4 = Rotation.from_frame(F4)
-
-    # print(R1)
-    # print(R2)
-    # print(R3)
-    # print(R4)
-
-    # # print(T1)
-    # print(T2)
-    # # print(T3)
-    # print(T4)
-
-    # # print(T1.inverse())
-    # print(T2.inverse())
-    # # print(T3.inverse())
-    # print(T4.inverse())
 
     import doctest
     doctest.testmod(globs=globals())

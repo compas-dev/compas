@@ -158,7 +158,7 @@ class Artist(object):
             The points to draw.
         layer : str, optional
             The layer to draw the points in.
-            Default is ``None``.
+            Default is ``None``, in which case the current layer is used.
         clear_layer : bool, optional
             Clear the specified layer.
             Default is ``False``.
@@ -170,6 +170,20 @@ class Artist(object):
         -------
         list of guid
             The GUIDs of the point objects.
+
+        Notes
+        -----
+        The attributes required for drawing a point are stored in a dictionary per point.
+        The dictionary has the following structure:
+
+        .. code-block:: none
+
+            {
+                'pos'   : point,
+                'name'  : str,         # optional
+                'color' : rgb or hex,  # optional
+                'layer' : str          # optional, defaults to the value of the parameter ``layer``.
+            }
 
         """
         layer = layer or self.layer
@@ -184,7 +198,7 @@ class Artist(object):
             The lines to draw.
         layer : str, optional
             The layer to draw the points in.
-            Default is ``None``.
+            Default is ``None``, in which case the current layer is used.
         clear_layer : bool, optional
             Clear the specified layer.
             Default is ``False``.
@@ -196,6 +210,23 @@ class Artist(object):
         -------
         list of guid
             The GUIDs of the line objects.
+
+        Notes
+        -----
+        The attributes required for drawing a line are stored in a dictionary per line.
+        The dictionary has the following structure:
+
+        .. code-block:: none
+
+            {
+                'start' : point,
+                'end'   : point,
+                'name'  : str,                      # optional
+                'color' : rgb or hex,               # optional
+                'layer' : str,                      # optional, defaults to the value of the parameter ``layer``.
+                'width' : float,                    # optional, modifies the plot weight if not None.
+                'arrow' : {'start', 'end', 'both'}  # optional
+            }
 
         """
         layer = layer or self.layer
@@ -210,7 +241,7 @@ class Artist(object):
             The polylines to draw.
         layer : str, optional
             The layer to draw the points in.
-            Default is ``None``.
+            Default is ``None``, in which case the current layer is used.
         clear_layer : bool, optional
             Clear the specified layer.
             Default is ``False``.
@@ -222,6 +253,22 @@ class Artist(object):
         -------
         list of guid
             The GUIDs of the polyline objects.
+
+        Notes
+        -----
+        The attributes required for drawing a polyline are stored in a dictionary per polyline.
+        The dictionary has the following structure:
+
+        .. code-block:: none
+
+            {
+                'points' : list of point,
+                'name'   : str,                      # optional
+                'color'  : rgb or hex,               # optional
+                'layer'  : str,                      # optional, defaults to the value of the parameter ``layer``.
+                'width'  : float,                    # optional, modifies the plot weight if not None.
+                'arrow'  : {'start', 'end', 'both'}  # optional
+            }
 
         """
         layer = layer or self.layer
@@ -236,7 +283,7 @@ class Artist(object):
             The polygons to draw.
         layer : str, optional
             The layer to draw the points in.
-            Default is ``None``.
+            Default is ``None``, in which case the current layer is used.
         clear_layer : bool, optional
             Clear the specified layer.
             Default is ``False``.
@@ -249,8 +296,31 @@ class Artist(object):
         list of guid
             The GUIDs of the polygon objects.
 
+        Notes
+        -----
+        The attributes required for drawing a polygon are stored in a dictionary per polygon.
+        The dictionary has the following structure:
+
+        .. code-block:: none
+
+            {
+                'points' : list of point,
+                'name'   : str,                      # optional
+                'color'  : rgb or hex,               # optional
+                'layer'  : str,                      # optional, defaults to the value of the parameter ``layer``.
+                'width'  : float,                    # optional, modifies the plot weight if not None.
+                'arrow'  : {'start', 'end', 'both'}  # optional
+            }
+
+        Note that the draing of polygons currently falls back on the drawing of polylines.
+        The polygon should therefore be closed expicitly, but this is done for you,
+        on te fly...
+
         """
         layer = layer or self.layer
+        for polygon in polygons:
+            if polygon['points'][0] != polygon['points'][-1]:
+                polygon['points'] = polygon['points'][:] + polygon['points'][:1]
         return compas_rhino.draw_polylines(polygons, layer=layer, clear=clear_layer, redraw=redraw)
 
     def draw_circles(self, circles, layer=None, clear_layer=False, redraw=False):
@@ -262,7 +332,7 @@ class Artist(object):
             The circles to draw.
         layer : str, optional
             The layer to draw the points in.
-            Default is ``None``.
+            Default is ``None``, in which case the current layer is used.
         clear_layer : bool, optional
             Clear the specified layer.
             Default is ``False``.
@@ -273,7 +343,22 @@ class Artist(object):
         Returns
         -------
         list of guid
-            The GUIDs of the polygon objects.
+            The GUIDs of the circle objects.
+
+        Notes
+        -----
+        The attributes required for drawing a circle are stored in a dictionary per circle.
+        The dictionary has the following structure:
+
+        .. code-block:: none
+
+            {
+                'plane'  : (point, normal),
+                'radius' : float
+                'name'   : str,              # optional
+                'color'  : rgb or hex,       # optional
+                'layer'  : str               # optional, defaults to the value of the parameter ``layer``.
+            }
 
         """
         layer = layer or self.layer
@@ -286,33 +371,4 @@ class Artist(object):
 
 if __name__ == "__main__":
 
-    from compas.datastructures import Mesh
-    from compas.geometry import Polyhedron
-
-    from compas_rhino.artists.meshartist import MeshArtist
-
-    poly = Polyhedron.generate(12)
-
-    mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
-
-    artist = MeshArtist(mesh)
-
-    artist.clear()
-
-    artist.draw_vertices()
-    artist.redraw(0.0)
-
-    artist.draw_vertexlabels()
-    artist.redraw(1.0)
-
-    artist.draw_faces()
-    artist.redraw(1.0)
-
-    artist.draw_facelabels()
-    artist.redraw(1.0)
-
-    artist.draw_edges()
-    artist.redraw(1.0)
-
-    artist.draw_edgelabels()
-    artist.redraw(1.0)
+    pass

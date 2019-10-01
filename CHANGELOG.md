@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Generate sphinx documentation from markdown files in repo root for top level sections.
 - Merged `compas.geometry.xforms` into `compas.geometry.transformations`
 - Fixed `AttributeError: 'Mesh' object has no attribute 'neighbors'`
 - Fixed Key error with `Mesh.boundary()`
@@ -35,9 +36,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deprecate the method `draw` of `compas_ghpython.artists.MeshArtist` in favor of `draw_mesh`.
 - Fix icosahedron generation
 - Examples in docs updated to work with current codebase
+- Base geometric primitives on `compas.geometry.Primitive` and `compas.geometry.Shape`
+- Separated `numpy` based tranformations into separate module.
 
 ### Removed
 
+- Removed `compas_viewers` to separate repo.
+- Removed `compas_hpc` to separate repo.
 
 ## [0.7.2] 2019-08-09
 

@@ -19,6 +19,8 @@ from compas.geometry.basic import vector_component
 from compas.geometry.basic import vector_component_xy
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import multiply_matrix_vector
+from compas.geometry.basic import multiply_matrices
+from compas.geometry.basic import transpose_matrix
 
 from compas.geometry.angles import angle_vectors
 
@@ -33,15 +35,17 @@ from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
 
-from compas.geometry.transformations import transform_points
-from compas.geometry.transformations import transform_points_numpy
-
 from compas.geometry.transformations import matrix_from_axis_and_angle
 from compas.geometry.transformations import matrix_from_scale_factors
 from compas.geometry.transformations import matrix_from_axis_and_angle
 
 
 __all__ = [
+    'local_axes',
+
+    'transform_points',
+    'transform_vectors',
+
     'translate_points',
     'translate_points_xy',
 
@@ -73,6 +77,82 @@ __all__ = [
 ]
 
 
+# this function will not always work
+# it is also a duplicate of stuff found in matrices and frame
+def local_axes(a, b, c):
+    u = b - a
+    v = c - a
+    w = cross_vectors(u, v)
+    v = cross_vectors(w, u)
+    return normalize_vector(u), normalize_vector(v), normalize_vector(w)
+
+
+def homogenize(vectors, w=1.0):
+    """Homogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+    w : float, optional
+        Homogenisation parameter.
+        Defaults to ``1.0``.
+
+    Returns
+    -------
+    list
+        Homogenised vectors.
+
+    Notes
+    -----
+    Vectors described by XYZ components are homogenised by appending a homogenisation
+    parameter to the components, and by dividing each component by that parameter.
+    Homogenisatioon of vectors is often used in relation to transformations.
+
+    Examples
+    --------
+    >>> vectors = [[1.0, 0.0, 0.0]]
+    >>> homogenize(vectors)
+    [[1.0, 0.0, 0.0, 1.0]]
+
+    """
+    return [[x * w, y * w, z * w, w] if w else [x, y, z, 0.0] for x, y, z in vectors]
+
+
+def dehomogenize(vectors):
+    """Dehomogenise a list of vectors.
+
+    Parameters
+    ----------
+    vectors : list
+        A list of vectors.
+
+    Returns
+    -------
+    list
+        Dehomogenised vectors.
+
+    Examples
+    --------
+    >>>
+
+    """
+    return [[x / w, y / w, z / w] if w else [x, y, z] for x, y, z, w in vectors]
+
+
+# ==============================================================================
+# transform
+# ==============================================================================
+
+
+def transform_points(points, T):
+    return dehomogenize(multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T)))
+
+
+def transform_vectors(vectors, T):
+    return dehomogenize(multiply_matrices(homogenize(vectors, w=0.0), transpose_matrix(T)))
+
+
 # ==============================================================================
 # translate
 # ==============================================================================
@@ -95,7 +175,7 @@ def translate_points(points, vector):
 
     Examples
     --------
-    >>> 
+    >>>
 
     """
     return [add_vectors(point, vector) for point in points]
@@ -118,7 +198,7 @@ def translate_points_xy(points, vector):
 
     Examples
     --------
-    >>> 
+    >>>
 
     """
     return [add_vectors_xy(point, vector) for point in points]
@@ -146,7 +226,7 @@ def scale_points(points, scale):
 
     Examples
     --------
-    >>> 
+    >>>
 
     """
     T = matrix_from_scale_factors([scale, scale, scale])
@@ -170,7 +250,7 @@ def scale_points_xy(points, scale):
 
     Examples
     --------
-    >>> 
+    >>>
 
     """
     T = matrix_from_scale_factors([scale, scale, 0])
@@ -850,7 +930,7 @@ def orient_points(points, reference_plane, target_plane):
         point = intersection_segment_segment_xy(ab, cd)
 
         points = orient_points([point], tarplane, refplane)
-        
+
         print(points[0])
 
     """
@@ -873,42 +953,4 @@ def orient_points(points, reference_plane, target_plane):
 
 if __name__ == "__main__":
 
-    from compas.geometry import orient_points
-    from compas.geometry import intersection_segment_segment_xy
-
-
-    refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
-    tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
-
-    points = [
-        [0.288675, 0.288675, 1.1547],
-        [0.866025, 0.866025, 0.0],
-        [1.077350, 0.077350, 0.57735],
-        [0.077350, 1.077350, 0.57735]
-    ]
-
-    points = orient_points(points, refplane, tarplane)
-
-    ab = points[0], points[1]
-    cd = points[2], points[3]
-
-    point = intersection_segment_segment_xy(ab, cd)
-
-    points = orient_points([point], tarplane, refplane)
-    
-    print(points[0])
-
-    # points = [
-    #     [ 1.0,  1.0, 0.0],
-    #     [-1.0,  1.0, 0.0],
-    #     [-1.0, -1.0, 0.0],
-    #     [ 1.0, -1.0, 0.0]
-    # ]
-
-    # refplane = ([0, 0, 0], [0, 0, -1.0])
-    # tarplane = ([0, 0, 0], [0, 0, 1.0])
-
-    # points = orient_points(points, refplane, tarplane)
-
-    # print(points)
-
+    pass

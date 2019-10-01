@@ -4,12 +4,13 @@ from __future__ import division
 
 from math import pi
 
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Plane
 
 __all__ = ['Circle']
 
 
-class Circle(object):
+class Circle(Primitive):
     """A circle is defined by a plane and a radius.
 
     Attributes

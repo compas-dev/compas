@@ -8,6 +8,7 @@ from compas.geometry.transformations import transform_points
 
 from compas.geometry.distance import distance_point_point
 
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Line
 
@@ -15,7 +16,7 @@ from compas.geometry.primitives import Line
 __all__ = ['Polyline']
 
 
-class Polyline(object):
+class Polyline(Primitive):
     """A polyline is a sequence of points connected by line segments.
 
     A polyline is a piecewise linear element.
@@ -134,7 +135,7 @@ class Polyline(object):
     # queries
     # ==========================================================================
 
-    def point(self, t, snap = False):
+    def point(self, t, snap=False):
         """Point: The point from the start to the end at a specific normalized parameter.
         If snap is True, return the closest polyline point."""
 
@@ -266,7 +267,6 @@ if __name__ == '__main__':
     from compas.geometry import matrix_from_axis_and_angle
     from compas_plotters import Plotter
 
-
     M = matrix_from_axis_and_angle([0, 0, 1.0], pi / 2)
     p = Polyline([[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]])
     q = p.transformed(M)
@@ -274,6 +274,6 @@ if __name__ == '__main__':
     #plotter = Plotter(figsize=(10, 7))
 
     #plotter.draw_polygons([{'points': p.points}, {'points': q.points}])
-    #plotter.show()
+    # plotter.show()
 
-    print(p.point(.7, snap = True))
+    print(p.point(.7, snap=True))
