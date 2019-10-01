@@ -6,11 +6,12 @@ import rhinoscriptsyntax as rs
 import compas_rhino
 
 from compas.datastructures import Mesh
-from compas.topology import delaunay_from_points
-from compas.topology import trimesh_remesh
+from compas.geometry import delaunay_from_points
+from compas.datastructures import trimesh_remesh
 
 from compas_rhino.conduits import MeshConduit
 
+from compas_rhino.artists import MeshArtist
 
 # define a callback for updating the conduit
 
@@ -48,6 +49,6 @@ with conduit.enabled():
         allow_boundary_swap=True,
         callback=callback)
 
-compas_rhino.mesh_draw(
-    mesh,
-    vertexcolor={key: '#ff0000' for key in mesh.vertices_on_boundary()})
+artist = MeshArtist(mesh)
+artist.draw_faces(join_faces=True)
+artist.redraw()

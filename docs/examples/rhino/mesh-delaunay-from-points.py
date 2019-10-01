@@ -1,7 +1,7 @@
 import compas_rhino
 
 from compas.datastructures import Mesh
-from compas.topology import delaunay_from_points
+from compas.geometry import delaunay_from_points
 
 from compas_rhino.artists import MeshArtist
 
