@@ -27,7 +27,7 @@ import compas._os
 from .utilities import *
 
 
-__version__ = '0.8.0'
+__version__ = '0.8.1'
 
 
 PURGE_ON_DELETE = True
