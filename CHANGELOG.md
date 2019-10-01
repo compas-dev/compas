@@ -35,7 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed `compas_ghpython.artists.MeshArtist` to support ngons.
 - Deprecate the method `draw` of `compas_ghpython.artists.MeshArtist` in favor of `draw_mesh`.
 - Fix icosahedron generation
-- Examples in docs updated to work with current codebase
+- Examples in docs/rhino updated to work with current codebase
+- Callbacks tutorial updated to work with current codebase
 - Base geometric primitives on `compas.geometry.Primitive` and `compas.geometry.Shape`
 - Separated `numpy` based tranformations into separate module.
 
