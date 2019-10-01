@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fixed unguarded import of `numpy` based transformations in mesh package.
+
 ### Removed
 
 
