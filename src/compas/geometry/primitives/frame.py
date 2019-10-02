@@ -663,19 +663,18 @@ class Frame(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
+        >>> from compas.geometry import Point, Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = [2, 2, 2]
+        >>> pw1 = Point(2, 2, 2)
         >>> pf = f.represent_point_in_local_coordinates(pw1)
         >>> pw2 = f.represent_point_in_global_coordinates(pf)
         >>> allclose(pw1, pw2)
         True
 
         """
-        pt = Point(*subtract_vectors(point, self.point))
-        T = inverse(matrix_from_basis_vectors(self.xaxis, self.yaxis))
-        pt.transform(T)
-        return pt
+        point = Point(*point)
+        T = Transformation.change_basis(Frame.worldXY(), self)
+        return point.transformed(T)
 
     def represent_point_in_global_coordinates(self, point):
         """Represents a point from local coordinates in the world coordinate system.
@@ -701,10 +700,9 @@ class Frame(Primitive):
         True
 
         """
-        T = matrix_from_frame(self)
-        pt = Point(*point)
-        pt.transform(T)
-        return pt
+        point = Point(*point)
+        T = Transformation.change_basis(self, Frame.worldXY())
+        return point.transformed(T)
 
     def represent_vector_in_local_coordinates(self, vector):
         """Represents a vector in the frame's local coordinate system.
@@ -730,10 +728,9 @@ class Frame(Primitive):
         True
 
         """
-        T = inverse(matrix_from_basis_vectors(self.xaxis, self.yaxis))
-        vec = Vector(*vector)
-        vec.transform(T)
-        return vec
+        vector = Vector(*vector)
+        T = Transformation.change_basis(Frame.worldXY(), self)
+        return vector.transformed(T)
 
     def represent_vector_in_global_coordinates(self, vector):
         """Represents a vector in local coordinates in the world coordinate system.
@@ -759,10 +756,9 @@ class Frame(Primitive):
         True
 
         """
-        T = matrix_from_frame(self)
-        vec = Vector(*vector)
-        vec.transform(T)
-        return vec
+        vector = Vector(*vector)
+        T = Transformation.change_basis(self, Frame.worldXY())
+        return vector.transformed(T)
 
     def represent_frame_in_local_coordinates(self, frame):
         """Represents another frame in the frame's local coordinate system.
@@ -791,10 +787,9 @@ class Frame(Primitive):
         True
 
         """
-        T = Transformation.from_frame(self).inverse()
-        f = frame.copy()
-        f.transform(T)
-        return f
+        T = Transformation.change_basis(Frame.worldXY(), self)
+        return frame.transformed(T)
+
 
     def represent_frame_in_global_coordinates(self, frame):
         """Represents another frame in the local coordinate system in the world
@@ -825,10 +820,8 @@ class Frame(Primitive):
         True
 
         """
-        T = Transformation.from_frame(self)
-        f = frame.copy()
-        f.transform(T)
-        return f
+        T = Transformation.change_basis(self, Frame.worldXY())
+        return frame.transformed(T)
 
     # ==========================================================================
     # transformations

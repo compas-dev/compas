@@ -142,12 +142,12 @@ class Transformation(object):
 
     @classmethod
     def from_frame(cls, frame):
-        """Computes a change of basis transformation from world XY to frame.
+        """Computes a transformation from world XY to frame.
 
         It is the same as from_frame_to_frame(Frame.worldXY(), frame).
 
         Args:
-            frame (:class:`Frame`): a frame describing the targeted Cartesian
+            frame (:class:`Frame`): a frame defining the targeted Cartesian
                 coordinate system
 
         Example:
