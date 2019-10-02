@@ -6,6 +6,7 @@ import compas
 
 try:
     import Grasshopper as gh
+    import System
 except ImportError:
     compas.raise_if_ironpython()
 
@@ -33,7 +34,8 @@ def update_component(ghenv, delay):
     ghdoc = ghcomp.OnPingDocument()
 
     def callback(ghdoc):
-        ghcomp.ExpireSolution(False)
+        if ghdoc.SolutionState != gh.Kernel.GH_ProcessStep.Process:
+            ghcomp.ExpireSolution(False)
 
     ghdoc.ScheduleSolution(
         delay, gh.Kernel.GH_Document.GH_ScheduleDelegate(callback))
