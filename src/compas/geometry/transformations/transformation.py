@@ -155,7 +155,7 @@ class Transformation(object):
 
     @classmethod
     def from_frame(cls, frame):
-        """Computes a change of basis transformation from world XY to frame.
+        """Computes a transformation from world XY to frame.
 
         Parameters
         ----------
