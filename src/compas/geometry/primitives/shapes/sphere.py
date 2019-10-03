@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from math import pi
+
 from compas.geometry.primitives import Point
 from compas.geometry.primitives.shapes import Shape
 
@@ -86,6 +88,16 @@ class Sphere(Shape):
     @property
     def center(self):
         return self.point
+
+    @property
+    def area(self):
+        """float: The surface area of the sphere."""
+        return 4 * pi * self.radius**2
+
+    @property
+    def volume(self):
+        """float: The volume of the sphere."""
+        return 4./3. * pi * self.radius**3
 
     @property
     def data(self):

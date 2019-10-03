@@ -104,7 +104,7 @@ class Box(Shape):
 
     @property
     def height(self):
-        """float: The height of the box in y direction."""
+        """float: The height of the box in z direction."""
         return self.zsize
 
     @property
