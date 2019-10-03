@@ -94,14 +94,17 @@ class Box(Shape):
 
     @property
     def width(self):
+        """float: The width of the box in x direction."""
         return self.xsize
 
     @property
     def depth(self):
+        """float: The depth of the box in y direction."""
         return self.ysize
 
     @property
     def height(self):
+        """float: The height of the box in y direction."""
         return self.zsize
 
     @property
@@ -112,6 +115,16 @@ class Box(Shape):
     @property
     def dimensions(self):
         return [self.xsize, self.ysize, self.zsize]
+
+    @property
+    def area(self):
+        """float: The surface area of the box."""
+        return 2 * self.xsize * self.ysize + 2 * self.ysize * self.zsize + 2 * self.zsize * self.xsize
+
+    @property
+    def volume(self):
+        """float: The volume of the box."""
+        return self.xsize * self.ysize * self.zsize
 
     @property
     def vertices(self):
