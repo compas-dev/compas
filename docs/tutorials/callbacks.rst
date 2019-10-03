@@ -156,6 +156,7 @@ Dynamic visualisation in Rhino
 ==============================
 
 .. code-block:: python
+
     import compas
     from compas.datastructures import Mesh
     from compas.datastructures import smooth_area
