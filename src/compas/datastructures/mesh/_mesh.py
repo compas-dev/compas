@@ -738,8 +738,12 @@ class Mesh(FromToPickle,
 
         Parameters
         ----------
-        f : :class: `compas.geometry.shape`
+        s : :class: `compas.geometry.shape`
             The input shape to generate a mesh from.
+        u : int
+            The resolution in u direction (Torus, Sphere, Cylinder, Cone).
+        v : int
+            The resolution in v direction (Sphere only).
 
         Returns
         -------
