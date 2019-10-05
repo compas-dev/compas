@@ -3345,13 +3345,4 @@ class Mesh(FromToPickle,
 
 if __name__ == '__main__':
 
-    from compas.geometry import Torus, Box, Sphere, Cylinder, Circle, Cone
-    t = Torus(((1,0,0), (0,0.5,1)), 2,1)
-    b = Box.from_width_height_depth(20,15,10)
-    s = Sphere((1,2,3),4)
-    c = Cylinder(Circle([(1,2,0), (0.25,0.5,1)], 3.5), 4)
-    c = Cone(Circle([(1,2,0), (0.25,0.5,1)], 3.5), 4)
-    m = Mesh.from_shape(c)
-    m.summary()
-    m.to_obj('/Users/bernham/Desktop/cone.obj')
-    # pass
+    pass
