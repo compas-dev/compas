@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.files.BaseReader import BaseReader
+
 
 __all__ = []
 
@@ -15,17 +17,17 @@ class LAS(object):
 
 
     """
-    def __init__(self, filepath, precision=None):
-        self.reader = LASReader(filepath)
+    def __init__(self, location, precision=None):
+        self.reader = LASReader(location)
         self.parser = LASParser(self.reader, precision=precision)
 
 
-class LASReader(object):
+class LASReader(BaseReader):
     """"""
 
-    def __init__(self, filepath):
-        self.filepath = filepath
-        self.read()
+    def __init__(self, location):
+        super(LASReader, self).__init__(location)
+        self.content = self.read_from_location()
 
     def read(self):
         pass

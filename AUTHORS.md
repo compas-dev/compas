@@ -19,3 +19,4 @@
 - Rafael Pastrana <<pastrana@arch.ethz.ch>> [@arpastrana](https://github.com/arpastrana)
 - Achilleas Xydis <<xydis@arch.ethz.ch>> [@Achillx](https://github.com/Achillx)
 - Elitsa Dimitrova <<e.dimitrova77@gmail.com>> [@elidim](https://github.com/elidim)
+- Anton T Johansson <<anton@tetov.se>> [@tetov](https://github.com/tetov)

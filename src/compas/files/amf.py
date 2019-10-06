@@ -2,12 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.files.BaseReader import BaseReader
 
 __all__ = []
 
 
 class AMF(object):
-    """AMFer file format.
+    """ASTM Additive Manufacturing File Format (AMF)
 
     See Also
     --------
@@ -15,17 +16,17 @@ class AMF(object):
 
 
     """
-    def __init__(self, filepath, precision=None):
-        self.reader = AMFReader(filepath)
+    def __init__(self, location, precision=None):
+        self.reader = AMFReader(location)
         self.parser = AMFParser(self.reader, precision=precision)
 
 
-class AMFReader(object):
+class AMFReader(BaseReader):
     """"""
 
-    def __init__(self, filepath):
-        self.filepath = filepath
-        self.read()
+    def __init__(self, location):
+        super(AMFReader, self).__init__(location)
+        self.content = self.read_from_location()
 
     def read(self):
         pass

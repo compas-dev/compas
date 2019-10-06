@@ -14,13 +14,6 @@ __all__ = [
 
 
 class STL(object):
-
-    def __init__(self, filepath, precision=None):
-        self.reader = STLReader(filepath)
-        self.parser = STLParser(self.reader, precision=precision)
-
-
-class STLReader(object):
     """Standard triangle library format.
 
     See Also
@@ -28,6 +21,13 @@ class STLReader(object):
     * http://paulbourke.net/dataformats/stl/
 
     """
+
+    def __init__(self, filepath, precision=None):
+        self.reader = STLReader(filepath)
+        self.parser = STLParser(self.reader, precision=precision)
+
+
+class STLReader(object):
 
     def __init__(self, filepath):
         self.filepath = filepath
