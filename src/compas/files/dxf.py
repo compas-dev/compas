@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.files.BaseReader import BaseReader
 
 __all__ = []
 
@@ -17,22 +18,17 @@ class DXF(object):
 
     """
 
-    def __init__(self, filepath, precision=None):
-        self.reader = DXFReader(filepath)
+    def __init__(self, location, precision=None):
+        self.reader = DXFReader(location)
         self.parser = DXFParser(self.reader, precision=precision)
 
 
-class DXFReader(object):
+class DXFReader(BaseReader):
     """"""
 
-    def __init__(self, filepath):
-        self.filepath = filepath
-        self.read()
-
-    def read(self):
-        with open(self.filepath, 'rb') as fp:
-            for line in fp:
-                print(line.strip())
+    def __init__(self, location):
+        super(DXFReader, self).__init__(location)
+        self.content = self.read_from_location()
 
 
 class DXFParser(object):

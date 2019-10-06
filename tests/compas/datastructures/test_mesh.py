@@ -6,6 +6,11 @@ import json
 
 from compas.datastructures import Mesh
 
+try:
+    from pathlib import Path
+except:
+    from pathlib2 import Path
+
 # --------------------------------------------------------------------------
 # constructors
 # --------------------------------------------------------------------------
@@ -42,6 +47,18 @@ def test_from_obj():
     assert mesh.number_of_vertices() == 36
     assert mesh.number_of_edges() == 60
 
+    mesh = Mesh.from_obj(Path.joinpath(Path.cwd(), 'data/mesh.obj'))
+    assert mesh.number_of_faces() == 563
+    assert mesh.number_of_vertices() == 309
+    assert mesh.number_of_edges() == 872
+
+    mesh = Mesh.from_obj(
+        'https://raw.githubusercontent.com/compas-dev/compas/master/data/hypar.obj'
+        )
+    assert mesh.number_of_faces() == 64
+    assert mesh.number_of_vertices() == 81
+    assert mesh.number_of_edges() == 144
+
 
 def test_from_ply():
     mesh = Mesh.from_ply(compas.get('bunny.ply'))
@@ -49,6 +66,7 @@ def test_from_ply():
     assert mesh.number_of_vertices() == 35947
     assert mesh.number_of_edges() == 104288
 
+    # No pathlib test since ply-test file is downloaded
 
 def test_from_stl():
     mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
@@ -56,14 +74,42 @@ def test_from_stl():
     assert mesh.number_of_vertices() == 4020
     assert mesh.number_of_edges() == 11368
 
+    mesh = None
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
     assert mesh.number_of_faces() == 12
     assert mesh.number_of_vertices() == 8
     assert mesh.number_of_edges() == 18
 
+    # mesh = Mesh.from_stl(Path.joinpath(Path.cwd(), 'data/cube_ascii.stl'))
+    # assert mesh.number_of_faces() == 12
+    # assert mesh.number_of_vertices() == 8
+    # assert mesh.number_of_edges() == 18
+
+    # mesh = Mesh.from_stl(
+        # 'https://raw.githubusercontent.com/compas-dev/compas/master/data/cube_ascii.stl'
+        # )
+    # assert mesh.number_of_faces() == 12
+    # assert mesh.number_of_vertices() == 8
+    # assert mesh.number_of_edges() == 18
+
 
 def test_from_off():
     mesh = Mesh.from_off(compas.get('cube.off'))
+    assert mesh.number_of_faces() == 6
+    assert mesh.number_of_vertices() == 8
+    assert mesh.number_of_edges() == 12
+
+    mesh = None
+    mesh = Mesh.from_off(Path.joinpath(Path.cwd(), 'data/cube.off'))
+    assert mesh.number_of_faces() == 6
+    assert mesh.number_of_vertices() == 8
+    assert mesh.number_of_edges() == 12
+
+    mesh = None
+    mesh = Mesh.from_off(compas.get('cube.off'))
+    mesh = Mesh.from_off(
+        'https://raw.githubusercontent.com/compas-dev/compas/master/data/cube.off'
+        )
     assert mesh.number_of_faces() == 6
     assert mesh.number_of_vertices() == 8
     assert mesh.number_of_edges() == 12
@@ -99,7 +145,7 @@ def test_from_points():
     # TODO: add test for boundary and holes
 
 
-def test_from_ploygons():
+def test_from_polygons():
     polygon = [[[1.0, 0.0, 3.0], [1.0, 1.25, 0.0], [1.5, 0.5, 0.0]], [[1.0, 0.0, 3.0], [1.0, 5.25, 0.0], [1.5, 0.5, 0.0]]]
     mesh = Mesh.from_polygons(polygon)
     assert mesh.number_of_faces() == 2

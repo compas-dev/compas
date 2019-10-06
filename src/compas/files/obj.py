@@ -6,8 +6,13 @@ try:
     from urllib.request import urlopen
 except ImportError:
     from urllib2 import urlopen
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 
 from compas.utilities import geometric_key
+from compas.files.BaseReader import BaseReader
 
 
 __all__ = [
@@ -25,18 +30,17 @@ class OBJ(object):
     * http://paulbourke.net/dataformats/obj/
 
     """
-    def __init__(self, filepath, precision=None):
-        self.reader = OBJReader(filepath)
+    def __init__(self, location, precision=None):
+        self.reader = OBJReader(location)
         self.parser = OBJParser(self.reader, precision=precision)
 
-
-class OBJReader(object):
+class OBJReader(BaseReader):
     """Read the contents of an *obj* file.
 
     Parameters
     ----------
-    filepath : str
-        Path to the file.
+    location: str or pathlib object
+        Path or URL to the file.
 
     Attributes
     ----------
@@ -72,9 +76,9 @@ class OBJReader(object):
 
     """
 
-    def __init__(self, filepath):
-        self.filepath = filepath
-        self.content = None
+    def __init__(self, location):
+        super(OBJReader, self).__init__(location)
+        self.content = self.read_from_location()
         # vertex data
         self.vertices = []
         self.weights = []
@@ -99,19 +103,10 @@ class OBJReader(object):
         self.groups = {}
         self.objects = {}
         self.group = None
-        # open file path and read
-        self.open()
         self.pre()
         self.read()
         self.post()
 
-    def open(self):
-        if self.filepath.startswith('http'):
-            resp = urlopen(self.filepath)
-            self.content = iter(resp.read().decode('utf-8').split('\n'))
-        else:
-            with open(self.filepath, 'r') as fh:
-                self.content = iter(fh.readlines())
 
     def pre(self):
         lines = []
@@ -335,7 +330,6 @@ class OBJParser(object):
 # ==============================================================================
 # Main
 # ==============================================================================
-
 if __name__ == '__main__':
 
     import compas
