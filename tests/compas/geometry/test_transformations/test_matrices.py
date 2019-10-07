@@ -1,3 +1,10 @@
+import pytest
+
+from compas.geometry.transformations import matrix_inverse
+from compas.geometry.transformations import matrix_determinant
+from compas.geometry.transformations import decompose_matrix
+from compas.geometry.transformations import compose_matrix
+
 from compas.geometry.transformations import identity_matrix
 from compas.geometry.transformations import matrix_from_frame
 from compas.geometry.transformations import matrix_from_euler_angles
@@ -24,6 +31,9 @@ from compas.geometry.transformations import quaternion_from_axis_angle
 from compas.geometry.transformations import basis_vectors_from_matrix
 from compas.geometry.transformations import translation_from_matrix
 
+from compas.geometry.transformations import Translation
+from compas.geometry.transformations import Rotation
+
 import math
 
 from compas.geometry.primitives import Frame
@@ -31,6 +41,36 @@ from compas.geometry.basic import allclose
 from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import cross_vectors
 import numpy as np
+
+
+@pytest.fixture
+def T():
+    return Translation([1, 2, 3])
+
+
+@pytest.fixture
+def R():
+    return Rotation.from_euler_angles([90, 0, 0])
+
+
+def test_matrix_determinant(R, T):
+    assert matrix_determinant(R.matrix) == 1
+    assert matrix_determinant(T.matrix) == 1
+
+
+def test_matrix_inverse(R, T):
+    assert matrix_inverse(R.matrix) == [[1.0, -0.0, 0.0, -0.0], [-0.0, -0.4480736161291701, 0.8939966636005579, 0.0], [0.0, -0.8939966636005579, -0.4480736161291701, -0.0], [-0.0, 0.0, -0.0, 1.0]]
+    assert matrix_inverse(T.matrix) == [[1.0, -0.0, 0.0, -1.0], [-0.0, 1.0, -0.0, -2.0], [0.0, -0.0, 1.0, -3.0], [-0.0, 0.0, -0.0, 1.0]]
+
+
+def test_decompose_matrix(R, T):
+    assert decompose_matrix(R.matrix) == ([1.0, 1.0, 1.0], [0.0, 0.0, 0.0], [2.035405699485789, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0])
+    assert decompose_matrix(T.matrix) == ([1.0, 1.0, 1.0], [0.0, 0.0, 0.0], [0.0, -0.0, 0.0], [1.0, 2.0, 3.0], [0.0, 0.0, 0.0, 1.0])
+
+
+def test_compose_matrix():
+    M = compose_matrix([1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12], [0, 1, 2, 3])
+    assert M == [[0.0034886706291650366, -0.01961312282449104, -0.40764893516767803, 0.2631578947368421], [-0.0015779803562060576, -0.034677956457534555, -0.1506311173884861, 0.2894736842105263], [-0.02603574333219426, -0.2133170820431009, -0.44447632662352016, 0.3157894736842105], [-0.05364946702059457, -0.4613121205437364, -1.0395837706355264, 1.0]]
 
 
 def test_identity_matrix():

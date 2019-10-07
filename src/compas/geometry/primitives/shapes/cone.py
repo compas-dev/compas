@@ -1,45 +1,49 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from math import pi
+from math import sqrt
 
-from compas.geometry.primitives import Primitive
+from compas.geometry.primitives import Circle
 from compas.geometry.primitives import Plane
 
-__all__ = ['Circle']
+from compas.geometry.primitives.shapes import Shape
+
+__all__ = ['Cone']
 
 
-class Circle(Primitive):
-    """A circle is defined by a plane and a radius.
+class Cone(Shape):
+    """A cone is defined by a circle and a height.
 
     Attributes
     ----------
-    plane: :class:`compas.geometry.Plane`
-        The plane of the circle.
-    radius: float
-        The radius of the circle.
+    circle: :class:`compas.geometry.Circle`
+        The circle of the cone.
+    height: float
+        The height of the cone.
 
     Examples
     --------
     >>> from compas.geometry import Plane
-    >>> from compas.geometry import Circle
+    >>> from compas.geometry import Cone
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
     >>> circle = Circle(plane, 5)
+    >>> cone = Cone(circle, 7)
 
     """
 
-    __slots__ = ['_plane', '_radius']
+    __slots__ = ['_circle', '_height']
 
-    def __init__(self, plane, radius):
-        self._plane = None
-        self._radius = None
-        self.plane = plane
-        self.radius = radius
+    def __init__(self, circle, height):
+        self._circle = None
+        self._height = None
+        self.circle = circle
+        self.height = height
 
     @classmethod
     def from_data(cls, data):
-        """Construct a circle from its data representation.
+        """Construct a cone from its data representation.
 
         Parameters
         ----------
@@ -48,20 +52,21 @@ class Circle(Primitive):
 
         Returns
         -------
-        Circle
-            The constructed circle.
+        Cone
+            The constructed cone.
 
         Examples
         --------
+        >>> from compas.geometry import Cone
         >>> from compas.geometry import Circle
         >>> from compas.geometry import Plane
-        >>> data = {'plane': Plane.worldXY().data, 'radius': 5.}
-        >>> circle = Circle.from_data(data)
+        >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
+        >>> cone = Cone.from_data(data)
 
         """
-        circle = cls(Plane.worldXY(), 1)
-        circle.data = data
-        return circle
+        cone = cls(Circle(Plane.worldXY(), 1), 1)
+        cone.data = data
+        return cone
 
     # ==========================================================================
     # descriptors
@@ -69,86 +74,105 @@ class Circle(Primitive):
 
     @property
     def plane(self):
-        """Plane: The plane of the circle."""
-        return self._plane
+        """Plane: The plane of the cone."""
+        return self.circle.plane
 
     @plane.setter
     def plane(self, plane):
-        self._plane = Plane(plane[0], plane[1])
+        self.circle.plane = Plane(plane[0], plane[1])
+
+    @property
+    def circle(self):
+        """float: The circle of the cone."""
+        return self._circle
+
+    @circle.setter
+    def circle(self, circle):
+        self._circle = circle
 
     @property
     def radius(self):
-        """float: The radius of the circle."""
-        return self._radius
+        """float: The radius of the cone."""
+        return self.circle.radius
 
     @radius.setter
     def radius(self, radius):
-        self._radius = float(radius)
+        self.circle.radius = float(radius)
+
+    @property
+    def height(self):
+        """float: The height of the cone."""
+        return self._height
+
+    @height.setter
+    def height(self, height):
+        self._height = float(height)
 
     @property
     def normal(self):
-        """Vector: The normal of the circle."""
+        """Vector: The normal of the cone."""
         return self.plane.normal
 
     @property
     def diameter(self):
-        """float: The diameter of the circle."""
-        return self.radius * 2
+        """float: The diameter of the cone."""
+        return self.circle.diameter
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the circle.
+        """Returns the data dictionary that represents the cone.
 
         Returns
         -------
         dict
-            The circle data.
+            The cone data.
 
         """
-        return {'plane': self.plane.data,
-                'radius': self.radius}
+        return {'circle': self.circle.data,
+                'height': self.height}
 
     @data.setter
     def data(self, data):
-        self.plane = Plane.from_data(data['plane'])
-        self.radius = data['radius']
+        self.circle = Circle.from_data(data['circle'])
+        self.height = data['height']
 
     def to_data(self):
-        """Returns the data dictionary that represents the circle.
+        """Returns the data dictionary that represents the cone.
 
         Returns
         -------
         dict
-            The circle data.
+            The cone data.
 
         """
         return self.data
 
     @property
     def center(self):
-        """Point: The center of the circle."""
-        return self.plane.point
+        """Point: The center of the cone."""
+        return self.circle.center
 
     @center.setter
     def center(self, point):
-        self.plane.point = point
+        self.circle.center = point
 
     @property
     def area(self):
-        """Float: The area of the circle."""
-        return pi * (self.radius**2)
+        """Float: The surface area of the cone."""
+        r = self.circle.radius
+        return pi * r * (r + sqrt(self.height**2 + r**2))
 
     @property
-    def circumference(self):
-        """Float: The circumference of the circle."""
-        return 2 * pi * self.radius
+    def volume(self):
+        """Float: The volume of the cone."""
+        return pi * self.circle.radius**2 * (self.height / 3)
 
     # ==========================================================================
     # representation
     # ==========================================================================
 
     def __repr__(self):
-        return 'Circle({0}, {1})'.format(self.plane, self.radius)
+        return 'Cone({0}, {1})'.format(self.circle, self.height)
 
     def __len__(self):
         return 2
@@ -159,77 +183,77 @@ class Circle(Primitive):
 
     def __getitem__(self, key):
         if key == 0:
-            return self.plane
+            return self.circle
         elif key == 1:
-            return self.radius
+            return self.height
         else:
             raise KeyError
 
     def __setitem__(self, key, value):
         if key == 0:
-            self.plane = value
+            self.circle = value
         elif key == 1:
-            self.radius = value
+            self.height = value
         else:
             raise KeyError
 
     def __iter__(self):
-        return iter([self.plane, self.radius])
+        return iter([self.circle, self.height])
 
     # ==========================================================================
     # helpers
     # ==========================================================================
 
     def copy(self):
-        """Makes a copy of this ``Circle``.
+        """Makes a copy of this ``Cone``.
 
         Returns
         -------
-        Circle
+        Cone
             The copy.
 
         """
         cls = type(self)
-        return cls(self.plane.copy(), self.radius)
+        return cls(self.circle.copy(), self.height)
 
     # ==========================================================================
     # transformations
     # ==========================================================================
 
     def transform(self, transformation):
-        """Transform the circle.
+        """Transform the cone.
 
         Parameters
         ----------
         transformation : :class:`Transformation`
-            The transformation used to transform the circle.
+            The transformation used to transform the cone.
 
         Examples
         --------
         >>> from compas.geometry import Frame
         >>> from compas.geometry import Transformation
         >>> from compas.geometry import Plane
-        >>> from compas.geometry import Circle
-        >>> circle = Circle(Plane.worldXY(), 5)
+        >>> from compas.geometry import Cone
+        >>> cone = Cone(Plane.worldXY(), 5, 7)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
-        >>> circle.transform(T)
+        >>> cone.transform(T)
 
         """
-        self.plane.transform(transformation)
+        self.circle.transform(transformation)
 
     def transformed(self, transformation):
-        """Returns a transformed copy of the current circle.
+        """Returns a transformed copy of the current cone.
 
         Parameters
         ----------
         transformation : :class:`Transformation`
-            The transformation used to transform the circle.
+            The transformation used to transform the cone.
 
         Returns
         -------
-        :class:`circle`
-            The transformed circle.
+        :class:`cone`
+            The transformed cone.
 
         Examples
         --------
@@ -237,15 +261,16 @@ class Circle(Primitive):
         >>> from compas.geometry import Transformation
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Circle
-        >>> circle = Circle(Plane.worldXY(), 5)
+        >>> from compas.geometry import Cone
+        >>> cone = Cone(Circle(Plane.worldXY(), 5), 7)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
-        >>> circle_transformed = circle.transformed(T)
+        >>> circle_transformed = cone.transformed(T)
 
         """
-        circle = self.copy()
-        circle.transform(transformation)
-        return circle
+        cone = self.copy()
+        cone.transform(transformation)
+        return cone
 
 
 # ==============================================================================
@@ -255,17 +280,19 @@ class Circle(Primitive):
 if __name__ == "__main__":
     from compas.geometry import Frame
     from compas.geometry import Transformation
-    circle = Circle(Plane.worldXY(), 5)
+    from compas.geometry import Circle
+
+    cone = Cone(Circle(Plane.worldXY(), 5), 7)
     frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     print(frame.normal)
     T = Transformation.from_frame(frame)
-    circle.transform(T)
-    print(circle)
+    cone.transform(T)
+    print(cone)
 
     print(Plane.worldXY().data)
-    data = {'plane': Plane.worldXY().data, 'radius': 5.}
-    circle = Circle.from_data(data)
-    print(circle)
+    data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
+    cone = Cone.from_data(data)
+    print(cone)
 
     import doctest
     doctest.testmod()

@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [0.8.1] 2019-10-01
+
+### Added
+
+### Changed
+
+- Fixed unguarded import of `numpy` based transformations in mesh package.
+
+### Removed
+
+
+## [0.8.0] 2019-10-01
+
+### Added
+
 - Added test section for `compas.geometry.transformations`
 - Added `tol` parameter to `queries.is_colinear`
 - Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
@@ -18,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Generate sphinx documentation from markdown files in repo root for top level sections.
 - Merged `compas.geometry.xforms` into `compas.geometry.transformations`
 - Fixed `AttributeError: 'Mesh' object has no attribute 'neighbors'`
 - Fixed Key error with `Mesh.boundary()`
@@ -34,9 +55,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed `compas_ghpython.artists.MeshArtist` to support ngons.
 - Deprecate the method `draw` of `compas_ghpython.artists.MeshArtist` in favor of `draw_mesh`.
 - Fix icosahedron generation
+- Examples in docs/rhino updated to work with current codebase
+- Callbacks tutorial updated to work with current codebase
+- Base geometric primitives on `compas.geometry.Primitive` and `compas.geometry.Shape`
+- Separated `numpy` based tranformations into separate module.
 
 ### Removed
 
+- Removed `compas_viewers` to separate repo.
+- Removed `compas_hpc` to separate repo.
 
 ## [0.7.2] 2019-08-09
 

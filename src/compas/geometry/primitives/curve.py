@@ -7,6 +7,7 @@ from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import add_vectors
 from compas.geometry.basic import subtract_vectors
 
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 
@@ -51,7 +52,7 @@ class BezierException(Exception):
     pass
 
 
-class Bezier(object):
+class Bezier(Primitive):
     """A Bezier curve.
 
     A Bezier curve of degree `n` is a linear combination of `n` + 1 Bernstein

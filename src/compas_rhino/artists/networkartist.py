@@ -69,24 +69,4 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
 
 if __name__ == "__main__":
 
-    import compas
-    from compas.datastructures import Network
-    from compas_rhino.artists import NetworkArtist
-
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    artist = NetworkArtist(network, layer='NetworkArtist')
-
-    artist.clear_layer()
-
-    artist.draw_vertices()
-    artist.redraw(0.0)
-
-    artist.draw_vertexlabels()
-    artist.redraw(1.0)
-
-    artist.draw_edges()
-    artist.redraw(1.0)
-
-    artist.draw_edgelabels()
-    artist.redraw(1.0)
+    pass

@@ -39,19 +39,20 @@ class Rotation(Transformation):
     The class contains methods for converting rotation matrices to axis-angle
     representations, Euler angles, quaternion and basis vectors.
 
-    Example:
-        >>> from compas.geometry import Frame
-        >>> f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> R = Rotation.from_frame(f1)
-        >>> args = False, 'xyz'
-        >>> alpha, beta, gamma = R.euler_angles(*args)
-        >>> xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
-        >>> Rx = Rotation.from_axis_and_angle(xaxis, alpha)
-        >>> Ry = Rotation.from_axis_and_angle(yaxis, beta)
-        >>> Rz = Rotation.from_axis_and_angle(zaxis, gamma)
-        >>> f2 = Frame.worldXY()
-        >>> f1 == f2.transform(Rx * Ry * Rz)
-        True
+    Examples
+    --------
+    >>> from compas.geometry import Frame
+    >>> f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    >>> R = Rotation.from_frame(f1)
+    >>> args = False, 'xyz'
+    >>> alpha, beta, gamma = R.euler_angles(*args)
+    >>> xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
+    >>> Rx = Rotation.from_axis_and_angle(xaxis, alpha)
+    >>> Ry = Rotation.from_axis_and_angle(yaxis, beta)
+    >>> Rz = Rotation.from_axis_and_angle(zaxis, gamma)
+    >>> f2 = Frame.worldXY()
+    >>> f1 == f2.transformed(Rx * Ry * Rz)
+    True
 
     """
 
@@ -59,14 +60,18 @@ class Rotation(Transformation):
     def from_basis_vectors(cls, xaxis, yaxis):
         """Creates a ``Rotation`` from basis vectors (= orthonormal vectors).
 
-        Args:
-            xaxis (:obj:`list` oof :obj:`float`): The x-axis of the frame.
-            yaxis (:obj:`list` oof :obj:`float`): The y-axis of the frame.
+        Parameters
+        ----------
+        xaxis : :obj:`list` of :obj:`float`
+            The x-axis of the frame.
+        yaxis : :obj:`list` of :obj:`float`
+            The y-axis of the frame.
 
-        Example:
-            >>> xaxis = [0.68, 0.68, 0.27]
-            >>> yaxis = [-0.67, 0.73, -0.15]
-            >>> R = Rotation.from_basis_vectors(xaxis, yaxis)
+        Examples
+        --------
+        >>> xaxis = [0.68, 0.68, 0.27]
+        >>> yaxis = [-0.67, 0.73, -0.15]
+        >>> R = Rotation.from_basis_vectors(xaxis, yaxis)
 
         """
         xaxis = normalize_vector(list(xaxis))
@@ -86,17 +91,19 @@ class Rotation(Transformation):
 
         It is the same as from_frame_to_frame(Frame.worldXY(), frame).
 
-        Args:
-            frame (:class:`Frame`): a frame describing the targeted Cartesian
-                coordinate system
+        Parameters
+        ----------
+        frame : :class:`Frame`
+            A frame describing the targeted Cartesian coordinate system.
 
-        Example:
-            >>> from compas.geometry import Frame
-            >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-            >>> T = Transformation.from_frame(f1)
-            >>> f2 = Frame.from_transformation(T)
-            >>> f1 == f2
-            True
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(f1)
+        >>> f2 = Frame.from_transformation(T)
+        >>> f1 == f2
+        True
         """
         R = cls()
         R.matrix = matrix_from_frame(frame)
@@ -107,16 +114,18 @@ class Rotation(Transformation):
     def from_quaternion(cls, quaternion):
         """Calculates a ``Rotation`` from quaternion coefficients.
 
-        Args:
-            quaternion (:obj:`list` of :obj:`float`): Four numbers that
-                represents the four coefficient values of a quaternion.
+        Parameters
+        ----------
+        quaternion : :obj:`list` of :obj:`float`
+            Four numbers that represents the four coefficient values of a quaternion.
 
-        Example:
-            >>> q1 = [0.945, -0.021, -0.125, 0.303]
-            >>> R = Rotation.from_quaternion(q1)
-            >>> q2 = R.quaternion
-            >>> allclose(q1, q2, tol=1e-3)
-            True
+        Examples
+        --------
+        >>> q1 = [0.945, -0.021, -0.125, 0.303]
+        >>> R = Rotation.from_quaternion(q1)
+        >>> q2 = R.quaternion
+        >>> allclose(q1, q2, tol=1e-3)
+        True
         """
         R = matrix_from_quaternion(quaternion)
         return cls(R)
@@ -125,19 +134,21 @@ class Rotation(Transformation):
     def from_axis_angle_vector(cls, axis_angle_vector, point=[0, 0, 0]):
         """Calculates a ``Rotation`` from an axis-angle vector.
 
-        Args:
-            axis_angle_vector (:obj:`list` of :obj:`float`): Three numbers
-                that represent the axis of rotation and angle of rotation
-                through the vector's magnitude.
-            point (:obj:`list` of :obj:`float`, optional): A point to
-                perform a rotation around an origin other than [0, 0, 0].
+        Parameters
+        ----------
+        axis_angle_vector : :obj:`list` of :obj:`float`
+            Three numbers that represent the axis of rotation and angle of rotation
+            through the vector's magnitude.
+        point : :obj:`list` of :obj:`float`, optional
+            A point to perform a rotation around an origin other than [0, 0, 0].
 
-        Example:
-            >>> aav1 = [-0.043, -0.254, 0.617]
-            >>> R = Rotation.from_axis_angle_vector(aav1)
-            >>> aav2 = R.axis_angle_vector
-            >>> allclose(aav1, aav2)
-            True
+        Examples
+        --------
+        >>> aav1 = [-0.043, -0.254, 0.617]
+        >>> R = Rotation.from_axis_angle_vector(aav1)
+        >>> aav2 = R.axis_angle_vector
+        >>> allclose(aav1, aav2)
+        True
         """
 
         axis_angle_vector = list(axis_angle_vector)
@@ -149,26 +160,30 @@ class Rotation(Transformation):
         """Calculates a ``Rotation`` from a rotation axis and an angle and \
             an optional point of rotation.
 
-        Note:
-            The rotation is based on the right hand rule, i.e. anti-clockwise
-            if the axis of rotation points towards the observer.
-
-        Args:
+        Parameters
+        ----------
             axis (:obj:`list` of :obj:`float`): Three numbers that represent
                 the axis of rotation
             angle (:obj:`float`): The rotation angle in radians.
             point (:obj:`list` of :obj:`float`, optional): A point to
                 perform a rotation around an origin other than [0, 0, 0].
 
-        Example:
-            >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
-            >>> angle1 = 0.1
-            >>> R = Rotation.from_axis_and_angle(axis1, angle1)
-            >>> axis2, angle2 = R.axis_and_angle
-            >>> allclose(axis1, axis2)
-            True
-            >>> allclose([angle1], [angle2])
-            True
+        Examples
+        --------
+        >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
+        >>> angle1 = 0.1
+        >>> R = Rotation.from_axis_and_angle(axis1, angle1)
+        >>> axis2, angle2 = R.axis_and_angle
+        >>> allclose(axis1, axis2)
+        True
+        >>> allclose([angle1], [angle2])
+        True
+
+        Notes
+        -----
+        The rotation is based on the right hand rule, i.e. anti-clockwise
+        if the axis of rotation points towards the observer.
+
         """
         M = matrix_from_axis_and_angle(axis, angle, point)
         return cls(M)
@@ -183,31 +198,33 @@ class Rotation(Transformation):
         depends on if the rotations are applied to a static (extrinsic) or
         rotating (intrinsic) frame and the order of axes.
 
-        Args:
-            euler_angles(:obj:`list` of :obj:`float`): Three numbers that
-                represent the angles of rotations about the defined axes.
-            static(:obj:`bool`, optional): If true the rotations are applied to
-                a static frame. If not, to a rotational. Defaults to true.
-            axes(:obj:`str`, optional): A 3 character string specifying order
-                of the axes. Defaults to 'xyz'.
+        Parameters
+        ----------
+        euler_angles : :obj:`list` of :obj:`float`
+            Three numbers that represent the angles of rotations about the defined axes.
+        static : :obj:`bool`, optional
+            If true the rotations are applied to a static frame.
+            If not, to a rotational. Defaults to true.
+        axes : :obj:`str`, optional
+            A 3 character string specifying order of the axes. Defaults to 'xyz'.
 
-        Example:
-            >>> ea1 = 1.4, 0.5, 2.3
-            >>> args = False, 'xyz'
-            >>> R1 = Rotation.from_euler_angles(ea1, *args)
-            >>> ea2 = R1.euler_angles(*args)
-            >>> allclose(ea1, ea2)
-            True
-            >>> alpha, beta, gamma = ea1
-            >>> xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
-            >>> Rx = Rotation.from_axis_and_angle(xaxis, alpha)
-            >>> Ry = Rotation.from_axis_and_angle(yaxis, beta)
-            >>> Rz = Rotation.from_axis_and_angle(zaxis, gamma)
-            >>> R2 = Rx * Ry * Rz
-            >>> R1 == R2
-            True
+        Examples
+        --------
+        >>> ea1 = 1.4, 0.5, 2.3
+        >>> args = False, 'xyz'
+        >>> R1 = Rotation.from_euler_angles(ea1, *args)
+        >>> ea2 = R1.euler_angles(*args)
+        >>> allclose(ea1, ea2)
+        True
+        >>> alpha, beta, gamma = ea1
+        >>> xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
+        >>> Rx = Rotation.from_axis_and_angle(xaxis, alpha)
+        >>> Ry = Rotation.from_axis_and_angle(yaxis, beta)
+        >>> Rz = Rotation.from_axis_and_angle(zaxis, gamma)
+        >>> R2 = Rx * Ry * Rz
+        >>> R1 == R2
+        True
         """
-
         M = matrix_from_euler_angles(euler_angles, static, axes)
         return Rotation(M)
 
@@ -215,12 +232,13 @@ class Rotation(Transformation):
     def quaternion(self):
         """Returns the 4 quaternion coefficients from the ``Rotation``.
 
-        Example:
-            >>> q1 = [0.945, -0.021, -0.125, 0.303]
-            >>> R = Rotation.from_quaternion(q1)
-            >>> q2 = R.quaternion
-            >>> allclose(q1, q2, tol=1e-3)
-            True
+        Examples
+        --------
+        >>> q1 = [0.945, -0.021, -0.125, 0.303]
+        >>> R = Rotation.from_quaternion(q1)
+        >>> q2 = R.quaternion
+        >>> allclose(q1, q2, tol=1e-3)
+        True
         """
         return quaternion_from_matrix(self.matrix)
 
@@ -228,15 +246,16 @@ class Rotation(Transformation):
     def axis_and_angle(self):
         """Returns the axis and the angle of the ``Rotation``.
 
-        Example:
-            >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
-            >>> angle1 = 0.1
-            >>> R = Rotation.from_axis_and_angle(axis1, angle1)
-            >>> axis2, angle2 = R.axis_and_angle
-            >>> allclose(axis1, axis2)
-            True
-            >>> allclose([angle1], [angle2])
-            True
+        Examples
+        --------
+        >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
+        >>> angle1 = 0.1
+        >>> R = Rotation.from_axis_and_angle(axis1, angle1)
+        >>> axis2, angle2 = R.axis_and_angle
+        >>> allclose(axis1, axis2)
+        True
+        >>> allclose([angle1], [angle2])
+        True
         """
         return axis_and_angle_from_matrix(self.matrix)
 
@@ -244,17 +263,19 @@ class Rotation(Transformation):
     def axis_angle_vector(self):
         """Returns the axis-angle vector of the ``Rotation``.
 
-        Returns:
-            (:obj:`list` of :obj:`float`): Three numbers that represent the
-                axis of rotation and angle of rotation through the vector's
-                magnitude.
+        Returns
+        -------
+        :obj:`list` of :obj:`float`
+            Three numbers that represent the axis of rotation and angle of rotation
+            through the vector's magnitude.
 
-        Example:
-            >>> aav1 = [-0.043, -0.254, 0.617]
-            >>> R = Rotation.from_axis_angle_vector(aav1)
-            >>> aav2 = R.axis_angle_vector
-            >>> allclose(aav1, aav2)
-            True
+        Examples
+        --------
+        >>> aav1 = [-0.043, -0.254, 0.617]
+        >>> R = Rotation.from_axis_angle_vector(aav1)
+        >>> aav2 = R.axis_angle_vector
+        >>> allclose(aav1, aav2)
+        True
         """
         axis, angle = self.axis_and_angle
         return scale_vector(axis, angle)
@@ -263,24 +284,28 @@ class Rotation(Transformation):
         """Returns Euler angles from the ``Rotation`` according to specified
         axis sequence and rotation type.
 
-        Args:
-            static(:obj:`bool`, optional): If true the rotations are applied to
-                a static frame. If not, to a rotational. Defaults to True.
-            axes(:obj:`str`, optional): A 3 character string specifying the
-                order of the axes. Defaults to 'xyz'.
+        Parameters
+        ----------
+        static : :obj:`bool`, optional
+            If true the rotations are applied to a static frame.
+            If not, to a rotational. Defaults to True.
+        axes : :obj:`str`, optional
+            A 3 character string specifying the order of the axes. Defaults to 'xyz'.
 
-        Returns:
-            (:obj:`list` of :obj:`float`): The 3 Euler angles.
+        Returns
+        -------
+        :obj:`list` of :obj:`float`
+            The 3 Euler angles.
 
-        Example:
-            >>> ea1 = 1.4, 0.5, 2.3
-            >>> args = False, 'xyz'
-            >>> R1 = Rotation.from_euler_angles(ea1, *args)
-            >>> ea2 = R1.euler_angles(*args)
-            >>> allclose(ea1, ea2)
-            True
+        Examples
+        --------
+        >>> ea1 = 1.4, 0.5, 2.3
+        >>> args = False, 'xyz'
+        >>> R1 = Rotation.from_euler_angles(ea1, *args)
+        >>> ea2 = R1.euler_angles(*args)
+        >>> allclose(ea1, ea2)
+        True
         """
-
         return euler_angles_from_matrix(self.matrix, static, axes)
 
     @property
@@ -299,49 +324,5 @@ if __name__ == "__main__":
     from compas.geometry import Frame
     from compas.geometry import allclose
 
-    xaxis = [0.68, 0.68, 0.27]
-    yaxis = [-0.67, 0.73, -0.15]
-    R = Rotation.from_basis_vectors(xaxis, yaxis)
-
-    q1 = [0.945, -0.021, -0.125, 0.303]
-    R = Rotation.from_quaternion(q1)
-    q2 = R.quaternion
-    print(allclose(q1, q2, tol=1e-3))
-
-    aav1 = [-0.043, -0.254, 0.617]
-    R = Rotation.from_axis_angle_vector(aav1)
-    aav2 = R.axis_angle_vector
-    print(allclose(aav1, aav2))
-
-    axis1 = normalize_vector([-0.043, -0.254, 0.617])
-    angle1 = 0.1
-    R = Rotation.from_axis_and_angle(axis1, angle1)
-    axis2, angle2 = R.axis_and_angle
-    print(allclose(axis1, axis2))
-    print(allclose([angle1], [angle2]))
-
-    ea1 = 1.4, 0.5, 2.3
-    args = False, 'xyz'
-    R1 = Rotation.from_euler_angles(ea1, *args)
-    ea2 = R1.euler_angles(*args)
-    print(allclose(ea1, ea2))
-
-    alpha, beta, gamma = ea1
-    origin, xaxis, yaxis, zaxis = [0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]
-    Rx = Rotation.from_axis_and_angle(xaxis, alpha)
-    Ry = Rotation.from_axis_and_angle(yaxis, beta)
-    Rz = Rotation.from_axis_and_angle(zaxis, gamma)
-    R2 = Rx * Ry * Rz
-    print(R1 == R2)
-
-    f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    R = Rotation.from_frame(f1)
-    args = False, 'xyz'
-    alpha, beta, gamma = R.euler_angles(*args)
-    xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
-    Rx = Rotation.from_axis_and_angle(xaxis, alpha)
-    Ry = Rotation.from_axis_and_angle(yaxis, beta)
-    Rz = Rotation.from_axis_and_angle(zaxis, gamma)
-    f2 = Frame.worldXY()
-    f2.transform(Rx * Ry * Rz)
-    print(f1 == f2)
+    import doctest
+    doctest.testmod(globs=globals())

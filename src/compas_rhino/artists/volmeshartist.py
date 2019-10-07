@@ -70,31 +70,4 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
 if __name__ == "__main__":
 
-    import compas
-
-    from compas.datastructures import VolMesh
-    from compas_rhino.artists import VolMeshArtist
-
-    volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
-
-    artist = VolMeshArtist(volmesh, layer='VolMeshArtist')
-
-    artist.clear_layer()
-
-    artist.draw_vertices()
-    artist.redraw(0.0)
-
-    artist.draw_vertexlabels()
-    artist.redraw(1.0)
-
-    artist.draw_faces()
-    artist.redraw(1.0)
-
-    artist.draw_facelabels()
-    artist.redraw(1.0)
-
-    artist.draw_edges()
-    artist.redraw(1.0)
-
-    artist.draw_edgelabels()
-    artist.redraw(1.0)
+    pass

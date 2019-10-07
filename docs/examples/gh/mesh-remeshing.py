@@ -4,7 +4,7 @@
         length: The target length of mesh edges
         start: Computes the solution if `True`.
     Output:
-        mesh: A Rhino mesh
+        mesh: The Rhino mesh
 """
 from __future__ import print_function
 from __future__ import division
@@ -25,8 +25,10 @@ from compas.geometry import delaunay_from_points
 guid = str(ghenv.Component.InstanceGuid)  # unique key
 mesh_key = "mesh_" + guid  # key for compas mesh
 rmesh_key = "rmesh_" + guid  # key for rhino mesh
+running_key = "running_" + guid
 
 # the callback is to update the Gh component
+
 
 def callback(mesh, k, args):
 
@@ -38,6 +40,7 @@ def callback(mesh, k, args):
 
 # the remeshing algorithm should run in a thread
 
+
 def threaded_function():
     trimesh_remesh(st[mesh_key],
                    target=length,
@@ -45,7 +48,11 @@ def threaded_function():
                    allow_boundary_split=True,
                    allow_boundary_swap=True,
                    callback=callback)
+    st[running_key] = False
 
+
+if running_key not in st:
+    st[running_key] = False
 
 if mesh_key not in st or start:
 
@@ -58,12 +65,12 @@ if mesh_key not in st or start:
     # save mesh into sticky dictionary
     st[mesh_key] = Mesh.from_vertices_and_faces(points, faces)
 
-
 # start or restart
 
-if start:
+if start and st[running_key] is False:
     thread = Thread(target=threaded_function)
     thread.start()
+    st[running_key] = True
 
 # make the result visible in the outlet 'mesh'
 

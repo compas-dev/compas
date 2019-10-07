@@ -28,14 +28,16 @@ class Projection(Transformation):
         """Returns an orthogonal ``Projection`` to project onto a plane
         defined by point and normal.
 
-        Args:
-            point(list of float)
-            normal(list of float)
+        Parameters
+        ----------
+        point : list of float
+        normal : list of float
 
-        Example:
-            >>> point = [0, 0, 0]
-            >>> normal = [0, 0, 1]
-            >>> P = Projection.orthogonal(point, normal)
+        Examples
+        --------
+        >>> point = [0, 0, 0]
+        >>> normal = [0, 0, 1]
+        >>> P = Projection.orthogonal(point, normal)
         """
         M = matrix_from_orthogonal_projection(point, normal)
         return cls(M)
@@ -45,16 +47,18 @@ class Projection(Transformation):
         """Returns a parallel ``Projection`` to project onto a plane defined
         by point, normal and direction.
 
-        Args:
-            point(list of float)
-            normal(list of float)
-            direction(list of float)
+        Parameters
+        ----------
+        point : list of float
+        normal : list of float
+        direction : list of float
 
-        Example:
-            >>> point = [0, 0, 0]
-            >>> normal = [0, 0, 1]
-            >>> direction = [1, 1, 1]
-            >>> P = Projection.parallel(point, normal, direction)
+        Examples
+        --------
+        >>> point = [0, 0, 0]
+        >>> normal = [0, 0, 1]
+        >>> direction = [1, 1, 1]
+        >>> P = Projection.parallel(point, normal, direction)
         """
         M = matrix_from_parallel_projection(point, normal, direction)
         return cls(M)
@@ -64,16 +68,18 @@ class Projection(Transformation):
         """Returns a perspective ``Projection`` to project onto a plane
         defined by point, normal and perspective.
 
-        Args:
-            point(list of float)
-            normal(list of float)
-            perspective(list of float)
+        Parameters
+        ----------
+        point : list of float
+        normal : list of float
+        perspective : list of float
 
-        Example:
-            >>> point = [0, 0, 0]
-            >>> normal = [0, 0, 1]
-            >>> perspective = [1, 1, 0]
-            >>> P = Projection.perspective(point, normal, perspective)
+        Examples
+        --------
+        >>> point = [0, 0, 0]
+        >>> normal = [0, 0, 1]
+        >>> perspective = [1, 1, 0]
+        >>> P = Projection.perspective(point, normal, perspective)
         """
         M = matrix_from_perspective_projection(point, normal, perspective)
         return cls(M)
@@ -83,9 +89,10 @@ class Projection(Transformation):
         """Constructs a perspective transformation by the perspective entries
         of a matrix.
 
-        Args:
-            perspective_entries(list of float): The 4 perspective
-                entries of a matrix.
+        Parameters
+        ----------
+        perspective_entries : list of float
+            The 4 perspective entries of a matrix.
         """
         M = matrix_from_perspective_entries(perspective_entries)
         return cls(M)

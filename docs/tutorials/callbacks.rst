@@ -159,24 +159,28 @@ Dynamic visualisation in Rhino
 
     import compas
     from compas.datastructures import Mesh
-    from compas.geometry import mesh_smooth_area
+    from compas.datastructures import smooth_area
     from compas_rhino.artists import MeshArtist
+    from compas_rhino.conduits import MeshConduit
 
     # make a mesh datastructure from a Rhino mesh object
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
+    fixed = list(mesh.vertices_where({'vertex_degree': 2}))
+
     # make an artist for visualization
-    artist = MeshArtist(mesh, refreshrate=5)
+    conduit = MeshConduit(mesh, refreshrate=5)
 
     # make a callback for updating the conduit
     def callback(k, args):
-        artist.redraw(k)
+       conduit.redraw(k)
 
     # run the smoothing algorithm with the conduit enabled
-    with artist.conduit.enabled():
+    with conduit.enabled():
         mesh_smooth_area(mesh, fixed=fixed, kmax=100, callback=callback)
 
     # draw the final result
+    artist = MeshArtist(mesh)
     artist.draw_mesh()
 
 
@@ -192,6 +196,8 @@ Applying constraints
     from compas_rhino.conduits import MeshConduit
     from compas_rhino.geometry import RhinoSurface
     from compas_rhino.artists import MeshArtist
+
+    fixed = list(mesh.vertices_where({'vertex_degree': 2}))
 
     # make a mesh datastructure from a Rhino mesh object
     guid = compas_rhino.select_mesh()
