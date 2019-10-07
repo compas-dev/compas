@@ -40,9 +40,6 @@ from compas.geometry import angle_points
 from compas.geometry import bestfit_plane
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
-from compas.geometry import transform_points
-from compas.geometry import Frame
-from compas.geometry import matrix_from_frame
 
 from compas.datastructures import Datastructure
 
@@ -743,7 +740,7 @@ class Mesh(FromToPickle,
         u : int
             The resolution in u direction (Torus, Sphere, Cylinder, Cone).
         v : int
-            The resolution in v direction (Sphere only).
+            The resolution in v direction (Torus and Sphere only).
 
         Returns
         -------
@@ -762,136 +759,139 @@ class Mesh(FromToPickle,
             mesh = Mesh.from_shape(t)
 
         """
-        from compas.geometry.primitives import shapes
-        from math import pi, cos, sin
-
-        mesh = None
-        if isinstance(s, shapes.Box):
-            mesh = Mesh.from_vertices_and_faces(s.vertices, s.faces)
-
-        elif isinstance(s, shapes.Torus):
-            theta = pi*2 / u
-            phi = pi*2 / v
-            vertices = []
-            for i in range(u):
-                for j in range(v):
-                    x = cos(i * theta) * (s.radius_axis + s.radius_pipe * cos(j * phi))
-                    y = sin(i * theta) * (s.radius_axis + s.radius_pipe * cos(j * phi))
-                    z = s.radius_pipe * sin(j * phi)
-                    vertices.append([x, y, z])
-            
-            # transform vertices to torus' plane
-            frame = Frame.from_plane(s.plane)
-            M = matrix_from_frame(frame)
-            vertices = transform_points(vertices, M)
-
-            faces = []
-            for i in range(u):
-                ii = (i + 1) % u
-                for j in range(v):
-                    jj = (j + 1) % v
-                    a = i * v + j
-                    b = ii * v + j
-                    c = ii * v + jj
-                    d = i * v + jj
-                    faces.append([a, b, c, d])
-            mesh = Mesh.from_vertices_and_faces(vertices, faces)
-            mesh.attributes['name'] = 'torus'
-
-        elif isinstance(s, shapes.Sphere):
-            theta = pi / u
-            phi = pi*2 / v
-            hpi = pi * 0.5
-
-            vertices = []
-            for i in range(1, u):
-                for j in range(v):
-                    tx = s.radius * cos(i * theta - hpi) * cos(j * phi) + s.point.x
-                    ty = s.radius * cos(i * theta - hpi) * sin(j * phi) + s.point.y
-                    tz = s.radius * sin(i* theta - hpi) + s.point.z
-                    vertices.append([tx, ty, tz])
-            
-            vertices.append([s.point.x, s.point.y, s.point.z + s.radius])
-            vertices.append([s.point.x, s.point.y, s.point.z - s.radius])
-
-            faces = []
-
-            # south pole triangle fan
-            sp = len(vertices) - 1
-            for j in range(v):
-                faces.append([sp, (j+1) % v, j])
-            
-            for i in range(u-2):
-                for j in range(v):
-                    jj = (j+1) % v
-                    a = i * v + j
-                    b = i * v + jj
-                    c = (i + 1) * v + jj
-                    d = (i + 1) * v + j
-                    faces.append([a, b, c, d])
-            
-            # north pole triangle fan
-            np = len(vertices) - 2
-            for j in range(v):
-                nc = len(vertices) - 3 - j
-                nn = len(vertices) - 3 - (j + 1) % v
-                faces.append([np, nn, nc])
-
-            mesh = Mesh.from_vertices_and_faces(vertices, faces)
-            mesh.attributes['name'] = 'sphere'
-
-        elif isinstance(s, shapes.Cone):
-            vertices = []
-            a = 2 * pi / u
-            for i in range(u):
-                x = s.circle.radius * cos(i * a)
-                y = s.circle.radius * sin(i * a)
-                vertices.append([x, y, 0])
-            vertices.append([0, 0, s.height])
-
-            # transform vertices to cylinder's plane
-            frame = Frame.from_plane(s.circle.plane)
-            M = matrix_from_frame(frame)
-            vertices = transform_points(vertices, M)
-
-            faces = []
-            last = len(vertices) - 1
-            for i in range(u):
-                faces.append([i, (i+1)%u, last])
-            faces.append([i for i in range(u)])
-            faces[-1].reverse()
-
-            mesh = Mesh.from_vertices_and_faces(vertices, faces)
-            mesh.attributes['name'] = 'cone'
-
-        elif isinstance(s, shapes.Cylinder):
-            vertices = []
-            a = 2 * pi / u
-            for i in range(u):
-                x = s.circle.radius * cos(i * a)
-                y = s.circle.radius * sin(i * a)
-                z = s.height / 2
-                vertices.append([x, y, z])
-                vertices.append([x, y, -z])
-
-            # transform vertices to cylinder's plane
-            frame = Frame.from_plane(s.circle.plane)
-            M = matrix_from_frame(frame)
-            vertices = transform_points(vertices, M)
-
-
-            faces = []
-            for i in range(0, u*2, 2):
-                faces.append([i, i+1, (i+3)%(u*2), (i+2)%(u*2)])
-            
-            faces.append([i for i in range(0, u*2, 2)])
-            faces.append([i for i in range(1, u*2, 2)])
-            faces[-1].reverse()
-
-            mesh = Mesh.from_vertices_and_faces(vertices, faces)
-            mesh.attributes['name'] = 'cylinder'
-
+        vertices, faces = s.to_vertices_and_faces(u, v)
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
         return mesh
+        # from compas.geometry.primitives import shapes
+        # from math import pi, cos, sin
+
+        # mesh = None
+        # if isinstance(s, shapes.Box):
+        #     mesh = Mesh.from_vertices_and_faces(s.vertices, s.faces)
+
+        # elif isinstance(s, shapes.Torus):
+        #     theta = pi*2 / u
+        #     phi = pi*2 / v
+        #     vertices = []
+        #     for i in range(u):
+        #         for j in range(v):
+        #             x = cos(i * theta) * (s.radius_axis + s.radius_pipe * cos(j * phi))
+        #             y = sin(i * theta) * (s.radius_axis + s.radius_pipe * cos(j * phi))
+        #             z = s.radius_pipe * sin(j * phi)
+        #             vertices.append([x, y, z])
+            
+        #     # transform vertices to torus' plane
+        #     frame = Frame.from_plane(s.plane)
+        #     M = matrix_from_frame(frame)
+        #     vertices = transform_points(vertices, M)
+
+        #     faces = []
+        #     for i in range(u):
+        #         ii = (i + 1) % u
+        #         for j in range(v):
+        #             jj = (j + 1) % v
+        #             a = i * v + j
+        #             b = ii * v + j
+        #             c = ii * v + jj
+        #             d = i * v + jj
+        #             faces.append([a, b, c, d])
+        #     mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        #     mesh.attributes['name'] = 'torus'
+
+        # elif isinstance(s, shapes.Sphere):
+        #     theta = pi / u
+        #     phi = pi*2 / v
+        #     hpi = pi * 0.5
+
+        #     vertices = []
+        #     for i in range(1, u):
+        #         for j in range(v):
+        #             tx = s.radius * cos(i * theta - hpi) * cos(j * phi) + s.point.x
+        #             ty = s.radius * cos(i * theta - hpi) * sin(j * phi) + s.point.y
+        #             tz = s.radius * sin(i* theta - hpi) + s.point.z
+        #             vertices.append([tx, ty, tz])
+            
+        #     vertices.append([s.point.x, s.point.y, s.point.z + s.radius])
+        #     vertices.append([s.point.x, s.point.y, s.point.z - s.radius])
+
+        #     faces = []
+
+        #     # south pole triangle fan
+        #     sp = len(vertices) - 1
+        #     for j in range(v):
+        #         faces.append([sp, (j+1) % v, j])
+            
+        #     for i in range(u-2):
+        #         for j in range(v):
+        #             jj = (j+1) % v
+        #             a = i * v + j
+        #             b = i * v + jj
+        #             c = (i + 1) * v + jj
+        #             d = (i + 1) * v + j
+        #             faces.append([a, b, c, d])
+            
+        #     # north pole triangle fan
+        #     np = len(vertices) - 2
+        #     for j in range(v):
+        #         nc = len(vertices) - 3 - j
+        #         nn = len(vertices) - 3 - (j + 1) % v
+        #         faces.append([np, nn, nc])
+
+        #     mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        #     mesh.attributes['name'] = 'sphere'
+
+        # elif isinstance(s, shapes.Cone):
+        #     vertices = []
+        #     a = 2 * pi / u
+        #     for i in range(u):
+        #         x = s.circle.radius * cos(i * a)
+        #         y = s.circle.radius * sin(i * a)
+        #         vertices.append([x, y, 0])
+        #     vertices.append([0, 0, s.height])
+
+        #     # transform vertices to cylinder's plane
+        #     frame = Frame.from_plane(s.circle.plane)
+        #     M = matrix_from_frame(frame)
+        #     vertices = transform_points(vertices, M)
+
+        #     faces = []
+        #     last = len(vertices) - 1
+        #     for i in range(u):
+        #         faces.append([i, (i+1)%u, last])
+        #     faces.append([i for i in range(u)])
+        #     faces[-1].reverse()
+
+        #     mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        #     mesh.attributes['name'] = 'cone'
+
+        # elif isinstance(s, shapes.Cylinder):
+        #     vertices = []
+        #     a = 2 * pi / u
+        #     for i in range(u):
+        #         x = s.circle.radius * cos(i * a)
+        #         y = s.circle.radius * sin(i * a)
+        #         z = s.height / 2
+        #         vertices.append([x, y, z])
+        #         vertices.append([x, y, -z])
+
+        #     # transform vertices to cylinder's plane
+        #     frame = Frame.from_plane(s.circle.plane)
+        #     M = matrix_from_frame(frame)
+        #     vertices = transform_points(vertices, M)
+
+
+        #     faces = []
+        #     for i in range(0, u*2, 2):
+        #         faces.append([i, i+1, (i+3)%(u*2), (i+2)%(u*2)])
+            
+        #     faces.append([i for i in range(0, u*2, 2)])
+        #     faces.append([i for i in range(1, u*2, 2)])
+        #     faces[-1].reverse()
+
+        #     mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        #     mesh.attributes['name'] = 'cylinder'
+
+        # return mesh
 
     @classmethod
     def from_points(cls, points, boundary=None, holes=None):
@@ -3348,5 +3348,4 @@ class Mesh(FromToPickle,
 # ==============================================================================
 
 if __name__ == '__main__':
-
     pass

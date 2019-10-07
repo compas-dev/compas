@@ -3,12 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.geometry import subtract_vectors
-
-from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Frame
-
+from compas.geometry.primitives import Vector
 from compas.geometry.primitives.shapes import Shape
-
 
 __all__ = ['Box']
 
@@ -377,6 +374,10 @@ class Box(Shape):
         True
         """
         return self.data
+
+    def to_vertices_and_faces(self):
+        """Returns a list of vertices and faces, called by `Mesh.from_shape()`."""
+        return self.vertices, self.faces
 
     # ==========================================================================
     # representation

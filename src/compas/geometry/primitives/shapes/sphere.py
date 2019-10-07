@@ -1,8 +1,10 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
+from math import cos
 from math import pi
+from math import sin
 
 from compas.geometry.primitives import Point
 from compas.geometry.primitives.shapes import Shape
@@ -145,6 +147,48 @@ class Sphere(Shape):
 
         """
         return self.data
+    
+    def to_vertices_and_faces(self, u=10, v=10):
+        """Returns a list of vertices and faces, called by `Mesh.from_shape()`."""
+        theta = pi / u
+        phi = pi*2 / v
+        hpi = pi * 0.5
+
+        vertices = []
+        for i in range(1, u):
+            for j in range(v):
+                tx = self.radius * cos(i * theta - hpi) * cos(j * phi) + self.point.x
+                ty = self.radius * cos(i * theta - hpi) * sin(j * phi) + self.point.y
+                tz = self.radius * sin(i* theta - hpi) + self.point.z
+                vertices.append([tx, ty, tz])
+        
+        vertices.append([self.point.x, self.point.y, self.point.z + self.radius])
+        vertices.append([self.point.x, self.point.y, self.point.z - self.radius])
+
+        faces = []
+
+        # south pole triangle fan
+        sp = len(vertices) - 1
+        for j in range(v):
+            faces.append([sp, (j+1) % v, j])
+        
+        for i in range(u-2):
+            for j in range(v):
+                jj = (j + 1) % v
+                a = i * v + j
+                b = i * v + jj
+                c = (i + 1) * v + jj
+                d = (i + 1) * v + j
+                faces.append([a, b, c, d])
+        
+        # north pole triangle fan
+        np = len(vertices) - 2
+        for j in range(v):
+            nc = len(vertices) - 3 - j
+            nn = len(vertices) - 3 - (j + 1) % v
+            faces.append([np, nn, nc])
+        
+        return vertices, faces
 
     # ==========================================================================
     # representation
