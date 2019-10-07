@@ -88,8 +88,5 @@ from __future__ import absolute_import
 from .edgeselector import *
 from .faceselector import *
 from .vertexselector import *
-from .meshselector import *
-from .networkselector import *
-from .volmeshselector import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
