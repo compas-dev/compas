@@ -9,6 +9,7 @@ from compas_rhino.artists import Artist
 
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
+from compas.datastructures import Network
 
 try:
     import rhinoscriptsyntax as rs
@@ -39,9 +40,11 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
 
     __module__ = "compas_rhino.artists"
 
-    def __init__(self, network, layer=None):
+    def __init__(self, network=None, layer=None):
+        if not isinstance(network, Network):
+            raise ValueError('needs a compas.datastructures.Network')
         super(NetworkArtist, self).__init__(layer=layer)
-        self.network = network
+        self.datastructure = network
         self.defaults.update({
             'color.vertex' : (255, 255, 255),
             'color.edge'   : (0, 0, 0),
@@ -51,10 +54,6 @@ class NetworkArtist(EdgeArtist, VertexArtist, Artist):
     def network(self):
         """compas.datastructures.Network: The network that should be painted."""
         return self.datastructure
-
-    @network.setter
-    def network(self, network):
-        self.datastructure = network
 
     def clear(self):
         """Clear the vertices and edges of the network, without clearing the

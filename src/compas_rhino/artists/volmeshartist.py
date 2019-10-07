@@ -10,6 +10,7 @@ from compas_rhino.artists import Artist
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
 from compas_rhino.artists.mixins import FaceArtist
+from compas.datastructures import VolMesh
 
 try:
     import rhinoscriptsyntax as rs
@@ -41,8 +42,10 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     __module__ = "compas_rhino.artists"
 
     def __init__(self, volmesh, layer=None):
+        if not isinstance(volmesh, VolMesh):
+            raise ValueError('needs a compas.datastructures.VolMesh')
         super(VolMeshArtist, self).__init__(layer=layer)
-        self.volmesh = volmesh
+        self.datastructure = volmesh
         self.defaults.update({
 
         })
@@ -51,10 +54,6 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     def volmesh(self):
         """compas.datastructures.VolMesh: The volmesh that should be painted."""
         return self.datastructure
-
-    @volmesh.setter
-    def volmesh(self, volmesh):
-        self.datastructure = volmesh
 
     def clear(self):
         """Clear the vertices, faces and edges of the volmesh, without clearing the

@@ -13,6 +13,7 @@ from compas_rhino.artists.mixins import FaceArtist
 
 from compas.utilities import pairwise
 from compas.geometry import centroid_polygon
+from compas.datastructures import Mesh
 
 try:
     import rhinoscriptsyntax as rs
@@ -60,9 +61,11 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
     __module__ = "compas_rhino.artists"
 
-    def __init__(self, mesh, layer=None):
+    def __init__(self, mesh=None, layer=None):
+        if not isinstance(mesh, Mesh):
+            raise ValueError('needs a compas.datastructures.Mesh')
         super(MeshArtist, self).__init__(layer=layer)
-        self.mesh = mesh
+        self.datastructure = mesh
         self.defaults.update({
             'color.vertex' : (255, 255, 255),
             'color.edge'   : (0, 0, 0),
@@ -73,10 +76,6 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     def mesh(self):
         """Mesh: The mesh that should be painted."""
         return self.datastructure
-
-    @mesh.setter
-    def mesh(self, mesh):
-        self.datastructure = mesh
 
     def draw_mesh(self, color=None, disjoint=False):
         """Draw the mesh as a consolidated RhinoMesh.
