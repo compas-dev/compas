@@ -25,6 +25,7 @@ from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Plane
+from compas.geometry.primitives import Quaternion
 
 __all__ = ['Frame']
 
@@ -530,10 +531,10 @@ class Frame(Primitive):
 
     @property
     def quaternion(self):
-        """:obj:`list` of :obj:`float` : The 4 quaternion coefficients from the rotation given by the frame.
+        """:class:`Quaternion` : The quaternion from the rotation given by the frame.
         """
         rotation = matrix_from_basis_vectors(self.xaxis, self.yaxis)
-        return quaternion_from_matrix(rotation)
+        return Quaternion(*quaternion_from_matrix(rotation))
 
     @property
     def axis_angle_vector(self):
