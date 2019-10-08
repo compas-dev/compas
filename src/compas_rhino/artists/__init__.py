@@ -13,6 +13,7 @@ Artists for visualising (painting) COMPAS data structures in Rhino.
     :toctree: generated/
     :nosignatures:
 
+    PrimitiveArtist
     Artist
     MeshArtist
     NetworkArtist

@@ -18,7 +18,7 @@ __all__ = ['Artist']
 
 
 class Artist(object):
-    """The base ``Artist`` defines functionality for drawing geometric primitives in Rhino.
+    """The base ``Artist`` defines functionality for drawing a bounded datastructure in Rhino.
 
     Parameters
     ----------
