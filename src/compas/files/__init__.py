@@ -37,7 +37,6 @@ from __future__ import division
 from __future__ import print_function
 
 from .amf  import *
-from .BaseReader import *
 from .dxf  import *
 from .las  import *
 from .obj  import *

@@ -12,7 +12,7 @@ except ImportError:
     from pathlib2 import Path
 
 from compas.utilities import geometric_key
-from compas.files.BaseReader import BaseReader
+from compas.files._BaseReader import BaseReader
 
 
 __all__ = [
