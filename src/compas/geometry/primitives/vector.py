@@ -444,6 +444,18 @@ class Vector(Primitive):
         self.y = self.y / l
         self.z = self.z / l
 
+    def unitized(self):
+        """Returns a unitized copy of this ``Vector``.
+
+        Returns
+        -------
+        :class:`Vector`
+
+        """
+        v = self.copy()
+        v.unitize()
+        return v
+
     def scale(self, n):
         """Scale this ``Vector`` by a factor n.
 
@@ -456,6 +468,23 @@ class Vector(Primitive):
         self.x *= n
         self.y *= n
         self.z *= n
+
+    def scaled(self, n):
+        """Returns a scaled copy of this ``Vector``.
+
+        Parameters
+        ----------
+        n : float
+            The scaling factor.
+
+        Returns
+        -------
+        :class:`Vector`
+
+        """
+        v = self.copy()
+        v.scale(n)
+        return v
 
     def dot(self, other):
         """The dot product of this ``Vector`` and another vector.
