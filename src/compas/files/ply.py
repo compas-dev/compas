@@ -4,7 +4,7 @@ from __future__ import division
 
 import struct
 
-from compas.files.BaseReader import BaseReader
+from compas.files._BaseReader import BaseReader
 
 
 __all__ = [
