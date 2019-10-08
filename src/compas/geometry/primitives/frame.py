@@ -6,8 +6,8 @@ from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import allclose
 
-from compas.geometry.xforms import Transformation
-from compas.geometry.xforms import Rotation
+from compas.geometry.transformations import Transformation
+from compas.geometry.transformations import Rotation
 
 from compas.geometry.transformations import matrix_from_basis_vectors
 from compas.geometry.transformations import basis_vectors_from_matrix
@@ -18,9 +18,10 @@ from compas.geometry.transformations import matrix_from_axis_angle_vector
 from compas.geometry.transformations import euler_angles_from_matrix
 from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import inverse
+from compas.geometry.transformations import matrix_inverse
 from compas.geometry.transformations import matrix_from_frame
 
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Plane
@@ -28,7 +29,7 @@ from compas.geometry.primitives import Plane
 __all__ = ['Frame']
 
 
-class Frame(object):
+class Frame(Primitive):
     """A frame is defined by a base point and two orthonormal base vectors.
 
     Parameters

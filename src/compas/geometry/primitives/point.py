@@ -18,14 +18,14 @@ from compas.geometry.queries import is_point_in_convex_polygon_xy
 
 from compas.geometry.transformations import transform_points
 
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
-
 
 
 __all__ = ['Point']
 
 
-class Point(object):
+class Point(Primitive):
     """A point is defined by XYZ coordinates.
 
     Parameters
@@ -635,16 +635,14 @@ if __name__ == '__main__':
 
     from compas.geometry import matrix_from_axis_and_angle
 
-
     M = matrix_from_axis_and_angle([0, 0, 1], pi / 2)
 
-
-    point    = Point(0.0, 0.0, 0.0)
-    normal   = Vector(0.0, 0.0, 1.0)
-    plane    = Plane(point, normal)
-    line     = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+    point = Point(0.0, 0.0, 0.0)
+    normal = Vector(0.0, 0.0, 1.0)
+    plane = Plane(point, normal)
+    line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
     triangle = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
-    polygon  = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
+    polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
 
     p = Point(1.0, 1.0, 1.0)
 
@@ -658,4 +656,3 @@ if __name__ == '__main__':
     print(p.distance_to_line(line))
     print(p.distance_to_plane(plane))
     print(p.in_triangle(triangle))
-

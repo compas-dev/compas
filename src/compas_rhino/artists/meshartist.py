@@ -128,37 +128,4 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
 if __name__ == "__main__":
 
-    import os
-
-    from compas.datastructures import Mesh
-    from compas.geometry import Polyhedron
-
-    from compas_rhino.artists import MeshArtist
-
-    poly = Polyhedron.generate(12)
-
-    mesh = Mesh.from_vertices_and_faces(poly.vertices, poly.faces)
-
-    artist = MeshArtist(mesh)
-
-    artist.clear()
-
-    artist.draw_vertices()
-    artist.redraw(0.0)
-
-    artist.draw_vertexlabels()
-    artist.redraw(1.0)
-
-    artist.draw_faces()
-    artist.redraw(1.0)
-
-    artist.draw_facelabels()
-    artist.redraw(1.0)
-
-    artist.draw_edges()
-    artist.redraw(1.0)
-
-    artist.draw_edgelabels()
-    artist.redraw(1.0)
-
-    print(artist.save(os.path.join(compas.TEMP, 'test4.png')))
+    pass

@@ -5,13 +5,14 @@ from __future__ import division
 from compas.geometry.transformations import transform_points
 from compas.geometry.transformations import transform_vectors
 
+from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 
 
 __all__ = ['Line']
 
 
-class Line(object):
+class Line(Primitive):
     """A line is defined by two points.
 
     Parameters

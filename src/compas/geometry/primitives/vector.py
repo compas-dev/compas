@@ -17,11 +17,12 @@ from compas.geometry.angles import angles_vectors
 
 from compas.geometry.transformations import transform_vectors
 
+from compas.geometry.primitives import Primitive
 
 __all__ = ['Vector']
 
 
-class Vector(object):
+class Vector(Primitive):
     """A vector is defined by XYZ components and a homogenisation factor.
 
     Parameters
@@ -390,7 +391,7 @@ class Vector(object):
     @staticmethod
     def angle_vectors(left, right):
         return [angle_vectors(u, v) for u, v in zip(left, right)]
-    
+
     @staticmethod
     def angle_vectors_signed(left, right, normal):
         return [angle_vectors_signed(u, v, normal) for u, v in zip(left, right)]
@@ -503,7 +504,7 @@ class Vector(object):
 
         """
         return angle_vectors(self, other)
-    
+
     def angle_signed(self, other, normal):
         """Compute the signed angle between this ``Vector`` and another vector.
 

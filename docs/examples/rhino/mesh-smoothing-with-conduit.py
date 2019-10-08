@@ -6,6 +6,8 @@ from compas.datastructures import Mesh
 from compas.geometry import smooth_area
 
 from compas_rhino.conduits import LinesConduit
+from compas_rhino.helpers import mesh_from_guid
+from compas_rhino.artists import MeshArtist
 
 # define a callback for updating the conduit
 
@@ -20,7 +22,7 @@ dz = 10
 # and make it into a mesh datastructure
 
 guid = compas_rhino.select_mesh()
-mesh = compas_rhino.mesh_from_guid(Mesh, guid)
+mesh = mesh_from_guid(Mesh, guid)
 
 # extract the data needed by the smoothing algorithm
 # identify the boundary as fixed
@@ -63,4 +65,6 @@ for key, attr in mesh.vertices(True):
     attr['y'] = vertices[key][1]
     attr['z'] = vertices[key][2]
 
-compas_rhino.mesh_draw(mesh)
+artist = MeshArtist(mesh)
+artist.draw_faces(join_faces=True)
+artist.redraw()

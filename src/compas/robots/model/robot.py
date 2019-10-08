@@ -47,6 +47,7 @@ class RobotModel(object):
         self.root = None
         self._rebuild_tree()
         self._create(self.root, Transformation())
+        self._scale_factor = 1.
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
@@ -366,6 +367,31 @@ class RobotModel(object):
             # Recursively call creation
             self._create(child_joint.child_link, child_joint.current_transformation)
 
+    def scale(self, factor, link=None):
+        """Scales the robot by factor (absolute).
+
+        Parameters
+        ----------
+        factor : float
+            The factor to scale the robot with.
+
+        Returns
+        -------
+        None
+        """
+        if not link or link == self.root:
+            link = self.root
+            relative_factor = factor / self._scale_factor  # relative scaling factor
+        else:
+            relative_factor = factor
+
+        for child_joint in link.joints:
+            child_joint.scale(relative_factor)
+            # Recursive call
+            self.scale(relative_factor, child_joint.child_link)
+
+        self._scale_factor = factor
+
     def compute_transformations(self, joint_state, link=None, parent_transformation=None):
         """Recursive function to calculate the transformations of each joint.
 
@@ -410,7 +436,7 @@ class RobotModel(object):
 
         return transformations
 
-    def updated_frames(self, joint_state):
+    def transformed_frames(self, joint_state):
         """Returns the transformed frames based on the joint_state.
 
         Parameters
@@ -426,7 +452,7 @@ class RobotModel(object):
         transformations = self.compute_transformations(joint_state)
         return [j.origin.transformed(transformations[j.name]) for j in self.iter_joints()]
 
-    def updated_axes(self, joint_state):
+    def transformed_axes(self, joint_state):
         """Returns the transformed axes based on the joint_state.
 
         Parameters

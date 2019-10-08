@@ -58,7 +58,7 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 
 ## Contributing
 
-If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/contributions.html).
+If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/contributing.html).
 
 
 ## Changelog
