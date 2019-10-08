@@ -148,8 +148,17 @@ class Sphere(Shape):
         """
         return self.data
     
-    def to_vertices_and_faces(self, u=10, v=10):
+    def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces, called by `Mesh.from_shape()`."""
+        if 'u' in kwargs:
+            u = kwargs['u']
+        else:
+            u = 10
+        if 'v' in kwargs:
+            v = kwargs['v']
+        else:
+            v = 10
+
         theta = pi / u
         phi = pi*2 / v
         hpi = pi * 0.5

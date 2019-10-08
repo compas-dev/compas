@@ -169,7 +169,12 @@ class Cylinder(Shape):
         """Float: The volume of the cylinder."""
         return self.circle.area * self.height
 
-    def to_vertices_and_faces(self, u=10):
+    def to_vertices_and_faces(self, **kwargs):
+        if 'u' in kwargs:
+            u = kwargs['u']
+        else:
+            u = 10
+
         vertices = []
         a = 2 * pi / u
         for i in range(u):

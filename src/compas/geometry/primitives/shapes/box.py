@@ -375,7 +375,7 @@ class Box(Shape):
         """
         return self.data
 
-    def to_vertices_and_faces(self):
+    def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces, called by `Mesh.from_shape()`."""
         return self.vertices, self.faces
 

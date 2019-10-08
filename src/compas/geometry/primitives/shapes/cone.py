@@ -171,8 +171,13 @@ class Cone(Shape):
         """Float: The volume of the cone."""
         return pi * self.circle.radius**2 * (self.height / 3)
 
-    def to_vertices_and_faces(self, u=10):
+    def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces, called by `Mesh.from_shape()`."""
+        if 'u' in kwargs:
+            u = kwargs['u']
+        else:
+            u = 10
+
         vertices = []
         a = 2 * pi / u
         for i in range(u):
