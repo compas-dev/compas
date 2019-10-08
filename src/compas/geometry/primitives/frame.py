@@ -540,7 +540,7 @@ class Frame(Primitive):
     def axis_angle_vector(self):
         """vector : The axis-angle vector from the rotation given by the frame."""
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
-        return axis_angle_vector_from_matrix(R)
+        return Vector(*axis_angle_vector_from_matrix(R))
 
     # ==========================================================================
     # representation
