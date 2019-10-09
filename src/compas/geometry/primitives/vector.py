@@ -534,7 +534,7 @@ class Vector(Primitive):
         Returns
         -------
         tuple of float
-            The angles between the two vectors, with the snalles angle first.
+            The angles between the two vectors, with the smallest angle first.
 
         """
         return angles_vectors(self, other)
