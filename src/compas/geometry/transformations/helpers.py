@@ -48,14 +48,79 @@ __all__ = [
 
 
 def transform_points(points, T):
+    """Transform multiple points with one Transformation.
+
+    Parameters
+    ----------
+    points : list of :class:`Point`
+        A list of points to be transformed.
+    T : :class:`Transformation`
+        The transformation to apply.
+
+    Examples
+    --------
+    >>> points = [Point(1,0,0), (1,2,4), [4,7,1]]
+    >>> T = Rotation.from_axis_and_angle((0,2,0), math.radians(45), point=(4,5,6))
+    >>> points_transformed = transform_points(points, T)
+    """
     return dehomogenize(multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T)))
 
 
 def transform_vectors(vectors, T):
+    """Transform multiple vectors with one Transformation.
+
+    Parameters
+    ----------
+    vectors : list of :class:`Vector`
+        A list of vectors to be transformed.
+    T : :class:`Transformation`
+        The transformation to apply.
+
+    Examples
+    --------
+    >>> vectors = [Vector(1,0,0), (1,2,4), [4,7,1]]
+    >>> T = Rotation.from_axis_and_angle((0,2,0), math.radians(45), point=(4,5,6))
+    >>> vectors_transformed = transform_vectors(vectors, T)
+    """
     return dehomogenize(multiply_matrices(homogenize(vectors, w=0.0), transpose_matrix(T)))
 
 
+def transform_frames(frames, T):
+    """Transform multiple frames with one Transformation.
+
+    Parameters
+    ----------
+    frames : list of :class:`Frame`
+        A list of frames to be transformed.
+    T : :class:`Transformation`
+        The transformation to apply on the frames.
+
+    Examples
+    --------
+    >>> frames = [Frame([1,0,0], [1,2,4], [4,7,1]), [[0,2,0], [5,2,1], [0,2,1]]]
+    >>> T = Rotation.from_axis_and_angle((0,2,0), math.radians(45), point=(4,5,6))
+    >>> transformed_frames = transform_frames(frames, T)
+    """
+    points_and_vectors = homogenize_and_flatten_frames(frames)
+    return dehomogenize_and_unflatten_frames(multiply_matrices(points_and_vectors, transpose_matrix(T)))
+
+
 def transform_points_numpy(points, T):
+    """Transform multiple points with one Transformation using numpy.
+
+    Parameters
+    ----------
+    points : list of :class:`Point`
+        A list of points to be transformed.
+    T : :class:`Transformation`
+        The transformation to apply.
+
+    Examples
+    --------
+    >>> points = [Point(1,0,0), (1,2,4), [4,7,1]]
+    >>> T = Rotation.from_axis_and_angle((0,2,0), math.radians(45), point=(4,5,6))
+    >>> points_transformed = transform_points_numpy(points, T)
+    """
     from numpy import asarray
     T = asarray(T)
     points = homogenize_numpy(points, w=1.0)
@@ -63,10 +128,47 @@ def transform_points_numpy(points, T):
 
 
 def transform_vectors_numpy(vectors, T):
+    """Transform multiple vectors with one Transformation using numpy.
+
+    Parameters
+    ----------
+    vectors : list of :class:`Vector`
+        A list of vectors to be transformed.
+    T : :class:`Transformation`
+        The transformation to apply.
+
+    Examples
+    --------
+    >>> vectors = [Vector(1,0,0), (1,2,4), [4,7,1]]
+    >>> T = Rotation.from_axis_and_angle((0,2,0), math.radians(45), point=(4,5,6))
+    >>> vectors_transformed = transform_vectors_numpy(vectors, T)
+    """
     from numpy import asarray
     T = asarray(T)
     vectors = homogenize_numpy(vectors, w=0.0)
     return dehomogenize_numpy(vectors.dot(T.T))
+
+
+def transform_frames_numpy(frames, T):
+    """Transform multiple frames with one Transformation usig numpy.
+
+    Parameters
+    ----------
+    frames : list of :class:`Frame`
+        A list of frames to be transformed.
+    T : :class:`Transformation`
+        The transformation to apply on the frames.
+
+    Examples
+    --------
+    >>> frames = [Frame([1,0,0], [1,2,4], [4,7,1]), [[0,2,0], [5,2,1], [0,2,1]]]
+    >>> T = Rotation.from_axis_and_angle((0,2,0), math.radians(45), point=(4,5,6))
+    >>> transformed_frames = transform_frames_numpy(frames, T)
+    """
+    from numpy import asarray
+    T = asarray(T)
+    points_and_vectors = homogenize_and_flatten_frames_numpy(frames)
+    return dehomogenize_and_unflatten_frames_numpy(points_and_vectors.dot(T.T))
 
 
 # ==============================================================================
@@ -111,12 +213,12 @@ def dehomogenize(vectors):
 
     Parameters
     ----------
-    vectors : list
+    vectors : list of float
         A list of vectors.
 
     Returns
     -------
-    list
+    list of float
         Dehomogenised vectors.
 
     Examples
@@ -127,7 +229,118 @@ def dehomogenize(vectors):
     return [[x / w, y / w, z / w] if w else [x, y, z] for x, y, z, w in vectors]
 
 
+def homogenize_and_flatten_frames(frames):
+    """Homogenize a list of frames and flatten the 3D list into a 2D list.
+
+    Parameters
+    ----------
+    frames: list of :class:`Frame`
+
+    Returns
+    -------
+    list of list of float
+
+    Examples
+    --------
+    >>> frames = [Frame((1, 1, 1), (0, 1, 0), (1, 0, 0))]
+    >>> homogenize_and_flatten_frames(frames)
+    [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 0.0], [1.0, -0.0, 0.0, 0.0]]
+    """
+    def homogenize_frame(frame):
+        return homogenize([frame[0]], w=1.0) + homogenize([frame[1], frame[2]], w=0.0)
+    return [v for frame in frames for v in homogenize_frame(frame)]
+
+
+def dehomogenize_and_unflatten_frames(points_and_vectors):
+    """Dehomogenize a list of vectors and unflatten the 2D list into a 3D list.
+
+    Parameters
+    ----------
+    points_and_vectors: list of list of float
+        Homogenized points and vectors.
+
+    Returns
+    -------
+    list of list of list of float
+        The frames.
+
+    Examples
+    --------
+    >>> points_and_vectors = [(1., 1., 1., 1.), (0., 1., 0., 0.), (1., 0., 0., 0.)]
+    >>> dehomogenize_and_unflatten_frames(points_and_vectors)
+    [[[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]]]
+    """
+    frames = dehomogenize(points_and_vectors)
+    return [frames[i:i+3] for i in range(0, len(frames), 3)]
+
+
+def homogenize_and_flatten_frames_numpy(frames):
+    """Homogenize a list of frames and flatten the 3D list into a 2D list using numpy.
+
+    The frame consists of a point and 2 orthonormal vectors.
+
+    Parameters
+    ----------
+    frames: list of :class:`Frame`
+
+    Returns
+    -------
+    :class:`numpy.ndarray`
+        An array of points and vectors.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> frames = [Frame((1, 1, 1), (0, 1, 0), (1, 0, 0))]
+    >>> res = homogenize_and_flatten_frames_numpy(frames)
+    >>> np.allclose(res, [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 0.0], [1.0, -0.0, 0.0, 0.0]])
+    True
+    """
+    from numpy import asarray
+    from numpy import tile
+    from numpy import hstack
+    n = len(frames)
+    frames = asarray(frames).reshape(n * 3, 3)
+    extend = tile(asarray([1, 0, 0]).reshape(3, 1), (n, 1))
+    return hstack((frames, extend))
+
+
+def dehomogenize_and_unflatten_frames_numpy(points_and_vectors):
+    """Dehomogenize a list of vectors and unflatten the 2D list into a 3D list.
+
+    Parameters
+    ----------
+    points_and_vectors: list of list of float
+        Homogenized points and vectors.
+
+    Returns
+    -------
+    :class:`numpy.ndarray`
+        The frames.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> points_and_vectors = [(1., 1., 1., 1.), (0., 1., 0., 0.), (1., 0., 0., 0.)]
+    >>> res = dehomogenize_and_unflatten_frames_numpy(points_and_vectors)
+    >>> np.allclose(res, [[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]])
+    True
+    """
+    frames = dehomogenize_numpy(points_and_vectors)
+    return frames.reshape((int(frames.shape[0]/3.), 3, 3))
+
+
 def homogenize_numpy(points, w=1.0):
+    """Dehomogenizes points or vectors.
+
+    Parameters
+    ----------
+    points: list of :class:`Points` or list of :class:`Vectors`
+
+    Returns
+    -------
+    :class:`numpy.ndarray`
+    """
     from numpy import asarray
     from numpy import hstack
     from numpy import ones
@@ -138,10 +351,25 @@ def homogenize_numpy(points, w=1.0):
 
 
 def dehomogenize_numpy(points):
+    """Dehomogenizes points or vectors.
+
+    Parameters
+    ----------
+    points: list of :class:`Points` or list of :class:`Vectors`
+
+    Returns
+    -------
+    :class:`numpy.ndarray`
+    """
     from numpy import asarray
+    from numpy import vectorize
+
+    def func(a):
+        return a if a else 1.
+    func = vectorize(func)
 
     points = asarray(points)
-    return points[:, :-1] / points[:, -1].reshape((-1, 1))
+    return points[:, :-1] / func(points[:, -1]).reshape((-1, 1))
 
 
 # this function will not always work
@@ -288,12 +516,11 @@ def inverse(M):
 
     Returns
     -------
-   list of list of float
+    list of list of float
         The inverted matrix.
 
     Examples
     --------
-    >>> from compas.geometry import Frame
     >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> T = matrix_from_frame(f)
     >>> I = multiply_matrices(T, inverse(T))
@@ -535,5 +762,14 @@ def compose_matrix(scale=None, shear=None, angles=None,
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    pass
+    import math
+    import doctest
+    from compas.geometry import allclose
+    from compas.geometry import matrix_from_frame
+    from compas.geometry import identity_matrix
+    from compas.geometry import Point
+    from compas.geometry import Vector
+    from compas.geometry import Frame
+    from compas.geometry import Transformation
+    from compas.geometry import Rotation
+    doctest.testmod(globs=globals())
