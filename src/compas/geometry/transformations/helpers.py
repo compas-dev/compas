@@ -382,6 +382,36 @@ def local_axes(a, b, c):
     return normalize_vector(u), normalize_vector(v), normalize_vector(w)
 
 
+def correct_axis_vectors(xaxis, yaxis):
+    """Corrects xaxis and yaxis to be unit vectors and orthonormal.
+
+    Parameters
+    ----------
+    xaxis: :class:`Vector` or list of float
+    yaxis: :class:`Vector` or list of float
+
+    Returns
+    -------
+    tuple: (xaxis, yaxis)
+        The corrected axes.
+    
+    Examples
+    --------
+    >>> xaxis = [1, 4, 5]
+    >>> yaxis = [1, 0, -2]
+    >>> xaxis, yaxis = correct_axis_vectors(xaxis, yaxis)
+    >>> allclose(xaxis, [0.1543, 0.6172, 0.7715], tol=0.001)
+    True
+    >>> allclose(yaxis, [0.6929, 0.4891, -0.5298], tol=0.001)
+    True
+    """
+    # TODO use this in Frame
+    xaxis = normalize_vector(xaxis)
+    yaxis = normalize_vector(yaxis)
+    zaxis = normalize_vector(cross_vectors(xaxis, yaxis))
+    yaxis = cross_vectors(zaxis, xaxis)
+    return xaxis, yaxis
+
 # this should be defined somewhere else
 # and should have a python equivalent
 # there is an implementation available in frame
@@ -406,6 +436,17 @@ def local_coords_numpy(origin, uvw, xyz):
     -----
     ``origin`` and ``uvw`` together form the frame of local coordinates.
 
+    Examples
+    --------
+    >>> import numpy as np
+    >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
+    >>> origin, uvw = f.point, [f.xaxis, f.yaxis, f.zaxis]
+    >>> xyz = [Point(2, 3, 5)]
+    >>> rst = local_coords_numpy(origin, uvw, xyz)
+    >>> np.allclose(rst, [[3.72620657, 4.08804176, 1.55025779]])
+    True
+    >>> f.represent_point_in_local_coordinates(xyz[0])
+    Point(3.726, 4.088, 1.550)
     """
     from numpy import asarray
     from scipy.linalg import solve
@@ -440,6 +481,15 @@ def global_coords_numpy(origin, uvw, rst):
     -----
     ``origin`` and ``uvw`` together form the frame of local coordinates.
 
+    Examples
+    --------
+    >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
+    >>> origin, uvw = f.point, [f.xaxis, f.yaxis, f.zaxis]
+    >>> xyz = [Point(2, 3, 5)]
+    >>> rst = local_coords_numpy(origin, uvw, xyz)
+    >>> xyz2 = global_coords_numpy(origin, uvw, rst)
+    >>> numpy.allclose(xyz, xyz2)
+    True
     """
     from numpy import asarray
 
@@ -764,6 +814,7 @@ def compose_matrix(scale=None, shear=None, angles=None,
 if __name__ == "__main__":
     import math
     import doctest
+    import numpy
     from compas.geometry import allclose
     from compas.geometry import matrix_from_frame
     from compas.geometry import identity_matrix
