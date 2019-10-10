@@ -395,6 +395,10 @@ def correct_axis_vectors(xaxis, yaxis):
     tuple: (xaxis, yaxis)
         The corrected axes.
     
+    Raises
+    ------
+    ValueError: If xaxis and yaxis cannot span a plane.
+    
     Examples
     --------
     >>> xaxis = [1, 4, 5]
@@ -408,13 +412,30 @@ def correct_axis_vectors(xaxis, yaxis):
     # TODO use this in Frame
     xaxis = normalize_vector(xaxis)
     yaxis = normalize_vector(yaxis)
-    zaxis = normalize_vector(cross_vectors(xaxis, yaxis))
-    yaxis = cross_vectors(zaxis, xaxis)
+    zaxis = cross_vectors(xaxis, yaxis)
+    if not norm_vector(zaxis):
+        raise ValueError("Xaxis and yaxis cannot span a plane.")
+    yaxis = cross_vectors(normalize_vector(zaxis), xaxis)
     return xaxis, yaxis
 
 # this should be defined somewhere else
 # and should have a python equivalent
 # there is an implementation available in frame
+
+def local_coords(frame, xyz):
+    """Convert global coordinates to local coordinates.
+
+    Parameters
+    ----------
+    frame : :class:`Frame` or [point, xaxis, yaxis]
+        The local coordinate system.
+    xyz : array-like
+        The global coordinates of the points to convert.
+    """
+    #T = Transformation.change_basis(Frame.worldXY(), self)
+    pass
+
+
 def local_coords_numpy(origin, uvw, xyz):
     """Convert global coordinates to local coordinates.
 
