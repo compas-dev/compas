@@ -19,7 +19,6 @@ from compas.geometry.basic import multiply_matrices
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE
 from compas.geometry.transformations import _NEXT_SPEC
-from compas.geometry.transformations import inverse
 
 __all__ = [
     'matrix_determinant',
@@ -410,14 +409,11 @@ def matrix_from_frame_to_frame(frame_from, frame_to):
 
     Examples
     --------
-    >>> from compas.geometry import Frame
     >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
     >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    >>> T = matrix_from_frame_to_frame(frame_from, frame_to)
-    >>> f1.transform(T)
-    >>> f1 == f2
-    True
+    >>> T = matrix_from_frame_to_frame(f1, f2)
     """
+    from compas.geometry.transformations import inverse
     T1 = matrix_from_frame(frame_from)
     T2 = matrix_from_frame(frame_to)
     return multiply_matrices(T2, inverse(T1))
@@ -439,16 +435,9 @@ def matrix_change_basis(frame_from, frame_to):
     >>> from compas.geometry import Point, Frame
     >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
     >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    >>> T = change_basis(f1, f2)
-    >>> p_f1 = Point(1, 1, 1) # point in f1
-    >>> p_f2 = p_f1.transformed(T) # same point represented in f2
-    >>> p_w1 = f1.represent_point_in_global_coordinates(p_f1) # point in world coordinates
-    >>> p_w2 = f2.represent_point_in_global_coordinates(p_f2) # point in world coordinates
-    >>> print(p_w1)
-    Point(0.733, 2.492, 3.074)
-    >>> print(p_w2)
-    Point(0.733, 2.492, 3.074)
+    >>> T = matrix_change_basis(f1, f2)
     """
+    from compas.geometry.transformations import inverse
     T1 = matrix_from_frame(frame_from)
     T2 = matrix_from_frame(frame_to)
     return multiply_matrices(inverse(T2), T1)
@@ -1337,5 +1326,7 @@ def axis_angle_from_quaternion(q):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    pass
+    import doctest
+    from compas.geometry import Frame
+    from compas.geometry import Transformation
+    doctest.testmod(globs=globals())
