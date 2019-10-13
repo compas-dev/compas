@@ -22,6 +22,7 @@ _NEXT_SPEC = [1, 2, 0, 1]
 # todo: separate the numpy version inot separate modules
 
 from .helpers import *
+from .coordinate_systems import *
 from .matrices import *
 from .transformations import *
 
