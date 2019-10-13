@@ -41,13 +41,12 @@ def correct_axes(xaxis, yaxis):
     --------
     >>> xaxis = [1, 4, 5]
     >>> yaxis = [1, 0, -2]
-    >>> xaxis, yaxis = correct_axis_vectors(xaxis, yaxis)
+    >>> xaxis, yaxis = correct_axes(xaxis, yaxis)
     >>> allclose(xaxis, [0.1543, 0.6172, 0.7715], tol=0.001)
     True
     >>> allclose(yaxis, [0.6929, 0.4891, -0.5298], tol=0.001)
     True
     """
-    # TODO use this in Frame
     xaxis = normalize_vector(xaxis)
     yaxis = normalize_vector(yaxis)
     zaxis = cross_vectors(xaxis, yaxis)
