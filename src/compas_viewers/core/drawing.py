@@ -197,9 +197,7 @@ def draw_circle(circle, color=None, n=100):
 
     u = -1.0, 0.0, a
     v = 0.0, -1.0, b
-    w = cross_vectors(u, v)
-
-    uvw = [normalize_vector(u), normalize_vector(v), normalize_vector(w)]
+    frame = [center, normalize_vector(u), normalize_vector(v)]
 
     color = color if color else (1.0, 0.0, 0.0, 0.5)
     sector = 2 * pi  / n
@@ -212,7 +210,8 @@ def draw_circle(circle, color=None, n=100):
         x = radius * cos(a)
         y = radius * sin(a)
         z = 0
-        x, y, z = global_coords_numpy(center, uvw, [[x, y, z]]).tolist()[0]
+
+        x, y, z = global_coords_numpy(frame, [[x, y, z]]).tolist()[0]
         glVertex3f(x, y, z)
     glEnd()
 
@@ -222,7 +221,7 @@ def draw_circle(circle, color=None, n=100):
         x = radius * cos(a)
         y = radius * sin(a)
         z = 0
-        x, y, z = global_coords_numpy(center, uvw, [[x, y, z]]).tolist()[0]
+        x, y, z = global_coords_numpy(frame, [[x, y, z]]).tolist()[0]
         glVertex3f(x, y, z)
     glEnd()
 

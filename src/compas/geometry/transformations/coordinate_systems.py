@@ -13,7 +13,7 @@ from compas.geometry.transformations.helpers import transform_points
 
 __all__ = [
     'local_axes',
-    'correct_axis_vectors',
+    'correct_axes',
     'local_coords',
     'local_coords_numpy',
     'global_coords',
@@ -27,12 +27,12 @@ def local_axes(a, b, c):
     # TODO: is this used somewhere?
     u = b - a
     v = c - a
-    u, v = correct_axis_vectors(v, v)
+    u, v = correct_axes(u, v)
     w = cross_vectors(u, v)
     return u, v, w
 
 
-def correct_axis_vectors(xaxis, yaxis):
+def correct_axes(xaxis, yaxis):
     """Corrects xaxis and yaxis to be unit vectors and orthonormal.
 
     Parameters
@@ -98,7 +98,7 @@ def local_coords(frame, xyz):
     return transform_points(xyz, T)
 
 
-def local_coords_numpy(origin, uvw, xyz):
+def local_coords_numpy(frame, xyz):
     """Convert global coordinates to local coordinates.
 
     Parameters
@@ -122,16 +122,17 @@ def local_coords_numpy(origin, uvw, xyz):
     Examples
     --------
     >>> import numpy as np
-    >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
-    >>> origin, uvw = f.point, [f.xaxis, f.yaxis, f.zaxis]
+    >>> frame = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(2, 3, 5)]
-    >>> rst = local_coords_numpy(origin, uvw, xyz)
+    >>> rst = local_coords_numpy(frame, xyz)
     >>> np.allclose(rst, [[3.726, 4.088, 1.550]], rtol=1e-3)
     True
     """
     from numpy import asarray
     from scipy.linalg import solve
 
+    origin = frame[0]
+    uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
     uvw = asarray(uvw).T
     xyz = asarray(xyz).T - asarray(origin).reshape((-1, 1))
     rst = solve(uvw, xyz)
@@ -166,7 +167,7 @@ def global_coords(frame, xyz):
     return transform_points(xyz, T)
 
 
-def global_coords_numpy(origin, uvw, rst):
+def global_coords_numpy(frame, rst):
     """Convert local coordinates to global (world) coordinates.
 
     Parameters
@@ -189,14 +190,16 @@ def global_coords_numpy(origin, uvw, rst):
 
     Examples
     --------
-    >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
-    >>> origin, uvw = f.point, [f.xaxis, f.yaxis, f.zaxis]
+    >>> frame = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> rst = [Point(3.726, 4.088, 1.550)]
-    >>> xyz = global_coords_numpy(origin, uvw, rst)
+    >>> xyz = global_coords_numpy(frame, rst)
     >>> numpy.allclose(xyz, [[2.000, 3.000, 5.000]], rtol=1e-3)
     True
     """
     from numpy import asarray
+
+    origin = frame[0]
+    uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
 
     uvw = asarray(uvw).T
     rst = asarray(rst).T
