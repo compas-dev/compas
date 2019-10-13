@@ -235,13 +235,10 @@ class Transformation(object):
             >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.change_basis(f1, f2)
             >>> p_f1 = Point(1, 1, 1) # point in f1
-            >>> p_f2 = p_f1.transformed(T) # same point represented in f2
-            >>> p_w1 = f1.represent_point_in_global_coordinates(p_f1) # point in world coordinates
-            >>> p_w2 = f2.represent_point_in_global_coordinates(p_f2) # point in world coordinates
-            >>> print(p_w1)
-            Point(0.733, 2.492, 3.074)
-            >>> print(p_w2)
-            Point(0.733, 2.492, 3.074)
+            >>> p_f1.transformed(T) # point represented in f2
+            Point(1.395, 0.955, 1.934)
+            >>> f1.global_coords(p_f1, f2)
+            Point(1.395, 0.955, 1.934)
         """
 
         T1 = cls.from_frame(frame_from)
