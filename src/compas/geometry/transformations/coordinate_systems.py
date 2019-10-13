@@ -90,10 +90,8 @@ def local_coords_numpy(frame, xyz):
 
     Parameters
     ----------
-    origin : array-like
-        The global (XYZ) coordinates of the origin of the local coordinate system.
-    uvw : array-like
-        The global coordinate difference vectors of the axes of the local coordinate system.
+    frame : :class:`Frame` or [point, xaxis, yaxis]
+        The local coordinate system.
     xyz : array-like
         The global coordinates of the points to convert.
 
@@ -101,10 +99,6 @@ def local_coords_numpy(frame, xyz):
     -------
     array
         The coordinates of the given points in the local coordinate system.
-
-    Notes
-    -----
-    ``origin`` and ``uvw`` together form the frame of local coordinates.
 
     Examples
     --------
@@ -160,10 +154,8 @@ def global_coords_numpy(frame, rst):
 
     Parameters
     ----------
-    origin : array-like
-        The origin of the local coordinate system.
-    uvw : array-like
-        The coordinate axes of the local coordinate system.
+    frame : :class:`Frame` or [point, xaxis, yaxis]
+        The local coordinate system.
     rst : array-like
         The coordinates of the points wrt the local coordinate system.
 
