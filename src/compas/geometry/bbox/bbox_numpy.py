@@ -62,7 +62,7 @@ def oriented_bounding_box_numpy(points):
     Examples
     --------
     Generate a random set of points with
-    :math:`x in [0, 10]`, :math:`y in [0, 1]` and :math:`z in [0, 3]`.
+    :math:`x \\in [0, 10]`, :math:`y \\in [0, 1]` and :math:`z \\in [0, 3]`.
     Add the corners of the box such that we now the volume is supposed to be :math:`30.0`.
 
     >>> points = numpy.random.rand(10000, 3)
