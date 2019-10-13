@@ -649,7 +649,7 @@ class Frame(Primitive):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    def local_coordinates(self, coords_wcs):
+    def local_coords(self, coords_wcs):
         """Returns the object's coordinates in the frame's local coordinate system.
 
         Parameters
@@ -671,8 +671,8 @@ class Frame(Primitive):
         >>> from compas.geometry import Point, Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw = Point(2, 2, 2)
-        >>> pl = f.local_coordinates(pw)
-        >>> f.global_coordinates(pl)
+        >>> pl = f.local_coords(pw)
+        >>> f.global_coords(pl)
         Point(2.000, 2.000, 2.000)
         """
         T = Transformation.change_basis(Frame.worldXY(), self)
@@ -682,7 +682,7 @@ class Frame(Primitive):
         else:
             return coords_wcs.transformed(T)
 
-    def global_coordinates(self, coords_lcs):
+    def global_coords(self, coords_lcs):
         """Returns the frame's object's coordinates in the global coordinate system.
 
         Parameters
@@ -704,8 +704,8 @@ class Frame(Primitive):
         >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pl = Point(1.632, -0.090, 0.573)
-        >>> pw = f.global_coordinates(pl)
-        >>> f.local_coordinates(pw)
+        >>> pw = f.global_coords(pl)
+        >>> f.local_coords(pw)
         Point(1.632, -0.090, 0.573)
         """
         T = Transformation.change_basis(self, Frame.worldXY())
