@@ -649,13 +649,16 @@ class Frame(Primitive):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    def local_coords(self, coords_wcs):
+    def local_coords(self, coords_rcs, rcs=None):
         """Returns the object's coordinates in the frame's local coordinate system.
 
         Parameters
         ----------
-        coords_wcs : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
-            A coordinate object in world XY.
+        coords_rcs : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
+            Coordinates in world XY or rcs.
+        rcs : :class:`Frame`, optional
+            The other coordinate system, defaults to world XY. If rcs is not `None`,
+            coords_rcs are assumed to be in rcs.
 
         Returns
         -------
@@ -675,20 +678,23 @@ class Frame(Primitive):
         >>> f.global_coords(pl)
         Point(2.000, 2.000, 2.000)
         """
-        T = Transformation.change_basis(Frame.worldXY(), self)
-        if isinstance(coords_wcs, list):
-            point = Point(*coords_wcs)
-            return point.transformed(T)
+        if not rcs:
+            rcs = Frame.worldXY()
+        T = Transformation.change_basis(rcs, self)
+        if isinstance(coords_rcs, list):
+            return Point(*coords_rcs).transformed(T)
         else:
-            return coords_wcs.transformed(T)
+            return coords_rcs.transformed(T)
 
-    def global_coords(self, coords_lcs):
+    def global_coords(self, coords_lcs, rcs=None):
         """Returns the frame's object's coordinates in the global coordinate system.
 
         Parameters
         ----------
-       coords_lcs : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
+        coords_lcs : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
             A coordinate object in the frames coordinate system.
+        rcs : :class:`Frame`, optional
+            The other coordinate system, defaults to world XY.
 
         Returns
         -------
@@ -708,10 +714,11 @@ class Frame(Primitive):
         >>> f.local_coords(pw)
         Point(1.632, -0.090, 0.573)
         """
-        T = Transformation.change_basis(self, Frame.worldXY())
+        if not rcs:
+            rcs = Frame.worldXY()
+        T = Transformation.change_basis(self, rcs)
         if isinstance(coords_lcs, list):
-            point = Point(*coords_lcs)
-            return point.transformed(T)
+            return Point(*coords_lcs).transformed(T)
         else:
             return coords_lcs.transformed(T)
 
