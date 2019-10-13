@@ -250,5 +250,3 @@ if __name__ == "__main__":
     import doctest
     doctest.testmod(globs=globals())
 
-    coords = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]]
-    print(oriented_bounding_box_numpy(coords).tolist())
