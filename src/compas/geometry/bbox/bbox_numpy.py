@@ -15,7 +15,7 @@ from numpy import sum
 from scipy.spatial import ConvexHull
 # from scipy.spatial import QhullError
 
-from compas.geometry import local_axes
+from compas.geometry import correct_axes
 from compas.geometry import local_coords_numpy
 from compas.geometry import global_coords_numpy
 
@@ -85,8 +85,8 @@ def oriented_bounding_box_numpy(points):
     >>> a = length_vector(subtract_vectors(bbox[1], bbox[0]))
     >>> b = length_vector(subtract_vectors(bbox[3], bbox[0]))
     >>> c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    >>> a * b * c
-    30.0
+    >>> allclose([a * b * c], [30.])
+    True
 
     """
     points = asarray(points)
@@ -112,9 +112,10 @@ def oriented_bounding_box_numpy(points):
     # this can be vectorised!
     for simplex in hull.simplices:
         a, b, c = points[simplex]
-        uvw = local_axes(a, b, c)
+        u, v = correct_axes(b - a, c - a)
         xyz = points[hull.vertices]
-        rst = local_coords_numpy(a, uvw, xyz)
+        frame = [a, u, v]
+        rst = local_coords_numpy(frame, xyz)
         dr, ds, dt = ptp(rst, axis=0)
         v = dr * ds * dt
 
@@ -131,7 +132,7 @@ def oriented_bounding_box_numpy(points):
                 [rmax, smax, tmax],
                 [rmin, smax, tmax],
             ]
-            bbox = global_coords_numpy(a, uvw, bbox)
+            bbox = global_coords_numpy(frame, bbox)
             volume = v
 
     return bbox
@@ -246,28 +247,5 @@ if __name__ == "__main__":
     from compas.geometry import transform_points_numpy
     from compas.geometry import allclose
 
-    points = numpy.random.rand(10000, 3)
-    bottom = numpy.array([[0.0,0.0,0.0], [1.0,0.0,0.0], [0.0,1.0,0.0], [1.0,1.0,0.0]])
-    top = numpy.array([[0.0, 0.0, 1.0], [1.0, 0.0, 1.0], [0.0, 1.0, 1.0], [1.0, 1.0, 1.0]])
-    points = numpy.concatenate((points, bottom, top))
-    points[:, 0] *= 10
-    points[:, 2] *= 3
-
-    bbox = bounding_box(points)
-    a = length_vector(subtract_vectors(bbox[1], bbox[0]))
-    b = length_vector(subtract_vectors(bbox[3], bbox[0]))
-    c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    v1 = a * b * c
-
-    R = Rotation.from_axis_and_angle([1.0, 1.0, 0.0], 0.5 * 3.14159)
-    points = transform_points_numpy(points, R.matrix)
-
-    bbox = oriented_bounding_box_numpy(points)
-
-    a = length_vector(subtract_vectors(bbox[1], bbox[0]))
-    b = length_vector(subtract_vectors(bbox[3], bbox[0]))
-    c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    v2 = a * b * c
-
-    print(v1, v2)
-    print(allclose([v1], [v2]))
+    import doctest
+    doctest.testmod(globs=globals())

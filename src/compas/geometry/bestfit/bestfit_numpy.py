@@ -151,7 +151,8 @@ def bestfit_circle_numpy(points):
 
     """
     o, uvw, _ = pca_numpy(points)
-    rst = local_coords_numpy(o, uvw, points)
+    frame = [o, uvw[1], uvw[2]]
+    rst = local_coords_numpy(frame, points)
     x = rst[:, 0]
     y = rst[:, 1]
 
@@ -172,7 +173,7 @@ def bestfit_circle_numpy(points):
 
     print(residu)
 
-    xyz = global_coords_numpy(o, uvw, [[c[0], c[1], 0.0]])[0]
+    xyz = global_coords_numpy(frame, [[c[0], c[1], 0.0]])[0]
 
     o = xyz.tolist()
     u, v, w = uvw.tolist()
