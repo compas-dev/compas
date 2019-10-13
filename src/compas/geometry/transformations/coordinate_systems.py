@@ -150,6 +150,7 @@ def global_coords(frame, xyz):
     >>> Point(*global_coords(f, xyz)[0])
     Point(2.000, 3.000, 5.000)
     """
+    from compas.geometry.primitives import Frame
     T = matrix_change_basis(frame, Frame.worldXY())
     return transform_points(xyz, T)
 
