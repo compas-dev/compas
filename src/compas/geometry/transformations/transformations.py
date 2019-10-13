@@ -531,7 +531,7 @@ def project_point_plane(point, plane):
     >>> point = [3.0, 3.0, 3.0]
     >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])  # the XY plane
     >>> project_point_plane(point, plane)
-    [3.0, 3.0, 3.0]
+    [3.0, 3.0, 0.0]
 
     """
     base, normal = plane
@@ -773,7 +773,7 @@ def reflect_line_triangle(line, triangle, tol=1e-6):
     >>> triangle = [1.0, 0, 0], [-1.0, 0, 0], [0, 0, 1.0]
     >>> line = [-1, 1, 0], [-0.5, 0.5, 0]
     >>> reflect_line_triangle(line, triangle)
-    ([0.0, 0.0, 0], [1.0, 1.0, 0])
+    ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
 
     """
     x = intersection_line_triangle(line, triangle, tol=tol)
@@ -827,32 +827,29 @@ def orient_points(points, reference_plane, target_plane):
 
     Examples
     --------
-    .. code-block:: python
-
-        from compas.geometry import orient_points
-        from compas.geometry import intersection_segment_segment_xy
-
-        refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
-        tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
-
-        points = [
-            [0.288675, 0.288675, 1.1547],
-            [0.866025, 0.866025, 0.0],
-            [1.077350, 0.077350, 0.57735],
-            [0.077350, 1.077350, 0.57735]
+    >>> from compas.geometry import orient_points
+    >>> from compas.geometry import intersection_segment_segment_xy
+    >>>
+    >>> refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
+    >>> tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
+    >>>
+    >>> points = [\
+            [0.288675, 0.288675, 1.1547],\
+            [0.866025, 0.866025, 0.0],\
+            [1.077350, 0.077350, 0.57735],\
+            [0.077350, 1.077350, 0.57735]\
         ]
-
-        points = orient_points(points, refplane, tarplane)
-
-        ab = points[0], points[1]
-        cd = points[2], points[3]
-
-        point = intersection_segment_segment_xy(ab, cd)
-
-        points = orient_points([point], tarplane, refplane)
-        
-        print(points[0])
-
+    >>>
+    >>> points = orient_points(points, refplane, tarplane)
+    >>>
+    >>> ab = points[0], points[1]
+    >>> cd = points[2], points[3]
+    >>>
+    >>> point = intersection_segment_segment_xy(ab, cd)
+    >>>
+    >>> points = orient_points([point], tarplane, refplane)
+    >>> Point(*points[0])
+    Point(0.577, 0.577, 0.577)
     """
     axis = cross_vectors(reference_plane[1], target_plane[1])
     angle = angle_vectors(reference_plane[1], target_plane[1])
@@ -873,42 +870,8 @@ def orient_points(points, reference_plane, target_plane):
 
 if __name__ == "__main__":
 
-    from compas.geometry import orient_points
-    from compas.geometry import intersection_segment_segment_xy
-
-
-    refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
-    tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
-
-    points = [
-        [0.288675, 0.288675, 1.1547],
-        [0.866025, 0.866025, 0.0],
-        [1.077350, 0.077350, 0.57735],
-        [0.077350, 1.077350, 0.57735]
-    ]
-
-    points = orient_points(points, refplane, tarplane)
-
-    ab = points[0], points[1]
-    cd = points[2], points[3]
-
-    point = intersection_segment_segment_xy(ab, cd)
-
-    points = orient_points([point], tarplane, refplane)
-    
-    print(points[0])
-
-    # points = [
-    #     [ 1.0,  1.0, 0.0],
-    #     [-1.0,  1.0, 0.0],
-    #     [-1.0, -1.0, 0.0],
-    #     [ 1.0, -1.0, 0.0]
-    # ]
-
-    # refplane = ([0, 0, 0], [0, 0, -1.0])
-    # tarplane = ([0, 0, 0], [0, 0, 1.0])
-
-    # points = orient_points(points, refplane, tarplane)
-
-    # print(points)
+    import doctest
+    from compas.geometry import allclose
+    from compas.geometry import Point
+    doctest.testmod(globs=globals())
 
