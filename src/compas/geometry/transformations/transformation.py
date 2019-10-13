@@ -209,13 +209,10 @@ class Transformation(object):
             >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
             >>> T = Transformation.change_basis(f1, f2)
             >>> p_f1 = Point(1, 1, 1) # point in f1
-            >>> p_f2 = p_f1.transformed(T) # same point represented in f2
-            >>> p_w1 = f1.represent_point_in_global_coordinates(p_f1) # point in world coordinates
-            >>> p_w2 = f2.represent_point_in_global_coordinates(p_f2) # point in world coordinates
-            >>> print(p_w1)
-            Point(0.733, 2.492, 3.074)
-            >>> print(p_w2)
-            Point(0.733, 2.492, 3.074)
+            >>> p_f1.transformed(T) # point represented in f2
+            Point(1.395, 0.955, 1.934)
+            >>> f1.global_coords(p_f1, f2)
+            Point(1.395, 0.955, 1.934)
         """
 
         T1 = cls.from_frame(frame_from)
@@ -328,37 +325,6 @@ if __name__ == "__main__":
     from compas.geometry import Rotation
     from compas.geometry import Scale
     from compas.geometry import Frame
-
-    # F1 = Frame([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
-    # F2 = Frame([0.0, 0.0, 0.0], [1.0, -1.0, 0.0], [1.0, 1.0, 0.0])
-
-    # F3 = Frame([1.0, 1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
-    # F4 = Frame([1.0, 1.0, 0.0], [1.0, -1.0, 0.0], [1.0, 1.0, 0.0])
-
-    # T1 = Transformation.from_frame(F1)
-    # T2 = Transformation.from_frame(F2)
-    # T3 = Transformation.from_frame(F3)
-    # T4 = Transformation.from_frame(F4)
-
-    # R1 = Rotation.from_frame(F1)
-    # R2 = Rotation.from_frame(F2)
-    # R3 = Rotation.from_frame(F3)
-    # R4 = Rotation.from_frame(F4)
-
-    # print(R1)
-    # print(R2)
-    # print(R3)
-    # print(R4)
-
-    # # print(T1)
-    # print(T2)
-    # # print(T3)
-    # print(T4)
-
-    # # print(T1.inverse())
-    # print(T2.inverse())
-    # # print(T3.inverse())
-    # print(T4.inverse())
 
     import doctest
     doctest.testmod(globs=globals())
