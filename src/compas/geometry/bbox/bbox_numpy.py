@@ -15,7 +15,7 @@ from numpy import sum
 from scipy.spatial import ConvexHull
 # from scipy.spatial import QhullError
 
-from compas.geometry import correct_axes
+from compas.geometry import local_axes
 from compas.geometry import local_coords_numpy
 from compas.geometry import global_coords_numpy
 
@@ -62,7 +62,7 @@ def oriented_bounding_box_numpy(points):
     Examples
     --------
     Generate a random set of points with
-    :math:`x \in [0, 10]`, :math:`y \in [0, 1]` and :math:`z \in [0, 3]`.
+    :math:`x in [0, 10]`, :math:`y in [0, 1]` and :math:`z in [0, 3]`.
     Add the corners of the box such that we now the volume is supposed to be :math:`30.0`.
 
     >>> points = numpy.random.rand(10000, 3)
@@ -112,9 +112,9 @@ def oriented_bounding_box_numpy(points):
     # this can be vectorised!
     for simplex in hull.simplices:
         a, b, c = points[simplex]
-        u, v = correct_axes(b - a, c - a)
+        uvw = local_axes(a, b, c)
         xyz = points[hull.vertices]
-        frame = [a, u, v]
+        frame = [a, uvw[0], uvw[1]]
         rst = local_coords_numpy(frame, xyz)
         dr, ds, dt = ptp(rst, axis=0)
         v = dr * ds * dt
@@ -192,7 +192,7 @@ def oriented_bounding_box_xy_numpy(points):
         p1 = points[simplex[1]]
 
         # s direction
-        s  = p1 - p0
+        s = p1 - p0
         sl = sum(s ** 2) ** 0.5
         su = s / sl
         vn = xy_hull - p0
@@ -205,7 +205,7 @@ def oriented_bounding_box_xy_numpy(points):
         b1 = p0 + sc[scmax] * su
 
         # t direction
-        t  = array([-s[1], s[0]])
+        t = array([-s[1], s[0]])
         tl = sum(t ** 2) ** 0.5
         tu = t / tl
         vn = xy_hull - p0
@@ -249,3 +249,6 @@ if __name__ == "__main__":
 
     import doctest
     doctest.testmod(globs=globals())
+
+    coords = [[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]]
+    print(oriented_bounding_box_numpy(coords).tolist())

@@ -12,12 +12,20 @@ from compas.geometry.transformations.matrices import matrix_change_basis
 from compas.geometry.transformations.helpers import transform_points
 
 __all__ = [
+    'local_axes',
     'correct_axes',
     'local_coords',
     'local_coords_numpy',
     'global_coords',
     'global_coords_numpy',
 ]
+
+def local_axes(a, b, c):
+    u = b - a
+    v = c - a
+    w = cross_vectors(u, v)
+    v = cross_vectors(w, u)
+    return normalize_vector(u), normalize_vector(v), normalize_vector(w)
 
 
 def correct_axes(xaxis, yaxis):
