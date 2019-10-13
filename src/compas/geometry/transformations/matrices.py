@@ -15,6 +15,8 @@ from compas.geometry.basic import multiply_matrix_vector
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import allclose
 from compas.geometry.basic import multiply_matrices
+from compas.geometry.basic import transpose_matrix
+from compas.geometry.basic import norm_vector
 
 from compas.geometry.transformations import _EPS
 from compas.geometry.transformations import _SPEC2TUPLE

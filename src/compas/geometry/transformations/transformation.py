@@ -244,7 +244,7 @@ class Transformation(object):
         T1 = cls.from_frame(frame_from)
         T2 = cls.from_frame(frame_to)
 
-        return cls(multiply_matrices(inverse(T2.matrix), T1.matrix))
+        return cls(multiply_matrices(matrix_inverse(T2.matrix), T1.matrix))
 
     def inverse(self):
         """Returns the inverse transformation.
