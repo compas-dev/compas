@@ -21,7 +21,7 @@ from compas.geometry.transformations.matrices import matrix_from_translation
 from compas.geometry.transformations.matrices import matrix_from_euler_angles
 from compas.geometry.transformations.matrices import matrix_from_shear_entries
 from compas.geometry.transformations.matrices import matrix_from_scale_factors
-
+from compas.geometry.transformations.matrices import matrix_change_basis
 
 __all__ = [
     'transform_points',
@@ -418,9 +418,7 @@ def correct_axis_vectors(xaxis, yaxis):
     yaxis = cross_vectors(normalize_vector(zaxis), xaxis)
     return xaxis, yaxis
 
-# this should be defined somewhere else
-# and should have a python equivalent
-# there is an implementation available in frame
+
 
 def local_coords(frame, xyz):
     """Convert global coordinates to local coordinates.
@@ -431,9 +429,24 @@ def local_coords(frame, xyz):
         The local coordinate system.
     xyz : array-like
         The global coordinates of the points to convert.
+    
+    Returns
+    -------
+    list of list of float
+        The coordinates of the given points in the local coordinate system.
+    
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
+    >>> xyz = [Point(2, 3, 5)]
+    >>> Point(*local_coords(f, xyz)[0])
+    Point(3.726, 4.088, 1.550)
     """
-    #T = Transformation.change_basis(Frame.worldXY(), self)
-    pass
+    T = matrix_change_basis(Frame.worldXY(), frame)
+    return transform_points(xyz, T)
+
 
 
 def local_coords_numpy(origin, uvw, xyz):
@@ -464,10 +477,8 @@ def local_coords_numpy(origin, uvw, xyz):
     >>> origin, uvw = f.point, [f.xaxis, f.yaxis, f.zaxis]
     >>> xyz = [Point(2, 3, 5)]
     >>> rst = local_coords_numpy(origin, uvw, xyz)
-    >>> np.allclose(rst, [[3.72620657, 4.08804176, 1.55025779]])
+    >>> np.allclose(rst, [[3.726, 4.088, 1.550]], rtol=1e-3)
     True
-    >>> f.represent_point_in_local_coordinates(xyz[0])
-    Point(3.726, 4.088, 1.550)
     """
     from numpy import asarray
     from scipy.linalg import solve
@@ -478,9 +489,34 @@ def local_coords_numpy(origin, uvw, xyz):
     return rst.T
 
 
-# this should be defined somewhere else
-# and should have a python equivalent
-# there is an implementation available in frame
+def global_coords(frame, xyz):
+    """Convert local coordinates to global coordinates.
+
+    Parameters
+    ----------
+    frame : :class:`Frame` or [point, xaxis, yaxis]
+        The local coordinate system.
+    xyz : list of `Points` or list of list of float
+        The global coordinates of the points to convert.
+    
+    Returns
+    -------
+    list of list of float
+        The coordinates of the given points in the local coordinate system.
+    
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
+    >>> xyz = [Point(3.726, 4.088, 1.550)]
+    >>> Point(*global_coords(f, xyz)[0])
+    Point(2.000, 3.000, 5.000)
+    """
+    T = matrix_change_basis(frame, Frame.worldXY())
+    return transform_points(xyz, T)
+
+
 def global_coords_numpy(origin, uvw, rst):
     """Convert local coordinates to global (world) coordinates.
 
@@ -506,10 +542,9 @@ def global_coords_numpy(origin, uvw, rst):
     --------
     >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> origin, uvw = f.point, [f.xaxis, f.yaxis, f.zaxis]
-    >>> xyz = [Point(2, 3, 5)]
-    >>> rst = local_coords_numpy(origin, uvw, xyz)
-    >>> xyz2 = global_coords_numpy(origin, uvw, rst)
-    >>> numpy.allclose(xyz, xyz2)
+    >>> rst = [Point(3.726, 4.088, 1.550)]
+    >>> xyz = global_coords_numpy(origin, uvw, rst)
+    >>> numpy.allclose(xyz, [[2.000, 3.000, 5.000]], rtol=1e-3)
     True
     """
     from numpy import asarray
