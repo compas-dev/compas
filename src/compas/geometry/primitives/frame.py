@@ -649,180 +649,71 @@ class Frame(Primitive):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    def represent_point_in_local_coordinates(self, point):
-        """Represents a point in the frame's local coordinate system.
+    def local_coordinates(self, coords_wcs):
+        """Returns the object's coordinates in the frame's local coordinate system.
 
         Parameters
         ----------
-        point : :obj:`list` of :obj:`float` or :class:`Point`
-            A point in world XY.
+        coords_wcs : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
+            A coordinate object in world XY.
 
         Returns
         -------
         :class:`Point`
             A point in the local coordinate system of the frame.
 
+        Notes
+        -----
+        If you pass a list of float, it is assumed to represent a point.
+
         Examples
         --------
         >>> from compas.geometry import Point, Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = Point(2, 2, 2)
-        >>> pf = f.represent_point_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_point_in_global_coordinates(pf)
-        >>> allclose(pw1, pw2)
-        True
-
+        >>> pw = Point(2, 2, 2)
+        >>> pl = f.local_coordinates(pw)
+        >>> f.global_coordinates(pl)
+        Point(2.000, 2.000, 2.000)
         """
-        point = Point(*point)
         T = Transformation.change_basis(Frame.worldXY(), self)
-        return point.transformed(T)
+        if isinstance(coords_wcs, list):
+            point = Point(*coords_wcs)
+            return point.transformed(T)
+        else:
+            return coords_wcs.transformed(T)
 
-    def represent_point_in_global_coordinates(self, point):
-        """Represents a point from local coordinates in the world coordinate system.
-
-        Parameters
-        ----------
-        point : :obj:`list` of :obj:`float` or :class:`Point`
-            A point in local coordinates.
-
-        Returns
-        -------
-        :class:`Point`
-            A point in the world coordinate system.
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = [2, 2, 2]
-        >>> pf = f.represent_point_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_point_in_global_coordinates(pf)
-        >>> allclose(pw1, pw2)
-        True
-
-        """
-        point = Point(*point)
-        T = Transformation.change_basis(self, Frame.worldXY())
-        return point.transformed(T)
-
-    def represent_vector_in_local_coordinates(self, vector):
-        """Represents a vector in the frame's local coordinate system.
+    def global_coordinates(self, coords_lcs):
+        """Returns the frame's object's coordinates in the global coordinate system.
 
         Parameters
         ----------
-        vector : :obj:`list` of :obj:`float` or :class:`Vector`
-            A vector in world XY.
+       coords_lcs : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
+            A coordinate object in the frames coordinate system.
 
         Returns
         -------
         :class:`Vector`
             A vector in the local coordinate system of the frame.
 
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = [2, 2, 2]
-        >>> pf = f.represent_vector_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_vector_in_global_coordinates(pf)
-        >>> allclose(pw1, pw2)
-        True
-
-        """
-        vector = Vector(*vector)
-        T = Transformation.change_basis(Frame.worldXY(), self)
-        return vector.transformed(T)
-
-    def represent_vector_in_global_coordinates(self, vector):
-        """Represents a vector in local coordinates in the world coordinate system.
-
-        Parameters
-        ----------
-        vector: :obj:`list` of :obj:`float` or :class:`Vector`
-            A vector in local coordinates.
-
-        Returns
-        -------
-        :class:`Vector`
-            A vector in the world coordinate system.
+        Notes
+        -----
+        If you pass a list of float, it is assumed to represent a point.
 
         Examples
         --------
         >>> from compas.geometry import Frame
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = [2, 2, 2]
-        >>> pf = f.represent_vector_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_vector_in_global_coordinates(pf)
-        >>> allclose(pw1, pw2)
-        True
-
-        """
-        vector = Vector(*vector)
-        T = Transformation.change_basis(self, Frame.worldXY())
-        return vector.transformed(T)
-
-    def represent_frame_in_local_coordinates(self, frame):
-        """Represents another frame in the frame's local coordinate system.
-
-        Parameters
-        ----------
-        frame: :class:`Frame`
-            A frame in the world coordinate system.
-
-        Returns
-        -------
-        :class:`Frame`
-            A frame in the frame's local coordinate system.
-
-        Examples
-        --------
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
-        >>> pf = f.represent_frame_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_frame_in_global_coordinates(pf)
-        >>> allclose(pw1.point, pw2.point)
-        True
-        >>> allclose(pw1.xaxis, pw2.xaxis)
-        True
-        >>> allclose(pw1.yaxis, pw2.yaxis)
-        True
-
-        """
-        T = Transformation.change_basis(Frame.worldXY(), self)
-        return frame.transformed(T)
-
-
-    def represent_frame_in_global_coordinates(self, frame):
-        """Represents another frame in the local coordinate system in the world
-            coordinate system.
-
-        Parameters
-        ----------
-        frame: :class:`Frame`
-            A frame in the local coordinate system.
-
-        Returns
-        -------
-        :class:`Frame`
-            A frame in the world coordinate system.
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw1 = Frame([1, 1, 1], [0.707, 0.707, 0], [-0.707, 0.707, 0])
-        >>> pf = f.represent_frame_in_local_coordinates(pw1)
-        >>> pw2 = f.represent_frame_in_global_coordinates(pf)
-        >>> allclose(pw1.point, pw2.point)
-        True
-        >>> allclose(pw1.xaxis, pw2.xaxis)
-        True
-        >>> allclose(pw1.yaxis, pw2.yaxis)
-        True
-
+        >>> pl = Point(1.632, -0.090, 0.573)
+        >>> pw = f.global_coordinates(pl)
+        >>> f.local_coordinates(pw)
+        Point(1.632, -0.090, 0.573)
         """
         T = Transformation.change_basis(self, Frame.worldXY())
-        return frame.transformed(T)
+        if isinstance(coords_lcs, list):
+            point = Point(*coords_lcs)
+            return point.transformed(T)
+        else:
+            return coords_lcs.transformed(T)
 
     # ==========================================================================
     # transformations
