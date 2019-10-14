@@ -466,7 +466,7 @@ class RobotModel(object):
         list of :class:`Vector`
         """
         transformations = self.compute_transformations(joint_state)
-        return [j.axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.axis]
+        return [j.axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.axis.vector.length]
 
     def forward_kinematics(self, joint_state, link_name=None):
         """Calculate the robot's forward kinematic.
