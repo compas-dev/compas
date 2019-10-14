@@ -31,6 +31,8 @@ __all__ = [
     'identity_matrix',
 
     'matrix_from_frame',
+    'matrix_from_frame_to_frame',
+    'matrix_change_basis',
     'matrix_from_euler_angles',
     'matrix_from_axis_and_angle',
     'matrix_from_axis_angle_vector',
@@ -415,10 +417,9 @@ def matrix_from_frame_to_frame(frame_from, frame_to):
     >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> T = matrix_from_frame_to_frame(f1, f2)
     """
-    from compas.geometry.transformations import inverse
     T1 = matrix_from_frame(frame_from)
     T2 = matrix_from_frame(frame_to)
-    return multiply_matrices(T2, inverse(T1))
+    return multiply_matrices(T2, matrix_inverse(T1))
 
 def matrix_change_basis(frame_from, frame_to):
     """Computes a change of basis transformation between two frames.
@@ -439,10 +440,9 @@ def matrix_change_basis(frame_from, frame_to):
     >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> T = matrix_change_basis(f1, f2)
     """
-    from compas.geometry.transformations import inverse
     T1 = matrix_from_frame(frame_from)
     T2 = matrix_from_frame(frame_to)
-    return multiply_matrices(inverse(T2), T1)
+    return multiply_matrices(matrix_inverse(T2), T1)
 
 def matrix_from_euler_angles(euler_angles, static=True, axes='xyz'):
     """Calculates a rotation matrix from Euler angles.
