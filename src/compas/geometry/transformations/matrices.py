@@ -62,6 +62,7 @@ __all__ = [
     'translation_from_matrix',
 ]
 
+
 def matrix_determinant(M, check=True):
     """Calculates the determinant of a square matrix M.
 
@@ -397,6 +398,7 @@ def matrix_from_frame(frame):
     M[0][3], M[1][3], M[2][3] = frame.point
     return M
 
+
 def matrix_from_frame_to_frame(frame_from, frame_to):
     """Computes a transformation between two frames.
 
@@ -421,6 +423,7 @@ def matrix_from_frame_to_frame(frame_from, frame_to):
     T2 = matrix_from_frame(frame_to)
     return multiply_matrices(T2, matrix_inverse(T1))
 
+
 def matrix_change_basis(frame_from, frame_to):
     """Computes a change of basis transformation between two frames.
 
@@ -443,6 +446,7 @@ def matrix_change_basis(frame_from, frame_to):
     T1 = matrix_from_frame(frame_from)
     T2 = matrix_from_frame(frame_to)
     return multiply_matrices(matrix_inverse(T2), T1)
+
 
 def matrix_from_euler_angles(euler_angles, static=True, axes='xyz'):
     """Calculates a rotation matrix from Euler angles.
