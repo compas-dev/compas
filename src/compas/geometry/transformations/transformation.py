@@ -97,7 +97,7 @@ class Transformation(object):
         return cls.from_matrix(self.matrix)
 
     def __repr__(self):
-        s  = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
+        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
         s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[1]])
         s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[2]])
         s += " [%s]]\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[3]])
@@ -237,7 +237,7 @@ class Transformation(object):
             >>> p_f1 = Point(1, 1, 1) # point in f1
             >>> p_f1.transformed(T) # point represented in f2
             Point(1.395, 0.955, 1.934)
-            >>> f1.global_coords(p_f1, f2)
+            >>> Frame.local_to_local_coords(f1, f2, p_f1)
             Point(1.395, 0.955, 1.934)
         """
 
@@ -245,7 +245,6 @@ class Transformation(object):
         T2 = cls.from_frame(frame_to)
 
         return cls(multiply_matrices(matrix_inverse(T2.matrix), T1.matrix))
-        
 
     def inverse(self):
         """Returns the inverse transformation.
