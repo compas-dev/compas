@@ -10,6 +10,8 @@ from numpy import tile
 
 from scipy.linalg import solve
 
+from compas.geometry.basic import cross_vectors
+
 
 __all__ = [
     'transform_points_numpy',
@@ -67,6 +69,7 @@ def transform_vectors_numpy(vectors, T):
     T = asarray(T)
     vectors = homogenize_numpy(vectors, w=0.0)
     return dehomogenize_numpy(vectors.dot(T.T))
+
 
 def transform_frames_numpy(frames, T):
     """Transform multiple frames with one Transformation usig numpy.
@@ -277,5 +280,6 @@ if __name__ == "__main__":
     import numpy
     import math
     from compas.geometry import Frame
+    from compas.geometry import Point
     from compas.geometry import matrix_from_axis_and_angle
     doctest.testmod(globs=globals())
