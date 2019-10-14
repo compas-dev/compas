@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added non-numpy versions of `global_coords`, `local_coords`
 - Added static method `Frame.local_to_local_coords`
 - Added `__getitem__`, `__setitem__` and `__eq__` to `Quaternion`
-- Added `Vector.scaled`
+- Added `Vector.scaled` and `Vector.unitized`
 - Added `transform_frames` and respective helper functions `dehomogenize_and_unflatten_frames`, `homogenize_and_flatten_frames`
 - Added `transform_frames_numpy` and respective helper functions `dehomogenize_and_unflatten_frames_numpy`, `homogenize_and_flatten_frames_numpy`
 
