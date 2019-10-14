@@ -649,21 +649,22 @@ class Frame(Primitive):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    def local_coords(self, coords_rcs, rcs=None):
-        """Returns the object's coordinates in the frame's local coordinate system.
+    # ==========================================================================
+    # coordinate frames
+    # ==========================================================================
+
+    def local_coords(self, object_in_wcf):
+        """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
         ----------
-        coords_rcs : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
-            Coordinates in world XY or rcs.
-        rcs : :class:`Frame`, optional
-            The other coordinate system, defaults to world XY. If rcs is not `None`,
-            coords_rcs are assumed to be in rcs.
+        object_in_wcf : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
+            An object in the world coordinate frame.
 
         Returns
         -------
-        :class:`Point`
-            A point in the local coordinate system of the frame.
+        :class:`Point` or :class:`Vector` or :class:`Frame`
+            The object in the local coordinate system of the frame.
 
         Notes
         -----
@@ -672,34 +673,30 @@ class Frame(Primitive):
         Examples
         --------
         >>> from compas.geometry import Point, Frame
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pw = Point(2, 2, 2)
-        >>> pl = f.local_coords(pw)
-        >>> f.global_coords(pl)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> pw = Point(2, 2, 2) # point in wcf
+        >>> pl = frame.local_coords(pw) # point in frame
+        >>> frame.global_coords(pl)
         Point(2.000, 2.000, 2.000)
         """
-        if not rcs:
-            rcs = Frame.worldXY()
-        T = Transformation.change_basis(rcs, self)
-        if isinstance(coords_rcs, list):
-            return Point(*coords_rcs).transformed(T)
+        T = Transformation.change_basis(Frame.worldXY(), self)
+        if isinstance(object_in_wcf, list):
+            return Point(*object_in_wcf).transformed(T)
         else:
-            return coords_rcs.transformed(T)
+            return object_in_wcf.transformed(T)
 
-    def global_coords(self, coords_lcs, rcs=None):
-        """Returns the frame's object's coordinates in the global coordinate system.
+    def global_coords(self, object_in_lcs):
+        """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
         ----------
-        coords_lcs : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
-            A coordinate object in the frames coordinate system.
-        rcs : :class:`Frame`, optional
-            The other coordinate system, defaults to world XY.
+        object_in_lcs : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
+            An object in local coordinate system of the frame.
 
         Returns
         -------
-        :class:`Vector`
-            A vector in the local coordinate system of the frame.
+        :class:`Point` or :class:`Vector` or :class:`Frame`
+            The object in the world coordinate frame.
 
         Notes
         -----
@@ -708,19 +705,51 @@ class Frame(Primitive):
         Examples
         --------
         >>> from compas.geometry import Frame
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> pl = Point(1.632, -0.090, 0.573)
-        >>> pw = f.global_coords(pl)
-        >>> f.local_coords(pw)
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> pl = Point(1.632, -0.090, 0.573) # point in frame
+        >>> pw = frame.global_coords(pl) # point in wcf
+        >>> frame.local_coords(pw)
         Point(1.632, -0.090, 0.573)
         """
-        if not rcs:
-            rcs = Frame.worldXY()
-        T = Transformation.change_basis(self, rcs)
-        if isinstance(coords_lcs, list):
-            return Point(*coords_lcs).transformed(T)
+        T = Transformation.change_basis(self, Frame.worldXY())
+        if isinstance(object_in_lcs, list):
+            return Point(*object_in_lcs).transformed(T)
         else:
-            return coords_lcs.transformed(T)
+            return object_in_lcs.transformed(T)
+
+    @staticmethod
+    def local_to_local_coords(frame1, frame2, object_in_frame1):
+        """Returns the object's coordinates in frame1 in the local coordinates of frame2.
+
+        Parameters
+        ----------
+        frame1 : :class:`Frame`
+            A frame representing one local coordinate system.
+        frame2 : :class:`Frame`
+            A frame representing another local coordinate system.
+        object_in_frame1 : :class:`Point` or :class:`Vector` or :class:`Frame` or list of float
+            An object in the coordinate frame1. If you pass a list of float, it is assumed to represent a point.
+
+        Returns
+        -------
+        :class:`Point` or :class:`Vector` or :class:`Frame`
+            The object in the local coordinate system of frame2.
+
+        Examples
+        --------
+        >>> from compas.geometry import Point, Frame
+        >>> frame1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> frame2 = Frame([2, 1, 3], [1., 0., 0.], [0., 1., 0.])
+        >>> p1 = Point(2, 2, 2) # point in frame1
+        >>> p2 = Frame.local_to_local_coords(frame1, frame2, p1) # point in frame2
+        >>> Frame.local_to_local_coords(frame2, frame1, p2)
+        Point(2.000, 2.000, 2.000)
+        """
+        T = Transformation.change_basis(frame1, frame2)
+        if isinstance(object_in_frame1, list):
+            return Point(*object_in_frame1).transformed(T)
+        else:
+            return object_in_frame1.transformed(T)
 
     # ==========================================================================
     # transformations
