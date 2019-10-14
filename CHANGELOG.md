@@ -9,15 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-### Changed
-
-### Removed
-
-
-## [0.8.1] 2019-10-01
-
-### Added
-
 - Added `matrix_change_basis`, `Transformation.change_basis`
 - Added `matrix_from_frame_to_frame`
 - Added non-numpy versions of `global_coords`, `local_coords`
@@ -29,10 +20,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Fixed unguarded import of `numpy` based transformations in mesh package.
 - Changed parameters `origin` `uvw` of `global_coords_numpy` and `local_coords_numpy` to `frame`
 - Fixed some returns of `Frame` and `Rotation` to use `Vector` or `Quaternion`
 - Methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` are now `Frame.local_coords` and `Frame.global_coords` 
+
+### Removed
+
+
+## [0.8.1] 2019-10-01
+
+### Added
+
+### Changed
+
+- Fixed unguarded import of `numpy` based transformations in mesh package.
 
 ### Removed
 
