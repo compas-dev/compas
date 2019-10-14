@@ -21,8 +21,6 @@ _SPEC2TUPLE = {
 _NEXT_SPEC = [1, 2, 0, 1]
 
 
-# todo: separate the numpy version inot separate modules
-
 from .matrices import *
 
 # migrated from xforms
