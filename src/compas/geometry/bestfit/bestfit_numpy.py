@@ -14,7 +14,7 @@ from scipy.optimize import leastsq
 
 # should this not be defined in a different location?
 from compas.geometry import local_coords_numpy
-from compas.geometry import global_coords_numpy
+from compas.geometry import world_coords_numpy
 
 from compas.numerical import pca_numpy
 
@@ -173,7 +173,7 @@ def bestfit_circle_numpy(points):
 
     print(residu)
 
-    xyz = global_coords_numpy(frame, [[c[0], c[1], 0.0]])[0]
+    xyz = world_coords_numpy(frame, [[c[0], c[1], 0.0]])[0]
 
     o = xyz.tolist()
     u, v, w = uvw.tolist()

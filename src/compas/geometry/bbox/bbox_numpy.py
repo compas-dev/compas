@@ -17,7 +17,7 @@ from scipy.spatial import ConvexHull
 
 from compas.geometry import local_axes
 from compas.geometry import local_coords_numpy
-from compas.geometry import global_coords_numpy
+from compas.geometry import world_coords_numpy
 
 
 __all__ = [
@@ -132,7 +132,7 @@ def oriented_bounding_box_numpy(points):
                 [rmax, smax, tmax],
                 [rmin, smax, tmax],
             ]
-            bbox = global_coords_numpy(frame, bbox)
+            bbox = world_coords_numpy(frame, bbox)
             volume = v
 
     return bbox

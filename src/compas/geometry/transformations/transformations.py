@@ -314,7 +314,7 @@ def local_coords(frame, xyz):
     return transform_points(xyz, T)
 
 
-def global_coords(frame, xyz):
+def world_coords(frame, xyz):
     """Convert local coordinates to global coordinates.
 
     Parameters
@@ -335,7 +335,7 @@ def global_coords(frame, xyz):
     >>> import numpy as np
     >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(3.726, 4.088, 1.550)]
-    >>> Point(*global_coords(f, xyz)[0])
+    >>> Point(*world_coords(f, xyz)[0])
     Point(2.000, 3.000, 5.000)
     """
     from compas.geometry.primitives import Frame

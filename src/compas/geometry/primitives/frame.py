@@ -676,7 +676,7 @@ class Frame(Primitive):
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw = Point(2, 2, 2) # point in wcf
         >>> pl = frame.local_coords(pw) # point in frame
-        >>> frame.global_coords(pl)
+        >>> frame.world_coords(pl)
         Point(2.000, 2.000, 2.000)
         """
         T = Transformation.change_basis(Frame.worldXY(), self)
@@ -685,7 +685,7 @@ class Frame(Primitive):
         else:
             return object_in_wcf.transformed(T)
 
-    def global_coords(self, object_in_lcs):
+    def world_coords(self, object_in_lcs):
         """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
@@ -707,7 +707,7 @@ class Frame(Primitive):
         >>> from compas.geometry import Frame
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pl = Point(1.632, -0.090, 0.573) # point in frame
-        >>> pw = frame.global_coords(pl) # point in wcf
+        >>> pw = frame.world_coords(pl) # point in wcf
         >>> frame.local_coords(pw)
         Point(1.632, -0.090, 0.573)
         """
