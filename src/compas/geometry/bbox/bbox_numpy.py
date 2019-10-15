@@ -85,7 +85,7 @@ def oriented_bounding_box_numpy(points):
     >>> a = length_vector(subtract_vectors(bbox[1], bbox[0]))
     >>> b = length_vector(subtract_vectors(bbox[3], bbox[0]))
     >>> c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    >>> allclose([a * b * c], [30.])
+    >>> close(a * b * c, 30.)
     True
 
     """
@@ -240,12 +240,14 @@ def oriented_bounding_box_xy_numpy(points):
 if __name__ == "__main__":
 
     import numpy
+    import math
     from compas.geometry import bounding_box
     from compas.geometry import subtract_vectors
     from compas.geometry import length_vector
     from compas.geometry import Rotation
     from compas.geometry import transform_points_numpy
     from compas.geometry import allclose
+    from compas.geometry import close
 
     import doctest
     doctest.testmod(globs=globals())
