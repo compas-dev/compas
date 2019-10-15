@@ -43,7 +43,7 @@ from compas.geometry.transformations import matrix_change_basis
 
 __all__ = [
     'local_axes',
-    'correct_axes',
+    'orthonormalize_axes',
 
     'transform_points',
     'transform_vectors',
@@ -89,7 +89,7 @@ def local_axes(a, b, c):
     return normalize_vector(u), normalize_vector(v), normalize_vector(w)
 
 
-def correct_axes(xaxis, yaxis):
+def orthonormalize_axes(xaxis, yaxis):
     """Corrects xaxis and yaxis to be unit vectors and orthonormal.
 
     Parameters
@@ -110,7 +110,7 @@ def correct_axes(xaxis, yaxis):
     --------
     >>> xaxis = [1, 4, 5]
     >>> yaxis = [1, 0, -2]
-    >>> xaxis, yaxis = correct_axes(xaxis, yaxis)
+    >>> xaxis, yaxis = orthonormalize_axes(xaxis, yaxis)
     >>> allclose(xaxis, [0.1543, 0.6172, 0.7715], tol=0.001)
     True
     >>> allclose(yaxis, [0.6929, 0.4891, -0.5298], tol=0.001)
