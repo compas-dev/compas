@@ -317,7 +317,8 @@ class Plotter(object):
         """Displays the plot.
 
         """
-        self.axes.autoscale()
+        if autoscale:
+            self.axes.autoscale()
         if self.tight:
             plt.tight_layout()
         plt.show()
