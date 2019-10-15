@@ -99,3 +99,7 @@ from .network import *
 from .volmesh import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
+
+import warnings
+warnings.simplefilter('always', DeprecationWarning)
+warnings.warn('Helpers has been deprecated, use artists, selectors, inspectors and modifiers instead', DeprecationWarning)

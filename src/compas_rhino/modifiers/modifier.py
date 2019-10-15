@@ -15,7 +15,12 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__all__ = ['Modifier']
+__all__ = [
+    'Modifier',
+    'mesh_update_attributes',
+    'network_move',
+    'network_update_attributes'
+    ]
 
 
 class Modifier(object):
@@ -76,6 +81,70 @@ class Modifier(object):
                     self.attributes[name] = value
             return True
         return False
+
+
+def mesh_update_attributes(mesh):
+    """Update the attributes of a mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`mesh_update_vertex_attributes`
+    * :func:`mesh_update_edge_attributes`
+    * :func:`mesh_update_face_attributes`
+
+    """
+    return Modifier.update_attributes(mesh)
+
+
+def network_move(network):
+    """Move the entire network.
+
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A network object.
+
+    See Also
+    --------
+    * :func:`network_move_vertex`
+
+    """
+    return Modifier.move(network)
+
+
+def network_update_attributes(network):
+    """Update the attributes of a network.
+
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A network object.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`network_update_vertex_attributes`
+    * :func:`network_update_edge_attributes`
+
+    """
+    return Modifier.update_attributes(network)
+
 
 
 # ==============================================================================
