@@ -10,6 +10,7 @@ compas_rhino
     :maxdepth: 1
 
     compas_rhino.artists
+    compas_rhino.constructors
     compas_rhino.conduits
     compas_rhino.forms
     compas_rhino.geometry
