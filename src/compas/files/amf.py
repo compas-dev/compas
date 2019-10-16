@@ -24,9 +24,8 @@ class AMF(object):
 class AMFReader(BaseReader):
     """"""
 
-    def __init__(self, location):
-        super(AMFReader, self).__init__(location)
-        self.content = self.read_from_location()
+    def __init__(self):
+        pass
 
     def read(self):
         pass

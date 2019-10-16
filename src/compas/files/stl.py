@@ -124,7 +124,7 @@ class STLReader(object):
 
             # no known line start matches, maybe not ascii
             elif not parts[0].isalnum():
-                raise RuntimeError('File is not ASCII')
+                raise Exception('File is not ASCII')
 
         return facets
 

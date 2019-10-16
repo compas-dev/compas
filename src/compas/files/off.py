@@ -52,20 +52,19 @@ class OFFReader(BaseReader):
     """
     def __init__(self, location):
         super(OFFReader, self).__init__(location)
-        self.content = self.read_from_location()
         self.vertices = []
         self.faces = []
         self.vertex_count = 0
         self.face_count = 0
         self.edge_count = 0
         self.pre()
-        self.read()
+        self.read_off()
         self.post()
 
     def pre(self):
         lines = []
         is_continuation = False
-        for line in self.content:
+        for line in self.read():
             line = line.rstrip()
             if not line:
                 continue
@@ -82,7 +81,7 @@ class OFFReader(BaseReader):
     def post(self):
         pass
 
-    def read(self):
+    def read_off(self):
         """Read the contents of the file, line by line.
 
         OFF
@@ -96,11 +95,11 @@ class OFFReader(BaseReader):
 
         """
         if not self.content:
-            raise RuntimeError('Import failed')
+            raise Exception('Import failed')
 
         header = next(self.content)
         if header.lower() != 'off':
-            raise RuntimeError('Not a valid OFF file')
+            raise Exception('Not a valid OFF file')
 
         for line in self.content:
             if line.startswith('#'):

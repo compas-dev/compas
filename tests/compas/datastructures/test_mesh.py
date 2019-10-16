@@ -74,24 +74,15 @@ def test_from_stl():
     assert mesh.number_of_vertices() == 4020
     assert mesh.number_of_edges() == 11368
 
-    mesh = None
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
     assert mesh.number_of_faces() == 12
     assert mesh.number_of_vertices() == 8
     assert mesh.number_of_edges() == 18
 
-    # mesh = Mesh.from_stl(Path.joinpath(Path.cwd(), 'data/cube_ascii.stl'))
-    # assert mesh.number_of_faces() == 12
-    # assert mesh.number_of_vertices() == 8
-    # assert mesh.number_of_edges() == 18
-
-    # mesh = Mesh.from_stl(
-        # 'https://raw.githubusercontent.com/compas-dev/compas/master/data/cube_ascii.stl'
-        # )
-    # assert mesh.number_of_faces() == 12
-    # assert mesh.number_of_vertices() == 8
-    # assert mesh.number_of_edges() == 18
-
+    mesh = Mesh.from_stl(compas.get('binary-w-ascii-header.stl'))
+    assert mesh.number_of_faces() == 4110
+    assert mesh.number_of_vertices() == 12324
+    assert mesh.number_of_edges() == 8216
 
 def test_from_off():
     mesh = Mesh.from_off(compas.get('cube.off'))

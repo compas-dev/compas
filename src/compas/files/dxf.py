@@ -28,7 +28,6 @@ class DXFReader(BaseReader):
 
     def __init__(self, location):
         super(DXFReader, self).__init__(location)
-        self.content = self.read_from_location()
 
 
 class DXFParser(object):

@@ -27,7 +27,6 @@ class LASReader(BaseReader):
 
     def __init__(self, location):
         super(LASReader, self).__init__(location)
-        self.content = self.read_from_location()
 
     def read(self):
         pass

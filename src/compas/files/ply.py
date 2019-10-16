@@ -88,7 +88,6 @@ class PLYReader(BaseReader):
 
     def __init__(self, location):
         self.location = location
-        self.content = self.read_from_location()
         self.file = None
         self.format = None
         self.comments = []
@@ -125,7 +124,7 @@ class PLYReader(BaseReader):
             return True
         return False
 
-    def read(self):
+    def read_ply(self):
         self.read_header()
         if self.format == 'ascii':
             self.read_data()
@@ -141,12 +140,13 @@ class PLYReader(BaseReader):
         # read it as text
         # otherwise file.tell() can't be used reliably
         # to figure out where the header ends
-        if next(self.content).rstrip() != 'ply':
-            raise RuntimeError('Not a valid PLY file')
+        first_line = self.read()
+        if first_line != 'ply':
+            raise Exception('Not a valid PLY file')
 
         self.start_header = 0
 
-        for line_index, line in enumerate(self.content):
+        for line_index, line in enumerate(self.read()):
             # Offsetting line_index to account for first line already read
             line_index += 1
             line = line.rstrip()
@@ -177,7 +177,7 @@ class PLYReader(BaseReader):
                     self.number_of_faces = int(parts[2])
                 else:
                     element_type = None
-                    raise RuntimeError('Userdefined elements not supported.')
+                    raise Exception('Userdefined elements not supported.')
                 continue
 
             if line.startswith('property'):
@@ -203,7 +203,7 @@ class PLYReader(BaseReader):
                         self.face_properties.append((property_name, property_type))
                 else:
                     element_type = None
-                    raise RuntimeError('Not a valid PLY file. Malformed property line.')
+                    raise Exception('Not a valid PLY file. Malformed property line.')
                 continue
 
             if line == 'end_header':
@@ -217,7 +217,7 @@ class PLYReader(BaseReader):
 
     def read_data(self):
         if not self.end_header:
-            raise RuntimeError('Header has not been read, or the file is not valid')
+            raise Exception('Header has not been read, or the file is not valid')
 
         for section in self.sections:
             if section == 'vertex':
@@ -227,11 +227,11 @@ class PLYReader(BaseReader):
             elif section == 'face':
                 self.read_faces()
             else:
-                raise RuntimeError('Not a valid PLY file.')
+                raise Exception('Not a valid PLY file.')
 
     def read_data_binary(self):
         if not self.end_header:
-            raise RuntimeError('Header has not been read, or the file is not valid')
+            raise Exception('Header has not been read, or the file is not valid')
         with open(self.location, 'rb') as self.file:
             self.file.seek(self.end_header)
             for section in self.sections:
@@ -251,7 +251,8 @@ class PLYReader(BaseReader):
 
     def read_vertices(self):
         while len(self.vertices) < self.number_of_vertices:
-            line = next(self.content).rstrip()
+            line = self.read()
+            line = line.rstrip()
             parts = line.split()
             vertex = {}
 
@@ -267,7 +268,8 @@ class PLYReader(BaseReader):
     def read_faces(self):
         while len(self.faces) < self.number_of_faces:
 
-            line = next(self.content).rstrip()
+            line = self.read()
+            line = line.rstrip()
             parts = line.split()
             face = {}
 
