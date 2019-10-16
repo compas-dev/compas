@@ -1,8 +1,6 @@
 from __future__ import absolute_import
 from __future__ import division
 
-from functools import partial
-
 try:
     from pathlib import Path
 except ImportError:
@@ -25,7 +23,7 @@ class BaseReader(object):
     def __init__(self, location):
         self.location = location
 
-    def read_from_location(self):
+    def read(self, mode='ascii'):
         """Returns iterable reading file line by line when given a location,
            either as pathlib object, string containing path or string containing url
 
@@ -35,35 +33,22 @@ class BaseReader(object):
             Iterable returning file line by line
         """
 
-        if isinstance(self.location, Path):
-            with self.location.open(mode='r') as fh:
-                content = iter(fh.readlines())
-        elif self.location.startswith('http'):
-            resp = urlopen(self.location)
-            content = iter(resp.read().decode('utf-8').split('\n'))
-        else:
-            with open(self.location, 'r') as fh:
-                content = iter(fh.readlines())
+        if mode == 'ascii':
 
-        return content
+            if isinstance(self.location, Path):
+                with self.location.open(mode='r') as fh:
+                    for line in fh:
+                        yield line
+            elif self.location.startswith('http'):
+                resp = urlopen(self.location)
+                yield from iter(resp.read().decode('utf-8').split('\n'))
+            else:
+                with open(self.location, 'r') as fh:
+                    for line in fh:
+                        yield line
 
-    def read_binary_from_location(self):
-        """Opens and reads binary file
-
-        Returns
-        -------
-        iterable
-            Iterable reading file
-
-        """
-
-        if self.location.isinstance(Path):
-            with self.location.open(mode='r') as fh:
-                content = iter(partial(fh.read, 64), b'')
-        elif self.location.startswith('http'):
+        elif mode == 'binary':
             raise NotImplementedError
-        else:
-            with open(self.location, 'r') as fh:
-                content = iter(partial(fh.read, 64), b'')
 
-        return content
+        else:
+            raise ValueError("mode most be ascii or binary")

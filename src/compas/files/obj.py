@@ -78,7 +78,6 @@ class OBJReader(BaseReader):
 
     def __init__(self, location):
         super(OBJReader, self).__init__(location)
-        self.content = self.read_from_location()
         # vertex data
         self.vertices = []
         self.weights = []
@@ -104,14 +103,15 @@ class OBJReader(BaseReader):
         self.objects = {}
         self.group = None
         self.pre()
-        self.read()
+        self.read_obj()
         self.post()
 
 
     def pre(self):
+        self.content = self.read()
         lines = []
         is_continuation = False
-        for line in self.content:
+        for line in self.read():
             line = line.rstrip()
             if not line:
                 continue
@@ -128,7 +128,7 @@ class OBJReader(BaseReader):
     def post(self):
         pass
 
-    def read(self):
+    def read_obj(self):
         """Read the contents of the file, line by line.
 
         Every line is split into a *head* and a *tail*.
@@ -268,8 +268,8 @@ class OBJReader(BaseReader):
             if self.deg[0] == 1:
                 if len(data) == 4:
                     self.lines.append((int(data[2]) - 1, int(data[3]) - 1))
-                    if self.group:
-                        self.groups[self.group].append(('l', len(self.lines) - 1))
+                if self.group:
+                    self.groups[self.group].append(('l', len(self.lines) - 1))
                     return
                 if len(data) > 4:
                     self.lines.append([int(d) - 1 for d in data[2:]])
