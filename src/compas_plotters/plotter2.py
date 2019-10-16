@@ -26,71 +26,16 @@ __all__ = ['Plotter2']
 
 
 class Plotter2(object):
-    """Definition of a plotter object based on matplotlib.
-
-    Parameters
-    ----------
-    figsize : tuple, optional
-        The size of the plot in inches (width, length). Default is ``(16.0, 12.0)``.
-
-    Other Parameters
-    ----------------
-    dpi : float, optional
-        The resolution of the plot.
-        Default is ``100.0``.
-    tight : bool, optional
-        Produce a plot with limited padding between the plot and the edge of the figure.
-        Default is ``True``.
-    fontsize : int, optional
-        The size of the font used in labels. Default is ``10``.
-    axes : matplotlib.axes.Axes, optional
-        An instance of ``matplotlib`` ``Axes``.
-        For example to share the axes of a figure between different plotters.
-        Default is ``None`` in which case the plotter will make its own axes.
-
-    Attributes
-    ----------
-    defaults : dict
-        Dictionary containing default attributes for vertices and edges.
-
-        * point.radius      : ``0.1``
-        * point.facecolor   : ``'#ffffff'``
-        * point.edgecolor   : ``'#000000'``
-        * point.edgewidth   : ``0.5``
-        * point.textcolor   : ``'#000000'``
-        * point.fontsize    : ``10``
-        * line.width        : ``1.0``
-        * line.color        : ``'#000000'``
-        * line.textcolor    : ``'#000000'``
-        * line.fontsize     : ``10``
-        * polygon.facecolor : ``'#ffffff'``
-        * polygon.edgecolor : ``'#000000'``
-        * polygon.edgewidth : ``0.1``
-        * polygon.textcolor : ``'#000000'``
-        * polygon.fontsize  : ``10``
-
-    Examples
-    --------
-    >>>
-
-    """
+    """"""
     def __init__(self, figsize=(16.0, 12.0), tight=True, **kwargs):
         """Initialises a plotter object"""
         self._axes = None
         self.tight = tight
-        # use descriptors for these
-        # to help the user set these attributes in the right format
-        # figure attributes
         self.figure_size = figsize
         self.figure_dpi = dpi
         self.figure_bgcolor = '#ffffff'
-        # axes attributes
         self.axes_xlabel = None
         self.axes_ylabel = None
-        # drawing defaults
-        # z-order
-        # color
-        # size/thickness
         self.defaults = {
             'point.radius'    : 0.1,
             'point.facecolor' : '#ffffff',
@@ -136,14 +81,8 @@ class Plotter2(object):
                 figsize=self.figure_size,
                 dpi=self.figure_dpi,
                 xlabel=self.axes_xlabel,
-                ylabel=self.axes_ylabel
-            )
-
+                ylabel=self.axes_ylabel)
         return self._axes
-
-    @axes.setter
-    def axes(self, axes):
-        self._axes = axes
 
     @property
     def figure(self):
@@ -252,6 +191,9 @@ class Plotter2(object):
         """
         self.figure.canvas.mpl_connect('pick_event', listener)
 
+    def draw(self):
+        self.canvas.draw()
+
     def show(self, autoscale=True):
         """Displays the plot.
 
@@ -281,154 +223,6 @@ class Plotter2(object):
         """
         self.axes.autoscale()
         plt.savefig(filepath, **kwargs)
-
-    def draw_points(self, points):
-        """Draws points on a 2D plot.
-
-        Parameters
-        ----------
-
-        points : list of dict
-            List of dictionaries containing the point properties.
-            Each point is represented by a circle with a given radius.
-            The following properties of the circle can be specified in the point dict.
-
-            * pos (list): XY(Z) coordinates
-            * radius (float, optional): the radius of the circle. Default is 0.1.
-            * text (str, optional): the text of the label. Default is None.
-            * facecolor (rgb or hex color, optional): The color of the face of the circle. Default is white.
-            * edgecolor (rgb or hex color, optional): The color of the edge of the cicrle. Default is black.
-            * edgewidth (float, optional): The width of the edge of the circle. Default is 1.0.
-            * textcolor (rgb or hex color, optional): Color of the text label. Default is black.
-            * fontsize (int, optional): Font size of the text label. Default is 12.
-
-        Returns
-        -------
-        object
-            The matplotlib point collection object.
-
-        Notes
-        -----
-        ...
-
-        See Also
-        --------
-        :func:`compas_plotters.core.draw_xpoints_xy`
-
-        Examples
-        --------
-        >>>
-
-        """
-        return draw_xpoints_xy(points, self.axes)
-
-    def draw_lines(self, lines):
-        """Draws lines on a 2D plot.
-
-        Parameters
-        ----------
-        lines : list of dict
-            List of dictionaries containing the line properties.
-            The following properties of a line can be specified in the dict.
-
-            * start (list): XY(Z) coordinates of the start point.
-            * end (list): XY(Z) coordinatesof the end point.
-            * width (float, optional): The width of the line. Default is ``1.0``.
-            * color (rgb tuple or hex string, optional): The color of the line. Default is black.
-            * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
-
-        Returns
-        -------
-        object
-            The matplotlib line collection object.
-
-        See Also
-        --------
-        :func:`compas_plotters.core.draw_xlines_xy`
-
-        """
-        return draw_xlines_xy(lines, self.axes)
-
-    def draw_polylines(self, polylines):
-        """Draw polylines on a 2D plot.
-
-        Parameters
-        ----------
-        polylines : list of dict
-            A list of dictionaries containing the polyline properties.
-            The following properties are supported:
-
-            * points (list): XY(Z) coordinates of the polygon vertices.
-            * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
-            * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
-            * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
-            * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
-
-        Returns
-        -------
-        object
-            The matplotlib polyline collection object.
-
-        """
-        return draw_xpolylines_xy(polylines, self.axes)
-
-    def draw_polygons(self, polygons):
-        """Draws polygons on a 2D plot.
-
-        Parameters
-        ----------
-        polygons : list of dict
-            List of dictionaries containing the polygon properties.
-            The following properties can be specified in the dict.
-
-            * points (list): XY(Z) coordinates of the polygon vertices.
-            * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```12``.
-            * facecolor (rgb tuple or hex string, optional): Color of the polygon face. Default is white.
-            * edgecolor (rgb tuple or hex string, optional): Color of the edge of the polygon. Default is black.
-            * edgewidth (float): Width of the polygon edge. Default is ``1.0``.
-
-        Returns
-        -------
-        object
-            The matplotlib polygon collection object.
-
-        """
-        return draw_xpolygons_xy(polygons, self.axes)
-
-    def draw_arrows(self, arrows):
-        """Draws arrows on a 2D plot.
-
-        Parameters
-        ----------
-        arrows : list of dict
-            List of dictionaries containing the arrow properties.
-            The following properties of an arrow can be specified in the dict.
-
-            * start (list): XY(Z) coordinates of the starting point.
-            * end (list): XY(Z) coordinates of the end point.
-            * text (str, optional): The text of the label. Default is ``None``.
-            * textcolor (rgb tuple or hex string, optional): Color of the label text. Default is black.
-            * fontsize (int, optional): The size of the font of the label text. Default is ```6``.
-            * color (rgb tuple or hex string, optional): Color of the arrow. Default is black.
-            * width (float): Width of the arrow. Default is ``1.0``.
-
-        Returns
-        -------
-        object
-            The matplotlib arrow collection object.
-
-        See Also
-        --------
-        :func:`compas_plotters.core.draw_xarrows_xy`
-
-        """
-        return draw_xarrows_xy(arrows, self.axes)
 
     def update(self, pause=0.0001):
         """Updates and pauses the plot.
