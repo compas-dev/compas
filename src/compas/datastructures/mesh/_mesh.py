@@ -3185,4 +3185,12 @@ class Mesh(FromToPickle,
 
 if __name__ == '__main__':
 
-    pass
+    import compas
+
+    compas.set_precision(0.0000001)
+
+    mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
+
+    v = mesh.number_of_vertices()
+
+    print(v)

@@ -64,7 +64,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
                    ylabel=None,
                    fontname='Times New Roman',
                    fontsize=10,
-                   grid=True,
+                   grid=False,
                    xlim=None,
                    ylim=None,
                    ticklength=20,
@@ -145,9 +145,9 @@ def create_axes_xy(figsize=(8.0, 6.0),
     axes.set_yscale(yscale)
     axes.set_xticks([])
     axes.set_yticks([])
-    axes.set_xmargin(0.05)
-    axes.set_ymargin(0.05)
-    axes.autoscale()
+    # axes.set_xmargin(0.05)
+    # axes.set_ymargin(0.05)
+    # axes.autoscale()
     return axes
 
 
