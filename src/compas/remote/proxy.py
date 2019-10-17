@@ -163,8 +163,15 @@ class Proxy(object):
             args = [self._python, '-m', 'compas.remote.services.{}'.format(self._service)]
             self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=self._env)
 
-        if not self.ping_server():
-            raise ThreadedServerError("Server unavailable at {}...".format(self.address))
+        # this doesn't work because (at least on my computer)
+        # you have to allow the server to accept incoming connections
+        # while you click on the dialog to confirm
+        # the ping times out
+        # and the function throws an error
+        # it does start the server anyway though :)
+
+        # if not self.ping_server():
+        #     raise ThreadedServerError("Server unavailable at {}...".format(self.address))
 
         print("Started {} service at {}...".format(self._service, self.address))
 
