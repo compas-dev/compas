@@ -13,6 +13,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from matplotlib.patches import Circle
+from matplotlib.collections import CircleCollection
 
 from compas_plotters.core.drawing import create_axes_xy
 from compas_plotters.core.drawing import draw_xpoints_xy
@@ -27,12 +28,14 @@ __all__ = ['Plotter2']
 
 class Plotter2(object):
     """"""
-    def __init__(self, figsize=(16.0, 12.0), tight=True, **kwargs):
+    def __init__(self, figsize=(8, 5), tight=True, **kwargs):
         """Initialises a plotter object"""
+        self._points = None
+        self._lines = None
         self._axes = None
         self.tight = tight
         self.figure_size = figsize
-        self.figure_dpi = dpi
+        self.figure_dpi = 100
         self.figure_bgcolor = '#ffffff'
         self.axes_xlabel = None
         self.axes_ylabel = None
@@ -77,11 +80,7 @@ class Plotter2(object):
 
         """
         if self._axes is None:
-            self._axes = create_axes_xy(
-                figsize=self.figure_size,
-                dpi=self.figure_dpi,
-                xlabel=self.axes_xlabel,
-                ylabel=self.axes_ylabel)
+            self._axes = create_axes_xy(figsize=self.figure_size)
         return self._axes
 
     @property
@@ -192,16 +191,14 @@ class Plotter2(object):
         self.figure.canvas.mpl_connect('pick_event', listener)
 
     def draw(self):
-        self.canvas.draw()
+        self.figure.canvas.draw()
 
-    def show(self, autoscale=True):
+    def show(self):
         """Displays the plot.
 
         """
-        if autoscale:
-            self.axes.autoscale()
-        if self.tight:
-            plt.tight_layout()
+        self.axes.autoscale()
+        plt.tight_layout()
         plt.show()
 
     def save(self, filepath, **kwargs):
@@ -238,43 +235,71 @@ class Plotter2(object):
             plt.tight_layout()
         plt.pause(pause)
 
-    def update_pointcollection(self, collection, centers, radius=1.0):
-        """Updates the location and radii of a point collection.
+    def set_points(self, points):
+        xys = []
+        circles = []
+        for point in points:
+            pos = point['pos'][:2]
+            radius = point.get('radius', self.defaults['point.radius'])
+            circle = Circle(pos, radius=radius)
+            circles.append(self.axes.add_artist(circle))
+            xys.append(pos)
+        self.axes.update_datalim(xys)
+        return circles
 
-        Parameters
-        ----------
-        collection : object
-            The point collection to update.
-        centers : list
-            List of tuples or lists with XY(Z) location for the points in the collection.
-        radius : float or list, optional
-            The radii of the points. If a floar is given it will be used for all points.
+    # def set_points2(self, points):
+    #     circles = []
+    #     sizes = []
+    #     for point in points:
+    #         pos = point['pos'][:2]
+    #         radius = point.get('radius', self.defaults['point.radius'])
+    #         # circle = Circle(pos, radius=radius)
+    #         # circles.append(circle)
+    #         sizes.append(radius)
+    #     collection = CircleCollection(sizes)
+    #     self.axes.add_collection(collection, autolim=True)
+    #     return collection
 
-        """
-        try:
-            len(radius)
-        except Exception:
-            radius = [radius] * len(centers)
-        data = zip(centers, radius)
-        circles = [Circle(c[0:2], r) for c, r in data]
-        collection.set_paths(circles)
+    def clear_points(self):
+        self._points = None
 
-    def update_linecollection(self, collection, segments):
-        """Updates a line collection.
+    # def update_pointcollection(self, collection, centers, radius=1.0):
+    #     """Updates the location and radii of a point collection.
 
-        Parameters
-        ----------
-        collection : object
-            The line collection to update.
-        segments : list
-            List of tuples or lists with XY(Z) location for the start and end
-            points in each line in the collection.
+    #     Parameters
+    #     ----------
+    #     collection : object
+    #         The point collection to update.
+    #     centers : list
+    #         List of tuples or lists with XY(Z) location for the points in the collection.
+    #     radius : float or list, optional
+    #         The radii of the points. If a floar is given it will be used for all points.
 
-        """
-        collection.set_segments([(start[0:2], end[0:2]) for start, end in segments])
+    #     """
+    #     try:
+    #         len(radius)
+    #     except Exception:
+    #         radius = [radius] * len(centers)
+    #     data = zip(centers, radius)
+    #     circles = [Circle(c[0:2], r) for c, r in data]
+    #     collection.set_paths(circles)
 
-    def update_polygoncollection(self, collection, polygons):
-        raise NotImplementedError
+    # def update_linecollection(self, collection, segments):
+    #     """Updates a line collection.
+
+    #     Parameters
+    #     ----------
+    #     collection : object
+    #         The line collection to update.
+    #     segments : list
+    #         List of tuples or lists with XY(Z) location for the start and end
+    #         points in each line in the collection.
+
+    #     """
+    #     collection.set_segments([(start[0:2], end[0:2]) for start, end in segments])
+
+    # def update_polygoncollection(self, collection, polygons):
+    #     raise NotImplementedError
 
 
 # ==============================================================================
@@ -283,55 +308,18 @@ class Plotter2(object):
 
 if __name__ == "__main__":
 
-    import compas
+    import time
 
-    from compas.datastructures import Mesh
-    from compas.geometry import smooth_centroid
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
-
-    points = []
-    for key in mesh.vertices():
-        points.append({
-            'pos': mesh.vertex_coordinates(key),
-            'radius': 0.1,
-            'facecolor': '#ff0000' if mesh.vertex_degree(key) == 2 else '#ffffff'
-        })
-
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start': mesh.vertex_coordinates(u),
-            'end': mesh.vertex_coordinates(v),
-            'width': 1.0
-        })
-
-    plotter = Plotter(figsize=(10, 6))
-
-    pcoll = plotter.draw_points(points)
-    lcoll = plotter.draw_lines(lines)
-
-    def callback(k, args):
-        plotter.update_pointcollection(pcoll, vertices, 0.1)
-
-        segments = []
-        for u, v in mesh.edges():
-            a = vertices[u][0:2]
-            b = vertices[v][0:2]
-            segments.append([a, b])
-
-        plotter.update_linecollection(lcoll, segments)
-        plotter.update(pause=0.001)
-
-    vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
-
-    smooth_centroid(vertices,
-                    adjacency,
-                    fixed=fixed,
-                    kmax=100,
-                    callback=callback)
+    plotter = Plotter2(figsize=(10, 6))
+    plotter.bgcolor = '#cccccc'
+    circles = plotter.set_points([{'pos': [2, 3], 'radius': 1.0}, {'pos': [5, 0], 'radius': 1.0}])
+    # plotter.axes.set_xlim(0, 10)
+    # plotter.axes.set_ylim(0, 6)
+    for i in range(10):
+        if i % 2:
+            circles[0].center[0] += 0.5
+        else:
+            circles[1].center[1] += 1.0
+        plotter.update(pause=0.1)
 
     plotter.show()
