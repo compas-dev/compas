@@ -47,6 +47,10 @@ __all__ = [
 
     'transform_points',
     'transform_vectors',
+    'transform_frames',
+
+    'local_to_world_coords',
+    'world_to_local_coords',
 
     'translate_points',
     'translate_points_xy',
