@@ -97,7 +97,7 @@ class Transformation(object):
         return cls.from_matrix(self.matrix)
 
     def __repr__(self):
-        s  = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
+        s = "[[%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[0]])
         s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[1]])
         s += " [%s],\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[2]])
         s += " [%s]]\n" % ",".join([("%.4f" % n).rjust(10) for n in self.matrix[3]])
@@ -155,7 +155,7 @@ class Transformation(object):
 
     @classmethod
     def from_frame(cls, frame):
-        """Computes a change of basis transformation from world XY to frame.
+        """Computes a transformation from world XY to frame.
 
         Parameters
         ----------
@@ -182,11 +182,11 @@ class Transformation(object):
 
     @classmethod
     def from_frame_to_frame(cls, frame_from, frame_to):
-        """Computes a change of basis transformation between two frames.
+        """Computes a transformation between two frames.
 
-        This transformation maps geometry from one Cartesian coordinate system
-        defined by "frame_from" to the other Cartesian coordinate system
-        defined by "frame_to".
+        This transformation allows to transform geometry from one Cartesian
+        coordinate system defined by "frame_from" to another Cartesian
+        coordinate system defined by "frame_to".
 
         Parameters
         ----------
@@ -215,6 +215,36 @@ class Transformation(object):
         T2 = cls.from_frame(frame_to)
 
         return cls(multiply_matrices(T2.matrix, matrix_inverse(T1.matrix)))
+
+    @classmethod
+    def change_basis(cls, frame_from, frame_to):
+        """Computes a change of basis transformation between two frames.
+
+        A basis change is essentially a remapping of geometry from one
+        coordinate system to another.
+
+        Args:
+            frame_from (:class:`Frame`): a frame defining the original
+                Cartesian coordinate system
+            frame_to (:class:`Frame`): a frame defining the targeted
+                Cartesian coordinate system
+
+        Example:
+            >>> from compas.geometry import Point, Frame
+            >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
+            >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            >>> T = Transformation.change_basis(f1, f2)
+            >>> p_f1 = Point(1, 1, 1) # point in f1
+            >>> p_f1.transformed(T) # point represented in f2
+            Point(1.395, 0.955, 1.934)
+            >>> Frame.local_to_local_coords(f1, f2, p_f1)
+            Point(1.395, 0.955, 1.934)
+        """
+
+        T1 = cls.from_frame(frame_from)
+        T2 = cls.from_frame(frame_to)
+
+        return cls(multiply_matrices(matrix_inverse(T2.matrix), T1.matrix))
 
     def inverse(self):
         """Returns the inverse transformation.
