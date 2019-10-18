@@ -285,7 +285,7 @@ def transform_frames(frames, T):
     return dehomogenize_and_unflatten_frames(multiply_matrices(points_and_vectors, transpose_matrix(T)))
 
 
-def local_coords(frame, xyz):
+def world_to_local_coords(frame, xyz):
     """Convert global coordinates to local coordinates.
 
     Parameters
@@ -306,7 +306,7 @@ def local_coords(frame, xyz):
     >>> import numpy as np
     >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(2, 3, 5)]
-    >>> Point(*local_coords(f, xyz)[0])
+    >>> Point(*world_to_local_coords(f, xyz)[0])
     Point(3.726, 4.088, 1.550)
     """
     from compas.geometry.primitives import Frame
@@ -314,7 +314,7 @@ def local_coords(frame, xyz):
     return transform_points(xyz, T)
 
 
-def world_coords(frame, xyz):
+def local_to_world_coords(frame, xyz):
     """Convert local coordinates to global coordinates.
 
     Parameters
@@ -335,7 +335,7 @@ def world_coords(frame, xyz):
     >>> import numpy as np
     >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(3.726, 4.088, 1.550)]
-    >>> Point(*world_coords(f, xyz)[0])
+    >>> Point(*local_to_world_coords(f, xyz)[0])
     Point(2.000, 3.000, 5.000)
     """
     from compas.geometry.primitives import Frame

@@ -23,8 +23,8 @@ __all__ = [
     'homogenize_and_flatten_frames_numpy',
     'dehomogenize_and_unflatten_frames_numpy',
 
-    'local_coords_numpy',
-    'world_coords_numpy',
+    'world_to_local_coords_numpy',
+    'local_to_world_coords_numpy',
 
 ]
 
@@ -93,7 +93,7 @@ def transform_frames_numpy(frames, T):
     return dehomogenize_and_unflatten_frames_numpy(points_and_vectors.dot(T.T))
 
 
-def local_coords_numpy(frame, xyz):
+def world_to_local_coords_numpy(frame, xyz):
     """Convert global coordinates to local coordinates.
 
     Parameters
@@ -113,7 +113,7 @@ def local_coords_numpy(frame, xyz):
     >>> import numpy as np
     >>> frame = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> xyz = [Point(2, 3, 5)]
-    >>> rst = local_coords_numpy(frame, xyz)
+    >>> rst = world_to_local_coords_numpy(frame, xyz)
     >>> np.allclose(rst, [[3.726, 4.088, 1.550]], rtol=1e-3)
     True
     """
@@ -128,7 +128,7 @@ def local_coords_numpy(frame, xyz):
     return rst.T
 
 
-def world_coords_numpy(frame, rst):
+def local_to_world_coords_numpy(frame, rst):
     """Convert local coordinates to global (world) coordinates.
 
     Parameters
@@ -151,7 +151,7 @@ def world_coords_numpy(frame, rst):
     --------
     >>> frame = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
     >>> rst = [Point(3.726, 4.088, 1.550)]
-    >>> xyz = world_coords_numpy(frame, rst)
+    >>> xyz = local_to_world_coords_numpy(frame, rst)
     >>> numpy.allclose(xyz, [[2.000, 3.000, 5.000]], rtol=1e-3)
     True
     """
