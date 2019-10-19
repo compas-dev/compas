@@ -28,17 +28,32 @@ __all__ = ['Plotter2']
 
 class Plotter2(object):
     """"""
-    def __init__(self, figsize=(8, 5), tight=True, **kwargs):
+    def __init__(self, view=None, size=(8, 5), dpi=100, **kwargs):
         """Initialises a plotter object"""
-        self._points = None
-        self._lines = None
+        self._bgcolor = None
+        self._view = None
         self._axes = None
-        self.tight = tight
-        self.figure_size = figsize
-        self.figure_dpi = 100
-        self.figure_bgcolor = '#ffffff'
-        self.axes_xlabel = None
-        self.axes_ylabel = None
+        self.view = view
+        self.size = size
+        self.dpi = dpi
+        self.bgcolor = kwargs.get('bgcolor', '#ffffff')
+
+    @property
+    def view(self):
+        return self._view
+
+    @view.setter
+    def view(self, view):
+        if not view:
+            return
+        if len(view) != 2:
+            return
+        xlim, ylim = view
+        if len(xlim) != 2:
+            return
+        if len(ylim) != 2:
+            return
+        self._view = xlim, ylim
 
     @property
     def axes(self):
@@ -60,8 +75,25 @@ class Plotter2(object):
         .. [2] https://matplotlib.org/api/axis_api.html
 
         """
-        if self._axes is None:
-            self._axes = create_axes_xy(figsize=self.figure_size)
+        if not self._axes:
+            figure = plt.figure(facecolor=self.bgcolor,
+                                figsize=self.size,
+                                dpi=self.dpi)
+            axes = figure.add_subplot('111', aspect='equal')
+            axes.grid(b=False)
+            axes.set_frame_on(False)
+            if self.view:
+                xmin, xmax = self.view[0]
+                ymin, ymax = self.view[1]
+                axes.set_xlim(xmin, xmax)
+                axes.set_ylim(ymin, ymax)
+            axes.set_xscale('linear')
+            axes.set_yscale('linear')
+            axes.set_xticks([])
+            axes.set_yticks([])
+            axes.autoscale()
+            plt.tight_layout()
+            self._axes = axes
         return self._axes
 
     @property
@@ -100,7 +132,7 @@ class Plotter2(object):
             The color as a string (hex colors).
 
         """
-        return self.figure.get_facecolor()
+        return self._bgcolor
 
     @bgcolor.setter
     def bgcolor(self, value):
@@ -114,6 +146,7 @@ class Plotter2(object):
             as a tuple of normalized RGB components.
 
         """
+        self._bgcolor = value
         self.figure.set_facecolor(value)
 
     @property
@@ -178,8 +211,8 @@ class Plotter2(object):
         """Displays the plot.
 
         """
-        self.axes.autoscale()
-        plt.tight_layout()
+        # self.axes.autoscale()
+        # plt.tight_layout()
         plt.show()
 
     def save(self, filepath, **kwargs):
@@ -211,76 +244,17 @@ class Plotter2(object):
             Ammount of time to pause the plot in seconds.
 
         """
-        self.axes.autoscale()
-        if self.tight:
-            plt.tight_layout()
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+        # self.axes.autoscale()
+        # if self.tight:
+        #     plt.tight_layout()
         plt.pause(pause)
 
-    def set_points(self, points):
-        xys = []
-        circles = []
-        for point in points:
-            pos = point['pos'][:2]
-            radius = point.get('radius', self.defaults['point.radius'])
-            circle = Circle(pos, radius=radius)
-            circles.append(self.axes.add_artist(circle))
-            xys.append(pos)
-        self.axes.update_datalim(xys)
-        return circles
-
-    # def set_points2(self, points):
-    #     circles = []
-    #     sizes = []
-    #     for point in points:
-    #         pos = point['pos'][:2]
-    #         radius = point.get('radius', self.defaults['point.radius'])
-    #         # circle = Circle(pos, radius=radius)
-    #         # circles.append(circle)
-    #         sizes.append(radius)
-    #     collection = CircleCollection(sizes)
-    #     self.axes.add_collection(collection, autolim=True)
-    #     return collection
-
-    def clear_points(self):
-        self._points = None
-
-    # def update_pointcollection(self, collection, centers, radius=1.0):
-    #     """Updates the location and radii of a point collection.
-
-    #     Parameters
-    #     ----------
-    #     collection : object
-    #         The point collection to update.
-    #     centers : list
-    #         List of tuples or lists with XY(Z) location for the points in the collection.
-    #     radius : float or list, optional
-    #         The radii of the points. If a floar is given it will be used for all points.
-
-    #     """
-    #     try:
-    #         len(radius)
-    #     except Exception:
-    #         radius = [radius] * len(centers)
-    #     data = zip(centers, radius)
-    #     circles = [Circle(c[0:2], r) for c, r in data]
-    #     collection.set_paths(circles)
-
-    # def update_linecollection(self, collection, segments):
-    #     """Updates a line collection.
-
-    #     Parameters
-    #     ----------
-    #     collection : object
-    #         The line collection to update.
-    #     segments : list
-    #         List of tuples or lists with XY(Z) location for the start and end
-    #         points in each line in the collection.
-
-    #     """
-    #     collection.set_segments([(start[0:2], end[0:2]) for start, end in segments])
-
-    # def update_polygoncollection(self, collection, polygons):
-    #     raise NotImplementedError
+    def add_circle(self, circle):
+        circle = self.axes.add_artist(circle)
+        # self.axes.update_datalim([circle.center[0:2]])
+        return circle
 
 
 # ==============================================================================
@@ -289,18 +263,22 @@ class Plotter2(object):
 
 if __name__ == "__main__":
 
-    import time
+    from compas.geometry import Point as PointObject
+    from compas_plotters.artists import PointArtist
 
-    plotter = Plotter2(figsize=(10, 6))
-    plotter.bgcolor = '#cccccc'
-    circles = plotter.set_points([{'pos': [2, 3], 'radius': 1.0}, {'pos': [5, 0], 'radius': 1.0}])
-    # plotter.axes.set_xlim(0, 10)
-    # plotter.axes.set_ylim(0, 6)
+    plotter = Plotter2(view=([0, 16], [0, 10]), size=(8, 5), bgcolor='#cccccc')
+
+    a = PointArtist(PointObject(1.0, 1.0), plotter)
+    b = PointArtist(PointObject(9.0, 5.0), plotter)
+    c = PointArtist(PointObject(9.0, 1.0), plotter)
+
+    a.draw()
+    b.draw()
+    c.draw()
+
+    plotter.update(pause=1.0)
     for i in range(10):
-        if i % 2:
-            circles[0].center[0] += 0.5
-        else:
-            circles[1].center[1] += 1.0
+        a.move_by(dx=0.5)
         plotter.update(pause=0.1)
 
     plotter.show()
