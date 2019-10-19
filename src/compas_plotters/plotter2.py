@@ -263,8 +263,8 @@ class Plotter2(object):
 
 if __name__ == "__main__":
 
-    from compas.geometry import Point as Point
-    from compas_plotters.artists import PointArtist
+    from compas.geometry import Point
+    from compas_plotters import PointArtist
 
     plotter = Plotter2(view=([0, 16], [0, 10]), size=(8, 5), bgcolor='#cccccc')
 
