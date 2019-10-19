@@ -64,7 +64,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
                    ylabel=None,
                    fontname='Times New Roman',
                    fontsize=10,
-                   grid=True,
+                   grid=False,
                    xlim=None,
                    ylim=None,
                    ticklength=20,
@@ -145,9 +145,9 @@ def create_axes_xy(figsize=(8.0, 6.0),
     axes.set_yscale(yscale)
     axes.set_xticks([])
     axes.set_yticks([])
-    axes.set_xmargin(0.05)
-    axes.set_ymargin(0.05)
-    axes.autoscale()
+    # axes.set_xmargin(0.05)
+    # axes.set_ymargin(0.05)
+    # axes.autoscale()
     return axes
 
 
@@ -662,12 +662,14 @@ def draw_xarrows_xy(lines, axes):
 
     """
     arrowprops = {
-        'arrowstyle'      : '-|>,head_length=0.4,head_width=0.2',
+        'arrowstyle'      : '-|>,head_length=0.6,head_width=0.2',
         'connectionstyle' : 'arc3,rad=0.0',
         'linewidth'       : 1.0,
         'color'           : '#000000',
-        'shrinkB'         : 0.05,
+        'shrinkB'         : 0.0,
+        'shrinkA'         : 0.0,
     }
+    xys = []
     for line in lines:
         sp        = line['start']
         ep        = line['end']
@@ -683,6 +685,8 @@ def draw_xarrows_xy(lines, axes):
             arrowprops=arrowprops,
             zorder=ZORDER_LINES,
         )
+        xys.append(sp[:2])
+        xys.append(ep[:2])
         if text:
             x, y, z = midpoint_line_xy((sp, ep))
             t = axes.text(x,
@@ -694,6 +698,7 @@ def draw_xarrows_xy(lines, axes):
                           va='center',
                           color=color_to_rgb(textcolor, normalize=True))
             t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
+    axes.update_datalim(xys)
 
 
 # ==============================================================================

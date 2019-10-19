@@ -13,6 +13,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from matplotlib.patches import Circle
+from matplotlib.collections import CircleCollection
 
 from compas_plotters.core.drawing import create_axes_xy
 from compas_plotters.core.drawing import draw_xpoints_xy
@@ -26,60 +27,15 @@ __all__ = ['Plotter2']
 
 
 class Plotter2(object):
-    """Definition of a plotter object based on matplotlib.
-
-    Parameters
-    ----------
-    figsize : tuple, optional
-        The size of the plot in inches (width, length). Default is ``(16.0, 12.0)``.
-
-    Other Parameters
-    ----------------
-    dpi : float, optional
-        The resolution of the plot.
-        Default is ``100.0``.
-    tight : bool, optional
-        Produce a plot with limited padding between the plot and the edge of the figure.
-        Default is ``True``.
-    fontsize : int, optional
-        The size of the font used in labels. Default is ``10``.
-    axes : matplotlib.axes.Axes, optional
-        An instance of ``matplotlib`` ``Axes``.
-        For example to share the axes of a figure between different plotters.
-        Default is ``None`` in which case the plotter will make its own axes.
-
-    Attributes
-    ----------
-    defaults : dict
-        Dictionary containing default attributes for vertices and edges.
-
-        * point.radius      : ``0.1``
-        * point.facecolor   : ``'#ffffff'``
-        * point.edgecolor   : ``'#000000'``
-        * point.edgewidth   : ``0.5``
-        * point.textcolor   : ``'#000000'``
-        * point.fontsize    : ``10``
-        * line.width        : ``1.0``
-        * line.color        : ``'#000000'``
-        * line.textcolor    : ``'#000000'``
-        * line.fontsize     : ``10``
-        * polygon.facecolor : ``'#ffffff'``
-        * polygon.edgecolor : ``'#000000'``
-        * polygon.edgewidth : ``0.1``
-        * polygon.textcolor : ``'#000000'``
-        * polygon.fontsize  : ``10``
-
-    Examples
-    --------
-    >>>
-
-    """
-    def __init__(self, figsize=(16.0, 12.0), tight=True, **kwargs):
+    """"""
+    def __init__(self, figsize=(8, 5), tight=True, **kwargs):
         """Initialises a plotter object"""
+        self._points = None
+        self._lines = None
         self._axes = None
         self.tight = tight
         self.figure_size = figsize
-        self.figure_dpi = dpi
+        self.figure_dpi = 100
         self.figure_bgcolor = '#ffffff'
         self.axes_xlabel = None
         self.axes_ylabel = None
@@ -105,18 +61,8 @@ class Plotter2(object):
 
         """
         if self._axes is None:
-            self._axes = create_axes_xy(
-                figsize=self.figure_size,
-                dpi=self.figure_dpi,
-                xlabel=self.axes_xlabel,
-                ylabel=self.axes_ylabel
-            )
-
+            self._axes = create_axes_xy(figsize=self.figure_size)
         return self._axes
-
-    @axes.setter
-    def axes(self, axes):
-        self._axes = axes
 
     @property
     def figure(self):
@@ -225,14 +171,15 @@ class Plotter2(object):
         """
         self.figure.canvas.mpl_connect('pick_event', listener)
 
-    def show(self, autoscale=True):
+    def draw(self):
+        self.figure.canvas.draw()
+
+    def show(self):
         """Displays the plot.
 
         """
-        if autoscale:
-            self.axes.autoscale()
-        if self.tight:
-            plt.tight_layout()
+        self.axes.autoscale()
+        plt.tight_layout()
         plt.show()
 
     def save(self, filepath, **kwargs):
@@ -255,6 +202,85 @@ class Plotter2(object):
         self.axes.autoscale()
         plt.savefig(filepath, **kwargs)
 
+    def update(self, pause=0.0001):
+        """Updates and pauses the plot.
+
+        Parameters
+        ----------
+        pause : float
+            Ammount of time to pause the plot in seconds.
+
+        """
+        self.axes.autoscale()
+        if self.tight:
+            plt.tight_layout()
+        plt.pause(pause)
+
+    def set_points(self, points):
+        xys = []
+        circles = []
+        for point in points:
+            pos = point['pos'][:2]
+            radius = point.get('radius', self.defaults['point.radius'])
+            circle = Circle(pos, radius=radius)
+            circles.append(self.axes.add_artist(circle))
+            xys.append(pos)
+        self.axes.update_datalim(xys)
+        return circles
+
+    # def set_points2(self, points):
+    #     circles = []
+    #     sizes = []
+    #     for point in points:
+    #         pos = point['pos'][:2]
+    #         radius = point.get('radius', self.defaults['point.radius'])
+    #         # circle = Circle(pos, radius=radius)
+    #         # circles.append(circle)
+    #         sizes.append(radius)
+    #     collection = CircleCollection(sizes)
+    #     self.axes.add_collection(collection, autolim=True)
+    #     return collection
+
+    def clear_points(self):
+        self._points = None
+
+    # def update_pointcollection(self, collection, centers, radius=1.0):
+    #     """Updates the location and radii of a point collection.
+
+    #     Parameters
+    #     ----------
+    #     collection : object
+    #         The point collection to update.
+    #     centers : list
+    #         List of tuples or lists with XY(Z) location for the points in the collection.
+    #     radius : float or list, optional
+    #         The radii of the points. If a floar is given it will be used for all points.
+
+    #     """
+    #     try:
+    #         len(radius)
+    #     except Exception:
+    #         radius = [radius] * len(centers)
+    #     data = zip(centers, radius)
+    #     circles = [Circle(c[0:2], r) for c, r in data]
+    #     collection.set_paths(circles)
+
+    # def update_linecollection(self, collection, segments):
+    #     """Updates a line collection.
+
+    #     Parameters
+    #     ----------
+    #     collection : object
+    #         The line collection to update.
+    #     segments : list
+    #         List of tuples or lists with XY(Z) location for the start and end
+    #         points in each line in the collection.
+
+    #     """
+    #     collection.set_segments([(start[0:2], end[0:2]) for start, end in segments])
+
+    # def update_polygoncollection(self, collection, polygons):
+    #     raise NotImplementedError
 
 
 # ==============================================================================
@@ -263,4 +289,18 @@ class Plotter2(object):
 
 if __name__ == "__main__":
 
-    pass
+    import time
+
+    plotter = Plotter2(figsize=(10, 6))
+    plotter.bgcolor = '#cccccc'
+    circles = plotter.set_points([{'pos': [2, 3], 'radius': 1.0}, {'pos': [5, 0], 'radius': 1.0}])
+    # plotter.axes.set_xlim(0, 10)
+    # plotter.axes.set_ylim(0, 6)
+    for i in range(10):
+        if i % 2:
+            circles[0].center[0] += 0.5
+        else:
+            circles[1].center[1] += 1.0
+        plotter.update(pause=0.1)
+
+    plotter.show()
