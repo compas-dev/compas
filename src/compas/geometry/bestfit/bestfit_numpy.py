@@ -13,8 +13,8 @@ from scipy.linalg import svd
 from scipy.optimize import leastsq
 
 # should this not be defined in a different location?
-from compas.geometry import local_coords_numpy
-from compas.geometry import global_coords_numpy
+from compas.geometry import world_to_local_coords_numpy
+from compas.geometry import local_to_world_coords_numpy
 
 from compas.numerical import pca_numpy
 
@@ -151,7 +151,8 @@ def bestfit_circle_numpy(points):
 
     """
     o, uvw, _ = pca_numpy(points)
-    rst = local_coords_numpy(o, uvw, points)
+    frame = [o, uvw[1], uvw[2]]
+    rst = world_to_local_coords_numpy(frame, points)
     x = rst[:, 0]
     y = rst[:, 1]
 
@@ -172,7 +173,7 @@ def bestfit_circle_numpy(points):
 
     print(residu)
 
-    xyz = global_coords_numpy(o, uvw, [[c[0], c[1], 0.0]])[0]
+    xyz = local_to_world_coords_numpy(frame, [[c[0], c[1], 0.0]])[0]
 
     o = xyz.tolist()
     u, v, w = uvw.tolist()

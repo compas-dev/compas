@@ -62,9 +62,9 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        xaxis : :obj:`list` of :obj:`float`
+        xaxis : :class:`Vector`
             The x-axis of the frame.
-        yaxis : :obj:`list` of :obj:`float`
+        yaxis : :class:`Vector`
             The y-axis of the frame.
 
         Examples
@@ -116,7 +116,7 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        quaternion : :obj:`list` of :obj:`float`
+        quaternion : :class:`Quaternion`
             Four numbers that represents the four coefficient values of a quaternion.
 
         Examples
@@ -136,10 +136,9 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        axis_angle_vector : :obj:`list` of :obj:`float`
-            Three numbers that represent the axis of rotation and angle of rotation
-            through the vector's magnitude.
-        point : :obj:`list` of :obj:`float`, optional
+        axis_angle_vector : list of float
+            Three numbers that represent the axis of rotation and angle of rotation through the vector's magnitude.
+        point : list of float, optional
             A point to perform a rotation around an origin other than [0, 0, 0].
 
         Examples
@@ -157,16 +156,19 @@ class Rotation(Transformation):
 
     @classmethod
     def from_axis_and_angle(cls, axis, angle, point=[0, 0, 0]):
-        """Calculates a ``Rotation`` from a rotation axis and an angle and \
-            an optional point of rotation.
+        """Calculates a ``Rotation`` from a rotation axis and an angle and an optional point of rotation.
+
+        The rotation is based on the right hand rule, i.e. anti-clockwise if the
+        axis of rotation points towards the observer.
 
         Parameters
         ----------
-            axis (:obj:`list` of :obj:`float`): Three numbers that represent
-                the axis of rotation
-            angle (:obj:`float`): The rotation angle in radians.
-            point (:obj:`list` of :obj:`float`, optional): A point to
-                perform a rotation around an origin other than [0, 0, 0].
+        axis : list of float
+            Three numbers that represent the axis of rotation.
+        angle : float
+            The rotation angle in radians.
+        point : :class:`Point` or list of float
+            A point to perform a rotation around an origin other than [0, 0, 0].
 
         Examples
         --------
@@ -200,12 +202,13 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        euler_angles : :obj:`list` of :obj:`float`
-            Three numbers that represent the angles of rotations about the defined axes.
-        static : :obj:`bool`, optional
-            If true the rotations are applied to a static frame.
-            If not, to a rotational. Defaults to true.
-        axes : :obj:`str`, optional
+        euler_angles: list of float
+            Three numbers that represent the angles of rotations about the
+            defined axes.
+        static: bool, optional
+            If true the rotations are applied to a static frame. If not, to a
+            rotational. Defaults to true.
+        axes: str, optional
             A 3 character string specifying order of the axes. Defaults to 'xyz'.
 
         Examples
@@ -230,7 +233,11 @@ class Rotation(Transformation):
 
     @property
     def quaternion(self):
-        """Returns the 4 quaternion coefficients from the ``Rotation``.
+        """Returns the Quaternion from the ``Rotation``.
+
+        Returns
+        -------
+        :class:`Quaternion`
 
         Examples
         --------
@@ -240,11 +247,16 @@ class Rotation(Transformation):
         >>> allclose(q1, q2, tol=1e-3)
         True
         """
-        return quaternion_from_matrix(self.matrix)
+        from compas.geometry.primitives import Quaternion
+        return Quaternion(*quaternion_from_matrix(self.matrix))
 
     @property
     def axis_and_angle(self):
         """Returns the axis and the angle of the ``Rotation``.
+
+        Returns
+        -------
+        tuple: (:class:`Vector`, float)
 
         Examples
         --------
@@ -257,7 +269,9 @@ class Rotation(Transformation):
         >>> allclose([angle1], [angle2])
         True
         """
-        return axis_and_angle_from_matrix(self.matrix)
+        from compas.geometry.primitives import Vector
+        axis, angle = axis_and_angle_from_matrix(self.matrix)
+        return Vector(*axis), angle
 
     @property
     def axis_angle_vector(self):
@@ -265,9 +279,7 @@ class Rotation(Transformation):
 
         Returns
         -------
-        :obj:`list` of :obj:`float`
-            Three numbers that represent the axis of rotation and angle of rotation
-            through the vector's magnitude.
+        :class:`Vector`
 
         Examples
         --------
@@ -278,7 +290,7 @@ class Rotation(Transformation):
         True
         """
         axis, angle = self.axis_and_angle
-        return scale_vector(axis, angle)
+        return axis.scaled(angle)
 
     def euler_angles(self, static=True, axes='xyz'):
         """Returns Euler angles from the ``Rotation`` according to specified
@@ -286,16 +298,16 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        static : :obj:`bool`, optional
-            If true the rotations are applied to a static frame.
-            If not, to a rotational. Defaults to True.
-        axes : :obj:`str`, optional
-            A 3 character string specifying the order of the axes. Defaults to 'xyz'.
+        static : bool, optional
+            If true the rotations are applied to a static frame. If not, to a
+            rotational. Defaults to True.
+        axes : str, optional
+            A 3 character string specifying the order of the axes. Defaults to
+            'xyz'.
 
         Returns
         -------
-        :obj:`list` of :obj:`float`
-            The 3 Euler angles.
+        list of float: The 3 Euler angles.
 
         Examples
         --------
@@ -311,8 +323,15 @@ class Rotation(Transformation):
     @property
     def basis_vectors(self):
         """Returns the basis vectors of the ``Rotation``.
+
+        Returns
+        -------
+        tuple: (:class:`Vector`, :class:`Vector`)
+
         """
-        return basis_vectors_from_matrix(self.matrix)
+        from compas.geometry.primitives import Vector
+        xaxis, yaxis = basis_vectors_from_matrix(self.matrix)
+        return Vector(*xaxis), Vector(*yaxis)
 
 
 # ==============================================================================

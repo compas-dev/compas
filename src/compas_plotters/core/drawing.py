@@ -671,8 +671,8 @@ def draw_xarrows_xy(lines, axes):
     }
     xys = []
     for line in lines:
-        sp        = line['start']
-        ep        = line['end']
+        sp        = line['start'][:2]
+        ep        = line['end'][:2]
         text      = line.get('text', None)
         textcolor = line.get('textcolor') or '#000000'
         fontsize  = line.get('fontsize') or 6
@@ -680,13 +680,13 @@ def draw_xarrows_xy(lines, axes):
         arrowprops['linewidth'] = line.get('width', 1.0)
         axes.annotate(
             '',
-            xy=ep[0:2],
-            xytext=sp[0:2],
+            xy=ep,
+            xytext=sp,
             arrowprops=arrowprops,
             zorder=ZORDER_LINES,
         )
-        xys.append(sp[:2])
-        xys.append(ep[:2])
+        xys.append(sp)
+        xys.append(ep)
         if text:
             x, y, z = midpoint_line_xy((sp, ep))
             t = axes.text(x,
