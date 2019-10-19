@@ -4,12 +4,12 @@ from __future__ import division
 
 import matplotlib
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+__all__ = ['Plotter3']
 
 
-__all__ = ['Plotter2']
-
-
-class Plotter2(object):
+class Plotter3(object):
     """"""
     def __init__(self, view=None, size=(8, 5), dpi=100, **kwargs):
         """Initialises a plotter object"""
@@ -62,18 +62,19 @@ class Plotter2(object):
             figure = plt.figure(facecolor=self.bgcolor,
                                 figsize=self.size,
                                 dpi=self.dpi)
-            axes = figure.add_subplot('111', aspect='equal')
-            axes.grid(b=False)
-            axes.set_frame_on(False)
-            if self.view:
-                xmin, xmax = self.view[0]
-                ymin, ymax = self.view[1]
-                axes.set_xlim(xmin, xmax)
-                axes.set_ylim(ymin, ymax)
-            axes.set_xscale('linear')
-            axes.set_yscale('linear')
-            axes.set_xticks([])
-            axes.set_yticks([])
+            axes = figure.add_subplot('111', projection='3d')
+            # axes.grid(b=False)
+            # axes.set_frame_on(False)
+            # if self.view:
+            #     xmin, xmax = self.view[0]
+            #     ymin, ymax = self.view[1]
+            #     axes.set_xlim(xmin, xmax)
+            #     axes.set_ylim(ymin, ymax)
+            # axes.set_xscale('linear')
+            # axes.set_yscale('linear')
+            # axes.set_zscale('linear')
+            # axes.set_xticks([])
+            # axes.set_yticks([])
             axes.autoscale()
             plt.tight_layout()
             self._axes = axes
@@ -156,37 +157,6 @@ class Plotter2(object):
         """
         self.figure.canvas.set_window_title(value)
 
-    def register_listener(self, listener):
-        """Register a listener for pick events.
-
-        Parameters
-        ----------
-        listener : callable
-            The handler for pick events.
-
-        Returns
-        -------
-        None
-
-        Notes
-        -----
-        For more information, see the docs of ``mpl_connect`` ([1]_), and on event
-        handling and picking ([2]_).
-
-        References
-        ----------
-        .. [1] https://matplotlib.org/api/backend_bases_api.html#matplotlib.backend_bases.FigureCanvasBase.mpl_connect
-        .. [2] https://matplotlib.org/users/event_handling.html
-
-        Examples
-        --------
-        .. code-block:: python
-
-            #
-
-        """
-        self.figure.canvas.mpl_connect('pick_event', listener)
-
     def draw(self):
         self.figure.canvas.draw()
 
@@ -229,10 +199,6 @@ class Plotter2(object):
         if pause:
             plt.pause(pause)
 
-    def add_circle(self, circle):
-        circle = self.axes.add_artist(circle)
-        return circle
-
 
 # ==============================================================================
 # Main
@@ -240,4 +206,5 @@ class Plotter2(object):
 
 if __name__ == "__main__":
 
-    pass
+    plotter = Plotter3()
+    plotter.show()

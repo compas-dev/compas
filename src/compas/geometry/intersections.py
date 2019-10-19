@@ -28,6 +28,8 @@ __all__ = [
     'intersection_line_line_xy',
     'intersection_segment_segment',
     'intersection_segment_segment_xy',
+    'intersection_line_segment',
+    'intersection_line_segment_xy',
     # 'intersection_circle_circle',
     'intersection_circle_circle_xy',
     'intersection_line_plane',
@@ -164,6 +166,28 @@ def intersection_segment_segment(ab, cd, tol=1e-6):
         return None
 
     if is_point_on_segment(x, ab, tol=tol) and is_point_on_segment(x, cd, tol=tol):
+        return x
+
+
+def intersection_line_segment(line, segment, tol=1e-6):
+    """"""
+    x = intersection_line_line(line, segment, tol=tol)
+
+    if not x:
+        return None
+
+    if is_point_on_segment(x, segment, tol=tol):
+        return x
+
+
+def intersection_line_segment_xy(line, segment, tol=1e-6):
+    """"""
+    x = intersection_line_line_xy(line, segment, tol=tol)
+
+    if not x:
+        return None
+
+    if is_point_on_segment_xy(x, segment, tol=tol):
         return x
 
 
