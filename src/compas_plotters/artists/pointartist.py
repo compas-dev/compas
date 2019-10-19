@@ -15,8 +15,8 @@ __all__ = ['PointArtist']
 class PointArtist(Artist):
     """"""
 
-    def __init__(self, point, plotter):
-        super(PointArtist, self).__init__(plotter)
+    def __init__(self, point):
+        super(PointArtist, self).__init__()
         self._radius = 5.0
         self.point = point
         self.facecolor = '#ffffff'
