@@ -82,6 +82,7 @@ if __name__ == '__main__':
 
     a = Point(1.0, 0.0)
     b = Point(3.0, 2.0)
+
     line = Line(a, b)
 
     a_artist = PointArtist(a)
@@ -91,11 +92,7 @@ if __name__ == '__main__':
 
     a_artist.draw()
     b_artist.draw()
-    line_artist.draw()
 
-    # # plotter.update(pause=1.0)
-    # # for i in range(10):
-    # #     a.move_by(dx=0.5)
-    # #     plotter.update(pause=0.1)
+    line_artist.draw()
 
     plotter.show()

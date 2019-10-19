@@ -52,14 +52,7 @@ class PointArtist(Artist):
                         zorder=self.zorder)
         self.circle = self.plotter.add_circle(circle)
 
-    def move_to(self, x, y):
-        self.point[0] = x
-        self.point[1] = y
-        self.set_transform()
-
-    def move_by(self, dx=0, dy=0):
-        self.point[0] += dx
-        self.point[1] += dy
+    def redraw(self):
         self.set_transform()
 
 
@@ -77,17 +70,23 @@ if __name__ == '__main__':
 
     PointArtist.plotter = plotter
 
-    a = PointArtist(Point(1.0, 1.0))
-    b = PointArtist(Point(9.0, 5.0))
-    c = PointArtist(Point(9.0, 1.0))
+    a = Point(1.0, 1.0)
+    b = Point(9.0, 5.0)
+    c = Point(9.0, 1.0)
 
-    a.draw()
-    b.draw()
-    c.draw()
+    a_artist = PointArtist(a)
+    b_artist = PointArtist(b)
+    c_artist = PointArtist(c)
+
+    a_artist.draw()
+    b_artist.draw()
+    c_artist.draw()
 
     plotter.update(pause=1.0)
+
     for i in range(10):
-        a.move_by(dx=0.5)
+        a[0] += 0.5
+        a_artist.redraw()
         plotter.update(pause=0.1)
 
     plotter.show()
