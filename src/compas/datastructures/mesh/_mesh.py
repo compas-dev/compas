@@ -824,6 +824,40 @@ class Mesh(FromToPickle,
                 vertices = [key_index[key] + 1 for key in vertices]
                 fh.write(' '.join(['f'] + [str(index) for index in vertices]) + '\n')
 
+    def to_obj_with_attribute(self, filepath, attribute):
+        """
+        Write the mesh to an OBJ file grouping the faces by attribute.
+
+        Parameters
+        ----------
+        filepath: str
+            Full path of the file.
+        attribute: str
+            The name of the faces' attribute to group by.
+        """
+        # if none of the faces has the attribute, export normally
+        if not any(self.get_faces_attribute(self.faces(), attribute)):
+            self.to_obj(filepath)
+            return
+
+        fkeys = list(self.faces())
+        fkeys.sort(key=lambda x: str(self.get_face_attribute(x, attribute)))
+
+        key_index = self.key_index()
+        current_group = 'na'
+        with open(filepath, 'w+') as fh:
+            for key, attr in self.vertices(True):
+                fh.write('v {0[x]:.3f} {0[y]:.3f} {0[z]:.3f}\n'.format(attr))
+            for fkey in fkeys:
+                fa = self.get_face_attribute(fkey, attribute)
+                if fa != current_group:
+                    fh.write("g " + str(fa) + "\n")
+                    current_group = fa
+
+                vertices = self.face_vertices(fkey)
+                vertices = [key_index[key] + 1 for key in vertices]
+                fh.write(' '.join(['f'] + [str(index) for index in vertices]) + '\n')
+
     def to_vertices_and_faces(self):
         """Return the vertices and faces of a mesh.
 
