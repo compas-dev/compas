@@ -157,6 +157,14 @@ class Plotter2(object):
         """
         self.figure.canvas.set_window_title(value)
 
+    @property
+    def artists(self):
+        return self._artists
+
+    @artists.setter
+    def artists(self, artists):
+        self._artists = artists
+
     # ==========================================================================
     # Methods
     # ==========================================================================

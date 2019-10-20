@@ -95,9 +95,11 @@ if __name__ == '__main__':
     b_artist = PointArtist(b)
     line_artist = LineArtist(line)
 
-    plotter.add_artist(a_artist)
-    plotter.add_artist(b_artist)
-    plotter.add_artist(line_artist)
+    # plotter.add_artist(a_artist)
+    # plotter.add_artist(b_artist)
+    # plotter.add_artist(line_artist)
+
+    plotter.artists += [a_artist, b_artist, line_artist]
 
     plotter.draw(pause=1.0)
 
