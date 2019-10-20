@@ -50,7 +50,7 @@ class PointArtist(Artist):
                         edgecolor=self.edgecolor,
                         transform=self.T,
                         zorder=self.zorder)
-        self.circle = self.plotter.add_circle(circle)
+        self.circle = self.plotter.axes.add_artist(circle)
 
     def redraw(self):
         self.set_transform()
@@ -78,15 +78,14 @@ if __name__ == '__main__':
     b_artist = PointArtist(b)
     c_artist = PointArtist(c)
 
-    a_artist.draw()
-    b_artist.draw()
-    c_artist.draw()
+    plotter.add_artist(a_artist)
+    plotter.add_artist(b_artist)
+    plotter.add_artist(c_artist)
 
-    plotter.update(pause=1.0)
+    plotter.draw(pause=1.0)
 
     for i in range(10):
         a[0] += 0.5
-        a_artist.redraw()
-        plotter.update(pause=0.1)
+        plotter.redraw(pause=0.1)
 
     plotter.show()

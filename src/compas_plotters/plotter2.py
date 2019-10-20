@@ -16,6 +16,7 @@ class Plotter2(object):
         self._bgcolor = None
         self._view = None
         self._axes = None
+        self._artists = []
         self.view = view
         self.size = size
         self.dpi = dpi
@@ -156,6 +157,13 @@ class Plotter2(object):
         """
         self.figure.canvas.set_window_title(value)
 
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    def add_artist(self, artist):
+        self._artists.append(artist)
+
     def register_listener(self, listener):
         """Register a listener for pick events.
 
@@ -187,8 +195,29 @@ class Plotter2(object):
         """
         self.figure.canvas.mpl_connect('pick_event', listener)
 
-    def draw(self):
+    def draw(self, pause=None):
+        for artist in self._artists:
+            artist.draw()
         self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+        if pause:
+            plt.pause(pause)
+
+    def redraw(self, pause=None):
+        """Updates and pauses the plot.
+
+        Parameters
+        ----------
+        pause : float
+            Ammount of time to pause the plot in seconds.
+
+        """
+        for artist in self._artists:
+            artist.redraw()
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+        if pause:
+            plt.pause(pause)
 
     def show(self):
         """Displays the plot.
@@ -214,24 +243,6 @@ class Plotter2(object):
 
         """
         plt.savefig(filepath, **kwargs)
-
-    def update(self, pause=0.0001):
-        """Updates and pauses the plot.
-
-        Parameters
-        ----------
-        pause : float
-            Ammount of time to pause the plot in seconds.
-
-        """
-        self.figure.canvas.draw()
-        self.figure.canvas.flush_events()
-        if pause:
-            plt.pause(pause)
-
-    def add_circle(self, circle):
-        circle = self.axes.add_artist(circle)
-        return circle
 
 
 # ==============================================================================

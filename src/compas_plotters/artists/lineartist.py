@@ -62,6 +62,13 @@ class LineArtist(Artist):
                         zorder=self.zorder)
         self.line2d = self.plotter.axes.add_line(line2d)
 
+    def redraw(self):
+        left, right = self.clip()
+        x0, y0 = left[:2]
+        x1, y1 = right[:2]
+        self.line2d.set_xdata([x0, x1])
+        self.line2d.set_ydata([y0, y1])
+
 
 # ==============================================================================
 # Main
@@ -82,17 +89,22 @@ if __name__ == '__main__':
 
     a = Point(1.0, 0.0)
     b = Point(3.0, 2.0)
-
     line = Line(a, b)
 
     a_artist = PointArtist(a)
     b_artist = PointArtist(b)
-
     line_artist = LineArtist(line)
 
-    a_artist.draw()
-    b_artist.draw()
+    plotter.add_artist(a_artist)
+    plotter.add_artist(b_artist)
+    plotter.add_artist(line_artist)
 
-    line_artist.draw()
+    plotter.draw(pause=1.0)
+
+    for i in range(10):
+        a[0] += 0.5
+        line.start[0] += 0.5
+
+        plotter.redraw(pause=0.1)
 
     plotter.show()
