@@ -23,7 +23,7 @@ class PointArtist(Artist):
         self.point = point
         self.facecolor = '#ffffff'
         self.edgecolor = '#000000'
-        self.circle = None
+        self.mpl_circle = None
 
     @property
     def radius(self):
@@ -40,9 +40,6 @@ class PointArtist(Artist):
         T = F + S
         return T
 
-    def set_transform(self):
-        self.circle.set_transform(self.T)
-
     def draw(self):
         circle = Circle([0, 0],
                         radius=self.radius,
@@ -50,10 +47,13 @@ class PointArtist(Artist):
                         edgecolor=self.edgecolor,
                         transform=self.T,
                         zorder=self.zorder)
-        self.circle = self.plotter.axes.add_artist(circle)
+        self.mpl_circle = self.plotter.axes.add_artist(circle)
 
     def redraw(self):
-        self.set_transform()
+        self.mpl_circle.set_radius(self.radius)
+        self.mpl_circle.set_edgecolor(self.edgecolor)
+        self.mpl_circle.set_facecolor(self.facecolor)
+        self.mpl_circle.set_transform(self.T)
 
 
 # ==============================================================================
@@ -68,8 +68,6 @@ if __name__ == '__main__':
 
     plotter = Plotter2(view=([0, 16], [0, 10]), size=(8, 5), bgcolor='#cccccc')
 
-    PointArtist.plotter = plotter
-
     a = Point(1.0, 1.0)
     b = Point(9.0, 5.0)
     c = Point(9.0, 1.0)
@@ -78,16 +76,12 @@ if __name__ == '__main__':
     b_artist = PointArtist(b)
     c_artist = PointArtist(c)
 
-    # plotter.add_artist(a_artist)
-    # plotter.add_artist(b_artist)
-    # plotter.add_artist(c_artist)
-
-    plotter.artists += [a_artist, b_artist, c_artist]
+    plotter.add_artists([a_artist, b_artist, c_artist])
 
     plotter.draw(pause=1.0)
 
     for i in range(10):
         a[0] += 0.5
-        plotter.redraw(pause=0.1)
+        plotter.redraw(pause=0.01)
 
     plotter.show()

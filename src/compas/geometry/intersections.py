@@ -7,6 +7,8 @@ from math import sqrt
 
 from compas.utilities import pairwise
 
+from compas.geometry.basic import close
+from compas.geometry.basic import allclose
 from compas.geometry.basic import add_vectors
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import scale_vector
@@ -30,7 +32,7 @@ __all__ = [
     'intersection_segment_segment_xy',
     'intersection_line_segment',
     'intersection_line_segment_xy',
-    # 'intersection_circle_circle',
+    'intersection_line_box_xy',
     'intersection_circle_circle_xy',
     'intersection_line_plane',
     'intersection_line_triangle',
@@ -189,6 +191,24 @@ def intersection_line_segment_xy(line, segment, tol=1e-6):
 
     if is_point_on_segment_xy(x, segment, tol=tol):
         return x
+
+
+def intersection_line_box_xy(line, box, tol=1e-6):
+    points = []
+    for segment in pairwise(box + box[:1]):
+        x = intersection_line_segment_xy(line, segment, tol=tol)
+        if x:
+            points.append(x)
+    if len(points) < 3:
+        return points
+    if len(points) == 3:
+        a, b, c = points
+        if allclose(a, b, tol=tol):
+            return [a, c]
+        if allclose(b, c, tol=tol):
+            return [a, b]
+        return [a, b]
+    return [a, c]
 
 
 def intersection_segment_segment_xy(ab, cd, tol=1e-6):

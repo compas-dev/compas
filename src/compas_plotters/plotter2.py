@@ -170,7 +170,12 @@ class Plotter2(object):
     # ==========================================================================
 
     def add_artist(self, artist):
+        artist.plotter = self
         self._artists.append(artist)
+
+    def add_artists(self, artists):
+        for artist in artists:
+            self.add_artist(artist)
 
     def register_listener(self, listener):
         """Register a listener for pick events.

@@ -11,10 +11,8 @@ __all__ = ['Artist']
 class Artist(object):
     """Base class for all plotter artists."""
 
-    plotter = None
-
     def __init__(self):
-        pass
+        self.plotter = None
 
     def draw(self):
         raise NotImplementedError
