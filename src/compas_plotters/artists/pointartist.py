@@ -66,17 +66,15 @@ if __name__ == '__main__':
     from compas_plotters import Plotter2
     from compas_plotters import PointArtist
 
-    plotter = Plotter2(view=([0, 16], [0, 10]), size=(8, 5), bgcolor='#cccccc')
+    plotter = Plotter2(figsize=(8, 5), viewbox=([0, 16], [0, 10]), bgcolor='#cccccc')
 
     a = Point(1.0, 1.0)
     b = Point(9.0, 5.0)
     c = Point(9.0, 1.0)
 
-    a_artist = PointArtist(a)
-    b_artist = PointArtist(b)
-    c_artist = PointArtist(c)
-
-    plotter.add_artists([a_artist, b_artist, c_artist])
+    plotter.add(a)
+    plotter.add(b)
+    plotter.add(c)
 
     plotter.draw(pause=1.0)
 

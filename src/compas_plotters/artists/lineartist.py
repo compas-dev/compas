@@ -72,19 +72,21 @@ if __name__ == '__main__':
     from compas_plotters import PointArtist
     from compas_plotters import LineArtist
 
-    plotter = Plotter2(view=([0, 16], [0, 10]), size=(8, 5), bgcolor='#cccccc')
+    plotter = Plotter2(figsize=(8, 5), viewbox=([0, 16], [0, 10]), bgcolor='#cccccc')
 
     a = Point(1.0, 0.0)
     b = Point(3.0, 2.0)
+
     line = Line(a, b)
 
-    a_artist = PointArtist(a)
-    b_artist = PointArtist(b)
-    line_artist = LineArtist(line)
+    plotter.add(a)
+    plotter.add(b)
 
-    plotter.add_artists([a_artist, b_artist, line_artist])
+    # add option to draw segment/line
+    plotter.add(line)
 
     plotter.draw(pause=1.0)
+
     for i in range(10):
         a[0] += 0.5
         line.start[0] += 0.5

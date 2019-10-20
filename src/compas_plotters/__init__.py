@@ -24,10 +24,10 @@ from __future__ import print_function
 
 from .core import *
 
+from .artists import *
+
 from .plotter import Plotter
 from .plotter2 import Plotter2
-
-from .artists import *
 
 from .networkplotter import NetworkPlotter
 from .meshplotter import MeshPlotter

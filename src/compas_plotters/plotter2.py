@@ -5,39 +5,40 @@ from __future__ import division
 import matplotlib
 import matplotlib.pyplot as plt
 
+from compas_plotters import Artist
 
 __all__ = ['Plotter2']
 
 
 class Plotter2(object):
     """"""
-    def __init__(self, view=None, size=(8, 5), dpi=100, **kwargs):
+    def __init__(self, figsize=(8, 5), viewbox=None, **kwargs):
         """Initialises a plotter object"""
         self._bgcolor = None
-        self._view = None
+        self._viewbox = None
         self._axes = None
         self._artists = []
-        self.view = view
-        self.size = size
-        self.dpi = dpi
+        self.viewbox = viewbox
+        self.figsize = figsize
+        self.dpi = kwargs.get('dpi', 100)
         self.bgcolor = kwargs.get('bgcolor', '#ffffff')
 
     @property
-    def view(self):
-        return self._view
+    def viewbox(self):
+        return self._viewbox
 
-    @view.setter
-    def view(self, view):
-        if not view:
+    @viewbox.setter
+    def viewbox(self, viewbox):
+        if not viewbox:
             return
-        if len(view) != 2:
+        if len(viewbox) != 2:
             return
-        xlim, ylim = view
+        xlim, ylim = viewbox
         if len(xlim) != 2:
             return
         if len(ylim) != 2:
             return
-        self._view = xlim, ylim
+        self._viewbox = xlim, ylim
 
     @property
     def axes(self):
@@ -61,14 +62,14 @@ class Plotter2(object):
         """
         if not self._axes:
             figure = plt.figure(facecolor=self.bgcolor,
-                                figsize=self.size,
+                                figsize=self.figsize,
                                 dpi=self.dpi)
             axes = figure.add_subplot('111', aspect='equal')
             axes.grid(b=False)
             axes.set_frame_on(False)
-            if self.view:
-                xmin, xmax = self.view[0]
-                ymin, ymax = self.view[1]
+            if self.viewbox:
+                xmin, xmax = self.viewbox[0]
+                ymin, ymax = self.viewbox[1]
                 axes.set_xlim(xmin, xmax)
                 axes.set_ylim(ymin, ymax)
             axes.set_xscale('linear')
@@ -165,17 +166,24 @@ class Plotter2(object):
     def artists(self, artists):
         self._artists = artists
 
-    # ==========================================================================
+    # =========================================================================
     # Methods
-    # ==========================================================================
+    # =========================================================================
 
-    def add_artist(self, artist):
+    def add(self, item, artist=None, **kwargs):
+        if not artist:
+            artist = Artist.build(item, **kwargs)
         artist.plotter = self
         self._artists.append(artist)
+        return artist
 
-    def add_artists(self, artists):
-        for artist in artists:
-            self.add_artist(artist)
+    # def add_artist(self, artist):
+    #     artist.plotter = self
+    #     self._artists.append(artist)
+
+    # def add_artists(self, artists):
+    #     for artist in artists:
+    #         self.add_artist(artist)
 
     def register_listener(self, listener):
         """Register a listener for pick events.
