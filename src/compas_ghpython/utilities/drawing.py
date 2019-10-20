@@ -220,6 +220,8 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
         for i, normal in enumerate(vertex_normals):
             normals[i] = Vector3f(normal[0], normal[1], normal[2])
         mesh.Normals.SetNormals(normals)
+    else:
+        mesh.Normals.ComputeNormals()
 
     if texture_coordinates:
         count = len(texture_coordinates)
@@ -235,6 +237,8 @@ def draw_mesh(vertices, faces, color=None, vertex_normals=None, texture_coordina
             colors[i] = rs.coercecolor(color)
         mesh.VertexColors.SetColors(colors)
 
+    # optionally https://developer.rhino3d.com/api/RhinoCommon/html/M_Rhino_Geometry_Mesh_Compact.htm:
+    # mesh.Compact()
     return mesh
 
 
