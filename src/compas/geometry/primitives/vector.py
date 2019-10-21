@@ -439,10 +439,10 @@ class Vector(Primitive):
 
     def unitize(self):
         """Scale this ``Vector`` to unit length."""
-        l = self.length
-        self.x = self.x / l
-        self.y = self.y / l
-        self.z = self.z / l
+        length = self.length
+        self.x = self.x / length
+        self.y = self.y / length
+        self.z = self.z / length
 
     def unitized(self):
         """Returns a unitized copy of this ``Vector``.

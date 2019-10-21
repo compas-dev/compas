@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed parameters `origin` `uvw` of `global_coords_numpy` and `local_coords_numpy` to `frame`
 - Fixed some returns of `Frame` and `Rotation` to use `Vector` or `Quaternion`
-- Methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` are now `Frame.local_coords` and `Frame.global_coords` 
+- Methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` are now `Frame.local_coords` and `Frame.global_coords`
 
 ### Removed
 

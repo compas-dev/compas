@@ -16,17 +16,18 @@ class LineArtist(Artist):
 
     zorder = 1000
 
-    def __init__(self, line, draw_points=False, draw_segment=False):
+    def __init__(self, line, draw_points=False, draw_segment=False, **kwargs):
         super(LineArtist, self).__init__()
+        self._mpl_line = None
+        self._start_artist = None
+        self._end_artist = None
+        self._segment_artist = None
         self._draw_points = draw_points
         self._draw_segment = draw_segment
-        self.width = 1.0
+
         self.line = line
-        self.color = '#000000'
-        self.mpl_line = None
-        self.start_artist = None
-        self.end_artist = None
-        self.segment_artist = None
+        self.width = kwargs.get('width', 1.0)
+        self.color = kwargs.get('color', '#000000')
 
     def viewbox(self):
         xlim = self.plotter.axes.get_xlim()
@@ -50,12 +51,12 @@ class LineArtist(Artist):
                             linestyle='solid',
                             color=self.color,
                             zorder=self.zorder)
-            self.mpl_line = self.plotter.axes.add_line(line2d)
+            self._mpl_line = self.plotter.axes.add_line(line2d)
             if self._draw_points:
-                self.start_artist = self.plotter.add(self.line.start)
-                self.end_artist = self.plotter.add(self.line.end)
+                self._start_artist = self.plotter.add(self.line.start)
+                self._end_artist = self.plotter.add(self.line.end)
             if self._draw_segment:
-                self.segment_artist = self.plotter.add(self.line, artist=SegmentArtist(self.line))
+                self._segment_artist = self.plotter.add(self.line, artist=SegmentArtist(self.line))
 
     def redraw(self):
         points = self.clip()
@@ -63,10 +64,10 @@ class LineArtist(Artist):
             p0, p1 = points
             x0, y0 = p0[:2]
             x1, y1 = p1[:2]
-            self.mpl_line.set_xdata([x0, x1])
-            self.mpl_line.set_ydata([y0, y1])
-            self.mpl_line.set_color(self.color)
-            self.mpl_line.set_linewidth(self.width)
+            self._mpl_line.set_xdata([x0, x1])
+            self._mpl_line.set_ydata([y0, y1])
+            self._mpl_line.set_color(self.color)
+            self._mpl_line.set_linewidth(self.width)
 
 
 # ==============================================================================
@@ -75,24 +76,29 @@ class LineArtist(Artist):
 
 if __name__ == '__main__':
 
+    from math import radians
+
     from compas.geometry import Point
+    from compas.geometry import Vector
     from compas.geometry import Line
     from compas.geometry import Rotation
     from compas_plotters import Plotter2
 
     plotter = Plotter2(figsize=(8, 5), viewbox=([0, 16], [0, 10]), bgcolor='#cccccc')
 
-    a = Point(1.0, 0.0)
-    b = Point(3.0, 2.0)
+    a = Point(3.0, 2.0)
+    b = Point(3.0, 5.0)
 
     line = Line(a, b)
+
+    R = Rotation.from_axis_and_angle(Vector(0.0, 0.0, 1.0), radians(10), point=line.end)
 
     plotter.add(line, draw_points=True, draw_segment=True)
 
     plotter.draw(pause=1.0)
 
-    for i in range(10):
-        line.start[0] += 0.5
+    for i in range(9):
+        line.transform(R)
         plotter.redraw(pause=0.01)
 
     plotter.show()

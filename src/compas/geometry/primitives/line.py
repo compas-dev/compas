@@ -205,8 +205,10 @@ class Line(Primitive):
             The transformation matrix.
 
         """
-        self.start = transform_points([self.start], matrix)[0]
-        self.end = transform_points([self.end], matrix)[0]
+        # self.start = transform_points([self.start], matrix)[0]
+        # self.end = transform_points([self.end], matrix)[0]
+        self.start.transform(matrix)
+        self.end.transform(matrix)
 
     def transformed(self, matrix):
         """Return a transformed copy of this ``Line`` using a given transformation matrix.
