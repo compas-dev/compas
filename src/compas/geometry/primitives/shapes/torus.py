@@ -165,15 +165,10 @@ class Torus(Shape):
         return self.data
 
     def to_vertices_and_faces(self, **kwargs):
-        """Returns a list of vertices and faces, called by `Mesh.from_shape()`."""
-        if 'u' in kwargs:
-            u = kwargs['u']
-        else:
-            u = 10
-        if 'v' in kwargs:
-            v = kwargs['v']
-        else:
-            v = 10
+        """Returns a list of vertices and faces"""
+
+        u = kwargs.get('u', 10)
+        v = kwargs.get('v', 10)
 
         theta = pi*2 / u
         phi = pi*2 / v
@@ -184,7 +179,7 @@ class Torus(Shape):
                 y = sin(i * theta) * (self.radius_axis + self.radius_pipe * cos(j * phi))
                 z = self.radius_pipe * sin(j * phi)
                 vertices.append([x, y, z])
-        
+
         # transform vertices to torus' plane
         frame = Frame.from_plane(self.plane)
         M = matrix_from_frame(frame)
@@ -318,8 +313,6 @@ class Torus(Shape):
 
 
 if __name__ == '__main__':
-    from compas.geometry import Frame
-    from compas.geometry import Plane
     from compas.geometry import Transformation
 
     torus = Torus(Plane.worldXY(), 5, 2)

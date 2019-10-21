@@ -147,17 +147,12 @@ class Sphere(Shape):
 
         """
         return self.data
-    
+
     def to_vertices_and_faces(self, **kwargs):
-        """Returns a list of vertices and faces, called by `Mesh.from_shape()`."""
-        if 'u' in kwargs:
-            u = kwargs['u']
-        else:
-            u = 10
-        if 'v' in kwargs:
-            v = kwargs['v']
-        else:
-            v = 10
+        """Returns a list of vertices and faces"""
+
+        u = kwargs.get('u', 10)
+        v = kwargs.get('v', 10)
 
         theta = pi / u
         phi = pi*2 / v
@@ -168,9 +163,9 @@ class Sphere(Shape):
             for j in range(v):
                 tx = self.radius * cos(i * theta - hpi) * cos(j * phi) + self.point.x
                 ty = self.radius * cos(i * theta - hpi) * sin(j * phi) + self.point.y
-                tz = self.radius * sin(i* theta - hpi) + self.point.z
+                tz = self.radius * sin(i * theta - hpi) + self.point.z
                 vertices.append([tx, ty, tz])
-        
+
         vertices.append([self.point.x, self.point.y, self.point.z + self.radius])
         vertices.append([self.point.x, self.point.y, self.point.z - self.radius])
 
@@ -180,7 +175,7 @@ class Sphere(Shape):
         sp = len(vertices) - 1
         for j in range(v):
             faces.append([sp, (j+1) % v, j])
-        
+
         for i in range(u-2):
             for j in range(v):
                 jj = (j + 1) % v
@@ -189,14 +184,14 @@ class Sphere(Shape):
                 c = (i + 1) * v + jj
                 d = (i + 1) * v + j
                 faces.append([a, b, c, d])
-        
+
         # north pole triangle fan
         np = len(vertices) - 2
         for j in range(v):
             nc = len(vertices) - 3 - j
             nn = len(vertices) - 3 - (j + 1) % v
             faces.append([np, nn, nc])
-        
+
         return vertices, faces
 
     # ==========================================================================

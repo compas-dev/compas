@@ -172,11 +172,9 @@ class Cone(Shape):
         return pi * self.circle.radius**2 * (self.height / 3)
 
     def to_vertices_and_faces(self, **kwargs):
-        """Returns a list of vertices and faces, called by `Mesh.from_shape()`."""
-        if 'u' in kwargs:
-            u = kwargs['u']
-        else:
-            u = 10
+        """Returns a list of vertices and faces"""
+
+        u = kwargs.get('u', 10)
 
         vertices = []
         a = 2 * pi / u
@@ -311,9 +309,7 @@ class Cone(Shape):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.geometry import Frame
     from compas.geometry import Transformation
-    from compas.geometry import Circle
 
     cone = Cone(Circle(Plane.worldXY(), 5), 7)
     frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])

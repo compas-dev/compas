@@ -170,10 +170,9 @@ class Cylinder(Shape):
         return self.circle.area * self.height
 
     def to_vertices_and_faces(self, **kwargs):
-        if 'u' in kwargs:
-            u = kwargs['u']
-        else:
-            u = 10
+        """Returns a list of vertices and faces"""
+
+        u = kwargs.get('u', 10)
 
         vertices = []
         a = 2 * pi / u
@@ -189,13 +188,12 @@ class Cylinder(Shape):
         M = matrix_from_frame(frame)
         vertices = transform_points(vertices, M)
 
-
         faces = []
-        for i in range(0, u*2, 2):
-            faces.append([i, i+1, (i+3)%(u*2), (i+2)%(u*2)])
-        
-        faces.append([i for i in range(0, u*2, 2)])
-        faces.append([i for i in range(1, u*2, 2)])
+        for i in range(0, u * 2, 2):
+            faces.append([i, i + 1, (i + 3) % (u * 2), (i + 2) % (u * 2)])
+
+        faces.append([i for i in range(0, u * 2, 2)])
+        faces.append([i for i in range(1, u * 2, 2)])
         faces[-1].reverse()
 
         return vertices, faces
@@ -311,10 +309,7 @@ class Cylinder(Shape):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.geometry import Frame
     from compas.geometry import Transformation
-    from compas.geometry import Circle
-    from compas.geometry import Cylinder
 
     cylinder = Cylinder(Circle(Plane.worldXY(), 5), 7)
     frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])

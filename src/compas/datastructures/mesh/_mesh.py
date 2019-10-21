@@ -40,7 +40,6 @@ from compas.geometry import angle_points
 from compas.geometry import bestfit_plane
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
-from compas.geometry import Shape
 
 from compas.datastructures import Datastructure
 
@@ -731,17 +730,15 @@ class Mesh(FromToPickle,
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod
-    def from_shape(cls, s, **kwargs):
+    def from_shape(cls, shape, **kwargs):
         """Construct a mesh from a primitive shape.
 
         Parameters
         ----------
-        s : :class: `compas.geometry.shape`
+        shape : :class: `compas.geometry.shape`
             The input shape to generate a mesh from.
-        u : int
-            The resolution in u direction (Torus, Sphere, Cylinder, Cone).
-        v : int
-            The resolution in v direction (Torus and Sphere only).
+        kwargs:
+            Optional keyword arguments ``u`` and ``v`` for the resolution in u (Torus, Sphere, Cylinder, Cone) and v direction (Torus and Sphere).
 
         Returns
         -------
@@ -760,10 +757,8 @@ class Mesh(FromToPickle,
             mesh = Mesh.from_shape(t)
 
         """
-        if not isinstance(s, Shape):
-            raise TypeError
 
-        vertices, faces = s.to_vertices_and_faces(**kwargs)
+        vertices, faces = shape.to_vertices_and_faces(**kwargs)
         mesh = Mesh.from_vertices_and_faces(vertices, faces)
         return mesh
 
