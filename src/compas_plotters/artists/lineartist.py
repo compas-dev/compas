@@ -77,6 +77,7 @@ if __name__ == '__main__':
 
     from compas.geometry import Point
     from compas.geometry import Line
+    from compas.geometry import Rotation
     from compas_plotters import Plotter2
 
     plotter = Plotter2(figsize=(8, 5), viewbox=([0, 16], [0, 10]), bgcolor='#cccccc')

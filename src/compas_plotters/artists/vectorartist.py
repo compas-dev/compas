@@ -16,39 +16,15 @@ class VectorArtist(Artist):
 
     zorder = 3000
 
-    def __init__(self, vector, point=None, draw_start=False, draw_end=False, draw_line=False):
+    def __init__(self, vector, point=None, draw_point=False):
         super(VectorArtist, self).__init__()
-        self._draw_start = draw_start
-        self._draw_end = draw_end
-        self._draw_line = draw_line
+        self._draw_point = draw_point
         self.width = 1.0
         self.color = '#000000'
-        self.vector = vector
         self.point = point or Point(0.0, 0.0, 0.0)
+        self.vector = vector
         self.mpl_vector = None
-        self.start_artist = None
-        self.end_artist = None
-        self.line_artist = None
-
-    # @property
-    # def T(self):
-    #     F = self.plotter.figure.dpi_scale_trans
-    #     S = ScaledTranslation(self.point[0], self.point[1], self.plotter.axes.transData)
-    #     T = F + S
-    #     return T
-
-    # def draw(self):
-    #     props = {'color': self.color, 'linewidth': self.width}
-    #     start = self.point
-    #     end = self.point + self.vector
-    #     arrow = self.plotter.axes.annotate('',
-    #         xytext=start[:2],
-    #         xy=end[:2],
-    #         arrowprops=props,
-    #         zorder=self.zorder)
-    #     self.plotter.axes.update_datalim([start[:2], end[:2]])
-    #     self.mpl_vector = arrow
-    #     print(arrow.arrow_patch)
+        self.point_artist = None
 
     def draw(self):
         style = ArrowStyle("Simple, head_length=.1, head_width=.1, tail_width=.01")
@@ -58,6 +34,8 @@ class VectorArtist(Artist):
                                 facecolor=self.color,
                                 zorder=self.zorder,
                                 mutation_scale=100)
+        if self._draw_point:
+            self.point_artist = self.plotter.add(self.point)
         self.mpl_vector = self.plotter.axes.add_patch(arrow)
 
     def redraw(self):
@@ -70,21 +48,32 @@ class VectorArtist(Artist):
 
 if __name__ == '__main__':
 
+    from math import radians
+
     from compas.geometry import Vector
+    from compas.geometry import Line
+    from compas.geometry import Rotation
+    from compas.geometry import Translation
     from compas_plotters import Plotter2
+
+    point = Point(0.0, 3.0, 0.0)
+    vector = Vector(2.0, 0.0, 0.0)
+
+    direction = vector.unitized()
+    loa = Line(point, point + direction)
+
+    R = Rotation.from_axis_and_angle(Vector(0.0, 0.0, 1.0), radians(3.6))
+    T = Translation(direction.scaled(0.1))
 
     plotter = Plotter2(figsize=(8, 5), viewbox=([0, 16], [0, 10]), bgcolor='#cccccc')
 
-    a = Point(1.0, 1.0, 0.0)
-    v = Vector(2.0, 3.0, 0.0)
-
-    artist = plotter.add(v, point=a)
-
+    plotter.add(vector, point=point, draw_point=True)
+    plotter.add(loa)
     plotter.draw(pause=1.0)
 
-    for i in range(10):
-        a[0] += 0.5
-        v[0] -= 0.2
+    for i in range(100):
+        point.transform(T)
+        vector.transform(R)
         plotter.redraw(pause=0.01)
 
     plotter.show()
