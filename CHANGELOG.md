@@ -9,10 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `compas_rhino.artists.PrimitiveArtist` for visualising primitives
+- Added datastructure type check when constructing Mesh/Volmesh/Network artists
+
 ### Changed
 
 ### Removed
 
+- Deleted primitive drawing functions from `compas_rhino.artists.Artist`
 
 ## [0.8.1] 2019-10-01
 
