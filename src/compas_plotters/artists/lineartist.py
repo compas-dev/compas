@@ -9,6 +9,7 @@ from matplotlib.lines import Line2D
 from compas.geometry import close
 from compas.geometry import intersection_line_box_xy
 from compas_plotters.artists import Artist
+from compas_plotters.artists import SegmentArtist
 
 __all__ = ['LineArtist']
 
@@ -18,12 +19,17 @@ class LineArtist(Artist):
 
     zorder = 1000
 
-    def __init__(self, line):
+    def __init__(self, line, draw_points=False, draw_segment=False):
         super(LineArtist, self).__init__()
+        self._draw_points = draw_points
+        self._draw_segment = draw_segment
         self.width = 1.0
         self.line = line
         self.color = '#000000'
         self.mpl_line = None
+        self.start_artist = None
+        self.end_artist = None
+        self.segment_artist = None
 
     def viewbox(self):
         xlim = self.plotter.axes.get_xlim()
@@ -48,6 +54,11 @@ class LineArtist(Artist):
                             color=self.color,
                             zorder=self.zorder)
             self.mpl_line = self.plotter.axes.add_line(line2d)
+            if self._draw_points:
+                self.start_artist = self.plotter.add(self.line.start)
+                self.end_artist = self.plotter.add(self.line.end)
+            if self._draw_segment:
+                self.segment_artist = self.plotter.add(self.line, artist=SegmentArtist(self.line))
 
     def redraw(self):
         points = self.clip()
@@ -79,16 +90,11 @@ if __name__ == '__main__':
 
     line = Line(a, b)
 
-    plotter.add(a)
-    plotter.add(b)
-
-    # add option to draw segment/line
-    plotter.add(line)
+    plotter.add(line, draw_points=True, draw_segment=True)
 
     plotter.draw(pause=1.0)
 
     for i in range(10):
-        a[0] += 0.5
         line.start[0] += 0.5
         plotter.redraw(pause=0.01)
 

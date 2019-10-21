@@ -27,6 +27,7 @@ from .artist import Artist
 
 from .pointartist import PointArtist
 from .vectorartist import VectorArtist
+from .segmentartist import SegmentArtist
 from .lineartist import LineArtist
 
 Artist.register(Point, PointArtist)
