@@ -1,14 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
-
-from compas.geometry import close
-from compas.geometry import intersection_line_box_xy
 from compas_plotters.artists import Artist
+from matplotlib.lines import Line2D
 
 __all__ = ['SegmentArtist']
 
@@ -44,6 +39,7 @@ class SegmentArtist(Artist):
         self.mpl_line.set_ydata([self.line.start[1], self.line.end[1]])
         self.mpl_line.set_color(self.color)
         self.mpl_line.set_linewidth(self.width)
+
 
 # ==============================================================================
 # Main

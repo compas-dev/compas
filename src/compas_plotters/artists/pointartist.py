@@ -1,13 +1,10 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
-import matplotlib
-import matplotlib.pyplot as plt
-from matplotlib.patches import Circle
-from matplotlib.transforms import ScaledTranslation
+from __future__ import print_function
 
 from compas_plotters.artists import Artist
+from matplotlib.patches import Circle
+from matplotlib.transforms import ScaledTranslation
 
 __all__ = ['PointArtist']
 
@@ -64,7 +61,6 @@ if __name__ == '__main__':
 
     from compas.geometry import Point
     from compas_plotters import Plotter2
-    from compas_plotters import PointArtist
 
     plotter = Plotter2(figsize=(8, 5), viewbox=([0, 16], [0, 10]), bgcolor='#cccccc')
 
