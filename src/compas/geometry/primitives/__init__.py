@@ -7,6 +7,7 @@ from .vector import Vector
 from .point import Point
 from .line import Line
 from .plane import Plane
+from .quaternion import Quaternion
 from .frame import Frame
 
 from .polyline import Polyline
@@ -14,7 +15,6 @@ from .polygon import Polygon
 from .circle import Circle
 from .curve import Bezier
 
-from .quaternion import Quaternion
 
 from .shapes import *
 

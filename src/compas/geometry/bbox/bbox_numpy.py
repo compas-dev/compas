@@ -16,8 +16,8 @@ from scipy.spatial import ConvexHull
 # from scipy.spatial import QhullError
 
 from compas.geometry import local_axes
-from compas.geometry import local_coords_numpy
-from compas.geometry import global_coords_numpy
+from compas.geometry import world_to_local_coords_numpy
+from compas.geometry import local_to_world_coords_numpy
 
 
 __all__ = [
@@ -27,7 +27,7 @@ __all__ = [
 
 
 def oriented_bounding_box_numpy(points):
-    """Compute the oriented minimum bounding box of a set of points in 3D space.
+    r"""Compute the oriented minimum bounding box of a set of points in 3D space.
 
     Parameters
     ----------
@@ -85,8 +85,8 @@ def oriented_bounding_box_numpy(points):
     >>> a = length_vector(subtract_vectors(bbox[1], bbox[0]))
     >>> b = length_vector(subtract_vectors(bbox[3], bbox[0]))
     >>> c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    >>> a * b * c
-    30.0
+    >>> close(a * b * c, 30.)
+    True
 
     """
     points = asarray(points)
@@ -114,7 +114,8 @@ def oriented_bounding_box_numpy(points):
         a, b, c = points[simplex]
         uvw = local_axes(a, b, c)
         xyz = points[hull.vertices]
-        rst = local_coords_numpy(a, uvw, xyz)
+        frame = [a, uvw[0], uvw[1]]
+        rst = world_to_local_coords_numpy(frame, xyz)
         dr, ds, dt = ptp(rst, axis=0)
         v = dr * ds * dt
 
@@ -131,7 +132,7 @@ def oriented_bounding_box_numpy(points):
                 [rmax, smax, tmax],
                 [rmin, smax, tmax],
             ]
-            bbox = global_coords_numpy(a, uvw, bbox)
+            bbox = local_to_world_coords_numpy(frame, bbox)
             volume = v
 
     return bbox
@@ -191,7 +192,7 @@ def oriented_bounding_box_xy_numpy(points):
         p1 = points[simplex[1]]
 
         # s direction
-        s  = p1 - p0
+        s = p1 - p0
         sl = sum(s ** 2) ** 0.5
         su = s / sl
         vn = xy_hull - p0
@@ -204,7 +205,7 @@ def oriented_bounding_box_xy_numpy(points):
         b1 = p0 + sc[scmax] * su
 
         # t direction
-        t  = array([-s[1], s[0]])
+        t = array([-s[1], s[0]])
         tl = sum(t ** 2) ** 0.5
         tu = t / tl
         vn = xy_hull - p0
@@ -239,35 +240,15 @@ def oriented_bounding_box_xy_numpy(points):
 if __name__ == "__main__":
 
     import numpy
+    import math
     from compas.geometry import bounding_box
     from compas.geometry import subtract_vectors
     from compas.geometry import length_vector
     from compas.geometry import Rotation
     from compas.geometry import transform_points_numpy
     from compas.geometry import allclose
+    from compas.geometry import close
 
-    points = numpy.random.rand(10000, 3)
-    bottom = numpy.array([[0.0,0.0,0.0], [1.0,0.0,0.0], [0.0,1.0,0.0], [1.0,1.0,0.0]])
-    top = numpy.array([[0.0, 0.0, 1.0], [1.0, 0.0, 1.0], [0.0, 1.0, 1.0], [1.0, 1.0, 1.0]])
-    points = numpy.concatenate((points, bottom, top))
-    points[:, 0] *= 10
-    points[:, 2] *= 3
+    import doctest
+    doctest.testmod(globs=globals())
 
-    bbox = bounding_box(points)
-    a = length_vector(subtract_vectors(bbox[1], bbox[0]))
-    b = length_vector(subtract_vectors(bbox[3], bbox[0]))
-    c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    v1 = a * b * c
-
-    R = Rotation.from_axis_and_angle([1.0, 1.0, 0.0], 0.5 * 3.14159)
-    points = transform_points_numpy(points, R.matrix)
-
-    bbox = oriented_bounding_box_numpy(points)
-
-    a = length_vector(subtract_vectors(bbox[1], bbox[0]))
-    b = length_vector(subtract_vectors(bbox[3], bbox[0]))
-    c = length_vector(subtract_vectors(bbox[4], bbox[0]))
-    v2 = a * b * c
-
-    print(v1, v2)
-    print(allclose([v1], [v2]))

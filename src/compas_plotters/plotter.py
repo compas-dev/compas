@@ -317,7 +317,8 @@ class Plotter(object):
         """Displays the plot.
 
         """
-        self.axes.autoscale()
+        if autoscale:
+            self.axes.autoscale()
         if self.tight:
             plt.tight_layout()
         plt.show()
@@ -682,28 +683,30 @@ if __name__ == "__main__":
 
     plotter = Plotter(figsize=(10, 6))
 
-    pcoll = plotter.draw_points(points)
-    lcoll = plotter.draw_lines(lines)
+    plotter.draw_arrows(lines)
 
-    def callback(k, args):
-        plotter.update_pointcollection(pcoll, vertices, 0.1)
+    # pcoll = plotter.draw_points(points)
+    # lcoll = plotter.draw_lines(lines)
 
-        segments = []
-        for u, v in mesh.edges():
-            a = vertices[u][0:2]
-            b = vertices[v][0:2]
-            segments.append([a, b])
+    # def callback(k, args):
+    #     plotter.update_pointcollection(pcoll, vertices, 0.1)
 
-        plotter.update_linecollection(lcoll, segments)
-        plotter.update(pause=0.001)
+    #     segments = []
+    #     for u, v in mesh.edges():
+    #         a = vertices[u][0:2]
+    #         b = vertices[v][0:2]
+    #         segments.append([a, b])
 
-    vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
+    #     plotter.update_linecollection(lcoll, segments)
+    #     plotter.update(pause=0.001)
 
-    smooth_centroid(vertices,
-                    adjacency,
-                    fixed=fixed,
-                    kmax=100,
-                    callback=callback)
+    # vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
+    # adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
+
+    # smooth_centroid(vertices,
+    #                 adjacency,
+    #                 fixed=fixed,
+    #                 kmax=100,
+    #                 callback=callback)
 
     plotter.show()

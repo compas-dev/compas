@@ -1,3 +1,5 @@
+import math
+
 from compas.geometry import quaternion_multiply
 from compas.geometry import quaternion_conjugate
 from compas.geometry import quaternion_unitize
@@ -5,7 +7,6 @@ from compas.geometry import quaternion_canonize
 from compas.geometry import quaternion_norm
 from compas.geometry import quaternion_is_unit
 
-from compas.geometry import allclose
 
 from compas.geometry.primitives import Primitive
 
@@ -93,10 +94,7 @@ class Quaternion(Primitive):
         self.z = float(z)
 
     def __iter__(self):
-        return iter([self.w, self.x, self.y, self.z])
-
-    def __str__(self):
-        return "Quaternion = %s" % list(self)
+        return iter(self.wxyz)
 
     def __repr__(self):
         return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(*self, prec=6)
@@ -213,11 +211,50 @@ class Quaternion(Primitive):
         qc = quaternion_conjugate(self)
         return Quaternion(*qc)
 
+    # ==========================================================================
+    # access
+    # ==========================================================================
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.w
+        if key == 1:
+            return self.x
+        if key == 2:
+            return self.y
+        if key == 3:
+            return self.z
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.w = value
+            return
+        if key == 1:
+            self.x = value
+            return
+        if key == 2:
+            self.y = value
+        if key == 3:
+            self.z = value
+        raise KeyError
+
+    # ==========================================================================
+    # comparison
+    # ==========================================================================
+
+    def __eq__(self, other, tol=1e-05):
+        for v1, v2 in zip(self, other):
+            if math.fabs(v1 - v2) > tol:
+                return False
+        return True
+
 
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
+    from compas.geometry import allclose
     import doctest
     doctest.testmod(globs=globals())

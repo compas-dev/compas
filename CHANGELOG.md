@@ -11,8 +11,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `compas_rhino.artists.PrimitiveArtist` for visualising primitives
 - Added datastructure type check when constructing Mesh/Volmesh/Network artists
+- Added `matrix_change_basis`, `Transformation.change_basis`
+- Added `matrix_from_frame_to_frame`
+- Added non-numpy versions of `global_coords`, `local_coords`
+- Added static method `Frame.local_to_local_coords`
+- Added `__getitem__`, `__setitem__` and `__eq__` to `Quaternion`
+- Added `Vector.scaled` and `Vector.unitized`
+- Added `transform_frames` and respective helper functions `dehomogenize_and_unflatten_frames`, `homogenize_and_flatten_frames`
+- Added `transform_frames_numpy` and respective helper functions `dehomogenize_and_unflatten_frames_numpy`, `homogenize_and_flatten_frames_numpy`
 
 ### Changed
+
+- Changed parameters `origin` `uvw` of `global_coords_numpy` and `local_coords_numpy` to `frame`
+- Fixed some returns of `Frame` and `Rotation` to use `Vector` or `Quaternion`
+- Methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` are now `Frame.local_coords` and `Frame.global_coords` 
 
 ### Removed
 

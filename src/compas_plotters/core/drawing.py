@@ -662,15 +662,17 @@ def draw_xarrows_xy(lines, axes):
 
     """
     arrowprops = {
-        'arrowstyle'      : '-|>,head_length=0.4,head_width=0.2',
+        'arrowstyle'      : '-|>,head_length=0.6,head_width=0.2',
         'connectionstyle' : 'arc3,rad=0.0',
         'linewidth'       : 1.0,
         'color'           : '#000000',
-        'shrinkB'         : 0.05,
+        'shrinkB'         : 0.0,
+        'shrinkA'         : 0.0,
     }
+    xys = []
     for line in lines:
-        sp        = line['start']
-        ep        = line['end']
+        sp        = line['start'][:2]
+        ep        = line['end'][:2]
         text      = line.get('text', None)
         textcolor = line.get('textcolor') or '#000000'
         fontsize  = line.get('fontsize') or 6
@@ -678,11 +680,13 @@ def draw_xarrows_xy(lines, axes):
         arrowprops['linewidth'] = line.get('width', 1.0)
         axes.annotate(
             '',
-            xy=ep[0:2],
-            xytext=sp[0:2],
+            xy=ep,
+            xytext=sp,
             arrowprops=arrowprops,
             zorder=ZORDER_LINES,
         )
+        xys.append(sp)
+        xys.append(ep)
         if text:
             x, y, z = midpoint_line_xy((sp, ep))
             t = axes.text(x,
@@ -694,6 +698,7 @@ def draw_xarrows_xy(lines, axes):
                           va='center',
                           color=color_to_rgb(textcolor, normalize=True))
             t.set_bbox({'color': '#ffffff', 'alpha': 1.0, 'edgecolor': '#ffffff'})
+    axes.update_datalim(xys)
 
 
 # ==============================================================================
