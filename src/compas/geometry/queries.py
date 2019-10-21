@@ -839,21 +839,23 @@ def is_intersection_segment_segment():
 
 
 def is_intersection_segment_segment_xy(ab, cd):
-    """Determine if two the segments ab and cd intersect?
+    """Determines if two segments, ab and cd, intersect.
 
-    Two segments a-b and c-d intersect, if both of the following conditions are true:
+    The segments intersect if both of the following conditions are true:
 
         * c is on the left of ab, and d is on the right, or vice versa
         * d is on the left of ac, and on the right of bc, or vice versa
 
-    Parameters:
-        ab: (tuple): A sequence of XY(Z) coordinates of two 2D or 3D points
-        (Z will be ignored) representing the start and end points of a line segment.
-        cd: (tuple): A sequence of XY(Z) coordinates of two 2D or 3D points
-        (Z will be ignored) representing the start and end points of a line segment.
+    Parameters
+    ----------
+        ab, cd : tuple
+            A sequence of XY(Z) coordinates of two 2D or 3D points
+            (Z will be ignored) representing the start and end points of a line segment.
 
-    Returns:
-        bool: ``True`` if the segments intersect, ``False`` otherwise.
+    Returns
+    -------
+    bool
+        ``True`` if the segments intersect, ``False`` otherwise.
 
     """
     a, b = ab

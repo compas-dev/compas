@@ -32,8 +32,7 @@ class Plane(Primitive):
 
     References
     ----------
-    .. [1] Wikipedia. *Plane (geometry)*.
-           Available at: https://en.wikipedia.org/wiki/Plane_(geometry).
+    .. [1] `Wikipedia: Plane (geometry) <https://en.wikipedia.org/wiki/Plane_%28geometry%29>`_
 
     """
 

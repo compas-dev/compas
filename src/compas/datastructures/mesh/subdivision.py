@@ -164,7 +164,7 @@ def mesh_subdivide_quad(mesh, k=1):
 
 
 def mesh_subdivide_corner(mesh, k=1):
-    """Subdivide a mesh by cutting croners.
+    """Subdivide a mesh by cutting corners.
 
     Parameters
     ----------

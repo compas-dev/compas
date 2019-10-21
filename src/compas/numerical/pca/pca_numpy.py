@@ -61,7 +61,7 @@ def pca_numpy(data):
     # the shape of the covariance matrix is dim x dim
     # for example, if the data are 2D point coordinates, the shape of C is 2 x 2
     # the diagonal of the covariance matrix contains the variance of each variable
-    # the off-diagonal elements of the covariannce matrix contain the covariance
+    # the off-diagonal elements of the covariance matrix contain the covariance
     # of two independent variables
     C = Y.T.dot(Y) / (n - 1)
 

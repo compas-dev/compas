@@ -458,6 +458,8 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, tol=1e-6):
         The base point and normal (normalized) defining the 1st plane.
     plane2 : tuple
         The base point and normal (normalized) defining the 2nd plane.
+    plane3 : tuple
+        The base point and normal (normalized) defining the 3rd plane.
     tol : float, optional
         A tolerance for membership verification.
         Default is ``1e-6``.

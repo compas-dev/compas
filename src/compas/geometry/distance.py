@@ -708,7 +708,7 @@ def closest_point_on_line_xy(point, line):
 
 
 def closest_point_on_segment(point, segment):
-    """Computes closest point on line segment (p1, p2) to testpoint.
+    """Computes closest point on line segment (p1, p2) to test point.
 
     Parameters
     ----------
@@ -740,7 +740,7 @@ def closest_point_on_segment(point, segment):
 
 
 def closest_point_on_segment_xy(point, segment):
-    """Compute closest point on line segment to a given point lying in the XY-plane.
+    """Compute closest point on a line segment to a given point lying in the XY-plane.
 
     Parameters
     ----------
