@@ -174,7 +174,9 @@ class Cone(Shape):
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
 
-        u = kwargs.get('u', 10)
+        u = kwargs.get('u') or 10
+        if u < 3:
+            raise ValueError('The value for u should be u > 3.')
 
         vertices = []
         a = 2 * pi / u

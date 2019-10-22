@@ -167,8 +167,10 @@ class Torus(Shape):
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
 
-        u = kwargs.get('u', 10)
-        v = kwargs.get('v', 10)
+        u = kwargs.get('u') or 10
+        v = kwargs.get('v') or 10
+        if u < 3 or v < 3:
+            raise ValueError('The values for u and v should be > 3.')
 
         theta = pi*2 / u
         phi = pi*2 / v
