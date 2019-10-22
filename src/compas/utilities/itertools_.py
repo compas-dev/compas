@@ -330,4 +330,4 @@ if __name__ == "__main__":
     for u, v, w in window(s + s[0:2], 3):
         print(u, v, w)
 
-    print(match('5', s))
+    print(match_length('5', s))
