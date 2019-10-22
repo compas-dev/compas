@@ -48,7 +48,8 @@ __all__ = [
     'first_true',
     'random_permutation',
     'random_combination',
-    'random_combination_with_replacement'
+    'random_combination_with_replacement',
+    'match_length'
 ]
 
 
@@ -273,14 +274,60 @@ def random_combination_with_replacement(iterable, r):
     return tuple(pool[i] for i in indices)
 
 
+def match_length(value, iterable):
+    """
+    Returns a list of values with the same length of a target iterable.
+
+    If the supplied value is a list or a tuple, its last item will be appended
+    at the end until the target length is reached.
+
+    Parameters
+    ----------
+    value : 
+        User-supplied object.
+    iterable:
+        An iterable to be matched in length.
+
+    Returns
+    -------
+    matched_list: list
+        A list of values.
+
+    Examples
+    --------
+    >>> match_length(0, "hello")
+    [0, 0, 0, 0, 0]
+    >>> match_length("a", [0, 1, 2])
+    ["a", "a", "a"]
+    >>> match_length(['foo', 'bar'], {'key_1': 'a', 'key_2': 'b'})
+    ['foo', 'bar']
+    >>> match_length(list(range(2)), range(3))
+    [0, 1, 1]
+
+    """
+
+    p = len(iterable)
+
+    if isinstance(value, (list, tuple)):
+        matched_list = value
+    else:
+        matched_list = [value] * p
+
+    d = len(matched_list)
+    if d < p:
+        matched_list.extend(matched_list[-1:] * (p - d))
+
+    return matched_list
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    s = range(5)
+    s = list(range(5))
 
     for u, v, w in window(s + s[0:2], 3):
         print(u, v, w)
-        
+
+    print(match('5', s))
