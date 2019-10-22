@@ -21,9 +21,17 @@ Artists for visualising (painting) COMPAS data structures in Rhino.
 """
 from __future__ import absolute_import
 
-from .artist import *
-from .meshartist import *
-from .networkartist import *
-from .volmeshartist import *
+from .artist import Artist
+from .meshartist import MeshArtist
+from .networkartist import NetworkArtist
+from .volmeshartist import VolMeshArtist
+from .primitiveartist import PrimitiveArtist
+from .pointartist import PointArtist
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]
+
+
+from compas.geometry import Point
+
+Artist.register(Point, PointArtist)

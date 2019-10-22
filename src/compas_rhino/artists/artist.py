@@ -6,6 +6,7 @@ import time
 
 import compas
 import compas_rhino
+from compas.geometry import Object3D
 
 try:
     import rhinoscriptsyntax as rs
@@ -17,7 +18,10 @@ except ImportError:
 __all__ = ['Artist']
 
 
-class Artist(object):
+_ITEM_ARTIST = {}
+
+
+class Artist(Object3D):
     """The base ``Artist`` defines functionality for drawing geometric primitives in Rhino.
 
     Parameters
@@ -55,7 +59,7 @@ class Artist(object):
 
     __module__ = "compas_rhino.artists"
 
-    def __init__(self, layer=None):
+    def __init__(self, geometry=None, attributes=None, layer=None):
         self._layer = None
         self.layer = layer
         self.defaults = {
@@ -63,6 +67,9 @@ class Artist(object):
             'color.line'    : (0, 0, 0),
             'color.polygon' : (210, 210, 210),
         }
+
+        self._last_transformation = None
+        super(Artist, self).__init__(geometry, attributes)
 
     @property
     def layer(self):
@@ -95,6 +102,48 @@ class Artist(object):
             compas_rhino.clear_layer(self.layer)
         else:
             compas_rhino.clear_current_layer()
+
+    @staticmethod
+    def register(item_type, artist_type):
+        _ITEM_ARTIST[item_type] = artist_type
+
+    @staticmethod
+    def build(item, **kwargs):
+        artist_type = _ITEM_ARTIST[type(item)]
+        artist = artist_type(item, **kwargs)
+        return artist
+
+    def add(self, item, **kwargs):
+        if isinstance(item, Artist):
+            artist = item
+        else:
+            artist = self.build(item, **kwargs)
+        self.add_child(artist)
+        return artist
+
+    def remove(self, item):
+        self.remove_child(item)
+
+    def _update_to_rhino(self):
+        if hasattr(self, 'GUID'):
+            T = self.transformation_world
+            if self._last_transformation is not None:
+                T = self._last_transformation.inverse() * T
+            rs.TransformObject(self.GUID, T.matrix)
+            self._last_transformation = self.transformation_world.copy()
+
+    def draw(self, timeout=None):
+        """Update and draw the bounded compas geometry in rhino"""
+        self._update_to_rhino()
+        for c in self.children:
+            c._update_to_rhino()
+        self.redraw(timeout)
+
+    def hide(self):
+        rs.HideObject(self.GUID)
+
+    def show(self):
+        rs.ShowObject(self.GUID)
 
     # ==========================================================================
     # save image, video, gif, ...
@@ -371,4 +420,37 @@ class Artist(object):
 
 if __name__ == "__main__":
 
-    pass
+    from compas_rhino.utilities import unload_modules
+    unload_modules("compas")
+    unload_modules("compas_rhino")
+
+    from compas.geometry import Point
+    from compas.geometry import Rotation
+    from compas_rhino.artists import PointArtist
+    from compas_rhino.artists import Artist
+    import math
+
+    # create a artist as container to draw everything inside it
+    artist = Artist()
+
+    # add point directly
+    artist.add(Point(10, 0, 0))
+
+    # add point with attributes
+    artist.add(Point(0, 10, 0), attributes={'color': (255, 0, 0)})
+
+    # add point through PointArtist
+    pa1 = PointArtist(Point(-10, 0, 0))
+    artist.add(pa1)
+
+    # add point with attributes through PointArtist
+    pa2 = PointArtist(Point(0, -10, 0), attributes={'color': (0, 255, 0)})
+    artist.add(pa2)
+
+    R = Rotation.from_axis_and_angle([0, 0, 1], math.pi / 40)
+
+    for i in range(0, 20):
+        artist.apply_transformation(R)
+        artist.draw(0.1)
+
+    print('finished!')
