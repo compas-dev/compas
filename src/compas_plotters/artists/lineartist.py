@@ -84,7 +84,7 @@ if __name__ == '__main__':
     from compas.geometry import Rotation
     from compas_plotters import Plotter2
 
-    plotter = Plotter2(figsize=(8, 5), viewbox=([0, 16], [0, 10]), bgcolor='#cccccc')
+    plotter = Plotter2()
 
     a = Point(3.0, 2.0)
     b = Point(3.0, 5.0)

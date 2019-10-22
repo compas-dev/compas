@@ -47,12 +47,14 @@ class PointArtist(Artist):
                         transform=self._T,
                         zorder=self.zorder)
         self._mpl_circle = self.plotter.axes.add_artist(circle)
+        self.plotter.axes.update_datalim([self.point[:2]])
 
     def redraw(self):
         self._mpl_circle.set_radius(self.size)
         self._mpl_circle.set_edgecolor(self.edgecolor)
         self._mpl_circle.set_facecolor(self.facecolor)
         self._mpl_circle.set_transform(self._T)
+        self.plotter.axes.update_datalim([self.point[:2]])
 
 
 # ==============================================================================
@@ -65,19 +67,17 @@ if __name__ == '__main__':
     from compas.geometry import Translation
     from compas_plotters import Plotter2
 
-    plotter = Plotter2(figsize=(8, 5), viewbox=([0, 16], [0, 10]))
+    plotter = Plotter2()
 
     a = Point(0.0, 0.0)
-    b = Point(10.0, 0.0)
-    c = Point(10.0, 10.0)
+    b = Point(5.0, 0.0)
+    c = Point(5.0, 5.0)
 
     T = Translation([0.1, 0.0, 0.0])
 
     plotter.add(a, edgecolor='#ff0000')
     plotter.add(b, edgecolor='#00ff00')
     plotter.add(c, edgecolor='#0000ff')
-
-    # plotter.bring_forward(a)
 
     plotter.draw(pause=1.0)
 

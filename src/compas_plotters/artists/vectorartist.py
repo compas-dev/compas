@@ -65,7 +65,7 @@ if __name__ == '__main__':
     R = Rotation.from_axis_and_angle(Vector(0.0, 0.0, 1.0), radians(3.6))
     T = Translation(direction.scaled(0.1))
 
-    plotter = Plotter2(figsize=(8, 5), viewbox=([0, 16], [0, 10]), bgcolor='#cccccc')
+    plotter = Plotter2()
 
     plotter.add(vector, point=point, draw_point=True)
     plotter.add(loa)

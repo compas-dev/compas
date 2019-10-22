@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import matplotlib
 import matplotlib.pyplot as plt
 
 from compas_plotters import Artist
@@ -12,13 +11,14 @@ __all__ = ['Plotter2']
 
 class Plotter2(object):
     """"""
-    def __init__(self, figsize=(8, 5), viewbox=None, **kwargs):
+    def __init__(self, view=None, figsize=(8, 5), **kwargs):
         """Initialises a plotter object"""
+        self._show_axes = kwargs.get('show_axes', False)
         self._bgcolor = None
         self._viewbox = None
         self._axes = None
         self._artists = []
-        self.viewbox = viewbox
+        self.viewbox = view
         self.figsize = figsize
         self.dpi = kwargs.get('dpi', 100)
         self.bgcolor = kwargs.get('bgcolor', '#ffffff')
@@ -28,12 +28,12 @@ class Plotter2(object):
         return self._viewbox
 
     @viewbox.setter
-    def viewbox(self, viewbox):
-        if not viewbox:
+    def viewbox(self, view):
+        if not view:
+            view = ([-10, 10], [-3, 10])
+        if len(view) != 2:
             return
-        if len(viewbox) != 2:
-            return
-        xlim, ylim = viewbox
+        xlim, ylim = view
         if len(xlim) != 2:
             return
         if len(ylim) != 2:
@@ -65,8 +65,6 @@ class Plotter2(object):
                                 figsize=self.figsize,
                                 dpi=self.dpi)
             axes = figure.add_subplot('111', aspect='equal')
-            axes.grid(b=False)
-            axes.set_frame_on(False)
             if self.viewbox:
                 xmin, xmax = self.viewbox[0]
                 ymin, ymax = self.viewbox[1]
@@ -74,8 +72,21 @@ class Plotter2(object):
                 axes.set_ylim(ymin, ymax)
             axes.set_xscale('linear')
             axes.set_yscale('linear')
-            axes.set_xticks([])
-            axes.set_yticks([])
+            axes.grid(False)
+            if self._show_axes:
+                axes.set_frame_on(True)
+                axes.set_xticks([])
+                axes.set_yticks([])
+                axes.spines['top'].set_color('none')
+                axes.spines['right'].set_color('none')
+                axes.spines['left'].set_position('zero')
+                axes.spines['bottom'].set_position('zero')
+                axes.spines['left'].set_linestyle(':')
+                axes.spines['bottom'].set_linestyle(':')
+            else:
+                axes.set_frame_on(False)
+                axes.set_xticks([])
+                axes.set_yticks([])
             axes.autoscale()
             plt.tight_layout()
             self._axes = axes
@@ -170,10 +181,14 @@ class Plotter2(object):
     # Methods
     # =========================================================================
 
+    def zoom_extents(self):
+        self.axes.autoscale_view()
+
     def add(self, item, artist=None, **kwargs):
         if not artist:
             artist = Artist.build(item, **kwargs)
         artist.plotter = self
+        artist.draw()
         self._artists.append(artist)
         return artist
 
@@ -212,8 +227,6 @@ class Plotter2(object):
         self.figure.canvas.mpl_connect('pick_event', listener)
 
     def draw(self, pause=None):
-        for artist in self._artists:
-            artist.draw()
         self.figure.canvas.draw()
         self.figure.canvas.flush_events()
         if pause:
@@ -239,6 +252,7 @@ class Plotter2(object):
         """Displays the plot.
 
         """
+        self.draw()
         plt.show()
 
     def save(self, filepath, **kwargs):
