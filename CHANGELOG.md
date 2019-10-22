@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.9.0] 2019-10-21
 
 ### Added
-- Added `match_length` to `compas.utilities`
+- Added `mesh_subdivide_frames` to `compas.datastructures.Mesh`
 - Added `matrix_change_basis`, `Transformation.change_basis`
 - Added `matrix_from_frame_to_frame`
 - Added non-numpy versions of `global_coords`, `local_coords`
