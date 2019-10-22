@@ -15,7 +15,10 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__all__ = ['FaceModifier']
+__all__ = [
+    'FaceModifier',
+    'mesh_update_face_attributes'
+    ]
 
 
 class FaceModifier(object):
@@ -81,6 +84,34 @@ class FaceModifier(object):
 
         return False
 
+
+def mesh_update_face_attributes(mesh, fkeys, names=None):
+    """Update the attributes of the faces of a mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    fkeys : tuple, list
+        The keys of the faces to update.
+    names : tuple, list (None)
+        The names of the atrtibutes to update.
+        Default is to update all attributes.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`mesh_update_attributes`
+    * :func:`mesh_update_vertex_attributes`
+    * :func:`mesh_update_edge_attributes`
+
+    """
+    return FaceModifier.update_vertex_attributes(mesh, fkeys, names=names)
 
 # ==============================================================================
 # Main

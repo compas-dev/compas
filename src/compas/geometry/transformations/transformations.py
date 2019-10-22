@@ -21,6 +21,7 @@ from compas.geometry.basic import length_vector
 from compas.geometry.basic import multiply_matrix_vector
 from compas.geometry.basic import multiply_matrices
 from compas.geometry.basic import transpose_matrix
+from compas.geometry.basic import norm_vector
 
 from compas.geometry.angles import angle_vectors
 
@@ -37,14 +38,19 @@ from compas.geometry.transformations import _NEXT_SPEC
 
 from compas.geometry.transformations import matrix_from_axis_and_angle
 from compas.geometry.transformations import matrix_from_scale_factors
-from compas.geometry.transformations import matrix_from_axis_and_angle
+from compas.geometry.transformations import matrix_change_basis
 
 
 __all__ = [
     'local_axes',
+    'orthonormalize_axes',
 
     'transform_points',
     'transform_vectors',
+    'transform_frames',
+
+    'local_to_world_coords',
+    'world_to_local_coords',
 
     'translate_points',
     'translate_points_xy',
@@ -85,6 +91,42 @@ def local_axes(a, b, c):
     w = cross_vectors(u, v)
     v = cross_vectors(w, u)
     return normalize_vector(u), normalize_vector(v), normalize_vector(w)
+
+
+def orthonormalize_axes(xaxis, yaxis):
+    """Corrects xaxis and yaxis to be unit vectors and orthonormal.
+
+    Parameters
+    ----------
+    xaxis: :class:`Vector` or list of float
+    yaxis: :class:`Vector` or list of float
+
+    Returns
+    -------
+    tuple: (xaxis, yaxis)
+        The corrected axes.
+
+    Raises
+    ------
+    ValueError: If xaxis and yaxis cannot span a plane.
+
+    Examples
+    --------
+    >>> xaxis = [1, 4, 5]
+    >>> yaxis = [1, 0, -2]
+    >>> xaxis, yaxis = orthonormalize_axes(xaxis, yaxis)
+    >>> allclose(xaxis, [0.1543, 0.6172, 0.7715], tol=0.001)
+    True
+    >>> allclose(yaxis, [0.6929, 0.4891, -0.5298], tol=0.001)
+    True
+    """
+    xaxis = normalize_vector(xaxis)
+    yaxis = normalize_vector(yaxis)
+    zaxis = cross_vectors(xaxis, yaxis)
+    if not norm_vector(zaxis):
+        raise ValueError("Xaxis and yaxis cannot span a plane.")
+    yaxis = cross_vectors(normalize_vector(zaxis), xaxis)
+    return xaxis, yaxis
 
 
 def homogenize(vectors, w=1.0):
@@ -140,17 +182,169 @@ def dehomogenize(vectors):
     return [[x / w, y / w, z / w] if w else [x, y, z] for x, y, z, w in vectors]
 
 
+def homogenize_and_flatten_frames(frames):
+    """Homogenize a list of frames and flatten the 3D list into a 2D list.
+
+    Parameters
+    ----------
+    frames: list of :class:`Frame`
+
+    Returns
+    -------
+    list of list of float
+
+    Examples
+    --------
+    >>> frames = [Frame((1, 1, 1), (0, 1, 0), (1, 0, 0))]
+    >>> homogenize_and_flatten_frames(frames)
+    [[1.0, 1.0, 1.0, 1.0], [0.0, 1.0, 0.0, 0.0], [1.0, -0.0, 0.0, 0.0]]
+    """
+    def homogenize_frame(frame):
+        return homogenize([frame[0]], w=1.0) + homogenize([frame[1], frame[2]], w=0.0)
+    return [v for frame in frames for v in homogenize_frame(frame)]
+
+
+def dehomogenize_and_unflatten_frames(points_and_vectors):
+    """Dehomogenize a list of vectors and unflatten the 2D list into a 3D list.
+
+    Parameters
+    ----------
+    points_and_vectors: list of list of float
+        Homogenized points and vectors.
+
+    Returns
+    -------
+    list of list of list of float
+        The frames.
+
+    Examples
+    --------
+    >>> points_and_vectors = [(1., 1., 1., 1.), (0., 1., 0., 0.), (1., 0., 0., 0.)]
+    >>> dehomogenize_and_unflatten_frames(points_and_vectors)
+    [[[1.0, 1.0, 1.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0]]]
+    """
+    frames = dehomogenize(points_and_vectors)
+    return [frames[i:i+3] for i in range(0, len(frames), 3)]
+
 # ==============================================================================
 # transform
 # ==============================================================================
 
 
 def transform_points(points, T):
+    """Transform multiple points with one transformation matrix.
+
+    Parameters
+    ----------
+    points : list of :class:`Point` or list of list of float
+        A list of points to be transformed.
+    T : :class:`Transformation` or list of list of float
+        The transformation to apply.
+
+    Examples
+    --------
+    >>> points = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
+    >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
+    >>> points_transformed = transform_points(points, T)
+    """
     return dehomogenize(multiply_matrices(homogenize(points, w=1.0), transpose_matrix(T)))
 
 
 def transform_vectors(vectors, T):
+    """Transform multiple vectors with one transformation matrix.
+
+    Parameters
+    ----------
+    vectors : list of :class:`Vector` or list of list of float
+        A list of vectors to be transformed.
+    T : :class:`Transformation` list of list of float
+        The transformation to apply.
+
+    Examples
+    --------
+    >>> vectors = [[1, 0, 0], [1, 2, 4], [4, 7, 1]]
+    >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
+    >>> vectors_transformed = transform_vectors(vectors, T)
+    """
     return dehomogenize(multiply_matrices(homogenize(vectors, w=0.0), transpose_matrix(T)))
+
+
+def transform_frames(frames, T):
+    """Transform multiple frames with one transformation matrix.
+
+    Parameters
+    ----------
+    frames : list of :class:`Frame`
+        A list of frames to be transformed.
+    T : :class:`Transformation`
+        The transformation to apply on the frames.
+
+    Examples
+    --------
+    >>> frames = [Frame([1, 0, 0], [1, 2, 4], [4, 7, 1]), Frame([0, 2, 0], [5, 2, 1], [0, 2, 1])]
+    >>> T = matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
+    >>> transformed_frames = transform_frames(frames, T)
+    """
+    points_and_vectors = homogenize_and_flatten_frames(frames)
+    return dehomogenize_and_unflatten_frames(multiply_matrices(points_and_vectors, transpose_matrix(T)))
+
+
+def world_to_local_coords(frame, xyz):
+    """Convert global coordinates to local coordinates.
+
+    Parameters
+    ----------
+    frame : :class:`Frame` or [point, xaxis, yaxis]
+        The local coordinate system.
+    xyz : array-like
+        The global coordinates of the points to convert.
+
+    Returns
+    -------
+    list of list of float
+        The coordinates of the given points in the local coordinate system.
+
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
+    >>> xyz = [Point(2, 3, 5)]
+    >>> Point(*world_to_local_coords(f, xyz)[0])
+    Point(3.726, 4.088, 1.550)
+    """
+    from compas.geometry.primitives import Frame
+    T = matrix_change_basis(Frame.worldXY(), frame)
+    return transform_points(xyz, T)
+
+
+def local_to_world_coords(frame, xyz):
+    """Convert local coordinates to global coordinates.
+
+    Parameters
+    ----------
+    frame : :class:`Frame` or [point, xaxis, yaxis]
+        The local coordinate system.
+    xyz : list of `Points` or list of list of float
+        The global coordinates of the points to convert.
+
+    Returns
+    -------
+    list of list of float
+        The coordinates of the given points in the local coordinate system.
+
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> f = Frame([0, 1, 0], [3, 4, 1], [1, 5, 9])
+    >>> xyz = [Point(3.726, 4.088, 1.550)]
+    >>> Point(*local_to_world_coords(f, xyz)[0])
+    Point(2.000, 3.000, 5.000)
+    """
+    from compas.geometry.primitives import Frame
+    T = matrix_change_basis(frame, Frame.worldXY())
+    return transform_points(xyz, T)
 
 
 # ==============================================================================
@@ -611,7 +805,7 @@ def project_point_plane(point, plane):
     >>> point = [3.0, 3.0, 3.0]
     >>> plane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])  # the XY plane
     >>> project_point_plane(point, plane)
-    [3.0, 3.0, 3.0]
+    [3.0, 3.0, 0.0]
 
     """
     base, normal = plane
@@ -853,7 +1047,7 @@ def reflect_line_triangle(line, triangle, tol=1e-6):
     >>> triangle = [1.0, 0, 0], [-1.0, 0, 0], [0, 0, 1.0]
     >>> line = [-1, 1, 0], [-0.5, 0.5, 0]
     >>> reflect_line_triangle(line, triangle)
-    ([0.0, 0.0, 0], [1.0, 1.0, 0])
+    ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
 
     """
     x = intersection_line_triangle(line, triangle, tol=tol)
@@ -907,32 +1101,29 @@ def orient_points(points, reference_plane, target_plane):
 
     Examples
     --------
-    .. code-block:: python
-
-        from compas.geometry import orient_points
-        from compas.geometry import intersection_segment_segment_xy
-
-        refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
-        tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
-
-        points = [
-            [0.288675, 0.288675, 1.1547],
-            [0.866025, 0.866025, 0.0],
-            [1.077350, 0.077350, 0.57735],
-            [0.077350, 1.077350, 0.57735]
+    >>> from compas.geometry import orient_points
+    >>> from compas.geometry import intersection_segment_segment_xy
+    >>>
+    >>> refplane = ([0.57735, 0.57735, 0.57735], [1.0, 1.0, 1.0])
+    >>> tarplane = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
+    >>>
+    >>> points = [\
+            [0.288675, 0.288675, 1.1547],\
+            [0.866025, 0.866025, 0.0],\
+            [1.077350, 0.077350, 0.57735],\
+            [0.077350, 1.077350, 0.57735]\
         ]
-
-        points = orient_points(points, refplane, tarplane)
-
-        ab = points[0], points[1]
-        cd = points[2], points[3]
-
-        point = intersection_segment_segment_xy(ab, cd)
-
-        points = orient_points([point], tarplane, refplane)
-
-        print(points[0])
-
+    >>>
+    >>> points = orient_points(points, refplane, tarplane)
+    >>>
+    >>> ab = points[0], points[1]
+    >>> cd = points[2], points[3]
+    >>>
+    >>> point = intersection_segment_segment_xy(ab, cd)
+    >>>
+    >>> points = orient_points([point], tarplane, refplane)
+    >>> Point(*points[0])
+    Point(0.577, 0.577, 0.577)
     """
     axis = cross_vectors(reference_plane[1], target_plane[1])
     angle = angle_vectors(reference_plane[1], target_plane[1])
@@ -953,4 +1144,8 @@ def orient_points(points, reference_plane, target_plane):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    from compas.geometry import allclose
+    from compas.geometry import Point
+    from compas.geometry import Frame
+    doctest.testmod(globs=globals())

@@ -33,7 +33,12 @@ else:
         compas.raise_if_ironpython()
 
 
-__all__ = ['EdgeModifier']
+__all__ = [
+    'EdgeModifier',
+
+    'mesh_update_edge_attributes',
+    'network_update_edge_attributes'
+    ]
 
 
 def rhino_update_named_values(names, values, message='', title='Update named values'):
@@ -84,6 +89,63 @@ class EdgeModifier(object):
 
             return True
         return False
+
+
+def mesh_update_edge_attributes(mesh, keys, names=None):
+    """Update the attributes of the edges of a mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    keys : tuple, list
+        The keys of the edges to update.
+    names : tuple, list (None)
+        The names of the atrtibutes to update.
+        Default is to update all attributes.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`mesh_update_attributes`
+    * :func:`mesh_update_vertex_attributes`
+    * :func:`mesh_update_face_attributes`
+
+    """
+    return EdgeModifier.update_edge_attributes(mesh, keys, names=names)
+
+
+def network_update_edge_attributes(network, keys, names=None):
+    """Update the attributes of the edges of a network.
+
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A network object.
+    keys : tuple, list
+        The keys of the edges to update.
+    names : tuple, list (None)
+        The names of the atrtibutes to update.
+        Default is to update all attributes.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`network_update_attributes`
+    * :func:`network_update_vertex_attributes`
+
+    """
+    return EdgeModifier.update_edge_attributes(network, keys, names=names)
 
 
 # ==============================================================================

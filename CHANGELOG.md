@@ -11,6 +11,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fixed transformation of start and end point of `compas.geometry.Line` to update the point objects in place.
+
+### Removed
+
+
+## [0.9.0] 2019-10-21
+
+### Added
+
+- Added `matrix_change_basis`, `Transformation.change_basis`
+- Added `matrix_from_frame_to_frame`
+- Added non-numpy versions of `global_coords`, `local_coords`
+- Added static method `Frame.local_to_local_coords`
+- Added `__getitem__`, `__setitem__` and `__eq__` to `Quaternion`
+- Added `Vector.scaled` and `Vector.unitized`
+- Added `transform_frames` and respective helper functions `dehomogenize_and_unflatten_frames`, `homogenize_and_flatten_frames`
+- Added `transform_frames_numpy` and respective helper functions `dehomogenize_and_unflatten_frames_numpy`, `homogenize_and_flatten_frames_numpy`
+
+### Changed
+
+- Renamed `global_coords_numpy` and `local_coords_numpy` to `local_to_world_coords_numpy` and `world_to_local_coords_numpy`.
+- Changed parameters `origin` `uvw` of `local_to_world_coords_numpy` and `world_to_local_coords_numpy` to `frame`.
+- Fixed some returns of `Frame` and `Rotation` to use `Vector` or `Quaternion`
+- Renamed methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` to `Frame.to_local_coords` and `Frame.to_world_coords`.
+
 ### Removed
 
 

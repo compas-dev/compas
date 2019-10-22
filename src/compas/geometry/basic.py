@@ -8,6 +8,7 @@ from random import sample
 from random import uniform
 
 __all__ = [
+    'close',
     'allclose',
     'add_vectors',
     'add_vectors_xy',
@@ -57,6 +58,27 @@ __all__ = [
     'pointcloud',
     'pointcloud_xy'
 ]
+
+
+def close(value1, value2, tol=1e-05):
+    """Returns True if two values are equal within a tolerance.
+
+    Parameters
+    ----------
+    value1 : float or int
+    value2 : float or int
+    tol : float, optional
+        The tolerance for comparing values.
+        Default is ``1e-05``.
+
+    Examples
+    --------
+    >>> close(1., 1.001)
+    False
+    >>> close(1., 1.001, tol=1e-2)
+    True
+    """
+    return fabs(value1 - value2) < tol
 
 
 def allclose(l1, l2, tol=1e-05):

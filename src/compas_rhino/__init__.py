@@ -10,6 +10,7 @@ compas_rhino
     :maxdepth: 1
 
     compas_rhino.artists
+    compas_rhino.constructors
     compas_rhino.conduits
     compas_rhino.forms
     compas_rhino.geometry
@@ -27,7 +28,7 @@ import compas._os
 from .utilities import *
 
 
-__version__ = '0.8.1'
+__version__ = '0.9.0'
 
 
 PURGE_ON_DELETE = True
