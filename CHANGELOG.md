@@ -7,12 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-### Added
-- `compas.files` readers for ASCII files now accept pathlib objects as well as strings for filepath/location.
-
 ### Changed
-- File reading functions for ascii files in `compas.files` has moved from the individual reader classes to a new parent class, `BaseReader`.
 
+- File reading functions for ascii files in `compas.files` has moved from the individual reader classes to a new parent class, `BaseReader`.
 - Fixed transformation of start and end point of `compas.geometry.Line` to update the point objects in place.
 
 ### Removed
