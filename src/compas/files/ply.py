@@ -1,6 +1,6 @@
-from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+from __future__ import absolute_import
 
 import struct
 
@@ -29,7 +29,10 @@ class PLY(object):
 class PLYReader(BaseReader):
     """"""
 
-    file_signature = b'ply'
+    file_signature = {
+                      'content': b'ply'
+                      'offset': 0,
+    }
 
     keywords = [
         'ply', 'format', 'comment', 'element', 'property', 'end_header'
@@ -108,7 +111,6 @@ class PLYReader(BaseReader):
         self.edges = []
         self.faces = []
         self.read_ply()
-        self.magic_length = 3
 
     def is_valid(self):
         self.read_header()
@@ -133,7 +135,9 @@ class PLYReader(BaseReader):
         if self.format == 'ascii':
             self.read_data()
         else:
-            self.read_data_binary()
+            # Until we have an implentation with or without numpy
+            raise NotImplementedError
+            # self.read_data_binary()
 
     # ==========================================================================
     # read the header
@@ -142,9 +146,8 @@ class PLYReader(BaseReader):
     def read_header(self):
         # the header is always in ascii format
         # read it as text
-        print(self.check_file_signature())
         if self.check_file_signature():
-            self.start_header == True
+            self.start_header = True
         else:
             raise Exception('Not a valid PLY file')
 
@@ -433,13 +436,13 @@ class PLYParser(object):
 
 if __name__ == "__main__":
 
+
     import compas
 
     from compas.datastructures import Mesh
 
-    ply = PLY(compas.get('plytest.ply'))
+    ply = PLY(compas.get_bunny()))
 
     mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
 
-    print(mesh.summary())
-
+    print(mesh.summry())

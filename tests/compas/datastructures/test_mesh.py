@@ -74,9 +74,6 @@ def test_from_ply():
     assert mesh.number_of_vertices() == 7876
     assert mesh.number_of_edges() == 23743
 
-    mesh = Mesh.from_ply(compas.get('sphere_binary.ply'))
-    mesh.summary()
-
 def test_from_stl():
     # increase precision to get more consistent test results
     compas.PRECISION = '6f'
@@ -87,7 +84,7 @@ def test_from_stl():
     assert mesh.number_of_edges() == 18
 
     # testing ascii stl and pathlib integration
-    mesh = Mesh.from_stl(Path.joinpath(Path.cwd(), 'data/cube_ascii.stl'))
+    mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
     assert mesh.number_of_faces() == 8016
     assert mesh.number_of_vertices() == 4020
     assert mesh.number_of_edges() == 11368
@@ -655,45 +652,3 @@ def test_edges_on_boundary():
 # --------------------------------------------------------------------------
 # attributes
 # --------------------------------------------------------------------------
-
-if __name__ == '__main__':
-    import tracemalloc
-    import linecache
-    import os
-
-    def display_top(snapshot, key_type='lineno', limit=10):
-        snapshot = snapshot.filter_traces((
-            tracemalloc.Filter(False, "<frozen importlib._bootstrap>"),
-            tracemalloc.Filter(False, "<unknown>"),
-        ))
-        top_stats = snapshot.statistics(key_type)
-
-        print("Top %s lines" % limit)
-        for index, stat in enumerate(top_stats[:limit], 1):
-            frame = stat.traceback[0]
-            # replace "/path/to/module/file.py" with "module/file.py"
-            filename = os.sep.join(frame.filename.split(os.sep)[-2:])
-            print("#%s: %s:%s: %.1f KiB"
-                  % (index, filename, frame.lineno, stat.size / 1024))
-            line = linecache.getline(frame.filename, frame.lineno).strip()
-            if line:
-                print('    %s' % line)
-
-        other = top_stats[limit:]
-        if other:
-            size = sum(stat.size for stat in other)
-            print("%s other: %.1f KiB" % (len(other), size / 1024))
-        total = sum(stat.size for stat in top_stats)
-        print("Total allocated size: %.1f KiB" % (total / 1024))
-
-    tracemalloc.start()
-
-# ... run your application ...
-
-    test_from_obj()
-    test_from_ply()
-    test_from_stl()
-    test_from_off()
-
-    snapshot = tracemalloc.take_snapshot()
-    display_top(snapshot)

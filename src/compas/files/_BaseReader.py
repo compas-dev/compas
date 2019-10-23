@@ -31,7 +31,6 @@ class BaseReader(object):
         ---------
         mode : string
             Treat file as ascii or binary
-
         Yields
         -------
         string
@@ -40,9 +39,9 @@ class BaseReader(object):
 
         if mode == 'text':
 
+            # TODO: Handle url's to binary files
             if self.is_URL:
                 resp = urlopen(self.location)
-                print(resp)
                 for line in resp.read().decode('utf-8').split('\n'):
                     yield line
             else:
@@ -75,8 +74,7 @@ class BaseReader(object):
         if pathobj.exists():
             return pathobj
         else:
-            raise FileNotFoundError
-
+            raise IOError('File not found.')
 
     def check_file_signature(self):
         '''
@@ -88,4 +86,8 @@ class BaseReader(object):
             raise TypeError('File type has no associated file signature')
 
         with self.location.open(mode="rb") as fd:
-            return fd.read(len(self.file_signature)) == self.file_signature
+            fd.seek(self.file_signature['offset'])
+            found_signature = fd.read(len(self.file_signature['content']))
+
+            if found_signature != self.file_signature['content']:
+                raise Exception('File not valid, import failed.')
