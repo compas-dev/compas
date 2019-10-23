@@ -30,7 +30,7 @@ class PLYReader(BaseReader):
     """"""
 
     file_signature = {
-                      'content': b'ply'
+                      'content': b'ply',
                       'offset': 0,
     }
 
@@ -146,10 +146,8 @@ class PLYReader(BaseReader):
     def read_header(self):
         # the header is always in ascii format
         # read it as text
-        if self.check_file_signature():
-            self.start_header = True
-        else:
-            raise Exception('Not a valid PLY file')
+        self.check_file_signature()
+        self.start_header = True
 
         self.file = self.read()
 
@@ -434,14 +432,13 @@ class PLYParser(object):
 # Main
 # ==============================================================================
 
+
 if __name__ == "__main__":
 
-
     import compas
-
     from compas.datastructures import Mesh
 
-    ply = PLY(compas.get_bunny()))
+    ply = PLY(compas.get_bunny())
 
     mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
 

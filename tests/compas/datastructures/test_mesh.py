@@ -8,7 +8,7 @@ from compas.datastructures import Mesh
 
 try:
     from pathlib import Path
-except:
+except ImportError:
     from pathlib2 import Path
 
 # --------------------------------------------------------------------------
@@ -74,6 +74,7 @@ def test_from_ply():
     assert mesh.number_of_vertices() == 7876
     assert mesh.number_of_edges() == 23743
 
+
 def test_from_stl():
     # increase precision to get more consistent test results
     compas.PRECISION = '6f'
@@ -95,6 +96,7 @@ def test_from_stl():
     assert mesh.number_of_edges() == 12324
 
     compas.PRECISION = '3f'  # resetting to compas standard
+
 
 def test_from_off():
     mesh = Mesh.from_off(compas.get('cube.off'))
