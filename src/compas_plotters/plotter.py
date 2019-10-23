@@ -9,7 +9,6 @@ import subprocess
 
 from contextlib import contextmanager
 
-import matplotlib
 import matplotlib.pyplot as plt
 
 from matplotlib.patches import Circle
