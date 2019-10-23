@@ -172,14 +172,6 @@ def get(filename):
     ----------
     filename : str
         The name of the data file.
-        The following are available.
-
-        * boxes.obj
-        * faces.obj
-        * fink.obj
-        * hypar.obj
-        * lines.obj
-        * saddle.obj
 
     Returns
     -------
@@ -192,7 +184,7 @@ def get(filename):
     This folder is only locally available if you installed **COMPAS** from source,
     or if you are working directly with the source.
     In all other cases, the function will get the corresponding files direcly from
-    the GitHub repo, at https://raw.githubusercontent.com/compas-dev/compas/master/data
+    the GitHub repo, at https://github.com/compas-dev/compas/tree/master/data
 
     Examples
     --------

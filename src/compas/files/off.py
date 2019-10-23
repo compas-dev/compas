@@ -30,9 +30,8 @@ class OFF(object):
 
 class OFFReader(BaseReader):
     """Read the contents of an *off* file.
-
-    Parameters
-    ----------
+    Arguments
+    ---------
     location: str or Path object
         Path or URL to the file.
 
@@ -50,6 +49,11 @@ class OFFReader(BaseReader):
         Edge count stated in beginning of file
 
     """
+    file_signature = {
+                      'content': b'OFF',
+                      'offset': 0,
+    }
+
     def __init__(self, location):
         super(OFFReader, self).__init__(location)
         self.vertices = []
@@ -62,6 +66,8 @@ class OFFReader(BaseReader):
         self.post()
 
     def pre(self):
+        self.check_file_signature()
+
         lines = []
         is_continuation = False
         for line in self.read():
@@ -96,10 +102,6 @@ class OFFReader(BaseReader):
         """
         if not self.content:
             raise Exception('Import failed')
-
-        header = next(self.content)
-        if header.lower() != 'off':
-            raise Exception('Not a valid OFF file')
 
         for line in self.content:
             if line.startswith('#'):
