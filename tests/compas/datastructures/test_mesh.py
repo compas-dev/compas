@@ -47,11 +47,13 @@ def test_from_obj():
     assert mesh.number_of_vertices() == 36
     assert mesh.number_of_edges() == 60
 
+    # test pathlib integration
     mesh = Mesh.from_obj(Path.joinpath(Path.cwd(), 'data/mesh.obj'))
     assert mesh.number_of_faces() == 563
     assert mesh.number_of_vertices() == 309
     assert mesh.number_of_edges() == 872
 
+    # test importing using URL
     mesh = Mesh.from_obj(
         'https://raw.githubusercontent.com/compas-dev/compas/master/data/hypar.obj'
         )
@@ -66,23 +68,36 @@ def test_from_ply():
     assert mesh.number_of_vertices() == 35947
     assert mesh.number_of_edges() == 104288
 
-    # No pathlib test since ply-test file is downloaded
+    # test pathlib integration
+    mesh = Mesh.from_ply(Path.joinpath(Path.cwd(), 'data/bigX_sphere.ply'))
+    assert mesh.number_of_faces() == 15712
+    assert mesh.number_of_vertices() == 7876
+    assert mesh.number_of_edges() == 23743
+
+    mesh = Mesh.from_ply(compas.get('sphere_binary.ply'))
+    mesh.summary()
 
 def test_from_stl():
-    mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
-    assert mesh.number_of_faces() == 8016
-    assert mesh.number_of_vertices() == 4020
-    assert mesh.number_of_edges() == 11368
+    # increase precision to get more consistent test results
+    compas.PRECISION = '6f'
 
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
     assert mesh.number_of_faces() == 12
     assert mesh.number_of_vertices() == 8
     assert mesh.number_of_edges() == 18
 
-    mesh = Mesh.from_stl(compas.get('binary-w-ascii-header.stl'))
-    assert mesh.number_of_faces() == 4110
-    assert mesh.number_of_vertices() == 12324
-    assert mesh.number_of_edges() == 8216
+    # testing ascii stl and pathlib integration
+    mesh = Mesh.from_stl(Path.joinpath(Path.cwd(), 'data/cube_ascii.stl'))
+    assert mesh.number_of_faces() == 8016
+    assert mesh.number_of_vertices() == 4020
+    assert mesh.number_of_edges() == 11368
+
+    mesh = Mesh.from_stl(compas.get('binary_w_ascii_header.stl'))
+    assert mesh.number_of_faces() == 8216
+    assert mesh.number_of_vertices() == 4110
+    assert mesh.number_of_edges() == 12324
+
+    compas.PRECISION = '3f'  # resetting to compas standard
 
 def test_from_off():
     mesh = Mesh.from_off(compas.get('cube.off'))
@@ -90,13 +105,13 @@ def test_from_off():
     assert mesh.number_of_vertices() == 8
     assert mesh.number_of_edges() == 12
 
-    mesh = None
+    # test pathlib integration
     mesh = Mesh.from_off(Path.joinpath(Path.cwd(), 'data/cube.off'))
     assert mesh.number_of_faces() == 6
     assert mesh.number_of_vertices() == 8
     assert mesh.number_of_edges() == 12
 
-    mesh = None
+    # test importing using URL
     mesh = Mesh.from_off(compas.get('cube.off'))
     mesh = Mesh.from_off(
         'https://raw.githubusercontent.com/compas-dev/compas/master/data/cube.off'
@@ -640,3 +655,45 @@ def test_edges_on_boundary():
 # --------------------------------------------------------------------------
 # attributes
 # --------------------------------------------------------------------------
+
+if __name__ == '__main__':
+    import tracemalloc
+    import linecache
+    import os
+
+    def display_top(snapshot, key_type='lineno', limit=10):
+        snapshot = snapshot.filter_traces((
+            tracemalloc.Filter(False, "<frozen importlib._bootstrap>"),
+            tracemalloc.Filter(False, "<unknown>"),
+        ))
+        top_stats = snapshot.statistics(key_type)
+
+        print("Top %s lines" % limit)
+        for index, stat in enumerate(top_stats[:limit], 1):
+            frame = stat.traceback[0]
+            # replace "/path/to/module/file.py" with "module/file.py"
+            filename = os.sep.join(frame.filename.split(os.sep)[-2:])
+            print("#%s: %s:%s: %.1f KiB"
+                  % (index, filename, frame.lineno, stat.size / 1024))
+            line = linecache.getline(frame.filename, frame.lineno).strip()
+            if line:
+                print('    %s' % line)
+
+        other = top_stats[limit:]
+        if other:
+            size = sum(stat.size for stat in other)
+            print("%s other: %.1f KiB" % (len(other), size / 1024))
+        total = sum(stat.size for stat in top_stats)
+        print("Total allocated size: %.1f KiB" % (total / 1024))
+
+    tracemalloc.start()
+
+# ... run your application ...
+
+    test_from_obj()
+    test_from_ply()
+    test_from_stl()
+    test_from_off()
+
+    snapshot = tracemalloc.take_snapshot()
+    display_top(snapshot)

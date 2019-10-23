@@ -1,11 +1,10 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import struct
 
 from compas.files._BaseReader import BaseReader
-
 
 __all__ = [
     'PLY',
@@ -30,64 +29,68 @@ class PLY(object):
 class PLYReader(BaseReader):
     """"""
 
-    keywords = ['ply', 'format', 'comment', 'element', 'property', 'end_header']
+    file_signature = b'ply'
+
+    keywords = [
+        'ply', 'format', 'comment', 'element', 'property', 'end_header'
+    ]
 
     property_types = {
-        'char'   : int,
-        'uchar'  : int,
-        'short'  : int,
-        'ushort' : int,
-        'int'    : int,
-        'uint'   : int,
-        'float'  : float,
-        'double' : float,
+        'char': int,
+        'uchar': int,
+        'short': int,
+        'ushort': int,
+        'int': int,
+        'uint': int,
+        'float': float,
+        'double': float,
     }
 
     binary_property_types = {
-        'int8'   : 'i1',
-        'char'   : 'i1',
-        'uint8'  : 'u1',
-        'uchar'  : 'u1',
-        'int16'  : 'i2',
-        'short'  : 'i2',
-        'uint16' : 'u2',
-        'ushort' : 'u2',
-        'int32'  : 'i4',
-        'int'    : 'i4',
-        'uint32' : 'u4',
-        'uint'   : 'u4',
+        'int8': 'i1',
+        'char': 'i1',
+        'uint8': 'u1',
+        'uchar': 'u1',
+        'int16': 'i2',
+        'short': 'i2',
+        'uint16': 'u2',
+        'ushort': 'u2',
+        'int32': 'i4',
+        'int': 'i4',
+        'uint32': 'u4',
+        'uint': 'u4',
         'float32': 'f4',
-        'float'  : 'f4',
+        'float': 'f4',
         'float64': 'f8',
-        'double' : 'f8'
+        'double': 'f8'
     }
 
     number_of_bytes_per_type = {
-        'char'  : 1,
-        'uchar' : 1,
-        'short' : 2,
+        'char': 1,
+        'uchar': 1,
+        'short': 2,
         'ushort': 2,
-        'int'   : 4,
-        'uint'  : 4,
-        'float' : 4,
+        'int': 4,
+        'uint': 4,
+        'float': 4,
         'double': 8
     }
 
     struct_format_per_type = {
-        'char'  : 'c',
-        'uchar' : 'B',
-        'short' : 'h',
+        'char': 'c',
+        'uchar': 'B',
+        'short': 'h',
         'ushort': 'H',
-        'int'   : 'i',
-        'uint'  : 'I',
-        'float' : 'f',
+        'int': 'i',
+        'uint': 'I',
+        'float': 'f',
         'double': 'd'
     }
 
     binary_byte_order = {'binary_big_endian': '>', 'binary_little_endian': '<'}
 
     def __init__(self, location):
-        self.location = location
+        super(PLYReader, self).__init__(location)
         self.file = None
         self.format = None
         self.comments = []
@@ -104,7 +107,8 @@ class PLYReader(BaseReader):
         self.vertices = []
         self.edges = []
         self.faces = []
-        self.read()
+        self.read_ply()
+        self.magic_length = 3
 
     def is_valid(self):
         self.read_header()
@@ -138,19 +142,16 @@ class PLYReader(BaseReader):
     def read_header(self):
         # the header is always in ascii format
         # read it as text
-        # otherwise file.tell() can't be used reliably
-        # to figure out where the header ends
-        first_line = self.read()
-        if first_line != 'ply':
+        print(self.check_file_signature())
+        if self.check_file_signature():
+            self.start_header == True
+        else:
             raise Exception('Not a valid PLY file')
 
-        self.start_header = 0
+        self.file = self.read()
 
-        for line_index, line in enumerate(self.read()):
-            # Offsetting line_index to account for first line already read
-            line_index += 1
+        for line_number, line in enumerate(self.file):
             line = line.rstrip()
-
             self.header.append(line)
 
             if line.startswith('format'):
@@ -185,7 +186,8 @@ class PLYReader(BaseReader):
                 if element_type == 'vertex':
                     property_type = parts[1]
                     property_name = parts[2]
-                    self.vertex_properties.append((property_name, property_type))
+                    self.vertex_properties.append(
+                        (property_name, property_type))
                 elif element_type == 'edge':
                     property_type = parts[1]
                     property_name = parts[2]
@@ -196,19 +198,22 @@ class PLYReader(BaseReader):
                         property_length = parts[2]
                         property_type = parts[3]
                         property_name = parts[4]
-                        self.face_properties.append((property_name, property_type, property_length))
+                        self.face_properties.append(
+                            (property_name, property_type, property_length))
                     else:
                         property_type = parts[1]
                         property_name = parts[2]
-                        self.face_properties.append((property_name, property_type))
+                        self.face_properties.append(
+                            (property_name, property_type))
                 else:
                     element_type = None
-                    raise Exception('Not a valid PLY file. Malformed property line.')
+                    raise Exception(
+                        'Not a valid PLY file. Malformed property line.')
                 continue
 
             if line == 'end_header':
                 element_type = None
-                self.end_header = line_index
+                self.end_header = line_number
                 break
 
     # ==========================================================================
@@ -217,7 +222,8 @@ class PLYReader(BaseReader):
 
     def read_data(self):
         if not self.end_header:
-            raise Exception('Header has not been read, or the file is not valid')
+            raise Exception(
+                'Header has not been read, or the file is not valid')
 
         for section in self.sections:
             if section == 'vertex':
@@ -231,19 +237,21 @@ class PLYReader(BaseReader):
 
     def read_data_binary(self):
         if not self.end_header:
-            raise Exception('Header has not been read, or the file is not valid')
+            raise Exception(
+                'Header has not been read, or the file is not valid')
         with open(self.location, 'rb') as self.file:
-            self.file.seek(self.end_header)
+            self.file.seek(self.end_header + 1)
             for section in self.sections:
                 if section == 'vertex':
-                    self.read_vertices_binary_wo_numpy()
+                    self.read_vertices_binary()
                 elif section == 'edge':
-                    self.read_edges_binary_wo_numpy()
+                    self.read_edges_binary()
                 elif section == 'face':
-                    self.read_faces_binary_wo_numpy()
+                    self.read_faces_binary()
                 else:
-                    print('user-defined elements are not supported: {0}'.format(section))
-                    pass
+                    raise Exception(
+                        'user-defined elements are not supported: {0}'.format(
+                            section))
 
     # ==========================================================================
     # read the individual section
@@ -251,7 +259,7 @@ class PLYReader(BaseReader):
 
     def read_vertices(self):
         while len(self.vertices) < self.number_of_vertices:
-            line = self.read()
+            line = next(self.file)
             line = line.rstrip()
             parts = line.split()
             vertex = {}
@@ -268,14 +276,16 @@ class PLYReader(BaseReader):
     def read_faces(self):
         while len(self.faces) < self.number_of_faces:
 
-            line = self.read()
+            line = next(self.file)
             line = line.rstrip()
             parts = line.split()
             face = {}
 
             for prop in self.face_properties:
                 pname, ptype, _ = prop
-                face[pname] = [self.property_types[ptype](part) for part in parts[1:]]
+                face[pname] = [
+                    self.property_types[ptype](part) for part in parts[1:]
+                ]
 
             self.faces.append(face)
 
@@ -287,7 +297,6 @@ class PLYReader(BaseReader):
     # with each chunck equal to the size specified in the header?
     # see: http://stackoverflow.com/questions/4566498/python-file-iterator-over-a-binary-file-with-newer-idiom
     # see: http://stackoverflow.com/questions/27532738/python-iterate-through-binary-file-without-lines
-    # TODO: Refactor out reading of file.
 
     def numpy_vertex_ptypes(self):
         ext = self.binary_byte_order[self.format]
@@ -335,7 +344,9 @@ class PLYReader(BaseReader):
     def read_vertices_binary(self):
         # use pandas to read the data frames
         import numpy as np
-        for line in np.fromfile(self.file, dtype=np.dtype(self.numpy_vertex_ptypes()), count=self.number_of_vertices):
+        for line in np.fromfile(self.file,
+                                dtype=np.dtype(self.numpy_vertex_ptypes()),
+                                count=self.number_of_vertices):
             vertex = {}
             for i, prop in enumerate(self.vertex_properties):
                 pname, ptype = prop
@@ -382,7 +393,9 @@ class PLYReader(BaseReader):
         # use pandas to read the data frames
         # how to deal with faces of variable length?
         import numpy as np
-        for line in np.fromfile(self.file, dtype=np.dtype(self.numpy_face_ptypes()), count=self.number_of_faces):
+        for line in np.fromfile(self.file,
+                                dtype=np.dtype(self.numpy_face_ptypes()),
+                                count=self.number_of_faces):
             face = {}
             for i, prop in enumerate(self.face_properties):
                 if len(prop) == 2:
@@ -401,19 +414,18 @@ class PLYReader(BaseReader):
 
 class PLYParser(object):
     """"""
-
     def __init__(self, reader, precision=None):
         self.precision = precision
-        self.reader    = reader
-        self.vertices  = None
-        self.edges     = None
-        self.faces     = None
+        self.reader = reader
+        self.vertices = None
+        self.edges = None
+        self.faces = None
         self.parse()
 
     def parse(self):
-        self.vertices = [(vertex['x'], vertex['y'], vertex['z']) for vertex in self.reader.vertices]
-        self.faces = [face['vertex_indices'] for face in self.reader.faces]
-
+        self.vertices = [(vertex['x'], vertex['y'], vertex['z'])
+                         for vertex in self.reader.vertices]
+        self.faces = [face[self.reader.face_properties[0][0]] for face in self.reader.faces]
 
 # ==============================================================================
 # Main
@@ -421,13 +433,13 @@ class PLYParser(object):
 
 if __name__ == "__main__":
 
-    import os
     import compas
 
     from compas.datastructures import Mesh
 
-    ply = PLY(compas.get_bunny())
+    ply = PLY(compas.get('plytest.ply'))
 
     mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
 
     print(mesh.summary())
+

@@ -102,31 +102,7 @@ class OBJReader(BaseReader):
         self.groups = {}
         self.objects = {}
         self.group = None
-        self.pre()
         self.read_obj()
-        self.post()
-
-
-    def pre(self):
-        self.content = self.read()
-        lines = []
-        is_continuation = False
-        for line in self.read():
-            line = line.rstrip()
-            if not line:
-                continue
-            if is_continuation:
-                lines[-1] = lines[-1][:-2] + line
-            else:
-                lines.append(line)
-            if line[-1] == '\\':
-                is_continuation = True
-            else:
-                is_continuation = False
-        self.content = iter(lines)
-
-    def post(self):
-        pass
 
     def read_obj(self):
         """Read the contents of the file, line by line.
@@ -148,9 +124,7 @@ class OBJReader(BaseReader):
         * ``cstype``: freeform attribute *curve or surface type*
 
         """
-        if not self.content:
-            return
-        for line in self.content:
+        for line in self.read():
             parts = line.split()
             if not parts:
                 continue
