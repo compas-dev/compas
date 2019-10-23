@@ -50,7 +50,9 @@ class BaseReader(object):
                         for line in fh:
                             yield line
                 except UnicodeDecodeError:
-                    with self.location.open(mode='r', errors='replace', newline='\r') as fh:
+                    with self.location.open(mode='r',
+                                            errors='replace',
+                                            newline='\r') as fh:
                         for line in fh:
                             yield line
 
@@ -82,12 +84,21 @@ class BaseReader(object):
            https://en.wikipedia.org/wiki/List_of_file_signatures
            https://en.wikipedia.org/wiki/File_format#Magic_number
         '''
-        if not self.file_signature:
+        if self.is_URL:
+            # not implemented yet
+            pass
+
+        elif not self.file_signature:
             raise TypeError('File type has no associated file signature')
 
-        with self.location.open(mode="rb") as fd:
-            fd.seek(self.file_signature['offset'])
-            found_signature = fd.read(len(self.file_signature['content']))
+        else:
+            with self.location.open(mode="rb") as fd:
+                fd.seek(self.file_signature['offset'])
 
-            if found_signature != self.file_signature['content']:
-                raise Exception('File not valid, import failed.')
+                found_signature = fd.read(len(self.file_signature['content']))
+                file_signature = self.file_signature['content']
+
+                if isinstance(found_signature, str) and found_signature != file_signature.decode():
+                    raise Exception('File not valid, import failed.')
+                elif found_signature != file_signature:
+                    raise Exception('File not valid, import failed.')
