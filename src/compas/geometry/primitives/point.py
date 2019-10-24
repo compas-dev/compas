@@ -162,14 +162,8 @@ class Point(Primitive):
         False
 
         """
-        points = []
-        data = transform_points(collection, X)
-        for point, xyz in zip(collection, data):
-            point = point.copy()
-            point.x = xyz[0]
-            point.y = xyz[1]
-            point.z = xyz[2]
-            points.append(point)
+        points = [point.copy() for point in collection]
+        Point.transform_collection(points, X)
         return points
 
     # ==========================================================================
