@@ -146,6 +146,57 @@ class Vector(Primitive):
     # ==========================================================================
 
     @classmethod
+    def Xaxis(cls):
+        """Construct a unit vector along the X axis.
+
+        Returns
+        -------
+        Vector
+            A vector with components ``x = 1.0, y = 0.0, z = 0.0``.
+
+        Examples
+        --------
+        >>> Vector.Xaxis()
+        Vector(1.000, 0.000, 0.000)
+
+        """
+        return cls(1.0, 0.0, 0.0)
+
+    @classmethod
+    def Yaxis(cls):
+        """Construct a unit vector along the Y axis.
+
+        Returns
+        -------
+        Vector
+            A vector with components ``x = 0.0, y = 1.0, z = 0.0``.
+
+        Examples
+        --------
+        >>> Vector.Yaxis()
+        Vector(0.000, 1.000, 0.000)
+
+        """
+        return cls(0.0, 1.0, 0.0)
+
+    @classmethod
+    def Zaxis(cls):
+        """Construct a unit vector along the Z axis.
+
+        Returns
+        -------
+        Vector
+            A vector with components ``x = 0.0, y = 0.0, z = 1.0``.
+
+        Examples
+        --------
+        >>> Vector.Zaxis()
+        Vector(0.000, 0.000, 1.000)
+
+        """
+        return cls(0.0, 0.0, 1.0)
+
+    @classmethod
     def from_start_end(cls, start, end):
         """Construct a ``Vector`` from start and end points.
 
