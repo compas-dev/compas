@@ -51,28 +51,28 @@ class Point(Primitive):
     >>> p1[0]
     1.0
     >>> p1[5]
-    1.0
+    3.0
     >>> p1[-3]
     1.0
     >>> p1[-6]
     1.0
 
     >>> p1 + p2
-    [5.0, 7.0, 9.0]
+    Point(5.000, 7.000, 9.000)
     >>> p1 + [4, 5, 6]
-    [5.0, 7.0, 9.0]
+    Point(5.000, 7.000, 9.000)
     >>> p1 * 2
-    [2.0, 4.0, 6.0]
+    Point(2.000, 4.000, 6.000)
     >>> p1 ** 2
-    [1.0, 4.0, 9.0]
+    Point(1.000, 4.000, 9.000)
     >>> p1
-    [1.0, 2.0, 3.0]
+    Point(1.000, 2.000, 3.000)
 
     >>> p1 += p2
     >>> p1 *= 2
     >>> p1 **= 2
     >>> p1
-    [100.0, 196.0, 324.0]
+    Point(100.000, 196.000, 324.000)
 
     Notes
     -----
@@ -154,7 +154,7 @@ class Point(Primitive):
         >>> T = Translation([1.0, 2.0, 3.0])
         >>> a = Point(0.0, 0.0, 0.0)
         >>> points = [a]
-        >>> transformed_points = Point.transform_collection(points, T)
+        >>> points = Point.transformed_collection(points, T)
         >>> b = points[0]
         >>> b
         Point(1.000, 2.000, 3.000)
