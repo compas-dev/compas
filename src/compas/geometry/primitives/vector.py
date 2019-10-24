@@ -131,14 +131,8 @@ class Vector(Primitive):
         False
 
         """
-        vectors = [None] * len(collection)
-        data = transform_vectors(collection, X)
-        for index, (vector, xyz) in enumerate(zip(collection, data)):
-            vector = vector.copy()
-            vector.x = xyz[0]
-            vector.y = xyz[1]
-            vector.z = xyz[2]
-            vectors[index] = vector
+        vectors = [vector.copy() for vector in collection]
+        Vector.transform_collection(vectors, X)
         return vectors
 
     # ==========================================================================
