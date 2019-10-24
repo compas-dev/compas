@@ -87,7 +87,6 @@ def transform_frames_numpy(frames, T):
     >>> T =  matrix_from_axis_and_angle([0, 2, 0], math.radians(45), point=[4, 5, 6])
     >>> transformed_frames = transform_frames_numpy(frames, T)
     """
-    from numpy import asarray
     T = asarray(T)
     points_and_vectors = homogenize_and_flatten_frames_numpy(frames)
     return dehomogenize_and_unflatten_frames_numpy(points_and_vectors.dot(T.T))
@@ -117,9 +116,6 @@ def world_to_local_coords_numpy(frame, xyz):
     >>> np.allclose(rst, [[3.726, 4.088, 1.550]], rtol=1e-3)
     True
     """
-    from numpy import asarray
-    from scipy.linalg import solve
-
     origin = frame[0]
     uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
     uvw = asarray(uvw).T
@@ -155,8 +151,6 @@ def local_to_world_coords_numpy(frame, rst):
     >>> numpy.allclose(xyz, [[2.000, 3.000, 5.000]], rtol=1e-3)
     True
     """
-    from numpy import asarray
-
     origin = frame[0]
     uvw = [frame[1], frame[2], cross_vectors(frame[1], frame[2])]
 
@@ -276,10 +270,13 @@ def dehomogenize_and_unflatten_frames_numpy(points_and_vectors):
 # ==============================================================================
 
 if __name__ == "__main__":
+
     import doctest
+
     import numpy
     import math
     from compas.geometry import Frame
     from compas.geometry import Point
     from compas.geometry import matrix_from_axis_and_angle
+
     doctest.testmod(globs=globals())
