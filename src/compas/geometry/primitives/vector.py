@@ -61,7 +61,7 @@ class Vector(Primitive):
 
     __slots__ = ['_x', '_y', '_z', '_precision']
 
-    def __init__(self, x, y, z, precision=None):
+    def __init__(self, x, y, z=0, precision=None):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
