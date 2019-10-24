@@ -2,11 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from math import sin
-from math import cos
-from math import sqrt
-from math import pi
-
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import subtract_vectors
@@ -75,6 +70,76 @@ class Vector(Primitive):
         self.y = y
         self.z = z
         self.precision = precision
+
+    @staticmethod
+    def transform_collection(collection, X):
+        """Transform a collection of ``Vector`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Vector
+            The collection of vectors.
+
+        Returns
+        -------
+        None
+            The vectors are modified in-place.
+
+        Examples
+        --------
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> vectors = [u]
+        >>> Vector.transform_collection(vectors, R)
+        >>> v = vectors[0]
+        >>> v
+        Vector(0.000, 1.000, 0.000)
+        >>> u is v
+        True
+
+        """
+        data = transform_vectors(collection, X)
+        for vector, xyz in zip(collection, data):
+            vector.x = xyz[0]
+            vector.y = xyz[1]
+            vector.z = xyz[2]
+
+    @staticmethod
+    def transformed_collection(collection, X):
+        """Create a collection of transformed ``Vector`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Vector
+            The collection of vectors.
+
+        Returns
+        -------
+        list of compas.geometry.Vector
+            The transformed vectors.
+
+        Examples
+        --------
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> vectors = [u]
+        >>> vectors = Vector.transformed_collection(vectors, R)
+        >>> v = vectors[0]
+        >>> v
+        Vector(0.000, 1.000, 0.000)
+        >>> u is v
+        False
+
+        """
+        vectors = [None] * len(collection)
+        data = transform_vectors(collection, X)
+        for index, (vector, xyz) in enumerate(zip(collection, data)):
+            vector = vector.copy()
+            vector.x = xyz[0]
+            vector.y = xyz[1]
+            vector.z = xyz[2]
+            vectors[index] = vector
+        return vectors
 
     # ==========================================================================
     # factory
@@ -611,20 +676,9 @@ class Vector(Primitive):
 
 if __name__ == '__main__':
 
-    from compas.geometry import matrix_from_axis_and_angle
+    import doctest
 
-    u = Vector(0.0, 0.0, 1.0)
-    v = Vector(1.0, 0.0, 0.0)
+    from math import radians
+    from compas.geometry import Rotation
 
-    print(u.angle(v))
-    print(3.14159 / 2)
-
-    w = Vector.from_start_end(u, v)
-
-    print(w)
-
-    M = matrix_from_axis_and_angle(v, pi / 4)
-
-    u.transform(M)
-
-    print(u)
+    doctest.testmod(globs=globals())
