@@ -27,17 +27,17 @@ class Line(Primitive):
     >>> line = Line([0, 0, 0], [1, 1, 1])
     >>> line.midpoint
     Point(0.500, 0.500, 0.500)
-    >>> line.length
-    1.73205080757
+    >>> line.length == sqrt(1 + 1 + 1)
+    True
     >>> line.direction
-    Vector(0.577, 0.577, 0.577, 1.000)
+    Vector(0.577, 0.577, 0.577)
 
-    >>> type(line.start)
-    <class 'compas.geometry.objects.point.Point'>
-    >>> type(line.midpoint)
-    <class 'compas.geometry.objects.point.Point'>
-    >>> type(line.direction)
-    <class 'compas.geometry.objects.vector.Vector'>
+    >>> type(line.start) == Point
+    True
+    >>> type(line.midpoint) == Point
+    True
+    >>> type(line.direction) == Vector
+    True
 
     Notes
     -----
@@ -233,14 +233,9 @@ class Line(Primitive):
 
 if __name__ == '__main__':
 
-    l1 = Line([0, 0, 0], [1, 1, 1])
+    import doctest
 
-    print(l1)
+    from math import sqrt
+    from compas.geometry import Vector
 
-    print(type(l1.start))
-    print(l1.midpoint)
-    print(l1.point(.75))
-    print(type(l1.midpoint))
-    print(l1.length)
-    print(l1.direction)
-    print(type(l1.direction))
+    doctest.testmod(globs=globals())

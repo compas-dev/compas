@@ -87,7 +87,7 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> vectors = [u]
         >>> Vector.transform_collection(vectors, R)
@@ -120,7 +120,7 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> vectors = [u]
         >>> vectors = Vector.transformed_collection(vectors, R)
