@@ -102,6 +102,78 @@ class Point(Primitive):
         self.z = z
         self.precision = precision
 
+    @staticmethod
+    def transform_collection(collection, X):
+        """Transform a collection of ``Point`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Point
+            The collection of points.
+
+        Returns
+        -------
+        None
+            The points are modified in-place.
+
+        Examples
+        --------
+        >>> from compas.geometry import Translation
+        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> a = Point(0.0, 0.0, 0.0)
+        >>> points = [a]
+        >>> Point.transform_collection(points, T)
+        >>> b = points[0]
+        >>> b
+        Point(1.000, 2.000, 3.000)
+        >>> a is b
+        True
+
+        """
+        data = transform_points(collection, X)
+        for point, xyz in zip(collection, data):
+            point.x = xyz[0]
+            point.y = xyz[1]
+            point.z = xyz[2]
+
+    @staticmethod
+    def transformed_collection(collection, X):
+        """Create a collection of transformed ``Point`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Point
+            The collection of points.
+
+        Returns
+        -------
+        list of compas.geometry.Point
+            The transformed points.
+
+        Examples
+        --------
+        >>> from compas.geometry import Translation
+        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> a = Point(0.0, 0.0, 0.0)
+        >>> points = [a]
+        >>> transformed_points = Point.transform_collection(points, T)
+        >>> b = points[0]
+        >>> b
+        Point(1.000, 2.000, 3.000)
+        >>> a is b
+        False
+
+        """
+        points = []
+        data = transform_points(collection, X)
+        for point, xyz in zip(collection, data):
+            point = point.copy()
+            point.x = xyz[0]
+            point.y = xyz[1]
+            point.z = xyz[2]
+            points.append(point)
+        return points
+
     # ==========================================================================
     # factory
     # ==========================================================================
@@ -379,6 +451,19 @@ class Point(Primitive):
     # ==========================================================================
     # helpers
     # ==========================================================================
+
+    def update(self, data):
+        """Update the coordinates of this ``Point``.
+
+        Parameters
+        ----------
+        data : list
+            New XYZ coordinates.
+
+        """
+        self.x = data[0]
+        self.y = data[1]
+        self.z = data[2]
 
     def copy(self):
         """Make a copy of this ``Point``.
