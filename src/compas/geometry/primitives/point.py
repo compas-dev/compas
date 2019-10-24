@@ -118,7 +118,6 @@ class Point(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Translation
         >>> T = Translation([1.0, 2.0, 3.0])
         >>> a = Point(0.0, 0.0, 0.0)
         >>> points = [a]
@@ -152,7 +151,6 @@ class Point(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Translation
         >>> T = Translation([1.0, 2.0, 3.0])
         >>> a = Point(0.0, 0.0, 0.0)
         >>> points = [a]
@@ -671,16 +669,16 @@ class Point(Primitive):
     # tranformations
     # ==========================================================================
 
-    def transform(self, matrix):
+    def transform(self, T):
         """Transform this ``Point`` using a given transformation matrix.
 
         Parameters
         ----------
-        matrix : list of list
+        T : list of list or compas.geometry.Transformation
             The transformation matrix.
 
         """
-        point = transform_points([self], matrix)[0]
+        point = transform_points([self], T)[0]
         self.x = point[0]
         self.y = point[1]
         self.z = point[2]
@@ -710,34 +708,8 @@ class Point(Primitive):
 
 if __name__ == '__main__':
 
-    from math import pi
+    import doctest
 
-    from compas.geometry import Point
-    from compas.geometry import Vector
-    from compas.geometry import Plane
-    from compas.geometry import Line
-    from compas.geometry import Polygon
+    from compas.geometry import Translation
 
-    from compas.geometry import matrix_from_axis_and_angle
-
-    M = matrix_from_axis_and_angle([0, 0, 1], pi / 2)
-
-    point = Point(0.0, 0.0, 0.0)
-    normal = Vector(0.0, 0.0, 1.0)
-    plane = Plane(point, normal)
-    line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
-    triangle = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
-    polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
-
-    p = Point(1.0, 1.0, 1.0)
-
-    p.transform(M)
-
-    print(*p)
-
-    print(repr(p))
-
-    print(p.distance_to_point(point))
-    print(p.distance_to_line(line))
-    print(p.distance_to_plane(plane))
-    print(p.in_triangle(triangle))
+    doctest.testmod(globs=globals())
