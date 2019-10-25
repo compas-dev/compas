@@ -42,10 +42,7 @@ def uninstall(version=None, packages=None):
     if version not in ('5.0', '6.0'):
         version = '6.0'
 
-    if system == 'win32':
-        print('Uninstalling COMPAS packages from Rhino {0} IronPython lib:'.format(version))
-    elif system == 'darwin':
-        print('Uninstalling COMPAS packages from Rhino IronPython lib.')
+    print('Uninstalling COMPAS packages from Rhino {0} IronPython lib:'.format(version))
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
