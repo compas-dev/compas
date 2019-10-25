@@ -21,6 +21,8 @@ Artists for visualising (painting) COMPAS data structures in Rhino.
 """
 from __future__ import absolute_import
 
+from .primitiveartist import *
+
 from .artist import *
 from .meshartist import *
 from .networkartist import *

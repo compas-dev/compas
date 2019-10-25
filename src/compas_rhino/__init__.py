@@ -27,6 +27,11 @@ import os
 import compas._os
 from .utilities import *
 
+try:
+    import rhinoscriptsyntax as rs
+except ImportError:
+    pass
+
 
 __version__ = '0.9.0'
 
