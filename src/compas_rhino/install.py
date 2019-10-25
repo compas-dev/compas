@@ -17,10 +17,7 @@ from compas._os import create_symlinks
 __all__ = ['install']
 
 
-INSTALLABLE_PACKAGES = ['compas', 'compas_rhino']
-
-if system == 'win32':
-    INSTALLABLE_PACKAGES.append('compas_ghpython')
+INSTALLABLE_PACKAGES = ['compas', 'compas_rhino', 'compas_ghpython']
 
 
 def _get_package_path(package):
@@ -63,16 +60,22 @@ def install(version=None, packages=None):
         $ python -m compas_rhino.install -v 6.0
 
     """
+
     if version not in ('5.0', '6.0'):
         version = '6.0'
 
-    if system == 'win32':
-        print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
-    elif system == 'darwin':
-        print('Installing COMPAS packages to Rhino IronPython lib.')
+    print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
+
+    if system == 'darwin' and version == 5.0:
+        ghpython_incompatible = True
 
     if not packages:
         packages = INSTALLABLE_PACKAGES
+    elif 'compas_ghpython' in packages and ghpython_incompatible:
+        print('Skipping installation of compas_ghpython since it\'s not supported for Rhino 5 for Mac')
+
+    if ghpython_incompatible:
+        packages.remove('compas_ghpython')
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
     print('IronPython location: {}'.format(ipylib_path))
