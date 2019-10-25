@@ -66,6 +66,8 @@ def install(version=None, packages=None):
 
     print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
 
+    ghpython_incompatible = False
+
     if system == 'darwin' and version == 5.0:
         ghpython_incompatible = True
 
