@@ -113,16 +113,27 @@ def _get_python_plugins_path_win32(version):
                         'PythonPlugins')
 
 
-def _get_python_plugins_path_mac():
-    return os.path.join(
-        os.environ['HOME'],
-        'Library',
-        'Application Support',
-        'McNeel',
-        'Rhinoceros',
-        'MacPlugIns',
-        'PythonPlugIns'
-    )
+def _get_python_plugins_path_mac(version):
+    if version == '6.0':
+        path = os.path.join(
+            os.environ['HOME'],
+            'Library',
+            'Application Support',
+            'McNeel',
+            'Rhinoceros',
+            '6.0',
+            'Plug-ins',
+            'PythonPlugIns')
+    else:
+        path = os.path.join(
+            os.environ['HOME'],
+            'Library',
+            'Application Support',
+            'McNeel',
+            'Rhinoceros',
+            'MacPlugIns',
+            'PythonPlugIns')
+    return path
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

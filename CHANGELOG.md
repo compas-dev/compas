@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `compas.geometry.Point.transform_collection` and `compas.geometry.Point.transformed_collection`.
 - Added `compas.geometry.Vector.transform_collection` and `compas.geometry.Vector.transformed_collection`.
 - Added `compas.geometry.Line.transform_collection` and `compas.geometry.Line.transformed_collection`.
+- Added support for new Python plugin location for Rhino 6.0 on Mac.
 
 ### Changed
 
