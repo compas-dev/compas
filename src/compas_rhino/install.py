@@ -61,21 +61,21 @@ def install(version=None, packages=None):
 
     """
 
-    if system == 'win32':
-        print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
-    elif system == 'darwin':
-        print('Installing COMPAS packages to Rhino IronPython lib.')
+    if version not in ('5.0', '6.0'):
+        version = '6.0'
+
+    print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
+
+    if system == 'darwin' and version == 5.0:
+        ghpython_incompatible = True
 
     if not packages:
         packages = INSTALLABLE_PACKAGES
-        if system == 'darwin' and version == '5.0':
-            packages.remove('compas_ghpython')
-    elif system == 'darwin' and 'compas_ghpython' in packages:
+    elif 'compas_ghpython' in packages and ghpython_incompatible:
         print('Skipping installation of compas_ghpython since it\'s not supported for Rhino 5 for Mac')
-        packages.remove('compas_ghpython')
 
-    if version not in ('5.0', '6.0'):
-        version = '6.0'
+    if ghpython_incompatible:
+        packages.remove('compas_ghpython')
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
     print('IronPython location: {}'.format(ipylib_path))
