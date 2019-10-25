@@ -2,11 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.basic import scale_vector
-from compas.geometry.basic import normalize_vector
-from compas.geometry.basic import add_vectors
-from compas.geometry.basic import subtract_vectors
-
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
@@ -46,10 +41,6 @@ def bernstein(n, k, t):
     if k > n:
         return 0
     return binomial_coefficient(n, k) * t ** k * (1 - t) ** (n - k)
-
-
-class BezierException(Exception):
-    pass
 
 
 class Bezier(Primitive):

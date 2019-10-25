@@ -226,6 +226,7 @@ def dehomogenize_and_unflatten_frames(points_and_vectors):
     frames = dehomogenize(points_and_vectors)
     return [frames[i:i+3] for i in range(0, len(frames), 3)]
 
+
 # ==============================================================================
 # transform
 # ==============================================================================
@@ -1145,7 +1146,9 @@ def orient_points(points, reference_plane, target_plane):
 if __name__ == "__main__":
 
     import doctest
+
     from compas.geometry import allclose
     from compas.geometry import Point
     from compas.geometry import Frame
+
     doctest.testmod(globs=globals())

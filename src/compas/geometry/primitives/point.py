@@ -51,28 +51,28 @@ class Point(Primitive):
     >>> p1[0]
     1.0
     >>> p1[5]
-    1.0
+    3.0
     >>> p1[-3]
     1.0
     >>> p1[-6]
     1.0
 
     >>> p1 + p2
-    [5.0, 7.0, 9.0]
+    Point(5.000, 7.000, 9.000)
     >>> p1 + [4, 5, 6]
-    [5.0, 7.0, 9.0]
+    Point(5.000, 7.000, 9.000)
     >>> p1 * 2
-    [2.0, 4.0, 6.0]
+    Point(2.000, 4.000, 6.000)
     >>> p1 ** 2
-    [1.0, 4.0, 9.0]
+    Point(1.000, 4.000, 9.000)
     >>> p1
-    [1.0, 2.0, 3.0]
+    Point(1.000, 2.000, 3.000)
 
     >>> p1 += p2
     >>> p1 *= 2
     >>> p1 **= 2
     >>> p1
-    [100.0, 196.0, 324.0]
+    Point(100.000, 196.000, 324.000)
 
     Notes
     -----
@@ -101,6 +101,70 @@ class Point(Primitive):
         self.y = y
         self.z = z
         self.precision = precision
+
+    @staticmethod
+    def transform_collection(collection, X):
+        """Transform a collection of ``Point`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Point
+            The collection of points.
+
+        Returns
+        -------
+        None
+            The points are modified in-place.
+
+        Examples
+        --------
+        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> a = Point(0.0, 0.0, 0.0)
+        >>> points = [a]
+        >>> Point.transform_collection(points, T)
+        >>> b = points[0]
+        >>> b
+        Point(1.000, 2.000, 3.000)
+        >>> a is b
+        True
+
+        """
+        data = transform_points(collection, X)
+        for point, xyz in zip(collection, data):
+            point.x = xyz[0]
+            point.y = xyz[1]
+            point.z = xyz[2]
+
+    @staticmethod
+    def transformed_collection(collection, X):
+        """Create a collection of transformed ``Point`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Point
+            The collection of points.
+
+        Returns
+        -------
+        list of compas.geometry.Point
+            The transformed points.
+
+        Examples
+        --------
+        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> a = Point(0.0, 0.0, 0.0)
+        >>> points = [a]
+        >>> points = Point.transformed_collection(points, T)
+        >>> b = points[0]
+        >>> b
+        Point(1.000, 2.000, 3.000)
+        >>> a is b
+        False
+
+        """
+        points = [point.copy() for point in collection]
+        Point.transform_collection(points, X)
+        return points
 
     # ==========================================================================
     # factory
@@ -380,6 +444,19 @@ class Point(Primitive):
     # helpers
     # ==========================================================================
 
+    def update(self, data):
+        """Update the coordinates of this ``Point``.
+
+        Parameters
+        ----------
+        data : list
+            New XYZ coordinates.
+
+        """
+        self.x = data[0]
+        self.y = data[1]
+        self.z = data[2]
+
     def copy(self):
         """Make a copy of this ``Point``.
 
@@ -586,16 +663,16 @@ class Point(Primitive):
     # tranformations
     # ==========================================================================
 
-    def transform(self, matrix):
+    def transform(self, T):
         """Transform this ``Point`` using a given transformation matrix.
 
         Parameters
         ----------
-        matrix : list of list
+        T : list of list or compas.geometry.Transformation
             The transformation matrix.
 
         """
-        point = transform_points([self], matrix)[0]
+        point = transform_points([self], T)[0]
         self.x = point[0]
         self.y = point[1]
         self.z = point[2]
@@ -625,34 +702,8 @@ class Point(Primitive):
 
 if __name__ == '__main__':
 
-    from math import pi
+    import doctest
 
-    from compas.geometry import Point
-    from compas.geometry import Vector
-    from compas.geometry import Plane
-    from compas.geometry import Line
-    from compas.geometry import Polygon
+    from compas.geometry import Translation
 
-    from compas.geometry import matrix_from_axis_and_angle
-
-    M = matrix_from_axis_and_angle([0, 0, 1], pi / 2)
-
-    point = Point(0.0, 0.0, 0.0)
-    normal = Vector(0.0, 0.0, 1.0)
-    plane = Plane(point, normal)
-    line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
-    triangle = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
-    polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
-
-    p = Point(1.0, 1.0, 1.0)
-
-    p.transform(M)
-
-    print(*p)
-
-    print(repr(p))
-
-    print(p.distance_to_point(point))
-    print(p.distance_to_line(line))
-    print(p.distance_to_plane(plane))
-    print(p.in_triangle(triangle))
+    doctest.testmod(globs=globals())
