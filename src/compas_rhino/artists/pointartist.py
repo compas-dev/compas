@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from itertools import zip_longest
+# from itertools import zip_longest
 
 import compas_rhino
 # from compas.utilities import like_list
@@ -13,9 +13,18 @@ __all__ = ['PointArtist']
 
 
 def list_like(target, value, fillvalue=None):
-    if not isinstance(value, list):
-        value = [value]
-    return [u for _ , u in zip_longest(target, value, fillvalue=fillvalue)]
+    p = len(target)
+
+    if isinstance(value, list):
+        matched_list = value
+    else:
+        matched_list = [value] * p
+
+    d = len(matched_list)
+    if d < p:
+        matched_list.extend([fillvalue] * (p - d))
+
+    return matched_list
 
 
 class PointArtist(_PrimitiveArtist):
@@ -33,7 +42,7 @@ class PointArtist(_PrimitiveArtist):
     --------
     >>>
 
-    """"
+    """
 
     __module__ = "compas_rhino.artists"
 
@@ -90,19 +99,13 @@ class PointArtist(_PrimitiveArtist):
             The name of the group if the collection objects are grouped. 
 
         """
-        layer = layer or self.settings['layer']
-        colors = list_like(collection, color, fill_value=self.settings['color.point'])
         points = []
-        for point, color in zip(collection, colors):
+        colors = list_like(collection, color)
+        for point, rgb in zip(collection, colors):
             points.append({
                 'pos': list(point),
-                'color': color})
-        if clear:
-            if layer:
-                compas_rhino.clear_layer(layer)
-            else:
-                compas_rhino.clear_current_layer()
-        guids = compas_rhino.draw_points(points, layer=layer)
+                'color': rgb})
+        guids = compas_rhino.draw_points(points, layer=layer, clear=clear)
         if not group_collection:
             return guids
         group = compas_rhino.rs.AddGroup(group_name)

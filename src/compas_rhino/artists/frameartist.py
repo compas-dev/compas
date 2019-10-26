@@ -4,13 +4,13 @@ from __future__ import division
 
 import compas_rhino
 
-from compas_rhino.artists import PrimitiveArtist
+from compas_rhino.artists import _PrimitiveArtist
 
 
 __all__ = ['FrameArtist']
 
 
-class FrameArtist(PrimitiveArtist):
+class FrameArtist(_PrimitiveArtist):
     """Artist for drawing ``Frame`` objects.
 
     Parameters
@@ -25,14 +25,13 @@ class FrameArtist(PrimitiveArtist):
     --------
     >>>
 
-    """"
+    """
 
     __module__ = "compas_rhino.artists"
 
     def __init__(self, frame, layer=None):
         super(FrameArtist, self).__init__(frame, layer=layer)
         self.settings.update({
-            'layer': layer
             'color.origin': (0, 0, 0),
             'color.xaxis': (255, 0, 0),
             'color.yaxis': (0, 255, 0),

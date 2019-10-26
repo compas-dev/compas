@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from itertools import zip_longest
+# from itertools import zip_longest
 
 import compas_rhino
 # from compas.utilities import like_list
@@ -13,9 +13,18 @@ __all__ = ['BoxArtist']
 
 
 def list_like(target, value, fillvalue=None):
-    if not isinstance(value, list):
-        value = [value]
-    return [u for _ , u in zip_longest(target, value, fillvalue=fillvalue)]
+    p = len(target)
+
+    if isinstance(value, list):
+        matched_list = value
+    else:
+        matched_list = [value] * p
+
+    d = len(matched_list)
+    if d < p:
+        matched_list.extend([fillvalue] * (p - d))
+
+    return matched_list
 
 
 class BoxArtist(_ShapeArtist):
@@ -33,7 +42,7 @@ class BoxArtist(_ShapeArtist):
     --------
     >>>
 
-    """"
+    """
 
     __module__ = "compas_rhino.artists"
 
