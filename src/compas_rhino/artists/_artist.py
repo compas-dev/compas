@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_rhino
 
-__all__ = ['_Artist']
+__all__ = ["_Artist"]
 
 
 class _Artist(object):
@@ -12,7 +12,7 @@ class _Artist(object):
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.primitives.Primitive`
+    primitive : :class:`compas.geometry.Primitive`
         The instance of the primitive.
     settings : dict (optional)
         A dictionary with visualisation settings.

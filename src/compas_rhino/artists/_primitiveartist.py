@@ -6,7 +6,7 @@ import compas_rhino
 
 from compas_rhino.artists import _Artist
 
-__all__ = ['_PrimitiveArtist']
+__all__ = ["_PrimitiveArtist"]
 
 
 class _PrimitiveArtist(_Artist):
@@ -14,7 +14,7 @@ class _PrimitiveArtist(_Artist):
 
     Parameters
     ----------
-    primitive : :class:`compas.geometry.Primitive`
+    primitive: :class:`compas.geometry.Primitive`
         The instance of the primitive.
 
     Attributes
