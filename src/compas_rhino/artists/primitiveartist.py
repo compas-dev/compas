@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas_rhino
+
 __all__ = ['PrimitiveArtist']
 
 
@@ -36,8 +38,18 @@ class PrimitiveArtist(object):
     def draw(self):
         raise NotImplementedError
 
+    def redraw(self):
+        raise NotImplementedError
+
     def draw_dynamic(self):
         raise NotImplementedError
+
+    def clear_layer(self):
+        """Clear the main layer of the artist."""
+        if self.settings['layer']:
+            compas_rhino.clear_layer(self.settings['layer'])
+        else:
+            compas_rhino.clear_current_layer()
 
 
 # ==============================================================================
