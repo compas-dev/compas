@@ -101,7 +101,7 @@ def _get_python_plugins_path(version):
     if compas._os.system == 'win32':
         python_plugins_path = _get_python_plugins_path_win32(version)
     elif compas._os.system == 'darwin':
-        python_plugins_path = _get_python_plugins_path_mac()
+        python_plugins_path = _get_python_plugins_path_mac(version)
     else:
         raise Exception('Unsupported platform')
 
