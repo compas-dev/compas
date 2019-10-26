@@ -4,20 +4,18 @@ from __future__ import division
 
 import compas_rhino
 
-__all__ = ['PrimitiveArtist']
+__all__ = ['_Artist']
 
 
-class PrimitiveArtist(object):
-    """Base class for all `Primitive` artists.
+class _Artist(object):
+    """Base class for all ``Artist`` objects.
 
     Parameters
     ----------
-    primitive : compas.geometry.primitives.Primitive
-        The instnce of the primitive.
+    primitive : :class:`compas.geometry.primitives.Primitive`
+        The instance of the primitive.
     settings : dict (optional)
         A dictionary with visualisation settings.
-        Note that visualisation settings may also be provided
-        one-by-one as keyword arguments.
 
     Attributes
     ----------
@@ -26,10 +24,11 @@ class PrimitiveArtist(object):
 
     """
 
-    def __init__(self, primitive, settings=None, **kwargs):
-        self.primitive = primitive
-        self.settings = settings or {}
-        self.settings.update(kwargs)
+    __module__ = "compas_rhino.artists"
+
+    def __init__(self, settings):
+        self.settings = {'layer': None}
+        self.settings.update(settings)
 
     @staticmethod
     def draw_collection(collection):
@@ -42,6 +41,7 @@ class PrimitiveArtist(object):
         raise NotImplementedError
 
     def draw_dynamic(self):
+        # should become a wrapper for using conduits
         raise NotImplementedError
 
     def clear_layer(self):
