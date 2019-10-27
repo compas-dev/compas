@@ -64,10 +64,10 @@ class Transformation(object):
         self.matrix = matrix
 
     def __mul__(self, other):
-        return self.concatenate(other)
+        return self.concatenated(other)
 
     def __imul__(self, other):
-        return self.concatenate(other)
+        return self.concatenated(other)
 
     def __getitem__(self, key):
         i, j = key
@@ -341,9 +341,9 @@ class Transformation(object):
         """
         return matrix_determinant(self.matrix)
 
-    def decompose(self):
-        """Decomposes the ``Transformation`` into ``Scale``, ``Shear``,
-        ``Rotation``, ``Translation`` and ``Perspective``.
+    def decomposed(self):
+        """Decompose the ``Transformation`` into its ``Scale``, ``Shear``,
+        ``Rotation``, ``Translation`` and ``Perspective`` components.
 
         Returns
         -------
@@ -360,7 +360,7 @@ class Transformation(object):
         >>> R1 = Rotation.from_euler_angles(angle1)
         >>> S1 = Scale(scale1)
         >>> M = (T1 * R1) * S1
-        >>> Sc, Sh, R, T, P = M.decompose()
+        >>> Sc, Sh, R, T, P = M.decomposed()
         >>> S1 == Sc
         True
         >>> R1 == R
@@ -418,9 +418,13 @@ class Transformation(object):
         -----
         Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.
         """
-        T = self.copy()
-        T.concatenate(other)
-        return T
+        # T = self.copy()
+        # T.concatenate(other)
+        # return T
+        cls = type(self)
+        if isinstance(other, cls):
+            return cls(multiply_matrices(self.matrix, other.matrix))
+        return Transformation(multiply_matrices(self.matrix, other.matrix))
 
 
 # ==============================================================================
