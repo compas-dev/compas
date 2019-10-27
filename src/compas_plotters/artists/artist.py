@@ -2,9 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import matplotlib
-import matplotlib.pyplot as plt
-
 __all__ = ['Artist']
 
 
@@ -24,6 +21,11 @@ class Artist(object):
     @staticmethod
     def build(item, **kwargs):
         artist_type = _ITEM_ARTIST[type(item)]
+        artist = artist_type(item, **kwargs)
+        return artist
+
+    @staticmethod
+    def build_as(item, artist_type, **kwargs):
         artist = artist_type(item, **kwargs)
         return artist
 
