@@ -18,11 +18,15 @@ from itertools import chain
 from itertools import repeat
 from itertools import starmap
 from itertools import tee
-# from itertools import zip_longest
 from itertools import cycle
 # from itertools import filterfalse
 from itertools import combinations
 from itertools import chain
+
+try:
+    from itertools import zip_longest
+except ImportError:
+    from itertools import izip_longest as zip_longest
 
 
 __all__ = [
@@ -49,7 +53,7 @@ __all__ = [
     'random_permutation',
     'random_combination',
     'random_combination_with_replacement',
-    'match_length'
+    'list_like'
 ]
 
 
@@ -274,50 +278,41 @@ def random_combination_with_replacement(iterable, r):
     return tuple(pool[i] for i in indices)
 
 
-def match_length(value, iterable):
+def list_like(target, base, fillvalue=None):
     """
-    Returns a list of values with the same length of a target iterable.
+    Returns a list of length equal to that of a target iterable.
 
-    If the supplied value is a list or a tuple, its last item will be appended
-    at the end until the target length is reached.
+    If the length of the base iterable is smaller than that of the target,
+    fillvalue will be appended to the end of the output list until the
+    goal length is reached. 
 
     Parameters
     ----------
-    value : 
-        User-supplied object.
-    iterable:
+    target : iterable
         An iterable to be matched in length.
+    base: iterable
+        Iterable taken as departing point.
+    fillvalue : object, optional
+        Fill value. Defaults to `None`.
 
     Returns
     -------
-    matched_list: list
-        A list of values.
+    matched : list
+        A list of base and fillvalue, whenever possible.
 
     Examples
     --------
-    >>> match_length(0, "hello")
-    [0, 0, 0, 0, 0]
-    >>> match_length("a", [0, 1, 2])
-    ["a", "a", "a"]
-    >>> match_length(['foo', 'bar'], {'key_1': 'a', 'key_2': 'b'})
-    ['foo', 'bar']
-    >>> match_length(list(range(2)), range(3))
-    [0, 1, 1]
-
+    >>> list_like("hello", [0.5], 0.0)
+    [0.5, 0.0, 0.0, 0.0, 0.0]
+    >>> list_like([0, 1, 2], ["a", "b"])
+    ["a", "b", None]
+    >>> list_like(["foo", "bar"], {"key_1": "a", "key_2": "b""})
+    ["key_1", "key_2"]
+    >>> list_like([25], range(3))
+    [0]
     """
-
-    p = len(iterable)
-
-    if isinstance(value, (list, tuple)):
-        matched_list = value
-    else:
-        matched_list = [value] * p
-
-    d = len(matched_list)
-    if d < p:
-        matched_list.extend(matched_list[-1:] * (p - d))
-
-    return matched_list
+    matched = [u for _ , u in zip_longest(target, base, fillvalue=fillvalue)]
+    return matched[:len(target)]
 
 # ==============================================================================
 # Main
@@ -325,9 +320,11 @@ def match_length(value, iterable):
 
 if __name__ == "__main__":
 
-    s = list(range(5))
+    s = list(range(3))
+    t = {'foo': 'bar', 'baz': 'qux'}
 
     for u, v, w in window(s + s[0:2], 3):
         print(u, v, w)
 
-    print(match_length('5', s))
+    print(list_like(t, s))
+    print(list_like(s, t))
