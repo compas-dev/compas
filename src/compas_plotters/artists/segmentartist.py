@@ -13,12 +13,12 @@ class SegmentArtist(Artist):
 
     zorder = 2000
 
-    def __init__(self, line, draw_points=False):
+    def __init__(self, line, draw_points=False, width=2.0, color='#000000'):
         super(SegmentArtist, self).__init__()
         self._draw_points = draw_points
-        self.width = 2.0
+        self.width = width
         self.line = line
-        self.color = '#000000'
+        self.color = color
         self.mpl_line = None
         self.start_artist = None
         self.end_artist = None
