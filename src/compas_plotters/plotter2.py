@@ -192,6 +192,13 @@ class Plotter2(object):
         self._artists.append(artist)
         return artist
 
+    def add_as(self, item, artist_type, **kwargs):
+        artist = Artist.build_as(item, artist_type, **kwargs)
+        artist.plotter = self
+        artist.draw()
+        self._artists.append(artist)
+        return artist
+
     def find(self, item):
         raise NotImplementedError
 
