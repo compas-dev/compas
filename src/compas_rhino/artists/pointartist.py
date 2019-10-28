@@ -59,7 +59,8 @@ class PointArtist(_PrimitiveArtist):
         """
         points = [{'pos': list(self.primitive), 'color': self.settings['color.point']}]
         guids = compas_rhino.draw_points(points, layer=self.settings['layer'], clear=False)
-        return guids
+        if guids:
+            return guids[0]
 
     @staticmethod
     def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):

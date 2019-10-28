@@ -64,7 +64,8 @@ class LineArtist(_PrimitiveArtist):
         end = list(self.primitive.end)
         lines = [{'start': start, 'end': end, 'color': self.settings['color.Line']}]
         guids = compas_rhino.draw_lines(lines, layer=self.settings['layer'], clear=False)
-        return guids
+        if guids:
+            return guids[0]
 
     @staticmethod
     def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):

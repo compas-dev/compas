@@ -44,6 +44,9 @@ class _Artist(object):
         # should become a wrapper for using conduits
         raise NotImplementedError
 
+    def draw_animation(self):
+        raise NotImplementedError
+
     def clear_layer(self):
         """Clear the main layer of the artist."""
         if self.settings['layer']:
