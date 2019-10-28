@@ -39,7 +39,7 @@ class FrameArtist(_PrimitiveArtist):
 
     def draw(self):
         """Draw the frame.
-        
+
         Returns
         -------
         guids: list

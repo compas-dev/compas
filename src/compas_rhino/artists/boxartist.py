@@ -2,10 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# from itertools import zip_longest
-
-import compas_rhino
-# from compas.utilities import like_list
 from compas_rhino.artists import _ShapeArtist
 
 
@@ -53,7 +49,7 @@ class BoxArtist(_ShapeArtist):
 
     def draw(self):
         """Draw the box.
-        
+
         Returns
         -------
         guids: list of str

@@ -53,7 +53,7 @@ class LineArtist(_PrimitiveArtist):
 
     def draw(self):
         """Draw the line.
-        
+
         Returns
         -------
         guid: str
@@ -69,7 +69,7 @@ class LineArtist(_PrimitiveArtist):
     @staticmethod
     def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):
         """Draw a collection of lines.
-        
+
         Parameters
         ----------
         collection: list of compas.geometry.Line
@@ -98,7 +98,7 @@ class LineArtist(_PrimitiveArtist):
         guids: list
             A list of GUIDs if the collection is not grouped.
         groupname: str
-            The name of the group if the collection objects are grouped. 
+            The name of the group if the collection objects are grouped.
 
         """
         colors = list_like(collection, color)

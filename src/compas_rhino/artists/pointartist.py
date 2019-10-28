@@ -2,10 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# from itertools import zip_longest
-
 import compas_rhino
-# from compas.utilities import like_list
 from compas_rhino.artists import _PrimitiveArtist
 
 
@@ -53,7 +50,7 @@ class PointArtist(_PrimitiveArtist):
 
     def draw(self):
         """Draw the point.
-        
+
         Returns
         -------
         guid: str
@@ -67,7 +64,7 @@ class PointArtist(_PrimitiveArtist):
     @staticmethod
     def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):
         """Draw a collection of points.
-        
+
         Parameters
         ----------
         collection: list of compas.geometry.Point
@@ -96,7 +93,7 @@ class PointArtist(_PrimitiveArtist):
         guids: list
             A list of GUIDs if the collection is not grouped.
         groupname: str
-            The name of the group if the collection objects are grouped. 
+            The name of the group if the collection objects are grouped.
 
         """
         points = []
