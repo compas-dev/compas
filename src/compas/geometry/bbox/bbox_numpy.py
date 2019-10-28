@@ -26,6 +26,8 @@ __all__ = [
 ]
 
 
+# make alternative implementation using PCA
+# compare results
 def oriented_bounding_box_numpy(points):
     r"""Compute the oriented minimum bounding box of a set of points in 3D space.
 
