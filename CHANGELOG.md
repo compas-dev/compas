@@ -9,14 +9,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [0.10.0] 2019-10-28
+
+### Added
+
+- Added method for computing the determinant of the matrix of a transformation `compas.geometry.Transformation.determinant`.
+- Added method for transposing (the matrix of) a transformation in-place `compas.geometry.Transformation.transpose`.
+- Added method creating a transposed copy of a transformation `compas.geometry.Transformation.transposed`.
+- Added method for invertig (the matrix of) a transformation in-place `compas.geometry.Transformation.invert`.
+- Added `compas.geometry.Transformation.inverted` as an alias for `compas.geometry.Transformation.inverse`.
+- Added method creating a copy of a transformation instance with a given transformation concatenated `compas.geometry.Transformation.concatenated`.
+
+### Changed
+
+- Changed `compas.geometry.Transformation.inverse` to return an inverted copy of the transformation.
+- Changed `compas.geometry.Transformation.decompose` to `compas.geometry.Transformation.decomposed`.
+- Changed `compas.geometry.Transformation.concatenate` to add another transformation to the transformation instance.
+
+### Removed
+
+
+## [0.9.1] 2019-10-28
+
+### Added
+
 - Added `compas.geometry.Point.transform_collection` and `compas.geometry.Point.transformed_collection`.
 - Added `compas.geometry.Vector.transform_collection` and `compas.geometry.Vector.transformed_collection`.
 - Added `compas.geometry.Line.transform_collection` and `compas.geometry.Line.transformed_collection`.
 - Added support for new Python plugin location for Rhino 6.0 on Mac.
+- Added `compas.geometry.bestfit_frame_numpy`
 
 ### Changed
 
 - Fixed transformation of start and end point of `compas.geometry.Line` to update the point objects in place.
+- Fixed return value of `compas.numerical.pca_numpy` to return mean not as nested list.
 
 ### Removed
 

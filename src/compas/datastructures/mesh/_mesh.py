@@ -730,6 +730,39 @@ class Mesh(FromToPickle,
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod
+    def from_shape(cls, shape, **kwargs):
+        """Construct a mesh from a primitive shape.
+
+        Parameters
+        ----------
+        shape : :class: `compas.geometry.shape`
+            The input shape to generate a mesh from.
+        kwargs:
+            Optional keyword arguments ``u`` and ``v`` for the resolution in u (Torus, Sphere, Cylinder, Cone) and v direction (Torus and Sphere).
+
+        Returns
+        -------
+        Mesh
+            A mesh object.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas
+            from compas.geometry import Torus
+            from compas.datastructures import Mesh
+
+            t = Torus(((0, 0, 0), (0, 0, 1)), 2, 1)
+            mesh = Mesh.from_shape(t)
+
+        """
+
+        vertices, faces = shape.to_vertices_and_faces(**kwargs)
+        mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        return mesh
+
+    @classmethod
     def from_points(cls, points, boundary=None, holes=None):
         """Construct a mesh from a delaunay triangulation of a set of points.
 
@@ -3184,13 +3217,4 @@ class Mesh(FromToPickle,
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    import compas
-
-    compas.set_precision(0.0000001)
-
-    mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
-
-    v = mesh.number_of_vertices()
-
-    print(v)
+    pass

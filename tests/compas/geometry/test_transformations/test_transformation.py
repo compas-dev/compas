@@ -49,7 +49,7 @@ def test_decompose():
     R1 = Rotation.from_euler_angles(angle1)
     S1 = Scale(scale1)
     M = (T1 * R1) * S1
-    Sc, Sh, R, T, P = M.decompose()
+    Sc, Sh, R, T, P = M.decomposed()
     assert S1 == Sc
     assert R1 == R
     assert T1 == T
