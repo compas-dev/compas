@@ -9,7 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added method for computing the determinant of the matrix of a transformation `compas.geometry.Transformation.determinant`.
+- Added method for transposing (the matrix of) a transformation in-place `compas.geometry.Transformation.transpose`.
+- Added method creating a transposed copy of a transformation `compas.geometry.Transformation.transposed`.
+- Added method for invertig (the matrix of) a transformation in-place `compas.geometry.Transformation.invert`.
+- Added `compas.geometry.Transformation.inverted` as an alias for `compas.geometry.Transformation.inverse`.
+- Added method creating a copy of a transformation instance with a given transformation concatenated `compas.geometry.Transformation.concatenated`.
+
 ### Changed
+
+- Changed `compas.geometry.Transformation.inverse` to return an inverted copy of the transformation.
+- Changed `compas.geometry.Transformation.decompose` to `compas.geometry.Transformation.decomposed`.
+- Changed `compas.geometry.Transformation.concatenate` to add another transformation to the transformation instance.
 
 ### Removed
 
