@@ -13,10 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `compas.geometry.Vector.transform_collection` and `compas.geometry.Vector.transformed_collection`.
 - Added `compas.geometry.Line.transform_collection` and `compas.geometry.Line.transformed_collection`.
 - Added support for new Python plugin location for Rhino 6.0 on Mac.
+- Added `compas.geometry.bestfit_frame_numpy`
 
 ### Changed
 
 - Fixed transformation of start and end point of `compas.geometry.Line` to update the point objects in place.
+- Fixed return value of `compas.numerical.pca_numpy` to return mean not as nested list.
 
 ### Removed
 
