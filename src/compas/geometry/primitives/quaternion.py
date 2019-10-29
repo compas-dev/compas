@@ -206,6 +206,12 @@ class Quaternion(Primitive):
         return Quaternion(*qc)
 
     def conjugate(self):
+        """Conjugate the quaternion.
+        """
+        qc = quaternion_conjugate(self)
+        self.w, self.x, self.y, self.z = qc
+
+    def conjugated(self):
         """Returns a conjugate :obj:`Quaternion`.
         """
         qc = quaternion_conjugate(self)
