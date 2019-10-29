@@ -1,0 +1,71 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+import compas_rhino
+
+from compas_rhino.artists import _PrimitiveArtist
+
+
+__all__ = ['FrameArtist']
+
+
+class FrameArtist(_PrimitiveArtist):
+    """Artist for drawing ``Frame`` objects.
+
+    Parameters
+    ----------
+    frame : compas.geometry.Frame
+        A COMPAS frame.
+    layer : str (optional)
+        The name of the layer that will contain the frame.
+        Default value is ``None``, in which case the current layer will be used.
+
+    Examples
+    --------
+    >>>
+
+    """
+
+    __module__ = "compas_rhino.artists"
+
+    def __init__(self, frame, layer=None):
+        super(FrameArtist, self).__init__(frame, layer=layer)
+        self.settings.update({
+            'color.origin': (0, 0, 0),
+            'color.xaxis': (255, 0, 0),
+            'color.yaxis': (0, 255, 0),
+            'color.zaxis': (0, 0, 255)})
+
+    def draw(self):
+        """Draw the frame.
+
+        Returns
+        -------
+        guids: list
+            The GUIDs of the created Rhino objects.
+
+        """
+        points = []
+        lines = []
+        origin = list(self.primitive.point)
+        x = (self.primitive.point + self.primitive.xaxis)
+        y = (self.primitive.point + self.primitive.yaxis)
+        z = (self.primitive.point + self.primitive.zaxis)
+        points = [{'pos': origin, 'color': self.settings['color.origin']}]
+        lines = [
+            {'start': origin, 'end': x, 'color': self.settings['color.xaxis'], 'arrow': 'end'},
+            {'start': origin, 'end': y, 'color': self.settings['color.yaxis'], 'arrow': 'end'},
+            {'start': origin, 'end': z, 'color': self.settings['color.zaxis'], 'arrow': 'end'}]
+        guids = compas_rhino.draw_points(points, layer=self.settings['layer'], clear=True)
+        guids += compas_rhino.draw_lines(lines, layer=self.settings['layer'], clear=False)
+        return guids
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+
+    pass

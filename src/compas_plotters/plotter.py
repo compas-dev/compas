@@ -12,6 +12,12 @@ from contextlib import contextmanager
 import matplotlib.pyplot as plt
 
 from matplotlib.patches import Circle
+from matplotlib.patches import FancyArrow
+from matplotlib.patches import FancyArrowPatch
+from matplotlib.patches import ArrowStyle
+from matplotlib.collections import PatchCollection
+
+from compas.geometry import subtract_vectors_xy
 
 from compas_plotters.core.drawing import create_axes_xy
 from compas_plotters.core.drawing import draw_xpoints_xy
@@ -596,6 +602,20 @@ class Plotter(object):
         """
         return draw_xarrows_xy(arrows, self.axes)
 
+    def draw_arrows2(self, arrows):
+        for data in arrows:
+            a = data['start'][:2]
+            b = data['end'][:2]
+            color = data.get('color', (0.0, 0.0, 0.0))
+            style = ArrowStyle("Simple, head_length=.1, head_width=.1, tail_width=.02")
+            arrow = FancyArrowPatch(a, b,
+                                    arrowstyle=style,
+                                    edgecolor=color,
+                                    facecolor=color,
+                                    zorder=2000,
+                                    mutation_scale=100)
+            self.axes.add_patch(arrow)
+
     def update(self, pause=0.0001):
         """Updates and pauses the plot.
 
@@ -682,10 +702,10 @@ if __name__ == "__main__":
 
     plotter = Plotter(figsize=(10, 6))
 
-    plotter.draw_arrows(lines)
-
     # pcoll = plotter.draw_points(points)
     # lcoll = plotter.draw_lines(lines)
+
+    plotter.draw_arrows(lines)
 
     # def callback(k, args):
     #     plotter.update_pointcollection(pcoll, vertices, 0.1)
