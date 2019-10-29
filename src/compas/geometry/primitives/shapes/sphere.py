@@ -153,8 +153,10 @@ class Sphere(Shape):
 
         u = kwargs.get('u') or 10
         v = kwargs.get('v') or 10
-        if u < 3 or v < 3:
-            raise ValueError('The values for u and v should be > 3.')
+        if u < 3:
+            raise ValueError('The value for u should be u > 3.')
+        if v < 3:
+            raise ValueError('The value for v should be v > 3.')
 
         theta = pi / u
         phi = pi*2 / v

@@ -260,7 +260,7 @@ class Line(Primitive):
     # ==========================================================================
 
     def transform(self, matrix):
-        """Transform this ``Plane`` using a given transformation matrix.
+        """Transform this ``Line`` using a given transformation matrix.
 
         Parameters
         ----------
