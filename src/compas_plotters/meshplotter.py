@@ -103,23 +103,23 @@ class MeshPlotter(Plotter):
         self.edgecollection = None
         self.facecollection = None
         self.defaults = {
-            'vertex.radius'    : 0.1,
-            'vertex.facecolor' : '#ffffff',
-            'vertex.edgecolor' : '#000000',
-            'vertex.edgewidth' : 0.5,
-            'vertex.textcolor' : '#000000',
-            'vertex.fontsize'  : kwargs.get('fontsize', 10),
+            'vertex.radius': 0.1,
+            'vertex.facecolor': '#ffffff',
+            'vertex.edgecolor': '#000000',
+            'vertex.edgewidth': 0.5,
+            'vertex.textcolor': '#000000',
+            'vertex.fontsize': kwargs.get('fontsize', 10),
 
-            'edge.width'    : 1.0,
-            'edge.color'    : '#000000',
+            'edge.width': 1.0,
+            'edge.color': '#000000',
             'edge.textcolor': '#000000',
-            'edge.fontsize' : kwargs.get('fontsize', 10),
+            'edge.fontsize': kwargs.get('fontsize', 10),
 
-            'face.facecolor' : '#eeeeee',
-            'face.edgecolor' : '#000000',
-            'face.edgewidth' : 0.1,
-            'face.textcolor' : '#000000',
-            'face.fontsize' : kwargs.get('fontsize', 10),
+            'face.facecolor': '#eeeeee',
+            'face.edgecolor': '#000000',
+            'face.edgewidth': 0.1,
+            'face.textcolor': '#000000',
+            'face.fontsize': kwargs.get('fontsize', 10),
         }
 
     def clear(self):
@@ -180,25 +180,25 @@ class MeshPlotter(Plotter):
         else:
             pass
 
-        radiusdict    = valuedict(keys, radius, self.defaults['vertex.radius'])
-        textdict      = valuedict(keys, text, '')
+        radiusdict = valuedict(keys, radius, self.defaults['vertex.radius'])
+        textdict = valuedict(keys, text, '')
         facecolordict = valuedict(keys, facecolor, self.defaults['vertex.facecolor'])
         edgecolordict = valuedict(keys, edgecolor, self.defaults['vertex.edgecolor'])
         edgewidthdict = valuedict(keys, edgewidth, self.defaults['vertex.edgewidth'])
         textcolordict = valuedict(keys, textcolor, self.defaults['vertex.textcolor'])
-        fontsizedict  = valuedict(keys, fontsize, self.defaults['vertex.fontsize'])
+        fontsizedict = valuedict(keys, fontsize, self.defaults['vertex.fontsize'])
 
         points = []
         for key in keys:
             points.append({
-                'pos'      : self.mesh.vertex_coordinates(key, 'xy'),
-                'radius'   : radiusdict[key],
-                'text'     : textdict[key],
+                'pos': self.mesh.vertex_coordinates(key, 'xy'),
+                'radius': radiusdict[key],
+                'text': textdict[key],
                 'facecolor': facecolordict[key],
                 'edgecolor': edgecolordict[key],
                 'edgewidth': edgewidthdict[key],
                 'textcolor': textcolordict[key],
-                'fontsize' : fontsizedict[key]
+                'fontsize': fontsizedict[key]
             })
 
         collection = self.draw_points(points)
@@ -286,10 +286,10 @@ class MeshPlotter(Plotter):
         lines = []
         for u, v in self.mesh.edges():
             lines.append({
-                'start' : self.mesh.vertex_coordinates(u, 'xy'),
-                'end'   : self.mesh.vertex_coordinates(v, 'xy'),
-                'color' : color,
-                'width' : width,
+                'start': self.mesh.vertex_coordinates(u, 'xy'),
+                'end': self.mesh.vertex_coordinates(v, 'xy'),
+                'color': color,
+                'width': width,
             })
         return super(MeshPlotter, self).draw_lines(lines)
 
@@ -332,22 +332,22 @@ class MeshPlotter(Plotter):
         else:
             pass
 
-        widthdict     = valuedict(keys, width, self.defaults['edge.width'])
-        colordict     = valuedict(keys, color, self.defaults['edge.color'])
-        textdict      = valuedict(keys, text, '')
+        widthdict = valuedict(keys, width, self.defaults['edge.width'])
+        colordict = valuedict(keys, color, self.defaults['edge.color'])
+        textdict = valuedict(keys, text, '')
         textcolordict = valuedict(keys, textcolor, self.defaults['edge.textcolor'])
-        fontsizedict  = valuedict(keys, fontsize, self.defaults['edge.fontsize'])
+        fontsizedict = valuedict(keys, fontsize, self.defaults['edge.fontsize'])
 
         lines = []
         for u, v in keys:
             lines.append({
-                'start'    : self.mesh.vertex_coordinates(u, 'xy'),
-                'end'      : self.mesh.vertex_coordinates(v, 'xy'),
-                'width'    : widthdict[(u, v)],
-                'color'    : colordict[(u, v)],
-                'text'     : textdict[(u, v)],
+                'start': self.mesh.vertex_coordinates(u, 'xy'),
+                'end': self.mesh.vertex_coordinates(v, 'xy'),
+                'width': widthdict[(u, v)],
+                'color': colordict[(u, v)],
+                'text': textdict[(u, v)],
                 'textcolor': textcolordict[(u, v)],
-                'fontsize' : fontsizedict[(u, v)]
+                'fontsize': fontsizedict[(u, v)]
             })
 
         collection = self.draw_lines(lines)
@@ -372,10 +372,10 @@ class MeshPlotter(Plotter):
             sp = self.mesh.vertex_coordinates(u, 'xy')
             ep = self.mesh.vertex_coordinates(v, 'xy')
             lines.append({
-                'start' : sp,
-                'end'   : ep,
-                'width' : edgewidth or self.defaults.get('edge.width', 2.0),
-                'color' : edgecolor or self.defaults.get('edge.color', '#ff0000')
+                'start': sp,
+                'end': ep,
+                'width': edgewidth or self.defaults.get('edge.width', 2.0),
+                'color': edgecolor or self.defaults.get('edge.color', '#ff0000')
             })
         self.draw_lines(lines)
 
@@ -420,23 +420,23 @@ class MeshPlotter(Plotter):
         else:
             pass
 
-        textdict      = valuedict(keys, text, '')
+        textdict = valuedict(keys, text, '')
         facecolordict = valuedict(keys, facecolor, self.defaults['face.facecolor'])
         edgecolordict = valuedict(keys, edgecolor, self.defaults['face.edgecolor'])
         edgewidthdict = valuedict(keys, edgewidth, self.defaults['face.edgewidth'])
         textcolordict = valuedict(keys, textcolor, self.defaults['face.textcolor'])
-        fontsizedict  = valuedict(keys, fontsize, self.defaults['face.fontsize'])
+        fontsizedict = valuedict(keys, fontsize, self.defaults['face.fontsize'])
 
         polygons = []
         for key in keys:
             polygons.append({
-                'points'   : self.mesh.face_coordinates(key, 'xy'),
-                'text'     : textdict[key],
+                'points': self.mesh.face_coordinates(key, 'xy'),
+                'text': textdict[key],
                 'facecolor': facecolordict[key],
                 'edgecolor': edgecolordict[key],
                 'edgewidth': edgewidthdict[key],
                 'textcolor': textcolordict[key],
-                'fontsize' : fontsizedict[key]
+                'fontsize': fontsizedict[key]
             })
 
         collection = self.draw_polygons(polygons)
