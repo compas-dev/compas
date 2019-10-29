@@ -1072,6 +1072,43 @@ def multiply_matrices(A, B):
     return [[dot_vectors(row, col) for col in B] for row in A]
 
 
+def multiply_matrices4(A, B):
+    r"""Mutliply a 4x4 matrix with a 4x4 matrix.
+
+    Parameters
+    ----------
+    A : sequence of sequence of float
+        The first matrix.
+    B : sequence of sequence of float
+        The second matrix.
+
+    Returns
+    -------
+    C : list of list of float
+        The result matrix.
+
+
+    Notes
+    -----
+    This is a pure Python version of the following linear algebra procedure:
+
+    .. math::
+
+        \mathbf{A} \cdot \mathbf{B} = \mathbf{C}
+
+    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{B}` a *n* by *o*
+    matrix, and :math:`\mathbf{C}` a *m* by *o* matrix.
+
+    Examples
+    --------
+    >>> TODO
+    """
+    A = list(A)
+    B = list(B)
+    B = list(zip(* list(B)))
+    return [[dot_vectors(row, col) for col in B] for row in A]
+
+
 def multiply_matrix_vector(A, b):
     r"""Multiply a matrix with a vector.
 
@@ -1114,6 +1151,45 @@ def multiply_matrix_vector(A, b):
     n = len(b)
     if not all([len(row) == n for row in A]):
         raise Exception('Matrix shape is not compatible with vector length.')
+    return [dot_vectors(row, b) for row in A]
+
+
+def multiply_matrix4_vector(A, b):
+    r"""Multiply a 4x4 matrix with a vector.
+
+    Parameters
+    ----------
+    A : list of list
+        The matrix.
+    b : list
+        The vector.
+
+    Returns
+    -------
+    c : list
+        The resulting vector.
+
+    Raises
+    ------
+    Exception
+        If not all rows of the matrix have the same length as the vector.
+
+    Notes
+    -----
+    This is a Python version of the following linear algebra procedure:
+
+    .. math::
+
+        \mathbf{A} \cdot \mathbf{x} = \mathbf{b}
+
+    with :math:`\mathbf{A}` a *m* by *n* matrix, :math:`\mathbf{x}` a vector of
+    length *n*, and :math:`\mathbf{b}` a vector of length *m*.
+
+    Examples
+    --------
+    >>> TODO
+
+    """
     return [dot_vectors(row, b) for row in A]
 
 
