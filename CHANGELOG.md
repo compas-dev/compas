@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fixed a missing import in `compas.geometry.Polygon`
+- Removed unused imports in `compas.geometry.Polyline`
+- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.cojugated()` instead which returns a new quarternion object
+
 ### Removed
 
 

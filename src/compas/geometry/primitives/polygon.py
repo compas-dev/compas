@@ -17,6 +17,7 @@ from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Line
 
+from compas.geometry import transform_points
 
 __all__ = ['Polygon']
 

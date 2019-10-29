@@ -2,11 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from functools import partial
-
 from compas.geometry.transformations import transform_points
-
-from compas.geometry.distance import distance_point_point
 
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
