@@ -11,10 +11,10 @@ from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import subtract_vectors
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import dot_vectors
-from compas.geometry.basic import multiply_matrix_vector
+from compas.geometry.basic import multiply_matrix4_vector
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import allclose
-from compas.geometry.basic import multiply_matrices
+from compas.geometry.basic import multiply_matrices4
 from compas.geometry.basic import transpose_matrix
 from compas.geometry.basic import norm_vector
 
@@ -138,7 +138,7 @@ def matrix_inverse(M):
     >>> from compas.geometry import Frame
     >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> T = matrix_from_frame(f)
-    >>> I = multiply_matrices(T, matrix_inverse(T))
+    >>> I = multiply_matrices4(T, matrix_inverse(T))
     >>> I2 = identity_matrix(4)
     >>> allclose(I[0], I2[0])
     True
@@ -211,7 +211,7 @@ def decompose_matrix(M):
     >>> T = matrix_from_translation(trans1)
     >>> R = matrix_from_euler_angles(angle1)
     >>> S = matrix_from_scale_factors(scale1)
-    >>> M = multiply_matrices(multiply_matrices(T, R), S)
+    >>> M = multiply_matrices4(multiply_matrices4(T, R), S)
     >>> # M = compose_matrix(scale1, None, angle1, trans1, None)
     >>> scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)
     >>> allclose(scale1, scale2)
@@ -309,7 +309,7 @@ def decompose_matrix(M):
         P = deepcopy(Mt)
         P[0][3], P[1][3], P[2][3], P[3][3] = 0.0, 0.0, 0.0, 1.0
         Ptinv = matrix_inverse(transpose_matrix(P))
-        perspective = multiply_matrix_vector(Ptinv, [Mt[0][3], Mt[1][3],
+        perspective = multiply_matrix4_vector(Ptinv, [Mt[0][3], Mt[1][3],
                                                      Mt[2][3], Mt[3][3]])
     else:
         perspective = [0.0, 0.0, 0.0, 1.0]
@@ -353,19 +353,19 @@ def compose_matrix(scale=None, shear=None, angles=None,
     M = [[1. if i == j else 0. for i in range(4)] for j in range(4)]
     if perspective is not None:
         P = matrix_from_perspective_entries(perspective)
-        M = multiply_matrices(M, P)
+        M = multiply_matrices4(M, P)
     if translation is not None:
         T = matrix_from_translation(translation)
-        M = multiply_matrices(M, T)
+        M = multiply_matrices4(M, T)
     if angles is not None:
         R = matrix_from_euler_angles(angles, static=True, axes="xyz")
-        M = multiply_matrices(M, R)
+        M = multiply_matrices4(M, R)
     if shear is not None:
         Sh = matrix_from_shear_entries(shear)
-        M = multiply_matrices(M, Sh)
+        M = multiply_matrices4(M, Sh)
     if scale is not None:
         Sc = matrix_from_scale_factors(scale)
-        M = multiply_matrices(M, Sc)
+        M = multiply_matrices4(M, Sc)
     for i in range(4):
         for j in range(4):
             M[i][j] /= M[3][3]
@@ -421,7 +421,7 @@ def matrix_from_frame_to_frame(frame_from, frame_to):
     """
     T1 = matrix_from_frame(frame_from)
     T2 = matrix_from_frame(frame_to)
-    return multiply_matrices(T2, matrix_inverse(T1))
+    return multiply_matrices4(T2, matrix_inverse(T1))
 
 
 def matrix_change_basis(frame_from, frame_to):
@@ -445,7 +445,7 @@ def matrix_change_basis(frame_from, frame_to):
     """
     T1 = matrix_from_frame(frame_from)
     T2 = matrix_from_frame(frame_to)
-    return multiply_matrices(matrix_inverse(T2), T1)
+    return multiply_matrices4(matrix_inverse(T2), T1)
 
 
 def matrix_from_euler_angles(euler_angles, static=True, axes='xyz'):
@@ -665,7 +665,7 @@ def matrix_from_axis_and_angle(axis, angle, point=None, rtype='list'):
             M[i][j] = R[i][j]
 
     # rotation about axis, angle AND point includes also translation
-    t = subtract_vectors(point, multiply_matrix_vector(R, point))
+    t = subtract_vectors(point, multiply_matrix4_vector(R, point))
     M[0][3] = t[0]
     M[1][3] = t[1]
     M[2][3] = t[2]

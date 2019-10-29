@@ -12,7 +12,7 @@ Ippoliti for providing code and documentation.
 """
 import math
 
-from compas.geometry.basic import multiply_matrices
+from compas.geometry.basic import multiply_matrices4
 from compas.geometry.basic import transpose_matrix
 
 from compas.geometry.transformations import matrix_inverse
@@ -216,7 +216,7 @@ class Transformation(object):
         T1 = cls.from_frame(frame_from)
         T2 = cls.from_frame(frame_to)
 
-        return cls(multiply_matrices(T2.matrix, matrix_inverse(T1.matrix)))
+        return cls(multiply_matrices4(T2.matrix, matrix_inverse(T1.matrix)))
 
     @classmethod
     def change_basis(cls, frame_from, frame_to):
@@ -246,7 +246,7 @@ class Transformation(object):
         T1 = cls.from_frame(frame_from)
         T2 = cls.from_frame(frame_to)
 
-        return cls(multiply_matrices(matrix_inverse(T2.matrix), T1.matrix))
+        return cls(multiply_matrices4(matrix_inverse(T2.matrix), T1.matrix))
 
     @property
     def rotation(self):
@@ -399,7 +399,7 @@ class Transformation(object):
         -----
         Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.
         """
-        self.matrix = multiply_matrices(self.matrix, other.matrix)
+        self.matrix = multiply_matrices4(self.matrix, other.matrix)
 
     def concatenated(self, other):
         """Concatenate two transformations into one ``Transformation``.
@@ -423,8 +423,8 @@ class Transformation(object):
         # return T
         cls = type(self)
         if isinstance(other, cls):
-            return cls(multiply_matrices(self.matrix, other.matrix))
-        return Transformation(multiply_matrices(self.matrix, other.matrix))
+            return cls(multiply_matrices4(self.matrix, other.matrix))
+        return Transformation(multiply_matrices4(self.matrix, other.matrix))
 
 
 # ==============================================================================
