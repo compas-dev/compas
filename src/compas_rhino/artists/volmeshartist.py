@@ -2,20 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-import compas_rhino
-
 from compas_rhino.artists import Artist
 
 from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
 from compas_rhino.artists.mixins import FaceArtist
-
-try:
-    import rhinoscriptsyntax as rs
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['VolMeshArtist']

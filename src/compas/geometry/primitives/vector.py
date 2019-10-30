@@ -2,11 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from math import sin
-from math import cos
-from math import sqrt
-from math import pi
-
 from compas.geometry.basic import length_vector
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import subtract_vectors
@@ -42,9 +37,9 @@ class Vector(Primitive):
     >>> u = Vector(1, 0, 0)
     >>> v = Vector(0, 1, 0)
     >>> u
-    [1.0, 0.0, 0.0]
+    Vector(1.000, 0.000, 0.000)
     >>> v
-    [0.0, 1.0, 0.0]
+    Vector(0.000, 1.000, 0.000)
     >>> u.x
     1.0
     >>> u[0]
@@ -52,21 +47,21 @@ class Vector(Primitive):
     >>> u.length
     1.0
     >>> u + v
-    [1.0, 1.0, 0.0]
+    Vector(1.000, 1.000, 0.000)
     >>> u + [0.0, 1.0, 0.0]
-    [1.0, 1.0, 0.0]
+    Vector(1.000, 1.000, 0.000)
     >>> u * 2
-    [2.0, 0.0, 0.0]
+    Vector(2.000, 0.000, 0.000)
     >>> u.dot(v)
     0.0
     >>> u.cross(v)
-    [0.0, 0.0, 1.0]
+    Vector(0.000, 0.000, 1.000)
 
     """
 
     __slots__ = ['_x', '_y', '_z', '_precision']
 
-    def __init__(self, x, y, z, precision=None):
+    def __init__(self, x, y, z=0, precision=None):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
@@ -76,9 +71,124 @@ class Vector(Primitive):
         self.z = z
         self.precision = precision
 
+    @staticmethod
+    def transform_collection(collection, X):
+        """Transform a collection of ``Vector`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Vector
+            The collection of vectors.
+
+        Returns
+        -------
+        None
+            The vectors are modified in-place.
+
+        Examples
+        --------
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> vectors = [u]
+        >>> Vector.transform_collection(vectors, R)
+        >>> v = vectors[0]
+        >>> v
+        Vector(0.000, 1.000, 0.000)
+        >>> u is v
+        True
+
+        """
+        data = transform_vectors(collection, X)
+        for vector, xyz in zip(collection, data):
+            vector.x = xyz[0]
+            vector.y = xyz[1]
+            vector.z = xyz[2]
+
+    @staticmethod
+    def transformed_collection(collection, X):
+        """Create a collection of transformed ``Vector`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Vector
+            The collection of vectors.
+
+        Returns
+        -------
+        list of compas.geometry.Vector
+            The transformed vectors.
+
+        Examples
+        --------
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> vectors = [u]
+        >>> vectors = Vector.transformed_collection(vectors, R)
+        >>> v = vectors[0]
+        >>> v
+        Vector(0.000, 1.000, 0.000)
+        >>> u is v
+        False
+
+        """
+        vectors = [vector.copy() for vector in collection]
+        Vector.transform_collection(vectors, X)
+        return vectors
+
     # ==========================================================================
     # factory
     # ==========================================================================
+
+    @classmethod
+    def Xaxis(cls):
+        """Construct a unit vector along the X axis.
+
+        Returns
+        -------
+        Vector
+            A vector with components ``x = 1.0, y = 0.0, z = 0.0``.
+
+        Examples
+        --------
+        >>> Vector.Xaxis()
+        Vector(1.000, 0.000, 0.000)
+
+        """
+        return cls(1.0, 0.0, 0.0)
+
+    @classmethod
+    def Yaxis(cls):
+        """Construct a unit vector along the Y axis.
+
+        Returns
+        -------
+        Vector
+            A vector with components ``x = 0.0, y = 1.0, z = 0.0``.
+
+        Examples
+        --------
+        >>> Vector.Yaxis()
+        Vector(0.000, 1.000, 0.000)
+
+        """
+        return cls(0.0, 1.0, 0.0)
+
+    @classmethod
+    def Zaxis(cls):
+        """Construct a unit vector along the Z axis.
+
+        Returns
+        -------
+        Vector
+            A vector with components ``x = 0.0, y = 0.0, z = 1.0``.
+
+        Examples
+        --------
+        >>> Vector.Zaxis()
+        Vector(0.000, 0.000, 1.000)
+
+        """
+        return cls(0.0, 0.0, 1.0)
 
     @classmethod
     def from_start_end(cls, start, end):
@@ -439,10 +549,10 @@ class Vector(Primitive):
 
     def unitize(self):
         """Scale this ``Vector`` to unit length."""
-        l = self.length
-        self.x = self.x / l
-        self.y = self.y / l
-        self.z = self.z / l
+        length = self.length
+        self.x = self.x / length
+        self.y = self.y / length
+        self.z = self.z / length
 
     def unitized(self):
         """Returns a unitized copy of this ``Vector``.
@@ -611,20 +721,9 @@ class Vector(Primitive):
 
 if __name__ == '__main__':
 
-    from compas.geometry import matrix_from_axis_and_angle
+    import doctest
 
-    u = Vector(0.0, 0.0, 1.0)
-    v = Vector(1.0, 0.0, 0.0)
+    from math import radians
+    from compas.geometry import Rotation
 
-    print(u.angle(v))
-    print(3.14159 / 2)
-
-    w = Vector.from_start_end(u, v)
-
-    print(w)
-
-    M = matrix_from_axis_and_angle(v, pi / 4)
-
-    u.transform(M)
-
-    print(u)
+    doctest.testmod(globs=globals())

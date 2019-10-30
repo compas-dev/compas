@@ -25,19 +25,21 @@ class Line(Primitive):
     Examples
     --------
     >>> line = Line([0, 0, 0], [1, 1, 1])
+    >>> line
+    Line(Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 1.000))
     >>> line.midpoint
     Point(0.500, 0.500, 0.500)
-    >>> line.length
-    1.73205080757
+    >>> line.length == sqrt(1 + 1 + 1)
+    True
     >>> line.direction
-    Vector(0.577, 0.577, 0.577, 1.000)
+    Vector(0.577, 0.577, 0.577)
 
-    >>> type(line.start)
-    <class 'compas.geometry.objects.point.Point'>
-    >>> type(line.midpoint)
-    <class 'compas.geometry.objects.point.Point'>
-    >>> type(line.direction)
-    <class 'compas.geometry.objects.vector.Vector'>
+    >>> type(line.start) == Point
+    True
+    >>> type(line.midpoint) == Point
+    True
+    >>> type(line.direction) == Vector
+    True
 
     Notes
     -----
@@ -57,6 +59,67 @@ class Line(Primitive):
         self._end = None
         self.start = p1
         self.end = p2
+
+    @staticmethod
+    def transform_collection(collection, X):
+        """Transform a collection of ``Line`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Line
+            The collection of lines.
+
+        Returns
+        -------
+        None
+            The lines are modified in-place.
+
+        Examples
+        --------
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> a = Line(Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0))
+        >>> lines = [a]
+        >>> Line.transform_collection(lines, R)
+        >>> b = lines[0]
+        >>> b.end
+        Point(0.000, 1.000, 0.000)
+        >>> a is b
+        True
+
+        """
+        points = [line.start for line in collection] + [line.end for line in collection]
+        Point.transform_collection(points, X)
+
+    @staticmethod
+    def transformed_collection(collection, X):
+        """Create a collection of transformed ``Line`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Line
+            The collection of lines.
+
+        Returns
+        -------
+        list of compas.geometry.Line
+            The transformed lines.
+
+        Examples
+        --------
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> a = Line(Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0))
+        >>> lines = [a]
+        >>> lines = Line.transformed_collection(lines, R)
+        >>> b = lines[0]
+        >>> b.end
+        Point(0.000, 1.000, 0.000)
+        >>> a is b
+        False
+
+        """
+        lines = [line.copy() for line in collection]
+        Line.transform_collection(lines, X)
+        return lines
 
     # ==========================================================================
     # factory
@@ -233,14 +296,13 @@ class Line(Primitive):
 
 if __name__ == '__main__':
 
-    l1 = Line([0, 0, 0], [1, 1, 1])
+    import doctest
 
-    print(l1)
+    from math import sqrt
+    from math import radians
 
-    print(type(l1.start))
-    print(l1.midpoint)
-    print(l1.point(.75))
-    print(type(l1.midpoint))
-    print(l1.length)
-    print(l1.direction)
-    print(type(l1.direction))
+    from compas.geometry import Rotation
+    from compas.geometry import Point
+    from compas.geometry import Vector
+
+    doctest.testmod(globs=globals())

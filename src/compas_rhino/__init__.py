@@ -27,8 +27,13 @@ import os
 import compas._os
 from .utilities import *
 
+try:
+    import rhinoscriptsyntax as rs
+except ImportError:
+    pass
 
-__version__ = '0.9.0'
+
+__version__ = '0.10.0'
 
 
 PURGE_ON_DELETE = True
@@ -96,7 +101,7 @@ def _get_python_plugins_path(version):
     if compas._os.system == 'win32':
         python_plugins_path = _get_python_plugins_path_win32(version)
     elif compas._os.system == 'darwin':
-        python_plugins_path = _get_python_plugins_path_mac()
+        python_plugins_path = _get_python_plugins_path_mac(version)
     else:
         raise Exception('Unsupported platform')
 
@@ -113,16 +118,27 @@ def _get_python_plugins_path_win32(version):
                         'PythonPlugins')
 
 
-def _get_python_plugins_path_mac():
-    return os.path.join(
-        os.environ['HOME'],
-        'Library',
-        'Application Support',
-        'McNeel',
-        'Rhinoceros',
-        'MacPlugIns',
-        'PythonPlugIns'
-    )
+def _get_python_plugins_path_mac(version):
+    if version == '6.0':
+        path = os.path.join(
+            os.environ['HOME'],
+            'Library',
+            'Application Support',
+            'McNeel',
+            'Rhinoceros',
+            '6.0',
+            'Plug-ins',
+            'PythonPlugIns')
+    else:
+        path = os.path.join(
+            os.environ['HOME'],
+            'Library',
+            'Application Support',
+            'McNeel',
+            'Rhinoceros',
+            'MacPlugIns',
+            'PythonPlugIns')
+    return path
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

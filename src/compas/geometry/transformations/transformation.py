@@ -13,8 +13,10 @@ Ippoliti for providing code and documentation.
 import math
 
 from compas.geometry.basic import multiply_matrices
+from compas.geometry.basic import transpose_matrix
 
 from compas.geometry.transformations import matrix_inverse
+from compas.geometry.transformations import matrix_determinant
 from compas.geometry.transformations import identity_matrix
 from compas.geometry.transformations import matrix_from_frame
 from compas.geometry.transformations import matrix_from_euler_angles
@@ -62,10 +64,10 @@ class Transformation(object):
         self.matrix = matrix
 
     def __mul__(self, other):
-        return self.concatenate(other)
+        return self.concatenated(other)
 
     def __imul__(self, other):
-        return self.concatenate(other)
+        return self.concatenated(other)
 
     def __getitem__(self, key):
         i, j = key
@@ -246,70 +248,6 @@ class Transformation(object):
 
         return cls(multiply_matrices(matrix_inverse(T2.matrix), T1.matrix))
 
-    def inverse(self):
-        """Returns the inverse transformation.
-
-        Returns
-        -------
-        Transformation
-            The inverse transformation.
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f)
-        >>> I = Transformation()
-        >>> I == T * T.inverse()
-        True
-
-        """
-        cls = type(self)
-        return cls(matrix_inverse(self.matrix))
-
-    def decompose(self):
-        """Decomposes the ``Transformation`` into ``Scale``, ``Shear``, ``Rotation``, ``Translation`` and ``Perspective``.
-
-        Returns
-        -------
-        5-tuple of Transformation
-            The scale, shear, rotation, tranlation, and projection components
-            of the current transformation.
-
-        Examples
-        --------
-        >>> trans1 = [1, 2, 3]
-        >>> angle1 = [-2.142, 1.141, -0.142]
-        >>> scale1 = [0.123, 2, 0.5]
-        >>> T1 = Translation(trans1)
-        >>> R1 = Rotation.from_euler_angles(angle1)
-        >>> S1 = Scale(scale1)
-        >>> M = (T1 * R1) * S1
-        >>> Sc, Sh, R, T, P = M.decompose()
-        >>> S1 == Sc
-        True
-        >>> R1 == R
-        True
-        >>> T1 == T
-        True
-
-        """
-        from compas.geometry.transformations import Scale
-        from compas.geometry.transformations import Shear
-        from compas.geometry.transformations import Rotation
-        from compas.geometry.transformations import Translation
-        from compas.geometry.transformations import Projection
-
-        sc, sh, a, t, p = decompose_matrix(self.matrix)
-
-        Sc = Scale(sc)
-        Sh = Shear.from_entries(sh)
-        R = Rotation.from_euler_angles(a, static=True, axes='xyz')
-        T = Translation(t)
-        P = Projection.from_entries(p)
-
-        return Sc, Sh, R, T, P
-
     @property
     def rotation(self):
         """Returns the ``Rotation`` component from the ``Transformation``.
@@ -341,18 +279,152 @@ class Transformation(object):
         """
         return [a for c in self.matrix for a in c]
 
+    def transpose(self):
+        """Transpose the matrix of this transformation.
+
+        Returns
+        -------
+        None
+            The transformation is transposed in-place.
+        """
+        self.matrix = transpose_matrix(self.matrix)
+
+    def transposed(self):
+        """Create a transposed copy of this transformation.
+
+        Returns
+        -------
+        T: :class:`compas.geometry.Transformation`
+            The transposed transformation object.
+        """
+        T = self.copy()
+        T.transpose()
+        return T
+
+    def invert(self):
+        """Invert this transformation."""
+        self.matrix = matrix_inverse(self.matrix)
+
+    def inverse(self):
+        """Returns the inverse transformation.
+
+        Returns
+        -------
+        Transformation
+            The inverse transformation.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> T = Transformation.from_frame(f)
+        >>> I = Transformation()
+        >>> I == T * T.inverse()
+        True
+
+        """
+        # cls = type(self)
+        # return cls(matrix_inverse(self.matrix))
+        T = self.copy()
+        T.invert()
+        return T
+
+    inverted = inverse
+
+    def determinant(self):
+        """The determinant of the matrix of the transformation.
+
+        Returns
+        -------
+        float
+            The determinant of the matrix of this transformation.
+        """
+        return matrix_determinant(self.matrix)
+
+    def decomposed(self):
+        """Decompose the ``Transformation`` into its ``Scale``, ``Shear``,
+        ``Rotation``, ``Translation`` and ``Perspective`` components.
+
+        Returns
+        -------
+        5-tuple of Transformation
+            The scale, shear, rotation, tranlation, and projection components
+            of the current transformation.
+
+        Examples
+        --------
+        >>> trans1 = [1, 2, 3]
+        >>> angle1 = [-2.142, 1.141, -0.142]
+        >>> scale1 = [0.123, 2, 0.5]
+        >>> T1 = Translation(trans1)
+        >>> R1 = Rotation.from_euler_angles(angle1)
+        >>> S1 = Scale(scale1)
+        >>> M = (T1 * R1) * S1
+        >>> Sc, Sh, R, T, P = M.decomposed()
+        >>> S1 == Sc
+        True
+        >>> R1 == R
+        True
+        >>> T1 == T
+        True
+
+        """
+        from compas.geometry.transformations import Scale
+        from compas.geometry.transformations import Shear
+        from compas.geometry.transformations import Rotation
+        from compas.geometry.transformations import Translation
+        from compas.geometry.transformations import Projection
+        sc, sh, a, t, p = decompose_matrix(self.matrix)
+        Sc = Scale(sc)
+        Sh = Shear.from_entries(sh)
+        R = Rotation.from_euler_angles(a, static=True, axes='xyz')
+        T = Translation(t)
+        P = Projection.from_entries(p)
+        return Sc, Sh, R, T, P
+
     def concatenate(self, other):
-        """Concatenate two transformations into one ``Transformation``.
+        """Concatenate another transformation to this transformation.
+
+        Parameters
+        ----------
+        other: :class:`compas.geometry.Transformation`
+            The transformation object to concatenate.
+
+        Returns
+        -------
+        None
+            This transformation object is changed in-place.
 
         Notes
         -----
         Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.
         """
+        self.matrix = multiply_matrices(self.matrix, other.matrix)
+
+    def concatenated(self, other):
+        """Concatenate two transformations into one ``Transformation``.
+
+        Parameters
+        ----------
+        other: :class:`compas.geometry.Transformation`
+            The transformation object to concatenate.
+
+        Returns
+        -------
+        T: :class:`compas.geometry.Transformation`
+            The new transformation that is the concatenation of this one and the other.
+
+        Notes
+        -----
+        Rz * Ry * Rx means that Rx is first transformation, Ry second, and Rz third.
+        """
+        # T = self.copy()
+        # T.concatenate(other)
+        # return T
         cls = type(self)
-        if not isinstance(other, cls):
-            return Transformation(multiply_matrices(self.matrix, other.matrix))
-        else:
+        if isinstance(other, cls):
             return cls(multiply_matrices(self.matrix, other.matrix))
+        return Transformation(multiply_matrices(self.matrix, other.matrix))
 
 
 # ==============================================================================
@@ -360,6 +432,7 @@ class Transformation(object):
 # ==============================================================================
 
 if __name__ == "__main__":
+
     from compas.geometry import Translation
     from compas.geometry import Rotation
     from compas.geometry import Scale

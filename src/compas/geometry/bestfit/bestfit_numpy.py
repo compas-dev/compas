@@ -5,14 +5,13 @@ from __future__ import division
 from numpy import asarray
 from numpy import sqrt
 from numpy import mean
-from numpy import sum
+# from numpy import sum
 from numpy import zeros
 from numpy.linalg import lstsq
 
-from scipy.linalg import svd
+# from scipy.linalg import svd
 from scipy.optimize import leastsq
 
-# should this not be defined in a different location?
 from compas.geometry import world_to_local_coords_numpy
 from compas.geometry import local_to_world_coords_numpy
 
@@ -21,6 +20,7 @@ from compas.numerical import pca_numpy
 
 __all__ = [
     'bestfit_plane_numpy',
+    'bestfit_frame_numpy',
     'bestfit_circle_numpy',
     'bestfit_sphere_numpy',
 ]
@@ -28,10 +28,6 @@ __all__ = [
 
 def bestfit_plane_numpy(points):
     """Fit a plane through more than three (non-coplanar) points.
-
-    Warning
-    -------
-    This function requires Numpy and Scipy.
 
     Parameters
     ----------
@@ -45,79 +41,41 @@ def bestfit_plane_numpy(points):
 
     Examples
     --------
-    .. code-block:: python
-
-        #
+    >>>
 
     """
-    xyz = asarray(points).reshape((-1, 3))
-    n = xyz.shape[0]
-    m = 1.0 / (n - 1.0)
-    c = (sum(xyz, axis=0) / n).reshape((-1, 3))
-    Yt = xyz - c
-    C = m * Yt.T.dot(Yt)
-    u, s, vT = svd(C)
-    w = vT[2, :]
-    return c, w
+    # xyz = asarray(points).reshape((-1, 3))
+    # n = xyz.shape[0]
+    # c = (sum(xyz, axis=0) / n).reshape((-1, 3))
+    # Yt = xyz - c
+    # C = Yt.T.dot(Yt) / (n - 1)
+    # U, S, Vt = svd(C)
+    # w = Vt[2, :]
+    # return c, w
+    o, uvw, _ = pca_numpy(points)
+    return o, uvw[2]
 
 
-# # @see: https://stackoverflow.com/questions/35070178/fit-plane-to-a-set-of-points-in-3d-scipy-optimize-minimize-vs-scipy-linalg-lsts
-# # @see: https://stackoverflow.com/questions/20699821/find-and-draw-regression-plane-to-a-set-of-points/20700063#20700063
-# # @see: http://www.ilikebigbits.com/blog/2015/3/2/plane-from-points
-# # @see: https://math.stackexchange.com/questions/99299/best-fitting-plane-given-a-set-of-points
+def bestfit_frame_numpy(points):
+    """Fit a frame to a set of points.
 
+    Parameters
+    ----------
+    points : list
+        XYZ coordinates of the points.
 
-# def bestfit_plane_numpy2(points):
-#     from numpy import asarray
-#     from numpy import sum
-#     from numpy import hstack
-#     from numpy import ones
-#     from scipy.linalg import solve
+    Returns
+    -------
+    3-tuple
+        The frame origin, and the local X and Y axes.
 
-#     xyz = asarray(points).reshape((-1, 3))
-#     n = xyz.shape[0]
-#     c = (sum(xyz, axis=0) / n).reshape((-1, 3))
-#     A = hstack((xyz[:, 0:2], ones((xyz.shape[0], 1))))
-#     b = xyz[:, 2:]
-#     a, b, c = solve(A.T.dot(A), A.T.dot(b))
-#     u = 1.0, 0.0, a[0]
-#     v = 0.0, 1.0, b[0]
-#     w = normalize_vector(cross_vectors(u, v))
-#     return c, w
+    Examples
+    --------
+    >>>
 
-
-# def bestfit_plane_numpy3(points):
-#     from numpy import asarray
-#     from numpy import sum
-#     from functools import partial
-#     from scipy.optimize import minimize
-
-#     def plane(x, y, abc):
-#         a, b, c = abc
-#         return a * x + b * y + c
-
-#     def error(abc, points):
-#         result = 0
-#         for x, y, z in points:
-#             znew = plane(x, y, abc)
-#             result += (znew - z) ** 2
-#         return result
-
-#     c = sum(asarray(points), axis=0) / len(points)
-#     objective = partial(error, points=points)
-#     res = minimize(objective, [0, 0, 0])
-#     a, b, c = res.x
-#     u = 1.0, 0.0, a
-#     v = 0.0, 1.0, b
-#     w = normalize_vector(cross_vectors(u, v))
-#     return c, w
-
-
-# def bestfit_plane_numpy4(points):
-#     from compas.numerical import pca_numpy
-
-#     c, (_, _, w), _ = pca_numpy(points)
-#     return c, w
+    """
+    o, uvw, _ = pca_numpy(points)
+    return o, uvw[0], uvw[1]
 
 
 def bestfit_circle_numpy(points):
@@ -136,6 +94,14 @@ def bestfit_circle_numpy(points):
 
     Notes
     -----
+    The point of this function is to find the bestfit frame through the given points
+    and transform the points to make the problem 2D.
+
+    Once in 2D, the problem simplifies to finding the center point that minimises
+    the difference between the resulting circles for all given points, i.e.
+    minimise in the least squares sense the deviation between the individual
+    radii and the average radius.
+
     For more information see [1]_.
 
     References
@@ -145,40 +111,48 @@ def bestfit_circle_numpy(points):
 
     Examples
     --------
-    .. code-block:: python
-
-        #
+    >>>
 
     """
     o, uvw, _ = pca_numpy(points)
     frame = [o, uvw[1], uvw[2]]
+
     rst = world_to_local_coords_numpy(frame, points)
+
     x = rst[:, 0]
     y = rst[:, 1]
 
     def dist(xc, yc):
+        # compute the radius of the circle through each of the given points
+        # for the current centre point
         return sqrt((x - xc) ** 2 + (y - yc) ** 2)
 
     def f(c):
+        # compute the deviation of the radius of each sample point
+        # from the average radius
+        # => minimize this deviation
         Ri = dist(*c)
         return Ri - Ri.mean()
 
     xm = mean(x)
     ym = mean(y)
     c0 = xm, ym
-    c, ier = leastsq(f, c0)
+    c, error = leastsq(f, c0)
+
+    # compute the radius of the circle through each sample point for the
+    # computed center point.
     Ri = dist(*c)
+
+    # compute the radius of the bestfit circle as the average of the individual
+    # radii.
     R = Ri.mean()
-    residu = sum((Ri - R) ** 2)
 
-    print(residu)
+    # residu = sum((Ri - R) ** 2)
+    # print(residu)
 
+    # convert the location of the center point back to global coordinates.
     xyz = local_to_world_coords_numpy(frame, [[c[0], c[1], 0.0]])[0]
-
-    o = xyz.tolist()
-    u, v, w = uvw.tolist()
-
-    return o, w, R
+    return xyz, uvw[2], R
 
 
 def bestfit_sphere_numpy(points):

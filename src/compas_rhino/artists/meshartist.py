@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
 import compas_rhino
 
 from compas_rhino.artists import Artist
@@ -13,12 +12,6 @@ from compas_rhino.artists.mixins import FaceArtist
 
 from compas.utilities import pairwise
 from compas.geometry import centroid_polygon
-
-try:
-    import rhinoscriptsyntax as rs
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['MeshArtist']
@@ -64,9 +57,9 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
         super(MeshArtist, self).__init__(layer=layer)
         self.mesh = mesh
         self.defaults.update({
-            'color.vertex' : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
-            'color.face'   : (210, 210, 210),
+            'color.vertex': (255, 255, 255),
+            'color.edge': (0, 0, 0),
+            'color.face': (210, 210, 210),
         })
 
     @property
@@ -92,12 +85,12 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
         faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
         new_faces = []
         for face in faces:
-            l = len(face)
-            if l == 3:
+            f = len(face)
+            if f == 3:
                 new_faces.append(face + face[-1:])
-            elif l == 4:
+            elif f == 4:
                 new_faces.append(face)
-            elif l > 4:
+            elif f > 4:
                 centroid = len(vertices)
                 vertices.append(centroid_polygon([vertices[index] for index in face]))
                 for a, b in pairwise(face + face[0:1]):

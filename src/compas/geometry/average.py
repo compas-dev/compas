@@ -14,11 +14,8 @@ from compas.geometry.basic import length_vector_xy
 from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import cross_vectors_xy
-from compas.geometry.basic import vector_from_points
 from compas.geometry.basic import scale_vector
 from compas.geometry.basic import sum_vectors
-from compas.geometry.basic import normalize_vector
-from compas.geometry.distance import distance_point_point
 
 
 __all__ = [
@@ -148,6 +145,7 @@ def centroid_points(points):
     p = len(points)
     x, y, z = zip(*points)
     return [sum(x) / p, sum(y) / p, sum(z) / p]
+
 
 def weighted_centroid_points(points, weights):
     """Compute the weighted centroid of a set of points. The weights can be any between minus and plus infinity.
