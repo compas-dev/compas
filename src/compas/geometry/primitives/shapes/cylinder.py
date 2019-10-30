@@ -178,10 +178,10 @@ class Cylinder(Shape):
 
         vertices = []
         a = 2 * pi / u
+        z = self.height / 2
         for i in range(u):
             x = self.circle.radius * cos(i * a)
             y = self.circle.radius * sin(i * a)
-            z = self.height / 2
             vertices.append([x, y, z])
             vertices.append([x, y, -z])
 
