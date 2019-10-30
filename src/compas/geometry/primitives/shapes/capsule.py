@@ -8,9 +8,9 @@ from math import sin
 
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
-from compas.geometry.primitives import Circle
+from compas.geometry import Frame
+from compas.geometry import Plane
 from compas.geometry.primitives import Line
-from compas.geometry.primitives.shapes import Sphere
 from compas.geometry.primitives.shapes import Shape
 
 __all__ = ['Capsule']
@@ -43,13 +43,9 @@ class Capsule(Shape):
     @property
     def line(self):
         return self._line
-    
+
     @line.setter
     def line(self, line):
-        # add check if segment is
-        # ((x,y,z),(x,y,z)) or
-        # [[x,y,z],[x,y,z]] or
-        # [point,point] or ...
         self._line = line
 
     @property
@@ -122,13 +118,16 @@ class Capsule(Shape):
         u = kwargs.get('u') or 10
         if u < 3:
             raise ValueError('The value for u should be u > 3.')
+        v = kwargs.get('v') or 5
+        if v < 3:
+            raise ValueError('The value for v should be v > 3.')
 
         vertices = []
         faces = []
         a = 2 * pi / u
 
         # lateral surface
-        halfheight = self.length/2
+        halfheight = self.line.length/2
         for i in range(u):
             x = self.radius * cos(i * a)
             y = self.radius * sin(i * a)
@@ -139,7 +138,32 @@ class Capsule(Shape):
             faces.append([i, i + 1, (i + 3) % (u * 2), (i + 2) % (u * 2)])
 
         # cap surfaces (hemi spheres)
-        # TODO
+        hpi = pi * 0.5
+        theta = hpi / v
+        phi = pi*2 / u
+        hpi = pi * 0.5
+
+        for i in range(1, v):
+            for j in range(u):
+                tx = self.radius * cos(i * theta) * cos(j * phi)
+                ty = self.radius * cos(i * theta) * sin(j * phi)
+                tz = self.radius * sin(i * theta) + halfheight
+                vertices.append([tx, ty, tz])
+        vertices.append([halfheight + self.radius])
+
+        for i in range(1, v):
+            for j in range(u):
+                tx = self.radius * cos(i * theta) * cos(j * phi)
+                ty = self.radius * cos(i * theta) * sin(j * phi)
+                tz = self.radius * sin(i * theta) - halfheight
+                vertices.append([tx, ty, tz])
+        vertices.append([-halfheight - self.radius])
+
+        # move points to correct location in space
+        plane = Plane(self.line.midpoint, self.line.direction)
+        frame = Frame.from_plane(plane)
+        M = matrix_from_frame(frame)
+        vertices = transform_points(vertices, M)
 
         return vertices, faces
 
@@ -172,7 +196,7 @@ class Capsule(Shape):
             The transformation matrix.
         """
         self.line.transform(matrix)
-    
+
     def transformed(self, matrix):
         """Return a transformed copy of this ``Capsule`` using a given transformation matrix.
 
@@ -196,4 +220,9 @@ class Capsule(Shape):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    from compas.datastructures import Mesh
+    line = Line((1, 2, 3), (5, 4, 3))
+    capsule = Capsule(line, 1.2)
+
+    mesh = Mesh.from_shape(capsule)
+    mesh.to_obj('/Users/bernham/Desktop/capsule.obj')
