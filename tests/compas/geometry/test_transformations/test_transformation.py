@@ -41,7 +41,7 @@ def test_inverse():
     assert Transformation() == T * T.inverse()
 
 
-def test_decompose():
+def test_decomposed():
     trans1 = [1, 2, 3]
     angle1 = [-2.142, 1.141, -0.142]
     scale1 = [0.123, 2, 0.5]
@@ -60,6 +60,12 @@ def test_rotation():
     R = Rotation.from_euler_angles(angle1)
     r = [[0.41249169135312663, -0.8335562904208867, -0.3674704277413451, 0.0], [-0.05897071585157175, -0.4269749553355485, 0.9023385407861949, 0.0], [-0.9090506362335324, -0.35053715668381935, -0.22527903264048646, 0.0], [0.0, 0.0, 0.0, 1.0]]
     assert np.allclose(R, r)
+
+def test_rotation_property():
+    T = Transformation()
+    r = T.rotation
+    assert type(r) == Rotation
+    assert r.matrix == [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
 
 
 def test_translation():
