@@ -53,7 +53,7 @@ __all__ = [
     'random_permutation',
     'random_combination',
     'random_combination_with_replacement',
-    'list_like'
+    'iterable_like'
 ]
 
 
@@ -278,41 +278,48 @@ def random_combination_with_replacement(iterable, r):
     return tuple(pool[i] for i in indices)
 
 
-def list_like(target, base, fillvalue=None):
+def iterable_like(target, reference, fillvalue=None, as_single=False):
     """
-    Returns a list of length equal to that of a target iterable.
+    Creates an iterator from a reference object with size equivalent to that of a target iterable.
 
-    If the length of the base iterable is smaller than that of the target,
-    fillvalue will be appended to the end of the output list until the
-    goal length is reached. 
+    Values will be yielded one at a time until the target iterable is exhausted.
+    If target and reference are of uneven size, fillvalue will be used to 
+    substitute the missing values.
 
     Parameters
     ----------
     target : iterable
-        An iterable to be matched in length.
-    base: iterable
-        Iterable taken as departing point.
+        An iterable to be matched in size.
+    reference: object
+        Object taken as departure point.
     fillvalue : object, optional
         Fill value. Defaults to `None`.
+    is_single : bool, optional
+        Reference should be regarded as a single entry. Defaults to `True`.
 
     Returns
     -------
-    matched : list
-        A list of base and fillvalue, whenever possible.
+    object
+        The next value in the iterator
 
     Examples
     --------
-    >>> list_like("hello", [0.5], 0.0)
-    [0.5, 0.0, 0.0, 0.0, 0.0]
-    >>> list_like([0, 1, 2], ["a", "b"])
-    ["a", "b", None]
-    >>> list_like(["foo", "bar"], {"key_1": "a", "key_2": "b""})
-    ["key_1", "key_2"]
-    >>> list_like([25], range(3))
-    [0]
+    >>> keys = [0, 1, 2]
+    >>> color = (255, 0, 0)
+    >>> [_ for _ in iterable_like(keys, color)]
+    [255, 0, 0]
+    >>> [_ for _ in iterable_like(keys, color, as_single=True)]
+    [(255, 0, 0), None, None]
+    >>> [_ for _ in iterable_like(keys, color, color, as_single=True)]
+    [(255, 0, 0), (255, 0, 0), (255, 0, 0)]
     """
-    matched = [u for _ , u in zip_longest(target, base, fillvalue=fillvalue)]
-    return matched[:len(target)]
+    if as_single:
+        reference = [reference]
+
+    zipped = zip_longest(target, reference, fillvalue=fillvalue)
+    for _ in target:
+        yield next(zipped)[1]
+
 
 # ==============================================================================
 # Main
@@ -326,5 +333,5 @@ if __name__ == "__main__":
     for u, v, w in window(s + s[0:2], 3):
         print(u, v, w)
 
-    print(list_like(t, s))
-    print(list_like(s, t))
+    for u in iterable_like(t, s):
+        print(u)
