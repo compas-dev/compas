@@ -61,7 +61,7 @@ def uninstall(version=None, packages=None):
 
     environment_name = bootstrapper_data.get('ENVIRONMENT_NAME', '')
     if environment_name:
-        print('Packages installed from environment: {}'.format(environment_name))
+        print('The following packages have been detected and will be uninstalled (environment name={})'.format(environment_name))
 
     results = []
     symlinks = []
@@ -96,7 +96,7 @@ def uninstall(version=None, packages=None):
         if status != 'OK':
             exit_code = -1
 
-    print('\nCompleted.')
+    print('\nUninstall completed.')
     sys.exit(exit_code)
 
 
