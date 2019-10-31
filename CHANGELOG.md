@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed a missing import in `compas.geometry.Polygon`
 - Removed unused imports in `compas.geometry.Polyline`
 - Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.cojugated()` instead which returns a new quarternion object
+- Fixed `rotation` property of `Transformation`
 
 ### Removed
 
@@ -28,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added method for invertig (the matrix of) a transformation in-place `compas.geometry.Transformation.invert`.
 - Added `compas.geometry.Transformation.inverted` as an alias for `compas.geometry.Transformation.inverse`.
 - Added method creating a copy of a transformation instance with a given transformation concatenated `compas.geometry.Transformation.concatenated`.
+- Added method `to_vertices_and_faces` to all the classes inheriting from `compas.geometry.Shape` to create a `Mesh` representation of them.
 
 ### Changed
 
