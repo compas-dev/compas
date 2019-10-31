@@ -26,8 +26,8 @@ class MogaPlotter(object):
         self.num_pop = 0
         self.num_gen = 0
         self.num_fit_func = 0
-        self.boundaries   = {}
-        self.parent_pop   = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}, 'pf': {}}
+        self.boundaries = {}
+        self.parent_pop = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {}, 'pf': {}}
         self.input_path = ''
         self.output_path = ''
         self.fit_names = []
@@ -147,17 +147,17 @@ class MogaPlotter(object):
         with open(self.input_path + filename, 'rb') as fh:
             moga = json.load(fh)
 
-        self.num_var        = moga['num_var']
-        self.num_pop        = moga['num_pop']
-        self.num_fit_func   = moga['num_fit_func']
-        self.boundaries     = moga['boundaries']
-        self.fit_names      = moga['fit_names']
-        self.num_gen        = moga['num_gen']
+        self.num_var = moga['num_var']
+        self.num_pop = moga['num_pop']
+        self.num_fit_func = moga['num_fit_func']
+        self.boundaries = moga['boundaries']
+        self.fit_names = moga['fit_names']
+        self.num_gen = moga['num_gen']
 
     def get_pop_from_pf_file(self):
-        file_pop  = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {},
-                     'pf': {}}
-        filename  = 'generation ' + "%03d" % self.generation + '_pareto_front' + ".pareto"
+        file_pop = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_values': {},
+                    'pf': {}}
+        filename = 'generation ' + "%03d" % self.generation + '_pareto_front' + ".pareto"
         filename = self.input_path + filename
         try:
             pf_file = open(filename, 'r')
@@ -228,13 +228,4 @@ class MogaPlotter(object):
 
 if __name__ == '__main__':
 
-    vis = MULTI_VIS()
-    vis.input_path = '/out/'
-    filename = 'fitness1_fitness2_.json'
-    # vis.generation = 1
-    vis.output_path = vis.input_path
-    vis.scale = ((-0.05, 1.05), (-0.05, 1.05))
-    fit_list = ((0, 1), (1, 0))
-    labels = ('A', 'B')
-    # is.add_fixed_individuals(fit_list,labels)
-    vis.draw_objective_spaces(filename, number=False)
+    pass

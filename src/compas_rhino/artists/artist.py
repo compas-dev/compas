@@ -4,14 +4,7 @@ from __future__ import division
 
 import time
 
-import compas
 import compas_rhino
-
-try:
-    import rhinoscriptsyntax as rs
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['Artist']
@@ -59,9 +52,9 @@ class Artist(object):
         self._layer = None
         self.layer = layer
         self.defaults = {
-            'color.point'   : (255, 255, 255),
-            'color.line'    : (0, 0, 0),
-            'color.polygon' : (210, 210, 210),
+            'color.point': (255, 255, 255),
+            'color.line': (0, 0, 0),
+            'color.polygon': (210, 210, 210),
         }
 
     @property
@@ -86,8 +79,8 @@ class Artist(object):
         """
         if timeout:
             time.sleep(timeout)
-        rs.EnableRedraw(True)
-        rs.Redraw()
+        compas_rhino.rs.EnableRedraw(True)
+        compas_rhino.rs.Redraw()
 
     def clear_layer(self):
         """Clear the main layer of the artist."""
