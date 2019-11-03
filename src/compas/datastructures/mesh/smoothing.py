@@ -4,7 +4,6 @@ from __future__ import division
 
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
-from compas.geometry import area_polygon
 
 
 __all__ = [
@@ -218,9 +217,9 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz       = {key: mesh.vertex_coordinates(key)[:] for key in mesh.vertices()}
+        key_xyz = {key: mesh.vertex_coordinates(key)[:] for key in mesh.vertices()}
         fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
-        fkey_area     = {fkey: mesh.face_area(fkey) for fkey in mesh.faces()}
+        fkey_area = {fkey: mesh.face_area(fkey) for fkey in mesh.faces()}
 
         for key, attr in mesh.vertices(True):
             if key in fixed:
@@ -235,8 +234,8 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
                 if fkey is None:
                     continue
 
-                a  = fkey_area[fkey]
-                c  = fkey_centroid[fkey]
+                a = fkey_area[fkey]
+                c = fkey_centroid[fkey]
                 ax += a * c[0]
                 ay += a * c[1]
                 az += a * c[2]
@@ -264,8 +263,6 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas.datastructures import mesh_smooth_area
-
     from compas_plotters import MeshPlotter
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
@@ -276,7 +273,7 @@ if __name__ == "__main__":
     for u, v in mesh.edges():
         lines.append({
             'start': mesh.vertex_coordinates(u, 'xy'),
-            'end'  : mesh.vertex_coordinates(v, 'xy'),
+            'end': mesh.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
             'width': 1.0,
         })

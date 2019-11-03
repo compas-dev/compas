@@ -69,13 +69,13 @@ class MatlabProcess(object):
     """
 
     def __init__(self, matlab_exec=None, ws_data=None, ws_filename=None, timeout=None, verbose=True):
-        self.matlab_exec    = matlab_exec or 'matlab'
+        self.matlab_exec = matlab_exec or 'matlab'
         self.matlab_options = ['-nosplash']
-        self.ws_data        = ws_data or {}
-        self.ws_filename    = ws_filename or './workspace.mat'
-        self.timeout        = timeout or 20
-        self.process        = None
-        self.verbose        = verbose
+        self.ws_data = ws_data or {}
+        self.ws_filename = ws_filename or './workspace.mat'
+        self.timeout = timeout or 20
+        self.process = None
+        self.verbose = verbose
 
     def init(self):
         pass

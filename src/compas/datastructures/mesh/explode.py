@@ -68,13 +68,13 @@ def mesh_explode(mesh, cls=None):
     exploded_meshes = []
 
     for part in parts:
-        
+
         vertex_keys = list(set([vkey for fkey in part for vkey in mesh.face_vertices(fkey)]))
         vertices = [mesh.vertex_coordinates(vkey) for vkey in vertex_keys]
-        
+
         key_to_index = {vkey: i for i, vkey in enumerate(vertex_keys)}
-        faces = [ [key_to_index[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in part]
-        
+        faces = [[key_to_index[vkey] for vkey in mesh.face_vertices(fkey)] for fkey in part]
+
         exploded_meshes.append(cls.from_vertices_and_faces(vertices, faces))
 
     return exploded_meshes
