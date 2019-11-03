@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `compas.geometry.icp_numpy` for pointcloud alignment using ICP.
+
 ### Changed
 
 - Fixed a missing import in `compas.geometry.Polygon`
