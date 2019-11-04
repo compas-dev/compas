@@ -1101,12 +1101,39 @@ def multiply_matrices4(A, B):
 
     Examples
     --------
-    >>> TODO
+    >>> A = Translation([5.0, 5.0, 5.0])
+    >>> B = Translation([5.0, 5.0, 5.0])
+    >>> multiply_matrices(A, B)
+    [[1.0, 0.0, 0.0, 10.0], [0.0, 1.0, 0.0, 10.0], [0.0, 0.0, 1.0, 10.0], [0.0, 0.0, 0.0, 1.0]]
     """
     A = list(A)
     B = list(B)
-    B = list(zip(* list(B)))
-    return [[dot_vectors(row, col) for col in B] for row in A]
+    return [
+            [
+                A[0][0]*B[0][0] + A[0][1]*B[1][0] + A[0][2]*B[2][0] + A[0][3]*B[3][0],
+                A[0][0]*B[0][1] + A[0][1]*B[1][1] + A[0][2]*B[2][1] + A[0][3]*B[3][1],
+                A[0][0]*B[0][2] + A[0][1]*B[1][2] + A[0][2]*B[2][2] + A[0][3]*B[3][2],
+                A[0][0]*B[0][3] + A[0][1]*B[1][3] + A[0][2]*B[2][3] + A[0][3]*B[3][3]
+            ],
+            [
+                A[1][0]*B[0][0] + A[1][1]*B[1][0] + A[1][2]*B[2][0] + A[1][3]*B[3][0],
+                A[1][0]*B[0][1] + A[1][1]*B[1][1] + A[1][2]*B[2][1] + A[1][3]*B[3][1],
+                A[1][0]*B[0][2] + A[1][1]*B[1][2] + A[1][2]*B[2][2] + A[1][3]*B[3][2],
+                A[1][0]*B[0][3] + A[1][1]*B[1][3] + A[1][2]*B[2][3] + A[1][3]*B[3][3]
+            ],
+            [
+                A[2][0]*B[0][0] + A[2][1]*B[1][0] + A[2][2]*B[2][0] + A[2][3]*B[3][0],
+                A[2][0]*B[0][1] + A[2][1]*B[1][1] + A[2][2]*B[2][1] + A[2][3]*B[3][1],
+                A[2][0]*B[0][2] + A[2][1]*B[1][2] + A[2][2]*B[2][2] + A[2][3]*B[3][2],
+                A[2][0]*B[0][3] + A[2][1]*B[1][3] + A[2][2]*B[2][3] + A[2][3]*B[3][3]
+            ],
+            [
+                A[3][0]*B[0][0] + A[3][1]*B[1][0] + A[3][2]*B[2][0] + A[3][3]*B[3][0],
+                A[3][0]*B[0][1] + A[3][1]*B[1][1] + A[3][2]*B[2][1] + A[3][3]*B[3][1],
+                A[3][0]*B[0][2] + A[3][1]*B[1][2] + A[3][2]*B[2][2] + A[3][3]*B[3][2],
+                A[3][0]*B[0][3] + A[3][1]*B[1][3] + A[3][2]*B[2][3] + A[3][3]*B[3][3]
+            ]
+        ]
 
 
 def multiply_matrix_vector(A, b):
@@ -1559,3 +1586,26 @@ if __name__ == "__main__":
 
     import doctest
     doctest.testmod()
+
+    # from compas.geometry import Translation
+    # import time
+    # import numpy as np
+
+    # t1 = Translation([5.0, 5.0, 5.0])
+    # t2 = Translation([5.0, 5.0, 5.0])
+
+    # # t1 = list(t1)
+    # # t2 = list(t2)
+    # # t1 = np.array(t1)
+    # # t2 = np.array(t2)
+
+    # start = time.time()
+    # for i in range(0, 1000000):
+    #     multiply_matrices4(t1, t2)
+    #     # x = np.dot(t1, t2)
+    # end = time.time() - start
+    # print(end)
+
+    # print(np.dot(t1, t2))
+    # print(multiply_matrices4(t1, t2))
+    # print(multiply_matrices(t1, t2))
