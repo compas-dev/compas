@@ -116,54 +116,65 @@ class Capsule(Shape):
         """Returns a list of vertices and faces"""
 
         u = kwargs.get('u') or 10
+        v = kwargs.get('v') or 10
         if u < 3:
             raise ValueError('The value for u should be u > 3.')
-        v = kwargs.get('v') or 5
         if v < 3:
             raise ValueError('The value for v should be v > 3.')
+        if v % 2 == 1:
+            v += 1
 
-        vertices = []
-        faces = []
-        a = 2 * pi / u
-
-        # lateral surface
-        halfheight = self.line.length/2
-        for i in range(u):
-            x = self.radius * cos(i * a)
-            y = self.radius * sin(i * a)
-            vertices.append([x, y, halfheight])
-            vertices.append([x, y, -halfheight])
-
-        for i in range(0, u * 2, 2):
-            faces.append([i, i + 1, (i + 3) % (u * 2), (i + 2) % (u * 2)])
-
-        # cap surfaces (hemi spheres)
-        hpi = pi * 0.5
-        theta = hpi / v
+        theta = pi / v
         phi = pi*2 / u
         hpi = pi * 0.5
+        halfheight = self.line.length/2
+        sidemult = -1
+        capswitch = 0
 
-        for i in range(1, v):
+        vertices = []
+        for i in range(1, v+1):
             for j in range(u):
-                tx = self.radius * cos(i * theta) * cos(j * phi)
-                ty = self.radius * cos(i * theta) * sin(j * phi)
-                tz = self.radius * sin(i * theta) + halfheight
+                a = i + capswitch
+                tx = self.radius * cos(a * theta - hpi) * cos(j * phi)
+                ty = self.radius * cos(a * theta - hpi) * sin(j * phi)
+                tz = self.radius * sin(a * theta - hpi) + sidemult * halfheight
                 vertices.append([tx, ty, tz])
-        vertices.append([halfheight + self.radius])
+            # switch from lower pole cap to upper pole cap
+            if i == v / 2 and sidemult == -1:
+                capswitch = -1
+                sidemult *= -1
 
-        for i in range(1, v):
-            for j in range(u):
-                tx = self.radius * cos(i * theta) * cos(j * phi)
-                ty = self.radius * cos(i * theta) * sin(j * phi)
-                tz = self.radius * sin(i * theta) - halfheight
-                vertices.append([tx, ty, tz])
-        vertices.append([-halfheight - self.radius])
+        vertices.append([0, 0, halfheight + self.radius])
+        vertices.append([0, 0, -halfheight - self.radius])
 
         # move points to correct location in space
         plane = Plane(self.line.midpoint, self.line.direction)
         frame = Frame.from_plane(plane)
         M = matrix_from_frame(frame)
         vertices = transform_points(vertices, M)
+
+        faces = []
+
+        # south pole triangle fan
+        sp = len(vertices) - 1
+        for j in range(u):
+            faces.append([sp, (j+1) % u, j])
+
+        for i in range(v-1):
+            for j in range(u):
+                jj = (j + 1) % u
+                a = i * u + j
+                b = i * u + jj
+                c = (i + 1) * u + jj
+                d = (i + 1) * u + j
+                faces.append([a, b, c, d])
+
+        # north pole triangle fan
+        np = len(vertices) - 2
+        for j in range(u):
+            nc = len(vertices) - 3 - j
+            nn = len(vertices) - 3 - (j + 1) % u
+            faces.append([np, nn, nc])
 
         return vertices, faces
 
