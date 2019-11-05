@@ -198,31 +198,31 @@ class Capsule(Shape):
     # transformations
     # ==========================================================================
 
-    def transform(self, matrix):
-        """Transform this ``Capsule`` using a given transformation matrix.
+    def transform(self, transformation):
+        """Transform this ``Capsule`` using a given transformation.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        transformation : :class:`Transformation`
+            The transformation used to transform the capsule.
         """
-        self.line.transform(matrix)
+        self.line.transform(transformation)
 
-    def transformed(self, matrix):
-        """Return a transformed copy of this ``Capsule`` using a given transformation matrix.
+    def transformed(self, transformation):
+        """Return a transformed copy of the current ``Capsule``.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        transformation : :class:`Transformation`
+            The transformation used to transform the capsule.
 
         Returns
         -------
-        Capsule
-            The transformed copy.
+        :class: `Capsule`
+            The transformed copy of the current capsule.
         """
         capsule = self.copy()
-        capsule.line.transform(matrix)
+        capsule.line.transform(transformation)
         return capsule
 
 

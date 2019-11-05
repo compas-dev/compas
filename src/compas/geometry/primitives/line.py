@@ -259,34 +259,33 @@ class Line(Primitive):
     # transformations
     # ==========================================================================
 
-    def transform(self, matrix):
-        """Transform this ``Line`` using a given transformation matrix.
+    def transform(self, transformation):
+        """Transform the line.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
-
+        transformation : :class:`Transformation`
+            The transformation used to transform the line.
         """
-        self.start.transform(matrix)
-        self.end.transform(matrix)
+        self.start.transform(transformation)
+        self.end.transform(transformation)
 
-    def transformed(self, matrix):
-        """Return a transformed copy of this ``Line`` using a given transformation matrix.
+    def transformed(self, transformation):
+        """Returns a transformed copy of the current line.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        transformation : :class:`Transformation`
+            The transformation used to transform the line.
 
         Returns
         -------
-        Line
-            The transformed copy.
+        :class: `Line`
+            The transformed line.
 
         """
         line = self.copy()
-        line.transform(matrix)
+        line.transform(transformation)
         return line
 
 
