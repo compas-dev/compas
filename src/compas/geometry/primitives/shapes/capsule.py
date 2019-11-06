@@ -112,6 +112,24 @@ class Capsule(Shape):
         """
         return self.data
 
+    @classmethod
+    def from_data(cls, data):
+        """Construct a capsule from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
+
+        Returns
+        -------
+        :class: `Capsule`
+            The constructed capsule.
+        """
+        line = Line.from_data(data['line'])
+        capsule = Capsule(line, data['radius'])
+        return capsule
+
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
 
@@ -179,6 +197,39 @@ class Capsule(Shape):
         return vertices, faces
 
     # ==========================================================================
+    # representation
+    # ==========================================================================
+
+    def __repr__(self):
+        return 'Capsule({0}, {1})'.format(self.line, self.radius)
+
+    def __len__(self):
+        return 2
+
+    # ==========================================================================
+    # access
+    # ==========================================================================
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.line
+        elif key == 1:
+            return self.radius
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.line = value
+        elif key == 1:
+            self.radius = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.line, self.radius])
+
+    # ==========================================================================
     # helpers
     # ==========================================================================
 
@@ -231,9 +282,19 @@ class Capsule(Shape):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.datastructures import Mesh
-    line = Line((1, 2, 3), (5, 4, 3))
-    capsule = Capsule(line, 1.2)
+    from compas.geometry import Transformation
 
-    mesh = Mesh.from_shape(capsule)
-    mesh.to_obj('/Users/bernham/Desktop/capsule.obj')
+    capsule = Capsule(Line((1, 2, 3), (4, 5, 6)), 1.3)
+    frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    print(frame.normal)
+    T = Transformation.from_frame(frame)
+    capsule.transform(T)
+    print(capsule)
+
+    print(Plane.worldXY().data)
+    data = {'line': Line((1, 2, 3), (5, 4, 2)).data, 'radius': 1.2}
+    capsule = Capsule.from_data(data)
+    print(capsule)
+
+    import doctest
+    doctest.testmod()

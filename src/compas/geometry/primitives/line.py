@@ -168,6 +168,24 @@ class Line(Primitive):
         v = self.direction * (0.5 * self.length)
         return self.start + v
 
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the line.
+
+        Returns
+        -------
+        dict
+            The line data.
+
+        """
+        return {'start': list(self.start),
+                'end': list(self.end)}
+
+    @classmethod
+    def from_data(cls, data):
+        line = Line(data['start'], data['end'])
+        return line
+
     # ==========================================================================
     # representation
     # ==========================================================================
