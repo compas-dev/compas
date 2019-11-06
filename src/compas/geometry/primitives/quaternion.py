@@ -97,7 +97,7 @@ class Quaternion(Primitive):
         return iter(self.wxyz)
 
     def __repr__(self):
-        return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(*self, prec=6)
+        return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(self.w, self.x, self.y, self.z, prec=6)
 
     def __mul__(self, other):
         """Multiply operator for two quaternions.
