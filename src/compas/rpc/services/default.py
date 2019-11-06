@@ -20,7 +20,7 @@ def start_service(port):
 
     # start the server on *localhost*
     # and listen to requests on port *1753*
-    server = Server(("localhost", port))
+    server = Server(("0.0.0.0", port))
 
     # register a few utility functions
     server.register_function(server.ping)
