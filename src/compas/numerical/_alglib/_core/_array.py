@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
 import array
 import compas
 
@@ -10,7 +9,6 @@ from compas.utilities import flatten
 
 try:
     from compas.numerical._alglib._core import xalglib
-
 except ImportError:
     compas.raise_if_ironpython()
 

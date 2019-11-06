@@ -2,10 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import os
 import time
 import json
-import sys
 
 import compas
 
@@ -16,8 +14,7 @@ except ImportError:
 
 try:
     from subprocess import Popen
-    from subprocess import PIPE
-    from subprocess import STDOUT
+    # from subprocess import PIPE
 
 except ImportError:
     try:
@@ -28,7 +25,6 @@ except ImportError:
 import compas._os
 
 from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
 
 from compas.rpc import RPCServerError
 
@@ -204,7 +200,7 @@ class Proxy(object):
         server = ServerProxy(self.address)
         try:
             server.ping()
-        except:
+        except Exception:
             return None
         else:
             print("Reconnecting to an existing server proxy.")
@@ -239,14 +235,15 @@ class Proxy(object):
                     self._process.StartInfo.EnvironmentVariables.Add(name, env[name])
 
             self._process.StartInfo.UseShellExecute = False
-            self._process.StartInfo.RedirectStandardOutput = True
-            self._process.StartInfo.RedirectStandardError = True
+            # self._process.StartInfo.RedirectStandardOutput = True
+            # self._process.StartInfo.RedirectStandardError = True
             self._process.StartInfo.FileName = self.python
             self._process.StartInfo.Arguments = '-m {0} {1}'.format(self.service, str(self._port))
             self._process.Start()
         else:
             args = [self.python, '-m', self.service, str(self._port)]
-            self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=env)
+            # self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=env)
+            self._process = Popen(args, env=env)
 
         server = ServerProxy(self.address)
 
@@ -257,7 +254,7 @@ class Proxy(object):
         while count:
             try:
                 server.ping()
-            except:
+            except Exception:
                 time.sleep(0.1)
                 count -= 1
                 print("    {} attempts left.".format(count))
@@ -277,7 +274,7 @@ class Proxy(object):
         print("Stopping the server proxy.")
         try:
             self._server.remote_shutdown()
-        except:
+        except Exception:
             pass
         self._terminate_process()
 
@@ -292,11 +289,11 @@ class Proxy(object):
 
         try:
             self._process.terminate()
-        except:
+        except Exception:
             pass
         try:
             self._process.kill()
-        except:
+        except Exception:
             pass
 
     def __getattr__(self, name):
@@ -304,7 +301,7 @@ class Proxy(object):
             name = "{}.{}".format(self.package, name)
         try:
             self._function = getattr(self._server, name)
-        except:
+        except Exception:
             raise RPCServerError()
         return self.proxy
 
@@ -333,9 +330,15 @@ class Proxy(object):
         idict = {'args': args, 'kwargs': kwargs}
         istring = json.dumps(idict, cls=DataEncoder)
 
+        # it makes sense that there is a broken pipe error
+        # because the process is not the one receiving the feedback
+        # when there is a print statement on the server side
+        # this counts as output
+        # it should be sent as part of RPC communication
         try:
             ostring = self._function(istring)
-        except:
+        except Exception:
+            # not clear what the point of this is
             self.stop_server()
             raise
 
@@ -359,10 +362,8 @@ class Proxy(object):
 if __name__ == "__main__":
 
     import compas
-    import sys
 
     from compas.datastructures import Mesh
-    from compas.rpc import Proxy
 
     from compas_rhino.artists import MeshArtist
 
@@ -375,10 +376,10 @@ if __name__ == "__main__":
 
     key_index = mesh.key_index()
 
-    xyz   = mesh.get_vertices_attributes('xyz')
+    xyz = mesh.get_vertices_attributes('xyz')
     edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
     fixed = [key_index[key] for key in mesh.vertices_where({'vertex_degree': 2})]
-    q     = mesh.get_edges_attribute('q', 1.0)
+    q = mesh.get_edges_attribute('q', 1.0)
     loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
 
     xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)

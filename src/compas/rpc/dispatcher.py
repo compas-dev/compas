@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import os
 import json
 import importlib
 
@@ -80,9 +79,9 @@ class Dispatcher(object):
 
         """
         odict = {
-            'data'    : None,
-            'error'   : None,
-            'profile' : None
+            'data': None,
+            'error': None,
+            'profile': None
         }
 
         parts = name.split('.')
@@ -133,7 +132,7 @@ class Dispatcher(object):
 
         try:
             data = function(*args, **kwargs)
-        except:
+        except Exception:
             odict['error'] = traceback.format_exc()
         else:
             odict['data'] = data
@@ -154,10 +153,11 @@ class Dispatcher(object):
             stats.strip_dirs()
             stats.sort_stats(1)
             stats.print_stats(20)
-        except:
+
+        except Exception:
             odict['error'] = traceback.format_exc()
         else:
-            odict['data']    = data
+            odict['data'] = data
             odict['profile'] = stream.getvalue()
 
 
