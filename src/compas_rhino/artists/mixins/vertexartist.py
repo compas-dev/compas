@@ -122,6 +122,10 @@ class VertexArtist(object):
             textdict = {key: str(key) for key in self.datastructure.vertices()}
         elif isinstance(text, dict):
             textdict = text
+        elif text == 'key':
+            textdict = {key: str(key) for key in self.datastructure.vertices()}
+        elif text == 'index':
+            textdict = {key: str(index) for index, key in enumerate(self.datastructure.vertices())}
         else:
             raise NotImplementedError
 

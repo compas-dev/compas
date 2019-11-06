@@ -29,13 +29,14 @@ class FrameArtist(_PrimitiveArtist):
 
     __module__ = "compas_rhino.artists"
 
-    def __init__(self, frame, layer=None):
+    def __init__(self, frame, layer=None, scale=1.0):
         super(FrameArtist, self).__init__(frame, layer=layer)
         self.settings.update({
             'color.origin': (0, 0, 0),
             'color.xaxis': (255, 0, 0),
             'color.yaxis': (0, 255, 0),
             'color.zaxis': (0, 0, 255)})
+        self.scale = scale
 
     def draw(self):
         """Draw the frame.
@@ -49,9 +50,9 @@ class FrameArtist(_PrimitiveArtist):
         points = []
         lines = []
         origin = list(self.primitive.point)
-        x = (self.primitive.point + self.primitive.xaxis)
-        y = (self.primitive.point + self.primitive.yaxis)
-        z = (self.primitive.point + self.primitive.zaxis)
+        x = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
+        y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
+        z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
         points = [{'pos': origin, 'color': self.settings['color.origin']}]
         lines = [
             {'start': origin, 'end': x, 'color': self.settings['color.xaxis'], 'arrow': 'end'},
