@@ -2,18 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
-import array
 import compas
-
-from compas.utilities import flatten
 
 try:
     from compas.numerical._alglib._core import xalglib
-
     from compas.numerical._alglib._core._array import Array
     from compas.numerical._alglib._core._array import Zeros
-
 except ImportError:
     compas.raise_if_ironpython()
 
@@ -28,10 +22,10 @@ class SparseArrayError(Exception):
 class SparseArray(object):
 
     dtypes = {
-        'f'    : float,
+        'f': float,
         'float': float,
-        'i'    : int,
-        'int'  : int
+        'i': int,
+        'int': int
     }
 
     def __init__(self, ijk, shape, dtype='f'):

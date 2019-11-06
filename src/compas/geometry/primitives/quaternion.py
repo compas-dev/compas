@@ -87,7 +87,6 @@ class Quaternion(Primitive):
     """
 
     def __init__(self, w, x, y, z):
-
         self.w = float(w)
         self.x = float(x)
         self.y = float(y)
