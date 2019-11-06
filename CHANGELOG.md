@@ -10,14 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added `compas.geometry.icp_numpy` for pointcloud alignment using ICP.
+- Added RPC command-line utility: `$ compas_rpc {start|stop} [port]`
 
 ### Changed
 
-- Fixing printing issue with `compas.geometry.Quarternion` in ironPython
+- Fixed printing issue with `compas.geometry.Quarternion` in ironPython
 - Fixed a missing import in `compas.geometry.Polygon`
 - Removed unused imports in `compas.geometry.Polyline`
 - Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.cojugated()` instead which returns a new quarternion object
 - Fixed `rotation` property of `Transformation`
+- Bind RPC server to `0.0.0.0` instead of `localhost`
 
 ### Removed
 
