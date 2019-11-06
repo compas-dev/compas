@@ -14,7 +14,7 @@ except ImportError:
 
 try:
     from subprocess import Popen
-    # from subprocess import PIPE
+    from subprocess import PIPE
 
 except ImportError:
     try:
@@ -235,15 +235,14 @@ class Proxy(object):
                     self._process.StartInfo.EnvironmentVariables.Add(name, env[name])
 
             self._process.StartInfo.UseShellExecute = False
-            # self._process.StartInfo.RedirectStandardOutput = True
-            # self._process.StartInfo.RedirectStandardError = True
+            self._process.StartInfo.RedirectStandardOutput = True
+            self._process.StartInfo.RedirectStandardError = True
             self._process.StartInfo.FileName = self.python
             self._process.StartInfo.Arguments = '-m {0} {1}'.format(self.service, str(self._port))
             self._process.Start()
         else:
             args = [self.python, '-m', self.service, str(self._port)]
-            # self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=env)
-            self._process = Popen(args, env=env)
+            self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=env)
 
         server = ServerProxy(self.address)
 
