@@ -16,17 +16,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added link to Github wiki for devguide.
 - Added pointcloud alignment example to docs.
 - Show git hash on `compas.__version__` if installed from git.
+- Added `autopep8` to dev requirements.
 
 ### Changed
 
-- Fixing printing issue with `compas.geometry.Quarternion` in ironPython
-- Fixed a missing import in `compas.geometry.Polygon`
-- Removed unused imports in `compas.geometry.Polyline`
-- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.cojugated()` instead which returns a new quarternion object
-- Fixed `rotation` property of `Transformation`
+- Fixing printing issue with `compas.geometry.Quarternion` in ironPython.
+- Fixed a missing import in `compas.geometry.Polygon`.
+- Removed unused imports in `compas.geometry.Polyline`.
+- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.cojugated()` instead which returns a new quarternion object.
+- Fixed `rotation` property of `Transformation`.
+- Simplified plugin installation (use plugin name only, without GUID).
 
 ### Removed
-
 
 ## [0.10.0] 2019-10-28
 
