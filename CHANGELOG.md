@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `Colormap` to `compas.utilities`.
 - Added link to Github wiki for devguide.
 - Added pointcloud alignment example to docs.
+- Show git hash on `compas.__version__` if installed from git.
 
 ### Changed
 
