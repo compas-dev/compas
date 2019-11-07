@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added `compas.geometry.icp_numpy` for pointcloud alignment using ICP.
+- Added RPC command-line utility: `$ compas_rpc {start|stop} [port]`
 - Added `__version__` to `compas_plotters`.
 - Added `compas_plotters` to `.bumpversion.cfg`.
 - Added `Colormap` to `compas.utilities`.
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.cojugated()` instead which returns a new quarternion object.
 - Fixed `rotation` property of `Transformation`.
 - Simplified plugin installation (use plugin name only, without GUID).
+- Bind RPC server to `0.0.0.0` instead of `localhost`
 
 ### Removed
 

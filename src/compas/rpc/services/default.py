@@ -1,10 +1,12 @@
 """This script starts a XMLRPC server and registers the default service.
 
-The server address is *localhost* and it listens to requests on port *1753*
+The server binds to all network interfaces (i.e. ``0.0.0.0``) and
+it listens to requests on port ``1753``.
 
 """
 
 from compas.rpc import Dispatcher
+from compas.rpc import Server
 
 
 class DefaultService(Dispatcher):
@@ -13,30 +15,12 @@ class DefaultService(Dispatcher):
         super(DefaultService, self).__init__()
 
 
-# ==============================================================================
-# main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    import sys
-    from compas.rpc import Server
-
-    try:
-        port = int(sys.argv[3])
-    except:
-        port = 1753
-
-    # with open('/Users/vanmelet/Code/compas-dev/compas/src/compas/rpc/services/rpc.txt', 'w') as f:
-    #     f.write(str(sys.version_info) + "\n")
-    #     for name in sys.path:
-    #         f.write(name + "\n")
-
+def start_service(port):
     print('Starting default RPC service on port {0}...'.format(port))
 
     # start the server on *localhost*
     # and listen to requests on port *1753*
-    server = Server(("localhost", port))
+    server = Server(("0.0.0.0", port))
 
     # register a few utility functions
     server.register_function(server.ping)
@@ -52,3 +36,17 @@ if __name__ == '__main__':
 
     print('Listening, press CTRL+C to abort...')
     server.serve_forever()
+
+# ==============================================================================
+# main
+# ==============================================================================
+
+if __name__ == '__main__':
+    import sys
+
+    try:
+        port = int(sys.argv[3])
+    except:
+        port = 1753
+
+    start_service(port)

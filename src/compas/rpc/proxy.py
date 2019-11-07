@@ -137,15 +137,22 @@ class Proxy(object):
         self.service = service
         self.package = package
 
+        self._implicitely_started_server = False
         self._server = self.try_reconnect()
         if self._server is None:
             self._server = self.start_server()
+            self._implicitely_started_server = True
 
     def __enter__(self):
         return self
 
     def __exit__(self, *args):
-        self.stop_server()
+        # If we started the RPC server, we will try to clean up and stop it
+        # otherwise we just disconnect from it
+        if self._implicitely_started_server:
+            self.stop_server()
+        else:
+            self._server.__close()
 
     @property
     def address(self):
