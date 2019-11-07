@@ -59,13 +59,29 @@ class Circle(Primitive):
         >>> circle = Circle.from_data(data)
 
         """
-        circle = cls(Plane.worldXY(), 1)
-        circle.data = data
-        return circle
+        return cls(data['plane'], data['radius'])
 
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the circle.
+
+        Returns
+        -------
+        dict
+            The circle data.
+
+        """
+        return {'plane': [list(self.plane.point), list(self.plane.normal)],
+                'radius': self.radius}
+
+    @data.setter
+    def data(self, data):
+        self.plane = data['plane']
+        self.radius = data['radius']
 
     @property
     def plane(self):
@@ -95,34 +111,17 @@ class Circle(Primitive):
         """float: The diameter of the circle."""
         return self.radius * 2
 
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the circle.
 
-        Returns
-        -------
-        dict
-            The circle data.
+    # def to_data(self):
+    #     """Returns the data dictionary that represents the circle.
 
-        """
-        return {'plane': self.plane.data,
-                'radius': self.radius}
+    #     Returns
+    #     -------
+    #     dict
+    #         The circle data.
 
-    @data.setter
-    def data(self, data):
-        self.plane = Plane.from_data(data['plane'])
-        self.radius = data['radius']
-
-    def to_data(self):
-        """Returns the data dictionary that represents the circle.
-
-        Returns
-        -------
-        dict
-            The circle data.
-
-        """
-        return self.data
+    #     """
+    #     return self.data
 
     @property
     def center(self):

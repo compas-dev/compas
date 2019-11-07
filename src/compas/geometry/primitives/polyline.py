@@ -56,9 +56,28 @@ class Polyline(Primitive):
     # factory
     # ==========================================================================
 
+    @classmethod
+    def from_data(cls, data):
+        return cls(data['points'])
+
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the polyline.
+
+        Returns
+        -------
+        dict
+            The polyline's data.
+        """
+        return {'points': [list(point) for point in self.points]}
+
+    @data.setter
+    def data(self, data):
+        self.points = data['points']
 
     @property
     def points(self):
@@ -258,18 +277,6 @@ class Polyline(Primitive):
 
 if __name__ == '__main__':
 
-    from math import pi
+    import doctest
 
-    from compas.geometry import matrix_from_axis_and_angle
-    from compas_plotters import Plotter
-
-    M = matrix_from_axis_and_angle([0, 0, 1.0], pi / 2)
-    p = Polyline([[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]])
-    q = p.transformed(M)
-
-    #plotter = Plotter(figsize=(10, 7))
-
-    #plotter.draw_polygons([{'points': p.points}, {'points': q.points}])
-    # plotter.show()
-
-    print(p.point(.7, snap=True))
+    doctest.testmod(globs=globals())

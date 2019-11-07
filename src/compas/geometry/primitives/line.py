@@ -125,9 +125,29 @@ class Line(Primitive):
     # factory
     # ==========================================================================
 
+    @classmethod
+    def from_data(cls, data):
+        return cls(data['start'], data['end'])
+
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the line.
+
+        Returns
+        -------
+        dict
+            The line's data.
+        """
+        return {'start': list(self.start), 'end': list(self.end)}
+
+    @data.setter
+    def data(self, data):
+        self.start = data['start']
+        self.end = data['end']
 
     @property
     def start(self):

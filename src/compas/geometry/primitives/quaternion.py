@@ -260,6 +260,9 @@ class Quaternion(Primitive):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.geometry import allclose
+
     import doctest
+
+    from compas.geometry import allclose
+
     doctest.testmod(globs=globals())

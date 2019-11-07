@@ -508,17 +508,6 @@ class Frame(Primitive):
         self.xaxis = data['xaxis']
         self.yaxis = data['yaxis']
 
-    def to_data(self):
-        """Returns the data dictionary that represents the frame.
-
-        Returns
-        -------
-        dict
-            The frame data.
-
-        """
-        return self.data
-
     @property
     def normal(self):
         """:class:`Vector` : The frame's normal (z-axis)."""

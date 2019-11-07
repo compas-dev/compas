@@ -145,13 +145,29 @@ class Plane(Primitive):
         >>>
 
         """
-        plane = cls.worldXY()
-        plane.data = data
-        return plane
+        return cls(data['point'], data['normal'])
 
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the plane.
+
+        Returns
+        -------
+        dict
+            The plane data.
+
+        """
+        return {'point': list(self.point),
+                'normal': list(self.normal)}
+
+    @data.setter
+    def data(self, data):
+        self.point = data['point']
+        self.normal = data['normal']
 
     @property
     def point(self):
@@ -179,21 +195,6 @@ class Plane(Primitive):
         x, y, z = self.point
         return - a * x - b * y - c * z
 
-    # @property
-    # def frame(self):
-    #     """Frame: The frame that forms a basis for the local coordinates of all
-    #     points in the half-spaces defined by the plane.
-    #     """
-    #     a, b, c = self.normal
-    #     u = 1.0, 0.0, - a / c
-    #     v = 0.0, 1.0, - b / c
-    #     u, v = orthonormalize_vectors([u, v])
-    #     u = Vector(*u)
-    #     v = Vector(*v)
-    #     u.unitize()
-    #     v.unitize()
-    #     return self.point, u, v
-
     # ==========================================================================
     # representation
     # ==========================================================================
@@ -203,35 +204,6 @@ class Plane(Primitive):
 
     def __len__(self):
         return 2
-
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the plane.
-
-        Returns
-        -------
-        dict
-            The plane data.
-
-        """
-        return {'point': list(self.point),
-                'normal': list(self.normal)}
-
-    @data.setter
-    def data(self, data):
-        self.point = data['point']
-        self.normal = data['normal']
-
-    def to_data(self):
-        """Returns the data dictionary that represents the plane.
-
-        Returns
-        -------
-        dict
-            The plane data.
-
-        """
-        return self.data
 
     # ==========================================================================
     # access
