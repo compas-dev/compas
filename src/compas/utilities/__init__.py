@@ -6,16 +6,6 @@ utilities
 .. currentmodule:: compas.utilities
 
 
-animation
-=========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    gif_from_images
-
-
 async
 =====
 
@@ -53,17 +43,6 @@ datetime
 
     timestamp
     now
-
-
-functions
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    fibonacci
-    binomial_coefficient
 
 
 itertools
@@ -120,28 +99,6 @@ profiling
     print_profile
 
 
-statistics
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    average
-    variance
-    standard_deviation
-
-
-xfunc
-=====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    XFunc
-
-
 """
 from __future__ import absolute_import
 from __future__ import division
@@ -164,6 +121,7 @@ from .coercing import *
 from .colors import *
 from .datetime_ import *
 from .decorators import *
+from .descriptors import *
 from .encoders import *
 from .functions import *
 from .itertools_ import *
@@ -172,5 +130,6 @@ from .profiling import *
 from .remote import *
 from .statistics import *
 from .xfunc import *
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

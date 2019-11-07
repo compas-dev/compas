@@ -13,12 +13,15 @@ class DataEncoder(json.JSONEncoder):
 
     def default(self, o):
         from compas.datastructures import Datastructure
+        from compas.geometry import Primitive
 
         if isinstance(o, Datastructure):
-            return {
-                'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
-                'value': o.to_data()
-            }
+            return {'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
+                    'value': o.to_data()}
+
+        if isinstance(o, Primitive):
+            return {'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
+                    'value': o.to_data()}
 
         try:
             import numpy as np

@@ -25,6 +25,7 @@ __all__ = [
     'is_color_rgb',
     'is_color_hex',
     'is_color_light',
+
     'Colormap',
 
     'red',

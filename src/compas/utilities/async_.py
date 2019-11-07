@@ -1,15 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import sys
-import time
 import threading
 
 
-__all__ = [
-    'await_callback',
-]
+__all__ = ['await_callback']
 
 
 class ThreadExceptHookHandler(object):
@@ -21,6 +18,7 @@ class ThreadExceptHookHandler(object):
     Disclaimer (!): https://news.ycombinator.com/item?id=11090814
 
     """
+
     def __enter__(self):
         original_init = threading.Thread.__init__
 
@@ -98,6 +96,7 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
     """
     wait_event = threading.Event()
     call_results = {}
+
     def inner_callback(*args, **kwargs):
         try:
             call_results['args'] = args
@@ -155,7 +154,6 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
         return dict_values
 
     return return_value + (dict_values,)
-
 
 
 # ==============================================================================
