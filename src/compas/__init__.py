@@ -50,6 +50,26 @@ APPTEMP = compas._os.absjoin(APPDATA, 'temp')
 
 PRECISION = '3f'
 
+# Check if COMPAS is installed from git
+# If that's the case, try to append the current head's hash to __version__
+try:
+    git_head_file = compas._os.absjoin(HOME, '.git', 'HEAD')
+
+    if os.path.exists(git_head_file):
+        # git head file contains one line that looks like this:
+        # ref: refs/heads/master
+        with open(git_head_file, 'r') as git_head:
+            _, ref_path = git_head.read().strip().split(' ')
+            ref_path = ref_path.split('/')
+
+            git_head_refs_file = compas._os.absjoin(HOME, '.git', *ref_path)
+
+        if os.path.exists(git_head_refs_file):
+            with open(git_head_refs_file, 'r') as git_head_ref:
+                git_commit = git_head_ref.read().strip()
+                __version__ += '-' + git_commit[:8]
+except:
+    pass
 
 __all__ = [
     'raise_if_windows',
