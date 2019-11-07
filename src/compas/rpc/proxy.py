@@ -86,41 +86,7 @@ class Proxy(object):
 
     .. code-block:: python
 
-        import compas
-        import time
-
-        from compas.datastructures import Mesh
-        from compas.rpc import Proxy
-
-        numerical = Proxy('compas.numerical')
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
-        mesh.update_default_edge_attributes({'q': 1.0})
-
-        key_index = mesh.key_index()
-
-        xyz   = mesh.get_vertices_attributes('xyz')
-        edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
-        fixed = [key_index[key] for key in mesh.vertices_where({'vertex_degree': 2})]
-        q     = mesh.get_edges_attribute('q', 1.0)
-        loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
-
-        xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
-
-        for key, attr in mesh.vertices(True):
-            index = key
-            attr['x'] = xyz[index][0]
-            attr['y'] = xyz[index][1]
-            attr['z'] = xyz[index][2]
-            attr['rx'] = r[index][0]
-            attr['ry'] = r[index][1]
-            attr['rz'] = r[index][2]
-
-        for index, (u, v, attr) in enumerate(mesh.edges(True)):
-            attr['f'] = f[index][0]
-            attr['l'] = l[index][0]
+        pass
 
     """
 
@@ -230,6 +196,11 @@ class Proxy(object):
         """
         env = compas._os.prepare_environment()
 
+        # this part starts the server side of the RPC setup
+        # it basically launches a subprocess
+        # to start the default service
+        # the default service creates a server
+        # and registers a dispatcher for custom functionality
         try:
             Popen
         except NameError:
@@ -251,6 +222,9 @@ class Proxy(object):
             args = [self.python, '-m', self.service, str(self._port)]
             self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=env)
 
+        # this starts the client side
+        # it creates a proxy for the server
+        # and tries to connect the proxy to the actual server
         server = ServerProxy(self.address)
 
         print("Starting a new proxy server...")
@@ -367,44 +341,6 @@ class Proxy(object):
 
 if __name__ == "__main__":
 
-    import compas
+    import doctest
 
-    from compas.datastructures import Mesh
-
-    from compas_rhino.artists import MeshArtist
-
-    numerical = Proxy('compas.numerical')
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
-    mesh.update_default_edge_attributes({'q': 1.0})
-
-    key_index = mesh.key_index()
-
-    xyz = mesh.get_vertices_attributes('xyz')
-    edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
-    fixed = [key_index[key] for key in mesh.vertices_where({'vertex_degree': 2})]
-    q = mesh.get_edges_attribute('q', 1.0)
-    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
-
-    xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
-
-    for key, attr in mesh.vertices(True):
-        index = key
-        attr['x'] = xyz[index][0]
-        attr['y'] = xyz[index][1]
-        attr['z'] = xyz[index][2]
-        attr['rx'] = r[index][0]
-        attr['ry'] = r[index][1]
-        attr['rz'] = r[index][2]
-
-    for index, (u, v, attr) in enumerate(mesh.edges(True)):
-        attr['f'] = f[index][0]
-        attr['l'] = l[index][0]
-
-    artist = MeshArtist(mesh)
-    artist.draw_vertices()
-    artist.draw_edges()
-    artist.draw_faces()
-    artist.redraw()
+    doctest.testmod(globs=globals())

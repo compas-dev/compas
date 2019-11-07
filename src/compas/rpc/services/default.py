@@ -37,6 +37,7 @@ def start_service(port):
     print('Listening, press CTRL+C to abort...')
     server.serve_forever()
 
+
 # ==============================================================================
 # main
 # ==============================================================================
@@ -46,7 +47,7 @@ if __name__ == '__main__':
 
     try:
         port = int(sys.argv[3])
-    except:
+    except Exception:
         port = 1753
 
     start_service(port)

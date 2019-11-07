@@ -1,6 +1,5 @@
 import time
 
-from compas.rpc import Proxy
 from compas.rpc.services.default import start_service
 
 try:
