@@ -508,10 +508,10 @@ class RobotModel(object):
 
         transformations = self.compute_transformations(joint_state)
         return joint.origin.transformed(transformations[joint.name])
-    
+
     def add_link(self, name, visual_mesh=None, visual_color=None, collision_mesh=None, **kwargs):
         """Adds a link to the robot model.
-        
+
         Provides an easy way to programmatically add a link to the robot model.
 
         Parameters
@@ -524,12 +524,12 @@ class RobotModel(object):
             The rgb color of the mesh. Defaults to (0.8, 0.8, 0.8)
         collision_mesh : :class:`compas.datastructures.Mesh`, optional
             The link's collision mesh.
-        
+
         Returns
         -------
         :class:`Link`
             The created `Link`
-        
+
         Examples
         --------
         >>> sphere = Sphere((0, 0, 0), 1)
@@ -548,19 +548,19 @@ class RobotModel(object):
             v.material = Material(color=Color("%f %f %f 1" % visual_color))
             v.geometry.shape.geometry = visual_mesh
             visual.append(v)
-        
-        if collision_mesh: # use visual_mesh as collision_mesh if none passed?
+
+        if collision_mesh:  # use visual_mesh as collision_mesh if none passed?
             c = Collision(Geometry(MeshDescriptor("")))
             c.geometry.shape.geometry = collision_mesh
             collision.append(c)
-        
+
         link = Link(name, visual=visual, collision=collision, **kwargs)
         self.links.append(link)
         return link
 
     def add_joint(self, name, type, parent_link, child_link, origin=None, axis=None, limit=None, **kwargs):
         """Adds a joint to the robot model.
-        
+
         Provides an easy way to programmatically add a joint to the robot model.
 
         Parameters
@@ -578,13 +578,13 @@ class RobotModel(object):
         axis : :class:`compas.geometry.Vector`
             The joint's axis.
         limit : list of 2 float
-            The lower and upper limits of the joint (used for joint types Joint.REVOLUTE or Joint.PRISMATIC) 
-        
+            The lower and upper limits of the joint (used for joint types Joint.REVOLUTE or Joint.PRISMATIC)
+
         Returns
         -------
         :class:`Joint`
             The created `Joint`
-        
+
         Examples
         --------
         >>> robot = RobotModel('robot')
@@ -602,14 +602,14 @@ class RobotModel(object):
         if limit:
             upper, lower = limit
             limit = Limit(lower=lower, upper=upper)
-        
+
         type_str = Joint.SUPPORTED_TYPES[type]
 
         joint = Joint(name, type_str, parent_link.name, child_link.name, origin=origin, axis=axis, limit=limit, **kwargs)
 
         self.joints.append(joint)
 
-        # self._rebuild_tree()
+        # Using only part of self._rebuild_tree()
         parent_link.joints.append(joint)
         child_link.parent_joint = joint
 
@@ -624,14 +624,14 @@ class RobotModel(object):
         self._joints[joint.name] = joint
         self._adjacency[joint.name] = [child_link.name]
 
-        # self._create(link, parent_transformation)
+        # Using only part of self._create(link, parent_transformation)
         parent_transformation = Transformation()
         for item in itertools.chain(parent_link.visual, parent_link.collision):
             if not item.init_transformation:
                 item.init_transformation = parent_transformation
             else:
                 parent_transformation = item.init_transformation
-        
+
         joint.create(parent_transformation)
 
         for item in itertools.chain(child_link.visual, child_link.collision):
