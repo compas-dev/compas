@@ -10,19 +10,12 @@ from numpy import mean
 from numpy import tan
 from numpy import arccos
 from numpy import sum
-from numpy import empty
-from numpy import append
-from numpy import ones
 
 from scipy.sparse import spdiags
-from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import splu
-from scipy.sparse.linalg import spsolve
-from scipy.linalg import solve
 
 from compas.numerical import normrow
 from compas.numerical import normalizerow
-from compas.geometry import scalarfield_contours_numpy
 
 from compas.datastructures.mesh.matrices import trimesh_cotangent_laplacian_matrix
 
@@ -30,45 +23,9 @@ from compas.datastructures.mesh.matrices import trimesh_cotangent_laplacian_matr
 __all__ = ['mesh_geodesic_distances']
 
 
-# def mesh_geodesic_distance_isolines(mesh, sources, m=1.0):
-#     distances = mesh_geodesic_distances(mesh, sources, m=m)
-#     levels, isolines = scalarfield_isolines_numpy(xy, distances)
-
-
-# Laplacian matrix with symmetric cotangent weights
-
-# W = empty(0)
-# I = empty(0, dtype=int)
-# J = empty(0, dtype=int)
-
-# for i1, i2, i3 in [(0, 1, 2), (1, 2, 0), (2, 0, 1)]:
-#     v1 = F[:, i1]
-#     v2 = F[:, i2]
-#     v3 = F[:, i3]
-
-#     e1 = V[v2] - V[v1]
-#     e2 = V[v3] - V[v1]
-
-#     cotan = 0.5 * sum(e1 * e2, axis=1) / normrow(cross(e1, e2)).ravel()
-
-#     W = append(W, cotan)
-#     I = append(I, v2)
-#     J = append(J, v3)
-
-#     W = append(W, cotan)
-#     I = append(I, v3)
-#     J = append(J, v2)
-
-# Lc = csr_matrix((W, (I, J)), shape=(V.shape[0], V.shape[0]))
-# Lc = Lc - spdiags(Lc * ones(V.shape[0]), 0, V.shape[0], V.shape[0])
-
-# Step I
-# Heat *u* is allowed to diffuse for a brief period of time (t)
-
-
 def mesh_geodesic_distances(mesh, sources, m=1.0):
     """Compute geodesic from the vertices of a mesh to given source vertices.
-    
+
     Parameters
     ----------
     mesh : compas.datastructures.Mesh
@@ -77,7 +34,7 @@ def mesh_geodesic_distances(mesh, sources, m=1.0):
         A list of vertex identifiers from which the distances should be calculated.
     m : float (1.0)
         ?
-    
+
     Returns
     -------
     array

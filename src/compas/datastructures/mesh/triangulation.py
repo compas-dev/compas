@@ -23,6 +23,7 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
             mesh.facedata[t2] = attr.copy()
         del mesh.facedata[fkey]
 
+
 # ==============================================================================
 # Main
 # ==============================================================================

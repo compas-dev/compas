@@ -25,10 +25,11 @@ class SSH(object):
         Username.
 
     """
+
     def __init__(self, server, username):
-        self.server   = server
+        self.server = server
         self.username = username
-        self.client   = self.create_client()
+        self.client = self.create_client()
 
     def create_client(self):
         """Create an SSH client with Paramiko.

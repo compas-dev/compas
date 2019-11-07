@@ -39,7 +39,7 @@ class Polygon(Primitive):
     --------
     >>> polygon = Polygon([[0,0,0], [1,0,0], [1,1,0], [0,1,0]])
     >>> polygon.centroid
-    [0.5, 0.5, 0.0]
+    Point(0.500, 0.500, 0.000)
     >>> polygon.area
     1.0
 
@@ -56,17 +56,52 @@ class Polygon(Primitive):
     def __init__(self, points):
         self._points = []
         self._lines = []
-        self._p = 0
-        self._l = 0
         self.points = points
 
     # ==========================================================================
     # factory
     # ==========================================================================
 
+    @classmethod
+    def from_data(cls, data):
+        """Construct a polygon from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
+
+        Returns
+        -------
+        Polygon
+            The constructed polygon.
+
+        Examples
+        --------
+        >>>
+
+        """
+        return cls(data['points'])
+
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the polygon.
+
+        Returns
+        -------
+        dict
+            The polygon data.
+
+        """
+        return {'points': [list(point) for point in self.points]}
+
+    @data.setter
+    def data(self, data):
+        self.points = data['points']
 
     @property
     def points(self):
@@ -84,16 +119,6 @@ class Polygon(Primitive):
     def lines(self):
         """list of Line: The lines of the polyline."""
         return self._lines
-
-    @property
-    def p(self):
-        """int: The number of points."""
-        return self._p
-
-    @property
-    def l(self):
-        """int: The number of lines."""
-        return self._l
 
     @property
     def length(self):
@@ -129,36 +154,6 @@ class Polygon(Primitive):
         n = Vector(* n)
         return n
 
-    # @property
-    # def tangent(self):
-    #     """The (average) tangent plane."""
-    #     o = self.center
-    #     a, b, c = self.normal
-    #     d = - (a * o.x + b * o.y + c * o.z)
-    #     return a, b, c, d
-
-    # @property
-    # def frame(self):
-    #     """The local coordinate frame."""
-    #     o  = self.center
-    #     w  = self.normal
-    #     p  = self.points[0]
-    #     u  = Vector.from_start_end(o, p)
-    #     u.unitize()
-    #     v = Vector.cross(w, u)
-
-    #     a, b, c = self.normal
-    #     u = 1.0, 0.0, - a / c
-    #     v = 0.0, 1.0, - b / c
-    #     u, v = orthonormalize_vectors([u, v])
-    #     u = Vector(*u)
-    #     v = Vector(*v)
-    #     u.unitize()
-    #     v.unitize()
-    #     return self.point, u, v
-
-    #     return o, u, v, w
-
     @property
     def area(self):
         """float: The area of the polygon."""
@@ -169,10 +164,10 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polygon({0})'.format(", ".join(map(lambda point: format(point, ""), self.points)))
+        return "Polygon({})".format(", ".join(["{}".format(point) for point in self.points]))
 
     def __len__(self):
-        return self.p
+        return len(self.points)
 
     # ==========================================================================
     # access
@@ -289,13 +284,8 @@ class Polygon(Primitive):
 
 if __name__ == '__main__':
 
-    from compas_plotters import Plotter
+    import doctest
 
-    polygon = Polygon([[1, 1, 0], [0, 1, 0], [0, 0, 0], [1, 0, 0]])
+    print(Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]))
 
-    for point in polygon.points:
-        print(point[0:2])
-
-    plotter = Plotter(figsize=(10, 7))
-    plotter.draw_polygons([{'points': polygon.points}])
-    plotter.show()
+    doctest.testmod(globs=globals())

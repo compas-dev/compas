@@ -57,7 +57,7 @@ class MatlabEngine(object):
     def __init__(self):
         self._matlab = None
         self._engine = None
-        self.engine  = None
+        self.engine = None
         self.session_name = None
         self._init()
 

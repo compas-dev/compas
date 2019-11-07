@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas import PRECISION
+
 from compas.geometry.distance import distance_point_point
 from compas.geometry.distance import distance_point_line
 from compas.geometry.distance import distance_point_plane
@@ -90,17 +92,15 @@ class Point(Primitive):
 
     """
 
-    __slots__ = ['_x', '_y', '_z', '_precision']
+    __slots__ = ['_x', '_y', '_z']
 
-    def __init__(self, x, y, z=0.0, precision=None):
+    def __init__(self, x, y, z=0.0):
         self._x = 0.0
         self._y = 0.0
         self._z = 0.0
-        self._precision = 3
         self.x = x
         self.y = y
         self.z = z
-        self.precision = precision
 
     @staticmethod
     def transform_collection(collection, X):
@@ -170,9 +170,30 @@ class Point(Primitive):
     # factory
     # ==========================================================================
 
+    @classmethod
+    def from_data(cls, data):
+        return cls(*data)
+
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the point.
+
+        Returns
+        -------
+        dict
+            The point's data.
+        """
+        return list(self)
+
+    @data.setter
+    def data(self, data):
+        self.x = data[0]
+        self.y = data[1]
+        self.z = data[2]
 
     @property
     def x(self):
@@ -201,22 +222,12 @@ class Point(Primitive):
     def z(self, z):
         self._z = float(z)
 
-    @property
-    def precision(self):
-        """int: The number of fractional digits used in the representation of the coordinates of the point."""
-        return self._precision
-
-    @precision.setter
-    def precision(self, value):
-        if isinstance(value, int) and value > 0:
-            self._precision = value
-
     # ==========================================================================
     # representation
     # ==========================================================================
 
     def __repr__(self):
-        return 'Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})'.format(self.x, self.y, self.z, self.precision)
+        return 'Point({0:.{3}f}, {1:.{3}f}, {2:.{3}f})'.format(self.x, self.y, self.z, PRECISION[:1])
 
     def __len__(self):
         return 3
@@ -467,7 +478,7 @@ class Point(Primitive):
 
         """
         cls = type(self)
-        return cls(self.x, self.y, self.z, self.precision)
+        return cls(self.x, self.y, self.z)
 
     # ==========================================================================
     # methods
@@ -704,6 +715,6 @@ if __name__ == '__main__':
 
     import doctest
 
-    from compas.geometry import Translation
+    from compas.geometry import Translation  # noqa F401
 
     doctest.testmod(globs=globals())

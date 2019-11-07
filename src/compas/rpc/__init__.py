@@ -35,6 +35,29 @@ of the proxied package are available as if they were directly present in our env
 
     Proxy
 
+RPC Command-line utility
+========================
+
+Besides the API of the RPC module, there is a command-line utility
+provided to start and stop the RPC server easily from the terminal.
+
+To start a new RPC server use the following command (default port is ``1753``):
+
+::
+
+    $ compas_rpc start <port>
+
+Conversely, to stop an existing RPC server:
+
+::
+
+    $ compas_rpc stop <port>
+
+
+.. note::
+
+    If COMPAS is installed in a virtual environment, make sure it is activated
+    before trying to use this command-line utility.
 """
 
 from __future__ import absolute_import

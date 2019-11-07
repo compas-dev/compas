@@ -1,69 +1,56 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import pickle
-import json
 import collections
-
-from copy import deepcopy
+import json
+import pickle
+import sys
 from ast import literal_eval
-
-from math import pi
 from collections import OrderedDict
-
-from compas.utilities import average
-
-from compas.files import OBJ
-from compas.files import PLY
-from compas.files import STL
-from compas.files import OFF
-
-from compas.utilities import pairwise
-from compas.utilities import window
-from compas.utilities import geometric_key
-
-from compas.geometry import normalize_vector
-from compas.geometry import centroid_points
-from compas.geometry import centroid_polygon
-from compas.geometry import cross_vectors
-from compas.geometry import length_vector
-from compas.geometry import scale_vector
-from compas.geometry import add_vectors
-from compas.geometry import sum_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import normal_polygon
-from compas.geometry import area_polygon
-from compas.geometry import flatness
-from compas.geometry import Polyhedron
-from compas.geometry import angle_points
-from compas.geometry import bestfit_plane
-from compas.geometry import distance_point_plane
-from compas.geometry import distance_point_point
+from copy import deepcopy
+from math import pi
 
 from compas.datastructures import Datastructure
-
-from compas.datastructures._mixins import VertexAttributesManagement
-from compas.datastructures._mixins import VertexHelpers
-from compas.datastructures._mixins import VertexFilter
-
-from compas.datastructures._mixins import EdgeHelpers
-from compas.datastructures._mixins import EdgeGeometry
 from compas.datastructures._mixins import EdgeFilter
-
+from compas.datastructures._mixins import EdgeGeometry
+from compas.datastructures._mixins import EdgeHelpers
+from compas.datastructures._mixins import EdgeMappings
 from compas.datastructures._mixins import FaceAttributesManagement
-from compas.datastructures._mixins import FaceHelpers
 from compas.datastructures._mixins import FaceFilter
-
+from compas.datastructures._mixins import FaceHelpers
+from compas.datastructures._mixins import FaceMappings
 from compas.datastructures._mixins import FromToData
 from compas.datastructures._mixins import FromToJson
 from compas.datastructures._mixins import FromToPickle
-
+from compas.datastructures._mixins import VertexAttributesManagement
+from compas.datastructures._mixins import VertexFilter
+from compas.datastructures._mixins import VertexHelpers
 from compas.datastructures._mixins import VertexMappings
-from compas.datastructures._mixins import EdgeMappings
-from compas.datastructures._mixins import FaceMappings
-
-import sys
+from compas.files import OBJ
+from compas.files import OFF
+from compas.files import PLY
+from compas.files import STL
+from compas.geometry import Polyhedron
+from compas.geometry import angle_points
+from compas.geometry import area_polygon
+from compas.geometry import bestfit_plane
+from compas.geometry import centroid_points
+from compas.geometry import centroid_polygon
+from compas.geometry import cross_vectors
+from compas.geometry import distance_point_plane
+from compas.geometry import distance_point_point
+from compas.geometry import flatness
+from compas.geometry import length_vector
+from compas.geometry import normal_polygon
+from compas.geometry import normalize_vector
+from compas.geometry import scale_vector
+from compas.geometry import subtract_vectors
+from compas.geometry import sum_vectors
+from compas.utilities import average
+from compas.utilities import geometric_key
+from compas.utilities import pairwise
+from compas.utilities import window
 
 __all__ = ['Mesh']
 
@@ -82,6 +69,7 @@ Mesh summary
 
 ================================================================================
 """
+
 
 class Mesh(FromToPickle,
            FromToJson,
@@ -159,7 +147,7 @@ class Mesh(FromToPickle,
         self.face = {}
         self.facedata = {}
         self.edgedata = {}
-        self.attributes = {'name' : 'Mesh'}
+        self.attributes = {'name': 'Mesh'}
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
@@ -229,15 +217,15 @@ class Mesh(FromToPickle,
         format, which only allows for dict keys that are strings.
 
         """
-        data = {'attributes'  : self.attributes,
-                'dva'         : self.default_vertex_attributes,
-                'dea'         : self.default_edge_attributes,
-                'dfa'         : self.default_face_attributes,
-                'vertex'      : {},
-                'face'        : {},
-                'facedata'    : {},
-                'edgedata'    : {},
-                'max_int_key' : self._max_int_key,
+        data = {'attributes': self.attributes,
+                'dva': self.default_vertex_attributes,
+                'dea': self.default_edge_attributes,
+                'dfa': self.default_face_attributes,
+                'vertex': {},
+                'face': {},
+                'facedata': {},
+                'edgedata': {},
+                'max_int_key': self._max_int_key,
                 'max_int_fkey': self._max_int_fkey, }
 
         for key in self.vertex:
@@ -256,15 +244,15 @@ class Mesh(FromToPickle,
 
     @data.setter
     def data(self, data):
-        attributes   = data.get('attributes') or {}
-        dva          = data.get('dva') or {}
-        dfa          = data.get('dfa') or {}
-        dea          = data.get('dea') or {}
-        vertex       = data.get('vertex') or {}
-        face         = data.get('face') or {}
-        facedata     = data.get('facedata') or {}
-        edgedata     = data.get('edgedata') or {}
-        max_int_key  = data.get('max_int_key', -1)
+        attributes = data.get('attributes') or {}
+        dva = data.get('dva') or {}
+        dfa = data.get('dfa') or {}
+        dea = data.get('dea') or {}
+        vertex = data.get('vertex') or {}
+        face = data.get('face') or {}
+        facedata = data.get('facedata') or {}
+        edgedata = data.get('edgedata') or {}
+        max_int_key = data.get('max_int_key', -1)
         max_int_fkey = data.get('max_int_fkey', -1)
 
         self.attributes.update(attributes)
@@ -303,15 +291,15 @@ class Mesh(FromToPickle,
 
         """
         data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'dfa'         : self.default_face_attributes,
-            'vertex'      : self.vertex,
-            'face'        : self.face,
-            'facedata'    : self.facedata,
-            'edgedata'    : self.edgedata,
-            'max_int_key' : self._max_int_key,
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'dfa': self.default_face_attributes,
+            'vertex': self.vertex,
+            'face': self.face,
+            'facedata': self.facedata,
+            'edgedata': self.edgedata,
+            'max_int_key': self._max_int_key,
             'max_int_fkey': self._max_int_fkey,
         }
         with open(filepath, 'wb+') as fo:
@@ -328,15 +316,15 @@ class Mesh(FromToPickle,
 
         """
         data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'dfa'         : self.default_face_attributes,
-            'vertex'      : self.vertex,
-            'face'        : self.face,
-            'facedata'    : self.facedata,
-            'edgedata'    : self.edgedata,
-            'max_int_key' : self._max_int_key,
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'dfa': self.default_face_attributes,
+            'vertex': self.vertex,
+            'face': self.face,
+            'facedata': self.facedata,
+            'edgedata': self.edgedata,
+            'max_int_key': self._max_int_key,
             'max_int_fkey': self._max_int_fkey,
         }
         return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
@@ -431,8 +419,8 @@ class Mesh(FromToPickle,
         """
         obj = OBJ(filepath, precision)
         vertices = obj.parser.vertices
-        faces    = obj.parser.faces
-        edges    = obj.parser.lines
+        faces = obj.parser.faces
+        edges = obj.parser.lines
         if faces:
             return cls.from_vertices_and_faces(vertices, faces)
         if edges:
@@ -471,7 +459,7 @@ class Mesh(FromToPickle,
         """
         ply = PLY(filepath)
         vertices = ply.parser.vertices
-        faces    = ply.parser.faces
+        faces = ply.parser.faces
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
@@ -687,7 +675,7 @@ class Mesh(FromToPickle,
 
         if isinstance(vertices, mapping):
             for key, xyz in vertices.items():
-                mesh.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
+                mesh.add_vertex(key=key, attr_dict={i: j for i, j in zip(['x', 'y', 'z'], xyz)})
         else:
             for x, y, z in iter(vertices):
                 mesh.add_vertex(x=x, y=y, z=z)
@@ -973,10 +961,10 @@ class Mesh(FromToPickle,
         del self.halfedge
         del self.face
         del self.facedata
-        self.vertex   = {}
+        self.vertex = {}
         self.edgedata = {}
         self.halfedge = {}
-        self.face     = {}
+        self.face = {}
         self.facedata = {}
         self._max_int_key = -1
         self._max_int_fkey = -1
@@ -2063,7 +2051,7 @@ class Mesh(FromToPickle,
 
         """
         if directed:
-            return (u, v) in self.edgedata
+            return (u, v) in set(self.edges())
         else:
             return u in self.halfedge and v in self.halfedge[u]
 
@@ -2836,7 +2824,9 @@ class Mesh(FromToPickle,
         return max((max(angles) - ideal_angle) / (180 - ideal_angle), (ideal_angle - min(angles)) / ideal_angle)
 
     def face_curvature(self, fkey):
-        """Dimensionless face curvature as the maximum face vertex deviation from the best-fit plane of the face vertices divided by the average lengths of the face vertices to the face centroid.
+        """Dimensionless face curvature as the maximum face vertex deviation from
+        the best-fit plane of the face vertices divided by the average lengths of
+        the face vertices to the face centroid.
 
         Parameters
         ----------
@@ -2992,7 +2982,7 @@ class Mesh(FromToPickle,
         """
 
         # TODO: perhaps split into two functions
-        boundary_edges =  [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
+        boundary_edges = [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
 
         if not chained:
             return boundary_edges

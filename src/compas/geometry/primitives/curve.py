@@ -66,6 +66,33 @@ class Bezier(Primitive):
         self._points = []
         self.points = points
 
+    # ==========================================================================
+    # factory
+    # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(data['points'])
+
+    # ==========================================================================
+    # descriptors
+    # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the curve.
+
+        Returns
+        -------
+        dict
+            The curve's data.
+        """
+        return {'points': [list(point) for point in self.points]}
+
+    @data.setter
+    def data(self, data):
+        self.points = data['points']
+
     @property
     def points(self):
         """The control points.
@@ -92,6 +119,10 @@ class Bezier(Primitive):
     def degree(self):
         """The degree of the curve."""
         return len(self.points) - 1
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def compute_point(self, t):
         """Compute a point on the curve.
