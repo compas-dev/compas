@@ -2,9 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.transformations import transform_points
-from compas.geometry.transformations import transform_vectors
-
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 
@@ -318,11 +315,11 @@ if __name__ == '__main__':
 
     import doctest
 
-    from math import sqrt
-    from math import radians
+    from math import sqrt     # noqa F401
+    from math import radians  # noqa F401
 
-    from compas.geometry import Rotation
-    from compas.geometry import Point
-    from compas.geometry import Vector
+    from compas.geometry import Rotation  # noqa F401
+    from compas.geometry import Point     # noqa F401
+    from compas.geometry import Vector    # noqa F401
 
     doctest.testmod(globs=globals())

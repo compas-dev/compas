@@ -715,6 +715,6 @@ if __name__ == '__main__':
 
     import doctest
 
-    from compas.geometry import Translation
+    from compas.geometry import Translation  # noqa F401
 
     doctest.testmod(globs=globals())

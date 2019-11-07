@@ -39,7 +39,7 @@ class Polygon(Primitive):
     --------
     >>> polygon = Polygon([[0,0,0], [1,0,0], [1,1,0], [0,1,0]])
     >>> polygon.centroid
-    [0.5, 0.5, 0.0]
+    Point(0.500, 0.500, 0.000)
     >>> polygon.area
     1.0
 
@@ -56,8 +56,6 @@ class Polygon(Primitive):
     def __init__(self, points):
         self._points = []
         self._lines = []
-        self._p = 0
-        self._l = 0
         self.points = points
 
     # ==========================================================================
@@ -123,16 +121,6 @@ class Polygon(Primitive):
         return self._lines
 
     @property
-    def p(self):
-        """int: The number of points."""
-        return self._p
-
-    @property
-    def l(self):
-        """int: The number of lines."""
-        return self._l
-
-    @property
     def length(self):
         """float: The length of the boundary."""
         return sum([line.length for line in self.lines])
@@ -176,10 +164,10 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polygon({0})'.format(", ".join(map(lambda point: format(point, ""), self.points)))
+        return "Polygon({})".format(", ".join(["{}".format(point) for point in self.points]))
 
     def __len__(self):
-        return self.p
+        return len(self.points)
 
     # ==========================================================================
     # access
@@ -297,5 +285,7 @@ class Polygon(Primitive):
 if __name__ == '__main__':
 
     import doctest
+
+    print(Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]))
 
     doctest.testmod(globs=globals())

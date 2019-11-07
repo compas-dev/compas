@@ -734,7 +734,7 @@ if __name__ == '__main__':
 
     import doctest
 
-    from math import radians
-    from compas.geometry import Rotation
+    from math import radians  # noqa F401
+    from compas.geometry import Rotation  # noqa F401
 
     doctest.testmod(globs=globals())

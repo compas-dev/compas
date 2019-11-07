@@ -111,7 +111,6 @@ class Circle(Primitive):
         """float: The diameter of the circle."""
         return self.radius * 2
 
-
     # def to_data(self):
     #     """Returns the data dictionary that represents the circle.
 
