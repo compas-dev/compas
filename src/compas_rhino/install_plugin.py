@@ -39,14 +39,14 @@ def install_plugin(plugin, version=None):
 
     .. code-block:: none
 
-        ~/Code/compas_xxx/ui/XXX{520ddb34-e56d-4a37-9c58-1da10edd1d62}
+        ~/Code/compas_xxx-UI/XXX{520ddb34-e56d-4a37-9c58-1da10edd1d62}
 
     It can be installed with the following command
 
     .. code-block:: bash
 
-        $ cd ~/Code/compas_xxx/ui
-        $ python -m compas_rhino.install_plugin XXX{520ddb34-e56d-4a37-9c58-1da10edd1d62}
+        $ cd ~/Code/compas_xxx-UI
+        $ python -m compas_rhino.install_plugin XXX
 
     """
     if version not in ('5.0', '6.0'):
@@ -55,7 +55,19 @@ def install_plugin(plugin, version=None):
     plugin_path, plugin_name = os.path.split(plugin)
     if not plugin_path:
         plugin_path = os.getcwd()
-    source = os.path.join(plugin_path, plugin_name)
+
+    dirpath, dirnames, filenames = next(os.walk(plugin_path))
+
+    plugin_fullname = None
+    for dirname in dirnames:
+        if dirname.startswith(plugin_name):
+            plugin_fullname = dirname
+            break
+
+    if not plugin_fullname:
+        raise Exception('Cannot find the plugin: {}'.format(plugin_name))
+
+    source = os.path.join(plugin_path, plugin_fullname)
 
     if not os.path.isdir(source):
         raise Exception('Cannot find the plugin: {}'.format(source))
@@ -71,7 +83,7 @@ def install_plugin(plugin, version=None):
     if not os.path.exists(python_plugins_path):
         os.mkdir(python_plugins_path)
 
-    destination = os.path.join(python_plugins_path, plugin_name)
+    destination = os.path.join(python_plugins_path, plugin_fullname)
 
     print('Installing PlugIn {} to Rhino PythonPlugIns.'.format(plugin_name))
 
