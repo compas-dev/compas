@@ -30,10 +30,10 @@ import decimal
 import compas._os
 
 
-__author__    = 'Tom Van Mele and many others (see AUTHORS.md)'
+__author__ = 'Tom Van Mele and many others (see AUTHORS.md)'
 __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+__license__ = 'MIT License'
+__email__ = 'vanmelet@ethz.ch'
 
 __version__ = '0.10.0'
 
@@ -68,7 +68,7 @@ try:
             with open(git_head_refs_file, 'r') as git_head_ref:
                 git_commit = git_head_ref.read().strip()
                 __version__ += '-' + git_commit[:8]
-except:
+except Exception:
     pass
 
 __all__ = [
@@ -89,6 +89,8 @@ def is_windows():
 
     """
     return os.name == 'nt'
+
+
 WINDOWS = is_windows()
 
 
@@ -102,6 +104,8 @@ def is_linux():
 
     """
     return os.name == 'posix'
+
+
 LINUX = is_linux()
 
 
@@ -115,6 +119,8 @@ def is_mono():
 
     """
     return 'mono' in sys.version.lower()
+
+
 MONO = is_mono()
 
 
@@ -128,6 +134,8 @@ def is_ironpython():
 
     """
     return 'ironpython' in sys.version.lower()
+
+
 IPY = is_ironpython()
 
 
