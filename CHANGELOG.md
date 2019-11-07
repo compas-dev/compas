@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added pointcloud alignment example to docs.
 - Show git hash on `compas.__version__` if installed from git.
 - Added `autopep8` to dev requirements.
+- Added methods `add_joint` and `add_link` to `RobotModel` 
 
 ### Changed
 
