@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `compas.geometry.icp_numpy` for pointcloud alignment using ICP.
 - Added RPC command-line utility: `$ compas_rpc {start|stop} [port]`
+- Added `__version__` to `compas_plotters`.
+- Added `compas_plotters` to `.bumpversion.cfg`.
+- Added `Colormap` to `compas.utilities`.
+- Added link to Github wiki for devguide.
+- Added pointcloud alignment example to docs.
 - Show git hash on `compas.__version__` if installed from git.
 
 ### Changed
