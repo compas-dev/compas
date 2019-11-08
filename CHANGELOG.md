@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added pointcloud alignment example to docs.
 - Show git hash on `compas.__version__` if installed from git.
 - Added `autopep8` to dev requirements.
+- Added support for geometric primitives to JSON data encoder and decoder.
+- Added support for `data` to all geometric primitives.
 
 ### Changed
 
@@ -91,7 +93,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` to `Frame.to_local_coords` and `Frame.to_world_coords`.
 
 ### Removed
-
 
 ## [0.8.1] 2019-10-01
 
@@ -169,7 +170,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix loss of precision during mesh welding in `compas.datastructures.mesh_weld`.
 
 ### Removed
-
 
 ## [0.7.1] 2019-06-29
 
