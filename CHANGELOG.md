@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `__version__` to `compas_plotters`.
 - Added `compas_plotters` to `.bumpversion.cfg`.
 - Added `Colormap` to `compas.utilities`.
+- Added `is_line_line_colinear()` to `compas.geometry`
 - Added link to Github wiki for devguide.
 - Added pointcloud alignment example to docs.
 - Show git hash on `compas.__version__` if installed from git.
@@ -26,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixing printing issue with `compas.geometry.Quarternion` in ironPython.
 - Fixed a missing import in `compas.geometry.Polygon`.
 - Removed unused imports in `compas.geometry.Polyline`.
-- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.cojugated()` instead which returns a new quarternion object.
+- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.conjugated()` instead which returns a new quarternion object
 - Fixed `rotation` property of `Transformation`.
 - Simplified plugin installation (use plugin name only, without GUID).
 - Bind RPC server to `0.0.0.0` instead of `localhost`
