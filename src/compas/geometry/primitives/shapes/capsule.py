@@ -28,7 +28,8 @@ class Capsule(Shape):
 
     Examples
     --------
-    >>> TODO
+    >>> line = Line((1, 2, 3), (5, 3, 1))
+    >>> capsule = Capsule(line, 2.3)
 
     """
 
