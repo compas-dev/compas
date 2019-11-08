@@ -294,7 +294,7 @@ def iterable_like(target, reference, fillvalue=None, as_single=False):
         Object taken as departure point.
     fillvalue : object, optional
         Fill value. Defaults to `None`.
-    is_single : bool, optional
+    as_single : bool, optional
         Reference should be regarded as a single entry. Defaults to `True`.
 
     Returns
