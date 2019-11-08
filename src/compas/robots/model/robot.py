@@ -13,7 +13,15 @@ from compas.topology import shortest_path
 from compas.robots.model.geometry import Color
 from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import Texture
+from compas.robots.model.geometry import Geometry
+from compas.robots.model.geometry import MeshDescriptor
+from compas.robots.model.geometry import Origin
+from compas.robots.model.joint import Axis
 from compas.robots.model.joint import Joint
+from compas.robots.model.joint import Limit
+from compas.robots.model.link import Link
+from compas.robots.model.link import Visual
+from compas.robots.model.link import Collision
 from compas.robots.resources import DefaultMeshLoader
 
 
@@ -500,6 +508,154 @@ class RobotModel(object):
 
         transformations = self.compute_transformations(joint_state)
         return joint.origin.transformed(transformations[joint.name])
+
+    def add_link(self, name, visual_mesh=None, visual_color=None, collision_mesh=None, **kwargs):
+        """Adds a link to the robot model.
+
+        Provides an easy way to programmatically add a link to the robot model.
+
+        Parameters
+        ----------
+        name : str
+            The name of the link
+        visual_mesh : :class:`compas.datastructures.Mesh`, optional
+            The link's visual mesh.
+        visual_color : list of 3 float, optional
+            The rgb color of the mesh. Defaults to (0.8, 0.8, 0.8)
+        collision_mesh : :class:`compas.datastructures.Mesh`, optional
+            The link's collision mesh.
+
+        Returns
+        -------
+        :class:`Link`
+            The created `Link`
+
+        Raises
+        ------
+        ValueError
+            If the link name is already used in the chain.
+
+        Examples
+        --------
+        >>> sphere = Sphere((0, 0, 0), 1)
+        >>> mesh = Mesh.from_shape(sphere)
+        >>> robot = RobotModel('robot')
+        >>> robot.add_link('link0', visual_mesh=mesh)
+        """
+
+        all_link_names = [l.name for l in self.links]
+        if name in all_link_names:
+            raise ValueError("Link name '%s' already used in chain." % name)
+
+        visual = []
+        collision = []
+
+        if visual_mesh:
+            if not visual_color:
+                visual_color = (0.8, 0.8, 0.8)
+            v = Visual(Geometry(MeshDescriptor("")))
+            v.material = Material(color=Color("%f %f %f 1" % visual_color))
+            v.geometry.shape.geometry = visual_mesh
+            visual.append(v)
+
+        if collision_mesh:  # use visual_mesh as collision_mesh if none passed?
+            c = Collision(Geometry(MeshDescriptor("")))
+            c.geometry.shape.geometry = collision_mesh
+            collision.append(c)
+
+        link = Link(name, visual=visual, collision=collision, **kwargs)
+        self.links.append(link)
+        return link
+
+    def add_joint(self, name, type, parent_link, child_link, origin=None, axis=None, limit=None, **kwargs):
+        """Adds a joint to the robot model.
+
+        Provides an easy way to programmatically add a joint to the robot model.
+
+        Parameters
+        ----------
+        name : str
+            The name of the joint
+        type : int
+            The joint type, e.g. Joint.REVOLUTE
+        parent_link : :class:`Link`
+            The joint's parent link.
+        child_link : :class:`Link`
+            The joint's child link.
+        origin : :class:`compas.geometry.Frame`
+            The joint's origin frame.
+        axis : :class:`compas.geometry.Vector`
+            The joint's axis.
+        limit : list of 2 float
+            The lower and upper limits of the joint (used for joint types Joint.REVOLUTE or Joint.PRISMATIC)
+
+        Returns
+        -------
+        :class:`Joint`
+            The created `Joint`
+
+        Raises
+        ------
+        ValueError
+            If the joint name is already used in the chain.
+
+        Examples
+        --------
+        >>> robot = RobotModel('robot')
+        >>> parent_link = robot.add_link('link0')
+        >>> child_link = robot.add_link('link1')
+        >>> origin = Frame.worldXY()
+        >>> axis = (1, 0, 0)
+        >>> robot.add_joint("joint1", Joint.CONTINUOUS, parent_link, child_link, origin, axis)
+        """
+
+        all_joint_names = [j.name for j in self.joints]
+        if name in all_joint_names:
+            raise ValueError("Joint name '%s' already used in chain." % name)
+
+        if origin:
+            origin = Origin(origin.point, origin.xaxis, origin.yaxis)
+        if axis:
+            axis = Axis('{} {} {}'.format(*list(axis)))
+        if limit:
+            upper, lower = limit
+            limit = Limit(lower=lower, upper=upper)
+
+        type_str = Joint.SUPPORTED_TYPES[type]
+
+        joint = Joint(name, type_str, parent_link.name, child_link.name, origin=origin, axis=axis, limit=limit, **kwargs)
+
+        self.joints.append(joint)
+
+        # Using only part of self._rebuild_tree()
+        parent_link.joints.append(joint)
+        child_link.parent_joint = joint
+
+        self._links[parent_link.name] = parent_link
+        self._adjacency[parent_link.name] = [joint.name for joint in parent_link.joints]
+        self._links[child_link.name] = child_link
+
+        if not parent_link.parent_joint:
+            self.root = parent_link
+
+        joint.child_link = child_link
+        self._joints[joint.name] = joint
+        self._adjacency[joint.name] = [child_link.name]
+
+        # Using only part of self._create(link, parent_transformation)
+        parent_transformation = Transformation()
+        for item in itertools.chain(parent_link.visual, parent_link.collision):
+            if not item.init_transformation:
+                item.init_transformation = parent_transformation
+            else:
+                parent_transformation = item.init_transformation
+
+        joint.create(parent_transformation)
+
+        for item in itertools.chain(child_link.visual, child_link.collision):
+            item.init_transformation = joint.current_transformation
+
+        return joint
 
 
 URDFParser.install_parser(RobotModel, 'robot')
