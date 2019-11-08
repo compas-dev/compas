@@ -530,6 +530,11 @@ class RobotModel(object):
         :class:`Link`
             The created `Link`
 
+        Raises
+        ------
+        ValueError
+            If the link name is already used in the chain.
+
         Examples
         --------
         >>> sphere = Sphere((0, 0, 0), 1)
@@ -537,6 +542,10 @@ class RobotModel(object):
         >>> robot = RobotModel('robot')
         >>> robot.add_link('link0', visual_mesh=mesh)
         """
+
+        all_link_names = [l.name for l in self.links]
+        if name in all_link_names:
+            raise ValueError("Link name '%s' already used in chain." % name)
 
         visual = []
         collision = []
@@ -585,6 +594,11 @@ class RobotModel(object):
         :class:`Joint`
             The created `Joint`
 
+        Raises
+        ------
+        ValueError
+            If the joint name is already used in the chain.
+
         Examples
         --------
         >>> robot = RobotModel('robot')
@@ -594,6 +608,10 @@ class RobotModel(object):
         >>> axis = (1, 0, 0)
         >>> robot.add_joint("joint1", Joint.CONTINUOUS, parent_link, child_link, origin, axis)
         """
+
+        all_joint_names = [j.name for j in self.joints]
+        if name in all_joint_names:
+            raise ValueError("Joint name '%s' already used in chain." % name)
 
         if origin:
             origin = Origin(origin.point, origin.xaxis, origin.yaxis)
