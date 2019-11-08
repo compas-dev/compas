@@ -194,23 +194,23 @@ def get_public_methods(obj):
 
 def get_macros(controller, instance_name):
     methods = get_public_methods(controller)
-    macros  = []
+    macros = []
     for n, o in methods:
         annotations = get_parsed_object_comments(o, separator='=>')
-        name        = annotations.get('name') or n
-        script      = annotations.get('script') or '-_RunPythonScript ({0}.{1}())'.format(instance_name, name)
-        tooltip     = annotations.get('tooltip')
-        help_text   = annotations.get('help_text') or tooltip
-        text        = annotations.get('text') or name
+        name = annotations.get('name') or n
+        script = annotations.get('script') or '-_RunPythonScript ({0}.{1}())'.format(instance_name, name)
+        tooltip = annotations.get('tooltip')
+        help_text = annotations.get('help_text') or tooltip
+        text = annotations.get('text') or name
         button_text = annotations.get('button_text') or text
-        menu_text   = annotations.get('menu_text') or ' '.join(text.split('_'))
+        menu_text = annotations.get('menu_text') or ' '.join(text.split('_'))
         macros.append({
-            'name'        : instance_name + '.' + name,
-            'script'      : script,
-            'tooltip'     : tooltip,
-            'help_text'   : help_text,
-            'button_text' : button_text,
-            'menu_text'   : menu_text,
+            'name': instance_name + '.' + name,
+            'script': script,
+            'tooltip': tooltip,
+            'help_text': help_text,
+            'button_text': button_text,
+            'menu_text': menu_text,
         })
     return macros
 
@@ -265,12 +265,12 @@ class Rui(object):
     def init(self):
         with open(self.filepath, 'w+') as f:
             f.write(TPL_RUI.format(uuid.uuid4(), uuid.uuid4()))
-        self.xml                = ET.parse(self.filepath)
-        self.root               = self.xml.getroot()
-        self.root_macros        = self.root.find('macros')
-        self.root_menus         = self.root.find('menus')
+        self.xml = ET.parse(self.filepath)
+        self.root = self.xml.getroot()
+        self.root_macros = self.root.find('macros')
+        self.root_menus = self.root.find('menus')
         self.root_toolbargroups = self.root.find('tool_bar_groups')
-        self.root_toolbars      = self.root.find('tool_bars')
+        self.root_toolbars = self.root.find('tool_bars')
 
     def parse(self):
         raise NotImplementedError
@@ -288,13 +288,13 @@ class Rui(object):
 
     def add_macros(self, macros):
         for macro in macros:
-            guid        = str(uuid.uuid4())
-            name        = macro['name']
-            script      = macro['script']
-            tooltip     = macro.get('tooltip', '')
-            help_text   = macro.get('help_text', '')
+            guid = str(uuid.uuid4())
+            name = macro['name']
+            script = macro['script']
+            tooltip = macro.get('tooltip', '')
+            help_text = macro.get('help_text', '')
             button_text = macro.get('button_text', name)
-            menu_text   = macro.get('menu_text', name.replace('_', ' '))
+            menu_text = macro.get('menu_text', name.replace('_', ' '))
             self.add_macro(name, guid, script, tooltip, help_text, button_text, menu_text)
 
     def add_macro(self, name, guid, script, tooltip, help_text, button_text, menu_text):
@@ -316,8 +316,8 @@ class Rui(object):
             root = self.root_menus
         e_menu = ET.SubElement(root, 'menu')
         e_menu.set('guid', str(uuid.uuid4()))
-        e_text        = ET.SubElement(e_menu, 'text')
-        e_locale      = ET.SubElement(e_text, 'locale_1033')
+        e_text = ET.SubElement(e_menu, 'text')
+        e_locale = ET.SubElement(e_text, 'locale_1033')
         e_locale.text = menu['name']
         for item in menu['items']:
             if item['type'] == 'normal':
@@ -333,13 +333,13 @@ class Rui(object):
                 continue
 
     def add_menuitem(self, root, macro_id):
-        guid   = uuid.uuid4()
+        guid = uuid.uuid4()
         s_item = TPL_MENUITEM.format(guid, macro_id)
         e_item = ET.fromstring(s_item)
         root.append(e_item)
 
     def add_menuseparator(self, root):
-        guid  = uuid.uuid4()
+        guid = uuid.uuid4()
         s_sep = TPL_MENUSEPARATOR.format(guid)
         e_sep = ET.fromstring(s_sep)
         root.append(e_sep)
@@ -367,11 +367,11 @@ class Rui(object):
                 left_macro = item.get('left_macro', item.get('left'))
                 if left_macro:
                     e_left = self.macros[left_macro]
-                    left_guid  = e_left.attrib['guid']
+                    left_guid = e_left.attrib['guid']
                 right_guid = None
                 right_macro = item.get('right_macro', item.get('right'))
                 if right_macro:
-                    e_right    = self.macros[right_macro]
+                    e_right = self.macros[right_macro]
                     right_guid = e_right.attrib['guid']
                 self.add_toolbaritem(e_tb, left_guid, right_guid)
                 continue
@@ -380,13 +380,13 @@ class Rui(object):
                 continue
 
     def add_toolbaritem(self, root, left_macro_id, right_macro_id):
-        guid   = uuid.uuid4()
+        guid = uuid.uuid4()
         s_item = TPL_TOOLBARITEM.format(guid, left_macro_id, right_macro_id)
         e_item = ET.fromstring(s_item)
         root.append(e_item)
 
     def add_toolbarseparator(self, root):
-        guid  = uuid.uuid4()
+        guid = uuid.uuid4()
         s_sep = TPL_TOOLBARSEPARATOR.format(guid)
         e_sep = ET.fromstring(s_sep)
         root.append(e_sep)
@@ -401,20 +401,20 @@ class Rui(object):
 
     def add_toolbargroup(self, tbg):
         options = {
-            'single_file'     : 'False',
-            'hide_single_tab' : 'False',
+            'single_file': 'False',
+            'hide_single_tab': 'False',
         }
-        guid  = uuid.uuid4()
+        guid = uuid.uuid4()
         s_tbg = TPL_TOOLBARGROUP.format(guid, tbg['name'], options)
         e_tbg = ET.fromstring(s_tbg)
         self.root_toolbargroups.append(e_tbg)
         for tb_name in tbg['toolbars']:
-            e_tb    = self.toolbars[tb_name]
+            e_tb = self.toolbars[tb_name]
             tb_guid = e_tb.attrib['guid']
             self.add_toolbargroupitem(e_tbg, tb_name, tb_guid)
 
     def add_toolbargroupitem(self, root, tb_name, tb_guid):
-        guid   = uuid.uuid4()
+        guid = uuid.uuid4()
         s_item = TPL_TOOLBARGROUPITEM.format(guid, tb_name, tb_guid)
         e_item = ET.fromstring(s_item)
         root.append(e_item)

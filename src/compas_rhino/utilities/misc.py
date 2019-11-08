@@ -154,6 +154,8 @@ def browse_for_file(title=None, folder=None, filter=None):
         filter = 'JSON files (*.json)|*.json||'
     elif filter == 'obj':
         filter = 'OBJ files (*.obj)|*.obj||'
+    elif filter == 'fofin':
+        filter = 'FOFIN session files (*.fofin)|*.fofin||'
     else:
         pass
     return rs.OpenFileName(title, filter=filter, folder=folder)

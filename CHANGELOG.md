@@ -10,15 +10,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added `iterable_like` to `compas.utilities.itertools_`
+- Added `compas.geometry.icp_numpy` for pointcloud alignment using ICP.
+- Added RPC command-line utility: `$ compas_rpc {start|stop} [port]`
+- Added `__version__` to `compas_plotters`.
+- Added `compas_plotters` to `.bumpversion.cfg`.
+- Added `Colormap` to `compas.utilities`.
+- Added `is_line_line_colinear()` to `compas.geometry`
+- Added link to Github wiki for devguide.
+- Added pointcloud alignment example to docs.
+- Show git hash on `compas.__version__` if installed from git.
+- Added `autopep8` to dev requirements.
+- Added support for geometric primitives to JSON data encoder and decoder.
+- Added support for `data` to all geometric primitives.
 
 ### Changed
 
-- Fixed a missing import in `compas.geometry.Polygon`
-- Removed unused imports in `compas.geometry.Polyline`
-- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.cojugated()` instead which returns a new quarternion object
+- Fixing printing issue with `compas.geometry.Quarternion` in ironPython.
+- Fixed a missing import in `compas.geometry.Polygon`.
+- Removed unused imports in `compas.geometry.Polyline`.
+- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.conjugated()` instead which returns a new quarternion object
+- Fixed `rotation` property of `Transformation`.
+- Simplified plugin installation (use plugin name only, without GUID).
+- Bind RPC server to `0.0.0.0` instead of `localhost`
 
 ### Removed
-
 
 ## [0.10.0] 2019-10-28
 
@@ -30,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added method for invertig (the matrix of) a transformation in-place `compas.geometry.Transformation.invert`.
 - Added `compas.geometry.Transformation.inverted` as an alias for `compas.geometry.Transformation.inverse`.
 - Added method creating a copy of a transformation instance with a given transformation concatenated `compas.geometry.Transformation.concatenated`.
+- Added method `to_vertices_and_faces` to all the classes inheriting from `compas.geometry.Shape` to create a `Mesh` representation of them.
 
 ### Changed
 
@@ -79,7 +95,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` to `Frame.to_local_coords` and `Frame.to_world_coords`.
 
 ### Removed
-
 
 ## [0.8.1] 2019-10-01
 
@@ -157,7 +172,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix loss of precision during mesh welding in `compas.datastructures.mesh_weld`.
 
 ### Removed
-
 
 ## [0.7.1] 2019-06-29
 

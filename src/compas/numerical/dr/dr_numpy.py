@@ -290,7 +290,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # start iterating
     # --------------------------------------------------------------------------
     for k in range(kmax):
-        print(k)
+        # print(k)
 
         q_fpre = fpre / l
         q_lpre = f / lpre

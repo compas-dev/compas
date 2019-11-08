@@ -12,6 +12,7 @@ The main library of COMPAS
    tutorials
    api
    contributing
+   devguide
    changelog
    citing
    license

@@ -178,12 +178,15 @@ class Cylinder(Shape):
 
         vertices = []
         a = 2 * pi / u
+        z = self.height / 2
         for i in range(u):
             x = self.circle.radius * cos(i * a)
             y = self.circle.radius * sin(i * a)
-            z = self.height / 2
             vertices.append([x, y, z])
             vertices.append([x, y, -z])
+        # add v in bottom and top's circle center
+        vertices.append([0, 0, z])
+        vertices.append([0, 0, -z])
 
         # transform vertices to cylinder's plane
         frame = Frame.from_plane(self.circle.plane)
@@ -191,12 +194,13 @@ class Cylinder(Shape):
         vertices = transform_points(vertices, M)
 
         faces = []
+        # side faces
         for i in range(0, u * 2, 2):
             faces.append([i, i + 1, (i + 3) % (u * 2), (i + 2) % (u * 2)])
-
-        faces.append([i for i in range(0, u * 2, 2)])
-        faces.append([i for i in range(1, u * 2, 2)])
-        faces[-1].reverse()
+        # top and bottom circle faces
+        for i in range(0, u * 2, 2):
+            faces.append([i, (i + 2) % (u * 2), len(vertices) - 2])
+            faces.append([i + 1, (i + 3) % (u * 2), len(vertices) - 1])
 
         return vertices, faces
 

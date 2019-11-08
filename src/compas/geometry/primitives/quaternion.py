@@ -87,7 +87,6 @@ class Quaternion(Primitive):
     """
 
     def __init__(self, w, x, y, z):
-
         self.w = float(w)
         self.x = float(x)
         self.y = float(y)
@@ -97,7 +96,7 @@ class Quaternion(Primitive):
         return iter(self.wxyz)
 
     def __repr__(self):
-        return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(*self, prec=6)
+        return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(self.w, self.x, self.y, self.z, prec=6)
 
     def __mul__(self, other):
         """Multiply operator for two quaternions.
@@ -261,6 +260,9 @@ class Quaternion(Primitive):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.geometry import allclose
+
     import doctest
+
+    from compas.geometry import allclose  # noqa F401
+
     doctest.testmod(globs=globals())

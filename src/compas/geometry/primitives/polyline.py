@@ -32,13 +32,13 @@ class Polyline(Primitive):
     >>> polyline.length
     3.0
 
-    >>> type(polyline.points[0])
-    <class 'point.Point'>
+    >>> type(polyline.points[0]) == Point
+    True
     >>> polyline.points[0].x
     0.0
 
-    >>> type(polyline.lines[0])
-    <class 'line.Line'>
+    >>> type(polyline.lines[0]) == Line
+    True
     >>> polyline.lines[0].length
     1.0
 
@@ -56,9 +56,28 @@ class Polyline(Primitive):
     # factory
     # ==========================================================================
 
+    @classmethod
+    def from_data(cls, data):
+        return cls(data['points'])
+
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the polyline.
+
+        Returns
+        -------
+        dict
+            The polyline's data.
+        """
+        return {'points': [list(point) for point in self.points]}
+
+    @data.setter
+    def data(self, data):
+        self.points = data['points']
 
     @property
     def points(self):
@@ -68,24 +87,12 @@ class Polyline(Primitive):
     @points.setter
     def points(self, points):
         self._points = [Point(*xyz) for xyz in points]
-        self._p = len(points)
-        self._lines = [Line(self._points[i], self._points[i + 1]) for i in range(0, self._p - 1)]
-        self._l = len(self._lines)
+        self._lines = [Line(self._points[i], self._points[i + 1]) for i in range(0, len(self._points) - 1)]
 
     @property
     def lines(self):
         """list of Line: The lines of the polyline."""
         return self._lines
-
-    @property
-    def p(self):
-        """int: The number of points."""
-        return self._p
-
-    @property
-    def l(self):
-        """int: The number of lines."""
-        return self._l
 
     @property
     def length(self):
@@ -97,25 +104,20 @@ class Polyline(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polyline({0})'.format(", ".join(map(lambda point: format(point, ""), self.points)))
+        return "Polyline({})".format(", ".join(["{}".format(point) for point in self.points]))
 
     def __len__(self):
-        return self.p
+        return len(self.points)
 
     # ==========================================================================
     # access
     # ==========================================================================
 
     def __getitem__(self, key):
-        if key < self.p:
-            return self.points[key]
-        raise KeyError
+        return self.points[key]
 
     def __setitem__(self, key, value):
-        if key < self.p:
-            self.points[key] = value
-            return
-        raise KeyError
+        self.points[key] = value
 
     def __iter__(self):
         return iter(self.points)
@@ -258,18 +260,6 @@ class Polyline(Primitive):
 
 if __name__ == '__main__':
 
-    from math import pi
+    import doctest
 
-    from compas.geometry import matrix_from_axis_and_angle
-    from compas_plotters import Plotter
-
-    M = matrix_from_axis_and_angle([0, 0, 1.0], pi / 2)
-    p = Polyline([[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]])
-    q = p.transformed(M)
-
-    #plotter = Plotter(figsize=(10, 7))
-
-    #plotter.draw_polygons([{'points': p.points}, {'points': q.points}])
-    # plotter.show()
-
-    print(p.point(.7, snap=True))
+    doctest.testmod(globs=globals())

@@ -53,7 +53,7 @@ class Transformation(object):
     >>> T = Transformation()
     >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> T = Transformation.from_frame(f1)
-    >>> Sc, Sh, R, Tl, P = T.decompose()
+    >>> Sc, Sh, R, Tl, P = T.decomposed()
     >>> Tinv = T.inverse()
 
     """
@@ -252,7 +252,7 @@ class Transformation(object):
     def rotation(self):
         """Returns the ``Rotation`` component from the ``Transformation``.
         """
-        Sc, Sh, R, T, P = self.decompose()
+        Sc, Sh, R, T, P = self.decomposed()
         return R
 
     @property

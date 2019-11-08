@@ -233,8 +233,8 @@ if __name__ == "__main__":
         print("Calling back about vector {}: length = {}".format(i, l))
         time.sleep(0.1)
 
-    c_vectors  = Array2D(vectors, 'double')
-    c_lengths  = Array1D(lengths, 'double')
+    c_vectors = Array2D(vectors, 'double')
+    c_lengths = Array1D(lengths, 'double')
     c_callback = CFUNCTYPE(None, c_int, c_double)
 
     lib.length.argtypes = [c_int, c_vectors.ctype, c_lengths.ctype, c_callback]

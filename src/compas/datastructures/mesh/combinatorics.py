@@ -57,7 +57,6 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.datastructures import meshes_join
     from compas.geometry import translate_points_xy
-    from compas.geometry import subtract_vectors
 
     m1 = Mesh.from_obj(compas.get('faces.obj'))
     m2 = m1.copy()

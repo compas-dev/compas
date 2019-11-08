@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     import compas
 
-    base  = 'example-mesh-remeshing-on-mesh'
+    base = 'example-mesh-remeshing-on-mesh'
     files = [os.path.join(compas.TEMP, 'screenshots', base + '-' + str(i).zfill(4) + '.jpg') for i in range(5, 295, 10)]
 
     gif_from_images(files, os.path.join(compas.TEMP, base + '.gif'))

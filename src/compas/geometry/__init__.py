@@ -301,6 +301,7 @@ Pointclouds
 
     bounding_box
     bounding_box_xy
+    icp_numpy
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
 
@@ -501,5 +502,7 @@ from .spatial import *
 from .triangulation import *
 
 from .primitives import *
+
+from .icp import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

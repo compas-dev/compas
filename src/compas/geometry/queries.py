@@ -29,6 +29,7 @@ __all__ = [
     'is_ccw_xy',
     'is_colinear',
     'is_colinear_xy',
+    'is_line_line_colinear',
     'is_coplanar',
     'is_polygon_convex',
     'is_polygon_convex_xy',
@@ -164,6 +165,31 @@ def is_colinear_xy(a, b, c):
     ac_y = c[1] - a[1]
 
     return ab_x * ac_y == ab_y  * ac_x
+
+
+def is_line_line_colinear(line1, line2, tol=1e-9):
+    """Determine if two lines are colinear.
+
+    Parameters
+    ----------
+    line1 : 2-tuple of points, Line
+        Line 1.
+    line2 : 2-tuple of points, Line
+        Line 2.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-9``.
+
+    Returns
+    -------
+    bool
+        ``True`` if the lines are colinear
+        ``False`` otherwise.
+
+    """
+    a, b = line1
+    c, d = line2
+    return is_colinear(a, b, c, tol) and is_colinear(a, b, d, tol)
 
 
 def is_coplanar(points, tol=0.01):

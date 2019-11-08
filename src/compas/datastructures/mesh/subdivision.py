@@ -388,7 +388,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
     # cls = type(mesh)
 
     for _ in range(k):
-        old_xyz      = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+        old_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         fkey_old_new = {fkey: {} for fkey in mesh.faces()}
 
         # subd = cls()
@@ -515,7 +515,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
     subd = mesh.copy()
 
     for _ in range(k):
-        key_xyz       = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
+        key_xyz = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
         fkey_vertices = {fkey: subd.face_vertices(fkey)[:] for fkey in subd.faces()}
         uv_w = {(u, v): subd.face_vertex_ancestor(fkey, u) for fkey in subd.faces() for u, v in subd.face_halfedges(fkey)}
         boundary = set(subd.vertices_on_boundary())
@@ -608,28 +608,15 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
-    from functools import partial
-
-    import compas
-
     from compas.datastructures import Mesh
-    from compas.utilities import print_profile
-
     from compas_plotters import MeshPlotter
-
-    #mesh = Mesh.from_polyhedron(6)
-    # fixed = [mesh.get_any_vertex()]
-    # print(fixed)
-
-    #subdivide = partial(mesh_subdivide_catmullclark)
-    #subd = subdivide(mesh, k=4)
 
     vertices = [
         [0.5, 0.0, 0.0],
         [0.0, 1.0, 0.0],
         [-0.5, 0.0, 0.0]
     ]
-    faces =[
+    faces = [
         [0, 1, 2]
     ]
 
