@@ -22,3 +22,4 @@
 - Elitsa Dimitrova <<e.dimitrova77@gmail.com>> [@elidim](https://github.com/elidim)
 - Li Chen <<li.chen@arch.ethz.ch>> [@licini](https://github.com/licini)
 - Anton Johansson <<anton@tetov.se>> [@tetov](https://github.com/tetov)
+- Victor Leung <<yck011522@gmail.com>> [@yck011522](https://github.com/yck011522)

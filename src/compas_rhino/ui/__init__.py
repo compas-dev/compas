@@ -5,10 +5,14 @@ compas_rhino.ui
 
 .. currentmodule:: compas_rhino.ui
 
+Classes
+=======
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
+    CommandMenu
 
 """
 

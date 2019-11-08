@@ -20,16 +20,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Show git hash on `compas.__version__` if installed from git.
 - Added `autopep8` to dev requirements.
 - Added methods `add_joint` and `add_link` to `RobotModel` 
+- Added support for geometric primitives to JSON data encoder and decoder.
+- Added support for `data` to all geometric primitives.
 
 ### Changed
 
 - Fixing printing issue with `compas.geometry.Quarternion` in ironPython.
 - Fixed a missing import in `compas.geometry.Polygon`.
 - Removed unused imports in `compas.geometry.Polyline`.
-- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.conjugated()` instead which returns a new quarternion object
+- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.conjugated()` instead which returns a new quarternion object.
 - Fixed `rotation` property of `Transformation`.
 - Simplified plugin installation (use plugin name only, without GUID).
-- Bind RPC server to `0.0.0.0` instead of `localhost`
+- Bind RPC server to `0.0.0.0` instead of `localhost`.
+- Fixed different argument naming between Rhino5 and Rhino6 of `rs.LayerVisible()` in `compas_rhino.utilities.objects`.
 
 ### Removed
 
@@ -93,7 +96,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` to `Frame.to_local_coords` and `Frame.to_world_coords`.
 
 ### Removed
-
 
 ## [0.8.1] 2019-10-01
 
@@ -171,7 +173,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix loss of precision during mesh welding in `compas.datastructures.mesh_weld`.
 
 ### Removed
-
 
 ## [0.7.1] 2019-06-29
 
