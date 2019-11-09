@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `iterable_like` to `compas.utilities.itertools_`
 - Added `compas.geometry.icp_numpy` for pointcloud alignment using ICP.
 - Added RPC command-line utility: `$ compas_rpc {start|stop} [port]`
 - Added `__version__` to `compas_plotters`.
@@ -78,7 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.9.0] 2019-10-21
 
 ### Added
-
+- Added `match_length` to `compas.utilities`
 - Added `matrix_change_basis`, `Transformation.change_basis`
 - Added `matrix_from_frame_to_frame`
 - Added non-numpy versions of `global_coords`, `local_coords`
