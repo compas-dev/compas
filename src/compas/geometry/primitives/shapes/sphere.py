@@ -153,16 +153,18 @@ class Sphere(Shape):
 
         u = kwargs.get('u') or 10
         v = kwargs.get('v') or 10
-        if u < 3 or v < 3:
-            raise ValueError('The values for u and v should be > 3.')
+        if u < 3:
+            raise ValueError('The value for u should be u > 3.')
+        if v < 3:
+            raise ValueError('The value for v should be v > 3.')
 
-        theta = pi / u
-        phi = pi*2 / v
+        theta = pi / v
+        phi = pi*2 / u
         hpi = pi * 0.5
 
         vertices = []
-        for i in range(1, u):
-            for j in range(v):
+        for i in range(1, v):
+            for j in range(u):
                 tx = self.radius * cos(i * theta - hpi) * cos(j * phi) + self.point.x
                 ty = self.radius * cos(i * theta - hpi) * sin(j * phi) + self.point.y
                 tz = self.radius * sin(i * theta - hpi) + self.point.z
@@ -175,23 +177,23 @@ class Sphere(Shape):
 
         # south pole triangle fan
         sp = len(vertices) - 1
-        for j in range(v):
-            faces.append([sp, (j+1) % v, j])
+        for j in range(u):
+            faces.append([sp, (j+1) % u, j])
 
-        for i in range(u-2):
-            for j in range(v):
-                jj = (j + 1) % v
-                a = i * v + j
-                b = i * v + jj
-                c = (i + 1) * v + jj
-                d = (i + 1) * v + j
+        for i in range(v-2):
+            for j in range(u):
+                jj = (j + 1) % u
+                a = i * u + j
+                b = i * u + jj
+                c = (i + 1) * u + jj
+                d = (i + 1) * u + j
                 faces.append([a, b, c, d])
 
         # north pole triangle fan
         np = len(vertices) - 2
-        for j in range(v):
+        for j in range(u):
             nc = len(vertices) - 3 - j
-            nn = len(vertices) - 3 - (j + 1) % v
+            nn = len(vertices) - 3 - (j + 1) % u
             faces.append([np, nn, nc])
 
         return vertices, faces
