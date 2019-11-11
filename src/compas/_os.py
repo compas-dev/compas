@@ -163,7 +163,9 @@ def _native_symlinks(symlinks, raise_on_error):
 
     for source, link_name in symlinks:
         try:
-            os.symlink(source, link_name)
+            tmpLink = link_name+'_temp'
+            os.symlink(source, tmpLink)
+            os.rename(tmpLink, link_name)
             result.append(True)
         except OSError:
             if raise_on_error:
