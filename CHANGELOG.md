@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added factory methods for `compas_rhino.artists._Artist`
+
 ### Changed
 
 - set `compas_rhino.artists.FrameArtist` Layer clear to false by default
