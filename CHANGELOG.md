@@ -13,7 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- set `compas_rhino.artists.FrameArtist` Layer clear to false by default
+- Set `compas_rhino.artists.FrameArtist` layer clear to false by default.
+- Wrapped internals of RPC dispatch method in try-except to catch any import problems and report back on the client side.
 
 ### Removed
 
