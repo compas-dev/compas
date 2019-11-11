@@ -58,7 +58,7 @@ class FrameArtist(_PrimitiveArtist):
             {'start': origin, 'end': x, 'color': self.settings['color.xaxis'], 'arrow': 'end'},
             {'start': origin, 'end': y, 'color': self.settings['color.yaxis'], 'arrow': 'end'},
             {'start': origin, 'end': z, 'color': self.settings['color.zaxis'], 'arrow': 'end'}]
-        guids = compas_rhino.draw_points(points, layer=self.settings['layer'], clear=True)
+        guids = compas_rhino.draw_points(points, layer=self.settings['layer'], clear=False)
         guids += compas_rhino.draw_lines(lines, layer=self.settings['layer'], clear=False)
         return guids
 
