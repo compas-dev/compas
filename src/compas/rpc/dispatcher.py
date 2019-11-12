@@ -96,11 +96,13 @@ class Dispatcher(object):
                 module = self
         except Exception:
             odict['error'] = traceback.format_exc()
+
         else:
             try:
                 function = getattr(module, functionname)
             except AttributeError:
                 odict['error'] = "This function is not part of the API: {0}".format(functionname)
+
             else:
                 try:
                     idict = json.loads(args[0], cls=DataDecoder)
@@ -108,6 +110,7 @@ class Dispatcher(object):
                     odict['error'] = (
                         "API methods require a single JSON encoded dictionary as input.\n"
                         "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})")
+
                 else:
                     self._call(function, idict, odict)
 

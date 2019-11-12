@@ -5,7 +5,7 @@ from __future__ import division
 import compas_rhino
 
 
-__all__ = ['CommandMenu']
+__all__ = ['CommandMenu', 'CommandAction']
 
 
 class CommandMenu(object):
@@ -14,7 +14,7 @@ class CommandMenu(object):
         self.menu = menu
 
     def select_action(self):
-        def select(message, options):
+        def _select(message, options):
             if not options:
                 return
             names = [option["name"] for option in options]
@@ -28,10 +28,23 @@ class CommandMenu(object):
                     break
             if "action" in option:
                 return option.get("action")
+
             message = option["message"]
             options = option.get("options")
-            return select(message, options)
-        return select(self.menu["message"], self.menu["options"])
+
+            return _select(message, options)
+
+        return _select(self.menu["message"], self.menu["options"])
+
+
+class CommandAction(object):
+
+    def __init__(self, name, action):
+        self.name = name
+        self.action = action
+
+    def __call__(self, *args, **kwargs):
+        return self.action(*args, **kwargs)
 
 
 # ==============================================================================
@@ -39,4 +52,11 @@ class CommandMenu(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    def open(x):
+        return x
+
+    action = CommandAction('open', open)
+
+    print(action.name)
+    print(action('test'))

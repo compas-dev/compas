@@ -8,21 +8,6 @@ from compas_rhino.artists import _ShapeArtist
 __all__ = ['BoxArtist']
 
 
-def list_like(target, value, fillvalue=None):
-    p = len(target)
-
-    if isinstance(value, list):
-        matched_list = value
-    else:
-        matched_list = [value] * p
-
-    d = len(matched_list)
-    if d < p:
-        matched_list.extend([fillvalue] * (p - d))
-
-    return matched_list
-
-
 class BoxArtist(_ShapeArtist):
     """Artist for drawing ``Box`` objects.
 
