@@ -1,18 +1,15 @@
 import json
 import os
 import importlib
-import threading
-import time
 import traceback
+import threading
 
 from compas.utilities import DataDecoder
 from compas.utilities import DataEncoder
 
 try:
-    from http.server import BaseHTTPRequestHandler
     from http.server import SimpleHTTPRequestHandler
 except ImportError:
-    from BaseHTTPServer import BaseHTTPRequestHandler
     from SimpleHTTPServer import SimpleHTTPRequestHandler
 
 
@@ -26,6 +23,15 @@ class RequestHandler(SimpleHTTPRequestHandler):
 
     def ping(self):
         return 1
+
+    def stop_server(self):
+        thread = threading.Thread(target=self.shutdown)
+        thread.daemon = False
+        thread.start()
+        self.server.server_close()
+
+    def shutdown(self):
+        self.server.shutdown()
 
     # def do_GET(self):
     #     self.send_response(200)
@@ -54,6 +60,8 @@ class RequestHandler(SimpleHTTPRequestHandler):
 
         try:
             itype = self.headers.get('Content-Type')
+            print(itype)
+
             ilength = self.headers.get('Content-Length')
             ilength = int(ilength)
             ibody = self.rfile.read(ilength).decode('utf-8')
@@ -74,7 +82,7 @@ class RequestHandler(SimpleHTTPRequestHandler):
             result = function(*args, **kwargs)
             odata['data'] = result
 
-        except:
+        except Exception:
             odata['error'] = traceback.format_exc()
 
         finally:

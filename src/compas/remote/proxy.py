@@ -9,7 +9,6 @@ if compas.IPY:
 else:
     from subprocess import Popen
     from subprocess import PIPE
-    from subprocess import STDOUT
 
 try:
     from urllib.request import urlopen
@@ -92,6 +91,9 @@ class Proxy(object):
         self.profile = None
         self.start_server()
 
+    def __del__(self):
+        self.stop_server()
+
     @property
     def address(self):
         """The address (including the port) of the server host."""
@@ -116,13 +118,12 @@ class Proxy(object):
         while attempts:
             try:
                 result = self.send_request('ping')
-            except Exception as e:
+            except Exception:
                 if compas.IPY:
                     compas_rhino.wait()
                 result = 0
                 time.sleep(0.1)
                 attempts -= 1
-                print("    {} attempts left.".format(attempts))
             else:
                 break
         return result
@@ -161,17 +162,10 @@ class Proxy(object):
 
         else:
             args = [self._python, '-m', 'compas.remote.services.{}'.format(self._service)]
-            self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=self._env)
+            self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=self._env)
 
-        # this doesn't work because (at least on my computer)
-        # you have to allow the server to accept incoming connections
-        # while you click on the dialog to confirm
-        # the ping times out
-        # and the function throws an error
-        # it does start the server anyway though :)
-
-        # if not self.ping_server():
-        #     raise ThreadedServerError("Server unavailable at {}...".format(self.address))
+        if not self.ping_server():
+            raise ThreadedServerError("Server unavailable at {}...".format(self.address))
 
         print("Started {} service at {}...".format(self._service, self.address))
 
@@ -250,11 +244,11 @@ class Proxy(object):
             return
         try:
             self._process.terminate()
-        except:
+        except Exception:
             pass
         try:
             self._process.kill()
-        except:
+        except Exception:
             pass
 
 
