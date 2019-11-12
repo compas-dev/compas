@@ -92,7 +92,10 @@ class Proxy(object):
         self.start_server()
 
     def __del__(self):
-        self.stop_server()
+        try:
+            self.stop_server()
+        except Exception:
+            pass
 
     @property
     def address(self):
