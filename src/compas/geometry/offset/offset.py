@@ -12,7 +12,9 @@ from compas.geometry import intersection_line_line
 from compas.geometry import normal_polygon
 from compas.geometry import is_colinear
 
+from compas.utilities import iterable_like
 from compas.utilities import pairwise
+from compas.utilities import is_item_iterable
 
 
 __all__ = [
@@ -67,7 +69,10 @@ def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
     a, b = line
     ab = subtract_vectors(b, a)
     direction = normalize_vector(cross_vectors(normal, ab))
-    distances = match_value_sequence(distance, line)
+
+    if not is_item_iterable(distance):
+        distance = [distance]
+    distances = list(iterable_like(line, distance, distance[-1]))
 
     u = scale_vector(direction, distances[0])
     v = scale_vector(direction, distances[1])
@@ -134,7 +139,11 @@ def offset_polygon(polygon, distance, tol=1e-6):
 
     """
     normal = normal_polygon(polygon)
-    distances = match_value_sequence(distance, polygon)
+    
+    if not is_item_iterable(distance):
+        distance = [distance]
+    distances = iterable_like(polygon, distance, distance[-1])
+
     polygon = polygon + polygon[:1]
     segments = offset_segments(polygon, distances, normal)
 
@@ -168,7 +177,9 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
 
     """
 
-    distances = match_value_sequence(distance, polyline)
+    if not is_item_iterable(distance):
+        distance = [distance]
+    distances = iterable_like(polyline, distance, distance[-1])
     segments = offset_segments(polyline, distances, normal)
 
     offset = [segments[0][0]]
@@ -178,22 +189,6 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
     offset.append(segments[-1][1])
 
     return offset
-
-
-def match_value_sequence(value, sequence):
-    """
-    """
-    p = len(sequence)
-    if isinstance(value, (list, tuple)):
-        values = value
-    else:
-        values = [value] * p
-
-    d = len(values)
-    if d < p:
-        values.extend(values[-1:] * (p - d))
-
-    return values
 
 
 def intersect_lines(l1, l2, tol):

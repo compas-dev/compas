@@ -18,11 +18,15 @@ from itertools import chain
 from itertools import repeat
 from itertools import starmap
 from itertools import tee
-# from itertools import zip_longest
 from itertools import cycle
 # from itertools import filterfalse
 from itertools import combinations
 from itertools import chain
+
+try:
+    from itertools import zip_longest
+except ImportError:
+    from itertools import izip_longest as zip_longest
 
 
 __all__ = [
@@ -48,7 +52,8 @@ __all__ = [
     'first_true',
     'random_permutation',
     'random_combination',
-    'random_combination_with_replacement'
+    'random_combination_with_replacement',
+    'iterable_like'
 ]
 
 
@@ -273,14 +278,60 @@ def random_combination_with_replacement(iterable, r):
     return tuple(pool[i] for i in indices)
 
 
+def iterable_like(target, reference, fillvalue=None, as_single=False):
+    """
+    Creates an iterator from a reference object with size equivalent to that of a target iterable.
+
+    Values will be yielded one at a time until the target iterable is exhausted.
+    If target and reference are of uneven size, fillvalue will be used to 
+    substitute the missing values.
+
+    Parameters
+    ----------
+    target : iterable
+        An iterable to be matched in size.
+    reference: object
+        Object taken as departure point.
+    fillvalue : object, optional
+        Fill value. Defaults to `None`.
+    as_single : bool, optional
+        Reference should be regarded as a single entry. Defaults to `True`.
+
+    Returns
+    -------
+    object
+        The next value in the iterator
+
+    Examples
+    --------
+    >>> keys = [0, 1, 2]
+    >>> color = (255, 0, 0)
+    >>> [_ for _ in iterable_like(keys, color)]
+    [255, 0, 0]
+    >>> [_ for _ in iterable_like(keys, color, as_single=True)]
+    [(255, 0, 0), None, None]
+    >>> [_ for _ in iterable_like(keys, color, color, as_single=True)]
+    [(255, 0, 0), (255, 0, 0), (255, 0, 0)]
+    """
+    if as_single:
+        reference = [reference]
+
+    zipped = zip_longest(target, reference, fillvalue=fillvalue)
+    for _ in target:
+        yield next(zipped)[1]
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    s = range(5)
+    s = list(range(3))
+    t = {'foo': 'bar', 'baz': 'qux'}
 
     for u, v, w in window(s + s[0:2], 3):
         print(u, v, w)
-        
+
+    for u in iterable_like(t, s):
+        print(u)

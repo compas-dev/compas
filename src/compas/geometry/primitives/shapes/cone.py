@@ -285,7 +285,7 @@ class Cone(Shape):
 
         Returns
         -------
-        :class:`cone`
+        :class: `Cone`
             The transformed cone.
 
         Examples

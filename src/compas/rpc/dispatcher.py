@@ -88,25 +88,31 @@ class Dispatcher(object):
 
         functionname = parts[-1]
 
-        if len(parts) > 1:
-            modulename = ".".join(parts[:-1])
-            module = importlib.import_module(modulename)
-        else:
-            module = self
-
         try:
-            function = getattr(module, functionname)
-        except AttributeError:
-            odict['error'] = "This function is not part of the API: {0}".format(functionname)
+            if len(parts) > 1:
+                modulename = ".".join(parts[:-1])
+                module = importlib.import_module(modulename)
+            else:
+                module = self
+        except Exception:
+            odict['error'] = traceback.format_exc()
+
         else:
             try:
-                idict = json.loads(args[0], cls=DataDecoder)
-            except (IndexError, TypeError):
-                odict['error'] = (
-                    "API methods require a single JSON encoded dictionary as input.\n"
-                    "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})")
+                function = getattr(module, functionname)
+            except AttributeError:
+                odict['error'] = "This function is not part of the API: {0}".format(functionname)
+
             else:
-                self._call(function, idict, odict)
+                try:
+                    idict = json.loads(args[0], cls=DataDecoder)
+                except (IndexError, TypeError):
+                    odict['error'] = (
+                        "API methods require a single JSON encoded dictionary as input.\n"
+                        "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})")
+
+                else:
+                    self._call(function, idict, odict)
 
         return json.dumps(odict, cls=DataEncoder)
 

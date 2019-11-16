@@ -185,6 +185,24 @@ class Line(Primitive):
         v = self.direction * (0.5 * self.length)
         return self.start + v
 
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the line.
+
+        Returns
+        -------
+        dict
+            The line data.
+
+        """
+        return {'start': list(self.start),
+                'end': list(self.end)}
+
+    @classmethod
+    def from_data(cls, data):
+        line = Line(data['start'], data['end'])
+        return line
+
     # ==========================================================================
     # representation
     # ==========================================================================
@@ -276,34 +294,33 @@ class Line(Primitive):
     # transformations
     # ==========================================================================
 
-    def transform(self, matrix):
-        """Transform this ``Plane`` using a given transformation matrix.
+    def transform(self, transformation):
+        """Transform the line.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
-
+        transformation : :class:`Transformation`
+            The transformation used to transform the line.
         """
-        self.start.transform(matrix)
-        self.end.transform(matrix)
+        self.start.transform(transformation)
+        self.end.transform(transformation)
 
-    def transformed(self, matrix):
-        """Return a transformed copy of this ``Line`` using a given transformation matrix.
+    def transformed(self, transformation):
+        """Returns a transformed copy of the current line.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        transformation : :class:`Transformation`
+            The transformation used to transform the line.
 
         Returns
         -------
-        Line
-            The transformed copy.
+        :class: `Line`
+            The transformed line.
 
         """
         line = self.copy()
-        line.transform(matrix)
+        line.transform(transformation)
         return line
 
 

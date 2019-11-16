@@ -7,6 +7,9 @@ import compas_rhino
 __all__ = ["_Artist"]
 
 
+_ITEM_ARTIST = {}
+
+
 class _Artist(object):
     """Base class for all ``Artist`` objects.
 
@@ -29,6 +32,21 @@ class _Artist(object):
     def __init__(self, settings):
         self.settings = {'layer': None}
         self.settings.update(settings)
+
+    @staticmethod
+    def register(item_type, artist_type):
+        _ITEM_ARTIST[item_type] = artist_type
+
+    @staticmethod
+    def build(item, **kwargs):
+        artist_type = _ITEM_ARTIST[type(item)]
+        artist = artist_type(item, **kwargs)
+        return artist
+
+    @staticmethod
+    def build_as(item, artist_type, **kwargs):
+        artist = artist_type(item, **kwargs)
+        return artist
 
     @staticmethod
     def draw_collection(collection):

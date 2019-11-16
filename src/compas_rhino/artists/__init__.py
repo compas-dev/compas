@@ -57,5 +57,12 @@ from .meshartist import *
 from .networkartist import *
 from .volmeshartist import *
 
+from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Point
+
+_Artist.register(Point, PointArtist)
+_Artist.register(Frame, FrameArtist)
+_Artist.register(Line, LineArtist)
 
 __all__ = [name for name in dir() if not name.startswith('_')]
