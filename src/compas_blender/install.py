@@ -1,27 +1,57 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import os
 import sys
+import tempfile
 
-# from compas._os import system
+from compas._os import copy
+from compas._os import create_symlinks
+from compas._os import remove
 from compas._os import remove_symlink
-from compas._os import create_symlink
-
+from compas._os import rename
 
 __all__ = ['install']
 
+BOOTSTRAPPER_TEMPLATE = """
+import os
+import sys
 
-def install(blenderpath):
+import bpy
+
+ENVIRONMENT_NAME = r"{}"
+PYTHON_DIRECTORY = r"{}"
+
+PREVIOUS_ENVIRON = os.environ.copy()
+
+# Blender uses `register` and `unregister` functions now for the startup scripts
+def register():
+    sys.version = '{}'
+
+    # We delay the import of compas._os because
+    # it depends this very same compas_bootstrapper
+    import compas._os
+
+    # Update current env variables
+    compas._os.prepare_environment(os.environ)
+
+def unregister():
+    # Restore environment state to before registration
+    os.environ = PREVIOUS_ENVIRON
+
+"""
+
+
+def install(blender_path):
     """Install COMPAS for Blender.
 
     Parameters
     ----------
-    blenderpath : str
+    blender_path : str
         The path to the folder with the version number of Blender.
-        For example, on Mac: `'/Applications/blender.app/Contents/Resources/2.80'`.
-        On Windows: `'%PROGRAMFILES%\\Blender Foundation\\Blender\\2.80'`.
+        For example, on Mac: ``'/Applications/blender.app/Contents/Resources/2.80'``.
+        On Windows: ``'%PROGRAMFILES%\\Blender Foundation\\Blender\\2.80'``.
 
     Examples
     --------
@@ -30,44 +60,55 @@ def install(blenderpath):
         $ python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.80
 
     """
+    if not os.environ.get('CONDA_PREFIX'):
+        print('Conda environment not found. The installation into Blender requires an active conda environment with a matching Python version to continue.')
+        sys.exit(-1)
 
-    version = os.path.split(blenderpath)
+    path, version = os.path.split(blender_path)
 
-    print('Installing COMPAS for Blender {}.'.format(version))
+    print('Installing COMPAS for Blender {}'.format(version))
 
-    startup = os.path.join(blenderpath, 'scripts', 'startup')
-    exit_code = 0
+    startup = os.path.join(blender_path, 'scripts', 'startup')
 
-    sys_version = "\\n".join(sys.version.split("\n"))
-
-    blenderpython_src = os.path.join(blenderpath, 'python')
-    blenderpython_dst = os.path.join(blenderpath, 'original_python')
+    blenderpython_src = os.path.join(blender_path, 'python')
+    blenderpython_dst = os.path.join(blender_path, 'original_python')
     compas_bootstrapper = os.path.join(startup, 'compas_bootstrapper.py')
 
     if os.path.exists(blenderpython_dst):
+        print('Found existing installation, restoring bundled python installation...')
         if os.path.exists(blenderpython_src):
             remove_symlink(blenderpython_src)
-        os.rename(blenderpython_dst, blenderpython_src)
+
+        print('  Renaming original_python back to bundled python folder: {} => {}'.format(blenderpython_dst, blenderpython_src))
+        rename(blenderpython_dst, blenderpython_src)
 
     if os.path.exists(compas_bootstrapper):
-        os.unlink(compas_bootstrapper)
+        print('  Removing compas bootstrapper...')
+        remove(compas_bootstrapper)
 
-    try:
-        os.rename(blenderpython_src, blenderpython_dst)
-        create_symlink(os.environ['CONDA_PREFIX'], 'python')
+    print('Installing current conda environment into Blender...')
+    print('  Renaming bundled python folder to original_python: {} => {}'.format(blenderpython_src, blenderpython_dst))
+    rename(blenderpython_src, blenderpython_dst)
+    create_symlinks([(os.environ['CONDA_PREFIX'], blenderpython_src)])
 
-        with open(compas_bootstrapper, 'w') as f:
-            f.write('import sys\n')
-            f.write('sys.version = \'{}\'\n'.format(sys_version))
+    # Take either the CONDA environment directory or the current Python executable's directory
+    python_directory = os.environ.get('CONDA_PREFIX', None) or os.path.dirname(sys.executable)
+    environment_name = os.environ.get('CONDA_DEFAULT_ENV', '')
 
-    except Exception:
-        print("\nInstalling COMPAS for Blender {} failed.".format(version))
-        exit_code = -1
+    # Get current sys.version value, we will override it inside Blender
+    # because it seems Blender overrides it as well, but doing so breaks many things after having replaced the Python interpreter
+    sys_version = "\\n".join(sys.version.split("\n"))
 
-    else:
-        print("\nCOMPAS will be available in Blender {} after restarting.".format(version))
+    _handle, bootstrapper_temp_path = tempfile.mkstemp(suffix='.py', text=True)
 
-    sys.exit(exit_code)
+    with open(bootstrapper_temp_path, 'w') as f:
+        f.write(BOOTSTRAPPER_TEMPLATE.format(environment_name, python_directory, sys_version))
+
+    print('  Creating bootstrap script: {}'.format(compas_bootstrapper))
+    copy(bootstrapper_temp_path, compas_bootstrapper)
+
+    print()
+    print('COMPAS for Blender {} has been installed.'.format(version))
 
 
 # ==============================================================================
