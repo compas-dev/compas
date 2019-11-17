@@ -4,6 +4,7 @@ These are internal functions of the framework.
 Not intended to be used outside compas* packages.
 """
 import os
+import shutil
 import sys
 import tempfile
 
@@ -100,22 +101,35 @@ def select_python(python_executable):
     return python_executable or 'pythonw'
 
 
-def prepare_environment():
+def prepare_environment(env=None):
     """Prepares an environment context to run Python on.
 
     If Python is being used from a conda environment, this is roughly equivalent
     to activating the conda environment by setting up the correct environment
     variables.
+
+    Parameters
+    ----------
+    env : dict, optional
+        Dictionary of environment variables to modify. If ``None`` is passed, then
+        this will create a copy of the current ``os.environ``.
+
+    Returns
+    -------
+    dict
+        Updated environment variable dictionary.
     """
-    env = os.environ.copy()
+
+    if env is None:
+        env = os.environ.copy()
 
     if PYTHON_DIRECTORY:
         lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
-        if os.path.exists(lib_bin):
+        if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
             env['PATH'] += os.pathsep + lib_bin
 
         lib_bin = os.path.join(PYTHON_DIRECTORY, 'lib')
-        if os.path.exists(lib_bin):
+        if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
             env['PATH'] += os.pathsep + lib_bin
 
     return env
@@ -134,14 +148,14 @@ def _polyfill_symlinks(symlinks, raise_on_error):
     _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
 
     with open(temp_path, 'w') as mklink_cmd:
-        mklink_cmd.write('@echo off' + os.linesep)
-        mklink_cmd.write('SET /A symlink_result=0' + os.linesep)
-        mklink_cmd.write('ECHO ret=%symlink_result%' + os.linesep)
+        mklink_cmd.write('@echo off\n')
+        mklink_cmd.write('SET /A symlink_result=0\n')
+        mklink_cmd.write('ECHO ret=%symlink_result%\n')
         for i, (source, link_name) in enumerate(symlinks):
-            mklink_cmd.write("mklink /D {}{}".format(subprocess.list2cmdline([link_name, source]), os.linesep))
-            mklink_cmd.write('IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} {}'.format(2 ** i, os.linesep))
+            mklink_cmd.write("mklink /D {}\n".format(subprocess.list2cmdline([link_name, source])))
+            mklink_cmd.write('IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} \n'.format(2 ** i))
 
-        mklink_cmd.write('EXIT /B %symlink_result%' + os.linesep)
+        mklink_cmd.write('EXIT /B %symlink_result%\n')
 
     ret_value = _run_as_admin([temp_path])
 
@@ -251,8 +265,14 @@ def remove_symlink(symlink):
             os.rmdir(symlink)
         except NotADirectoryError:
             os.unlink(symlink)
+        except PermissionError:
+            if os.name != 'nt':
+                raise
+
+            _run_command_as_admin('rmdir', [symlink])
     else:
         os.unlink(symlink)
+
 
 
 def remove_symlinks(symlinks, raise_on_error=False):
@@ -287,6 +307,39 @@ def remove_symlinks(symlinks, raise_on_error=False):
     return result
 
 
+def rename(src, dst):
+    """Rename a file or directory."""
+    try:
+        os.rename(src, dst)
+    except (PermissionError, OSError):
+        if os.name != 'nt':
+            raise
+
+        _run_command_as_admin('move', [src, dst])
+
+
+def remove(path):
+    """Remove path."""
+    try:
+        os.remove(path)
+    except (PermissionError, OSError):
+        if os.name != 'nt':
+            raise
+
+        _run_command_as_admin('del', [path])
+
+
+def copy(src, dst):
+    """Copy a file from source to destination."""
+    try:
+        shutil.copy(src, dst)
+    except (PermissionError, OSError):
+        if os.name != 'nt':
+            raise
+
+        _run_command_as_admin('copy', [src, dst])
+
+
 def is_admin():
     """Determines whether the current user has admin rights.
 
@@ -302,6 +355,25 @@ def is_admin():
         return bool(ctypes.windll.shell32.IsUserAnAdmin())
     except:  # noqa: E722
         return False
+
+
+def _run_command_as_admin(command, arguments):
+    """Run a single command as admin on Windows.
+
+    Parameters
+    ----------
+    command : str
+        Command name.
+    arguments : list of str
+        List of arguments.
+    """
+    _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
+
+    with open(temp_path, 'w') as remove_symlink_cmd:
+        remove_symlink_cmd.write('@echo off\n')
+        remove_symlink_cmd.write('{} {}\n'.format(command, subprocess.list2cmdline(arguments)))
+
+    _run_as_admin([temp_path])
 
 
 def _run_as_admin(command):
@@ -502,6 +574,9 @@ __all__ = [
     'create_symlinks',
     'remove_symlink',
     'remove_symlinks',
+    'copy',
+    'remove',
+    'rename',
     'user_data_dir',
     'select_python',
     'prepare_environment',
