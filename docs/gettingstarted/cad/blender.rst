@@ -2,20 +2,16 @@
 Blender
 ********************************************************************************
 
-Blender ships with its own embedded version of Python but it is relatively
-simple to replace it with the one you have COMPAS installed on.
+Blender ships with its own embedded version of Python. Therefore, the simplest
+(and recommended) way to install COMPAS for Blender is to replace the embedded
+Python by the Python of a `conda` environment that already has COMPAS installed.
 
-.. warning::
+It is important that the version of Python installed in the `conda` environment matches
+the version of Python that was originally shipped with Blender. For Blender 2.8x
+this is Python 3.7x.
 
-    The latest releases of COMPAS only support Blender 2.8. This version of Blender
-    requires Python `3.7.x`.
-
-
-Replace Python
-==============
-
-It is recommended to create a new ``conda`` environment to make sure the python
-version matches exactly what Blender expects.
+Installation
+============
 
 .. raw:: html
 
@@ -86,28 +82,14 @@ Now configure Blender to use the newly installed environment:
 Verify setup
 ============
 
-In Blender, you should now be able to use COMPAS packages without any problems.
-Simply create and run the following script to verify everything is working properly.
+In Blender, at the interactive Python prompt (>>>) import the following packages
 
 .. code-block:: python
 
-    import compas
-
-    from compas.datastructures import Mesh
-    from compas_blender.artists import MeshArtist
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    artist = MeshArtist(mesh)
-
-    artist.draw_vertices()
-    artist.draw_edges()
-    artist.draw_faces()
-
-
-.. figure:: /_images/blender_verify.png
-     :figclass: figure
-     :class: figure-img img-fluid
+    >>> import compas
+    >>> import compas_blender
+    >>> import numpy
+    >>> import scipy
 
 
 Install Python packages
@@ -116,7 +98,7 @@ Install Python packages
 After replacing the embedded version of Python with the one in the virutual
 environment, as instructed above, it is not necessary to activate the environment
 before using Blender. However, when you want to update the installed packages,
-or add more packages, make sure you do it for the Python in the virtual environment.
+or add more packages, make sure to activate the Blender environment first.
 Otherwise, the changes will not have any effect.
 
 .. code-block:: bash
