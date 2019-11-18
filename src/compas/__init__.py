@@ -184,7 +184,7 @@ def set_precision(precision):
     precision = str(precision)
     d = decimal.Decimal(precision).as_tuple()
     if d.exponent < 0:
-        e = abs(d.exponent)
+        e = - d.exponent
         PRECISION = "{}f".format(e)
 
 

@@ -167,8 +167,8 @@ class Proxy(object):
         Returns
         -------
         ServerProxy
-            Instance of the proxy if reconnection succeeded,
-            otherwise ``None``.
+            Instance of the proxy if reconnection succeeded, otherwise ``None``.
+
         """
         server = ServerProxy(self.address)
         try:

@@ -26,8 +26,6 @@ Shape Artists
     :toctree: generated/
     :nosignatures:
 
-    BoxArtist
-
 
 Data Structure Artists
 ======================

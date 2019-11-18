@@ -5,7 +5,7 @@ Blender
 Blender ships with its own embedded version of Python but it is relatively
 simple to replace it with the one you have COMPAS installed on.
 
-.. note::
+.. warning::
 
     The latest releases of COMPAS only support Blender 2.8. This version of Blender
     requires Python `3.7.x`.
