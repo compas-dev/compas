@@ -50,9 +50,7 @@ Now configure Blender to use the newly installed environment:
 
 .. code-block:: bash
 
-    cd %PROGRAMFILES%\Blender Foundation\Blender\2.80
-    ren python original_python
-    mklink /j python %CONDA_PREFIX%
+    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender\2.80"
 
 .. raw:: html
 
@@ -72,9 +70,7 @@ Now configure Blender to use the newly installed environment:
 
 .. code-block:: bash
 
-    cd /Applications/blender.app/Contents/Resources/2.80
-    mv python original_python
-    ln -s $CONDA_PREFIX python
+    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.80
 
 .. raw:: html
 
