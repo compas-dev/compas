@@ -31,9 +31,11 @@ def uninstall_plugin(plugin, version=None):
     --------
     .. code-block:: bash
 
-        $ python -m compas_rhino.uninstall_plugin XXX{520ddb34-e56d-4a37-9c58-1da10edd1d62}
+        $ python -m compas_rhino.uninstall_plugin XXX
 
     """
+    raise NotImplementedError
+
     if version not in ('5.0', '6.0'):
         version = '6.0'
 
@@ -58,7 +60,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('plugin', help="The path to the plugin.")
+    parser.add_argument('plugin', help="The name of the plugin.")
     parser.add_argument('-v', '--version', help="The version of Rhino.")
 
     args = parser.parse_args()
