@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Set `compas_rhino.artists.FrameArtist` layer clear to false by default.
 - Wrapped internals of RPC dispatch method in try-except to catch any import problems and report back on the client side.
 - Stopping of HTTP server (`compas.remote`) is now handled properly through separate thread.
+- Fixed mutable init parameters of `RobotModel`
 
 ### Removed
 

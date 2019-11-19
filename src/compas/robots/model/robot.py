@@ -46,11 +46,11 @@ class RobotModel(object):
         attr: Non-standard attributes.
     """
 
-    def __init__(self, name, joints=[], links=[], materials=[], **kwargs):
+    def __init__(self, name, joints=None, links=None, materials=None, **kwargs):
         self.name = name
-        self.joints = joints
-        self.links = links
-        self.materials = materials
+        self.joints = joints or []
+        self.links = links or []
+        self.materials = materials or []
         self.attr = kwargs
         self.root = None
         self._rebuild_tree()
