@@ -2,9 +2,6 @@
 Tutorials
 *********
 
-COMPAS
-======
-
 .. toctree::
     :maxdepth: 1
     :titlesonly:
@@ -12,30 +9,7 @@ COMPAS
 
     tutorials/networks
     tutorials/meshes
-    tutorials/plotters
     tutorials/callbacks
-
-
-Python
-======
-
-.. toctree::
-    :maxdepth: 1
-    :titlesonly:
-    :glob:
-
-    tutorials/packages
-
-
-Rhino
-=====
-
-.. toctree::
-    :maxdepth: 1
-    :titlesonly:
-    :glob:
-
-    tutorials/xfunc
+    tutorials/geomaps
     tutorials/rpc
-    tutorials/toolbar
-    tutorials/plugins
+    tutorials/serialization
