@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 
-def _mesh_face_adjacency(mesh, nmax=10, radius=2.0):
+def _mesh_face_adjacency(mesh, nmax=10, radius=10.0):
     fkey_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
     index_fkey = {index: fkey for index, fkey in enumerate(mesh.faces())}
     points = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
@@ -26,33 +26,33 @@ def _mesh_face_adjacency(mesh, nmax=10, radius=2.0):
         _, closest = tree.query(points, k=k, n_jobs=-1)
 
     except Exception:
-        try:
-            from Rhino.Geometry import RTree
-            from Rhino.Geometry import Sphere
-            from Rhino.Geometry import Point3d
+        # try:
+        #     from Rhino.Geometry import RTree
+        #     from Rhino.Geometry import Sphere
+        #     from Rhino.Geometry import Point3d
 
-        except Exception:
-            from compas.geometry import KDTree
+        # except Exception:
+        from compas.geometry import KDTree
 
-            tree = KDTree(points)
-            closest = [tree.nearest_neighbors(point, k) for point in points]
-            closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
+        tree = KDTree(points)
+        closest = [tree.nearest_neighbors(point, k) for point in points]
+        closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
 
-        else:
-            tree = RTree()
-            for i, point in enumerate(points):
-                tree.Insert(Point3d(* point), i)
+        # else:
+        #     tree = RTree()
+        #     for i, point in enumerate(points):
+        #         tree.Insert(Point3d(* point), i)
 
-            def callback(sender, e):
-                data = e.Tag
-                data.append(e.Id)
+        #     def callback(sender, e):
+        #         data = e.Tag
+        #         data.append(e.Id)
 
-            closest = []
-            for i, point in enumerate(points):
-                sphere = Sphere(Point3d(* point), radius)
-                data = []
-                tree.Search(sphere, callback, data)
-                closest.append(data)
+        #     closest = []
+        #     for i, point in enumerate(points):
+        #         sphere = Sphere(Point3d(* point), radius)
+        #         data = []
+        #         tree.Search(sphere, callback, data)
+        #         closest.append(data)
 
     adjacency = {}
 
