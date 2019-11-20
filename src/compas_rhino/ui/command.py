@@ -27,7 +27,7 @@ class CommandMenu(object):
                 if option["name"] == name:
                     break
             if "action" in option:
-                return option.get("action")
+                return option
 
             message = option["message"]
             options = option.get("options")
