@@ -1,6 +1,7 @@
 cython
 matplotlib >=2.2, <3.0; python_version >= '2.7' and python_version < '3.0'
-matplotlib >=2.2, <3.1; python_version >= '3.5'
+matplotlib >=2.2, <3.1; python_version >= '3.5' and sys_platform == 'win32'
+matplotlib >=2.2; python_version >= '3.5' and sys_platform != 'win32'
 networkx
 numba
 numpy >=1.15.4
