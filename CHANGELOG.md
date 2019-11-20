@@ -9,10 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `compas_rhino.etoforms.ImageForm`.
+
 ### Changed
+
+- Changed `compas_rhino.install_plugin` to use only the plugin name, w/o the GUID.
 
 ### Removed
 
+- Removed `compas_rhino.ui.Controller`.
+- Removed `compas_rhino.ui.Button`.
 
 ## [[0.11.2] 2019-11-19] 2019-11-19
 
