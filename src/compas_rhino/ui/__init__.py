@@ -13,12 +13,13 @@ Classes
     :nosignatures:
 
     CommandMenu
+    Mouse
+    Rui
 
 """
 
-from .button import *
 from .command import *
-from .controller import *
 from .mouse import *
+from .rui import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

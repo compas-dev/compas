@@ -3,20 +3,18 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import json
 import inspect
 
 import compas
 
 import uuid
-from xml.etree import ElementTree as ET
-from xml.dom import minidom
+
+if not compas.IPY:
+    from xml.etree import ElementTree as ET
+    from xml.dom import minidom
 
 
-__all__ = [
-    'Rui',
-    'compile_rui'
-]
+__all__ = ['Rui']
 
 
 TPL_RUI = '''<?xml version="1.0" encoding="utf-8"?>
@@ -192,41 +190,41 @@ def get_public_methods(obj):
     return [method for method in methods if not method[0].startswith('_')]
 
 
-def get_macros(controller, instance_name):
-    methods = get_public_methods(controller)
-    macros = []
-    for n, o in methods:
-        annotations = get_parsed_object_comments(o, separator='=>')
-        name = annotations.get('name') or n
-        script = annotations.get('script') or '-_RunPythonScript ({0}.{1}())'.format(instance_name, name)
-        tooltip = annotations.get('tooltip')
-        help_text = annotations.get('help_text') or tooltip
-        text = annotations.get('text') or name
-        button_text = annotations.get('button_text') or text
-        menu_text = annotations.get('menu_text') or ' '.join(text.split('_'))
-        macros.append({
-            'name': instance_name + '.' + name,
-            'script': script,
-            'tooltip': tooltip,
-            'help_text': help_text,
-            'button_text': button_text,
-            'menu_text': menu_text,
-        })
-    return macros
+# def get_macros(controller, instance_name):
+#     methods = get_public_methods(controller)
+#     macros = []
+#     for n, o in methods:
+#         annotations = get_parsed_object_comments(o, separator='=>')
+#         name = annotations.get('name') or n
+#         script = annotations.get('script') or '-_RunPythonScript ({0}.{1}())'.format(instance_name, name)
+#         tooltip = annotations.get('tooltip')
+#         help_text = annotations.get('help_text') or tooltip
+#         text = annotations.get('text') or name
+#         button_text = annotations.get('button_text') or text
+#         menu_text = annotations.get('menu_text') or ' '.join(text.split('_'))
+#         macros.append({
+#             'name': instance_name + '.' + name,
+#             'script': script,
+#             'tooltip': tooltip,
+#             'help_text': help_text,
+#             'button_text': button_text,
+#             'menu_text': menu_text,
+#         })
+#     return macros
 
 
-def find_macro(name, macros):
-    for i, macro in enumerate(macros):
-        if macro['name'] == name:
-            return i, macro
-    return None, None
+# def find_macro(name, macros):
+#     for i, macro in enumerate(macros):
+#         if macro['name'] == name:
+#             return i, macro
+#     return None, None
 
 
-def update_macro(macros, name, key, value):
-    i, macro = find_macro(name, macros)
-    if macro:
-        macro[key] = value
-    macros[i] = macro
+# def update_macro(macros, name, key, value):
+#     i, macro = find_macro(name, macros)
+#     if macro:
+#         macro[key] = value
+#     macros[i] = macro
 
 
 class Rui(object):
@@ -420,63 +418,63 @@ class Rui(object):
         root.append(e_item)
 
 
-def compile_rui(oclass, opath, rui_config='rui_config.json'):
-    """Compile an RUI file from a MacroController class.
+# def compile_rui(oclass, opath, rui_config='rui_config.json'):
+#     """Compile an RUI file from a MacroController class.
 
-    Parameters
-    ----------
-    oclass : MacroController
-        The controller class.
-    opath : str
-        The module path of the controller class.
-    rui_config : str, optional
-        The path of the configuration file.
-        Default is ``'rui_config.json'``
+#     Parameters
+#     ----------
+#     oclass : MacroController
+#         The controller class.
+#     opath : str
+#         The module path of the controller class.
+#     rui_config : str, optional
+#         The path of the configuration file.
+#         Default is ``'rui_config.json'``
 
-    Returns
-    -------
-    None
+#     Returns
+#     -------
+#     None
 
-    Examples
-    --------
-    .. code-block:: python
+#     Examples
+#     --------
+#     .. code-block:: python
 
-        #
+#         #
 
-    """
+#     """
 
-    if not oclass.instancename:
-        raise Exception('MacroController instance name not set.')
+#     if not oclass.instancename:
+#         raise Exception('MacroController instance name not set.')
 
-    with open(os.path.join(rui_config), 'r') as fp:
-        config = json.load(fp)
+#     with open(os.path.join(rui_config), 'r') as fp:
+#         config = json.load(fp)
 
-    macros = get_macros(oclass, oclass.instancename)
+#     macros = get_macros(oclass, oclass.instancename)
 
-    init_script = [
-        '-_RunPythonScript ResetEngine (',
-        'import rhinoscriptsyntax as rs;',
-        'import sys;',
-        'import os;',
-        'path = rs.ToolbarCollectionPath(\'{}\');'.format(oclass.instancename),
-        'path = os.path.dirname(path);',
-        'sys.path.insert(0, path);',
-        'from {} import {};'.format(opath, oclass.__name__),
-        '{} = {}();'.format(oclass.instancename, oclass.__name__),
-        '{}.init();'.format(oclass.instancename),
-        ')'
-    ]
+#     init_script = [
+#         '-_RunPythonScript ResetEngine (',
+#         'import rhinoscriptsyntax as rs;',
+#         'import sys;',
+#         'import os;',
+#         'path = rs.ToolbarCollectionPath(\'{}\');'.format(oclass.instancename),
+#         'path = os.path.dirname(path);',
+#         'sys.path.insert(0, path);',
+#         'from {} import {};'.format(opath, oclass.__name__),
+#         '{} = {}();'.format(oclass.instancename, oclass.__name__),
+#         '{}.init();'.format(oclass.instancename),
+#         ')'
+#     ]
 
-    update_macro(macros, '{}.init'.format(oclass.instancename), 'script', ''.join(init_script))
+#     update_macro(macros, '{}.init'.format(oclass.instancename), 'script', ''.join(init_script))
 
-    rui = Rui('./{}.rui'.format(oclass.instancename))
+#     rui = Rui('./{}.rui'.format(oclass.instancename))
 
-    rui.init()
-    rui.add_macros(macros)
-    rui.add_menus(config['menus'])
-    rui.add_toolbars(config['toolbars'])
-    rui.add_toolbargroups(config['toolbargroups'])
-    rui.write()
+#     rui.init()
+#     rui.add_macros(macros)
+#     rui.add_menus(config['menus'])
+#     rui.add_toolbars(config['toolbars'])
+#     rui.add_toolbargroups(config['toolbargroups'])
+#     rui.write()
 
 
 # ==============================================================================

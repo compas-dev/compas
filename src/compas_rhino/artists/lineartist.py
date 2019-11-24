@@ -62,7 +62,7 @@ class LineArtist(_PrimitiveArtist):
         """
         start = list(self.primitive.start)
         end = list(self.primitive.end)
-        lines = [{'start': start, 'end': end, 'color': self.settings['color.Line']}]
+        lines = [{'start': start, 'end': end, 'color': self.settings['color.line']}]
         guids = compas_rhino.draw_lines(lines, layer=self.settings['layer'], clear=False)
         if guids:
             return guids[0]

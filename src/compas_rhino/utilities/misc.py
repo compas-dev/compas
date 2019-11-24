@@ -5,7 +5,6 @@ from __future__ import division
 import os
 import sys
 import ast
-import inspect
 
 import compas
 
@@ -36,7 +35,7 @@ except ImportError:
 try:
     from compas_rhino.etoforms import PropertyListForm
 
-except:
+except Exception:
     try:
         from Rhino.UI.Dialogs import ShowPropertyListBox
 
@@ -204,7 +203,7 @@ def display_html():
 def update_named_values(names, values, message='', title='Update named values', evaluate=False):
     try:
         dialog = PropertyListForm(names, values)
-    except:
+    except Exception:
         values = ShowPropertyListBox(message, title, names, values)
     else:
         if dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow):
@@ -225,7 +224,7 @@ def update_named_values(names, values, message='', title='Update named values', 
 
 
 def update_settings(settings, message='', title='Update settings'):
-    names  = sorted(settings.keys())
+    names = sorted(settings.keys())
     values = [str(settings[name]) for name in names]
     values = update_named_values(names, values, message=message, title=title)
     if values:

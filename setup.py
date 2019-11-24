@@ -21,9 +21,9 @@ def read(*names, **kwargs):
 long_description = read('README.md')
 requirements = read('requirements.txt').split('\n')
 optional_requirements = {
-    "viewers"  : ['PyOpenGL', 'PySide2', 'vtk'],
-    "hpc"      : ['pyopencl', 'pycuda'],
-    "robotics" : ['roslibpy']
+    "viewers": ['PyOpenGL', 'PySide2'],
+    "hpc": ['pyopencl', 'pycuda'],
+    "robotics": ['roslibpy']
 }
 
 setup(
@@ -72,7 +72,7 @@ setup(
     entry_points={
         'console_scripts': [
             'compas_rpc=compas.rpc.__main__:main',
-            # 'compas_install_rhinoplugin=compas_rhino.install_plugin:main'
+            'compas_install_rhinoplugin=compas_rhino.install_plugin:main'
         ]
     },
     ext_modules=[],

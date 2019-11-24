@@ -80,7 +80,7 @@ def mesh_from_guid(cls, guid):
     """
     vertices, faces = compas_rhino.get_mesh_vertices_and_faces(guid)
     faces = [face[:-1] if face[-2] == face[-1] else face for face in faces]
-    mesh  = cls.from_vertices_and_faces(vertices, faces)
+    mesh = cls.from_vertices_and_faces(vertices, faces)
     return mesh
 
 
@@ -467,7 +467,7 @@ def mesh_draw_faces(mesh,
 
     if clear_faces:
         artist.clear_faces()
-    
+
     guids = artist.draw_faces(color=color)
 
     if redraw:
@@ -891,6 +891,7 @@ def mesh_move_vertex(mesh, key, constraint=None, allow_off=False):
     """
     return VertexModifier.move_vertex(mesh, key, constraint=constraint, allow_off=allow_off)
 
+
 def mesh_move_vertices(mesh, keys):
     """Move on vertices of the mesh.
 
@@ -908,6 +909,7 @@ def mesh_move_vertices(mesh, keys):
 
     """
     return VertexModifier.move_vertices(mesh, keys)
+
 
 def mesh_update_edge_attributes(mesh, keys, names=None):
     """Update the attributes of the edges of a mesh.
