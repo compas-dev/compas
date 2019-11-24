@@ -7,15 +7,19 @@
 ## Main Developers
 
 - Gonzalo Casas <<casas@arch.ethz.ch>> [@gonzalocasas](https://github.com/gonzalocasas)
-- Andrew Liew <<a.liew@sheffield.ac.uk>> [@andrewliew](https://github.com/andrewliew)
-- Tomás Méndez Echenagucia <<mendez@arch.ethz.ch>> [@tmsmendez](https://github.com/tmsmendez)
-- Matthias Rippmann <<rippmann@arch.ethz.ch>> [@Rippmann](https://github.com/Rippmann)
 - Romana Rust <<rust@arch.ethz.ch>> [@romanarust](https://github.com/romanarust)
+- Mathias Bernhard <<bernhard@arch.ethz.ch>> [@worbit](https://github.com/worbit)
 
 ## Contributors
 
+- Andrew Liew <<a.liew@sheffield.ac.uk>> [@andrewliew](https://github.com/andrewliew)
+- Tomás Méndez Echenagucia <<mendez@arch.ethz.ch>> [@tmsmendez](https://github.com/tmsmendez)
+- Matthias Rippmann <<rippmann@arch.ethz.ch>> [@Rippmann](https://github.com/Rippmann)
 - Kathrin Dörfler <<doerfler@arch.ethz.ch>> [@Kathrin3010](https://github.com/Kathrin3010)
 - Robin Oval <<oval@arch.ethz.ch>> [@robin-oval](https://github.com/robin-oval)
 - Rafael Pastrana <<pastrana@arch.ethz.ch>> [@arpastrana](https://github.com/arpastrana)
 - Achilleas Xydis <<xydis@arch.ethz.ch>> [@Achillx](https://github.com/Achillx)
 - Elitsa Dimitrova <<e.dimitrova77@gmail.com>> [@elidim](https://github.com/elidim)
+- Li Chen <<li.chen@arch.ethz.ch>> [@licini](https://github.com/licini)
+- Anton Johansson <<anton@tetov.se>> [@tetov](https://github.com/tetov)
+- Victor Leung <<yck011522@gmail.com>> [@yck011522](https://github.com/yck011522)

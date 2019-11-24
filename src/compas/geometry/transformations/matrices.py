@@ -284,13 +284,13 @@ def decompose_matrix(M):
     if row[0][2] != -1. and row[0][2] != 1.:
 
         beta1 = math.asin(-row[0][2])
-        beta2 = math.pi - beta1
+        # beta2 = math.pi - beta1
 
         alpha1 = math.atan2(row[1][2] / math.cos(beta1), row[2][2] / math.cos(beta1))
-        alpha2 = math.atan2(row[1][2] / math.cos(beta2), row[2][2] / math.cos(beta2))
+        # alpha2 = math.atan2(row[1][2] / math.cos(beta2), row[2][2] / math.cos(beta2))
 
         gamma1 = math.atan2(row[0][1] / math.cos(beta1), row[0][0] / math.cos(beta1))
-        gamma2 = math.atan2(row[0][1] / math.cos(beta2), row[0][0] / math.cos(beta2))
+        # gamma2 = math.atan2(row[0][1] / math.cos(beta2), row[0][0] / math.cos(beta2))
 
         angles = [alpha1, beta1, gamma1]
         # TODO: check for alpha2, beta2, gamma2 needed?

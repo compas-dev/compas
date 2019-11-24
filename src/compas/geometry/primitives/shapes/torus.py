@@ -2,8 +2,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from math import cos
 from math import pi
+from math import sin
 
+from compas.geometry import matrix_from_frame
+from compas.geometry import transform_points
+from compas.geometry.primitives import Frame
 from compas.geometry.primitives import Plane
 from compas.geometry.primitives.shapes import Shape
 
@@ -159,6 +164,43 @@ class Torus(Shape):
         """
         return self.data
 
+    def to_vertices_and_faces(self, **kwargs):
+        """Returns a list of vertices and faces"""
+
+        u = kwargs.get('u') or 10
+        v = kwargs.get('v') or 10
+        if u < 3:
+            raise ValueError('The value for u should be u > 3.')
+        if v < 3:
+            raise ValueError('The value for v should be v > 3.')
+
+        theta = pi*2 / u
+        phi = pi*2 / v
+        vertices = []
+        for i in range(u):
+            for j in range(v):
+                x = cos(i * theta) * (self.radius_axis + self.radius_pipe * cos(j * phi))
+                y = sin(i * theta) * (self.radius_axis + self.radius_pipe * cos(j * phi))
+                z = self.radius_pipe * sin(j * phi)
+                vertices.append([x, y, z])
+
+        # transform vertices to torus' plane
+        frame = Frame.from_plane(self.plane)
+        M = matrix_from_frame(frame)
+        vertices = transform_points(vertices, M)
+
+        faces = []
+        for i in range(u):
+            ii = (i + 1) % u
+            for j in range(v):
+                jj = (j + 1) % v
+                a = i * v + j
+                b = ii * v + j
+                c = ii * v + jj
+                d = i * v + jj
+                faces.append([a, b, c, d])
+        return vertices, faces
+
     # ==========================================================================
     # representation
     # ==========================================================================
@@ -275,8 +317,6 @@ class Torus(Shape):
 
 
 if __name__ == '__main__':
-    from compas.geometry import Frame
-    from compas.geometry import Plane
     from compas.geometry import Transformation
 
     torus = Torus(Plane.worldXY(), 5, 2)

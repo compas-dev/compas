@@ -2,12 +2,16 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from math import cos
 from math import pi
+from math import sin
 from math import sqrt
 
+from compas.geometry import matrix_from_frame
+from compas.geometry import transform_points
 from compas.geometry.primitives import Circle
+from compas.geometry.primitives import Frame
 from compas.geometry.primitives import Plane
-
 from compas.geometry.primitives.shapes import Shape
 
 __all__ = ['Cone']
@@ -167,6 +171,35 @@ class Cone(Shape):
         """Float: The volume of the cone."""
         return pi * self.circle.radius**2 * (self.height / 3)
 
+    def to_vertices_and_faces(self, **kwargs):
+        """Returns a list of vertices and faces"""
+
+        u = kwargs.get('u') or 10
+        if u < 3:
+            raise ValueError('The value for u should be u > 3.')
+
+        vertices = []
+        a = 2 * pi / u
+        for i in range(u):
+            x = self.circle.radius * cos(i * a)
+            y = self.circle.radius * sin(i * a)
+            vertices.append([x, y, 0])
+        vertices.append([0, 0, self.height])
+
+        # transform vertices to cylinder's plane
+        frame = Frame.from_plane(self.circle.plane)
+        M = matrix_from_frame(frame)
+        vertices = transform_points(vertices, M)
+
+        faces = []
+        last = len(vertices) - 1
+        for i in range(u):
+            faces.append([i, (i + 1) % u, last])
+        faces.append([i for i in range(u)])
+        faces[-1].reverse()
+
+        return vertices, faces
+
     # ==========================================================================
     # representation
     # ==========================================================================
@@ -252,7 +285,7 @@ class Cone(Shape):
 
         Returns
         -------
-        :class:`cone`
+        :class: `Cone`
             The transformed cone.
 
         Examples
@@ -278,9 +311,7 @@ class Cone(Shape):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.geometry import Frame
     from compas.geometry import Transformation
-    from compas.geometry import Circle
 
     cone = Cone(Circle(Plane.worldXY(), 5), 7)
     frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])

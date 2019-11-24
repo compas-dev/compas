@@ -28,7 +28,7 @@ optional_requirements = {
 
 setup(
     name='COMPAS',
-    version='0.9.0',
+    version='0.11.2',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -69,8 +69,12 @@ setup(
     install_requires=requirements,
     python_requires='>=2.7',
     extras_require=optional_requirements,
-    entry_points={},
+    entry_points={
+        'console_scripts': [
+            'compas_rpc=compas.rpc.__main__:main',
+            # 'compas_install_rhinoplugin=compas_rhino.install_plugin:main'
+        ]
+    },
     ext_modules=[],
-    cmdclass={},
-    scripts=[]
+    cmdclass={}
 )

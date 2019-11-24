@@ -26,6 +26,8 @@ __all__ = [
     'is_color_hex',
     'is_color_light',
 
+    'Colormap',
+
     'red',
     'green',
     'blue',
@@ -50,7 +52,7 @@ white = 255, 255, 255
 black = 0, 0, 0
 
 
-BASE16  = '0123456789abcdef'
+BASE16 = '0123456789abcdef'
 
 
 try:
@@ -59,30 +61,9 @@ except Exception:
     HEX_DEC = {v: int(v, 16) for v in [x + y for x in BASE16 for y in BASE16]}
 
 
-class Color(object):
-    """"""
-
-    def __init__(self):
-        pass
-
-    @classmethod
-    def from_rgb(cls, rgb):
-        pass
-
-    @classmethod
-    def from_hex(cls, hex):
-        pass
-
-    def to_rgb(self):
-        pass
-
-    def to_hex(self):
-        pass
-
-
 def i_to_rgb(i, normalize=False):
-    i  = max(i, 0.0)
-    i  = min(i, 1.0)
+    i = max(i, 0.0)
+    i = min(i, 1.0)
     if i == 0.0:
         r, g, b = 0, 0, 255
     elif 0.0 < i < 0.25:
@@ -110,38 +91,61 @@ def i_to_rgb(i, normalize=False):
 
 
 def i_to_red(i):
-    i  = max(i, 0.0)
-    i  = min(i, 1.0)
+    i = max(i, 0.0)
+    i = min(i, 1.0)
     gb = min((1 - i) * 255, 255)
     return (255, int(gb), int(gb))
 
 
 def i_to_green(i):
-    i  = max(i, 0.0)
-    i  = min(i, 1.0)
+    i = max(i, 0.0)
+    i = min(i, 1.0)
     rb = min((1 - i) * 255, 255)
     return (int(rb), 255, int(rb))
 
 
 def i_to_blue(i):
-    i  = max(i, 0.0)
-    i  = min(i, 1.0)
+    i = max(i, 0.0)
+    i = min(i, 1.0)
     rg = min((1 - i) * 255, 255)
     return (int(rg), int(rg), 255)
 
 
 def i_to_white(i):
-    i   = max(i, 0.0)
-    i   = min(i, 1.0)
+    i = max(i, 0.0)
+    i = min(i, 1.0)
     rgb = min((1 - i) * 255, 255)
     return (int(rgb), int(rgb), int(rgb))
 
 
 def i_to_black(i):
-    i   = max(i, 0.0)
-    i   = min(i, 1.0)
+    i = max(i, 0.0)
+    i = min(i, 1.0)
     rgb = min(i * 255, 255)
     return (int(rgb), int(rgb), int(rgb))
+
+
+class Colormap(object):
+
+    colorfuncs = {
+        'rgb': i_to_rgb,
+        'red': i_to_red,
+        'green': i_to_green,
+        'blue': i_to_blue,
+        'white': i_to_white,
+        'black': i_to_black
+    }
+
+    def __init__(self, data, spec):
+        self.data = data
+        self.dmin = min(data)
+        self.dmax = max(data)
+        self.dspan = self.dmax - self.dmin
+        self.colorfunc = Colormap.colorfuncs[spec]
+
+    def __call__(self, value):
+        i = (value - self.dmin) / (self.dspan)
+        return self.colorfunc(i)
 
 
 # see: http://stackoverflow.com/questions/4296249/how-do-i-convert-a-hex-triplet-to-an-rgb-tuple-and-back
@@ -270,11 +274,6 @@ def is_color_light(color):
 
 if __name__ == '__main__':
 
-    print(hex_to_rgb('#000000'))
-    print(hex_to_rgb('#ffffff'))
-    print(rgb_to_hex(0, 0, 0))
-    print(rgb_to_hex(1, 1, 1))
-    print(rgb_to_hex(1.0, 1.0, 1.0))
-    print(rgb_to_hex(255, 255, 255))
-    print(rgb_to_hex(255., 255., 255.0))
-    print(is_color_hex('#000'))
+    import doctest
+
+    doctest.testmod(globs=globals())

@@ -11,7 +11,95 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+### Removed
+
+
+## [[0.11.2] 2019-11-19] 2019-11-19
+
+### Added
+
+- Added factory methods for `compas_rhino.artists._Artist`
+
+### Changed
+
+- Set `compas_rhino.artists.FrameArtist` layer clear to false by default.
+- Wrapped internals of RPC dispatch method in try-except to catch any import problems and report back on the client side.
+- Stopping of HTTP server (`compas.remote`) is now handled properly through separate thread.
+- Fixed mutable init parameters of `RobotModel`
+- Fixed bug in `mesh_quads_to_triangles` that caused face data to be deleted even when not necessary.
+- Switched to `compas.geometry.KDTree` as fallback for `scipy.spatial.cKDTree` instead of Rhino `RTree` because it currently fails.
+
+### Removed
+
+
+## [0.11.0] 2019-11-09
+
+### Added
+
+- Added `iterable_like` to `compas.utilities.itertools_`
+- Added `compas.geometry.icp_numpy` for pointcloud alignment using ICP.
+- Added RPC command-line utility: `$ compas_rpc {start|stop} [port]`
+- Added `__version__` to `compas_plotters`.
+- Added `compas_plotters` to `.bumpversion.cfg`.
+- Added `Colormap` to `compas.utilities`.
+- Added `is_line_line_colinear()` to `compas.geometry`
+- Added link to Github wiki for devguide.
+- Added pointcloud alignment example to docs.
+- Show git hash on `compas.__version__` if installed from git.
+- Added `autopep8` to dev requirements.
+- Added methods `add_joint` and `add_link` to `RobotModel` 
+- Added support for geometric primitives to JSON data encoder and decoder.
+- Added support for `data` to all geometric primitives.
+
+### Changed
+
+- Docs are only deployed to github pages for tagged commits.
+- Fixing printing issue with `compas.geometry.Quarternion` in ironPython.
+- Fixed a missing import in `compas.geometry.Polygon`.
+- Removed unused imports in `compas.geometry.Polyline`.
+- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.conjugated()` instead which returns a new quarternion object.
+- Fixed `rotation` property of `Transformation`.
+- Simplified plugin installation (use plugin name only, without GUID).
+- Bind RPC server to `0.0.0.0` instead of `localhost`.
+- Fixed different argument naming between Rhino5 and Rhino6 of `rs.LayerVisible()` in `compas_rhino.utilities.objects`.
+
+### Removed
+
+## [0.10.0] 2019-10-28
+
+### Added
+
+- Added method for computing the determinant of the matrix of a transformation `compas.geometry.Transformation.determinant`.
+- Added method for transposing (the matrix of) a transformation in-place `compas.geometry.Transformation.transpose`.
+- Added method creating a transposed copy of a transformation `compas.geometry.Transformation.transposed`.
+- Added method for invertig (the matrix of) a transformation in-place `compas.geometry.Transformation.invert`.
+- Added `compas.geometry.Transformation.inverted` as an alias for `compas.geometry.Transformation.inverse`.
+- Added method creating a copy of a transformation instance with a given transformation concatenated `compas.geometry.Transformation.concatenated`.
+- Added method `to_vertices_and_faces` to all the classes inheriting from `compas.geometry.Shape` to create a `Mesh` representation of them.
+
+### Changed
+
+- Changed `compas.geometry.Transformation.inverse` to return an inverted copy of the transformation.
+- Changed `compas.geometry.Transformation.decompose` to `compas.geometry.Transformation.decomposed`.
+- Changed `compas.geometry.Transformation.concatenate` to add another transformation to the transformation instance.
+
+### Removed
+
+
+## [0.9.1] 2019-10-28
+
+### Added
+
+- Added `compas.geometry.Point.transform_collection` and `compas.geometry.Point.transformed_collection`.
+- Added `compas.geometry.Vector.transform_collection` and `compas.geometry.Vector.transformed_collection`.
+- Added `compas.geometry.Line.transform_collection` and `compas.geometry.Line.transformed_collection`.
+- Added support for new Python plugin location for Rhino 6.0 on Mac.
+- Added `compas.geometry.bestfit_frame_numpy`
+
+### Changed
+
 - Fixed transformation of start and end point of `compas.geometry.Line` to update the point objects in place.
+- Fixed return value of `compas.numerical.pca_numpy` to return mean not as nested list.
 
 ### Removed
 
@@ -19,7 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.9.0] 2019-10-21
 
 ### Added
-- Added `mesh_subdivide_frames` to `compas.datastructures.Mesh`
+
 - Added `matrix_change_basis`, `Transformation.change_basis`
 - Added `matrix_from_frame_to_frame`
 - Added non-numpy versions of `global_coords`, `local_coords`
@@ -37,7 +125,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` to `Frame.to_local_coords` and `Frame.to_world_coords`.
 
 ### Removed
-
 
 ## [0.8.1] 2019-10-01
 
@@ -115,7 +202,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix loss of precision during mesh welding in `compas.datastructures.mesh_weld`.
 
 ### Removed
-
 
 ## [0.7.1] 2019-06-29
 

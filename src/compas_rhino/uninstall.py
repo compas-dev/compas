@@ -42,10 +42,7 @@ def uninstall(version=None, packages=None):
     if version not in ('5.0', '6.0'):
         version = '6.0'
 
-    if system == 'win32':
-        print('Uninstalling COMPAS packages from Rhino {0} IronPython lib:'.format(version))
-    elif system == 'darwin':
-        print('Uninstalling COMPAS packages from Rhino IronPython lib.')
+    print('Uninstalling COMPAS packages from Rhino {0} IronPython lib:'.format(version))
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
@@ -64,7 +61,7 @@ def uninstall(version=None, packages=None):
 
     environment_name = bootstrapper_data.get('ENVIRONMENT_NAME', '')
     if environment_name:
-        print('Packages installed from environment: {}'.format(environment_name))
+        print('The following packages have been detected and will be uninstalled (environment name={})'.format(environment_name))
 
     results = []
     symlinks = []
@@ -99,7 +96,7 @@ def uninstall(version=None, packages=None):
         if status != 'OK':
             exit_code = -1
 
-    print('\nCompleted.')
+    print('\nUninstall completed.')
     sys.exit(exit_code)
 
 

@@ -2,11 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.basic import scale_vector
-from compas.geometry.basic import normalize_vector
-from compas.geometry.basic import add_vectors
-from compas.geometry.basic import subtract_vectors
-
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
@@ -48,10 +43,6 @@ def bernstein(n, k, t):
     return binomial_coefficient(n, k) * t ** k * (1 - t) ** (n - k)
 
 
-class BezierException(Exception):
-    pass
-
-
 class Bezier(Primitive):
     """A Bezier curve.
 
@@ -74,6 +65,33 @@ class Bezier(Primitive):
     def __init__(self, points):
         self._points = []
         self.points = points
+
+    # ==========================================================================
+    # factory
+    # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(data['points'])
+
+    # ==========================================================================
+    # descriptors
+    # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the curve.
+
+        Returns
+        -------
+        dict
+            The curve's data.
+        """
+        return {'points': [list(point) for point in self.points]}
+
+    @data.setter
+    def data(self, data):
+        self.points = data['points']
 
     @property
     def points(self):
@@ -101,6 +119,10 @@ class Bezier(Primitive):
     def degree(self):
         """The degree of the curve."""
         return len(self.points) - 1
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def compute_point(self, t):
         """Compute a point on the curve.

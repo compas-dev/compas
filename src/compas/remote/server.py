@@ -27,10 +27,6 @@ class ThreadedServer(object):
     def start(self):
         self.thread.start()
 
-    def stop(self):
-        self.server.shutdown()
-        self.server.server_close()
-
 
 # ==============================================================================
 # Main

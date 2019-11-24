@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
 import compas_rhino
 
 from compas_rhino.artists import Artist
@@ -11,14 +10,11 @@ from compas_rhino.artists.mixins import VertexArtist
 from compas_rhino.artists.mixins import EdgeArtist
 from compas_rhino.artists.mixins import FaceArtist
 
+from compas.utilities import color_to_colordict
 from compas.utilities import pairwise
+from compas.geometry import add_vectors
+from compas.geometry import scale_vector
 from compas.geometry import centroid_polygon
-
-try:
-    import rhinoscriptsyntax as rs
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['MeshArtist']
@@ -64,9 +60,12 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
         super(MeshArtist, self).__init__(layer=layer)
         self.mesh = mesh
         self.defaults.update({
-            'color.vertex' : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
-            'color.face'   : (210, 210, 210),
+            'color.vertex': (255, 255, 255),
+            'color.edge': (0, 0, 0),
+            'color.face': (210, 210, 210),
+            'color.normal': (0, 255, 0),
+
+            'scale.normal': 0.1,
         })
 
     @property
@@ -77,6 +76,28 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     @mesh.setter
     def mesh(self, mesh):
         self.datastructure = mesh
+
+    def draw_normals(self, keys=None, color=None, scale=None):
+        keys = keys or list(self.mesh.vertices())
+        scale = scale or self.defaults.get('scale.normal')
+        colordict = color_to_colordict(color,
+                                       keys,
+                                       default=self.defaults.get('color.normal'),
+                                       colorformat='rgb',
+                                       normalize=False)
+        lines = []
+        for key in keys:
+            a = self.mesh.vertex_coordinates(key)
+            n = self.mesh.vertex_normal(key)
+            b = add_vectors(a, scale_vector(n, scale))
+            lines.append({
+                'start': a,
+                'end': b,
+                'color': colordict[key],
+                'name': "{}.normal.{}".format(self.mesh.name, key),
+                'layer': self.layer,
+                'arrow': 'end'})
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_mesh(self, color=None, disjoint=False):
         """Draw the mesh as a consolidated RhinoMesh.
@@ -92,12 +113,12 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
         faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
         new_faces = []
         for face in faces:
-            l = len(face)
-            if l == 3:
+            f = len(face)
+            if f == 3:
                 new_faces.append(face + face[-1:])
-            elif l == 4:
+            elif f == 4:
                 new_faces.append(face)
-            elif l > 4:
+            elif f > 4:
                 centroid = len(vertices)
                 vertices.append(centroid_polygon([vertices[index] for index in face]))
                 for a, b in pairwise(face + face[0:1]):
@@ -111,6 +132,27 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     def clear_mesh(self):
         compas_rhino.delete_objects(compas_rhino.get_objects(name="{}.mesh".format(self.mesh.name)))
 
+    def clear_normals(self, keys=None):
+        """Clear all normals previously drawn by the ``MeshArtist``.
+
+        Parameters
+        ----------
+        keys : list, optional
+            The keys of a specific set of normals that should be cleared.
+            Default is to clear all normals.
+
+        """
+        if not keys:
+            name = '{}.normal.*'.format(self.mesh.name)
+            guids = compas_rhino.get_objects(name=name)
+        else:
+            guids = []
+            for key in keys:
+                name = '{}.normal.{}'.format(self.mesh.name, key)
+                guid = compas_rhino.get_object(name=name)
+                guids.append(guid)
+        compas_rhino.delete_objects(guids)
+
     def clear(self):
         """Clear the vertices, faces and edges of the mesh, without clearing the
         other elements in the layer.
@@ -120,6 +162,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
         self.clear_faces()
         self.clear_mesh()
         self.clear_edges()
+        self.clear_normals()
 
 
 # ==============================================================================

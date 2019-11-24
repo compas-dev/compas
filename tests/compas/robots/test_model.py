@@ -52,6 +52,17 @@ def ur5():
                  ]
                  )
 
+@pytest.fixture
+def programatic_robot_model():
+    robot = RobotModel("robot")
+    link0 = robot.add_link("link0")
+    link1 = robot.add_link("link1")
+    robot.add_joint("joint1", Joint.CONTINUOUS, link0, link1)
+    assert(['link0', 'joint1', 'link1'] == list(robot.iter_chain()))
+    link2 = robot.add_link("link2")
+    robot.add_joint("joint2", Joint.CONTINUOUS, link1, link2)
+    assert(['link0', 'joint1', 'link1', 'joint2', 'link2'] == list(robot.iter_chain()))
+
 
 def test_ur5_urdf(ur5_file):
     r = RobotModel.from_urdf_file(ur5_file)

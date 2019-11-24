@@ -34,7 +34,7 @@ def trimesh_face_circle(mesh, fkey):
     b = mesh.vertex_coordinates(v)
     c = mesh.vertex_coordinates(w)
     return circle_from_points(a, b, c)
-  
+
 
 # ==============================================================================
 # Main

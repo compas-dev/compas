@@ -2,11 +2,15 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from math import cos
 from math import pi
+from math import sin
 
-from compas.geometry.primitives import Plane
+from compas.geometry import matrix_from_frame
+from compas.geometry import transform_points
 from compas.geometry.primitives import Circle
-
+from compas.geometry.primitives import Frame
+from compas.geometry.primitives import Plane
 from compas.geometry.primitives.shapes import Shape
 
 __all__ = ['Cylinder']
@@ -165,6 +169,41 @@ class Cylinder(Shape):
         """Float: The volume of the cylinder."""
         return self.circle.area * self.height
 
+    def to_vertices_and_faces(self, **kwargs):
+        """Returns a list of vertices and faces"""
+
+        u = kwargs.get('u') or 10
+        if u < 3:
+            raise ValueError('The value for u should be u > 3.')
+
+        vertices = []
+        a = 2 * pi / u
+        z = self.height / 2
+        for i in range(u):
+            x = self.circle.radius * cos(i * a)
+            y = self.circle.radius * sin(i * a)
+            vertices.append([x, y, z])
+            vertices.append([x, y, -z])
+        # add v in bottom and top's circle center
+        vertices.append([0, 0, z])
+        vertices.append([0, 0, -z])
+
+        # transform vertices to cylinder's plane
+        frame = Frame.from_plane(self.circle.plane)
+        M = matrix_from_frame(frame)
+        vertices = transform_points(vertices, M)
+
+        faces = []
+        # side faces
+        for i in range(0, u * 2, 2):
+            faces.append([i, i + 1, (i + 3) % (u * 2), (i + 2) % (u * 2)])
+        # top and bottom circle faces
+        for i in range(0, u * 2, 2):
+            faces.append([i, (i + 2) % (u * 2), len(vertices) - 2])
+            faces.append([i + 1, (i + 3) % (u * 2), len(vertices) - 1])
+
+        return vertices, faces
+
     # ==========================================================================
     # representation
     # ==========================================================================
@@ -276,10 +315,7 @@ class Cylinder(Shape):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.geometry import Frame
     from compas.geometry import Transformation
-    from compas.geometry import Circle
-    from compas.geometry import Cylinder
 
     cylinder = Cylinder(Circle(Plane.worldXY(), 5), 7)
     frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])

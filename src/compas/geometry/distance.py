@@ -428,7 +428,7 @@ def distance_point_plane_signed(point, plane):
 
 
 def distance_line_line(l1, l2, tol=0.0):
-    """Compute the shortest distance between two lines.
+    r"""Compute the shortest distance between two lines.
 
     Parameters
     ----------

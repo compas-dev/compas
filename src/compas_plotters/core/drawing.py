@@ -8,26 +8,19 @@ except NameError:
 
 from numpy import asarray
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-
-from matplotlib.path import Path
 
 from matplotlib.patches import Circle
 from matplotlib.patches import Polygon
-from matplotlib.patches import PathPatch
 
-from matplotlib.collections import PathCollection
 from matplotlib.collections import LineCollection
 from matplotlib.collections import PatchCollection
 from matplotlib.collections import PolyCollection
 
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
-from mpl_toolkits.mplot3d.art3d import Patch3DCollection
 
 from compas.geometry import centroid_points_xy
 from compas.geometry import midpoint_line_xy
-from compas.utilities import color_to_colordict
 from compas.utilities import color_to_rgb
 
 
@@ -48,9 +41,9 @@ __all__ = [
 
 
 ZORDER_POLYGONS = 1000
-ZORDER_LINES    = 2000
-ZORDER_POINTS   = 3000
-ZORDER_LABELS   = 4000
+ZORDER_LINES = 2000
+ZORDER_POINTS = 3000
+ZORDER_LABELS = 4000
 
 
 # ==============================================================================
@@ -64,7 +57,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
                    ylabel=None,
                    fontname='Times New Roman',
                    fontsize=10,
-                   grid=True,
+                   grid=False,
                    xlim=None,
                    ylim=None,
                    ticklength=20,
@@ -145,9 +138,9 @@ def create_axes_xy(figsize=(8.0, 6.0),
     axes.set_yscale(yscale)
     axes.set_xticks([])
     axes.set_yticks([])
-    axes.set_xmargin(0.05)
-    axes.set_ymargin(0.05)
-    axes.autoscale()
+    # axes.set_xmargin(0.05)
+    # axes.set_ymargin(0.05)
+    # axes.autoscale()
     return axes
 
 
@@ -278,7 +271,7 @@ def draw_points_xy(points,
     # --------------------------------------------------------------------------
     circles = []
     for i in range(p):
-        point  = points[i]
+        point = points[i]
         circle = Circle(point[0:2], radius=radius[i])
         circles.append(circle)
     coll = PatchCollection(
@@ -327,13 +320,13 @@ def draw_xpoints_xy(points, axes):
     linewidths = []
     for point in points:
         pos = point['pos']
-        radius    = point['radius']
-        text      = point.get('text')
-        fcolor    = point.get('facecolor') or '#ffffff'
-        ecolor    = point.get('edgecolor') or '#000000'
-        lwidth    = point.get('edgewidth') or 1.0
+        radius = point['radius']
+        text = point.get('text')
+        fcolor = point.get('facecolor') or '#ffffff'
+        ecolor = point.get('edgecolor') or '#000000'
+        lwidth = point.get('edgewidth') or 1.0
         textcolor = point.get('textcolor') or '#000000'
-        fontsize  = point.get('fontsize') or 12
+        fontsize = point.get('fontsize') or 12
         circles.append(Circle(pos[0:2], radius=radius))
         facecolors.append(color_to_rgb(fcolor, normalize=True))
         edgecolors.append(color_to_rgb(ecolor, normalize=True))
@@ -437,12 +430,12 @@ def draw_lines_xy(lines,
         The matplotlib point collection object.
 
     """
-    l = len(lines)
+    n = len(lines)
     if isinstance(linewidth, (int, float)):
         linewidth = float(linewidth)
-        linewidth = [linewidth] * l
+        linewidth = [linewidth] * n
     if isinstance(color, basestring):
-        color = [color] * l
+        color = [color] * n
     # --------------------------------------------------------------------------
     coll = LineCollection(
         [(start[0:2], end[0:2]) for start, end in lines],
@@ -488,17 +481,17 @@ def draw_xlines_xy(lines, axes, alpha=1.0, linestyle='solid'):
         The matplotlib line collection object.
 
     """
-    fromto  = []
-    widths  = []
-    colors  = []
+    fromto = []
+    widths = []
+    colors = []
     for line in lines:
-        sp        = line['start']
-        ep        = line['end']
-        width     = line.get('width', 1.0)
-        color     = line.get('color', '#000000')
-        text      = line.get('text', None)
+        sp = line['start']
+        ep = line['end']
+        width = line.get('width', 1.0)
+        color = line.get('color', '#000000')
+        text = line.get('text', None)
         textcolor = line.get('textcolor') or '#000000'
-        fontsize  = line.get('fontsize') or 6
+        fontsize = line.get('fontsize') or 6
         fromto.append((sp[0:2], ep[0:2]))
         widths.append(width)
         colors.append(color_to_rgb(color, normalize=True))
@@ -554,12 +547,12 @@ def draw_lines_3d(lines,
         The matplotlib line collection object.
 
     """
-    l = len(lines)
+    n = len(lines)
     if isinstance(linewidth, (int, float)):
         linewidth = float(linewidth)
-        linewidth = [linewidth] * l
+        linewidth = [linewidth] * n
     if isinstance(color, basestring):
-        color = [color] * l
+        color = [color] * n
 
     coll = Line3DCollection(
         lines,
@@ -578,7 +571,6 @@ def draw_lines_3d(lines,
 
 
 def draw_xpolylines_xy(polylines, axes):
-    patches = []
     paths = []
 
     widths = []
@@ -586,13 +578,11 @@ def draw_xpolylines_xy(polylines, axes):
 
     for polyline in polylines:
         points = polyline['points']
-        codes = [Path.MOVETO] + [Path.LINETO] * (len(points) - 1)
-
-        width     = polyline.get('width', 1.0)
-        color     = polyline.get('color', '#000000')
-        text      = polyline.get('text', None)
+        width = polyline.get('width', 1.0)
+        color = polyline.get('color', '#000000')
+        text = polyline.get('text', None)
         textcolor = polyline.get('textcolor') or '#000000'
-        fontsize  = polyline.get('fontsize') or 6
+        fontsize = polyline.get('fontsize') or 6
 
         path = [point[0:2] for point in points]
         paths.append(path)
@@ -662,21 +652,21 @@ def draw_xarrows_xy(lines, axes):
 
     """
     arrowprops = {
-        'arrowstyle'      : '-|>,head_length=0.6,head_width=0.2',
-        'connectionstyle' : 'arc3,rad=0.0',
-        'linewidth'       : 1.0,
-        'color'           : '#000000',
-        'shrinkB'         : 0.0,
-        'shrinkA'         : 0.0,
+        'arrowstyle': '-|>,head_length=0.6,head_width=0.2',
+        'connectionstyle': 'arc3,rad=0.0',
+        'linewidth': 1.0,
+        'color': '#000000',
+        'shrinkB': 0.0,
+        'shrinkA': 0.0,
     }
     xys = []
     for line in lines:
-        sp        = line['start'][:2]
-        ep        = line['end'][:2]
-        text      = line.get('text', None)
+        sp = line['start'][:2]
+        ep = line['end'][:2]
+        text = line.get('text', None)
         textcolor = line.get('textcolor') or '#000000'
-        fontsize  = line.get('fontsize') or 6
-        arrowprops['color']     = color_to_rgb(line.get('color', '#000000'), normalize=True)
+        fontsize = line.get('fontsize') or 6
+        arrowprops['color'] = color_to_rgb(line.get('color', '#000000'), normalize=True)
         arrowprops['linewidth'] = line.get('width', 1.0)
         axes.annotate(
             '',
@@ -718,15 +708,15 @@ def draw_xlabels_xy(labels, axes):
 
     """
     for label in labels:
-        x, y      = label['pos']
-        text      = label['text']
-        fontsize  = label['fontsize']
-        color     = label.get('color') or '#ffffff'
+        x, y = label['pos']
+        text = label['text']
+        fontsize = label['fontsize']
+        color = label.get('color') or '#ffffff'
         textcolor = label.get('textcolor') or '#000000'
-        bbox      = dict(color=color_to_rgb(color, normalize=True),
-                         edgecolor=color_to_rgb(color, normalize=True),
-                         alpha=1.0,
-                         pad=0.0)
+        bbox = dict(color=color_to_rgb(color, normalize=True),
+                    edgecolor=color_to_rgb(color, normalize=True),
+                    alpha=1.0,
+                    pad=0.0)
         t = axes.text(
             x,
             y,
@@ -777,8 +767,8 @@ def draw_xpolygons_xy(polygons, axes):
     patches = []
 
     for attr in polygons:
-        points    = attr['points']
-        text      = attr.get('text')
+        points = attr['points']
+        text = attr.get('text')
         textcolor = color_to_rgb(attr.get('textcolor', '#000000'), normalize=True)
 
         facecolors.append(color_to_rgb(attr.get('facecolor', '#ffffff'), normalize=True))
@@ -800,7 +790,6 @@ def draw_xpolygons_xy(polygons, axes):
                 color=textcolor
             )
 
-    # this could also be a PolyCollection
     coll = PatchCollection(
         patches,
         facecolors=facecolors,
