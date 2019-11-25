@@ -72,7 +72,7 @@ def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
 
     if not is_item_iterable(distance):
         distance = [distance]
-    distances = list(iterable_like(line, distance, distance[-1]))
+    distances = list(iterable_like(line, distance, distance[-1], as_single=False))
 
     u = scale_vector(direction, distances[0])
     v = scale_vector(direction, distances[1])
@@ -142,7 +142,7 @@ def offset_polygon(polygon, distance, tol=1e-6):
     
     if not is_item_iterable(distance):
         distance = [distance]
-    distances = iterable_like(polygon, distance, distance[-1])
+    distances = iterable_like(polygon, distance, distance[-1], as_single=False)
 
     polygon = polygon + polygon[:1]
     segments = offset_segments(polygon, distances, normal)
@@ -179,7 +179,7 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
 
     if not is_item_iterable(distance):
         distance = [distance]
-    distances = iterable_like(polyline, distance, distance[-1])
+    distances = iterable_like(polyline, distance, distance[-1], as_single=False)
     segments = offset_segments(polyline, distances, normal)
 
     offset = [segments[0][0]]

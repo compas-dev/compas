@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed `compas_rhino.install_plugin` to use only the plugin name, w/o the GUID.
+- Changed `iterable_like` to prevent exhausting generators passed as targets.
 
 ### Removed
 

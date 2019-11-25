@@ -7,10 +7,6 @@ from math import pi
 from copy import deepcopy
 
 from compas.geometry import centroid_points
-from compas.geometry import offset_polygon
-
-from compas.utilities import pairwise
-from compas.utilities import match_length
 
 from compas.datastructures.mesh._mesh import Mesh
 from compas.datastructures.mesh.operations import mesh_split_edge
@@ -23,7 +19,6 @@ __all__ = [
     'mesh_subdivide_quad',
     'mesh_subdivide_catmullclark',
     'mesh_subdivide_doosabin',
-    'mesh_subdivide_frames',
     'trimesh_subdivide_loop',
 ]
 
@@ -470,69 +465,6 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
         mesh = subd
 
     return mesh
-
-
-def mesh_subdivide_frames(mesh, offset, add_windows=False):
-    """Subdivide a mesh by creating offset frames and windows on its faces.
-
-    Parameters
-    ----------
-    mesh : Mesh
-        The mesh object that will be subdivided.
-    offset : float or dict
-        The offset distance to create the frames.
-    add_windows : boolean
-        Optional. Flag to add window face. Default is ``False``.
-
-    Returns
-    -------
-    Mesh
-        A new subdivided mesh.
-
-    Notes
-    ------
-        The offset distance can be supplied either as a single global value 
-        or as a dictionary. In the case of the latter, the function will expect 
-        a face_key: offset mapping, and it will apply it accordingly.
-
-    """
-
-    subd = Mesh()
-
-    # 0. pre-compute offset distances
-    if not isinstance(offset, dict):
-        distances = match_length(offset, list(mesh.faces()))
-        offset = {fkey: od for fkey, od in zip(mesh.faces(), distances)}
-
-    # 1. add vertices
-    for vkey, attr in mesh.vertices(True):
-        xyz = mesh.vertex_coordinates(vkey)
-        attrs = {i: j for i, j in zip(['x', 'y', 'z'], xyz)}
-        subd.add_vertex(key=vkey, attr_dict=attrs)
-
-    # 2. add faces
-    for fkey in mesh.faces():
-        face = mesh.face_vertices(fkey)
-        polygon = offset_polygon(mesh.face_coordinates(fkey), offset.get(fkey))
-
-        # 2a. add offset vertices
-        window = []
-        for xyz in polygon:
-            attrs = {i: j for i, j in zip(['x', 'y', 'z'], xyz)}
-            new_vkey = subd.add_vertex(attr_dict=attrs)
-            window.append(new_vkey)
-
-        # 2b. frame faces
-        face = face + face[:1]
-        window = window + window[:1]
-        for sa, sb in zip(pairwise(face), pairwise(window)):
-            subd.add_face([sa[0], sa[1], sb[1], sb[0]])
-
-        # 2c. window face
-        if add_windows:
-            subd.add_face(window)
-
-    return subd
 
 
 def trimesh_subdivide_loop(mesh, k=1, fixed=None):
