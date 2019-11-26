@@ -74,7 +74,7 @@ def draw_points(points):
     """
     rg_points = []
     for p in iter(points):
-        pos = p['pos']
+        pos = p.data
         rg_points.append(Point3d(*pos))
     return rg_points
 
