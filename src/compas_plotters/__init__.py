@@ -23,7 +23,7 @@ from __future__ import division
 from __future__ import print_function
 
 
-__version__ = '0.11.2'
+__version__ = '0.11.3'
 
 
 from .core import *
