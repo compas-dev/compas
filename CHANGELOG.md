@@ -13,12 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+- Removed `compas.remote` because it does not provide an advatage over `compas.rpc`.
 
 ## [[0.11.4] 2019-11-26] 2019-11-26
 
 ### Added
 
 - Added `compas_rhino.etoforms.ImageForm`.
+- Added `doc8` as dev requirement.
 
 ### Changed
 
