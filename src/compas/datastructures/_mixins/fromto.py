@@ -19,7 +19,7 @@ __all__ = [
 
 class FromToData(object):
 
-    __module__ = 'compas.datastructures._mixins'
+    __module__ = 'compas.datastructures'
 
     @classmethod
     def from_data(cls, data):
@@ -64,7 +64,7 @@ class FromToData(object):
 
 class FromToJson(object):
 
-    __module__ = 'compas.datastructures._mixins'
+    __module__ = 'compas.datastructures'
 
     @classmethod
     def from_json(cls, filepath):
@@ -110,7 +110,7 @@ class FromToJson(object):
 
 class FromToPickle(object):
 
-    __module__ = 'compas.datastructures._mixins'
+    __module__ = 'compas.datastructures'
 
     @classmethod
     def from_pickle(cls, filepath):

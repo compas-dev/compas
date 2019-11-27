@@ -136,6 +136,41 @@ be used for the representation of subdivided/partitioned polyhedra.
 
     VolMesh
 
+Mixins
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    VertexAttributesManagement
+    EdgeAttributesManagement
+    FaceAttributesManagement
+
+    VertexCoordinatesDescriptors
+
+    VertexFilter
+    EdgeFilter
+    FaceFilter
+
+    FromToData
+    FromToJson
+    FromToPickle
+
+    VertexGeometry
+    EdgeGeometry
+    FaceGeometry
+
+    VertexHelpers
+    EdgeHelpers
+    FaceHelpers
+
+    MagicMethods
+
+    VertexMappings
+    EdgeMappings
+    FaceMappings
+
 """
 
 from __future__ import absolute_import
@@ -146,6 +181,7 @@ from __future__ import print_function
 class Datastructure(object):
     pass
 
+from ._mixins import *
 
 from .network import *
 from .mesh import *

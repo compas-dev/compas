@@ -29,7 +29,7 @@ __all__ = ['TextForm']
 
 class TextForm(Dialog):
 
-    def __init__(self, text):
+    def __init__(self, text, title=None):
         self.text = text
         self.textbox = textbox = forms.TextArea()
 
@@ -45,7 +45,7 @@ class TextForm(Dialog):
         layout.EndHorizontal()
         layout.EndVertical()
 
-        self.Title = 'Display text'
+        self.Title = title
         self.Padding = drawing.Padding(12)
         self.Resizable = False
         self.Content = layout

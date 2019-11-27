@@ -74,7 +74,7 @@
     {%- endfor %}
     {% endif %}
 
-    {% if inherited %}
+    {% if inherited_methods %}
     .. rubric:: Inherited Methods
 
     .. autosummary::

@@ -15,7 +15,7 @@ __all__ = [
 class VertexAttributesManagement(object):
     """Mix-in methods for working getting, setting, and updating vertex attributes."""
 
-    __module__ = 'compas.datastructures._mixins'
+    __module__ = 'compas.datastructures'
 
     def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
         """Update the default vertex attributes (this also affects already existing vertices).
@@ -213,7 +213,7 @@ class VertexAttributesManagement(object):
 class EdgeAttributesManagement(object):
     """Mix-in methods for setting, getting, and updating edge attributes."""
 
-    __module__ = 'compas.datastructures._mixins'
+    __module__ = 'compas.datastructures'
 
     def update_default_edge_attributes(self, attr_dict=None, **kwattr):
         """Update the default edge attributes (this also affects already existing edges).
@@ -433,7 +433,7 @@ class EdgeAttributesManagement(object):
 class FaceAttributesManagement(object):
     """Mix-in methods for setting, getting, and updating face attributes."""
 
-    __module__ = 'compas.datastructures._mixins'
+    __module__ = 'compas.datastructures'
 
     def update_default_face_attributes(self, attr_dict=None, **kwattr):
         """Update the default face attributes (this also affects already existing faces).

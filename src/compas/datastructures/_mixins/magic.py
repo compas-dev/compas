@@ -10,7 +10,7 @@ __all__ = [
 
 class MagicMethods(object):
 
-    __module__ = 'compas.datastructures._mixins'
+    __module__ = 'compas.datastructures'
 
     def __contains__(self, key):
         """Verify if the data structure contains a specific vertex.

@@ -10,7 +10,7 @@ __all__ = [
 
 class VertexCoordinatesDescriptors(object):
 
-    __module__ = 'compas.datastructures._mixins'
+    __module__ = 'compas.datastructures'
 
     @property
     def xyz(self):
