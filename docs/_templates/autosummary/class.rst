@@ -80,7 +80,7 @@
     .. autosummary::
         :toctree:
 
-    {% for item in inherited %}
+    {% for item in inherited_methods %}
         ~{{ name }}.{{ item }}
     {%- endfor %}
     {% endif %}
