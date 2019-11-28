@@ -278,7 +278,7 @@ def random_combination_with_replacement(iterable, r):
     return tuple(pool[i] for i in indices)
 
 
-def iterable_like(target, reference, fillvalue=None, as_single=True):
+def iterable_like(target, reference, fillvalue=None):
     """
     Creates an iterator from a reference object with size equivalent to that of a target iterable.
 
@@ -290,14 +290,11 @@ def iterable_like(target, reference, fillvalue=None, as_single=True):
     ----------
     target : iterable
         An iterable to be matched in size.
-    reference: object
-        Input taken as basis for pairing.
+    reference: iterable
+        Iterable taken as basis for pairing.
     fillvalue : object, optional
-        Defaults to `reference` when `as_single` is `True`.
-        Otherwise, defaults to `None`.
-    as_single : bool, optional
-        Reference should be regarded as a single entry. Defaults to `True`.
-
+        Defaults to `None`.
+    
     Returns
     -------
     object
@@ -306,21 +303,17 @@ def iterable_like(target, reference, fillvalue=None, as_single=True):
     Note
     -------
     This function can also produce an iterable capped to the size of target
-    if the supplied reference is larger.
+    whenever the supplied reference is larger.
 
     Examples
     --------
     >>> keys = [0, 1, 2, 3]
     >>> color = (255, 0, 0)
-    >>> list(iterable_like(keys, color))
+    >>> list(iterable_like(keys, [color], color))
     [(255, 0, 0), (255, 0, 0), (255, 0, 0), (255, 0, 0)]
-    >>> list(iterable_like(color, keys, as_single=False))
+    >>> list(iterable_like(color, keys))
     [0, 1, 2]
     """
-
-    if as_single:
-        fillvalue = fillvalue or reference
-        reference = [reference]
 
     target, counter = tee(target)
     zipped = zip_longest(target, reference, fillvalue=fillvalue)
