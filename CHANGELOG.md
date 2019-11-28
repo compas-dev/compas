@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added inherited methods to class docs.
-- Added data structure mixins to the docs
+- Added data structure mixins to the docs.
 
 ### Changed
 
