@@ -199,8 +199,10 @@ class Cylinder(Shape):
             faces.append([i, i + 1, (i + 3) % (u * 2), (i + 2) % (u * 2)])
         # top and bottom circle faces
         for i in range(0, u * 2, 2):
-            faces.append([i, (i + 2) % (u * 2), len(vertices) - 2])
-            faces.append([i + 1, (i + 3) % (u * 2), len(vertices) - 1])
+            top = [i, (i + 2) % (u * 2), len(vertices) - 2]
+            bottom = [i + 1, (i + 3) % (u * 2), len(vertices) - 1]
+            faces.append(top)
+            faces.append(bottom[::-1])
 
         return vertices, faces
 

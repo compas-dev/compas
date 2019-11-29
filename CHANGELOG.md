@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Bottom face of cylinder shape should be flipped.
+
 ### Removed
 
 - Removed `compas.remote` because it does not provide an advatage over `compas.rpc`.
