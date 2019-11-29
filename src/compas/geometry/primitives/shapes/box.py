@@ -4,6 +4,7 @@ from __future__ import print_function
 
 from compas.geometry import subtract_vectors
 from compas.geometry.primitives import Frame
+from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives.shapes import Shape
 
@@ -132,10 +133,10 @@ class Box(Shape):
         zaxis = self.frame.zaxis
         width, depth, height = self.xsize, self.ysize, self.zsize
 
-        a = point
-        b = point + yaxis * depth
-        c = point + xaxis * width + yaxis * depth
-        d = point + xaxis * width
+        a = point - xaxis * 0.5 * width - yaxis * 0.5 * depth - zaxis * 0.5 * height
+        b = point - xaxis * 0.5 * width + yaxis * 0.5 * depth - zaxis * 0.5 * height
+        c = point + xaxis * 0.5 * width + yaxis * 0.5 * depth - zaxis * 0.5 * height
+        d = point + xaxis * 0.5 * width - yaxis * 0.5 * depth - zaxis * 0.5 * height
 
         e = a + zaxis * height
         f = d + zaxis * height
@@ -230,6 +231,8 @@ class Box(Shape):
 
     @classmethod
     def from_bounding_box(cls, bbox):
+        # this should put the frame at the centroid of the box
+        # not at the bottom left corner
         a = bbox[0]
         b = bbox[1]
         d = bbox[3]
@@ -241,6 +244,7 @@ class Box(Shape):
         ysize = yaxis.length
         zsize = zaxis.length
         frame = Frame(a, xaxis, yaxis)
+        frame.point += frame.xaxis * 0.5 * xsize + frame.yaxis * 0.5 * ysize + frame.zaxis * 0.5 * zsize
         return cls(frame, xsize, ysize, zsize)
 
     @classmethod
@@ -267,6 +271,8 @@ class Box(Shape):
         >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
 
         """
+        # this should put the frame at the centroid of the box
+        # not at the bottom left corner
         if height == 0:
             raise Exception('The box should have a height.')
 
@@ -282,6 +288,7 @@ class Box(Shape):
             raise Exception('Corners should be in the same horizontal plane.')
 
         frame = Frame(corner1, xaxis, yaxis)
+        frame.point += frame.xaxis * 0.5 * width + frame.yaxis * 0.5 * depth + frame.zaxis * 0.5 * height
         return cls(frame, width, depth, height)
 
     @classmethod
@@ -305,6 +312,8 @@ class Box(Shape):
         >>> box = Box.from_diagonal(diagonal)
 
         """
+        # this should put the frame at the centroid of the box
+        # not at the bottom left corner
         d1, d2 = diagonal
 
         x1, y1, z1 = d1
@@ -321,6 +330,7 @@ class Box(Shape):
         height = zaxis.length
 
         frame = Frame(d1, xaxis, yaxis)
+        frame.point += frame.xaxis * 0.5 * width + frame.yaxis * 0.5 * depth + frame.zaxis * 0.5 * height
         return cls(frame, width, depth, height)
 
     @property
@@ -501,14 +511,12 @@ if __name__ == '__main__':
     box = Box.from_diagonal(([0.0, 0.0, 0.0], [1.0, 1.0, 1.0]))
     box = Box.from_corner_corner_height([0., 0., 0.], [1., 1., 0.], 4.0)
     box = Box.from_width_height_depth(5, 4, 6)
-    print(box.vertices)
 
     mesh = Mesh.from_vertices_and_faces(box.vertices, box.faces)
 
-    print(mesh)
     box = Box.from_diagonal(([0.0, 0.0, 0.0], [1.0, 1.0, 1.0]))
     dia = box.diagonal
     print(Box.from_diagonal(dia))
 
-    import doctest
-    doctest.testmod()
+    # import doctest
+    # doctest.testmod()
