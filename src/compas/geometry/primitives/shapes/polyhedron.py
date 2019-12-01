@@ -77,7 +77,7 @@ class Polyhedron(Shape):
             The resulting polyhedron.
 
         """
-        p = cls()
+        p = cls.generate(len(faces))
         p.vertices = vertices
         p.faces = faces
         return p
@@ -99,12 +99,10 @@ class Polyhedron(Shape):
         Examples
         --------
         >>> from compas.geometry import Polyhedron
-        >>> from compas.geometry import Tetrahedron
         >>> p = Polyhedron.from_platonicsolid(4)
-        >>> data = p.to_data()
-        >>> q = Polyhedron.from_data(data)
+        >>> q = Polyhedron.from_data(p.to_data())
         """
-        p = cls()
+        p = cls.generate(len(data.get('faces')))
         p.data = data
         return p
 
