@@ -19,7 +19,7 @@ def read(*names, **kwargs):
 
 
 long_description = read('README.md')
-requirements = read('requirements.txt').split('\n')
+requirements = [r for r in read('requirements.txt').split('\n') if r]
 optional_requirements = {
     "viewers": ['PyOpenGL', 'PySide2'],
     "hpc": ['pyopencl', 'pycuda'],

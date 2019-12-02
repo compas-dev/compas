@@ -274,7 +274,6 @@ def remove_symlink(symlink):
         os.unlink(symlink)
 
 
-
 def remove_symlinks(symlinks, raise_on_error=False):
     """Remove one or more symlinks.
 

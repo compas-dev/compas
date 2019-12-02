@@ -4,9 +4,6 @@ from __future__ import print_function
 
 import compas
 
-# from .fd_alglib import *
-# from .fd_cpp import *
-
 if not compas.IPY:
     from .fd_numpy import *
 
