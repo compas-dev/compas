@@ -77,10 +77,51 @@ class Polyhedron(Shape):
             The resulting polyhedron.
 
         """
-        p = cls()
+        p = cls.generate(len(faces))
         p.vertices = vertices
         p.faces = faces
         return p
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a polyhedron from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
+
+        Returns
+        -------
+        Polyhedron
+            The constructed polyhedron.
+
+        Examples
+        --------
+        >>> from compas.geometry import Polyhedron
+        >>> p = Polyhedron.from_platonicsolid(4)
+        >>> q = Polyhedron.from_data(p.data)
+        """
+        p = cls.generate(len(data.get('faces')))
+        p.data = data
+        return p
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the polyhedron.
+
+        Returns
+        -------
+        dict
+            The polyhedron data.
+
+        """
+        return {'vertices': self.vertices, 'faces': self.faces}
+
+    @data.setter
+    def data(self, data):
+        self.vertices = data['vertices']
+        self.faces = data['faces']
 
     def __iter__(self):
         return iter([self.vertices, self.faces])
@@ -90,7 +131,6 @@ class Polyhedron(Shape):
 
     def is_positive(self):
         pass
-
 
 # ==============================================================================
 # Platonic solids
