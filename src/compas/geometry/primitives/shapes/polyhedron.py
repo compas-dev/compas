@@ -100,7 +100,7 @@ class Polyhedron(Shape):
         --------
         >>> from compas.geometry import Polyhedron
         >>> p = Polyhedron.from_platonicsolid(4)
-        >>> q = Polyhedron.from_data(p.to_data())
+        >>> q = Polyhedron.from_data(p.data)
         """
         p = cls.generate(len(data.get('faces')))
         p.data = data
@@ -122,17 +122,6 @@ class Polyhedron(Shape):
     def data(self, data):
         self.vertices = data['vertices']
         self.faces = data['faces']
-
-    def to_data(self):
-        """Returns the data dictionary that represents the polyhedron.
-
-        Returns
-        -------
-        dict
-            The polyhedron data.
-
-        """
-        return self.data
 
     def __iter__(self):
         return iter([self.vertices, self.faces])
