@@ -92,8 +92,6 @@ def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
 def face_adjacency(xyz, faces):
     f = len(faces)
 
-    print(f)
-
     if f > 100:
         return _face_adjacency(xyz, faces)
 
