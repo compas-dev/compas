@@ -48,9 +48,9 @@ class EdgeArtist(object):
         for u, v in keys:
             lines.append({
                 'start': self.datastructure.vertex_coordinates(u),
-                'end'  : self.datastructure.vertex_coordinates(v),
+                'end': self.datastructure.vertex_coordinates(v),
                 'color': colordict[(u, v)],
-                'name' : self.datastructure.edge_name(u, v),
+                'name': self.datastructure.edge_name(u, v),
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
         return compas_ghpython.draw_lines(lines)
@@ -95,10 +95,10 @@ class EdgeArtist(object):
 
         for (u, v), text in iter(textdict.items()):
             labels.append({
-                'pos'  : self.datastructure.edge_midpoint(u, v),
-                'name' : self.datastructure.edge_label_name(u, v),
+                'pos': self.datastructure.edge_midpoint(u, v),
+                'name': self.datastructure.edge_label_name(u, v),
                 'color': colordict[(u, v)],
-                'text' : textdict[(u, v)],
+                'text': textdict[(u, v)],
                 'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
             })
 

@@ -62,6 +62,7 @@ def xtransform(geo, transformation):
     T = xform_from_transformation(transformation)
     geo.Transform(T)
 
+
 def xtransformed(geo, transformation):
     """Returns a copy of the transformed Rhino Geometry object.
 

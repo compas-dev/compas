@@ -46,9 +46,9 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     def __init__(self, mesh):
         self.mesh = mesh
         self.defaults = {
-            'color.vertex' : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
-            'color.face'   : (210, 210, 210),
+            'color.vertex': (255, 255, 255),
+            'color.edge': (0, 0, 0),
+            'color.face': (210, 210, 210),
         }
 
     @property

@@ -29,8 +29,8 @@ class NetworkArtist(EdgeArtist, VertexArtist):
     def __init__(self, network):
         self.network = network
         self.defaults = {
-            'color.vertex' : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
+            'color.vertex': (255, 255, 255),
+            'color.edge': (0, 0, 0),
         }
 
     @property
@@ -46,6 +46,7 @@ class NetworkArtist(EdgeArtist, VertexArtist):
 # Main
 # ==============================================================================
 
+
 if __name__ == "__main__":
 
     import compas
@@ -58,4 +59,3 @@ if __name__ == "__main__":
 
     vertices = artist.draw_vertices()
     edges = artist.draw_edges()
-
