@@ -1,4 +1,3 @@
-
 """
 ********************************************************************************
 compas_blender.artists
@@ -23,9 +22,4 @@ from .meshartist import *
 from .networkartist import *
 from .volmeshartist import *
 
-from .artist import __all__ as a
-from .meshartist import __all__ as b
-from .networkartist import __all__ as c
-from .volmeshartist import __all__ as d
-
-__all__ = a + b + c + d
+__all__ = [name for name in dir() if not name.startswith('_')]

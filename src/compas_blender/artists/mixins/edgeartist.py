@@ -1,8 +1,3 @@
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_blender.utilities import set_objects_show_names
 from compas_blender.utilities import draw_lines
 
@@ -26,7 +21,7 @@ class EdgeArtist(object):
         self.clear_edges()
         self.clear_edgelabels()
 
-        keys  = keys or list(self.datastructure.edges())
+        keys = keys or list(self.datastructure.edges())
         lines = [0] * len(keys)
 
         if colors is None:

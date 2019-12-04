@@ -1,8 +1,3 @@
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_blender.utilities import delete_objects
 from compas_blender.utilities import get_objects
 

@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_blender.artists import Artist
 from compas_blender.artists.mixins import VertexArtist
 from compas_blender.artists.mixins import EdgeArtist
@@ -52,7 +48,6 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import VolMesh
-
 
     volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 

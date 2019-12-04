@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 try:
     import bpy
 except ImportError:
@@ -25,8 +21,8 @@ class Artist(object):
             'color.polygon': [210, 210, 210],
         }
         self.vertex_objects = []
-        self.edge_objects   = []
-        self.face_objects   = []
+        self.edge_objects = []
+        self.face_objects = []
 
     def redraw(self, timeout=None):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)

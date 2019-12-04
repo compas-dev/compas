@@ -1,8 +1,3 @@
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas.datastructures import Mesh
 
 try:
@@ -204,7 +199,7 @@ def get_meshes(layer=None):
 
 def mesh_from_bmesh(bmesh):
     vertices = [list(vertex.co) for vertex in bmesh.data.vertices]
-    faces    = [list(face.vertices) for face in bmesh.data.polygons]
+    faces = [list(face.vertices) for face in bmesh.data.polygons]
     return Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)
 
 
@@ -273,7 +268,7 @@ def set_objects_visible(objects, visible=True):
 
 
 def set_object_property(object, property, value):
-        object[property] = value
+    object[property] = value
 
 
 def set_objects_property(objects, property, value):
