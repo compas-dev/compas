@@ -8,6 +8,8 @@ prune docs
 prune libs
 prune tests
 prune temp
+prune ext
+prune modules
 
 include LICENSE
 include README.md

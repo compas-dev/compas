@@ -127,13 +127,13 @@ def check(ctx):
 
     with chdir(BASE_FOLDER):
         log.write('Checking MANIFEST.in...')
-        ctx.run('check-manifest --ignore-bad-ideas=test.so,fd.so,smoothing.so,drx_c.so')
+        ctx.run('check-manifest')
 
         log.write('Checking metadata...')
         ctx.run('python setup.py check --strict --metadata')
 
         log.write('Running flake8 python linter...')
-        ctx.run('flake8 src tests setup.py')
+        ctx.run('flake8 --count --statistics src tests')
 
         # log.write('Checking python imports...')
         # ctx.run('isort --check-only --diff --recursive src tests setup.py')
@@ -168,7 +168,6 @@ def prepare_changelog(ctx):
                 '## ', UNRELEASED_CHANGELOG_TEMPLATE, 1))
 
         ctx.run('git add CHANGELOG.md && git commit -m "Prepare changelog for next release"')
-
 
 
 @task(help={

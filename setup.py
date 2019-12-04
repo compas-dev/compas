@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
+# flake8: noqa
 from __future__ import print_function
 
 import io
