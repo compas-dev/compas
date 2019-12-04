@@ -47,11 +47,3 @@ COMPAS itself.
 Working with virtual environments
 =================================
 
-
-Installing plugins
-==================
-
-
-XFunc and RPC
-=============
-

@@ -50,19 +50,3 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
 
     unload_modules('my_custom_library')
 
-
-Working with global sticky variables
-====================================
-
-.. TODO
-    Working with global sticky variables
-    https://developer.rhino3d.com/guides/rhinopython/ghpython-global-sticky/
-
-    Passing dictionaries to another component
-    my_dict = {'apples': 5, 'bananas': 7, 'pears': 3}
-    my_outlet = [my_dict]
-
-
-Freezing Grasshopper and workarounds
-====================================
-
