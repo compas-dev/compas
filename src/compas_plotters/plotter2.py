@@ -11,6 +11,7 @@ __all__ = ['Plotter2']
 
 class Plotter2(object):
     """"""
+
     def __init__(self, view=None, figsize=(8, 5), **kwargs):
         """Initialises a plotter object"""
         self._show_axes = kwargs.get('show_axes', False)

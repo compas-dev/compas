@@ -4,7 +4,6 @@ from __future__ import division
 
 from matplotlib.patches import Circle
 
-from compas.utilities import valuedict
 from compas_plotters.plotter import Plotter
 
 try:
@@ -14,6 +13,16 @@ except NameError:
 
 
 __all__ = ['NetworkPlotter']
+
+
+def valuedict(keys, value, default):
+    value = value or default
+    if isinstance(value, dict):
+        valuedict = {key: default for key in keys}
+        valuedict.update(value)
+    else:
+        valuedict = {key: value for key in keys}
+    return valuedict
 
 
 class NetworkPlotter(Plotter):

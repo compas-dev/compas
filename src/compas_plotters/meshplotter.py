@@ -10,7 +10,6 @@ except NameError:
 from matplotlib.patches import Circle
 from matplotlib.patches import Polygon
 
-from compas.utilities import valuedict
 from compas.utilities import color_to_rgb
 from compas.utilities import pairwise
 
@@ -18,6 +17,16 @@ from compas_plotters.plotter import Plotter
 
 
 __all__ = ['MeshPlotter']
+
+
+def valuedict(keys, value, default):
+    value = value or default
+    if isinstance(value, dict):
+        valuedict = {key: default for key in keys}
+        valuedict.update(value)
+    else:
+        valuedict = {key: value for key in keys}
+    return valuedict
 
 
 class MeshPlotter(Plotter):

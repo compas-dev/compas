@@ -189,6 +189,7 @@ class Cloud3D(object):
 
 class Hull(object):
     """"""
+
     def __init__(self, hull):
         self.vertices = hull.points
         self.faces = hull.simplices
