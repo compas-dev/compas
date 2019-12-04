@@ -160,11 +160,11 @@ def connectivity_matrix(edges, rtype='array'):
      [-1  0  0  1]]
 
     """
-    m    = len(edges)
+    m = len(edges)
     data = array([-1] * m + [1] * m)
     rows = array(list(range(m)) + list(range(m)))
     cols = array([edge[0] for edge in edges] + [edge[1] for edge in edges])
-    C    = coo_matrix((data, (rows, cols))).asfptype()
+    C = coo_matrix((data, (rows, cols))).asfptype()
     return _return_matrix(C, rtype)
 
 
@@ -270,14 +270,14 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
 
     """
     xyz = asarray(xyz, dtype=float)
-    C   = csr_matrix(C)
-    xy  = xyz[:, :2]
-    uv  = C.dot(xy)
-    U   = diags([uv[:, 0].flatten()], [0])
-    V   = diags([uv[:, 1].flatten()], [0])
-    Ct  = C.transpose()
+    C = csr_matrix(C)
+    xy = xyz[:, :2]
+    uv = C.dot(xy)
+    U = diags([uv[:, 0].flatten()], [0])
+    V = diags([uv[:, 1].flatten()], [0])
+    Ct = C.transpose()
     Cti = Ct[free, :]
-    E   = svstack((Cti.dot(U), Cti.dot(V)))
+    E = svstack((Cti.dot(U), Cti.dot(V)))
     return _return_matrix(E, rtype)
 
 
@@ -332,13 +332,4 @@ def stiffness_matrix():
 
 if __name__ == "__main__":
 
-    import compas
-
-    from compas.datastructures import Network
-
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    A = network_adjacency_matrix(network)
-    C = network_connectivity_matrix(network)
-    L = network_laplacian_matrix(network, normalize=True, rtype='csr')
-    D = network_degree_matrix(network)
+    pass

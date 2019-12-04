@@ -9,6 +9,7 @@ __all__ = ['Spline']
 
 class Spline(Primitive):
     """"""
+
     def __init__(self):
         self.segments = []
 

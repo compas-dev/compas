@@ -78,12 +78,11 @@ def mesh_unweld_edges(mesh, edges):
 
         # get adjacency network of faces around the vertex excluding adjacency
         # through the edges to unweld
-        network_vertices = [mesh.face_centroid(fkey) for fkey in mesh.vertex_faces(vkey)]
         network_edges = []
         for nbr in mesh.vertex_neighbors(vkey):
             if not mesh.is_edge_on_boundary(vkey, nbr) and (vkey, nbr) not in edges and (nbr, vkey) not in edges:
                 network_edges.append((old_to_new[mesh.halfedge[vkey][nbr]], old_to_new[mesh.halfedge[nbr][vkey]]))
-        
+
         adjacency = adjacency_from_edges(network_edges)
         for key, values in adjacency.items():
             adjacency[key] = {value: None for value in values}
@@ -112,4 +111,4 @@ def mesh_unweld_edges(mesh, edges):
 
 if __name__ == "__main__":
 
-  pass
+    pass

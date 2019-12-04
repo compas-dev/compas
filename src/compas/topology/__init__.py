@@ -76,12 +76,19 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import compas
 
-from .traversal import *
-from .combinatorics import *
-from .orientation import *
-from .connectivity import *
-from .conway import *
+from .traversal import *  # noqa: F401 F403
+from .combinatorics import *  # noqa: F401 F403
+from .orientation import *  # noqa: F401 F403
+
+if compas.IPY:
+    from .orientation_rhino import *  # noqa: F401 F403
+else:
+    from .orientation_numpy import *  # noqa: F401 F403
+
+from .connectivity import *  # noqa: F401 F403
+from .conway import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

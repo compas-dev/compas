@@ -92,8 +92,6 @@ if __name__ == "__main__":
     from compas.geometry import Translation
     from compas.geometry import Rotation
     from compas.datastructures import network
-    from compas.datastructures import network_transform
-
 
     network_transform = print_profile(network_transform)
 

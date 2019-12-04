@@ -125,7 +125,7 @@ if __name__ == "__main__":
     for u, v in network.edges():
         lines.append({
             'start': network.vertex_coordinates(u, 'xy'),
-            'end'  : network.vertex_coordinates(v, 'xy'),
+            'end': network.vertex_coordinates(v, 'xy'),
             'arrow': 'end',
             'width': 4.0,
             'color': '#00ff00'

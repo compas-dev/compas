@@ -12,11 +12,6 @@ from scipy.interpolate import griddata
 
 import matplotlib.pyplot as plt
 
-try:
-    import pymesh
-except ImportError:
-    pass
-
 from compas.geometry import scalarfield_contours_numpy
 
 

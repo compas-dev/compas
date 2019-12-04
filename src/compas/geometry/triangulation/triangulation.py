@@ -73,15 +73,15 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
     def super_triangle(coords):
         centpt = centroid_points(coords)
-        bbpts  = bounding_box(coords)
-        dis    = distance_point_point(bbpts[0], bbpts[2])
-        dis    = dis * 300
-        v1     = (0 * dis, 2 * dis, 0)
-        v2     = (1.73205 * dis, -1.0000000000001 * dis, 0)  # due to numerical issues
-        v3     = (-1.73205 * dis, -1 * dis, 0)
-        pt1    = add_vectors(centpt, v1)
-        pt2    = add_vectors(centpt, v2)
-        pt3    = add_vectors(centpt, v3)
+        bbpts = bounding_box(coords)
+        dis = distance_point_point(bbpts[0], bbpts[2])
+        dis = dis * 300
+        v1 = (0 * dis, 2 * dis, 0)
+        v2 = (1.73205 * dis, -1.0000000000001 * dis, 0)  # due to numerical issues
+        v3 = (-1.73205 * dis, -1 * dis, 0)
+        pt1 = add_vectors(centpt, v1)
+        pt2 = add_vectors(centpt, v2)
+        pt3 = add_vectors(centpt, v3)
         return pt1, pt2, pt3
 
     mesh = Mesh()
@@ -131,9 +131,9 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
             fkey = newtris.pop()
 
             # get opposite_face
-            keys  = mesh.face_vertices(fkey)
-            s     = list(set(keys) - set([key]))
-            u, v  = s[0], s[1]
+            keys = mesh.face_vertices(fkey)
+            s = list(set(keys) - set([key]))
+            u, v = s[0], s[1]
             fkey1 = mesh.halfedge[u][v]
 
             if fkey1 != fkey:

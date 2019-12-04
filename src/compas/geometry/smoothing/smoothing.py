@@ -301,9 +301,9 @@ def smooth_area(vertices,
     fixed = set(fixed)
 
     for k in range(kmax):
-        xyz_0      = [xyz[:] for xyz in vertices]
+        xyz_0 = [xyz[:] for xyz in vertices]
         centroid_0 = [centroid_points([vertices[index] for index in corners]) for corners in faces]
-        area_0     = [area_polygon([vertices[index] for index in corners]) for corners in faces]
+        area_0 = [area_polygon([vertices[index] for index in corners]) for corners in faces]
 
         for index, point in enumerate(xyz_0):
             if index in fixed:
@@ -313,8 +313,8 @@ def smooth_area(vertices,
             x, y, z = 0, 0, 0
             for nbr in adjacency[index]:
                 if nbr is not None:
-                    a  = area_0[nbr]
-                    c  = centroid_0[nbr]
+                    a = area_0[nbr]
+                    c = centroid_0[nbr]
                     x += a * c[0]
                     y += a * c[1]
                     z += a * c[2]
@@ -351,16 +351,16 @@ if __name__ == "__main__":
     # neighbors = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
     # fixed     = [key_index[key] for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
-    vertices  = mesh.get_vertices_attributes('xyz')
-    faces     = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
+    vertices = mesh.get_vertices_attributes('xyz')
+    faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
     adjacency = [mesh.vertex_neighbors(key, ordered=True) for key in mesh.vertices()]
-    fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
     lines = []
     for u, v in mesh.edges():
         lines.append({
             'start': mesh.vertex_coordinates(u, 'xy'),
-            'end'  : mesh.vertex_coordinates(v, 'xy'),
+            'end': mesh.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
             'width': 1.0,
         })

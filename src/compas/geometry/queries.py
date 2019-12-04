@@ -111,8 +111,8 @@ def is_ccw_xy(a, b, c, colinear=False):
     ac_y = c[1] - a[1]
 
     if colinear:
-        return ab_x * ac_y - ab_y  * ac_x >= 0
-    return ab_x * ac_y - ab_y  * ac_x > 0
+        return ab_x * ac_y - ab_y * ac_x >= 0
+    return ab_x * ac_y - ab_y * ac_x > 0
 
 
 def is_colinear(a, b, c, tol=1e-9):
@@ -164,7 +164,7 @@ def is_colinear_xy(a, b, c):
     ac_x = c[0] - a[0]
     ac_y = c[1] - a[1]
 
-    return ab_x * ac_y == ab_y  * ac_x
+    return ab_x * ac_y == ab_y * ac_x
 
 
 def is_line_line_colinear(line1, line2, tol=1e-9):
@@ -946,7 +946,7 @@ def is_intersection_line_triangle(line, triangle, epsilon=1e-6):
     v = dot_vectors(v1, q) * inv_det
 
     # The intersection lies outside of the triangle
-    if v < 0.0 or u + v  > 1.0:
+    if v < 0.0 or u + v > 1.0:
         return False
 
     t = dot_vectors(e2, q) * inv_det

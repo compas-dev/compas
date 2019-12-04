@@ -2,8 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.datastructures import Mesh
-from compas.robots.resources.basic import SUPPORTED_FORMATS
 from compas.robots.resources.basic import AbstractMeshLoader
 from compas.robots.resources.basic import _mesh_import
 
@@ -96,3 +94,11 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         # storing a temp file for these urls
         tempfile, _ = urlretrieve(url)
         return _mesh_import(url, tempfile)
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass

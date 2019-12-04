@@ -4,20 +4,20 @@ from __future__ import print_function
 
 import compas.geometry
 from compas.geometry import Frame
-from compas.geometry import Transformation
 from compas.utilities import hex_to_rgb
 
-__all__ = ['Geometry',
-           'Box',
-           'Cylinder',
-           'Sphere',
-           'Capsule',
-           'MeshDescriptor',
-           'Color',
-           'Texture',
-           'Material',
-           'Origin'
-           ]
+__all__ = [
+    'Geometry',
+    'Box',
+    'Cylinder',
+    'Sphere',
+    'Capsule',
+    'MeshDescriptor',
+    'Color',
+    'Texture',
+    'Material',
+    'Origin'
+]
 
 # Copied from https://github.com/ubernostrum/webcolors/blob/master/webcolors.py
 HTML4_NAMES_TO_HEX = {
@@ -166,3 +166,11 @@ class Geometry(object):
             Shape's geometry, usually a mesh implementation.
         """
         return self.shape.geometry
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass

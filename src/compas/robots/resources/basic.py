@@ -111,7 +111,7 @@ class DefaultMeshLoader(AbstractMeshLoader):
         -------
         :class:`Mesh`
             Instance of a mesh.
-        """        
+        """
         url = self._get_mesh_url(url)
         return _mesh_import(url, url)
 
@@ -132,8 +132,8 @@ class DefaultMeshLoader(AbstractMeshLoader):
         """
         if url.startswith('file:///'):
             url = url[8:]
-        
-        basepath = self.attr.get('basepath') 
+
+        basepath = self.attr.get('basepath')
         if basepath:
             return os.path.join(basepath, url)
         return url

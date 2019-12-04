@@ -7,8 +7,6 @@ try:
 except ImportError:
     from urllib2 import urlopen
 
-from compas.utilities import geometric_key
-
 
 __all__ = [
     'OFF',
@@ -27,6 +25,7 @@ class OFF(object):
 
 
     """
+
     def __init__(self, filepath):
         self.reader = OFFReader(filepath)
 
@@ -162,11 +161,9 @@ class OFFReader(object):
                 continue
 
 
-
 # ==============================================================================
 # Main
 # ==============================================================================
-
 if __name__ == '__main__':
 
     import compas

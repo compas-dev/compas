@@ -68,9 +68,9 @@ def normal_polygon(polygon, unitized=True):
     if not unitized:
         return nx, ny, nz
 
-    l = length_vector([nx, ny, nz])
+    length = length_vector([nx, ny, nz])
 
-    return nx / l, ny / l, nz / l
+    return nx / length, ny / length, nz / length
 
 
 def normal_triangle(triangle, unitized=True):
@@ -96,7 +96,7 @@ def normal_triangle(triangle, unitized=True):
     a, b, c = triangle
     ab = subtract_vectors(b, a)
     ac = subtract_vectors(c, a)
-    n  = cross_vectors(ab, ac)
+    n = cross_vectors(ab, ac)
     if not unitized:
         return n
     lvec = length_vector(n)
@@ -126,7 +126,7 @@ def normal_triangle_xy(triangle, unitized=True):
     a, b, c = triangle
     ab = subtract_vectors_xy(b, a)
     ac = subtract_vectors_xy(c, a)
-    n  = cross_vectors_xy(ab, ac)
+    n = cross_vectors_xy(ab, ac)
     if not unitized:
         return n
     lvec = length_vector_xy(n)
@@ -138,44 +138,5 @@ def normal_triangle_xy(triangle, unitized=True):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
-    from compas.geometry import area_polygon
-    from compas.geometry import centroid_points
-    from compas_plotters import Plotter
 
-    plotter = Plotter(figsize=(10, 7))
-
-    points = [
-        [0, 0, 0],
-        [1.0, 0, 0],
-        [1.0, 1.0, 0],
-        [0.5, 0.0, 0],
-        [0, 1.0, 0]
-    ]
-    polygon = points[::-1]
-
-    print(polygon)
-    print(area_polygon(polygon))
-
-    n = normal_polygon(polygon, unitized=False)
-    print(n)
-
-    if n[2] > 0:
-        color = '#ff0000'
-    else:
-        color = '#0000ff'
-
-    polygons = [{
-        'points' : polygon
-    }]
-    points = [{
-        'pos' : centroid_points(polygon),
-        'radius' : 0.025,
-        'facecolor' : color
-    }]
-
-    plotter.draw_polygons(polygons)
-    plotter.draw_points(points)
-
-    plotter.show()
-
+    pass

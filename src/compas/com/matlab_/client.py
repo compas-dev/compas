@@ -2,12 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
-try:
-    import System
-except ImportError:
-    compas.raise_if_ironpython()
+import System
 
 
 __all__ = ['MatlabClient']

@@ -56,7 +56,7 @@ def print_profile(func):
         #
         profile.disable()
         stream = StringIO()
-        stats  = pstats.Stats(profile, stream=stream)
+        stats = pstats.Stats(profile, stream=stream)
         stats.strip_dirs()
         stats.sort_stats(1)
         stats.print_stats(20)

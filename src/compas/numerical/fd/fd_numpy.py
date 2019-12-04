@@ -72,7 +72,7 @@ def fd_numpy(vertices, edges, fixed, q, loads, **kwargs):
 
     xyz[free] = spsolve(A, b)
 
-    l = normrow(C.dot(xyz))
+    l = normrow(C.dot(xyz))  # noqa: E741
     f = q * l
     r = p - Ct.dot(Q).dot(C).dot(xyz)
 

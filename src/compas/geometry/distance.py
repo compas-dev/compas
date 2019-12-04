@@ -19,7 +19,6 @@ from compas.geometry.basic import length_vector_sqrd_xy
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import cross_vectors_xy
 from compas.geometry.basic import dot_vectors
-from compas.geometry.basic import dot_vectors_xy
 from compas.geometry.basic import vector_component
 from compas.geometry.basic import vector_component_xy
 
@@ -204,9 +203,9 @@ def distance_point_line(point, line):
     ab = subtract_vectors(b, a)
     pa = subtract_vectors(a, point)
     pb = subtract_vectors(b, point)
-    l = length_vector(cross_vectors(pa, pb))
-    l_ab = length_vector(ab)
-    return l / l_ab
+    length = length_vector(cross_vectors(pa, pb))
+    length_ab = length_vector(ab)
+    return length / length_ab
 
 
 def distance_point_line_xy(point, line):
@@ -240,9 +239,9 @@ def distance_point_line_xy(point, line):
     ab = subtract_vectors_xy(b, a)
     pa = subtract_vectors_xy(a, point)
     pb = subtract_vectors_xy(b, point)
-    l = fabs(cross_vectors_xy(pa, pb)[2])
-    l_ab = length_vector_xy(ab)
-    return l / l_ab
+    length = fabs(cross_vectors_xy(pa, pb)[2])
+    length_ab = length_vector_xy(ab)
+    return length / length_ab
 
 
 def distance_point_line_sqrd(point, line):
@@ -274,9 +273,9 @@ def distance_point_line_sqrd(point, line):
     ab = subtract_vectors(b, a)
     pa = subtract_vectors(a, point)
     pb = subtract_vectors(b, point)
-    l = length_vector_sqrd(cross_vectors(pa, pb))
-    l_ab = length_vector_sqrd(ab)
-    return l / l_ab
+    length = length_vector_sqrd(cross_vectors(pa, pb))
+    length_ab = length_vector_sqrd(ab)
+    return length / length_ab
 
 
 def distance_point_line_sqrd_xy(point, line):
@@ -310,9 +309,9 @@ def distance_point_line_sqrd_xy(point, line):
     ab = subtract_vectors_xy(b, a)
     pa = subtract_vectors_xy(a, point)
     pb = subtract_vectors_xy(b, point)
-    l = cross_vectors_xy(pa, pb)[2]**2
-    l_ab = length_vector_sqrd_xy(ab)
-    return l / l_ab
+    length = cross_vectors_xy(pa, pb)[2]**2
+    length_ab = length_vector_sqrd_xy(ab)
+    return length / length_ab
 
 
 def distance_point_plane(point, plane):
@@ -469,10 +468,10 @@ def distance_line_line(l1, l2, tol=0.0):
     cd = subtract_vectors(d, c)
     ac = subtract_vectors(c, a)
     n = cross_vectors(ab, cd)
-    l = length_vector(n)
-    if l <= tol:
+    length = length_vector(n)
+    if length <= tol:
         return distance_point_point(closest_point_on_line(l1[0], l2), l1[0])
-    n = scale_vector(n, 1.0 / l)
+    n = scale_vector(n, 1.0 / length)
     return fabs(dot_vectors(n, ac))
 
 

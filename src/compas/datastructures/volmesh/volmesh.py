@@ -135,29 +135,29 @@ class VolMesh(FromToPickle,
         self._max_int_vkey = -1
         self._max_int_fkey = -1
         self._max_int_ckey = -1
-        self._key_to_str   = False
+        self._key_to_str = False
 
-        self.vertex   = {}
-        self.edge     = {}
+        self.vertex = {}
+        self.edge = {}
         self.halfface = {}
-        self.cell     = {}
-        self.plane    = {}
+        self.cell = {}
+        self.plane = {}
 
         self.edgedata = {}
         self.facedata = {}
         self.celldata = {}
 
-        self.attributes = {'name'                : 'VolMesh',
-                           'color.vertex'        : (255, 255, 255),
-                           'color.edge'          : (0, 0, 0),
-                           'color.face'          : (200, 200, 200),
-                           'color.normal:vertex' : (0, 255, 0),
-                           'color.normal:face'   : (0, 255, 0)}
+        self.attributes = {'name': 'VolMesh',
+                           'color.vertex': (255, 255, 255),
+                           'color.edge': (0, 0, 0),
+                           'color.face': (200, 200, 200),
+                           'color.normal:vertex': (0, 255, 0),
+                           'color.normal:face': (0, 255, 0)}
 
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
-        self.default_edge_attributes   = {}
-        self.default_face_attributes   = {}
-        self.default_cell_attributes   = {}
+        self.default_edge_attributes = {}
+        self.default_face_attributes = {}
+        self.default_cell_attributes = {}
 
     # --------------------------------------------------------------------------
     # customisation
@@ -171,7 +171,7 @@ class VolMesh(FromToPickle,
         """Print a summary of the volmesh."""
         numv = self.number_of_vertices()
         numc = self.number_of_cells()
-        s    = TPL.format(self.name, numv, numc)
+        s = TPL.format(self.name, numv, numc)
         print(s)
 
     # --------------------------------------------------------------------------
@@ -221,19 +221,19 @@ class VolMesh(FromToPickle,
 
         """
         data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'dfa'         : self.default_face_attributes,
-            'dca'         : self.default_cell_attributes,
-            'vertex'      : {},
-            'edge'        : {},
-            'halfface'    : {},
-            'cell'        : {},
-            'plane'       : {},
-            'edgedata'    : {},
-            'facedata'    : {},
-            'celldata'    : {},
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'dfa': self.default_face_attributes,
+            'dca': self.default_cell_attributes,
+            'vertex': {},
+            'edge': {},
+            'halfface': {},
+            'cell': {},
+            'plane': {},
+            'edgedata': {},
+            'facedata': {},
+            'celldata': {},
             'max_int_vkey': self._max_int_vkey,
             'max_int_fkey': self._max_int_fkey,
             'max_int_ckey': self._max_int_ckey, }
@@ -297,19 +297,19 @@ class VolMesh(FromToPickle,
 
     @data.setter
     def data(self, data):
-        attributes   = data.get('attributes') or {}
-        dva          = data.get('dva') or {}
-        dea          = data.get('dea') or {}
-        dfa          = data.get('dfa') or {}
-        dca          = data.get('dca') or {}
-        vertex       = data.get('vertex') or {}
-        edge         = data.get('edge') or {}
-        halfface     = data.get('halfface') or {}
-        cell         = data.get('cell') or {}
-        plane        = data.get('plane') or {}
-        edgedata     = data.get('edgedata') or {}
-        facedata     = data.get('facedata') or {}
-        celldata     = data.get('celldata') or {}
+        attributes = data.get('attributes') or {}
+        dva = data.get('dva') or {}
+        dea = data.get('dea') or {}
+        dfa = data.get('dfa') or {}
+        dca = data.get('dca') or {}
+        vertex = data.get('vertex') or {}
+        edge = data.get('edge') or {}
+        halfface = data.get('halfface') or {}
+        cell = data.get('cell') or {}
+        plane = data.get('plane') or {}
+        edgedata = data.get('edgedata') or {}
+        facedata = data.get('facedata') or {}
+        celldata = data.get('celldata') or {}
         max_int_vkey = data.get('max_int_vkey', - 1)
         max_int_fkey = data.get('max_int_fkey', - 1)
         max_int_ckey = data.get('max_int_ckey', - 1)
@@ -401,18 +401,18 @@ class VolMesh(FromToPickle,
 
         """
         data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'dfa'         : self.default_face_attributes,
-            'dca'         : self.default_cell_attributes,
-            'vertex'      : self.vertex,
-            'edge'        : self.edge,
-            'halfface'    : self.face,
-            'cell'        : self.cell,
-            'plane'       : self.plane,
-            'facedata'    : self.facedata,
-            'celldata'    : self.celldata,
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'dfa': self.default_face_attributes,
+            'dca': self.default_cell_attributes,
+            'vertex': self.vertex,
+            'edge': self.edge,
+            'halfface': self.face,
+            'cell': self.cell,
+            'plane': self.plane,
+            'facedata': self.facedata,
+            'celldata': self.celldata,
             'max_int_vkey': self._max_int_vkey,
             'max_int_fkey': self._max_int_fkey,
             'max_int_ckey': self._max_int_ckey,
@@ -431,18 +431,18 @@ class VolMesh(FromToPickle,
 
         """
         data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'dfa'         : self.default_face_attributes,
-            'dca'         : self.default_cell_attributes,
-            'vertex'      : self.vertex,
-            'edge'        : self.edge,
-            'halfface'    : self.face,
-            'cell'        : self.cell,
-            'plane'       : self.plane,
-            'facedata'    : self.facedata,
-            'celldata'    : self.celldata,
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'dfa': self.default_face_attributes,
+            'dca': self.default_cell_attributes,
+            'vertex': self.vertex,
+            'edge': self.edge,
+            'halfface': self.face,
+            'cell': self.cell,
+            'plane': self.plane,
+            'facedata': self.facedata,
+            'celldata': self.celldata,
             'max_int_vkey': self._max_int_vkey,
             'max_int_fkey': self._max_int_fkey,
             'max_int_ckey': self._max_int_ckey,
@@ -461,22 +461,22 @@ class VolMesh(FromToPickle,
         with open(filepath, 'rb') as fo:
             data = pickle.load(fo)
 
-        self.attributes                = data['attributes']
+        self.attributes = data['attributes']
         self.default_vertex_attributes = data['dva']
-        self.default_edge_attributes   = data['dea']
-        self.default_face_attributes   = data['dfa']
-        self.default_cell_attributes   = data['dca']
-        self.vertex                    = data['vertex']
-        self.edge                      = data['edge']
-        self.halfface                  = data['halfface']
-        self.cell                      = data['cell']
-        self.plane                     = data['plane']
-        self.edgedata                  = data['edgedata']
-        self.facedata                  = data['facedata']
-        self.celldata                  = data['celldata']
-        self._max_int_vkey             = data['max_int_vkey']
-        self._max_int_fkey             = data['max_int_fkey']
-        self._max_int_fkey             = data['max_int_fkey']
+        self.default_edge_attributes = data['dea']
+        self.default_face_attributes = data['dfa']
+        self.default_cell_attributes = data['dca']
+        self.vertex = data['vertex']
+        self.edge = data['edge']
+        self.halfface = data['halfface']
+        self.cell = data['cell']
+        self.plane = data['plane']
+        self.edgedata = data['edgedata']
+        self.facedata = data['facedata']
+        self.celldata = data['celldata']
+        self._max_int_vkey = data['max_int_vkey']
+        self._max_int_fkey = data['max_int_fkey']
+        self._max_int_fkey = data['max_int_fkey']
 
     def loads(self, s):
         """Load serialised volmesh data from a pickle string.
@@ -489,22 +489,22 @@ class VolMesh(FromToPickle,
         """
         data = pickle.loads(s)
 
-        self.attributes                = data['attributes']
+        self.attributes = data['attributes']
         self.default_vertex_attributes = data['dva']
-        self.default_edge_attributes   = data['dea']
-        self.default_face_attributes   = data['dfa']
-        self.default_cell_attributes   = data['dca']
-        self.vertex                    = data['vertex']
-        self.edge                      = data['edge']
-        self.halfface                  = data['halfface']
-        self.cell                      = data['cell']
-        self.plane                     = data['plane']
-        self.edgedata                  = data['edgedata']
-        self.facedata                  = data['facedata']
-        self.celldata                  = data['celldata']
-        self._max_int_vkey             = data['max_int_vkey']
-        self._max_int_fkey             = data['max_int_fkey']
-        self._max_int_fkey             = data['max_int_fkey']
+        self.default_edge_attributes = data['dea']
+        self.default_face_attributes = data['dfa']
+        self.default_cell_attributes = data['dca']
+        self.vertex = data['vertex']
+        self.edge = data['edge']
+        self.halfface = data['halfface']
+        self.cell = data['cell']
+        self.plane = data['plane']
+        self.edgedata = data['edgedata']
+        self.facedata = data['facedata']
+        self.celldata = data['celldata']
+        self._max_int_vkey = data['max_int_vkey']
+        self._max_int_fkey = data['max_int_fkey']
+        self._max_int_fkey = data['max_int_fkey']
 
     # --------------------------------------------------------------------------
     # constructors
@@ -603,7 +603,7 @@ class VolMesh(FromToPickle,
         """
         key_index = self.key_index()
 
-        vertices  = [self.vertex_coordinates(vkey) for vkey in self.vertices()]
+        vertices = [self.vertex_coordinates(vkey) for vkey in self.vertices()]
         cells = []
 
         for ckey in self.cell:
@@ -709,15 +709,15 @@ class VolMesh(FromToPickle,
         del self.edgedata
         del self.facedata
         del self.celldata
-        self.vertex        = {}
-        self.edge          = {}
-        self.halfface      = {}
-        self.cell          = {}
-        self.plane         = {}
-        self.edgedata      = {}
-        self.facedata      = {}
-        self.celldata      = {}
-        self._max_int_vkey  = -1
+        self.vertex = {}
+        self.edge = {}
+        self.halfface = {}
+        self.cell = {}
+        self.plane = {}
+        self.edgedata = {}
+        self.facedata = {}
+        self.celldata = {}
+        self._max_int_vkey = -1
         self._max_int_fkey = -1
         self._max_int_ckey = -1
 
@@ -783,8 +783,8 @@ class VolMesh(FromToPickle,
 
         if vkey not in self.vertex:
             self.vertex[vkey] = attr
-            self.plane[vkey]  = {}
-            self.edge[vkey]   = {}
+            self.plane[vkey] = {}
+            self.edge[vkey] = {}
 
         return vkey
 
@@ -905,7 +905,7 @@ class VolMesh(FromToPickle,
         """
         ckey = self._get_cellkey(ckey)
 
-        self.cell[ckey]     = {}
+        self.cell[ckey] = {}
         self.celldata[ckey] = self.default_cell_attributes
 
         for vertices in halffaces:
@@ -922,7 +922,7 @@ class VolMesh(FromToPickle,
                     self.cell[ckey][u] = {}
 
                 self.cell[ckey][u][v] = hfkey
-                self.plane[u][v][w]   = ckey
+                self.plane[u][v][w] = ckey
 
         return ckey
 
@@ -1147,7 +1147,7 @@ class VolMesh(FromToPickle,
             The list of halffaces connected to a vertex.
 
         """
-        cells     = self.vertex_cells(vkey)
+        cells = self.vertex_cells(vkey)
 
         nbr_vkeys = self.plane[vkey].keys()
 
@@ -1227,14 +1227,14 @@ class VolMesh(FromToPickle,
             List of of keys identifying the adjacent halffaces.
 
         """
-        edge_ckeys     = self.plane[u][v].values()
-        ckey           = edge_ckeys[0]
+        edge_ckeys = self.plane[u][v].values()
+        ckey = edge_ckeys[0]
         ordered_hfkeys = []
 
         for i in range(len(edge_ckeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            w     = self.halfface_vertex_descendent(hfkey, v)
-            ckey  = self.plane[w][v][u]
+            w = self.halfface_vertex_descendent(hfkey, v)
+            ckey = self.plane[w][v][u]
             ordered_hfkeys.append(hfkey)
 
         return ordered_hfkeys
@@ -1255,14 +1255,14 @@ class VolMesh(FromToPickle,
             Ordered List of keys identifying the adjacent cells.
 
         """
-        edge_ckeys    = self.plane[u][v].values()
-        ckey          = edge_ckeys[0]
+        edge_ckeys = self.plane[u][v].values()
+        ckey = edge_ckeys[0]
         ordered_ckeys = [ckey]
 
         for i in range(len(edge_ckeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            w     = self.halfface_vertex_descendent(hfkey, v)
-            ckey  = self.plane[w][v][u]
+            w = self.halfface_vertex_descendent(hfkey, v)
+            ckey = self.plane[w][v][u]
             ordered_ckeys.append(ckey)
 
         return ordered_ckeys
@@ -1536,7 +1536,7 @@ class VolMesh(FromToPickle,
 
         for i in range(len(nbr_vkeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            v     = self.halfface_vertex_ancestor(hfkey, u)
+            v = self.halfface_vertex_ancestor(hfkey, u)
             ordered_vkeys.append(v)
 
         return ordered_vkeys
@@ -1564,7 +1564,7 @@ class VolMesh(FromToPickle,
 
         for i in range(len(nbr_vkeys)):
             hfkey = self.cell[ckey][u][v]
-            v     = self.halfface_vertex_ancestor(hfkey, u)
+            v = self.halfface_vertex_ancestor(hfkey, u)
             ordered_hfkeys.append(hfkey)
 
         return ordered_hfkeys
@@ -1657,8 +1657,8 @@ class VolMesh(FromToPickle,
 
         vkey_vindex = dict((vkey, index) for index, vkey in enumerate(vkeys))
 
-        vertices    = [self.vertex_coordinates(vkey) for vkey in vkeys]
-        halffaces   = [[vkey_vindex[vkey] for vkey in self.halfface[fkey]] for fkey in hfkeys]
+        vertices = [self.vertex_coordinates(vkey) for vkey in vkeys]
+        halffaces = [[vkey_vindex[vkey] for vkey in self.halfface[fkey]] for fkey in hfkeys]
 
         return vertices, halffaces
 
@@ -2104,7 +2104,6 @@ class VolMesh(FromToPickle,
         """
         for name, value in zip(names, values):
             self.set_edge_attribute(key, name, value)
-
 
     def set_edges_attribute(self, name, value, keys=None):
         """Set one attribute of multiple edges.

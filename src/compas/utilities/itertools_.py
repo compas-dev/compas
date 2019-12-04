@@ -21,7 +21,6 @@ from itertools import tee
 from itertools import cycle
 # from itertools import filterfalse
 from itertools import combinations
-from itertools import chain
 
 try:
     from itertools import zip_longest
@@ -137,6 +136,7 @@ def pairwise(iterable):
     a, b = tee(iterable)
     next(b, None)
     return zip(a, b)
+
 
 def window(seq, n=2):
     """Returns a sliding window (of width n) over data from the iterable.
@@ -283,7 +283,7 @@ def iterable_like(target, reference, fillvalue=None):
     Creates an iterator from a reference object with size equivalent to that of a target iterable.
 
     Values will be yielded one at a time until the target iterable is exhausted.
-    If target and reference are of uneven size, fillvalue will be used to 
+    If target and reference are of uneven size, fillvalue will be used to
     substitute the missing values.
 
     Parameters
@@ -294,14 +294,14 @@ def iterable_like(target, reference, fillvalue=None):
         Iterable taken as basis for pairing.
     fillvalue : object, optional
         Defaults to `None`.
-    
+
     Returns
     -------
     object
         The next value in the iterator
 
-    Note
-    -------
+    Notes
+    -----
     This function can also produce an iterable capped to the size of target
     whenever the supplied reference is larger.
 

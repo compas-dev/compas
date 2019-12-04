@@ -24,7 +24,6 @@ __all__ = ['descent_numpy']
 
 
 def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, args=()):
-
     """A gradient descent optimisation solver.
 
     Parameters
@@ -53,9 +52,9 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, 
 
     """
 
-    r  = 0.5
-    c  = 0.0001
-    n  = len(x0)
+    r = 0.5
+    c = 0.0001
+    n = len(x0)
     x0 = reshape(array(x0), (n, 1))
 
     if bounds:
@@ -67,14 +66,14 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, 
         ub = ones((n, 1)) * +10**20
 
     zn = zeros((n, 1))
-    g  = zeros((n, 1))
-    v  = eye(n) * e
+    g = zeros((n, 1))
+    v = eye(n) * e
 
     def phi(x, mu, *args):
         p = mu * (sum(maximum(lb - x, zn)) + sum(maximum(x - ub, zn)))**2
         return fn(x, *args) + p
 
-    i  = 0
+    i = 0
     mu = 1
 
     while i < iterations:
@@ -87,7 +86,7 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, 
 
         D = sum(-g * g)
 
-        a  = 1
+        a = 1
         x1 = x0 - a * g
 
         while phi(x1, mu, *args) > p0 + c * a * D:
@@ -96,10 +95,10 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, 
 
         x0 -= a * g
 
-        mu  *= 10
+        mu *= 10
         res = mean(abs(g))
-        i   += 1
-        f1  = phi(x0, mu, *args)
+        i += 1
+        f1 = phi(x0, mu, *args)
 
         if f1 < limit:
             break

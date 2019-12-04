@@ -55,7 +55,7 @@ try:
     from System.Xml import XmlReaderSettings
 
     CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
-                        RegexOptions.Compiled)
+                         RegexOptions.Compiled)
 except ImportError:
     compas.raise_if_ironpython()
 

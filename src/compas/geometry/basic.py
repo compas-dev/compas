@@ -4,7 +4,6 @@ from __future__ import division
 
 from math import sqrt
 from math import fabs
-from random import sample
 from random import uniform
 
 __all__ = [
@@ -428,10 +427,10 @@ def normalize_vector(vector):
     >>>
 
     """
-    l = length_vector(vector)
-    if not l:
+    length = length_vector(vector)
+    if not length:
         return vector
-    return [vector[0] / l, vector[1] / l, vector[2] / l]
+    return [vector[0] / length, vector[1] / length, vector[2] / length]
 
 
 def normalize_vector_xy(vector):
@@ -452,10 +451,10 @@ def normalize_vector_xy(vector):
     >>>
 
     """
-    l = length_vector_xy(vector)
-    if not l:
+    length = length_vector_xy(vector)
+    if not length:
         return vector
-    return [vector[0] / l, vector[1] / l, 0.0]
+    return [vector[0] / length, vector[1] / length, 0.0]
 
 
 def normalize_vectors(vectors):

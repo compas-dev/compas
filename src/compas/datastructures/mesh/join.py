@@ -4,7 +4,8 @@ from __future__ import division
 
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
-from compas.utilities import reverse_geometric_key
+# from compas.utilities import reverse_geometric_key
+
 
 __all__ = [
     'mesh_weld',
@@ -103,7 +104,6 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
 if __name__ == "__main__":
 
     from compas.datastructures import Mesh
-    from compas.datastructures import mesh_weld
     from compas_plotters import MeshPlotter
 
     vertices = [[0, 0, 0], [0.04, 0, 0], [1.0, 0, 0], [1.0, 1.0, 0], [0, 1.0, 0]]

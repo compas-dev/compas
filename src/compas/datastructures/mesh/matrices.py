@@ -3,7 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 from numpy import asarray
-from numpy import ones
 from numpy import zeros
 from numpy import cross
 from numpy import bincount
@@ -19,7 +18,6 @@ from compas.numerical import normrow
 from compas.numerical import adjacency_matrix
 from compas.numerical import degree_matrix
 from compas.numerical import connectivity_matrix
-from compas.numerical import laplacian_matrix
 from compas.numerical import face_matrix
 
 

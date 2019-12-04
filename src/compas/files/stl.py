@@ -52,7 +52,8 @@ class STLReader(object):
                 self.read_binary()
         except Exception:
             # raise if it was already detected as binary, but failed anyway
-            if is_binary: raise
+            if is_binary:
+                raise
 
             # else, ascii parsing failed, try binary
             is_binary = True
@@ -196,9 +197,9 @@ class STLParser(object):
 
     def __init__(self, reader, precision=None):
         self.precision = precision
-        self.reader    = reader
-        self.vertices  = None
-        self.faces     = None
+        self.reader = reader
+        self.vertices = None
+        self.faces = None
         self.parse()
 
     def parse(self):
@@ -236,7 +237,6 @@ if __name__ == "__main__":
     from compas_viewers import MeshViewer
     from compas.utilities import download_file_from_remote
     from compas.topology import connected_components
-
 
     source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
     filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')

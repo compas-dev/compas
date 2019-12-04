@@ -1,7 +1,7 @@
 """
-********************************************************************************
+******************
 com
-********************************************************************************
+******************
 
 .. currentmodule:: compas.com
 
@@ -27,7 +27,7 @@ Rhino
 
     RhinoClient
 
-ssh
+SSH
 ===
 
 .. autosummary::
@@ -43,9 +43,9 @@ from __future__ import division
 from __future__ import print_function
 
 
-from .matlab_ import *  # noqa: F401 F402 F403
-from .ssh import *      # noqa: F401 F402 F403
-from .rhino import *    # noqa: F401 F402 F403
+from .matlab_ import *  # noqa: F401 F403
+from .ssh import *  # noqa: F401 F403
+from .rhino import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

@@ -45,6 +45,7 @@ def network_join_edges(network, key):
     # set attributes based on average of two joining edges?
     network.add_edge(a, b)
 
+
 def network_polylines(network, splits=None):
     """Join network edges into polylines.
     The polylines stop at points with a valency different from 2 in the network of line.
@@ -85,7 +86,7 @@ def network_polylines(network, splits=None):
             (points[2], points[4]),
             (points[4], points[5]),
         ]
-        
+
         network = Network.from_lines([(line[0], line[-1]) for line in lines])
 
         print(network_polylines(network))
@@ -130,6 +131,7 @@ def network_polylines(network, splits=None):
 # Main
 # ==============================================================================
 
+
 if __name__ == "__main__":
-    
+
     pass

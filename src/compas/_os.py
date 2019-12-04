@@ -509,7 +509,7 @@ def _get_win_folder_with_pywin32(csidl_name):
     # not return unicode strings when there is unicode data in the
     # path.
     try:
-        dir = str(dir) if PY3 else unicode(dir)
+        dir = str(dir) if PY3 else unicode(dir)  # noqa: F821
 
         # Downgrade to short path name if have highbit chars. See
         # <http://bugs.activestate.com/show_bug.cgi?id=85099>.

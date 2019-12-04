@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry import KDTree
+from scipy.spatial import cKDTree
 
 from compas.utilities import pairwise
 from compas.geometry import centroid_points
@@ -10,12 +10,12 @@ from compas.topology import breadth_first_traverse
 
 
 __all__ = [
-    'face_adjacency',
-    'unify_cycles',
+    'face_adjacency_numpy',
+    'unify_cycles_numpy',
 ]
 
 
-def unify_cycles(vertices, faces, root=0):
+def unify_cycles_numpy(vertices, faces, root=0):
     """"""
     def unify(node, nbr):
         # find the common edge
@@ -31,7 +31,7 @@ def unify_cycles(vertices, faces, root=0):
                     faces[nbr][:] = faces[nbr][::-1]
                     return
 
-    adj = face_adjacency(vertices, faces)
+    adj = face_adjacency_numpy(vertices, faces)
 
     visited = breadth_first_traverse(adj, root, unify)
 
@@ -39,10 +39,8 @@ def unify_cycles(vertices, faces, root=0):
     return faces
 
 
-def face_adjacency(xyz, faces):
+def face_adjacency_numpy(xyz, faces):
     f = len(faces)
-
-    print(f)
 
     if f > 100:
         return _face_adjacency(xyz, faces)
@@ -82,9 +80,10 @@ def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
     """"""
     points = [centroid_points([xyz[index] for index in face]) for face in faces]
 
-    tree = KDTree(points)
-    closest = [tree.nearest_neighbors(point, nmax) for point in points]
-    closest = [[index for _, index, _ in nnbrs] for nnbrs in closest]
+    k = min(len(faces), nmax)
+
+    tree = cKDTree(points)
+    _, closest = tree.query(points, k=k, n_jobs=-1)
 
     adjacency = {}
 

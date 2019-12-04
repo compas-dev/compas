@@ -106,7 +106,6 @@ def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=F
 
 def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh,
                      beams, inds, indi, indf, EIx, EIy, callback, **kwargs):
-
     """ NumPy and SciPy dynamic relaxation solver.
 
     Parameters
@@ -226,8 +225,8 @@ def _beam_data(structure):
         inds = array(inds, dtype=int32)
         indi = array(indi, dtype=int32)
         indf = array(indf, dtype=int32)
-        EIx  = array(EIx, dtype=float64)
-        EIy  = array(EIy, dtype=float64)
+        EIx = array(EIx, dtype=float64)
+        EIy = array(EIy, dtype=float64)
         beams = 1
 
     else:
@@ -251,9 +250,9 @@ def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
     Qn = cross(Qa, Qb)
     mu = 0.5 * (Xf - Xs)
 
-    La  = normrow(Qa)
-    Lb  = normrow(Qb)
-    Lc  = normrow(Qc)
+    La = normrow(Qa)
+    Lb = normrow(Qb)
+    Lc = normrow(Qc)
     LQn = normrow(Qn)
     Lmu = normrow(mu)
     a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
@@ -309,11 +308,11 @@ def _create_arrays(structure):
 
     # Edges
 
-    m  = structure.number_of_edges()
-    u  = zeros(m, dtype=int32)
-    v  = zeros(m, dtype=int32)
-    E  = zeros(m, dtype=float64)
-    A  = zeros(m, dtype=float64)
+    m = structure.number_of_edges()
+    u = zeros(m, dtype=int32)
+    v = zeros(m, dtype=int32)
+    E = zeros(m, dtype=float64)
+    A = zeros(m, dtype=float64)
     s0 = zeros(m, dtype=float64)
     l0 = zeros(m, dtype=float64)
     ind_c = []
@@ -323,7 +322,7 @@ def _create_arrays(structure):
 
     for ui, vi in structure.edges():
 
-        i    = uv_i[(ui, vi)]
+        i = uv_i[(ui, vi)]
         E[i] = structure.get_edge_attribute(key=(ui, vi), name='E')
         A[i] = structure.get_edge_attribute(key=(ui, vi), name='A')
 
@@ -337,8 +336,8 @@ def _create_arrays(structure):
         else:
             s0[i] = 0
 
-        u[i]  = k_i[ui]
-        v[i]  = k_i[vi]
+        u[i] = k_i[ui]
+        v[i] = k_i[vi]
         ct = structure.get_edge_attribute(key=(ui, vi), name='ct')
         if ct == 'c':
             ind_c.append(i)
@@ -350,9 +349,9 @@ def _create_arrays(structure):
 
     # Arrays
 
-    C  = connectivity_matrix([[k_i[i], k_i[j]] for i, j in structure.edges()], 'csr')
+    C = connectivity_matrix([[k_i[i], k_i[j]] for i, j in structure.edges()], 'csr')
     Ct = C.transpose()
-    M  = mass_matrix(Ct=Ct, ks=k0, q=q0, c=1, tiled=False)
+    M = mass_matrix(Ct=Ct, ks=k0, q=q0, c=1, tiled=False)
     rows, cols, vals = find(Ct)
     rows = array(rows, dtype=int32)
     cols = array(cols, dtype=int32)
@@ -374,7 +373,6 @@ if __name__ == "__main__":
 
     # from compas.datastructures import Network
     # from compas_viewers import VtkViewer
-
 
     # m = 70
     # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
@@ -406,13 +404,11 @@ if __name__ == "__main__":
     #     'edges':    [{'vertices': uv} for uv in structure.edges()]
     # }
 
-
     # def callback(X, self):
     #     self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
 
     # def func(self):
     #     drx_numpy(structure=structure, tol=0.05, update=True, refresh=5, callback=callback, self=self)
-
 
     # print('Press key S to start')
 
@@ -423,7 +419,6 @@ if __name__ == "__main__":
     # viewer.setup()
     # viewer.start()
 
-
     # ==========================================================================
     # Example 2 (grid)
     # ==========================================================================
@@ -432,7 +427,6 @@ if __name__ == "__main__":
 
     # from compas.datastructures import Network
     # from compas_plotters import NetworkPlotter
-
 
     # structure = Network.from_obj(compas.get('lines.obj'))
     # structure.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
@@ -452,7 +446,6 @@ if __name__ == "__main__":
     # plotter.draw_lines(lines)
     # plotter.draw_edges()
 
-
     # def callback(X, k_i):
 
     #     for key in structure.vertices():
@@ -461,11 +454,9 @@ if __name__ == "__main__":
     #     plotter.update_edges()
     #     plotter.update(pause=0.01)
 
-
     # drx_numpy(structure=structure, tol=0.001, refresh=1, update=True, callback=callback, k_i=structure.key_index())
 
     # plotter.show()
-
 
     # ==========================================================================
     # Example 3 (beam)
@@ -477,9 +468,8 @@ if __name__ == "__main__":
     from compas.datastructures import Network
     from compas_plotters import NetworkPlotter
 
-
-    L  = 2.5
-    n  = 100
+    L = 2.5
+    n = 100
     EI = 0.2
 
     vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
@@ -498,7 +488,7 @@ if __name__ == "__main__":
     for u, v in structure.edges():
         lines.append({
             'start': structure.vertex_coordinates(u, 'xy'),
-            'end':   structure.vertex_coordinates(v, 'xy'),
+            'end': structure.vertex_coordinates(v, 'xy'),
             'color': '#cccccc'
         })
 
@@ -507,7 +497,6 @@ if __name__ == "__main__":
     plotter.draw_lines(lines)
     plotter.draw_edges()
 
-
     def callback(X, k_i):
 
         for key in structure.vertices():
@@ -515,7 +504,6 @@ if __name__ == "__main__":
             structure.set_vertex_attributes(key, 'xyz', [x, y, z])
         plotter.update_edges()
         plotter.update(pause=0.01)
-
 
     drx_numpy(structure=structure, tol=0.01, refresh=20, factor=30, update=1, callback=callback, k_i=structure.key_index())
 

@@ -62,6 +62,7 @@ class Bezier(Primitive):
         The degree of the curve.
 
     """
+
     def __init__(self, points):
         self._points = []
         self.points = points

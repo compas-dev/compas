@@ -70,7 +70,7 @@ def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
 
 def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
     """Insert a vertex in the faces adjacent to an edge, between the two edge vertices.
-    
+
     If no vertex key is specified or if the key does not exist yet, a vertex is added and located at the edge midpoint.
     If the vertex key exists, the position is not modified.
 
@@ -99,7 +99,7 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
     yields the two new faces
     face_1 = [a, e, b, c] and
     face_2 = [b, e, a, d].
-    
+
     Examples
     --------
     >>> from compas.datastructures import Mesh
@@ -137,8 +137,8 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
             mesh.add_face(face_vertices, fkey)
 
     return vkey
-  
-  
+
+
 # ==============================================================================
 # Main
 # ==============================================================================

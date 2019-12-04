@@ -54,7 +54,6 @@ def ga(fit_function,
        output_path=None,
        input_path=None,
        print_refresh=1):
-
     """Genetic Algorithm optimisation.
 
     Parameters
@@ -182,28 +181,28 @@ def ga(fit_function,
     """
     ga_ = GA()
 
-    ga_.fit_name             = fit_name or fit_function.__name__
-    ga_.fit_type             = fit_type
-    ga_.num_gen              = num_gen
-    ga_.num_pop              = num_pop
-    ga_.num_pop_init         = num_pop_init
-    ga_.num_gen_init_pop     = num_gen_init_pop
-    ga_.num_elite            = num_elite
-    ga_.num_var              = num_var
+    ga_.fit_name = fit_name or fit_function.__name__
+    ga_.fit_type = fit_type
+    ga_.num_gen = num_gen
+    ga_.num_pop = num_pop
+    ga_.num_pop_init = num_pop_init
+    ga_.num_gen_init_pop = num_gen_init_pop
+    ga_.num_elite = num_elite
+    ga_.num_var = num_var
     ga_.mutation_probability = mutation_probability
-    ga_.ncross               = n_cross
-    ga_.start_from_gen       = start_from_gen
-    ga_.min_fit              = min_fit
-    ga_.boundaries           = boundaries
-    ga_.num_bin_dig          = num_bin_dig or [8] * num_var
-    ga_.max_bin_dig          = max(ga_.num_bin_dig)
-    ga_.total_bin_dig        = sum(ga_.num_bin_dig)
-    ga_.fargs                = fargs or {}
-    ga_.fkwargs              = fkwargs or {}
-    ga_.fit_function         = fit_function
-    ga_.output_path          = output_path or ''
-    ga_.input_path           = input_path or ''
-    ga_.print_refresh        = print_refresh
+    ga_.ncross = n_cross
+    ga_.start_from_gen = start_from_gen
+    ga_.min_fit = min_fit
+    ga_.boundaries = boundaries
+    ga_.num_bin_dig = num_bin_dig or [8] * num_var
+    ga_.max_bin_dig = max(ga_.num_bin_dig)
+    ga_.total_bin_dig = sum(ga_.num_bin_dig)
+    ga_.fargs = fargs or {}
+    ga_.fkwargs = fkwargs or {}
+    ga_.fit_function = fit_function
+    ga_.output_path = output_path or ''
+    ga_.input_path = input_path or ''
+    ga_.print_refresh = print_refresh
     ga_.ga_optimize()
     return ga_
 
@@ -292,9 +291,9 @@ class GA(object):
         self.fargs = {}
         self.best_fit = None
         self.best_individual_index = None
-        self.boundaries   = {}
-        self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
-        self.elite_pop    = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        self.boundaries = {}
+        self.current_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        self.elite_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
         self.end_gen = None
         self.fit_function = None
         self.fit_name = ''
@@ -358,7 +357,7 @@ class GA(object):
         for generation in range(start_gen_number, self.num_gen):
 
             self.current_pop['decoded'] = self.decode_binary_pop(self.current_pop['binary'])
-            self.current_pop['scaled']  = self.scale_population(self.current_pop['decoded'])
+            self.current_pop['scaled'] = self.scale_population(self.current_pop['decoded'])
 
             if generation == 0:
                 num = self.num_pop
@@ -381,12 +380,6 @@ class GA(object):
             if generation % self.print_refresh == 0:
                 print('generation ', generation, ' best fit ', self.best_fit, 'min fit', self.min_fit)
 
-            #####################################################################
-            # print ('before')
-            # for i in range(len(self.current_pop['binary'])):
-            #     print (i, self.current_pop['binary'][i], self.current_pop['fit_value'][i])
-            #####################################################################
-
             if self.check_diversity:
                 print('num repeated individuals', self.check_pop_diversity())
             if generation < self.num_gen - 1 and self.min_fit_flag is False:
@@ -397,12 +390,6 @@ class GA(object):
                 self.random_mutation()  # n-e
                 self.add_elite_to_current()  # n
 
-                #####################################################################
-                # print ('after')
-                # for i in range(len(self.current_pop['binary'])):
-                #     print (i, self.current_pop['binary'][i], self.current_pop['binary'][i] in self.elite_pop['binary'])
-                # print ()
-                #####################################################################
             else:
                 self.end_gen = generation
                 self.get_best_individual_index()
@@ -466,7 +453,6 @@ class GA(object):
         return random_bin_pop
 
     def scale_population(self, decoded_pop):
-
         """Scales the decoded population, variable values are scaled according to each
         of their bounds contained in ``GA.boundaries``.
 
@@ -493,12 +479,8 @@ class GA(object):
         pop_a = []
         pop_b = []
         indices = range(self.num_pop)
-        # for i in range((self.num_pop - self.num_elite)):
-        #     u, v = random.sample(indices, 2)
-        #     pop_a.append(u)
-        #     pop_b.append(v)
-        pop_a = random.sample(indices,self.num_pop-self.num_elite)
-        pop_b = random.sample(indices,self.num_pop-self.num_elite)
+        pop_a = random.sample(indices, self.num_pop - self.num_elite)
+        pop_b = random.sample(indices, self.num_pop - self.num_elite)
         self.mp_indices = []
         for i in range(self.num_pop - self.num_elite):
             fit_a = self.current_pop['fit_value'][pop_a[i]]
@@ -513,10 +495,6 @@ class GA(object):
                     self.mp_indices.append(pop_a[i])
                 else:
                     self.mp_indices.append(pop_b[i])
-        # print (pop_a, 'tournament pop_a')
-        # print (pop_b, 'tournament pop_a')
-        # print()
-        # print (self.mp_indices, 'tournament winners')
 
     def select_elite_pop(self, pop, num_elite=None):
         """Saves the elite population in the elite population dictionary
@@ -540,7 +518,7 @@ class GA(object):
         if not num_elite:
             num_elite = self.num_elite
 
-        elite_pop   = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        elite_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
         for i in range(num_elite):
             elite_pop['binary'].append(pop['binary'][sorted_ind[i]])
             elite_pop['decoded'].append(pop['decoded'][sorted_ind[i]])
@@ -588,8 +566,6 @@ class GA(object):
         for i in range(int((self.num_pop - self.num_elite) / 2)):
             chrom_a = []
             chrom_b = []
-            # print (i, ' ',self.mp_indices[i], self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))], '       mp individual ab')
-            # print (i + (int((self.num_pop - self.num_elite) / 2)), ' ', self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))], self.mp_indices[i], '       mp individual ba')
             for j in range(self.num_var):
                 chrom_a += self.current_pop['binary'][self.mp_indices[i]][j]
                 chrom_b += self.current_pop['binary'][self.mp_indices[i + (int((self.num_pop - self.num_elite) / 2))]][j]
@@ -601,11 +577,10 @@ class GA(object):
         combined with individuals in ``GA.mating_pool_b`` using a single, randomly selected
         crossover point.
         """
-        self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        self.current_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
         self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(int((self.num_pop - self.num_elite) / 2)):
             cross = random.randint(1, self.total_bin_dig - 1)
-            # print (j, cross, 'crossover point')
             a = self.mating_pool_a[j]
             b = self.mating_pool_b[j]
             c = a[:cross] + b[cross:]
@@ -624,7 +599,7 @@ class GA(object):
         combined with individuals in ``GA.mating_pool_b`` using ne, randomly selected
         crossover points.
         """
-        self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
+        self.current_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': []}
         self.current_pop['binary'] = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(int((self.num_pop - self.num_elite) / 2)):
             a = self.mating_pool_a[j]
@@ -743,8 +718,8 @@ class GA(object):
         generation: int
             The generation number.
         """
-        filename  = 'generation_' + "%05d" % generation + '_population' + ".txt"
-        pf_file  = open(self.output_path + (str(filename)), "w")
+        filename = 'generation_' + "%05d" % generation + '_population' + ".txt"
+        pf_file = open(self.output_path + (str(filename)), "w")
         pf_file.write('Generation \n')
         pf_file.write(str(generation) + '\n')
         pf_file.write('\n')
@@ -859,9 +834,7 @@ class GA(object):
         file_pop: dict
             The population dictionary contained in the file.
         """
-        # file_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_value': [],
-        #              'pf': []}
-        filename  = 'generation_' + "%05d" % gen + '_population' + ".txt"
+        filename = 'generation_' + "%05d" % gen + '_population' + ".txt"
         filename = self.input_path + filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
@@ -892,7 +865,6 @@ class GA(object):
         """Saves the index of the best performing individual of the current population
          in ``GA.best_individual_index``.
         """
-        # fit_values = self.current_pop['fit_value'].values()
         fit_values = [self.current_pop['fit_value'][i] for i in range(len(self.current_pop['fit_value']))]
         if self.fit_type == 'min':
             indices = self.get_sorting_indices(fit_values)
@@ -930,7 +902,7 @@ if __name__ == '__main__':
     boundaries = [(-5.12, 5.12)] * num_var
     # boundaries = [(1, 5)] * num_var
 
-    num_bin_dig  = [40] * num_var
+    num_bin_dig = [40] * num_var
     output_path = os.path.join(compas.TEMP, 'ga_out/')
     min_fit = 0.000001  # num_var * boundaries[0][0]
 

@@ -46,7 +46,6 @@ def moga(fit_functions,
          fargs=None,
          fkwargs=None,
          output_path=None):
-
     """Multi-objective Genetic Algorithm optimisation.
 
     Parameters
@@ -170,22 +169,22 @@ def moga(fit_functions,
 
     moga = MOGA()
 
-    moga.fit_names            = fit_names or [ff.__name__ for ff in fit_functions]
-    moga.fit_types            = fit_types
-    moga.num_gen              = num_gen
-    moga.num_pop              = num_pop
-    moga.num_var              = num_var
+    moga.fit_names = fit_names or [ff.__name__ for ff in fit_functions]
+    moga.fit_types = fit_types
+    moga.num_gen = num_gen
+    moga.num_pop = num_pop
+    moga.num_var = num_var
     moga.mutation_probability = mutation_probability
-    moga.start_from_gen       = start_from_gen
-    moga.boundaries           = boundaries
-    moga.num_bin_dig          = num_bin_dig or [8] * num_var
-    moga.max_bin_dig          = max(moga.num_bin_dig)
-    moga.total_bin_dig        = sum(moga.num_bin_dig)
-    moga.fargs                = fargs or {}
-    moga.fkwargs              = fkwargs or {}
-    moga.fit_functions        = fit_functions
-    moga.output_path          = output_path or ''
-    moga.num_fit_func         = len(fit_functions)
+    moga.start_from_gen = start_from_gen
+    moga.boundaries = boundaries
+    moga.num_bin_dig = num_bin_dig or [8] * num_var
+    moga.max_bin_dig = max(moga.num_bin_dig)
+    moga.total_bin_dig = sum(moga.num_bin_dig)
+    moga.fargs = fargs or {}
+    moga.fkwargs = fkwargs or {}
+    moga.fit_functions = fit_functions
+    moga.output_path = output_path or ''
+    moga.num_fit_func = len(fit_functions)
     moga.moga_optimize()
     return moga
 
@@ -274,7 +273,7 @@ class MOGA(object):
         """
         self.fit_functions = []
         self.fit_types = []
-        self.boundaries   = {}
+        self.boundaries = {}
         self.num_var = 0
         self.num_pop = 0
         self.num_gen = 0
@@ -287,11 +286,11 @@ class MOGA(object):
         self.num_fit_func = 0
         self.output_path = []
         self.parent_combined_dict = {}
-        self.parent_pop   = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': [], 'pf': []}
-        self.current_pop  = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': []}
+        self.parent_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': [], 'pf': []}
+        self.current_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': []}
         self.combined_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': []}
         self.new_pop_cd = []
-        self.fixed_start_pop = None  # {'binary':{},'decoded':{},'scaled':{}}
+        self.fixed_start_pop = None
         self.fargs = {}
         self.fkwargs = {}
         self.ind_fit_dict = {}
@@ -332,14 +331,9 @@ class MOGA(object):
 
             if self.fixed_start_pop:
                 for i in range(self.fixed_start_pop['num_pop']):
-                    # print('fixed start individual', i)
-                    # print(self.fixed_start_pop['binary'][i])
                     self.parent_pop['binary'][i] = self.fixed_start_pop['binary'][i]
                     self.parent_pop['decoded'][i] = self.fixed_start_pop['decoded'][i]
-                    # print(self.fixed_start_pop['decoded'][i])
                     self.parent_pop['scaled'][i] = self.fixed_start_pop['scaled'][i]
-                    # print(self.fixed_start_pop['scaled'][i])
-                    # print('')
             self.parent_pop['fit_values'] = [[[]] * self.num_fit_func for i in range(self.num_pop)]
             for i in range(self.num_pop):
                 for j in range(self.num_fit_func):
@@ -358,7 +352,6 @@ class MOGA(object):
                 for j in range(self.num_fit_func):
                     fit_func = self.fit_functions[j]
                     self.current_pop['fit_values'][i][j] = fit_func(self.current_pop['scaled'][i], **self.fkwargs)
-                    # self.parent_pop['fit_values'][i][j] = self.evaluate_fitness(i, fit_func)
 
             self.combine_populations()
             self.non_dom_sort()
@@ -396,8 +389,8 @@ class MOGA(object):
         generation: int
             The generation to write the population data of.
         """
-        filename  = 'generation ' + "%03d" % generation + '_pareto_front' + ".pareto"
-        pf_file  = open(self.output_path + (str(filename)), "wb")
+        filename = 'generation ' + "%03d" % generation + '_pareto_front' + ".pareto"
+        pf_file = open(self.output_path + (str(filename)), "wb")
         pf_file.write('Generation \n')
         pf_file.write(str(generation) + '\n')
         pf_file.write('\n')
@@ -488,12 +481,6 @@ class MOGA(object):
         scaled_pop: list
             The scaled ppopulation list.
         """
-        # scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
-        # for j in range(self.num_pop):
-        #     for i in range(self.num_var):
-        #         maxbin = float((2 ** self.num_bin_dig[i]) - 1)
-        #         scaled_pop[j][i] = self.boundaries[i][0] + (self.boundaries[i][1] - self.boundaries[i][0]) * decoded_pop[j][i] / maxbin
-        # return scaled_pop
         scaled_pop = [[[]] * self.num_var for i in range(self.num_pop)]
         for j in range(self.num_pop):
             for i in range(self.num_var):
@@ -575,8 +562,8 @@ class MOGA(object):
             index = index_count + self.pareto_front_indices[pareto_front_number]
             self.pareto_front_indices.append(index)
 
-            a  = self.pareto_front_indices[pareto_front_number]
-            b  = self.pareto_front_indices[pareto_front_number + 1]
+            a = self.pareto_front_indices[pareto_front_number]
+            b = self.pareto_front_indices[pareto_front_number + 1]
 
             for k in range(a, b):
                 for h in range(len(self.dominating_individuals)):
@@ -600,16 +587,13 @@ class MOGA(object):
         crowdng distance is used by NSGA-II to better distribute the population allong the Pareto
         front and avoid crowded areas, thus better representing the variety of solutions in the front.
         """
-        self.num_i_pareto_front      = len(self.i_pareto_front)
-        self.pf_values               = [0] * self.num_i_pareto_front
-        self.crowding_distance       = [0] * self.num_i_pareto_front
+        self.num_i_pareto_front = len(self.i_pareto_front)
+        self.pf_values = [0] * self.num_i_pareto_front
+        self.crowding_distance = [0] * self.num_i_pareto_front
 
         for i in range(self.num_fit_func):
             ind_fit_values_list = [fit_val[i] for fit_val in self.combined_pop['fit_values']]
-            # print (ind_fit_values_list)
             delta = max(ind_fit_values_list) - min(ind_fit_values_list)
-            # print (delta)
-            # print()
 
             for k in range(self.num_i_pareto_front):
                 self.pf_values[k] = (self.combined_pop['fit_values'][self.i_pareto_front[k]][i])
@@ -654,7 +638,7 @@ class MOGA(object):
         to their crowding distance.
         """
         cd_sorted_last_pf_index = []
-        sorted_last_pf_cd  = sorted(self.crowding_distance)
+        sorted_last_pf_cd = sorted(self.crowding_distance)
         sorted_last_pf_cd = list(reversed(sorted_last_pf_cd))
         sorting_index = self.get_sorting_indices(self.crowding_distance, reverse=True)
 
@@ -678,20 +662,20 @@ class MOGA(object):
             self.parent_combined_dict[i] = self.pareto_front_individuals[i]
 
         self.parent_pop['decoded'] = self.decode_binary_pop(self.parent_pop['binary'])
-        self.parent_pop['scaled']  = self.scale_population(self.parent_pop['decoded'])
+        self.parent_pop['scaled'] = self.scale_population(self.parent_pop['decoded'])
         self.parent_pop['pf'] = self.make_pop_pf_dict()
 
     def nsga_tournament(self):
         """This function performs the tournament selection operator of the NSGA-II
         algorithm.
         """
-        pf_indices_a                = [0] * self.num_pop
-        pf_indices_b                = [0] * self.num_pop
-        cd_b                        = [0] * self.num_pop
-        self.mp_individual_indices  = [0] * self.num_pop
+        pf_indices_a = [0] * self.num_pop
+        pf_indices_b = [0] * self.num_pop
+        cd_b = [0] * self.num_pop
+        self.mp_individual_indices = [0] * self.num_pop
 
         temp_pf_individuals_a = []
-        temp_pf_individuals_a[:]  = self.pareto_front_individuals[0:self.num_pop]
+        temp_pf_individuals_a[:] = self.pareto_front_individuals[0:self.num_pop]
         temp_pf_individuals_b = random.sample(temp_pf_individuals_a, len(temp_pf_individuals_a))
 
         pf_individuals_2 = []
@@ -705,7 +689,6 @@ class MOGA(object):
 
             pf_individuals_2.append(temp_pf_individuals_b[0])
             del temp_pf_individuals_b[0]
-            # t emp_pf_individuals_b = np.delete(tempPFindividualsB,0,0)
 
         for j in range(len(self.pareto_front_indices) - 1):
             pf_indices_a[self.pareto_front_indices[j]: self.pareto_front_indices[j + 1]] = [j] * (self.pareto_front_indices[j + 1] - self.pareto_front_indices[j])
@@ -734,13 +717,13 @@ class MOGA(object):
                 else:
                     self.mp_individual_indices[j] = temp_pf_individuals_a[j]
 
-        self.pareto_front_indices       = []
-        self.sorted_crowding_distance   = []
-        self.new_pop_cd                 = []
-        self.dominated_set              = []
-        self.dominating_individuals     = []
-        self.pareto_front_individuals   = []
-        self.new_pop_cd                 = []
+        self.pareto_front_indices = []
+        self.sorted_crowding_distance = []
+        self.new_pop_cd = []
+        self.dominated_set = []
+        self.dominating_individuals = []
+        self.pareto_front_individuals = []
+        self.new_pop_cd = []
 
     def create_mating_pool(self):
         """Creates two lists of cromosomes to be used by the crossover operator.
@@ -805,7 +788,7 @@ class MOGA(object):
 
         file_pop = {'binary': [], 'decoded': [], 'scaled': [], 'fit_values': [],
                     'pf': []}
-        filename  = 'generation ' + "%03d" % self.start_from_gen + '_pareto_front' + ".pareto"
+        filename = 'generation ' + "%03d" % self.start_from_gen + '_pareto_front' + ".pareto"
         filename = self.output_path + filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
@@ -840,7 +823,7 @@ class MOGA(object):
             file_pop['pf'][i] = pf
 
         file_pop['decoded'] = self.unscale_pop(file_pop['scaled'])
-        file_pop['binary']  = self.code_decoded(file_pop['decoded'])
+        file_pop['binary'] = self.code_decoded(file_pop['decoded'])
         return file_pop
 
     def code_decoded(self, decoded_pop):
@@ -1081,7 +1064,7 @@ if __name__ == "__main__":
     fit_types = ['min', 'min']
     num_var = 30
     boundaries = [(0, 1)] * num_var
-    num_bin_dig  = [8] * num_var
+    num_bin_dig = [8] * num_var
     output_path = os.path.join(compas.TEMP, 'moga_out/')
 
     if not os.path.exists(output_path):
@@ -1105,8 +1088,7 @@ if __name__ == "__main__":
     filename += '.json'
     vis.output_path = vis.input_path
     vis.draw_objective_spaces(filename, number=True)
-    print (len(moga_.ind_fit_dict))
-
+    print(len(moga_.ind_fit_dict))
 
     # is crowding distance calculation working?
     # or is the problem simply loss of diversity?

@@ -236,12 +236,12 @@ def volume_polyhedron(polyhedron):
                 triangles.append([i, u, v])
 
         for u, v, w in triangles:
-            a  = xyz[u]
-            b  = xyz[v]
-            c  = xyz[w]
+            a = xyz[u]
+            b = xyz[v]
+            c = xyz[w]
             ab = subtract_vectors(b, a)
             ac = subtract_vectors(c, a)
-            n  = cross_vectors(ab, ac)
+            n = cross_vectors(ab, ac)
             V += dot_vectors(a, n)
     return V / 6.
 
@@ -252,11 +252,7 @@ def volume_polyhedron(polyhedron):
 
 if __name__ == "__main__":
 
-    from compas_plotters import Plotter
     from compas.geometry import Polyhedron
-    from compas.geometry import length_vector
-    from compas.geometry import subtract_vectors
-    from compas.geometry import centroid_polyhedron
 
     cube = Polyhedron.generate(6)
 
@@ -286,4 +282,3 @@ if __name__ == "__main__":
     # plotter.draw_polygons(polygons)
 
     # plotter.show()
-

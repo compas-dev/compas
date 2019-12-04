@@ -5,9 +5,9 @@ from __future__ import print_function
 import compas
 
 if not compas.IPY:
-    from .drx_numpy import *
+    from .drx_numpy import *  # noqa: F401 F403
 
-# from .drx_numba import *
+# from .drx_numba import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

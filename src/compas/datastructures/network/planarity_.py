@@ -6,6 +6,8 @@ from math import cos
 from math import sin
 from math import pi
 
+import planarity
+
 from compas.geometry import angle_vectors_xy
 from compas.geometry import is_intersection_segment_segment_xy
 from compas.geometry import is_ccw_xy
@@ -216,11 +218,6 @@ def network_is_planar(network):
         plotter.show()
 
     """
-    try:
-        import planarity
-    except ImportError:
-        print("Planarity is not installed. Install with: conda install python-planarity")
-        raise
     return planarity.is_planar(list(network.edges()))
 
 
@@ -338,9 +335,9 @@ def network_embed_in_plane(network, fix=None, straightline=True):
 
     if fix:
         a, b = fix
-        p0   = network.vertex_coordinates(a, 'xy')
-        p1   = network.vertex_coordinates(b, 'xy')
-        p2   = pos[b]
+        p0 = network.vertex_coordinates(a, 'xy')
+        p1 = network.vertex_coordinates(b, 'xy')
+        p2 = pos[b]
         vec0 = [network.vertex[b][axis] - network.vertex[a][axis] for axis in 'xy']
         vec1 = [pos[b][axis] - pos[a][axis] for axis in (0, 1)]
         # rotate
@@ -384,8 +381,6 @@ if __name__ == '__main__':
     import compas
 
     from compas.datastructures import Network
-    from compas.datastructures import network_is_planar
-    from compas.datastructures import network_find_crossings
     from compas_plotters import NetworkPlotter
 
     network = Network.from_obj(compas.get('lines.obj'))

@@ -139,7 +139,7 @@ def offset_polygon(polygon, distance, tol=1e-6):
 
     """
     normal = normal_polygon(polygon)
-    
+
     if not is_item_iterable(distance):
         distance = [distance]
     distances = iterable_like(polygon, distance, distance[-1])
@@ -236,6 +236,7 @@ def offset_segments(point_list, distances, normal):
 # ==============================================================================
 # Main
 # ==============================================================================
+
 
 if __name__ == "__main__":
 

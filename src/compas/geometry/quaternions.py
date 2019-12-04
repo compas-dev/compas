@@ -82,7 +82,7 @@ def quaternion_norm(q):
     .. _mathworld quaternion norm: http://mathworld.wolfram.com/QuaternionNorm.html
 
     """
-    return math.sqrt(sum([x*x for x in q]))
+    return math.sqrt(sum([x * x for x in q]))
 
 
 def quaternion_unitize(q):
@@ -102,7 +102,7 @@ def quaternion_unitize(q):
     if allclose([n], [0.0], ATOL):
         raise ValueError("The given quaternion has zero length.")
     else:
-        return [x/n for x in q]
+        return [x / n for x in q]
 
 
 def quaternion_is_unit(q, tol=ATOL):

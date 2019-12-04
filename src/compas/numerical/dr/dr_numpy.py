@@ -200,42 +200,42 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # --------------------------------------------------------------------------
     # configuration
     # --------------------------------------------------------------------------
-    kmax  = kwargs.get('kmax', 10000)
-    dt    = kwargs.get('dt', 1.0)
-    tol1  = kwargs.get('tol1', 1e-3)
-    tol2  = kwargs.get('tol2', 1e-6)
+    kmax = kwargs.get('kmax', 10000)
+    dt = kwargs.get('dt', 1.0)
+    tol1 = kwargs.get('tol1', 1e-3)
+    tol2 = kwargs.get('tol2', 1e-6)
     coeff = Coeff(kwargs.get('c', 0.1))
-    ca    = coeff.a
-    cb    = coeff.b
+    ca = coeff.a
+    cb = coeff.b
     # --------------------------------------------------------------------------
     # attribute lists
     # --------------------------------------------------------------------------
     num_v = len(vertices)
     num_e = len(edges)
-    free  = list(set(range(num_v)) - set(fixed))
+    free = list(set(range(num_v)) - set(fixed))
     # --------------------------------------------------------------------------
     # attribute arrays
     # --------------------------------------------------------------------------
-    x      = array(vertices, dtype=float).reshape((-1, 3))                      # m
-    p      = array(loads, dtype=float).reshape((-1, 3))                         # kN
-    qpre   = array(qpre, dtype=float).reshape((-1, 1))
-    fpre   = array(fpre, dtype=float).reshape((-1, 1))                          # kN
-    lpre   = array(lpre, dtype=float).reshape((-1, 1))                          # m
-    linit  = array(linit, dtype=float).reshape((-1, 1))                         # m
-    E      = array(E, dtype=float).reshape((-1, 1))                             # kN/mm2 => GPa
+    x = array(vertices, dtype=float).reshape((-1, 3))                      # m
+    p = array(loads, dtype=float).reshape((-1, 3))                         # kN
+    qpre = array(qpre, dtype=float).reshape((-1, 1))
+    fpre = array(fpre, dtype=float).reshape((-1, 1))                          # kN
+    lpre = array(lpre, dtype=float).reshape((-1, 1))                          # m
+    linit = array(linit, dtype=float).reshape((-1, 1))                         # m
+    E = array(E, dtype=float).reshape((-1, 1))                             # kN/mm2 => GPa
     radius = array(radius, dtype=float).reshape((-1, 1))                        # mm
     # --------------------------------------------------------------------------
     # sectional properties
     # --------------------------------------------------------------------------
-    A  = 3.14159 * radius ** 2                                                  # mm2
+    A = 3.14159 * radius ** 2                                                  # mm2
     EA = E * A                                                                  # kN
     # --------------------------------------------------------------------------
     # create the connectivity matrices
     # after spline edges have been aligned
     # --------------------------------------------------------------------------
-    C   = connectivity_matrix(edges, 'csr')
-    Ct  = C.transpose()
-    Ci  = C[:, free]
+    C = connectivity_matrix(edges, 'csr')
+    Ct = C.transpose()
+    Ci = C[:, free]
     Cit = Ci.transpose()
     Ct2 = Ct.copy()
     Ct2.data **= 2
@@ -259,7 +259,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
     def rk(x0, v0, steps=2):
         def a(t, v):
-            dx      = v * t
+            dx = v * t
             x[free] = x0[free] + dx[free]
             # update residual forces
             r[free] = p[free] - D.dot(x)
@@ -294,22 +294,22 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
         q_fpre = fpre / l
         q_lpre = f / lpre
-        q_EA   = EA * (l - linit) / (linit * l)
+        q_EA = EA * (l - linit) / (linit * l)
         q_lpre[isinf(q_lpre)] = 0
         q_lpre[isnan(q_lpre)] = 0
-        q_EA[isinf(q_EA)]     = 0
-        q_EA[isnan(q_EA)]     = 0
+        q_EA[isinf(q_EA)] = 0
+        q_EA[isnan(q_EA)] = 0
 
-        q    = qpre + q_fpre + q_lpre + q_EA
-        Q    = diags([q[:, 0]], [0])
-        D    = Cit.dot(Q).dot(C)
+        q = qpre + q_fpre + q_lpre + q_EA
+        Q = diags([q[:, 0]], [0])
+        D = Cit.dot(Q).dot(C)
         mass = 0.5 * dt ** 2 * Ct2.dot(qpre + q_fpre + q_lpre + EA / linit)
         # RK
-        x0      = x.copy()
-        v0      = ca * v.copy()
-        dv      = rk(x0, v0, steps=4)
+        x0 = x.copy()
+        v0 = ca * v.copy()
+        dv = rk(x0, v0, steps=4)
         v[free] = v0[free] + dv[free]
-        dx      = v * dt
+        dx = v * dt
         x[free] = x0[free] + dx[free]
         # update
         u = C.dot(x)
@@ -379,21 +379,21 @@ if __name__ == "__main__":
     k_i = mesh.key_index()
 
     vertices = mesh.get_vertices_attributes(('x', 'y', 'z'))
-    edges    = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
-    fixed    = [k_i[key] for key in mesh.vertices_where({'is_fixed': True})]
-    loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'))
-    qpre     = mesh.get_edges_attribute('qpre')
-    fpre     = mesh.get_edges_attribute('fpre')
-    lpre     = mesh.get_edges_attribute('lpre')
-    linit    = mesh.get_edges_attribute('linit')
-    E        = mesh.get_edges_attribute('E')
-    radius   = mesh.get_edges_attribute('radius')
+    edges = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
+    fixed = [k_i[key] for key in mesh.vertices_where({'is_fixed': True})]
+    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
+    qpre = mesh.get_edges_attribute('qpre')
+    fpre = mesh.get_edges_attribute('fpre')
+    lpre = mesh.get_edges_attribute('lpre')
+    linit = mesh.get_edges_attribute('linit')
+    E = mesh.get_edges_attribute('E')
+    radius = mesh.get_edges_attribute('radius')
 
     lines = []
     for u, v in mesh.edges():
         lines.append({
             'start': mesh.vertex_coordinates(u, 'xy'),
-            'end'  : mesh.vertex_coordinates(v, 'xy'),
+            'end': mesh.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
             'width': 0.5
         })

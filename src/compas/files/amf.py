@@ -15,6 +15,7 @@ class AMF(object):
 
 
     """
+
     def __init__(self, filepath, precision=None):
         self.reader = AMFReader(filepath)
         self.parser = AMFParser(self.reader, precision=precision)

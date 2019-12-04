@@ -7,6 +7,7 @@ __all__ = ['Primitive']
 
 class Primitive(object):
     """Base class for geometric primitives."""
+
     def __init__(self):
         pass
 

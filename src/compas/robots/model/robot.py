@@ -6,7 +6,6 @@ import itertools
 
 from compas.files import URDF
 from compas.files import URDFParser
-from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.topology import shortest_path
 
@@ -37,13 +36,20 @@ class RobotModel(object):
     In line with URDF limitations, only tree structures can be represented by
     this model, ruling out all parallel robots.
 
-    Attributes:
-        name: Unique name of the robot.
-        joints: List of joint elements.
-        links: List of links of the robot.
-        materials: List of global materials.
-        root: Root link of the model.
-        attr: Non-standard attributes.
+    Attributes
+    ----------
+    name:
+        Unique name of the robot.
+    joints:
+        List of joint elements.
+    links:
+        List of links of the robot.
+    materials:
+        List of global materials.
+    root:
+        Root link of the model.
+    attr:
+        Non-standard attributes.
     """
 
     def __init__(self, name, joints=[], links=[], materials=[], **kwargs):
@@ -84,11 +90,15 @@ class RobotModel(object):
     def from_urdf_file(cls, file):
         """Construct a robot model from a URDF file model description.
 
-        Args:
-            file: file name or file object.
+        Parameters
+        ----------
+        file:
+            file name or file object.
 
-        Returns:
-            A robot model instance.
+        Returns
+        -------
+        A robot model instance.
+
         """
         urdf = URDF.from_file(file)
         return urdf.robot
@@ -97,11 +107,14 @@ class RobotModel(object):
     def from_urdf_string(cls, text):
         """Construct a robot model from a URDF description as string.
 
-        Args:
-            text: string containing the XML URDF model.
+        Parameters
+        ----------
+        text:
+            String containing the XML URDF model.
 
-        Returns:
-            A robot model instance.
+        Returns
+        -------
+        A robot model instance.
         """
         urdf = URDF.from_string(text)
         return urdf.robot
@@ -126,30 +139,37 @@ class RobotModel(object):
     def get_link_by_name(self, name):
         """Get a link in a robot model matching by its name.
 
-        Args:
-            name: link name.
+        Parameters
+        ----------
+        name:
+            link name.
 
-        Returns:
-            A link instance.
+        Returns
+        -------
+        A link instance.
         """
         return self._links.get(name, None)
 
     def get_joint_by_name(self, name):
         """Get a joint in a robot model matching by its name.
 
-        Args:
-            name: joint name.
+        Parameters
+        ----------
+        name:
+            joint name.
 
-        Returns:
-            A joint instance.
+        Returns
+        -------
+        A joint instance.
         """
         return self._joints.get(name, None)
 
     def iter_links(self):
         """Iterator over the links that starts with the root link.
 
-        Returns:
-            Iterator of all links starting at root.
+        Returns
+        -------
+        Iterator of all links starting at root.
         """
 
         def func(cjoints, links):
@@ -165,8 +185,9 @@ class RobotModel(object):
         """Iterator over the joints that starts with the root link's
             children joints.
 
-        Returns:
-            Iterator of all joints starting at root.
+        Returns
+        -------
+        Iterator of all joints starting at root.
         """
 
         def func(clink, joints):
@@ -181,19 +202,22 @@ class RobotModel(object):
     def iter_link_chain(self, link_start_name=None, link_end_name=None):
         """Iterator over the chain of links between a pair of start and end links.
 
-        Args:
+        Parameters
+        ----------
             link_start_name: Name of the starting link of the chain,
                 or ``None`` to start at root.
             link_end_name: Name of the final link of the chain,
                 or ``None`` to try to identify the last link.
 
-        Returns:
-            Iterator of the chain of links.
+        Returns
+        -------
+        Iterator of the chain of links.
 
-        .. note::
-            This method differs from :meth:`iter_links` in that it returns the chain respecting
-            the tree structure, hence if one link branches into two or more joints, only the
-            branch matching the end link will be returned.
+        Notes
+        -----
+        This method differs from :meth:`iter_links` in that it returns the chain respecting
+        the tree structure, hence if one link branches into two or more joints, only the
+        branch matching the end link will be returned.
         """
         chain = self.iter_chain(link_start_name, link_end_name)
         for link in map(self.get_link_by_name, chain):
@@ -204,20 +228,23 @@ class RobotModel(object):
     def iter_joint_chain(self, link_start_name=None, link_end_name=None):
         """Iterator over the chain of joints between a pair of start and end links.
 
-        Args:
+        Parameters
+        ----------
             link_start_name: Name of the starting link of the chain,
                 or ``None`` to start at root.
             link_end_name: Name of the final link of the chain,
                 or ``None`` to try to identify the last link.
 
-        Returns:
-            Iterator of the chain of joints.
+        Returns
+        -------
+        Iterator of the chain of joints.
 
-        .. note::
-            This method differs from :meth:`iter_joints` in that it returns the
-            chain respecting the tree structure, hence if one link branches into
-            two or more joints, only the branch matching the end link will be
-            returned.
+        Notes
+        -----
+        This method differs from :meth:`iter_joints` in that it returns the
+        chain respecting the tree structure, hence if one link branches into
+        two or more joints, only the branch matching the end link will be
+        returned.
         """
         chain = self.iter_chain(link_start_name, link_end_name)
         for joint in map(self.get_joint_by_name, chain):
@@ -228,14 +255,16 @@ class RobotModel(object):
     def iter_chain(self, start=None, end=None):
         """Iterator over the chain of all elements between a pair of start and end elements.
 
-        Args:
+        Parameters
+        ----------
             start: Name of the starting element of the chain,
                 or ``None`` to start at the root link.
             end: Name of the final element of the chain,
                 or ``None`` to try to identify the last element.
 
-        Returns:
-            Iterator of the chain of links and joints.
+        Returns
+        -------
+        Iterator of the chain of links and joints.
         """
         if not start:
             if not self.root:
@@ -294,12 +323,15 @@ class RobotModel(object):
     def load_geometry(self, *resource_loaders, **kwargs):
         """Load external geometry resources, such as meshes.
 
-        Args:
-            resource_loaders: List of objects that implement the
-                resource loading interface (:class:`compas.robots.AbstractMeshLoader`)
-                and can retrieve external geometry.
-            force: True if it should force reloading even if the geometry
-                has been loaded already, otherwise False.
+        Parameters
+        ----------
+        resource_loaders:
+            List of objects that implement the
+            resource loading interface (:class:`compas.robots.AbstractMeshLoader`)
+            and can retrieve external geometry.
+        force:
+            True if it should force reloading even if the geometry
+            has been loaded already, otherwise False.
         """
         force = kwargs.get('force', False)
 
@@ -323,8 +355,10 @@ class RobotModel(object):
     def frames(self):
         """Returns the frames of links that have a visual node.
 
-        Returns:
-            list: List of :class:`compas.geometry.Frame` of all links with a visual representation.
+        Returns
+        -------
+        list
+            List of :class:`compas.geometry.Frame` of all links with a visual representation.
         """
         frames = []
         for link in self.iter_links():
@@ -336,8 +370,10 @@ class RobotModel(object):
     def axes(self):
         """Returns the joints' axes.
 
-        Returns:
-            list: Axis vectors of all joints.
+        Returns
+        -------
+        list
+            Axis vectors of all joints.
         """
         axes = []
         for joint in self.iter_joints():
@@ -662,3 +698,11 @@ URDFParser.install_parser(RobotModel, 'robot')
 URDFParser.install_parser(Material, 'robot/material')
 URDFParser.install_parser(Color, 'robot/material/color')
 URDFParser.install_parser(Texture, 'robot/material/texture')
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass

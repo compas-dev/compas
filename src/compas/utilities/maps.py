@@ -148,7 +148,6 @@ def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, orig
 if __name__ == "__main__":
 
     from math import pi
-    import compas
 
     compas.PRECISION = '6f'
 

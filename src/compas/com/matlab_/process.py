@@ -3,16 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 import time
-import compas
 
 from subprocess import Popen
 from subprocess import PIPE
 
-try:
-    from scipy.io import savemat
-    from scipy.io import loadmat
-except ImportError:
-    compas.raise_if_ironpython()
+from scipy.io import savemat
+from scipy.io import loadmat
 
 
 __all__ = ['MatlabProcess']

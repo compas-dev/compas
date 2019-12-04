@@ -268,13 +268,13 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
     i_nbrs = adjacency_from_edges(edges)
 
-    ij_e   = {(i, j): index for index, (i, j) in enumerate(edges)}
+    ij_e = {(i, j): index for index, (i, j) in enumerate(edges)}
     ij_e.update({(j, i): index for (i, j), index in ij_e.items()})
 
     coeff = Coeff(c)
-    ca    = coeff.a
-    cb    = coeff.b
-    free  = list(set(range(n)) - set(fixed))
+    ca = coeff.a
+    cb = coeff.b
+    free = list(set(range(n)) - set(fixed))
     # --------------------------------------------------------------------------
     # attribute arrays
     # --------------------------------------------------------------------------
@@ -284,9 +284,9 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # --------------------------------------------------------------------------
     # initial values
     # --------------------------------------------------------------------------
-    M  = [sum(0.5 * dt ** 2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
-    V  = [[0.0, 0.0, 0.0] for _ in range(n)]
-    R  = [[0.0, 0.0, 0.0] for _ in range(n)]
+    M = [sum(0.5 * dt ** 2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
+    V = [[0.0, 0.0, 0.0] for _ in range(n)]
+    R = [[0.0, 0.0, 0.0] for _ in range(n)]
     dX = [[0.0, 0.0, 0.0] for _ in range(n)]
     # --------------------------------------------------------------------------
     # helpers
@@ -299,7 +299,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             z = X[i][2]
             f = [0.0, 0.0, 0.0]
             for j in i_nbrs[i]:
-                q  = Q[ij_e[(i, j)]]
+                q = Q[ij_e[(i, j)]]
                 f[0] += q * (X[j][0] - x)
                 f[1] += q * (X[j][1] - y)
                 f[2] += q * (X[j][2] - z)
@@ -314,7 +314,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             return [[cb * R[i][axis] / M[i] for axis in (0, 1, 2)] for i in range(n)]
 
         if steps == 2:
-            B  = [0.0, 1.0]
+            B = [0.0, 1.0]
             a0 = a(K[0][0] * dt, V0)
             k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
             a1 = a(K[1][0] * dt, [[V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)])
@@ -322,7 +322,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
             return [[B[0] * k0[i][axis] + B[1] * k1[i][axis] for axis in (0, 1, 2)] for i in range(n)]
 
         if steps == 4:
-            B  = [1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0]
+            B = [1.0 / 6.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0]
             a0 = a(K[0][0] * dt, V0)
             k0 = [[dt * a0[i][axis] for axis in (0, 1, 2)] for i in range(n)]
             a1 = a(K[1][0] * dt, [[V0[i][axis] + K[1][1] * k0[i][axis] for axis in (0, 1, 2)] for i in range(n)])
@@ -350,9 +350,9 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
 
         # update
         for i in free:
-            V[i]  = [V0[i][axis] + dV[i][axis] for axis in (0, 1, 2)]
+            V[i] = [V0[i][axis] + dV[i][axis] for axis in (0, 1, 2)]
             dX[i] = [V[i][axis] * dt for axis in (0, 1, 2)]
-            X[i]  = [X0[i][axis] + dX[i][axis] for axis in (0, 1, 2)]
+            X[i] = [X0[i][axis] + dX[i][axis] for axis in (0, 1, 2)]
 
         L = [sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5 for i, j in iter(edges)]
         F = [q * l for q, l in zip(Q, L)]
@@ -391,7 +391,6 @@ if __name__ == "__main__":
     import compas
     from compas.datastructures import Network
     from compas_plotters import NetworkPlotter
-    from compas.numerical import dr
     from compas.utilities import i_to_rgb
 
     # make a network
@@ -436,15 +435,15 @@ if __name__ == "__main__":
     # extract numerical data from the datastructure
 
     vertices = network.get_vertices_attributes(('x', 'y', 'z'))
-    edges    = list(network.edges())
-    fixed    = network.vertices_where({'is_fixed': True})
-    loads    = network.get_vertices_attributes(('px', 'py', 'pz'))
-    qpre     = network.get_edges_attribute('qpre')
-    fpre     = network.get_edges_attribute('fpre')
-    lpre     = network.get_edges_attribute('lpre')
-    linit    = network.get_edges_attribute('linit')
-    E        = network.get_edges_attribute('E')
-    radius   = network.get_edges_attribute('radius')
+    edges = list(network.edges())
+    fixed = network.vertices_where({'is_fixed': True})
+    loads = network.get_vertices_attributes(('px', 'py', 'pz'))
+    qpre = network.get_edges_attribute('qpre')
+    fpre = network.get_edges_attribute('fpre')
+    lpre = network.get_edges_attribute('lpre')
+    linit = network.get_edges_attribute('linit')
+    E = network.get_edges_attribute('E')
+    radius = network.get_edges_attribute('radius')
 
     # make a plotter for (dynamic) visualization
     # and define a callback function
@@ -471,7 +470,7 @@ if __name__ == "__main__":
     for u, v in network.edges():
         lines.append({
             'start': network.vertex_coordinates(u, 'xy'),
-            'end'  : network.vertex_coordinates(v, 'xy'),
+            'end': network.vertex_coordinates(v, 'xy'),
             'color': '#cccccc',
             'width': 0.5
         })

@@ -107,20 +107,19 @@ from __future__ import print_function
 import compas
 
 if not compas.IPY:
-    from .linalg import *
-    from .matrices import *
-    from .operators import *
-    from .utilities import *
+    from .linalg import *  # noqa: F401 F403
+    from .matrices import *  # noqa: F401 F403
+    from .operators import *  # noqa: F401 F403
+    from .utilities import *  # noqa: F401 F403
 
-from .descent import *
-from .devo import *
-from .dr import *
-from .drx import *
-from .fd import *
-from .ga import *
+from .topop import *  # noqa: F401 F403
+from .pca import *  # noqa: F401 F403
+from .ga import *  # noqa: F401 F403
+from .fd import *  # noqa: F401 F403
+from .drx import *  # noqa: F401 F403
+from .dr import *  # noqa: F401 F403
+from .devo import *  # noqa: F401 F403
+from .descent import *  # noqa: F401 F403
 
-from .pca import *
-
-from .topop import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

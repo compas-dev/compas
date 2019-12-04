@@ -42,6 +42,7 @@ class URDF(object):
     .. _URDF XSD Schema: https://github.com/ros/urdfdom/blob/master/xsd/urdf.xsd
 
     """
+
     def __init__(self, xml):
         self.xml = xml
         self.robot = URDFParser.parse_element(xml.root, xml.root.tag)

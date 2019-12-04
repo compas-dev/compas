@@ -85,7 +85,7 @@ def trimesh_remesh(mesh,
 
     Examples
     --------
-    >>> 
+    >>>
 
     """
     if verbose:

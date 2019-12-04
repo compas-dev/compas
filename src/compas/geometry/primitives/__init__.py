@@ -15,9 +15,9 @@ from .polygon import Polygon
 from .circle import Circle
 from .curve import Bezier
 
-from ._collections import *
+from ._collections import *  # noqa: F401 F403
 
-from .shapes import *
+from .shapes import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

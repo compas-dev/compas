@@ -2,17 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-
-from compas.geometry import transform_points_numpy
+from compas.geometry import transform_points
 
 
 __all__ = [
-    'mesh_transform_numpy',
-    'mesh_transformed_numpy',
+    'mesh_transform',
+    'mesh_transformed',
 ]
 
 
-def mesh_transform_numpy(mesh, transformation):
+def mesh_transform(mesh, transformation):
     """Transform a mesh.
 
     Parameters
@@ -35,14 +34,14 @@ def mesh_transform_numpy(mesh, transformation):
 
     """
     vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    xyz = transform_points_numpy(vertices, transformation)
+    xyz = transform_points(vertices, transformation)
     for index, (_, attr) in enumerate(mesh.vertices(True)):
         attr['x'] = xyz[index][0]
         attr['y'] = xyz[index][1]
         attr['z'] = xyz[index][2]
 
 
-def mesh_transformed_numpy(mesh, transformation):
+def mesh_transformed(mesh, transformation):
     """Transform a copy of ``mesh``.
 
     Parameters
@@ -70,7 +69,7 @@ def mesh_transformed_numpy(mesh, transformation):
 
     """
     mesh_copy = mesh.copy()
-    mesh_transform_numpy(mesh_copy, transformation)
+    mesh_transform(mesh_copy, transformation)
     return mesh_copy
 
 

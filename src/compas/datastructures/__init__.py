@@ -178,13 +178,13 @@ from __future__ import division
 from __future__ import print_function
 
 
-class Datastructure:
+class Datastructure(object):
     pass
 
 
 from ._mixins import *  # noqa: F401 F402 F403
 from .network import *  # noqa: F401 F402 F403
-from .mesh import *     # noqa: F401 F402 F403
+from .mesh import *  # noqa: F401 F402 F403
 from .volmesh import *  # noqa: F401 F402 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

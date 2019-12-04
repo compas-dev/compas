@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import sys
 import json
 import tempfile
 
@@ -19,7 +18,8 @@ except ImportError:
     import pickle
 
 try:
-    from subprocess import Popen, PIPE, STDOUT
+    from subprocess import Popen
+    from subprocess import PIPE
 except ImportError:
     try:
         from System.Diagnostics import Process

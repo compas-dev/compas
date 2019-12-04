@@ -622,7 +622,7 @@ class FaceAttributesManagement(object):
         if not values:
             values = [None] * len(names)
         temp = list(zip(names, values))
-        return [[self.get_face_attribute(fkey, name, value) for name, value in temp] for fkey in fkeys]
+        return [[self.get_face_attribute(key, name, value) for name, value in temp] for key in keys]
 
     def get_face_attributes_all(self, key, data=True):
         """Get all attributes of one face.

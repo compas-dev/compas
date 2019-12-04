@@ -64,18 +64,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
-class RPCServerError(Exception):
-    pass
-
-
-class RPCClientError(Exception):
-    pass
-
-
-from .proxy import *
-from .server import *
-from .dispatcher import *
+from .errors import *  # noqa: F401 F403
+from .proxy import *  # noqa: F401 F403
+from .server import *  # noqa: F401 F403
+from .dispatcher import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

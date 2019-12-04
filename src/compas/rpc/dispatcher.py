@@ -33,12 +33,7 @@ class Dispatcher(object):
 
     Examples
     --------
-    .. code-block:: python
-
-        class Service(Dipatcher):
-
-            pass
-
+    >>>
 
     Notes
     -----

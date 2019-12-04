@@ -485,35 +485,35 @@ def centroid_polygon_edges(polygon):
     to the total length of the boundary.
 
     """
-    L  = 0
+    L = 0
     cx = 0
     cy = 0
     cz = 0
-    p  = len(polygon)
+    p = len(polygon)
     for i in range(-1, p - 1):
-        p1  = polygon[i]
-        p2  = polygon[i + 1]
-        d   = length_vector(subtract_vectors(p2, p1))
+        p1 = polygon[i]
+        p2 = polygon[i + 1]
+        d = length_vector(subtract_vectors(p2, p1))
         cx += 0.5 * d * (p1[0] + p2[0])
         cy += 0.5 * d * (p1[1] + p2[1])
         cz += 0.5 * d * (p1[2] + p2[2])
-        L  += d
+        L += d
     return [cx / L, cy / L, cz / L]
 
 
 def centroid_polygon_edges_xy(polygon):
     """"""
-    L  = 0
+    L = 0
     cx = 0
     cy = 0
-    p  = len(polygon)
+    p = len(polygon)
     for i in range(-1, p - 1):
-        p1  = polygon[i]
-        p2  = polygon[i + 1]
-        d   = length_vector_xy(subtract_vectors_xy(p2, p1))
+        p1 = polygon[i]
+        p2 = polygon[i + 1]
+        d = length_vector_xy(subtract_vectors_xy(p2, p1))
         cx += 0.5 * d * (p1[0] + p2[0])
         cy += 0.5 * d * (p1[1] + p2[1])
-        L  += d
+        L += d
     return [cx / L, cy / L, 0.0]
 
 
@@ -547,10 +547,10 @@ def centroid_polyhedron(polyhedron):
     """
     vertices, faces = polyhedron
 
-    V  = 0
-    x  = 0.0
-    y  = 0.0
-    z  = 0.0
+    V = 0
+    x = 0.0
+    y = 0.0
+    z = 0.0
     ex = [1.0, 0.0, 0.0]
     ey = [0.0, 1.0, 0.0]
     ez = [0.0, 0.0, 1.0]
@@ -565,12 +565,12 @@ def centroid_polyhedron(polyhedron):
             triangles = [[w, u, v] for u, v in pairwise(face + face[0:1])]
 
         for triangle in triangles:
-            a  = vertices[triangle[0]]
-            b  = vertices[triangle[1]]
-            c  = vertices[triangle[2]]
+            a = vertices[triangle[0]]
+            b = vertices[triangle[1]]
+            c = vertices[triangle[2]]
             ab = subtract_vectors(b, a)
             ac = subtract_vectors(c, a)
-            n  = cross_vectors(ab, ac)
+            n = cross_vectors(ab, ac)
             V += dot_vectors(a, n)
 
             nx = dot_vectors(n, ex)
@@ -625,10 +625,6 @@ def centroid_polyhedron(polyhedron):
 
 if __name__ == "__main__":
 
-    from compas_plotters import Plotter
-    from compas.geometry import intersection_line_line
-    from compas.geometry import midpoint_point_point
-    from compas.geometry import centroid_points
     from compas.geometry import Polyhedron
 
     polyhedron = Polyhedron.generate(6)

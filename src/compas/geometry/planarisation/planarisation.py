@@ -136,7 +136,7 @@ if __name__ == "__main__":
     for key, attr in mesh.vertices(True):
         attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
-    fixed  = [key for key in mesh.vertices_where({'is_fixed': True})]
+    fixed = [key for key in mesh.vertices_where({'is_fixed': True})]
     radius = {key: (0.05 if key in fixed else 0.01) for key in mesh.vertices()}
 
     plotter = MeshPlotter(mesh, figsize=(10, 7))

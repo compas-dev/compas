@@ -12,7 +12,6 @@ __all__ = [
     'is_sequence_of_str',
     'is_sequence_of_int',
     'is_sequence_of_float',
-    'is_sequence_of_long',
     'is_sequence_of_tuple',
     'is_sequence_of_list',
     'is_sequence_of_dict',
@@ -23,7 +22,7 @@ __all__ = [
     'coerce_sequence_of_tuple',
     'coerce_sequence_of_list',
 
-    'coerce_json'
+    'coerce_json',
 ]
 
 
@@ -42,10 +41,6 @@ def is_sequence_of_int(sequence):
 
 def is_sequence_of_float(sequence):
     return is_sequence_of_type(sequence, float)
-
-
-def is_sequence_of_long(sequence):
-    return is_sequence_of_type(sequence, long)
 
 
 def is_sequence_of_list(sequence):
@@ -83,7 +78,6 @@ def is_sequence_of_iterable(sequence):
 # ==============================================================================
 # coerce
 # ==============================================================================
-
 
 def coerce_sequence_of_tuple(sequence):
     items = []

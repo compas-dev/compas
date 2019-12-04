@@ -98,7 +98,7 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
                      M, factor, V, inds, indi, indf, EIx, EIy, beams)
 
     _, l = uvw_lengths(C, X)
-    f    = f0 + k0 * (l.ravel() - l0)
+    f = f0 + k0 * (l.ravel() - l0)
 
     toc2 = time() - tic2
 
@@ -114,7 +114,7 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 
     if update:
 
-        k_i  = network.key_index()
+        k_i = network.key_index()
         uv_i = network.uv_index()
 
         for key in network.vertices():
@@ -129,12 +129,11 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
 
 
 @guvectorize([(f8, i8, i8, i8, i8, i4[:], i4[:], f8[:, :], f8[:], f8[:], f8[:], i8[:], i8[:], f8[:, :], f8[:, :],
-    f8[:, :], i4[:], i4[:], f8[:], i8, f8[:], f8, f8[:, :], i4[:], i4[:], i4[:], f8[:], f8[:], i8, f8)],
-    '(),(),(),(),(),(m),(m),(n,p),(m),(m),(m),(a),(b),(n,p),(n,p),(n,p),(c),(c),(c),(),(n),(),(n,p),(k),(k),(k),(k),(k),()->()',
-    nopython=True, cache=True, target='parallel')
+               f8[:, :], i4[:], i4[:], f8[:], i8, f8[:], f8, f8[:, :], i4[:], i4[:], i4[:], f8[:], f8[:], i8, f8)],
+             '(),(),(),(),(),(m),(m),(n,p),(m),(m),(m),(a),(b),(n,p),(n,p),(n,p),(c),(c),(c),(),(n),(),(n,p),(k),(k),(k),(k),(k),()->()',
+             nopython=True, cache=True, target='parallel')
 def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv,
                      M, factor, V, inds, indi, indf, EIx, EIy, beams, out):
-
     """ Numba accelerated dynamic relaxation solver.
 
     Parameters
@@ -204,14 +203,14 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
 
     """
 
-    f   = zeros(m)
-    fx  = zeros(m)
-    fy  = zeros(m)
-    fz  = zeros(m)
+    f = zeros(m)
+    fx = zeros(m)
+    fy = zeros(m)
+    fz = zeros(m)
     frx = zeros(n)
     fry = zeros(n)
     frz = zeros(n)
-    Rn  = zeros(n)
+    Rn = zeros(n)
     Una = zeros(n)
 
     res = 1000 * tol
@@ -221,12 +220,12 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
 
         for i in range(m):
 
-            xd    = X[v[i], 0] - X[u[i], 0]
-            yd    = X[v[i], 1] - X[u[i], 1]
-            zd    = X[v[i], 2] - X[u[i], 2]
-            l     = sqrt(xd**2 + yd**2 + zd**2)
-            f[i]  = f0[i] + k0[i] * (l - l0[i])
-            q     = f[i] / l
+            xd = X[v[i], 0] - X[u[i], 0]
+            yd = X[v[i], 1] - X[u[i], 1]
+            zd = X[v[i], 2] - X[u[i], 2]
+            l = sqrt(xd**2 + yd**2 + zd**2)
+            f[i] = f0[i] + k0[i] * (l - l0[i])
+            q = f[i] / l
             fx[i] = xd * q
             fy[i] = yd * q
             fz[i] = zd * q
@@ -260,32 +259,32 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
                 Qc = Xf - Xs
                 Qn = cross(Qa, Qb)
 
-                mu  = 0.5 * (Xf - Xs)
-                La  = length(Qa)
-                Lb  = length(Qb)
-                Lc  = length(Qc)
+                mu = 0.5 * (Xf - Xs)
+                La = length(Qa)
+                Lb = length(Qb)
+                Lc = length(Qc)
                 LQn = length(Qn)
                 Lmu = length(mu)
 
-                a  = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
-                k  = 2 * sin(a) / Lc
+                a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
+                k = 2 * sin(a) / Lc
                 ex = Qn / LQn
                 ez = mu / Lmu
                 ey = cross(ez, ex)
 
-                K   = k * Qn / LQn
-                Kx  = dot(K, ex) * ex
-                Ky  = dot(K, ey) * ey
-                Mc  = EIx[i] * Kx + EIy[i] * Ky
+                K = k * Qn / LQn
+                Kx = dot(K, ex) * ex
+                Ky = dot(K, ey) * ey
+                Mc = EIx[i] * Kx + EIy[i] * Ky
                 cma = cross(Mc, Qa)
                 cmb = cross(Mc, Qb)
-                ua  = cma / length(cma)
-                ub  = cmb / length(cmb)
-                c1  = cross(Qa, ua)
-                c2  = cross(Qb, ub)
+                ua = cma / length(cma)
+                ub = cmb / length(cmb)
+                c1 = cross(Qa, ua)
+                c2 = cross(Qb, ub)
                 Lc1 = length(c1)
                 Lc2 = length(c2)
-                Ms  = Mc[0]**2 + Mc[1]**2 + Mc[2]**2
+                Ms = Mc[0]**2 + Mc[1]**2 + Mc[2]**2
 
                 Sa = ua * Ms * Lc1 / (La * dot(Mc, c1))
                 Sb = ub * Ms * Lc2 / (Lb * dot(Mc, c2))
@@ -309,16 +308,16 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
 
         for i in range(n):
 
-            Rx    = (P[i, 0] - S[i, 0] - frx[i]) * B[i, 0]
-            Ry    = (P[i, 1] - S[i, 1] - fry[i]) * B[i, 1]
-            Rz    = (P[i, 2] - S[i, 2] - frz[i]) * B[i, 2]
+            Rx = (P[i, 0] - S[i, 0] - frx[i]) * B[i, 0]
+            Ry = (P[i, 1] - S[i, 1] - fry[i]) * B[i, 1]
+            Rz = (P[i, 2] - S[i, 2] - frz[i]) * B[i, 2]
             Rn[i] = sqrt(Rx**2 + Ry**2 + Rz**2)
 
             Mi = M[i] * factor
             V[i, 0] += Rx / Mi
             V[i, 1] += Ry / Mi
             V[i, 2] += Rz / Mi
-            Una[i]  = Mi * (V[i, 0]**2 + V[i, 1]**2 + V[i, 2]**2)
+            Una[i] = Mi * (V[i, 0]**2 + V[i, 1]**2 + V[i, 2]**2)
 
         Un = sum(Una)
 
@@ -338,7 +337,7 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
     if summary:
         print('Step:', ts - 1, ' Residual:', res)
 
-    out = 0.
+    # out = 0.
 
 
 # ==============================================================================
@@ -354,7 +353,6 @@ if __name__ == "__main__":
     from compas.datastructures import Network
     from compas_viewers import VtkViewer
 
-
     m = 150
     p = [(i / m - 0.5) * 5 for i in range(m + 1)]
     vertices = [[xi, yi, 0] for yi in p for xi in p]
@@ -363,7 +361,7 @@ if __name__ == "__main__":
     for i in range(m):
         for j in range(m):
 
-            s  = (m + 1)
+            s = (m + 1)
             p1 = (j + 0) * s + i + 0
             p2 = (j + 0) * s + i + 1
             p3 = (j + 1) * s + i + 0
@@ -388,7 +386,7 @@ if __name__ == "__main__":
 
     data = {
         'vertices': [network.vertex_coordinates(i) for i in network.vertices()],
-        'edges':    [{'vertices': uv} for uv in network.edges()]
+        'edges': [{'vertices': uv} for uv in network.edges()]
     }
 
     viewer = VtkViewer(data=data)

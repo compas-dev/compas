@@ -74,7 +74,3 @@ if __name__ == "__main__":
     m3 = meshes_join([m1, m2])
 
     doctest.testmod()
-
-
-
-

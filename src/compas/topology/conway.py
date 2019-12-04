@@ -49,7 +49,8 @@ def conway_dual(mesh):
 
     old_faces_to_new_vertices = {fkey: i for i, fkey in enumerate(mesh.faces())}
 
-    faces = [[old_faces_to_new_vertices[fkey] for fkey in reversed(mesh.vertex_faces(vkey, ordered = True))] for vkey in mesh.vertices() if not mesh.is_vertex_on_boundary(vkey) and len(mesh.vertex_neighbors(vkey)) != 0]
+    faces = [[old_faces_to_new_vertices[fkey] for fkey in reversed(mesh.vertex_faces(vkey, ordered=True))]
+             for vkey in mesh.vertices() if not mesh.is_vertex_on_boundary(vkey) and len(mesh.vertex_neighbors(vkey)) != 0]
 
     return cls.from_vertices_and_faces(vertices, faces)
 
@@ -86,9 +87,9 @@ def conway_join(mesh):
 
     faces = [[
         old_vertices_to_new_vertices[u], old_faces_to_new_vertices[mesh.halfedge[v][u]], old_vertices_to_new_vertices[v], old_faces_to_new_vertices[mesh.halfedge[u][v]]
-        ] for u, v in mesh.edges() if not mesh.is_edge_on_boundary(u, v)]
+    ] for u, v in mesh.edges() if not mesh.is_edge_on_boundary(u, v)]
 
-    join_mesh =  mesh_class.from_vertices_and_faces(vertices, faces)
+    join_mesh = mesh_class.from_vertices_and_faces(vertices, faces)
     join_mesh.cull_vertices()
 
     return join_mesh
@@ -152,7 +153,7 @@ def conway_kis(mesh):
 
     faces = [[
         old_vertices_to_new_vertices[u], old_vertices_to_new_vertices[v], old_faces_to_new_vertices[mesh.halfedge[u][v]]
-        ] for fkey in mesh.faces() for u, v in mesh.face_halfedges(fkey)]
+    ] for fkey in mesh.faces() for u, v in mesh.face_halfedges(fkey)]
 
     return mesh_class.from_vertices_and_faces(vertices, faces)
 
@@ -312,11 +313,13 @@ def conway_gyro(mesh):
     """
     mesh_class = type(mesh)
 
-    vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()] + [mesh.face_centroid(fkey) for fkey in mesh.faces()] + [mesh.edge_point(u, v, t = .33) for u in mesh.vertices() for v in mesh.halfedge[u]]
+    vertices = [mesh.vertex_coordinates(vkey) for vkey in mesh.vertices()] + [mesh.face_centroid(fkey) for fkey in mesh.faces()] + \
+        [mesh.edge_point(u, v, t=.33) for u in mesh.vertices() for v in mesh.halfedge[u]]
 
     old_vertices_to_new_vertices = {vkey: i for i, vkey in enumerate(mesh.vertices())}
     old_faces_to_new_vertices = {fkey: i + mesh.number_of_vertices() for i, fkey in enumerate(mesh.faces())}
-    old_halfedges_to_new_vertices = {halfedge: i + mesh.number_of_vertices() + mesh.number_of_faces() for i, halfedge in enumerate([(u, v) for u in mesh.vertices() for v in mesh.halfedge[u]])}
+    old_halfedges_to_new_vertices = {halfedge: i + mesh.number_of_vertices() + mesh.number_of_faces()
+                                     for i, halfedge in enumerate([(u, v) for u in mesh.vertices() for v in mesh.halfedge[u]])}
 
     faces = []
     for fkey in mesh.faces():
@@ -416,4 +419,4 @@ def conway_bevel(mesh):
 
 if __name__ == '__main__':
 
-    import compas
+    pass

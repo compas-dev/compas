@@ -44,7 +44,6 @@ def network_disconnected_edges(network):
 
     """
 
-
     parts = network_disconnected_vertices(network)
 
     return [[(u, v) for u in part for v in network.vertex_neighbors(u) if u < v] for part in parts]
@@ -73,13 +72,13 @@ def network_explode(network, cls=None):
     exploded_networks = []
 
     for part in parts:
-        
+
         vertex_keys = list(set([vkey for edge in part for vkey in edge]))
         vertices = [network.vertex_coordinates(vkey) for vkey in vertex_keys]
-        
+
         key_to_index = {vkey: i for i, vkey in enumerate(vertex_keys)}
-        edges = [ (key_to_index[u], key_to_index[v]) for u, v in part]
-        
+        edges = [(key_to_index[u], key_to_index[v]) for u, v in part]
+
         exploded_networks.append(cls.from_vertices_and_edges(vertices, edges))
 
     return exploded_networks
@@ -90,7 +89,7 @@ def network_explode(network, cls=None):
 # ==============================================================================
 
 if __name__ == "__main__":
-    
+
     from compas.datastructures import Network
 
     vertices = [

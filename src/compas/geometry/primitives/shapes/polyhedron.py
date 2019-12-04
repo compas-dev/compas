@@ -106,6 +106,16 @@ class Polyhedron(Shape):
         p.data = data
         return p
 
+    def to_data(self):
+        """Returns the data dictionary that represents the polyhedron.
+
+        Returns
+        -------
+        dict
+            The polyhedron data.
+        """
+        return self.data
+
     @property
     def data(self):
         """Returns the data dictionary that represents the polyhedron.
@@ -143,6 +153,7 @@ class Tetrahedron(Polyhedron):
     F = 4
     E = 6
     """
+
     def __init__(self):
         super(Tetrahedron, self).__init__()
         self.compute()
@@ -182,6 +193,7 @@ class Hexahedron(Polyhedron):
     F = 6
     E = 12
     """
+
     def __init__(self):
         super(Hexahedron, self).__init__()
         self.compute()
@@ -221,6 +233,7 @@ class Octahedron(Polyhedron):
     F = 8
     E = 12
     """
+
     def __init__(self):
         super(Octahedron, self).__init__()
         self.compute()
@@ -266,6 +279,7 @@ class Dodecahedron(Polyhedron):
     F = 12
     E = 30
     """
+
     def __init__(self):
         super(Dodecahedron, self).__init__()
         self.compute()
@@ -313,6 +327,7 @@ class Icosahedron(Polyhedron):
     F = 20
     E = 30
     """
+
     def __init__(self):
         super(Icosahedron, self).__init__()
         self.compute()

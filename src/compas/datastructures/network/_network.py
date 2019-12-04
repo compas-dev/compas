@@ -51,6 +51,7 @@ Network summary
 
 """
 
+
 class Network(FromToJson,
               FromToData,
               EdgeGeometry,
@@ -110,10 +111,10 @@ class Network(FromToJson,
         self._max_int_key = -1
 
         self.attributes = {
-            'name'         : 'Network',
-            'color.vertex' : None,
-            'color.edge'   : None,
-            'color.face'   : None,
+            'name': 'Network',
+            'color.vertex': None,
+            'color.edge': None,
+            'color.face': None,
         }
         self.vertex = {}
         self.edge = {}
@@ -169,13 +170,13 @@ class Network(FromToJson,
     def data(self):
         """Return a data dict of this data structure for serialisation.
         """
-        data = {'attributes'  : self.attributes,
-                'dva'         : self.default_vertex_attributes,
-                'dea'         : self.default_edge_attributes,
-                'vertex'      : {},
-                'edge'        : {},
-                'halfedge'    : {},
-                'max_int_key' : self._max_int_key, }
+        data = {'attributes': self.attributes,
+                'dva': self.default_vertex_attributes,
+                'dea': self.default_edge_attributes,
+                'vertex': {},
+                'edge': {},
+                'halfedge': {},
+                'max_int_key': self._max_int_key, }
 
         for key in self.vertex:
             data['vertex'][repr(key)] = self.vertex[key]
@@ -200,13 +201,13 @@ class Network(FromToJson,
 
     @data.setter
     def data(self, data):
-        attributes   = data.get('attributes') or {}
-        dva          = data.get('dva') or {}
-        dea          = data.get('dea') or {}
-        vertex       = data.get('vertex') or {}
-        halfedge     = data.get('halfedge') or {}
-        edge         = data.get('edge') or {}
-        max_int_key  = data.get('max_int_key', -1)
+        attributes = data.get('attributes') or {}
+        dva = data.get('dva') or {}
+        dea = data.get('dea') or {}
+        vertex = data.get('vertex') or {}
+        halfedge = data.get('halfedge') or {}
+        edge = data.get('edge') or {}
+        max_int_key = data.get('max_int_key', -1)
 
         self.attributes.update(attributes)
         self.default_vertex_attributes.update(dva)
@@ -271,13 +272,13 @@ class Network(FromToJson,
 
         """
         data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'vertex'      : self.vertex,
-            'edge'        : self.edge,
-            'halfedge'    : self.halfedge,
-            'max_int_key' : self._max_int_key,
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'vertex': self.vertex,
+            'edge': self.edge,
+            'halfedge': self.halfedge,
+            'max_int_key': self._max_int_key,
         }
         with open(filepath, 'wb+') as fo:
             pickle.dump(data, fo, protocol=pickle.HIGHEST_PROTOCOL)
@@ -293,13 +294,13 @@ class Network(FromToJson,
 
         """
         data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'vertex'      : self.vertex,
-            'edge'        : self.edge,
-            'halfedge'    : self.halfedge,
-            'max_int_key' : self._max_int_key,
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'vertex': self.vertex,
+            'edge': self.edge,
+            'halfedge': self.halfedge,
+            'max_int_key': self._max_int_key,
         }
         return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -378,10 +379,10 @@ class Network(FromToJson,
             network = Network.from_obj(compas.get('lines.obj'))
 
         """
-        network  = cls()
-        obj      = OBJ(filepath, precision=precision)
+        network = cls()
+        obj = OBJ(filepath, precision=precision)
         vertices = obj.parser.vertices
-        edges    = obj.parser.lines
+        edges = obj.parser.lines
         for i, (x, y, z) in enumerate(vertices):
             network.add_vertex(i, x=x, y=y, z=z)
         for u, v in edges:
@@ -420,13 +421,13 @@ class Network(FromToJson,
 
         """
         network = cls()
-        edges   = []
-        vertex  = {}
+        edges = []
+        vertex = {}
         for line in lines:
             sp = line[0]
             ep = line[1]
-            a  = geometric_key(sp, precision)
-            b  = geometric_key(ep, precision)
+            a = geometric_key(sp, precision)
+            b = geometric_key(ep, precision)
             vertex[a] = sp
             vertex[b] = ep
             edges.append((a, b))
@@ -469,7 +470,7 @@ class Network(FromToJson,
                 network.add_vertex(x=x, y=y, z=z)
         elif isinstance(vertices, collections.Mapping):
             for key, xyz in vertices.items():
-                network.add_vertex(key = key, attr_dict = {i: j for i, j in zip(['x', 'y', 'z'], xyz)})
+                network.add_vertex(key=key, attr_dict={i: j for i, j in zip(['x', 'y', 'z'], xyz)})
 
         for u, v in edges:
             network.add_edge(u, v)
@@ -553,8 +554,8 @@ class Network(FromToJson,
 
         """
         key_index = dict((key, index) for index, key in enumerate(self.vertices()))
-        vertices  = [self.vertex_coordinates(key) for key in self.vertices()]
-        edges     = [(key_index[u], key_index[v]) for u, v in self.edges()]
+        vertices = [self.vertex_coordinates(key) for key in self.vertices()]
+        edges = [(key_index[u], key_index[v]) for u, v in self.edges()]
         return vertices, edges
 
     # --------------------------------------------------------------------------
@@ -594,8 +595,8 @@ class Network(FromToJson,
         del self.vertex
         del self.edge
         del self.halfedge
-        self.vertex   = {}
-        self.edge     = {}
+        self.vertex = {}
+        self.edge = {}
         self.halfedge = {}
         self._max_int_key = -1
         self._max_int_fkey = -1
@@ -1370,4 +1371,3 @@ if __name__ == '__main__':
     plotter.draw_vertices(text='key', radius=0.2)
     plotter.draw_edges()
     plotter.show()
-

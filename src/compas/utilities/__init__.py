@@ -104,32 +104,21 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
-def valuedict(keys, value, default):
-    value = value or default
-    if isinstance(value, dict):
-        valuedict = {key: default for key in keys}
-        valuedict.update(value)
-    else:
-        valuedict = {key: value for key in keys}
-    return valuedict
-
-
-from .animation import *
-from .async_ import *
-from .coercing import *
-from .colors import *
-from .datetime_ import *
-from .decorators import *
-from .descriptors import *
-from .encoders import *
-from .functions import *
-from .itertools_ import *
-from .maps import *
-from .profiling import *
-from .remote import *
-from .statistics import *
-from .xfunc import *
+from .animation import *  # noqa: F401 F403
+from .async_ import *  # noqa: F401 F403
+from .coercing import *  # noqa: F401 F403
+from .colors import *  # noqa: F401 F403
+from .datetime_ import *  # noqa: F401 F403
+from .decorators import *  # noqa: F401 F403
+# from .descriptors import *  # noqa: F401 F403
+from .encoders import *  # noqa: F401 F403
+# from .functions import *  # noqa: F401 F403
+from .itertools_ import *  # noqa: F401 F403
+from .maps import *  # noqa: F401 F403
+from .profiling import *  # noqa: F401 F403
+from .remote import *  # noqa: F401 F403
+# from .statistics import *  # noqa: F401 F403
+from .xfunc import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

@@ -95,7 +95,7 @@ def mesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
         Allow collapses involving boundary vertices.
     fixed : list (None)
         A list of identifiers of vertices that should stay fixed.
-    
+
     Returns
     -------
     None
@@ -266,7 +266,7 @@ def trimesh_collapse_edge(mesh, u, v, t=0.5, allow_boundary=False, fixed=None):
 
     Examples
     --------
-    >>> 
+    >>>
 
     """
     if t < 0.0:

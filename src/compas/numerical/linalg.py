@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from subprocess import Popen
 import sys
 
 from functools import wraps
@@ -21,18 +22,16 @@ from scipy import cross
 from scipy.linalg import cho_factor
 from scipy.linalg import cho_solve
 from scipy.linalg import lstsq
-from scipy.linalg import lu
 from scipy.linalg import qr
-from scipy.linalg import solve
 from scipy.linalg import svd
 from scipy.io import loadmat
 from scipy.io import savemat
 from scipy.sparse.linalg import factorized
 from scipy.sparse.linalg import spsolve
 
-old_settings = seterr(all='ignore')
+import compas
 
-from subprocess import Popen
+old_settings = seterr(all='ignore')
 
 
 __all__ = [
@@ -407,6 +406,7 @@ def rref_matlab(A, ifile, ofile, tol=None):
 
 class Memoized:
     """"""
+
     def __init__(self, f):
         self.f = f
         self.memo = {}

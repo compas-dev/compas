@@ -7,7 +7,6 @@ from math import sqrt
 
 from compas.utilities import pairwise
 
-from compas.geometry.basic import close
 from compas.geometry.basic import allclose
 from compas.geometry.basic import add_vectors
 from compas.geometry.basic import subtract_vectors
@@ -403,46 +402,6 @@ def intersection_line_triangle(line, triangle, tol=1e-6):
         If the intersection does not exist.
 
     """
-    # a, b, c = triangle
-    # v1 = subtract_vectors(line[1], line[0])
-    # p1 = line[0]
-    # # Find vectors for two edges sharing V1
-    # e1 = subtract_vectors(b, a)
-    # e2 = subtract_vectors(c, a)
-    # # Begin calculating determinant - also used to calculate u parameter
-    # p = cross_vectors(v1, e2)
-
-    # # if determinant is near zero, ray lies in plane of triangle
-    # det = dot_vectors(e1, p)
-    # if det > - epsilon and det < epsilon:
-    #     return None
-
-    # inv_det = 1.0 / det
-    # # calculate distance from V1 to ray origin
-    # t = subtract_vectors(p1, a)
-
-    # # Calculate u parameter
-    # u = dot_vectors(t, p) * inv_det
-    # # The intersection lies outside of the triangle
-    # if u < 0.0 or u > 1.0:
-    #     return None
-
-    # # Prepare to make_blocks v parameter
-    # q = cross_vectors(t, e1)
-    # # Calculate V parameter
-
-    # v = dot_vectors(v1, q) * inv_det
-    # # The intersection lies outside of the triangle
-    # if v < 0.0 or u + v > 1.0:
-    #     return None
-
-    # t = dot_vectors(e2, q) * inv_det
-    # if t > epsilon:
-    #     return add_vectors(p1, scale_vector(v1, t))
-
-    # # No hit
-    # return None
-
     a, b, c = triangle
     ab = subtract_vectors(b, a)
     ac = subtract_vectors(c, a)
@@ -579,18 +538,22 @@ def intersection_sphere_sphere(sphere1, sphere2):
     # Case 4: No intersection
     if radius1 + radius2 < distance:
         return None
+
     # Case 4: No intersection, sphere is within the other sphere
     elif distance + min(radius1, radius2) < max(radius1, radius2):
         return None
+
     # Case 3: sphere's overlap
     elif radius1 == radius2 and distance == 0:
         return "sphere", sphere1
+
     # Case 2: point intersection
     elif radius1 + radius2 == distance:
         ipt = subtract_vectors(center2, center1)
         ipt = scale_vector(ipt, radius1/distance)
         ipt = add_vectors(center1, ipt)
         return "point", ipt
+
     # Case 2: point intersection, smaller sphere is within the bigger
     elif distance + min(radius1, radius2) == max(radius1, radius2):
         if radius1 > radius2:
@@ -602,15 +565,15 @@ def intersection_sphere_sphere(sphere1, sphere2):
             ipt = scale_vector(ipt, radius2/distance)
             ipt = add_vectors(center2, ipt)
         return "point", ipt
+
     # Case 1: circle intersection
-    else:
-        h  = 0.5 + (radius1**2 - radius2**2)/(2 * distance**2)
-        ci = subtract_vectors(center2, center1)
-        ci = scale_vector(ci, h)
-        ci = add_vectors(center1, ci)
-        ri = sqrt(radius1**2 - h**2 * distance**2)
-        normal = scale_vector(subtract_vectors(center2, center1), 1/distance)
-        return "circle", (ci, ri, normal)
+    h = 0.5 + (radius1**2 - radius2**2)/(2 * distance**2)
+    ci = subtract_vectors(center2, center1)
+    ci = scale_vector(ci, h)
+    ci = add_vectors(center1, ci)
+    ri = sqrt(radius1**2 - h**2 * distance**2)
+    normal = scale_vector(subtract_vectors(center2, center1), 1/distance)
+    return "circle", (ci, ri, normal)
 
 
 def intersection_ellipse_line_xy(ellipse, line):
@@ -669,25 +632,7 @@ def intersection_ellipse_line_xy(ellipse, line):
 # Main
 # ==============================================================================
 
+
 if __name__ == "__main__":
-    
-    # # intersection_sphere_sphere(sphere1, sphere2)
-    # sphere1 = (3.0, 7.0, 4.0), 10.0
-    # sphere2 = (7.0, 4.0, 0.0), 5.0
-    # result = intersection_sphere_sphere(sphere1, sphere2)
-    # print(result)
-    # if result:
-    #     case, res = result
-    #     if case == "circle":
-    #         center, radius, normal = res
-    #     elif case == "point":
-    #         point = res
-    #     elif case == "sphere":
-    #         center, radius = res
 
-    a = ([0.0, 0.0, 0.0], [1.0, 1.0, 0.0])
-    b = ([1.0, 0.0, 0.0], [2.0, 1.0, 0.0])
-
-    res = intersection_line_line_xy(a, b)
-
-    print(res)
+    pass
