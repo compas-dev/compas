@@ -97,7 +97,7 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
     drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv,
                      M, factor, V, inds, indi, indf, EIx, EIy, beams)
 
-    _, l = uvw_lengths(C, X)
+    _, l = uvw_lengths(C, X)  # noqa: E741
     f = f0 + k0 * (l.ravel() - l0)
 
     toc2 = time() - tic2
@@ -223,7 +223,7 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
             xd = X[v[i], 0] - X[u[i], 0]
             yd = X[v[i], 1] - X[u[i], 1]
             zd = X[v[i], 2] - X[u[i], 2]
-            l = sqrt(xd**2 + yd**2 + zd**2)
+            l = sqrt(xd**2 + yd**2 + zd**2)  # noqa: E741
             f[i] = f0[i] + k0[i] * (l - l0[i])
             q = f[i] / l
             fx[i] = xd * q

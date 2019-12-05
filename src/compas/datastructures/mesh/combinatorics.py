@@ -3,10 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.topology import breadth_first_traverse
+from compas.topology import connected_components
 
 
 __all__ = [
-    'mesh_is_connected'
+    'mesh_is_connected',
+    'mesh_connected_components'
 ]
 
 
@@ -44,6 +46,10 @@ def mesh_is_connected(mesh):
     nodes = breadth_first_traverse(mesh.adjacency, mesh.get_any_vertex())
 
     return len(nodes) == mesh.number_of_vertices()
+
+
+def mesh_connected_components(mesh):
+    return connected_components(mesh.adjacency)
 
 
 # ==============================================================================

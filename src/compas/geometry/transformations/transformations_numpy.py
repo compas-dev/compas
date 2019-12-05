@@ -273,10 +273,10 @@ if __name__ == "__main__":
 
     import doctest
 
-    import numpy
-    import math
-    from compas.geometry import Frame
-    from compas.geometry import Point
-    from compas.geometry import matrix_from_axis_and_angle
+    import numpy  # noqa: F401
+    import math  # noqa: F401
+    from compas.geometry import Frame  # noqa: F401
+    from compas.geometry import Point  # noqa: F401
+    from compas.geometry import matrix_from_axis_and_angle  # noqa: F401
 
     doctest.testmod(globs=globals())

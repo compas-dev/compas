@@ -66,7 +66,8 @@ def network_polylines(network, splits=None):
 
     Examples
     --------
-    Joining the lines (a, b), (b, c), (c, d), (c, e) and (e, f), where a ... f are different point coordinates will resut in the following polylines (a, b, c), (c, d) and (c, e, f).
+    Joining the lines (a, b), (b, c), (c, d), (c, e) and (e, f),
+    where a ... f are different point coordinates will resut in the following polylines (a, b, c), (c, d) and (c, e, f).
 
     .. code-block:: python
 

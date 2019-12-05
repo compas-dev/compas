@@ -4,7 +4,6 @@ from __future__ import print_function
 
 from compas.geometry import subtract_vectors
 from compas.geometry.primitives import Frame
-from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives.shapes import Shape
 
@@ -34,8 +33,6 @@ class Box(Shape):
 
     Examples
     --------
-    >>> from compas.geometry import Frame
-    >>> from compas.geometry import Box
     >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
 
     """
@@ -175,8 +172,6 @@ class Box(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Box
-        >>> from compas.geometry import Frame
         >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
         >>> box = Box.from_data(data)
 
@@ -210,7 +205,6 @@ class Box(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Box
         >>> box = Box.from_width_height_depth(1.0, 2.0, 3.0)
 
         """
@@ -267,7 +261,6 @@ class Box(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Box
         >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
 
         """
@@ -307,7 +300,6 @@ class Box(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Box
         >>> diagonal = [0.0, 0.0, 0.0], [1.0, 1.0, 1.0]
         >>> box = Box.from_diagonal(diagonal)
 
@@ -344,8 +336,6 @@ class Box(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Box
         >>> frame = Frame.worldXY()
         >>> box = Box(frame, 1.0, 2.0, 3.0)
         >>> bdict = {'frame': frame.data, 'xsize': 1.0, 'ysize': 2.0, 'zsize': 3.0}
@@ -375,8 +365,6 @@ class Box(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Box
         >>> frame = Frame.worldXY()
         >>> box = Box(frame, 1.0, 2.0, 3.0)
         >>> bdict = {'frame': frame.data, 'xsize': 1.0, 'ysize': 2.0, 'zsize': 3.0}
@@ -436,8 +424,6 @@ class Box(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Box
-        >>> from compas.geometry import Frame
         >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
         >>> box_copy = box.copy()
 
@@ -459,9 +445,6 @@ class Box(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Box
         >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
@@ -485,9 +468,6 @@ class Box(Shape):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Box
         >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
@@ -506,17 +486,8 @@ class Box(Shape):
 
 if __name__ == '__main__':
 
-    from compas.datastructures import Mesh
+    import doctest
 
-    box = Box.from_diagonal(([0.0, 0.0, 0.0], [1.0, 1.0, 1.0]))
-    box = Box.from_corner_corner_height([0., 0., 0.], [1., 1., 0.], 4.0)
-    box = Box.from_width_height_depth(5, 4, 6)
+    from compas.geometry import Transformation  # noqa : F401
 
-    mesh = Mesh.from_vertices_and_faces(box.vertices, box.faces)
-
-    box = Box.from_diagonal(([0.0, 0.0, 0.0], [1.0, 1.0, 1.0]))
-    dia = box.diagonal
-    print(Box.from_diagonal(dia))
-
-    # import doctest
-    # doctest.testmod()
+    doctest.testmod(globs=globals())

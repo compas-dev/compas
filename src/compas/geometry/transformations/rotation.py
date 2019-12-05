@@ -13,15 +13,11 @@ Ippoliti for providing code and documentation.
 from compas.geometry.basic import normalize_vector
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import length_vector
-from compas.geometry.basic import scale_vector
-from compas.geometry.basic import multiply_matrices
 
 from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import euler_angles_from_matrix
 from compas.geometry.transformations import matrix_from_axis_and_angle
-from compas.geometry.transformations import matrix_from_axis_angle_vector
 from compas.geometry.transformations import axis_and_angle_from_matrix
-from compas.geometry.transformations import axis_angle_vector_from_matrix
 from compas.geometry.transformations import matrix_from_quaternion
 from compas.geometry.transformations import quaternion_from_matrix
 from compas.geometry.transformations import basis_vectors_from_matrix
@@ -340,8 +336,9 @@ class Rotation(Transformation):
 
 if __name__ == "__main__":
 
-    from compas.geometry import Frame
-    from compas.geometry import allclose
-
     import doctest
+
+    from compas.geometry import Frame  # noqa: F401
+    from compas.geometry import allclose  # noqa: F401
+
     doctest.testmod(globs=globals())

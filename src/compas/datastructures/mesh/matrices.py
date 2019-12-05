@@ -243,7 +243,8 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
     References
     ----------
-    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
+        `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
     data, rows, cols = [], [], []
@@ -304,9 +305,9 @@ def trimesh_edge_cotangent(mesh, u, v):
         w = mesh.face_vertex_ancestor(fkey, u)
         wu = mesh.edge_vector(w, u)
         wv = mesh.edge_vector(w, v)
-        l = length_vector(cross_vectors(wu, wv))
-        if l:
-            cotangent = dot_vectors(wu, wv) / l
+        length = length_vector(cross_vectors(wu, wv))
+        if length:
+            cotangent = dot_vectors(wu, wv) / length
     return cotangent
 
 
@@ -382,7 +383,8 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
 
     References
     ----------
-    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M. `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
+    .. [1] Nealen A., Igarashi T., Sorkine O. and Alexa M.
+        `Laplacian Mesh Optimization <https://igl.ethz.ch/projects/Laplacian-mesh-processing/Laplacian-mesh-optimization/lmo.pdf>`_.
 
     """
     key_index = mesh.key_index()

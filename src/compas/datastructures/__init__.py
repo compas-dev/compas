@@ -49,12 +49,17 @@ Mesh algorithms
 
     mesh_bounding_box
     mesh_bounding_box_xy
+    mesh_connected_components
+    mesh_contours_numpy
+    mesh_delete_duplicate_vertices
+    mesh_dual
+    mesh_flip_cycles
+    mesh_geodesic_distances_numpy
+    mesh_is_connected
+    mesh_isolines_numpy
+    mesh_offset
     mesh_oriented_bounding_box_numpy
     mesh_oriented_bounding_box_xy_numpy
-    mesh_contours_numpy
-    mesh_dual
-    mesh_geodesic_distances
-    mesh_isolines_numpy
     mesh_planarize_faces
     mesh_quads_to_triangles
     mesh_smooth_centroid
@@ -67,6 +72,10 @@ Mesh algorithms
     mesh_subdivide_doosabin
     mesh_transform
     mesh_transformed
+    mesh_transform_numpy
+    mesh_transformed_numpy
+    mesh_unify_cycles
+    mesh_weld
 
 .. autosummary::
     :toctree: generated/
@@ -75,19 +84,6 @@ Mesh algorithms
     trimesh_gaussian_curvature
     trimesh_remesh
     trimesh_subdivide_loop
-
-Mesh helpers
-------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mesh_delete_duplicate_vertices
-    mesh_face_adjacency
-    mesh_flip_cycles
-    mesh_is_connected
-    mesh_unify_cycles
 
 Network
 =======
@@ -122,6 +118,8 @@ Network algorithms
     network_is_planar_embedding
     network_is_xy
     network_smooth_centroid
+    network_transform
+    network_transformed
 
 VolMesh
 =======

@@ -127,8 +127,8 @@ class DefaultMeshLoader(AbstractMeshLoader):
         Returns
         -------
         url: str
-            Extended mesh url location if basepath in kwargs. 
-            Else, it returns url. 
+            Extended mesh url location if basepath in kwargs.
+            Else, it returns url.
         """
         if url.startswith('file:///'):
             url = url[8:]

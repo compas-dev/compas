@@ -4,8 +4,6 @@ from __future__ import division
 
 import math
 
-from copy import deepcopy
-
 from compas.geometry.basic import scale_vector
 from compas.geometry.basic import scale_vector_xy
 from compas.geometry.basic import normalize_vector
@@ -17,7 +15,6 @@ from compas.geometry.basic import dot_vectors
 from compas.geometry.basic import cross_vectors
 from compas.geometry.basic import vector_component
 from compas.geometry.basic import vector_component_xy
-from compas.geometry.basic import length_vector
 from compas.geometry.basic import multiply_matrix_vector
 from compas.geometry.basic import multiply_matrices
 from compas.geometry.basic import transpose_matrix
@@ -32,9 +29,9 @@ from compas.geometry.distance import closest_point_on_line_xy
 from compas.geometry.intersections import intersection_line_plane
 from compas.geometry.intersections import intersection_line_triangle
 
-from compas.geometry.transformations import _EPS
-from compas.geometry.transformations import _SPEC2TUPLE
-from compas.geometry.transformations import _NEXT_SPEC
+# from compas.geometry.transformations import _EPS
+# from compas.geometry.transformations import _SPEC2TUPLE
+# from compas.geometry.transformations import _NEXT_SPEC
 
 from compas.geometry.transformations import matrix_from_axis_and_angle
 from compas.geometry.transformations import matrix_from_scale_factors
@@ -314,7 +311,7 @@ def world_to_local_coords(frame, xyz):
     >>> Point(*world_to_local_coords(f, xyz)[0])
     Point(3.726, 4.088, 1.550)
     """
-    from compas.geometry.primitives import Frame
+    from compas.geometry.primitives import Frame  # noqa: F811
     T = matrix_change_basis(Frame.worldXY(), frame)
     return transform_points(xyz, T)
 
@@ -343,7 +340,7 @@ def local_to_world_coords(frame, xyz):
     >>> Point(*local_to_world_coords(f, xyz)[0])
     Point(2.000, 3.000, 5.000)
     """
-    from compas.geometry.primitives import Frame
+    from compas.geometry.primitives import Frame  # noqa: F811
     T = matrix_change_basis(frame, Frame.worldXY())
     return transform_points(xyz, T)
 
@@ -1147,8 +1144,8 @@ if __name__ == "__main__":
 
     import doctest
 
-    from compas.geometry import allclose
-    from compas.geometry import Point
-    from compas.geometry import Frame
+    from compas.geometry import allclose  # noqa: F401
+    from compas.geometry import Point  # noqa: F401
+    from compas.geometry import Frame  # noqa: F401
 
     doctest.testmod(globs=globals())

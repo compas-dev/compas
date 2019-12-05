@@ -5,7 +5,7 @@ from __future__ import division
 from numpy import asarray
 
 from compas.geometry import transform_points_numpy
-from compas.geometry.primitives._collections import CollectionNumpy
+from compas.geometry.primitives.collections import CollectionNumpy
 
 
 __all__ = ['PointCollectionNumpy']

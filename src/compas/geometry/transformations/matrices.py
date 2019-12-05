@@ -19,8 +19,9 @@ from compas.geometry.basic import transpose_matrix
 from compas.geometry.basic import norm_vector
 
 from compas.geometry.transformations import _EPS
-from compas.geometry.transformations import _SPEC2TUPLE
-from compas.geometry.transformations import _NEXT_SPEC
+from compas.geometry.transformations import _SPEC2TUPLE  # noqa: F401
+from compas.geometry.transformations import _NEXT_SPEC  # noqa: F401
+
 
 __all__ = [
     'matrix_determinant',
@@ -1332,7 +1333,10 @@ def axis_angle_from_quaternion(q):
 # ==============================================================================
 
 if __name__ == "__main__":
+
     import doctest
-    from compas.geometry import Frame
-    from compas.geometry import Transformation
+
+    from compas.geometry import Frame  # noqa: F401
+    from compas.geometry import Transformation  # noqa: F401
+
     doctest.testmod(globs=globals())

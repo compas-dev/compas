@@ -82,11 +82,9 @@ class Shear(Transformation):
 
 if __name__ == "__main__":
 
-    from compas.geometry import Frame
-    from compas.geometry import Shear
+    import doctest
 
-    shear1 = [-0.41, -0.14, -0.35]
-    Sh1 = Shear.from_entries(shear1)
-    S2, Sh, R2, T2, P = Sh1.decompose()
+    from compas.geometry import Shear  # noqa: F401 F811
+    from compas.geomtry import cross_vectors  # noqa: F401
 
-    print(Sh)
+    doctest.testmod(globs=globals())

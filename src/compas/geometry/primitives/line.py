@@ -198,11 +198,6 @@ class Line(Primitive):
         return {'start': list(self.start),
                 'end': list(self.end)}
 
-    @classmethod
-    def from_data(cls, data):
-        line = Line(data['start'], data['end'])
-        return line
-
     # ==========================================================================
     # representation
     # ==========================================================================

@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.primitives._collections import Collection
+from compas.geometry.primitives.collections import Collection
 
 __all__ = ['PointCollection']
 

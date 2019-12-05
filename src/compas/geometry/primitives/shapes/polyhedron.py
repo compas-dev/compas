@@ -178,8 +178,8 @@ class Tetrahedron(Polyhedron):
                       [0, 2, 3],
                       [1, 3, 2]]
         self.vertices = []
-        l = 2.
-        r = l * sqrt(6) / 4.
+        L = 2.
+        r = L * sqrt(6) / 4.
         c = 1. / r
         for i in -1., +1.:
             i *= c
@@ -216,8 +216,8 @@ class Hexahedron(Polyhedron):
                       [4, 7, 1, 2],
                       [4, 5, 6, 7]]
         self.vertices = []
-        l = 1.
-        r = l * sqrt(3) / 2.
+        L = 1.
+        r = L * sqrt(3) / 2.
         c = 1. / r
         for i in -1., +1.:
             i *= c
@@ -263,8 +263,8 @@ class Octahedron(Polyhedron):
                       [3, 2, 4],
                       [0, 4, 2]]
         self.vertices = []
-        l = sqrt(2)
-        r = l * sqrt(2) / 2.
+        L = sqrt(2)
+        r = L * sqrt(2) / 2.
         c = 1. / r
         for i in -1., +1.:
             i *= c
@@ -304,8 +304,8 @@ class Dodecahedron(Polyhedron):
                  [6,   9, 15, 19, 16],
                  [12, 17, 14, 11, 13],
                  [12, 18, 16, 19, 17]]
-        l = 2. / phi
-        r = l * phi * sqrt(3) / 2.
+        L = 2. / phi
+        r = L * phi * sqrt(3) / 2.
         c = 1. / r
         for i in -1, +1:
             i *= c

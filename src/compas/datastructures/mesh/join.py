@@ -4,8 +4,6 @@ from __future__ import division
 
 from compas.utilities import pairwise
 from compas.utilities import geometric_key
-# from compas.utilities import reverse_geometric_key
-
 
 __all__ = [
     'mesh_weld',

@@ -64,7 +64,7 @@ def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=Non
                 e = uv_e[(key, nbr)]
                 ax, ay, az = key_xyz[nbr]
                 tx, ty, tz = targets[e]
-                l = lengths[e]
+                l = lengths[e]  # noqa: E741
 
                 if key in network.edge[nbr]:
                     bx = ax + l * tx

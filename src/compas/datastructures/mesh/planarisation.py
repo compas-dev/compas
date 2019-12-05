@@ -48,9 +48,9 @@ def mesh_flatness(mesh, maxdev=1.0):
     for fkey in mesh.faces():
         points = mesh.face_coordinates(fkey)
         lengths = [distance_point_point(a, b) for a, b in window(points + points[0:1], 2)]
-        l = sum(lengths) / len(lengths)
+        length = sum(lengths) / len(lengths)
         d = distance_line_line((points[0], points[2]), (points[1], points[3]))
-        dev.append((d / l) / maxdev)
+        dev.append((d / length) / maxdev)
     return dev
 
 

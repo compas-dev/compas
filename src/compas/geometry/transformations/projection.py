@@ -104,10 +104,6 @@ class Projection(Transformation):
 
 if __name__ == "__main__":
 
-    from compas.geometry import Frame
+    import doctest
 
-    persp1 = [0.3, 0.1, 0.1, 1]
-    P1 = Projection.from_entries(persp1)
-    S2, Sh, R2, T2, P = P1.decompose()
-
-    print(P)
+    doctest.testmod(globs=globals())

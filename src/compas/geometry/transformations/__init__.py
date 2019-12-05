@@ -18,18 +18,18 @@ _SPEC2TUPLE = {
 
 _NEXT_SPEC = [1, 2, 0, 1]
 
-import compas
+import compas  # noqa: F402
 
 from .matrices import *  # noqa: F401 F403
 
-from .transformation import Transformation
+from .transformation import Transformation  # noqa: F401 F402
 
-from .translation import Translation
-from .shear import Shear
-from .scale import Scale
-from .rotation import Rotation
-from .reflection import Reflection
-from .projection import Projection
+from .translation import Translation  # noqa: F401 F402
+from .shear import Shear  # noqa: F401 F402
+from .scale import Scale  # noqa: F401 F402
+from .rotation import Rotation  # noqa: F401 F402
+from .reflection import Reflection  # noqa: F401 F402
+from .projection import Projection  # noqa: F401 F402
 
 from .transformations import *  # noqa: F401 F403
 

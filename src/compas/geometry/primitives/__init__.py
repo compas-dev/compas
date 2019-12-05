@@ -2,20 +2,20 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .primitive import Primitive
-from .vector import Vector
-from .point import Point
-from .line import Line
-from .plane import Plane
-from .quaternion import Quaternion
-from .frame import Frame
+from .primitive import Primitive  # noqa: F401
+from .vector import Vector  # noqa: F401
+from .point import Point  # noqa: F401
+from .line import Line  # noqa: F401
+from .plane import Plane  # noqa: F401
+from .quaternion import Quaternion  # noqa: F401
+from .frame import Frame  # noqa: F401
 
-from .polyline import Polyline
-from .polygon import Polygon
-from .circle import Circle
-from .curve import Bezier
+from .polyline import Polyline  # noqa: F401
+from .polygon import Polygon  # noqa: F401
+from .circle import Circle  # noqa: F401
+from .curve import Bezier  # noqa: F401
 
-from ._collections import *  # noqa: F401 F403
+from .collections import *  # noqa: F401 F403
 
 from .shapes import *  # noqa: F401 F403
 

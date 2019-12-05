@@ -3,14 +3,15 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import io
+# import io
 
 import compas
 
 try:
-    from urllib.request import urlopen, urlretrieve
+    # from urllib.request import urlopen
+    from urllib.request import urlretrieve
 except ImportError:
-    from urllib2 import urlopen
+    # from urllib2 import urlopen
     from urllib import urlretrieve
 
 # try:

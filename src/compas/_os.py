@@ -556,11 +556,11 @@ def _get_win_folder_with_ctypes(csidl_name):
 
 if system == "win32":
     try:
-        import win32com.shell
+        import win32com.shell  # noqa: F401
         _get_win_folder = _get_win_folder_with_pywin32
     except ImportError:
         try:
-            from ctypes import windll
+            from ctypes import windll  # noqa: F401
             _get_win_folder = _get_win_folder_with_ctypes
         except ImportError:
             _get_win_folder = _get_win_folder_from_registry

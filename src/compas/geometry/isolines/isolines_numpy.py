@@ -130,7 +130,6 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.geometry import centroid_points
     from compas.geometry import distance_point_point
-    from compas.geometry import scalarfield_contours_numpy
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 

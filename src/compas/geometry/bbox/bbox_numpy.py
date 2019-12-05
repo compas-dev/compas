@@ -241,15 +241,17 @@ def oriented_bounding_box_xy_numpy(points):
 
 if __name__ == "__main__":
 
-    import numpy
-    import math
-    from compas.geometry import bounding_box
-    from compas.geometry import subtract_vectors
-    from compas.geometry import length_vector
-    from compas.geometry import Rotation
-    from compas.geometry import transform_points_numpy
-    from compas.geometry import allclose
-    from compas.geometry import close
-
     import doctest
+
+    import numpy  # noqa: F401
+    import math  # noqa: F401
+
+    from compas.geometry import bounding_box  # noqa: F401
+    from compas.geometry import subtract_vectors  # noqa: F401
+    from compas.geometry import length_vector  # noqa: F401
+    from compas.geometry import Rotation  # noqa: F401
+    from compas.geometry import transform_points_numpy  # noqa: F401
+    from compas.geometry import allclose  # noqa: F401
+    from compas.geometry import close  # noqa: F401
+
     doctest.testmod(globs=globals())

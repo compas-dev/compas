@@ -2,12 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .shape import Shape
-from .box import Box
-from .cylinder import Cylinder
-from .cone import Cone
-from .polyhedron import Polyhedron
-from .sphere import Sphere
-from .torus import Torus
+from .shape import Shape  # noqa: F401
+from .box import Box  # noqa: F401
+from .cylinder import Cylinder  # noqa: F401
+from .cone import Cone  # noqa: F401
+from .polyhedron import Polyhedron  # noqa: F401
+from .sphere import Sphere  # noqa: F401
+from .torus import Torus  # noqa: F401
 
 __all__ = [name for name in dir() if not name.startswith('_')]

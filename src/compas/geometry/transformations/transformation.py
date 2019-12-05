@@ -82,11 +82,11 @@ class Transformation(object):
 
     def __eq__(self, other, tol=1e-05):
         try:
-            M = self.matrix
-            O = other.matrix
+            A = self.matrix
+            B = other.matrix
             for i in range(4):
                 for j in range(4):
-                    if math.fabs(M[i][j] - O[i][j]) > tol:
+                    if math.fabs(A[i][j] - B[i][j]) > tol:
                         return False
             return True
         except BaseException:
@@ -369,11 +369,12 @@ class Transformation(object):
         True
 
         """
-        from compas.geometry.transformations import Scale
+        from compas.geometry.transformations import Scale  # noqa: F811
         from compas.geometry.transformations import Shear
-        from compas.geometry.transformations import Rotation
-        from compas.geometry.transformations import Translation
+        from compas.geometry.transformations import Rotation  # noqa: F811
+        from compas.geometry.transformations import Translation  # noqa: F811
         from compas.geometry.transformations import Projection
+
         sc, sh, a, t, p = decompose_matrix(self.matrix)
         Sc = Scale(sc)
         Sh = Shear.from_entries(sh)
@@ -433,10 +434,10 @@ class Transformation(object):
 
 if __name__ == "__main__":
 
-    from compas.geometry import Translation
-    from compas.geometry import Rotation
-    from compas.geometry import Scale
-    from compas.geometry import Frame
+    from compas.geometry import Translation  # noqa: F401
+    from compas.geometry import Rotation  # noqa: F401
+    from compas.geometry import Scale  # noqa: F401
+    from compas.geometry import Frame  # noqa: F401
 
     import doctest
     doctest.testmod(globs=globals())

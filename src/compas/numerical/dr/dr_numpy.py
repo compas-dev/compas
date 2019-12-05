@@ -249,7 +249,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # initial values
     # --------------------------------------------------------------------------
     q = ones((num_e, 1), dtype=float)
-    l = normrow(C.dot(x))
+    l = normrow(C.dot(x))  # noqa: E741
     f = q * l
     v = zeros((num_v, 3), dtype=float)
     r = zeros((num_v, 3), dtype=float)
@@ -313,7 +313,7 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         x[free] = x0[free] + dx[free]
         # update
         u = C.dot(x)
-        l = normrow(u)
+        l = normrow(u)  # noqa: E741
         f = q * l
         r = p - Ct.dot(Q).dot(u)
         # crits

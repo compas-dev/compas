@@ -74,7 +74,7 @@ def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=F
 
     tic2 = time()
 
-    X, f, l = drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh,
+    X, f, l = drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh,  # noqa: E741
                                beams, inds, indi, indf, EIx, EIy, callback, **kwargs)
 
     toc2 = time() - tic2
@@ -176,7 +176,7 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, 
 
     while (ts <= steps) and (res > tol):
 
-        uvw, l = uvw_lengths(C, X)
+        uvw, l = uvw_lengths(C, X)  # noqa: E741
         f = f0 + k0 * (l.ravel() - l0)
 
         if ind_t:
