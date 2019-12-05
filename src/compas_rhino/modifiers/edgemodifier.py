@@ -5,22 +5,17 @@ from __future__ import division
 import ast
 
 import compas
-import compas_rhino
 
 try:
     import Rhino
-    from Rhino.Geometry import Point3d
-
 except ImportError:
     compas.raise_if_ironpython()
 
 try:
     from compas_rhino.etoforms import PropertyListForm
-
-except:
+except ImportError:
     try:
         from Rhino.UI.Dialogs import ShowPropertyListBox
-
     except ImportError:
         compas.raise_if_ironpython()
 else:
@@ -28,7 +23,6 @@ else:
         import clr
         clr.AddReference('Rhino.UI')
         import Rhino.UI
-
     except ImportError:
         compas.raise_if_ironpython()
 
@@ -44,7 +38,7 @@ __all__ = [
 def rhino_update_named_values(names, values, message='', title='Update named values'):
     try:
         dialog = PropertyListForm(names, values)
-    except:
+    except Exception:
         values = ShowPropertyListBox(message, title, names, values)
     else:
         if dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow):
@@ -158,7 +152,6 @@ if __name__ == "__main__":
 
     from compas.datastructures import Network
     from compas_rhino.artists.networkartist import NetworkArtist
-    from compas_rhino.modifiers.edgemodifier import EdgeModifier
 
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 

@@ -152,11 +152,11 @@ geometry
 """
 from __future__ import absolute_import
 
-from .document import *
-from .layers import *
-from .objects import *
-from .misc import *
-from .drawing import *
-from .geometry import *
+from .document import *  # noqa: F401 F403
+from .layers import *  # noqa: F401 F403
+from .objects import *  # noqa: F401 F403
+from .misc import *  # noqa: F401 F403
+from .drawing import *  # noqa: F401 F403
+from .geometry import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

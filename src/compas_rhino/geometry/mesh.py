@@ -77,9 +77,9 @@ class RhinoMesh(RhinoGeometry):
         if not objref:
             return None
         tvindex = objref.GeometryComponentIndex.Index
-        mesh    = sc.doc.Objects.Find(guid)
-        temp    = mesh.Geometry.TopologyVertices.MeshVertexIndices(tvindex)
-        vindex  = temp[0]
+        mesh = sc.doc.Objects.Find(guid)
+        temp = mesh.Geometry.TopologyVertices.MeshVertexIndices(tvindex)
+        vindex = temp[0]
         go.Dispose()
         return vindex
 

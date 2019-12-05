@@ -105,12 +105,12 @@ def create_layers_from_dict(layers):
             except TypeError:
                 attr = {}
             attr = attr or {}
-            color   = attr.get('color', (0, 0, 0))
+            color = attr.get('color', (0, 0, 0))
             visible = attr.get('visible', True)
-            locked  = attr.get('locked', False)
+            locked = attr.get('locked', False)
             if not rs.IsLayer(fullname):
                 rs.AddLayer(fullname, color, visible, locked)
-            if 'layers' in attr :
+            if 'layers' in attr:
                 recurse(attr['layers'], fullname)
     rs.EnableRedraw(False)
     recurse(layers)
@@ -168,6 +168,7 @@ def clear_layers(layers, include_children=True, include_hidden=True):
 
 def delete_layers(layers):
     to_delete = []
+
     def recurse(layers, parent=None):
         for name in layers:
             if not name:

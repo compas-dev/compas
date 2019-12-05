@@ -88,10 +88,10 @@ their functionality in Rhino.
 from __future__ import absolute_import
 
 
-from .vertexmodifier import *
-from .edgemodifier import *
-from .facemodifier import *
+from .vertexmodifier import *  # noqa: F401 F403
+from .edgemodifier import *  # noqa: F401 F403
+from .facemodifier import *  # noqa: F401 F403
 
-from .modifier import *
+from .modifier import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

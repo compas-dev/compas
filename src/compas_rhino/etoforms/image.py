@@ -11,7 +11,6 @@ try:
 
     import Rhino
     import Rhino.UI
-    import Eto
     import Eto.Drawing as drawing
     import Eto.Forms as forms
 

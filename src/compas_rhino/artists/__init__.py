@@ -41,19 +41,17 @@ Data Structure Artists
 """
 from __future__ import absolute_import
 
-from ._artist import *
-from ._primitiveartist import *
-# from ._shapeartist import *
-# from ._datastructureartist import *
+from ._artist import _Artist
+from ._primitiveartist import *  # noqa: F401 F403
 
-from .pointartist import *
-from .lineartist import *
-from .frameartist import *
+from .pointartist import PointArtist
+from .lineartist import LineArtist
+from .frameartist import FrameArtist
 
-from .artist import *
-from .meshartist import *
-from .networkartist import *
-from .volmeshartist import *
+from .artist import *  # noqa: F401 F403
+from .meshartist import *  # noqa: F401 F403
+from .networkartist import *  # noqa: F401 F403
+from .volmeshartist import *  # noqa: F401 F403
 
 from compas.geometry import Frame
 from compas.geometry import Line

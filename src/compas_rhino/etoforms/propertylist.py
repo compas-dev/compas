@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from ast import literal_eval
-
 import compas
 
 try:
@@ -11,13 +9,12 @@ try:
     clr.AddReference("Eto")
     clr.AddReference("Rhino.UI")
 
-except:
+except Exception:
     compas.raise_if_ironpython()
 
 try:
     import Rhino
     import Rhino.UI
-    import Eto
     import Eto.Drawing as drawing
     import Eto.Forms as forms
 
@@ -83,7 +80,7 @@ class PropertyListForm(Dialog):
         self.AbortButton.Click += self.on_cancel
         return self.AbortButton
 
-    def on_ok(self, sender, e):
+    def on_ok(self, sender, event):
         try:
             for i, name in enumerate(self.names):
                 value = self.table.DataStore[i][1]
@@ -93,7 +90,7 @@ class PropertyListForm(Dialog):
             self.Close(False)
         self.Close(True)
 
-    def on_cancel(self, sender, e):
+    def on_cancel(self, sender, event):
         self.Close(False)
 
     def show(self):

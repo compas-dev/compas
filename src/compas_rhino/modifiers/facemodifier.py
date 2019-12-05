@@ -18,7 +18,7 @@ except ImportError:
 __all__ = [
     'FaceModifier',
     'mesh_update_face_attributes'
-    ]
+]
 
 
 class FaceModifier(object):
@@ -26,8 +26,8 @@ class FaceModifier(object):
     @staticmethod
     def move_face(self, key, constraint=None, allow_off=None):
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        nbrs  = [self.face_coordinates(nbr) for nbr in self.face_neighbors(key)]
-        nbrs  = [Point3d(*xyz) for xyz in nbrs]
+        nbrs = [self.face_coordinates(nbr) for nbr in self.face_neighbors(key)]
+        nbrs = [Point3d(*xyz) for xyz in nbrs]
 
         def OnDynamicDraw(sender, e):
             for ep in nbrs:
@@ -117,13 +117,13 @@ def mesh_update_face_attributes(mesh, fkeys, names=None):
 # Main
 # ==============================================================================
 
+
 if __name__ == "__main__":
 
     import compas
 
     from compas.datastructures import Network
     from compas_rhino.artists.networkartist import NetworkArtist
-    from compas_rhino.modifiers.facemodifier import FaceModifier
 
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 

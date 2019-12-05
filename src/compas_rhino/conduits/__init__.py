@@ -71,11 +71,11 @@ class Conduit(DisplayConduit):
             time.sleep(pause)
 
 
-from .mesh import *
-from .faces import *
-from .labels import *
-from .lines import *
-from .points import *
-# from .splines import *
+from .mesh import *  # noqa: F401 F403
+from .faces import *  # noqa: F401 F403
+from .labels import *  # noqa: F401 F403
+from .lines import *  # noqa: F401 F403
+from .points import *  # noqa: F401 F403
+# from .splines import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

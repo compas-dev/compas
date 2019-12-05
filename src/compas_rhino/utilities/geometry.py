@@ -41,8 +41,8 @@ def uv_points_from_surface(srf, u_div, v_div):
 
     for u in range(u_div):
         for v in range(v_div):
-            uv = (u_domain[0] + u_step * u , v_domain[0] + v_step  * v)
-            uv_points[u][v] = rs.EvaluateSurface(srf, uv[0] , uv[1])
+            uv = (u_domain[0] + u_step * u, v_domain[0] + v_step * v)
+            uv_points[u][v] = rs.EvaluateSurface(srf, uv[0], uv[1])
 
     return uv_points
 

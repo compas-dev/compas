@@ -280,7 +280,7 @@ def select_lines(message='Select lines.'):
     if temp:
         for guid in temp:
             if is_curve_line(guid):
-                    guids.append(guid)
+                guids.append(guid)
     return guids
 
 
@@ -297,7 +297,7 @@ def select_polylines(message='Select polylines (curves with degree = 1, and mult
     if temp:
         for guid in temp:
             if is_curve_polyline(guid):
-                    guids.append(guid)
+                guids.append(guid)
     return guids
 
 

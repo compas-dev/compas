@@ -20,18 +20,18 @@ __all__ = [
     'mesh_update_attributes',
     'network_move',
     'network_update_attributes'
-    ]
+]
 
 
 class Modifier(object):
 
     @staticmethod
     def move(self):
-        color  = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
         origin = {key: self.vertex_coordinates(key) for key in self.self.vertices()}
         vertex = {key: self.vertex_coordinates(key) for key in self.self.vertices()}
-        edges  = self.edges()
-        start  = compas_rhino.pick_point('Point to move from?')
+        edges = self.edges()
+        start = compas_rhino.pick_point('Point to move from?')
 
         if not start:
             return False
@@ -70,7 +70,7 @@ class Modifier(object):
 
     @staticmethod
     def update_attributes(self):
-        names  = sorted(self.attributes.keys())
+        names = sorted(self.attributes.keys())
         values = [str(self.attributes[name]) for name in names]
         values = compas_rhino.update_named_values(names, values)
         if values:
@@ -146,14 +146,13 @@ def network_update_attributes(network):
     return Modifier.update_attributes(network)
 
 
-
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    import compas
+    pass
 
     # from compas.datastructures import Network
     # from compas_rhino.artists.networkartist import NetworkArtist

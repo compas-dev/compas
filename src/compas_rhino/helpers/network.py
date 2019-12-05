@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
-
 from compas_rhino.artists import NetworkArtist
 
 from compas_rhino.modifiers import Modifier
@@ -563,9 +561,6 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Network
-    from compas_rhino import network_draw
-    from compas_rhino import network_select_vertex
-    from compas_rhino import network_move_vertex
 
     network = Network.from_obj(compas.get('lines.obj'))
 

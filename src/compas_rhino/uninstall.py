@@ -8,7 +8,6 @@ import sys
 import compas_rhino
 import compas_rhino.install
 
-from compas._os import system
 from compas._os import remove_symlinks
 
 

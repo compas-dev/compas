@@ -18,8 +18,6 @@ try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
 
-    from Rhino.Geometry import Point3d
-
     find_object = sc.doc.Objects.Find
 
 except ImportError:
@@ -436,7 +434,7 @@ class RhinoSurface(RhinoGeometry):
             mesh.vertex[vkey]['z'] = z
         return mesh
 
-      
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -448,9 +446,9 @@ if __name__ == '__main__':
     points = []
     for xyz in surface.heightfield():
         points.append({
-            'pos'   : xyz,
-            'name'  : 'heightfield',
-            'color' : (0, 255, 0),
+            'pos': xyz,
+            'name': 'heightfield',
+            'color': (0, 255, 0),
         })
 
     compas_rhino.draw_points(points, layer='Layer 01', clear=True, redraw=True)

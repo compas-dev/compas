@@ -85,8 +85,8 @@ their functionality in Rhino.
 """
 from __future__ import absolute_import
 
-from .edgeselector import *
-from .faceselector import *
-from .vertexselector import *
+from .edgeselector import *  # noqa: F401 F403
+from .faceselector import *  # noqa: F401 F403
+from .vertexselector import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

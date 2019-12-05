@@ -87,10 +87,10 @@ class VertexArtist(object):
         points = []
         for key in keys:
             points.append({
-                'pos'   : self.datastructure.vertex_coordinates(key),
-                'name'  : self.datastructure.vertex_name(key),
-                'color' : colordict[key],
-                'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'pos': self.datastructure.vertex_coordinates(key),
+                'name': self.datastructure.vertex_name(key),
+                'color': colordict[key],
+                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
@@ -138,11 +138,11 @@ class VertexArtist(object):
 
         for key, text in iter(textdict.items()):
             labels.append({
-                'pos'  : self.datastructure.vertex_coordinates(key),
-                'name' : self.datastructure.vertex_label_name(key),
+                'pos': self.datastructure.vertex_coordinates(key),
+                'name': self.datastructure.vertex_label_name(key),
                 'color': colordict[key],
-                'text' : textdict[key],
-                'layer' : self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'text': textdict[key],
+                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)

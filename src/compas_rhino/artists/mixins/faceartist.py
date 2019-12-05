@@ -123,9 +123,9 @@ class FaceArtist(object):
         for fkey in keys:
             faces.append({
                 'points': self.datastructure.face_coordinates(fkey),
-                'name'  : self.datastructure.face_name(fkey),
-                'color' : colordict[fkey],
-                'layer' : self.datastructure.get_face_attribute(fkey, 'layer', None)
+                'name': self.datastructure.face_name(fkey),
+                'color': colordict[fkey],
+                'layer': self.datastructure.get_face_attribute(fkey, 'layer', None)
             })
 
         guids = compas_rhino.draw_faces(faces, layer=self.layer, clear=False, redraw=False)
@@ -179,11 +179,11 @@ class FaceArtist(object):
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
-                'pos'   : self.datastructure.face_center(key),
-                'name'  : "{}.face.label.{}".format(self.datastructure.name, key),
-                'color' : colordict[key],
-                'text'  : textdict[key],
-                'layer' : self.datastructure.get_face_attribute(key, 'layer', None)
+                'pos': self.datastructure.face_center(key),
+                'name': "{}.face.label.{}".format(self.datastructure.name, key),
+                'color': colordict[key],
+                'text': textdict[key],
+                'layer': self.datastructure.get_face_attribute(key, 'layer', None)
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
@@ -214,21 +214,18 @@ class FaceArtist(object):
             sp = self.datastructure.face_centroid(fkey)
             ep = add_vectors(sp, scale_vector(n, scale))
             lines.append({
-                'start' : sp,
-                'end'   : ep,
-                'name'  : "{}.face.normal.{}".format(self.datastructure.name, fkey),
-                'color' : color,
-                'arrow' : 'end'
+                'start': sp,
+                'end': ep,
+                'name': "{}.face.normal.{}".format(self.datastructure.name, fkey),
+                'color': color,
+                'arrow': 'end'
             })
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-
-
 
 
 # ==============================================================================
 # Main
 # ==============================================================================
-
 if __name__ == "__main__":
 
     pass

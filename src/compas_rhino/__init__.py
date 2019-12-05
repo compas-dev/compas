@@ -25,10 +25,10 @@ from __future__ import absolute_import
 
 import os
 import compas._os
-from .utilities import *
+from .utilities import *  # noqa: F401 F403
 
 try:
-    import rhinoscriptsyntax as rs
+    import rhinoscriptsyntax as rs  # noqa: F401
 except ImportError:
     pass
 

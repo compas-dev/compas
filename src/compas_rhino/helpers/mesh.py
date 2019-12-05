@@ -993,9 +993,6 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Mesh
-    from compas_rhino import mesh_draw
-    from compas_rhino import mesh_select_vertex
-    from compas_rhino import mesh_move_vertex
 
     mesh = Mesh.from_obj(compas.get_data('quadmesh_planar.obj'))
 

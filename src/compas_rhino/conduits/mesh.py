@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas
 from compas_rhino.conduits import Conduit
+from compas.utilities import color_to_rgb
 
 try:
     from Rhino.Geometry import Point3d
@@ -76,12 +77,12 @@ class MeshConduit(Conduit):
     @thickness.setter
     def thickness(self, thickness):
         if thickness:
-            l = self.mesh.number_of_edges()
+            e = self.mesh.number_of_edges()
             t = len(thickness)
-            if t < l:
-                thickness += [self._default_thickness for i in range(l - t)]
-            elif t > l:
-                thickness[:] = thickness[:l]
+            if t < e:
+                thickness += [self._default_thickness for i in range(e - t)]
+            elif t > e:
+                thickness[:] = thickness[:e]
             self._thickness = thickness
 
     @property
@@ -95,17 +96,17 @@ class MeshConduit(Conduit):
 
         """
         return self._color
-    
+
     @color.setter
     def color(self, color):
         if color:
             color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
-            l = self.mesh.number_of_edges()
+            e = self.mesh.number_of_edges()
             c = len(color)
-            if c < l:
-                color += [self._default_color for i in range(l - c)]
-            elif c > l:
-                color[:] = color[:l]
+            if c < e:
+                color += [self._default_color for i in range(e - c)]
+            elif c > e:
+                color[:] = color[:e]
             self._color = color
 
     def DrawForeground(self, e):

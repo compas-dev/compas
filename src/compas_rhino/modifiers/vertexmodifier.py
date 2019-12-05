@@ -5,22 +5,18 @@ from __future__ import division
 import ast
 
 import compas
-import compas_rhino
 
 try:
     import Rhino
     from Rhino.Geometry import Point3d
-
 except ImportError:
     compas.raise_if_ironpython()
 
 try:
     from compas_rhino.etoforms import PropertyListForm
-
-except:
+except ImportError:
     try:
         from Rhino.UI.Dialogs import ShowPropertyListBox
-
     except ImportError:
         compas.raise_if_ironpython()
 else:
@@ -42,13 +38,13 @@ __all__ = [
 
     'network_move_vertex',
     'network_update_vertex_attributes'
-    ]
+]
 
 
 def rhino_update_named_values(names, values, message='', title='Update named values'):
     try:
         dialog = PropertyListForm(names, values)
-    except:
+    except Exception:
         values = ShowPropertyListBox(message, title, names, values)
     else:
         if dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow):
@@ -63,8 +59,8 @@ class VertexModifier(object):
     @staticmethod
     def move_vertex(self, key, constraint=None, allow_off=None):
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        nbrs  = [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]
-        nbrs  = [Point3d(*xyz) for xyz in nbrs]
+        nbrs = [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]
+        nbrs = [Point3d(*xyz) for xyz in nbrs]
 
         def OnDynamicDraw(sender, e):
             for ep in nbrs:
@@ -321,7 +317,6 @@ if __name__ == "__main__":
 
     from compas.datastructures import Network
     from compas_rhino.artists.networkartist import NetworkArtist
-    from compas_rhino.modifiers.vertexmodifier import VertexModifier
 
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 

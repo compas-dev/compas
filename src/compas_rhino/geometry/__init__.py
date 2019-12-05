@@ -218,10 +218,10 @@ class RhinoGeometry(object):
         raise NotImplementedError
 
 
-from .point import *
-from .curve import *
-from .mesh import *
-from .surface import *
+from .point import *  # noqa: F401 F403
+from .curve import *  # noqa: F401 F403
+from .mesh import *  # noqa: F401 F403
+from .surface import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

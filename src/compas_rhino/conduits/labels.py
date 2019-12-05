@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas
 from compas_rhino.conduits import Conduit
+from compas.utilities import color_to_rgb
 
 try:
     from Rhino.Geometry import Point3d
@@ -83,15 +84,15 @@ class LabelsConduit(Conduit):
 
         """
         return self._colors
-    
+
     @color.setter
     def color(self, color):
         if color:
             color[:] = [(FromArgb(* color_to_rgb(bgc)), FromArgb(* color_to_rgb(tc))) for bgc, tc in color]
-            l = len(self.labels)
+            l = len(self.labels)  # noqa: E741
             c = len(color)
             if c < l:
-                colors += [(self._default_color, self._default_textcolor) for i in range(l - c)]
+                color += [(self._default_color, self._default_textcolor) for i in range(l - c)]
             elif c > l:
                 color[:] = color[:l]
             self._color = color

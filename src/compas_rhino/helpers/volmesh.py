@@ -94,8 +94,8 @@ def volmesh_from_polysurfaces(cls, guids):
         cells.append(cell)
 
     gkey_index = dict((gkey, index) for index, gkey in enumerate(gkey_xyz))
-    vertices   = [list(xyz) for gkey, xyz in gkey_xyz.items()]
-    cells      = [[[gkey_index[gkey] for gkey in face] for face in cell] for cell in cells]
+    vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
+    cells = [[[gkey_index[gkey] for gkey in face] for face in cell] for cell in cells]
 
     return cls.from_vertices_and_cells(vertices, cells)
 
@@ -422,8 +422,6 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import VolMesh
-    from compas_rhino import volmesh_draw
-    from compas_rhino import volmesh_select_vertex
     # from compas_rhino import volmesh_move_vertex
 
     volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
