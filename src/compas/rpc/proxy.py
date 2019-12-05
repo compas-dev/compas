@@ -84,6 +84,10 @@ class Proxy(object):
     Complete example demonstrating use of the force density method in the
     numerical package to compute equilibrium of axial force networks.
 
+    .. code-block:: python
+
+        pass
+
     """
 
     def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None):
