@@ -26,14 +26,14 @@ from __future__ import print_function
 __version__ = '0.11.4'
 
 
-from .core import *
-from .artists import *
+from .core import *  # noqa: F401 F403
+from .artists import *  # noqa: F401 F403
 
-from .plotter import Plotter
-from .plotter2 import Plotter2
+from .plotter import Plotter  # noqa: F401
+from .plotter2 import Plotter2  # noqa: F401
 
-from .networkplotter import NetworkPlotter
-from .meshplotter import MeshPlotter
+from .networkplotter import NetworkPlotter  # noqa: F401
+from .meshplotter import MeshPlotter  # noqa: F401
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

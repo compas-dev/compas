@@ -130,3 +130,11 @@ def mesh_draw_faces(mesh,
     """
     artist = MeshArtist(mesh)
     return artist.draw_faces(keys, color, join_faces)
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass

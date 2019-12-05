@@ -38,3 +38,11 @@ def update_component(ghenv, delay):
 
     ghdoc.ScheduleSolution(
         delay, gh.Kernel.GH_Document.GH_ScheduleDelegate(callback))
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass
