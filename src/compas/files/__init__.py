@@ -13,9 +13,12 @@ Classes
     :toctree: generated/
     :nosignatures:
 
+    BaseReader
     OBJ
     OBJReader
     OBJParser
+    OFF
+    OFFReader
     PLY
     PLYReader
     PLYParser

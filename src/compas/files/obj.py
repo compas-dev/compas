@@ -1,15 +1,18 @@
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
-
 from collections import OrderedDict
-
 try:
     from urllib.request import urlopen
 except ImportError:
     from urllib2 import urlopen
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 
 from compas.utilities import geometric_key
+from compas.files.base_reader import BaseReader
 
 
 __all__ = [
@@ -27,19 +30,17 @@ class OBJ(object):
     * http://paulbourke.net/dataformats/obj/
 
     """
-
-    def __init__(self, filepath, precision=None):
-        self.reader = OBJReader(filepath)
+    def __init__(self, location, precision=None):
+        self.reader = OBJReader(location)
         self.parser = OBJParser(self.reader, precision=precision)
 
-
-class OBJReader(object):
+class OBJReader(BaseReader):
     """Read the contents of an *obj* file.
 
     Parameters
     ----------
-    filepath : str
-        Path to the file.
+    location: str or pathlib object
+        Path or URL to the file.
 
     Attributes
     ----------
@@ -75,9 +76,8 @@ class OBJReader(object):
 
     """
 
-    def __init__(self, filepath):
-        self.filepath = filepath
-        self.content = None
+    def __init__(self, location):
+        super(OBJReader, self).__init__(location)
         # vertex data
         self.vertices = []
         self.weights = []
@@ -102,41 +102,9 @@ class OBJReader(object):
         self.groups = {}
         self.objects = {}
         self.group = None
-        # open file path and read
-        self.open()
-        self.pre()
-        self.read()
-        self.post()
+        self.read_obj()
 
-    def open(self):
-        if self.filepath.startswith('http'):
-            resp = urlopen(self.filepath)
-            self.content = iter(resp.read().decode('utf-8').split('\n'))
-        else:
-            with open(self.filepath, 'r') as fh:
-                self.content = iter(fh.readlines())
-
-    def pre(self):
-        lines = []
-        is_continuation = False
-        for line in self.content:
-            line = line.rstrip()
-            if not line:
-                continue
-            if is_continuation:
-                lines[-1] = lines[-1][:-2] + line
-            else:
-                lines.append(line)
-            if line[-1] == '\\':
-                is_continuation = True
-            else:
-                is_continuation = False
-        self.content = iter(lines)
-
-    def post(self):
-        pass
-
-    def read(self):
+    def read_obj(self):
         """Read the contents of the file, line by line.
 
         Every line is split into a *head* and a *tail*.
@@ -156,9 +124,7 @@ class OBJReader(object):
         * ``cstype``: freeform attribute *curve or surface type*
 
         """
-        if not self.content:
-            return
-        for line in self.content:
+        for line in self.read():
             parts = line.split()
             if not parts:
                 continue
@@ -276,8 +242,8 @@ class OBJReader(object):
             if self.deg[0] == 1:
                 if len(data) == 4:
                     self.lines.append((int(data[2]) - 1, int(data[3]) - 1))
-                    if self.group:
-                        self.groups[self.group].append(('l', len(self.lines) - 1))
+                if self.group:
+                    self.groups[self.group].append(('l', len(self.lines) - 1))
                     return
                 if len(data) > 4:
                     self.lines.append([int(d) - 1 for d in data[2:]])
@@ -297,23 +263,22 @@ class OBJReader(object):
 
 class OBJParser(object):
     """"""
-
     def __init__(self, reader, precision=None):
         self.precision = precision
-        self.reader = reader
-        self.vertices = None
-        self.weights = None
-        self.textures = None
-        self.normals = None
-        self.points = None
-        self.lines = None
+        self.reader    = reader
+        self.vertices  = None
+        self.weights   = None
+        self.textures  = None
+        self.normals   = None
+        self.points    = None
+        self.lines     = None
         self.polylines = None
-        self.faces = None
-        self.curves = None
-        self.curves2 = None
-        self.surfaces = None
-        self.groups = None
-        self.objects = None
+        self.faces     = None
+        self.curves    = None
+        self.curves2   = None
+        self.surfaces  = None
+        self.groups    = None
+        self.objects   = None
         self.parse()
 
     def parse(self):
@@ -328,18 +293,17 @@ class OBJParser(object):
         key_index = {key: index for index, key in enumerate(vertex)}
         index_index = {index: key_index[key] for index, key in iter(index_key.items())}
 
-        self.vertices = [xyz for xyz in iter(vertex.values())]
-        self.points = [index_index[index] for index in self.reader.points]
-        self.lines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) == 2]
+        self.vertices  = [xyz for xyz in iter(vertex.values())]
+        self.points    = [index_index[index] for index in self.reader.points]
+        self.lines     = [[index_index[index] for index in line] for line in self.reader.lines if len(line) == 2]
         self.polylines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
-        self.faces = [[index_index[index] for index in face] for face in self.reader.faces]
-        self.groups = self.reader.groups
+        self.faces     = [[index_index[index] for index in face] for face in self.reader.faces]
+        self.groups    = self.reader.groups
 
 
 # ==============================================================================
 # Main
 # ==============================================================================
-
 if __name__ == '__main__':
 
     import compas
