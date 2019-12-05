@@ -49,9 +49,7 @@ class NetworkArtist(EdgeArtist, VertexArtist):
 
 if __name__ == "__main__":
 
-    import compas
     from compas.datastructures import Network
-    from compas_ghpython.artists.networkartist import NetworkArtist
 
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 

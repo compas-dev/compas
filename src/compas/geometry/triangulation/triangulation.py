@@ -260,19 +260,20 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
 if __name__ == "__main__":
 
-    from compas.datastructures import Mesh
-    from compas.geometry import pointcloud_xy
-    from compas.geometry import delaunay_from_points
-    from compas_plotters import MeshPlotter
+    pass
 
-    points = pointcloud_xy(20, (0, 50))
-    faces = delaunay_from_points(points)
+    # from compas.datastructures import Mesh
+    # from compas.geometry import pointcloud_xy
+    # from compas_plotters import MeshPlotter
 
-    delaunay = Mesh.from_vertices_and_faces(points, faces)
+    # points = pointcloud_xy(20, (0, 50))
+    # faces = delaunay_from_points(points)
 
-    plotter = MeshPlotter(delaunay, figsize=(12, 8))
+    # delaunay = Mesh.from_vertices_and_faces(points, faces)
 
-    plotter.draw_vertices(radius=0.1)
-    plotter.draw_faces()
+    # plotter = MeshPlotter(delaunay, figsize=(12, 8))
 
-    plotter.show()
+    # plotter.draw_vertices(radius=0.1)
+    # plotter.draw_faces()
+
+    # plotter.show()

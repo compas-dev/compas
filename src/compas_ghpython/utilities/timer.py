@@ -6,7 +6,6 @@ import compas
 
 try:
     import Grasshopper as gh
-    import System
 except ImportError:
     compas.raise_if_ironpython()
 

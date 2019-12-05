@@ -51,10 +51,7 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
 if __name__ == "__main__":
 
-    import compas
-
     from compas.datastructures import VolMesh
-    from compas_ghpython.artists.volmeshartist import VolMeshArtist
 
     volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 

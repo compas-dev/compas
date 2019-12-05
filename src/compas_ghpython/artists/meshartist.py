@@ -72,12 +72,12 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
         faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
         new_faces = []
         for face in faces:
-            l = len(face)
-            if l == 3:
+            f = len(face)
+            if f == 3:
                 new_faces.append(face + [face[-1]])
-            elif l == 4:
+            elif f == 4:
                 new_faces.append(face)
-            elif l > 4:
+            elif f > 4:
                 centroid = len(vertices)
                 vertices.append(centroid_polygon(
                     [vertices[index] for index in face]))
@@ -96,8 +96,6 @@ if __name__ == "__main__":
 
     from compas.datastructures import Mesh
     from compas.geometry import Polyhedron
-
-    from compas_ghpython.artists.meshartist import MeshArtist
 
     poly = Polyhedron.generate(12)
 
