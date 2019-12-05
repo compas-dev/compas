@@ -26,31 +26,34 @@ def urdf_file_with_shapes():
 def ur5_file():
     return os.path.join(BASE_FOLDER, 'fixtures', 'ur5.xacro')
 
+
 @pytest.fixture
 def urdf_with_unknown_attr():
     return os.path.join(BASE_FOLDER, 'fixtures', 'sample_unknown_attributes.urdf')
+
 
 @pytest.fixture
 def ur5():
     """Return a UR5 created programatically instead of from a file."""
     return RobotModel('ur5',
-                 joints=[
-                     Joint('shoulder_pan_joint', 'revolute', 'base_link', 'shoulder_link'),
-                     Joint('shoulder_lift_joint', 'revolute', 'shoulder_link', 'upper_arm_link'),
-                     Joint('elbow_joint', 'revolute', 'upper_arm_link', 'forearm_link'),
-                     Joint('wrist_1_joint', 'revolute', 'forearm_link', 'wrist_1_link'),
-                     Joint('wrist_2_joint', 'revolute', 'wrist_1_link', 'wrist_2_link'),
-                     Joint('wrist_3_joint', 'revolute', 'wrist_2_link', 'wrist_3_link'),
-                 ], links=[
-                     Link('base_link'),
-                     Link('shoulder_link'),
-                     Link('upper_arm_link'),
-                     Link('forearm_link'),
-                     Link('wrist_1_link'),
-                     Link('wrist_2_link'),
-                     Link('wrist_3_link'),
-                 ]
-                 )
+                      joints=[
+                          Joint('shoulder_pan_joint', 'revolute', 'base_link', 'shoulder_link'),
+                          Joint('shoulder_lift_joint', 'revolute', 'shoulder_link', 'upper_arm_link'),
+                          Joint('elbow_joint', 'revolute', 'upper_arm_link', 'forearm_link'),
+                          Joint('wrist_1_joint', 'revolute', 'forearm_link', 'wrist_1_link'),
+                          Joint('wrist_2_joint', 'revolute', 'wrist_1_link', 'wrist_2_link'),
+                          Joint('wrist_3_joint', 'revolute', 'wrist_2_link', 'wrist_3_link'),
+                      ], links=[
+                          Link('base_link'),
+                          Link('shoulder_link'),
+                          Link('upper_arm_link'),
+                          Link('forearm_link'),
+                          Link('wrist_1_link'),
+                          Link('wrist_2_link'),
+                          Link('wrist_3_link'),
+                      ]
+                      )
+
 
 @pytest.fixture
 def programatic_robot_model():
@@ -162,7 +165,7 @@ def test_root(urdf_file):
 def test_root_getter_without_links():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot name="panda"></robot>""")
-    assert r.root == None
+    assert r.root is None
 
 
 def test_get_link_by_name(urdf_file):
@@ -309,6 +312,10 @@ def test_unknown_axis_attribute(urdf_with_unknown_attr):
     assert r.joints[0].axis.attr['rpy'] == '0 0 0'
 
 
+# ==============================================================================
+# Main
+# ==============================================================================
+
 if __name__ == '__main__':
     import os
     from zipfile import ZipFile
@@ -328,10 +335,10 @@ if __name__ == '__main__':
 
     for f in zipfile.namelist():
         if f.endswith('.urdf') or f.endswith('.xacro'):
-            with zipfile.open(f) as urdf_file:
+            with zipfile.open(f) as urdfile:
                 try:
                     all_files.append(f)
-                    r = RobotModel.from_urdf_file(urdf_file)
+                    r = RobotModel.from_urdf_file(urdfile)
                 except Exception as e:
                     errors.append((f, e))
 

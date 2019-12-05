@@ -1,7 +1,5 @@
 import pytest
 
-import compas
-
 from compas.datastructures import Network
 from compas.datastructures import network_is_planar
 

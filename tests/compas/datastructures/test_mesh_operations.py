@@ -1,7 +1,5 @@
 import pytest
 
-import compas
-
 from compas.datastructures import Mesh
 from compas.datastructures import mesh_insert_vertex_on_edge
 from compas.datastructures import mesh_substitute_vertex_in_faces
@@ -10,7 +8,7 @@ from compas.datastructures import mesh_substitute_vertex_in_faces
 @pytest.fixture
 def mesh_0():
     vertices = [
-        [1.0, 0.0, 0.0], 
+        [1.0, 0.0, 0.0],
         [1.0, 2.0, 0.0],
         [0.0, 1.0, 0.0],
         [2.0, 1.0, 0.0],
@@ -20,7 +18,7 @@ def mesh_0():
         [0, 1, 2],
         [0, 3, 1]
     ]
-    
+
     return Mesh.from_vertices_and_faces(vertices, faces)
 
 

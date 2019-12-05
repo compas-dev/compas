@@ -1,9 +1,5 @@
-import pytest
 from compas.geometry import circle_evaluate
 from compas.geometry import ellipse_evaluate
-from compas.geometry import archimedean_spiral_evaluate
-from compas.geometry import logarithmic_spiral_evaluate
-from compas.geometry import helix_evaluate
 from math import pi
 
 

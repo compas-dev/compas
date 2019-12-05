@@ -1,5 +1,3 @@
-import functools
-
 from compas.utilities import memoize
 
 

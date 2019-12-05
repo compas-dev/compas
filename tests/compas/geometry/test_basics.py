@@ -8,7 +8,6 @@ from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
 
 from compas.geometry import centroid_points
-from compas.geometry import centroid_polygon
 from compas.geometry import centroid_polyhedron
 from compas.geometry import volume_polyhedron
 
