@@ -424,8 +424,7 @@ class PLYParser(object):
         self.parse()
 
     def parse(self):
-        self.vertices = [(vertex['x'], vertex['y'], vertex['z'])
-                         for vertex in self.reader.vertices]
+        self.vertices = [(vertex['x'], vertex['y'], vertex['z']) for vertex in self.reader.vertices]
         self.faces = [face[self.reader.face_properties[0][0]] for face in self.reader.faces]
 
 # ==============================================================================
@@ -442,4 +441,4 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
 
-    print(mesh.summry())
+    print(mesh.summary())
