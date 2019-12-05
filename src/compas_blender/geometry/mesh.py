@@ -1,8 +1,3 @@
-try:
-    import bpy
-except ImportError:
-    pass
-
 from compas.datastructures import Mesh
 
 from compas.geometry import add_vectors

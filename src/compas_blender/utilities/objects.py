@@ -122,7 +122,7 @@ def get_objects_coordinates(objects):
 def get_object_property(object, property):
     try:
         return object[property]
-    except:
+    except Exception:
         return None
 
 

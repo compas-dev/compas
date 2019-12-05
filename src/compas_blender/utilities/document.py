@@ -1,8 +1,3 @@
-try:
-    import bpy
-except ImportError:
-    pass
-
 
 __all__ = [
     'get_document_name',

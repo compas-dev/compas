@@ -1,7 +1,6 @@
 import os
 import sys
 
-from compas._os import create_symlinks
 from compas._os import remove
 from compas._os import remove_symlink
 from compas._os import rename

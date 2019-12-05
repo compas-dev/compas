@@ -77,10 +77,10 @@ class BlenderGeometry(object):
         raise NotImplementedError
 
 
-from .point import BlenderPoint
-from .curve import BlenderCurve
-from .mesh import BlenderMesh
-from .surface import BlenderSurface
+from .point import BlenderPoint  # noqa: E402
+from .curve import BlenderCurve  # noqa: E402
+from .mesh import BlenderMesh  # noqa: E402
+from .surface import BlenderSurface  # noqa: E402
 
 
 __all__ = [

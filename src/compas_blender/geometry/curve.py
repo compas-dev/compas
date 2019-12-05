@@ -2,7 +2,6 @@ from compas.geometry import add_vectors
 from compas_blender.geometry import BlenderGeometry
 
 try:
-    import bpy
     from mathutils.geometry import interpolate_bezier
 except ImportError:
     pass

@@ -1,10 +1,4 @@
 
-try:
-    import bpy
-except ImportError:
-    pass
-
-
 __all__ = [
     'get_tolerance',
     'screenshot_current_view',
