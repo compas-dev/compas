@@ -33,7 +33,6 @@ class RhinoClient(object):
     >>> rhino.show()
     >>> rhino.top()
     >>> rhino.AddPoint(0, 0, 0)
-    <guid>
 
     """
 
@@ -81,10 +80,4 @@ class RhinoClient(object):
 
 if __name__ == "__main__":
 
-    Rhino = RhinoClient()
-
-    Rhino.start()
-    Rhino.show()
-    Rhino.top()
-
-    Rhino.AddPoint([0, 0, 0])
+    pass

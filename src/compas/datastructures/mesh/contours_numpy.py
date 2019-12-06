@@ -72,10 +72,6 @@ def mesh_contours_numpy(mesh, levels=None, density=100):
     The contours are defined as the isolines of the z-coordinates of the vertices
     of the mesh.
 
-    Examples
-    --------
-    >>>
-
     """
     xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
     z = [mesh.get_vertex_attribute(key, 'z') for key in mesh.vertices()]
