@@ -3,6 +3,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 
 import struct
+import warnings
 
 from compas.files.base_reader import BaseReader
 
@@ -21,6 +22,7 @@ class PLY(object):
     * http://paulbourke.net/dataformats/ply/
 
     """
+
     def __init__(self, location, precision=None):
         self.reader = PLYReader(location)
         self.parser = PLYParser(self.reader, precision=precision)
@@ -29,10 +31,7 @@ class PLY(object):
 class PLYReader(BaseReader):
     """"""
 
-    file_signature = {
-                      'content': b'ply',
-                      'offset': 0,
-    }
+    FILE_SIGNATURE = {'content': b'ply', 'offset': 0}
 
     keywords = [
         'ply', 'format', 'comment', 'element', 'property', 'end_header'
@@ -149,7 +148,7 @@ class PLYReader(BaseReader):
         self.check_file_signature()
         self.start_header = True
 
-        self.file = self.read()
+        self.file = self.read_line_or_chunk(mode='ascii')
 
         for line_number, line in enumerate(self.file):
             line = line.rstrip()
@@ -178,8 +177,8 @@ class PLYReader(BaseReader):
                     self.sections.append('face')
                     self.number_of_faces = int(parts[2])
                 else:
+                    warnings.warn('Unrecognized element type in header: {}'.format(element_type))
                     element_type = None
-                    raise Exception('Userdefined elements not supported.')
                 continue
 
             if line.startswith('property'):
@@ -187,8 +186,7 @@ class PLYReader(BaseReader):
                 if element_type == 'vertex':
                     property_type = parts[1]
                     property_name = parts[2]
-                    self.vertex_properties.append(
-                        (property_name, property_type))
+                    self.vertex_properties.append((property_name, property_type))
                 elif element_type == 'edge':
                     property_type = parts[1]
                     property_name = parts[2]
@@ -199,17 +197,14 @@ class PLYReader(BaseReader):
                         property_length = parts[2]
                         property_type = parts[3]
                         property_name = parts[4]
-                        self.face_properties.append(
-                            (property_name, property_type, property_length))
+                        self.face_properties.append((property_name, property_type, property_length))
                     else:
                         property_type = parts[1]
                         property_name = parts[2]
-                        self.face_properties.append(
-                            (property_name, property_type))
+                        self.face_properties.append((property_name, property_type))
                 else:
+                    warnings.warn('Unrecognized property type: {}'.format(property_type))
                     element_type = None
-                    raise Exception(
-                        'Not a valid PLY file. Malformed property line.')
                 continue
 
             if line == 'end_header':
@@ -223,8 +218,7 @@ class PLYReader(BaseReader):
 
     def read_data(self):
         if not self.end_header:
-            raise Exception(
-                'Header has not been read, or the file is not valid')
+            raise Exception('Failed to parse file as a PLY-file, header was not read')
 
         for section in self.sections:
             if section == 'vertex':
@@ -233,13 +227,10 @@ class PLYReader(BaseReader):
                 self.read_edges()
             elif section == 'face':
                 self.read_faces()
-            else:
-                raise Exception('Not a valid PLY file.')
 
     def read_data_binary(self):
         if not self.end_header:
-            raise Exception(
-                'Header has not been read, or the file is not valid')
+            raise Exception('Failed to parse file as a PLY-file, header was not read')
         with open(self.location, 'rb') as self.file:
             self.file.seek(self.end_header + 1)
             for section in self.sections:
@@ -249,10 +240,6 @@ class PLYReader(BaseReader):
                     self.read_edges_binary()
                 elif section == 'face':
                     self.read_faces_binary()
-                else:
-                    raise Exception(
-                        'user-defined elements are not supported: {0}'.format(
-                            section))
 
     # ==========================================================================
     # read the individual section
@@ -414,7 +401,8 @@ class PLYReader(BaseReader):
 
 
 class PLYParser(object):
-    """"""
+    """
+    """
     def __init__(self, reader, precision=None):
         self.precision = precision
         self.reader = reader

@@ -24,6 +24,7 @@ class OFF(object):
     * http://segeval.cs.princeton.edu/public/off_format.html
 
     """
+
     def __init__(self, filepath):
         self.reader = OFFReader(filepath)
 
@@ -49,10 +50,7 @@ class OFFReader(BaseReader):
         Edge count stated in beginning of file
 
     """
-    file_signature = {
-                      'content': b'OFF',
-                      'offset': 0,
-    }
+    FILE_SIGNATURE = {'content': b'OFF', 'offset': 0}
 
     def __init__(self, location):
         super(OFFReader, self).__init__(location)
@@ -70,7 +68,7 @@ class OFFReader(BaseReader):
 
         lines = []
         is_continuation = False
-        for line in self.read():
+        for line in self.read_line_or_chunk():
             line = line.rstrip()
             if not line:
                 continue
@@ -101,7 +99,7 @@ class OFFReader(BaseReader):
 
         """
         if not self.content:
-            raise Exception('Import failed')
+            raise Exception('Failed to parse file as an OFF-file')
 
         for line in self.content:
             if line.startswith('#'):
@@ -112,7 +110,7 @@ class OFFReader(BaseReader):
                 continue
 
             if len(parts) == 3:
-                self.vertex_count, self.face_count, self.edge_count = \
+                self.number_of_vertices, self.number_of_faces, self.number_of_edges = \
                     int(parts[0]), int(parts[1]), int(parts[2])
                 break
 

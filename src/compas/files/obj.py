@@ -2,14 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 from collections import OrderedDict
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
-try:
-    from pathlib import Path
-except ImportError:
-    from pathlib2 import Path
 
 from compas.utilities import geometric_key
 from compas.files.base_reader import BaseReader
@@ -33,6 +25,7 @@ class OBJ(object):
     def __init__(self, location, precision=None):
         self.reader = OBJReader(location)
         self.parser = OBJParser(self.reader, precision=precision)
+
 
 class OBJReader(BaseReader):
     """Read the contents of an *obj* file.
@@ -124,7 +117,7 @@ class OBJReader(BaseReader):
         * ``cstype``: freeform attribute *curve or surface type*
 
         """
-        for line in self.read():
+        for line in self.read_line_or_chunk(mode='ascii'):
             parts = line.split()
             if not parts:
                 continue
