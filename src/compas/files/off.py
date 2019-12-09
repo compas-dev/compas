@@ -148,17 +148,33 @@ class OFFReader(object):
         for line in self.content:
             parts = line.split()
             if not parts:
+                self.face = None
                 continue
 
             if len(parts) == 3:
                 self.vertices.append([float(axis) for axis in parts])
                 continue
 
-            if len(parts) > 3:
+            if len(parts) > 1:
                 f = int(parts[0])
-                if f == len(parts[1:]):
-                    self.faces.append([int(index) for index in parts[1:]])
-                continue
+                face = [int(index) for index in parts[1:]]
+                while len(face) < f:
+                    line = next(self.content)
+                    line = line.strip()
+                    if not line:
+                        break
+                    parts = line.split()
+                    if not parts:
+                        break
+                    face += [int(index) for index in parts]
+                if len(face) == f:
+                    self.faces.append(face)
+
+            # if len(parts) > 3:
+            #     f = int(parts[0])
+            #     if f == len(parts[1:]):
+            #         self.faces.append([int(index) for index in parts[1:]])
+            #     continue
 
 
 # ==============================================================================
@@ -170,5 +186,5 @@ if __name__ == '__main__':
 
     off = OFF(compas.get('cube.off'))
 
-    print(off.reader.vertices)
-    print(off.reader.faces)
+    print(len(off.reader.vertices) == off.reader.v)
+    print(len(off.reader.faces) == off.reader.f)

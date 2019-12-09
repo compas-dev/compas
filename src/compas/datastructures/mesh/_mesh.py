@@ -502,7 +502,7 @@ class Mesh(FromToPickle,
 
     @classmethod
     def from_off(cls, filepath):
-        """Construct a mesh object from the data described in a STL file.
+        """Construct a mesh object from the data described in a OFF file.
 
         Parameters
         ----------
@@ -521,7 +521,7 @@ class Mesh(FromToPickle,
             import compas
             from compas.datastructures import Mesh
 
-            mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
+            mesh = Mesh.from_off(compas.get('cube.off'))
 
         """
         off = OFF(filepath)
