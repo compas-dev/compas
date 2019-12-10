@@ -245,7 +245,7 @@ def get(filename):
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://raw.githubusercontent.com/compas-dev/compas/master/data/{}".format(filename)
+        return "https://github.com/compas-dev/compas/raw/master/data/{}".format(filename)
 
 
 def get_bunny(localstorage=None):
