@@ -1,8 +1,3 @@
-try:
-    import bpy
-except ImportError:
-    pass
-
 from compas_blender.utilities import draw_points
 from compas_blender.utilities import draw_lines
 from compas_blender.utilities import draw_faces
