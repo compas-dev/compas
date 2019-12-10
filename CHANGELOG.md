@@ -12,10 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added inherited methods to class docs.
 - Added data structure mixins to the docs.
 - Added `data` and `from_data` to `compas.geometry.Polyhedron`
+- Added explicit support for collections to `compas_blender`
 
 ### Changed
 
 - Bottom face of cylinder shape should be flipped.
+- Face reading mechanism of OFF reader.
+- `compas.geometry.Box` is now centred at origin by default.
 
 ### Removed
 
