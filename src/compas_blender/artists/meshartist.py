@@ -2,6 +2,7 @@ from compas_blender.artists import Artist
 from compas_blender.artists.mixins import VertexArtist
 from compas_blender.artists.mixins import EdgeArtist
 from compas_blender.artists.mixins import FaceArtist
+from compas_blender.utilities import draw_mesh
 
 
 __all__ = [
@@ -10,12 +11,32 @@ __all__ = [
 
 
 class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
+    """Artist for COMPAS meshes.
+
+    Parameters
+    ----------
+    mesh: compas.datastructures.Mesh
+        A COMPAS mesh data structure.
+    layer (optional): str
+        The layer in which the components of the mesh should be drawn.
+        Default is None.
+
+    Notes
+    -----
+    There is no such thing as a "layer" in Blender.
+    Instead, objects are added to collections.
+    Vertices will automatically be added to a vertex collection,
+    edges to an edge collection, and faces to a face collection.
+    These collections are added to a mesh collection for the current mesh.
+    What is specified as "layer" will be the collection this overal mesh
+    collection is added to.
+
+    """
 
     __module__ = "compas_blender.artists"
 
     def __init__(self, mesh, layer=None):
-        super(MeshArtist, self).__init__(layer=layer)
-
+        super().__init__(layer=layer)
         self.mesh = mesh
         self.defaults.update({
             'color.vertex': [255, 255, 255],
@@ -32,7 +53,10 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
         self.datastructure = mesh
 
     def draw_mesh(self):
-        raise NotImplementedError
+        vertices = self.mesh.get_vertices_attributes('xyz')
+        edges = []
+        faces = [self.mesh.face_vertices(key) for key in self.mesh.faces()]
+        draw_mesh(vertices, edges, faces)
 
     def clear(self):
         self.clear_vertices()
@@ -46,24 +70,4 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
 if __name__ == "__main__":
 
-    import compas
-
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-
-    artist = MeshArtist(mesh)
-
-    # artist.clear()
-
-    artist.draw_vertices(radius=0.01)
-    artist.draw_vertexlabels()
-    # artist.clear_vertexlabels()
-
-    # artist.draw_edges(width=0.01)
-    # artist.draw_edgelabels()
-    # artist.clear_edgelabels()
-
-    # artist.draw_faces()
-    # artist.draw_facelabels()
-    # artist.clear_facelabels()
+    pass

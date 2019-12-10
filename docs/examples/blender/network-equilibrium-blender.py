@@ -1,11 +1,14 @@
+import bpy
 import compas
-from compas_blender.helpers import NetworkArtist
+import compas_blender
+from compas_blender.artists import NetworkArtist
 from compas.datastructures import Network
 from compas.numerical import fd_numpy
 
+
 # make a network from sample data
 
-network = Network.from_obj(compas.get_data('saddle.obj'))
+network = Network.from_obj(compas.get('saddle.obj'))
 
 # set default vertex and edge attributes
 
@@ -50,11 +53,7 @@ for key in network.vertices():
 
 # display the result
 
-networkartist = NetworkArtist(network=network)
-networkartist.clear_layer()
+artist = NetworkArtist(network, layer="TEMP")
 
-networkartist.draw_vertices(radius=0.05)
-networkartist.draw_vertexlabels()
-
-networkartist.draw_edges()
-networkartist.draw_edgelabels()
+artist.draw_vertices(radius=0.05)
+artist.draw_edges()

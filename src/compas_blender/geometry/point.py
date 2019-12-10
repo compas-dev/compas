@@ -8,8 +8,8 @@ __all__ = [
 
 class BlenderPoint(BlenderGeometry):
 
-    def __init__(self, object):
-        super(BlenderPoint, self).__init__(object)
+    def __init__(self, obj):
+        super().__init__(obj)
 
     @property
     def xyz(self):
