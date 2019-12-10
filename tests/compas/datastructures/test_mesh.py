@@ -1,7 +1,5 @@
 import pytest
-
 import compas
-
 import json
 
 from compas.datastructures import Mesh
