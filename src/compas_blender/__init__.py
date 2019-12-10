@@ -17,7 +17,7 @@ compas_blender
 from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '0.11.4'
+__version__ = '0.12.0'
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
