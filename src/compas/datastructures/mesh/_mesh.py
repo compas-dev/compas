@@ -3039,6 +3039,9 @@ class Mesh(FromToPickle,
             self.edgedata[u, v].update(self.edgedata[v, u])
             del self.edgedata[v, u]
             self.edgedata[v, u] = self.edgedata[u, v]
+        else:
+            self.edgedata[v, u] = self.default_edge_attributes.copy()
+            self.edgedata[v, u][name] = value
         self.edgedata[u, v][name] = value
 
     def set_edge_attributes(self, key, names, values):

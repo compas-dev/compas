@@ -23,3 +23,4 @@
 - Li Chen <<li.chen@arch.ethz.ch>> [@licini](https://github.com/licini)
 - Anton Johansson <<anton@tetov.se>> [@tetov](https://github.com/tetov)
 - Victor Leung <<yck011522@gmail.com>> [@yck011522](https://github.com/yck011522)
+- Mariana Popescu <<mariana.popescu@arch.ethz.ch>> [@mpopescu](https://github.com/mpopescu)
