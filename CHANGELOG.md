@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+- Reworked docstrings of methods in `compas.geometry.queries`
+- Set default `tol` to `1e-6` in `compas.geometry.queries`
 
 ### Removed
 
