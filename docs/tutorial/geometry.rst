@@ -1,5 +1,5 @@
 Geometry
-========
+********
 
 * :mod:`compas.geometry`
 
@@ -9,6 +9,27 @@ The primitives and transformations provide an object-oriented interface to the g
 
 Basic examples
 ==============
+
+.. code-block:: python
+
+    >>> x = [1.0, 0.0, 0.0]
+    >>> y = [0.0, 1.0, 0.0]
+    >>> add_vectors(x, y)
+    [1.0, 1.0, 0.0]
+
+.. code-block:: python
+
+    >>> x = Vector(1.0, 0.0, 0.0)
+    >>> y = Vector(0.0, 1.0, 0.0)
+    >>> add_vectors(x, y)
+    [1.0, 1.0, 0.0]
+
+.. code-block:: python
+
+    >>> x = Vector(1.0, 0.0, 0.0)
+    >>> y = Vector(0.0, 1.0, 0.0)
+    >>> x + y
+    Vector(1.000, 1.000, 0.000)
 
 .. code-block:: python
 
@@ -40,8 +61,7 @@ Basic examples
 .. code-block:: python
 
     >>> points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
-    >>> polygon = Polygon(points)
-    >>> area_polygon(points) == polygon.area()
+    >>> area_polygon(points) == Polygon(points).area()
     True
 
 .. code-block:: python
@@ -50,6 +70,7 @@ Basic examples
     >>> X = matrix_from_axis_and_angle([0.0, 0.0, 1.0], radians(30))
     >>> transform_points(points, X)
 
+
 .. intersections
 
 .. shape transformations
@@ -57,38 +78,4 @@ Basic examples
 .. collections
 
 .. numpy
-
-
-
-Primitives
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    compas.geometry.Circle
-    compas.geometry.Frame
-    compas.geometry.Line
-    compas.geometry.Plane
-    compas.geometry.Point
-    compas.geometry.Polygon
-    compas.geometry.Polyline
-    compas.geometry.Vector
-
-
-Shapes
-======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    compas.geometry.Box
-    compas.geometry.Capsule
-    compas.geometry.Cone
-    compas.geometry.Cylinder
-    compas.geometry.Polyhedron
-    compas.geometry.Sphere
-    compas.geometry.Torus
 
