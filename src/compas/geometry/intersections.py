@@ -7,6 +7,8 @@ from math import sqrt
 
 from compas.utilities import pairwise
 
+from compas.geometry.average import centroid_points
+
 from compas.geometry.basic import allclose
 from compas.geometry.basic import add_vectors
 from compas.geometry.basic import subtract_vectors
@@ -40,6 +42,8 @@ __all__ = [
     'intersection_plane_plane_plane',
     'intersection_sphere_sphere',
     'intersection_ellipse_line_xy',
+    'intersection_segment_polyline',
+    'intersection_segment_polyline_xy'
 ]
 
 
@@ -90,7 +94,7 @@ def intersection_line_line(l1, l2, tol=1e-6):
 
 
 def intersection_line_line_xy(l1, l2, tol=1e-6):
-    """Compute the intersection of two lines, assuming they lie in the XY plane.
+    """Compute the intersection of two lines, assuming they lie on the XY plane.
 
     Parameters
     ----------
@@ -161,13 +165,13 @@ def intersection_segment_segment(ab, cd, tol=1e-6):
         XYZ coordinates of intersection point if one exists.
 
     """
-    x = intersection_line_line(ab, cd, tol=tol)
+    x1, x2 = intersection_line_line(ab, cd, tol=tol)
 
-    if not x:
+    if not x1 or not x2:
         return None
 
-    if is_point_on_segment(x, ab, tol=tol) and is_point_on_segment(x, cd, tol=tol):
-        return x
+    if is_point_on_segment(x1, ab, tol=tol) and is_point_on_segment(x2, cd, tol=tol):
+        return centroid_points([x1, x2])
 
 
 def intersection_line_segment(line, segment, tol=1e-6):
@@ -628,11 +632,94 @@ def intersection_ellipse_line_xy(ellipse, line):
     else:
         return None
 
+
+def intersection_segment_polyline(segment, polyline, tol=1e-6):
+    """
+    Calculate the intersection point of a segment and a polyline.
+
+    Parameters
+    ----------
+    segment : sequence of sequence of float
+        XYZ coordinates of two points defining a line segment.
+    polyline : sequence of sequence of float
+        XYZ coordinates of the points of the polyline.
+    tol : float, optional
+        The tolerance for intersection verification.
+        Default is ``1e-6``. 
+    
+    Returns
+    -------
+    None
+        If there is no intersection point.
+    point : list of tuple
+        XYZ coordinates of the first intersection point if it exists.
+
+    Examples
+    --------
+    >>> from compas.geometry import is_point_on_polyline
+    >>> from compas.geometry import is_point_on_segment
+    >>> from compas.geometry import distance_point_point
+    >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.5), (2.0, 0.5, 1.0)]
+    >>> s = [(0.5, 0.0, 0.0), (0.5, 0.0, 2.0)]
+    >>> intpt = intersection_segment_polyline(s, p)
+    >>> is_point_on_polyline(intpt, p)
+    True
+    >>> is_point_on_segment(intpt, s)
+    True
+    >>> distance_point_point((0.5, 0.0, 0.25), intpt) < 1e-6
+    True
+    """
+    for cd in pairwise(polyline):
+        pt = intersection_segment_segment(segment, cd, tol)
+        if pt: 
+            return pt
+
+
+def intersection_segment_polyline_xy(segment, polyline, tol=1e-6):
+    """
+    Calculate the intersection point of a segment and a polyline on the XY-plane.
+
+    Parameters
+    ----------
+    segment : sequence of sequence of float
+        XY(Z) coordinates of two points defining a line segment.
+    polyline : sequence of sequence of float
+        XY(Z) coordinates of the points of the polyline.
+    tol : float, optional
+        The tolerance for intersection verification.
+        Default is ``1e-6``. 
+    
+    Returns
+    -------
+    None
+        If there is no intersection point.
+    point : list of tuple
+        XYZ coordinates of the first intersection point if one exists (Z = 0).
+
+    Examples
+    --------
+    >>> from compas.geometry import is_point_on_polyline_xy
+    >>> from compas.geometry import is_point_on_segment_xy
+    >>> from compas.geometry import distance_point_point
+    >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]
+    >>> s = [(0.5, -0.5, 0.0), (0.5, 0.5, 0.0)]
+    >>> intpt = intersection_segment_polyline_xy(s, p)
+    >>> is_point_on_polyline_xy(intpt, p)
+    True
+    >>> is_point_on_segment_xy(intpt, s)
+    True
+    >>> distance_point_point((0.5, 0.0, 0.0), intpt) < 1e-6
+    True
+    """
+    for cd in pairwise(polyline):
+        pt = intersection_segment_segment_xy(segment, cd, tol)
+        if pt: 
+            return pt
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 
 if __name__ == "__main__":
-
     pass
