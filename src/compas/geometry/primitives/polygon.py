@@ -114,6 +114,9 @@ class Polygon(Primitive):
         >>> len({round(line.length, 6) for line in pentagon.lines}) == 1
         True
         """
+        if sides < 3:
+            raise ValueError("Supplied number of sides must be at least 3!")
+
         side = math.pi * 2 / sides
 
         points = []
