@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.12.2] 2019-12-11
 
 ### Added
+- Added `mesh_subdivide_frames` to `compas.datastructures.subdivision`
 
 ### Changed
 
