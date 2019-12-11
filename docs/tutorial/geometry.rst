@@ -1,49 +1,94 @@
-Geometry Processing
-===================
+Geometry
+========
 
-The functions of this package take various geometric primitives as input parameters.
-These primitives may be passed into those functions as instances of the
-corresponding classes or as an equivalent representation using (combinations of)
-built-in Python objects. The following table defines those equivalent representations.
+* :mod:`compas.geometry`
 
-.. rst-class:: longtable table table-bordered
+The geometry package provides primitives (and shapes), transformations, and algorithms (for lack of a better word).
+The primitives and transformations provide an object-oriented interface to the geometry processing algorithms.
 
-=========== ====================================================================
-parameter   representation
-=========== ====================================================================
-vector      list of XYZ coordinates.
-point       list of XYZ coordinates.
-segment     2-tuple of points.
-line        2-tuple of points.
-ray         2-tuple of points.
-polyline    list of points.
-polygon     list of points.
-plane       2-tuple of origin (point) and normal (vector).
-frame       3-tuple of origin (point), U axis (vector) and V axis (vector).
-circle      3-tuple of center (point), normal (vector) and radius (float).
-=========== ====================================================================
+
+Basic examples
+==============
 
 .. code-block:: python
 
-    >>> cross_vectors([1.0, 0.0, 0.0], [0.0, 1.0, 0.0])
+    >>> x = [1.0, 0.0, 0.0]
+    >>> y = [0.0, 1.0, 0.0]
+    >>> cross_vectors(x, y)
     [0.0, 0.0, 1.0]
-    >>> cross_vectors(Vector(1, 0, 0), [0, 1, 0])
+
+.. code-block:: python
+
+    >>> x = Vector(1.0, 0.0, 0.0)
+    >>> y = Vector(0.0, 1.0, 0.0)
+    >>> cross_vectors(x, y)
     [0.0, 0.0, 1.0]
-    >>> cross_vectors(Vector(1, 0, 0), Vector(0, 1, 0))
-    [0.0, 0.0, 1.0]
+
+.. code-block:: python
+
+    >>> x = Vector(1.0, 0.0, 0.0)
+    >>> y = Vector(0.0, 1.0, 0.0)
+    >>> x.cross(y)
+    Vector(0.000, 0.000, 1.000]
+
+.. code-block:: python
+
     >>> points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
     >>> area_polygon(points) == area_polygon(Polygon(points))
     True
 
-Many functions also have an ``_xy`` variant.
-These variants ignore the Z-component of the input parameters.
-Therefore, they also accept 2D representations of geometric objects.
-However, they always return a 3D result in the XY plane (with ``z = 0``).
-For example, ``scale_vector_xy`` accepts both 2D and 3D vectors,
-but always returns a 3D vector with the Z-component set to zero.
+.. code-block:: python
+
+    >>> points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
+    >>> polygon = Polygon(points)
+    >>> area_polygon(points) == polygon.area()
+    True
 
 .. code-block:: python
 
-    >>> points = [[0.0, 0.0, 1.0], [1.0, 0.0, 0.0], [1.0, 1.0, 1.0], [0.0, 1.0, 0.0]]
-    >>> area_polygon_xy(points) == area_polygon(points)
-    False
+    >>> points = pointcloud(50, (0, 50), (0, 10), (0, 20))
+    >>> X = matrix_from_axis_and_angle([0.0, 0.0, 1.0], radians(30))
+    >>> transform_points(points, X)
+
+.. intersections
+
+.. shape transformations
+
+.. collections
+
+.. numpy
+
+
+
+Primitives
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    compas.geometry.Circle
+    compas.geometry.Frame
+    compas.geometry.Line
+    compas.geometry.Plane
+    compas.geometry.Point
+    compas.geometry.Polygon
+    compas.geometry.Polyline
+    compas.geometry.Vector
+
+
+Shapes
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    compas.geometry.Box
+    compas.geometry.Capsule
+    compas.geometry.Cone
+    compas.geometry.Cylinder
+    compas.geometry.Polyhedron
+    compas.geometry.Sphere
+    compas.geometry.Torus
+
