@@ -70,6 +70,19 @@ class SubdMesh(Mesh):
 
         return fkey
 
+    def insert_vertex(self, fkey, key=None, xyz=None):
+        fkeys = []
+
+        if not xyz:
+            x, y, z = self.face_center(fkey)
+        else:
+            x, y, z = xyz
+        w = self.add_vertex(x=x, y=y, z=z)
+
+        for u, v in self.face_halfedges(fkey):
+            fkeys.append(self.add_face([u, v, w]))
+        del self.face[fkey]
+        return w
 
 # distinguish between subd of meshes with and without boundary
 # closed vs. open
@@ -136,7 +149,7 @@ def mesh_subdivide_tri(mesh, k=1):
 
     """
     for _ in range(k):
-        subd = mesh.copy()
+        subd = mesh_fast_copy(mesh)
         for fkey in mesh.faces():
             subd.insert_vertex(fkey)
         mesh = subd
@@ -146,10 +159,8 @@ def mesh_subdivide_tri(mesh, k=1):
 def mesh_subdivide_quad(mesh, k=1):
     """Subdivide a mesh such that all faces are quads.
     """
-    # cls = type(mesh)
     for _ in range(k):
-        # subd = mesh_fast_copy(mesh)
-        subd = mesh.copy()
+        subd = mesh_fast_copy(mesh)
         for u, v in list(subd.edges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
         for fkey in mesh.faces():
@@ -196,7 +207,7 @@ def mesh_subdivide_corner(mesh, k=1):
     """
 
     for _ in range(k):
-        subd = mesh.copy()
+        subd = mesh_fast_copy(mesh)
 
         # split every edge
         for u, v in list(subd.edges()):
@@ -261,7 +272,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     for _ in range(k):
 
-        subd = mesh.copy()
+        subd = mesh_fast_copy(mesh)
 
         # keep track of original connectivity and vertex locations
 
@@ -492,7 +503,7 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
         A new subdivided mesh.
     """
 
-    subd = Mesh()
+    subd = SubdMesh()
 
     # 0. pre-compute offset distances
     if not isinstance(offset, dict):
@@ -500,14 +511,13 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
         offset = {fkey: od for fkey, od in zip(mesh.faces(), distances)}
 
     # 1. add vertices
+    newkeys = {}
     for vkey, attr in mesh.vertices(True):
-        xyz = mesh.vertex_coordinates(vkey)
-        attrs = {i: j for i, j in zip(['x', 'y', 'z'], xyz)}
-        subd.add_vertex(key=vkey, attr_dict=attrs)
+        newkeys[vkey] = subd.add_vertex(*mesh.vertex_coordinates(vkey))
 
     # 2. add faces
     for fkey in mesh.faces():
-        face = mesh.face_vertices(fkey)
+        face = [newkeys[vkey] for vkey in mesh.face_vertices(fkey)]
         d = offset.get(fkey)
 
         # 2a. add face and break if no offset is found
@@ -520,8 +530,8 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
         # 2a. add offset vertices
         window = []
         for xyz in polygon:
-            attrs = {i: j for i, j in zip(['x', 'y', 'z'], xyz)}
-            new_vkey = subd.add_vertex(attr_dict=attrs)
+            x, y, z = xyz
+            new_vkey = subd.add_vertex(x=x, y=y, z=z)
             window.append(new_vkey)
 
         # 2b. frame faces
@@ -582,7 +592,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
     fixed = set(fixed)
 
-    subd = mesh.copy()
+    subd = mesh_fast_copy(mesh)
 
     for _ in range(k):
         key_xyz = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
