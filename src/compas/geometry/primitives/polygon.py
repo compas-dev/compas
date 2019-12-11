@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import math
+
 from compas.geometry.basic import cross_vectors
 
 from compas.geometry.average import centroid_points
@@ -82,6 +84,46 @@ class Polygon(Primitive):
 
         """
         return cls(data['points'])
+
+    @classmethod
+    def from_sides_and_radius(cls, sides, radius):
+        """Construct a regular polygon from a number of sides and a radius.
+        The resulting polygon is equilateral and equiangular.
+        Its winding is clockwise and lies on the XY-plane.
+
+        Parameters
+        ----------
+        sides : int
+            The number of sides.
+        radius : float
+            The radius of the polygon's circumscribed circle.
+
+        Returns
+        -------
+        Polygon
+            The constructed polygon.
+
+        Examples
+        --------
+        >>> from compas.geometry import normal_polygon
+        >>> pentagon = Polygon.from_sides_and_radius(5, 1.0)
+        >>> len(pentagon.points) == 5
+        True
+        >>> normal_polygon(pentagon)
+        (0.0, 0.0, -1.0)
+        >>> len({round(line.length, 6) for line in pentagon.lines}) == 1
+        True
+        """
+        side = math.pi * 2 / sides
+
+        points = []
+        for i in range(sides):
+            point = [math.sin(side * i) * radius,
+                     math.cos(side * i) * radius,
+                     0.]
+            points.append(point)
+
+        return cls(points)
 
     # ==========================================================================
     # descriptors
