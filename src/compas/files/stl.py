@@ -14,13 +14,6 @@ __all__ = [
 
 
 class STL(object):
-    """Standard triangle library format.
-
-    See Also
-    --------
-    * http://paulbourke.net/dataformats/stl/
-
-    """
 
     def __init__(self, filepath, precision=None):
         self.reader = STLReader(filepath)
@@ -28,6 +21,13 @@ class STL(object):
 
 
 class STLReader(object):
+    """Standard triangle library format.
+
+    See Also
+    --------
+    * http://paulbourke.net/dataformats/stl/
+
+    """
 
     def __init__(self, filepath):
         self.filepath = filepath
@@ -125,7 +125,7 @@ class STLReader(object):
 
             # no known line start matches, maybe not ascii
             elif not parts[0].isalnum():
-                raise Exception('File is not ASCII')
+                raise RuntimeError('File is not ASCII')
 
         return facets
 

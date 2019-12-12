@@ -7,7 +7,7 @@ __all__ = []
 
 
 class AMF(object):
-    """ASTM Additive Manufacturing File Format (AMF)
+    """AMFer file format.
 
     See Also
     --------

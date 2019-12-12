@@ -1,14 +1,8 @@
+import pytest
+import compas
 import json
 
-import pytest
-
-import compas
 from compas.datastructures import Mesh
-
-try:
-    from pathlib import Path
-except ImportError:
-    from pathlib2 import Path
 
 # --------------------------------------------------------------------------
 # constructors
@@ -25,7 +19,9 @@ def polylines():
         [[1.0, 1.0, 0.0], [0.0, 1.0, 0.0]],
         [[0.0, 1.0, 0.0], [0.0, 0.0, 0.0]],
     ]
-    other_polylines = [[[1.0, 0.0, 0.0], [1.0, 0.25, 0.0], [1.0, 0.5, 0.0], [1.0, 0.75, 0.0], [1.0, 1.0, 0.0]]]
+    other_polylines = [
+        [[1.0, 0.0, 0.0], [1.0, 0.25, 0.0], [1.0, 0.5, 0.0], [1.0, 0.75, 0.0], [1.0, 1.0, 0.0]]
+    ]
 
     return boundary_polylines, other_polylines
 
@@ -44,18 +40,6 @@ def test_from_obj():
     assert mesh.number_of_vertices() == 36
     assert mesh.number_of_edges() == 60
 
-    # test pathlib integration
-    mesh = Mesh.from_obj(Path.joinpath(Path.cwd(), 'data/mesh.obj'))
-    assert mesh.number_of_faces() == 563
-    assert mesh.number_of_vertices() == 309
-    assert mesh.number_of_edges() == 872
-
-    # test importing using URL
-    mesh = Mesh.from_obj('https://raw.githubusercontent.com/compas-dev/compas/master/data/hypar.obj')
-    assert mesh.number_of_faces() == 64
-    assert mesh.number_of_vertices() == 81
-    assert mesh.number_of_edges() == 144
-
 
 def test_from_ply():
     mesh = Mesh.from_ply(compas.get('bunny.ply'))
@@ -63,28 +47,21 @@ def test_from_ply():
     assert mesh.number_of_vertices() == 35947
     assert mesh.number_of_edges() == 104288
 
-    # test pathlib integration
-    mesh = Mesh.from_ply(Path.joinpath(Path.cwd(), 'data/bigX_sphere.ply'))
-    assert mesh.number_of_faces() == 15712
-    assert mesh.number_of_vertices() == 7876
-    assert mesh.number_of_edges() == 23743
+
+def test_from_stl():
+    mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
+    assert mesh.number_of_faces() == 8016
+    assert mesh.number_of_vertices() == 4020
+    assert mesh.number_of_edges() == 11368
+
+    mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
+    assert mesh.number_of_faces() == 12
+    assert mesh.number_of_vertices() == 8
+    assert mesh.number_of_edges() == 18
 
 
 def test_from_off():
     mesh = Mesh.from_off(compas.get('cube.off'))
-    assert mesh.number_of_faces() == 6
-    assert mesh.number_of_vertices() == 8
-    assert mesh.number_of_edges() == 12
-
-    # test pathlib integration
-    mesh = Mesh.from_off(Path.joinpath(Path.cwd(), 'data/cube.off'))
-    assert mesh.number_of_faces() == 6
-    assert mesh.number_of_vertices() == 8
-    assert mesh.number_of_edges() == 12
-
-    # test importing using URL
-    mesh = Mesh.from_off(compas.get('cube.off'))
-    mesh = Mesh.from_off('https://raw.githubusercontent.com/compas-dev/compas/master/data/cube.off')
     assert mesh.number_of_faces() == 6
     assert mesh.number_of_vertices() == 8
     assert mesh.number_of_edges() == 12
@@ -120,7 +97,7 @@ def test_from_points():
     # TODO: add test for boundary and holes
 
 
-def test_from_polygons():
+def test_from_ploygons():
     polygon = [[[1.0, 0.0, 3.0], [1.0, 1.25, 0.0], [1.5, 0.5, 0.0]], [[1.0, 0.0, 3.0], [1.0, 5.25, 0.0], [1.5, 0.5, 0.0]]]
     mesh = Mesh.from_polygons(polygon)
     assert mesh.number_of_faces() == 2
@@ -131,7 +108,6 @@ def test_from_polygons():
 # --------------------------------------------------------------------------
 # converters
 # --------------------------------------------------------------------------
-
 
 def test_to_obj():
     mesh = Mesh.from_obj(compas.get('faces.obj'))
@@ -152,7 +128,6 @@ def test_to_vertices_and_faces():
 # --------------------------------------------------------------------------
 # helpers
 # --------------------------------------------------------------------------
-
 
 def test_copy():
     mesh1 = Mesh.from_obj(compas.get('faces.obj'))
@@ -186,13 +161,12 @@ def test_clear_halfedgedict():
 # builders
 # --------------------------------------------------------------------------
 
-
 def test_add_vertex():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
     n = mesh.number_of_vertices()
     key = mesh.add_vertex(x=0, y=1, z=2)
     assert mesh.vertex[key] == {'x': 0, 'y': 1, 'z': 2}
-    assert mesh.number_of_vertices() == n + 1
+    assert mesh.number_of_vertices() == n+1
 
 
 def test_add_face():
@@ -200,13 +174,12 @@ def test_add_face():
     n = mesh.number_of_faces()
     key = mesh.add_face([0, 1, 2])
     assert mesh.face[key] == [0, 1, 2]
-    assert mesh.number_of_faces() == n + 1
+    assert mesh.number_of_faces() == n+1
 
 
 # --------------------------------------------------------------------------
 # modifiers
 # --------------------------------------------------------------------------
-
 
 def test_delete_vertex():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
@@ -214,9 +187,9 @@ def test_delete_vertex():
     fn = mesh.number_of_faces()
     en = mesh.number_of_edges()
     mesh.delete_vertex(0)
-    assert mesh.number_of_vertices() == n - 1
-    assert mesh.number_of_faces() == fn - 4
-    assert mesh.number_of_edges() == en - 4
+    assert mesh.number_of_vertices() == n-1
+    assert mesh.number_of_faces() == fn-4
+    assert mesh.number_of_edges() == en-4
 
 
 def test_insert_vertex():
@@ -234,7 +207,7 @@ def test_delete_face():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
     fn = mesh.number_of_faces()
     mesh.delete_face(0)
-    assert mesh.number_of_faces() == fn - 1
+    assert mesh.number_of_faces() == fn-1
 
 
 def test_cull_vertices():
@@ -253,7 +226,6 @@ def test_cull_edges():
 # --------------------------------------------------------------------------
 # info
 # --------------------------------------------------------------------------
-
 
 def test_is_valid():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
@@ -314,7 +286,6 @@ def test_genus():
 # accessors
 # --------------------------------------------------------------------------
 
-
 def test_vertices():
     pass
 
@@ -334,7 +305,6 @@ def test_edges():
 # --------------------------------------------------------------------------
 # vertex topology
 # --------------------------------------------------------------------------
-
 
 def test_has_vertex():
     pass
@@ -387,7 +357,6 @@ def test_vertex_faces():
 # edge topology
 # --------------------------------------------------------------------------
 
-
 def test_has_edge():
     pass
 
@@ -406,7 +375,6 @@ def test_is_edge_on_boundary():
 # polyedge topology
 # --------------------------------------------------------------------------
 
-
 def test_boundaries():
     mesh = Mesh.from_obj(compas.get('faces.obj'))
     assert mesh.boundaries() == [[34, 35, 29, 23, 17, 11, 5, 4, 3, 2, 1, 0, 6, 12, 18, 24, 30, 31, 32, 33]]
@@ -415,7 +383,6 @@ def test_boundaries():
 # --------------------------------------------------------------------------
 # face topology
 # --------------------------------------------------------------------------
-
 
 def test_face_vertices():
     pass
@@ -508,7 +475,6 @@ def test_normal():
 # vertex geometry
 # --------------------------------------------------------------------------
 
-
 def test_vertex_coordinates():
     mesh = Mesh.from_obj(compas.get('faces.obj'))
     assert mesh.vertex_coordinates(15) == [6.0, 4.0, 0.0]
@@ -552,8 +518,8 @@ def test_face_coordinates():
         [3.661179780960083, 2.32784628868103, 1.580246925354004], [3.775796413421631, 1.727785348892212, 1.382716059684753],
         [4.22069787979126, 1.696692585945129, 1.086419701576233], [4.109739303588867, 2.34430718421936, 1.283950567245483]]
     assert mesh.face_coordinates(0, 'zy') == [
-        [1.580246925354004, 2.32784628868103], [1.382716059684753, 1.727785348892212],
-        [1.086419701576233, 1.696692585945129], [1.283950567245483, 2.34430718421936]]
+        [1.580246925354004, 2.32784628868103], [1.382716059684753, 1.727785348892212], [1.086419701576233, 1.696692585945129],
+        [1.283950567245483, 2.34430718421936]]
 
 
 def test_face_normal():
@@ -612,7 +578,6 @@ def test_face_curvature():
 # boundary
 # --------------------------------------------------------------------------
 
-
 def test_vertices_on_boundary():
     mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
     assert mesh.vertices_on_boundary() == [0, 1, 2, 3, 4, 5, 6, 7, 14, 15, 17, 33, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 53, 62, 71, 73, 74, 75, 76, 84, 85, 86, 87, 88, 89, 98]
@@ -625,7 +590,7 @@ def test_vertices_on_boundaries():
     mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
     print(mesh.vertices_on_boundaries())
     assert mesh.vertices_on_boundaries() == [
-    [6, 5, 4, 3, 2, 1, 0, 15, 14, 85, 84, 86, 76, 75, 74, 73, 88, 87, 33, 71, 17, 53, 89, 35, 62, 98, 44, 45, 37, 38, 39, 40, 41, 42, 43, 7]]
+        [6, 5, 4, 3, 2, 1, 0, 15, 14, 85, 84, 86, 76, 75, 74, 73, 88, 87, 33, 71, 17, 53, 89, 35, 62, 98, 44, 45, 37, 38, 39, 40, 41, 42, 43, 7]]
 
 
 def test_faces_on_boundary():

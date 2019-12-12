@@ -2,7 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.files.base_reader import BaseReader
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
+
 
 __all__ = [
     'OFF',
@@ -11,11 +15,7 @@ __all__ = [
 
 
 class OFF(object):
-    """Read and write files in *OFF* format.
-
-    Notes
-    -----
-    GeomView Object File Format
+    """Read and write files in OFF format.
 
     References
     ----------
@@ -23,52 +23,80 @@ class OFF(object):
     * http://www.geomview.org/docs/html/OFF.html
     * http://segeval.cs.princeton.edu/public/off_format.html
 
+
     """
 
     def __init__(self, filepath):
         self.reader = OFFReader(filepath)
 
 
-class OFFReader(BaseReader):
-    """Read the contents of an *off* file.
-    Arguments
-    ---------
-    location: str or Path object
-        Path or URL to the file.
+class OFFReader(object):
+    """Read the contents of an *obj* file.
+
+    Parameters
+    ----------
+    filepath : str
+        Path to the file.
 
     Attributes
     ----------
     vertices : list
         Vertex coordinates.
+    weights : list
+        Vertex weights.
+    textures : list
+        Vertex textures.
+    normals : list
+        Vertex normals.
+    points : list
+        Point objects, referencing the list of vertices.
+    lines : list
+        Line objects, referencing the list of vertices.
     faces : list
         Face objects, referencing the list of vertices.
-    vertex_count : int
-        Vertex count stated in beginning of file
-    face_count : int
-        Face count stated in beginning of file
-    edge_count : int
-        Edge count stated in beginning of file
+    curves : list
+        Curves
+    curves2 : list
+        Curves
+    surfaces : list
+        Surfaces
+
+    Notes
+    -----
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Bourke, P. *Object Files*.
+           Available at: http://paulbourke.net/dataformats/obj/.
 
     """
-    FILE_SIGNATURE = {'content': b'OFF', 'offset': 0}
 
-    def __init__(self, location):
-        super(OFFReader, self).__init__(location)
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.content = None
         self.vertices = []
         self.faces = []
-        self.vertex_count = 0
-        self.face_count = 0
-        self.edge_count = 0
+        self.v = 0
+        self.f = 0
+        self.e = 0
+        self.open()
         self.pre()
-        self.read_off()
+        self.read()
         self.post()
 
-    def pre(self):
-        self.check_file_signature()
+    def open(self):
+        if self.filepath.startswith('http'):
+            resp = urlopen(self.filepath)
+            self.content = iter(resp.read().decode('utf-8').split('\n'))
+        else:
+            with open(self.filepath, 'r') as fh:
+                self.content = iter(fh.readlines())
 
+    def pre(self):
         lines = []
         is_continuation = False
-        for line in self.read_line_or_chunk():
+        for line in self.content:
             line = line.rstrip()
             if not line:
                 continue
@@ -85,7 +113,7 @@ class OFFReader(BaseReader):
     def post(self):
         pass
 
-    def read_off(self):
+    def read(self):
         """Read the contents of the file, line by line.
 
         OFF
@@ -99,7 +127,11 @@ class OFFReader(BaseReader):
 
         """
         if not self.content:
-            raise Exception('Failed to parse file as an OFF-file')
+            return
+
+        header = next(self.content)
+        if not header.lower() == 'off':
+            return
 
         for line in self.content:
             if line.startswith('#'):
@@ -110,35 +142,49 @@ class OFFReader(BaseReader):
                 continue
 
             if len(parts) == 3:
-                self.number_of_vertices, self.number_of_faces, self.number_of_edges = \
-                    int(parts[0]), int(parts[1]), int(parts[2])
+                self.v, self.f, self.e = int(parts[0]), int(parts[1]), int(parts[2])
                 break
 
         for line in self.content:
             parts = line.split()
             if not parts:
+                self.face = None
                 continue
 
             if len(parts) == 3:
                 self.vertices.append([float(axis) for axis in parts])
                 continue
 
-            if len(parts) > 3:
+            if len(parts) > 1:
                 f = int(parts[0])
-                if f == len(parts[1:]):
-                    self.faces.append([int(index) for index in parts[1:]])
-                continue
+                face = [int(index) for index in parts[1:]]
+                while len(face) < f:
+                    line = next(self.content)
+                    line = line.strip()
+                    if not line:
+                        break
+                    parts = line.split()
+                    if not parts:
+                        break
+                    face += [int(index) for index in parts]
+                if len(face) == f:
+                    self.faces.append(face)
+
+            # if len(parts) > 3:
+            #     f = int(parts[0])
+            #     if f == len(parts[1:]):
+            #         self.faces.append([int(index) for index in parts[1:]])
+            #     continue
 
 
 # ==============================================================================
 # Main
 # ==============================================================================
-
 if __name__ == '__main__':
 
     import compas
 
     off = OFF(compas.get('cube.off'))
 
-    print(off.reader.vertices)
-    print(off.reader.faces)
+    print(len(off.reader.vertices) == off.reader.v)
+    print(len(off.reader.faces) == off.reader.f)

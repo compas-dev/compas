@@ -1,10 +1,15 @@
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+
 from collections import OrderedDict
 
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
+
 from compas.utilities import geometric_key
-from compas.files.base_reader import BaseReader
 
 
 __all__ = [
@@ -22,18 +27,19 @@ class OBJ(object):
     * http://paulbourke.net/dataformats/obj/
 
     """
-    def __init__(self, location, precision=None):
-        self.reader = OBJReader(location)
+
+    def __init__(self, filepath, precision=None):
+        self.reader = OBJReader(filepath)
         self.parser = OBJParser(self.reader, precision=precision)
 
 
-class OBJReader(BaseReader):
+class OBJReader(object):
     """Read the contents of an *obj* file.
 
     Parameters
     ----------
-    location: str or pathlib object
-        Path or URL to the file.
+    filepath : str
+        Path to the file.
 
     Attributes
     ----------
@@ -69,8 +75,9 @@ class OBJReader(BaseReader):
 
     """
 
-    def __init__(self, location):
-        super(OBJReader, self).__init__(location)
+    def __init__(self, filepath):
+        self.filepath = filepath
+        self.content = None
         # vertex data
         self.vertices = []
         self.weights = []
@@ -95,9 +102,41 @@ class OBJReader(BaseReader):
         self.groups = {}
         self.objects = {}
         self.group = None
-        self.read_obj()
+        # open file path and read
+        self.open()
+        self.pre()
+        self.read()
+        self.post()
 
-    def read_obj(self):
+    def open(self):
+        if self.filepath.startswith('http'):
+            resp = urlopen(self.filepath)
+            self.content = iter(resp.read().decode('utf-8').split('\n'))
+        else:
+            with open(self.filepath, 'r') as fh:
+                self.content = iter(fh.readlines())
+
+    def pre(self):
+        lines = []
+        is_continuation = False
+        for line in self.content:
+            line = line.rstrip()
+            if not line:
+                continue
+            if is_continuation:
+                lines[-1] = lines[-1][:-2] + line
+            else:
+                lines.append(line)
+            if line[-1] == '\\':
+                is_continuation = True
+            else:
+                is_continuation = False
+        self.content = iter(lines)
+
+    def post(self):
+        pass
+
+    def read(self):
         """Read the contents of the file, line by line.
 
         Every line is split into a *head* and a *tail*.
@@ -117,7 +156,9 @@ class OBJReader(BaseReader):
         * ``cstype``: freeform attribute *curve or surface type*
 
         """
-        for line in self.read_line_or_chunk(mode='ascii'):
+        if not self.content:
+            return
+        for line in self.content:
             parts = line.split()
             if not parts:
                 continue
@@ -235,8 +276,8 @@ class OBJReader(BaseReader):
             if self.deg[0] == 1:
                 if len(data) == 4:
                     self.lines.append((int(data[2]) - 1, int(data[3]) - 1))
-                if self.group:
-                    self.groups[self.group].append(('l', len(self.lines) - 1))
+                    if self.group:
+                        self.groups[self.group].append(('l', len(self.lines) - 1))
                     return
                 if len(data) > 4:
                     self.lines.append([int(d) - 1 for d in data[2:]])
@@ -256,6 +297,7 @@ class OBJReader(BaseReader):
 
 class OBJParser(object):
     """"""
+
     def __init__(self, reader, precision=None):
         self.precision = precision
         self.reader = reader
@@ -297,6 +339,7 @@ class OBJParser(object):
 # ==============================================================================
 # Main
 # ==============================================================================
+
 if __name__ == '__main__':
 
     import compas
