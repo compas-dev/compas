@@ -17,8 +17,6 @@ Classes
     OBJ
     OBJReader
     OBJParser
-    OFF
-    OFFReader
     PLY
     PLYReader
     PLYParser

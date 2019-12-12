@@ -6,9 +6,9 @@ try:
 except ImportError:
     from pathlib2 import Path
 try:
-    from urllib.request import urlopen
+    from urllib.request import urlretrieve
 except ImportError:
-    from urllib2 import urlopen
+    from urllib2 import urlretrieve
 
 
 class BaseReader(object):
@@ -18,85 +18,124 @@ class BaseReader(object):
     ----------
     location : str or pathlib object
         Path or URL to the file
-    """
+    is_url
 
+    Methods
+    -------
+    is_url
+    location
+    download
+        Download file specified by URL to temporary storage
+    open_ascii
+        Open ascii file specified by file path
+    open_binary
+        Open binary file specified by file path
+    iterlines
+        Yields line from ascii file
+    iterchunks
+        Yields chunks from binary file
+
+    """
     def __init__(self, location):
-        self.is_url = location
-        self.location = location
+        self._is_url = None
+        self._location = location
+
+        self.check_file_signature()
 
     @property
     def is_url(self):
-        return self._is_url
-
-    @is_url.setter
-    def is_url(self, location):
         """Determine if location is local or specified as an URL
         """
-        if str(location).startswith('http'):
-            self._is_url = True
-        else:
-            self._is_url = False
+        self._is_url = str(self._location).startswith('http')
+        return self._is_url
 
     @property
     def location(self):
-        return self._location
-
-    @location.setter
-    def location(self, location):
-        """Ensure that location is specified using Path object
-        """
-        if self.is_url:
-            self._location = location
-        else:
-            if not isinstance(location, Path):
-                pathobj = Path(location)
-            else:
-                pathobj = location
-
-            if pathobj.exists():
-                self._location = pathobj
-            else:
-                raise IOError('File not found.')
-
-    def read_line_or_chunk(self, mode='ascii'):
-        """Returns iterable reading file line by line
-
-        Should accept both local files as well as URLs, in binary or ascii format.
+        """ Create or ensure Pathlib object for file
 
         Parameters
-        ---------
-        mode : string
-            Treat file as ascii or binary
+        ----------
+        location : string or Pathlib object
+            location specified either as an URL, string containing path or
+            Pathlib object
+
+        Raises
+        ------
+        IOError
+            If file is not found
+        """
+        if self.is_url:
+            pathobj = self.download(self._location)
+        else:
+            if not isinstance(self._location, Path):
+                pathobj = Path(self._location)
+            else:
+                pathobj = self._location
+
+        if pathobj.exists():
+            return pathobj
+
+        raise IOError('File not found.')
+
+    def download(self, url):
+        """Downloads file and returns path to tempfle
+
+        Parameters
+        ----------
+        url : string
+            URL to file
+
+        Returns
+        -------
+        location : Pathlib object
+            Path to tempfile
+        """
+
+        location, _ = urlretrieve(url)
+
+        return Path(location)
+
+    def _open(self):
+        """Open ascii or binary file and return file object
+
+        Returns
+        -------
+        file object
+        """
+        try:
+            file_object = self.location.open(mode='r')
+        except UnicodeDecodeError:
+            file_object = self.location.open(mode='r', errors='replace', newline='\r')
+        return file_object
+
+    def iter_lines(self):
+        """Yields lines from local ascii files
+
         Yields
         -------
         string
             Next line or chunk of file
         """
-        # TODO: Handle url's to binary files
         # TODO: Handle continuing lines (as in OFF files)
-        # TODO: Read binary chunks
 
-        self.check_file_signature()
+        with self._open() as fo:
+            for line in fo:
+                yield line
 
-        if mode == 'ascii':
-            print(self.is_url)
+    def iter_chunks(self, chunk_size=1024):
+        """Yields lines from local binary files
 
-            if self.is_url:
-                resp = urlopen(self.location)
-                for line in resp.read().decode('utf-8').split('\n'):
-                    yield line
-            else:
-                try:
-                    with self.location.open(mode='r') as fh:
-                        for line in fh:
-                            yield line
-                except UnicodeDecodeError:
-                    with self.location.open(mode='r', errors='replace', newline='\r') as fh:
-                        for line in fh:
-                            yield line
+        Parameters
+        ----------
+        chunk_size : int
+            Chunks to read with each call
 
-        elif mode == 'binary':
-            raise NotImplementedError
+        Yields
+        ------
+        bytes
+            Next chunk of file
+        """
+        raise NotImplementedError
 
     def check_file_signature(self):
         """Checks wether file signature (also known as magic number) is present
@@ -118,10 +157,8 @@ class BaseReader(object):
         .. [1] https://en.wikipedia.org/wiki/List_of_file_signatures
         .. [2] https://en.wikipedia.org/wiki/File_format#Magic_number
         """
-        # TODO: Check url
-        if self.is_url:
-            # not implemented yet
-            return
+        # TODO: Integrate with is_binary checks in file readers
+        # TODO. Look into binaryornot library to help with above
 
         try:
             file_signature = self.FILE_SIGNATURE['content']
@@ -139,3 +176,6 @@ class BaseReader(object):
             raise Exception('File not valid, import failed.')
         elif found_signature != file_signature:
             raise Exception('File not valid, import failed.')
+
+        def read(self):
+            raise NotImplementedError
