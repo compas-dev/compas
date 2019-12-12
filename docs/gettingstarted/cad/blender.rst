@@ -1,6 +1,7 @@
-********************************************************************************
+
+*******************************************************************************
 Blender
-********************************************************************************
+*******************************************************************************
 
 Blender ships with its own embedded version of Python. Therefore, the simplest
 (and recommended) way to install COMPAS for Blender is to replace the embedded
@@ -110,55 +111,16 @@ Otherwise, the changes will not have any effect.
 Start Blender
 =============
 
-Both on Windows and Mac (for different reasons) Blender should be started from the command line.
-By adding the Blender executable to the `PATH` variable this is really simple.
+Blender uses the command window of your system to display error messages and other text output.
+On Windows, the output window can be brought to the front directly from the "Window" menu.
+On Mac, you should start Blender from the command line.
 
-.. raw:: html
-
-    <div class="card">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#blender_start_windows">Windows</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#blender_start_osx">OSX</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-content">
-
-.. raw:: html
-
-    <div class="tab-pane active" id="blender_start_windows">
-
-Add the path to the Blender executable to your PATH in Environment Variables.
-
-.. code-block::
-
-    %PROGRAMFILES%\Blender Foundation\Blender
-
-.. raw:: html
-
-    </div>
-    <div class="tab-pane" id="blender_start_osx">
-
-Add the following to your .bash_profile
+By adding the Blender executable to the ``PATH`` variable this is really simple.
+Just add the following to your ``.bash_profile``
 
 .. code-block:: bash
 
     export PATH="/Applications/blender.app/Contents/MacOS:$PATH"
-
-.. raw:: html
-
-    </div>
-
-.. raw:: html
-
-    </div>
-    </div>
-    </div>
 
 After that starting Blender from the command line is much simpler.
 

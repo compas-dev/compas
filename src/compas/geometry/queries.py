@@ -115,7 +115,7 @@ def is_ccw_xy(a, b, c, colinear=False):
     return ab_x * ac_y - ab_y * ac_x > 0
 
 
-def is_colinear(a, b, c, tol=1e-9):
+def is_colinear(a, b, c, tol=1e-6):
     """Determine if three points are colinear.
 
     Parameters
@@ -128,12 +128,12 @@ def is_colinear(a, b, c, tol=1e-9):
         Point 3.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``1e-9``.
+        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the points are colinear
+        ``True`` if the points are colinear.
         ``False`` otherwise.
 
     """
@@ -141,7 +141,7 @@ def is_colinear(a, b, c, tol=1e-9):
 
 
 def is_colinear_xy(a, b, c):
-    """Determine if three points are colinear in the XY plane.
+    """Determine if three points are colinear on the XY-plane.
 
     Parameters
     ----------
@@ -155,7 +155,7 @@ def is_colinear_xy(a, b, c):
     Returns
     -------
     bool
-        ``True`` if the points are colinear
+        ``True`` if the points are colinear.
         ``False`` otherwise.
 
     """
@@ -167,7 +167,7 @@ def is_colinear_xy(a, b, c):
     return ab_x * ac_y == ab_y * ac_x
 
 
-def is_line_line_colinear(line1, line2, tol=1e-9):
+def is_line_line_colinear(line1, line2, tol=1e-6):
     """Determine if two lines are colinear.
 
     Parameters
@@ -177,13 +177,13 @@ def is_line_line_colinear(line1, line2, tol=1e-9):
     line2 : 2-tuple of points, Line
         Line 2.
     tol : float, optional
-        A tolerance for membership verification.
-        Default is ``1e-9``.
+        A tolerance for colinearity verification.
+        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        ``True`` if the lines are colinear
+        ``True`` if the lines are colinear.
         ``False`` otherwise.
 
     """
@@ -199,6 +199,9 @@ def is_coplanar(points, tol=0.01):
     ----------
     points : sequence
         A sequence of locations in three-dimensional space.
+    tol : float, optional
+        A tolerance for planarity validation.
+        Default is ``0.01``.
 
     Returns
     -------
@@ -261,6 +264,12 @@ def is_polygon_convex(polygon):
     Use this function for *spatial* polygons.
     If the polygon is in a horizontal plane, use :func:`is_polygon_convex_xy` instead.
 
+    Returns
+    -------
+    bool
+        ``True`` if the polygon is convex.
+        ``False`` otherwise.
+
     See Also
     --------
     is_polygon_convex_xy
@@ -284,7 +293,7 @@ def is_polygon_convex(polygon):
 
 
 def is_polygon_convex_xy(polygon, colinear=False):
-    """Determine if the polygon is convex in the XY-plane.
+    """Determine if the polygon is convex on the XY-plane.
 
     Parameters
     ----------
@@ -298,7 +307,7 @@ def is_polygon_convex_xy(polygon, colinear=False):
     Returns
     -------
     bool
-        ``True`` if the figure is convex.
+        ``True`` if the polygon is convex.
         ``False`` otherwise.
 
     """
@@ -323,8 +332,8 @@ def is_polygon_convex_xy(polygon, colinear=False):
 #     pass
 
 
-def is_point_on_plane(point, plane, tol=0.0):
-    """Determine if a point lies in a plane.
+def is_point_on_plane(point, plane, tol=1e-6):
+    """Determine if a point lies on a plane.
 
     Parameters
     ----------
@@ -333,7 +342,8 @@ def is_point_on_plane(point, plane, tol=0.0):
     plane : tuple
         Base point and normal defining a plane.
     tol : float, optional
-        A tolerance. Default is ``0.0``.
+        A tolerance for membership verification.
+        Default is ``1e-6``.
 
     Returns
     -------
@@ -345,7 +355,7 @@ def is_point_on_plane(point, plane, tol=0.0):
     return distance_point_plane(point, plane) <= tol
 
 
-def is_point_infront_plane(point, plane):
+def is_point_infront_plane(point, plane, tol=1e-6):
     """Determine if a point lies in front of a plane.
 
     Parameters
@@ -354,6 +364,9 @@ def is_point_infront_plane(point, plane):
         XYZ coordinates.
     plane : tuple
         Base point and normal defining a plane.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-6``.
 
     Returns
     -------
@@ -362,10 +375,10 @@ def is_point_infront_plane(point, plane):
         ``False`` otherwise.
 
     """
-    return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > 0.0
+    return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > tol
 
 
-def is_point_on_line(point, line, tol=0.0):
+def is_point_on_line(point, line, tol=1e-6):
     """Determine if a point lies on a line.
 
     Parameters
@@ -375,7 +388,8 @@ def is_point_on_line(point, line, tol=0.0):
     line : tuple
         Two points defining a line.
     tol : float, optional
-        A tolerance. Default is ``0.0``.
+        A tolerance for membership verification.
+        Default is ``1e-6``.
 
     Returns
     -------
@@ -387,8 +401,8 @@ def is_point_on_line(point, line, tol=0.0):
     return distance_point_line(point, line) <= tol
 
 
-def is_point_on_line_xy(point, line, tol=0.0):
-    """Determine if a point lies on a line in the XY-plane.
+def is_point_on_line_xy(point, line, tol=1e-6):
+    """Determine if a point lies on a line on the XY-plane.
 
     Parameters
     ----------
@@ -397,8 +411,8 @@ def is_point_on_line_xy(point, line, tol=0.0):
     line : tuple
         XY(Z) coordinates of two points defining a line.
     tol : float, optional
-        A tolerance.
-        Default is ``0.0``.
+        A tolerance for membership verification.
+        Default is ``1e-6``.
 
     Returns
     -------
@@ -410,7 +424,7 @@ def is_point_on_line_xy(point, line, tol=0.0):
     return distance_point_line_xy(point, line) <= tol
 
 
-def is_point_on_segment(point, segment, tol=0.0):
+def is_point_on_segment(point, segment, tol=1e-6):
     """Determine if a point lies on a given line segment.
 
     Parameters
@@ -419,6 +433,9 @@ def is_point_on_segment(point, segment, tol=0.0):
         XYZ coordinates.
     segment : tuple
         Two points defining the line segment.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-6``.
 
     Returns
     -------
@@ -446,8 +463,8 @@ def is_point_on_segment(point, segment, tol=0.0):
     return False
 
 
-def is_point_on_segment_xy(point, segment, tol=0.0):
-    """Determine if a point lies on a given line segment in the XY-plane.
+def is_point_on_segment_xy(point, segment, tol=1e-6):
+    """Determine if a point lies on a given line segment on the XY-plane.
 
     Parameters
     ----------
@@ -455,6 +472,9 @@ def is_point_on_segment_xy(point, segment, tol=0.0):
         XY(Z) coordinates of a point.
     segment : tuple, list
         XY(Z) coordinates of two points defining a segment.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-6``.
 
     Returns
     -------
@@ -522,7 +542,7 @@ def is_point_on_segment_xy(point, segment, tol=0.0):
 #     return False
 
 
-def is_point_on_polyline(point, polyline, tol=0.0):
+def is_point_on_polyline(point, polyline, tol=1e-6):
     """Determine if a point is on a polyline.
 
     Parameters
@@ -532,8 +552,8 @@ def is_point_on_polyline(point, polyline, tol=0.0):
     polyline : sequence of sequence of float
         XYZ coordinates of the points of the polyline.
     tol : float, optional
-        The tolerance.
-        Default is ``0.0``.
+        The tolerance for membership verification.
+        Default is ``1e-6``.
 
     Returns
     -------
@@ -553,8 +573,8 @@ def is_point_on_polyline(point, polyline, tol=0.0):
     return False
 
 
-def is_point_on_polyline_xy(point, polyline, tol=0.0):
-    """Determine if a point is on a polyline in the XY plane.
+def is_point_on_polyline_xy(point, polyline, tol=1e-6):
+    """Determine if a point is on a polyline on the XY-plane.
 
     Parameters
     ----------
@@ -563,8 +583,8 @@ def is_point_on_polyline_xy(point, polyline, tol=0.0):
     polyline : sequence of sequence of float
         XY(Z) coordinates of the points of the polyline.
     tol : float, optional
-        The tolerance.
-        Default is ``0.0``.
+        The tolerance for membership verification.
+        Default is ``1e-6``.
 
     Returns
     -------
@@ -597,16 +617,16 @@ def is_point_in_triangle(point, triangle):
     Returns
     -------
     bool
-        True if the point is in inside the triangle.
-        False otherwise.
+        ``True`` if the point is in inside the triangle.
+        ``False`` otherwise.
 
     Notes
     -----
-    Should the point be in the same plane as the triangle?
+    Should the point be on the same plane as the triangle?
 
     See Also
     --------
-    is_point_in_triangle_xy
+    ``is_point_in_triangle_xy``
 
     """
     def is_on_same_side(p1, p2, segment):
@@ -631,7 +651,7 @@ def is_point_in_triangle(point, triangle):
 
 
 def is_point_in_triangle_xy(point, triangle, colinear=False):
-    """Determine if a point is in the interior of a triangle lying in the XY-plane.
+    """Determine if a point is in the interior of a triangle lying on the XY-plane.
 
     Parameters
     ----------
@@ -646,8 +666,8 @@ def is_point_in_triangle_xy(point, triangle, colinear=False):
     Returns
     -------
     bool
-        True if the point is in the convex polygon
-        False otherwise.
+        ``True`` if the point is in the convex polygon.
+        ``False`` otherwise.
 
     """
     a, b, c = triangle
@@ -663,7 +683,7 @@ def is_point_in_triangle_xy(point, triangle, colinear=False):
 
 
 def is_point_in_convex_polygon_xy(point, polygon):
-    """Determine if a point is in the interior of a convex polygon lying in the XY-plane.
+    """Determine if a point is in the interior of a convex polygon lying on the XY-plane.
 
     Parameters
     ----------
@@ -678,7 +698,8 @@ def is_point_in_convex_polygon_xy(point, polygon):
     Returns
     -------
     bool
-        True if the point is in the convex polygon, False otherwise.
+        ``True`` if the point is in the convex polygon
+        ``False`` otherwise.
 
     Warning
     -------
@@ -698,7 +719,7 @@ def is_point_in_convex_polygon_xy(point, polygon):
 
 
 def is_point_in_polygon_xy(point, polygon):
-    """Determine if a point is in the interior of a polygon lying in the XY-plane.
+    """Determine if a point is in the interior of a polygon lying on the XY-plane.
 
     Parameters
     ----------
@@ -718,7 +739,8 @@ def is_point_in_polygon_xy(point, polygon):
     Returns
     -------
     bool
-        True if the point is in the polygon, False otherwise.
+        ``True`` if the point is in the polygon.
+        ``False`` otherwise.
 
     """
     x, y = point[0], point[1]
@@ -740,12 +762,18 @@ def is_point_in_polygon_xy(point, polygon):
 def is_point_in_circle(point, circle):
     """Determine if a point lies in a circle.
 
-    Parameters:
-        point (sequence of float): XYZ coordinates of a 3D point.
-        circle (tuple): center, radius, normal
+    Parameters
+    ----------
+    point : sequence of float
+        XYZ coordinates of a 3D point.
+    circle : tuple
+        center, radius, normal
 
-    Returns:
-        (bool): True if the point lies in the circle, False otherwise.
+    Returns
+    -------
+    bool
+        ``True`` if the point lies in the circle.
+        ``False`` otherwise.
 
     """
     center, radius, normal = circle
@@ -755,14 +783,20 @@ def is_point_in_circle(point, circle):
 
 
 def is_point_in_circle_xy(point, circle):
-    """Determine if a point lies in a circle lying in the XY plane.
+    """Determine if a point lies in a circle lying on the XY-plane.
 
-    Parameters:
-        point (sequence of float): XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-        circle (tuple): center, radius of the circle in the xy plane.
+    Parameters
+    ----------
+    point : sequence of float 
+        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
+    circle : tuple
+        center, radius of the circle on the xy plane.
 
-    Returns:
-        (bool): True if the point lies in the circle, False otherwise.
+    Returns
+    -------
+    bool
+        ``True`` if the point lies in the circle.
+        ``False`` otherwise.
 
     """
     dis = distance_point_point_xy(point, circle[0])
@@ -772,7 +806,7 @@ def is_point_in_circle_xy(point, circle):
 
 
 def is_polygon_in_polygon_xy(polygon1, polygon2):
-    """Determine if a polygon is in the interior of another polygon, both lying in the XY-plane.
+    """Determine if a polygon is in the interior of another polygon on the XY-plane.
 
     Parameters
     ----------
@@ -790,7 +824,8 @@ def is_polygon_in_polygon_xy(polygon1, polygon2):
     Returns
     -------
     bool
-        True if polygon2 is inside polygon1, False otherwise.
+        ``True`` if polygon2 is inside polygon1.
+        ``False`` otherwise.
 
     """
     if is_polygon_convex_xy(polygon1) and is_polygon_convex_xy(polygon2):
@@ -815,18 +850,23 @@ def is_polygon_in_polygon_xy(polygon1, polygon2):
 # ==============================================================================
 
 
-def is_intersection_line_line(l1, l2, epsilon=1e-6):
-    """Verifies if two lines intersection in one point.
+def is_intersection_line_line(l1, l2, tol=1e-6):
+    """Verifies if two lines intersect.
 
-    Parameters:
-        ab: (tuple): A sequence of XYZ coordinates of two 3D points representing
-            two points on the line.
-        cd: (tuple): A sequence of XYZ coordinates of two 3D points representing
-            two points on the line.
+    Parameters
+    ----------
+    l1 : tuple
+        A sequence of XYZ coordinates of two 3D points representing two points on the line.
+    l2 : tuple
+        A sequence of XYZ coordinates of two 3D points representing two points on the line.
+    tol : float, optional
+        A tolerance for intersection verification. Default is ``1e-6``.
 
-    Returns:
-        True (bool): if the lines intersect in one point, False is the lines are
-        skew, parallel or lie on top of each other.
+    Returns
+    --------
+    bool 
+        ``True``if the lines intersect in one point.
+        ``False`` if the lines are skew, parallel or lie on top of each other.
     """
     a, b = l1
     c, d = l2
@@ -835,7 +875,7 @@ def is_intersection_line_line(l1, l2, epsilon=1e-6):
     e2 = normalize_vector(subtract_vectors(d, c))
 
     # check for parallel lines
-    if abs(dot_vectors(e1, e2)) > 1.0 - epsilon:
+    if abs(dot_vectors(e1, e2)) > 1.0 - tol:
         return False
 
     # check for intersection
@@ -846,16 +886,23 @@ def is_intersection_line_line(l1, l2, epsilon=1e-6):
     return False
 
 
-def is_intersection_line_line_xy(l1, l2):
-    """Determine if two lines intersect in 2d lying in the XY plane.
+def is_intersection_line_line_xy(l1, l2, tol=1e-6):
+    """Verifies if two lines intersect on the XY-plane.
 
-    Parameters:
-        l1 (tuple):
-        l2 (tuple):
+    Parameters
+    ----------
+    l1 : tuple
+        A sequence of XYZ coordinates of two 3D points representing two points on the line.
+    l2 : tuple
+        A sequence of XYZ coordinates of two 3D points representing two points on the line.
+    tol : float, optional
+        A tolerance for intersection verification. Default is ``1e-6``.
 
-    Returns:
-        (bool): True if there is a intersection, False otherwise.
-
+    Returns
+    --------
+    bool 
+        ``True``if the lines intersect in one point
+        ``False`` if the lines are skew, parallel or lie on top of each other.
     """
     raise NotImplementedError
 
@@ -874,14 +921,15 @@ def is_intersection_segment_segment_xy(ab, cd):
 
     Parameters
     ----------
-        ab, cd : tuple
-            A sequence of XY(Z) coordinates of two 2D or 3D points
-            (Z will be ignored) representing the start and end points of a line segment.
+    ab, cd : tuple
+        A sequence of XY(Z) coordinates of two 2D or 3D points
+        (Z will be ignored) representing the start and end points of a segment.
 
     Returns
     -------
     bool
-        ``True`` if the segments intersect, ``False`` otherwise.
+        ``True`` if the segments intersect.
+        ``False`` otherwise.
 
     """
     a, b = ab
@@ -889,13 +937,8 @@ def is_intersection_segment_segment_xy(ab, cd):
     return is_ccw_xy(a, c, d) != is_ccw_xy(b, c, d) and is_ccw_xy(a, b, c) != is_ccw_xy(a, b, d)
 
 
-def is_intersection_line_triangle(line, triangle, epsilon=1e-6):
+def is_intersection_line_triangle(line, triangle, tol=1e-6):
     """Verifies if a line (ray) intersects with a triangle.
-
-    Notes
-    -----
-    Based on the Moeller Trumbore intersection algorithm.
-    The line is treated as continues, directed ray and not as line segment with a start and end point
 
     Parameters
     ----------
@@ -903,11 +946,20 @@ def is_intersection_line_triangle(line, triangle, epsilon=1e-6):
         Two points defining the line.
     triangle : sequence of sequence of float
         XYZ coordinates of the triangle corners.
+    tol : float, optional
+        A tolerance for intersection verification.
+        Default is ``1e-6``.
 
     Returns
     -------
     bool
-        True if the line (ray) intersects with the triangle, False otherwise.
+        ``True`` if the line (ray) intersects with the triangle.
+        ``False`` otherwise.
+
+    Notes
+    -----
+    Based on the Moeller Trumbore intersection algorithm.
+    The line is treated as continues, directed ray and not as line segment with a start and end point
 
     Examples
     --------
@@ -927,7 +979,7 @@ def is_intersection_line_triangle(line, triangle, epsilon=1e-6):
     det = dot_vectors(e1, p)
 
     # NOT CULLING
-    if det > - epsilon and det < epsilon:
+    if det > - tol and det < tol:
         return False
 
     inv_det = 1.0 / det
@@ -951,22 +1003,31 @@ def is_intersection_line_triangle(line, triangle, epsilon=1e-6):
 
     t = dot_vectors(e2, q) * inv_det
 
-    if t > epsilon:
+    if t > tol:
         return True
 
     # No hit
     return False
 
 
-def is_intersection_line_plane(line, plane, epsilon=1e-6):
-    """Determine if a line (continuous ray) intersects with a plane.
+def is_intersection_line_plane(line, plane, tol=1e-6):
+    """Determine if a line (ray) intersects with a plane.
 
-    Parameters:
-        line (tuple): Two points defining the line.
-        plane (tuple): The base point and normal defining the plane.
-    Returns:
-        (bool): True if the line intersects with the plane, False otherwise.
-
+    Parameters
+    ----------
+    line : tuple
+        Two points defining the line.
+    plane : tuple
+        The base point and normal defining the plane.
+    tol : float, optional
+        A tolerance for intersection verification.
+        Default is ``1e-6``.
+    
+    Returns
+    -------
+    bool
+        ``True`` if the line intersects with the plane.
+        ``False`` otherwise.
     """
     pt1 = line[0]
     pt2 = line[1]
@@ -975,20 +1036,28 @@ def is_intersection_line_plane(line, plane, epsilon=1e-6):
     v1 = subtract_vectors(pt2, pt1)
     dot = dot_vectors(p_norm, v1)
 
-    if fabs(dot) > epsilon:
+    if fabs(dot) > tol:
         return True
     return False
 
 
-def is_intersection_segment_plane(segment, plane, epsilon=1e-6):
+def is_intersection_segment_plane(segment, plane, tol=1e-6):
     """Determine if a line segment intersects with a plane.
 
-    Parameters:
-        segment (tuple): Two points defining the line segment.
-        plane (tuple): The base point and normal defining the plane.
-    Returns:
-        (bool): True if the line segment intersects with the plane, False otherwise.
-
+    Parameters
+    ----------
+    segment : tuple
+        Two points defining the segment.
+    plane : tuple
+        The base point and normal defining the plane.
+    tol : float, optional
+        A tolerance for intersection verification.
+        Default is ``1e-6``.
+    
+    Returns
+    -------
+    bool
+        ``True`` if the segment intersects with the plane, ``False`` otherwise.
     """
     pt1 = segment[0]
     pt2 = segment[1]
@@ -998,7 +1067,7 @@ def is_intersection_segment_plane(segment, plane, epsilon=1e-6):
     v1 = subtract_vectors(pt2, pt1)
     dot = dot_vectors(p_norm, v1)
 
-    if fabs(dot) > epsilon:
+    if fabs(dot) > tol:
         v2 = subtract_vectors(pt1, p_cent)
         fac = - dot_vectors(p_norm, v2) / dot
         if fac > 0. and fac < 1.:
@@ -1008,18 +1077,28 @@ def is_intersection_segment_plane(segment, plane, epsilon=1e-6):
         return False
 
 
-def is_intersection_plane_plane(plane1, plane2, epsilon=1e-6):
-    """Computes the intersection of two planes
+def is_intersection_plane_plane(plane1, plane2, tol=1e-6):
+    """Verifies if two planes intersect.
 
-    Parameters:
-        plane1 (tuple): The base point and normal (normalized) defining the 1st plane.
-        plane2 (tuple): The base point and normal (normalized) defining the 2nd plane.
-    Returns:
-        (bool): True if the planes intersect, False otherwise.
+    Parameters
+    ----------
+    plane1 : tuple
+        The base point and normal (normalized) defining the 1st plane.
+    plane2 : tuple
+        The base point and normal (normalized) defining the 2nd plane.
+    tol : float, optional
+        A tolerance for intersection verification.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    bool 
+        ``True`` if plane1 intersects with plane2.
+        ``False`` otherwise.
 
     """
     # check for parallelity of planes
-    if abs(dot_vectors(plane1[1], plane2[1])) > 1 - epsilon:
+    if abs(dot_vectors(plane1[1], plane2[1])) > 1 - tol:
         return False
     return True
 

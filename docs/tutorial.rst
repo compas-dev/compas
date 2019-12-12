@@ -6,11 +6,11 @@ Tutorial
     :titlesonly:
     :glob:
 
-    tutorials/basics
-    tutorials/networks
-    tutorials/meshes
-    tutorials/geoprocessing
-    tutorials/callbacks
-    tutorials/geomaps
-    tutorials/rpc
-    tutorials/serialization
+    tutorial/basics
+    tutorial/geometry
+    tutorial/networks
+    tutorial/meshes
+    tutorial/serialization
+    tutorial/rpc
+    tutorial/callbacks
+    tutorial/geomaps

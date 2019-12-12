@@ -42,23 +42,19 @@ class MatlabProcess(object):
     Examples
     --------
     >>> m = MatlabProcess()
-
     >>> m.start()
     >>> m.write_value('a', 37)
     >>> m.run_command('tf = isprime(a);')
     >>> m.read_workspace()
     >>> m.stop()
     >>> print(m.ws_data)
-
     >>> m.write_value('a', 17)
     >>> m.run_command('res = isprime(a);')
     >>> m.read_value('res')
     True
-
     >>> m.run_command('res = isprime(a);', ivars={'a': 17})
     >>> m.read_value('res')
     True
-
     >>> m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None})
     {'res': True}
 
@@ -224,17 +220,4 @@ class MatlabProcess(object):
 
 if __name__ == "__main__":
 
-    m = MatlabProcess()
-
-    m.start()
-
-    m.write_value('a', 37)
-    m.run_command('res = isprime(a);')
-
-    print(m.read_value('res'))
-    print(m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None}))
-
-    # m.read_workspace()
-    m.stop()
-
-    print(m.ws_data)
+    pass

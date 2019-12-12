@@ -14,8 +14,8 @@ __all__ = [
 
 class BlenderCurve(BlenderGeometry):
 
-    def __init__(self, object):
-        super(BlenderCurve, self).__init__(object)
+    def __init__(self, obj):
+        super().__init__(obj)
 
     @classmethod
     def from_points(cls, points, degree=None):

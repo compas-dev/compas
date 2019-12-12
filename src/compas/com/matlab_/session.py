@@ -124,7 +124,4 @@ class MatlabSession(object):
 
 if __name__ == "__main__":
 
-    m = MatlabSession('test')
-
-    print(m.session_name)
-    print(m.isprime(17))
+    pass

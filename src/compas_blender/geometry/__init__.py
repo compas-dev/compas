@@ -13,7 +13,6 @@ Object-oriented convenience wrappers for native Blender geometry.
     BlenderCurve
     BlenderMesh
     BlenderPoint
-    BlenderSurface
 
 """
 try:
@@ -80,13 +79,11 @@ class BlenderGeometry(object):
 from .point import BlenderPoint  # noqa: E402
 from .curve import BlenderCurve  # noqa: E402
 from .mesh import BlenderMesh  # noqa: E402
-from .surface import BlenderSurface  # noqa: E402
 
 
 __all__ = [
     'BlenderGeometry',
     'BlenderPoint',
     'BlenderCurve',
-    'BlenderMesh',
-    'BlenderSurface',
+    'BlenderMesh'
 ]

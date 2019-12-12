@@ -14,8 +14,8 @@ __all__ = [
 
 class BlenderMesh(BlenderGeometry):
 
-    def __init__(self, object):
-        super(BlenderMesh, self).__init__(object)
+    def __init__(self, obj):
+        super().__init__(obj)
 
     def get_vertex_coordinates(self, vertex):
         return add_vectors(self.location, self.geometry.vertices[vertex].co)

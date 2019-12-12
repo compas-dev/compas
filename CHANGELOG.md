@@ -10,13 +10,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - File reading functions for ascii files in `compas.files` has moved from the individual reader classes to a new parent class, `BaseReader`.
+
+### Changed
+
+### Removed
+
+
+## [0.12.4] 2019-12-11
+
+### Added
+
+### Changed
+
+### Removed
+
+
+## [0.12.3] 2019-12-11
+
+### Added
+
+### Changed
+
+### Removed
+
+
+## [0.12.2] 2019-12-11
+
+### Added
+
+### Changed
+- Reworked docstrings of methods in `compas.geometry.queries`
+- Set default `tol` to `1e-6` in `compas.geometry.queries`
+
+### Removed
+
+
+## [[0.12.1] 2019-12-10] 2019-12-10
+
+### Added
+
 - Added inherited methods to class docs.
 - Added data structure mixins to the docs.
 - Added `data` and `from_data` to `compas.geometry.Polyhedron`
+- Added explicit support for collections to `compas_blender`
 
 ### Changed
 
 - Bottom face of cylinder shape should be flipped.
+- Face reading mechanism of OFF reader.
+- `compas.geometry.Box` is now centred at origin by default.
 
 ### Removed
 
@@ -72,7 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added pointcloud alignment example to docs.
 - Show git hash on `compas.__version__` if installed from git.
 - Added `autopep8` to dev requirements.
-- Added methods `add_joint` and `add_link` to `RobotModel` 
+- Added methods `add_joint` and `add_link` to `RobotModel`
 - Added support for geometric primitives to JSON data encoder and decoder.
 - Added support for `data` to all geometric primitives.
 

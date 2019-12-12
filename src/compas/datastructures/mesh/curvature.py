@@ -47,10 +47,6 @@ def trimesh_gaussian_curvature(mesh):
     where :math:`N(i)` are the triangles incident on vertex :math:`i` and :math:`\teta_{ij}`
     is the angle at vertex :math:`i` in triangle :math:`j`.
 
-    Examples
-    --------
-    >>>
-
     """
     pi2 = 2 * pi
     key_xyz = {key: mesh.get_vertex_attributes(key, 'xyz') for key in mesh.vertices()}

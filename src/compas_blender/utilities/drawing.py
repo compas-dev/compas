@@ -16,6 +16,7 @@ from math import atan2
 
 __all__ = [
     'create_material',
+
     'draw_points',
     'draw_lines',
     'draw_geodesics',
@@ -25,209 +26,143 @@ __all__ = [
     'draw_forces',
     'draw_spheres',
     'draw_cubes',
-    'draw_mesh',
     'draw_faces',
-    'draw_pointcloud',
     'draw_texts',
-    'draw_cylinder',
+
+    'draw_pointcloud',
+    'draw_mesh',
     'draw_plane',
-    'draw_text',
-    'draw_line',
 ]
 
 
-def _link_objects(objects, copy=None, layer=None):
-    for object in objects:
-        bpy.context.collection.objects.link(object)
-    if copy:
-        delete_object(object=copy)
+# ==============================================================================
+# Helpers
+# ==============================================================================
+
+def link_objects(objects, layer=None):
+    for obj in objects:
+        bpy.context.collection.objects.link(obj)
     if layer:
-        set_objects_layer(objects=objects, layer=layer)
+        set_objects_layer(objects, layer)
+
+
+def create_material(rgb, alpha=1):
+    rgba = rgb + [alpha]
+    name = '-'.join(['{0:.2f}'.format(i) for i in rgba])
+    material = bpy.data.materials.get(name) or bpy.data.materials.new(name)
+    material.diffuse_color = rgba
+    return material
+
+
+def set_object_color(obj, rgb, alpha=1.0):
+    rgba = rgb + [alpha]
+    material = create_material(rgb, alpha)
+    obj.color = rgba
+    if obj.data.materials:
+        obj.data.materials[0] = material
+    else:
+        obj.data.materials.append(material)
+    obj.active_material = material
+
+
+# ==============================================================================
+# Annotations
+# ==============================================================================
+
+def draw_texts(texts, layer=None):
+    bpy.ops.obj.text_add()
+    empty = bpy.context.active_object
+    objects = [0] * len(texts)
+    for index, data in enumerate(texts):
+        obj = empty.copy()
+        obj.location = data['pos']
+        obj.scale *= data.get('radius', 1)
+        obj.name = data.get('name', 'text')
+        obj.data.body = data.get('text', 'text')
+        rgb = data.get('color') or [1, 1, 1]
+        obj.color = rgb + [1]
+        objects[index] = obj
+    delete_object(empty)
+    link_objects(objects, layer=layer)
     return objects
 
 
-def create_material(color, alpha=1):
-    ckey = '-'.join(['{0:.2f}'.format(i) for i in color + [alpha]])
-    names = [i.name for i in bpy.data.materials]
-    if ckey not in names:
-        material = bpy.data.materials.new(name=ckey)
-        material.diffuse_color = color + [alpha]
-        return material
-    else:
-        return bpy.data.materials[ckey]
-
+# ==============================================================================
+# Primitives
+# ==============================================================================
 
 def draw_points(points, layer=None):
-    bpy.ops.object.empty_add(type='SPHERE', radius=1, location=[0, 0, 0])
-    copy = bpy.context.object
+    bpy.ops.object.empty_add(type='SPHERE')
+    empty = bpy.context.active_object
     objects = [0] * len(points)
-    for c, data in enumerate(points):
-        object = copy.copy()
-        object.scale *= data.get('radius', 1)
-        object.location = data.get('pos', [0, 0, 0])
-        object.name = data.get('name', 'point')
-        objects[c] = object
-    return _link_objects(objects, copy, layer)
+    for index, data in enumerate(points):
+        obj = empty.copy()
+        obj.location = data['pos']
+        obj.scale *= data.get('radius', 1)
+        obj.name = data.get('name', 'point')
+        rgb = data.get('color') or [1.0, 1.0, 1.0]
+        obj.color = rgb + [1.0]
+        # set_object_color(obj, rgb)
+        objects[index] = obj
+    link_objects(objects, layer=layer)
+    delete_object(empty)
+    return objects
 
 
-def draw_lines(lines, centroid=True, layer=None):
+def draw_lines(lines, layer=None, centroid=True):
     objects = [0] * len(lines)
-    for c, data in enumerate(lines):
-        name = data.get('name', 'line')
-        sp = data.get('start', [0, 0, 0])
-        ep = data.get('end', [1, 1, 1])
+    for index, data in enumerate(lines):
+        sp = data['start']
+        ep = data['end']
         mp = centroid_points([sp, ep]) if centroid else [0, 0, 0]
+        name = data.get('name', 'line')
         curve = bpy.data.curves.new(name, type='CURVE')
         curve.dimensions = '3D'
-        object = bpy.data.objects.new(name, curve)
-        object.location = mp
         spline = curve.splines.new('NURBS')
         spline.points.add(2)
         spline.points[0].co = list(subtract_vectors(sp, mp)) + [1]
         spline.points[1].co = list(subtract_vectors(ep, mp)) + [1]
         spline.order_u = 1
-        object.data.fill_mode = 'FULL'
-        object.data.bevel_depth = data.get('width', 0.05)
-        object.data.bevel_resolution = 0
-        object.data.resolution_u = 20
-        object.color = data.get('color', [1, 1, 1]) + [1]
-        objects[c] = object
-    return _link_objects(objects=objects, layer=layer)
-
-
-def draw_geodesics(geodesics, **kwargs):
-    raise NotImplementedError
-
-
-def draw_breps(faces, **kwargs):
-    raise NotImplementedError
-
-
-def draw_cylinders(cylinders, div=10, layer=None):
-    bpy.ops.mesh.primitive_cylinder_add(radius=1, depth=1, vertices=div, location=[0, 0, 0])
-    copy = bpy.context.object
-    objects = [0] * len(cylinders)
-    for c, data in enumerate(cylinders):
-        radius = data.get('radius', 1)
-        start = data.get('start', [0, 0, 0])
-        end = data.get('end', [0, 0, 1])
-        L = distance_point_point(start, end)
-        pos = centroid_points([start, end])
-        object = copy.copy()
-        object.name = data.get('name', 'cylinder')
-        object.rotation_euler[1] = acos((end[2] - start[2]) / L)
-        object.rotation_euler[2] = atan2(end[1] - start[1], end[0] - start[0])
-        object.location = pos
-        object.scale = ((radius, radius, L))
-        object.color = data.get('color', [1, 1, 1]) + [1]
-        objects[c] = object
-    return _link_objects(objects=objects, copy=copy, layer=layer)
-
-
-def draw_pipes(pipes, **kwargs):
-    raise NotImplementedError
-
-
-def draw_forces(forces, **kwargs):
-    raise NotImplementedError
-
-
-def draw_spheres(spheres, div=10, layer=None):
-    bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=[0, 0, 0], ring_count=div, segments=div)
-    copy = bpy.context.object
-    objects = [0] * len(spheres)
-    for c, data in enumerate(spheres):
-        object = copy.copy()
-        object.name = data.get('name', 'sphere')
-        object.scale *= data.get('radius', 1)
-        object.location = data.get('pos', [0, 0, 0])
-        object.color = data.get('color', [1, 1, 1]) + [1]
-        objects[c] = object
-    return _link_objects(objects=objects, layer=layer, copy=copy)
-
-
-def draw_cubes(cubes, layer):
-    bpy.ops.mesh.primitive_cube_add(size=1, location=[0, 0, 0])
-    copy = bpy.context.object
-    objects = [0] * len(cubes)
-    for c, data in enumerate(cubes):
-        object = copy.copy()
-        object.name = data.get('name', 'cube')
-        object.scale *= data.get('radius', 1)
-        object.location = data.get('pos', [0, 0, 0])
-        object.color = data.get('color', [1, 1, 1]) + [1]
-        objects[c] = object
-    return _link_objects(objects=objects, layer=layer, copy=copy)
-
-
-def draw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1], centroid=True, layer=None, **kwargs):
-    edges = [] if not edges else edges
-    faces = [] if not faces else faces
-    mp = centroid_points(vertices) if centroid else [0, 0, 0]
-    vertices = [subtract_vectors(vertex, mp) for vertex in vertices]
-    mesh = bpy.data.meshes.new(name)
-    mesh.from_pydata(vertices, edges, faces)
-    mesh.update(calc_edges=True)
-    object = bpy.data.objects.new(name, mesh)
-    object.show_wire = True
-    object.color = color + [1]
-    object.location = mp
-    bpy.context.collection.objects.link(object)
-    if layer:
-        set_objects_layer(objects=[object], layer=layer)
-    return object
-
-
-def draw_faces(faces, **kwargs):
-    for face in faces:
-        name = face.get('name', 'face')
-        points = face.get('points')
-        layer = face.get('layer', None)
-        color = face.get('color', [1, 1, 1])
-        indices = [list(range(len(points)))]
-        draw_mesh(name=name, vertices=points, faces=indices, color=color, layer=layer)
-
-
-def draw_pointcloud(points, layer=None):
-    objects = [0] * len(points)
-    for c, data in enumerate(points):
-        object = draw_mesh(name=data.get('name', 'pt'), vertices=[[0, 0, 0]])
-        object.location = data['pos']
-        objects[c] = object
-    if layer:
-        set_objects_layer(objects=objects, layer=layer)
+        obj = bpy.data.objects.new(name, curve)
+        obj.location = mp
+        obj.data.fill_mode = 'FULL'
+        obj.data.bevel_depth = data.get('width', 0.05)
+        obj.data.bevel_resolution = 0
+        obj.data.resolution_u = 20
+        rgb = data.get('color') or [1.0, 1.0, 1.0]
+        set_object_color(obj, rgb)
+        objects[index] = obj
+    link_objects(objects, layer=layer)
     return objects
 
 
-def draw_texts(texts, layer=None):
-    bpy.ops.object.text_add()
-    copy = bpy.context.object
-    objects = [0] * len(texts)
-    for c, data in enumerate(texts):
-        object = copy.copy()
-        object.scale *= data.get('radius', 1)
-        object.location = data.get('pos', [0, 0, 0])
-        object.name = data.get('name', 'text')
-        object.data.body = data.get('text', 'text')
-        object.color = data.get('color', [1, 1, 1]) + [1]
-        objects[c] = object
-    return _link_objects(objects=objects, layer=layer, copy=copy)
+def draw_faces(faces, **kwargs):
+    objects = []
+    for face in faces:
+        points = face['points']
+        indices = [list(range(len(points)))]
+        name = face.get('name', 'face')
+        layer = face.get('layer', None)
+        color = face.get('color') or [1, 1, 1]
+        obj = draw_mesh(name=name, vertices=points, faces=indices, color=color, layer=layer)
+        # a lot of basic stuff is done by draw_mesh
+        objects.append(obj)
+    return objects
 
 
-def draw_cylinder(start, end, radius=1, color=[1, 1, 1], layer=None, div=10, name='cylinder'):
-    bpy.ops.mesh.primitive_cylinder_add(radius=1, depth=1, vertices=div, location=[0, 0, 0])
-    L = distance_point_point(start, end)
-    pos = centroid_points([start, end])
-    object = bpy.context.object
-    object.name = name
-    object.rotation_euler[1] = acos((end[2] - start[2]) / L)
-    object.rotation_euler[2] = atan2(end[1] - start[1], end[0] - start[0])
-    object.location = pos
-    object.scale = ((radius, radius, L))
-    object.color = color + [1]
-    if layer:
-        set_objects_layer(objects=[object], layer=layer)
-    return object
+# make collection
+# name after pointcloud
+# draw point objects
+# add points to collection
+# assign collection to layer
+def draw_pointcloud(points, layer=None):
+    objects = [0] * len(points)
+    for index, data in enumerate(points):
+        obj = draw_mesh(name=data.get('name', 'pt'), vertices=[[0, 0, 0]])
+        obj.location = data['pos']
+        objects[index] = obj
+    link_objects(objects, layer=layer)
+    return objects
 
 
 def draw_plane(Lx=1, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 1, 1]):
@@ -242,38 +177,121 @@ def draw_plane(Lx=1, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 1
     return draw_mesh(name=name, vertices=vertices, faces=faces, layer=layer, color=color, centroid=False)
 
 
-def draw_text(radius=1, pos=[0, 0, 0], text='text', layer=None, color=[1, 1, 1]):
-    bpy.ops.object.text_add()
-    object = bpy.context.object
-    object.scale *= radius
-    object.location = pos
-    object.data.body = text
-    object.color = color + [1]
-    if layer:
-        set_objects_layer(objects=[object], layer=layer)
-    return object
+# ==============================================================================
+# Shapes
+# ==============================================================================
+
+# replace div by uv
+def draw_cylinders(cylinders, div=10, layer=None):
+    # don't set the obvious defaults?
+    bpy.ops.mesh.primitive_cylinder_add(location=[0, 0, 0], radius=1, depth=1, vertices=div)
+    empty = bpy.context.active_object
+    objects = [0] * len(cylinders)
+    for index, data in enumerate(cylinders):
+        sp = data['start']
+        ep = data['end']
+        mp = centroid_points([sp, ep])
+        radius = data.get('radius', 1.0)
+        length = distance_point_point(sp, ep)
+        obj = empty.copy()
+        obj.name = data.get('name', 'cylinder')
+        # get this from geometry package
+        obj.rotation_euler[1] = acos((ep[2] - sp[2]) / length)
+        obj.rotation_euler[2] = atan2(ep[1] - sp[1], ep[0] - sp[0])
+        obj.location = mp
+        obj.scale = ((radius, radius, length))
+        rgb = data.get('color') or [1.0, 1.0, 1.0]
+        set_object_color(obj, rgb)
+        objects[index] = obj
+    delete_object(empty)
+    link_objects(objects, layer=layer)
+    return objects
 
 
-def draw_line(start=[0, 0, 0], end=[1, 1, 1], width=0.05, centroid=True, name='line', color=[1, 1, 1], layer=None):
-    mp = centroid_points([start, end]) if centroid else [0, 0, 0]
-    curve = bpy.data.curves.new(name, type='CURVE')
-    curve.dimensions = '3D'
-    object = bpy.data.objects.new(name, curve)
-    object.location = mp
-    spline = curve.splines.new('NURBS')
-    spline.points.add(2)
-    spline.points[0].co = list(subtract_vectors(start, mp)) + [1]
-    spline.points[1].co = list(subtract_vectors(end, mp)) + [1]
-    spline.order_u = 1
-    object.data.fill_mode = 'FULL'
-    object.data.bevel_depth = width
-    object.data.bevel_resolution = 0
-    object.data.resolution_u = 20
-    object.color = color + [1]
-    bpy.context.collection.objects.link(object)
-    if layer:
-        set_objects_layer(objects=[object], layer=layer)
-    return object
+# rename div to u, v
+def draw_spheres(spheres, div=10, layer=None):
+    bpy.ops.mesh.primitive_uv_sphere_add(location=[0, 0, 0], radius=1.0, segments=div, ring_count=div)
+    empty = bpy.context.active_object
+    objects = [0] * len(spheres)
+    for index, data in enumerate(spheres):
+        obj = empty.copy()
+        obj.location = data['pos']
+        obj.scale *= data.get('radius', 1.0)
+        obj.name = data.get('name', 'sphere')
+        values = [True] * len(obj.data.polygons)
+        obj.data.polygons.foreach_set("use_smooth", values)
+        rgb = data.get('color') or [1.0, 1.0, 1.0]
+        set_object_color(obj, rgb)
+        objects[index] = obj
+    delete_object(empty)
+    link_objects(objects, layer=layer)
+    return objects
+
+
+def draw_cubes(cubes, layer):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=[0, 0, 0])
+    empty = bpy.context.active_object
+    objects = [0] * len(cubes)
+    for index, data in enumerate(cubes):
+        obj = empty.copy()
+        obj.location = data['pos']
+        obj.scale *= data.get('size', 1)
+        obj.name = data.get('name', 'cube')
+        rgb = data.get('color') or [1.0, 1.0, 1.0]
+        set_object_color(obj, rgb)
+        objects[index] = obj
+    delete_object(empty)
+    link_objects(objects, layer=layer)
+    return objects
+
+
+def draw_pipes(pipes, **kwargs):
+    raise NotImplementedError
+
+
+# ==============================================================================
+# NURBS
+# ==============================================================================
+
+def draw_breps(faces, **kwargs):
+    raise NotImplementedError
+
+
+# ==============================================================================
+# Other
+# ==============================================================================
+
+def draw_geodesics(geodesics, **kwargs):
+    raise NotImplementedError
+
+
+# ==============================================================================
+# Data Structures
+# ==============================================================================
+
+def draw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1],
+              centroid=True, layer=None, **kwargs):
+    edges = [] if not edges else edges
+    faces = [] if not faces else faces
+    mp = centroid_points(vertices) if centroid else [0, 0, 0]
+    vertices = [subtract_vectors(vertex, mp) for vertex in vertices]
+    mesh = bpy.data.meshes.new(name)
+    mesh.from_pydata(vertices, edges, faces)
+    mesh.update(calc_edges=True)
+    obj = bpy.data.objects.new(name, mesh)
+    obj.show_wire = True
+    obj.location = mp
+    set_object_color(obj, color)
+    link_objects([obj], layer=layer)
+    return obj
+
+
+# ==============================================================================
+# Structures
+# ==============================================================================
+
+def draw_forces(forces, **kwargs):
+    raise NotImplementedError
 
 
 # ==============================================================================
@@ -282,36 +300,4 @@ def draw_line(start=[0, 0, 0], end=[1, 1, 1], width=0.05, centroid=True, name='l
 
 if __name__ == '__main__':
 
-    from compas_blender.utilities import clear_layers
-    from compas_blender.utilities import set_objects_show_names
-
-    clear_layers(layers=['Collection'])
-
-    n = 10
-
-    points = [{'pos': [0, 0, i], 'radius': 0.2, 'name': 'pt{0}'.format(i)} for i in range(n)]
-    lines = [{'start': [1, 1, i], 'end': [1, 0, i], 'radius': 0.1, 'color': [1, 0, 1]} for i in range(n)]
-    cyls = [{'start': [2, 1, i], 'end': [2, 0, i], 'radius': 0.1, 'color': [0, 0, 1]} for i in range(n)]
-    spheres = [{'pos': [3, 0, i], 'radius': 0.5, 'color': [0, 1, 0]} for i in range(n)]
-    cubes = [{'pos': [4, 0, i], 'radius': 0.5, 'color': [0, 1, 1]} for i in range(n)]
-    texts = [{'text': 'text2', 'radius': 0.5, 'color': [1, 0, 1], 'pos': [5, 0, i]} for i in range(n)]
-
-    draw_cylinder(start=[0, 0, 0], end=[1, 1, 1], radius=0.1, color=[1, 0, 1], layer='Collection')
-    draw_line(start=[2, 2, 2], end=[1, 1, 1], width=0.05, name='line', color=[1, 1, 0])
-    draw_text(radius=1, pos=[0, 0, 0], text='text', layer='Collection', color=[1, 0, 0])
-
-    draw_points(points=points)
-    draw_lines(lines=lines, layer='Collection')
-    draw_cylinders(cylinders=cyls, layer='Collection')
-    draw_spheres(spheres=spheres)
-    draw_cubes(cubes=cubes, layer='Collection')
-    draw_texts(texts=texts, layer='Collection')
-
-    draw_plane(Lx=2, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 0, 1])
-
-    vertices = [[-1, 0, 1], [-2, 0, 2], [-2, 1, 1], [-1, 1, 0]]
-    faces = [[0, 1, 2], [2, 3, 0]]
-    mesh = draw_mesh(name='mesh', vertices=vertices, faces=faces, layer='Collection', color=[1, 0, 1])
-
-    objects = draw_pointcloud(points=points)
-    set_objects_show_names(objects=objects, show=True)
+    pass
