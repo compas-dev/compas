@@ -12,29 +12,25 @@ BASE_FOLDER = os.path.dirname(__file__)
 
 @pytest.fixture
 def binary_stl_with_ascii_header():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'binary_w_ascii_header.stl')
+    return os.path.join(BASE_FOLDER, 'fixtures', 'binary-1.stl')
 
 
 @pytest.fixture
-def cube_binary():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'cube_binary.stl')
+def binary_stl():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'binary-2.stl')
 
 
 @pytest.fixture
-def cube_ascii():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'cube_ascii.stl')
+def ascii_stl():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'ascii.stl')
 
 
-def test_parse_binary_stl(cube_binary):
-    stl = STL(cube_binary)
+def test_binary_detection(ascii_stl, binary_stl, binary_stl_with_ascii_header):
+    stl = STL(ascii_stl)
     assert len(stl.parser.vertices) > 0
 
-
-def test_parse_ascii_stl(cube_ascii):
-    stl = STL(cube_ascii)
+    stl = STL(binary_stl)
     assert len(stl.parser.vertices) > 0
 
-
-def test_parse_binary_w_ascii_header(binary_stl_with_ascii_header):
     stl = STL(binary_stl_with_ascii_header)
     assert len(stl.parser.vertices) > 0
