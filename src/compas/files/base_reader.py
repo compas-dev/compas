@@ -22,32 +22,33 @@ class BaseReader(object):
 
     Methods
     -------
-    is_url
     location
+    is_url
+    is_binary
+    is_valid
+        Defined in subclasses
     download
         Download file specified by URL to temporary storage
     open_ascii
         Open ascii file specified by file path
     open_binary
         Open binary file specified by file path
-    iterlines
+    iter_lines
         Yields line from ascii file
-    iterchunks
+    iter_chunks
         Yields chunks from binary file
+    read
+        Defined in subclasses
+    check_file_signature
+        Verify file signatures for file formats with file signature in format
+        specification
 
     """
     def __init__(self, location):
-        self._is_url = None
         self._location = location
+        self._is_url = None
+        self._is_binary = None
 
-        self.check_file_signature()
-
-    @property
-    def is_url(self):
-        """Determine if location is local or specified as an URL
-        """
-        self._is_url = str(self._location).startswith('http')
-        return self._is_url
 
     @property
     def location(self):
@@ -77,8 +78,30 @@ class BaseReader(object):
 
         raise IOError('File not found.')
 
+    @property
+    def is_url(self):
+        """Checks if given location is a string containing an URL
+
+        Returns
+        -------
+        bool
+            True if recognized as an URL
+        """
+        self._is_url = str(self._location).startswith('http')
+        return self._is_url
+
+    @property
+    def is_binary(self):
+        pass
+
+    @property
+    def is_valid(self):
+        return NotImplementedError
+
     def download(self, url):
         """Downloads file and returns path to tempfle
+
+        Called by property self.location
 
         Parameters
         ----------
@@ -95,7 +118,7 @@ class BaseReader(object):
 
         return Path(location)
 
-    def _open(self):
+    def open_ascii(self):
         """Open ascii or binary file and return file object
 
         Returns
@@ -104,9 +127,20 @@ class BaseReader(object):
         """
         try:
             file_object = self.location.open(mode='r')
+        # unnecessary now?
         except UnicodeDecodeError:
             file_object = self.location.open(mode='r', errors='replace', newline='\r')
         return file_object
+
+    def open_binary(self):
+        """Open binary file and return file object
+
+        Returns
+        -------
+        file object
+        """
+
+        return self.location.open(mode='rb')
 
     def iter_lines(self):
         """Yields lines from local ascii files
@@ -118,7 +152,7 @@ class BaseReader(object):
         """
         # TODO: Handle continuing lines (as in OFF files)
 
-        with self._open() as fo:
+        with self.open_ascii() as fo:
             for line in fo:
                 yield line
 
@@ -135,6 +169,12 @@ class BaseReader(object):
         bytes
             Next chunk of file
         """
+        raise NotImplementedError
+
+    def read(self):
+        raise NotImplementedError
+
+    def is_valid(self):
         raise NotImplementedError
 
     def check_file_signature(self):
@@ -176,6 +216,3 @@ class BaseReader(object):
             raise Exception('File not valid, import failed.')
         elif found_signature != file_signature:
             raise Exception('File not valid, import failed.')
-
-        def read(self):
-            raise NotImplementedError
