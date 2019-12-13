@@ -520,13 +520,13 @@ def intersection_sphere_sphere(sphere1, sphere2):
     >>> sphere2 = (7.0, 4.0, 0.0), 5.0
     >>> result = intersection_sphere_sphere(sphere1, sphere2)
     >>> if result:
-    >>>    case, res = result
-    >>>    if case == "circle":
-    >>>        center, radius, normal = res
-    >>>    elif case == "point":
-    >>>        point = res
-    >>>    elif case == "sphere":
-    >>>        center, radius = res
+    ...     case, res = result
+    ...     if case == "circle":
+    ...         center, radius, normal = res
+    ...     elif case == "point":
+    ...         point = res
+    ...     elif case == "sphere":
+    ...         center, radius = res
 
     References
     --------
@@ -722,4 +722,5 @@ def intersection_segment_polyline_xy(segment, polyline, tol=1e-6):
 
 
 if __name__ == "__main__":
-    pass
+    import doctest
+    doctest.testmod(globs=globals())
