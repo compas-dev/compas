@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.12.2] 2019-12-11
 
 ### Added
-- Added `from_sides_and_radius` to `compas.geometry.Polygon`
+- Added `from_circle` to `compas.geometry.Polygon`
 
 ### Changed
 - Reworked docstrings of methods in `compas.geometry.queries`

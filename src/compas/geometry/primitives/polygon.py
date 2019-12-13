@@ -18,8 +18,11 @@ from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Line
+from compas.geometry.primitives import Plane
 
+from compas.geometry import orient_points
 from compas.geometry import transform_points
+
 
 __all__ = ['Polygon']
 
@@ -86,17 +89,16 @@ class Polygon(Primitive):
         return cls(data['points'])
 
     @classmethod
-    def from_sides_and_radius(cls, sides, radius):
-        """Construct a regular polygon from a number of sides and a radius.
+    def from_circle(cls, circle, n):
+        """Construct a regular polygon based on a circle and a number of sides.
         The resulting polygon is equilateral and equiangular.
-        Its winding is clockwise and lies on the XY-plane.
 
         Parameters
         ----------
-        sides : int
+        circle : compas.geometry.Circle
+            The circle the polygon will be circumscribed to.
+        n : int
             The number of sides.
-        radius : float
-            The radius of the polygon's circumscribed circle.
 
         Returns
         -------
@@ -105,28 +107,31 @@ class Polygon(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import normal_polygon
-        >>> pentagon = Polygon.from_sides_and_radius(5, 1.0)
-        >>> len(pentagon.points) == 5
+        >>> from compas.geometry import Circle
+        >>> from compas.geometry import Plane
+        >>> from compas.geometry import dot_vectors
+        >>> circle = Circle(Plane([0, 0, 0], [0, 1, 1]), 0.5)
+        >>> pentagon = Polygon.from_circle(circle, 5)
+        >>> len(pentagon.lines) == 5
         True
-        >>> normal_polygon(pentagon)
-        (0.0, 0.0, -1.0)
         >>> len({round(line.length, 6) for line in pentagon.lines}) == 1
         True
+        >>> dot_vectors(pentagon.normal, circle.normal) == 1
+        True
         """
-        if sides < 3:
+        if n < 3:
             raise ValueError("Supplied number of sides must be at least 3!")
 
-        side = math.pi * 2 / sides
+        side = math.pi * 2 / n
 
         points = []
-        for i in range(sides):
-            point = [math.sin(side * i) * radius,
-                     math.cos(side * i) * radius,
-                     0.]
+        for i in range(1, n + 1):
+            point = [math.sin(side * (n - i)) * circle.radius,
+                     math.cos(side * (n - i)) * circle.radius,
+                     0.0]
             points.append(point)
 
-        return cls(points)
+        return cls(orient_points(points, Plane.worldXY(), circle.plane))
 
     # ==========================================================================
     # descriptors
