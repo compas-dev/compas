@@ -24,7 +24,6 @@ class BaseReader(object):
         self._location = location
         self._is_binary = None
 
-
     @property
     def location(self):
         """ Create or ensure Pathlib object for file
@@ -40,7 +39,7 @@ class BaseReader(object):
         IOError
             If file is not found
         """
-        if self.is_url:
+        if self.is_location_url():
             pathobj = self.download(self._location)
         else:
             if not isinstance(self._location, Path):
@@ -53,7 +52,6 @@ class BaseReader(object):
 
         raise IOError('File not found.')
 
-
     @property
     def is_binary(self):
         pass
@@ -62,7 +60,7 @@ class BaseReader(object):
     def is_valid(self):
         return NotImplementedError
 
-    def is_url(self):
+    def is_location_url(self):
         """Checks if given location is a string containing an URL
 
         Returns
@@ -129,7 +127,7 @@ class BaseReader(object):
 
         with self.open_ascii() as fo:
             for line in fo:
-                yield line
+                yield line.rstrip()
 
     def iter_chunks(self, chunk_size=1024):
         """Yields lines from local binary files
