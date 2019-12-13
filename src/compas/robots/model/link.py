@@ -97,6 +97,15 @@ class Visual(object):
         self.native_geometry = None  # to store the link's CAD native geometry
 
     def get_color(self):
+        """Get the RGBA color array assigned to the link.
+
+        Only if the link has a material assigned.
+
+        Returns
+        -------
+        :obj:`list` of :obj:`float`
+            List of 4 floats (``0.0-1.0``) indicating RGB colors and Alpha channel.
+        """
         if self.material:
             return self.material.get_color()
         else:

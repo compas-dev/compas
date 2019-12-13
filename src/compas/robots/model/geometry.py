@@ -52,11 +52,34 @@ class Origin(Frame):
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
+        """Create origin instance from an URDF element.
+
+        Parameters
+        ----------
+        attributes
+            Attributes of the URDF element.
+        elements
+            Children elements of the URDF element.
+        text
+            Text content of the URDF element.
+
+        Returns
+        -------
+        :class:`Origin`
+            Origin instance.
+        """
         xyz = _parse_floats(attributes.get('xyz', '0 0 0'))
         rpy = _parse_floats(attributes.get('rpy', '0 0 0'))
         return cls.from_euler_angles(rpy, static=True, axes='xyz', point=xyz)
 
     def scale(self, factor):
+        """Scale the origin by a given factor.
+
+        Parameters
+        ----------
+        factor : :obj:`float`
+            Scale factor.
+        """
         self.point = self.point * factor
 
 
@@ -134,6 +157,13 @@ class Material(object):
         self.texture = texture
 
     def get_color(self):
+        """Get the RGBA color array of the material.
+
+        Returns
+        -------
+        :obj:`list` of :obj:`float`
+            List of 4 floats (``0.0-1.0``) indicating RGB colors and Alpha channel of the material.
+        """
         if self.name:
             if self.name in HTML4_NAMES_TO_HEX:
                 r, g, b = hex_to_rgb(HTML4_NAMES_TO_HEX[self.name])

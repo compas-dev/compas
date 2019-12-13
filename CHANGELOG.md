@@ -35,9 +35,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.12.2] 2019-12-11
 
 ### Added
-- Added `from_circle` to `compas.geometry.Polygon`
+
+- Added `intersection_segment_polyline` to `compas.geometry.intersections`
+- Added `intersection_segment_polyline_xy` to `compas.geometry.intersections`
 
 ### Changed
+
 - Reworked docstrings of methods in `compas.geometry.queries`
 - Set default `tol` to `1e-6` in `compas.geometry.queries`
 
