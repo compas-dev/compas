@@ -8,7 +8,7 @@ except ImportError:
 try:
     from urllib.request import urlretrieve
 except ImportError:
-    from urllib2 import urlretrieve
+    from urllib import urlretrieve
 
 
 class BaseReader(object):
@@ -18,35 +18,10 @@ class BaseReader(object):
     ----------
     location : str or pathlib object
         Path or URL to the file
-    is_url
-
-    Methods
-    -------
-    location
-    is_url
-    is_binary
-    is_valid
-        Defined in subclasses
-    download
-        Download file specified by URL to temporary storage
-    open_ascii
-        Open ascii file specified by file path
-    open_binary
-        Open binary file specified by file path
-    iter_lines
-        Yields line from ascii file
-    iter_chunks
-        Yields chunks from binary file
-    read
-        Defined in subclasses
-    check_file_signature
-        Verify file signatures for file formats with file signature in format
-        specification
 
     """
     def __init__(self, location):
         self._location = location
-        self._is_url = None
         self._is_binary = None
 
 
@@ -78,7 +53,15 @@ class BaseReader(object):
 
         raise IOError('File not found.')
 
+
     @property
+    def is_binary(self):
+        pass
+
+    @property
+    def is_valid(self):
+        return NotImplementedError
+
     def is_url(self):
         """Checks if given location is a string containing an URL
 
@@ -89,14 +72,6 @@ class BaseReader(object):
         """
         self._is_url = str(self._location).startswith('http')
         return self._is_url
-
-    @property
-    def is_binary(self):
-        pass
-
-    @property
-    def is_valid(self):
-        return NotImplementedError
 
     def download(self, url):
         """Downloads file and returns path to tempfle
@@ -172,9 +147,6 @@ class BaseReader(object):
         raise NotImplementedError
 
     def read(self):
-        raise NotImplementedError
-
-    def is_valid(self):
         raise NotImplementedError
 
     def check_file_signature(self):
