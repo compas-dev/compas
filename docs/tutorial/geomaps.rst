@@ -1,5 +1,5 @@
 ********************************************************************************
-Using geometric maps
+Geometric Maps
 ********************************************************************************
 
 Geometric maps provide a simple, but effective way to identify points that can be

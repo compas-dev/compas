@@ -1,5 +1,5 @@
 ********************************************************************************
-Using callbacks
+Callbacks
 ********************************************************************************
 
 COMPAS implements a *callback* mechanism that provides a consistent way to
