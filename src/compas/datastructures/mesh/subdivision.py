@@ -750,10 +750,10 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 if __name__ == "__main__":
 
     import doctest
-    import compas
+    import compas  # noqa: F401
     from compas.datastructures import Mesh
-    from compas.datastructures import mesh_quads_to_triangles
-    from compas.geometry import Box
+    from compas.datastructures import mesh_quads_to_triangles  # noqa: F401
+    from compas.geometry import Box  # noqa: F401
 
     # from compas_plotters import MeshPlotter
     # from compas_viewers.meshviewer import MeshViewer
