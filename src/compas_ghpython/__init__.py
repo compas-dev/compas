@@ -18,7 +18,7 @@ from .utilities import *  # noqa: F401 F403
 from .helpers import *  # noqa: F401 F403
 
 
-__version__ = '0.12.4'
+__version__ = '0.13.0'
 
 
 __all__ = []
