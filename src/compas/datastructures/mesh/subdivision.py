@@ -69,6 +69,14 @@ class SubdMesh(Mesh):
 
         return fkey
 
+    def insert_vertex(self, fkey):
+        x, y, z = self.face_center(fkey)
+        w = self.add_vertex(x=x, y=y, z=z)
+        for u, v in self.face_halfedges(fkey):
+            self.add_face([u, v, w])
+        del self.face[fkey]
+        return w
+
 
 # distinguish between subd of meshes with and without boundary
 # closed vs. open
@@ -134,21 +142,21 @@ def mesh_subdivide_tri(mesh, k=1):
         A new subdivided mesh.
 
     """
+    cls = type(mesh)
+    subd = mesh_fast_copy(mesh)
     for _ in range(k):
-        subd = mesh.copy()
-        for fkey in mesh.faces():
+        for fkey in list(subd.faces()):
             subd.insert_vertex(fkey)
-        mesh = subd
-    return mesh
+    return cls.from_data(subd.data)
 
 
 def mesh_subdivide_quad(mesh, k=1):
     """Subdivide a mesh such that all faces are quads.
     """
-    # cls = type(mesh)
+    cls = type(mesh)
     for _ in range(k):
-        # subd = mesh_fast_copy(mesh)
-        subd = mesh.copy()
+        subd = mesh_fast_copy(mesh)
+        # subd = mesh.copy()
         for u, v in list(subd.edges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
         for fkey in mesh.faces():
@@ -162,9 +170,9 @@ def mesh_subdivide_quad(mesh, k=1):
                 subd.add_face([a, key, d, c])
             del subd.face[fkey]
         mesh = subd
-    # subd = cls()
-    # subd.data = mesh.data
-    return subd
+    subd2 = cls()
+    subd2.data = mesh.data
+    return subd2
 
 
 def mesh_subdivide_corner(mesh, k=1):
@@ -612,21 +620,18 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
+    import compas
     from compas.datastructures import Mesh
     from compas_plotters import MeshPlotter
+    from compas.utilities import print_profile
 
-    vertices = [
-        [0.5, 0.0, 0.0],
-        [0.0, 1.0, 0.0],
-        [-0.5, 0.0, 0.0]
-    ]
-    faces = [
-        [0, 1, 2]
-    ]
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-    subd = trimesh_subdivide_loop(mesh, k=3)
+    subdivide = print_profile(mesh_subdivide_tri)
+    subdivide = print_profile(mesh_subdivide_quad)
 
-    plotter = MeshPlotter(subd)
-    plotter.draw_edges()
+    subd = subdivide(mesh, k=5)
+
+    plotter = MeshPlotter(subd, figsize=(8, 5))
+    plotter.draw_edges(width=0.5)
     plotter.show()
