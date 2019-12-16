@@ -41,6 +41,10 @@ def mesh_fast_copy(other):
 
 class SubdMesh(Mesh):
 
+    _add_vertex = Mesh.add_vertex
+    _add_face = Mesh.add_face
+    _insert_vertex = Mesh.insert_vertex
+
     def add_vertex(self, x, y, z):
         key = self._max_int_key = self._max_int_key + 1
 
