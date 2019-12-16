@@ -787,7 +787,7 @@ def is_point_in_circle_xy(point, circle):
 
     Parameters
     ----------
-    point : sequence of float 
+    point : sequence of float
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
     circle : tuple
         center, radius of the circle on the xy plane.
@@ -864,7 +864,7 @@ def is_intersection_line_line(l1, l2, tol=1e-6):
 
     Returns
     --------
-    bool 
+    bool
         ``True``if the lines intersect in one point.
         ``False`` if the lines are skew, parallel or lie on top of each other.
     """
@@ -900,7 +900,7 @@ def is_intersection_line_line_xy(l1, l2, tol=1e-6):
 
     Returns
     --------
-    bool 
+    bool
         ``True``if the lines intersect in one point
         ``False`` if the lines are skew, parallel or lie on top of each other.
     """
@@ -1022,7 +1022,7 @@ def is_intersection_line_plane(line, plane, tol=1e-6):
     tol : float, optional
         A tolerance for intersection verification.
         Default is ``1e-6``.
-    
+
     Returns
     -------
     bool
@@ -1053,7 +1053,7 @@ def is_intersection_segment_plane(segment, plane, tol=1e-6):
     tol : float, optional
         A tolerance for intersection verification.
         Default is ``1e-6``.
-    
+
     Returns
     -------
     bool
@@ -1092,7 +1092,7 @@ def is_intersection_plane_plane(plane1, plane2, tol=1e-6):
 
     Returns
     -------
-    bool 
+    bool
         ``True`` if plane1 intersects with plane2.
         ``False`` otherwise.
 

@@ -645,8 +645,8 @@ def intersection_segment_polyline(segment, polyline, tol=1e-6):
         XYZ coordinates of the points of the polyline.
     tol : float, optional
         The tolerance for intersection verification.
-        Default is ``1e-6``. 
-    
+        Default is ``1e-6``.
+
     Returns
     -------
     None
@@ -671,7 +671,7 @@ def intersection_segment_polyline(segment, polyline, tol=1e-6):
     """
     for cd in pairwise(polyline):
         pt = intersection_segment_segment(segment, cd, tol)
-        if pt: 
+        if pt:
             return pt
 
 
@@ -687,8 +687,8 @@ def intersection_segment_polyline_xy(segment, polyline, tol=1e-6):
         XY(Z) coordinates of the points of the polyline.
     tol : float, optional
         The tolerance for intersection verification.
-        Default is ``1e-6``. 
-    
+        Default is ``1e-6``.
+
     Returns
     -------
     None
@@ -713,7 +713,7 @@ def intersection_segment_polyline_xy(segment, polyline, tol=1e-6):
     """
     for cd in pairwise(polyline):
         pt = intersection_segment_segment_xy(segment, cd, tol)
-        if pt: 
+        if pt:
             return pt
 
 # ==============================================================================
