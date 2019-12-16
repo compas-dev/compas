@@ -145,6 +145,20 @@ def mesh_subdivide_tri(mesh, k=1):
     Mesh
         A new subdivided mesh.
 
+    Examples
+    --------
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> k = 2
+    >>> subd = mesh_subdivide_tri(mesh, k=k)
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+    >>> k1 = sum(len(mesh.face_vertices(fkey)) for fkey in mesh.faces())
+    >>> subd.number_of_faces() == (k1 if k == 1 else k1 * 3 ** (k - 1))
+    True
+
     """
     cls = type(mesh)
     subd = mesh_fast_copy(mesh)
@@ -156,6 +170,36 @@ def mesh_subdivide_tri(mesh, k=1):
 
 def mesh_subdivide_quad(mesh, k=1):
     """Subdivide a mesh such that all faces are quads.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh object that will be subdivided.
+    k : int
+        Optional. The number of levels of subdivision. Default is ``1``.
+
+    Returns
+    -------
+    Mesh
+        A new subdivided mesh.
+
+    Notes
+    -----
+
+
+    Examples
+    --------
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> k = 2
+    >>> subd = mesh_subdivide_quad(mesh, k=k)
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+    >>> subd.number_of_faces() == mesh.number_of_faces() * 4 ** k
+    True
+
     """
     cls = type(mesh)
     for _ in range(k):
@@ -254,7 +298,16 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     Examples
     --------
-    >>>
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> k = 2
+    >>> subd = mesh_subdivide_catmullclark(mesh, k=k)
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+    >>> subd.number_of_faces() == mesh.number_of_faces() * 4 ** k
+    True
 
     """
     cls = type(mesh)
@@ -388,6 +441,17 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
     Mesh
         A new subdivided mesh.
 
+    Examples
+    --------
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> k = 2
+    >>> subd = mesh_subdivide_doosabin(mesh, k=k)
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+
     """
     if not fixed:
         fixed = []
@@ -425,16 +489,12 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
                     cy += alpha * y
                     cz += alpha * z
 
-                # fkey_old_new[fkey][old] = subd.add_vertex(x=cx, y=cy, z=cz)
                 new = subd.add_vertex(cx, cy, cz)
                 fkey_old_new[fkey][old] = new
 
                 face.append(new)
 
             subd.add_face(face)
-
-        # for fkey in mesh.faces():
-        #     subd.add_face([fkey_old_new[fkey][key] for key in mesh.face_vertices(fkey)])
 
         boundary = set(mesh.vertices_on_boundary())
 
@@ -495,6 +555,11 @@ def mesh_subdivide_frames(mesh, offset, add_windows=False):
     -------
     Mesh
         A new subdivided mesh.
+
+    Examples
+    --------
+    >>>
+
     """
 
     subd = SubdMesh()
@@ -560,25 +625,23 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
     Examples
     --------
-    .. code-block:: python
+    Make a low poly mesh from a box shape.
+    Triangulate the faces.
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> mesh_quads_to_triangles(mesh)
 
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_flip_cycle_directions
-        from compas_plotters import SubdMeshViewer
+    Subdivide 2 times.
+    >>> k = 2
+    >>> subd = trimesh_subdivide_loop(mesh, k=k)
 
-        mesh = Mesh.from_polyhedron(4)
-        mesh_flip_cycle_directions(mesh)
-
-        viewer = SubdMeshViewer(mesh, subdfunc=loop_subdivision, width=600, height=600)
-
-        viewer.axes_on = False
-        viewer.grid_on = False
-
-        for _ in range(10):
-            viewer.camera.zoom_in()
-
-        viewer.setup()
-        viewer.show()
+    Compare low-poly cage with subdivision mesh.
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+    >>> subd.number_of_faces() == mesh.number_of_faces() * (3 + 1) ** k
+    True
 
     """
     cls = type(mesh)
@@ -679,33 +742,39 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
     subd2.data = subd.data
     return subd2
 
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
+    import doctest
     import compas
     from compas.datastructures import Mesh
+    from compas.datastructures import mesh_quads_to_triangles
     from compas.geometry import Box
+
     # from compas_plotters import MeshPlotter
-    from compas_viewers.meshviewer import MeshViewer
-    from compas.utilities import print_profile
+    # from compas_viewers.meshviewer import MeshViewer
+    # from compas.utilities import print_profile
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-    mesh = Mesh.from_shape(Box.from_corner_corner_height((0.0, 0.0, 0.0), (1.0, 1.0, 0.0), 1.0))
+    # mesh = Mesh.from_obj(compas.get('faces.obj'))
+    # mesh = Mesh.from_shape(Box.from_corner_corner_height((0.0, 0.0, 0.0), (1.0, 1.0, 0.0), 1.0))
 
-    subdivide = print_profile(mesh_subdivide_tri)
-    # subdivide = print_profile(mesh_subdivide_quad)
-    # subdivide = print_profile(mesh_subdivide_catmullclark)
-    # subdivide = print_profile(mesh_subdivide_corner)
-    # subdivide = print_profile(mesh_subdivide_doosabin)
+    # subdivide = print_profile(mesh_subdivide_tri)
+    # # subdivide = print_profile(mesh_subdivide_quad)
+    # # subdivide = print_profile(mesh_subdivide_catmullclark)
+    # # subdivide = print_profile(mesh_subdivide_corner)
+    # # subdivide = print_profile(mesh_subdivide_doosabin)
 
-    subd = subdivide(mesh, k=6)
+    # subd = subdivide(mesh, k=6)
 
-    print(subd.number_of_faces())
+    # print(subd.number_of_faces())
 
-    viewer = MeshViewer()
-    viewer.mesh = subd
+    # viewer = MeshViewer()
+    # viewer.mesh = subd
 
-    viewer.show()
+    # viewer.show()
+
+    doctest.testmod(globs=globals())
