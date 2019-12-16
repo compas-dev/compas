@@ -6,10 +6,10 @@ import collections
 import json
 import pickle
 import sys
-from ast import literal_eval
 from collections import OrderedDict
 from copy import deepcopy
 from math import pi
+from ast import literal_eval
 
 from compas.datastructures import Datastructure
 from compas.datastructures._mixins import EdgeFilter
@@ -20,9 +20,6 @@ from compas.datastructures._mixins import FaceAttributesManagement
 from compas.datastructures._mixins import FaceFilter
 from compas.datastructures._mixins import FaceHelpers
 from compas.datastructures._mixins import FaceMappings
-from compas.datastructures._mixins import FromToData
-from compas.datastructures._mixins import FromToJson
-from compas.datastructures._mixins import FromToPickle
 from compas.datastructures._mixins import VertexAttributesManagement
 from compas.datastructures._mixins import VertexFilter
 from compas.datastructures._mixins import VertexHelpers
@@ -71,10 +68,7 @@ Mesh summary
 """
 
 
-class Mesh(FromToPickle,
-           FromToJson,
-           FromToData,
-           EdgeGeometry,
+class Mesh(EdgeGeometry,
            FaceHelpers,
            FaceFilter,
            EdgeHelpers,
@@ -221,162 +215,151 @@ class Mesh(FromToPickle,
                 'dva': self.default_vertex_attributes,
                 'dea': self.default_edge_attributes,
                 'dfa': self.default_face_attributes,
-                'vertex': {},
-                'face': {},
-                'facedata': {},
-                'edgedata': {},
+                'vertex': self.vertex,
+                'face': self.face,
+                'halfedge': self.halfedge,
+                'facedata': self.facedata,
+                'edgedata': self.edgedata,
                 'max_int_key': self._max_int_key,
                 'max_int_fkey': self._max_int_fkey, }
-
-        for key in self.vertex:
-            data['vertex'][repr(key)] = self.vertex[key]
-
-        for fkey in self.face:
-            data['face'][repr(fkey)] = [repr(key) for key in self.face[fkey]]
-
-        for fkey in self.facedata:
-            data['facedata'][repr(fkey)] = self.facedata[fkey]
-
-        for uv in self.edgedata:
-            data['edgedata'][repr(uv)] = self.edgedata[uv]
-
         return data
 
     @data.setter
     def data(self, data):
-        attributes = data.get('attributes') or {}
+        attributes = data['attributes']
         dva = data.get('dva') or {}
         dfa = data.get('dfa') or {}
         dea = data.get('dea') or {}
-        vertex = data.get('vertex') or {}
-        face = data.get('face') or {}
-        facedata = data.get('facedata') or {}
-        edgedata = data.get('edgedata') or {}
-        max_int_key = data.get('max_int_key', -1)
-        max_int_fkey = data.get('max_int_fkey', -1)
-
         self.attributes.update(attributes)
         self.default_vertex_attributes.update(dva)
         self.default_face_attributes.update(dfa)
         self.default_edge_attributes.update(dea)
-
-        self.clear()
-
-        for key, attr in iter(vertex.items()):
-            self.add_vertex(literal_eval(key), attr_dict=attr)
-
-        for fkey, vertices in iter(face.items()):
-            attr = facedata.get(fkey) or {}
-            vertices = [literal_eval(k) for k in vertices]
-            self.add_face(vertices, fkey=literal_eval(fkey), attr_dict=attr)
-
-        for uv, attr in iter(edgedata.items()):
-            self.edgedata[literal_eval(uv)] = attr or {}
-
-        self._max_int_key = max_int_key
-        self._max_int_fkey = max_int_fkey
+        self.vertex = data.get('vertex') or {}
+        halfedge = data.get('halfedge') or {}
+        if halfedge:
+            self.face = data.get('face') or {}
+            self.halfedge = halfedge
+        else:
+            for fkey, vertices in data['face'].items():
+                self.add_face(vertices, fkey=fkey)
+        self.facedata = data.get('facedata') or {}
+        self.edgedata = data.get('edgedata') or {}
+        self._max_int_key = data.get('max_int_key', -1)
+        self._max_int_fkey = data.get('max_int_fkey', -1)
 
     # --------------------------------------------------------------------------
-    # serialisation
+    # constructors
     # --------------------------------------------------------------------------
 
-    def dump(self, filepath):
-        """Dump the data representing the mesh to a file using Python's built-in
-        object serialisation.
+    @classmethod
+    def from_data(cls, data):
+        """Construct a mesh from structured data.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        object
+            An object of the type of ``cls``.
+
+        Note
+        ----
+        This constructor method is meant to be used in conjuction with the
+        corresponding *to_data* method.
+
+        """
+        mesh = cls()
+        mesh.data = data
+        return mesh
+
+    @classmethod
+    def from_json(cls, filepath, convert=False):
+        """Construct a datastructure from structured data contained in a json file.
 
         Parameters
         ----------
         filepath : str
-            Path to the dump file.
-
-        """
-        data = {
-            'attributes': self.attributes,
-            'dva': self.default_vertex_attributes,
-            'dea': self.default_edge_attributes,
-            'dfa': self.default_face_attributes,
-            'vertex': self.vertex,
-            'face': self.face,
-            'facedata': self.facedata,
-            'edgedata': self.edgedata,
-            'max_int_key': self._max_int_key,
-            'max_int_fkey': self._max_int_fkey,
-        }
-        with open(filepath, 'wb+') as fo:
-            pickle.dump(data, fo, protocol=pickle.HIGHEST_PROTOCOL)
-
-    def dumps(self):
-        """Dump the data representing the mesh to a string using Python's built-in
-        object serialisation.
+            The path to the json file.
 
         Returns
         -------
-        str
-            The pickled string representation of the data.
+        object
+            An object of the type of ``cls``.
+
+        Note
+        ----
+        This constructor method is meant to be used in conjuction with the
+        corresponding *to_json* method.
 
         """
-        data = {
-            'attributes': self.attributes,
-            'dva': self.default_vertex_attributes,
-            'dea': self.default_edge_attributes,
-            'dfa': self.default_face_attributes,
-            'vertex': self.vertex,
-            'face': self.face,
-            'facedata': self.facedata,
-            'edgedata': self.edgedata,
-            'max_int_key': self._max_int_key,
-            'max_int_fkey': self._max_int_fkey,
-        }
-        return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
 
-    def load(self, filepath):
-        """Load serialised mesh data from a pickle file.
+        if convert:
+            vertex = {}
+            face = {}
+            facedata = {}
+            edgedata = {}
+            for key, attr in iter(data['vertex'].items()):
+                vertex[literal_eval(key)] = attr
+            for fkey, vertices in iter(data['face'].items()):
+                face[literal_eval(fkey)] = [literal_eval(key) for key in vertices]
+            for fkey, attr in iter(data['facedata'].items()):
+                facedata[literal_eval(fkey)] = attr
+            for key, attr in iter(data['edgedata'].items()):
+                edgedata[literal_eval(key)] = attr
+            data['vertex'] = vertex
+            data['face'] = face
+            data['facedata'] = facedata
+            data['edgedata'] = edgedata
+
+        else:
+            vertex = {}
+            face = {}
+            facedata = {}
+            for key, attr in iter(data['vertex'].items()):
+                vertex[int(key)] = attr
+            for fkey, vertices in iter(data['face'].items()):
+                face[int(fkey)] = vertices
+            for fkey, attr in iter(data['facedata'].items()):
+                facedata[int(fkey)] = attr
+            data['vertex'] = vertex
+            data['face'] = face
+            data['facedata'] = facedata
+
+        mesh = cls()
+        mesh.data = data
+        return mesh
+
+    @classmethod
+    def from_pickle(cls, filepath):
+        """Construct a mesh from serialised data contained in a pickle file.
 
         Parameters
         ----------
         filepath : str
             The path to the pickle file.
 
+        Returns
+        -------
+        object
+            An object of type ``cls``.
+
+        Note
+        ----
+        This constructor method is meant to be used in conjuction with the
+        corresponding *to_pickle* method.
+
         """
         with open(filepath, 'rb') as fo:
             data = pickle.load(fo)
 
-        self.attributes = data['attributes']
-        self.default_vertex_attributes = data['dva']
-        self.default_edge_attributes = data['dea']
-        self.default_face_attributes = data['dfa']
-        self.vertex = data['vertex']
-        self.face = data['face']
-        self.edgedata = data['edgedata']
-        self.facedata = data['facedata']
-        self._max_int_key = data['max_int_key']
-        self._max_int_fkey = data['max_int_fkey']
-
-    def loads(self, s):
-        """Load serialised mesh data from a pickle string.
-
-        Parameters
-        ----------
-        s : str
-            The pickled string.
-
-        """
-        data = pickle.loads(s)
-
-        self.attributes = data['attributes']
-        self.default_vertex_attributes = data['dva']
-        self.default_edge_attributes = data['dea']
-        self.default_face_attributes = data['dfa']
-        self.vertex = data['vertex']
-        self.face = data['face']
-        self.edgedata = data['edgedata']
-        self.facedata = data['facedata']
-        self._max_int_key = data['max_int_key']
-        self._max_int_fkey = data['max_int_fkey']
-
-    # --------------------------------------------------------------------------
-    # constructors
-    # --------------------------------------------------------------------------
+        o = cls()
+        o.data = data
+        return o
 
     @classmethod
     def from_obj(cls, filepath, precision=None):
@@ -616,7 +599,6 @@ class Mesh(FromToPickle,
             A mesh object.
 
         """
-
         corner_vertices = [geometric_key(xyz) for polyline in boundary_polylines + other_polylines for xyz in [polyline[0], polyline[-1]]]
         boundary_vertices = [geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline]
 
@@ -815,6 +797,49 @@ class Mesh(FromToPickle,
     # converters
     # --------------------------------------------------------------------------
 
+    def to_data(self):
+        """Returns a dictionary of structured data representing the mesh.
+
+        Returns
+        -------
+        dict
+            The structured data.
+
+        Note
+        ----
+        This method produces the data that can be used in conjuction with the
+        corresponding *from_data* class method.
+
+        """
+        return self.data
+
+    def to_json(self, filepath, pretty=False):
+        """Serialise the structured data representing the data structure to json.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the json file.
+
+        """
+        with open(filepath, 'w+') as f:
+            if pretty:
+                json.dump(self.data, f, sort_keys=True, indent=4)
+            else:
+                json.dump(self.data, f)
+
+    def to_pickle(self, filepath):
+        """Serialise the structured data representing the mesh to a pickle file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the pickle file.
+
+        """
+        with open(filepath, 'wb+') as f:
+            pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
+
     def to_obj(self, filepath):
         """Write the mesh to an OBJ file.
 
@@ -837,13 +862,13 @@ class Mesh(FromToPickle,
         """
         key_index = self.key_index()
 
-        with open(filepath, 'w+') as fh:
+        with open(filepath, 'w+') as f:
             for key, attr in self.vertices(True):
-                fh.write('v {0[x]:.3f} {0[y]:.3f} {0[z]:.3f}\n'.format(attr))
+                f.write('v {0[x]:.3f} {0[y]:.3f} {0[z]:.3f}\n'.format(attr))
             for fkey in self.faces():
                 vertices = self.face_vertices(fkey)
                 vertices = [key_index[key] + 1 for key in vertices]
-                fh.write(' '.join(['f'] + [str(index) for index in vertices]) + '\n')
+                f.write(' '.join(['f'] + [str(index) for index in vertices]) + '\n')
 
     def to_vertices_and_faces(self):
         """Return the vertices and faces of a mesh.
@@ -877,16 +902,14 @@ class Mesh(FromToPickle,
     def _get_vertex_key(self, key):
         if key is None:
             key = self._max_int_key = self._max_int_key + 1
+            return key
+        try:
+            i = int(key)
+        except (ValueError, TypeError):
+            pass
         else:
-            try:
-                i = int(key)
-            except (ValueError, TypeError):
-                pass
-            else:
-                if i > self._max_int_key:
-                    self._max_int_key = i
-        if self._key_to_str:
-            return str(key)
+            if i > self._max_int_key:
+                self._max_int_key = i
         return key
 
     def _get_face_key(self, fkey):

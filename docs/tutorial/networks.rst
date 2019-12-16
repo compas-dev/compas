@@ -1,5 +1,5 @@
 ********************************************************************************
-Working with networks
+Networks
 ********************************************************************************
 
 COMPAS networks are simple edge graphs: they consist of vertices
@@ -22,7 +22,6 @@ Making a network
 
 .. code-block:: python
 
-    import compas
     from compas.datastructures import Network
 
     network = Network()
@@ -33,23 +32,22 @@ Adding vertices and edges
 
 .. code-block:: python
 
-    a = network.add_vertex()
-    b = network.add_vertex(x=1.0)
-    c = network.add_vertex(y=1.0)
-    d = network.add_vertex(x==1.0)
-    e = network.add_vertex(y==1.0)
+    >>> a = network.add_vertex()
+    >>> b = network.add_vertex(x=1.0)
+    >>> c = network.add_vertex(y=1.0)
+    >>> d = network.add_vertex(x==1.0)
+    >>> e = network.add_vertex(y==1.0)
 
 
 .. code-block:: python
 
-    network.add_edge(a, b)
-    network.add_edge(a, c)
-    network.add_edge(a, d)
-    network.add_edge(a, e)
-
-
-.. parsed-literal::
-
+    >>> network.add_edge(a, b)
+    (0, 1)
+    >>> network.add_edge(a, c)
+    (0, 2)
+    >>> network.add_edge(a, d)
+    (0, 3)
+    >>> network.add_edge(a, e)
     (0, 4)
 
 
@@ -67,63 +65,34 @@ Other types keys may be specified as well, as long as their value is
 
 .. code-block:: python
 
-    print(a, type(a))
-
-
-.. parsed-literal::
-
+    >>> print(a, type(a))
     0 <class 'int'>
 
-
 .. code-block:: python
 
-    b == a + 1
-
-
-.. parsed-literal::
-
+    >>> b == a + 1
     True
 
-
 .. code-block:: python
 
-    f = network.add_vertex(key=7)
-    f == e + 1
-
-
-.. parsed-literal::
-
+    >>> f = network.add_vertex(key=7)
+    >>> f == e + 1
     False
 
-
 .. code-block:: python
 
-    g = network.add_vertex()
-    g == f + 1
-
-
-.. parsed-literal::
-
+    >>> g = network.add_vertex()
+    >>> g == f + 1
     True
 
-
 .. code-block:: python
 
-    network.add_vertex(key='compas')
-
-
-.. parsed-literal::
-
+    >>> network.add_vertex(key='compas')
     'compas'
 
-
 .. code-block:: python
 
-    network.add_vertex()
-
-
-.. parsed-literal::
-
+    >>> network.add_vertex()
     9
 
 
@@ -135,32 +104,19 @@ Iteration
 
 .. code-block:: python
 
-    network.vertices()
-
-
-.. parsed-literal::
-
+    >>> network.vertices()
     <dict_keyiterator at 0x6193a2958>
 
-
 .. code-block:: python
 
-    network.edges()
-
-
-.. parsed-literal::
-
+    >>> network.edges()
     <generator object Network.edges at 0x61560f678>
 
-
 .. code-block:: python
 
-    for key in network.vertices():
-        print(key)
-
-
-.. parsed-literal::
-
+    >>> for key in network.vertices():
+    ...     print(key)
+    ...
     0
     1
     2
@@ -171,15 +127,11 @@ Iteration
     compas
     9
 
-
 .. code-block:: python
 
-    for u, v in network.edges():
-        print(u, v)
-
-
-.. parsed-literal::
-
+    >>> for u, v in network.edges():
+    ...     print(u, v)
+    ...
     0 1
     0 2
     0 3
@@ -191,21 +143,12 @@ Lists
 
 .. code-block:: python
 
-    list(network.vertices())
-
-
-.. parsed-literal::
-
+    >>> list(network.vertices())
     [0, 1, 2, 3, 4, 7, 8, 'compas', 9]
-
 
 .. code-block:: python
 
-    list(network.edges())
-
-
-.. parsed-literal::
-
+    >>> list(network.edges())
     [(0, 1), (0, 2), (0, 3), (0, 4)]
 
 
@@ -214,11 +157,7 @@ Filtering
 
 .. code-block:: python
 
-    network.vertices_where({'x': 0.0})
-
-
-.. parsed-literal::
-
+    >>> network.vertices_where({'x': 0.0})
     <generator object VertexFilter.vertices_where at 0x61560f468>
 
 
@@ -233,15 +172,13 @@ To change the default attributes associated with vertices and edges, do:
 
 .. code-block:: python
 
-    network.update_default_vertex_attributes({'z': 10}, is_fixed=False)
-
-    # or network.update_default_vertex_attributes(z=10, is_fixed=False)
+    >>> network.update_default_vertex_attributes({'z': 10}, is_fixed=False)
+    >>> network.update_default_vertex_attributes(z=10, is_fixed=False)
 
 .. code-block:: python
 
-    network.update_default_edge_attributes({'weight': 0.0})
-
-    # or network.update_default_edge_attributes(weight=0.0)
+    >>> network.update_default_edge_attributes({'weight': 0.0})
+    >>> network.update_default_edge_attributes(weight=0.0)
 
 .. note::
 
@@ -261,40 +198,20 @@ Getting attributes
 
 .. code-block:: python
 
-    network.get_vertex_attribute(a, 'is_fixed')
-
-
-.. parsed-literal::
-
+    >>> network.get_vertex_attribute(a, 'is_fixed')
     False
 
-
 .. code-block:: python
 
-    network.get_vertices_attribute('x')
-
-
-.. parsed-literal::
-
+    >>> network.get_vertices_attribute('x')
     [0.0, 1.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 
-
 .. code-block:: python
 
-    network.get_vertices_attributes('xyz')
-
-
-.. parsed-literal::
-
-    [[0.0, 0.0, 0.0],
-     [1.0, 0.0, 0.0],
-     [0.0, 1.0, 0.0],
-     [-1.0, 0.0, 0.0],
-     [0.0, -1.0, 0.0],
-     [0.0, 0.0, 0.0],
-     [0.0, 0.0, 0.0],
-     [0.0, 0.0, 0.0],
-     [0.0, 0.0, 0.0]]
+    >>> network.get_vertices_attributes('xyz')
+    [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [-1.0, 0.0, 0.0],
+    [0.0, -1.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0],
+    [0.0, 0.0, 0.0]]
 
 
 Setting attributes
@@ -302,15 +219,9 @@ Setting attributes
 
 .. code-block:: python
 
-    network.set_vertex_attribute(a, 'is_fixed', True)
-
-.. code-block:: python
-
-    network.set_vertices_attribute('is_fixed', True)
-
-.. code-block:: python
-
-    network.set_vertices_attributes(('z', 'is_fixed'), (3, False))
+    >>> network.set_vertex_attribute(a, 'is_fixed', True)
+    >>> network.set_vertices_attribute('is_fixed', True)
+    >>> network.set_vertices_attributes(('z', 'is_fixed'), (3, False))
 
 
 Using constructors
@@ -323,13 +234,26 @@ Using constructors
     # network = Network.from_json('network.json')
     # network = Network.from_pickle('network.pickle')
 
-    network = Network.from_obj(compas.get('lines.obj'))
+    >>> network = Network.from_obj(compas.get('lines.obj'))
+
+.. note::
+
+    COMPAS provides sample data for debugging purposes.
+    This data can be accessed using :func:`compas.get`.
+
+
+From/To
+=======
+
+.. code-block:: python
+
+    >>> network = Network.from_obj(compas.get('lines.obj'))
+    >>> data = network.to_data()
+    >>> other = Network.from_data(data)
 
 
 Queries
 =======
-
-under construction...
 
 
 Visualisation

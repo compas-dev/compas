@@ -14,7 +14,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 
-## [0.12.3] 2019-12-11
+## [0.13.0] 2019-12-16
+
+### Added
+
+- Added DOI to bibtex entry.
+- Added conversion for old mesh JSON data.
+
+### Changed
+
+- Indirectly changed mesh serialisation to JSON (by changing key conversion and moving conversion into JSON methods).
+- Moved conversion of int keys of mesh data to strings for json serialisation to from/to json.
+- Moved from/to methods for mesh into mesh definition.
+- Subdivision algorithms use fast mesh copy.
+
+### Removed
+
+- Support for non-integer vertex and face identifiers in mesh.
+
+## [0.12.4] 2019-12-11
 
 ### Added
 
@@ -22,8 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
-## [0.12.2] 2019-12-11
+## [0.12.3] 2019-12-11
 
 ### Added
 - Added `mesh_subdivide_frames` to `compas.datastructures.subdivision`
@@ -32,6 +49,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.12.2] 2019-12-11
+
+### Added
+
+- Added `intersection_segment_polyline` to `compas.geometry.intersections`
+- Added `intersection_segment_polyline_xy` to `compas.geometry.intersections`
+
+### Changed
+
+- Reworked docstrings of methods in `compas.geometry.queries`
+- Set default `tol` to `1e-6` in `compas.geometry.queries`
+
+### Removed
 
 ## [[0.12.1] 2019-12-10] 2019-12-10
 
@@ -86,7 +116,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.11.0] 2019-11-09
 
 ### Added
@@ -140,7 +169,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.9.1] 2019-10-28
 
 ### Added
@@ -190,7 +218,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed unguarded import of `numpy` based transformations in mesh package.
 
 ### Removed
-
 
 ## [0.8.0] 2019-10-01
 
@@ -273,7 +300,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.7.0] 2019-06-27
 
 ### Added
@@ -313,7 +339,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.6.1] 2019-04-29
 
 ### Added
@@ -323,7 +348,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed bug in RPC. The services cannot have a `pass` statement as class body.
 
 ### Removed
-
 
 ## [0.6.0] 2019-04-29
 

@@ -1,6 +1,8 @@
 ********************************************************************************
-Setting up an RPC service
+Remote Procedure Calls
 ********************************************************************************
+
+* :mod:`compas.rpc`
 
 Through ``Xfunc``, COMPAS provides a mechanism for calling Python functions through
 a separately launched subprocess. This provides the posibility of, for example,
@@ -18,10 +20,33 @@ the server can handle the requests without any overhead. Therefore, the response
 time is much faster than with ``XFunc``.
 
 
-Starting RPC server
-===================
+Basic Usage
+===========
 
-The ``ServerProxy`` will try to start an RPC server automatically
+.. code-block:: python
+
+    from compas.rpc import Proxy
+    numerical = Proxy('compas.numerical')
+
+    result = numerical.fd_numpy(...)
+
+
+Supported data types
+====================
+
+
+Switching packages
+==================
+
+
+Starting and Stopping
+=====================
+
+
+Starting an RPC server manually
+===============================
+
+``Proxy`` will try to start an RPC server automatically
 if no server is already running, but very often it is recommended
 to start it manually from the command-line.
 

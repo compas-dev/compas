@@ -1,5 +1,5 @@
 ********************************************************************************
-Working with meshes
+Meshes
 ********************************************************************************
 
 .. highlight:: python
@@ -65,11 +65,7 @@ by default, but any other *hashable* type can be assigned explicitly.
 
 .. code-block:: python
 
-    print(f, type(f))
-
-
-.. parsed-literal::
-
+    >>> print(f, type(f))
     0 <class 'int'>
 
 
@@ -81,9 +77,9 @@ following formats are supported: ``obj``, ``ply``, ``stl``.
 
 .. code-block:: python
 
-    mesh = Mesh.from_obj('faces.obj')
-    mesh = Mesh.from_ply('bunny.ply')
-    mesh = Mesh.from_stl('cube.stl')
+    >>> mesh = Mesh.from_obj('faces.obj')
+    >>> mesh = Mesh.from_ply('bunny.ply')
+    >>> mesh = Mesh.from_stl('cube.stl')
 
 
 COMPAS provides a set of sample files that can be used during development,
@@ -91,9 +87,9 @@ or simply to make examples like the ones in this tutorial.
 
 .. code-block:: python
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-    mesh = Mesh.from_ply(compas.get('bunny.ply'))
-    mesh = Mesh.from_stl(compas.get('cube.stl'))
+    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+    >>> mesh = Mesh.from_ply(compas.get('bunny.ply'))
+    >>> mesh = Mesh.from_stl(compas.get('cube.stl'))
 
 
 Data
@@ -109,22 +105,14 @@ Iteration
 
 .. code-block:: python
 
-    mesh.vertices()
-
-
-.. parsed-literal::
-
+    >>> mesh.vertices()
     <dict_keyiterator at 0x60d74f278>
-
 
 .. code-block:: python
 
-    for key in mesh.vertices():
-        print(key)
-
-
-.. parsed-literal::
-
+    >>> for key in mesh.vertices():
+    ...     print(key)
+    ...
     0
     1
     2
@@ -135,25 +123,16 @@ Iteration
     34
     35
 
-
 .. code-block:: python
 
-    mesh.faces()
-
-
-.. parsed-literal::
-
+    >>> mesh.faces()
     <generator object Mesh.faces at 0x60d723e08>
 
-
 .. code-block:: python
 
-    for key in mesh.faces():
-        print(key)
-
-
-.. parsed-literal::
-
+    >>> for key in mesh.faces():
+    ...     print(key)
+    ...
     0
     1
     2
@@ -164,25 +143,16 @@ Iteration
     23
     24
 
-
 .. code-block:: python
 
-    mesh.edges()
-
-
-.. parsed-literal::
-
+    >>> mesh.edges()
     <generator object Mesh.edges at 0x60d723a98>
 
-
 .. code-block:: python
 
-    for key in mesh.edges():
-        print(key)
-
-
-.. parsed-literal::
-
+    >>> for key in mesh.edges():
+    ...     print(key)
+    ...
     (0, 1)
     (0, 6)
     (1, 7)
@@ -193,37 +163,22 @@ Iteration
     (33, 34)
     (34, 35)
 
-
 Lists
 -----
 
 .. code-block:: python
 
-    list(mesh.vertices())
-
-
-.. parsed-literal::
-
+    >>> list(mesh.vertices())
     [0, 1, 2, 3, ... 32, 33, 34, 35]
 
-
 .. code-block:: python
 
-    list(mesh.faces())
-
-
-.. parsed-literal::
-
+    >>> list(mesh.faces())
     [0, 1, 2, 3, ... 21, 22, 23, 24]
 
-
 .. code-block:: python
 
-    list(mesh.edges())
-
-
-.. parsed-literal::
-
+    >>> list(mesh.edges())
     [(0, 1), (0, 6), (1, 7), (1, 2), ... (31, 32), (32, 33), (33, 34), (34, 35)]
 
 
@@ -239,15 +194,9 @@ To change the default attributes, do:
 
 .. code-block:: python
 
-    mesh.update_default_vertex_attributes(z=10, is_fixed=False)
-
-.. code-block:: python
-
-    mesh.update_default_face_attributes(is_loaded=True)
-
-.. code-block:: python
-
-    mesh.update_default_edge_attributes(q=1.0)
+    >>> mesh.update_default_vertex_attributes(z=10, is_fixed=False)
+    >>> mesh.update_default_face_attributes(is_loaded=True)
+    >>> mesh.update_default_edge_attributes(q=1.0)
 
 
 Getting attributes
@@ -255,42 +204,20 @@ Getting attributes
 
 .. code-block:: python
 
-    mesh.get_vertex_attribute(mesh.get_any_vertex(), 'x')
-
-
-.. parsed-literal::
-
+    >>> mesh.get_vertex_attribute(mesh.get_any_vertex(), 'x')
     2.0
 
-
 .. code-block:: python
 
-    mesh.get_vertices_attribute('x')
-
-
-.. parsed-literal::
-
+    >>> mesh.get_vertices_attribute('x')
     [0.0, 2.0, 4.0, 6.0, ... 4.0, 6.0, 8.0, 10.0]
 
-
 .. code-block:: python
 
-    mesh.get_vertices_attributes('xyz')
-
-
-.. parsed-literal::
-
-    [[0.0, 0.0, 0.0],
-     [2.0, 0.0, 0.0],
-     [4.0, 0.0, 0.0],
-     [6.0, 0.0, 0.0],
-
-     ...
-
-     [4.0, 10.0, 0.0],
-     [6.0, 10.0, 0.0],
-     [8.0, 10.0, 0.0],
-     [10.0, 10.0, 0.0]]
+    >>> mesh.get_vertices_attributes('xyz')
+    [[0.0, 0.0, 0.0], [2.0, 0.0, 0.0], [4.0, 0.0, 0.0], [6.0, 0.0, 0.0],
+    ...
+    [4.0, 10.0, 0.0], [6.0, 10.0, 0.0], [8.0, 10.0, 0.0], [10.0, 10.0, 0.0]]
 
 
 Setting attributes
@@ -298,19 +225,10 @@ Setting attributes
 
 .. code-block:: python
 
-    mesh.set_vertex_attribute(0, 'is_fixed', True)
-
-.. code-block:: python
-
-    mesh.set_vertex_attributes(0, ('is_fixed', 'z'), (False, 10))
-
-.. code-block:: python
-
-    mesh.set_vertices_attribute('z', 10)
-
-.. code-block:: python
-
-    mesh.set_vertices_attributes(('z', 'is_fixed'), (0, False))
+    >>> mesh.set_vertex_attribute(0, 'is_fixed', True)
+    >>> mesh.set_vertex_attributes(0, ('is_fixed', 'z'), (False, 10))
+    >>> mesh.set_vertices_attribute('z', 10)
+    >>> mesh.set_vertices_attributes(('z', 'is_fixed'), (0, False))
 
 
 Connectivity
@@ -318,82 +236,58 @@ Connectivity
 
 .. code-block:: python
 
-    for key in mesh.vertices():
-        print(key, "(neighbors)", mesh.vertex_neighbors(key, ordered=True))
-        print(key, "(faces)", mesh.vertex_faces(key, ordered=True))
-        print()
-
-
-.. parsed-literal::
-
+    >>> for key in mesh.vertices():
+    ...     print(key, "(neighbors)", mesh.vertex_neighbors(key, ordered=True))
+    ...     print(key, "(faces)", mesh.vertex_faces(key, ordered=True))
+    ...
     0 (neighbors) [6, 1]
     0 (faces) [0]
-
     1 (neighbors) [0, 7, 2]
     1 (faces) [0, 1]
-
     2 (neighbors) [1, 8, 3]
     2 (faces) [1, 2]
-
     3 (neighbors) [2, 9, 4]
     3 (faces) [2, 3]
-
     ...
-
     32 (neighbors) [33, 26, 31]
     32 (faces) [22, 21]
-
     33 (neighbors) [34, 27, 32]
     33 (faces) [23, 22]
-
     34 (neighbors) [35, 28, 33]
     34 (faces) [24, 23]
-
     35 (neighbors) [29, 34]
     35 (faces) [24]
 
 
 .. code-block:: python
 
-    for fkey in mesh.faces():
-        print(fkey, "(vertices)", mesh.face_vertices(fkey))
-        print(fkey, "(half-edges)", mesh.face_halfedges(fkey))
-        print(fkey, "(neighbors)", mesh.face_neighbors(fkey))
-        print()
-
-
-.. parsed-literal::
-
+    >>> for fkey in mesh.faces():
+    ...     print(fkey, "(vertices)", mesh.face_vertices(fkey))
+    ...     print(fkey, "(half-edges)", mesh.face_halfedges(fkey))
+    ...     print(fkey, "(neighbors)", mesh.face_neighbors(fkey))
+    ...
     0 (vertices) [0, 1, 7, 6]
     0 (half-edges) [(0, 1), (1, 7), (7, 6), (6, 0)]
     0 (neighbors) [1, 5]
-
     1 (vertices) [1, 2, 8, 7]
     1 (half-edges) [(1, 2), (2, 8), (8, 7), (7, 1)]
     1 (neighbors) [2, 6, 0]
-
     2 (vertices) [2, 3, 9, 8]
     2 (half-edges) [(2, 3), (3, 9), (9, 8), (8, 2)]
     2 (neighbors) [3, 7, 1]
-
     3 (vertices) [3, 4, 10, 9]
     3 (half-edges) [(3, 4), (4, 10), (10, 9), (9, 3)]
     3 (neighbors) [4, 8, 2]
-
     ...
-
     21 (vertices) [25, 26, 32, 31]
     21 (half-edges) [(25, 26), (26, 32), (32, 31), (31, 25)]
     21 (neighbors) [16, 22, 20]
-
     22 (vertices) [26, 27, 33, 32]
     22 (half-edges) [(26, 27), (27, 33), (33, 32), (32, 26)]
     22 (neighbors) [17, 23, 21]
-
     23 (vertices) [27, 28, 34, 33]
     23 (half-edges) [(27, 28), (28, 34), (34, 33), (33, 27)]
     23 (neighbors) [18, 24, 22]
-
     24 (vertices) [28, 29, 35, 34]
     24 (half-edges) [(28, 29), (29, 35), (35, 34), (34, 28)]
     24 (neighbors) [19, 23]
@@ -428,8 +322,8 @@ type class:`compas.datastructures.Mesh` without loss of information.
 
 .. code-block:: python
 
-    data = mesh.to_data()
-    mesh = Mesh.from_data(data)
+    >>> data = mesh.to_data()
+    >>> mesh = Mesh.from_data(data)
 
 
 This data can be serialised to various formats such that
@@ -448,8 +342,8 @@ with a CPython subprocess.
 
 .. code-block:: python
 
-    mesh.to_json('mesh.json')
-    mesh = Mesh.from_json('mesh.json')
+    >>> mesh.to_json('mesh.json')
+    >>> mesh = Mesh.from_json('mesh.json')
 
 
 Pickle
@@ -457,13 +351,10 @@ Pickle
 
 .. code-block:: python
 
-    mesh.dump('mesh.pickle')
-    mesh.load('mesh.pickle')
-
-.. code-block:: python
-
-    s = mesh.dumps()
-    mesh.loads(s)
+    >>> mesh.dump('mesh.pickle')
+    >>> mesh.load('mesh.pickle')
+    >>> s = mesh.dumps()
+    >>> mesh.loads(s)
 
 
 Visualisation
@@ -482,11 +373,11 @@ Visualisation
 
     plotter.draw_vertices(
         facecolor={key: '#ff0000' for key in mesh.vertices_on_boundary()},
-        radius={key: 0.3 for key in mesh.vertices_on_boundary()},
+        radius={key: 0.2 for key in mesh.vertices_on_boundary()},
         text={key: str(key) for key in mesh.vertices_on_boundary()})
 
     plotter.draw_edges(
-        color={key: '#00ff00' for key in mesh.edges_on_boundary()},
+        color={key: '#ff0000' for key in mesh.edges_on_boundary()},
         width={key: 3 for key in mesh.edges_on_boundary()})
 
     plotter.draw_faces(
