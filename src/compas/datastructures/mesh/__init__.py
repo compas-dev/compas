@@ -9,6 +9,7 @@ from ._mesh import *  # noqa: F401 F403
 # these have to be imported first
 
 from .operations import *  # noqa: F401 F403
+
 if not compas.IPY:
     from .matrices import *  # noqa: F401 F403
 
@@ -48,6 +49,7 @@ from .remesh import *  # noqa: F401 F403
 from .subdivision import *  # noqa: F401 F403
 
 from .transformations import *  # noqa: F401 F403
+
 if not compas.IPY:
     from .transformations_numpy import *  # noqa: F401 F403
 

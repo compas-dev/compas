@@ -9,6 +9,7 @@ import sys
 from collections import OrderedDict
 from copy import deepcopy
 from math import pi
+from ast import literal_eval
 
 from compas.datastructures import Datastructure
 from compas.datastructures._mixins import EdgeFilter
@@ -275,7 +276,7 @@ class Mesh(EdgeGeometry,
         return mesh
 
     @classmethod
-    def from_json(cls, filepath):
+    def from_json(cls, filepath, convert=False):
         """Construct a datastructure from structured data contained in a json file.
 
         Parameters
@@ -297,20 +298,37 @@ class Mesh(EdgeGeometry,
         with open(filepath, 'r') as fp:
             data = json.load(fp)
 
-        vertex = {}
-        face = {}
-        facedata = {}
+        if convert:
+            vertex = {}
+            face = {}
+            facedata = {}
+            edgedata = {}
+            for key, attr in iter(data['vertex'].items()):
+                vertex[literal_eval(key)] = attr
+            for fkey, vertices in iter(data['face'].items()):
+                face[literal_eval(fkey)] = [literal_eval(key) for key in vertices]
+            for fkey, attr in iter(data['facedata'].items()):
+                facedata[literal_eval(fkey)] = attr
+            for key, attr in iter(data['edgedata'].items()):
+                edgedata[literal_eval(key)] = attr
+            data['vertex'] = vertex
+            data['face'] = face
+            data['facedata'] = facedata
+            data['edgedata'] = edgedata
 
-        for key, attr in iter(data['vertex'].items()):
-            vertex[int(key)] = attr
-        for fkey, vertices in iter(data['face'].items()):
-            face[int(fkey)] = vertices
-        for fkey, attr in iter(data['facedata'].items()):
-            facedata[int(fkey)] = attr
-
-        data['vertex'] = vertex
-        data['face'] = face
-        data['facedata'] = facedata
+        else:
+            vertex = {}
+            face = {}
+            facedata = {}
+            for key, attr in iter(data['vertex'].items()):
+                vertex[int(key)] = attr
+            for fkey, vertices in iter(data['face'].items()):
+                face[int(fkey)] = vertices
+            for fkey, attr in iter(data['facedata'].items()):
+                facedata[int(fkey)] = attr
+            data['vertex'] = vertex
+            data['face'] = face
+            data['facedata'] = facedata
 
         mesh = cls()
         mesh.data = data
