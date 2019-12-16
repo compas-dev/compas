@@ -25,14 +25,14 @@ __all__ = [
 
 def mesh_fast_copy(other):
     subd = SubdMesh()
-    subd.attributes = deepcopy(other.attributes)
-    subd.default_vertex_attributes = deepcopy(other.default_vertex_attributes)
-    subd.default_face_attributes = deepcopy(other.default_face_attributes)
-    subd.default_edge_attributes = deepcopy(other.default_edge_attributes)
+    # subd.attributes = deepcopy(other.attributes)
+    # subd.default_vertex_attributes = deepcopy(other.default_vertex_attributes)
+    # subd.default_face_attributes = deepcopy(other.default_face_attributes)
+    # subd.default_edge_attributes = deepcopy(other.default_edge_attributes)
     subd.vertex = deepcopy(other.vertex)
     subd.face = deepcopy(other.face)
-    subd.edgedata = deepcopy(other.edgedata)
-    subd.facedata = deepcopy(other.facedata)
+    # subd.edgedata = deepcopy(other.edgedata)
+    # subd.facedata = deepcopy(other.facedata)
     subd.halfedge = deepcopy(other.halfedge)
     subd._max_int_key = other._max_int_key
     subd._max_int_fkey = other._max_int_fkey
@@ -156,7 +156,6 @@ def mesh_subdivide_quad(mesh, k=1):
     cls = type(mesh)
     for _ in range(k):
         subd = mesh_fast_copy(mesh)
-        # subd = mesh.copy()
         for u, v in list(subd.edges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
         for fkey in mesh.faces():
@@ -201,36 +200,28 @@ def mesh_subdivide_corner(mesh, k=1):
     meshes.
 
     """
-
+    cls = type(mesh)
     for _ in range(k):
-        subd = mesh.copy()
-
+        subd = mesh_fast_copy(mesh)
         # split every edge
         for u, v in list(subd.edges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
-
         # create 4 new faces for every old face
         for fkey in mesh.faces():
-
             descendant = {i: j for i, j in subd.face_halfedges(fkey)}
             ancestor = {j: i for i, j in subd.face_halfedges(fkey)}
-
             center = []
-
             for key in mesh.face_vertices(fkey):
                 a = ancestor[key]
                 d = descendant[key]
-
                 subd.add_face([a, key, d])
-
                 center.append(a)
-
             subd.add_face(center)
             del subd.face[fkey]
-
         mesh = subd
-
-    return mesh
+    subd2 = cls()
+    subd2.data = mesh.data
+    return subd2
 
 
 def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
@@ -261,14 +252,13 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
     >>>
 
     """
+    cls = type(mesh)
     if not fixed:
         fixed = []
-
     fixed = set(fixed)
 
     for _ in range(k):
-
-        subd = mesh.copy()
+        subd = mesh_fast_copy(mesh)
 
         # keep track of original connectivity and vertex locations
 
@@ -371,7 +361,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         mesh = subd
 
-    return mesh
+    subd2 = cls()
+    subd2.data = mesh.data
+    return subd2
 
 
 def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
@@ -397,13 +389,12 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
     fixed = set(fixed)
 
-    # cls = type(mesh)
+    cls = type(mesh)
 
     for _ in range(k):
         old_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         fkey_old_new = {fkey: {} for fkey in mesh.faces()}
 
-        # subd = cls()
         subd = SubdMesh()
 
         for fkey in mesh.faces():
@@ -476,7 +467,9 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
         mesh = subd
 
-    return mesh
+    subd2 = cls()
+    subd2.data = mesh.data
+    return subd2
 
 
 def trimesh_subdivide_loop(mesh, k=1, fixed=None):
@@ -519,12 +512,14 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
         viewer.show()
 
     """
+    cls = type(mesh)
+
     if not fixed:
         fixed = []
 
     fixed = set(fixed)
 
-    subd = mesh.copy()
+    subd = mesh_fast_copy(mesh)
 
     for _ in range(k):
         key_xyz = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
@@ -611,7 +606,9 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
             del subd.face[fkey]
 
-    return subd
+    subd2 = cls()
+    subd2.data = subd.data
+    return subd2
 
 
 # ==============================================================================
@@ -622,16 +619,25 @@ if __name__ == "__main__":
 
     import compas
     from compas.datastructures import Mesh
-    from compas_plotters import MeshPlotter
+    from compas.geometry import Box
+    # from compas_plotters import MeshPlotter
+    from compas_viewers.meshviewer import MeshViewer
     from compas.utilities import print_profile
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
+    mesh = Mesh.from_shape(Box.from_corner_corner_height((0.0, 0.0, 0.0), (1.0, 1.0, 0.0), 1.0))
 
     subdivide = print_profile(mesh_subdivide_tri)
-    subdivide = print_profile(mesh_subdivide_quad)
+    # subdivide = print_profile(mesh_subdivide_quad)
+    # subdivide = print_profile(mesh_subdivide_catmullclark)
+    # subdivide = print_profile(mesh_subdivide_corner)
+    # subdivide = print_profile(mesh_subdivide_doosabin)
 
-    subd = subdivide(mesh, k=5)
+    subd = subdivide(mesh, k=6)
 
-    plotter = MeshPlotter(subd, figsize=(8, 5))
-    plotter.draw_edges(width=0.5)
-    plotter.show()
+    print(subd.number_of_faces())
+
+    viewer = MeshViewer()
+    viewer.mesh = subd
+
+    viewer.show()
