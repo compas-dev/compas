@@ -4,10 +4,10 @@ from __future__ import division
 
 from compas_rhino.artists import _Artist
 
-__all__ = ["_PrimitiveArtist"]
+__all__ = ["PrimitiveArtist"]
 
 
-class _PrimitiveArtist(_Artist):
+class PrimitiveArtist(_Artist):
     """Base class for all ``Primitive`` artists.
 
     Parameters
@@ -25,7 +25,7 @@ class _PrimitiveArtist(_Artist):
     __module__ = "compas_rhino.artists"
 
     def __init__(self, primitive, **kwargs):
-        super(_PrimitiveArtist, self).__init__(kwargs)
+        super(PrimitiveArtist, self).__init__(kwargs)
         self.primitive = primitive
 
 

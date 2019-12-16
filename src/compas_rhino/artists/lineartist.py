@@ -6,7 +6,7 @@ from __future__ import division
 
 import compas_rhino
 # from compas.utilities import like_list
-from compas_rhino.artists import _PrimitiveArtist
+from compas_rhino.artists import PrimitiveArtist
 
 
 __all__ = ['LineArtist']
@@ -27,7 +27,7 @@ def list_like(target, value, fillvalue=None):
     return matched_list
 
 
-class LineArtist(_PrimitiveArtist):
+class LineArtist(PrimitiveArtist):
     """Artist for drawing ``Line`` objects.
 
     Parameters
