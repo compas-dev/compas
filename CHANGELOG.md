@@ -11,8 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Moved conversion of int keys of mesh data to strings for json serialisation to from/to json.
+
 ### Removed
 
+- Support for non-integer vertex and face identifiers in mesh.
 
 ## [0.12.4] 2019-12-11
 
