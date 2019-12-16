@@ -2,13 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas_rhino.artists import _ShapeArtist
+from compas.datastructures import Mesh
+from compas_rhino.artists import MeshArtist
 
 
 __all__ = ['BoxArtist']
 
 
-class BoxArtist(_ShapeArtist):
+class BoxArtist(MeshArtist):
     """Artist for drawing ``Box`` objects.
 
     Parameters
@@ -27,21 +28,23 @@ class BoxArtist(_ShapeArtist):
 
     __module__ = "compas_rhino.artists"
 
-    def __init__(self, box, layer=None):
-        super(BoxArtist, self).__init__(box, layer=layer)
+    def __init__(self, box, **kwargs):
+        self._box = None
+        super(BoxArtist, self).__init__(None, **kwargs)
+        self.box = box
         self.settings.update({
-            'color.box': (0, 0, 0)})
+            'color.vertices': (0, 0, 0),
+            'color.edges': (255, 0, 0),
+            'color.faces': (255, 200, 200)})
 
-    def draw(self):
-        """Draw the box.
+    @property
+    def box(self):
+        return self._box
 
-        Returns
-        -------
-        guids: list of str
-            The GUIDs of the created Rhino objects.
-
-        """
-        pass
+    @box.setter
+    def box(self, box):
+        self._box = box
+        self.datastructure = Mesh.from_shape(box)
 
 
 # ==============================================================================

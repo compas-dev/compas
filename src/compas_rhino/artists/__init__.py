@@ -42,16 +42,19 @@ Data Structure Artists
 from __future__ import absolute_import
 
 from ._artist import _Artist
-from ._primitiveartist import *  # noqa: F401 F403
+
+from .primitiveartist import *  # noqa: F401 F403
 
 from .pointartist import PointArtist
 from .lineartist import LineArtist
 from .frameartist import FrameArtist
 
 from .artist import *  # noqa: F401 F403
-from .meshartist import *  # noqa: F401 F403
 from .networkartist import *  # noqa: F401 F403
+from .meshartist import *  # noqa: F401 F403
 from .volmeshartist import *  # noqa: F401 F403
+
+from .boxartist import *  # noqa: F401 F403
 
 from compas.geometry import Frame
 from compas.geometry import Line

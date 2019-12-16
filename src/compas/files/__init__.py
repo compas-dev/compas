@@ -6,8 +6,8 @@ files
 .. currentmodule:: compas.files
 
 
-Classes
-=======
+OBJ
+===
 
 .. autosummary::
     :toctree: generated/
@@ -16,14 +16,46 @@ Classes
     OBJ
     OBJReader
     OBJParser
+
+PLY
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     PLY
     PLYReader
     PLYParser
+
+STL
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     STL
     STLReader
     STLParser
+
+URDF
+====
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     URDF
     URDFParser
+
+XML
+===
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     XML
     XMLReader
 

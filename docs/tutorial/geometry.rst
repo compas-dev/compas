@@ -70,12 +70,38 @@ Basic examples
     >>> X = matrix_from_axis_and_angle([0.0, 0.0, 1.0], radians(30))
     >>> transform_points(points, X)
 
+Primitives
+==========
 
-.. intersections
+.. code-block:: python
 
-.. shape transformations
+    >>> a = Point(1.0, 0.0, 0,0)
+    >>> b = Point(0.0, 1.0, 0.0)
+    >>> a + b
+    Point(1.000, 1.000, 0.000)
+    >>> a * 3.0
+    Point(3.000, 0.000, 0.000)
+    >>> a - b
+    Vector(1.000, -1.000, 0.000)
 
-.. collections
+.. code-block:: python
 
-.. numpy
+    >>> u = Vector(1.0, 0.0, 0,0)
+    >>> v = Vector(0.0, 1.0, 0,0)
+    >>> u.length
+    1.0
+    >>> u + v
+    Vector(1.000, 1.000, 0.000)
+
+
+Transformations
+===============
+
+
+Collections
+===========
+
+
+Numpy
+=====
 

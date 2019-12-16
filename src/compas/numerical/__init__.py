@@ -5,18 +5,6 @@ numerical
 
 .. currentmodule:: compas.numerical
 
-.. note::
-
-    For many functions, multiple implementations are available using various backends.
-    If no backend is specified, the function is assumed to be implemented in pure Python.
-    The suffix `_numpy` indicates that the function uses Numpy and/or Scipy.
-    Some of the other possibilities are `_alglib`, `_cpp`, `_matlab`, `_sympy`.
-
-    On most platforms, all variants are directly available.
-    In Rhino, only the pure Python and the `_alglib` variants can be used directly.
-    All others have to be accessed through an `XFunc` or an `RPC` service.
-
-
 Solvers
 =======
 
