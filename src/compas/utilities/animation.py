@@ -40,6 +40,12 @@ def gif_from_images(files,
     subrectangles : bool, optional
         Default is ``True``.
 
+    Examples
+    --------
+    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+    >>> plotter = MeshPlotter(mesh)
+    >>> plotter.draw_vertices()
+
     """
     if reverse:
         files.reverse()
@@ -67,9 +73,4 @@ def gif_from_images(files,
 
 if __name__ == "__main__":
 
-    import compas
-
-    base = 'example-mesh-remeshing-on-mesh'
-    files = [os.path.join(compas.TEMP, 'screenshots', base + '-' + str(i).zfill(4) + '.jpg') for i in range(5, 295, 10)]
-
-    gif_from_images(files, os.path.join(compas.TEMP, base + '.gif'))
+    pass
