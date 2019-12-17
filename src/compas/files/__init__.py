@@ -13,7 +13,6 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    BaseReader
     OBJ
     OBJReader
     OBJParser
