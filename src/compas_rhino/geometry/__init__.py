@@ -36,14 +36,10 @@ from __future__ import print_function
 import compas
 import compas_rhino
 
-try:
+if compas.IPY:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
-
     find_object = sc.doc.Objects.Find
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 class RhinoGeometry(object):

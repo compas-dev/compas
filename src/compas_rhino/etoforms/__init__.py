@@ -1,3 +1,21 @@
+"""
+********************************************************************************
+compas_rhino.etoforms
+********************************************************************************
+
+.. currentmodule:: compas_rhino.etoforms
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    ImageForm
+    PropertyListFormForm
+    SettingsForm
+    TextForm
+
+"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function

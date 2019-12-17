@@ -4,13 +4,13 @@ from __future__ import division
 
 import compas_rhino
 
-from compas_rhino.artists import _PrimitiveArtist
+from compas_rhino.artists import PrimitiveArtist
 
 
 __all__ = ['FrameArtist']
 
 
-class FrameArtist(_PrimitiveArtist):
+class FrameArtist(PrimitiveArtist):
     """Artist for drawing ``Frame`` objects.
 
     Parameters

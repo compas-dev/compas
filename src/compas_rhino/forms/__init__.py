@@ -26,16 +26,12 @@ from abc import abstractmethod
 
 import compas
 
-try:
+if compas.IPY:
     from System.Windows.Forms import DialogResult
     from System.Windows.Forms import FormBorderStyle
     from System.Windows.Forms import Form as WinForm
     import Rhino
-
-except ImportError:
-    if compas.is_ironpython() and compas.is_windows():
-        raise
-
+else:
     class WinForm(object):
         pass
 

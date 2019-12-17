@@ -29,14 +29,11 @@ from contextlib import contextmanager
 
 import compas
 
-try:
+if compas.IPY:
     import Rhino
     import scriptcontext as sc
     from Rhino.Display import DisplayConduit
-
-except ImportError:
-    compas.raise_if_ironpython()
-
+else:
     class DisplayConduit(object):
         pass
 
