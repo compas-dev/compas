@@ -89,68 +89,52 @@ class Polygon(Primitive):
         return cls(data['points'])
 
     @classmethod
-    def from_circle(cls, circle, n, vector=None):
-        """Construct a regular polygon from a ``Circle`` and a number of sides.
+    def from_sides_and_radius_xy(cls, n, radius):
+        """Construct a polygon from a number of sides and a radius.
         The resulting polygon is planar, equilateral and equiangular.
 
         Parameters
         ----------
-        circle : ``Circle``
-            The circle the polygon will be circumscribed to.
         n : ``int``
             The number of sides.
-        vector : ``list`` of ``float`` or ``Vector``, optional
-            The direction the first point of the polygon will follow.
-            If not supplied, its alignment is arbitrarily selected
-            based on the ``Circle``'s normal.
+        radius : ``float``
+            The radius of the circle the polygon will be circumscribed to.
         
         Returns
         -------
         polygon: ``Polygon``
             The constructed polygon.
 
+        Notes
+        -----
+        The first point of the polygon aligns with the Y-axis.
+        The order of the polygon's points is counterclockwise.
+        
         Examples
         --------
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Plane
         >>> from compas.geometry import dot_vectors
         >>> from compas.geometry import subtract_vectors
-        >>> circle = Circle(Plane([0, 0, 0], [0, 0, 1]), 0.5)
-        >>> vec = [1, 0, 0]
-        >>> pentagon = Polygon.from_circle(circle, 5, vec)
+        >>> pentagon = Polygon.from_sides_and_radius_xy(5, 1.0)
         >>> len(pentagon.lines) == 5
         True
         >>> len({round(line.length, 6) for line in pentagon.lines}) == 1
         True
-        >>> dot_vectors(pentagon.normal, circle.normal) == 1
+        >>> dot_vectors(pentagon.normal, [0.0, 0.0, 1.0]) == 1
         True
-        >>> centertofirst = subtract_vectors(pentagon.points[0], circle.center)
-        >>> dot_vectors(centertofirst, vec) == circle.radius
+        >>> centertofirst = subtract_vectors(pentagon.points[0], pentagon.center)
+        >>> dot_vectors(centertofirst, [0.0, 1.0, 0.0]) == 1
         True
         """
-        def check_number_sides():
-            if n < 3:
-                raise ValueError("Supplied number of sides must be at least 3!")
-
-        def calculate_frame():
-            if vector is None:
-                return Frame.from_plane(circle.plane)
-            return Frame(circle.center, cross_vectors(circle.normal, vector), vector)
-            
-        def polygon_xy():
-            side = math.pi * 2 / n
-            points = []
-            for i in range(n):
-                point = [math.sin(side * i) * circle.radius,
-                         math.cos(side * i) * circle.radius,
-                         0.0]
-                points.append(point)
-            return points
-
-
-        check_number_sides()
-        T = Transformation.from_frame(calculate_frame())
-        return cls(transform_points(polygon_xy(), T))
+        assert n >= 3, "Supplied number of sides must be at least 3!"
+        
+        points = []
+        side = math.pi * 2 / n
+        for i in range(n):
+            point = [math.sin(side * (n - i)) * radius,
+                     math.cos(side * (n - i)) * radius,
+                     0.0]
+            points.append(point)
+        return cls(points)
 
     # ==========================================================================
     # descriptors
