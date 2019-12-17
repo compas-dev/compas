@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import math
+
 from compas.geometry.basic import cross_vectors
 
 from compas.geometry.average import centroid_points
@@ -16,8 +18,11 @@ from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Line
+from compas.geometry.primitives import Frame
 
+from compas.geometry import Transformation
 from compas.geometry import transform_points
+
 
 __all__ = ['Polygon']
 
@@ -82,6 +87,54 @@ class Polygon(Primitive):
 
         """
         return cls(data['points'])
+
+    @classmethod
+    def from_sides_and_radius_xy(cls, n, radius):
+        """Construct a polygon from a number of sides and a radius.
+        The resulting polygon is planar, equilateral and equiangular.
+
+        Parameters
+        ----------
+        n : ``int``
+            The number of sides.
+        radius : ``float``
+            The radius of the circle the polygon will be circumscribed to.
+        
+        Returns
+        -------
+        polygon: ``Polygon``
+            The constructed polygon.
+
+        Notes
+        -----
+        The first point of the polygon aligns with the Y-axis.
+        The order of the polygon's points is counterclockwise.
+        
+        Examples
+        --------
+        >>> from compas.geometry import dot_vectors
+        >>> from compas.geometry import subtract_vectors
+        >>> pentagon = Polygon.from_sides_and_radius_xy(5, 1.0)
+        >>> len(pentagon.lines) == 5
+        True
+        >>> len({round(line.length, 6) for line in pentagon.lines}) == 1
+        True
+        >>> dot_vectors(pentagon.normal, [0.0, 0.0, 1.0]) == 1
+        True
+        >>> centertofirst = subtract_vectors(pentagon.points[0], pentagon.center)
+        >>> dot_vectors(centertofirst, [0.0, 1.0, 0.0]) == 1
+        True
+        """
+        assert n >= 3, "Supplied number of sides must be at least 3!"
+        
+        points = []
+        side = math.pi * 2 / n
+        for i in range(n):
+            point = [math.sin(side * (n - i)) * radius,
+                     math.cos(side * (n - i)) * radius,
+                     0.0]
+            points.append(point)
+        return cls(points)
 
     # ==========================================================================
     # descriptors
