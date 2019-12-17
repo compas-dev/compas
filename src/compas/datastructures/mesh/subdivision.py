@@ -750,31 +750,10 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 if __name__ == "__main__":
 
     import doctest
+
     import compas  # noqa: F401
     from compas.datastructures import Mesh
     from compas.datastructures import mesh_quads_to_triangles  # noqa: F401
     from compas.geometry import Box  # noqa: F401
-
-    # from compas_plotters import MeshPlotter
-    # from compas_viewers.meshviewer import MeshViewer
-    # from compas.utilities import print_profile
-
-    # mesh = Mesh.from_obj(compas.get('faces.obj'))
-    # mesh = Mesh.from_shape(Box.from_corner_corner_height((0.0, 0.0, 0.0), (1.0, 1.0, 0.0), 1.0))
-
-    # subdivide = print_profile(mesh_subdivide_tri)
-    # # subdivide = print_profile(mesh_subdivide_quad)
-    # # subdivide = print_profile(mesh_subdivide_catmullclark)
-    # # subdivide = print_profile(mesh_subdivide_corner)
-    # # subdivide = print_profile(mesh_subdivide_doosabin)
-
-    # subd = subdivide(mesh, k=6)
-
-    # print(subd.number_of_faces())
-
-    # viewer = MeshViewer()
-    # viewer.mesh = subd
-
-    # viewer.show()
 
     doctest.testmod(globs=globals())
