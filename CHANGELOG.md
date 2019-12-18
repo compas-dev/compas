@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- File reading functions for ascii files in `compas.files` has moved from the individual reader classes to a new parent class, `BaseReader`.
-
 ### Changed
 
 ### Removed
@@ -143,7 +141,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added pointcloud alignment example to docs.
 - Show git hash on `compas.__version__` if installed from git.
 - Added `autopep8` to dev requirements.
-- Added methods `add_joint` and `add_link` to `RobotModel`
+- Added methods `add_joint` and `add_link` to `RobotModel` 
 - Added support for geometric primitives to JSON data encoder and decoder.
 - Added support for `data` to all geometric primitives.
 
