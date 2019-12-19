@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- compas.utilities.maps.geometric_key2 renamed to geometric_key_xy
 - File reading functions for ascii files in `compas.files` has moved from the individual reader classes to a new parent class, `BaseReader`.
 
 ### Changed
+
+- compas.utilities.maps.geometric_key2 renamed to geometric_key_xy
 
 ### Removed
 
