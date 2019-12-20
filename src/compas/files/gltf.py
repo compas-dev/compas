@@ -8,6 +8,7 @@ __all__ = [
     'GLTFParser',
 ]
 
+import json
 from compas.geometry import multiply_matrices, transpose_matrix
 
 
@@ -40,7 +41,6 @@ class GLTFReader(object):
     """
     def __init__(self, filepath):
         self.filepath = filepath
-        self.json = None
         self.scene = None
         self.read()
 
@@ -100,7 +100,7 @@ class GLTFParser(object):
 
             parent_transform = vertex_data[parent]['transform']
             matrix = attributes['matrix']
-            child_transform = self._multiply(parent_transform, matrix)
+            child_transform = multiply_matrices(parent_transform, matrix)
 
             vertex_coordinate_data[child] = self._inhomogeneous_transformation(child_transform, origin)
             attributes['transform'] = child_transform
@@ -112,9 +112,6 @@ class GLTFParser(object):
             'vertices': vertex_coordinate_data,  # {vertex_name: [x, y, z]]}
             'edges': edge_data,  # [(parent_name, child_name])
         }
-
-    def _multiply(self, matrix1, matrix2):
-        return multiply_matrices(matrix1, matrix2)
 
     def _inhomogeneous_transformation(self, matrix, vector):
         return self._project_vector(multiply_matrices([self._embed_vector(vector)], transpose_matrix(matrix))[0])
@@ -148,6 +145,8 @@ if __name__ == '__main__':
     download_file_from_remote(source_bin, filepath_bin, overwrite=False)
 
     gltf = GLTF(filepath_gltf)
+
+    print('hello')
 
     scene_tree = Network.from_vertices_and_edges(
         gltf.parser.scene_data['vertices'],

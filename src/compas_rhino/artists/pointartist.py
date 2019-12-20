@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas_rhino.artists import _PrimitiveArtist
+from compas_rhino.artists import PrimitiveArtist
 
 
 __all__ = ['PointArtist']
@@ -24,7 +24,7 @@ def list_like(target, value, fillvalue=None):
     return matched_list
 
 
-class PointArtist(_PrimitiveArtist):
+class PointArtist(PrimitiveArtist):
     """Artist for drawing ``Point`` objects.
 
     Parameters
