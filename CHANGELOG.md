@@ -9,9 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- File reading functions for ascii files in `compas.files` has moved from the individual reader classes to a new parent class, `BaseReader`.
+- New parent class BaseReader has been added to `compas.files` in new module `base_reader` to define shared methods for opening, downloading and reading files among other things.
 
 ### Changed
+- `compas.files.obj` now inherits from `compas.files.base_reader.BaseReader` and uses parents function for reading, opening and downloading.
 
 ### Removed
 
