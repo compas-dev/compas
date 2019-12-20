@@ -95,8 +95,12 @@ def open_nonexistant_file():
 
 
 def test_open_nonexistant_file():
-    with pytest.raises(FileNotFoundError):
-        open_nonexistant_file()
+    try:
+        with pytest.raises(FileNotFoundError):
+            open_nonexistant_file()
+    except NameError:
+        with pytest.raises(OSError):
+            open_nonexistant_file()
 
 
 def test_location_from_string_adress(ascii_ply):
