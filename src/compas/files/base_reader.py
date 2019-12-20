@@ -64,8 +64,10 @@ class BaseReader(object):
             else:
                 pathobj = self._address
 
-        if pathobj.exists():
-            return pathobj
+        # Makes path absolute and raises FileNotFound if file is not found
+        pathobj.resolve(strict=True)
+
+        return pathobj
 
     @property
     def is_binary(self):

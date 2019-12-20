@@ -89,6 +89,16 @@ def test_iterate_over_binary_file(binary_stl):
     assert two_chunks[1][:5] == b'\x9a%\x00\x00\x8b'
 
 
+def open_nonexistant_file():
+    not_a_file = BaseReader('not_a_file')
+    print(not_a_file.location)
+
+
+def test_open_nonexistant_file():
+    with pytest.raises(FileNotFoundError):
+        open_nonexistant_file()
+
+
 def test_location_from_string_adress(ascii_ply):
     file = BaseReader(ascii_ply)
     assert isinstance(file.location, Path)
