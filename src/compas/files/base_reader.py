@@ -55,6 +55,11 @@ class BaseReader(object):
         ------
         Path object
             Path object for file location
+
+        Raises
+        ------
+        FileNotFound (Python >=3.3) or OSError (Python <3.3)
+            If a file can't be found at given address
         """
         if self.is_address_url():
             pathobj = self._download(self._address)
@@ -64,8 +69,9 @@ class BaseReader(object):
             else:
                 pathobj = self._address
 
-        if pathobj.exists():
-            return pathobj
+        pathobj.resolve(strict=True)
+
+        return pathobj
 
     @property
     def is_binary(self):
