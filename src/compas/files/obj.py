@@ -99,7 +99,40 @@ class OBJReader(BaseReader):
 
     def read(self):
         """Read the contents of *obj*-file
+        """
+        # TODO: Docstrings
 
+        line_buffer = []
+        line_generator = self.iter_lines()
+
+        try:
+            while True:
+                line = next(line_generator)
+
+                line = line.strip()
+
+                # ignore empty lines
+                if line == '':
+                    continue
+
+                if line[-1] == '\\':
+                    line_buffer.append(line[:-1])
+                    continue
+
+                if len(line_buffer) > 0:
+                    line = " ".join(line_buffer + [line])
+                    line_buffer = []
+
+                self._read_line(line)
+
+        except StopIteration:
+            # If last line contains continued line marker, try to process it anyways
+            if len(line_buffer) > 0:
+                line = " ".join(line_buffer)
+                self._read_line(line)
+
+    def _read_line(self, line):
+        """
         Every line is split into a *head* and a *tail*.
         The *head* determines the meaning of the data found in *tail*.
 
@@ -115,44 +148,36 @@ class OBJReader(BaseReader):
         * ``bmat``: freeform attribute *basis matrix*
         * ``step``: freeform attribute *step size*
         * ``cstype``: freeform attribute *curve or surface type*
-
         """
-        for line in self.iter_lines():
-            parts = line.split()
-            if not parts:
-                continue
-            head = parts[0]
-            tail = parts[1:]
-            if head == '#':
-                self._read_comment(tail)
-                continue
-            if head == 'v':
-                self._read_vertex_coordinates(tail)
-                continue
-            if head == 'vt':
-                self._read_vertex_texture(tail)
-                continue
-            if head == 'vn':
-                self._read_vertex_normal(tail)
-                continue
-            if head == 'vp':
-                self._read_parameter_vertex(tail)
-                continue
-            if head in ('p', 'l', 'f'):
-                self._read_polygonal_geometry(head, tail)
-                continue
-            if head in ('deg', 'bmat', 'step', 'cstype'):
-                self._read_freeform_attribute(head, tail)
-                continue
-            if head in ('curv', 'curv2', 'surf'):
-                self._read_freeform_geometry(head, tail)
-                continue
-            if head in ('parm', 'trim', 'hole', 'scrv', 'sp', 'end'):
-                self._read_freeform_statement(head, tail)
-                continue
-            if head in ('g', 's', 'mg', 'o'):
-                self._read_grouping(head, tail)
-                continue
+
+        parts = line.split()
+
+        head = parts[0]
+        tail = parts[1:]
+
+        # starts with if the comment starts after # without whitespace
+        if head.startswith('#'):
+            self._read_comment(tail)
+        if head == 'v':
+            self._read_vertex_coordinates(tail)
+        if head == 'vt':
+            self._read_vertex_texture(tail)
+        if head == 'vn':
+            self._read_vertex_normal(tail)
+        if head == 'vp':
+            self._read_parameter_vertex(tail)
+        if head in ('p', 'l', 'f'):
+            self._read_polygonal_geometry(head, tail)
+        if head in ('deg', 'bmat', 'step', 'cstype'):
+            self._read_freeform_attribute(head, tail)
+        if head in ('curv', 'curv2', 'surf'):
+            self._read_freeform_geometry(head, tail)
+        if head in ('parm', 'trim', 'hole', 'scrv', 'sp', 'end'):
+            self._read_freeform_statement(head, tail)
+        if head in ('g', 's', 'mg', 'o'):
+            self._read_grouping(head, tail)
+        # warn if none of above is true?
+
 
     def _read_comment(self, data):
         """Read a comment.

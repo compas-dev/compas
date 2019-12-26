@@ -6,6 +6,7 @@ import compas
 from compas.files.obj import OBJ, OBJParser, OBJReader
 
 REPO_ROOT = os.path.join(os.path.dirname(compas.__file__), '../..')
+BASE_FOLDER = os.path.dirname(__file__)
 
 
 @pytest.fixture
@@ -16,6 +17,11 @@ def boxes_obj():
 @pytest.fixture
 def faces_obj():
     return os.path.join(REPO_ROOT, 'data', 'faces.obj')
+
+
+@pytest.fixture
+def obj_w_line_conts():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'faces_reversed_line_conts.obj')
 
 
 def test_OBJReader(faces_obj):
@@ -34,3 +40,9 @@ def test_OBJ(boxes_obj):
     obj = OBJ(boxes_obj)
 
     assert len(obj.reader.vertices) == 192
+
+
+def test_line_conts(obj_w_line_conts):
+    obj = OBJReader(obj_w_line_conts)
+
+    assert len(obj.vertices) == 36
