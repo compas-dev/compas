@@ -103,33 +103,28 @@ class OBJReader(BaseReader):
         # TODO: Docstrings
 
         line_buffer = []
-        line_generator = self.iter_lines()
 
-        try:
-            while True:
-                line = next(line_generator)
+        for line in self.iter_lines():
+            line = line.strip()
 
-                line = line.strip()
+            # ignore empty lines
+            if line == '':
+                continue
 
-                # ignore empty lines
-                if line == '':
-                    continue
+            if line[-1] == '\\':
+                line_buffer.append(line[:-1])
+                continue
 
-                if line[-1] == '\\':
-                    line_buffer.append(line[:-1])
-                    continue
-
-                if len(line_buffer) > 0:
-                    line = " ".join(line_buffer + [line])
-                    line_buffer = []
-
-                self._read_line(line)
-
-        except StopIteration:
-            # If last line contains continued line marker, try to process it anyways
             if len(line_buffer) > 0:
-                line = " ".join(line_buffer)
-                self._read_line(line)
+                line = " ".join(line_buffer + [line])
+                line_buffer = []
+
+            self._read_line(line)
+
+        # If last line contains continued line marker, try to process it anyways
+        if len(line_buffer) > 0:
+            line = " ".join(line_buffer)
+            self._read_line(line)
 
     def _read_line(self, line):
         """
