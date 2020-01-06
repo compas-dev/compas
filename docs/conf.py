@@ -15,22 +15,22 @@ sys.path.insert(0, os.path.abspath('../src'))
 
 # -- General configuration ------------------------------------------------
 
-project          = 'COMPAS'
-copyright        = 'Block Research Group - ETH Zurich'
-author           = 'Tom Van Mele'
+project = 'COMPAS'
+copyright = 'Block Research Group - ETH Zurich'
+author = 'Tom Van Mele'
 
-release = '0.13.3'
+release = '0.13.1'
 version = '.'.join(release.split('.')[0:2])
 
-master_doc       = 'index'
-source_suffix    = ['.rst', ]
-templates_path   = ['_templates', ]
+master_doc = 'index'
+source_suffix = ['.rst', ]
+templates_path = ['_templates', ]
 exclude_patterns = ['_build', '**.ipynb_checkpoints', '_notebooks']
 
-pygments_style   = 'sphinx'
-show_authors     = True
+pygments_style = 'sphinx'
+show_authors = True
 add_module_names = True
-language         = None
+language = None
 
 
 # -- Extension configuration ------------------------------------------------
@@ -81,16 +81,22 @@ napoleon_use_rtype = False
 # first, we define new methods for any new sections and add them to the class
 def parse_keys_section(self, section):
     return self._format_fields('Keys', self._consume_fields())
+
+
 NumpyDocstring._parse_keys_section = parse_keys_section
 
 
 def parse_attributes_section(self, section):
     return self._format_fields('Attributes', self._consume_fields())
+
+
 NumpyDocstring._parse_attributes_section = parse_attributes_section
 
 
 def parse_class_attributes_section(self, section):
     return self._format_fields('Class Attributes', self._consume_fields())
+
+
 NumpyDocstring._parse_class_attributes_section = parse_class_attributes_section
 
 
@@ -100,6 +106,8 @@ def patched_parse(self):
     self._sections['keys'] = self._parse_keys_section
     self._sections['class attributes'] = self._parse_class_attributes_section
     self._unpatched_parse()
+
+
 NumpyDocstring._unpatched_parse = NumpyDocstring._parse
 NumpyDocstring._parse = patched_parse
 
@@ -216,7 +224,7 @@ intersphinx_mapping = {
 html_theme = 'compas'
 html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
-    'navbar_active' : 'main',
+    'navbar_active': 'main',
 }
 html_context = {}
 html_static_path = []
