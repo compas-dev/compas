@@ -70,13 +70,14 @@ class GLTF2Reader(object):
     ----------
     filepath: str
         Path to the file.
+        Binary files containing the mesh data are assumed to be in the same directory.
 
     Attributes
     ----------
     filepath : str
-        String containing the path to the glTF
+        String containing the path to the glTF.
     json : dict
-        Dictionary object containing the contents of the glTF
+        Dictionary object containing the contents of the glTF.
     """
     def __init__(self, filepath):
         self.filepath = filepath
@@ -90,7 +91,8 @@ class GLTF2Reader(object):
 
 
 class GLTF2Parser(object):
-    """Parse the contents of the reader to read and parse the associated binary files to create objects digestible by compas.
+    """Parse the contents of the reader to read and parse the associated binary files
+    and create objects digestible by compas.
 
     Parameters
     ----------
@@ -112,6 +114,7 @@ class GLTF2Parser(object):
                 'matrix' : <matrix representing the transformation from the parent to the vertex>
                 'mesh_key' : <index of the mesh at this vertex, if any>
                 'mesh_name' : <name of the mesh, if any>
+                'extras' : <extra data associated to the node, if any>
             }
     edges : list
         List of tupled pairs of vertices representing edges.
@@ -120,7 +123,7 @@ class GLTF2Parser(object):
         self.reader = reader
         self.faces_and_vertices = []
         self.root = 'world'
-        self.vertices = {self.root: [0, 0, 0]}  # this contains much redundant information, so that a reasonable thing?
+        self.vertices = {self.root: [0, 0, 0]}
         self.vertex_data = {self.root: {
             'transform': identity_matrix(4),
             'matrix': identity_matrix(4),
@@ -131,20 +134,25 @@ class GLTF2Parser(object):
     def parse(self):
         self.extract_tree_data()
 
-        meshes = self.reader.json['meshes']
+        meshes = self.reader.json.get('meshes', [])
         self.faces_and_vertices = [self.get_faces_and_vertices(mesh) for mesh in meshes]
 
     def extract_tree_data(self):
-        default_scene_index = self.reader.json['scene']  # consider handling other scenes...
-        root_children = self.reader.json['scenes'][default_scene_index]['nodes']
+        default_scene_index = self.get_default_scene()
+        root_children = self.reader.json['scenes'][default_scene_index].get('nodes', [])
 
         self.process_children(self.root, root_children)
 
-        nodes = self.reader.json['nodes']
+        nodes = self.reader.json.get('nodes', [])
         for node_key, node in enumerate(nodes):
-            if 'children' in node:
-                child_indices = node['children']
-                self.process_children(node_key, child_indices)
+            child_keys = node.get('children', [])
+            self.process_children(node_key, child_keys)
+
+    def get_default_scene(self):
+        if 'scene' not in self.reader.json:
+            raise Exception('This gltf contains no default scene.')
+
+        return self.reader.json['scene']
 
     def process_children(self, parent_key, child_keys):
         for child_key in child_keys:
@@ -162,9 +170,11 @@ class GLTF2Parser(object):
         matrix = self.get_matrix(node)
         transform = multiply_matrices(self.vertex_data[parent_key]['transform'], matrix)
         mesh_data = self.get_mesh_data(node)
+        extras = node.get('extras', {})
 
         data = {'matrix': matrix, 'transform': transform}
         data.update(mesh_data)
+        data.update(extras)
         return data
 
     def get_matrix(self, node):
@@ -195,7 +205,6 @@ class GLTF2Parser(object):
         if 'mesh' in node:
             mesh_key = node['mesh']
             mesh_data['mesh_key'] = mesh_key
-
             mesh = self.reader.json['meshes'][mesh_key]
             if 'name' in mesh:
                 mesh_data['mesh_name'] = mesh['name']
@@ -216,6 +225,9 @@ class GLTF2Parser(object):
         primitives = mesh['primitives']
         shift = 0
         for primitive in primitives:
+            if 'targets' in primitive:
+                raise NotImplementedError
+
             face_side_count = self.get_face_side_count(primitive)
 
             if 'attributes' not in primitive or 'POSITION' not in primitive['attributes']:
@@ -246,12 +258,9 @@ class GLTF2Parser(object):
 
     def get_indices(self, primitive, num_vertices):
         if 'indices' not in primitive:
-            indices = self.get_generic_indices(num_vertices)
-        else:
-            indices_accessor_index = primitive['indices']
-            wrapped_indices = self.access_data(indices_accessor_index)
-            indices = [item[0] for item in wrapped_indices]
-        return indices
+            return self.get_generic_indices(num_vertices)
+        indices_accessor_index = primitive['indices']
+        return self.access_data(indices_accessor_index)
 
     def get_generic_indices(self, num_vertices):
         return list(range(num_vertices))
@@ -264,28 +273,55 @@ class GLTF2Parser(object):
         return list(zip(*it))
 
     def access_data(self, accessor_index):
-        data = []
-
         accessor = self.reader.json['accessors'][accessor_index]
 
-        if 'sparse' in accessor:
-            raise NotImplementedError
-
-        buffer_view_index = accessor['bufferView']
-        buffer_view = self.reader.json['bufferViews'][buffer_view_index]
-
-        offset = accessor['byteOffset'] + buffer_view['byteOffset']
         count = accessor['count']
         component_type = accessor['componentType']
         type_ = accessor['type']
+        accessor_offset = accessor.get('byteOffset', 0)
 
         try:
             num_components = NUM_COMPONENTS_BY_TYPE_ENUM[type_]
         except KeyError:
+            raise NotImplementedError  # is this too harsh?  maybe this should just be ignored...
+
+        if 'sparse' not in accessor and 'bufferView' not in accessor:
             raise NotImplementedError
 
+        if 'bufferView' in accessor:
+            buffer_view_index = accessor['bufferView']
+            data = self.read_from_buffer_view(buffer_view_index, count, component_type, accessor_offset, num_components)
+
+        else:
+            data = [(0, ) * num_components for _ in range(count)]
+
+        if 'sparse' in accessor:
+            sparse_data = accessor['sparse']
+            sparse_count = sparse_data['count']
+
+            sparse_indices_data = sparse_data['indices']
+            sparse_indices_buffer_view_index = sparse_indices_data['bufferView']
+            sparse_indices_component_type = sparse_indices_data['componentType']
+            sparse_indices = self.read_from_buffer_view(sparse_indices_buffer_view_index, sparse_count, sparse_indices_component_type, accessor_offset, 1)
+
+            sparse_values_data = sparse_data['values']
+            sparse_values_buffer_view_index = sparse_values_data['bufferView']
+            sparse_values = self.read_from_buffer_view(sparse_values_buffer_view_index, sparse_count, component_type, accessor_offset, num_components)
+
+            for index, data_index in enumerate(sparse_indices):
+                data[data_index] = sparse_values[index]
+
+        return data
+
+    def read_from_buffer_view(self, buffer_view_index, count, component_type, accessor_offset, num_components):
+        data = []
+        buffer_view = self.reader.json['bufferViews'][buffer_view_index]
+        buffer_view_offset = buffer_view.get('byteOffset', 0)
+
+        offset = accessor_offset + buffer_view_offset
+
         expected_length = COMPONENT_TYPE_SIZE_ENUM[component_type] * num_components
-        byte_stride = buffer_view['byteStride'] if 'byteStride' in buffer_view else expected_length
+        byte_stride = buffer_view.get('byteStride', expected_length)
         pad_length = byte_stride - expected_length
 
         format_ = '<' + COMPONENT_TYPE_ENUM[component_type] * num_components + 'x' * pad_length
@@ -299,6 +335,9 @@ class GLTF2Parser(object):
             unpacked = struct.unpack(format_, bytes_)
             data.append(unpacked)
         f.close()
+
+        if num_components == 1:
+            data = [item[0] for item in data]  # if scalars
 
         return data
 
@@ -341,10 +380,15 @@ if __name__ == '__main__':
     from compas.utilities import download_file_from_remote
     from compas_viewers.multimeshviewer import MultiMeshViewer
 
-    source_gltf = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/GearboxAssy/glTF/GearboxAssy.gltf'
-    source_bin = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/GearboxAssy/glTF/GearboxAssy0.bin'
-    filepath_gltf = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'GearboxAssy.gltf')
-    filepath_bin = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'GearboxAssy0.bin')
+    # source_gltf = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/GearboxAssy/glTF/GearboxAssy.gltf'
+    # source_bin = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/GearboxAssy/glTF/GearboxAssy0.bin'
+    # filepath_gltf = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'GearboxAssy.gltf')
+    # filepath_bin = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'GearboxAssy0.bin')
+
+    source_gltf = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SimpleSparseAccessor/glTF/SimpleSparseAccessor.gltf'
+    source_bin = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SimpleSparseAccessor/glTF/SimpleSparseAccessor.bin'
+    filepath_gltf = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'SimpleSparseAccessor.gltf')
+    filepath_bin = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'SimpleSparseAccessor.bin')
 
     download_file_from_remote(source_gltf, filepath_gltf, overwrite=False)
     download_file_from_remote(source_bin, filepath_bin, overwrite=False)
@@ -380,3 +424,12 @@ if __name__ == '__main__':
     viewer = MultiMeshViewer()
     viewer.meshes = transformed_meshes
     viewer.show()
+
+
+# unfinished business:
+#   -glb support
+#   -sparse support, beautify and test
+#   -morph target support, troublesome because weights can depend on the node
+#       this would mean passing a lot of data back up and might even be beyond what is necessary, but hard for me to say
+#   -<extras> support for things other than nodes?
+#   -load different scenes
