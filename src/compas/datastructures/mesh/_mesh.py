@@ -211,17 +211,41 @@ class Mesh(EdgeGeometry,
         format, which only allows for dict keys that are strings.
 
         """
+        vertex = {}
+        face = {}
+        halfedge = {}
+        facedata = {}
+        edgedata = {}
+
+        for key in self.vertex:
+            vertex[repr(key)] = self.vertex[key]
+            halfedge[repr(key)] = {}
+
+        for key in self.face:
+            face[repr(key)] = [repr(k) for k in self.face[key]]
+
+        for u in self.halfedge:
+            for v in self.halfedge[u]:
+                halfedge[repr(u)][repr(v)] = repr(self.halfedge[u][v])
+
+        for key in self.facedata:
+            facedata[repr(key)] = self.facedata[key]
+
+        for key in self.edgedata:
+            edgedata[repr(key)] = self.edgedata[key]
+
         data = {'attributes': self.attributes,
                 'dva': self.default_vertex_attributes,
                 'dea': self.default_edge_attributes,
                 'dfa': self.default_face_attributes,
-                'vertex': self.vertex,
-                'face': self.face,
-                'halfedge': self.halfedge,
-                'facedata': self.facedata,
-                'edgedata': self.edgedata,
+                'vertex': vertex,
+                'face': face,
+                'halfedge': halfedge,
+                'facedata': facedata,
+                'edgedata': edgedata,
                 'max_int_key': self._max_int_key,
                 'max_int_fkey': self._max_int_fkey, }
+
         return data
 
     @data.setter
@@ -230,22 +254,44 @@ class Mesh(EdgeGeometry,
         dva = data.get('dva') or {}
         dfa = data.get('dfa') or {}
         dea = data.get('dea') or {}
+        vertex = data.get('vertex') or {}
+        face = data.get('face') or {}
+        halfedge = data.get('halfedge') or {}
+        facedata = data.get('facedata') or {}
+        edgedata = data.get('edgedata') or {}
+        max_int_key = data.get('max_int_key', -1)
+        max_int_fkey = data.get('max_int_fkey', -1)
+
+        self.vertex = {}
+        self.face = {}
+        self.halfedge = {}
+        self.facedata = {}
+        self.edgedata = {}
+
+        for key in vertex:
+            self.vertex[literal_eval(key)] = vertex[key]
+            self.halfedge[literal_eval(key)] = {}
+
+        for key in face:
+            self.face[literal_eval(key)] = [literal_eval(k) for k in face[key]]
+
+        for u in halfedge:
+            for v in halfedge[u]:
+                self.halfedge[literal_eval(u)][literal_eval(v)] = literal_eval(halfedge[u][v])
+
+        for key in facedata:
+            self.facedata[literal_eval(key)] = facedata[key]
+
+        for key in edgedata:
+            self.edgedata[literal_eval(key)] = edgedata[key]
+
         self.attributes.update(attributes)
         self.default_vertex_attributes.update(dva)
         self.default_face_attributes.update(dfa)
         self.default_edge_attributes.update(dea)
-        self.vertex = data.get('vertex') or {}
-        halfedge = data.get('halfedge') or {}
-        if halfedge:
-            self.face = data.get('face') or {}
-            self.halfedge = halfedge
-        else:
-            for fkey, vertices in data['face'].items():
-                self.add_face(vertices, fkey=fkey)
-        self.facedata = data.get('facedata') or {}
-        self.edgedata = data.get('edgedata') or {}
-        self._max_int_key = data.get('max_int_key', -1)
-        self._max_int_fkey = data.get('max_int_fkey', -1)
+
+        self._max_int_key = max_int_key
+        self._max_int_fkey = max_int_fkey
 
     # --------------------------------------------------------------------------
     # constructors
@@ -276,7 +322,7 @@ class Mesh(EdgeGeometry,
         return mesh
 
     @classmethod
-    def from_json(cls, filepath, convert=False):
+    def from_json(cls, filepath):
         """Construct a datastructure from structured data contained in a json file.
 
         Parameters
@@ -297,38 +343,6 @@ class Mesh(EdgeGeometry,
         """
         with open(filepath, 'r') as fp:
             data = json.load(fp)
-
-        if convert:
-            vertex = {}
-            face = {}
-            facedata = {}
-            edgedata = {}
-            for key, attr in iter(data['vertex'].items()):
-                vertex[literal_eval(key)] = attr
-            for fkey, vertices in iter(data['face'].items()):
-                face[literal_eval(fkey)] = [literal_eval(key) for key in vertices]
-            for fkey, attr in iter(data['facedata'].items()):
-                facedata[literal_eval(fkey)] = attr
-            for key, attr in iter(data['edgedata'].items()):
-                edgedata[literal_eval(key)] = attr
-            data['vertex'] = vertex
-            data['face'] = face
-            data['facedata'] = facedata
-            data['edgedata'] = edgedata
-
-        else:
-            vertex = {}
-            face = {}
-            facedata = {}
-            for key, attr in iter(data['vertex'].items()):
-                vertex[int(key)] = attr
-            for fkey, vertices in iter(data['face'].items()):
-                face[int(fkey)] = vertices
-            for fkey, attr in iter(data['facedata'].items()):
-                facedata[int(fkey)] = attr
-            data['vertex'] = vertex
-            data['face'] = face
-            data['facedata'] = facedata
 
         mesh = cls()
         mesh.data = data

@@ -2,13 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas_rhino.artists import _Artist
+from compas_rhino.artists import Artist
 
 __all__ = ["PrimitiveArtist"]
 
 
-class PrimitiveArtist(_Artist):
-    """Base class for all ``Primitive`` artists.
+class PrimitiveArtist(Artist):
+    """Base class for all artists for ``compas.geometry.Primitive``.
 
     Parameters
     ----------
@@ -25,7 +25,7 @@ class PrimitiveArtist(_Artist):
     __module__ = "compas_rhino.artists"
 
     def __init__(self, primitive, **kwargs):
-        super(PrimitiveArtist, self).__init__(kwargs)
+        super(PrimitiveArtist, self).__init__(**kwargs)
         self.primitive = primitive
 
 

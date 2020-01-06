@@ -2,29 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# from itertools import zip_longest
-
 import compas_rhino
-# from compas.utilities import like_list
+from compas.utilities import iterable_like
 from compas_rhino.artists import PrimitiveArtist
 
 
 __all__ = ['LineArtist']
-
-
-def list_like(target, value, fillvalue=None):
-    p = len(target)
-
-    if isinstance(value, list):
-        matched_list = value
-    else:
-        matched_list = [value] * p
-
-    d = len(matched_list)
-    if d < p:
-        matched_list.extend([fillvalue] * (p - d))
-
-    return matched_list
 
 
 class LineArtist(PrimitiveArtist):
@@ -63,9 +46,8 @@ class LineArtist(PrimitiveArtist):
         start = list(self.primitive.start)
         end = list(self.primitive.end)
         lines = [{'start': start, 'end': end, 'color': self.settings['color.line']}]
-        guids = compas_rhino.draw_lines(lines, layer=self.settings['layer'], clear=False)
-        if guids:
-            return guids[0]
+        guids = compas_rhino.draw_lines(lines, layer=self.settings['layer'], clear=False, redraw=True)
+        self.guids = guids
 
     @staticmethod
     def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):
@@ -102,7 +84,7 @@ class LineArtist(PrimitiveArtist):
             The name of the group if the collection objects are grouped.
 
         """
-        colors = list_like(collection, color)
+        colors = iterable_like(collection, color)
         lines = []
         for line, rgb in zip(collection, colors):
             lines.append({
@@ -124,4 +106,16 @@ class LineArtist(PrimitiveArtist):
 
 if __name__ == "__main__":
 
-    pass
+    import time
+    from compas.geometry import Line
+
+    line = Line([0, 0, 0], [1, 1, 1])
+
+    artist = LineArtist(line)
+
+    for i in range(10):
+        artist.draw()
+        time.sleep(0.1)
+        artist.clear()
+        time.sleep(0.1)
+

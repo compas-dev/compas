@@ -29,8 +29,8 @@ class BoxArtist(MeshArtist):
     __module__ = "compas_rhino.artists"
 
     def __init__(self, box, **kwargs):
-        self._box = None
         super(BoxArtist, self).__init__(None, **kwargs)
+        self._box = None
         self.box = box
         self.settings.update({
             'color.vertices': (0, 0, 0),
@@ -46,6 +46,11 @@ class BoxArtist(MeshArtist):
         self._box = box
         self.datastructure = Mesh.from_shape(box)
 
+    def draw(self):
+        self.draw_vertices()
+        self.draw_faces()
+        self.draw_edges()
+
 
 # ==============================================================================
 # Main
@@ -53,4 +58,11 @@ class BoxArtist(MeshArtist):
 
 if __name__ == "__main__":
 
-    pass
+    # import time
+    from compas.geometry import Box
+
+    box = Box.from_corner_corner_height([0, 0, 0], [1, 1, 0], 1.0)
+
+    artist = BoxArtist(box)
+
+    artist.draw()

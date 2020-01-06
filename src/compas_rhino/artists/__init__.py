@@ -26,6 +26,8 @@ Shape Artists
     :toctree: generated/
     :nosignatures:
 
+    BoxArtist
+
 
 Data Structure Artists
 ======================
@@ -41,27 +43,27 @@ Data Structure Artists
 """
 from __future__ import absolute_import
 
-from ._artist import _Artist
+from .artist import Artist
 
-from .primitiveartist import *  # noqa: F401 F403
-
+from .primitiveartist import PrimitiveArtist  # noqa: F401
 from .pointartist import PointArtist
 from .lineartist import LineArtist
 from .frameartist import FrameArtist
-
-from .artist import *  # noqa: F401 F403
 from .networkartist import *  # noqa: F401 F403
 from .meshartist import *  # noqa: F401 F403
 from .volmeshartist import *  # noqa: F401 F403
-
 from .boxartist import *  # noqa: F401 F403
 
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Point
+from compas.geometry import Box
+from compas.datastructures import Mesh
 
-_Artist.register(Point, PointArtist)
-_Artist.register(Frame, FrameArtist)
-_Artist.register(Line, LineArtist)
+Artist.register(Point, PointArtist)
+Artist.register(Frame, FrameArtist)
+Artist.register(Line, LineArtist)
+Artist.register(Box, LineArtist)
+Artist.register(Mesh, LineArtist)
 
 __all__ = [name for name in dir() if not name.startswith('_')]

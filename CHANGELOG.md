@@ -13,8 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-### Removed
+- Rebased `compas_rhino.artists.MeshArtist` on new-style artist `compas_rhino.artists.Artist`.
+- Renamed `compas_rhino.artists.MeshArtist.defaults` to `compas_rhino.artists.MeshArtist.settings`.
+- Changed usage of (nonexisting) `compas_rhino.get_object` to `compas_rhino.get_objects`.
+- Integrated vertex, face, edge mixins into `compas_rhino.artists.MeshArtist`.
+- Integrated vertex, edge mixins into `compas_rhino.artists.NetworkArtist`.
+- Rebased `compas_rhino.artists.VolMeshArtist` on `compas_rhino.artists.MeshArtist`.
 
+### Removed
 
 ## [0.13.1] 2019-12-17
 

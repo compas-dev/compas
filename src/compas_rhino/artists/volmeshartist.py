@@ -2,17 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas_rhino.artists import Artist
-
-from compas_rhino.artists.mixins import VertexArtist
-from compas_rhino.artists.mixins import EdgeArtist
-from compas_rhino.artists.mixins import FaceArtist
+from compas_rhino.artists import MeshArtist
 
 
 __all__ = ['VolMeshArtist']
 
 
-class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
+class VolMeshArtist(MeshArtist):
     """A volmesh artist defines functionality for visualising COMPAS volmeshes in Rhino.
 
     Parameters
@@ -32,11 +28,7 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     __module__ = "compas_rhino.artists"
 
     def __init__(self, volmesh, layer=None):
-        super(VolMeshArtist, self).__init__(layer=layer)
-        self.volmesh = volmesh
-        self.defaults.update({
-
-        })
+        super(VolMeshArtist, self).__init__(volmesh, layer=layer)
 
     @property
     def volmesh(self):
@@ -47,13 +39,6 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     def volmesh(self, volmesh):
         self.datastructure = volmesh
 
-    def clear(self):
-        """Clear the vertices, faces and edges of the volmesh, without clearing the
-        other elements in the layer."""
-        self.clear_vertices()
-        self.clear_faces()
-        self.clear_edges()
-
 
 # ==============================================================================
 # Main
@@ -61,4 +46,14 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
 if __name__ == "__main__":
 
-    pass
+    import compas
+
+    from compas.datastructures import VolMesh
+
+    mesh = VolMesh.from_obj(compas.get('boxes.obj'))
+
+    artist = VolMeshArtist(mesh)
+    artist.clear()
+    artist.draw_faces()
+    artist.draw_vertices()
+    artist.draw_edges()
