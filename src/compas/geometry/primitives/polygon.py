@@ -18,9 +18,6 @@ from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Line
-from compas.geometry.primitives import Frame
-
-from compas.geometry import Transformation
 from compas.geometry import transform_points
 
 
@@ -99,7 +96,7 @@ class Polygon(Primitive):
             The number of sides.
         radius : ``float``
             The radius of the circle the polygon will be circumscribed to.
-        
+
         Returns
         -------
         polygon: ``Polygon``
@@ -109,7 +106,7 @@ class Polygon(Primitive):
         -----
         The first point of the polygon aligns with the Y-axis.
         The order of the polygon's points is counterclockwise.
-        
+
         Examples
         --------
         >>> from compas.geometry import dot_vectors
@@ -126,7 +123,7 @@ class Polygon(Primitive):
         True
         """
         assert n >= 3, "Supplied number of sides must be at least 3!"
-        
+
         points = []
         side = math.pi * 2 / n
         for i in range(n):

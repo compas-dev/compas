@@ -11,7 +11,7 @@ __all__ = ['Scene']
 
 class Scene(object):
     """Rhino scene object for managing the visualisation of COMPAS data and geometry.
-    
+
     Notes
     -----
     * Add "display mode": `Shaded`, `Ghosted`, ...
@@ -122,13 +122,6 @@ class Scene(object):
 if __name__ == '__main__':
 
     from compas.datastructures import Mesh
-    from compas.geometry import Point
-    from compas.geometry import Line
-    from compas.geometry import Polygon
-    from compas.geometry import Box
-    
-    import compas_rhino
-    from compas_rhino.scene import Scene
 
     scene = Scene()
 

@@ -355,4 +355,4 @@ if __name__ == "__main__":
     artist.draw_vertices()
     artist.draw_edges()
     artist.draw_vertexlabels(text='key')
-    artist.draw_edgelabels(text={key:index for index, key in enumerate(network.edges())})
+    artist.draw_edgelabels(text={key: index for index, key in enumerate(network.edges())})
