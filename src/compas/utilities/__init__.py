@@ -85,7 +85,7 @@ maps
 
     geometric_key
     reverse_geometric_key
-    geometric_key2
+    geometric_key_xy
     normalize_values
 
 

@@ -1,6 +1,6 @@
 autopep8
 attrs >=17.4
-bumpversion >=0.5
+bump2version >=0.5.11
 check-manifest >=0.36
 doc8
 flake8
