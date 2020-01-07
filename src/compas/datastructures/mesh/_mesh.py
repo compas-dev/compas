@@ -213,20 +213,14 @@ class Mesh(EdgeGeometry,
         """
         vertex = {}
         face = {}
-        halfedge = {}
         facedata = {}
         edgedata = {}
 
         for key in self.vertex:
             vertex[repr(key)] = self.vertex[key]
-            halfedge[repr(key)] = {}
 
         for key in self.face:
             face[repr(key)] = [repr(k) for k in self.face[key]]
-
-        for u in self.halfedge:
-            for v in self.halfedge[u]:
-                halfedge[repr(u)][repr(v)] = repr(self.halfedge[u][v])
 
         for key in self.facedata:
             facedata[repr(key)] = self.facedata[key]
@@ -240,11 +234,10 @@ class Mesh(EdgeGeometry,
                 'dfa': self.default_face_attributes,
                 'vertex': vertex,
                 'face': face,
-                'halfedge': halfedge,
                 'facedata': facedata,
                 'edgedata': edgedata,
                 'max_int_key': self._max_int_key,
-                'max_int_fkey': self._max_int_fkey, }
+                'max_int_fkey': self._max_int_fkey}
 
         return data
 
@@ -256,11 +249,15 @@ class Mesh(EdgeGeometry,
         dea = data.get('dea') or {}
         vertex = data.get('vertex') or {}
         face = data.get('face') or {}
-        halfedge = data.get('halfedge') or {}
         facedata = data.get('facedata') or {}
         edgedata = data.get('edgedata') or {}
         max_int_key = data.get('max_int_key', -1)
         max_int_fkey = data.get('max_int_fkey', -1)
+
+        self.attributes.update(attributes)
+        self.default_vertex_attributes.update(dva)
+        self.default_face_attributes.update(dfa)
+        self.default_edge_attributes.update(dea)
 
         self.vertex = {}
         self.face = {}
@@ -268,27 +265,16 @@ class Mesh(EdgeGeometry,
         self.facedata = {}
         self.edgedata = {}
 
-        for key in vertex:
-            self.vertex[literal_eval(key)] = vertex[key]
-            self.halfedge[literal_eval(key)] = {}
+        for key, attr in iter(vertex.items()):
+            self.add_vertex(literal_eval(key), attr_dict=attr)
 
-        for key in face:
-            self.face[literal_eval(key)] = [literal_eval(k) for k in face[key]]
+        for fkey, vertices in iter(face.items()):
+            attr = facedata.get(fkey) or {}
+            vertices = [literal_eval(k) for k in vertices]
+            self.add_face(vertices, fkey=literal_eval(fkey), attr_dict=attr)
 
-        for u in halfedge:
-            for v in halfedge[u]:
-                self.halfedge[literal_eval(u)][literal_eval(v)] = literal_eval(halfedge[u][v])
-
-        for key in facedata:
-            self.facedata[literal_eval(key)] = facedata[key]
-
-        for key in edgedata:
-            self.edgedata[literal_eval(key)] = edgedata[key]
-
-        self.attributes.update(attributes)
-        self.default_vertex_attributes.update(dva)
-        self.default_face_attributes.update(dfa)
-        self.default_edge_attributes.update(dea)
+        for uv, attr in iter(edgedata.items()):
+            self.edgedata[literal_eval(uv)] = attr or {}
 
         self._max_int_key = max_int_key
         self._max_int_fkey = max_int_fkey
