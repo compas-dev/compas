@@ -155,9 +155,9 @@ def connectivity_matrix(edges, rtype='array'):
     Examples
     --------
     >>> connectivity_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
-    [[-1  1  0  0]
-     [-1  0  1  0]
-     [-1  0  0  1]]
+    array([[-1.,  1.,  0.,  0.],
+           [-1.,  0.,  1.,  0.],
+           [-1.,  0.,  0.,  1.]])
 
     """
     m = len(edges)
@@ -202,10 +202,10 @@ def laplacian_matrix(edges, normalize=False, rtype='array'):
     Examples
     --------
     >>> laplacian_matrix([[0, 1], [0, 2], [0, 3]], rtype='array')
-    [[ 3 -1 -1 -1]
-     [-1  1  0  0]
-     [-1  0  1  0]
-     [-1  0  0  1]]
+    array([[ 3., -1., -1., -1.],
+           [-1.,  1.,  0.,  0.],
+           [-1.,  0.,  1.,  0.],
+           [-1.,  0.,  0.,  1.]])
 
     """
     C = connectivity_matrix(edges, rtype='csr')
@@ -265,8 +265,8 @@ def equilibrium_matrix(C, xyz, free, rtype='array'):
     >>> C = connectivity_matrix([[0, 1], [0, 2], [0, 3]])
     >>> xyz = [[0, 0, 1], [0, 1, 0], [-1, -1, 0], [1, -1, 0]]
     >>> equilibrium_matrix(C, xyz, [0], rtype='array')
-        [[ 0.  1. -1.]
-         [-1.  1.  1.]]
+    array([[ 0.,  1., -1.],
+           [-1.,  1.,  1.]])
 
     """
     xyz = asarray(xyz, dtype=float)
@@ -332,4 +332,6 @@ def stiffness_matrix():
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+
+    doctest.testmod(globs=globals())
