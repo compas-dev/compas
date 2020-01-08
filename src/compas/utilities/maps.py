@@ -6,7 +6,7 @@ from __future__ import division
 import compas
 
 
-__all__ = ['geometric_key', 'reverse_geometric_key', 'geometric_key2', 'normalize_values', 'remap_values']
+__all__ = ['geometric_key', 'reverse_geometric_key', 'geometric_key_xy', 'normalize_values', 'remap_values']
 
 
 def geometric_key(xyz, precision=None, sanitize=True):
@@ -41,6 +41,10 @@ def geometric_key(xyz, precision=None, sanitize=True):
 
         # 3.142,3.142,3.142
 
+    See also
+    --------
+    geometric_key_xy: Create geometric keys for 2D coordinates
+
     """
     x, y, z = xyz
 
@@ -71,8 +75,14 @@ def reverse_geometric_key(string):
     return [float(i) for i in xyz]
 
 
-def geometric_key2(xy, precision=None, sanitize=True):
-    """Convert XY coordinates to a string that can be used as a dict key."""
+def geometric_key_xy(xy, precision=None, sanitize=True):
+    """Convert XY coordinates to a string that can be used as a dict key.
+
+    See also
+    --------
+    geometric_key: Create geometric keys for 3D coordinates
+
+    """
     x, y = xy
 
     if not precision:
