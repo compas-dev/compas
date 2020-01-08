@@ -286,9 +286,9 @@ class GLTFParser(object):
         extras : dict
             Extra information about the scene.
         faces_and_vertices : dict
-            Dictionary of dictionaries containing vertex and face lists.
+            Dictionary of dictionaries containing vertex and face lists for the included meshes.
         vertices : dict
-            Dictionary with vertex names as keys and values of the form:
+            Dictionary naming the vertices of the scene tree.  The values are of the form:
                 {
                     'position' : <xyz coordinates>
                     'transform': <matrix representing the transformation from the origin to the vertex>
@@ -298,7 +298,7 @@ class GLTFParser(object):
                     'extras' : <extra data associated to the node, if any>
                 }
         edges : list
-            List of tupled pairs of vertices representing edges.
+            List of tupled pairs of vertices representing edges of the scene tree.
     """
     def __init__(self, reader):
         self.reader = reader
@@ -485,8 +485,8 @@ if __name__ == '__main__':
     from compas.utilities import download_file_from_remote
     from compas_viewers.multimeshviewer import MultiMeshViewer
 
-    source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/GearboxAssy/glTF-Binary/GearboxAssy.glb'
-    filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'GearboxAssy.glb')
+    source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxInterleaved/glTF-Binary/BoxInterleaved.glb'
+    filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'BoxInterleaved.glb')
 
     download_file_from_remote(source_glb, filepath_glb, overwrite=False)
 

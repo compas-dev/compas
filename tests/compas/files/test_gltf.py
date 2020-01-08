@@ -11,18 +11,51 @@ BASE_FOLDER = os.path.dirname(__file__)
 
 
 @pytest.fixture
-def gltf():
+def simple_gltf():
     return os.path.join(BASE_FOLDER, 'fixtures', 'SimpleMeshes.gltf')
 
 
-def test_from_gltf_edges_loaded(gltf):
-    loaded_gltf = GLTF(gltf)
-    assert len(loaded_gltf.parser.scene_data['edges']) > 0
+@pytest.fixture
+def embedded_gltf():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'SimpleMeshesEmbedded.gltf')
 
 
-# gltf and bin
-#   simple
-#   with sparse
-#   with morph targets
-# gltf with data uri
-# glb
+@pytest.fixture
+def interleaved_glb():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'BoxInterleaved.glb')
+
+
+@pytest.fixture
+def indexless_gltf():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'TriangleWithoutIndices.gltf')
+
+
+@pytest.fixture
+def morph_gltf():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'SimpleMorph.gltf')
+
+
+@pytest.fixture
+def sparse_gltf():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'SimpleSparseAccessor.gltf')
+
+
+def test_from_gltf_edges_loaded(simple_gltf, embedded_gltf, interleaved_glb, indexless_gltf, morph_gltf, sparse_gltf):
+    gltf = GLTF(simple_gltf)
+    assert len(gltf.parser.scenes[0]['edges']) > 0
+
+    gltf = GLTF(embedded_gltf)
+    assert len(gltf.parser.scenes[0]['edges']) > 0
+
+    gltf = GLTF(interleaved_glb)
+    assert len(gltf.parser.scenes[0]['edges']) > 0
+    assert len(gltf.parser.scenes[0]['faces_and_vertices'][0]['vertices']) == 24
+
+    gltf = GLTF(indexless_gltf)
+    assert len(gltf.parser.scenes[0]['faces_and_vertices'][0]['faces']) > 0
+
+    gltf = GLTF(morph_gltf)
+    assert (0.5, 1.5, 0.0) in gltf.parser.scenes[0]['faces_and_vertices'][0]['vertices']
+
+    gltf = GLTF(sparse_gltf)
+    assert (5.0, 4.0, 0.0) in gltf.parser.scenes[0]['faces_and_vertices'][0]['vertices']
