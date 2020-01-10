@@ -13,14 +13,6 @@ __all__ = ['PointArtist']
 class PointArtist(PrimitiveArtist):
     """Artist for drawing ``Point`` objects.
 
-    Parameters
-    ----------
-    point : :class:`compas.geometry.Point`
-        A COMPAS point.
-    layer : str (optional)
-        The name of the layer that will contain the point.
-        Default value is ``None``, in which case the current layer will be used.
-
     Examples
     --------
     >>>
@@ -28,11 +20,6 @@ class PointArtist(PrimitiveArtist):
     """
 
     __module__ = "compas_rhino.artists"
-
-    def __init__(self, point, layer=None):
-        super(PointArtist, self).__init__(point, layer=layer)
-        self.settings.update({
-            'color.point': (0, 0, 0)})
 
     def draw(self):
         """Draw the point.
@@ -43,56 +30,55 @@ class PointArtist(PrimitiveArtist):
             The GUID of the created Rhino object.
 
         """
-        points = [{'pos': list(self.primitive), 'color': self.settings['color.point']}]
-        guids = compas_rhino.draw_points(points, layer=self.settings['layer'], clear=False, redraw=True)
-        self.guids = guids
+        points = [{'pos': list(self.primitive), 'color': self.color, 'name': self.name}]
+        self.guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
-    @staticmethod
-    def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):
-        """Draw a collection of points.
+    # @staticmethod
+    # def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):
+    #     """Draw a collection of points.
 
-        Parameters
-        ----------
-        collection: list of compas.geometry.Point
-            A collection of ``Point`` objects.
-        color: tuple or list of tuple (optional)
-            Color specification of the points.
-            If one RGB color is provided, it will be applied to all points.
-            If a list of RGB colors is provided, these colors are applied to the corresponding points.
-            A list of colors should have the same length as the collection, with one color per item.
-            Default value is ``None`` in which case the default point color of the artist is used.
-        layer: str (optional)
-            The layer in which the objects of the collection should be created.
-            Default is ``None``, in which case the default layer setting of the artist is used.
-        clear: bool (optional)
-            Clear the layer before drawing.
-            Default is ``False``.
-        group_collection: bool (optional)
-            Flag for grouping the objects of the collection.
-            Default is ``False``.
-        group_name: str (optional).
-            The name of the group.
-            Default is ``None``.
+    #     Parameters
+    #     ----------
+    #     collection: list of compas.geometry.Point
+    #         A collection of ``Point`` objects.
+    #     color: tuple or list of tuple (optional)
+    #         Color specification of the points.
+    #         If one RGB color is provided, it will be applied to all points.
+    #         If a list of RGB colors is provided, these colors are applied to the corresponding points.
+    #         A list of colors should have the same length as the collection, with one color per item.
+    #         Default value is ``None`` in which case the default point color of the artist is used.
+    #     layer: str (optional)
+    #         The layer in which the objects of the collection should be created.
+    #         Default is ``None``, in which case the default layer setting of the artist is used.
+    #     clear: bool (optional)
+    #         Clear the layer before drawing.
+    #         Default is ``False``.
+    #     group_collection: bool (optional)
+    #         Flag for grouping the objects of the collection.
+    #         Default is ``False``.
+    #     group_name: str (optional).
+    #         The name of the group.
+    #         Default is ``None``.
 
-        Returns
-        -------
-        guids: list
-            A list of GUIDs if the collection is not grouped.
-        groupname: str
-            The name of the group if the collection objects are grouped.
+    #     Returns
+    #     -------
+    #     guids: list
+    #         A list of GUIDs if the collection is not grouped.
+    #     groupname: str
+    #         The name of the group if the collection objects are grouped.
 
-        """
-        points = []
-        colors = iterable_like(collection, color)
-        for point, rgb in zip(collection, colors):
-            points.append({'pos': list(point), 'color': rgb})
-        guids = compas_rhino.draw_points(points, layer=layer, clear=clear)
-        if not group_collection:
-            return guids
-        group = compas_rhino.rs.AddGroup(group_name)
-        if group:
-            compas_rhino.rs.AddObjectsToGroup(guids, group)
-        return group
+    #     """
+    #     points = []
+    #     colors = iterable_like(collection, color)
+    #     for point, rgb in zip(collection, colors):
+    #         points.append({'pos': list(point), 'color': rgb})
+    #     guids = compas_rhino.draw_points(points, layer=layer, clear=clear)
+    #     if not group_collection:
+    #         return guids
+    #     group = compas_rhino.rs.AddGroup(group_name)
+    #     if group:
+    #         compas_rhino.rs.AddObjectsToGroup(guids, group)
+    #     return group
 
 
 # ==============================================================================
@@ -101,13 +87,4 @@ class PointArtist(PrimitiveArtist):
 
 if __name__ == "__main__":
 
-    import time
-    from compas.geometry import Point
-
-    point = Point(1, 1, 0)
-
-    artist = PointArtist(point)
-
-    artist.draw()
-    time.sleep(2.0)
-    artist.clear()
+    pass

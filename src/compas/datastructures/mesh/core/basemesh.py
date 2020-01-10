@@ -49,7 +49,7 @@ from compas.utilities import geometric_key
 from compas.utilities import pairwise
 from compas.utilities import window
 
-__all__ = ['_Mesh']
+__all__ = ['BaseMesh']
 
 
 TPL = """
@@ -68,19 +68,19 @@ Mesh summary
 """
 
 
-class _Mesh(EdgeGeometry,
-            FaceHelpers,
-            FaceFilter,
-            EdgeHelpers,
-            VertexHelpers,
-            VertexFilter,
-            EdgeFilter,
-            FaceMappings,
-            EdgeMappings,
-            VertexMappings,
-            FaceAttributesManagement,
-            VertexAttributesManagement,
-            Datastructure):
+class BaseMesh(EdgeGeometry,
+               FaceHelpers,
+               FaceFilter,
+               EdgeHelpers,
+               VertexHelpers,
+               VertexFilter,
+               EdgeFilter,
+               FaceMappings,
+               EdgeMappings,
+               VertexMappings,
+               FaceAttributesManagement,
+               VertexAttributesManagement,
+               Datastructure):
     """Definition of a mesh.
 
     Attributes
@@ -132,7 +132,7 @@ class _Mesh(EdgeGeometry,
     __module__ = 'compas.datastructures'
 
     def __init__(self):
-        super(_Mesh, self).__init__()
+        super(BaseMesh, self).__init__()
         self._key_to_str = False
         self._max_int_key = -1
         self._max_int_fkey = -1

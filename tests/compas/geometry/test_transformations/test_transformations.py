@@ -101,11 +101,11 @@ def test_mirror_points_point_xy():
 
 
 def test_mirror_points_line():
-    assert np.allclose(mirror_points_line([[0, 1, 2]], ([3, 4, 5], [6, 7, 8.8])), [[0.281134401972873, 1.281134401972873, 1.5561035758323052]])
+    assert np.allclose(mirror_points_line([[1.0, 0.0, 0.0]], ([0.0, 0.0, 0.0], [0.0, 1.0, 0.0])), [[-1.0, 0.0, 0.0]])
 
 
 def test_mirror_points_line_xy():
-    assert mirror_points_line_xy([[0, 2.5, 2]], ([3, 4, 5], [6, 7, 8.8])) == [[0.75, 1.75, 0.0]]
+    assert np.allclose(mirror_points_line_xy([[1.0, 0.0, 0.0]], ([0.0, 0.0, 0.0], [0.0, 1.0, 0.0])), [[-1.0, 0.0, 0.0]])
 
 
 def test_mirror_points_plane():

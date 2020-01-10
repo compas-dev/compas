@@ -145,8 +145,6 @@ Mixins
     EdgeAttributesManagement
     FaceAttributesManagement
 
-    VertexCoordinatesDescriptors
-
     VertexFilter
     EdgeFilter
     FaceFilter
@@ -162,8 +160,6 @@ Mixins
     VertexHelpers
     EdgeHelpers
     FaceHelpers
-
-    MagicMethods
 
     VertexMappings
     EdgeMappings

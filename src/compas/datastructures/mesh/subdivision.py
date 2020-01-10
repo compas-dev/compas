@@ -13,7 +13,7 @@ from compas.utilities import iterable_like
 from compas.utilities import pairwise
 
 from compas.datastructures.mesh._mesh import Mesh
-from compas.datastructures.mesh.operations import mesh_split_edge
+from compas.datastructures.mesh.core import mesh_split_edge
 
 
 __all__ = [

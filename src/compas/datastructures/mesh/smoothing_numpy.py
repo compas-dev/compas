@@ -1,6 +1,6 @@
 from numpy import array
 
-from compas.datastructures.mesh.matrices import trimesh_cotangent_laplacian_matrix
+from compas.datastructures.mesh.core import trimesh_cotangent_laplacian_matrix
 
 
 __all__ = ['trimesh_smooth_laplacian_cotangent']

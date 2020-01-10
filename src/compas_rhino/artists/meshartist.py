@@ -52,10 +52,12 @@ class MeshArtist(Artist):
 
     __module__ = "compas_rhino.artists"
 
-    def __init__(self, mesh, layer=None):
-        super(MeshArtist, self).__init__(layer=layer)
-        self.datastructure = mesh
-        self.settings.update({
+    def __init__(self, mesh, layer=None, name=None):
+        super(MeshArtist, self).__init__()
+        self.layer = layer
+        self.name = name
+        self.mesh = mesh
+        self.settings = {
             'color.vertex': (255, 255, 255),
             'color.edge': (0, 0, 0),
             'color.face': (210, 210, 210),
@@ -65,21 +67,18 @@ class MeshArtist(Artist):
             'scale.normal:face': 0.1,
             'on.vertices': True,
             'on.edges': True,
-            'on.faces': True
-        })
-
-    @property
-    def mesh(self):
-        """Mesh: The mesh that should be painted."""
-        return self.datastructure
-
-    @mesh.setter
-    def mesh(self, mesh):
-        self.datastructure = mesh
+            'on.faces': True}
 
     # ==========================================================================
     # clear
     # ==========================================================================
+
+    def clear_layer(self):
+        """Clear the main layer of the artist."""
+        if self.layer:
+            compas_rhino.clear_layer(self.layer)
+        else:
+            compas_rhino.clear_current_layer()
 
     def clear(self):
         """Clear the vertices, faces and edges of the mesh, without clearing the
@@ -97,7 +96,7 @@ class MeshArtist(Artist):
         self.clear_edgelabels()
 
     def clear_mesh(self):
-        name = "{}.mesh".format(self.datastructure.name)
+        name = "{}.mesh".format(self.mesh.name)
         guids = compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -112,12 +111,12 @@ class MeshArtist(Artist):
 
         """
         if not keys:
-            name = '{}.vertex.*'.format(self.datastructure.name)
+            name = '{}.vertex.*'.format(self.mesh.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for key in keys:
-                name = '{}.vertex.{}'.format(self.datastructure.name, key)
+                name = '{}.vertex.{}'.format(self.mesh.name, key)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -132,12 +131,12 @@ class MeshArtist(Artist):
 
         """
         if not keys:
-            name = '{}.face.*'.format(self.datastructure.name)
+            name = '{}.face.*'.format(self.mesh.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for key in keys:
-                name = '{}.face.{}'.format(self.datastructure.name, key)
+                name = '{}.face.{}'.format(self.mesh.name, key)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -152,12 +151,12 @@ class MeshArtist(Artist):
 
         """
         if not keys:
-            name = '{}.edge.*'.format(self.datastructure.name)
+            name = '{}.edge.*'.format(self.mesh.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for u, v in keys:
-                name = '{}.edge.{}-{}'.format(self.datastructure.name, u, v)
+                name = '{}.edge.{}-{}'.format(self.mesh.name, u, v)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -172,12 +171,12 @@ class MeshArtist(Artist):
 
         """
         if not keys:
-            name = '{}.vertex.label.*'.format(self.datastructure.name)
+            name = '{}.vertex.label.*'.format(self.mesh.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for key in keys:
-                name = '{}.vertex.label.{}'.format(self.datastructure.name, key)
+                name = '{}.vertex.label.{}'.format(self.mesh.name, key)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -192,12 +191,12 @@ class MeshArtist(Artist):
 
         """
         if not keys:
-            name = '{}.face.label.*'.format(self.datastructure.name)
+            name = '{}.face.label.*'.format(self.mesh.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for key in keys:
-                name = '{}.face.label.{}'.format(self.datastructure.name, key)
+                name = '{}.face.label.{}'.format(self.mesh.name, key)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -212,12 +211,12 @@ class MeshArtist(Artist):
 
         """
         if not keys:
-            name = '{}.edge.label.*'.format(self.datastructure.name)
+            name = '{}.edge.label.*'.format(self.mesh.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for u, v in keys:
-                name = '{}.edge.label.{}-{}'.format(self.datastructure.name, u, v)
+                name = '{}.edge.label.{}-{}'.format(self.mesh.name, u, v)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -232,12 +231,12 @@ class MeshArtist(Artist):
 
         """
         if not keys:
-            name = '{}.vertex.normal.*'.format(self.datastructure.name)
+            name = '{}.vertex.normal.*'.format(self.mesh.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for key in keys:
-                name = '{}.vertex.normal.{}'.format(self.datastructure.name, key)
+                name = '{}.vertex.normal.{}'.format(self.mesh.name, key)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -252,18 +251,23 @@ class MeshArtist(Artist):
 
         """
         if not keys:
-            name = '{}.face.normal.*'.format(self.datastructure.name)
+            name = '{}.face.normal.*'.format(self.mesh.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for key in keys:
-                name = '{}.face.normal.{}'.format(self.datastructure.name, key)
+                name = '{}.face.normal.{}'.format(self.mesh.name, key)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
     # ==========================================================================
     # components
     # ==========================================================================
+
+    def draw(self):
+        self.draw_faces()
+        self.draw_vertices()
+        self.draw_edges()
 
     def draw_mesh(self, color=None, disjoint=False):
         """Draw the mesh as a consolidated RhinoMesh.
@@ -274,9 +278,9 @@ class MeshArtist(Artist):
         only triangular or quadrilateral faces.
 
         """
-        key_index = self.datastructure.key_index()
-        vertices = self.datastructure.get_vertices_attributes('xyz')
-        faces = [[key_index[key] for key in self.datastructure.face_vertices(fkey)] for fkey in self.datastructure.faces()]
+        key_index = self.mesh.key_index()
+        vertices = self.mesh.get_vertices_attributes('xyz')
+        faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
         new_faces = []
         for face in faces:
             f = len(face)
@@ -292,7 +296,7 @@ class MeshArtist(Artist):
             else:
                 continue
         layer = self.layer
-        name = "{}.mesh".format(self.datastructure.name)
+        name = "{}.mesh".format(self.mesh.name)
         return compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
 
     def draw_vertices(self, keys=None, color=None):
@@ -317,11 +321,11 @@ class MeshArtist(Artist):
         Notes
         -----
         The vertices are named using the following template:
-        ``"{}.vertex.{}".format(self.datastructure.name, key)``.
+        ``"{}.vertex.{}".format(self.mesh.name, key)``.
         This name is used afterwards to identify vertices in the Rhino model.
 
         """
-        keys = keys or list(self.datastructure.vertices())
+        keys = keys or list(self.mesh.vertices())
         colordict = color_to_colordict(color,
                                        keys,
                                        default=self.settings.get('color.vertex'),
@@ -330,10 +334,10 @@ class MeshArtist(Artist):
         points = []
         for key in keys:
             points.append({
-                'pos': self.datastructure.vertex_coordinates(key),
-                'name': "{}.vertex.{}".format(self.datastructure.name, key),
+                'pos': self.mesh.vertex_coordinates(key),
+                'name': "{}.vertex.{}".format(self.mesh.name, key),
                 'color': colordict[key],
-                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'layer': self.mesh.get_vertex_attribute(key, 'layer', None)
             })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
@@ -359,11 +363,11 @@ class MeshArtist(Artist):
         Notes
         -----
         The faces are named using the following template:
-        ``"{}.face.{}".format(self.datastructure.name, key)``.
+        ``"{}.face.{}".format(self.mesh.name, key)``.
         This name is used afterwards to identify faces in the Rhino model.
 
         """
-        keys = keys or list(self.datastructure.faces())
+        keys = keys or list(self.mesh.faces())
 
         colordict = color_to_colordict(color,
                                        keys,
@@ -373,10 +377,10 @@ class MeshArtist(Artist):
         faces = []
         for fkey in keys:
             faces.append({
-                'points': self.datastructure.face_coordinates(fkey),
-                'name': "{}.face.{}".format(self.datastructure.name, fkey),
+                'points': self.mesh.face_coordinates(fkey),
+                'name': "{}.face.{}".format(self.mesh.name, fkey),
                 'color': colordict[fkey],
-                'layer': self.datastructure.get_face_attribute(fkey, 'layer', None)
+                'layer': self.mesh.get_face_attribute(fkey, 'layer', None)
             })
 
         guids = compas_rhino.draw_faces(faces, layer=self.layer, clear=False, redraw=False)
@@ -384,7 +388,7 @@ class MeshArtist(Artist):
             return guids
         guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
         compas_rhino.rs.ObjectLayer(guid, self.layer)
-        compas_rhino.rs.ObjectName(guid, '{}.mesh'.format(self.datastructure.name))
+        compas_rhino.rs.ObjectName(guid, '{}.mesh'.format(self.mesh.name))
         if color:
             compas_rhino.rs.ObjectColor(guid, color)
         return guid
@@ -411,11 +415,11 @@ class MeshArtist(Artist):
         Notes
         -----
         All edges are named using the following template:
-        ``"{}.edge.{}-{}".fromat(self.datastructure.name, u, v)``.
+        ``"{}.edge.{}-{}".fromat(self.mesh.name, u, v)``.
         This name is used afterwards to identify edges in the Rhino model.
 
         """
-        keys = keys or list(self.datastructure.edges())
+        keys = keys or list(self.mesh.edges())
         colordict = color_to_colordict(color,
                                        keys,
                                        default=self.settings.get('color.edge'),
@@ -424,11 +428,11 @@ class MeshArtist(Artist):
         lines = []
         for u, v in keys:
             lines.append({
-                'start': self.datastructure.vertex_coordinates(u),
-                'end': self.datastructure.vertex_coordinates(v),
+                'start': self.mesh.vertex_coordinates(u),
+                'end': self.mesh.vertex_coordinates(v),
                 'color': colordict[(u, v)],
-                'name': "{}.edge.{}-{}".format(self.datastructure.name, u, v),
-                'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
+                'name': "{}.edge.{}-{}".format(self.mesh.name, u, v),
+                'layer': self.mesh.get_edge_attribute((u, v), 'layer', None)
             })
 
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -438,19 +442,19 @@ class MeshArtist(Artist):
     # ==========================================================================
 
     def draw_vertexnormals(self, keys=None, color=None, scale=None):
-        keys = keys or list(self.datastructure.vertices())
+        keys = keys or list(self.mesh.vertices())
         scale = scale or self.settings.get('scale.normal:vertex')
         color = color or self.settings.get('color.normal:vertex')
         lines = []
         for key in keys:
-            a = self.datastructure.vertex_coordinates(key)
-            n = self.datastructure.vertex_normal(key)
+            a = self.mesh.vertex_coordinates(key)
+            n = self.mesh.vertex_normal(key)
             b = add_vectors(a, scale_vector(n, scale))
             lines.append({
                 'start': a,
                 'end': b,
                 'color': color,
-                'name': "{}.vertex.normal.{}".format(self.datastructure.name, key),
+                'name': "{}.vertex.normal.{}".format(self.mesh.name, key),
                 'arrow': 'end'})
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
@@ -469,22 +473,22 @@ class MeshArtist(Artist):
         Notes
         -----
         The face normals are named using the following template:
-        ``"{}.face.normal.{}".format(self.datastructure.name, key)``.
+        ``"{}.face.normal.{}".format(self.mesh.name, key)``.
         This name is used afterwards to identify the normals in the Rhino model.
 
         """
-        keys = keys or list(self.datastructure.faces())
+        keys = keys or list(self.mesh.faces())
         scale = scale or self.settings.get('scale.normal:face')
         color = color or self.settings.get('color.normal:face')
         lines = []
-        for key in self.datastructure.faces():
-            a = self.datastructure.face_centroid(key)
-            n = self.datastructure.face_normal(key)
+        for key in self.mesh.faces():
+            a = self.mesh.face_centroid(key)
+            n = self.mesh.face_normal(key)
             b = add_vectors(a, scale_vector(n, scale))
             lines.append({
                 'start': a,
                 'end': b,
-                'name': "{}.face.normal.{}".format(self.datastructure.name, key),
+                'name': "{}.face.normal.{}".format(self.mesh.name, key),
                 'color': color,
                 'arrow': 'end'})
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -514,17 +518,17 @@ class MeshArtist(Artist):
         Notes
         -----
         All labels are assigned a name using the folling template:
-        ``"{}.vertex.label.{}".format(self.datastructure.name, key)``.
+        ``"{}.vertex.label.{}".format(self.mesh.name, key)``.
 
         """
         if text is None:
-            textdict = {key: str(key) for key in self.datastructure.vertices()}
+            textdict = {key: str(key) for key in self.mesh.vertices()}
         elif isinstance(text, dict):
             textdict = text
         elif text == 'key':
-            textdict = {key: str(key) for key in self.datastructure.vertices()}
+            textdict = {key: str(key) for key in self.mesh.vertices()}
         elif text == 'index':
-            textdict = {key: str(index) for index, key in enumerate(self.datastructure.vertices())}
+            textdict = {key: str(index) for index, key in enumerate(self.mesh.vertices())}
         else:
             raise NotImplementedError
 
@@ -537,11 +541,11 @@ class MeshArtist(Artist):
 
         for key, text in iter(textdict.items()):
             labels.append({
-                'pos': self.datastructure.vertex_coordinates(key),
-                'name': "{}.vertex.label.{}".format(self.datastructure.name, key),
+                'pos': self.mesh.vertex_coordinates(key),
+                'name': "{}.vertex.label.{}".format(self.mesh.name, key),
                 'color': colordict[key],
                 'text': textdict[key],
-                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'layer': self.mesh.get_vertex_attribute(key, 'layer', None)
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
@@ -567,12 +571,12 @@ class MeshArtist(Artist):
         Notes
         -----
         The face labels are named using the following template:
-        ``"{}.face.label.{}".format(self.datastructure.name, key)``.
+        ``"{}.face.label.{}".format(self.mesh.name, key)``.
         This name is used afterwards to identify faces and face labels in the Rhino model.
 
         """
         if text is None:
-            textdict = {key: str(key) for key in self.datastructure.faces()}
+            textdict = {key: str(key) for key in self.mesh.faces()}
         elif isinstance(text, dict):
             textdict = text
         else:
@@ -587,11 +591,11 @@ class MeshArtist(Artist):
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
-                'pos': self.datastructure.face_center(key),
-                'name': "{}.face.label.{}".format(self.datastructure.name, key),
+                'pos': self.mesh.face_center(key),
+                'name': "{}.face.label.{}".format(self.mesh.name, key),
                 'color': colordict[key],
                 'text': textdict[key],
-                'layer': self.datastructure.get_face_attribute(key, 'layer', None)
+                'layer': self.mesh.get_face_attribute(key, 'layer', None)
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
@@ -616,11 +620,11 @@ class MeshArtist(Artist):
         Notes
         -----
         All labels are assigned a name using the folling template:
-        ``"{}.edge.{}".format(self.datastructure.name, key)``.
+        ``"{}.edge.{}".format(self.mesh.name, key)``.
 
         """
         if text is None:
-            textdict = {(u, v): "{}-{}".format(u, v) for u, v in self.datastructure.edges()}
+            textdict = {(u, v): "{}-{}".format(u, v) for u, v in self.mesh.edges()}
         elif isinstance(text, dict):
             textdict = text
         else:
@@ -635,11 +639,11 @@ class MeshArtist(Artist):
 
         for (u, v), text in iter(textdict.items()):
             labels.append({
-                'pos': self.datastructure.edge_midpoint(u, v),
-                'name': "{}.edge.label.{}-{}".format(self.datastructure.name, u, v),
+                'pos': self.mesh.edge_midpoint(u, v),
+                'name': "{}.edge.label.{}-{}".format(self.mesh.name, u, v),
                 'color': colordict[(u, v)],
                 'text': textdict[(u, v)],
-                'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
+                'layer': self.mesh.get_edge_attribute((u, v), 'layer', None)
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)

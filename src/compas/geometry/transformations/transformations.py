@@ -703,7 +703,7 @@ def mirror_points_line(points, line):
         The mirrored points.
 
     """
-    return [closest_point_on_line(point, line) for point in points]
+    return [mirror_point_line(point, line) for point in points]
 
 
 def mirror_points_line_xy(points, line):
@@ -722,7 +722,7 @@ def mirror_points_line_xy(points, line):
         The mirrored points.
 
     """
-    return [closest_point_on_line_xy(point, line) for point in points]
+    return [mirror_point_line_xy(point, line) for point in points]
 
 
 def mirror_point_plane(point, plane):

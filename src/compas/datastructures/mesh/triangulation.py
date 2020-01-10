@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 
-from compas.datastructures.mesh.operations import mesh_split_face
+from compas.datastructures.mesh.core import mesh_split_face
 
 
 __all__ = [

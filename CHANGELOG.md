@@ -9,12 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `compas_rhino.artists.ShapeArtist` as base artist for all shape artists.
+- Added `layer`, `name`, `color` attributes to `compas_rhino.artists.PrimitiveArtist`.
+- Added `layer`, `name` attributes to `compas_rhino.artists.ShapeArtist`.
+- Added `layer`, `name` attributes to `compas_rhino.artists.MeshArtist`.
+- Added `clear_layer` method to `compas_rhino.artists.PrimitiveArtist`.
+- Added `clear_layer` method to `compas_rhino.artists.ShapeArtist`.
+- Added `clear_layer` method to `compas_rhino.artists.MeshArtist`.
+
 ### Changed
 
-- compas.utilities.maps.geometric_key2 renamed to geometric_key_xy
+- Renamed `compas.utilities.maps.geometric_key2` to `geometric_key_xy`.
+- Fixed bug in mirror functions.
+- Fixed mirroring tests.
+- Moved `BaseMesh`, `matrices`, `operations` to `compas.datastructures.mesh.core`.
+- Added `transform` and `transformed` (and others) to `Mesh`. 
 
 ### Removed
 
+- `compas_rhino.artists.BoxArtist`
+- Removed `layer` attribute from `compas_rhino.artists.Artist`.
+- Removed `clear_layer` method from `compas_rhino.artists.Artist`.
 
 ## [0.13.2] 2020-01-06
 

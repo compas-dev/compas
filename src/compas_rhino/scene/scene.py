@@ -9,6 +9,16 @@ from compas_rhino.artists import Artist
 __all__ = ['Scene']
 
 
+
+class SceneNode(object):
+
+    def __init__(self, scene, item, **kwargs):
+        self.scene = scene
+        self.item = item
+        self.artist = Artist.build(item, **kwargs)
+        self.nodes = []
+
+
 class Scene(object):
     """Rhino scene object for managing the visualisation of COMPAS data and geometry.
 
@@ -22,97 +32,63 @@ class Scene(object):
     """
 
     def __init__(self):
-        self._artists = []
+        self.nodes = []
 
-    @property
-    def artists(self):
-        return self._artists
+    def add(self, item, **kwargs):
+        node = SceneNode(self, item, **kwargs)
+        self.nodes.append(node)
+        return node
 
-    @artists.setter
-    def artists(self, artists):
-        self._artists = artists
+    def update(self):
+        compas_rhino.rs.EnableRedraw(False)
+        for node in self.nodes:
+            node.artist.draw()
+        compas_rhino.rs.EnableRedraw(True)
 
-    def add(self, item, artist=None, **kwargs):
-        if not artist:
-            artist = Artist.build(item, **kwargs)
-        artist.draw()
-        self._artists.append(artist)
-        return artist
+    # def save(self, path, width=1920, height=1080, scale=1,
+    #          draw_grid=False, draw_world_axes=False, draw_cplane_axes=False, background=False):
+    #     """Save the current screen view.
 
-    def find(self, item):
-        raise NotImplementedError
+    #     Parameters
+    #     ----------
+    #     path : str
+    #         The path where the screenshot should be saved.
+    #     width : int, optional
+    #         The width of the saved image.
+    #         Default is ``1920``.
+    #     height : int, optional
+    #         The height of the saved image.
+    #         Default is ``1080``.
+    #     scale : float, optional
+    #         Scaling factor for the saved view.
+    #         Default is ``1``.
+    #     draw_grid : bool, optional
+    #         Include the grid in the screenshot.
+    #         Default is ``False``.
+    #     draw_world_axes : bool, optional
+    #         Include the world axes in the screenshot.
+    #         Default is ``False``.
+    #     draw_cplane_axes : bool, optional
+    #         Include the CPlane axes in the screenshot.
+    #         Default is ``False``.
+    #     background : bool, optional
+    #         Include the current background in the screenshot.
+    #         Default is ``False``.
 
-    def register_listener(self, listener):
-        """Register a listener for pick events.
+    #     Returns
+    #     -------
+    #     str
+    #         The path where the file was saved.
 
-        Parameters
-        ----------
-        listener : callable
-            The handler for pick events.
-
-        Returns
-        -------
-        None
-
-        """
-        raise NotImplementedError
-
-    def clear(self):
-        pass
-
-    def draw(self):
-        compas_rhino.rs.Redraw(False)
-        for artist in self.artists:
-            artist.draw()
-        compas_rhino.rs.Redraw(True)
-
-    def redraw(self):
-        pass
-
-    def save(self, path, width=1920, height=1080, scale=1,
-             draw_grid=False, draw_world_axes=False, draw_cplane_axes=False, background=False):
-        """Save the current screen view.
-
-        Parameters
-        ----------
-        path : str
-            The path where the screenshot should be saved.
-        width : int, optional
-            The width of the saved image.
-            Default is ``1920``.
-        height : int, optional
-            The height of the saved image.
-            Default is ``1080``.
-        scale : float, optional
-            Scaling factor for the saved view.
-            Default is ``1``.
-        draw_grid : bool, optional
-            Include the grid in the screenshot.
-            Default is ``False``.
-        draw_world_axes : bool, optional
-            Include the world axes in the screenshot.
-            Default is ``False``.
-        draw_cplane_axes : bool, optional
-            Include the CPlane axes in the screenshot.
-            Default is ``False``.
-        background : bool, optional
-            Include the current background in the screenshot.
-            Default is ``False``.
-
-        Returns
-        -------
-        str
-            The path where the file was saved.
-
-        """
-        return compas_rhino.screenshot_current_view(path,
-                                                    width=width,
-                                                    height=height,
-                                                    scale=scale,
-                                                    draw_grid=draw_grid,
-                                                    draw_world_axes=draw_world_axes,
-                                                    draw_cplane_axes=draw_cplane_axes,
-                                                    background=background)
+    #     """
+    #     return compas_rhino.screenshot_current_view(path,
+    #                                                 width=width,
+    #                                                 height=height,
+    #                                                 scale=scale,
+    #                                                 draw_grid=draw_grid,
+    #                                                 draw_world_axes=draw_world_axes,
+    #                                                 draw_cplane_axes=draw_cplane_axes,
+    #                                                 background=background)
 
 
 # ==============================================================================
@@ -121,11 +97,25 @@ class Scene(object):
 
 if __name__ == '__main__':
 
+    from compas.geometry import Point
+    from compas.geometry import Line
+    from compas.geometry import Frame
+
     from compas.datastructures import Mesh
 
     scene = Scene()
 
-    mesh = Mesh.from_polyhedron(20)
+    a = Point(1.0, 1.0, 0.0)
+    b = Point(5.0, 5.0, 0.0)
+    ab = Line(a, b)
+    world = Frame.worldXY()
 
-    # this constructs and returns an artist or a scene object in the background
-    mesh_obj = scene.add(mesh, name="Icosahedron")
+    mesh = Mesh.from_polyhedron(6)
+
+    scene.add(a, name="A", color=(0, 0, 0), layer="A")
+    scene.add(b, name="B", color=(255, 255, 255), layer="B")
+    scene.add(ab, name="AB", color=(128, 128, 128), layer="AB")
+    scene.add(world, name="World", layer="World")
+    scene.add(mesh, name="Cube", layer="Cube")
+
+    scene.update()

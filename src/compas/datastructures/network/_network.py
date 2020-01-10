@@ -22,13 +22,11 @@ from compas.datastructures._mixins import VertexAttributesManagement
 from compas.datastructures._mixins import VertexHelpers
 from compas.datastructures._mixins import VertexMappings
 from compas.datastructures._mixins import VertexFilter
-
 from compas.datastructures._mixins import EdgeAttributesManagement
 from compas.datastructures._mixins import EdgeHelpers
 from compas.datastructures._mixins import EdgeGeometry
 from compas.datastructures._mixins import EdgeMappings
 from compas.datastructures._mixins import EdgeFilter
-
 from compas.datastructures._mixins import FromToData
 from compas.datastructures._mixins import FromToJson
 

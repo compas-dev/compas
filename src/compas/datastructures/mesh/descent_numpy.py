@@ -6,7 +6,7 @@ from numpy import array
 from compas.numerical import grad
 
 
-__all__ = []
+__all__ = ['trimesh_descent']
 
 
 def trimesh_descent(trimesh):

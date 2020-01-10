@@ -17,7 +17,7 @@ from scipy.sparse.linalg import splu
 from compas.numerical import normrow
 from compas.numerical import normalizerow
 
-from compas.datastructures.mesh.matrices import trimesh_cotangent_laplacian_matrix
+from compas.datastructures.mesh.core import trimesh_cotangent_laplacian_matrix
 
 
 __all__ = ['mesh_geodesic_distances_numpy']

@@ -11,7 +11,7 @@ compas_rhino.etoforms
     :nosignatures:
 
     ImageForm
-    PropertyListFormForm
+    PropertyListForm
     SettingsForm
     TextForm
 
