@@ -34,7 +34,7 @@ except ImportError:
     pass
 
 
-__version__ = '0.13.2'
+__version__ = '0.13.3'
 
 
 PURGE_ON_DELETE = True
