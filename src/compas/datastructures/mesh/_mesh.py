@@ -18,6 +18,7 @@ from compas.datastructures.mesh.orientation import mesh_unify_cycles
 from compas.datastructures.mesh.transformations import mesh_transform
 from compas.datastructures.mesh.transformations import mesh_transformed
 
+
 __all__ = ['Mesh']
 
 
