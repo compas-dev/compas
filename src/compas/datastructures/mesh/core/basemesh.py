@@ -729,7 +729,7 @@ class BaseMesh(EdgeGeometry,
         """
 
         vertices, faces = shape.to_vertices_and_faces(**kwargs)
-        mesh = Mesh.from_vertices_and_faces(vertices, faces)
+        mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
     @classmethod
