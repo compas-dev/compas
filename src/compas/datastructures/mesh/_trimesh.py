@@ -121,7 +121,7 @@ class TriMesh(BaseMesh):
 
     def vertex_attributes(self, key, names=None, values=None):
         """Get or set multiple attributes of a vertex.
-        
+
         Parameters
         ----------
         key : int
@@ -142,7 +142,7 @@ class TriMesh(BaseMesh):
             the function returns a dictionary of all attribute name-value pairs of the vertex.
         list
             If the parameter ``names`` is not empty,
-            the function returns a list of the values corresponding to the provided attribute names. 
+            the function returns a list of the values corresponding to the provided attribute names.
 
         Notes
         -----
@@ -242,7 +242,7 @@ class TriMesh(BaseMesh):
                 else:
                     values.append(None)
         return values
-        
+
 
 # =============================================================================
 # Main

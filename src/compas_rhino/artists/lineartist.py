@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas.utilities import iterable_like
+# from compas.utilities import iterable_like
 from compas_rhino.artists import PrimitiveArtist
 
 

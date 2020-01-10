@@ -9,7 +9,6 @@ from compas_rhino.artists import Artist
 __all__ = ['Scene']
 
 
-
 class SceneNode(object):
 
     def __init__(self, scene, item, **kwargs):

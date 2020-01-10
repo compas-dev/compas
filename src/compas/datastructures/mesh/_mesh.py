@@ -23,7 +23,7 @@ __all__ = ['Mesh']
 
 
 class Mesh(BaseMesh):
-    
+
     collapse_edge = mesh_collapse_edge
     split_edge = mesh_split_edge
 
@@ -32,14 +32,14 @@ class Mesh(BaseMesh):
     connected_components = mesh_connected_components
     dual = mesh_dual
     face_adjacency = mesh_face_adjacency
-    flip_cycles = mesh_unify_cycles
+    flip_cycles = mesh_flip_cycles
     unify_cycles = mesh_unify_cycles
 
     transform = mesh_transform
     transformed = mesh_transformed
 
     def to_trimesh(self):
-        from compas.datastructures.mesh._trimesh import TriMesh
+        pass
 
 
 # =============================================================================
