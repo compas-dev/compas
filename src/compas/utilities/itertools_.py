@@ -29,35 +29,152 @@ except ImportError:
 
 
 __all__ = [
-    'take',
-    'tabulate',
-    'tail',
-    'consume',
-    'nth',
-    'all_equal',
-    'quantify',
-    'padnone',
-    'ncycles',
-    'dotproduct',
     'flatten',
-    'repeatfunc',
     'pairwise',
     'window',
-    'roundrobin',
-    'powerset',
-    # 'unique_everseen',
-    'unique_justseen',
-    'iter_except',
-    'first_true',
-    'random_permutation',
-    'random_combination',
-    'random_combination_with_replacement',
     'iterable_like'
 ]
 
 
+def flatten(listOfLists):
+    """Flatten one level of nesting"""
+    return chain.from_iterable(listOfLists)
+
+
+def pairwise(iterable):
+    """Returns a sliding window of size 2 over the data of the iterable.
+    
+    Parameters
+    ----------
+    iterable : iterable
+        A sequence of items.
+
+    Yields
+    ------
+    tuple
+        Two items per iteration, if there are at least two items in the iterable.
+    
+    Examples
+    --------
+    >>> for a, b in pairwise(range(5)):
+    ...     print(a, b)
+    ...
+    0 1
+    1 2
+    2 3
+    3 4
+    """
+    a, b = tee(iterable)
+    next(b, None)
+    return zip(a, b)
+
+
+def window(seq, n=2):
+    """Returns a sliding window (of width n) over the data from the iterable.
+
+    Parameters
+    ----------
+    seq : iterable
+        A sequence of items.
+    n : int, optional
+        The width of the sliding window.
+
+    Yields
+    ------
+    tuple
+        A tuple of size `n` at every iteration,
+        if there are at least `n` items in the sequence.
+
+    Examples
+    --------
+    >>> for view in window(range(10), 3):
+    ...     print(view)
+    ...
+    (0, 1, 2)
+    (1, 2, 3)
+    (2, 3, 4)
+    (3, 4, 5)
+    (4, 5, 6)
+    (5, 6, 7)
+    (6, 7, 8)
+    (7, 8, 9)
+    
+    """
+    it = iter(seq)
+    result = tuple(islice(it, n))
+    if len(result) == n:
+        yield result
+    for elem in it:
+        result = result[1:] + (elem,)
+        yield result
+
+
+def iterable_like(target, reference, fillvalue=None):
+    """Creates an iterator from a reference object with size equivalent to that of a target iterable.
+
+    Values will be yielded one at a time until the target iterable is exhausted.
+    If target and reference are of uneven size, fillvalue will be used to
+    substitute the missing values.
+
+    Parameters
+    ----------
+    target : iterable
+        An iterable to be matched in size.
+    reference: iterable
+        Iterable taken as basis for pairing.
+    fillvalue : object, optional
+        Defaults to `None`.
+
+    Returns
+    -------
+    object
+        The next value in the iterator
+
+    Notes
+    -----
+    This function can also produce an iterable capped to the size of target
+    whenever the supplied reference is larger.
+
+    Examples
+    --------
+    >>> keys = [0, 1, 2, 3]
+    >>> color = (255, 0, 0)
+    >>> list(iterable_like(keys, [color], color))
+    [(255, 0, 0), (255, 0, 0), (255, 0, 0), (255, 0, 0)]
+    >>> list(iterable_like(color, keys))
+    [0, 1, 2]
+    """
+    target, counter = tee(target)
+    zipped = zip_longest(target, reference, fillvalue=fillvalue)
+    for _ in counter:
+        yield next(zipped)[1]
+
+
+# ==============================================================================
+# Other
+# ==============================================================================
+
+
 def take(n, iterable):
-    """Return first n items of the iterable as a list"""
+    """Return the first n items of the iterable as a list.
+    
+    Parameters
+    ----------
+    n : int
+        The number of items.
+    iterable : iterable
+        An iterable object.
+
+    Returns
+    -------
+    list
+        A list with the first `n` items of `iterable`.
+
+    Examples
+    --------
+    >>> take(5, range(100))
+    [0, 1, 2, 3, 4]
+    """
     return list(islice(iterable, n))
 
 
@@ -118,49 +235,18 @@ def dotproduct(vec1, vec2):
     return sum(map(operator.mul, vec1, vec2))
 
 
-def flatten(listOfLists):
-    """Flatten one level of nesting"""
-    return chain.from_iterable(listOfLists)
-
-
 def repeatfunc(func, times=None, *args):
-    """Repeat calls to func with specified arguments.
-
-    Examples
-    --------
-    >>> repeatfunc(random.random)
-    """
+    """Repeat calls to func with specified arguments."""
     if times is None:
         return starmap(func, repeat(args))
     return starmap(func, repeat(args, times))
 
 
-def pairwise(iterable):
-    """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
-    a, b = tee(iterable)
-    next(b, None)
-    return zip(a, b)
-
-
-def window(seq, n=2):
-    """Returns a sliding window (of width n) over data from the iterable.
-
-    s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ...
-    """
-    it = iter(seq)
-    result = tuple(islice(it, n))
-    if len(result) == n:
-        yield result
-    for elem in it:
-        result = result[1:] + (elem,)
-        yield result
-
-
-# def grouper(iterable, n, fillvalue=None):
-#     """Collect data into fixed-length chunks or blocks"""
-#     # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"""
-#     args = [iter(iterable)] * n
-#     return zip_longest(*args, fillvalue=fillvalue)
+def grouper(iterable, n, fillvalue=None):
+    """Collect data into fixed-length chunks or blocks"""
+    # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"""
+    args = [iter(iterable)] * n
+    return zip_longest(*args, fillvalue=fillvalue)
 
 
 def roundrobin(*iterables):
@@ -177,11 +263,11 @@ def roundrobin(*iterables):
             nexts = cycle(islice(nexts, pending))
 
 
-# def partition(pred, iterable):
-#     'Use a predicate to partition entries into false entries and true entries'
-#     # partition(is_odd, range(10)) --> 0 2 4 6 8   and  1 3 5 7 9
-#     t1, t2 = tee(iterable)
-#     return filterfalse(pred, t1), filter(pred, t2)
+def partition(pred, iterable):
+    'Use a predicate to partition entries into false entries and true entries'
+    # partition(is_odd, range(10)) --> 0 2 4 6 8   and  1 3 5 7 9
+    t1, t2 = tee(iterable)
+    return filterfalse(pred, t1), filter(pred, t2)
 
 
 def powerset(iterable):
@@ -190,22 +276,22 @@ def powerset(iterable):
     return chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))
 
 
-# def unique_everseen(iterable, key=None):
-#     """List unique elements, preserving order. Remember all elements ever seen."""
-#     # unique_everseen('AAAABBBCCDAABBB') --> A B C D
-#     # unique_everseen('ABBCcAD', str.lower) --> A B C D
-#     seen = set()
-#     seen_add = seen.add
-#     if key is None:
-#         for element in filterfalse(seen.__contains__, iterable):
-#             seen_add(element)
-#             yield element
-#     else:
-#         for element in iterable:
-#             k = key(element)
-#             if k not in seen:
-#                 seen_add(k)
-#                 yield element
+def unique_everseen(iterable, key=None):
+    """List unique elements, preserving order. Remember all elements ever seen."""
+    # unique_everseen('AAAABBBCCDAABBB') --> A B C D
+    # unique_everseen('ABBCcAD', str.lower) --> A B C D
+    seen = set()
+    seen_add = seen.add
+    if key is None:
+        for element in filterfalse(seen.__contains__, iterable):
+            seen_add(element)
+            yield element
+    else:
+        for element in iterable:
+            k = key(element)
+            if k not in seen:
+                seen_add(k)
+                yield element
 
 
 def unique_justseen(iterable, key=None):
@@ -253,10 +339,10 @@ def first_true(iterable, default=False, pred=None):
     return next(filter(pred, iterable), default)
 
 
-# def random_product(*args, repeat=1):
-#     """Random selection from itertools.product(*args, **kwds)"""
-#     pools = [tuple(pool) for pool in args] * repeat
-#     return tuple(random.choice(pool) for pool in pools)
+def random_product(*args, repeat=1):
+    """Random selection from itertools.product(*args, **kwds)"""
+    pools = [tuple(pool) for pool in args] * repeat
+    return tuple(random.choice(pool) for pool in pools)
 
 
 def random_permutation(iterable, r=None):
@@ -282,60 +368,12 @@ def random_combination_with_replacement(iterable, r):
     return tuple(pool[i] for i in indices)
 
 
-def iterable_like(target, reference, fillvalue=None):
-    """
-    Creates an iterator from a reference object with size equivalent to that of a target iterable.
-
-    Values will be yielded one at a time until the target iterable is exhausted.
-    If target and reference are of uneven size, fillvalue will be used to
-    substitute the missing values.
-
-    Parameters
-    ----------
-    target : iterable
-        An iterable to be matched in size.
-    reference: iterable
-        Iterable taken as basis for pairing.
-    fillvalue : object, optional
-        Defaults to `None`.
-
-    Returns
-    -------
-    object
-        The next value in the iterator
-
-    Notes
-    -----
-    This function can also produce an iterable capped to the size of target
-    whenever the supplied reference is larger.
-
-    Examples
-    --------
-    >>> keys = [0, 1, 2, 3]
-    >>> color = (255, 0, 0)
-    >>> list(iterable_like(keys, [color], color))
-    [(255, 0, 0), (255, 0, 0), (255, 0, 0), (255, 0, 0)]
-    >>> list(iterable_like(color, keys))
-    [0, 1, 2]
-    """
-
-    target, counter = tee(target)
-    zipped = zip_longest(target, reference, fillvalue=fillvalue)
-    for _ in counter:
-        yield next(zipped)[1]
-
-
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    s = list(range(3))
-    t = {'foo': 'bar', 'baz': 'qux'}
+    import doctest
 
-    for u, v, w in window(s + s[0:2], 3):
-        print(u, v, w)
-
-    for u in iterable_like(t, s):
-        print(u)
+    doctest.testmod(globs=globals())
