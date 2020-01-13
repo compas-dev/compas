@@ -68,7 +68,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
     def draw_mesh(self, color=None):
         key_index = self.mesh.key_index()
-        vertices = self.mesh.get_vertices_attributes('xyz')
+        vertices = self.mesh.vertices_attributes('xyz')
         faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
         new_faces = []
         for face in faces:

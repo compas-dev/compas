@@ -88,7 +88,7 @@ def mesh_connectivity_matrix(mesh, rtype='array'):
     >>> type(C)
     <class 'scipy.sparse.csr.csr_matrix'>
 
-    >>> xyz = asarray(mesh.get_vertices_attributes('xyz'))
+    >>> xyz = asarray(mesh.vertices_attributes('xyz'))
     >>> C = mesh_connectivity_matrix(mesh, rtype='csr')
     >>> uv = C.dot(xyz)
 
@@ -179,7 +179,7 @@ def mesh_face_matrix(mesh, rtype='array'):
     <class 'scipy.sparse.csr.csr_matrix'>
 
     >>> from numpy import allclose
-    >>> xyz = asarray(mesh.get_vertices_attributes('xyz'))
+    >>> xyz = asarray(mesh.vertices_attributes('xyz'))
     >>> F = mesh_face_matrix(mesh, rtype='csr')
     >>> c1 = F.dot(xyz) / F.sum(axis=1)
     >>> c2 = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
@@ -237,7 +237,7 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
     >>> type(L)
     <class 'scipy.sparse.csr.csr_matrix'>
 
-    >>> xyz = asarray(mesh.get_vertices_attributes('xyz'))
+    >>> xyz = asarray(mesh.vertices_attributes('xyz'))
     >>> L = mesh_laplacian_matrix(mesh)
     >>> d = L.dot(xyz)
 
@@ -475,7 +475,7 @@ def trimesh_vertexarea_matrix(mesh):
 
     """
     key_index = mesh.key_index()
-    xyz = asarray(mesh.get_vertices_attributes('xyz'), dtype=float)
+    xyz = asarray(mesh.vertices_attributes('xyz'), dtype=float)
     tris = asarray([[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()], dtype=int)
     e1 = xyz[tris[:, 1]] - xyz[tris[:, 0]]
     e2 = xyz[tris[:, 2]] - xyz[tris[:, 0]]

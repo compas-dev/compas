@@ -58,7 +58,7 @@ def smooth_centroid(vertices,
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        vertices   = mesh.get_vertices_attributes('xyz')
+        vertices   = mesh.vertices_attributes('xyz')
         neighbors = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
         fixed      = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
@@ -162,7 +162,7 @@ def smooth_centerofmass(vertices,
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        vertices  = mesh.get_vertices_attributes('xyz')
+        vertices  = mesh.vertices_attributes('xyz')
         adjacency = [mesh.vertex_neighbors(key, ordered=True) for key in mesh.vertices()]
         fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
@@ -263,7 +263,7 @@ def smooth_area(vertices,
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        vertices  = mesh.get_vertices_attributes('xyz')
+        vertices  = mesh.vertices_attributes('xyz')
         faces     = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
         adjacency = [mesh.vertex_faces(key, ordered=True) for key in mesh.vertices()]
         fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
@@ -348,12 +348,12 @@ if __name__ == "__main__":
     # mesh = Mesh.from_obj(compas.get('faces.obj'))
 
     # # key_index = mesh.key_index()
-    # # vertices  = mesh.get_vertices_attributes('xyz')
+    # # vertices  = mesh.vertices_attributes('xyz')
     # # faces     = [mesh.face_vertices(key) for key in mesh.faces()]
     # # neighbors = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
     # # fixed     = [key_index[key] for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
-    # vertices = mesh.get_vertices_attributes('xyz')
+    # vertices = mesh.vertices_attributes('xyz')
     # faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
     # adjacency = [mesh.vertex_neighbors(key, ordered=True) for key in mesh.vertices()]
     # fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]

@@ -135,7 +135,7 @@ def network_find_faces(network, breakpoints=None):
 
     _sort_neighbors(network)
 
-    leaves = list(network.leaves())
+    leaves = [key for key in network.vertex if len(network.halfedge[key]) == 1]
 
     if leaves:
         u = sorted([(key, network.vertex[key]) for key in leaves], key=lambda x: (x[1]['y'], x[1]['x']))[0][0]

@@ -53,7 +53,7 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
         self.datastructure = mesh
 
     def draw_mesh(self):
-        vertices = self.mesh.get_vertices_attributes('xyz')
+        vertices = self.mesh.vertices_attributes('xyz')
         edges = []
         faces = [self.mesh.face_vertices(key) for key in self.mesh.faces()]
         draw_mesh(vertices, edges, faces)

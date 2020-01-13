@@ -49,7 +49,7 @@ def trimesh_gaussian_curvature(mesh):
 
     """
     pi2 = 2 * pi
-    key_xyz = {key: mesh.get_vertex_attributes(key, 'xyz') for key in mesh.vertices()}
+    key_xyz = {key: mesh.vertex_attributes(key, 'xyz') for key in mesh.vertices()}
     curvature = []
     for key in mesh.vertices():
         angles = []
@@ -61,7 +61,6 @@ def trimesh_gaussian_curvature(mesh):
                 v = vertices[vertices.index(key) - 1]
                 a = key_xyz[u]
                 b = key_xyz[v]
-                print(o, a, b)
                 angles.append(angle_points(o, a, b))
         curvature.append(pi2 - sum(angles))
     return curvature

@@ -87,7 +87,7 @@ def voronoi_from_points_numpy(points):
 
         mesh.add_face([0, 1, 2, 3])
 
-        sites = mesh.get_vertices_attributes('xy')
+        sites = mesh.vertices_attributes('xy')
         voronoi = voronoi_from_points_numpy(sites)
 
         points = []

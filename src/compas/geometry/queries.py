@@ -1116,7 +1116,7 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_json(os.path.join(compas.TEMP, 'm11.json'))
 
-    xyz = mesh.get_vertices_attributes('xyz')
+    xyz = mesh.vertices_attributes('xyz')
     xyz = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [3.0, 1.0, 0.5]]
 
     print(is_coplanar(xyz))

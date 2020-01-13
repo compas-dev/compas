@@ -214,11 +214,11 @@ class XFunc(object):
             attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
         key_index = mesh.key_index()
-        vertices  = mesh.get_vertices_attributes('xyz')
+        vertices  = mesh.vertices_attributes('xyz')
         edges     = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
         fixed     = [key_index[key] for key in mesh.vertices_where({'is_fixed': True})]
-        q         = mesh.get_edges_attribute('q', 1.0)
-        loads     = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
+        q         = mesh.edges_attribute('q')
+        loads     = mesh.vertices_attributes(('px', 'py', 'pz'))
 
         xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
 

@@ -264,7 +264,7 @@ if __name__ == "__main__":
 
     for vertexgroup, facegroup in zip(vertexgroups, facegroups):
         key_index = {key: index for index, key in enumerate(vertexgroup)}
-        vertices = mesh.get_vertices_attributes('xyz', keys=vertexgroup)
+        vertices = mesh.vertices_attributes('xyz', keys=vertexgroup)
         faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in facegroup]
 
         meshes.append(Mesh.from_vertices_and_faces(vertices, faces))

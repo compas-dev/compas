@@ -33,7 +33,7 @@ def mesh_oriented_bounding_box_numpy(mesh):
     8
 
     """
-    xyz = mesh.get_vertices_attributes('xyz')
+    xyz = mesh.vertices_attributes('xyz')
     return oriented_bounding_box_numpy(xyz)
 
 
@@ -56,7 +56,7 @@ def mesh_oriented_bounding_box_xy_numpy(mesh):
     [[10.0, 0.0], [0.0, 0.0], [0.0, 10.0], [10.0, 10.0]]
 
     """
-    xyz = mesh.get_vertices_attributes('xyz')
+    xyz = mesh.vertices_attributes('xyz')
     return oriented_bounding_box_xy_numpy(xyz)
 
 

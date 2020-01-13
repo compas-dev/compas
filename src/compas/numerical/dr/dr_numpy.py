@@ -378,16 +378,16 @@ if __name__ == "__main__":
 
     k_i = mesh.key_index()
 
-    vertices = mesh.get_vertices_attributes(('x', 'y', 'z'))
+    vertices = mesh.vertices_attributes('xyz')
     edges = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
     fixed = [k_i[key] for key in mesh.vertices_where({'is_fixed': True})]
-    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'))
-    qpre = mesh.get_edges_attribute('qpre')
-    fpre = mesh.get_edges_attribute('fpre')
-    lpre = mesh.get_edges_attribute('lpre')
-    linit = mesh.get_edges_attribute('linit')
-    E = mesh.get_edges_attribute('E')
-    radius = mesh.get_edges_attribute('radius')
+    loads = mesh.vertices_attributes(('px', 'py', 'pz'))
+    qpre = mesh.edges_attribute('qpre')
+    fpre = mesh.edges_attribute('fpre')
+    lpre = mesh.edges_attribute('lpre')
+    linit = mesh.edges_attribute('linit')
+    E = mesh.edges_attribute('E')
+    radius = mesh.edges_attribute('radius')
 
     lines = []
     for u, v in mesh.edges():
@@ -428,7 +428,7 @@ if __name__ == "__main__":
         attr['f'] = f[index, 0]
         attr['l'] = l[index, 0]
 
-    fmax = max(mesh.get_edges_attribute('f'))
+    fmax = max(mesh.edges_attribute('f'))
 
     plotter.clear_vertices()
     plotter.clear_edges()

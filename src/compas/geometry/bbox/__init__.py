@@ -5,7 +5,6 @@ from __future__ import print_function
 import compas
 
 from .bbox import *  # noqa: F401 F403
-
 if not compas.IPY:
     from .bbox_numpy import *  # noqa: F401 F403
 

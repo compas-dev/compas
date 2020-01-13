@@ -5,7 +5,6 @@ from __future__ import print_function
 import compas
 
 from .hull import *  # noqa: F401 F403
-
 if not compas.IPY:
     from .hull_numpy import *  # noqa: F401 F403
 

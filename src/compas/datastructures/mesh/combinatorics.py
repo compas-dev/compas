@@ -38,13 +38,10 @@ def mesh_is_connected(mesh):
     True
     >>> mesh_is_connected(m3)
     False
-
     """
     if not mesh.vertex:
         return False
-
     nodes = breadth_first_traverse(mesh.adjacency, mesh.get_any_vertex())
-
     return len(nodes) == mesh.number_of_vertices()
 
 
