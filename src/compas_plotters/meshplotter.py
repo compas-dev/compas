@@ -319,11 +319,11 @@ class MeshPlotter(Plotter):
             Width of the mesh edges.
         color : list
             Color for the edge lines.
-        text : list
+        text : dict
             Strings to be displayed on the edges.
-        textcolor : list
+        textcolor : rgb tuple or dict of rgb tuples
             Color for the text to be displayed on the edges.
-        fontsize : list
+        fontsize : int or dict of int.
             Font size for the text to be displayed on the edges.
 
         Returns
