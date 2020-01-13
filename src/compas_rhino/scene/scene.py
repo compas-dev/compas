@@ -6,7 +6,7 @@ import compas_rhino
 from compas_rhino.artists import Artist
 
 
-__all__ = ['Scene']
+__all__ = ['Scene', 'SceneNode']
 
 
 class SceneNode(object):
@@ -27,7 +27,6 @@ class Scene(object):
     * Add "projection": `Perspective`, `Orthogonal`, ...
     * Add "viewport": `Front`, `Left`, `Top`, `Perpsective`
     * Add "camera": ...
-
     """
 
     def __init__(self):
@@ -44,50 +43,49 @@ class Scene(object):
             node.artist.draw()
         compas_rhino.rs.EnableRedraw(True)
 
-    # def save(self, path, width=1920, height=1080, scale=1,
-    #          draw_grid=False, draw_world_axes=False, draw_cplane_axes=False, background=False):
-    #     """Save the current screen view.
+    def save(self, path, width=1920, height=1080, scale=1,
+             draw_grid=False, draw_world_axes=False, draw_cplane_axes=False, background=False):
+        """Save the current screen view.
 
-    #     Parameters
-    #     ----------
-    #     path : str
-    #         The path where the screenshot should be saved.
-    #     width : int, optional
-    #         The width of the saved image.
-    #         Default is ``1920``.
-    #     height : int, optional
-    #         The height of the saved image.
-    #         Default is ``1080``.
-    #     scale : float, optional
-    #         Scaling factor for the saved view.
-    #         Default is ``1``.
-    #     draw_grid : bool, optional
-    #         Include the grid in the screenshot.
-    #         Default is ``False``.
-    #     draw_world_axes : bool, optional
-    #         Include the world axes in the screenshot.
-    #         Default is ``False``.
-    #     draw_cplane_axes : bool, optional
-    #         Include the CPlane axes in the screenshot.
-    #         Default is ``False``.
-    #     background : bool, optional
-    #         Include the current background in the screenshot.
-    #         Default is ``False``.
+        Parameters
+        ----------
+        path : str
+            The path where the screenshot should be saved.
+        width : int, optional
+            The width of the saved image.
+            Default is ``1920``.
+        height : int, optional
+            The height of the saved image.
+            Default is ``1080``.
+        scale : float, optional
+            Scaling factor for the saved view.
+            Default is ``1``.
+        draw_grid : bool, optional
+            Include the grid in the screenshot.
+            Default is ``False``.
+        draw_world_axes : bool, optional
+            Include the world axes in the screenshot.
+            Default is ``False``.
+        draw_cplane_axes : bool, optional
+            Include the CPlane axes in the screenshot.
+            Default is ``False``.
+        background : bool, optional
+            Include the current background in the screenshot.
+            Default is ``False``.
 
-    #     Returns
-    #     -------
-    #     str
-    #         The path where the file was saved.
-
-    #     """
-    #     return compas_rhino.screenshot_current_view(path,
-    #                                                 width=width,
-    #                                                 height=height,
-    #                                                 scale=scale,
-    #                                                 draw_grid=draw_grid,
-    #                                                 draw_world_axes=draw_world_axes,
-    #                                                 draw_cplane_axes=draw_cplane_axes,
-    #                                                 background=background)
+        Returns
+        -------
+        str
+            The path where the file was saved.
+        """
+        return compas_rhino.screenshot_current_view(path,
+                                                    width=width,
+                                                    height=height,
+                                                    scale=scale,
+                                                    draw_grid=draw_grid,
+                                                    draw_world_axes=draw_world_axes,
+                                                    draw_cplane_axes=draw_cplane_axes,
+                                                    background=background)
 
 
 # ==============================================================================
