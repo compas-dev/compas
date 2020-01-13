@@ -62,6 +62,47 @@ except Exception:
 
 
 def i_to_rgb(i, normalize=False):
+    """"Convert a number between 0.0 and 1.0 to an equivalent RGB tuple.
+    
+    Parameters
+    ----------
+    i : float
+        A number between `0.0` and `1.0`.
+    normalize : bool, optional
+        Normalize the resulting RGB values.
+        Default is to return integer values ranging from 0 to 255.
+    
+    Results
+    -------
+    tuple
+        The RGB values of the color corresponding to the provided number.
+        If `normalize` is true, the RGB values are normalized to values between 0.0 and 1.0.
+        If `normalize` is false, the RGB values are integers between 0 and 255.
+
+    Examples
+    --------
+    >>> i_to_rgb(1.0)
+    (255, 0, 0)
+    >>> i_to_rgb(0.75)
+    (255, 255, 0)
+    >>> i_to_rgb(0.5)
+    (0, 255, 0)
+    >>> i_to_rgb(0.25)
+    (0, 255, 255)
+    >>> i_to_rgb(0.0)
+    (0, 0, 255)
+
+    >>> i_to_rgb(1.0, True)
+    (1.0, 0.0, 0.0)
+    >>> i_to_rgb(0.75, True)
+    (1.0, 1.0, 0.0)
+    >>> i_to_rgb(0.5, True)
+    (0.0, 1.0, 0.0)
+    >>> i_to_rgb(0.25, True)
+    (0.0, 1.0, 1.0)
+    >>> i_to_rgb(0.0, True)
+    (0.0, 0.0, 1.0)
+    """
     i = max(i, 0.0)
     i = min(i, 1.0)
     if i == 0.0:
@@ -85,47 +126,188 @@ def i_to_rgb(i, normalize=False):
     else:
         r, g, b = 0, 0, 0
     if not normalize:
-        return [r, g, b]
-    else:
-        return [r / 255.0, g / 255.0, b / 255.0]
+        return r, g, b
+    return r / 255.0, g / 255.0, b / 255.0
 
 
-def i_to_red(i):
+def i_to_red(i, normalize=False):
+    """Convert a number between 0.0 and 1.0 to a shade of red.
+    
+    Parameters
+    ----------
+    i : float
+        A number between 0.0 and 1.0.
+    normalize : bool, optional
+        Normalize the resulting RGB values.
+        Default is to return integer values ranging from 0 to 255.
+    
+    Results
+    -------
+    tuple
+        The RGB values of the color corresponding to the provided number.
+        If `normalize` is true, the RGB values are normalized to values between 0.0 and 1.0.
+        If `normalize` is false, the RGB values are integers between 0 and 255.
+
+    Examples
+    --------
+    >>> i_to_red(1.0)
+    (255, 0, 0)
+    >>> i_to_red(0.0)
+    (255, 255, 255)    
+    """
     i = max(i, 0.0)
     i = min(i, 1.0)
-    gb = min((1 - i) * 255, 255)
-    return (255, int(gb), int(gb))
+    g = b = min((1 - i) * 255, 255)
+    if not normalize:
+        return 255, int(g), int(b)
+    return 1.0, g / 255, b / 255
 
 
-def i_to_green(i):
+def i_to_green(i, normalize=False):
+    """Convert a number between 0.0 and 1.0 to a shade of green.
+    
+    Parameters
+    ----------
+    i : float
+        A number between 0.0 and 1.0.
+    normalize : bool, optional
+        Normalize the resulting RGB values.
+        Default is to return integer values ranging from 0 to 255.
+    
+    Results
+    -------
+    tuple
+        The RGB values of the color corresponding to the provided number.
+        If `normalize` is true, the RGB values are normalized to values between 0.0 and 1.0.
+        If `normalize` is false, the RGB values are integers between 0 and 255.
+
+    Examples
+    --------
+    >>> i_to_green(1.0)
+    (0, 255, 0)
+    >>> i_to_green(0.0)
+    (255, 255, 255)    
+    """
     i = max(i, 0.0)
     i = min(i, 1.0)
-    rb = min((1 - i) * 255, 255)
-    return (int(rb), 255, int(rb))
+    r = b = min((1 - i) * 255, 255)
+    if not normalize:
+        return int(r), 255, int(b)
+    return r / 255, 1.0, b / 255
 
 
-def i_to_blue(i):
+def i_to_blue(i, normalize=False):
+    """Convert a number between 0.0 and 1.0 to a shade of blue.
+    
+    Parameters
+    ----------
+    i : float
+        A number between 0.0 and 1.0.
+    normalize : bool, optional
+        Normalize the resulting RGB values.
+        Default is to return integer values ranging from 0 to 255.
+    
+    Results
+    -------
+    tuple
+        The RGB values of the color corresponding to the provided number.
+        If `normalize` is true, the RGB values are normalized to values between 0.0 and 1.0.
+        If `normalize` is false, the RGB values are integers between 0 and 255.
+
+    Examples
+    --------
+    >>> i_to_blue(1.0)
+    (0, 0, 255)
+    >>> i_to_blue(0.0)
+    (255, 255, 255)    
+    """
     i = max(i, 0.0)
     i = min(i, 1.0)
-    rg = min((1 - i) * 255, 255)
-    return (int(rg), int(rg), 255)
+    r = g = min((1 - i) * 255, 255)
+    if not normalize:
+        return int(r), int(g), 255
+    return r / 255, g / 255, 1.0
 
 
-def i_to_white(i):
-    i = max(i, 0.0)
-    i = min(i, 1.0)
-    rgb = min((1 - i) * 255, 255)
-    return (int(rgb), int(rgb), int(rgb))
+def i_to_white(i, normalize=False):
+    """Convert a number between 0.0 and 1.0 to a shade of white.
+    
+    Parameters
+    ----------
+    i : float
+        A number between 0.0 and 1.0.
+    normalize : bool, optional
+        Normalize the resulting RGB values.
+        Default is to return integer values ranging from 0 to 255.
+    
+    Results
+    -------
+    tuple
+        The RGB values of the color corresponding to the provided number.
+        If `normalize` is true, the RGB values are normalized to values between 0.0 and 1.0.
+        If `normalize` is false, the RGB values are integers between 0 and 255.
 
-
-def i_to_black(i):
+    Examples
+    --------
+    >>> i_to_white(1.0)
+    (255, 255, 255)
+    >>> i_to_white(0.0)
+    (0, 0, 0)    
+    """
     i = max(i, 0.0)
     i = min(i, 1.0)
     rgb = min(i * 255, 255)
-    return (int(rgb), int(rgb), int(rgb))
+    if not normalize:
+        return int(rgb), int(rgb), int(rgb)
+    rgb = rgb / 255
+    return rgb, rgb, rgb 
+
+
+def i_to_black(i, normalize=False):
+    """Convert a number between 0.0 and 1.0 to a shade of black.
+    
+    Parameters
+    ----------
+    i : float
+        A number between 0.0 and 1.0.
+    normalize : bool, optional
+        Normalize the resulting RGB values.
+        Default is to return integer values ranging from 0 to 255.
+    
+    Results
+    -------
+    tuple
+        The RGB values of the color corresponding to the provided number.
+        If `normalize` is true, the RGB values are normalized to values between 0.0 and 1.0.
+        If `normalize` is false, the RGB values are integers between 0 and 255.
+
+    Examples
+    --------
+    >>> i_to_black(1.0)
+    (0, 0, 0)
+    >>> i_to_black(0.0)
+    (255, 255, 255)    
+    """
+    i = max(i, 0.0)
+    i = min(i, 1.0)
+    rgb = min((1 - i) * 255, 255)
+    if not normalize:
+        return int(rgb), int(rgb), int(rgb)
+    rgb = rgb / 255
+    return rgb, rgb, rgb
 
 
 class Colormap(object):
+    """"Convenience class for converting a data range into a corresponding RGB color range.
+    
+    Parameters
+    ----------
+    data : list
+        A list of data points.
+    spec : {'rgb', 'red', 'green', 'blue', 'white', 'black'}
+        A color specification.
+
+    """
 
     colorfuncs = {
         'rgb': i_to_rgb,

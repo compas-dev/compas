@@ -15,13 +15,10 @@ __all__ = [
     'is_sequence_of_tuple',
     'is_sequence_of_list',
     'is_sequence_of_dict',
-
     'is_item_iterable',
     'is_sequence_of_iterable',
-
     'coerce_sequence_of_tuple',
     'coerce_sequence_of_list',
-
     'coerce_json',
 ]
 
@@ -32,6 +29,7 @@ __all__ = [
 
 
 def is_sequence_of_str(sequence):
+    """"""
     return is_sequence_of_type(sequence, basestring)
 
 
