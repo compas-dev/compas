@@ -113,6 +113,8 @@ def ncycles(iterable, n):
 
 
 def dotproduct(vec1, vec2):
+    """Compute the dot product of two vectors of arbitrary but equal length.
+    """
     return sum(map(operator.mul, vec1, vec2))
 
 
@@ -124,7 +126,9 @@ def flatten(listOfLists):
 def repeatfunc(func, times=None, *args):
     """Repeat calls to func with specified arguments.
 
-    Example:  repeatfunc(random.random)
+    Examples
+    --------
+    >>> repeatfunc(random.random)
     """
     if times is None:
         return starmap(func, repeat(args))
