@@ -53,7 +53,9 @@ orientation
     :nosignatures:
 
     face_adjacency
+    face_adjacency_numpy
     unify_cycles
+    unify_cycles_numpy
 
 traversal
 ---------
