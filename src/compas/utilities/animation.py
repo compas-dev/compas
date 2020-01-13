@@ -42,17 +42,13 @@ def gif_from_images(files,
 
     Examples
     --------
-    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
-    >>> plotter = MeshPlotter(mesh)
-    >>> plotter.draw_vertices()
+    >>> 
 
     """
     if reverse:
         files.reverse()
-
     if pingpong:
         files += files[::-1]
-
     with imageio.get_writer(gif_path,
                             mode='I',
                             fps=fps,
@@ -61,7 +57,6 @@ def gif_from_images(files,
         for filename in files:
             image = imageio.imread(filename)
             writer.append_data(image)
-
     if delete_files:
         for filename in files:
             os.remove(filename)
