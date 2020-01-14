@@ -649,7 +649,7 @@ def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=F
 
 
 def is_color_light(color):
-    r"""Ïs a color 'light'.
+    r"""Is a color 'light'.
     
     Parameters
     ----------

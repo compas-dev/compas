@@ -23,10 +23,9 @@ def adjacency_from_edges(edges):
 
     Examples
     --------
-    .. code-block:: python
-
-        #
-
+    >>> edges = [[0, 1], [0, 2], [0, 3], [0, 4]]
+    >>> adjacency_from_edges(edges)
+    {0: [1, 2, 3, 4], 1: [0], 2: [0], 3: [0], 4: [0]}
     """
     adj = {}
     for i, j in iter(edges):
@@ -34,11 +33,13 @@ def adjacency_from_edges(edges):
         adj.setdefault(j, []).append(i)
     return adj
 
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
-
 if __name__ == "__main__":
 
-    pass
+    import doctest
+
+    doctest.testmod(globs=globals())

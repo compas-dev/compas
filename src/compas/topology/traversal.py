@@ -70,11 +70,7 @@ def depth_first_ordering(adjacency, root):
 
     Examples
     --------
-    >>> import compas
-    >>> from compas.datastructures import Network
-    >>> from compas.topology import depth_first_search as dfs
-    >>> network = Network.from_obj(compas.get('lines.obj'))
-    >>> print(dfs(network, network.get_any_vertex()))
+    >>>
     """
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
     tovisit = [root]
@@ -84,14 +80,12 @@ def depth_first_ordering(adjacency, root):
     while tovisit:
         # pop the last added element from the stack
         node = tovisit.pop()
-
         if node not in visited:
             # mark the node as visited
             visited.add(node)
             ordering.append(node)
             # add the unvisited nbrs to the stack
             tovisit.extend(adjacency[node] - visited)
-
     return ordering
 
 
@@ -128,28 +122,21 @@ def depth_first_ordering(adjacency, root):
 #     while tovisit:
 #         # pop the last added element from the stack
 #         node = tovisit.pop()
-
 #         if node not in visited:
 #             paths[-1].append(node)
-
 #             # mark the node as visited
 #             visited.add(node)
 #             ordering.append(node)
-
 #             # add the unvisited nbrs to the stack
 #             nodes = adjacency[node] - visited
-
 #             if nodes:
 #                 for child in nodes:
 #                     predecessors[child] = node
 #             else:
 #                 paths.append([])
-
 #             tovisit.extend(nodes)
-
 #     if not len(paths[-1]):
 #         del paths[-1]
-
 #     return ordering, predecessors, paths
 
 
@@ -192,7 +179,6 @@ def breadth_first_ordering(adjacency, root):
     Examples
     --------
     >>>
-
     """
     tovisit = deque([root])
     visited = set([root])
@@ -262,6 +248,9 @@ def breadth_first_paths(adjacency, root, goal):
     -----
     Due to the nature of the search, the first path returned is the shortest.
 
+    Examples
+    --------
+    >>>
     """
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
     tovisit = deque([(root, [root])])
@@ -336,10 +325,13 @@ def astar_shortest_path(network, root, goal):
     list, None
         The path from root to goal, or None, if no path exists between the vertices.
 
+    Examples
+    --------
+    >>>
+
     References
     ----------
     https://en.wikipedia.org/wiki/A*_search_algorithm
-
     """
     root_coords = network.vertex_coordinates(root)
     goal_coords = network.vertex_coordinates(goal)
@@ -439,13 +431,10 @@ def dijkstra_distances(adjacency, weight, target):
         u = min(tovisit, key=lambda k: distance[k])
         tovisit.remove(u)
         visited.add(u)
-
         for v in adjacency[u] - visited:
             d = distance[u] + weight[(u, v)]
-
             if d < distance[v]:
                 distance[v] = d
-
     return distance
 
 
@@ -497,5 +486,4 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 # ==============================================================================
 
 if __name__ == '__main__':
-
     pass
