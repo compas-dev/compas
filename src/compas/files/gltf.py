@@ -196,7 +196,7 @@ class GLTFReader(object):
         is_glb = self._content[:4] == b'glTF'
 
         if not is_glb:
-            content = bytes(self._content).decode('utf-8')
+            content = self._content.tobytes().decode('utf-8')
             self._content = None
             self.json = json.loads(content)
 
@@ -238,7 +238,7 @@ class GLTFReader(object):
         type_, length_, json_bytes, offset = self.load_chunk(offset)
         if type_ != b'JSON':
             raise Exception('Bad glTF.  First chunk not in JSON format')
-        json_str = bytes(json_bytes).decode('utf-8')
+        json_str = json_bytes.tobytes().decode('utf-8')
         self.json = json.loads(json_str)
 
         # load binary buffer
@@ -602,13 +602,8 @@ if __name__ == '__main__':
     filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'BoxInterleaved.glb')
 
     download_file_from_remote(source_glb, filepath_glb, overwrite=False)
-
-    source = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SimpleMeshes/glTF-Embedded/SimpleMeshes.gltf'
-
-    file_path = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'SimpleMeshesEmbedded.gltf')
-    download_file_from_remote(source, file_path, overwrite=False)
-
-    gltf = GLTF(file_path)
+    
+    gltf = GLTF(filepath_glb)
 
     default_scene_index = gltf.parser.default_scene_index or 0
     vertex_data = gltf.parser.scenes[default_scene_index].nodes
