@@ -196,7 +196,7 @@ class GLTFReader(object):
         is_glb = self._content[:4] == b'glTF'
 
         if not is_glb:
-            content = str(self._content, encoding='utf-8')
+            content = bytes(self._content).decode('utf-8')
             self._content = None
             self.json = json.loads(content)
 
@@ -238,7 +238,7 @@ class GLTFReader(object):
         type_, length_, json_bytes, offset = self.load_chunk(offset)
         if type_ != b'JSON':
             raise Exception('Bad glTF.  First chunk not in JSON format')
-        json_str = str(json_bytes, encoding='utf-8')
+        json_str = bytes(json_bytes).decode('utf-8')
         self.json = json.loads(json_str)
 
         # load binary buffer
