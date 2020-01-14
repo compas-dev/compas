@@ -381,7 +381,7 @@ class GLTFReader(object):
             buffer = self._glb_buffer
         elif self.is_data_uri(uri):
             string = self.get_data_uri_data(uri)
-            buffer = memoryview(base64.b16decode(string))
+            buffer = memoryview(base64.b64decode(string))
         else:
             filepath = self.get_filepath(uri)
             with open(filepath, 'rb') as f:
@@ -603,7 +603,12 @@ if __name__ == '__main__':
 
     download_file_from_remote(source_glb, filepath_glb, overwrite=False)
 
-    gltf = GLTF(filepath_glb)
+    source = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SimpleMeshes/glTF-Embedded/SimpleMeshes.gltf'
+
+    file_path = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'SimpleMeshesEmbedded.gltf')
+    download_file_from_remote(source, file_path, overwrite=False)
+
+    gltf = GLTF(file_path)
 
     default_scene_index = gltf.parser.default_scene_index or 0
     vertex_data = gltf.parser.scenes[default_scene_index].nodes
