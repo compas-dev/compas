@@ -31,24 +31,92 @@ COMPONENT_TYPE_ENUM = {
     5126: 'f',  # FLOAT
 }
 
-COMPONENT_TYPE_SIZE_ENUM = {
-    5120: 1,  # BYTE
-    5121: 1,  # UNSIGNED_BYTE
-    5122: 2,  # SHORT
-    5123: 2,  # UNSIGNED_SHORT
-    5125: 4,  # UNSIGNED_INT
-    5126: 4,  # FLOAT
-}
-
 NUM_COMPONENTS_BY_TYPE_ENUM = {
     "SCALAR": 1,
-    # "VEC2": 2,
+    "VEC2": 2,
     "VEC3": 3,
-    # "VEC4": 4,
-    # "MAT2": 4,
-    # "MAT3": 9,
-    # "MAT4": 16,
+    "VEC4": 4,
+    "MAT2": 4,
+    "MAT3": 9,
+    "MAT4": 16,
 }
+
+DEFAULT_ROOT_NAME = 'root'
+
+
+class MeshData(object):
+    """Object containing COMPAS consumable data for creating a mesh.
+
+    Attributes
+    ----------
+    vertices : list
+        List of the xyz-coordinates of the vertices of the mesh.
+    faces : list of tuples
+        List of the faces of the mesh represented by tuples of vertices referenced by index.
+    mesh_name : str
+        Name of the mesh, if any.
+    """
+    def __init__(self, faces, vertices, mesh_name):
+        self.vertices = vertices
+        self.faces = faces
+        self.mesh_name = mesh_name
+        # self.material = ??
+
+
+class GLTFScene(object):
+    """Object representing a root node of a scene.
+
+    Attributes
+    ----------
+    name : str
+        Name of the scene, if any.
+    edges : list
+        List of 2-tuples referencing nodes by key.
+    nodes : dict
+        Dictionary of (node_key, GLTFNode) pairs.
+    """
+    def __init__(self):
+        self.name = None
+        self.edges = []
+        self.nodes = {}
+
+
+class GLTFNode(object):
+    """Object representing the COMPAS consumable part of a glTF node.
+
+    Attributes
+    ----------
+    name : str
+        Name of the node, if any.
+    children : list
+        Child nodes referenced by node_key.
+    matrix : list of lists
+        Matrix representing the displacement from node's parent to the node.
+    mesh_index : int or str double check this
+        Index of the associated mesh within the JSON.
+    weights : list of ints
+        Weights used for computing morph targets in the attached mesh, if any.
+
+    position : tuple
+        xyz-coordinates of the node, calculated from the matrix.
+    transform : list of lists
+        Matrix representing the displacement from the root node to the node.
+    mesh_data : MeshData
+        Contains mesh data, if any.
+    node_key : int
+        Key of the node used in GLTFScene.nodes.
+    """
+    def __init__(self):
+        self.name = None
+        self.children = []
+        self.matrix = None
+        self.mesh_index = None
+        self.weights = None
+
+        self.position = None
+        self.transform = None
+        self.mesh_data = None
+        self.node_key = None
 
 
 class GLTF(object):
@@ -60,12 +128,36 @@ class GLTF(object):
 
     """
     def __init__(self, filepath):
-        self.reader = GLTFReader(filepath)
-        self.parser = GLTFParser(self.reader)
+        self.filepath = filepath
+
+        self._is_parsed = False
+        self._reader = None
+        self._parser = None
+
+    def read(self):
+        self._reader = GLTFReader(self.filepath)
+        self._parser = GLTFParser(self._reader)
+        self._is_parsed = True
+
+    @property
+    def reader(self):
+        if not self._is_parsed:
+            self.read()
+        return self._reader
+
+    @property
+    def parser(self):
+        if not self._is_parsed:
+            self.read()
+        return self._parser
 
 
 class GLTFReader(object):
-    """"Read the contents of a *glTF* or *glb* version 2 file using the json library .
+    """"Read the contents of a *glTF* or *glb* version 2 file using the json library.
+    Uses ideas from Khrono's Group glTF-Blender-IO.
+    Caution: Extensions are not supported and their data may be lost.
+    Caution: Data for materials, textures, animations, images, skins and cameras are saved,
+        but are not processed or used.
 
     Parameters
     ----------
@@ -81,84 +173,103 @@ class GLTFReader(object):
         Dictionary object containing the contents of the glTF.
     data : list
         List of lists containing data read from binary files.
-        Note: Only scalar and 3 dimensional vector data are supported.
+    image_data : list
+        List containing binary image data.
     """
     def __init__(self, filepath):
         self.filepath = filepath
+
         self.json = None
         self.data = []
+        self.image_data = []
+
+        self._content = None
+        self._glb_buffer = None
+        self._buffers = {}
+
         self.read()
 
     def read(self):
-        if self.filepath:
-            ext = self.get_file_extension()
-            if ext == '.gltf':
-                self.load_json_from_gltf()
-            if ext == '.glb':
-                self.load_json_from_glb()
+        with open(self.filepath, 'rb') as f:
+            self._content = memoryview(f.read())
+
+        is_glb = self._content[:4] == b'glTF'
+
+        if not is_glb:
+            content = str(self._content, encoding='utf-8')
+            self._content = None
+            self.json = json.loads(content)
+
+        else:
+            self.load_from_glb()
+            self._content = None
+
+        self.check_version()
 
         if self.json:
             for accessor in self.json.get('accessors', []):
                 accessor_data = self.access_data(accessor)
                 self.data.append(accessor_data)
 
-    def get_file_extension(self):
-        _, ext = os.path.splitext(self.filepath)
-        if ext not in ['.gltf', '.glb']:
-            raise Exception('Invalid  file extension.  glTF or glb expected.')
-        return ext
+            for image in self.json.get('images', []):
+                image_data = self.get_image_data(image)
+                self.image_data.append(image_data)
 
-    def load_json_from_gltf(self):
-        with open(self.filepath, 'r') as f:
-            self.json = json.load(f)
-            version = self.json['asset']['version']
-            self.check_version(version)
+    def get_image_data(self, image):
+        if 'bufferView' not in image:
+            return None
+        buffer_view_index = image['bufferView']
+        buffer_view = self.json['buffersViews'][buffer_view_index]
+        buffer = self.get_buffer(buffer_view['buffer'])
+        offset = buffer_view.get('byteOffset', 0)
+        length_ = buffer_view['byteLength']
+        return buffer[offset: offset + length_]
 
-    def load_json_from_glb(self):
-        with open(self.filepath, 'rb') as f:
-            self.check_magic_number(f)
-            version = self.read_byte(f, 4)
-            self.check_version(version)
-            self.check_chunk_type(f)
+    def load_from_glb(self):
+        header = struct.unpack_from('<4sII', self._content)
+        file_size = header[2]
 
-            chunk_length = self.read_byte(f, 12)
-            f.seek(20)
-            bytes_ = f.read(chunk_length)
-            self.json = json.loads(bytes_)
+        if file_size != len(self._content):
+            raise Exception('Bad glTF.  File size does not match.')
 
-    def check_version(self, version):
+        offset = 12
+
+        # load json
+        type_, length_, json_bytes, offset = self.load_chunk(offset)
+        if type_ != b'JSON':
+            raise Exception('Bad glTF.  First chunk not in JSON format')
+        json_str = str(json_bytes, encoding='utf-8')
+        self.json = json.loads(json_str)
+
+        # load binary buffer
+        if offset < len(self._content):
+            type_, length_, bytes_, offset = self.load_chunk(offset)
+            if type_ == b'BIN\0':
+                self._glb_buffer = bytes_
+
+    def load_chunk(self, offset):
+        chunk_header = struct.unpack_from('<I4s', self._content, offset)
+        length_ = chunk_header[0]
+        type_ = chunk_header[1]
+        data = self._content[offset + 8: offset + 8 + length_]
+
+        return type_, length_, data, offset + 8 + length_
+
+    def check_version(self):
+        version = self.json['asset']['version']
         if float(version) != 2.0:
             raise Exception('Invalid glTF version.  Version 2.0 expected.')
-
-    def check_magic_number(self, f):
-        magic = self.read_byte(f, 0)
-        if magic != 0x46546C67:
-            raise Exception('Invalid file type.')
-
-    def check_chunk_type(self, f):
-        chunk_type = self.read_byte(f, 16)
-        if chunk_type != 0x4E4F534A:
-            raise NotImplementedError
-
-    def read_byte(self, f, origin, type_='I'):
-        f.seek(origin)
-        return struct.unpack(type_, f.read(4))[0]
 
     def access_data(self, accessor):
         count = accessor['count']
         component_type = accessor['componentType']
         type_ = accessor['type']
         accessor_offset = accessor.get('byteOffset', 0)
+        num_components = NUM_COMPONENTS_BY_TYPE_ENUM[type_]
 
-        try:
-            num_components = NUM_COMPONENTS_BY_TYPE_ENUM[type_]
-        except KeyError:
-            return None
-
+        # This situation indicates use of an extension.
         if 'sparse' not in accessor and 'bufferView' not in accessor:
-            raise Exception('Extensions are not supported.')
-
-        data = self.get_generic_data(num_components, count)
+            return None
 
         if 'bufferView' in accessor:
             buffer_view_index = accessor['bufferView']
@@ -169,6 +280,8 @@ class GLTFReader(object):
                 accessor_offset,
                 num_components
             )
+        else:
+            data = self.get_generic_data(num_components, count)
 
         if 'sparse' in accessor:
             sparse_data = accessor['sparse']
@@ -198,62 +311,88 @@ class GLTFReader(object):
             for index, data_index in enumerate(sparse_indices):
                 data[data_index] = sparse_values[index]
 
+            if accessor.get('normalized', False):
+                for index, tuple_ in enumerate(data):
+                    new_tuple = ()
+                    for i in tuple_:
+                        if component_type == 5120:
+                            new_tuple += (max(float(i / 127.0), -1.0),)
+                        elif component_type == 5121:
+                            new_tuple += (float(i / 255.0),)
+                        elif component_type == 5122:
+                            new_tuple += (max(float(i / 32767.0), -1.0),)
+                        elif component_type == 5123:
+                            new_tuple += (i / 65535.0,)
+                        else:
+                            new_tuple += (float(i),)
+                    data[index] = new_tuple
+
         return data
 
     def get_generic_data(self, num_components, count):
         return [(0, ) * num_components for _ in range(count)]
 
     def read_from_buffer_view(self, buffer_view_index, count, component_type, accessor_offset, num_components):
-        data = []
         buffer_view = self.json['bufferViews'][buffer_view_index]
-        buffer_view_offset = buffer_view.get('byteOffset', 0)
 
+        buffer_view_offset = buffer_view.get('byteOffset', 0)
         offset = accessor_offset + buffer_view_offset
 
-        expected_length = COMPONENT_TYPE_SIZE_ENUM[component_type] * num_components
+        format_char = COMPONENT_TYPE_ENUM[component_type]
+        format_ = '<' + format_char * num_components
+
+        expected_length = struct.calcsize(format_)
+
+        component_size = struct.calcsize('<' + format_char)
+        if component_type == 'MAT2' and component_size == 1:
+            format_ = '<FFxxFF'.replace('F', format_char)
+            expected_length = 8
+        elif component_type == 'MAT3' and component_size == 1:
+            format_ = '<FFFxFFFxFFF'.replace('F', format_char)
+            expected_length = 12
+        elif component_type == 'MAT3' and component_size == 2:
+            format_ = '<FFFxxFFFxxFFF'.replace('F', format_char)
+            expected_length = 24
+
         byte_stride = buffer_view.get('byteStride', expected_length)
-        pad_length = byte_stride - expected_length
 
-        format_ = '<' + COMPONENT_TYPE_ENUM[component_type] * num_components + 'x' * pad_length
+        unpack_from = struct.Struct(format_).unpack_from
 
-        uri = self.get_uri(buffer_view)
-        f = self.get_byte_stream(uri)
+        buffer_index = buffer_view['buffer']
+        buffer = self.get_buffer(buffer_index)
 
-        f.seek(offset, 1)
-        for _ in range(count):
-            bytes_ = f.read(byte_stride)
-            unpacked = struct.unpack(format_, bytes_)
-            data.append(unpacked)
-        f.close()
+        data = [
+            unpack_from(buffer, i)
+            for i in range(offset, offset + count * byte_stride, byte_stride)
+        ]
 
         if num_components == 1:
-            data = [item[0] for item in data]  # unwrap integers from tuple
+            data = [item[0] for item in data]  # unwrap scalars from tuple
 
         return data
 
-    def get_uri(self, buffer_view):
-        buffer_index = buffer_view['buffer']
-        return self.json['buffers'][buffer_index].get('uri', None)
+    def get_buffer(self, buffer_index):
+        if buffer_index in self._buffers:
+            return self._buffers[buffer_index]
 
-    def get_byte_stream(self, uri):
+        uri = self.json['buffers'][buffer_index].get('uri', None)
+
         if not uri:
-            f = open(self.filepath, 'rb')
-            chunk_0_len = self.read_byte(f, 12)
-            f.seek(12 + 8 + chunk_0_len + 8)  # header + chunk 0 header + chunk 0 + chunk 1 header
+            buffer = self._glb_buffer
         elif self.is_data_uri(uri):
             string = self.get_data_uri_data(uri)
-            f = base64.b64decode(string)
-            f = io.BytesIO(f)
-            f.seek(0)
+            buffer = memoryview(base64.b16decode(string))
         else:
             filepath = self.get_filepath(uri)
-            f = open(filepath, 'rb')
-            f.seek(0)
-        return f
+            with open(filepath, 'rb') as f:
+                buffer = memoryview(f.read())
+
+        self._buffers[buffer_index] = buffer
+
+        return buffer
 
     def is_data_uri(self, uri):
-        split_uri = uri.split(':')
-        return split_uri[0] == 'data'
+        return uri.startswith('data:')
 
     def get_data_uri_data(self, uri):
         split_uri = uri.split(',')
@@ -275,88 +414,74 @@ class GLTFParser(object):
     Attributes
     ----------
     reader : GLTF2Reader
-    default_scene : int
+    default_scene_index : int
         index of the default scene
-    scenes : list
+    scenes : list of GLTFScenes
         List of dictionaries containing the information of each scene.
-        Dictionaries are of the following form:
-
-        name : str
-            Name of the scene.
-        extras : dict
-            Extra information about the scene.
-        faces_and_vertices : dict
-            Dictionary of dictionaries containing vertex and face lists for the included meshes.
-        vertices : dict
-            Dictionary naming the vertices of the scene tree.  The values are of the form:
-                {
-                    'position' : <xyz coordinates>
-                    'transform': <matrix representing the transformation from the origin to the vertex>
-                    'matrix' : <matrix representing the transformation from the parent to the vertex>
-                    'mesh_key' : <index of the mesh at this vertex, if any>
-                    'mesh_name' : <name of the mesh, if any>
-                    'extras' : <extra data associated to the node, if any>
-                }
-        edges : list
-            List of tupled pairs of vertices representing edges of the scene tree.
     """
     def __init__(self, reader):
         self.reader = reader
+        self.default_scene_index = None
         self.scenes = []
-        self.default_scene = None
+
         self.parse()
 
     def parse(self):
-        self.default_scene = self.get_default_scene()
+        self.default_scene_index = self.get_default_scene()
 
         for scene in self.reader.json.get('scenes', []):
-            scene_dict = self.get_initial_scene_dict(scene)
-            root_children = scene.get('nodes', [])
-            self.process_children('root', root_children, scene_dict)
-            self.scenes.append(scene_dict)
+            scene_obj = self.get_initial_scene(scene)
+            self.process_children('root', scene_obj)
+            self.scenes.append(scene_obj)
 
     def get_default_scene(self):
-        return self.reader.json.get('scene', None)
+        return self.reader.json.get('scene')
 
-    def get_initial_scene_dict(self, scene):
-        return {
-            'name': scene.get('name', ''),
-            'extras': scene.get('extras', {}),
-            'faces_and_vertices': {},
-            'vertices': {'root': {
-                'position': [0, 0, 0],
-                'transform': identity_matrix(4),
-                'matrix': identity_matrix(4),
-            }},
-            'edges': [],
-        }
+    def get_initial_scene(self, scene):
+        scene_obj = GLTFScene()
+        scene_obj.name = scene.get('name')
 
-    def process_children(self, parent_key, child_keys, scene_dict):
+        root_node = self.get_default_root_node(scene)
+        scene_obj.nodes[root_node.name] = root_node
+
+        return scene_obj
+
+    def get_default_root_node(self, scene):
+        root_node = GLTFNode()
+
+        root_node.name = DEFAULT_ROOT_NAME
+        root_node.position = [0, 0, 0]
+        root_node.transform = identity_matrix(4)
+        root_node.matrix = identity_matrix(4)
+        root_node.children = scene.get('nodes', [])
+
+        return root_node
+
+    def process_children(self, parent_key, scene_obj):
+        child_keys = scene_obj.nodes[parent_key].children
         for key in child_keys:
-            scene_dict['edges'].append((parent_key, key))
+            scene_obj.edges.append((parent_key, key))
 
-            data = self.get_vertex_data(key, parent_key, scene_dict)
+            gltf_node = GLTFNode()
 
-            transform = data['transform']
-            position = self.inhomogeneous_transformation(transform, scene_dict['vertices']['root']['position'])
-            data['position'] = position
+            node = self.reader.json['nodes'][key]
 
-            scene_dict['vertices'][key] = data
+            gltf_node.name = node.get('name')
+            gltf_node.children = node.get('children', [])
+            gltf_node.matrix = self.get_matrix(node)
+            gltf_node.weights = node.get('weights')
+            gltf_node.mesh_index = node.get('mesh')
 
-            descendents = self.reader.json['nodes'][key].get('children', [])
-            self.process_children(key, descendents, scene_dict)
+            gltf_node.transform = multiply_matrices(scene_obj.nodes[parent_key].transform, gltf_node.matrix)
+            gltf_node.position = self.inhomogeneous_transformation(gltf_node.transform, scene_obj.nodes[DEFAULT_ROOT_NAME].position)
+            gltf_node.node_key = key
 
-    def get_vertex_data(self, vertex_key, parent_key, scene_dict):
-        node = self.reader.json['nodes'][vertex_key]
-        matrix = self.get_matrix(node)
-        transform = multiply_matrices(scene_dict['vertices'][parent_key]['transform'], matrix)
-        mesh_data = self.get_mesh_data(node, scene_dict)
-        extras = node.get('extras', {})
+            if gltf_node.mesh_index is not None:
+                gltf_node.mesh_data = self.get_mesh_data(gltf_node)
 
-        data = {'matrix': matrix, 'transform': transform}
-        data.update(mesh_data)
-        data['extras'] = extras
-        return data
+            scene_obj.nodes[key] = gltf_node
+
+            self.process_children(key, scene_obj)
 
     def get_matrix(self, node):
         if 'matrix' in node:
@@ -366,29 +491,18 @@ class GLTFParser(object):
     def get_matrix_from_col_major_list(self, matrix_as_list):
         return [[matrix_as_list[i + j * 4] for j in range(4)] for i in range(4)]
 
-    def get_matrix_from_trs(self, child_node):
+    def get_matrix_from_trs(self, node):
         matrix = identity_matrix(4)
-        if 'translation' in child_node:
-            translation = matrix_from_translation(child_node['translation'])
+        if 'translation' in node:
+            translation = matrix_from_translation(node['translation'])
             matrix = multiply_matrices(matrix, translation)
-        if 'rotation' in child_node:
-            rotation = matrix_from_quaternion(child_node['rotation'])
+        if 'rotation' in node:
+            rotation = matrix_from_quaternion(node['rotation'])
             matrix = multiply_matrices(matrix, rotation)
-        if 'scale' in child_node:
-            scale = matrix_from_scale_factors(child_node['scale'])
+        if 'scale' in node:
+            scale = matrix_from_scale_factors(node['scale'])
             matrix = multiply_matrices(matrix, scale)
         return matrix
-
-    def get_mesh_data(self, node, scene_dict):
-        mesh_data = {}
-        if 'mesh' in node:
-            mesh_key = node['mesh']
-            mesh_data['mesh_key'] = mesh_key
-            mesh = self.reader.json['meshes'][mesh_key]
-            scene_dict['faces_and_vertices'][mesh_key] = self.get_faces_and_vertices(mesh, node)
-            if 'name' in mesh:
-                mesh_data['mesh_name'] = mesh['name']
-        return mesh_data
 
     def inhomogeneous_transformation(self, matrix, vector):
         return self.project_vector(multiply_matrices([self.embed_vector(vector)], transpose_matrix(matrix))[0])
@@ -399,12 +513,14 @@ class GLTFParser(object):
     def project_vector(self, vector):
         return vector[:3]
 
-    def get_faces_and_vertices(self, mesh, node):
-        vertices = []
+    def get_mesh_data(self, gltf_node):
         faces = []
+        vertices = []
+        mesh = self.reader.json['meshes'][gltf_node.mesh_index]
+        mesh_name = mesh.get('name')
         primitives = mesh['primitives']
         shift = 0
-        weights = self.get_weights(mesh, node)
+        weights = self.get_weights(mesh, gltf_node)
         for primitive in primitives:
 
             face_side_count = self.get_face_side_count(primitive)
@@ -429,14 +545,11 @@ class GLTFParser(object):
             faces.extend(primitive_faces)
 
             shift += len(primitive_vertices)
-        return {
-                'vertices': vertices,
-                'faces': faces,
-            }
+        return MeshData(faces, vertices, mesh_name)
 
-    def get_weights(self, mesh, node):
+    def get_weights(self, mesh, gltf_node):
         weights = mesh.get('weights', None)
-        weights = node.get('weights', weights)
+        weights = gltf_node.weights or weights
         return weights
 
     def get_morph_function(self, w):
@@ -492,28 +605,22 @@ if __name__ == '__main__':
 
     gltf = GLTF(filepath_glb)
 
-    default_scene = gltf.parser.default_scene or 0
-    vertex_data = gltf.parser.scenes[default_scene]['vertices']
+    default_scene_index = gltf.parser.default_scene_index or 0
+    vertex_data = gltf.parser.scenes[default_scene_index].nodes
 
-    vertices = {name: data['position'] for name, data in vertex_data.items()}
-    edges = gltf.parser.scenes[default_scene]['edges']
+    vertices = {name: gltf_node.position for name, gltf_node in vertex_data.items()}
+    edges = gltf.parser.scenes[default_scene_index].edges
 
     scene_tree = Network.from_vertices_and_edges(vertices, edges)
     scene_tree.plot()
 
-    meshes_by_key = {
-        key: Mesh.from_vertices_and_faces(data['vertices'], data['faces'])
-        for key, data in gltf.parser.scenes[default_scene]['faces_and_vertices'].items()
-    }
-
     transformed_meshes = []
 
-    for vertex_name, attributes in vertex_data.items():
-        if 'mesh_key' not in attributes:
+    for vertex_name, gltf_node in vertex_data.items():
+        if gltf_node.mesh_data is None:
             continue
-        mk = attributes['mesh_key']
-        t = attributes['transform']
-        m = meshes_by_key[mk]
+        t = gltf_node.transform
+        m = Mesh.from_vertices_and_faces(gltf_node.mesh_data.vertices, gltf_node.mesh_data.faces)
         transformed_mesh = mesh_transformed(m, t)
         transformed_meshes.append(transformed_mesh)
 
