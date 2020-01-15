@@ -73,7 +73,7 @@ def i_to_rgb(i, normalize=False):
         Normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
-    Results
+    Returns
     -------
     tuple
         The RGB values of the color corresponding to the provided number.
@@ -142,7 +142,7 @@ def i_to_red(i, normalize=False):
         Normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
-    Results
+    Returns
     -------
     tuple
         The RGB values of the color corresponding to the provided number.
@@ -175,7 +175,7 @@ def i_to_green(i, normalize=False):
         Normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
-    Results
+    Returns
     -------
     tuple
         The RGB values of the color corresponding to the provided number.
@@ -208,7 +208,7 @@ def i_to_blue(i, normalize=False):
         Normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
-    Results
+    Returns
     -------
     tuple
         The RGB values of the color corresponding to the provided number.
@@ -241,7 +241,7 @@ def i_to_white(i, normalize=False):
         Normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
-    Results
+    Returns
     -------
     tuple
         The RGB values of the color corresponding to the provided number.
@@ -275,7 +275,7 @@ def i_to_black(i, normalize=False):
         Normalize the resulting RGB values.
         Default is to return integer values ranging from 0 to 255.
 
-    Results
+    Returns
     -------
     tuple
         The RGB values of the color corresponding to the provided number.
