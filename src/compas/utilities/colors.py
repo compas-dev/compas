@@ -63,7 +63,7 @@ except Exception:
 
 
 def i_to_rgb(i, normalize=False):
-    """"Convert a number between 0.0 and 1.0 to an equivalent RGB tuple.
+    """Convert a number between 0.0 and 1.0 to an equivalent RGB tuple.
 
     Parameters
     ----------
@@ -299,7 +299,7 @@ def i_to_black(i, normalize=False):
 
 
 class Colormap(object):
-    """"Convenience class for converting a data range into a corresponding RGB color range.
+    """Convenience class for converting a data range into a corresponding RGB color range.
 
     Parameters
     ----------
