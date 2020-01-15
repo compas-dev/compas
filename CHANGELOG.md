@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fixed bug in `compas.geometry.is_point_in_circle`.
+- Fixed bug in `compas.geometry.is_polygon_convex`.
+- Fixed bug in `compas.geometry.Polygon.is_convex`.
+
 ### Removed
 
 

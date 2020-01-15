@@ -46,7 +46,6 @@ class Line(Primitive):
     ----------
     .. [1] Wikipedia. *Linear equation*.
            Available at: https://en.wikipedia.org/wiki/Linear_equation.
-
     """
 
     __slots__ = ['_start', '_end']
@@ -82,7 +81,6 @@ class Line(Primitive):
         Point(0.000, 1.000, 0.000)
         >>> a is b
         True
-
         """
         points = [line.start for line in collection] + [line.end for line in collection]
         Point.transform_collection(points, X)
@@ -112,7 +110,6 @@ class Line(Primitive):
         Point(0.000, 1.000, 0.000)
         >>> a is b
         False
-
         """
         lines = [line.copy() for line in collection]
         Line.transform_collection(lines, X)
@@ -124,6 +121,19 @@ class Line(Primitive):
 
     @classmethod
     def from_data(cls, data):
+        """Construct a frame from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Examples
+        --------
+        >>> line = Line.from_data({'start': [0.0, 0.0, 0.0], 'end': [1.0, 0.0, 0.0]})
+        >>> line.end
+        Point(1.000, 0.000, 0.000)
+        """
         return cls(data['start'], data['end'])
 
     # ==========================================================================
@@ -193,7 +203,6 @@ class Line(Primitive):
         -------
         dict
             The line data.
-
         """
         return {'start': list(self.start),
                 'end': list(self.end)}
@@ -243,17 +252,28 @@ class Line(Primitive):
     # ==========================================================================
 
     def point(self, t):
-        """Point: The point from the start to the end at a specific normalized parameter."""
+        """The point from the start to the end at a specific normalized parameter.
 
-        if t < 0 or t > 1:
-            return None
+        Parameters
+        ----------
+        t : float
+            The line parameter.
 
+        Returns
+        -------
+        Point
+            A point on the line.
+
+        Examples
+        --------
+        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> line.point(0.5)
+        Point(0.500, 0.000, 0.000)
+        """
         if t == 0:
             return self.start
-
         if t == 1:
             return self.end
-
         v = self.direction * (t * self.length)
         return self.start + v
 
@@ -277,6 +297,11 @@ class Line(Primitive):
         Line
             The copy.
 
+        Examples
+        --------
+        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> line.copy()
+        Line(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000))
         """
         cls = type(self)
         return cls(self.start.copy(), self.end.copy())
@@ -296,6 +321,16 @@ class Line(Primitive):
         ----------
         transformation : :class:`Transformation`
             The transformation used to transform the line.
+
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> line.transform(R)
+        >>> line.end
+        Point(0.000, 1.000, 0.000)
         """
         self.start.transform(transformation)
         self.end.transform(transformation)
@@ -313,6 +348,17 @@ class Line(Primitive):
         :class: `Line`
             The transformed line.
 
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> l1 = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> l2 = l1.transformed(R)
+        >>> l1.end
+        Point(1.000, 0.000, 0.000)
+        >>> l2.end
+        Point(0.000, 1.000, 0.000)
         """
         line = self.copy()
         line.transform(transformation)

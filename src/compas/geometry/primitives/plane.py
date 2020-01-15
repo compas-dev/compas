@@ -20,12 +20,6 @@ class Plane(Primitive):
     normal : vector
         The normal vector of the plane.
 
-    Examples
-    --------
-    >>>
-        from compas.geometry import Plane
-        plane = Plane([0,0,0], [0,0,1])
-
     Notes
     -----
     For more info on lines and linear equations, see [1]_.
@@ -34,6 +28,14 @@ class Plane(Primitive):
     ----------
     .. [1] `Wikipedia: Plane (geometry) <https://en.wikipedia.org/wiki/Plane_%28geometry%29>`_
 
+    Examples
+    --------
+    >>> from compas.geometry import Plane
+    >>> plane = Plane([0, 0, 0], [0, 0, 1])
+    >>> plane.point
+    Point(0.000, 0.000, 0.000)
+    >>> plane.normal
+    Vector(0.000, 0.000, 1.000)
     """
 
     __slots__ = ['_point', '_normal']
@@ -67,6 +69,13 @@ class Plane(Primitive):
             A plane with base point ``a`` and normal vector defined as the unitized
             cross product of the vectors ``ab`` and ``ac``.
 
+        Examples
+        --------
+        >>> plane = Plane.from_three_points([0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0])
+        >>> plane.point
+        Point(0.000, 0.000, 0.000)
+        >>> plane.normal
+        Vector(0.000, 0.000, 1.000)
         """
         a = Point(*a)
         b = Point(*b)
@@ -93,26 +102,16 @@ class Plane(Primitive):
             A plane with base point ``point`` and normal vector defined as the unitized
             cross product of vectors ``u`` and ``v``.
 
+        Examples
+        --------
+        >>> plane = Plane.from_three_points([0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0])
+        >>> plane.point
+        Point(0.000, 0.000, 0.000)
+        >>> plane.normal
+        Vector(0.000, 0.000, 1.000)
         """
         normal = Vector.cross(u, v)
         return cls(point, normal)
-
-    @classmethod
-    def from_points(cls, points):
-        """Construct the *best-fit* plane through more than three (non-coplanar) points.
-
-        Parameters
-        ----------
-        points : list of point
-            List of points.
-
-        Returns
-        -------
-        Plane
-            A plane that minimizes the distance to each point in the list.
-
-        """
-        raise NotImplementedError
 
     @classmethod
     def worldXY(cls):
@@ -142,8 +141,11 @@ class Plane(Primitive):
 
         Examples
         --------
-        >>>
-
+        >>> plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
+        >>> plane.point
+        Point(0.000, 0.000, 0.000)
+        >>> plane.normal
+        Vector(0.000, 0.000, 1.000)
         """
         return cls(data['point'], data['normal'])
 
@@ -233,7 +235,7 @@ class Plane(Primitive):
     # ==========================================================================
 
     def __eq__(self, other):
-        raise NotImplementedError
+        return self.point == other[0] and self.normal == other[1]
 
     # ==========================================================================
     # operators
@@ -255,6 +257,13 @@ class Plane(Primitive):
         Plane
             The copy.
 
+        Examples
+        --------
+        >>> p1 = Plane.worldXY()
+        >>> p2 = p1.copy()
+        >>> p2.point.x += 1.0
+        >>> p2 == p1
+        False
         """
         cls = type(self)
         return cls(self.point.copy(), self.normal.copy())
@@ -284,7 +293,6 @@ class Plane(Primitive):
         >>> T = Transformation.from_frame(f)
         >>> plane = Plane.worldXY()
         >>> plane.transform(T)
-
         """
         self.point.transform(transformation)
         self.normal.transform(transformation)
@@ -309,9 +317,8 @@ class Plane(Primitive):
         >>> from compas.geometry import Plane
         >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(f)
-        >>> plane = Plane.worldXY()
-        >>> plane_transformed = plane.transformed(T)
-
+        >>> p1 = Plane.worldXY()
+        >>> p2 = p1.transformed(T)
         """
         plane = self.copy()
         plane.transform(transformation)
@@ -324,35 +331,5 @@ class Plane(Primitive):
 
 if __name__ == '__main__':
 
-    from compas.geometry import Frame
-    from compas.geometry import Transformation
-
-    base = Point(0.0, 0.0, 0.0)
-    normal = Vector(1.0, 0.0, 0.0)
-
-    plane = Plane(base, normal)
-
-    print(plane)
-    print(plane.d)
-
-    a, b, c = normal
-
-    p = [1.0, 0.0, 1.0]
-
-    d = a * p[0] + b * p[1] + c * p[2]
-
-    print(d)
-    print(d <= plane.d)
-
-    f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    T = Transformation.from_frame(f)
-    plane = Plane.worldXY()
-    plane.transform(T)
-    print(plane)
-
-    data = {'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]}
-    plane = Plane.from_data(data)
-    print(plane)
-
     import doctest
-    doctest.testmod()
+    doctest.testmod(globs=globals())

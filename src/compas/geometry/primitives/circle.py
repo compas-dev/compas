@@ -15,10 +15,20 @@ class Circle(Primitive):
 
     Attributes
     ----------
-    plane: :class:`compas.geometry.Plane`
+    plane : :class:`compas.geometry.Plane`
         The plane of the circle.
-    radius: float
+    radius : float
         The radius of the circle.
+    normal : :class:`compas.geometry.Vector`
+        The normal vector of the circle's plane.
+    diameter : float
+        The length of the diameter.
+    center : :class:`compas.geometry.Point`
+        The center of the circle.
+    area : float
+        The area of the circle.
+    circumference : float
+        The circumference of the circle.
 
     Examples
     --------
@@ -26,7 +36,6 @@ class Circle(Primitive):
     >>> from compas.geometry import Circle
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
     >>> circle = Circle(plane, 5)
-
     """
 
     __slots__ = ['_plane', '_radius']
@@ -54,12 +63,30 @@ class Circle(Primitive):
         Examples
         --------
         >>> from compas.geometry import Circle
-        >>> from compas.geometry import Plane
-        >>> data = {'plane': Plane.worldXY().data, 'radius': 5.}
+        >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 5.}
         >>> circle = Circle.from_data(data)
-
         """
         return cls(data['plane'], data['radius'])
+
+    def to_data(self):
+        """Returns the data dictionary that represents the circle.
+
+        Returns
+        -------
+        dict
+            The circle data.
+
+        Examples
+        --------
+        >>> from compas.geometry import Circle
+        >>> from compas.geometry import Plane
+        >>> from compas.geometry import Point
+        >>> from compas.geometry import Vector
+        >>> circle = Circle(Plane(Point(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0)), 1.0)
+        >>> circle.to_data()
+        {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 1.0}
+        """
+        return self.data
 
     # ==========================================================================
     # descriptors
@@ -73,10 +100,8 @@ class Circle(Primitive):
         -------
         dict
             The circle data.
-
         """
-        return {'plane': [list(self.plane.point), list(self.plane.normal)],
-                'radius': self.radius}
+        return {'plane': [list(self.plane.point), list(self.plane.normal)], 'radius': self.radius}
 
     @data.setter
     def data(self, data):
@@ -110,17 +135,6 @@ class Circle(Primitive):
     def diameter(self):
         """float: The diameter of the circle."""
         return self.radius * 2
-
-    # def to_data(self):
-    #     """Returns the data dictionary that represents the circle.
-
-    #     Returns
-    #     -------
-    #     dict
-    #         The circle data.
-
-    #     """
-    #     return self.data
 
     @property
     def center(self):
@@ -186,6 +200,12 @@ class Circle(Primitive):
         Circle
             The copy.
 
+        Examples
+        --------
+        >>> c1 = Circle([[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 1.0)
+        >>> c2 = c1.copy()
+        >>> c1 == c2
+        False
         """
         cls = type(self)
         return cls(self.plane.copy(), self.radius)
@@ -212,7 +232,6 @@ class Circle(Primitive):
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> circle.transform(T)
-
         """
         self.plane.transform(transformation)
 
@@ -239,7 +258,6 @@ class Circle(Primitive):
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> circle_transformed = circle.transformed(T)
-
         """
         circle = self.copy()
         circle.transform(transformation)
@@ -251,19 +269,5 @@ class Circle(Primitive):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.geometry import Frame
-    from compas.geometry import Transformation
-    circle = Circle(Plane.worldXY(), 5)
-    frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    print(frame.normal)
-    T = Transformation.from_frame(frame)
-    circle.transform(T)
-    print(circle)
-
-    print(Plane.worldXY().data)
-    data = {'plane': Plane.worldXY().data, 'radius': 5.}
-    circle = Circle.from_data(data)
-    print(circle)
-
     import doctest
-    doctest.testmod()
+    doctest.testmod(globs=globals())

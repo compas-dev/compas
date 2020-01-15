@@ -48,73 +48,24 @@ def area_polygon(polygon):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        from compas.geometry import area_polygon
-        from compas_plotters import Plotter
-
-        plotter = Plotter()
-
-        polygon = [
-            [0.0, 0.0, 0.0],
-            [1.0, 0.0, 0.0],
-            [1.0, 1.0, 0.0],
-            [0.0, 1.0, 0.0]
-        ]
-
-        area_polygon(polygon)
-
-        # 1.0
-
-        plotter.draw_polygons([{'points': polygon}])
-        plotter.show()
-
-    .. plot::
-        :include-source:
-
-        from compas.geometry import area_polygon
-        from compas_plotters import Plotter
-
-        plotter = Plotter()
-
-        polygon = [
-            [0.0, 0.0, 0.0],
-            [1.0, 0.0, 0.0],
-            [1.0, 1.0, 0.0],
-            [0.5, 0.0, 0.0],
-            [0.0, 1.0, 0.0]
-        ]
-
-        area_polygon(polygon)
-
-        # 0.5
-
-        plotter.draw_polygons([{'points': polygon}])
-        plotter.show()
-
+    >>>
     """
     o = centroid_points(polygon)
     a = polygon[-1]
     b = polygon[0]
     oa = subtract_vectors(a, o)
     ob = subtract_vectors(b, o)
-
     n0 = cross_vectors(oa, ob)
-
     area = 0.5 * length_vector(n0)
-
     for i in range(0, len(polygon) - 1):
         oa = ob
         b = polygon[i + 1]
         ob = subtract_vectors(b, o)
         n = cross_vectors(oa, ob)
-
         if dot_vectors(n, n0) > 0:
             area += 0.5 * length_vector(n)
         else:
             area -= 0.5 * length_vector(n)
-
     return area
 
 

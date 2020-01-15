@@ -44,15 +44,10 @@ class Frame(Primitive):
 
     Examples
     --------
-    >>> from compas.geometry import Frame
     >>> from compas.geometry import Point
     >>> from compas.geometry import Vector
     >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
     >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
-    >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
-    >>> f = Frame.from_euler_angles([0.5, 1., 0.2])
-    >>> f = Frame.worldXY()
-
     """
 
     def __init__(self, point, xaxis, yaxis):
@@ -76,6 +71,15 @@ class Frame(Primitive):
         Frame
             The world XY frame.
 
+        Examples
+        --------
+        >>> frame = Frame.worldXY()
+        >>> frame.point
+        Point(0.000, 0.000, 0.000)
+        >>> frame.xaxis
+        Vector(1.000, 0.000, 0.000)
+        >>> frame.yaxis
+        Vector(0.000, 1.000, 0.000)
         """
         return cls([0, 0, 0], [1, 0, 0], [0, 1, 0])
 
@@ -88,6 +92,15 @@ class Frame(Primitive):
         Frame
             The world ZX frame.
 
+        Examples
+        --------
+        >>> frame = Frame.worldZX()
+        >>> frame.point
+        Point(0.000, 0.000, 0.000)
+        >>> frame.xaxis
+        Vector(0.000, 0.000, 1.000)
+        >>> frame.yaxis
+        Vector(1.000, 0.000, 0.000)
         """
         return cls([0, 0, 0], [0, 0, 1], [1, 0, 0])
 
@@ -100,6 +113,15 @@ class Frame(Primitive):
         Frame
             The world YZ frame.
 
+        Examples
+        --------
+        >>> frame = Frame.worldYZ()
+        >>> frame.point
+        Point(0.000, 0.000, 0.000)
+        >>> frame.xaxis
+        Vector(0.000, 1.000, 0.000)
+        >>> frame.yaxis
+        Vector(0.000, 0.000, 1.000)
         """
         return cls([0, 0, 0], [0, 1, 0], [0, 0, 1])
 
@@ -123,9 +145,13 @@ class Frame(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> f = Frame.from_points([1, 1, 1], [2, 4, 5], [4, 2, 3])
-
+        >>> frame = Frame.from_points([0, 0, 0], [1, 0, 0], [0, 1, 0])
+        >>> frame.point
+        Point(0.000, 0.000, 0.000)
+        >>> frame.xaxis
+        Vector(1.000, 0.000, 0.000)
+        >>> frame.yaxis
+        Vector(0.000, 1.000, 0.000)
         """
         xaxis = subtract_vectors(point_xaxis, point)
         xyvec = subtract_vectors(point_xyplane, point)
@@ -151,14 +177,12 @@ class Frame(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
         >>> from compas.geometry import Rotation
         >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> R = Rotation.from_frame(f1)
-        >>> f2 = Frame.from_rotation(R, point = f1.point)
+        >>> f2 = Frame.from_rotation(R, point=f1.point)
         >>> f1 == f2
         True
-
         """
         xaxis, yaxis = rotation.basis_vectors
         return cls(point, xaxis, yaxis)
@@ -180,14 +204,12 @@ class Frame(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
         >>> from compas.geometry import Rotation
         >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(f1)
         >>> f2 = Frame.from_transformation(T)
         >>> f1 == f2
         True
-
         """
         xaxis, yaxis = transformation.basis_vectors
         point = transformation.translation
@@ -209,7 +231,6 @@ class Frame(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
         >>> from compas.geometry import matrix_from_euler_angles
         >>> ea1 = [0.5, 0.4, 0.8]
         >>> M = matrix_from_euler_angles(ea1)
@@ -217,7 +238,6 @@ class Frame(Primitive):
         >>> ea2 = f.euler_angles()
         >>> allclose(ea1, ea2)
         True
-
         """
         sc, sh, a, point, p = decompose_matrix(matrix)
         R = matrix_from_euler_angles(a, static=True, axes='xyz')
@@ -243,20 +263,16 @@ class Frame(Primitive):
         ValueError
             If the length of the list is neither 12 nor 16.
 
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> f = Frame.from_list([-1.0,  0.0,  0.0, 8110,\
-                                  0.0,  0.0, -1.0, 7020,\
-                                  0.0, -1.0,  0.0, 1810])
-
         Notes
         -----
         Since the transformation matrix follows the row-major order, the
         translational components must be at the list's indices 3, 7, 11.
 
+        Examples
+        --------
+        >>> l = [-1.0,  0.0,  0.0, 8110, 0.0,  0.0, -1.0, 7020, 0.0, -1.0,  0.0, 1810]
+        >>> f = Frame.from_list(l)
         """
-
         if len(values) == 12:
             values.extend([0., 0., 0., 1.])
         if len(values) != 16:
@@ -290,13 +306,11 @@ class Frame(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
         >>> q1 = [0.945, -0.021, -0.125, 0.303]
         >>> f = Frame.from_quaternion(q1, point = [1., 1., 1.])
         >>> q2 = f.quaternion
         >>> allclose(q1, q2, tol=1e-03)
         True
-
         """
         R = matrix_from_quaternion(quaternion)
         xaxis, yaxis = basis_vectors_from_matrix(R)
@@ -322,13 +336,11 @@ class Frame(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
         >>> aav1 = [-0.043, -0.254, 0.617]
-        >>> f = Frame.from_axis_angle_vector(aav1, point = [0, 0, 0])
+        >>> f = Frame.from_axis_angle_vector(aav1, point=[0, 0, 0])
         >>> aav2 = f.axis_angle_vector
         >>> allclose(aav1, aav2)
         True
-
         """
         R = matrix_from_axis_angle_vector(axis_angle_vector)
         xaxis, yaxis = basis_vectors_from_matrix(R)
@@ -361,13 +373,11 @@ class Frame(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
         >>> ea1 = 1.4, 0.5, 2.3
-        >>> f = Frame.from_euler_angles(ea1, static = True, axes = 'xyz')
-        >>> ea2 = f.euler_angles(static = True, axes = 'xyz')
+        >>> f = Frame.from_euler_angles(ea1, static=True, axes='xyz')
+        >>> ea2 = f.euler_angles(static=True, axes='xyz')
         >>> allclose(ea1, ea2)
         True
-
         """
         R = matrix_from_euler_angles(euler_angles, static, axes)
         xaxis, yaxis = basis_vectors_from_matrix(R)
@@ -389,8 +399,14 @@ class Frame(Primitive):
 
         Examples
         --------
-        >>>
-
+        >>> data = {'point': [0.0, 0.0, 0.0], 'xaxis': [1.0, 0.0, 0.0], 'yaxis': [0.0, 1.0, 0.0]}
+        >>> frame = Frame.from_data(data)
+        >>> frame.point
+        Point(0.000, 0.000, 0.000)
+        >>> frame.xaxis
+        Vector(1.000, 0.000, 0.000)
+        >>> frame.yaxis
+        Vector(0.000, 1.000, 0.000)
         """
         frame = cls.worldXY()
         frame.data = data
@@ -414,29 +430,25 @@ class Frame(Primitive):
 
         Examples
         --------
+        >>> from compas.geometry import Plane
         >>> plane = Plane([0,0,0], [0,0,1])
         >>> frame = Frame.from_plane(plane)
         >>> allclose(frame.normal, plane.normal)
         True
         """
-
         # plane equation: a*x + b*y + c*z = d
         d = Vector(*plane.point).dot(plane.normal)
-
         # select 2 arbitrary points in the plane from which we create the xaxis
-
         coeffs = list(plane.normal)  # a, b, c
         # select a coeff with a value != 0
         coeffs_abs = [math.fabs(x) for x in coeffs]
         idx = coeffs_abs.index(max(coeffs_abs))
-
         # first point
         coords = [0, 0, 0]  # x, y, z
         # z = (d - a*0 + b*0)/c, if idx == 2
         v = d/coeffs[idx]
         coords[idx] = v
         pt1_in_plane = Point(*coords)
-
         # second point
         coords = [1, 1, 1]  # x, y, z
         coords[idx] = 0
@@ -444,7 +456,6 @@ class Frame(Primitive):
         v = (d - sum([a*x for a, x in zip(coeffs, coords)]))/coeffs[idx]
         coords[idx] = v
         pt2_in_plane = Point(*coords)
-
         xaxis = pt2_in_plane - pt1_in_plane
         yaxis = plane.normal.cross(xaxis)
         return cls(plane.point, xaxis, yaxis)
@@ -491,7 +502,6 @@ class Frame(Primitive):
         -------
         dict
             The frame data.
-
         """
         return {'point': list(self.point),
                 'xaxis': list(self.xaxis),
@@ -594,6 +604,12 @@ class Frame(Primitive):
         Frame
             The copy.
 
+        Examples
+        --------
+        >>> f1 = Frame.worldXY()
+        >>> f2 = f1.copy()
+        >>> f2.point
+        Point(0.000, 0.000, 0.000)
         """
         cls = type(self)
         return cls(self.point.copy(), self.xaxis.copy(), self.yaxis.copy())
@@ -628,7 +644,6 @@ class Frame(Primitive):
         >>> ea2 = f.euler_angles(static = True, axes = 'xyz')
         >>> allclose(ea1, ea2)
         True
-
         """
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
@@ -757,7 +772,6 @@ class Frame(Primitive):
         >>> f2.transform(T)
         >>> f1 == f2
         True
-
         """
         T = transformation * Transformation.from_frame(self)
         point = T.translation
@@ -788,7 +802,6 @@ class Frame(Primitive):
         >>> f2 = Frame.worldXY()
         >>> f1 == f2.transformed(T)
         True
-
         """
         frame = self.copy()
         frame.transform(transformation)
@@ -802,4 +815,5 @@ class Frame(Primitive):
 if __name__ == '__main__':
 
     import doctest
-    doctest.testmod()
+    from compas.geometry import allclose
+    doctest.testmod(globs=globals())

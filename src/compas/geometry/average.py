@@ -93,7 +93,7 @@ def midpoint_line(line):
     Examples
     --------
     >>> midpoint_line(([0.0, 0.0, 0.0], [1.0, 0.0, 1.0]))
-
+    [0.5, 0.0, 0.5]
     """
     return midpoint_point_point(*line)
 
@@ -114,7 +114,7 @@ def midpoint_line_xy(line):
     Examples
     --------
     >>> midpoint_line_xy(([0.0, 0.0, 0.0], [1.0, 0.0, 1.0]))
-
+    [0.5, 0.0, 0.0]
     """
     return midpoint_point_point_xy(*line)
 
@@ -139,8 +139,7 @@ def centroid_points(points):
 
     Examples
     --------
-    >>> centroid_points()
-
+    >>>
     """
     p = len(points)
     x, y, z = zip(*points)
@@ -162,7 +161,6 @@ def weighted_centroid_points(points, weights):
     list
         The coordinates of the weighted centroid.
     """
-
     vectors = [scale_vector(point, weight) for point, weight in zip(points, weights)]
     vector = scale_vector(sum_vectors(vectors), 1. / sum(weights))
     return vector
@@ -188,8 +186,7 @@ def centroid_points_xy(points):
 
     Examples
     --------
-    >>> centroid_points_xy()
-
+    >>>
     """
     p = len(points)
     x, y = list(zip(*points))[:2]
@@ -208,42 +205,6 @@ def centroid_polygon(polygon):
     -------
     list
         The XYZ coordinates of the centroid.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        from compas.geometry import centroid_polygon
-
-        polygon = [
-            [0.0, 0.0, 0.0],
-            [1.0, 0.0, 0.0],
-            [1.0, 1.0, 0.0],
-            [0.0, 1.0, 0.0]
-        ]
-
-        c = centroid_polygon(polygon)
-
-        print(c)  # [0.5, 0.5, 0.0]
-
-    .. code-block:: python
-
-        from compas.geometry import centroid_polygon
-        from compas.geometry import centroid_points
-
-        polygon = [
-            [0.0, 0.0, 0.0],
-            [1.0, 0.0, 0.0],
-            [1.0, 1.0, 0.0],
-            [0.5, 1.0, 0.0],
-            [0.0, 1.0, 0.0]
-        ]
-
-        c = centroid_polygon(polygon)
-        print(c)  # [0.5, 0.5, 0.0]
-
-        c = centroid_points(polygon)
-        print(c)  # [0.5, 0.6, 0.0]
 
     Notes
     -----
@@ -271,6 +232,10 @@ def centroid_polygon(polygon):
     The polygon may be self-intersecting. However, it is unclear what the meaning
     of the centroid is in that case.
 
+    Examples
+    --------
+    >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]
+    >>> centroid_polygon(polygon)
     """
     p = len(polygon)
 
@@ -338,42 +303,6 @@ def centroid_polygon_xy(polygon):
         The XYZ coordinates of the centroid.
         The Z coodinate is zero.
 
-    Examples
-    --------
-    .. code-block:: python
-
-        from compas.geometry import centroid_polygon_xy
-
-        polygon = [
-            [0.0, 0.0, 0.0],
-            [1.0, 0.0, 0.0],
-            [1.0, 1.0, 0.0],
-            [0.0, 1.0, 0.0]
-        ]
-
-        c = centroid_polygon_xy(polygon)
-
-        print(c)  # [0.5, 0.5, 0.0]
-
-    .. code-block:: python
-
-        from compas.geometry import centroid_polygon_xy
-        from compas.geometry import centroid_points_xy
-
-        polygon = [
-            [0.0, 0.0, 0.0],
-            [1.0, 0.0, 0.0],
-            [1.0, 1.0, 0.0],
-            [0.5, 1.0, 0.0],
-            [0.0, 1.0, 0.0]
-        ]
-
-        c = centroid_polygon(polygon)
-        print(c)  # [0.5, 0.5, 0.0]
-
-        c = centroid_points(polygon)
-        print(c)  # [0.5, 0.6, 0.0]
-
     Notes
     -----
     The centroid is the centre of gravity of the polygon surface if mass would be
@@ -397,6 +326,10 @@ def centroid_polygon_xy(polygon):
     The polygon may be self-intersecting. However, it is unclear what the meaning
     of the centroid is in that case.
 
+    Examples
+    --------
+    >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.1, 0.1, 0.0], [0.0, 1.0, 0.0]]
+    >>> centroid_polygon_xy(polygon)
     """
     p = len(polygon)
 
@@ -456,7 +389,6 @@ def centroid_polygon_vertices(polygon):
     -------
     list
         The XYZ coordinates of the centroid.
-
     """
     return centroid_points(polygon)
 
@@ -483,7 +415,6 @@ def centroid_polygon_edges(polygon):
     The centroid of the edges is the centroid of the midpoints of the edges, with
     each midpoint weighted by the length of the corresponding edge proportional
     to the total length of the boundary.
-
     """
     L = 0
     cx = 0
@@ -543,7 +474,6 @@ def centroid_polyhedron(polyhedron):
     >>> p = Polyhedron.generate(6)
     >>> centroid_polyhedron(p)
     [0.0, 0.0, 0.0]
-
     """
     vertices, faces = polyhedron
 
@@ -625,106 +555,5 @@ def centroid_polyhedron(polyhedron):
 
 if __name__ == "__main__":
 
-    from compas.geometry import Polyhedron
-
-    polyhedron = Polyhedron.generate(6)
-
-    print(centroid_polyhedron(polyhedron))
-
-    vertices = [
-        [1.0, 1.0, 2.0],
-        [0.0, 0.0, 0.0],
-        [1.0, 0.0, 2.0],
-        [1.0, 0.0, 0.0],
-        [0.0, 1.0, 0.0],
-        [1.0, 1.0, 0.0],
-        [0.0, 1.0, 1.0],
-        [0.0, 0.0, 1.0]
-    ]
-
-    faces = [
-        [4, 6, 7, 1],
-        [5, 0, 6, 4],
-        [4, 1, 3, 5],
-        [3, 2, 0, 5],
-        [1, 7, 2, 3],
-        [6, 0, 2, 7]
-    ]
-
-    faces[:] = [face[::-1] for face in faces]
-
-    polyhedron = Polyhedron.from_vertices_and_faces(vertices, faces)
-
-    print(centroid_polyhedron(polyhedron))
-
-    # points = [[0.0, 0.0, 0.0], [0.1, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.1, 0.0]]
-
-    # centroid = centroid_points(points)
-
-    # print(centroid)
-
-    # polygon = [
-    #     [0.0, 0.0, 0.0],
-    #     [1.0, 0.0, 0.0],
-    #     [1.0, 1.0, 0.0],
-    #     [0.5, 1.0, 0.0],
-    #     [0.0, 1.0, 0.0]
-    # ]
-
-    # o = centroid_polygon_xy(polygon)
-    # print(o)
-
-    # o = centroid_points(polygon)
-    # print(o)
-
-    # # polygons = [{
-    # #     'points' : polygon,
-    # #     'facecolor' : '#eeeeee',
-    # # }]
-
-    # # points = [
-    # #     {
-    # #         'pos' : o,
-    # #         'radius' : 0.03,
-    # #         'facecolor' : '#ff0000',
-    # #     },
-    # #     {
-    # #         'pos' : c,
-    # #         'radius' : 0.01,
-    # #         'facecolor' : '#0000ff',
-    # #     },
-    # # ]
-
-    # # for point in polygon:
-    # #     points.append({
-    # #         'pos' : point,
-    # #         'radius' : 0.02,
-    # #         'facecolor' : '#ffffff',
-    # #     })
-
-    # # plotter = Plotter(figsize=(10, 7))
-
-    # # plotter.draw_polygons(polygons)
-    # # plotter.draw_points(points)
-
-    # # plotter.show()
-
-    # # # m1v = [
-    # # #     [1.0, 1.0, 2.0],
-    # # #     [0.0, 0.0, 0.0],
-    # # #     [1.0, 0.0, 2.0],
-    # # #     [1.0, 0.0, 0.0],
-    # # #     [0.0, 1.0, 0.0],
-    # # #     [1.0, 1.0, 0.0],
-    # # #     [0.0, 1.0, 1.0],
-    # # #     [0.0, 0.0, 1.0]
-    # # # ]
-
-    # # # m1f = [
-    # # #     [4, 6, 7, 1],
-    # # #     [5, 0, 6, 4],
-    # # #     [4, 1, 3, 5],
-    # # #     [3, 2, 0, 5],
-    # # #     [1, 7, 2, 3],
-    # # #     [6, 0, 2, 7]
-    # # # ]
+    import doctest
+    doctest.testmod(globs=globals())
