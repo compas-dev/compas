@@ -6,6 +6,7 @@ compas_ghpython.helpers
 .. currentmodule:: compas_ghpython.helpers
 
 .. autosummary::
+
     :toctree: generated/
     mesh_draw
     mesh_draw_vertices
