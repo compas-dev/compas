@@ -19,6 +19,24 @@ class Line(Primitive):
     p2 : point
         The second point.
 
+    Attributes
+    ----------
+    data
+    start
+    end
+    vector
+    direction
+    midpoint
+
+    Notes
+    -----
+    For more info on lines and linear equations, see [1]_.
+
+    References
+    ----------
+    .. [1] Wikipedia. *Linear equation*.
+           Available at: https://en.wikipedia.org/wiki/Linear_equation.
+
     Examples
     --------
     >>> line = Line([0, 0, 0], [1, 1, 1])
@@ -37,15 +55,6 @@ class Line(Primitive):
     True
     >>> type(line.direction) == Vector
     True
-
-    Notes
-    -----
-    For more info on lines and linear equations, see [1]_.
-
-    References
-    ----------
-    .. [1] Wikipedia. *Linear equation*.
-           Available at: https://en.wikipedia.org/wiki/Linear_equation.
     """
 
     __slots__ = ['_start', '_end']
@@ -194,18 +203,6 @@ class Line(Primitive):
         """Point: The midpoint between start and end."""
         v = self.direction * (0.5 * self.length)
         return self.start + v
-
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the line.
-
-        Returns
-        -------
-        dict
-            The line data.
-        """
-        return {'start': list(self.start),
-                'end': list(self.end)}
 
     # ==========================================================================
     # representation

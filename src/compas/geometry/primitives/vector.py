@@ -34,6 +34,14 @@ class Vector(Primitive):
         The number of fractional digits used in the representation of the coordinates of the vector.
         Default is ``3``.
 
+    Attributes
+    ----------
+    data
+    x
+    y
+    z
+    length
+
     Examples
     --------
     >>> u = Vector(1, 0, 0)
@@ -58,7 +66,6 @@ class Vector(Primitive):
     0.0
     >>> u.cross(v)
     Vector(0.000, 0.000, 1.000)
-
     """
 
     __slots__ = ['_x', '_y', '_z']
@@ -96,7 +103,6 @@ class Vector(Primitive):
         Vector(0.000, 1.000, 0.000)
         >>> u is v
         True
-
         """
         data = transform_vectors(collection, X)
         for vector, xyz in zip(collection, data):
@@ -129,7 +135,6 @@ class Vector(Primitive):
         Vector(0.000, 1.000, 0.000)
         >>> u is v
         False
-
         """
         vectors = [vector.copy() for vector in collection]
         Vector.transform_collection(vectors, X)
@@ -152,7 +157,6 @@ class Vector(Primitive):
         --------
         >>> Vector.Xaxis()
         Vector(1.000, 0.000, 0.000)
-
         """
         return cls(1.0, 0.0, 0.0)
 
@@ -169,7 +173,6 @@ class Vector(Primitive):
         --------
         >>> Vector.Yaxis()
         Vector(0.000, 1.000, 0.000)
-
         """
         return cls(0.0, 1.0, 0.0)
 
@@ -186,7 +189,6 @@ class Vector(Primitive):
         --------
         >>> Vector.Zaxis()
         Vector(0.000, 0.000, 1.000)
-
         """
         return cls(0.0, 0.0, 1.0)
 
@@ -205,13 +207,34 @@ class Vector(Primitive):
         -------
         Vector
             The vector from start to end.
-
+        
+        Examples
+        --------
+        >>> Vector.from_start_end([1.0, 0.0, 0.0], [1.0, 1.0, 0.0])
+        Vector(0.000, 1.000, 0.000)
         """
         v = subtract_vectors(end, start)
         return cls(*v)
 
     @classmethod
     def from_data(cls, data):
+        """Construct a vector from a data dict.
+        
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+        
+        Returns
+        -------
+        Vector
+            The vector constructed from the provided data.
+
+        Examples
+        --------
+        >>> Vector.from_data([0.0, 0.0, 1.0])
+        Vector(0.000, 0.000, 1.000)
+        """
         return cls(*data)
 
     # ==========================================================================
@@ -322,7 +345,6 @@ class Vector(Primitive):
         bool
             True if the vectors are equal.
             False otherwise.
-
         """
         return self.x == other[0] and self.y == other[1] and self.z == other[2]
 
@@ -342,7 +364,6 @@ class Vector(Primitive):
         -------
         Vector
             The resulting new ``Vector``.
-
         """
         return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
 
@@ -358,7 +379,6 @@ class Vector(Primitive):
         -------
         Vector
             The resulting new ``Vector``.
-
         """
         return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
 
@@ -374,7 +394,6 @@ class Vector(Primitive):
         -------
         Vector
             The resulting new ``Vector``.
-
         """
         return Vector(self.x * n, self.y * n, self.z * n)
 
@@ -390,7 +409,6 @@ class Vector(Primitive):
         -------
         Vector
             The resulting new ``Vector``.
-
         """
         return Vector(self.x / n, self.y / n, self.z / n)
 
@@ -407,7 +425,6 @@ class Vector(Primitive):
         -------
         Vector
             A new point with raised coordinates.
-
         """
         return Vector(self.x ** n, self.y ** n, self.z ** n)
 
@@ -422,7 +439,6 @@ class Vector(Primitive):
         ----------
         other : vector
             The vector to add.
-
         """
         self.x += other[0]
         self.y += other[1]
@@ -436,7 +452,6 @@ class Vector(Primitive):
         ----------
         other : vector
             The vector to subtract.
-
         """
         self.x -= other[0]
         self.y -= other[1]
@@ -450,7 +465,6 @@ class Vector(Primitive):
         ----------
         n : float
             The multiplication factor.
-
         """
         self.x *= n
         self.y *= n
@@ -464,7 +478,6 @@ class Vector(Primitive):
         ----------
         n : float
             The multiplication factor.
-
         """
         self.x /= n
         self.y /= n
@@ -478,7 +491,6 @@ class Vector(Primitive):
         ----------
         n : float
             The power.
-
         """
         self.x **= n
         self.y **= n
@@ -491,43 +503,137 @@ class Vector(Primitive):
 
     @staticmethod
     def length_vectors(vectors):
+        """Compute the length of multiple vectors.
+        
+        Parameters
+        ----------
+        vectors : list
+            A list of vectors.
+        
+        Returns
+        -------
+        list
+            A list of lengths.
+        
+        Examples
+        --------
+        >>> Vector.length_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+        [1.0, 2.0]
+        """
         return [length_vector(vector) for vector in vectors]
 
     @staticmethod
     def sum_vectors(vectors):
+        """Compute the sum of multiple vectors.
+        
+        Parameters
+        ----------
+        vectors : list
+            A list of vectors.
+        
+        Returns
+        -------
+        Vector
+            A vector that is the sum of the vectors.
+        
+        Examples
+        --------
+        >>> Vector.sum_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+        Vector(3.000, 0.000, 0.000)
+        """
         return Vector(* [sum(axis) for axis in zip(* vectors)])
 
     @staticmethod
     def dot_vectors(left, right):
+        """Compute the dot product of two lists of vectors.
+        
+        Parameters
+        ----------
+        left : list
+            A list of vectors.
+        right : list
+            A list of vectors.
+        
+        Returns
+        -------
+        list
+            A list of dot products.
+        
+        Examples
+        --------
+        >>> Vector.dot_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
+        [1.0, 4.0]
+        """
         return [Vector.dot(u, v) for u, v in zip(left, right)]
 
     @staticmethod
     def cross_vectors(left, right):
+        """Compute the cross product of two lists of vectors.
+        
+        Parameters
+        ----------
+        left : list
+            A list of vectors.
+        right : list
+            A list of vectors.
+        
+        Returns
+        -------
+        list
+            A list of cross products.
+        
+        Examples
+        --------
+        >>> Vector.cross_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
+        [Vector(0.000, 0.000, 1.000), Vector(0.000, -4.000, 0.000)]
+        """
         return [Vector.cross(u, v) for u, v in zip(left, right)]
 
     @staticmethod
     def angles_vectors(left, right):
+        """Compute both angles between corresponding pairs of two lists of vectors.
+        
+        Parameters
+        ----------
+        left : list
+            A list of vectors.
+        right : list
+            A list of vectors.
+        
+        Returns
+        -------
+        list
+            A list of angle pairs.
+        
+        Examples
+        --------
+        >>> Vector.angles_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
+        [(1.5707963267948966, 4.71238898038469), (1.5707963267948966, 4.71238898038469)]
+        """
         return [angles_vectors(u, v) for u, v in zip(left, right)]
 
     @staticmethod
     def angle_vectors(left, right):
+        """Compute the smallest angle between corresponding pairs of two lists of vectors.
+        
+        Parameters
+        ----------
+        left : list
+            A list of vectors.
+        right : list
+            A list of vectors.
+        
+        Returns
+        -------
+        list
+            A list of angles.
+        
+        Examples
+        --------
+        >>> Vector.angle_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
+        [1.5707963267948966, 1.5707963267948966]
+        """
         return [angle_vectors(u, v) for u, v in zip(left, right)]
-
-    @staticmethod
-    def angle_vectors_signed(left, right, normal):
-        return [angle_vectors_signed(u, v, normal) for u, v in zip(left, right)]
-
-    @staticmethod
-    def homogenise_vectors(vectors):
-        pass
-
-    @staticmethod
-    def dehomogenise_vectors(vectors):
-        pass
-
-    @staticmethod
-    def orthonormalize_vectors(vectors):
-        pass
 
     # ==========================================================================
     # properties
@@ -550,6 +656,14 @@ class Vector(Primitive):
         Vector
             The copy.
 
+        Examples
+        --------
+        >>> u = Vector(0.0, 0.0, 0.0)
+        >>> v = u.copy()
+        >>> u == v
+        True
+        >>> u is v
+        False
         """
         cls = type(self)
         return cls(self.x, self.y, self.z)
@@ -559,7 +673,15 @@ class Vector(Primitive):
     # ==========================================================================
 
     def unitize(self):
-        """Scale this ``Vector`` to unit length."""
+        """Scale this ``Vector`` to unit length.
+        
+        Examples
+        --------
+        >>> u = Vector(1.0, 2.0, 3.0)
+        >>> u.unitize()
+        >>> u.length
+        1.0
+        """
         length = self.length
         self.x = self.x / length
         self.y = self.y / length
@@ -571,7 +693,16 @@ class Vector(Primitive):
         Returns
         -------
         :class:`Vector`
+            A unitized copy of the vector.
 
+        Examples
+        --------
+        >>> u = Vector(1.0, 2.0, 3.0)
+        >>> v = u.unitized()
+        >>> u.length == 1.0
+        False
+        >>> v.length == 1.0
+        True
         """
         v = self.copy()
         v.unitize()
@@ -585,6 +716,12 @@ class Vector(Primitive):
         n : float
             The scaling factor.
 
+        Examples
+        --------
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> u.scale(3.0)
+        >>> u.length
+        3.0
         """
         self.x *= n
         self.y *= n
@@ -601,7 +738,16 @@ class Vector(Primitive):
         Returns
         -------
         :class:`Vector`
+            A scaled copy of the vector.
 
+        Examples
+        --------
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> v = u.scaled(3.0)
+        >>> u.length
+        1.0
+        >>> v.length
+        3.0
         """
         v = self.copy()
         v.scale(n)
@@ -620,6 +766,12 @@ class Vector(Primitive):
         float
             The dot product.
 
+        Examples
+        --------
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> v = Vector(0.0, 1.0, 0.0)
+        >>> u.dot(v)
+        0.0
         """
         return dot_vectors(self, other)
 
@@ -636,6 +788,12 @@ class Vector(Primitive):
         Vector
             The cross product.
 
+        Examples
+        --------
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> v = Vector(0.0, 1.0, 0.0)
+        >>> u.cross(v)
+        Vector(0.000, 0.000, 1.000)
         """
         return Vector(* cross_vectors(self, other))
 
@@ -652,6 +810,13 @@ class Vector(Primitive):
         float
             The smallest angle between the two vectors.
 
+        Examples
+        --------
+        >>> from math import pi
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> v = Vector(0.0, 1.0, 0.0)
+        >>> u.angle(v) == 0.5 * pi
+        True
         """
         return angle_vectors(self, other)
 
@@ -670,6 +835,15 @@ class Vector(Primitive):
         float
             The signed angle between the two vectors.
 
+        Examples
+        --------
+        >>> from math import pi
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> v = Vector(0.0, 1.0, 0.0)
+        >>> u.angle_signed(v, Vector(0.0, 0.0, 1.0)) == 0.5 * pi
+        True
+        >>> u.angle_signed(v, Vector(0.0, 0.0, -1.0)) == -0.5 * pi
+        True
         """
         return angle_vectors_signed(self, other, normal)
 
@@ -686,6 +860,13 @@ class Vector(Primitive):
         tuple of float
             The angles between the two vectors, with the smallest angle first.
 
+        Examples
+        --------
+        >>> from math import pi
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> v = Vector(0.0, 1.0, 0.0)
+        >>> u.angles(v)[0] == 0.5 * pi
+        True
         """
         return angles_vectors(self, other)
 
@@ -701,6 +882,15 @@ class Vector(Primitive):
         matrix : list of list
             The transformation matrix.
 
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> u.transform(R)
+        >>> u
+        Vector(0.000, 1.000, 0.000)
         """
         point = transform_vectors([self], matrix)[0]
         self.x = point[0]
@@ -720,6 +910,15 @@ class Vector(Primitive):
         Vector
             The transformed copy.
 
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> v = u.transformed(R)
+        >>> v
+        Vector(0.000, 1.000, 0.000)
         """
         vector = self.copy()
         vector.transform(matrix)

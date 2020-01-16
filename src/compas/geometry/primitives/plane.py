@@ -20,6 +20,13 @@ class Plane(Primitive):
     normal : vector
         The normal vector of the plane.
 
+    Attributes
+    ----------
+    data
+    point
+    normal
+    d
+
     Notes
     -----
     For more info on lines and linear equations, see [1]_.

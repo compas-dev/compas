@@ -43,6 +43,13 @@ class Point(Primitive):
         The number of fractional digits used in the representation of the coordinates of the point.
         Default is ``3``.
 
+    Attributes
+    ----------
+    data
+    x
+    y
+    z
+
     Notes
     -----
     A ``Point`` object supports direct access to its xyz coordinates through

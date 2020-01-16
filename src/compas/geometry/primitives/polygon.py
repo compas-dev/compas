@@ -37,6 +37,16 @@ class Polygon(Primitive):
     points : list of point
         An ordered list of points.
 
+    Attributes
+    ----------
+    data
+    points
+    lines
+    length
+    centroid
+    area
+    normal
+
     Notes
     -----
     All ``Polygon`` objects are considered closed. Therefore the first and
@@ -178,11 +188,6 @@ class Polygon(Primitive):
         """int: The centroid of the polygon."""
         point = centroid_polygon(self.points)
         return Point(*point)
-
-    @property
-    def center(self):
-        """Point: The center (of mass) of the polygon."""
-        return Point(* centroid_polygon(self.points))
 
     @property
     def normal(self):

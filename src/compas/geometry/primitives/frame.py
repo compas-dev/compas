@@ -37,6 +37,17 @@ class Frame(Primitive):
     yaxis : vector
         The y-axis of the frame.
 
+    Attributes
+    ----------
+    axis_angle_vector
+    data
+    point
+    normal
+    xaxis
+    yaxis
+    zaxis
+    quaternion
+
     Notes
     -----
     All input vectors are orthonormalized when creating a frame, with the first

@@ -60,10 +60,9 @@ class Bezier(Primitive):
 
     Attributes
     ----------
-    points : list
-        The control points.
-    degree : int
-        The degree of the curve.
+    data
+    points
+    degree
 
     Examples
     --------

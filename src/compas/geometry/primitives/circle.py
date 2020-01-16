@@ -15,20 +15,14 @@ class Circle(Primitive):
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
-        The plane of the circle.
-    radius : float
-        The radius of the circle.
-    normal : :class:`compas.geometry.Vector`
-        The normal vector of the circle's plane.
-    diameter : float
-        The length of the diameter.
-    center : :class:`compas.geometry.Point`
-        The center of the circle.
-    area : float
-        The area of the circle.
-    circumference : float
-        The circumference of the circle.
+    data
+    plane
+    radius
+    normal
+    diameter
+    center
+    area
+    circumference
 
     Examples
     --------
