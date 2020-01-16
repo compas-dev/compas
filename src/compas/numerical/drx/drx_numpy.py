@@ -57,30 +57,25 @@ def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=F
     array
         Edge lengths.
 
+    Examples
+    --------
+    >>>
     """
-
     # Setup
-
     tic1 = time()
-
     X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n, rows, cols, vals, nv = _create_arrays(structure)
     inds, indi, indf, EIx, EIy, beams = _beam_data(structure)
     EIx = EIx.reshape(-1, 1)
     EIy = EIy.reshape(-1, 1)
-
     toc1 = time() - tic1
 
     # Solver
-
     tic2 = time()
-
     X, f, l = drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh,  # noqa: E741
                                beams, inds, indi, indf, EIx, EIy, callback, **kwargs)
-
     toc2 = time() - tic2
 
     # Summary
-
     if refresh:
         print('\n\nNumPy-SciPy DR -------------------')
         print('Setup time: {0:.3f} s'.format(toc1))
@@ -88,14 +83,11 @@ def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=F
         print('----------------------------------')
 
     # Update
-
     if update:
-
         k_i = structure.key_index()
         for key in structure.vertices():
             x, y, z = X[k_i[key], :]
             structure.set_vertex_attributes(key, 'xyz', [x, y, z])
-
         uv_i = structure.uv_index()
         for uv in structure.edges():
             i = uv_i[uv]
@@ -106,7 +98,7 @@ def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=F
 
 def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, P, S, B, V, refresh,
                      beams, inds, indi, indf, EIx, EIy, callback, **kwargs):
-    """ NumPy and SciPy dynamic relaxation solver.
+    """NumPy and SciPy dynamic relaxation solver.
 
     Parameters
     ----------
@@ -167,9 +159,7 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, 
         Edge forces.
     array
         Edge lengths.
-
     """
-
     res = 1000 * tol
     ts, Uo = 0, 0
     M = factor * tile(M.reshape((-1, 1)), (1, 3))
@@ -212,7 +202,6 @@ def drx_solver_numpy(tol, steps, factor, C, Ct, X, M, k0, l0, f0, ind_c, ind_t, 
 
 
 def _beam_data(structure):
-
     if structure.attributes.get('beams', None):
         inds, indi, indf, EIx, EIy = [], [], [], [], []
         for beam in structure.attributes['beams'].values():
@@ -228,7 +217,6 @@ def _beam_data(structure):
         EIx = array(EIx, dtype=float64)
         EIy = array(EIy, dtype=float64)
         beams = 1
-
     else:
         inds = indi = indf = array([0], dtype=int32)
         EIx = EIy = array([0.], dtype=float64)
@@ -238,9 +226,7 @@ def _beam_data(structure):
 
 
 def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
-
     S *= 0
-
     Xs = X[inds, :]
     Xi = X[indi, :]
     Xf = X[indf, :]
@@ -249,7 +235,6 @@ def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
     Qc = Xf - Xs
     Qn = cross(Qa, Qb)
     mu = 0.5 * (Xf - Xs)
-
     La = normrow(Qa)
     Lb = normrow(Qb)
     Lc = normrow(Qc)
@@ -257,16 +242,13 @@ def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
     Lmu = normrow(mu)
     a = arccos((La**2 + Lb**2 - Lc**2) / (2 * La * Lb))
     k = 2 * sin(a) / Lc
-
     ex = Qn / tile(LQn, (1, 3))
     ez = mu / tile(Lmu, (1, 3))
     ey = cross(ez, ex)
-
     K = tile(k / LQn, (1, 3)) * Qn
     Kx = tile(sum(K * ex, 1)[:, newaxis], (1, 3)) * ex
     Ky = tile(sum(K * ey, 1)[:, newaxis], (1, 3)) * ey
     Mc = EIx * Kx + EIy * Ky
-
     cma = cross(Mc, Qa)
     cmb = cross(Mc, Qb)
     ua = cma / tile(normrow(cma), (1, 3))
@@ -276,7 +258,6 @@ def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
     Lc1 = normrow(c1)
     Lc2 = normrow(c2)
     Ms = sum(Mc**2, 1)[:, newaxis]
-
     Sa = ua * tile(Ms * Lc1 / (La * sum(Mc * c1, 1)[:, newaxis]), (1, 3))
     Sb = ub * tile(Ms * Lc2 / (Lb * sum(Mc * c2, 1)[:, newaxis]), (1, 3))
     Sa[isnan(Sa)] = 0
@@ -284,21 +265,17 @@ def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
     S[inds, :] += Sa
     S[indi, :] -= Sa + Sb
     S[indf, :] += Sb
-
     return S
 
 
 def _create_arrays(structure):
-
     # Vertices
-
     n = structure.number_of_vertices()
     B = zeros((n, 3), dtype=float64)
     P = zeros((n, 3), dtype=float64)
     X = zeros((n, 3), dtype=float64)
     S = zeros((n, 3), dtype=float64)
     V = zeros((n, 3), dtype=float64)
-
     k_i = structure.key_index()
     for key, vertex in structure.vertex.items():
         i = k_i[key]
@@ -307,7 +284,6 @@ def _create_arrays(structure):
         X[i, :] = [vertex[j] for j in 'xyz']
 
     # Edges
-
     m = structure.number_of_edges()
     u = zeros(m, dtype=int32)
     v = zeros(m, dtype=int32)
@@ -317,25 +293,19 @@ def _create_arrays(structure):
     l0 = zeros(m, dtype=float64)
     ind_c = []
     ind_t = []
-
     uv_i = structure.uv_index()
-
     for ui, vi in structure.edges():
-
         i = uv_i[(ui, vi)]
         E[i] = structure.get_edge_attribute(key=(ui, vi), name='E')
         A[i] = structure.get_edge_attribute(key=(ui, vi), name='A')
-
         if structure.get_edge_attribute(key=(ui, vi), name='l0'):
             l0[i] = structure.get_edge_attribute(key=(ui, vi), name='l0')
         else:
             l0[i] = structure.edge_length(ui, vi)
-
         if structure.get_edge_attribute(key=(ui, vi), name='s0'):
             s0[i] = structure.get_edge_attribute(key=(ui, vi), name='s0')
         else:
             s0[i] = 0
-
         u[i] = k_i[ui]
         v[i] = k_i[vi]
         ct = structure.get_edge_attribute(key=(ui, vi), name='ct')
@@ -348,7 +318,6 @@ def _create_arrays(structure):
     q0 = f0 / l0
 
     # Arrays
-
     C = connectivity_matrix([[k_i[i], k_i[j]] for i, j in structure.edges()], 'csr')
     Ct = C.transpose()
     M = mass_matrix(Ct=Ct, ks=k0, q=q0, c=1, tiled=False)
@@ -366,145 +335,4 @@ def _create_arrays(structure):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    # ==========================================================================
-    # Example 1 (Dense)
-    # ==========================================================================
-
-    # from compas.datastructures import Network
-    # from compas_viewers import VtkViewer
-
-    # m = 70
-    # p = [(i / m - 0.5) * 5 for i in range(m + 1)]
-    # vertices = [[xi, yi, 0] for yi in p for xi in p]
-    # edges = []
-
-    # for i in range(m):
-    #     for j in range(m):
-    #         s = (m + 1)
-    #         p1 = (j + 0) * s + i + 0
-    #         p2 = (j + 0) * s + i + 1
-    #         p3 = (j + 1) * s + i + 0
-    #         p4 = (j + 1) * s + i + 1
-    #         edges.append([p1, p2])
-    #         edges.append([p1, p3])
-    #         if j == m - 1:
-    #             edges.append([p4, p3])
-    #         if i == m - 1:
-    #             edges.append([p2, p4])
-
-    # structure = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    # sides = [i for i in structure.vertices() if structure.vertex_degree(i) <= 2]
-    # structure.update_default_vertex_attributes({'P': [0, 0, 1000 / structure.number_of_vertices()]})
-    # structure.update_default_edge_attributes({'E': 100, 'A': 1, 'ct': 't'})
-    # structure.set_vertices_attributes(keys=sides, names='B', values=[[0, 0, 0]])
-
-    # data = {
-    #     'vertices': [structure.vertex_coordinates(i) for i in structure.vertices()],
-    #     'edges':    [{'vertices': uv} for uv in structure.edges()]
-    # }
-
-    # def callback(X, self):
-    #     self.update_vertices_coordinates({i: X[i, :] for i in range(X.shape[0])})
-
-    # def func(self):
-    #     drx_numpy(structure=structure, tol=0.05, update=True, refresh=5, callback=callback, self=self)
-
-    # print('Press key S to start')
-
-    # viewer = VtkViewer(data=data)
-    # viewer.vertex_size = 1
-    # viewer.edge_width  = 10
-    # viewer.keycallbacks['s'] = func
-    # viewer.setup()
-    # viewer.start()
-
-    # ==========================================================================
-    # Example 2 (grid)
-    # ==========================================================================
-
-    # import compas
-
-    # from compas.datastructures import Network
-    # from compas_plotters import NetworkPlotter
-
-    # structure = Network.from_obj(compas.get('lines.obj'))
-    # structure.update_default_vertex_attributes({'is_fixed': False, 'P': [1, 1, 0]})
-    # structure.update_default_edge_attributes({'E': 10, 'A': 1, 'ct': 't'})
-    # structure.set_vertices_attributes(['is_fixed', 'B'], [True, [0, 0, 0]], structure.leaves())
-
-    # lines = []
-    # for u, v in structure.edges():
-    #     lines.append({
-    #         'start': structure.vertex_coordinates(u, 'xy'),
-    #         'end':   structure.vertex_coordinates(v, 'xy'),
-    #         'color': '#cccccc'
-    #     })
-
-    # plotter = NetworkPlotter(structure, figsize=(10, 7))
-    # plotter.draw_vertices(facecolor={key: '#ff0000' for key in structure.vertices_where({'is_fixed': True})})
-    # plotter.draw_lines(lines)
-    # plotter.draw_edges()
-
-    # def callback(X, k_i):
-
-    #     for key in structure.vertices():
-    #         x, y, z = X[k_i[key], :]
-    #         structure.set_vertex_attributes(key, 'xyz', [x, y, z])
-    #     plotter.update_edges()
-    #     plotter.update(pause=0.01)
-
-    # drx_numpy(structure=structure, tol=0.001, refresh=1, update=True, callback=callback, k_i=structure.key_index())
-
-    # plotter.show()
-
-    # ==========================================================================
-    # Example 3 (beam)
-    # ==========================================================================
-
-    from numpy import linspace
-    from numpy import sign
-
-    from compas.datastructures import Network
-    from compas_plotters import NetworkPlotter
-
-    L = 2.5
-    n = 100
-    EI = 0.2
-
-    vertices = [[i, 1 - abs(i), 0] for i in list(linspace(-1, 1, n))]
-    for i in range(n):
-        if vertices[i][1] < 0.5:
-            vertices[i][0] = sign(vertices[i][0]) * vertices[i][1]
-    edges = [[i, i + 1] for i in range(n - 1)]
-
-    structure = Network.from_vertices_and_edges(vertices=vertices, edges=edges)
-    structure.update_default_vertex_attributes({'is_fixed': False, 'EIx': EI, 'EIy': EI})
-    structure.update_default_edge_attributes({'E': 50, 'A': 1, 'l0': L / n})
-    structure.set_vertices_attributes(['B', 'is_fixed'], [[0, 0, 0], True], structure.leaves())
-    structure.attributes['beams'] = {'beam': {'nodes': list(range(n))}}
-
-    lines = []
-    for u, v in structure.edges():
-        lines.append({
-            'start': structure.vertex_coordinates(u, 'xy'),
-            'end': structure.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc'
-        })
-
-    plotter = NetworkPlotter(structure, figsize=(10, 7))
-    plotter.draw_vertices(radius=0.005, facecolor={i: '#ff0000' for i in structure.vertices_where({'is_fixed': True})})
-    plotter.draw_lines(lines)
-    plotter.draw_edges()
-
-    def callback(X, k_i):
-
-        for key in structure.vertices():
-            x, y, z = X[k_i[key], :]
-            structure.set_vertex_attributes(key, 'xyz', [x, y, z])
-        plotter.update_edges()
-        plotter.update(pause=0.01)
-
-    drx_numpy(structure=structure, tol=0.01, refresh=20, factor=30, update=1, callback=callback, k_i=structure.key_index())
-
-    plotter.show()
+    pass

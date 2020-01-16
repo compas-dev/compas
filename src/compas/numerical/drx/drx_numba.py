@@ -202,7 +202,6 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
     None
 
     """
-
     f = zeros(m)
     fx = zeros(m)
     fy = zeros(m)
