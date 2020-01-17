@@ -80,11 +80,10 @@ class VertexAttributeView(AttributeView, collections.MutableMapping):
         self.attr = attr
 
     def __getitem__(self, key):
-        if key in self.attr:
+        try:
             return self.attr[key]
-        if key in self.defaults:
+        except KeyError:
             return self.defaults[key]
-        raise KeyError
 
     def __setitem__(self, key, value):
         self.attr[key] = value
@@ -107,9 +106,7 @@ class FaceAttributeView(AttributeView, collections.MutableMapping):
     def __getitem__(self, key):
         if self.key in self.attr and key in self.attr[self.key]:
             return self.attr[self.key][key]
-        if key in self.defaults:
-            return self.defaults[key]
-        raise KeyError
+        return self.defaults[key]
 
     def __setitem__(self, key, value):
         self.attr[self.key][key] = value
@@ -142,9 +139,7 @@ class EdgeAttributeView(AttributeView, collections.MutableMapping):
     def __getitem__(self, key):
         if self.key in self.attr and key in self.attr[self.key]:
             return self.attr[self.key][key]
-        if key in self.defaults:
-            return self.defaults[key]
-        raise KeyError
+        return self.defaults[key]
 
     def __setitem__(self, key, value):
         self.attr[self.key][key] = value
@@ -1204,9 +1199,8 @@ class BaseMesh(EdgeGeometry,
 
         Yields
         ------
-        int
+        int or tuple
             The next vertex identifier, if ``data`` is false.
-        2-tuple
             The next vertex as a (key, attr) tuple, if ``data`` is true.
         """
         for key in self.vertex:
@@ -1225,9 +1219,8 @@ class BaseMesh(EdgeGeometry,
 
         Yields
         ------
-        int
+        int or tuple
             The next face identifier, if ``data`` is ``False``.
-        2-tuple
             The next face as a (fkey, attr) tuple, if ``data`` is ``True``.
         """
         for key in self.face:
@@ -1248,7 +1241,6 @@ class BaseMesh(EdgeGeometry,
         ------
         tuple
             The next edge as a (u, v) tuple, if ``data`` is false.
-        tuple
             The next edge as a ((u, v), data) tuple, if ``data`` is true.
 
         Note
@@ -1322,18 +1314,21 @@ class BaseMesh(EdgeGeometry,
         
         Returns
         -------
-        None
+        object or None
+            The value of the attribute,
+            or ``None`` if the vertex does not exist
+            or when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
             If the vertex does not exist.
-        None
-            If the parameter ``value`` is not ```None``.
-        obj
-            The value of the attribute.
         """
         if key not in self.vertex:
-            return None
+            raise KeyError(key)
         if value is not None:
             self.vertex[key][name] = value
-            return
+            return None
         if name in self.vertex[key]:
             return self.vertex[key][name]
         else:
@@ -1354,19 +1349,20 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        None
-            If the vertex does not exist.
-        None
-            If the parameter ``values`` is not empty.
-        dict
+        dict, list or None
             If the parameter ``names`` is empty,
             the function returns a dictionary of all attribute name-value pairs of the vertex.
-        list
             If the parameter ``names`` is not empty,
-            the function returns a list of the values corresponding to the provided attribute names.
+            the function returns a list of the values corresponding to the requested attribute names.
+            The function returns ``None`` if it is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the vertex does not exist.
         """
         if key not in self.vertex:
-            return None
+            raise KeyError(key)
         if values:
             # use it as a setter
             for name, value in zip(names, values):
@@ -1401,10 +1397,14 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        None
-            If the parameter ``value`` is not ```None``.
-        list
-            The value of the attribute for each vertex.
+        list or None
+            The value of the attribute for each vertex,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the vertices does not exist.
         """
         if not keys:
             keys = self.vertices()
@@ -1430,13 +1430,17 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        None
-            If the parameter ``value`` is not ```None``.
-        list of dict
-            An attribute dict with all attributes (default + custom) per vertex,
-            if the parameter ```names`` is ``None``.
-        list of obj
-            A list of attribute values for each vertex.
+        list or None
+            If the parameter ``names`` is ``None``,
+            the function returns a list containing an attribute dict per vertex.
+            If the parameter ``names`` is not ``None``,
+            the function returns a list containing a list of attribute values per vertex corresponding to the provided attribute names.
+            The function returns ``None`` if it is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the vertices does not exist.
         """
         if not keys:
             keys = self.vertices()
@@ -1461,7 +1465,6 @@ class BaseMesh(EdgeGeometry,
         ----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
-
         """
         if not attr_dict:
             attr_dict = {}
@@ -1482,15 +1485,16 @@ class BaseMesh(EdgeGeometry,
         
         Returns
         -------
-        None
+        object or None
+            The value of the attribute, or ``None`` when the function is used as a "setter".
+        
+        Raises
+        ------
+        KeyError
             If the face does not exist.
-        None
-            If the parameter ``value`` is not ```None``.
-        obj
-            The value of the attribute.
         """
         if key not in self.face:
-            return None
+            raise KeyError(key)
         if value is not None:
             if key not in self.facedata:
                 self.facedata[key] = {}
@@ -1517,19 +1521,20 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        None
-            If the face does not exist.
-        None
-            If the parameter ``values`` is not empty.
-        dict
+        dict, list or None
             If the parameter ``names`` is empty,
-            the function returns a dictionary of all attribute name-value pairs of the face.
-        list
+            a dictionary of all attribute name-value pairs of the face.
             If the parameter ``names`` is not empty,
-            the function returns a list of the values corresponding to the provided attribute names.
+            a list of the values corresponding to the provided names.
+            ``None`` if the function is used as a "setter".
+        
+        Raises
+        ------
+        KeyError
+            If the face does not exist.
         """
         if key not in self.face:
-            return None
+            raise KeyError(key)
         if values:
             # use it as a setter
             for name, value in zip(names, values):
@@ -1566,10 +1571,14 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        None
-            If the parameter ``value`` is not ```None``.
-        list
-            The value of the attribute for each face.
+        list or None
+            A list containing the value per face of the requested attribute,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the faces does not exist.
         """
         if not keys:
             keys = self.faces()
@@ -1595,13 +1604,17 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        None
-            If the parameter ``value`` is not ```None``.
-        list of dict
-            An attribute dict with all attributes (default + custom) per face,
-            if the parameter ```names`` is ``None``.
-        list of obj
-            A list of attribute values for each face.
+        dict, list or None
+            If the parameter ``names`` is ``None``,
+            a list containing per face an attribute dict with all attributes (default + custom) of the face.
+            If the parameter ``names`` is ``None``,
+            a list containing per face a list of attribute values corresponding to the requested names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the faces does not exist.
         """
         if not keys:
             keys = self.faces()
@@ -1648,16 +1661,17 @@ class BaseMesh(EdgeGeometry,
         
         Returns
         -------
-        None
+        object or None
+            The value of the attribute, or ``None`` when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
             If the edge does not exist.
-        None
-            If the parameter ``value`` is not ```None``.
-        obj
-            The value of the attribute.
         """
         u, v = key
         if u not in self.halfedge or v not in self.halfedge[u]:
-            return
+            raise KeyError(key)
         if value is not None:
             if (u, v) not in self.edgedata:
                 self.edgedata[u, v] = {}
@@ -1686,20 +1700,21 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        None
-            If the edge does not exist.
-        None
-            If the parameter ``values`` is not empty.
-        dict
+        dict, list or None
             If the parameter ``names`` is empty,
-            the function returns a dictionary of all attribute name-value pairs of the edge.
-        list
+            a dictionary of all attribute name-value pairs of the edge.
             If the parameter ``names`` is not empty,
-            the function returns a list of the values corresponding to the provided attribute names.
+            a list of the values corresponding to the provided names.
+            ``None`` if the function is used as a "setter".
+        
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
         """
         u, v = key
         if u not in self.halfedge or v not in self.halfedge[u]:
-            return
+            raise KeyError(key)
         if values:
             # use it as a setter
             for name, value in zip(names, values):
@@ -1741,10 +1756,14 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        None
-            If the parameter ``value`` is not ```None``.
-        list
-            The value of the attribute for each edge.
+        list or None
+            A list containing the value per edge of the requested attribute,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the edges does not exist.
         """
         if not keys:
             keys = self.edges()
@@ -1770,13 +1789,17 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        None
-            If the parameter ``value`` is not ```None``.
-        list of dict
-            An attribute dict with all attributes (default + custom) per edge,
-            if the parameter ```names`` is ``None``.
-        list of obj
-            A list of attribute values for each edge.
+        dict, list or None
+            If the parameter ``names`` is ``None``,
+            a list containing per edge an attribute dict with all attributes (default + custom) of the edge.
+            If the parameter ``names`` is ``None``,
+            a list containing per edge a list of attribute values corresponding to the requested names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the edges does not exist.
         """
         if not keys:
             keys = self.edges()
