@@ -25,7 +25,7 @@ def geometric_key(xyz, precision=None, sanitize=True):
         A formatting option that specifies the precision of the
         individual numbers in the string.
         Supported values are any float precision, or decimal integer (``'d'``).
-        Default is ``None``, inwhich case the global precision setting will be used (``compas.PRECISION``).
+        Default is ``None``, in which case the global precision setting will be used (``compas.PRECISION``).
     sanitize : {True, False}, optional
         Flag that indicates whether or not the input should be cleaned up.
         Default is ``True``.
