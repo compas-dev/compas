@@ -23,14 +23,13 @@ class Quaternion(Primitive):
     x, y, z : float
         Components of the vector (complex, imaginary) part of a quaternion.
 
-
-    Examples
-    --------
-    >>> Q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized()
-    >>> R = Quaternion(0.0,-0.1, 0.2,-0.3).unitized()
-    >>> P = R*Q
-    >>> P.is_unit
-    True
+    Attributes
+    ----------
+    data
+    wxyz
+    xyzw
+    norm
+    is_unit
 
     Notes
     -----
@@ -84,6 +83,13 @@ class Quaternion(Primitive):
     .. [2] http://mathworld.wolfram.com/HamiltonsRules.html
     .. [3] https://github.com/matthew-brett/transforms3d/blob/master/transforms3d/quaternions.py
 
+    Examples
+    --------
+    >>> Q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized()
+    >>> R = Quaternion(0.0,-0.1, 0.2,-0.3).unitized()
+    >>> P = R*Q
+    >>> P.is_unit
+    True
     """
 
     def __init__(self, w, x, y, z):
@@ -96,7 +102,7 @@ class Quaternion(Primitive):
         return iter(self.wxyz)
 
     def __repr__(self):
-        return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(self.w, self.x, self.y, self.z, prec=6)
+        return 'Quaternion({:.{prec}f}, {:.{prec}f}, {:.{prec}f}, {:.{prec}f})'.format(self.w, self.x, self.y, self.z, prec=3)
 
     def __mul__(self, other):
         """Multiply operator for two quaternions.
@@ -111,6 +117,13 @@ class Quaternion(Primitive):
         Quaternion
             The product P = R * Q of this quaternion (R) multiplied by other quaternion (Q).
 
+        Notes
+        -----
+        Multiplication of two quaternions R*Q can be interpreted as applying rotation R to an orientation Q,
+        provided that both R and Q are unit-length.
+        The result is also unit-length.
+        Multiplication of quaternions is not commutative!
+
         Examples
         --------
         >>> Q = Quaternion(1.0, 1.0, 1.0, 1.0).unitized()
@@ -118,15 +131,7 @@ class Quaternion(Primitive):
         >>> P = R*Q
         >>> P.is_unit
         True
-
-        Notes
-        -----
-        Multiplication of two quaternions R*Q can be interpreted as applying rotation R to an orientation Q,
-        provided that both R and Q are unit-length.
-        The result is also unit-length.
-        Multiplication of quaternions is not commutative!
         """
-
         p = quaternion_multiply(list(self), list(other))
         return Quaternion(*p)
 
@@ -152,7 +157,6 @@ class Quaternion(Primitive):
         >>> allclose(list(Q.canonized()), quaternion_canonize(quaternion_unitize(q)))
         True
         """
-
         w, x, y, z = frame.quaternion
         return cls(w, x, y, z)
 
@@ -182,36 +186,100 @@ class Quaternion(Primitive):
 
     def unitize(self):
         """Scales the quaternion to make it unit-length.
+
+        Examples
+        --------
+        >>> q = Quaternion(1.0, 1.0, 1.0, 1.0)
+        >>> q.is_unit
+        False
+        >>> q.unitize()
+        >>> q.is_unit
+        True
         """
         qu = quaternion_unitize(self)
         self.w, self.x, self.y, self.z = qu
 
     def unitized(self):
         """Returns a :obj:`Quaternion` with a unit-length.
+
+        Examples
+        --------
+        >>> q = Quaternion(1.0, 1.0, 1.0, 1.0)
+        >>> q.is_unit
+        False
+        >>> p = q.unitized()
+        >>> p.is_unit
+        True
         """
         qu = quaternion_unitize(self)
         return Quaternion(*qu)
 
     def canonize(self):
         """Makes the quaternion canonic.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> q = Quaternion.from_frame(Frame.worldZX())
+        >>> q
+        Quaternion(-0.500, 0.500, 0.500, 0.500)
+        >>> q.canonize()
+        >>> q
+        Quaternion(0.500, -0.500, -0.500, -0.500)
         """
         qc = quaternion_canonize(self)
         self.w, self.x, self.y, self.z = qc
 
     def canonized(self):
-        """Returns a :obj:`Quaternion` in a canonic form.
+        """Returns a :obj:`Quaternion` in canonic form.
+
+        Returns
+        -------
+        Quaternion
+            A quaternion in canonic form.
+
+        Examples
+        --------
+        >>> from compas.geometry import Frame
+        >>> q = Quaternion.from_frame(Frame.worldZX())
+        >>> q
+        Quaternion(-0.500, 0.500, 0.500, 0.500)
+        >>> p = q.canonized()
+        >>> p
+        Quaternion(0.500, -0.500, -0.500, -0.500)
         """
         qc = quaternion_canonize(self)
         return Quaternion(*qc)
 
     def conjugate(self):
         """Conjugate the quaternion.
+
+        Examples
+        --------
+        >>> q = Quaternion(1.0, 1.0, 1.0, 1.0)
+        >>> q.conjugate()
+        >>> q
+        Quaternion(1.000, -1.000, -1.000, -1.000)
         """
         qc = quaternion_conjugate(self)
         self.w, self.x, self.y, self.z = qc
 
     def conjugated(self):
         """Returns a conjugate :obj:`Quaternion`.
+
+        Returns
+        -------
+        Quaternion
+            The conjugated quaternion.
+
+        Examples
+        --------
+        >>> q = Quaternion(1.0, 1.0, 1.0, 1.0)
+        >>> p = q.conjugated()
+        >>> q
+        Quaternion(1.000, 1.000, 1.000, 1.000)
+        >>> p
+        Quaternion(1.000, -1.000, -1.000, -1.000)
         """
         qc = quaternion_conjugate(self)
         return Quaternion(*qc)

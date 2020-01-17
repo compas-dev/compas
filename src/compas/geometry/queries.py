@@ -23,6 +23,9 @@ from compas.geometry.size import area_triangle
 
 from compas.geometry.angles import angle_vectors
 from compas.geometry.average import centroid_polygon
+from compas.geometry.average import centroid_points
+
+from compas.utilities import window
 
 
 __all__ = [
@@ -274,21 +277,26 @@ def is_polygon_convex(polygon):
     --------
     is_polygon_convex_xy
 
+    Examples
+    --------
+    >>> polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.4, 0.4, 0.0], [0.0, 1.0, 0.0]]
+    >>> is_polygon_convex(polygon)
+    False
     """
-    c = centroid_polygon(polygon)
-
-    for i in range(-1, len(polygon) - 1):
-        p0 = polygon[i]
-        p1 = polygon[i - 1]
-        p2 = polygon[i + 1]
-        v0 = subtract_vectors(c, p0)
-        v1 = subtract_vectors(p1, p0)
-        v2 = subtract_vectors(p2, p0)
-        a1 = angle_vectors(v1, v0)
-        a2 = angle_vectors(v0, v2)
-        if a1 + a2 > pi:
+    a = polygon[0]
+    o = polygon[1]
+    b = polygon[2]
+    oa = subtract_vectors(a, o)
+    ob = subtract_vectors(b, o)
+    n0 = cross_vectors(oa, ob)
+    for a, o, b in window(polygon + polygon[:2], 3):
+        oa = subtract_vectors(a, o)
+        ob = subtract_vectors(b, o)
+        n = cross_vectors(oa, ob)
+        if dot_vectors(n, n0) >= 0:
+            continue
+        else:
             return False
-
     return True
 
 
@@ -776,9 +784,9 @@ def is_point_in_circle(point, circle):
         ``False`` otherwise.
 
     """
-    center, radius, normal = circle
-    if is_point_on_plane(point, (center, normal)):
-        return distance_point_point(point, center) <= radius
+    plane, radius = circle
+    if is_point_on_plane(point, plane):
+        return distance_point_point(point, plane[0]) <= radius
     return False
 
 
@@ -1109,14 +1117,5 @@ def is_intersection_plane_plane(plane1, plane2, tol=1e-6):
 
 if __name__ == "__main__":
 
-    import os
-    import compas
-
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_json(os.path.join(compas.TEMP, 'm11.json'))
-
-    xyz = mesh.vertices_attributes('xyz')
-    xyz = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [3.0, 1.0, 0.5]]
-
-    print(is_coplanar(xyz))
+    import doctest
+    doctest.testmod(globs=globals())

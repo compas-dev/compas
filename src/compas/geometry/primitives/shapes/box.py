@@ -174,7 +174,6 @@ class Box(Shape):
         --------
         >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
         >>> box = Box.from_data(data)
-
         """
         box = cls(Frame.worldXY(), 1, 1, 1)
         box.data = data
@@ -206,7 +205,6 @@ class Box(Shape):
         Examples
         --------
         >>> box = Box.from_width_height_depth(1.0, 2.0, 3.0)
-
         """
         width = float(width)
         height = float(height)
@@ -225,8 +223,33 @@ class Box(Shape):
 
     @classmethod
     def from_bounding_box(cls, bbox):
-        # this should put the frame at the centroid of the box
-        # not at the bottom left corner
+        """Construct a box from the result of a bounding box calculation.
+        
+        Parameters
+        ----------
+        bbox : list
+            A list of 8 point locations, representing the corners of the bounding box.
+            Positions 0, 1, 2, 3 are the bottom corners.
+            Positions 4, 5, 6, 7 are the top corners.
+            Both the top and bottom face are oriented in CCW direction, starting at the bottom, left-most point.
+
+        Returns
+        -------
+        Box
+            The box shape.
+
+        Examples
+        --------
+        >>> from compas.geometry import bounding_box
+        >>> bbox = bounding_box([[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]])
+        >>> box = Box.from_bounding_box(bbox)
+        >>> box.width
+        1.0
+        >>> box.height
+        1.0
+        >>> box.depth
+        1.0
+        """
         a = bbox[0]
         b = bbox[1]
         d = bbox[3]

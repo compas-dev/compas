@@ -35,6 +35,10 @@ def bernstein(n, k, t):
     float
         The value of the Bernstein basis polynomial at `t`.
 
+    Examples
+    --------
+    >>> bernstein(3, 2, 0.5)
+    0.375
     """
     if k < 0:
         return 0
@@ -56,11 +60,15 @@ class Bezier(Primitive):
 
     Attributes
     ----------
-    points : list
-        The control points.
-    degree : int
-        The degree of the curve.
+    data
+    points
+    degree
 
+    Examples
+    --------
+    >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
+    >>> curve.degree
+    2
     """
 
     def __init__(self, points):
@@ -138,6 +146,13 @@ class Bezier(Primitive):
         Point
             the corresponding point on the curve.
 
+        Examples
+        --------
+        >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
+        >>> curve.compute_point(0.0)
+        Point(0.000, 0.000, 0.000)
+        >>> curve.compute_point(1.0)
+        Point(1.000, 0.000, 0.000)
         """
         n = self.degree
         point = Point(0, 0, 0)
@@ -147,6 +162,24 @@ class Bezier(Primitive):
         return point
 
     def compute_tangent(self, t):
+        """Compute the tangent vector at a point on the curve.
+
+        Parameters
+        ----------
+        t : float
+            The value of the curve parameter. Must be between 0 and 1.
+
+        Returns
+        -------
+        Vector
+            The corresponding tangent vector.
+
+        Examples
+        --------
+        >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
+        >>> curve.compute_tangent(0.5)
+        Vector(1.000, 0.000, 0.000)
+        """
         n = self.degree
         v = Vector(0, 0, 0)
         for i, p in enumerate(self.points):
@@ -169,7 +202,18 @@ class Bezier(Primitive):
         Returns
         -------
         list
+            Points along the curve.
 
+        Examples
+        --------
+        >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
+        >>> points = curve.compute_locus(10)
+        >>> len(points) == 10
+        True
+        >>> points[0]
+        Point(0.000, 0.000, 0.000)
+        >>> points[-1]
+        Point(1.000, 0.000, 0.000)
         """
         locus = []
         divisor = float(resolution - 1)
@@ -178,23 +222,23 @@ class Bezier(Primitive):
             locus.append(self.compute_point(t))
         return locus
 
-    def draw(self, params=None):
-        import matplotlib.pyplot as plt
-        locus = self.compute_locus()
-        x, y, _ = zip(*locus)
-        plt.plot(x, y, '-b')
-        x, y, _ = zip(* self.points)
-        plt.plot(x, y, 'ro')
-        if params is not None:
-            for t in params:
-                p0 = self.compute_point(t)
-                v = self.compute_tangent(t)
-                p1 = p0 + v
-                plt.plot([p0[0], p1[0]], [p0[1], p1[1]], '-k')
-                plt.plot([p0[0]], [p0[1]], 'ok')
-        ax = plt.gca()
-        ax.set_aspect('equal')
-        plt.show()
+    # def draw(self, params=None):
+    #     import matplotlib.pyplot as plt
+    #     locus = self.compute_locus()
+    #     x, y, _ = zip(*locus)
+    #     plt.plot(x, y, '-b')
+    #     x, y, _ = zip(* self.points)
+    #     plt.plot(x, y, 'ro')
+    #     if params is not None:
+    #         for t in params:
+    #             p0 = self.compute_point(t)
+    #             v = self.compute_tangent(t)
+    #             p1 = p0 + v
+    #             plt.plot([p0[0], p1[0]], [p0[1], p1[1]], '-k')
+    #             plt.plot([p0[0]], [p0[1]], 'ok')
+    #     ax = plt.gca()
+    #     ax.set_aspect('equal')
+    #     plt.show()
 
 
 # ==============================================================================
@@ -203,5 +247,8 @@ class Bezier(Primitive):
 
 if __name__ == '__main__':
 
-    curve = Bezier([[0, 0, 0], [1, -1, 0], [2, +1, 0], [3, 0, 0]])
-    curve.draw(params=[0.1, 0.2, 0.3, 0.4, 0.5])
+    # curve = Bezier([[0, 0, 0], [1, -1, 0], [2, +1, 0], [3, 0, 0]])
+    # curve.draw(params=[0.1, 0.2, 0.3, 0.4, 0.5])
+
+    import doctest
+    doctest.testmod(globs=globals())

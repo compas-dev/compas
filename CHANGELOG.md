@@ -31,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Default Mesh vertex, face, edge attributes are no longer copied and stored explicitly per vertex, face, edge, repesctively.
 - Updating default attributes now only changes the corresponding default attribute dict.
 - Updated `mesh_quads_to_triangles` to copy only customised face attributes onto newly created faces.
+- Fixed bug in `compas.geometry.is_point_in_circle`.
+- Fixed bug in `compas.geometry.is_polygon_convex`.
+- Fixed bug in `compas.geometry.Polygon.is_convex`.
 
 ### Removed
 

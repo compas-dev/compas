@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 try:
     from pathlib import Path
@@ -216,3 +217,11 @@ class BaseReader(object):
             return False
 
         return True
+
+
+# =============================================================================
+# Main
+# =============================================================================
+
+if __name__ == "__main__":
+    pass

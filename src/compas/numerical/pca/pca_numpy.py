@@ -38,7 +38,6 @@ def pca_numpy(data):
     Examples
     --------
     >>>
-
     """
     X = asarray(data)
     n, dim = X.shape

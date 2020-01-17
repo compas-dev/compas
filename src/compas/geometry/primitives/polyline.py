@@ -26,6 +26,13 @@ class Polyline(Primitive):
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
 
+    Attributes
+    ----------
+    data
+    points
+    lines
+    length
+
     Examples
     --------
     >>> polyline = Polyline([[0,0,0], [1,0,0], [2,0,0], [3,0,0]])
@@ -41,7 +48,6 @@ class Polyline(Primitive):
     True
     >>> polyline.lines[0].length
     1.0
-
     """
     __slots__ = ['_points', '_lines', '_p', '_l']
 
@@ -58,6 +64,24 @@ class Polyline(Primitive):
 
     @classmethod
     def from_data(cls, data):
+        """Construct a polyline from a data dict.
+        
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        Polyline
+            The constructed polyline.
+
+        Examples
+        --------
+        >>> polyline = Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
+        >>> polyline
+        Polyline(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000))
+        """
         return cls(data['points'])
 
     # ==========================================================================
@@ -127,24 +151,39 @@ class Polyline(Primitive):
     # ==========================================================================
 
     def __eq__(self, other):
-        raise NotImplementedError
+        return all(a == b for a, b in zip(self, other))
 
     # ==========================================================================
     # queries
     # ==========================================================================
 
     def point(self, t, snap=False):
-        """Point: The point from the start to the end at a specific normalized parameter.
-        If snap is True, return the closest polyline point."""
+        """Point on the polyline at a specific normalized parameter.
 
+        Parameters
+        ----------
+        t : float
+            The parameter value.
+        snap : bool, optional
+            If True, return the closest polyline point.
+        
+        Returns
+        -------
+        Point
+            The point on the polyline.
+
+        Examples
+        --------
+        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
+        >>> polyline.point(0.75)
+        Point(1.000, 0.500, 0.000)
+        """
         if t < 0 or t > 1:
             return None
 
         points = self.points
-
         if t == 0:
             return points[0]
-
         if t == 1:
             return points[-1]
 
@@ -152,24 +191,17 @@ class Polyline(Primitive):
 
         x = 0
         i = 0
-
         while x <= t:
-
             line = Line(points[i], points[i + 1])
             line_length = line.length
-
             dx = line_length / polyline_length
-
             if x + dx > t:
-
                 if snap:
                     if t - x < x + dx - t:
                         return line.start
                     else:
                         return line.end
-
                 return line.point((t - x) * polyline_length / line_length)
-
             x += dx
             i += 1
 
@@ -193,6 +225,14 @@ class Polyline(Primitive):
         Polyline
             The copy.
 
+        Examples
+        --------
+        >>> p1 = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
+        >>> p2 = p1.copy()
+        >>> p1 == p2
+        True
+        >>> p1 is p2
+        False
         """
         cls = type(self)
         return cls([point.copy() for point in self.points])
@@ -203,6 +243,16 @@ class Polyline(Primitive):
 
     def is_selfintersecting(self):
         """Determine if the polyline is self-intersecting.
+
+        Returns
+        -------
+        bool
+            True if the polyline is self-intersecting.
+            False otherwise.
+        
+        Examples
+        --------
+        >>>
         """
         raise NotImplementedError
 
@@ -214,6 +264,14 @@ class Polyline(Primitive):
         bool
             True if the polyline is closed, False otherwise.
 
+        Examples
+        --------
+        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
+        >>> polyline.is_closed()
+        False
+        >>> polyline.points.append(polyline.points[0])
+        >>> polyline.is_closed()
+        True
         """
         return self.points[0] == self.points[-1]
 
@@ -229,6 +287,13 @@ class Polyline(Primitive):
         matrix : list of list
             The transformation matrix.
 
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]])
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> polyline.transform(R)
         """
         for index, point in enumerate(transform_points(self.points, matrix)):
             self.points[index].x = point[0]
@@ -248,6 +313,16 @@ class Polyline(Primitive):
         Polyline
             The transformed copy.
 
+        Examples
+        --------
+        >>> from compas.geometry import Scale
+        >>> p1 = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]])
+        >>> S = Scale([1.0, 1.0, 1.0])
+        >>> p2 = p1.transformed(S)
+        >>> p1 == p2
+        True
+        >>> p1 is p2
+        False
         """
         polyline = self.copy()
         polyline.transform(matrix)

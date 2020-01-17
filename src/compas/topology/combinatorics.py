@@ -35,26 +35,14 @@ def vertex_coloring(adjacency):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-        from compas.datastructures import Network
-        from compas_plotters import NetworkPlotter
-        from compas.topology import vertex_coloring
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-        key_color = vertex_coloring(network.adjacency)
-        colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff']
-
-        plotter = NetworkPlotter(network)
-
-        plotter.draw_vertices(facecolor={key: colors[key_color[key]] for key in network.vertices()})
-        plotter.draw_edges()
-
-        plotter.show()
-
+    >>> import compas
+    >>> from compas.datastructures import Network
+    >>> network = Network.from_obj(compas.get('lines.obj'))
+    >>> key_color = vertex_coloring(network.adjacency)
+    >>> key = network.get_any_vertex()
+    >>> color = key_color[key]
+    >>> any(key_color[nbr] == color for nbr in network.vertex_neighbors(key))
+    False
     """
     key_to_color = {}
     key_to_degree = {key: len(adjacency[key]) for key in adjacency}
@@ -90,10 +78,9 @@ def connected_components(adjacency):
 
     Examples
     --------
-    .. code-block:: python
-
-        pass
-
+    >>> adjacency = {0: [1, 2], 1: [0, 2], 2: [0, 1], 3: []}
+    >>> connected_components(adjacency)
+    [[0, 1, 2], [3]]
     """
     tovisit = set(adjacency)
     components = []
@@ -111,21 +98,6 @@ def connected_components(adjacency):
 
 if __name__ == "__main__":
 
-    import compas
-    from compas.datastructures import Network
-    from compas_plotters import NetworkPlotter
+    import doctest
 
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    components = connected_components(network.adjacency)
-
-    key_color = vertex_coloring(network.adjacency)
-
-    colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00']
-
-    plotter = NetworkPlotter(network, figsize=(10, 7))
-
-    plotter.draw_vertices(facecolor={key: colors[key_color[key]] for key in network.vertices()})
-    plotter.draw_edges()
-
-    plotter.show()
+    doctest.testmod(globs=globals())

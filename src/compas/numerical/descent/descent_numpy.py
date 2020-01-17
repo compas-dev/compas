@@ -51,7 +51,6 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, 
         Values of x at the found local minimum.
 
     """
-
     r = 0.5
     c = 0.0001
     n = len(x0)
@@ -117,18 +116,26 @@ def descent_numpy(x0, fn, iterations=1000, gtol=10**(-6), bounds=None, limit=0, 
 
 if __name__ == "__main__":
 
-    def fn(u, *args):
+    from scipy.optimize import rosen
 
-        # Booth's function, fopt=0, uopt=(1, 3)
+    def f(u, *args):
+        return rosen(u.ravel())
 
-        x = u[0]
-        y = u[1]
-        z = (x + 2 * y - 7)**2 + (2 * x + y - 5)**2
+    x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
+    bounds = [[-2.0, 2.0], [-2.0, 2.0], [-2.0, 2.0], [-2.0, 2.0], [-2.0, 2.0]]
 
-        return float(z)
+    res = descent_numpy(x0, f, bounds=bounds)
+    print(res)
 
-    x0 = [-6., -6.]
-    bounds = [[0, 2], [2, 4]]
-    fopt, uopt = descent_numpy(x0, fn, gtol=10**(-4), bounds=bounds)
+    # def fn(u, *args):
+    #     # Booth's function, fopt=0, uopt=(1, 3)
+    #     x = u[0]
+    #     y = u[1]
+    #     z = (x + 2 * y - 7)**2 + (2 * x + y - 5)**2
+    #     return float(z)
 
-    print(uopt)
+    # x0 = [-6., -6.]
+    # bounds = [[0, 2], [2, 4]]
+    # fopt, uopt = descent_numpy(x0, fn, gtol=10**(-4), bounds=bounds)
+
+    # print(uopt)

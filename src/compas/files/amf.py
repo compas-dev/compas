@@ -13,7 +13,6 @@ class AMF(object):
     --------
     * http://www.asprs.org/wp-content/uploads/2010/12/AMF_1_4_r13.pdf
 
-
     """
 
     def __init__(self, filepath, precision=None):

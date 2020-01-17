@@ -176,12 +176,10 @@ def quaternion_canonize(q):
     Notes
     -----
     Canonic form means the scalar component is a non-negative number.
-
     """
     if q[0] < 0.0:
         return [-x for x in q]
-    else:
-        return [x for x in q]
+    return q[:]
 
 
 def quaternion_conjugate(q):
@@ -200,7 +198,6 @@ def quaternion_conjugate(q):
     References
     ----------
     .. _mathworld quaternion conjugate: http://mathworld.wolfram.com/QuaternionConjugate.html
-
     """
     return [q[0], -q[1], -q[2], -q[3]]
 
