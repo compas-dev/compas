@@ -1,8 +1,8 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
-from .opencl import *
-from .math_ import *
+from .opencl import *  # noqa: F401 F403
+from .math_ import *  # noqa: F401 F403
 
-from .opencl import __all__ as a
-from .math_ import __all__ as b
-
-__all__ = a + b
+__all__ = [name for name in dir() if not name.startswith('_')]

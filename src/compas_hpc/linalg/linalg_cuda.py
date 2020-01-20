@@ -1,27 +1,20 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-try:
-    from numpy import ceil
-    from numpy import diag
-    from numpy import eye
-    from numpy import float32
-    from numpy import uint32
-except:
-    pass
+from numpy import ceil
+from numpy import diag
+from numpy import eye
+from numpy import float32
+from numpy import uint32
 
-try:
-    from compas.hpc import give_cuda
-except:
-    pass
+from compas.hpc import give_cuda
 
 try:
     import pycuda
     import pycuda.autoinit
     has_pycuda = True
-except:
+except ImportError:
     has_pycuda = False
 
 
@@ -61,8 +54,7 @@ if has_pycuda:
 
 
 def transpose_cuda(a):
-
-    """ Return the transpose of a GPUArray.
+    """Return the transpose of a GPUArray.
 
      Parameters
     ----------
@@ -82,15 +74,12 @@ def transpose_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return a.transpose()
 
 
 def dot_cuda(a, b, dim=2):
-
-    """ Matrix multiplication of two GPUArrays.
+    """Matrix multiplication of two GPUArrays.
 
     Parameters
     ----------
@@ -116,11 +105,9 @@ def dot_cuda(a, b, dim=2):
 
     >>> type(c)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     m, n = a.shape
-    o  = b.shape[1]
+    o = b.shape[1]
     nx = int(ceil(o / dim))
     ny = int(ceil(m / dim))
 
@@ -132,8 +119,7 @@ def dot_cuda(a, b, dim=2):
 
 
 def diag_cuda(a):
-
-    """ Construct GPUArray diagonal.
+    """Construct GPUArray diagonal.
 
     Parameters
     ----------
@@ -154,15 +140,12 @@ def diag_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return give_cuda(diag(a))
 
 
 def eye_cuda(n):
-
-    """ Create GPUArray identity matrix (ones on diagonal) of size (n x n).
+    """Create GPUArray identity matrix (ones on diagonal) of size (n x n).
 
     Parameters
     ----------
@@ -183,9 +166,7 @@ def eye_cuda(n):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return give_cuda(eye(n, dtype=float32))
 
 
@@ -194,28 +175,29 @@ def eye_cuda(n):
 # ==============================================================================
 
 if __name__ == "__main__":
+    pass
 
-    from compas.hpc import get_cuda
+    # from compas.hpc import get_cuda
 
-    from numpy import allclose
-    from numpy import dot
-    from numpy.random import rand
+    # from numpy import allclose
+    # from numpy import dot
+    # from numpy.random import rand
 
-    from time import time
+    # from time import time
 
-    a = diag_cuda([1., 2., 3.])
-    a = eye_cuda(3)
-    b = give_cuda([[5, -2, 1], [0, 3, -1], [2, 0, 7]])
-    c = transpose_cuda(b)
+    # a = diag_cuda([1., 2., 3.])
+    # a = eye_cuda(3)
+    # b = give_cuda([[5, -2, 1], [0, 3, -1], [2, 0, 7]])
+    # c = transpose_cuda(b)
 
-    a = rand(200, 3)
-    b = rand(3, 500)
-    c = dot(a, b)
+    # a = rand(200, 3)
+    # b = rand(3, 500)
+    # c = dot(a, b)
 
-    a_ = give_cuda(a)
-    b_ = give_cuda(b)
-    c_ = dot_cuda(a_, b_)
+    # a_ = give_cuda(a)
+    # b_ = give_cuda(b)
+    # c_ = dot_cuda(a_, b_)
 
-    tic = time()
-    print(1000 * (time() - tic))
-    print(allclose(c, get_cuda(c_)))
+    # tic = time()
+    # print(1000 * (time() - tic))
+    # print(allclose(c, get_cuda(c_)))

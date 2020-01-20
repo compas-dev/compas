@@ -1,21 +1,17 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-try:
-    from numpy import array
-    from numpy import float32
-    from numpy import complex64
-    from numpy import uint32
-except:
-    pass
+from numpy import array
+from numpy import float32
+from numpy import complex64
+from numpy import uint32
 
 try:
     import pyopencl as cl
     import pyopencl.array as cl_array
     import pyopencl.clrandom
-except:
+except ImportError:
     pass
 
 
@@ -32,8 +28,7 @@ __all__ = [
 
 
 def rand_cl(queue, shape):
-
-    """ Create random values in the range [0, 1] in a GPUArray.
+    """Create random values in the range [0, 1] in a GPUArray.
 
     Parameters
     ----------
@@ -55,15 +50,12 @@ def rand_cl(queue, shape):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clrandom.rand(queue, shape, dtype=float32)
 
 
 def give_cl(queue, a, type='real'):
-
-    """ Give a list or an array to GPU memory.
+    """Give a list or an array to GPU memory.
 
     Parameters
     ----------
@@ -96,9 +88,7 @@ def give_cl(queue, a, type='real'):
 
     >>> a.reshape((1, 6))
     [[ 1.,  2.,  3.,  4.,  5.,  6.]]
-
     """
-
     if type == 'real':
         return cl_array.to_device(queue, array(a).astype(float32))
 
@@ -107,8 +97,7 @@ def give_cl(queue, a, type='real'):
 
 
 def get_cl(a):
-
-    """ Return GPUArray from GPU memory as NumPy array.
+    """Return GPUArray from GPU memory as NumPy array.
 
     Parameters
     ----------
@@ -128,15 +117,12 @@ def get_cl(a):
 
     >>> type(b)
     <class 'numpy.ndarray'>
-
     """
-
     return a.get()
 
 
 def ones_cl(queue, shape):
-
-    """ Create GPUArray of ones directly on GPU memory.
+    """Create GPUArray of ones directly on GPU memory.
 
     Parameters
     ----------
@@ -159,9 +145,7 @@ def ones_cl(queue, shape):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     a = cl_array.zeros(queue, shape, dtype=float32)
     a.fill(1.0)
 
@@ -169,8 +153,7 @@ def ones_cl(queue, shape):
 
 
 def zeros_cl(queue, shape):
-
-    """ Create GPUArray of zeros directly on GPU memory.
+    """Create GPUArray of zeros directly on GPU memory.
 
     Parameters
     ----------
@@ -193,15 +176,12 @@ def zeros_cl(queue, shape):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return cl_array.zeros(queue, shape, dtype=float32)
 
 
 def tile_cl(queue, a, shape, dim=4):
-
-    """ Horizontally and vertically tile a GPUArray.
+    """Horizontally and vertically tile a GPUArray.
 
     Parameters
     ----------
@@ -216,9 +196,7 @@ def tile_cl(queue, a, shape, dim=4):
     -------
     gpuarray
         Tiled GPUArray.
-
     """
-
     m, n = a.shape
     repy, repx = shape
     b = cl_array.empty(queue, (m * repy, n * repx), dtype=float32)
@@ -242,8 +220,7 @@ def tile_cl(queue, a, shape, dim=4):
 
 
 def hstack_cl(queue, a, b, dim=4):
-
-    """ Stack two GPUArrays horizontally.
+    """Stack two GPUArrays horizontally.
 
     Parameters
     ----------
@@ -258,9 +235,7 @@ def hstack_cl(queue, a, b, dim=4):
     -------
     gpuarray
         Horizontally stacked GPUArrays.
-
     """
-
     m, n = a.shape
     o = b.shape[1]
     c = cl_array.empty(queue, (m, n + o), dtype=float32)
@@ -291,8 +266,7 @@ def hstack_cl(queue, a, b, dim=4):
 
 
 def vstack_cl(queue, a, b, dim=4):
-
-    """ Stack two GPUArrays vertically.
+    """Stack two GPUArrays vertically.
 
     Parameters
     ----------
@@ -307,9 +281,7 @@ def vstack_cl(queue, a, b, dim=4):
     -------
     gpuarray
         Vertically stacked GPUArrays.
-
     """
-
     m, n = a.shape
     o = b.shape[0]
     c = cl_array.empty(queue, (m + o, n), dtype=float32)
@@ -344,19 +316,20 @@ def vstack_cl(queue, a, b, dim=4):
 # ==============================================================================
 
 if __name__ == "__main__":
+    pass
 
-    ctx   = cl.create_some_context()
-    queue = cl.CommandQueue(ctx)  # need to find the device association
+    # ctx = cl.create_some_context()
+    # queue = cl.CommandQueue(ctx)  # need to find the device association
 
-    a = give_cl(queue, [[1., 2., 3.], [4., 5., 6.]])
-    # a = give_cl(queue, [1.+1j, 2.+2j, 3.+3j], type='complex')
-    a = get_cl(a)
-    a = ones_cl(queue, (2, 2))
-    b = zeros_cl(queue, (2, 2))
-    c = rand_cl(queue, (1, 3))
-    d = rand_cl(queue, (1, 2))
-    # e = vstack_cl(queue, c, d)
-    e = tile_cl(queue, d, (2, 2))
+    # a = give_cl(queue, [[1., 2., 3.], [4., 5., 6.]])
+    # # a = give_cl(queue, [1.+1j, 2.+2j, 3.+3j], type='complex')
+    # a = get_cl(a)
+    # a = ones_cl(queue, (2, 2))
+    # b = zeros_cl(queue, (2, 2))
+    # c = rand_cl(queue, (1, 3))
+    # d = rand_cl(queue, (1, 2))
+    # # e = vstack_cl(queue, c, d)
+    # e = tile_cl(queue, d, (2, 2))
 
-    print(d)
-    print(e)
+    # print(d)
+    # print(e)

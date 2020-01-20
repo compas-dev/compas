@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -35,8 +34,7 @@ __all__ = [
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def centroid_points_numba(u):
-
-    """ Compute the centroid of a set of points.
+    """Compute the centroid of a set of points.
 
     Parameters
     ----------
@@ -47,9 +45,7 @@ def centroid_points_numba(u):
     -------
     array
         Centroid of the points.
-
     """
-
     m = u.shape[0]
     sc = 1. / m
     return scale_vector_numba(sum_vectors_numba(u, axis=0), factor=sc)
@@ -57,8 +53,7 @@ def centroid_points_numba(u):
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def centroid_points_xy_numba(u):
-
-    """ Compute the centroid of a set of points lying in the XY plane.
+    """Compute the centroid of a set of points lying in the XY plane.
 
     Parameters
     ----------
@@ -69,17 +64,14 @@ def centroid_points_xy_numba(u):
     -------
     array
         Centroid of the points (Z = 0.0).
-
     """
-
     u[:, 2] = 0
     return centroid_points_numba(u)
 
 
 @jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def midpoint_point_point_numba(u, v):
-
-    """ Compute the midpoint of two points.
+    """Compute the midpoint of two points.
 
     Parameters
     ----------
@@ -92,16 +84,13 @@ def midpoint_point_point_numba(u, v):
     -------
     array
         XYZ coordinates of the midpoint.
-
     """
-
     return scale_vector_numba(add_vectors_numba(u, v), factor=0.5)
 
 
 @jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def midpoint_point_point_xy_numba(u, v):
-
-    """ Compute the midpoint of two points lying in the XY-plane.
+    """Compute the midpoint of two points lying in the XY-plane.
 
     Parameters
     ----------
@@ -114,16 +103,13 @@ def midpoint_point_point_xy_numba(u, v):
     -------
     array
         XYZ (Z = 0.0) coordinates of the midpoint.
-
     """
-
     return scale_vector_xy_numba(add_vectors_xy_numba(u, v), factor=0.5)
 
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def center_of_mass_polyline_numba(polyline):
-
-    """ Compute the center of mass of polyline edges defined as an array of points.
+    """Compute the center of mass of polyline edges defined as an array of points.
 
     Parameters
     ----------
@@ -134,9 +120,7 @@ def center_of_mass_polyline_numba(polyline):
     -------
     array
         The XYZ coordinates of the center of mass.
-
     """
-
     L = 0
     cx = 0
     cy = 0
@@ -158,8 +142,7 @@ def center_of_mass_polyline_numba(polyline):
 
 @jit(f8[:](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def center_of_mass_polyline_xy_numba(polyline):
-
-    """ Compute the center of mass of polyline edges in the XY plane, defined as an array of points.
+    """Compute the center of mass of polyline edges in the XY plane, defined as an array of points.
 
     Parameters
     ----------
@@ -170,9 +153,7 @@ def center_of_mass_polyline_xy_numba(polyline):
     -------
     array
         The XY(Z) coordinates of the center of mass.
-
     """
-
     L = 0
     cx = 0
     cy = 0
@@ -192,8 +173,7 @@ def center_of_mass_polyline_xy_numba(polyline):
 
 @jit(f8[:](f8[:, :], i8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def center_of_mass_polyhedron_numba(vertices, faces):
-
-    """ Compute the center of mass of the edges of a polyhedron.
+    """Compute the center of mass of the edges of a polyhedron.
 
     Parameters
     ----------
@@ -206,14 +186,12 @@ def center_of_mass_polyhedron_numba(vertices, faces):
     ------
     array
         The XYZ coordinates of the polyhedron edges' center of mass.
-
     """
-
-    m  = faces.shape[0]
-    V  = 0.
-    x  = 0.
-    y  = 0.
-    z  = 0.
+    m = faces.shape[0]
+    V = 0.
+    x = 0.
+    y = 0.
+    z = 0.
     ex = array([1., 0., 0.])
     ey = array([0., 1., 0.])
     ez = array([0., 0., 1.])
@@ -225,7 +203,7 @@ def center_of_mass_polyhedron_numba(vertices, faces):
         c = vertices[faces[i, 2]]
         ab = subtract_vectors_numba(b, a)
         ac = subtract_vectors_numba(c, a)
-        n  = cross_vectors_numba(ab, ac)
+        n = cross_vectors_numba(ab, ac)
         V += dot_vectors_numba(a, n)
         nx = dot_vectors_numba(n, ex)
         ny = dot_vectors_numba(n, ey)
@@ -255,24 +233,25 @@ def center_of_mass_polyhedron_numba(vertices, faces):
 # ==============================================================================
 
 if __name__ == "__main__":
+    pass
 
-    from time import time
+    # from time import time
 
-    u = array([1., 2., 3.])
-    v = array([4., 5., 6.])
-    c = array([[0., 0., 1.], [3., 4., 1.], [6., 0., 1.]])
+    # u = array([1., 2., 3.])
+    # v = array([4., 5., 6.])
+    # c = array([[0., 0., 1.], [3., 4., 1.], [6., 0., 1.]])
 
-    tic = time()
+    # tic = time()
 
-    for i in range(10**6):
+    # for i in range(10**6):
 
-        # a = centroid_points_numba(c)
-        # a = centroid_points_xy_numba(c)
-        # a = midpoint_point_point_numba(u, v)
-        # a = midpoint_point_point_xy_numba(u, v)
-        # a = center_of_mass_polyline_numba(c)
-        # a = center_of_mass_polyline_xy_numba(c)
-        a = center_of_mass_polyhedron_numba(c, array([[0, 1, 2]]))
+    #     # a = centroid_points_numba(c)
+    #     # a = centroid_points_xy_numba(c)
+    #     # a = midpoint_point_point_numba(u, v)
+    #     # a = midpoint_point_point_xy_numba(u, v)
+    #     # a = center_of_mass_polyline_numba(c)
+    #     # a = center_of_mass_polyline_xy_numba(c)
+    #     a = center_of_mass_polyhedron_numba(c, array([[0, 1, 2]]))
 
-    print(time() - tic)
-    print(a)
+    # print(time() - tic)
+    # print(a)

@@ -542,6 +542,6 @@ def conway_bevel(mesh):
 if __name__ == '__main__':
 
     import doctest
-    from compas.datastructures import Mesh
-    
+    from compas.datastructures import Mesh  # noqa: F401
+
     doctest.testmod(globs=globals())

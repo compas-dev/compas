@@ -3,21 +3,21 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-try:
-    from numpy import ceil
-    from numpy import float32
-    from numpy import int32
-except:
-    pass
+from numpy import ceil
+from numpy import float32
+from numpy import int32
 
 try:
     import pycuda
     import pycuda.gpuarray as cuda_array
     import pycuda.cumath
     import pycuda.autoinit
+
     has_pycuda = True
-    from compas_hpc import give_cuda
-except:
+
+    # from compas_hpc import give_cuda
+
+except ImportError:
     has_pycuda = False
 
 
@@ -125,8 +125,7 @@ if has_pycuda:
 
 
 def abs_cuda(a):
-
-    """ Absolute values of GPUArray elements.
+    """Absolute values of GPUArray elements.
 
     Parameters
     ----------
@@ -145,15 +144,12 @@ def abs_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.fabs(a)
 
 
 def acos_cuda(a):
-
-    """ Trigonometric arccosine of GPUArray elements.
+    """Trigonometric arccosine of GPUArray elements.
 
     Parameters
     ----------
@@ -172,15 +168,12 @@ def acos_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.acos(a)
 
 
 def asin_cuda(a):
-
-    """ Trigonometric arcsine of GPUArray elements.
+    """Trigonometric arcsine of GPUArray elements.
 
     Parameters
     ----------
@@ -199,15 +192,12 @@ def asin_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.asin(a)
 
 
 def atan_cuda(a):
-
-    """ Trigonometric arctangent of GPUArray elements.
+    """Trigonometric arctangent of GPUArray elements.
 
     Parameters
     ----------
@@ -226,15 +216,12 @@ def atan_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.atan(a)
 
 
 def ceil_cuda(a):
-
-    """ Ceiling of GPUArray elements.
+    """Ceiling of GPUArray elements.
 
     Parameters
     ----------
@@ -253,15 +240,12 @@ def ceil_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.ceil(a)
 
 
 def cos_cuda(a):
-
-    """ Trigonometric cosine of GPUArray elements.
+    """Trigonometric cosine of GPUArray elements.
 
     Parameters
     ----------
@@ -280,15 +264,12 @@ def cos_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.cos(a)
 
 
 def cosh_cuda(a):
-
-    """ Hyperbolic cosine of GPUArray elements.
+    """Hyperbolic cosine of GPUArray elements.
 
     Parameters
     ----------
@@ -307,15 +288,12 @@ def cosh_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.cosh(a)
 
 
 def exp_cuda(a):
-
-    """ Exponential of GPUArray elements.
+    """Exponential of GPUArray elements.
 
     Parameters
     ----------
@@ -334,15 +312,12 @@ def exp_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.exp(a)
 
 
 def floor_cuda(a):
-
-    """ Floor of GPUArray elements.
+    """Floor of GPUArray elements.
 
     Parameters
     ----------
@@ -361,15 +336,12 @@ def floor_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.floor(a)
 
 
 def log_cuda(a):
-
-    """ Natural logarithm of GPUArray elements.
+    """Natural logarithm of GPUArray elements.
 
     Parameters
     ----------
@@ -388,15 +360,12 @@ def log_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.log(a)
 
 
 def log10_cuda(a):
-
-    """ Base10 logarithm of GPUArray elements.
+    """Base10 logarithm of GPUArray elements.
 
     Parameters
     ----------
@@ -415,15 +384,12 @@ def log10_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.log10(a)
 
 
 def maximum_cuda(a, b=None):
-
-    """ Maximum values of two GPUArrays.
+    """Maximum values of two GPUArrays.
 
     Parameters
     ----------
@@ -444,17 +410,14 @@ def maximum_cuda(a, b=None):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     if b is not None:
         return cuda_array.maximum(a, b)
     return cuda_array.max(a)
 
 
 def minimum_cuda(a, b=None):
-
-    """ Minimum values of two GPUArrays.
+    """Minimum values of two GPUArrays.
 
     Parameters
     ----------
@@ -475,21 +438,18 @@ def minimum_cuda(a, b=None):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     if b is not None:
         return cuda_array.minimum(a, b)
     return cuda_array.min(a)
 
 
 def round_cuda(a, dim=4):
-
     shape = a.shape
 
     if len(shape) == 1:
 
-        m  = shape[0]
+        m = shape[0]
         nx = int(ceil(m / dim))
 
         func = mod.get_function('round1d_cuda')
@@ -510,8 +470,7 @@ def round_cuda(a, dim=4):
 
 
 def sin_cuda(a):
-
-    """ Trigonometric sine of GPUArray elements.
+    """Trigonometric sine of GPUArray elements.
 
     Parameters
     ----------
@@ -530,15 +489,12 @@ def sin_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.sin(a)
 
 
 def sinh_cuda(a):
-
-    """ Hyperbolic sine of GPUArray elements.
+    """Hyperbolic sine of GPUArray elements.
 
     Parameters
     ----------
@@ -557,15 +513,12 @@ def sinh_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.sinh(a)
 
 
 def sqrt_cuda(a):
-
-    """ Square-root of GPUArray elements.
+    """Square-root of GPUArray elements.
 
     Parameters
     ----------
@@ -584,15 +537,12 @@ def sqrt_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.sqrt(a)
 
 
 def sum_cuda(a, axis=None):
-
-    """ Sum of GPUArray elements in a given axis direction or all elements.
+    """Sum of GPUArray elements in a given axis direction or all elements.
 
     Parameters
     ----------
@@ -609,9 +559,7 @@ def sum_cuda(a, axis=None):
     Notes
     -----
     - This is temporary and not an efficient implementation.
-
     """
-
     if axis is not None:
 
         m, n = a.shape
@@ -635,8 +583,7 @@ def sum_cuda(a, axis=None):
 
 
 def tan_cuda(a):
-
-    """ Trigonometric tangent of GPUArray elements.
+    """Trigonometric tangent of GPUArray elements.
 
     Parameters
     ----------
@@ -655,15 +602,12 @@ def tan_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.tan(a)
 
 
 def tanh_cuda(a):
-
-    """ Hyperbolic tangent of GPUArray elements.
+    """Hyperbolic tangent of GPUArray elements.
 
     Parameters
     ----------
@@ -682,9 +626,7 @@ def tanh_cuda(a):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.cumath.tanh(a)
 
 
@@ -693,33 +635,4 @@ def tanh_cuda(a):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    from compas_hpc import give_cuda
-
-    from numpy import pi
-
-    # a = abs_cuda(give_cuda([-0.1, -1.7]))
-    # a = maximum_cuda(give_cuda([1, 2, 3]), give_cuda([3, 2, 1]))
-    # a = maximum_cuda(give_cuda([1, 2, 3]))
-    # a = minimum_cuda(give_cuda([1, 2, 3]), give_cuda([3, 2, 1]))
-    # a = acos_cuda(give_cuda([0.5, 1]))
-    # a = asin_cuda(give_cuda([0.5, 1]))
-    # a = atan_cuda(give_cuda([0.5, 1]))
-    # a = ceil_cuda(give_cuda([0.5, 0.1, 1.9]))
-    # a = cos_cuda(give_cuda([0, pi/4]))
-    # a = cosh_cuda(give_cuda([0, pi/4]))
-    # a = exp_cuda(give_cuda([0, 1]))
-    # a = floor_cuda(give_cuda([0.5, 0.1, 1.9]))
-    # a = log_cuda(give_cuda([1, 10]))
-    # a = log10_cuda(give_cuda([1, 10]))
-    # a = sin_cuda(give_cuda([0, pi/4]))
-    # a = sinh_cuda(give_cuda([0, pi/4]))
-    # a = sqrt_cuda(give_cuda([4, 9]))
-    # a = tan_cuda(give_cuda([0, pi/4]))
-    # a = tanh_cuda(give_cuda([0, pi/4]))
-    # a = round_cuda(give_cuda([1.4, 1.5, 1.6]))
-    # a = round_cuda(give_cuda([[1.4, 1.5, 1.6], [2.4, 2.5, 2.6]]))
-    a = sum_cuda(give_cuda([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), axis=1)
-
-    print(a)
-    print(type(a))
+    pass

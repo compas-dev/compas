@@ -177,12 +177,12 @@ class Point(Primitive):
     @classmethod
     def from_data(cls, data):
         """Construct a point from a data dict.
-        
+
         Parameters
         ----------
         data : dict
             The data dictionary.
-        
+
         Returns
         -------
         Point

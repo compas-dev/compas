@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from math import pi
+# from math import pi
 from math import fabs
 from random import sample
 
@@ -21,9 +21,9 @@ from compas.geometry.distance import closest_point_on_segment_xy
 
 from compas.geometry.size import area_triangle
 
-from compas.geometry.angles import angle_vectors
-from compas.geometry.average import centroid_polygon
-from compas.geometry.average import centroid_points
+# from compas.geometry.angles import angle_vectors
+# from compas.geometry.average import centroid_polygon
+# from compas.geometry.average import centroid_points
 
 from compas.utilities import window
 

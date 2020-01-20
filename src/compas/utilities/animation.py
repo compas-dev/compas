@@ -42,8 +42,7 @@ def gif_from_images(files,
 
     Examples
     --------
-    >>> 
-
+    >>>
     """
     if reverse:
         files.reverse()
@@ -67,5 +66,4 @@ def gif_from_images(files,
 # ==============================================================================
 
 if __name__ == "__main__":
-
     pass

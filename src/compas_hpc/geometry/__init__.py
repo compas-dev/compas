@@ -1,10 +1,9 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
-from .basic_numba import *
-from .average_numba import *
-from .spatial_numba import *
+from .basic_numba import *  # noqa: F401 F403
+from .average_numba import *  # noqa: F401 F403
+from .spatial_numba import *  # noqa: F401 F403
 
-from .basic_numba import __all__ as a
-from .average_numba import __all__ as b
-from .spatial_numba import __all__ as c
-
-__all__ = a + b + c
+__all__ = [name for name in dir() if not name.startswith('_')]

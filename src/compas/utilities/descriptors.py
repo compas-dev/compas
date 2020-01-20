@@ -17,7 +17,7 @@ __all__ = [
 
 class Float(object):
     """Descriptor for properties of type float.
-    
+
     Parameters
     ----------
     value : float
@@ -25,7 +25,7 @@ class Float(object):
     minval : float, optional
         The minimum value of the property.
     maxval : float, optional
-        The maximum value of the property.    
+        The maximum value of the property.
     """
 
     __slots__ = ('value', 'minval', 'maxval')
@@ -65,7 +65,7 @@ class Float(object):
 
 class RGBColour(object):
     """Descriptor for RGB color properties.
-    
+
     Parameters
     ----------
     default : tuple

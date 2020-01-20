@@ -32,8 +32,6 @@ def xform_from_transformation(transformation):
     :class:`Rhino.Geometry.Transform`
         RhinoCommon Transform object
     """
-
-
     transform = Transform(1.0)
     for i in range(0, 4):
         for j in range(0, 4):

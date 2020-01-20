@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [0.14.0] 2020-01-21
+
+### Added
+
 - Added `compas.datastructures.mesh.Mesh.any_vertex`.
 - Added `compas.datastructures.mesh.Mesh.any_face`.
 - Added `compas.datastructures.mesh.Mesh.any_edge`.

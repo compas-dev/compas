@@ -31,18 +31,18 @@ __all__ = [
 
 def is_sequence_of_str(sequence):
     """Determine if all items in a sequence are of type str.
-    
+
     Parameters
     ----------
     sequence : list or tuple
         The sequence of items.
-    
+
     Returns
     -------
     bool
         True if all items in the sequence are strings.
         False otherwise.
-    
+
     Examples
     --------
     >>> is_sequence_of_str(['a', 'b', 'c'])
@@ -53,18 +53,18 @@ def is_sequence_of_str(sequence):
 
 def is_sequence_of_int(sequence):
     """Determine if all items in a sequence are of type int.
-    
+
     Parameters
     ----------
     sequence : list or tuple
         The sequence of items.
-    
+
     Returns
     -------
     bool
         True if all items in the sequence are of type int.
         False otherwise.
-    
+
     Examples
     --------
     >>> is_sequence_of_int([1, 2, 3])
@@ -75,18 +75,18 @@ def is_sequence_of_int(sequence):
 
 def is_sequence_of_float(sequence):
     """Determine if all items in a sequence are of type float.
-    
+
     Parameters
     ----------
     sequence : list or tuple
         The sequence of items.
-    
+
     Returns
     -------
     bool
         True if all items in the sequence are of type float.
         False otherwise.
-    
+
     Examples
     --------
     >>> is_sequence_of_float([1.0, 2.0, 3.0])
@@ -97,18 +97,18 @@ def is_sequence_of_float(sequence):
 
 def is_sequence_of_list(sequence):
     """Determine if all items in a sequence are of type list.
-    
+
     Parameters
     ----------
     sequence : list or tuple
         The sequence of items.
-    
+
     Returns
     -------
     bool
         True if all items in the sequence are of type list.
         False otherwise.
-    
+
     Examples
     --------
     >>> is_sequence_of_list([[1], [1], [1]])
@@ -119,18 +119,18 @@ def is_sequence_of_list(sequence):
 
 def is_sequence_of_tuple(sequence):
     """Determine if all items in a sequence are of type tuple.
-    
+
     Parameters
     ----------
     sequence : list or tuple
         The sequence of items.
-    
+
     Returns
     -------
     bool
         True if all items in the sequence are of type tuple.
         False otherwise.
-    
+
     Examples
     --------
     >>> is_sequence_of_tuple([(1, ), (1, ), (1, )])
@@ -141,18 +141,18 @@ def is_sequence_of_tuple(sequence):
 
 def is_sequence_of_dict(sequence):
     """Determine if all items in a sequence are of type dict.
-    
+
     Parameters
     ----------
     sequence : list or tuple
         The sequence of items.
-    
+
     Returns
     -------
     bool
         True if all items in the sequence are of type dict.
         False otherwise.
-    
+
     Examples
     --------
     >>> is_sequence_of_dict([{'a': 1}, {'b': 2}, {'c': 3}])
@@ -163,20 +163,20 @@ def is_sequence_of_dict(sequence):
 
 def is_sequence_of_type(sequence, t):
     """Determine if all items in a sequence are of a specific type.
-    
+
     Parameters
     ----------
     sequence : list or tuple
         The sequence of items.
     t : object
         The item type.
-    
+
     Returns
     -------
     bool
         True if all items in the sequence are of the specified type.
         False otherwise.
-    
+
     Examples
     --------
     >>> is_sequence_of_type([1, 2, 3], int)
@@ -189,12 +189,12 @@ def is_sequence_of_type(sequence, t):
 
 def is_item_iterable(item):
     """Determine if an item is iterable.
-    
+
     Parameters
     ----------
     item : object
         The item to test.
-    
+
     Returns
     -------
     bool
@@ -217,18 +217,18 @@ def is_item_iterable(item):
 
 def is_sequence_of_iterable(sequence):
     """Determine if a sequence contains only iterable items.
-    
+
     Parameters
     ----------
     sequence : list or tuple
         A sequence of items.
-    
+
     Returns
     -------
     bool
         True if all items in the sequence are iterable.
         False otherwise.
-    
+
     Examples
     --------
     >>> is_sequence_of_iterable(['abc', [1.0], (2, 'a', None)])
@@ -255,7 +255,7 @@ def coerce_sequence_of_tuple(sequence):
         A list containing the items of the original sequence,
         with each iterable item converted to a tuple,
         and non-iterable items wrapped in a tuple.
-    
+
     Examples
     --------
     >>> items = coerce_sequence_of_tuple(['a', 1, (None, ), [2.0, 3.0]])
@@ -287,7 +287,7 @@ def coerce_sequence_of_list(sequence):
         A list containing the items of the original sequence,
         with each iterable item converted to a list,
         and non-iterable items wrapped in a list.
-    
+
     Examples
     --------
     >>> items = coerce_sequence_of_list(['a', 1, (None, ), [2.0, 3.0]])

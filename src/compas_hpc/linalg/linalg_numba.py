@@ -39,8 +39,7 @@ __all__ = [
 
 @jit(f8(f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def trace_numba(A):
-
-    """ Trace of matrix A.
+    """Trace of matrix A.
 
     Parameters
     ----------
@@ -51,9 +50,7 @@ def trace_numba(A):
     -------
     array
         trace(A).
-
     """
-
     c = 0
 
     for i in range(A.shape[0]):
@@ -64,8 +61,7 @@ def trace_numba(A):
 
 @jit(f8[:, :](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def diag_numba(A, b):
-
-    """ Fill matrix A with a diagonal represented by vector b.
+    """Fill matrix A with a diagonal represented by vector b.
 
     Parameters
     ----------
@@ -78,9 +74,7 @@ def diag_numba(A, b):
     -------
     array
         Matrix A with diagonal filled.
-
     """
-
     for i in range(b.shape[0]):
         A[i, i] = b[i]
 
@@ -89,8 +83,7 @@ def diag_numba(A, b):
 
 @jit(c16[:, :](c16[:, :], c16[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def diag_complex_numba(A, b):
-
-    """ Fill complex matrix A with a diagonal represented by vector b (complex).
+    """Fill complex matrix A with a diagonal represented by vector b (complex).
 
     Parameters
     ----------
@@ -103,9 +96,7 @@ def diag_complex_numba(A, b):
     -------
     array
         Matrix A with diagonal filled (complex).
-
     """
-
     for i in range(b.shape[0]):
         A[i, i] = b[i]
 
@@ -114,8 +105,7 @@ def diag_complex_numba(A, b):
 
 @jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def diag_fill_numba(A, b):
-
-    """ Fill matrix A with a diagonal represented by scalar b.
+    """Fill matrix A with a diagonal represented by scalar b.
 
     Parameters
     ----------
@@ -128,9 +118,7 @@ def diag_fill_numba(A, b):
     -------
     array
         Matrix A with diagonal filled.
-
     """
-
     if A.shape[0] < A.shape[1]:
         m = A.shape[0]
     else:
@@ -144,8 +132,7 @@ def diag_fill_numba(A, b):
 
 @jit(c16[:, :](c16[:, :], c16), nogil=True, nopython=True, parallel=False, cache=True)
 def diag_fill_complex_numba(A, b):
-
-    """ Fill complex matrix A with a diagonal represented by complex number b.
+    """Fill complex matrix A with a diagonal represented by complex number b.
 
     Parameters
     ----------
@@ -158,9 +145,7 @@ def diag_fill_complex_numba(A, b):
     -------
     array
         Matrix A with diagonal filled (complex).
-
     """
-
     if A.shape[0] < A.shape[1]:
         m = A.shape[0]
     else:
@@ -174,8 +159,7 @@ def diag_fill_complex_numba(A, b):
 
 @jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def dot_numba(A, B):
-
-    """ The multiplication of matrices.
+    """The multiplication of matrices.
 
     Parameters
     ----------
@@ -188,9 +172,7 @@ def dot_numba(A, B):
     -------
     array
         AB of size (m x p).
-
     """
-
     m = A.shape[0]
     n = A.shape[1]
     p = B.shape[1]
@@ -206,8 +188,7 @@ def dot_numba(A, B):
 
 @jit(f8[:](f8[:, :], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
 def dotv_numba(A, b):
-
-    """ The multiplication of a matrix with a vector.
+    """The multiplication of a matrix with a vector.
 
     Parameters
     ----------
@@ -220,9 +201,7 @@ def dotv_numba(A, b):
     -------
     array
         Ab of size (m,).
-
     """
-
     m = A.shape[0]
     n = A.shape[1]
     C = zeros(m)
@@ -236,8 +215,7 @@ def dotv_numba(A, b):
 
 @jit(f8[:](f8[:], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def rotate_x_numba(a, theta):
-
-    """ Rotate a vector about the x axis.
+    """Rotate a vector about the x axis.
 
     Parameters
     ----------
@@ -250,9 +228,7 @@ def rotate_x_numba(a, theta):
     -------
     array
         Rotated vector.
-
     """
-
     c = cos(theta)
     s = sin(theta)
 
@@ -266,8 +242,7 @@ def rotate_x_numba(a, theta):
 
 @jit(f8[:](f8[:], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def rotate_y_numba(a, theta):
-
-    """ Rotate a vector about the y axis.
+    """Rotate a vector about the y axis.
 
     Parameters
     ----------
@@ -280,9 +255,7 @@ def rotate_y_numba(a, theta):
     -------
     array
         Rotated vector.
-
     """
-
     c = cos(theta)
     s = sin(theta)
 
@@ -296,8 +269,7 @@ def rotate_y_numba(a, theta):
 
 @jit(f8[:](f8[:], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def rotate_z_numba(a, theta):
-
-    """ Rotate a vector about the z axis.
+    """Rotate a vector about the z axis.
 
     Parameters
     ----------
@@ -310,9 +282,7 @@ def rotate_z_numba(a, theta):
     -------
     array
         Rotated vector.
-
     """
-
     c = cos(theta)
     s = sin(theta)
 
@@ -326,8 +296,7 @@ def rotate_z_numba(a, theta):
 
 @jit(f8[:, :](f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def transpose_numba(A):
-
-    """ Transpose an array.
+    """Transpose an array.
 
     Parameters
     ----------
@@ -338,9 +307,7 @@ def transpose_numba(A):
     -------
     array
         A transposed (n x m).
-
     """
-
     m = A.shape[0]
     n = A.shape[1]
     B = zeros((n, m))
@@ -358,8 +325,7 @@ def transpose_numba(A):
 
 @jit(f8[:, :](f8[:, :], f8), nogil=True, nopython=True, parallel=False, cache=True)
 def scale_matrix_numba(A, b):
-
-    """ Scale a matrix A with a float.
+    """Scale a matrix A with a float.
 
     Parameters
     ----------
@@ -372,9 +338,7 @@ def scale_matrix_numba(A, b):
     -------
     array
         Matrix A scaled by b.
-
     """
-
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] *= b
@@ -384,8 +348,7 @@ def scale_matrix_numba(A, b):
 
 @jit(c16[:, :](c16[:, :], c16), nogil=True, nopython=True, parallel=False, cache=True)
 def scale_matrix_complex_numba(A, b):
-
-    """ Scale a complex matrix A with a complex number.
+    """Scale a complex matrix A with a complex number.
 
     Parameters
     ----------
@@ -398,9 +361,7 @@ def scale_matrix_complex_numba(A, b):
     -------
     array
         Complex matrix A scaled by b.
-
     """
-
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] *= b
@@ -410,8 +371,7 @@ def scale_matrix_complex_numba(A, b):
 
 @jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def multiply_matrices_numba(A, B):
-
-    """ Multiply element-wise a matrix A with another matrix B.
+    """Multiply element-wise a matrix A with another matrix B.
 
     Parameters
     ----------
@@ -424,9 +384,7 @@ def multiply_matrices_numba(A, B):
     -------
     array
         Element-wise A * B.
-
     """
-
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] *= B[i, j]
@@ -436,8 +394,7 @@ def multiply_matrices_numba(A, B):
 
 @jit(c16[:, :](c16[:, :], c16[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def multiply_matrices_complex_numba(A, B):
-
-    """ Multiply element-wise a complex matrix A with another complex matrix B.
+    """Multiply element-wise a complex matrix A with another complex matrix B.
 
     Parameters
     ----------
@@ -450,9 +407,7 @@ def multiply_matrices_complex_numba(A, B):
     -------
     array
         Element-wise A * B (complex).
-
     """
-
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] *= B[i, j]
@@ -462,8 +417,7 @@ def multiply_matrices_complex_numba(A, B):
 
 @jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def divide_matrices_numba(A, B):
-
-    """ Divide element-wise a matrix A with another matrix B.
+    """Divide element-wise a matrix A with another matrix B.
 
     Parameters
     ----------
@@ -476,9 +430,7 @@ def divide_matrices_numba(A, B):
     -------
     array
         Element-wise A / B.
-
     """
-
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] /= B[i, j]
@@ -488,8 +440,7 @@ def divide_matrices_numba(A, B):
 
 @jit(c16[:, :](c16[:, :], c16[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def divide_matrices_complex_numba(A, B):
-
-    """ Divide element-wise a complex matrix A with another complex matrix B.
+    """Divide element-wise a complex matrix A with another complex matrix B.
 
     Parameters
     ----------
@@ -502,9 +453,7 @@ def divide_matrices_complex_numba(A, B):
     -------
     array
         Element-wise A / B (complex).
-
     """
-
     for i in range(A.shape[0]):
         for j in range(A.shape[1]):
             A[i, j] /= B[i, j]
@@ -517,42 +466,42 @@ def divide_matrices_complex_numba(A, B):
 # ==============================================================================
 
 if __name__ == "__main__":
+    pass
 
-    from numpy import array
-    from numpy import complex128
-    from numpy import dot
-    from numpy import pi
-    from numpy import ones
-    from numpy import zeros
+    # from numpy import array
+    # from numpy import complex128
+    # from numpy import dot
+    # from numpy import pi
+    # from numpy import ones
+    # from numpy import zeros
 
+    # A = zeros((5, 5)) + 2
+    # B = zeros((5, 5), dtype=complex128) + (1 + 1j)
+    # C = zeros((5, 5)) + 4
+    # D = zeros((5, 5), dtype=complex128) + (1 - 2j)
+    # E = zeros((5, 2)) + 1
+    # b = ones(5)
+    # c = ones(5) + 3j
+    # d = ones(5) * 2
+    # e = ones(5) * 3
+    # # b = array(list(range(m)), dtype=float64)
 
-    A = zeros((5, 5)) + 2
-    B = zeros((5, 5), dtype=complex128) + (1 + 1j)
-    C = zeros((5, 5)) + 4
-    D = zeros((5, 5), dtype=complex128) + (1 - 2j)
-    E = zeros((5, 2)) + 1
-    b = ones(5)
-    c = ones(5) + 3j
-    d = ones(5) * 2
-    e = ones(5) * 3
-    # b = array(list(range(m)), dtype=float64)
-
-    # print(diag_numba(A, b))
-    # print(diag_complex_numba(B, c))
-    # print(diag_fill_numba(A, 3.0))
-    # print(diag_fill_complex_numba(B, 3.0 + 2j))
-    # print(scale_matrix_numba(A, 3))
-    # print(scale_matrix_complex_numba(B, 1 + 2j))
-    # print(multiply_matrices_numba(A, C))
-    # print(divide_matrices_numba(A, C))
-    # print(multiply_matrices_complex_numba(B, D))
-    # print(divide_matrices_complex_numba(B, D))
-    # print(dot(A, C))
-    # print(dot_numba(A, C))
-    # print(dot(A, d[:, None]))
-    # print(dotv_numba(A, d))
-    # print(transpose_numba(E))
-    # print(trace_numba(A))
-    # print(rotate_z_numba(array([1., 0., 3.]), pi/2))
-    # print(rotate_y_numba(array([1., 2., 0.]), pi/2))
-    print(rotate_x_numba(array([3., 2., 0.]), pi/2))
+    # # print(diag_numba(A, b))
+    # # print(diag_complex_numba(B, c))
+    # # print(diag_fill_numba(A, 3.0))
+    # # print(diag_fill_complex_numba(B, 3.0 + 2j))
+    # # print(scale_matrix_numba(A, 3))
+    # # print(scale_matrix_complex_numba(B, 1 + 2j))
+    # # print(multiply_matrices_numba(A, C))
+    # # print(divide_matrices_numba(A, C))
+    # # print(multiply_matrices_complex_numba(B, D))
+    # # print(divide_matrices_complex_numba(B, D))
+    # # print(dot(A, C))
+    # # print(dot_numba(A, C))
+    # # print(dot(A, d[:, None]))
+    # # print(dotv_numba(A, d))
+    # # print(transpose_numba(E))
+    # # print(trace_numba(A))
+    # # print(rotate_z_numba(array([1., 0., 3.]), pi/2))
+    # # print(rotate_y_numba(array([1., 2., 0.]), pi/2))
+    # print(rotate_x_numba(array([3., 2., 0.]), pi/2))
