@@ -43,8 +43,8 @@ class Scene(object):
             node.artist.draw()
         compas_rhino.rs.EnableRedraw(True)
 
-    def save(self, path, width=1920, height=1080, scale=1,
-             draw_grid=False, draw_world_axes=False, draw_cplane_axes=False, background=False):
+    def screenshot(self, path, width=1920, height=1080, scale=1,
+                   draw_grid=False, draw_world_axes=False, draw_cplane_axes=False, background=False):
         """Save the current screen view.
 
         Parameters
