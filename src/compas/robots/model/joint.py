@@ -282,7 +282,7 @@ class Joint(object):
         ----------
         transformation : :class:`Transformation`
             The transformation used to transform the joint.
-        
+
         Returns
         -------
         None
@@ -294,12 +294,12 @@ class Joint(object):
 
     def create(self, transformation):
         """Internal method to initialize the transformation tree.
-        
+
         Parameters
         ----------
         transformation : :class:`Transformation`
             The transformation used to transform the joint.
-        
+
         Returns
         -------
         None
@@ -428,7 +428,7 @@ class Joint(object):
         ----------
         factor : :obj:`float`
             Scale factor.
-        
+
         Returns
         -------
         None
