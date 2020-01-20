@@ -34,6 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed bug in `compas.geometry.is_point_in_circle`.
 - Fixed bug in `compas.geometry.is_polygon_convex`.
 - Fixed bug in `compas.geometry.Polygon.is_convex`.
+- Renamed `compas.datastructures.Mesh.has_vertex` to `compas.datastructures.Mesh.is_vertex`.
+- Renamed `compas.datastructures.Mesh.has_face` to `compas.datastructures.Mesh.is_face`.
+- Split `compas.datastructures.Mesh.has_edge` into `compas.datastructures.Mesh.is_edge` and `compas.datastructures.Mesh.is_halfedge`.
 
 ### Removed
 
