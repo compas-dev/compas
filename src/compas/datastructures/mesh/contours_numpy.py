@@ -73,8 +73,8 @@ def mesh_contours_numpy(mesh, levels=None, density=100):
     of the mesh.
 
     """
-    xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
-    z = [mesh.get_vertex_attribute(key, 'z') for key in mesh.vertices()]
+    xy = [mesh.vertex_attributes(key, 'xy') for key in mesh.vertices()]
+    z = [mesh.vertex_attribute(key, 'z') for key in mesh.vertices()]
 
     xy = asarray(xy)
     z = asarray(z)

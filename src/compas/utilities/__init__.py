@@ -52,28 +52,10 @@ itertools
     :toctree: generated/
     :nosignatures:
 
-    take
-    tabulate
-    tail
-    consume
-    nth
-    all_equal
-    quantify
-    padnone
-    ncycles
-    dotproduct
     flatten
-    repeatfunc
     pairwise
     window
-    roundrobin
-    powerset
-    unique_justseen
-    iter_except
-    first_true
-    random_permutation
-    random_combination
-    random_combination_with_replacement
+    iterable_like
 
 
 maps
@@ -110,7 +92,7 @@ from .coercing import *  # noqa: F401 F403
 from .colors import *  # noqa: F401 F403
 from .datetime_ import *  # noqa: F401 F403
 from .decorators import *  # noqa: F401 F403
-# from .descriptors import *  # noqa: F401 F403
+from .descriptors import *  # noqa: F401 F403
 from .encoders import *  # noqa: F401 F403
 from .functions import *  # noqa: F401 F403
 from .itertools_ import *  # noqa: F401 F403

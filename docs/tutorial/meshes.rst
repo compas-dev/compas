@@ -45,8 +45,8 @@ Adding vertices and faces
 Identifiers
 ===========
 
-All vertices of a mesh have a unique ID, the "key" of the vertex. By
-default, keys are integers, and every vertex is assigned a number
+All vertices of a mesh have a unique ID, the "key" of the vertex.
+Keys are integers, and every vertex is assigned a number
 corresponding to the order in which it is added. The number is always
 the highest number used so far, plus one.
 
@@ -56,12 +56,9 @@ the highest number used so far, plus one.
 >>> b == a + 1
 True
 
+IDs can also be assigned explicitly.
 
-IDs can also be assigned explicitly, as integers or as any other *hashable*
-type.
-
-Faces are also assigned a unique id. As with vertices, keys are integers
-by default, but any other *hashable* type can be assigned explicitly.
+Faces are also assigned a unique integer id, and keys be assigned explicitly.
 
 .. code-block:: python
 
@@ -204,17 +201,17 @@ Getting attributes
 
 .. code-block:: python
 
-    >>> mesh.get_vertex_attribute(mesh.get_any_vertex(), 'x')
+    >>> mesh.vertex_attribute(mesh.get_any_vertex(), 'x')
     2.0
 
 .. code-block:: python
 
-    >>> mesh.get_vertices_attribute('x')
+    >>> mesh.vertices_attribute('x')
     [0.0, 2.0, 4.0, 6.0, ... 4.0, 6.0, 8.0, 10.0]
 
 .. code-block:: python
 
-    >>> mesh.get_vertices_attributes('xyz')
+    >>> mesh.vertices_attributes('xyz')
     [[0.0, 0.0, 0.0], [2.0, 0.0, 0.0], [4.0, 0.0, 0.0], [6.0, 0.0, 0.0],
     ...
     [4.0, 10.0, 0.0], [6.0, 10.0, 0.0], [8.0, 10.0, 0.0], [10.0, 10.0, 0.0]]
@@ -225,10 +222,10 @@ Setting attributes
 
 .. code-block:: python
 
-    >>> mesh.set_vertex_attribute(0, 'is_fixed', True)
-    >>> mesh.set_vertex_attributes(0, ('is_fixed', 'z'), (False, 10))
-    >>> mesh.set_vertices_attribute('z', 10)
-    >>> mesh.set_vertices_attributes(('z', 'is_fixed'), (0, False))
+    >>> mesh.vertex_attribute(0, 'is_fixed', True)
+    >>> mesh.vertex_attributes(0, ('is_fixed', 'z'), (False, 10))
+    >>> mesh.vertices_attribute('z', 10)
+    >>> mesh.vertices_attributes(('z', 'is_fixed'), (0, False))
 
 
 Connectivity
@@ -384,3 +381,9 @@ Visualisation
         text={key: str(key) for key in mesh.faces_on_boundary()})
 
     plotter.show()
+
+
+Algorithms
+==========
+
+...

@@ -289,22 +289,42 @@ class RobotModel(object):
             yield name
 
     def get_configurable_joints(self):
+        """Returns the configurable joints.
+
+        Returns
+        -------
+        list of :class: `compas.robots.Joint`
+        """
         joints = self.iter_joints()
         return [joint for joint in joints if joint.is_configurable()]
 
     def get_joint_types(self):
+        """Returns the joint types of the configurable joints.
+
+        Returns
+        -------
+        list of int
+        """
         joints = self.get_configurable_joints()
         return [joint.type for joint in joints]
 
-    def get_positions(self):
-        joints = self.get_configurable_joints()
-        return [j.position for j in joints]
-
     def get_configurable_joint_names(self):
+        """Returns the configurable joint names.
+
+        Returns
+        -------
+        list of str
+        """
         joints = self.get_configurable_joints()
         return [j.name for j in joints]
 
     def get_end_effector_link(self):
+        """Returns the end effector link.
+
+        Returns
+        -------
+        :class: `compas.robots.Link`
+        """
         joints = self.get_configurable_joints()
         clink = joints[-1].child_link
         for j in clink.joints:
@@ -313,10 +333,22 @@ class RobotModel(object):
         return clink
 
     def get_end_effector_link_name(self):
+        """Returns the name of the end effector link.
+
+        Returns
+        -------
+        str
+        """
         link = self.get_end_effector_link()
         return link.name
 
     def get_base_link_name(self):
+        """Returns the name of the base link.
+
+        Returns
+        -------
+        str
+        """
         joints = self.get_configurable_joints()
         return joints[0].parent.link
 
@@ -407,7 +439,7 @@ class RobotModel(object):
             item.init_transformation = parent_transformation
 
         for child_joint in link.joints:
-            child_joint.create(parent_transformation)
+            child_joint._create(parent_transformation)
             # Recursively call creation
             self._create(child_joint.child_link, child_joint.current_transformation)
 
@@ -686,7 +718,7 @@ class RobotModel(object):
             else:
                 parent_transformation = item.init_transformation
 
-        joint.create(parent_transformation)
+        joint._create(parent_transformation)
 
         for item in itertools.chain(child_link.visual, child_link.collision):
             item.init_transformation = joint.current_transformation

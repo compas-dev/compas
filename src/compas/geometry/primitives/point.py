@@ -43,6 +43,27 @@ class Point(Primitive):
         The number of fractional digits used in the representation of the coordinates of the point.
         Default is ``3``.
 
+    Attributes
+    ----------
+    data
+    x
+    y
+    z
+
+    Notes
+    -----
+    A ``Point`` object supports direct access to its xyz coordinates through
+    the dot notation, as well list-style access using indices. Indexed
+    access is implemented such that the ``Point`` behaves like a circular
+    list.
+
+    For more info, see [1]_.
+
+    References
+    ----------
+    .. [1] Stack Overflow. *Pythonic Circular List*.
+           Available at: https://stackoverflow.com/questions/8951020/pythonic-circular-list.
+
     Examples
     --------
     >>> p1 = Point(1, 2, 3)
@@ -75,21 +96,6 @@ class Point(Primitive):
     >>> p1 **= 2
     >>> p1
     Point(100.000, 196.000, 324.000)
-
-    Notes
-    -----
-    A ``Point`` object supports direct access to its xyz coordinates through
-    the dot notation, as well list-style access using indices. Indexed
-    access is implemented such that the ``Point`` behaves like a circular
-    list.
-
-    For more info, see [1]_.
-
-    References
-    ----------
-    .. [1] Stack Overflow. *Pythonic Circular List*.
-           Available at: https://stackoverflow.com/questions/8951020/pythonic-circular-list.
-
     """
 
     __slots__ = ['_x', '_y', '_z']
@@ -127,7 +133,6 @@ class Point(Primitive):
         Point(1.000, 2.000, 3.000)
         >>> a is b
         True
-
         """
         data = transform_points(collection, X)
         for point, xyz in zip(collection, data):
@@ -160,7 +165,6 @@ class Point(Primitive):
         Point(1.000, 2.000, 3.000)
         >>> a is b
         False
-
         """
         points = [point.copy() for point in collection]
         Point.transform_collection(points, X)
@@ -172,6 +176,24 @@ class Point(Primitive):
 
     @classmethod
     def from_data(cls, data):
+        """Construct a point from a data dict.
+        
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+        
+        Returns
+        -------
+        Point
+            The constructed point.
+
+        Examples
+        --------
+        >>> point = Point.from_data([0.0, 0.0, 0.0])
+        >>> point
+        Point(0.000, 0.000, 0.000)
+        """
         return cls(*data)
 
     # ==========================================================================
@@ -282,7 +304,6 @@ class Point(Primitive):
         bool
             True if the points are equal.
             False otherwise.
-
         """
         return self.x == other[0] and self.y == other[1] and self.z == other[2]
 
@@ -302,7 +323,6 @@ class Point(Primitive):
         -------
         Point
             The resulting new point.
-
         """
         return Point(self.x + other[0], self.y + other[1], self.z + other[2])
 
@@ -319,7 +339,6 @@ class Point(Primitive):
         -------
         Vector
             A vector from other to self.
-
         """
         x = self.x - other[0]
         y = self.y - other[1]
@@ -339,7 +358,6 @@ class Point(Primitive):
         -------
         Point
             The resulting new ``Point``.
-
         """
         return Point(n * self.x, n * self.y, n * self.z)
 
@@ -356,7 +374,6 @@ class Point(Primitive):
         -------
         Point
             The resulting new ``Point``.
-
         """
         return Point(self.x / n, self.y / n, self.z / n)
 
@@ -373,7 +390,6 @@ class Point(Primitive):
         -------
         Point
             A new point with raised coordinates.
-
         """
         return Point(self.x ** n, self.y ** n, self.z ** n)
 
@@ -388,7 +404,6 @@ class Point(Primitive):
         ----------
         other : point
             The point to add.
-
         """
         self.x += other[0]
         self.y += other[1]
@@ -402,7 +417,6 @@ class Point(Primitive):
         ----------
         other : point
             The point to subtract.
-
         """
         self.x -= other[0]
         self.y -= other[1]
@@ -416,7 +430,6 @@ class Point(Primitive):
         ----------
         n : float
             The multiplication factor.
-
         """
         self.x *= n
         self.y *= n
@@ -430,7 +443,6 @@ class Point(Primitive):
         ----------
         n : float
             The multiplication factor.
-
         """
         self.x /= n
         self.y /= n
@@ -444,7 +456,6 @@ class Point(Primitive):
         ----------
         n : float
             The power.
-
         """
         self.x **= n
         self.y **= n
@@ -463,6 +474,12 @@ class Point(Primitive):
         data : list
             New XYZ coordinates.
 
+        Examples
+        --------
+        >>> point = Point(0.0, 0.0, 0.0)
+        >>> point.update([1.0, 1.0, 1.0])
+        >>> point
+        Point(1.000, 1.000, 1.000)
         """
         self.x = data[0]
         self.y = data[1]
@@ -476,6 +493,13 @@ class Point(Primitive):
         Point
             The copy.
 
+        Examples
+        --------
+        >>> a = Point(0.0, 0.0, 0.0)
+        >>> b = a.copy()
+        >>> b[0] += 1
+        >>> a == b
+        False
         """
         cls = type(self)
         return cls(self.x, self.y, self.z)
@@ -497,6 +521,12 @@ class Point(Primitive):
         float
             The distance.
 
+        Examples
+        --------
+        >>> a = Point(0.0, 0.0, 0.0)
+        >>> b = Point(1.0, 0.0, 0.0)
+        >>> a.distance_to_point(b)
+        1.0
         """
         return distance_point_point(self, point)
 
@@ -513,6 +543,13 @@ class Point(Primitive):
         float
             The distance.
 
+        Examples
+        --------
+        >>> from compas.geometry import Line
+        >>> point = Point(0.0, 0.0, 0.0)
+        >>> line = Line(Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0))
+        >>> point.distance_to_line(line)
+        1.0
         """
         return distance_point_line(self, line)
 
@@ -529,6 +566,14 @@ class Point(Primitive):
         float
             The distance.
 
+        Examples
+        --------
+        >>> from compas.geometry import Plane
+        >>> from compas.geometry import Vector
+        >>> point = Point(0.0, 0.0, 0.0)
+        >>> plane = Plane(Point(1.0, 0.0, 0.0), Vector(1.0, 0.0, 0.0))
+        >>> point.distance_to_plane(plane)
+        1.0
         """
         return distance_point_plane(self, plane)
 
@@ -546,6 +591,13 @@ class Point(Primitive):
             True, if the point lies on the line.
             False, otherwise.
 
+        Examples
+        --------
+        >>> from compas.geometry import Line
+        >>> line = Line(Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0))
+        >>> point = line.point(1.5)
+        >>> point.on_line(line)
+        True
         """
         return is_point_on_line(self, line)
 
@@ -563,6 +615,13 @@ class Point(Primitive):
             True, if the point lies on the segment.
             False, otherwise.
 
+        Examples
+        --------
+        >>> from compas.geometry import Line
+        >>> line = Line(Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0))
+        >>> point = line.point(1.5)
+        >>> point.on_segment(line)
+        False
         """
         return is_point_on_segment(self, segment)
 
@@ -580,6 +639,13 @@ class Point(Primitive):
             True, if the point lies on the polyline.
             False, otherwise.
 
+        Examples
+        --------
+        >>> from compas.geometry import Polyline
+        >>> poly = Polyline([Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0), Point(2.0, 0.0, 0.0)])
+        >>> point = poly.point(0.5)
+        >>> point.on_polyline(poly)
+        True
         """
         return is_point_on_polyline(self, polyline)
 
@@ -596,7 +662,6 @@ class Point(Primitive):
         bool
             True, if the point lies on the circle.
             False, otherwise.
-
         """
         raise NotImplementedError
 
@@ -614,6 +679,13 @@ class Point(Primitive):
             True, if the point lies in the triangle.
             False, otherwise.
 
+        Examples
+        --------
+        >>> from compas.geometry import Polygon
+        >>> tri = Polygon([Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0), Point(0.5, 1.0, 0.0)])
+        >>> point = Point(0.5, 0.5, 0.0)
+        >>> point.in_triangle(tri)
+        True
         """
         return is_point_in_triangle(self, triangle)
 
@@ -631,6 +703,13 @@ class Point(Primitive):
             True, if the point lies on the polyline.
             False, otherwise.
 
+        Examples
+        --------
+        >>> from compas.geometry import Polygon
+        >>> poly = Polygon([Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0), Point(0.0, 1.0, 0.0)])
+        >>> point = Point(0.5, 0.5, 0.0)
+        >>> point.in_polygon(poly)
+        True
         """
         if is_polygon_convex_xy(polygon):
             return is_point_in_convex_polygon_xy(self, polygon)
@@ -650,6 +729,15 @@ class Point(Primitive):
             True, if the point lies on the polyline.
             False, otherwise.
 
+        Examples
+        --------
+        >>> from compas.geometry import Vector
+        >>> from compas.geometry import Plane
+        >>> from compas.geometry import Circle
+        >>> circle = Circle(Plane(Point(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0)), 1.0)
+        >>> point = Point(0.5, 0.0, 0.0)
+        >>> point.in_circle(circle)
+        True
         """
         return is_point_in_circle(self, circle)
 
@@ -682,6 +770,14 @@ class Point(Primitive):
         T : list of list or compas.geometry.Transformation
             The transformation matrix.
 
+        Examples
+        --------
+        >>> from compas.geometry import Translation
+        >>> point = Point(0.0, 0.0, 0.0)
+        >>> T = Translation([1.0, 1.0, 1.0])
+        >>> point.transform(T)
+        >>> point.x == 1.0
+        True
         """
         point = transform_points([self], T)[0]
         self.x = point[0]
@@ -701,6 +797,14 @@ class Point(Primitive):
         Point
             The transformed copy.
 
+        Examples
+        --------
+        >>> from compas.geometry import Translation
+        >>> a = Point(0.0, 0.0, 0.0)
+        >>> T = Translation([1.0, 1.0, 1.0])
+        >>> b = a.transformed(T)
+        >>> a == b
+        False
         """
         point = self.copy()
         point.transform(matrix)

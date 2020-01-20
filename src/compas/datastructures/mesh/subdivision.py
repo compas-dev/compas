@@ -67,7 +67,7 @@ class SubdMesh(Mesh):
         self.face[fkey] = vertices
         self.facedata[fkey] = {}
 
-        for u, v in self._cycle_keys(vertices):
+        for u, v in pairwise(vertices + vertices[:1]):
             self.halfedge[u][v] = fkey
             if u not in self.halfedge[v]:
                 self.halfedge[v][u] = None

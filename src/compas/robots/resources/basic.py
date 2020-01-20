@@ -166,6 +166,17 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
         self.schema_prefix = 'package://' + self.support_package + '/'
 
     def build_path(self, *path_parts):
+        """Returns the building path.
+
+        Parameters
+        ----------
+        *path_parts: str
+            The additional foldernames that construct the path.
+
+        Returns
+        -------
+        str
+        """
         return os.path.join(self.path,
                             self.support_package,
                             *path_parts)

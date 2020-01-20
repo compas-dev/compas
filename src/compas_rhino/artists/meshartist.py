@@ -279,7 +279,7 @@ class MeshArtist(Artist):
 
         """
         key_index = self.mesh.key_index()
-        vertices = self.mesh.get_vertices_attributes('xyz')
+        vertices = self.mesh.vertices_attributes('xyz')
         faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
         new_faces = []
         for face in faces:
@@ -337,7 +337,7 @@ class MeshArtist(Artist):
                 'pos': self.mesh.vertex_coordinates(key),
                 'name': "{}.vertex.{}".format(self.mesh.name, key),
                 'color': colordict[key],
-                'layer': self.mesh.get_vertex_attribute(key, 'layer', None)
+                'layer': self.mesh.vertex_attribute(key, 'layer')
             })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
@@ -380,7 +380,7 @@ class MeshArtist(Artist):
                 'points': self.mesh.face_coordinates(fkey),
                 'name': "{}.face.{}".format(self.mesh.name, fkey),
                 'color': colordict[fkey],
-                'layer': self.mesh.get_face_attribute(fkey, 'layer', None)
+                'layer': self.mesh.face_attribute(fkey, 'layer')
             })
 
         guids = compas_rhino.draw_faces(faces, layer=self.layer, clear=False, redraw=False)
@@ -432,7 +432,7 @@ class MeshArtist(Artist):
                 'end': self.mesh.vertex_coordinates(v),
                 'color': colordict[(u, v)],
                 'name': "{}.edge.{}-{}".format(self.mesh.name, u, v),
-                'layer': self.mesh.get_edge_attribute((u, v), 'layer', None)
+                'layer': self.mesh.edge_attribute((u, v), 'layer')
             })
 
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -545,7 +545,7 @@ class MeshArtist(Artist):
                 'name': "{}.vertex.label.{}".format(self.mesh.name, key),
                 'color': colordict[key],
                 'text': textdict[key],
-                'layer': self.mesh.get_vertex_attribute(key, 'layer', None)
+                'layer': self.mesh.vertex_attribute(key, 'layer')
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
@@ -595,7 +595,7 @@ class MeshArtist(Artist):
                 'name': "{}.face.label.{}".format(self.mesh.name, key),
                 'color': colordict[key],
                 'text': textdict[key],
-                'layer': self.mesh.get_face_attribute(key, 'layer', None)
+                'layer': self.mesh.face_attribute(key, 'layer')
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
@@ -643,7 +643,7 @@ class MeshArtist(Artist):
                 'name': "{}.edge.label.{}-{}".format(self.mesh.name, u, v),
                 'color': colordict[(u, v)],
                 'text': textdict[(u, v)],
-                'layer': self.mesh.get_edge_attribute((u, v), 'layer', None)
+                'layer': self.mesh.edge_attribute((u, v), 'layer')
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)

@@ -12,6 +12,33 @@ __all__ = [
 
 
 def fibonacci(n, memo={}):
+    """Memoized function for generating fibonacci numbers.
+    
+    Parameters
+    ----------
+    n : int
+        The position of the number in the sequence.
+    memo : dict
+        The memoization dict.
+
+    Returns
+    -------
+    int
+        The nth fibonacci number.
+
+    Examples
+    --------
+    >>> fibonacci(0)
+    0
+    >>> fibonacci(1)
+    1
+    >>> fibonacci(2)
+    1
+    >>> fibonacci(3)
+    2
+    >>> fibonacci(4)
+    3
+    """
     if n == 0:
         return 0
     if n == 1:
@@ -44,7 +71,6 @@ def binomial_coefficient(n, k):
     -------
     int
         The coefficient.
-
     """
     return int(factorial(n) / float(factorial(k) * factorial(n - k)))
 
@@ -55,6 +81,6 @@ def binomial_coefficient(n, k):
 
 if __name__ == "__main__":
 
-    print(fibonacci(100))
+    import doctest
 
-    print(binomial_coefficient(10, 4))
+    doctest.testmod(globs=globals())

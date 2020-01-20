@@ -14,14 +14,18 @@ __all__ = [
 def mesh_quads_to_triangles(mesh, check_angles=False):
     """"""
     for fkey in list(mesh.faces()):
-        attr = mesh.facedata[fkey]
+        attr = mesh.face_attributes(fkey)
+        attr.custom_only = True
         vertices = mesh.face_vertices(fkey)
         if len(vertices) == 4:
             a, b, c, d = vertices
             t1, t2 = mesh_split_face(mesh, fkey, b, d)
-            mesh.facedata[t1] = attr.copy()
-            mesh.facedata[t2] = attr.copy()
-            del mesh.facedata[fkey]
+            mesh.face_attributes(t1, attr.keys(), attr.values())
+            mesh.face_attributes(t2, attr.keys(), attr.values())
+            # mesh.facedata[t1] = attr.copy()
+            # mesh.facedata[t2] = attr.copy()
+            if fkey in mesh.facedata:
+                del mesh.facedata[fkey]
 
 
 # ==============================================================================

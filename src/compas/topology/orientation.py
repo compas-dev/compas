@@ -16,7 +16,34 @@ __all__ = [
 
 
 def unify_cycles(vertices, faces, root=0):
-    """"""
+    """Unify the cycle directions of the given faces such that adjacent faces share opposite halfedges.
+    
+    Parameters
+    ----------
+    vertices : list
+        A list of vertex coordinates.
+    faces : list
+        A list of lists of face vertex indices.
+    root : int, optional
+        The starting face.
+
+    Returns
+    -------
+    list
+        A list of faces with the same orientation as the root face.
+
+    Raises
+    ------
+    AssertionError
+        If not all faces were visited.
+
+    Examples
+    --------
+    >>> vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 1.0]]
+    >>> faces = [[0, 1, 2], [0, 3, 2]]
+    >>> unify_cycles(vertices, faces)
+    [[0, 1, 2], [2, 3, 0]]
+    """
     def unify(node, nbr):
         # find the common edge
         for u, v in pairwise(faces[nbr] + faces[nbr][0:1]):
@@ -30,90 +57,87 @@ def unify_cycles(vertices, faces, root=0):
                     # flip the neighbor
                     faces[nbr][:] = faces[nbr][::-1]
                     return
-
     adj = face_adjacency(vertices, faces)
-
     visited = breadth_first_traverse(adj, root, unify)
-
     assert len(list(visited)) == len(faces), 'Not all faces were visited'
     return faces
 
 
 def face_adjacency(xyz, faces):
-    f = len(faces)
+    """Construct an adjacency dictionary of the given faces, assuming that the faces have arbitrary orientation.
+    
+    Parameters
+    ----------
+    xyz : list
+        The coordinates of the face vertices.
+    faces : list
+        The indices of the face vertices in the coordinates list.
 
+    Returns
+    -------
+    dict
+        For every face a list of neighbouring faces.
+
+    Examples
+    --------
+    >>> vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 1.0]]
+    >>> faces = [[0, 1, 2], [0, 3, 2]]
+    >>> face_adjacency(vertices, faces)
+    {0: [1], 1: [0]}
+    """
+    f = len(faces)
     if f > 100:
         return _face_adjacency(xyz, faces)
-
     adjacency = {}
-
     for face, vertices in enumerate(faces):
         nbrs = []
         found = set()
-
         for u, v in pairwise(vertices + vertices[0:1]):
             for nbr, _ in enumerate(faces):
-
                 if nbr == face:
                     continue
                 if nbr in found:
                     continue
-
                 for a, b in pairwise(faces[nbr] + faces[nbr][0:1]):
                     if v == a and u == b:
                         nbrs.append(nbr)
                         found.add(nbr)
                         break
-
                 for a, b in pairwise(faces[nbr] + faces[nbr][0:1]):
                     if u == a and v == b:
                         nbrs.append(nbr)
                         found.add(nbr)
                         break
-
         adjacency[face] = nbrs
-
     return adjacency
 
-
 def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
-    """"""
     points = [centroid_points([xyz[index] for index in face]) for face in faces]
-
     tree = KDTree(points)
     closest = [tree.nearest_neighbors(point, nmax) for point in points]
     closest = [[index for _, index, _ in nnbrs] for nnbrs in closest]
-
     adjacency = {}
-
     for face, vertices in enumerate(faces):
         nbrs = []
         found = set()
-
         nnbrs = set(closest[face])
-
         for u, v in pairwise(vertices + vertices[0:1]):
             for nbr in nnbrs:
-
                 if nbr == face:
                     continue
                 if nbr in found:
                     continue
-
                 for a, b in pairwise(faces[nbr] + faces[nbr][0:1]):
                     if v == a and u == b:
                         nbrs.append(nbr)
                         found.add(nbr)
                         break
-
                 for a, b in pairwise(faces[nbr] + faces[nbr][0:1]):
                     if u == a and v == b:
                         nbrs.append(nbr)
                         found.add(nbr)
                         break
-
         adjacency[face] = nbrs
-
     return adjacency
 
 
@@ -123,4 +147,6 @@ def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+
+    doctest.testmod(globs=globals())

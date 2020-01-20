@@ -40,10 +40,7 @@ def bestfit_plane(points):
 
     Examples
     --------
-    .. code-block:: python
-
-        #
-
+    >>>
     """
     centroid = centroid_points(points)
 

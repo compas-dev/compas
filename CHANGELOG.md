@@ -9,10 +9,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `compas.datastructures.mesh.Mesh.any_vertex`.
+- Added `compas.datastructures.mesh.Mesh.any_face`.
+- Added `compas.datastructures.mesh.Mesh.any_edge`.
+- Added `compas.datastructures.mesh.Mesh.vertex_attribute`.
+- Added `compas.datastructures.mesh.Mesh.vertex_attributes`.
+- Added `compas.datastructures.mesh.Mesh.vertices_attribute`.
+- Added `compas.datastructures.mesh.Mesh.vertices_attributes`.
+- Added `compas.datastructures.mesh.Mesh.edge_attribute`.
+- Added `compas.datastructures.mesh.Mesh.edge_attributes`.
+- Added `compas.datastructures.mesh.Mesh.edges_attribute`.
+- Added `compas.datastructures.mesh.Mesh.edges_attributes`.
+- Added `compas.datastructures.mesh.Mesh.face_attribute`.
+- Added `compas.datastructures.mesh.Mesh.face_attributes`.
+- Added `compas.datastructures.mesh.Mesh.faces_attribute`.
+- Added `compas.datastructures.mesh.Mesh.faces_attributes`.
+- Added mutable attribute view for mesh vertex/face/edge attributes.
+
 ### Changed
+
+- Default Mesh vertex, face, edge attributes are no longer copied and stored explicitly per vertex, face, edge, repesctively.
+- Updating default attributes now only changes the corresponding default attribute dict.
+- Updated `mesh_quads_to_triangles` to copy only customised face attributes onto newly created faces.
+- Fixed bug in `compas.geometry.is_point_in_circle`.
+- Fixed bug in `compas.geometry.is_polygon_convex`.
+- Fixed bug in `compas.geometry.Polygon.is_convex`.
+- Renamed `compas.datastructures.Mesh.has_vertex` to `compas.datastructures.Mesh.is_vertex`.
+- Renamed `compas.datastructures.Mesh.has_face` to `compas.datastructures.Mesh.is_face`.
+- Split `compas.datastructures.Mesh.has_edge` into `compas.datastructures.Mesh.is_edge` and `compas.datastructures.Mesh.is_halfedge`.
 
 ### Removed
 
+- Removed `compas.datastructures.mesh.Mesh.get_any_vertex`.
+- Removed `compas.datastructures.mesh.Mesh.get_any_face`.
+- Removed `compas.datastructures.mesh.Mesh.get_any_edge`.
+- Removed `compas.datastructures.mesh.Mesh.get_vertex_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_vertex_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_vertices_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_vertices_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_edge_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_edge_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_edges_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_edges_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_face_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_face_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_faces_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_faces_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_vertex_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_vertex_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_vertices_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_vertices_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_edge_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_edge_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_edges_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_edges_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_face_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_face_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_faces_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_faces_attributes`.
+- Removed `print` statement from curvature module.
 
 ## [0.13.3] 2020-01-10
 

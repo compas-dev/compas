@@ -12,22 +12,23 @@ from math import pi
 from ast import literal_eval
 
 from compas.datastructures import Datastructure
+
 from compas.datastructures._mixins import EdgeFilter
 from compas.datastructures._mixins import EdgeGeometry
 from compas.datastructures._mixins import EdgeHelpers
 from compas.datastructures._mixins import EdgeMappings
-from compas.datastructures._mixins import FaceAttributesManagement
 from compas.datastructures._mixins import FaceFilter
 from compas.datastructures._mixins import FaceHelpers
 from compas.datastructures._mixins import FaceMappings
-from compas.datastructures._mixins import VertexAttributesManagement
 from compas.datastructures._mixins import VertexFilter
 from compas.datastructures._mixins import VertexHelpers
 from compas.datastructures._mixins import VertexMappings
+
 from compas.files import OBJ
 from compas.files import OFF
 from compas.files import PLY
 from compas.files import STL
+
 from compas.geometry import Polyhedron
 from compas.geometry import angle_points
 from compas.geometry import area_polygon
@@ -42,30 +43,129 @@ from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
 from compas.geometry import scale_vector
+from compas.geometry import add_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import sum_vectors
+from compas.geometry import midpoint_line
+
 from compas.utilities import average
 from compas.utilities import geometric_key
 from compas.utilities import pairwise
 from compas.utilities import window
 
+
 __all__ = ['BaseMesh']
 
 
-TPL = """
-================================================================================
-Mesh summary
-================================================================================
+class AttributeView(object):
+    """Mixin for attribute dict views."""
 
-- name: {}
-- vertices: {}
-- edges: {}
-- faces: {}
-- vertex degree: {}/{}
-- face degree: {}/{}
+    def __str__(self):
+        s = []
+        for k, v in self.items():
+            s.append("{}: {}".format(repr(k), repr(v)))
+        return "{" + ", ".join(s) + "}"
 
-================================================================================
-"""
+    def __len__(self):
+        return len(self.defaults)
+
+
+class VertexAttributeView(AttributeView, collections.MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of a vertex
+    combined with the default attributes of all vertices."""
+
+    def __init__(self, defaults, attr):
+        self.defaults = defaults
+        self.attr = attr
+
+    def __getitem__(self, key):
+        try:
+            return self.attr[key]
+        except KeyError:
+            return self.defaults[key]
+
+    def __setitem__(self, key, value):
+        self.attr[key] = value
+
+    def __delitem__(self, key):
+        if key in self.attr:
+            del self.attr[key]
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        for key in self.defaults:
+            yield key
+
+
+class FaceAttributeView(AttributeView, collections.MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of a face
+    combined with the default attributes of all faces."""
+
+    def __init__(self, defaults, attr, key, custom_only=False):
+        self.defaults = defaults
+        self.attr = attr
+        self.key = key
+        self.custom_only = custom_only
+
+    def __getitem__(self, key):
+        if self.key in self.attr and key in self.attr[self.key]:
+            return self.attr[self.key][key]
+        return self.defaults[key]
+
+    def __setitem__(self, key, value):
+        self.attr[self.key][key] = value
+
+    def __delitem__(self, key):
+        if self.key in self.attr:
+            if key in self.attr[self.key]:
+                del self.attr[self.key][key]
+            else:
+                raise KeyError
+
+    def __iter__(self):
+        if self.custom_only:
+            if self.key in self.attr:
+                for key in self.attr[self.key]:
+                    yield key
+        else:
+            for key in self.defaults:
+                yield key
+
+
+class EdgeAttributeView(AttributeView, collections.MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of an edge
+    combined with the default attributes of all edges."""
+
+    def __init__(self, defaults, attr, key, custom_only=False):
+        self.defaults = defaults
+        self.attr = attr
+        self.key = key
+        self.custom_only = custom_only
+
+    def __getitem__(self, key):
+        if self.key in self.attr and key in self.attr[self.key]:
+            return self.attr[self.key][key]
+        return self.defaults[key]
+
+    def __setitem__(self, key, value):
+        self.attr[self.key][key] = value
+
+    def __delitem__(self, key):
+        if self.key in self.attr:
+            if key in self.attr[self.key]:
+                del self.attr[self.key][key]
+            else:
+                raise KeyError
+
+    def __iter__(self):
+        if self.custom_only:
+            if self.key in self.attr:
+                for key in self.attr[self.key]:
+                    yield key
+        else:
+            for key in self.defaults:
+                yield key
 
 
 class BaseMesh(EdgeGeometry,
@@ -78,8 +178,6 @@ class BaseMesh(EdgeGeometry,
                FaceMappings,
                EdgeMappings,
                VertexMappings,
-               FaceAttributesManagement,
-               VertexAttributesManagement,
                Datastructure):
     """Definition of a mesh.
 
@@ -156,14 +254,23 @@ class BaseMesh(EdgeGeometry,
 
     def summary(self):
         """Print a summary of the mesh."""
-        numv = self.number_of_vertices()
-        nume = self.number_of_edges()
-        numf = self.number_of_faces()
-        vmin = self.vertex_min_degree()
-        vmax = self.vertex_max_degree()
-        fmin = self.face_min_degree()
-        fmax = self.face_max_degree()
-        s = TPL.format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
+        tpl = "\n".join(
+            ["Mesh summary",
+             "============",
+             "- name: {}",
+             "- vertices: {}",
+             "- edges: {}",
+             "- faces: {}",
+             "- vertex degree: {}/{}",
+             "- face degree: {}/{}"])
+        s = tpl.format(self.name,
+                       self.number_of_vertices(),
+                       self.number_of_edges(),
+                       self.number_of_faces(),
+                       self.vertex_min_degree(),
+                       self.vertex_max_degree(),
+                       self.face_min_degree(),
+                       self.face_max_degree())
         print(s)
 
     # --------------------------------------------------------------------------
@@ -280,7 +387,7 @@ class BaseMesh(EdgeGeometry,
         self._max_int_fkey = max_int_fkey
 
     # --------------------------------------------------------------------------
-    # constructors
+    # from/to
     # --------------------------------------------------------------------------
 
     @classmethod
@@ -307,6 +414,21 @@ class BaseMesh(EdgeGeometry,
         mesh.data = data
         return mesh
 
+    def to_data(self):
+        """Returns a dictionary of structured data representing the mesh.
+
+        Returns
+        -------
+        dict
+            The structured data.
+
+        Note
+        ----
+        This method produces the data that can be used in conjuction with the
+        corresponding *from_data* class method.
+        """
+        return self.data
+
     @classmethod
     def from_json(cls, filepath):
         """Construct a datastructure from structured data contained in a json file.
@@ -325,14 +447,26 @@ class BaseMesh(EdgeGeometry,
         ----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_json* method.
-
         """
         with open(filepath, 'r') as fp:
             data = json.load(fp)
-
         mesh = cls()
         mesh.data = data
         return mesh
+
+    def to_json(self, filepath, pretty=False):
+        """Serialise the structured data representing the data structure to json.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the json file.
+        """
+        with open(filepath, 'w+') as f:
+            if pretty:
+                json.dump(self.data, f, sort_keys=True, indent=4)
+            else:
+                json.dump(self.data, f)
 
     @classmethod
     def from_pickle(cls, filepath):
@@ -352,14 +486,23 @@ class BaseMesh(EdgeGeometry,
         ----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_pickle* method.
-
         """
         with open(filepath, 'rb') as fo:
             data = pickle.load(fo)
-
         o = cls()
         o.data = data
         return o
+
+    def to_pickle(self, filepath):
+        """Serialise the structured data representing the mesh to a pickle file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the pickle file.
+        """
+        with open(filepath, 'wb+') as f:
+            pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     @classmethod
     def from_obj(cls, filepath, precision=None):
@@ -390,15 +533,7 @@ class BaseMesh(EdgeGeometry,
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            mesh.plot()
-
+        >>>
         """
         obj = OBJ(filepath, precision)
         vertices = obj.parser.vertices
@@ -409,6 +544,35 @@ class BaseMesh(EdgeGeometry,
         if edges:
             lines = [(vertices[u], vertices[v], 0) for u, v in edges]
             return cls.from_lines(lines)
+
+    def to_obj(self, filepath):
+        """Write the mesh to an OBJ file.
+
+        Parameters
+        ----------
+        filepath : str
+            Full path of the file.
+
+        Warning
+        -------
+        Currently this function only writes geometric data about the vertices and
+        the faces to the file.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            pass
+
+        """
+        key_index = self.key_index()
+        with open(filepath, 'w+') as f:
+            for key, attr in self.vertices(True):
+                f.write('v {0[x]:.3f} {0[y]:.3f} {0[z]:.3f}\n'.format(attr))
+            for fkey in self.faces():
+                vertices = self.face_vertices(fkey)
+                vertices = [key_index[key] + 1 for key in vertices]
+                f.write(' '.join(['f'] + [str(index) for index in vertices]) + '\n')
 
     @classmethod
     def from_ply(cls, filepath):
@@ -446,6 +610,9 @@ class BaseMesh(EdgeGeometry,
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
+    def to_ply(self, filepath):
+        raise NotImplementedError
+
     @classmethod
     def from_stl(cls, filepath):
         """Construct a mesh object from the data described in a STL file.
@@ -469,19 +636,16 @@ class BaseMesh(EdgeGeometry,
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-
-            mesh = Mesh.from_stl(compas.get('cube_ascii.stl'))
-
+        >>>
         """
         stl = STL(filepath)
         vertices = stl.parser.vertices
         faces = stl.parser.faces
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
+
+    def to_stl(self, filepath):
+        raise NotImplementedError
 
     @classmethod
     def from_off(cls, filepath):
@@ -499,13 +663,7 @@ class BaseMesh(EdgeGeometry,
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-
-            mesh = Mesh.from_off(compas.get('cube.off'))
-
+        >>>
         """
         off = OFF(filepath)
         vertices = off.reader.vertices
@@ -513,13 +671,8 @@ class BaseMesh(EdgeGeometry,
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
-    def leaves(self):
-        leaves = []
-        for key in self.halfedge:
-            nbrs = self.halfedge[key]
-            if len(nbrs) == 1:
-                leaves.append(key)
-        return leaves
+    def to_off(self, filepath):
+        raise NotImplementedError
 
     @classmethod
     def from_lines(cls, lines, delete_boundary_face=False, precision=None):
@@ -543,37 +696,22 @@ class BaseMesh(EdgeGeometry,
 
         Examples
         --------
-        .. code-block:: python
-
-            import json
-
-            import compas
-            from compas.datastructures import Mesh
-
-            with open(compas.get('lines.json'), 'r') as fo:
-                lines = json.load(fo)
-
-            mesh = Mesh.from_lines(lines)
-
+        >>>
         """
         from compas.datastructures import Network
         from compas.datastructures import network_find_faces
-
-        network = Network.from_lines(lines, precision=precision)
-
         mesh = cls()
-
+        network = Network.from_lines(lines, precision=precision)
         for key, attr in network.vertices(True):
             mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=attr['z'])
-
         mesh.halfedge = network.halfedge
-
         network_find_faces(mesh)
-
         if delete_boundary_face:
             mesh.delete_face(0)
-
         return mesh
+
+    def to_lines(self, filepath):
+        raise NotImplementedError
 
     @classmethod
     def from_polylines(cls, boundary_polylines, other_polylines):
@@ -597,13 +735,10 @@ class BaseMesh(EdgeGeometry,
         -------
         Mesh
             A mesh object.
-
         """
         corner_vertices = [geometric_key(xyz) for polyline in boundary_polylines + other_polylines for xyz in [polyline[0], polyline[-1]]]
         boundary_vertices = [geometric_key(xyz) for polyline in boundary_polylines for xyz in polyline]
-
         mesh = cls.from_lines([(u, v) for polyline in boundary_polylines + other_polylines for u, v in pairwise(polyline)])
-
         # remove the vertices that are not from the polyline extremities and the faces with all their vertices on the boundary
         vertex_keys = [vkey for vkey in mesh.vertices() if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices]
         vertex_map = {vkey: i for i, vkey in enumerate(vertex_keys)}
@@ -612,10 +747,11 @@ class BaseMesh(EdgeGeometry,
         for fkey in mesh.faces():
             if sum([geometric_key(mesh.vertex_coordinates(vkey)) not in boundary_vertices for vkey in mesh.face_vertices(fkey)]):
                 faces.append([vertex_map[vkey] for vkey in mesh.face_vertices(fkey) if geometric_key(mesh.vertex_coordinates(vkey)) in corner_vertices])
-
         mesh.cull_vertices()
-
         return cls.from_vertices_and_faces(vertices, faces)
+
+    def to_polylines(self):
+        raise NotImplementedError
 
     @classmethod
     def from_vertices_and_faces(cls, vertices, faces):
@@ -637,39 +773,48 @@ class BaseMesh(EdgeGeometry,
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-
-            vertices = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]
-            faces = [[0, 1, 2]]
-
-            mesh = Mesh.from_vertices_and_faces(vertices, faces)
-
+        >>>
         """
         mesh = cls()
-
         if sys.version_info[0] < 3:
             mapping = collections.Mapping
         else:
             mapping = collections.abc.Mapping
-
         if isinstance(vertices, mapping):
             for key, xyz in vertices.items():
                 mesh.add_vertex(key=key, attr_dict={i: j for i, j in zip(['x', 'y', 'z'], xyz)})
         else:
             for x, y, z in iter(vertices):
                 mesh.add_vertex(x=x, y=y, z=z)
-
         if isinstance(faces, mapping):
             for fkey, vertices in faces.items():
                 mesh.add_face(vertices, fkey)
         else:
             for face in iter(faces):
                 mesh.add_face(face)
-
         return mesh
+
+    def to_vertices_and_faces(self):
+        """Return the vertices and faces of a mesh.
+
+        Returns
+        -------
+        tuple
+            A 2-tuple containing
+
+            * a list of vertices, represented by their XYZ coordinates, and
+            * a list of faces.
+
+            Each face is a list of indices referencing the list of vertex coordinates.
+
+        Example
+        -------
+        >>>
+        """
+        key_index = self.key_index()
+        vertices = [self.vertex_coordinates(key) for key in self.vertices()]
+        faces = [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
+        return vertices, faces
 
     @classmethod
     def from_polyhedron(cls, f):
@@ -688,13 +833,7 @@ class BaseMesh(EdgeGeometry,
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-
-            mesh = Mesh.from_polyhedron(8)
-
+        >>>
         """
         p = Polyhedron.generate(f)
         return cls.from_vertices_and_faces(p.vertices, p.faces)
@@ -717,17 +856,8 @@ class BaseMesh(EdgeGeometry,
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            from compas.geometry import Torus
-            from compas.datastructures import Mesh
-
-            t = Torus(((0, 0, 0), (0, 0, 1)), 2, 1)
-            mesh = Mesh.from_shape(t)
-
+        >>>
         """
-
         vertices, faces = shape.to_vertices_and_faces(**kwargs)
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
@@ -749,14 +879,14 @@ class BaseMesh(EdgeGeometry,
 
         Examples
         --------
-        .. code-block:: python
-
-            pass
-
+        >>>
         """
         from compas.geometry import delaunay_from_points
         faces = delaunay_from_points(points, boundary=boundary, holes=holes)
         return cls.from_vertices_and_faces(points, faces)
+
+    def to_points(self):
+        raise NotImplementedError
 
     @classmethod
     def from_polygons(cls, polygons, precision=None):
@@ -774,11 +904,9 @@ class BaseMesh(EdgeGeometry,
         -------
         Mesh
             A mesh object.
-
         """
         faces = []
         gkey_xyz = {}
-
         for points in polygons:
             face = []
             for xyz in points:
@@ -786,177 +914,17 @@ class BaseMesh(EdgeGeometry,
                 gkey_xyz[gkey] = xyz
                 face.append(gkey)
             faces.append(face)
-
         gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}
         vertices = gkey_xyz.values()
         faces[:] = [[gkey_index[gkey] for gkey in face] for face in faces]
-
         return cls.from_vertices_and_faces(vertices, faces)
 
-    # --------------------------------------------------------------------------
-    # converters
-    # --------------------------------------------------------------------------
-
-    def to_data(self):
-        """Returns a dictionary of structured data representing the mesh.
-
-        Returns
-        -------
-        dict
-            The structured data.
-
-        Note
-        ----
-        This method produces the data that can be used in conjuction with the
-        corresponding *from_data* class method.
-
-        """
-        return self.data
-
-    def to_json(self, filepath, pretty=False):
-        """Serialise the structured data representing the data structure to json.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-
-        """
-        with open(filepath, 'w+') as f:
-            if pretty:
-                json.dump(self.data, f, sort_keys=True, indent=4)
-            else:
-                json.dump(self.data, f)
-
-    def to_pickle(self, filepath):
-        """Serialise the structured data representing the mesh to a pickle file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the pickle file.
-
-        """
-        with open(filepath, 'wb+') as f:
-            pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-    def to_obj(self, filepath):
-        """Write the mesh to an OBJ file.
-
-        Parameters
-        ----------
-        filepath : str
-            Full path of the file.
-
-        Warning
-        -------
-        Currently this function only writes geometric data about the vertices and
-        the faces to the file.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            pass
-
-        """
-        key_index = self.key_index()
-
-        with open(filepath, 'w+') as f:
-            for key, attr in self.vertices(True):
-                f.write('v {0[x]:.3f} {0[y]:.3f} {0[z]:.3f}\n'.format(attr))
-            for fkey in self.faces():
-                vertices = self.face_vertices(fkey)
-                vertices = [key_index[key] + 1 for key in vertices]
-                f.write(' '.join(['f'] + [str(index) for index in vertices]) + '\n')
-
-    def to_vertices_and_faces(self):
-        """Return the vertices and faces of a mesh.
-
-        Returns
-        -------
-        tuple
-            A 2-tuple containing
-
-            * a list of vertices, represented by their XYZ coordinates, and
-            * a list of faces.
-
-            Each face is a list of indices referencing the list of vertex coordinates.
-
-        Example
-        -------
-        .. code-block:: python
-
-            pass
-
-        """
-        key_index = self.key_index()
-        vertices = [self.vertex_coordinates(key) for key in self.vertices()]
-        faces = [[key_index[key] for key in self.face_vertices(fkey)] for fkey in self.faces()]
-        return vertices, faces
+    def to_polygons(self):
+        raise NotImplementedError
 
     # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
-
-    def _get_vertex_key(self, key):
-        if key is None:
-            key = self._max_int_key = self._max_int_key + 1
-            return key
-        try:
-            i = int(key)
-        except (ValueError, TypeError):
-            pass
-        else:
-            if i > self._max_int_key:
-                self._max_int_key = i
-        return key
-
-    def _get_face_key(self, fkey):
-        if fkey is None:
-            fkey = self._max_int_fkey = self._max_int_fkey + 1
-        else:
-            try:
-                i = int(fkey)
-            except (ValueError, TypeError):
-                pass
-            else:
-                if i > self._max_int_fkey:
-                    self._max_int_fkey = i
-        return fkey
-
-    def _compile_vattr(self, attr_dict, kwattr):
-        attr = self.default_vertex_attributes.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        return attr
-
-    def _compile_eattr(self, attr_dict, kwattr):
-        attr = self.default_edge_attributes.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        return attr
-
-    def _compile_fattr(self, attr_dict, kwattr):
-        attr = self.default_face_attributes.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        return attr
-
-    def _clean_vertices(self, vertices):
-        if vertices[0] == vertices[-1]:
-            del vertices[-1]
-        if vertices[-2] == vertices[-1]:
-            del vertices[-1]
-
-    def _cycle_keys(self, keys):
-        return pairwise(keys + keys[0:1])
 
     def copy(self, cls=None):
         """Make an independent copy of the mesh object.
@@ -971,7 +939,6 @@ class BaseMesh(EdgeGeometry,
         -------
         Mesh
             A separate, but identical mesh object.
-
         """
         if not cls:
             cls = type(self)
@@ -992,25 +959,6 @@ class BaseMesh(EdgeGeometry,
         self._max_int_key = -1
         self._max_int_fkey = -1
 
-    def clear_vertexdict(self):
-        """Clear only the vertices."""
-        del self.vertex
-        self.vertex = {}
-        self._max_int_key = -1
-
-    def clear_facedict(self):
-        """Clear only the faces."""
-        del self.face
-        del self.facedata
-        self.face = {}
-        self.facedata = {}
-        self._max_int_fkey = -1
-
-    def clear_halfedgedict(self):
-        """Clear only the half edges."""
-        del self.halfedge
-        self.halfedge = {}
-
     # --------------------------------------------------------------------------
     # builders
     # --------------------------------------------------------------------------
@@ -1020,10 +968,8 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : int
-            An identifier for the vertex.
-            Defaults to None.
-            The key is converted to a string before it is used.
+        key : int, optional
+            The vertex identifier.
         attr_dict : dict, optional
             Vertex attributes.
         kwattr : dict, optional
@@ -1034,17 +980,7 @@ class BaseMesh(EdgeGeometry,
         Returns
         -------
         int
-            The key of the vertex.
-            If no key was provided, this is always an integer.
-        hashable
-            The key of the vertex.
-            Any hashable object may be provided as identifier for the vertex.
-            Provided keys are returned unchanged.
-
-        Raises
-        ------
-        TypeError
-            If the provided vertex key is of an unhashable type.
+            The identifier of the vertex.
 
         Notes
         -----
@@ -1065,17 +1001,17 @@ class BaseMesh(EdgeGeometry,
         2
         >>> mesh.add_vertex(key=0, x=1)
         0
-
         """
-        attr = self._compile_vattr(attr_dict, kwattr)
-        key = self._get_vertex_key(key)
-
+        if key is None:
+            key = self._max_int_key = self._max_int_key + 1
+        if key > self._max_int_key:
+            self._max_int_key = key
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
-
+        attr = attr_dict or {}
+        attr.update(kwattr)
         self.vertex[key].update(attr)
-
         return key
 
     def add_face(self, vertices, fkey=None, attr_dict=None, **kwattr):
@@ -1085,7 +1021,6 @@ class BaseMesh(EdgeGeometry,
         ----------
         vertices : list
             A list of vertex keys.
-            For every vertex that does not yet exist, a new vertex is created.
         attr_dict : dict, optional
             Face attributes.
         kwattr : dict, optional
@@ -1097,11 +1032,6 @@ class BaseMesh(EdgeGeometry,
         -------
         int
             The key of the face.
-            The key is an integer, if no key was provided.
-        hashable
-            The key of the face.
-            Any hashable object may be provided as identifier for the face.
-            Provided keys are returned unchanged.
 
         Raises
         ------
@@ -1120,31 +1050,24 @@ class BaseMesh(EdgeGeometry,
         Examples
         --------
         >>>
-
         """
-        attr = self._compile_fattr(attr_dict, kwattr)
-
-        self._clean_vertices(vertices)
-
         if len(vertices) < 3:
             return
-
-        keys = []
-        for key in vertices:
-            if key not in self.vertex:
-                key = self.add_vertex(key)
-            keys.append(key)
-
-        fkey = self._get_face_key(fkey)
-
-        self.face[fkey] = keys
-        self.facedata[fkey] = attr
-
-        for u, v in self._cycle_keys(keys):
+        if vertices[-1] == vertices[0]:
+            vertices = vertices[:-1]
+        if fkey is None:
+            fkey = self._max_int_fkey = self._max_int_fkey + 1
+        if fkey > self._max_int_fkey:
+            self._max_int_fkey = fkey
+        attr = attr_dict or {}
+        attr.update(kwattr)
+        self.face[fkey] = vertices
+        for u, v in pairwise(vertices + vertices[:1]):
+            if u == v:
+                continue
             self.halfedge[u][v] = fkey
             if u not in self.halfedge[v]:
                 self.halfedge[v][u] = None
-
         return fkey
 
     # --------------------------------------------------------------------------
@@ -1156,54 +1079,16 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Examples
         --------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            mesh.delete_vertex(17)
-
-            color = {key: '#ff0000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2}
-
-            plotter = MeshPlotter(mesh)
-            plotter.draw_vertices(facecolor=color)
-            plotter.draw_faces()
-            plotter.show()
+        >>>
 
         In some cases, disconnected vertices can remain after application of this
         method. To remove these vertices as well, combine this method with vertex
         culling (:meth:`cull_vertices`).
-
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            mesh.delete_vertex(17)
-            mesh.delete_vertex(18)
-            mesh.delete_vertex(0)
-            mesh.cull_vertices()
-
-            color = {key: '#ff0000' for key in mesh.vertices() if mesh.vertex_degree(key) == 2}
-
-            plotter = MeshPlotter(mesh)
-            plotter.draw_vertices(facecolor=color)
-            plotter.draw_faces()
-            plotter.show()
-
         """
         nbrs = self.vertex_neighbors(key)
         for nbr in nbrs:
@@ -1213,13 +1098,23 @@ class BaseMesh(EdgeGeometry,
             for u, v in self.face_halfedges(fkey):
                 self.halfedge[u][v] = None
             del self.face[fkey]
+            if fkey in self.facedata:
+                del self.facedata[fkey]
         for nbr in nbrs:
             del self.halfedge[nbr][key]
+            if (nbr, key) in self.edgedata:
+                del self.edgedata[nbr, key]
+            if (key, nbr) in self.edgedata:
+                del self.edgedata[key, nbr]
         for nbr in nbrs:
             for n in self.vertex_neighbors(nbr):
                 if self.halfedge[nbr][n] is None and self.halfedge[n][nbr] is None:
                     del self.halfedge[nbr][n]
                     del self.halfedge[n][nbr]
+                    if (nbr, n) in self.edgedata:
+                        del self.edgedata[nbr, n]
+                    if (n, nbr) in self.edgedata:
+                        del self.edgedata[n, nbr]
         del self.halfedge[key]
         del self.vertex[key]
 
@@ -1228,9 +1123,9 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             The key of the face in which the vertex should be inserted.
-        key : hashable, optional
+        key : int, optional
             The key to be used to identify the inserted vertex.
         xyz : list, optional
             Specific XYZ coordinates for the inserted vertex.
@@ -1241,7 +1136,7 @@ class BaseMesh(EdgeGeometry,
 
         Returns
         -------
-        hashable
+        int
             The key of the inserted vertex, if ``return_fkeys`` is false.
         tuple
             The key of the newly created vertex
@@ -1249,35 +1144,18 @@ class BaseMesh(EdgeGeometry,
 
         Examples
         --------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            key, fkeys = mesh.insert_vertex(12, return_fkeys=True)
-
-            plotter = MeshPlotter(mesh)
-            plotter.draw_vertices(radius=0.15, text={key: str(key)})
-            plotter.draw_faces(text={fkey: fkey for fkey in fkeys})
-            plotter.show()
+        >>>
 
         """
         fkeys = []
-
         if not xyz:
             x, y, z = self.face_center(fkey)
         else:
             x, y, z = xyz
         w = self.add_vertex(key=key, x=x, y=y, z=z)
-
         for u, v in self.face_halfedges(fkey):
             fkeys.append(self.add_face([u, v, w]))
         del self.face[fkey]
-
         if return_fkeys:
             return w, fkeys
         return w
@@ -1287,34 +1165,25 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             The identifier of the face.
 
         Examples
         --------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            mesh.delete_face(12)
-
-            plotter = MeshPlotter(mesh)
-            plotter.draw_vertices()
-            plotter.draw_faces()
-            plotter.show()
-
+        >>>
         """
         for u, v in self.face_halfedges(fkey):
             self.halfedge[u][v] = None
             if self.halfedge[v][u] is None:
                 del self.halfedge[u][v]
                 del self.halfedge[v][u]
+                if (u, v) in self.edgedata:
+                    del self.edgedata[u, v]
+                if (v, u) in self.edgedata:
+                    del self.edgedata[v, u]
         del self.face[fkey]
+        if fkey in self.facedata:
+            del self.facedata[fkey]
 
     def cull_vertices(self):
         """Remove all unused vertices from the mesh object.
@@ -1327,19 +1196,711 @@ class BaseMesh(EdgeGeometry,
                     del self.vertex[u]
                     del self.halfedge[u]
 
-    # to be updated
-    def cull_edges(self):
-        """Remove all unused edges from the mesh object."""
-        for u, v in list(self.edges()):
-            if u not in self.halfedge:
-                del self.edge[u][v]
-            if v not in self.halfedge[u]:
-                del self.edge[u][v]
-            if len(self.edge[u]) == 0:
-                del self.edge[u]
+    # --------------------------------------------------------------------------
+    # accessors
+    # --------------------------------------------------------------------------
+
+    def vertices(self, data=False):
+        """Iterate over the vertices of the mesh.
+
+        Parameters
+        ----------
+        data : bool, optional
+            Return the vertex data as well as the vertex keys.
+
+        Yields
+        ------
+        int or tuple
+            The next vertex identifier, if ``data`` is false.
+            The next vertex as a (key, attr) tuple, if ``data`` is true.
+        """
+        for key in self.vertex:
+            if not data:
+                yield key
+            else:
+                yield key, self.vertex_attributes(key)
+
+    def faces(self, data=False):
+        """Iterate over the faces of the mesh.
+
+        Parameters
+        ----------
+        data : bool, optional
+            Return the face data as well as the face keys.
+
+        Yields
+        ------
+        int or tuple
+            The next face identifier, if ``data`` is ``False``.
+            The next face as a (fkey, attr) tuple, if ``data`` is ``True``.
+        """
+        for key in self.face:
+            if not data:
+                yield key
+            else:
+                yield key, self.face_attributes(key)
+
+    def edges(self, data=False):
+        """Iterate over the edges of the mesh.
+
+        Parameters
+        ----------
+        data : bool, optional
+            Return the edge data as well as the edge vertex keys.
+
+        Yields
+        ------
+        tuple
+            The next edge as a (u, v) tuple, if ``data`` is false.
+            The next edge as a ((u, v), data) tuple, if ``data`` is true.
+
+        Note
+        ----
+        Mesh edges have no topological meaning. They are only used to store data.
+        Edges are not automatically created when vertices and faces are added to
+        the mesh. Instead, they are created when data is stored on them, or when
+        they are accessed using this method.
+
+        This method yields the directed edges of the mesh.
+        Unless edges were added explicitly using :meth:`add_edge` the order of
+        edges is *as they come out*. However, as long as the toplogy remains
+        unchanged, the order is consistent.
+
+        Example
+        -------
+        >>>
+        """
+        seen = set()
+        for u in self.halfedge:
+            for v in self.halfedge[u]:
+                key = u, v
+                ikey = v, u
+                if key in seen or ikey in seen:
+                    continue
+                seen.add(key)
+                seen.add(ikey)
+                if not data:
+                    yield key
+                else:
+                    yield key, self.edge_attributes(key)
 
     # --------------------------------------------------------------------------
-    # info
+    # attributes
+    # --------------------------------------------------------------------------
+
+    def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
+        """Update the default vertex attributes.
+
+        Parameters
+        ----------
+        attr_dict : dict, optional
+            A dictionary of attributes with their default values.
+            Defaults to an empty ``dict``.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Note
+        ----
+        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        if they exist.
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        self.default_vertex_attributes.update(attr_dict)
+
+    def vertex_attribute(self, key, name, value=None):
+        """Get or set an attribute of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The vertex identifier.
+        name : str
+            The name of the attribute
+        value : obj, optional
+            The value of the attribute.
+
+        Returns
+        -------
+        object or None
+            The value of the attribute,
+            or ``None`` if the vertex does not exist
+            or when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the vertex does not exist.
+        """
+        if key not in self.vertex:
+            raise KeyError(key)
+        if value is not None:
+            self.vertex[key][name] = value
+            return None
+        if name in self.vertex[key]:
+            return self.vertex[key][name]
+        else:
+            if name in self.default_vertex_attributes:
+                return self.default_vertex_attributes[name]
+
+    def unset_vertex_attribute(self, key, name):
+        """Unset the attribute of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The vertex identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the vertex does not exist.
+
+        Notes
+        -----
+        Unsetting the value of a vertex attribute implicitly sets it back to the value
+        stored in the default vertex attribute dict.
+        """
+        if name in self.vertex[key]:
+            del self.vertex[key][name]
+
+    def vertex_attributes(self, key, names=None, values=None):
+        """Get or set multiple attributes of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the vertex.
+        names : list, optional
+            A list of attribute names.
+        values : list, optional
+            A list of attribute values.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is empty,
+            the function returns a dictionary of all attribute name-value pairs of the vertex.
+            If the parameter ``names`` is not empty,
+            the function returns a list of the values corresponding to the requested attribute names.
+            The function returns ``None`` if it is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the vertex does not exist.
+        """
+        if key not in self.vertex:
+            raise KeyError(key)
+        if values:
+            # use it as a setter
+            for name, value in zip(names, values):
+                self.vertex[key][name] = value
+            return
+        # use it as a getter
+        if not names:
+            # return all vertex attributes as a dict
+            return VertexAttributeView(self.default_vertex_attributes, self.vertex[key])
+        values = []
+        for name in names:
+            if name in self.vertex[key]:
+                values.append(self.vertex[key][name])
+            elif name in self.default_vertex_attributes:
+                values.append(self.default_vertex_attributes[name])
+            else:
+                values.append(None)
+        return values
+
+    def vertices_attribute(self, name, value=None, keys=None):
+        """Get or set an attribute of multiple vertices.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of vertex identifiers.
+
+        Returns
+        -------
+        list or None
+            The value of the attribute for each vertex,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the vertices does not exist.
+        """
+        if not keys:
+            keys = self.vertices()
+        if value:
+            for key in keys:
+                self.vertex_attribute(key, name, value)
+            return
+        return [self.vertex_attribute(key, name) for key in keys]
+
+    def vertices_attributes(self, names=None, values=None, keys=None):
+        """Get or set multiple attributes of multiple vertices.
+
+        Parameters
+        ----------
+        names : list of str, optional
+            The names of the attribute.
+            Default is ``None``.
+        values : list of obj, optional
+            The values of the attributes.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of vertex identifiers.
+
+        Returns
+        -------
+        list or None
+            If the parameter ``names`` is ``None``,
+            the function returns a list containing an attribute dict per vertex.
+            If the parameter ``names`` is not ``None``,
+            the function returns a list containing a list of attribute values per vertex corresponding to the provided attribute names.
+            The function returns ``None`` if it is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the vertices does not exist.
+        """
+        if not keys:
+            keys = self.vertices()
+        if values:
+            for key in keys:
+                self.vertex_attributes(key, names, values)
+            return
+        return [self.vertex_attributes(key, names) for key in keys]
+
+    def update_default_face_attributes(self, attr_dict=None, **kwattr):
+        """Update the default face attributes.
+
+        Parameters
+        ----------
+        attr_dict : dict (None)
+            A dictionary of attributes with their default values.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Note
+        ----
+        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        if they exist.
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        self.default_face_attributes.update(attr_dict)
+
+    def face_attribute(self, key, name, value=None):
+        """Get or set an attribute of a face.
+
+        Parameters
+        ----------
+        key : int
+            The face identifier.
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+
+        Returns
+        -------
+        object or None
+            The value of the attribute, or ``None`` when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the face does not exist.
+        """
+        if key not in self.face:
+            raise KeyError(key)
+        if value is not None:
+            if key not in self.facedata:
+                self.facedata[key] = {}
+            self.facedata[key][name] = value
+            return
+        if key not in self.facedata or name not in self.facedata[key]:
+            if name in self.default_face_attributes:
+                return self.default_face_attributes[name]
+        else:
+            return self.facedata[key][name]
+        return None
+
+    def unset_face_attribute(self, key, name):
+        """Unset the attribute of a face.
+
+        Parameters
+        ----------
+        key : int
+            The face identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the face does not exist.
+
+        Notes
+        -----
+        Unsetting the value of a face attribute implicitly sets it back to the value
+        stored in the default face attribute dict.
+        """
+        if key not in self.face:
+            raise KeyError(key)
+        if key in self.facedata:
+            if name in self.facedata[key]:
+                del self.facedata[key][name]
+
+    def face_attributes(self, key, names=None, values=None):
+        """Get or set multiple attributes of a face.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the face.
+        names : list, optional
+            A list of attribute names.
+        values : list, optional
+            A list of attribute values.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is empty,
+            a dictionary of all attribute name-value pairs of the face.
+            If the parameter ``names`` is not empty,
+            a list of the values corresponding to the provided names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the face does not exist.
+        """
+        if key not in self.face:
+            raise KeyError(key)
+        if values:
+            # use it as a setter
+            for name, value in zip(names, values):
+                if key not in self.facedata:
+                    self.facedata[key] = {}
+                self.facedata[key][name] = value
+            return
+        # use it as a getter
+        if not names:
+            return FaceAttributeView(self.default_face_attributes, self.facedata, key)
+        values = []
+        for name in names:
+            if key not in self.facedata or name not in self.facedata[key]:
+                if name in self.default_face_attributes:
+                    values.append(self.default_face_attributes[name])
+                else:
+                    values.append(None)
+            else:
+                values.append(self.facedata[key][name])
+        return values
+
+    def faces_attribute(self, name, value=None, keys=None):
+        """Get or set an attribute of multiple faces.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of face identifiers.
+
+        Returns
+        -------
+        list or None
+            A list containing the value per face of the requested attribute,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the faces does not exist.
+        """
+        if not keys:
+            keys = self.faces()
+        if value:
+            for key in keys:
+                self.face_attribute(key, name, value)
+            return
+        return [self.face_attribute(key, name) for key in keys]
+
+    def faces_attributes(self, names=None, values=None, keys=None):
+        """Get or set multiple attributes of multiple faces.
+
+        Parameters
+        ----------
+        names : list of str, optional
+            The names of the attribute.
+            Default is ``None``.
+        values : list of obj, optional
+            The values of the attributes.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of face identifiers.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is ``None``,
+            a list containing per face an attribute dict with all attributes (default + custom) of the face.
+            If the parameter ``names`` is ``None``,
+            a list containing per face a list of attribute values corresponding to the requested names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the faces does not exist.
+        """
+        if not keys:
+            keys = self.faces()
+        if values:
+            for key in keys:
+                self.face_attributes(key, names, values)
+            return
+        return [self.face_attributes(key, names) for key in keys]
+
+    def update_default_edge_attributes(self, attr_dict=None, **kwattr):
+        """Update the default edge attributes.
+
+        Parameters
+        ----------
+        attr_dict : dict, optional
+            A dictionary of attributes with their default values.
+            Defaults to an empty ``dict``.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Note
+        ----
+        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        if they exist.
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        self.default_edge_attributes.update(attr_dict)
+
+    def edge_attribute(self, key, name, value=None):
+        """Get or set an attribute of an edge.
+
+        Parameters
+        ----------
+        key : 2-tuple of int
+            The identifier of the edge as a pair of vertex identifiers.
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+            Default is ``None``.
+
+        Returns
+        -------
+        object or None
+            The value of the attribute, or ``None`` when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
+        """
+        u, v = key
+        if u not in self.halfedge or v not in self.halfedge[u]:
+            raise KeyError(key)
+        if value is not None:
+            if (u, v) not in self.edgedata:
+                self.edgedata[u, v] = {}
+            if (v, u) not in self.edgedata:
+                self.edgedata[v, u] = {}
+            self.edgedata[u, v][name] = self.edgedata[v, u][name] = value
+            return
+        if (u, v) in self.edgedata:
+            if name in self.edgedata[u, v]:
+                return self.edgedata[u, v][name]
+        if name in self.default_edge_attributes:
+            return self.default_edge_attributes[name]
+        return
+
+    def unset_edge_attribute(self, key, name):
+        """Unset the attribute of an edge.
+
+        Parameters
+        ----------
+        key : tuple of int
+            The edge identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
+
+        Notes
+        -----
+        Unsetting the value of an edge attribute implicitly sets it back to the value
+        stored in the default edge attribute dict.
+        """
+        u, v = key
+        if u not in self.halfedge or v not in self.halfedge[u]:
+            raise KeyError(key)
+        if key in self.edgedata:
+            if name in self.edgedata[key]:
+                del self.edgedata[key][name]
+        key = v, u
+        if key in self.edgedata:
+            if name in self.edgedata[key]:
+                del self.edgedata[key][name]
+
+    def edge_attributes(self, key, names=None, values=None):
+        """Get or set multiple attributes of an edge.
+
+        Parameters
+        ----------
+        key : 2-tuple of int
+            The identifier of the edge.
+        names : list, optional
+            A list of attribute names.
+        values : list, optional
+            A list of attribute values.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is empty,
+            a dictionary of all attribute name-value pairs of the edge.
+            If the parameter ``names`` is not empty,
+            a list of the values corresponding to the provided names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
+        """
+        u, v = key
+        if u not in self.halfedge or v not in self.halfedge[u]:
+            raise KeyError(key)
+        if values:
+            # use it as a setter
+            for name, value in zip(names, values):
+                self.edge_attribute(key, name, value)
+            return
+        # use it as a getter
+        if not names:
+            # get the entire attribute dict
+            return EdgeAttributeView(self.default_edge_attributes, self.edgedata, key)
+        # get only the values of the named attributes
+        values = []
+        for name in names:
+            if key in self.edgedata:
+                if name in self.edgedata[key]:
+                    values.append(self.edgedata[key][name])
+                elif name in self.default_edge_attributes:
+                    values.append(self.default_edge_attributes[name])
+                else:
+                    values.append(None)
+            else:
+                if name in self.default_edge_attributes:
+                    values.append(self.default_edge_attributes[name])
+                else:
+                    values.append(None)
+        return values
+
+    def edges_attribute(self, name, value=None, keys=None):
+        """Get or set an attribute of multiple edges.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+            Default is ``None``.
+        keys : list of 2-tuple of int, optional
+            A list of edge identifiers.
+
+        Returns
+        -------
+        list or None
+            A list containing the value per edge of the requested attribute,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the edges does not exist.
+        """
+        if not keys:
+            keys = self.edges()
+        if value:
+            for key in keys:
+                self.edge_attribute(key, name, value)
+            return
+        return [self.edge_attribute(key, name) for key in keys]
+
+    def edges_attributes(self, names=None, values=None, keys=None):
+        """Get or set multiple attributes of multiple edges.
+
+        Parameters
+        ----------
+        names : list of str, optional
+            The names of the attribute.
+            Default is ``None``.
+        values : list of obj, optional
+            The values of the attributes.
+            Default is ``None``.
+        keys : list of 2-tuple of int, optional
+            A list of edge identifiers.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is ``None``,
+            a list containing per edge an attribute dict with all attributes (default + custom) of the edge.
+            If the parameter ``names`` is ``None``,
+            a list containing per edge a list of attribute values corresponding to the requested names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the edges does not exist.
+        """
+        if not keys:
+            keys = self.edges()
+        if values:
+            for key in keys:
+                self.edge_attributes(key, names, values)
+            return
+        return [self.edge_attributes(key, names) for key in keys]
+
+    # --------------------------------------------------------------------------
+    # mesh info
     # --------------------------------------------------------------------------
 
     def number_of_vertices(self):
@@ -1517,7 +2078,6 @@ class BaseMesh(EdgeGeometry,
         bool
             True, if the mesh is a quad mesh.
             False, otherwise.
-
         """
         if not self.face:
             return False
@@ -1526,204 +2086,76 @@ class BaseMesh(EdgeGeometry,
     def is_empty(self):
         """Boolean whether the mesh is empty.
 
-        Parameters
-        ----------
-
         Returns
         -------
         bool
             True if no vertices. False otherwise.
         """
-
         if self.number_of_vertices() == 0:
             return True
-
         return False
 
     def euler(self):
         """Calculate the Euler characterisic.
-
-        Parameters
-        ----------
 
         Returns
         -------
         int
             The Euler chracteristic.
         """
-
         V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
         E = self.number_of_edges()
         F = self.number_of_faces()
-
         return V - E + F
 
     def genus(self):
         """Calculate the genus.
-
-        Parameters
-        ----------
 
         Returns
         -------
         int
             The genus.
 
-         References
+        References
         ----------
         .. [1] Wolfram MathWorld. *Genus*.
                Available at: http://mathworld.wolfram.com/Genus.html.
-
         """
-
         X = self.euler()
-
         # each boundary must be taken into account as if it was one face
         B = len(self.boundaries())
-
         if self.is_orientable():
             return (2 - (X + B)) / 2
         else:
             return 2 - (X + B)
 
     # --------------------------------------------------------------------------
-    # accessors
-    # --------------------------------------------------------------------------
-
-    def vertices(self, data=False):
-        """Iterate over the vertices of the mesh.
-
-        Parameters
-        ----------
-        data : bool, optional
-            Return the vertex data as well as the vertex keys.
-
-        Yields
-        ------
-        hashable
-            The next vertex identifier (*key*), if ``data`` is false.
-        2-tuple
-            The next vertex as a (key, attr) tuple, if ``data`` is true.
-
-        """
-        for key in self.vertex:
-            if data:
-                yield key, self.vertex[key]
-            else:
-                yield key
-
-    def faces(self, data=False):
-        """Iterate over the faces of the mesh.
-
-        Parameters
-        ----------
-        data : bool, optional
-            Return the face data as well as the face keys.
-
-        Yields
-        ------
-        hashable
-            The next face identifier (*key*), if ``data`` is ``False``.
-        2-tuple
-            The next face as a (fkey, attr) tuple, if ``data`` is ``True``.
-
-        """
-        for fkey in self.face:
-            if data:
-                yield fkey, self.facedata.setdefault(fkey, self.default_face_attributes.copy())
-            else:
-                yield fkey
-
-    def edges(self, data=False):
-        """Iterate over the edges of the mesh.
-
-        Parameters
-        ----------
-        data : bool, optional
-            Return the edge data as well as the edge vertex keys.
-
-        Yields
-        ------
-        2-tuple
-            The next edge as a (u, v) tuple, if ``data`` is false.
-        3-tuple
-            The next edge as a (u, v, data) tuple, if ``data`` is true.
-
-        Note
-        ----
-        Mesh edges have no topological meaning. They are only used to store data.
-        Edges are not automatically created when vertices and faces are added to
-        the mesh. Instead, they are created when data is stored on them, or when
-        they are accessed using this method.
-
-        This method yields the directed edges of the mesh.
-        Unless edges were added explicitly using :meth:`add_edge` the order of
-        edges is *as they come out*. However, as long as the toplogy remains
-        unchanged, the order is consistent.
-
-        Example
-        -------
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            for index, (u, v, attr) in enumerate(mesh.edges(True)):
-                attr['index1'] = index
-
-            for index, (u, v, attr) in enumerate(mesh.edges(True)):
-                attr['index2'] = index
-
-            plotter = MeshPlotter(mesh)
-
-            text = {(u, v): '{}-{}'.format(a['index1'], a['index2']) for u, v, a in mesh.edges(True)}
-
-            plotter.draw_vertices()
-            plotter.draw_faces()
-            plotter.draw_edges(text=text)
-            plotter.show()
-
-        """
-        edges = set()
-
-        for u in self.halfedge:
-            for v in self.halfedge[u]:
-
-                if (u, v) in edges or (v, u) in edges:
-                    continue
-
-                edges.add((u, v))
-                edges.add((v, u))
-
-                if (u, v) in self.edgedata:
-                    attr = self.edgedata[v, u] = self.edgedata[u, v]
-                elif (v, u) in self.edgedata:
-                    attr = self.edgedata[u, v] = self.edgedata[v, u]
-                else:
-                    attr = self.edgedata[u, v] = self.edgedata[v, u] = self.default_edge_attributes.copy()
-
-                if data:
-                    yield u, v, attr
-                else:
-                    yield u, v
-
-    # --------------------------------------------------------------------------
-    # special accessors
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
     # vertex topology
     # --------------------------------------------------------------------------
 
-    def has_vertex(self, key):
+    # def has_vertex(self, key):
+    #     """Verify that a vertex is in the mesh.
+
+    #     Parameters
+    #     ----------
+    #     key : int
+    #         The identifier of the vertex.
+
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the vertex is in the mesh.
+    #         False otherwise.
+
+    #     """
+    #     return key in self.vertex
+
+    def is_vertex(self, key):
         """Verify that a vertex is in the mesh.
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
@@ -1731,7 +2163,6 @@ class BaseMesh(EdgeGeometry,
         bool
             True if the vertex is in the mesh.
             False otherwise.
-
         """
         return key in self.vertex
 
@@ -1740,7 +2171,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
@@ -1748,7 +2179,6 @@ class BaseMesh(EdgeGeometry,
         bool
             True if the vertex is connected to at least one other vertex.
             False otherwise.
-
         """
         return self.vertex_degree(key) > 0
 
@@ -1757,7 +2187,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
@@ -1765,7 +2195,6 @@ class BaseMesh(EdgeGeometry,
         bool
             True if the vertex is on the boundary.
             False otherwise.
-
         """
         for nbr in self.halfedge[key]:
             if self.halfedge[key][nbr] is None:
@@ -1777,7 +2206,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
         ordered : bool, optional
             Return the neighbors in the cycling order of the faces.
@@ -1800,44 +2229,15 @@ class BaseMesh(EdgeGeometry,
 
         Example
         -------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            key = 17
-            nbrs = mesh.vertex_neighbors(key, ordered=True)
-
-            plotter = MeshPlotter(mesh)
-
-            color = {nbr: '#cccccc' for nbr in nbrs}
-            color[key] = '#ff0000'
-
-            text = {nbr: str(index) for index, nbr in enumerate(nbrs)}
-            text[key] = str(key)
-
-            plotter.draw_vertices(text=text, facecolor=color)
-            plotter.draw_faces()
-            plotter.draw_edges()
-
-            plotter.show()
-
+        >>>
         """
         temp = list(self.halfedge[key])
-
         if not ordered:
             return temp
-
         if not temp:
             return temp
-
         if len(temp) == 1:
             return temp
-
         # if one of the neighbors points to the *outside* face
         # start there
         # otherwise the starting point can be random
@@ -1846,26 +2246,20 @@ class BaseMesh(EdgeGeometry,
             if self.halfedge[key][nbr] is None:
                 start = nbr
                 break
-
         # start in the opposite direction
         # to avoid pointing at an *outside* face again
         fkey = self.halfedge[start][key]
         nbrs = [start]
         count = 1000
-
         while count:
             count -= 1
             nbr = self.face_vertex_descendant(fkey, key)
             fkey = self.halfedge[nbr][key]
-
             if nbr == start:
                 break
-
             nbrs.append(nbr)
-
             if fkey is None:
                 break
-
         return nbrs
 
     def vertex_neighborhood(self, key, ring=1):
@@ -1873,7 +2267,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
         ring : int, optional
             The number of neighborhood rings to include. Default is ``1``.
@@ -1889,48 +2283,19 @@ class BaseMesh(EdgeGeometry,
 
         Example
         -------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            key = 17
-            nbrs = mesh.vertex_neighborhood(key, ring=2)
-
-            plotter = MeshPlotter(mesh)
-
-            color = {nbr: '#cccccc' for nbr in nbrs}
-            color[key] = '#ff0000'
-
-            text = {nbr: str(index) for index, nbr in enumerate(nbrs)}
-            text[key] = str(key)
-
-            plotter.draw_vertices(text=text, facecolor=color)
-            plotter.draw_faces()
-            plotter.draw_edges()
-
-            plotter.show()
+        >>>
 
         """
         nbrs = set(self.vertex_neighbors(key))
-
         i = 1
         while True:
             if i == ring:
                 break
-
             temp = []
             for key in nbrs:
                 temp += self.vertex_neighbors(key)
-
             nbrs.update(temp)
-
             i += 1
-
         return nbrs
 
     def vertex_degree(self, key):
@@ -1938,14 +2303,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
         -------
         int
             The degree of the vertex.
-
         """
         return len(self.vertex_neighbors(key))
 
@@ -1954,14 +2318,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
         -------
         int
             The lowest degree of all vertices.
-
         """
         if not self.vertex:
             return 0
@@ -1972,14 +2335,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
         -------
         int
             The highest degree of all vertices.
-
         """
         if not self.vertex:
             return 0
@@ -1990,7 +2352,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
         ordered : bool, optional
             Return the faces in cycling order.
@@ -2006,86 +2368,93 @@ class BaseMesh(EdgeGeometry,
 
         Example
         -------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            key = 17
-            nbrs = mesh.vertex_faces(key, ordered=True)
-
-            plotter = MeshPlotter(mesh)
-
-            plotter.draw_vertices(
-                text={17: '17'},
-                facecolor={17: '#ff0000'},
-                radius=0.2
-            )
-            plotter.draw_faces(
-                text={nbr: str(index) for index, nbr in enumerate(nbrs)},
-                facecolor={nbr: '#cccccc' for nbr in nbrs}
-            )
-            plotter.draw_edges()
-            plotter.show()
-
+        >>>
         """
         if not ordered:
             faces = list(self.halfedge[key].values())
-
         else:
             nbrs = self.vertex_neighbors(key, ordered=True)
             faces = [self.halfedge[key][n] for n in nbrs]
-
         if include_none:
             return faces
-
         return [fkey for fkey in faces if fkey is not None]
 
     # --------------------------------------------------------------------------
     # edge topology
     # --------------------------------------------------------------------------
 
-    def has_edge(self, u, v, directed=True):
-        """Verify that the mesh contains a specific edge.
+    # def has_edge(self, u, v, directed=True):
+    #     """Verify that the mesh contains a specific edge.
 
-        Warning
-        -------
-        This method may produce unexpected results.
+    #     Warning
+    #     -------
+    #     This method may produce unexpected results.
+
+    #     Parameters
+    #     ----------
+    #     u : int
+    #         The identifier of the first vertex.
+    #     v : int
+    #         The identifier of the second vertex.
+    #     directed : bool, optional
+    #         Only consider directed edges.
+    #         Default is ``True``.
+
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the edge exists.
+    #         False otherwise.
+    #     """
+    #     if directed:
+    #         return (u, v) in set(self.edges())
+    #     else:
+    #         return u in self.halfedge and v in self.halfedge[u]
+
+    def is_edge(self, key):
+        """Verify that an edge is part of the mesh.
 
         Parameters
         ----------
-        u : hashable
-            The identifier of the first vertex.
-        v : hashable
-            The identifier of the second vertex.
-        directed : bool, optional
-            Only consider directed edges.
-            Default is ``True``.
+        key : tuple of int
+            The identifier of the edge.
 
         Returns
         -------
         bool
-            True if the edge exists.
+            True if the edge is part of the mesh.
             False otherwise.
-
         """
-        if directed:
-            return (u, v) in set(self.edges())
-        else:
-            return u in self.halfedge and v in self.halfedge[u]
+        for uv in self.edges():
+            if key == uv:
+                return True
+        return False
+
+    def is_halfedge(self, key):
+        """Verify that a halfedge is part of the mesh.
+
+        Parameters
+        ----------
+        key : tuple of int
+            The identifier of the halfedge.
+
+        Returns
+        -------
+        bool
+            True if the halfedge is part of the mesh.
+            False otherwise.
+        """
+        u, v = key
+        return u in self.halfedge and v in self.halfedge[u]
 
     def edge_faces(self, u, v):
         """Find the two faces adjacent to an edge.
 
         Parameters
         ----------
-        u : hashable
+        u : int
             The identifier of the first vertex.
-        v : hashable
+        v : int
             The identifier of the second vertex.
 
         Returns
@@ -2093,18 +2462,44 @@ class BaseMesh(EdgeGeometry,
         tuple
             The identifiers of the adjacent faces.
             If the edge is on the bboundary, one of the identifiers is ``None``.
-
         """
         return self.halfedge[u][v], self.halfedge[v][u]
+
+    def halfedge_face(self, u, v):
+        """Find the face corresponding to a halfedge.
+
+        Parameters
+        ----------
+        u : int
+            The identifier of the first vertex.
+        v : int
+            The identifier of the second vertex.
+
+        Returns
+        -------
+        int or None
+            The identifier of the face corresponding to the halfedge.
+            None, if the halfedge is on the outside of a boundary.
+
+        Raises
+        ------
+        KeyError
+            If the halfedge does not exist.
+
+        Examples
+        --------
+        >>>
+        """
+        return self.halfedge[u][v]
 
     def is_edge_on_boundary(self, u, v):
         """Verify that an edge is on the boundary.
 
         Parameters
         ----------
-        u : hashable
+        u : int
             The identifier of the first vertex.
-        v : hashable
+        v : int
             The identifier of the second vertex.
 
         Returns
@@ -2112,64 +2507,53 @@ class BaseMesh(EdgeGeometry,
         bool
             True if the edge is on the boundary.
             False otherwise.
-
         """
-        return self.halfedge[u][v] is None or self.halfedge[v][u] is None
+        return self.halfedge[v][u] is None or self.halfedge[u][v] is None
 
     # --------------------------------------------------------------------------
     # polyedge topology
     # --------------------------------------------------------------------------
 
-    def boundaries(self):
-        """Collect the mesh boundaries as lists of vertices.
-
-        Parameters
-        ----------
-        mesh : Mesh
-            Mesh.
-
-        Returns
-        -------
-        boundaries : list
-            List of boundaries as lists of vertex keys.
-
-        """
-
-        boundaries = []
-
-        # get all boundary edges pointing outwards
-        boundary_edges = OrderedDict([(u, v) for u, v in self.edges_on_boundary(True)])
-
-        # start new boundary
-        while len(boundary_edges) > 0:
-            boundary = list(boundary_edges.popitem())
-
-            # get consecuvite vertex until the boundary is closed
-            while boundary[0] != boundary[-1]:
-                boundary.append(boundary_edges[boundary[-1]])
-                boundary_edges.pop(boundary[-2])
-
-            boundaries.append(boundary[: -1])
-
-        return boundaries
+    # face strips?
+    # edge chains?
+    # ...?
 
     # --------------------------------------------------------------------------
     # face topology
     # --------------------------------------------------------------------------
+
+    def is_face(self, fkey):
+        """Verify that a face is part of the mesh.
+
+        Parameters
+        ----------
+        fkey : int
+            The identifier of the face.
+
+        Returns
+        -------
+        bool
+            True if the face exists.
+            False otherwise.
+
+        Examples
+        --------
+        >>>
+        """
+        return fkey in self.face
 
     def face_vertices(self, fkey):
         """The vertices of a face.
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             Identifier of the face.
 
         Returns
         -------
         list
             Ordered vertex identifiers.
-
         """
         return self.face[fkey]
 
@@ -2178,14 +2562,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             Identifier of the face.
 
         Returns
         -------
         list
             The halfedges of a face.
-
         """
         vertices = self.face_vertices(fkey)
         return list(pairwise(vertices + vertices[0:1]))
@@ -2195,14 +2578,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             Identifier of the face.
 
         Returns
         -------
         list
             The corners of the face in the form of a list of vertex triplets.
-
         """
         vertices = self.face_vertices(fkey)
         return list(window(vertices + vertices[0:2], 3))
@@ -2212,7 +2594,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             Identifier of the face.
 
         Returns
@@ -2222,29 +2604,7 @@ class BaseMesh(EdgeGeometry,
 
         Example
         -------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            key = 12
-            nbrs = mesh.face_neighbors(key)
-
-            text = {nbr: str(nbr) for nbr in nbrs}
-            text[key] = str(key)
-
-            color = {nbr: '#cccccc' for nbr in nbrs}
-            color[key] = '#ff0000'
-
-            plotter = MeshPlotter(mesh)
-            plotter.draw_vertices()
-            plotter.draw_faces(text=text, facecolor=color)
-            plotter.draw_edges()
-            plotter.show()
+        >>>
 
         """
         nbrs = []
@@ -2259,7 +2619,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the face.
         ring : int, optional
             The size of the neighborhood.
@@ -2269,24 +2629,17 @@ class BaseMesh(EdgeGeometry,
         -------
         list
             A list of face identifiers.
-
         """
-
         nbrs = set(self.face_neighbors(key))
-
         i = 1
         while True:
             if i == ring:
                 break
-
             temp = []
             for key in nbrs:
                 temp += self.face_neighbors(key)
-
             nbrs.update(temp)
-
             i += 1
-
         return list(nbrs)
 
     def face_degree(self, fkey):
@@ -2294,14 +2647,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             Identifier of the face.
 
         Returns
         -------
         int
             The count.
-
         """
         return len(self.face_neighbors(fkey))
 
@@ -2310,14 +2662,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             Identifier of the face.
 
         Returns
         -------
         int
             The lowest degree.
-
         """
         if not self.face:
             return 0
@@ -2328,14 +2679,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             Identifier of the face.
 
         Returns
         -------
         int
             The highest degree.
-
         """
         if not self.face:
             return 0
@@ -2346,23 +2696,22 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             Identifier of the face.
-        key : hashable
+        key : int
             The identifier of the vertex.
         n : int, optional
             The index of the vertex ancestor. Default is 1, meaning the previous vertex.
 
         Returns
         -------
-        hashable
+        int
             The identifier of the vertex before the given vertex in the face cycle.
 
         Raises
         ------
         ValueError
             If the vertex is not part of the face.
-
         """
         i = self.face[fkey].index(key)
         return self.face[fkey][(i - n) % len(self.face[fkey])]
@@ -2372,23 +2721,22 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             Identifier of the face.
-        key : hashable
+        key : int
             The identifier of the vertex.
         n : int, optional
             The index of the vertex descendant. Default is 1, meaning the next vertex.
 
         Returns
         -------
-        hashable
+        int
             The identifier of the vertex after the given vertex in the face cycle.
 
         Raises
         ------
         ValueError
             If the vertex is not part of the face.
-
         """
         i = self.face[fkey].index(key)
         return self.face[fkey][(i + n) % len(self.face[fkey])]
@@ -2414,7 +2762,6 @@ class BaseMesh(EdgeGeometry,
         ----
         For use in form-finding algorithms, that rely on form-force duality information,
         further checks relating to the orientation of the corresponding are required.
-
         """
         for u, v in self.face_halfedges(f1):
             if self.halfedge[v][u] == f2:
@@ -2425,9 +2772,9 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        f1 : hashable
+        f1 : int
             The identifier of the first face.
-        f2 : hashable
+        f2 : int
             The identifier of the second face.
 
         Returns
@@ -2436,9 +2783,7 @@ class BaseMesh(EdgeGeometry,
             The vertices separating face 1 from face 2.
         None
             If the faces are not adjacent.
-
         """
-
         return [vkey for vkey in self.face_vertices(f1) if vkey in self.face_vertices(f2)]
 
     def is_face_on_boundary(self, key):
@@ -2446,7 +2791,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the face.
 
         Returns
@@ -2454,13 +2799,13 @@ class BaseMesh(EdgeGeometry,
         bool
             True if the face is on the boundary.
             False otherwise.
-
         """
         a = [self.halfedge[v][u] for u, v in self.face_halfedges(key)]
         if None in a:
             return True
         else:
             return False
+
     # --------------------------------------------------------------------------
     # mesh geometry
     # --------------------------------------------------------------------------
@@ -2468,43 +2813,31 @@ class BaseMesh(EdgeGeometry,
     def area(self):
         """Calculate the total mesh area.
 
-        Parameters
-        ----------
-
         Returns
         -------
         float
             The area.
         """
-
         return sum(self.face_area(fkey) for fkey in self.faces())
 
     def centroid(self):
         """Calculate the mesh centroid.
-
-        Parameters
-        ----------
 
         Returns
         -------
         list
             The coordinates of the mesh centroid.
         """
-
         return scale_vector(sum_vectors([scale_vector(self.face_centroid(fkey), self.face_area(fkey)) for fkey in self.faces()]), 1. / self.area())
 
     def normal(self):
         """Calculate the average mesh normal.
-
-        Parameters
-        ----------
 
         Returns
         -------
         list
             The coordinates of the mesh normal.
         """
-
         return scale_vector(sum_vectors([scale_vector(self.face_normal(fkey), self.face_area(fkey)) for fkey in self.faces()]), 1. / self.area())
 
     # --------------------------------------------------------------------------
@@ -2516,10 +2849,10 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
         axes : str, optional
-            The axes alon which to take the coordinates.
+            The axes along which to take the coordinates.
             Should be a combination of ``'x'``, ``'y'``, ``'z'``.
             Default is ``'xyz'``.
 
@@ -2527,7 +2860,6 @@ class BaseMesh(EdgeGeometry,
         -------
         list
             Coordinates of the vertex.
-
         """
         return [self.vertex[key][axis] for axis in axes]
 
@@ -2536,7 +2868,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
@@ -2546,25 +2878,7 @@ class BaseMesh(EdgeGeometry,
 
         Example
         -------
-        .. plot::
-            :include-source:
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            k_a = {key: mesh.vertex_area(key) for key in mesh.vertices()}
-
-            plotter = MeshPlotter(mesh)
-            plotter.draw_vertices(
-                radius=0.2,
-                text={key: '{:.1f}'.format(k_a[key]) for key in mesh.vertices()}
-            )
-            plotter.draw_faces()
-            plotter.draw_edges()
-            plotter.show()
+        >>>
 
         """
         area = 0.
@@ -2594,14 +2908,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
         -------
         list
             The components of the vector.
-
         """
         c = self.vertex_neighborhood_centroid(key)
         p = self.vertex_coordinates(key)
@@ -2612,14 +2925,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
         -------
         list
             The coordinates of the centroid.
-
         """
         return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)])
 
@@ -2629,14 +2941,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        key : hashable
+        key : int
             The identifier of the vertex.
 
         Returns
         -------
         list
             The components of the normal vector.
-
         """
         vectors = [self.face_normal(fkey, False) for fkey in self.vertex_faces(key) if fkey is not None]
         return normalize_vector(centroid_points(vectors))
@@ -2646,7 +2957,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : Key
+        fkey : int
             The face key.
 
         Returns
@@ -2659,20 +2970,135 @@ class BaseMesh(EdgeGeometry,
         Based on [1]_
 
         .. [1] Botsch, Mario, et al. *Polygon mesh processing.* AK Peters/CRC Press, 2010.
-
         """
-
-        Sum = 0
+        C = 0
         for u, v in pairwise(self.vertex_neighbors(vkey, ordered=True) + self.vertex_neighbors(vkey, ordered=True)[:1]):
-            Sum += angle_points(self.vertex_coordinates(vkey), self.vertex_coordinates(u), self.vertex_coordinates(v))
-
-        return 2 * pi - Sum
+            C += angle_points(self.vertex_coordinates(vkey), self.vertex_coordinates(u), self.vertex_coordinates(v))
+        return 2 * pi - C
 
     # --------------------------------------------------------------------------
     # edge geometry
     # --------------------------------------------------------------------------
 
-    # inherited from EdgeGeometryMixin
+    def edge_coordinates(self, u, v, axes='xyz'):
+        """Return the coordinates of the start and end point of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+        axes : str (xyz)
+            The axes along which the coordinates should be included.
+
+        Returns
+        -------
+        tuple
+            The coordinates of the start point and the coordinates of the end point.
+
+        """
+        return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
+
+    def edge_length(self, u, v):
+        """Return the length of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+
+        Returns
+        -------
+        float
+            The length of the edge.
+
+        """
+        a, b = self.edge_coordinates(u, v)
+        return distance_point_point(a, b)
+
+    def edge_vector(self, u, v):
+        """Return the vector of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+
+        Returns
+        -------
+        list
+            The vector from u to v.
+
+        """
+        a, b = self.edge_coordinates(u, v)
+        ab = subtract_vectors(b, a)
+        return ab
+
+    def edge_point(self, u, v, t=0.5):
+        """Return the location of a point along an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+        t : float (0.5)
+            The location of the point on the edge.
+            If the value of ``t`` is outside the range ``0-1``, the point will
+            lie in the direction of the edge, but not on the edge vector.
+
+        Returns
+        -------
+        list
+            The XYZ coordinates of the point.
+
+        """
+        a, b = self.edge_coordinates(u, v)
+        ab = subtract_vectors(b, a)
+        return add_vectors(a, scale_vector(ab, t))
+
+    def edge_midpoint(self, u, v):
+        """Return the location of the midpoint of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+
+        Returns
+        -------
+        list
+            The XYZ coordinates of the midpoint.
+
+        """
+        a, b = self.edge_coordinates(u, v)
+        return midpoint_line((a, b))
+
+    def edge_direction(self, u, v):
+        """Return the direction vector of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+
+        Returns
+        -------
+        list
+            The direction vector of the edge.
+
+        """
+        return normalize_vector(self.edge_vector(u, v))
 
     # --------------------------------------------------------------------------
     # face geometry
@@ -2683,7 +3109,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             The identifier of the face.
         axes : str, optional
             The axes alon which to take the coordinates.
@@ -2694,7 +3120,6 @@ class BaseMesh(EdgeGeometry,
         -------
         list of list
             The coordinates of the vertices of the face.
-
         """
         return [self.vertex_coordinates(key, axes=axes) for key in self.face_vertices(fkey)]
 
@@ -2703,7 +3128,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             The identifier of the face.
         unitized : bool, optional
             Unitize the normal vector.
@@ -2713,7 +3138,6 @@ class BaseMesh(EdgeGeometry,
         -------
         list
             The components of the normal vector.
-
         """
         return normal_polygon(self.face_coordinates(fkey), unitized=unitized)
 
@@ -2722,14 +3146,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             The identifier of the face.
 
         Returns
         -------
         list
             The coordinates of the centroid.
-
         """
         return centroid_points(self.face_coordinates(fkey))
 
@@ -2738,14 +3161,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             The identifier of the face.
 
         Returns
         -------
         list
             The coordinates of the center of mass.
-
         """
         return centroid_polygon(self.face_coordinates(fkey))
 
@@ -2754,14 +3176,13 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             The identifier of the face.
 
         Returns
         -------
         float
             The area of the face.
-
         """
         return area_polygon(self.face_coordinates(fkey))
 
@@ -2770,7 +3191,7 @@ class BaseMesh(EdgeGeometry,
 
         Parameters
         ----------
-        fkey : hashable
+        fkey : int
             The identifier of the face.
 
         Returns
@@ -2787,7 +3208,6 @@ class BaseMesh(EdgeGeometry,
         Warning
         -------
         This method only makes sense for quadrilateral faces.
-
         """
         vertices = self.face_coordinates(fkey)
         face = range(len(self.face_vertices(fkey)))
@@ -2806,13 +3226,11 @@ class BaseMesh(EdgeGeometry,
         float
             The aspect ratio.
 
-         References
+        References
         ----------
         .. [1] Wikipedia. *Types of mesh*.
                Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
-
         """
-
         face_edge_lengths = [self.edge_length(u, v) for u, v in self.face_halfedges(fkey)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
@@ -2829,11 +3247,10 @@ class BaseMesh(EdgeGeometry,
         float
             The skewness.
 
-         References
+        References
         ----------
         .. [1] Wikipedia. *Types of mesh*.
                Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
-
         """
         ideal_angle = 180 * (1 - 2 / float(len(self.face_vertices(fkey))))
         angles = []
@@ -2860,7 +3277,6 @@ class BaseMesh(EdgeGeometry,
         -------
         float
             The dimensionless curvature.
-
         """
         vertices = self.face_vertices(fkey)
         points = [self.vertex_coordinates(key) for key in vertices]
@@ -3003,226 +3419,38 @@ class BaseMesh(EdgeGeometry,
             The boundary edges.
 
         """
-
-        # TODO: perhaps split into two functions
         boundary_edges = [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
-
         if not chained:
             return boundary_edges
-
+        # this is not "chained"
+        # it is "oriented"
         return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]
 
-    # --------------------------------------------------------------------------
-    # attributes
-    # --------------------------------------------------------------------------
+    # def boundaries(self):
+    #     """Collect the mesh boundaries as lists of vertices.
 
-    def update_default_edge_attributes(self, attr_dict=None, **kwattr):
-        """Update the default edge attributes (this also affects already existing edges).
+    #     Parameters
+    #     ----------
+    #     mesh : Mesh
+    #         Mesh.
 
-        Parameters
-        ----------
-        attr_dict : dict (None)
-            A dictionary of attributes with their default values.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Notes
-        -----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
-        if they exist.
-
-        """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        for u, v, data in self.edges(True):
-            attr = deepcopy(attr_dict)
-            attr.update(data)
-            self.edgedata[u, v] = self.edgedata[v, u] = attr
-        self.default_edge_attributes.update(attr_dict)
-
-    def set_edge_attribute(self, key, name, value):
-        """Set one attribute of one edge.
-
-        Parameters
-        ----------
-        key : tuple of hashable
-            The identifier of the edge, in the form of a pair of vertex identifiers.
-        name : str
-            The name of the attribute.
-        value : object
-            The value of the attribute.
-
-        """
-        u, v = key
-        if (u, v) not in self.edgedata:
-            self.edgedata[u, v] = self.default_edge_attributes.copy()
-        if (v, u) in self.edgedata:
-            self.edgedata[u, v].update(self.edgedata[v, u])
-            del self.edgedata[v, u]
-            self.edgedata[v, u] = self.edgedata[u, v]
-        self.edgedata[u, v][name] = value
-
-    def set_edge_attributes(self, key, names, values):
-        """Set multiple attributes of one edge.
-
-        Parameters
-        ----------
-        key : tuple of hashable
-            The identifier of the edge, in the form of a pair of vertex identifiers.
-        names : list of str
-            The names of the attributes.
-        values : list of object
-            The values of the attributes.
-
-        """
-        for name, value in zip(names, values):
-            self.set_edge_attribute(key, name, value)
-
-    def set_edges_attribute(self, name, value, keys=None):
-        """Set one attribute of multiple edges.
-
-        Parameters
-        ----------
-        name : str
-            The name of the attribute.
-        value : object
-            The value of the attribute.
-        keys : list of hashable, optional
-            A list of edge identifiers.
-            Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
-
-        """
-        if not keys:
-            keys = self.edges()
-        for key in keys:
-            self.set_edge_attribute(key, name, value)
-
-    def set_edges_attributes(self, names, values, keys=None):
-        """Set multiple attributes of multiple edges.
-
-        Parameters
-        ----------
-        names : list of str
-            The names of the attributes.
-        values : list of object
-            The values of the attributes.
-        keys : list of hashable, optional
-            A list of edge identifiers.
-            Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
-
-        """
-        for name, value in zip(names, values):
-            self.set_edges_attribute(name, value, keys=keys)
-
-    def get_edge_attribute(self, key, name, value=None):
-        """Get the value of a named attribute of one edge.
-
-        Parameters
-        ----------
-        key : tuple of hashable
-            The identifier of the edge, in the form of a pair of vertex identifiers.
-        name : str
-            The name of the attribute.
-        value : object (None)
-            The default value.
-
-        Returns
-        -------
-        value
-            The value of the attribute,
-            or the default value if the attribute does not exist.
-
-        """
-        u, v = key
-        if (u, v) in self.edgedata:
-            return self.edgedata[u, v].get(name, value)
-        if (v, u) in self.edgedata:
-            return self.edgedata[v, u].get(name, value)
-        self.edgedata[u, v] = self.edgedata[v, u] = self.default_edge_attributes.copy()
-        return self.edgedata[u, v].get(name, value)
-
-    def get_edge_attributes(self, key, names, values=None):
-        """Get the value of a named attribute of one edge.
-
-        Parameters
-        ----------
-        key : tuple of hashable
-            The identifier of the edge, in the form of a pair of vertex identifiers.
-        names : list
-            A list of attribute names.
-        values : list, optional
-            A list of default values.
-            Defaults to a list of ``None``.
-
-        Returns
-        -------
-        values : list
-            A list of values.
-            Every attribute that does not exist is replaced by the corresponding
-            default value.
-
-        """
-        if not values:
-            values = [None] * len(names)
-
-        return [self.get_edge_attribute(key, name, value) for name, value in zip(names, values)]
-
-    def get_edges_attribute(self, name, value=None, keys=None):
-        """Get the value of a named attribute of multiple edges.
-
-        Parameters
-        ----------
-        name : str
-            The name of the attribute.
-        value : object (None)
-            The default value.
-        keys : iterable (None)
-            A list of edge identifiers.
-            Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
-
-        Returns
-        -------
-        values : list
-            A list of values of the named attribute of the specified edges.
-
-        """
-        if not keys:
-            keys = self.edges()
-
-        return [self.get_edge_attribute(key, name, value) for key in keys]
-
-    def get_edges_attributes(self, names, values=None, keys=None):
-        """Get the values of multiple named attribute of multiple edges.
-
-        Parameters
-        ----------
-        names : list
-            The names of the attributes.
-        values : list, optional
-            A list of default values.
-            Defaults to a list of ``None``.
-        keys : list of hashable, optional
-            A list of edge identifiers.
-            Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
-
-        Returns
-        -------
-        values: list of list
-            The values of the attributes of the specified edges.
-            If an attribute does not exist for a specific edge, it is replaced
-            by the default value.
-
-        """
-        if not keys:
-            keys = self.edges()
-
-        return [self.get_edge_attributes(key, names, values) for key in keys]
+    #     Returns
+    #     -------
+    #     boundaries : list
+    #         List of boundaries as lists of vertex keys.
+    #     """
+    #     # get all boundary edges pointing outwards
+    #     boundary_edges = OrderedDict([(u, v) for u, v in self.edges_on_boundary(True)])
+    #     # find the boundaries
+    #     boundaries = []
+    #     while len(boundary_edges) > 0:
+    #         boundary = list(boundary_edges.popitem())
+    #         # get consecuvite vertex until the boundary is closed
+    #         while boundary[0] != boundary[-1]:
+    #             boundary.append(boundary_edges[boundary[-1]])
+    #             boundary_edges.pop(boundary[-2])
+    #         boundaries.append(boundary[: -1])
+    #     return boundaries
 
 
 # ==============================================================================

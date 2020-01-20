@@ -141,8 +141,8 @@ if __name__ == "__main__":
 
     levels, contours = scalarfield_contours_numpy(xy, distances)
 
-    # xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
-    # z = [mesh.get_vertex_attribute(key, 'z') for key in mesh.vertices()]
+    # xy = [mesh.vertex_attributes(key, 'xy') for key in mesh.vertices()]
+    # z = [mesh.vertex_attribute(key, 'z') for key in mesh.vertices()]
     # levels, contours = scalarfield_contours_numpy(xy, z)
 
     # levels, contours = mesh_contours_numpy(mesh)

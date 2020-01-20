@@ -9,29 +9,29 @@ from compas.datastructures import Mesh
 # --------------------------------------------------------------------------
 
 
-@pytest.fixture
-def polylines():
-    boundary_polylines = [
-        [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]],
-        [[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]],
-        [[2.0, 0.0, 0.0], [2.0, 1.0, 0.0]],
-        [[2.0, 1.0, 0.0], [1.0, 1.0, 0.0]],
-        [[1.0, 1.0, 0.0], [0.0, 1.0, 0.0]],
-        [[0.0, 1.0, 0.0], [0.0, 0.0, 0.0]],
-    ]
-    other_polylines = [
-        [[1.0, 0.0, 0.0], [1.0, 0.25, 0.0], [1.0, 0.5, 0.0], [1.0, 0.75, 0.0], [1.0, 1.0, 0.0]]
-    ]
+# @pytest.fixture
+# def polylines():
+#     boundary_polylines = [
+#         [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]],
+#         [[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]],
+#         [[2.0, 0.0, 0.0], [2.0, 1.0, 0.0]],
+#         [[2.0, 1.0, 0.0], [1.0, 1.0, 0.0]],
+#         [[1.0, 1.0, 0.0], [0.0, 1.0, 0.0]],
+#         [[0.0, 1.0, 0.0], [0.0, 0.0, 0.0]],
+#     ]
+#     other_polylines = [
+#         [[1.0, 0.0, 0.0], [1.0, 0.25, 0.0], [1.0, 0.5, 0.0], [1.0, 0.75, 0.0], [1.0, 1.0, 0.0]]
+#     ]
 
-    return boundary_polylines, other_polylines
+#     return boundary_polylines, other_polylines
 
 
-def test_from_polylines(polylines):
-    boundary_polylines, other_polylines = polylines
-    mesh = Mesh.from_polylines(boundary_polylines, other_polylines)
-    assert mesh.number_of_vertices() == 6
-    assert mesh.number_of_faces() == 2
-    assert mesh.number_of_edges() == 7
+# def test_from_polylines(polylines):
+#     boundary_polylines, other_polylines = polylines
+#     mesh = Mesh.from_polylines(boundary_polylines, other_polylines)
+#     assert mesh.number_of_vertices() == 6
+#     assert mesh.number_of_faces() == 2
+#     assert mesh.number_of_edges() == 7
 
 
 def test_from_obj():
@@ -145,18 +145,6 @@ def test_clear():
     assert mesh.number_of_edges() == 0
 
 
-def test_clear_vertexdict():
-    pass
-
-
-def test_clear_facedict():
-    pass
-
-
-def test_clear_halfedgedict():
-    pass
-
-
 # --------------------------------------------------------------------------
 # builders
 # --------------------------------------------------------------------------
@@ -216,11 +204,6 @@ def test_cull_vertices():
     n = mesh.number_of_vertices()
     mesh.cull_vertices()
     assert mesh.number_of_vertices() == n - 1
-
-
-def test_cull_edges():
-    # TODO: to be updated
-    pass
 
 
 # --------------------------------------------------------------------------
@@ -375,9 +358,9 @@ def test_is_edge_on_boundary():
 # polyedge topology
 # --------------------------------------------------------------------------
 
-def test_boundaries():
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-    assert mesh.boundaries() == [[34, 35, 29, 23, 17, 11, 5, 4, 3, 2, 1, 0, 6, 12, 18, 24, 30, 31, 32, 33]]
+# def test_boundaries():
+#     mesh = Mesh.from_obj(compas.get('faces.obj'))
+#     assert mesh.boundaries() == [[34, 35, 29, 23, 17, 11, 5, 4, 3, 2, 1, 0, 6, 12, 18, 24, 30, 31, 32, 33]]
 
 
 # --------------------------------------------------------------------------

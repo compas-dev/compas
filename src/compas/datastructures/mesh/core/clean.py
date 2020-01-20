@@ -30,6 +30,14 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
 
     Examples
     --------
+    >>> import compas
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+    >>> mesh.number_of_vertices()
+    36
+    >>> for x, y, z in mesh.vertices_attributes('xyz', keys=list(mesh.vertices())[:5]):
+    ...     mesh.add_vertex(x=x, y=y, z=z)
+    ... 
     >>> mesh.number_of_vertices()
     41
     >>> mesh_delete_duplicate_vertices(mesh)
@@ -37,7 +45,7 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
     36
 
     """
-    key_gkey = {key: geometric_key(mesh.vertex_coordinates(key), precision=precision) for key in mesh.vertices()}
+    key_gkey = {key: geometric_key(mesh.vertex_attributes(key, 'xyz'), precision=precision) for key in mesh.vertices()}
     gkey_key = {gkey: key for key, gkey in iter(key_gkey.items())}
 
     for key in list(mesh.vertices()):
@@ -72,9 +80,4 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
 if __name__ == "__main__":
 
     import doctest
-    import compas
-    from compas.datastructures import Mesh
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-    for x, y, z in mesh.get_vertices_attributes('xyz')[:5]:
-        mesh.add_vertex(x=x, y=y, z=z)
     doctest.testmod()

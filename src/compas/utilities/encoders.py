@@ -9,7 +9,7 @@ __all__ = ['DataDecoder', 'DataEncoder']
 
 
 class DataEncoder(json.JSONEncoder):
-    """Dump"""
+    """Data encoder for custom JSON serialisation with support for COMPAS data structures and geometric primitives."""
 
     def default(self, o):
         from compas.datastructures import Datastructure
@@ -35,7 +35,7 @@ class DataEncoder(json.JSONEncoder):
 
 
 class DataDecoder(json.JSONDecoder):
-    """Load"""
+    """Data decoder for custom JSON serialisation with support for COMPAS data structures and geometric primitives."""
 
     def __init__(self, *args, **kwargs):
         super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)

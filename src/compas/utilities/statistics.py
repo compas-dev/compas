@@ -22,9 +22,7 @@ def average(list):
     -------
     float
         The mean value.
-
     """
-
     return sum(list) / float(len(list))
 
 
@@ -40,11 +38,8 @@ def variance(list):
     -------
     float
         The variance value.
-
     """
-
     m = average(list)
-
     return (sum([(i - m) ** 2 for i in list]) / float(len(list))) ** .5
 
 
@@ -60,9 +55,7 @@ def standard_deviation(list):
     -------
     float
         The standard deviation value.
-
     """
-
     return variance(list) ** .5
 
 

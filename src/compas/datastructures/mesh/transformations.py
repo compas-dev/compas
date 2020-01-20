@@ -35,7 +35,7 @@ def mesh_transform(mesh, transformation):
     """
     vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
     xyz = transform_points(vertices, transformation)
-    for index, (_, attr) in enumerate(mesh.vertices(True)):
+    for index, (key, attr) in enumerate(mesh.vertices(True)):
         attr['x'] = xyz[index][0]
         attr['y'] = xyz[index][1]
         attr['z'] = xyz[index][2]

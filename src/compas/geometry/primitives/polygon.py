@@ -37,13 +37,15 @@ class Polygon(Primitive):
     points : list of point
         An ordered list of points.
 
-    Examples
-    --------
-    >>> polygon = Polygon([[0,0,0], [1,0,0], [1,1,0], [0,1,0]])
-    >>> polygon.centroid
-    Point(0.500, 0.500, 0.000)
-    >>> polygon.area
-    1.0
+    Attributes
+    ----------
+    data
+    points
+    lines
+    length
+    centroid
+    area
+    normal
 
     Notes
     -----
@@ -53,6 +55,13 @@ class Polygon(Primitive):
 
     Polygons are not necessarily planar by construction; they can be warped.
 
+    Examples
+    --------
+    >>> polygon = Polygon([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]])
+    >>> polygon.centroid
+    Point(0.500, 0.500, 0.000)
+    >>> polygon.area
+    1.0
     """
 
     def __init__(self, points):
@@ -80,8 +89,9 @@ class Polygon(Primitive):
 
         Examples
         --------
-        >>>
-
+        >>> polygon = Polygon.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 1.0]]})
+        >>> polygon.points[0]
+        Point(0.000, 0.000, 0.000)
         """
         return cls(data['points'])
 
@@ -123,7 +133,6 @@ class Polygon(Primitive):
         True
         """
         assert n >= 3, "Supplied number of sides must be at least 3!"
-
         points = []
         side = math.pi * 2 / n
         for i in range(n):
@@ -145,7 +154,6 @@ class Polygon(Primitive):
         -------
         dict
             The polygon data.
-
         """
         return {'points': [list(point) for point in self.points]}
 
@@ -178,12 +186,8 @@ class Polygon(Primitive):
     @property
     def centroid(self):
         """int: The centroid of the polygon."""
-        return Point(* centroid_points(self.points))
-
-    @property
-    def center(self):
-        """Point: The center (of mass) of the polygon."""
-        return Point(* centroid_polygon(self.points))
+        point = centroid_polygon(self.points)
+        return Point(*point)
 
     @property
     def normal(self):
@@ -237,7 +241,7 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def __eq__(self, other):
-        raise NotImplementedError
+        return all(a == b for a, b in zip(self, other))
 
     # ==========================================================================
     # operators
@@ -259,6 +263,14 @@ class Polygon(Primitive):
         Polygon
             The copy.
 
+        Examples
+        --------
+        >>> p1 = Polygon.from_sides_and_radius_xy(4, 1.0)
+        >>> p2 = p1.copy()
+        >>> p1 == p2
+        True
+        >>> p1 is p2
+        False
         """
         cls = type(self)
         return cls([point.copy() for point in self.points])
@@ -276,6 +288,11 @@ class Polygon(Primitive):
             True if the polygon is convex.
             False otherwise.
 
+        Examples
+        --------
+        >>> polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.4, 0.4, 0.0], [0.0, 1.0, 0.0]])
+        >>> polygon.is_convex()
+        False
         """
         return is_polygon_convex(self.points)
 
@@ -288,6 +305,11 @@ class Polygon(Primitive):
             True if all points of the polygon lie in one plane.
             False otherwise.
 
+        Examples
+        --------
+        >>> polygon = Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.1]])
+        >>> polygon.is_planar()
+        False
         """
         return is_coplanar(self.points)
 
@@ -303,6 +325,15 @@ class Polygon(Primitive):
         matrix : list of list
             The transformation matrix.
 
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> polygon = Polygon.from_sides_and_radius_xy(4, 1.0)
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(45))
+        >>> polygon.transform(R)
+        >>> polygon.points[0]
+        Point(-0.707, 0.707, 0.000)
         """
         for index, point in enumerate(transform_points(self.points, matrix)):
             self.points[index].x = point[0]
@@ -322,6 +353,15 @@ class Polygon(Primitive):
         Polygon
             The transformed copy.
 
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> poly1 = Polygon.from_sides_and_radius_xy(4, 1.0)
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(45))
+        >>> poly2 = poly1.transformed(R)
+        >>> poly2.points[0] == poly1.points[0]
+        False
         """
         polygon = self.copy()
         polygon.transform(matrix)
@@ -335,7 +375,4 @@ class Polygon(Primitive):
 if __name__ == '__main__':
 
     import doctest
-
-    print(Polygon([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]]))
-
     doctest.testmod(globs=globals())
