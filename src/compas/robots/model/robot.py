@@ -439,7 +439,7 @@ class RobotModel(object):
             item.init_transformation = parent_transformation
 
         for child_joint in link.joints:
-            child_joint.create(parent_transformation)
+            child_joint._create(parent_transformation)
             # Recursively call creation
             self._create(child_joint.child_link, child_joint.current_transformation)
 
@@ -718,7 +718,7 @@ class RobotModel(object):
             else:
                 parent_transformation = item.init_transformation
 
-        joint.create(parent_transformation)
+        joint._create(parent_transformation)
 
         for item in itertools.chain(child_link.visual, child_link.collision):
             item.init_transformation = joint.current_transformation

@@ -292,7 +292,7 @@ class Joint(object):
         if self.axis:
             self.axis.transform(transformation)
 
-    def create(self, transformation):
+    def _create(self, transformation):
         """Internal method to initialize the transformation tree.
 
         Parameters
