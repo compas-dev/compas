@@ -91,6 +91,10 @@ class Limit(object):
         ----------
         factor : :obj:`float`
             Scale factor.
+
+        Returns
+        -------
+        None
         """
         self.lower *= factor
         self.upper *= factor
@@ -282,14 +286,28 @@ class Joint(object):
         ----------
         transformation : :class:`Transformation`
             The transformation used to transform the joint.
+
+        Returns
+        -------
+        None
         """
         if self.origin:
             self.origin.transform(transformation)
         if self.axis:
             self.axis.transform(transformation)
 
-    def create(self, transformation):
-        """Internal method to initialize the transformation tree."""
+    def _create(self, transformation):
+        """Internal method to initialize the transformation tree.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the joint.
+
+        Returns
+        -------
+        None
+        """
         if self.origin:
             self.origin.transform(transformation)
         if self.axis:
@@ -414,6 +432,10 @@ class Joint(object):
         ----------
         factor : :obj:`float`
             Scale factor.
+
+        Returns
+        -------
+        None
         """
         self.origin.scale(factor)
         if self.is_scalable():

@@ -39,6 +39,19 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         self.schema_prefix = 'package://' + self.support_package + '/'
 
     def build_url(self, file):
+        """Returns the corresponding url of the file.
+
+        Parameters
+        ----------
+        file : str
+            File name. Following convention, the file should reside
+            inside a ``urdf`` folder.
+
+        Returns
+        -------
+        str
+            The file's url.
+        """
         return '{}/{}/{}/{}/{}'.format(GithubPackageMeshLoader.HOST,
                                        self.repository,
                                        self.branch,
