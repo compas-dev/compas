@@ -13,7 +13,7 @@ __all__ = [
 
 def fibonacci(n, memo={}):
     """Memoized function for generating fibonacci numbers.
-    
+
     Parameters
     ----------
     n : int

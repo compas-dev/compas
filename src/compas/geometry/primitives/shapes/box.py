@@ -224,7 +224,7 @@ class Box(Shape):
     @classmethod
     def from_bounding_box(cls, bbox):
         """Construct a box from the result of a bounding box calculation.
-        
+
         Parameters
         ----------
         bbox : list

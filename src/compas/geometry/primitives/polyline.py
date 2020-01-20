@@ -65,7 +65,7 @@ class Polyline(Primitive):
     @classmethod
     def from_data(cls, data):
         """Construct a polyline from a data dict.
-        
+
         Parameters
         ----------
         data : dict
@@ -166,7 +166,7 @@ class Polyline(Primitive):
             The parameter value.
         snap : bool, optional
             If True, return the closest polyline point.
-        
+
         Returns
         -------
         Point
@@ -249,7 +249,7 @@ class Polyline(Primitive):
         bool
             True if the polyline is self-intersecting.
             False otherwise.
-        
+
         Examples
         --------
         >>>

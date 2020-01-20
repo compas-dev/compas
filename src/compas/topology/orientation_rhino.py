@@ -19,7 +19,7 @@ __all__ = [
 
 def unify_cycles_rhino(vertices, faces, root=0):
     """Unify the cycle directions of the given faces such that adjacent faces share opposite halfedges.
-    
+
     Parameters
     ----------
     vertices : list
@@ -71,7 +71,7 @@ def unify_cycles_rhino(vertices, faces, root=0):
 
 def face_adjacency_rhino(xyz, faces):
     """Construct an adjacency dictionary of the given faces, assuming that the faces have arbitrary orientation.
-    
+
     Parameters
     ----------
     xyz : list
@@ -129,6 +129,7 @@ def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
     tree = RTree()
     for i, point in enumerate(points):
         tree.Insert(Point3d(* point), i)
+
     def callback(sender, e):
         data = e.Tag
         data.append(e.Id)

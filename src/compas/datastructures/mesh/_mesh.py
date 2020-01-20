@@ -59,7 +59,6 @@ class Mesh(BaseMesh):
 
 if __name__ == "__main__":
 
-    import os
     import compas
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))

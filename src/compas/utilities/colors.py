@@ -539,14 +539,14 @@ def hex_to_rgb(value, normalize=False):
 
 def color_to_rgb(color, normalize=False):
     """Convert a HEX or RGB color to RGB.
-    
+
     Parameters
     ----------
     color : str or tuple or float
         The color.
     normalize : bool, optional
         If true, normalize the resulting RGB color components.
-    
+
     Returns
     -------
     tuple
@@ -582,7 +582,7 @@ def color_to_rgb(color, normalize=False):
 
 def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=False):
     """Convert a color specification to a dict of colors.
-    
+
     Parameters
     ----------
     color : str or tuple or list or dict
@@ -650,12 +650,12 @@ def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=F
 
 def is_color_light(color):
     r"""Is a color 'light'.
-    
+
     Parameters
     ----------
     color: str or tuple
         The color specification in HEX or RGB format.
-    
+
     Returns
     -------
     bool

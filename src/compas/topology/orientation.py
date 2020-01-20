@@ -17,7 +17,7 @@ __all__ = [
 
 def unify_cycles(vertices, faces, root=0):
     """Unify the cycle directions of the given faces such that adjacent faces share opposite halfedges.
-    
+
     Parameters
     ----------
     vertices : list
@@ -65,7 +65,7 @@ def unify_cycles(vertices, faces, root=0):
 
 def face_adjacency(xyz, faces):
     """Construct an adjacency dictionary of the given faces, assuming that the faces have arbitrary orientation.
-    
+
     Parameters
     ----------
     xyz : list
@@ -110,6 +110,7 @@ def face_adjacency(xyz, faces):
                         break
         adjacency[face] = nbrs
     return adjacency
+
 
 def _face_adjacency(xyz, faces, nmax=10, radius=2.0):
     points = [centroid_points([xyz[index] for index in face]) for face in faces]

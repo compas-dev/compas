@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import abc
+# import abc
 import functools
 
 
@@ -11,7 +11,7 @@ __all__ = ['memoize']
 
 class abstractstatic(staticmethod):
     """Decorator for declaring a static method abstract.
-    
+
     Parameters
     ----------
     function : callable
@@ -29,7 +29,7 @@ class abstractstatic(staticmethod):
 
 def memoize(func, *args, **kwargs):
     """Decorator to wrap a function with a memoizing callable.
-    
+
     Parameters
     ----------
     func : callable

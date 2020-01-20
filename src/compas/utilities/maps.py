@@ -63,7 +63,7 @@ def geometric_key(xyz, precision=None, sanitize=True):
 
 def reverse_geometric_key(gkey):
     """Reverse a geometric key string into xyz coordinates.
-    
+
     Parameters
     ----------
     gkey : str
@@ -132,7 +132,7 @@ def geometric_key_xy(xy, precision=None, sanitize=True):
 
 def normalize_values(values, new_min=0.0, new_max=1.0):
     """Normalize a list of numbers to the range between new_min and new_max.
-    
+
     Parameters
     ----------
     values : list of float
@@ -192,7 +192,7 @@ def normalize_values(values, new_min=0.0, new_max=1.0):
 #     ------
 #     TypeError
 #         If `values` is not a list.
-    
+
 #     Examples
 #     --------
 #     >>>
@@ -215,7 +215,7 @@ def normalize_values(values, new_min=0.0, new_max=1.0):
 
 if __name__ == "__main__":
 
-    from math import pi
+    from math import pi  # noqa: F401
 
     import doctest
     doctest.testmod(globs=globals())

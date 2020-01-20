@@ -14,7 +14,7 @@ __all__ = [
 
 def timestamp():
     """Generate a timestamp using the current date and time.
-    
+
     Returns
     -------
     str
@@ -30,7 +30,7 @@ def timestamp():
 
 def now():
     """Generate a timestamp using the current date and time.
-    
+
     Returns
     -------
     str

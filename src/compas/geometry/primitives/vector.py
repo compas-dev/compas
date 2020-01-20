@@ -207,7 +207,7 @@ class Vector(Primitive):
         -------
         Vector
             The vector from start to end.
-        
+
         Examples
         --------
         >>> Vector.from_start_end([1.0, 0.0, 0.0], [1.0, 1.0, 0.0])
@@ -219,12 +219,12 @@ class Vector(Primitive):
     @classmethod
     def from_data(cls, data):
         """Construct a vector from a data dict.
-        
+
         Parameters
         ----------
         data : dict
             The data dictionary.
-        
+
         Returns
         -------
         Vector
@@ -504,17 +504,17 @@ class Vector(Primitive):
     @staticmethod
     def length_vectors(vectors):
         """Compute the length of multiple vectors.
-        
+
         Parameters
         ----------
         vectors : list
             A list of vectors.
-        
+
         Returns
         -------
         list
             A list of lengths.
-        
+
         Examples
         --------
         >>> Vector.length_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
@@ -525,17 +525,17 @@ class Vector(Primitive):
     @staticmethod
     def sum_vectors(vectors):
         """Compute the sum of multiple vectors.
-        
+
         Parameters
         ----------
         vectors : list
             A list of vectors.
-        
+
         Returns
         -------
         Vector
             A vector that is the sum of the vectors.
-        
+
         Examples
         --------
         >>> Vector.sum_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
@@ -546,19 +546,19 @@ class Vector(Primitive):
     @staticmethod
     def dot_vectors(left, right):
         """Compute the dot product of two lists of vectors.
-        
+
         Parameters
         ----------
         left : list
             A list of vectors.
         right : list
             A list of vectors.
-        
+
         Returns
         -------
         list
             A list of dot products.
-        
+
         Examples
         --------
         >>> Vector.dot_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]])
@@ -569,19 +569,19 @@ class Vector(Primitive):
     @staticmethod
     def cross_vectors(left, right):
         """Compute the cross product of two lists of vectors.
-        
+
         Parameters
         ----------
         left : list
             A list of vectors.
         right : list
             A list of vectors.
-        
+
         Returns
         -------
         list
             A list of cross products.
-        
+
         Examples
         --------
         >>> Vector.cross_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
@@ -592,19 +592,19 @@ class Vector(Primitive):
     @staticmethod
     def angles_vectors(left, right):
         """Compute both angles between corresponding pairs of two lists of vectors.
-        
+
         Parameters
         ----------
         left : list
             A list of vectors.
         right : list
             A list of vectors.
-        
+
         Returns
         -------
         list
             A list of angle pairs.
-        
+
         Examples
         --------
         >>> Vector.angles_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
@@ -615,19 +615,19 @@ class Vector(Primitive):
     @staticmethod
     def angle_vectors(left, right):
         """Compute the smallest angle between corresponding pairs of two lists of vectors.
-        
+
         Parameters
         ----------
         left : list
             A list of vectors.
         right : list
             A list of vectors.
-        
+
         Returns
         -------
         list
             A list of angles.
-        
+
         Examples
         --------
         >>> Vector.angle_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
@@ -674,7 +674,7 @@ class Vector(Primitive):
 
     def unitize(self):
         """Scale this ``Vector`` to unit length.
-        
+
         Examples
         --------
         >>> u = Vector(1.0, 2.0, 3.0)

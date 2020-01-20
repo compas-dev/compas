@@ -1,19 +1,15 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-try:
-    from numpy import float32
-    from numpy import uint32
-except:
-    pass
+from numpy import float32
+from numpy import uint32
 
 try:
     import pyopencl as cl
     import pyopencl.clmath
     import pyopencl.array as cl_array
-except:
+except ImportError:
     pass
 
 
@@ -42,8 +38,7 @@ __all__ = [
 
 
 def abs_cl(a):
-
-    """ Absolute values of GPUArray elements.
+    """Absolute values of GPUArray elements.
 
     Parameters
     ----------
@@ -62,15 +57,12 @@ def abs_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.fabs(a)
 
 
 def acos_cl(a):
-
-    """ Trigonometric arccosine of GPUArray elements.
+    """Trigonometric arccosine of GPUArray elements.
 
     Parameters
     ----------
@@ -89,15 +81,12 @@ def acos_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.acos(a)
 
 
 def asin_cl(a):
-
-    """ Trigonometric arcsine of GPUArray elements.
+    """Trigonometric arcsine of GPUArray elements.
 
     Parameters
     ----------
@@ -116,15 +105,12 @@ def asin_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.asin(a)
 
 
 def atan_cl(a):
-
-    """ Trigonometric arctangent of GPUArray elements.
+    """Trigonometric arctangent of GPUArray elements.
 
     Parameters
     ----------
@@ -143,15 +129,12 @@ def atan_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.atan(a)
 
 
 def ceil_cl(a):
-
-    """ Ceiling of GPUArray elements.
+    """Ceiling of GPUArray elements.
 
     Parameters
     ----------
@@ -170,15 +153,12 @@ def ceil_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.ceil(a)
 
 
 def cos_cl(a):
-
-    """ Trigonometric cosine of GPUArray elements.
+    """Trigonometric cosine of GPUArray elements.
 
     Parameters
     ----------
@@ -197,15 +177,12 @@ def cos_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.cos(a)
 
 
 def cosh_cl(a):
-
-    """ Hyperbolic cosine of GPUArray elements.
+    """Hyperbolic cosine of GPUArray elements.
 
     Parameters
     ----------
@@ -224,15 +201,12 @@ def cosh_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.cosh(a)
 
 
 def exp_cl(a):
-
-    """ Exponential of GPUArray elements.
+    """Exponential of GPUArray elements.
 
     Parameters
     ----------
@@ -251,15 +225,12 @@ def exp_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.exp(a)
 
 
 def floor_cl(a):
-
-    """ Floor of GPUArray elements.
+    """Floor of GPUArray elements.
 
     Parameters
     ----------
@@ -278,15 +249,12 @@ def floor_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.floor(a)
 
 
 def log_cl(a):
-
-    """ Natural logarithm of GPUArray elements.
+    """Natural logarithm of GPUArray elements.
 
     Parameters
     ----------
@@ -305,15 +273,12 @@ def log_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.log(a)
 
 
 def log10_cl(a):
-
-    """ Base10 logarithm of GPUArray elements.
+    """Base10 logarithm of GPUArray elements.
 
     Parameters
     ----------
@@ -338,8 +303,7 @@ def log10_cl(a):
 
 
 def maximum_cl(a, b=None):
-
-    """ Maximum values of two GPUArrays.
+    """Maximum values of two GPUArrays.
 
     Parameters
     ----------
@@ -360,17 +324,14 @@ def maximum_cl(a, b=None):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     if b is not None:
         return cl_array.maximum(a, b)
     return cl_array.max(a)
 
 
 def minimum_cl(a, b=None):
-
-    """ Minimum values of two GPUArrays.
+    """Minimum values of two GPUArrays.
 
     Parameters
     ----------
@@ -391,17 +352,14 @@ def minimum_cl(a, b=None):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     if b is not None:
         return cl_array.minimum(a, b)
     return cl_array.min(a)
 
 
 def round_cl(a):
-
-    """ Rounding of GPUArray elements.
+    """Rounding of GPUArray elements.
 
     Parameters
     ----------
@@ -420,15 +378,12 @@ def round_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.round(a)
 
 
 def sin_cl(a):
-
-    """ Trigonometric sine of GPUArray elements.
+    """Trigonometric sine of GPUArray elements.
 
     Parameters
     ----------
@@ -447,15 +402,12 @@ def sin_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.sin(a)
 
 
 def sinh_cl(a):
-
-    """ Hyperbolic sine of GPUArray elements.
+    """Hyperbolic sine of GPUArray elements.
 
     Parameters
     ----------
@@ -474,15 +426,12 @@ def sinh_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.sinh(a)
 
 
 def sqrt_cl(a):
-
-    """ Square-root of GPUArray elements.
+    """Square-root of GPUArray elements.
 
     Parameters
     ----------
@@ -501,15 +450,12 @@ def sqrt_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.sqrt(a)
 
 
 def sum_cl(queue, a, axis=None):
-
-    """ Sum of GPUArray elements in a given axis direction or all elements.
+    """Sum of GPUArray elements in a given axis direction or all elements.
 
     Parameters
     ----------
@@ -528,9 +474,7 @@ def sum_cl(queue, a, axis=None):
     Notes
     -----
     - This is temporary and not an efficient implementation.
-
     """
-
     if axis is not None:
 
         m, n = a.shape
@@ -602,8 +546,7 @@ def sum_cl(queue, a, axis=None):
 
 
 def tan_cl(a):
-
-    """ Trigonometric tangent of GPUArray elements.
+    """Trigonometric tangent of GPUArray elements.
 
     Parameters
     ----------
@@ -622,15 +565,12 @@ def tan_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.tan(a)
 
 
 def tanh_cl(a):
-
-    """ Hyperbolic tangent of GPUArray elements.
+    """Hyperbolic tangent of GPUArray elements.
 
     Parameters
     ----------
@@ -649,9 +589,7 @@ def tanh_cl(a):
 
     >>> type(a)
     <class 'pyopencl.array.Array'>
-
     """
-
     return pyopencl.clmath.tanh(a)
 
 
@@ -660,37 +598,36 @@ def tanh_cl(a):
 # ==============================================================================
 
 if __name__ == "__main__":
+    pass
 
-    from compas_hpc import give_cl
-    from compas_hpc import get_cl
+    # from compas_hpc import give_cl
+    # from compas_hpc import get_cl
 
-    from numpy import pi
+    # ctx = cl.create_some_context()
+    # queue = cl.CommandQueue(ctx)
 
-    ctx   = cl.create_some_context()
-    queue = cl.CommandQueue(ctx)
+    # # a = abs_cl(give_cl(queue, [-0.1, -1.7]))
+    # # a = acos_cl(give_cl(queue, [0.5, 1]))
+    # # a = asin_cl(give_cl(queue, [0.5, 1]))
+    # # a = atan_cl(give_cl(queue, [0.5, 1]))
+    # # a = cos_cl(give_cl(queue, [0, pi/4]))
+    # # a = cosh_cl(give_cl(queue, [0, pi/4]))
+    # # a = maximum_cl(give_cl(queue, [1, 2, 3]), give_cl(queue, [3, 2, 1]))
+    # # a = maximum_cl(give_cl(queue, [1, 2, 3]))
+    # # a = minimum_cl(give_cl(queue, [1, 2, 3]), give_cl(queue, [3, 2, 1]))
+    # # a = minimum_cl(give_cl(queue, [1, 2, 3]))
+    # # a = sin_cl(give_cl(queue, [0, pi/4]))
+    # # a = sinh_cl(give_cl(queue, [0, pi/4]))
+    # # a = sqrt_cl(give_cl(queue, [4, 9]))
+    # # a = tan_cl(give_cl(queue, [0, pi/4]))
+    # # a = tanh_cl(give_cl(queue, [0, pi/4]))
+    # # a = exp_cl(give_cl(queue, [0, 1]))
+    # # a = floor_cl(give_cl(queue, [0.5, 0.1, 1.9]))
+    # # a = ceil_cl(give_cl(queue, [0.5, 0.1, 1.9]))
+    # # a = log_cl(give_cl(queue, [1, 10]))
+    # # a = log10_cl(give_cl(queue, [1, 10]))
+    # # a = round_cl(give_cl(queue, [1.4, 1.5, 1.6]))
+    # a = sum_cl(queue, give_cl(queue, [[1, 2, 3], [4, 5, 6], [7, 8, 9]]), axis=1)
 
-    # a = abs_cl(give_cl(queue, [-0.1, -1.7]))
-    # a = acos_cl(give_cl(queue, [0.5, 1]))
-    # a = asin_cl(give_cl(queue, [0.5, 1]))
-    # a = atan_cl(give_cl(queue, [0.5, 1]))
-    # a = cos_cl(give_cl(queue, [0, pi/4]))
-    # a = cosh_cl(give_cl(queue, [0, pi/4]))
-    # a = maximum_cl(give_cl(queue, [1, 2, 3]), give_cl(queue, [3, 2, 1]))
-    # a = maximum_cl(give_cl(queue, [1, 2, 3]))
-    # a = minimum_cl(give_cl(queue, [1, 2, 3]), give_cl(queue, [3, 2, 1]))
-    # a = minimum_cl(give_cl(queue, [1, 2, 3]))
-    # a = sin_cl(give_cl(queue, [0, pi/4]))
-    # a = sinh_cl(give_cl(queue, [0, pi/4]))
-    # a = sqrt_cl(give_cl(queue, [4, 9]))
-    # a = tan_cl(give_cl(queue, [0, pi/4]))
-    # a = tanh_cl(give_cl(queue, [0, pi/4]))
-    # a = exp_cl(give_cl(queue, [0, 1]))
-    # a = floor_cl(give_cl(queue, [0.5, 0.1, 1.9]))
-    # a = ceil_cl(give_cl(queue, [0.5, 0.1, 1.9]))
-    # a = log_cl(give_cl(queue, [1, 10]))
-    # a = log10_cl(give_cl(queue, [1, 10]))
-    # a = round_cl(give_cl(queue, [1.4, 1.5, 1.6]))
-    a = sum_cl(queue, give_cl(queue, [[1, 2, 3], [4, 5, 6], [7, 8, 9]]), axis=1)
-
-    print(a)
-    print(type(a))
+    # print(a)
+    # print(type(a))

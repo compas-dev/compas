@@ -1,16 +1,12 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-try:
-    from numpy import array
-    from numpy import ceil
-    from numpy import complex64
-    from numpy import float32
-    from numpy import int32
-except:
-    pass
+from numpy import array
+from numpy import ceil
+from numpy import complex64
+from numpy import float32
+from numpy import int32
 
 try:
     import pycuda
@@ -18,7 +14,7 @@ try:
     import pycuda.curandom
     import pycuda.autoinit
     has_pycuda = True
-except:
+except ImportError:
     has_pycuda = False
 
 
@@ -98,8 +94,7 @@ if has_pycuda:
 
 
 def device_cuda():
-
-    """ Display CUDA GPU device details.
+    """Display CUDA GPU device details.
 
     Parameters
     ----------
@@ -112,7 +107,6 @@ def device_cuda():
     Examples
     --------
     >>> device_cuda()
-
     Device: GeForce GTX 1060 6GB
     Compute Capability: 6.1
     Total Memory: 6291 MB
@@ -122,9 +116,7 @@ def device_cuda():
     MAX_BLOCK_DIM_Y: 1024
     MAX_BLOCK_DIM_Z: 64
     ...etc
-
     """
-
     pycuda.driver.init()
     dev = pycuda.driver.Device(0)
 
@@ -140,8 +132,7 @@ def device_cuda():
 
 
 def rand_cuda(shape):
-
-    """ Create random values in the range [0, 1] in a GPUArray.
+    """Create random values in the range [0, 1] in a GPUArray.
 
     Parameters
     ----------
@@ -161,15 +152,12 @@ def rand_cuda(shape):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return pycuda.curandom.rand(shape, dtype=float32)
 
 
 def give_cuda(a, type='real'):
-
-    """ Give a list or an array to GPU memory.
+    """Give a list or an array to GPU memory.
 
     Parameters
     ----------
@@ -200,9 +188,7 @@ def give_cuda(a, type='real'):
 
     >>> a.reshape((1, 6))
     [[ 1.,  2.,  3.,  4.,  5.,  6.]]
-
     """
-
     if type == 'real':
         return cuda_array.to_gpu(array(a).astype(float32))
 
@@ -211,8 +197,7 @@ def give_cuda(a, type='real'):
 
 
 def get_cuda(a):
-
-    """ Return GPUArray from GPU memory as NumPy array.
+    """Return GPUArray from GPU memory as NumPy array.
 
     Parameters
     ----------
@@ -232,15 +217,12 @@ def get_cuda(a):
 
     >>> type(b)
     <class 'numpy.ndarray'>
-
     """
-
     return a.get()
 
 
 def ones_cuda(shape):
-
-    """ Create GPUArray of ones directly on GPU memory.
+    """Create GPUArray of ones directly on GPU memory.
 
     Parameters
     ----------
@@ -261,18 +243,14 @@ def ones_cuda(shape):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     a = cuda_array.GPUArray(shape, dtype=float32, allocator=pycuda.driver.mem_alloc, order='C')
     a.fill(1.0)
-
     return a
 
 
 def zeros_cuda(shape):
-
-    """ Create GPUArray of zeros directly on GPU memory.
+    """Create GPUArray of zeros directly on GPU memory.
 
     Parameters
     ----------
@@ -293,15 +271,12 @@ def zeros_cuda(shape):
 
     >>> type(a)
     <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     return cuda_array.zeros(shape, dtype=float32)
 
 
 def tile_cuda(a, shape, dim=4):
-
-    """ Horizontally and vertically tile a GPUArray.
+    """Horizontally and vertically tile a GPUArray.
 
     Parameters
     ----------
@@ -325,9 +300,7 @@ def tile_cuda(a, shape, dim=4):
 
      >>> type(a)
      <class 'pycuda.gpuarray.GPUArray'>
-
     """
-
     m, n = a.shape
     repy, repx = shape
     nx = int(ceil(n * repx / dim))
@@ -341,8 +314,7 @@ def tile_cuda(a, shape, dim=4):
 
 
 def hstack_cuda(a, b, dim=4):
-
-    """ Stack two GPUArrays horizontally.
+    """Stack two GPUArrays horizontally.
 
     Parameters
     ----------
@@ -355,11 +327,9 @@ def hstack_cuda(a, b, dim=4):
     -------
     gpuarray
         Horizontally stacked GPUArrays.
-
     """
-
     m, n = a.shape
-    o  = b.shape[1]
+    o = b.shape[1]
     nx = int(ceil((n + o) / dim))
     ny = int(ceil(m / dim))
 
@@ -371,8 +341,7 @@ def hstack_cuda(a, b, dim=4):
 
 
 def vstack_cuda(a, b, dim=4):
-
-    """ Stack two GPUArrays vertically.
+    """Stack two GPUArrays vertically.
 
     Parameters
     ----------
@@ -385,11 +354,9 @@ def vstack_cuda(a, b, dim=4):
     -------
     gpuarray
         Vertically stacked GPUArrays.
-
     """
-
     m, n = a.shape
-    o  = b.shape[0]
+    o = b.shape[0]
     nx = int(ceil(n / dim))
     ny = int(ceil((m + o) / dim))
 

@@ -195,7 +195,7 @@ def breadth_first_ordering(adjacency, root):
 
 def breadth_first_traverse(adjacency, root, callback=None):
     """Traverse an adjacency dict in "breadth-first" order.
-    
+
     Parameters
     ----------
     adjacency : dict
@@ -209,7 +209,7 @@ def breadth_first_traverse(adjacency, root, callback=None):
     -------
     set
         The visited nodes.
-    
+
     Examples
     --------
     >>>

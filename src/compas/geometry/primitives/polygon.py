@@ -6,7 +6,7 @@ import math
 
 from compas.geometry.basic import cross_vectors
 
-from compas.geometry.average import centroid_points
+# from compas.geometry.average import centroid_points
 from compas.geometry.average import centroid_polygon
 
 from compas.geometry.size import area_polygon
