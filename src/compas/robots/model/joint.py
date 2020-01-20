@@ -91,6 +91,10 @@ class Limit(object):
         ----------
         factor : :obj:`float`
             Scale factor.
+
+        Returns
+        -------
+        None
         """
         self.lower *= factor
         self.upper *= factor
