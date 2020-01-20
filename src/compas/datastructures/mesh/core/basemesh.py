@@ -58,6 +58,7 @@ __all__ = ['BaseMesh']
 
 
 class AttributeView(object):
+    """Mixin for attribute dict views."""
 
     def __str__(self):
         s = []
@@ -65,15 +66,13 @@ class AttributeView(object):
             s.append("{}: {}".format(repr(k), repr(v)))
         return "{" + ", ".join(s) + "}"
 
-    def __iter__(self):
-        for key in self.defaults:
-            yield key
-
     def __len__(self):
         return len(self.defaults)
 
 
 class VertexAttributeView(AttributeView, collections.MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of a vertex
+    combined with the default attributes of all vertices."""
 
     def __init__(self, defaults, attr):
         self.defaults = defaults
@@ -94,8 +93,14 @@ class VertexAttributeView(AttributeView, collections.MutableMapping):
         else:
             raise KeyError
 
+    def __iter__(self):
+        for key in self.defaults:
+            yield key
+
 
 class FaceAttributeView(AttributeView, collections.MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of a face
+    combined with the default attributes of all faces."""
 
     def __init__(self, defaults, attr, key, custom_only=False):
         self.defaults = defaults
@@ -129,6 +134,8 @@ class FaceAttributeView(AttributeView, collections.MutableMapping):
 
 
 class EdgeAttributeView(AttributeView, collections.MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of an edge
+    combined with the default attributes of all edges."""
 
     def __init__(self, defaults, attr, key, custom_only=False):
         self.defaults = defaults
@@ -1046,6 +1053,8 @@ class BaseMesh(EdgeGeometry,
         """
         if len(vertices) < 3:
             return
+        if vertices[-1] == vertices[0]:
+            vertices = vertices[:-1]
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
         if fkey > self._max_int_fkey:
@@ -1054,6 +1063,8 @@ class BaseMesh(EdgeGeometry,
         attr.update(kwattr)
         self.face[fkey] = vertices
         for u, v in pairwise(vertices + vertices[:1]):
+            if u == v:
+                continue
             self.halfedge[u][v] = fkey
             if u not in self.halfedge[v]:
                 self.halfedge[v][u] = None
@@ -1293,7 +1304,6 @@ class BaseMesh(EdgeGeometry,
         ----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
-
         """
         if not attr_dict:
             attr_dict = {}
@@ -1302,7 +1312,7 @@ class BaseMesh(EdgeGeometry,
 
     def vertex_attribute(self, key, name, value=None):
         """Get or set an attribute of a vertex.
-        
+
         Parameters
         ----------
         key : int
@@ -1311,7 +1321,7 @@ class BaseMesh(EdgeGeometry,
             The name of the attribute
         value : obj, optional
             The value of the attribute.
-        
+
         Returns
         -------
         object or None
@@ -1334,6 +1344,29 @@ class BaseMesh(EdgeGeometry,
         else:
             if name in self.default_vertex_attributes:
                 return self.default_vertex_attributes[name]
+
+    def unset_vertex_attribute(self, key, name):
+        """Unset the attribute of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The vertex identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the vertex does not exist.
+
+        Notes
+        -----
+        Unsetting the value of a vertex attribute implicitly sets it back to the value
+        stored in the default vertex attribute dict.
+        """
+        if name in self.vertex[key]:
+            del self.vertex[key][name]
 
     def vertex_attributes(self, key, names=None, values=None):
         """Get or set multiple attributes of a vertex.
@@ -1384,7 +1417,7 @@ class BaseMesh(EdgeGeometry,
 
     def vertices_attribute(self, name, value=None, keys=None):
         """Get or set an attribute of multiple vertices.
-        
+
         Parameters
         ----------
         name : str
@@ -1416,7 +1449,7 @@ class BaseMesh(EdgeGeometry,
 
     def vertices_attributes(self, names=None, values=None, keys=None):
         """Get or set multiple attributes of multiple vertices.
-        
+
         Parameters
         ----------
         names : list of str, optional
@@ -1473,7 +1506,7 @@ class BaseMesh(EdgeGeometry,
 
     def face_attribute(self, key, name, value=None):
         """Get or set an attribute of a face.
-        
+
         Parameters
         ----------
         key : int
@@ -1482,12 +1515,12 @@ class BaseMesh(EdgeGeometry,
             The name of the attribute.
         value : obj, optional
             The value of the attribute.
-        
+
         Returns
         -------
         object or None
             The value of the attribute, or ``None`` when the function is used as a "setter".
-        
+
         Raises
         ------
         KeyError
@@ -1506,6 +1539,32 @@ class BaseMesh(EdgeGeometry,
         else:
             return self.facedata[key][name]
         return None
+
+    def unset_face_attribute(self, key, name):
+        """Unset the attribute of a face.
+
+        Parameters
+        ----------
+        key : int
+            The face identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the face does not exist.
+
+        Notes
+        -----
+        Unsetting the value of a face attribute implicitly sets it back to the value
+        stored in the default face attribute dict.
+        """
+        if key not in self.face:
+            raise KeyError(key)
+        if key in self.facedata:
+            if name in self.facedata[key]:
+                del self.facedata[key][name]
 
     def face_attributes(self, key, names=None, values=None):
         """Get or set multiple attributes of a face.
@@ -1527,7 +1586,7 @@ class BaseMesh(EdgeGeometry,
             If the parameter ``names`` is not empty,
             a list of the values corresponding to the provided names.
             ``None`` if the function is used as a "setter".
-        
+
         Raises
         ------
         KeyError
@@ -1558,7 +1617,7 @@ class BaseMesh(EdgeGeometry,
 
     def faces_attribute(self, name, value=None, keys=None):
         """Get or set an attribute of multiple faces.
-        
+
         Parameters
         ----------
         name : str
@@ -1590,7 +1649,7 @@ class BaseMesh(EdgeGeometry,
 
     def faces_attributes(self, names=None, values=None, keys=None):
         """Get or set multiple attributes of multiple faces.
-        
+
         Parameters
         ----------
         names : list of str, optional
@@ -1648,7 +1707,7 @@ class BaseMesh(EdgeGeometry,
 
     def edge_attribute(self, key, name, value=None):
         """Get or set an attribute of an edge.
-        
+
         Parameters
         ----------
         key : 2-tuple of int
@@ -1658,7 +1717,7 @@ class BaseMesh(EdgeGeometry,
         value : obj, optional
             The value of the attribute.
             Default is ``None``.
-        
+
         Returns
         -------
         object or None
@@ -1686,6 +1745,37 @@ class BaseMesh(EdgeGeometry,
             return self.default_edge_attributes[name]
         return
 
+    def unset_edge_attribute(self, key, name):
+        """Unset the attribute of an edge.
+
+        Parameters
+        ----------
+        key : tuple of int
+            The edge identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
+
+        Notes
+        -----
+        Unsetting the value of an edge attribute implicitly sets it back to the value
+        stored in the default edge attribute dict.
+        """
+        u, v = key
+        if u not in self.halfedge or v not in self.halfedge[u]:
+            raise KeyError(key)
+        if key in self.edgedata:
+            if name in self.edgedata[key]:
+                del self.edgedata[key][name]
+        key = v, u
+        if key in self.edgedata:
+            if name in self.edgedata[key]:
+                del self.edgedata[key][name]
+
     def edge_attributes(self, key, names=None, values=None):
         """Get or set multiple attributes of an edge.
 
@@ -1706,7 +1796,7 @@ class BaseMesh(EdgeGeometry,
             If the parameter ``names`` is not empty,
             a list of the values corresponding to the provided names.
             ``None`` if the function is used as a "setter".
-        
+
         Raises
         ------
         KeyError
@@ -1743,7 +1833,7 @@ class BaseMesh(EdgeGeometry,
 
     def edges_attribute(self, name, value=None, keys=None):
         """Get or set an attribute of multiple edges.
-        
+
         Parameters
         ----------
         name : str
@@ -1775,7 +1865,7 @@ class BaseMesh(EdgeGeometry,
 
     def edges_attributes(self, names=None, values=None, keys=None):
         """Get or set multiple attributes of multiple edges.
-        
+
         Parameters
         ----------
         names : list of str, optional
@@ -2043,7 +2133,24 @@ class BaseMesh(EdgeGeometry,
     # vertex topology
     # --------------------------------------------------------------------------
 
-    def has_vertex(self, key):
+    # def has_vertex(self, key):
+    #     """Verify that a vertex is in the mesh.
+
+    #     Parameters
+    #     ----------
+    #     key : int
+    #         The identifier of the vertex.
+
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the vertex is in the mesh.
+    #         False otherwise.
+
+    #     """
+    #     return key in self.vertex
+
+    def is_vertex(self, key):
         """Verify that a vertex is in the mesh.
 
         Parameters
@@ -2056,7 +2163,6 @@ class BaseMesh(EdgeGeometry,
         bool
             True if the vertex is in the mesh.
             False otherwise.
-
         """
         return key in self.vertex
 
@@ -2073,7 +2179,6 @@ class BaseMesh(EdgeGeometry,
         bool
             True if the vertex is connected to at least one other vertex.
             False otherwise.
-
         """
         return self.vertex_degree(key) > 0
 
@@ -2090,7 +2195,6 @@ class BaseMesh(EdgeGeometry,
         bool
             True if the vertex is on the boundary.
             False otherwise.
-
         """
         for nbr in self.halfedge[key]:
             if self.halfedge[key][nbr] is None:
@@ -2126,7 +2230,6 @@ class BaseMesh(EdgeGeometry,
         Example
         -------
         >>>
-
         """
         temp = list(self.halfedge[key])
         if not ordered:
@@ -2266,7 +2369,6 @@ class BaseMesh(EdgeGeometry,
         Example
         -------
         >>>
-
         """
         if not ordered:
             faces = list(self.halfedge[key].values())
@@ -2281,41 +2383,67 @@ class BaseMesh(EdgeGeometry,
     # edge topology
     # --------------------------------------------------------------------------
 
-    def has_edge(self, u, v, directed=True):
-        """Verify that the mesh contains a specific edge.
+    # def has_edge(self, u, v, directed=True):
+    #     """Verify that the mesh contains a specific edge.
 
-        Warning
-        -------
-        This method may produce unexpected results.
+    #     Warning
+    #     -------
+    #     This method may produce unexpected results.
+
+    #     Parameters
+    #     ----------
+    #     u : int
+    #         The identifier of the first vertex.
+    #     v : int
+    #         The identifier of the second vertex.
+    #     directed : bool, optional
+    #         Only consider directed edges.
+    #         Default is ``True``.
+
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the edge exists.
+    #         False otherwise.
+    #     """
+    #     if directed:
+    #         return (u, v) in set(self.edges())
+    #     else:
+    #         return u in self.halfedge and v in self.halfedge[u]
+
+    def is_edge(self, key):
+        """Verify that an edge is part of the mesh.
 
         Parameters
         ----------
-        u : int
-            The identifier of the first vertex.
-        v : int
-            The identifier of the second vertex.
-        directed : bool, optional
-            Only consider directed edges.
-            Default is ``True``.
+        key : tuple of int
+            The identifier of the edge.
 
         Returns
         -------
         bool
-            True if the edge exists.
+            True if the edge is part of the mesh.
             False otherwise.
         """
-        if directed:
-            return (u, v) in set(self.edges())
-        else:
-            return u in self.halfedge and v in self.halfedge[u]
-
-    def is_edge(key):
         for uv in self.edges():
             if key == uv:
                 return True
         return False
 
-    def is_halfedge(key):
+    def is_halfedge(self, key):
+        """Verify that a halfedge is part of the mesh.
+
+        Parameters
+        ----------
+        key : tuple of int
+            The identifier of the halfedge.
+
+        Returns
+        -------
+        bool
+            True if the halfedge is part of the mesh.
+            False otherwise.
+        """
         u, v = key
         return u in self.halfedge and v in self.halfedge[u]
 
@@ -2336,6 +2464,33 @@ class BaseMesh(EdgeGeometry,
             If the edge is on the bboundary, one of the identifiers is ``None``.
         """
         return self.halfedge[u][v], self.halfedge[v][u]
+
+    def halfedge_face(self, u, v):
+        """Find the face corresponding to a halfedge.
+
+        Parameters
+        ----------
+        u : int
+            The identifier of the first vertex.
+        v : int
+            The identifier of the second vertex.
+
+        Returns
+        -------
+        int or None
+            The identifier of the face corresponding to the halfedge.
+            None, if the halfedge is on the outside of a boundary.
+
+        Raises
+        ------
+        KeyError
+            If the halfedge does not exist.
+
+        Examples
+        --------
+        >>>
+        """
+        return self.halfedge[u][v]
 
     def is_edge_on_boundary(self, u, v):
         """Verify that an edge is on the boundary.
@@ -2368,6 +2523,23 @@ class BaseMesh(EdgeGeometry,
     # --------------------------------------------------------------------------
 
     def is_face(self, fkey):
+        """Verify that a face is part of the mesh.
+
+        Parameters
+        ----------
+        fkey : int
+            The identifier of the face.
+
+        Returns
+        -------
+        bool
+            True if the face exists.
+            False otherwise.
+
+        Examples
+        --------
+        >>>
+        """
         return fkey in self.face
 
     def face_vertices(self, fkey):
