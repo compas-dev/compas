@@ -99,6 +99,11 @@ class RobotModel(object):
         -------
         A robot model instance.
 
+        Examples
+        --------
+        >>> model = RobotModel.from_urdf_file(ur5_urdf_file)
+        >>> print(model)
+        Robot name=ur5, Links=11, Joints=10 (6 configurable)
         """
         urdf = URDF.from_file(file)
         return urdf.robot
@@ -115,6 +120,11 @@ class RobotModel(object):
         Returns
         -------
         A robot model instance.
+
+        Examples
+        --------
+        >>> urdf_string = '<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"></robot>'
+        >>> model = RobotModel.from_urdf_string(urdf_string)
         """
         urdf = URDF.from_string(text)
         return urdf.robot
@@ -130,6 +140,22 @@ class RobotModel(object):
 
     def find_parent_joint(self, link):
         """Returns the parent joint of the link or None if not found.
+
+        Parameters
+        ----------
+        link : :class:`compas.robots.Link`
+            The link of which we want to know the parent joint.
+
+        Returns
+        -------
+        :class:`compas.robots.Joint`
+            The parent joint of the link.
+
+        Examples
+        --------
+        >>> j = robot.find_parent_joint(link1)
+        >>> j.name
+        'joint1'
         """
         for joint in self.joints:
             if str(joint.child) == link.name:
@@ -147,6 +173,12 @@ class RobotModel(object):
         Returns
         -------
         A link instance.
+
+        Examples
+        --------
+        >>> l = robot.get_link_by_name('world')
+        >>> l.name
+        'world'
         """
         return self._links.get(name, None)
 
@@ -161,6 +193,12 @@ class RobotModel(object):
         Returns
         -------
         A joint instance.
+
+        Examples
+        --------
+        >>> j = robot.get_joint_by_name('joint1')
+        >>> j.name
+        'joint1'
         """
         return self._joints.get(name, None)
 
@@ -170,6 +208,11 @@ class RobotModel(object):
         Returns
         -------
         Iterator of all links starting at root.
+
+        Examples
+        --------
+        >>> [l.name for l in robot.iter_links()]
+        ['world', 'link1', 'link2']
         """
 
         def func(cjoints, links):
@@ -182,12 +225,16 @@ class RobotModel(object):
         return iter(func(self.root.joints, [self.root]))
 
     def iter_joints(self):
-        """Iterator over the joints that starts with the root link's
-            children joints.
+        """Iterator over the joints that starts with the root link's children joints.
 
         Returns
         -------
         Iterator of all joints starting at root.
+
+        Examples
+        --------
+        >>> [j.name for j in robot.iter_joints()]
+        ['joint1', 'joint2']
         """
 
         def func(clink, joints):
@@ -204,10 +251,10 @@ class RobotModel(object):
 
         Parameters
         ----------
-            link_start_name: Name of the starting link of the chain,
-                or ``None`` to start at root.
-            link_end_name: Name of the final link of the chain,
-                or ``None`` to try to identify the last link.
+        link_start_name: str or ``None``
+            Name of the starting link of the chain. Defaults to the root link name.
+        link_end_name: str or ``None``
+            Name of the final link of the chain. Defaults to the last link's name.
 
         Returns
         -------
@@ -218,6 +265,11 @@ class RobotModel(object):
         This method differs from :meth:`iter_links` in that it returns the chain respecting
         the tree structure, hence if one link branches into two or more joints, only the
         branch matching the end link will be returned.
+
+        Examples
+        --------
+        >>> [l.name for l in robot.iter_link_chain('world', 'link2')]
+        ['world', 'link1', 'link2']
         """
         chain = self.iter_chain(link_start_name, link_end_name)
         for link in map(self.get_link_by_name, chain):
@@ -230,10 +282,10 @@ class RobotModel(object):
 
         Parameters
         ----------
-            link_start_name: Name of the starting link of the chain,
-                or ``None`` to start at root.
-            link_end_name: Name of the final link of the chain,
-                or ``None`` to try to identify the last link.
+        link_start_name: str or ``None``
+            Name of the starting link of the chain. Defaults to the root link name.
+        link_end_name: str or ``None``
+            Name of the final link of the chain. Defaults to the last link's name.
 
         Returns
         -------
@@ -245,6 +297,11 @@ class RobotModel(object):
         chain respecting the tree structure, hence if one link branches into
         two or more joints, only the branch matching the end link will be
         returned.
+
+        Examples
+        --------
+        >>> [j.name for j in robot.iter_joint_chain('world', 'link2')]
+        ['joint1', 'joint2']
         """
         chain = self.iter_chain(link_start_name, link_end_name)
         for joint in map(self.get_joint_by_name, chain):
@@ -257,19 +314,23 @@ class RobotModel(object):
 
         Parameters
         ----------
-            start: Name of the starting element of the chain,
-                or ``None`` to start at the root link.
-            end: Name of the final element of the chain,
-                or ``None`` to try to identify the last element.
+        start: str or ``None``
+            Name of the starting element of the chain. Defaults to the root link name.
+        end: str or ``None``
+            Name of the final element of the chain. Defaults to the name of the last element.
 
         Returns
         -------
-        Iterator of the chain of links and joints.
+        Iterator of the chain of links and joints (names).
+
+        Examples
+        --------
+        >>> list(robot.iter_chain('world', 'link2'))
+        ['world', 'joint1', 'link1', 'joint2', 'link2']
         """
         if not start:
             if not self.root:
                 raise Exception('No root link found')
-
             start = self.root.name
 
         if not end:
@@ -294,6 +355,12 @@ class RobotModel(object):
         Returns
         -------
         list of :class: `compas.robots.Joint`
+
+        Examples
+        --------
+        >>> joints = robot.get_configurable_joints()
+        >>> [j.name for j in joints]
+        ['joint1', 'joint2']
         """
         joints = self.iter_joints()
         return [joint for joint in joints if joint.is_configurable()]
@@ -304,6 +371,11 @@ class RobotModel(object):
         Returns
         -------
         list of int
+
+        Examples
+        --------
+        >>> robot.get_joint_types() == [Joint.CONTINUOUS, Joint.CONTINUOUS]
+        True
         """
         joints = self.get_configurable_joints()
         return [joint.type for joint in joints]
@@ -314,6 +386,11 @@ class RobotModel(object):
         Returns
         -------
         list of str
+
+        Examples
+        --------
+        >>> robot.get_configurable_joint_names()
+        ['joint1', 'joint2']
         """
         joints = self.get_configurable_joints()
         return [j.name for j in joints]
@@ -324,6 +401,12 @@ class RobotModel(object):
         Returns
         -------
         :class: `compas.robots.Link`
+
+        Examples
+        --------
+        >>> ee_link = robot.get_end_effector_link()
+        >>> ee_link.name
+        'link2'
         """
         joints = self.get_configurable_joints()
         clink = joints[-1].child_link
@@ -338,6 +421,11 @@ class RobotModel(object):
         Returns
         -------
         str
+
+        Examples
+        --------
+        >>> robot.get_end_effector_link_name()
+        'link2'
         """
         link = self.get_end_effector_link()
         return link.name
@@ -348,6 +436,11 @@ class RobotModel(object):
         Returns
         -------
         str
+
+        Examples
+        --------
+        >>> robot.get_base_link_name()
+        'world'
         """
         joints = self.get_configurable_joints()
         return joints[0].parent.link
@@ -357,13 +450,21 @@ class RobotModel(object):
 
         Parameters
         ----------
-        resource_loaders:
+        resource_loaders: :class:`compas.robots.AbstractMeshLoader`
             List of objects that implement the
             resource loading interface (:class:`compas.robots.AbstractMeshLoader`)
             and can retrieve external geometry.
-        force:
+        force: boolean
             True if it should force reloading even if the geometry
             has been loaded already, otherwise False.
+
+
+        Examples
+        --------
+        >>> loader = GithubPackageMeshLoader('ros-industrial/abb', 'abb_irb6600_support', 'kinetic-devel')
+        >>> urdf = loader.load_urdf('irb6640.urdf')
+        >>> model = RobotModel.from_urdf_file(urdf)
+        >>> model.load_geometry(loader)
         """
         force = kwargs.get('force', False)
 
@@ -454,6 +555,10 @@ class RobotModel(object):
         Returns
         -------
         None
+
+        Examples
+        --------
+        >>> robot.scale(100)
         """
         if not link or link == self.root:
             link = self.root
@@ -524,6 +629,15 @@ class RobotModel(object):
         Returns
         -------
         list of :class:`Frame`
+
+        Examples
+        --------
+        >>> joint_names = robot.get_configurable_joint_names()
+        >>> values = [1.2, 0.5]
+        >>> joint_state = dict(zip(joint_names, values))
+        >>> frames_transformed = robot.transformed_frames(joint_state)
+        >>> frames_transformed[0]
+        Frame(Point(0.000, 0.000, 0.000), Vector(0.362, 0.932, 0.000), Vector(-0.932, 0.362, 0.000))
         """
         transformations = self.compute_transformations(joint_state)
         return [j.origin.transformed(transformations[j.name]) for j in self.iter_joints()]
@@ -540,6 +654,14 @@ class RobotModel(object):
         Returns
         -------
         list of :class:`Vector`
+
+        Examples
+        --------
+        >>> joint_names = robot.get_configurable_joint_names()
+        >>> values = [1.2, 0.5]
+        >>> joint_state = dict(zip(joint_names, values))
+        >>> robot.transformed_axes(joint_state)
+        [Vector(0.000, 0.000, 1.000), Vector(0.000, 0.000, 1.000)]
         """
         transformations = self.compute_transformations(joint_state)
         return [j.axis.transformed(transformations[j.name]) for j in self.iter_joints() if j.axis.vector.length]
@@ -608,7 +730,7 @@ class RobotModel(object):
         >>> sphere = Sphere((0, 0, 0), 1)
         >>> mesh = Mesh.from_shape(sphere)
         >>> robot = RobotModel('robot')
-        >>> robot.add_link('link0', visual_mesh=mesh)
+        >>> link = robot.add_link('link0', visual_mesh=mesh)
         """
 
         all_link_names = [l.name for l in self.links]
@@ -674,7 +796,7 @@ class RobotModel(object):
         >>> child_link = robot.add_link('link1')
         >>> origin = Frame.worldXY()
         >>> axis = (1, 0, 0)
-        >>> robot.add_joint("joint1", Joint.CONTINUOUS, parent_link, child_link, origin, axis)
+        >>> j = robot.add_joint("joint1", Joint.CONTINUOUS, parent_link, child_link, origin, axis)
         """
 
         all_joint_names = [j.name for j in self.joints]
@@ -732,9 +854,21 @@ URDFParser.install_parser(Color, 'robot/material/color')
 URDFParser.install_parser(Texture, 'robot/material/texture')
 
 
-# ==============================================================================
-# Main
-# ==============================================================================
-
 if __name__ == '__main__':
-    pass
+    import os
+    import doctest
+    from compas import HERE
+    from compas.geometry import Frame
+    from compas.geometry import Sphere
+    from compas.datastructures import Mesh
+    from compas.robots import GithubPackageMeshLoader
+
+    ur5_urdf_file = os.path.join(HERE, '..', '..', 'tests', 'compas', 'robots', 'fixtures', 'ur5.xacro')
+
+    robot = RobotModel("robot", links=[], joints=[])
+    link0 = robot.add_link("world")
+    link1 = robot.add_link("link1")
+    link2 = robot.add_link("link2")
+    robot.add_joint("joint1", Joint.CONTINUOUS, link0, link1, Frame.worldXY(), (0, 0, 1))
+    robot.add_joint("joint2", Joint.CONTINUOUS, link1, link2, Frame.worldXY(), (0, 0, 1))
+    doctest.testmod(globs=globals())
