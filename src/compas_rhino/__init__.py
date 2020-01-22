@@ -10,12 +10,9 @@ compas_rhino
     :maxdepth: 1
 
     compas_rhino.artists
-    compas_rhino.conduits
-    compas_rhino.constructors
     compas_rhino.etoforms
     compas_rhino.forms
     compas_rhino.geometry
-    compas_rhino.helpers
     compas_rhino.modifiers
     compas_rhino.selectors
     compas_rhino.ui
@@ -33,6 +30,16 @@ try:
 except ImportError:
     pass
 
+try:
+    import scriptcontext as sc  # noqa: F401
+except ImportError:
+    pass
+
+try:
+    import scriptcontext as sc  # noqa: F401
+    find_object = sc.doc.Objects.Find
+except ImportError:
+    pass
 
 __version__ = '0.14.0'
 

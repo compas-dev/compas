@@ -42,8 +42,8 @@ def mesh_from_guid(cls, guid):
     -------
     Mesh
         A mesh object.
-
     """
+    # return RhinoMesh(guid).to_compas()
     vertices, faces = compas_rhino.get_mesh_vertices_and_faces(guid)
     faces = [face[:-1] if face[-2] == face[-1] else face for face in faces]
     mesh = cls.from_vertices_and_faces(vertices, faces)

@@ -9,10 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added `to_compas` to `compas_rhino.geometry.RhinoPoint`.
+- Added `to_compas` to `compas_rhino.geometry.RhinoLine`.
+- Added `to_compas` to `compas_rhino.geometry.RhinoCurve`.
+- Added `to_compas` to `compas_rhino.geometry.RhinoMesh`.
+- Added `brep_to_compas` to `compas_rhino.geometry.RhinoSurface`.
+- Added `uv_to_compas` to `compas_rhino.geometry.RhinoSurface`.
+- Added `heightfield_to_compas` to `compas_rhino.geometry.RhinoSurface`.
+
 ### Changed
+
+- Moved `compas_rhino.conduits` into `compas_rhino.artists`.
 
 ### Removed
 
+- Removed deprecated `compas.geometry.xforms`.
+- Removed deprecated `compas_rhino.helpers`.
+- Removed `compas_rhino.constructors`.
 
 ## [0.14.0] 2020-01-21
 

@@ -3,16 +3,10 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
+import compas_rhino
 
+from compas.geometry import Point
 from compas_rhino.geometry import RhinoGeometry
-from compas_rhino.utilities import select_point
-
-try:
-    import scriptcontext as sc
-    find_object = sc.doc.Objects.Find
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['RhinoPoint']
@@ -34,9 +28,8 @@ class RhinoPoint(RhinoGeometry):
         -------
         RhinoPoint
             A convenience wrapper around the Rhino point object.
-
         """
-        guid = select_point()
+        guid = compas_rhino.select_point()
         return cls(guid)
 
     @property
@@ -45,60 +38,78 @@ class RhinoPoint(RhinoGeometry):
         loc = self.geometry.Location
         return [loc.X, loc.Y, loc.Z]
 
-    def closest_point(self, point, maxdist=None):
-        """Find the closest point on the ``RhinoGeometry`` object to a test point.
+    @property
+    def x(self):
+        """list : The X coordinate of the point."""
+        return self.geometry.Location.X
 
-        Parameters
-        ----------
-        point : list of float, Rhino.Geometry.Point3d
-            The XYZ coordinates of the test point.
-        maxdist : float, optional
-            The maximum distance between the test point and the closest point on the ``RhinoGeometry`` object.
-            Default is ``None``.
+    @property
+    def y(self):
+        """list : The Y coordinate of the point."""
+        return self.geometry.Location.Y
 
-        Returns
-        -------
-        list of float
-            The XYZ coordinates of the closest point.
+    @property
+    def z(self):
+        """list : The Z coordinate of the point."""
+        return self.geometry.Location.Z
 
-        Examples
-        --------
-        >>>
+    def to_compas(self):
+        return Point(self.x, self.y, self.z)
 
-        """
-        return self.xyz
+    # def closest_point(self, point, maxdist=None):
+    #     """Find the closest point on the ``RhinoGeometry`` object to a test point.
 
-    def closest_points(self, points, maxdist=None):
-        """Find the closest points to a list of test points on the ``RhinoGeometry`` object.
+    #     Parameters
+    #     ----------
+    #     point : list of float, Rhino.Geometry.Point3d
+    #         The XYZ coordinates of the test point.
+    #     maxdist : float, optional
+    #         The maximum distance between the test point and the closest point on the ``RhinoGeometry`` object.
+    #         Default is ``None``.
 
-        Parameters
-        ----------
-        points : list of list of float
-            The list of test points.
-        maxdist : float, optional
-            The maximum distance between any of the test points and the corresponding closest points on the ``RhinoGeometry`` object.
-            Default is ``None``.
+    #     Returns
+    #     -------
+    #     list of float
+    #         The XYZ coordinates of the closest point.
 
-        Returns
-        -------
-        list of list of float
-            The XYZ coordinates of the closest points.
+    #     Examples
+    #     --------
+    #     >>>
 
-        Examples
-        --------
-        >>>
+    #     """
+    #     return self.xyz
 
-        """
-        return [self.closest_point(point, maxdist) for point in points]
+    # def closest_points(self, points, maxdist=None):
+    #     """Find the closest points to a list of test points on the ``RhinoGeometry`` object.
 
-    def project_to_curve(self, curve, direction=(0, 0, 1)):
-        pass
+    #     Parameters
+    #     ----------
+    #     points : list of list of float
+    #         The list of test points.
+    #     maxdist : float, optional
+    #         The maximum distance between any of the test points and the corresponding closest points on the ``RhinoGeometry`` object.
+    #         Default is ``None``.
 
-    def project_to_surface(self, surface, direction=(0, 0, 1)):
-        pass
+    #     Returns
+    #     -------
+    #     list of list of float
+    #         The XYZ coordinates of the closest points.
 
-    def project_to_mesh(self, mesh, direction=(0, 0, 1)):
-        pass
+    #     Examples
+    #     --------
+    #     >>>
+
+    #     """
+    #     return [self.closest_point(point, maxdist) for point in points]
+
+    # def project_to_curve(self, curve, direction=(0, 0, 1)):
+    #     pass
+
+    # def project_to_surface(self, surface, direction=(0, 0, 1)):
+    #     pass
+
+    # def project_to_mesh(self, mesh, direction=(0, 0, 1)):
+    #     pass
 
 
 # ==============================================================================

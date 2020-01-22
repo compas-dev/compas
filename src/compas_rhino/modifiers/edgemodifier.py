@@ -29,10 +29,9 @@ else:
 
 __all__ = [
     'EdgeModifier',
-
     'mesh_update_edge_attributes',
     'network_update_edge_attributes'
-    ]
+]
 
 
 def rhino_update_named_values(names, values, message='', title='Update named values'):
