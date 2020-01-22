@@ -7,7 +7,7 @@ import compas_rhino
 
 from compas.geometry import Line
 from compas.geometry import Polyline
-from compas.geometry import Polygon
+# from compas.geometry import Polygon
 from compas.geometry import Circle
 
 from compas_rhino.geometry import RhinoGeometry
@@ -135,7 +135,7 @@ class RhinoCurve(RhinoGeometry):
             True if the curve is closed.
             False otherwise.
         """
-        return rs.IsCurveClosed(self.guid)
+        return compas_rhino.rs.IsCurveClosed(self.guid)
 
     # def length(self):
     #     """Return the length of the curve.

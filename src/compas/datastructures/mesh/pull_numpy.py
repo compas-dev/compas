@@ -216,6 +216,8 @@ def _find_closest_component(point, vertices, triangles, closest_tris, closest_vi
 
 if __name__ == "__main__":
 
+    import compas
+
     from compas.datastructures import Mesh
     from compas.datastructures import mesh_quads_to_triangles
 
@@ -229,7 +231,7 @@ if __name__ == "__main__":
 
     mesh_quads_to_triangles(target)
 
-    pulled = mesh_pull_points(target, points)
+    pulled = mesh_pull_points_numpy(target, points)
 
     plotter = MeshPlotter(mesh)
     plotter.draw_vertices(text={key: "{:.1f}".format(attr['z']) for key, attr in mesh.vertices(True)})

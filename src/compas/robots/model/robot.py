@@ -859,9 +859,9 @@ if __name__ == '__main__':
     import doctest
     from compas import HERE
     from compas.geometry import Frame
-    from compas.geometry import Sphere
-    from compas.datastructures import Mesh
-    from compas.robots import GithubPackageMeshLoader
+    from compas.geometry import Sphere  # noqa: F401
+    from compas.datastructures import Mesh  # noqa: F401
+    from compas.robots import GithubPackageMeshLoader  # noqa: F401
 
     ur5_urdf_file = os.path.join(HERE, '..', '..', 'tests', 'compas', 'robots', 'fixtures', 'ur5.xacro')
 

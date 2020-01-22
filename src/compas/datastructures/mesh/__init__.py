@@ -29,7 +29,7 @@ from .join import *  # noqa: F401 F403
 from .offset import *  # noqa: F401 F403
 from .orientation import *  # noqa: F401 F403
 from .planarisation import *  # noqa: F401 F403
-if not compas.IPY:
+if not IPY:
     from .pull_numpy import *  # noqa: F401 F403
 # has to be imported before remeshing
 from .smoothing import *  # noqa: F401 F403

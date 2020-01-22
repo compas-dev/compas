@@ -36,7 +36,6 @@ except ImportError:
     pass
 
 try:
-    import scriptcontext as sc  # noqa: F401
     find_object = sc.doc.Objects.Find
 except ImportError:
     pass

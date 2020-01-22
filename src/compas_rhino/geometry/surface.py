@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
 import compas_rhino
 
 from compas.datastructures import Mesh
@@ -10,6 +9,7 @@ from compas_rhino.geometry import RhinoGeometry
 # from compas.geometry import subtract_vectors
 # from compas.geometry import angle_vectors
 # from compas.geometry import distance_point_point
+from compas.utilities import geometric_key
 
 
 __all__ = ['RhinoSurface']
@@ -85,13 +85,14 @@ class RhinoSurface(RhinoGeometry):
                         (i + 1) * v + j)
                 faces.append(face)
         cls = cls or Mesh
-        return cls.from_vertices_and_faces()
+        return cls.from_vertices_and_faces(vertices, faces)
 
     # ==========================================================================
     #
     # ==========================================================================
 
     def space(self, density=10):
+        rs = compas_rhino.rs
         rs.EnableRedraw(False)
 
         try:
@@ -129,7 +130,7 @@ class RhinoSurface(RhinoGeometry):
     # if the surface is in fact a height field
     # split up and rename!
     def heightfield(self, density=10, over_space=True):
-        """"""
+        rs = compas_rhino.rs
         rs.EnableRedraw(False)
 
         try:

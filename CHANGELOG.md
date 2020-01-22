@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `brep_to_compas` to `compas_rhino.geometry.RhinoSurface`.
 - Added `uv_to_compas` to `compas_rhino.geometry.RhinoSurface`.
 - Added `heightfield_to_compas` to `compas_rhino.geometry.RhinoSurface`.
+- Added `compas.datastructures.mesh_pull_points_numpy`.
 
 ### Changed
 
