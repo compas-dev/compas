@@ -537,7 +537,12 @@ class RobotModel(object):
             return
 
         for item in itertools.chain(link.visual, link.collision):
-            item.init_transformation = parent_transformation
+            if item.origin:
+                # transform visual or collison geometry with the transformation specified in origin
+                transformation = Transformation.from_frame(item.origin)
+                item.init_transformation = parent_transformation * transformation
+            else:
+                item.init_transformation = parent_transformation
 
         for child_joint in link.joints:
             child_joint._create(parent_transformation)
