@@ -19,26 +19,26 @@ from compas.geometry import is_point_in_triangle
 
 
 __all__ = [
-    'mesh_pull_points'
+    'mesh_pull_points_numpy'
 ]
 
 
-def mesh_pull_points(mesh, points):
+def mesh_pull_points_numpy(mesh, points):
     # preprocess
-    i_k         = mesh.index_key()
-    fk_fi       = {fkey: index for index, fkey in enumerate(mesh.faces())}
-    vertices    = array(mesh.get_vertices_attributes('xyz'), dtype=float64).reshape((-1, 3))
-    triangles   = array([mesh.face_coordinates(fkey) for fkey in mesh.faces()], dtype=float64)
-    points      = array(points, dtype=float64).reshape((-1, 3))
+    i_k = mesh.index_key()
+    fk_fi = {fkey: index for index, fkey in enumerate(mesh.faces())}
+    vertices = array(mesh.get_vertices_attributes('xyz'), dtype=float64).reshape((-1, 3))
+    triangles = array([mesh.face_coordinates(fkey) for fkey in mesh.faces()], dtype=float64)
+    points = array(points, dtype=float64).reshape((-1, 3))
     closest_vis = argmin(distance_matrix(points, vertices), axis=1)
     # transformation matrices
     # ?
     pulled_points = []
     # pull every point onto the mesh
     for i in range(points.shape[0]):
-        point        = points[i]
-        closest_vi   = closest_vis[i]
-        closest_vk   = i_k[closest_vi]
+        point = points[i]
+        closest_vi = closest_vis[i]
+        closest_vk = i_k[closest_vi]
         closest_tris = [fk_fi[fk] for fk in mesh.vertex_faces(closest_vk, ordered=True) if fk is not None]
         # process the connected triangles
         d, p, c = _find_closest_component(
@@ -59,7 +59,6 @@ def mesh_pull_points(mesh, points):
 
 def _is_point_in_edgezone(p, p0, p1):
     n = cross_vectors(p1 - p0, [0, 0, 1.])
-
     return (is_ccw_xy(p0 - p0, n, p - p0) and
             not is_ccw_xy(p0 - p0, p1 - p0, p - p0) and
             not is_ccw_xy(p1 - p1, n, p - p1))
@@ -86,9 +85,9 @@ def _triangle_xform(triangle):
 
 
 def _find_closest_component(point, vertices, triangles, closest_tris, closest_vi):
-    distance   = None
+    distance = None
     projection = None
-    component  = None
+    component = None
 
     for tri in closest_tris:
         # the triangle to process
@@ -104,47 +103,47 @@ def _find_closest_component(point, vertices, triangles, closest_tris, closest_vi
         # compute distance to closest component
         if is_point_in_triangle(p, t):
             p[2] = 0
-            xyz  = A.dot(p[:, None]).T + o
-            distance   = 0
+            xyz = A.dot(p[:, None]).T + o
+            distance = 0
             # why to list?
             projection = xyz[0].tolist()
-            component  = 'face', tri
+            component = 'face', tri
             break
         if _is_point_in_edgezone(p, t[0], t[1]):
             rst = _compute_point_on_segment(p, t[0], t[1])
             xyz = A.dot(rst.T).T + o
-            d   = sqrt(sum((rst - p[None, :]) ** 2))
+            d = sqrt(sum((rst - p[None, :]) ** 2))
             if distance is None or d < distance:
-                distance   = d
+                distance = d
                 # why to list?
                 projection = xyz[0].tolist()
-                component  = 'edge', (None, None)
+                component = 'edge', (None, None)
         elif _is_point_in_edgezone(p, t[1], t[2]):
             rst = _compute_point_on_segment(p, t[1], t[2])
             xyz = A.dot(rst.T).T + o
-            d   = sqrt(sum((rst - p[None, :]) ** 2))
+            d = sqrt(sum((rst - p[None, :]) ** 2))
             if distance is None or d < distance:
-                distance   = d
+                distance = d
                 # why to list?
                 projection = xyz[0].tolist()
-                component  = 'edge', (None, None)
+                component = 'edge', (None, None)
         elif _is_point_in_edgezone(p, t[2], t[0]):
             rst = _compute_point_on_segment(p, t[2], t[0])
             xyz = A.dot(rst.T).T + o
-            d   = sqrt(sum((rst - p[None, :]) ** 2))
+            d = sqrt(sum((rst - p[None, :]) ** 2))
             if distance is None or d < distance:
-                distance   = d
+                distance = d
                 # why to list?
                 projection = xyz[0].tolist()
-                component  = 'edge', (None, None)
+                component = 'edge', (None, None)
         else:
             xyz = vertices[closest_vi]
-            d   = sqrt(sum((xyz - point) ** 2))
+            d = sqrt(sum((xyz - point) ** 2))
             if distance is None or d < distance:
-                distance   = d
+                distance = d
                 # why to list?
                 projection = xyz.tolist()
-                component  = 'vertex', closest_vi
+                component = 'vertex', closest_vi
     return distance, projection, component
 
 
@@ -222,10 +221,8 @@ if __name__ == "__main__":
 
     from compas_plotters import MeshPlotter
 
-
     mesh = Mesh.from_obj(compas.get('hypar.obj'))
     target = mesh.copy()
-
 
     points = mesh.get_vertices_attributes('xyz')
     points[:] = [[x, y, 0] for x, y, z in points]
@@ -234,16 +231,14 @@ if __name__ == "__main__":
 
     pulled = mesh_pull_points(target, points)
 
-
     plotter = MeshPlotter(mesh)
     plotter.draw_vertices(text={key: "{:.1f}".format(attr['z']) for key, attr in mesh.vertices(True)})
     plotter.draw_faces()
     plotter.draw_points([{
-        'pos'       : [x, y, z],
-        'text'      : "{:.1f}".format(z),
-        'radius'    : 0.1,
-        'facecolor' : '#00ff00'
+        'pos': [x, y, z],
+        'text': "{:.1f}".format(z),
+        'radius': 0.1,
+        'facecolor': '#00ff00'
     } for x, y, z in pulled])
 
     plotter.show()
-
