@@ -125,3 +125,4 @@ if __name__ == "__main__":
     print(point.attributes)
     print(point.type)
     print(point.xyz)
+    print(point.to_compas())

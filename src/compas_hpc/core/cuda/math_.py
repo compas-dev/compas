@@ -1,9 +1,8 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from numpy import ceil
+# from numpy import ceil
 from numpy import float32
 from numpy import int32
 
@@ -12,10 +11,7 @@ try:
     import pycuda.gpuarray as cuda_array
     import pycuda.cumath
     import pycuda.autoinit
-
     has_pycuda = True
-
-    # from compas_hpc import give_cuda
 
 except ImportError:
     has_pycuda = False
@@ -35,7 +31,7 @@ __all__ = [
     'log10_cuda',
     'maximum_cuda',
     'minimum_cuda',
-    'round_cuda',
+    # 'round_cuda',
     'sin_cuda',
     'sinh_cuda',
     'sqrt_cuda',
@@ -46,7 +42,6 @@ __all__ = [
 
 
 kernel = """
-
 __global__ void round1d_cuda(float *a, float *b, int m)
 {
     int id = blockDim.x * blockIdx.x + threadIdx.x;
@@ -56,7 +51,6 @@ __global__ void round1d_cuda(float *a, float *b, int m)
         b[id] = roundf(a[id]);
     }
 }
-
 
 __global__ void round2d_cuda(float *a, float *b, int m, int n)
 {
@@ -70,7 +64,6 @@ __global__ void round2d_cuda(float *a, float *b, int m, int n)
         b[id] = roundf(a[id]);
     }
 }
-
 
 __global__ void sum0_cuda(float *a, float *b, int m, int n)
 {
@@ -95,7 +88,6 @@ __global__ void sum0_cuda(float *a, float *b, int m, int n)
     b[bid] = sum[0];
 }
 
-
 __global__ void sum1_cuda(float *a, float *b, int m, int n)
 {
     int bid = blockIdx.y;
@@ -118,8 +110,8 @@ __global__ void sum1_cuda(float *a, float *b, int m, int n)
 
     b[bid] = sum[0];
 }
-
 """
+
 if has_pycuda:
     mod = pycuda.compiler.SourceModule(kernel)
 
@@ -444,29 +436,29 @@ def minimum_cuda(a, b=None):
     return cuda_array.min(a)
 
 
-def round_cuda(a, dim=4):
-    shape = a.shape
+# def round_cuda(a, dim=4):
+#     shape = a.shape
 
-    if len(shape) == 1:
+#     if len(shape) == 1:
 
-        m = shape[0]
-        nx = int(ceil(m / dim))
+#         m = shape[0]
+#         nx = int(ceil(m / dim))
 
-        func = mod.get_function('round1d_cuda')
-        b = pycuda.gpuarray.empty((m), dtype=float32)
-        func(a, b, int32(m), block=(dim, 1, 1), grid=(nx, 1, 1))
+#         func = mod.get_function('round1d_cuda')
+#         b = pycuda.gpuarray.empty((m), dtype=float32)
+#         func(a, b, int32(m), block=(dim, 1, 1), grid=(nx, 1, 1))
 
-    elif len(shape) == 2:
+#     elif len(shape) == 2:
 
-        m, n = a.shape
-        nx = int(ceil(n / dim))
-        ny = int(ceil(m / dim))
+#         m, n = a.shape
+#         nx = int(ceil(n / dim))
+#         ny = int(ceil(m / dim))
 
-        func = mod.get_function('round2d_cuda')
-        b = pycuda.gpuarray.empty((m, n), dtype=float32)
-        func(a, b, int32(m), int32(n), block=(dim, dim, 1), grid=(nx, ny, 1))
+#         func = mod.get_function('round2d_cuda')
+#         b = pycuda.gpuarray.empty((m, n), dtype=float32)
+#         func(a, b, int32(m), int32(n), block=(dim, dim, 1), grid=(nx, ny, 1))
 
-    return b
+#     return b
 
 
 def sin_cuda(a):
@@ -561,25 +553,17 @@ def sum_cuda(a, axis=None):
     - This is temporary and not an efficient implementation.
     """
     if axis is not None:
-
         m, n = a.shape
-
         if axis == 0:
-
             func = mod.get_function('sum0_cuda')
             b = pycuda.gpuarray.empty((1, n), dtype=float32)
             func(a, b, int32(m), int32(n), block=(1, m, 1), grid=(n, 1, 1))
-
         elif axis == 1:
-
             func = mod.get_function('sum1_cuda')
             b = pycuda.gpuarray.empty((m, 1), dtype=float32)
             func(a, b, int32(m), int32(n), block=(n, 1, 1), grid=(1, m, 1))
-
         return b
-
-    else:
-        return cuda_array.sum(a)
+    return cuda_array.sum(a)
 
 
 def tan_cuda(a):
