@@ -8,7 +8,7 @@ from numpy import eye
 from numpy import float32
 from numpy import uint32
 
-from compas.hpc import give_cuda
+from compas_hpc import give_cuda
 
 try:
     import pycuda
@@ -27,7 +27,6 @@ __all__ = [
 
 
 kernel = """
-
 __global__ void dot_cuda(int m, int n, int o, float *a, float *b, float *c) {
 
     // int nx  = blockDim.x * gridDim.x;
@@ -49,6 +48,7 @@ __global__ void dot_cuda(int m, int n, int o, float *a, float *b, float *c) {
     }
 }
 """
+
 if has_pycuda:
     mod = pycuda.compiler.SourceModule(kernel)
 
@@ -110,11 +110,9 @@ def dot_cuda(a, b, dim=2):
     o = b.shape[1]
     nx = int(ceil(o / dim))
     ny = int(ceil(m / dim))
-
     func = mod.get_function('dot_cuda')
     c = pycuda.gpuarray.empty((m, o), dtype=float32)
     func(uint32(m), uint32(n), uint32(o),  a, b, c, block=(dim, dim, 1), grid=(nx, ny, 1))
-
     return c
 
 
@@ -175,29 +173,27 @@ def eye_cuda(n):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    from compas_hpc import get_cuda
 
-    # from compas.hpc import get_cuda
+    from numpy import allclose
+    from numpy import dot
+    from numpy.random import rand
 
-    # from numpy import allclose
-    # from numpy import dot
-    # from numpy.random import rand
+    from time import time
 
-    # from time import time
+    a = diag_cuda([1., 2., 3.])
+    a = eye_cuda(3)
+    b = give_cuda([[5, -2, 1], [0, 3, -1], [2, 0, 7]])
+    c = transpose_cuda(b)
 
-    # a = diag_cuda([1., 2., 3.])
-    # a = eye_cuda(3)
-    # b = give_cuda([[5, -2, 1], [0, 3, -1], [2, 0, 7]])
-    # c = transpose_cuda(b)
+    a = rand(200, 3)
+    b = rand(3, 500)
+    c = dot(a, b)
 
-    # a = rand(200, 3)
-    # b = rand(3, 500)
-    # c = dot(a, b)
+    a_ = give_cuda(a)
+    b_ = give_cuda(b)
+    c_ = dot_cuda(a_, b_)
 
-    # a_ = give_cuda(a)
-    # b_ = give_cuda(b)
-    # c_ = dot_cuda(a_, b_)
-
-    # tic = time()
-    # print(1000 * (time() - tic))
-    # print(allclose(c, get_cuda(c_)))
+    tic = time()
+    print(1000 * (time() - tic))
+    print(allclose(c, get_cuda(c_)))

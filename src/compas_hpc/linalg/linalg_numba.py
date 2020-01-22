@@ -466,42 +466,38 @@ def divide_matrices_complex_numba(A, B):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    from numpy import array
+    from numpy import complex128
+    from numpy import dot
+    from numpy import pi
+    from numpy import ones
 
-    # from numpy import array
-    # from numpy import complex128
-    # from numpy import dot
-    # from numpy import pi
-    # from numpy import ones
-    # from numpy import zeros
+    A = zeros((5, 5)) + 2
+    B = zeros((5, 5), dtype=complex128) + (1 + 1j)
+    C = zeros((5, 5)) + 4
+    D = zeros((5, 5), dtype=complex128) + (1 - 2j)
+    E = zeros((5, 2)) + 1
+    b = ones(5)
+    c = ones(5) + 3j
+    d = ones(5) * 2
+    e = ones(5) * 3
 
-    # A = zeros((5, 5)) + 2
-    # B = zeros((5, 5), dtype=complex128) + (1 + 1j)
-    # C = zeros((5, 5)) + 4
-    # D = zeros((5, 5), dtype=complex128) + (1 - 2j)
-    # E = zeros((5, 2)) + 1
-    # b = ones(5)
-    # c = ones(5) + 3j
-    # d = ones(5) * 2
-    # e = ones(5) * 3
-    # # b = array(list(range(m)), dtype=float64)
-
-    # # print(diag_numba(A, b))
-    # # print(diag_complex_numba(B, c))
-    # # print(diag_fill_numba(A, 3.0))
-    # # print(diag_fill_complex_numba(B, 3.0 + 2j))
-    # # print(scale_matrix_numba(A, 3))
-    # # print(scale_matrix_complex_numba(B, 1 + 2j))
-    # # print(multiply_matrices_numba(A, C))
-    # # print(divide_matrices_numba(A, C))
-    # # print(multiply_matrices_complex_numba(B, D))
-    # # print(divide_matrices_complex_numba(B, D))
-    # # print(dot(A, C))
-    # # print(dot_numba(A, C))
-    # # print(dot(A, d[:, None]))
-    # # print(dotv_numba(A, d))
-    # # print(transpose_numba(E))
-    # # print(trace_numba(A))
-    # # print(rotate_z_numba(array([1., 0., 3.]), pi/2))
-    # # print(rotate_y_numba(array([1., 2., 0.]), pi/2))
-    # print(rotate_x_numba(array([3., 2., 0.]), pi/2))
+    print(diag_numba(A, b))
+    print(diag_complex_numba(B, c))
+    print(diag_fill_numba(A, 3.0))
+    print(diag_fill_complex_numba(B, 3.0 + 2j))
+    print(scale_matrix_numba(A, 3))
+    print(scale_matrix_complex_numba(B, 1 + 2j))
+    print(multiply_matrices_numba(A, C))
+    print(divide_matrices_numba(A, C))
+    print(multiply_matrices_complex_numba(B, D))
+    print(divide_matrices_complex_numba(B, D))
+    print(dot(A, C))
+    print(dot_numba(A, C))
+    print(dot(A, d[:, None]))
+    print(dotv_numba(A, d))
+    print(transpose_numba(E))
+    print(trace_numba(A))
+    print(rotate_z_numba(array([1., 0., 3.]), pi/2))
+    print(rotate_y_numba(array([1., 2., 0.]), pi/2))
+    print(rotate_x_numba(array([3., 2., 0.]), pi/2))

@@ -6,12 +6,12 @@ from numpy import diag
 from numpy import eye
 from numpy import float32
 
-from compas.hpc import give_cl
+from compas_hpc import give_cl
 
-# try:
-#     import pyopencl as cl
-# except ImportError:
-#     pass
+try:
+    import pyopencl as cl
+except ImportError:
+    pass
 
 
 __all__ = [
@@ -78,15 +78,13 @@ def eye_cl(queue, n):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    from compas_hpc import get_cl
 
-    # from compas.hpc import get_cl
+    ctx = cl.create_some_context()
+    queue = cl.CommandQueue(ctx)
 
-    # ctx = cl.create_some_context()
-    # queue = cl.CommandQueue(ctx)
+    a_ = give_cl(queue, [[0, 1, 2]])
 
-    # a_ = give_cl(queue, [[0, 1, 2]])
-
-    # print(get_cl(diag_cl(queue, [0, 1, 2])))
-    # print(get_cl(eye_cl(queue, 3)))
-    # print(get_cl(transpose_cl(a_)))
+    print(get_cl(diag_cl(queue, [0, 1, 2])))
+    print(get_cl(eye_cl(queue, 3)))
+    print(get_cl(transpose_cl(a_)))

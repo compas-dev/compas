@@ -20,6 +20,7 @@ except ImportError:
 
 __all__ = [
     'device_cuda',
+
     'rand_cuda',
     'give_cuda',
     'get_cuda',
@@ -89,6 +90,7 @@ __global__ void tile_cuda(int m, int n, int repx, int repy, float *a, float *b)
 }
 
 """
+
 if has_pycuda:
     mod = pycuda.compiler.SourceModule(kernel)
 
@@ -191,9 +193,10 @@ def give_cuda(a, type='real'):
     """
     if type == 'real':
         return cuda_array.to_gpu(array(a).astype(float32))
-
     elif type == 'complex':
         return cuda_array.to_gpu(array(a).astype(complex64))
+    else:
+        raise NotImplementedError
 
 
 def get_cuda(a):
@@ -375,19 +378,19 @@ if __name__ == "__main__":
 
     n = 500
     device_cuda()
-    # a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
-    # a = give_cuda([1.+1j, 2.+2j, 3.+3j], type='complex')
-    # a = get_cuda(a)
-    # a = ones_cuda((3, 3))
-    # a = zeros_cuda((3, 3))
-    # a = give_cuda([[1, 2, 3], [4, 5, 6]])
-    # a = rand_cuda((n, n))
-    # b = rand_cuda((n, n))
-    # c = hstack_cuda(a, b, dim=4)
+    a = give_cuda([[1., 2., 3.], [4., 5., 6.]])
+    a = give_cuda([1.+1j, 2.+2j, 3.+3j], type='complex')
+    a = get_cuda(a)
+    a = ones_cuda((3, 3))
+    a = zeros_cuda((3, 3))
+    a = give_cuda([[1, 2, 3], [4, 5, 6]])
+    a = rand_cuda((n, n))
+    b = rand_cuda((n, n))
+    c = hstack_cuda(a, b, dim=4)
 
-    # print(a)
-    # print(b)
-    # print(c)
-    # print(type(a))
-    # print(a.shape)
-    # print(a.dtype)
+    print(a)
+    print(b)
+    print(c)
+    print(type(a))
+    print(a.shape)
+    print(a.dtype)

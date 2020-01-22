@@ -91,7 +91,6 @@ def give_cl(queue, a, type='real'):
     """
     if type == 'real':
         return cl_array.to_device(queue, array(a).astype(float32))
-
     elif type == 'complex':
         return cl_array.to_device(queue, array(a).astype(complex64))
 
@@ -202,7 +201,6 @@ def tile_cl(queue, a, shape, dim=4):
     b = cl_array.empty(queue, (m * repy, n * repx), dtype=float32)
 
     kernel = cl.Program(queue.context, """
-
     __kernel void tile_cl(__global float *a, __global float *b, unsigned m, unsigned n, unsigned repx, unsigned repy)
     {
         int idx = get_global_id(0);
@@ -211,7 +209,6 @@ def tile_cl(queue, a, shape, dim=4):
 
         b[id] = a[(idy % m) * n + (idx % n)];
     }
-
     """).build()
 
     kernel.tile_cl(queue, (n * repx, m * repy), None, a.data, b.data, uint32(m), uint32(n), uint32(repx), uint32(repy))
@@ -241,7 +238,6 @@ def hstack_cl(queue, a, b, dim=4):
     c = cl_array.empty(queue, (m, n + o), dtype=float32)
 
     kernel = cl.Program(queue.context, """
-
     __kernel void hstack_cl(__global float *a, __global float *b, __global float *c, unsigned n, unsigned o)
     {
         int idx = get_global_id(0);
@@ -257,7 +253,6 @@ def hstack_cl(queue, a, b, dim=4):
             c[id] = b[idy * o + (idx - n)];
         }
     }
-
     """).build()
 
     kernel.hstack_cl(queue, (n + o, m), None, a.data, b.data, c.data, uint32(n), uint32(o))
@@ -287,7 +282,6 @@ def vstack_cl(queue, a, b, dim=4):
     c = cl_array.empty(queue, (m + o, n), dtype=float32)
 
     kernel = cl.Program(queue.context, """
-
     __kernel void vstack_cl(__global float *a, __global float *b, __global float *c, unsigned m, unsigned n, unsigned o)
     {
         int idx = get_global_id(0);
@@ -303,7 +297,6 @@ def vstack_cl(queue, a, b, dim=4):
             c[id] = b[(idy - m) * n + idx];
         }
     }
-
     """).build()
 
     kernel.vstack_cl(queue, (n, m + o), None, a.data, b.data, c.data, uint32(m), uint32(n), uint32(o))
