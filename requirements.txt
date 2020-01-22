@@ -10,5 +10,6 @@ numba
 numpy >= 1.15.4
 pillow
 planarity
+pyopencl
 scipy >= 1.1
 sympy
