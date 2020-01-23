@@ -9,11 +9,10 @@ __all__ = [
 ]
 
 import base64
-import io
 import json
+import math
 import os
 import struct
-from math import fsum
 
 from compas.geometry import identity_matrix
 from compas.geometry import matrix_from_quaternion
@@ -22,13 +21,20 @@ from compas.geometry import matrix_from_translation
 from compas.geometry import multiply_matrices
 from compas.geometry import transpose_matrix
 
+COMPONENT_TYPE_BYTE = 5120
+COMPONENT_TYPE_UNSIGNED_BYTE = 5121
+COMPONENT_TYPE_SHORT = 5122
+COMPONENT_TYPE_UNSIGNED_SHORT = 5123
+COMPONENT_TYPE_UNSIGNED_INT = 5125
+COMPONENT_TYPE_FLOAT = 5126
+
 COMPONENT_TYPE_ENUM = {
-    5120: 'b',  # BYTE
-    5121: 'B',  # UNSIGNED_BYTE
-    5122: 'h',  # SHORT
-    5123: 'H',  # UNSIGNED_SHORT
-    5125: 'I',  # UNSIGNED_INT
-    5126: 'f',  # FLOAT
+    COMPONENT_TYPE_BYTE: 'b',
+    COMPONENT_TYPE_UNSIGNED_BYTE: 'B',
+    COMPONENT_TYPE_SHORT: 'h',
+    COMPONENT_TYPE_UNSIGNED_SHORT: 'H',
+    COMPONENT_TYPE_UNSIGNED_INT: 'I',
+    COMPONENT_TYPE_FLOAT: 'f',
 }
 
 NUM_COMPONENTS_BY_TYPE_ENUM = {
@@ -60,7 +66,7 @@ class MeshData(object):
         self.vertices = vertices
         self.faces = faces
         self.mesh_name = mesh_name
-        # self.material = ??
+        # self.material = None
 
 
 class GLTFScene(object):
@@ -70,14 +76,11 @@ class GLTFScene(object):
     ----------
     name : str
         Name of the scene, if any.
-    edges : list
-        List of 2-tuples referencing nodes by key.
     nodes : dict
-        Dictionary of (node_key, GLTFNode) pairs.
+        Dictionary of (node_key, :class:`GLTFNode`) pairs.
     """
     def __init__(self):
         self.name = None
-        self.edges = []
         self.nodes = {}
 
 
@@ -96,15 +99,14 @@ class GLTFNode(object):
         Index of the associated mesh within the JSON.
     weights : list of ints
         Weights used for computing morph targets in the attached mesh, if any.
-
     position : tuple
         xyz-coordinates of the node, calculated from the matrix.
     transform : list of lists
         Matrix representing the displacement from the root node to the node.
-    mesh_data : MeshData
+    mesh_data : :class:`MeshData`
         Contains mesh data, if any.
     node_key : int
-        Key of the node used in GLTFScene.nodes.
+        Key of the node used in :attr:`GLTFScene.nodes`.
     """
     def __init__(self):
         self.name = None
@@ -197,12 +199,13 @@ class GLTFReader(object):
 
         if not is_glb:
             content = self._content.tobytes().decode('utf-8')
-            self._content = None
             self.json = json.loads(content)
 
         else:
             self.load_from_glb()
-            self._content = None
+
+        self.release_buffer(self._content)
+        self._content = None
 
         self.check_version()
 
@@ -215,15 +218,7 @@ class GLTFReader(object):
                 image_data = self.get_image_data(image)
                 self.image_data.append(image_data)
 
-    def get_image_data(self, image):
-        if 'bufferView' not in image:
-            return None
-        buffer_view_index = image['bufferView']
-        buffer_view = self.json['buffersViews'][buffer_view_index]
-        buffer = self.get_buffer(buffer_view['buffer'])
-        offset = buffer_view.get('byteOffset', 0)
-        length_ = buffer_view['byteLength']
-        return buffer[offset: offset + length_]
+        self.release_buffers()
 
     def load_from_glb(self):
         header = struct.unpack_from('<4sII', self._content)
@@ -235,7 +230,7 @@ class GLTFReader(object):
         offset = 12
 
         # load json
-        type_, length_, json_bytes, offset = self.load_chunk(offset)
+        type_, _length, json_bytes, offset = self.load_chunk(offset)
         if type_ != b'JSON':
             raise Exception('Bad glTF.  First chunk not in JSON format')
         json_str = json_bytes.tobytes().decode('utf-8')
@@ -243,22 +238,32 @@ class GLTFReader(object):
 
         # load binary buffer
         if offset < len(self._content):
-            type_, length_, bytes_, offset = self.load_chunk(offset)
+            type_, _length, bytes_, offset = self.load_chunk(offset)
             if type_ == b'BIN\0':
                 self._glb_buffer = bytes_
 
     def load_chunk(self, offset):
         chunk_header = struct.unpack_from('<I4s', self._content, offset)
-        length_ = chunk_header[0]
+        length = chunk_header[0]
         type_ = chunk_header[1]
-        data = self._content[offset + 8: offset + 8 + length_]
+        data = self._content[offset + 8: offset + 8 + length]
 
-        return type_, length_, data, offset + 8 + length_
+        return type_, length, data, offset + 8 + length
 
     def check_version(self):
         version = self.json['asset']['version']
-        if float(version) != 2.0:
+        if version != '2.0':
             raise Exception('Invalid glTF version.  Version 2.0 expected.')
+
+    def get_image_data(self, image):
+        if 'bufferView' not in image:
+            return None
+        buffer_view_index = image['bufferView']
+        buffer_view = self.json['bufferViews'][buffer_view_index]
+        buffer = self.get_buffer(buffer_view['buffer'])
+        offset = buffer_view.get('byteOffset', 0)
+        length = buffer_view['byteLength']
+        return buffer[offset: offset + length].tobytes()
 
     def access_data(self, accessor):
         count = accessor['count']
@@ -315,13 +320,13 @@ class GLTFReader(object):
                 for index, tuple_ in enumerate(data):
                     new_tuple = ()
                     for i in tuple_:
-                        if component_type == 5120:
+                        if component_type == COMPONENT_TYPE_BYTE:
                             new_tuple += (max(float(i / 127.0), -1.0),)
-                        elif component_type == 5121:
+                        elif component_type == COMPONENT_TYPE_UNSIGNED_BYTE:
                             new_tuple += (float(i / 255.0),)
-                        elif component_type == 5122:
+                        elif component_type == COMPONENT_TYPE_SHORT:
                             new_tuple += (max(float(i / 32767.0), -1.0),)
-                        elif component_type == 5123:
+                        elif component_type == COMPONENT_TYPE_UNSIGNED_SHORT:
                             new_tuple += (i / 65535.0,)
                         else:
                             new_tuple += (float(i),)
@@ -362,7 +367,7 @@ class GLTFReader(object):
         buffer = self.get_buffer(buffer_index)
 
         data = [
-            unpack_from(buffer, i)
+            unpack_from(buffer[i: i + byte_stride].tobytes())
             for i in range(offset, offset + count * byte_stride, byte_stride)
         ]
 
@@ -391,6 +396,19 @@ class GLTFReader(object):
 
         return buffer
 
+    def release_buffer(self, buffer):
+        try:
+            buffer.release()
+        except AttributeError:
+            pass
+
+    def release_buffers(self):
+        self.release_buffer(self._glb_buffer)
+        self._glb_buffer = None
+        for i in range(len(self._buffers)):
+            self.release_buffer(self._buffers[i])
+        self._buffers = {}
+
     def is_data_uri(self, uri):
         return uri.startswith('data:')
 
@@ -409,14 +427,14 @@ class GLTFParser(object):
 
     Parameters
     ----------
-    reader : GLTFReader
+    reader : :class:`GLTFReader`
 
     Attributes
     ----------
-    reader : GLTF2Reader
+    reader : :class:`GLTFReader`
     default_scene_index : int
         index of the default scene
-    scenes : list of GLTFScenes
+    scenes : list of :class:`GLTFScene`
         List of dictionaries containing the information of each scene.
     """
     def __init__(self, reader):
@@ -460,8 +478,6 @@ class GLTFParser(object):
     def process_children(self, parent_key, scene_obj):
         child_keys = scene_obj.nodes[parent_key].children
         for key in child_keys:
-            scene_obj.edges.append((parent_key, key))
-
             gltf_node = GLTFNode()
 
             node = self.reader.json['nodes'][key]
@@ -552,12 +568,20 @@ class GLTFParser(object):
         weights = gltf_node.weights or weights
         return weights
 
-    def get_morph_function(self, w):
+    def get_morph_function(self, weights):
         # Returns a function which computes for a fixed list w of scalar weights the linear combination
         #                               vertex + sum_i(w[i] * targets[i])
         # where vertex and targets[i] are vectors.
+
+        def apply_weight(weight, target_coordinate):
+            return weight * target_coordinate
+
+        def weighted_sum(vertex_coordinate, *targets_coordinate):
+            return vertex_coordinate + math.fsum(map(apply_weight, weights, targets_coordinate))
+
         def apply_morph_target(vertex, *targets):
-            return tuple(map(lambda v, *t: v + fsum(map(lambda a, b: a * b, w, t)), vertex, *targets))
+            return tuple(map(weighted_sum, vertex, *targets))
+
         return apply_morph_target
 
     def get_face_side_count(self, primitive):
@@ -602,14 +626,18 @@ if __name__ == '__main__':
     filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'BoxInterleaved.glb')
 
     download_file_from_remote(source_glb, filepath_glb, overwrite=False)
-    
+
     gltf = GLTF(filepath_glb)
 
     default_scene_index = gltf.parser.default_scene_index or 0
     vertex_data = gltf.parser.scenes[default_scene_index].nodes
 
     vertices = {name: gltf_node.position for name, gltf_node in vertex_data.items()}
-    edges = gltf.parser.scenes[default_scene_index].edges
+    edges = [
+        (node.node_key, child)
+        for node in gltf.parser.scenes[default_scene_index].nodes.values()
+        for child in node.children
+    ]
 
     scene_tree = Network.from_vertices_and_edges(vertices, edges)
     scene_tree.plot()

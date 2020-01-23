@@ -42,13 +42,13 @@ def sparse_gltf():
 
 def test_from_gltf_edges_loaded(simple_gltf, embedded_gltf, interleaved_glb, indexless_gltf, morph_gltf, sparse_gltf):
     gltf = GLTF(simple_gltf)
-    assert len(gltf.parser.scenes[0].edges) > 0
+    assert len(gltf.parser.scenes[0].nodes) > 1
 
     gltf = GLTF(embedded_gltf)
-    assert len(gltf.parser.scenes[0].edges) > 0
+    assert len(gltf.parser.scenes[0].nodes) > 1
 
     gltf = GLTF(interleaved_glb)
-    assert len(gltf.parser.scenes[0].edges) > 0
+    assert len(gltf.parser.scenes[0].nodes) > 1
     assert len(gltf.parser.scenes[0].nodes[1].mesh_data.vertices) == 24
 
     gltf = GLTF(indexless_gltf)
