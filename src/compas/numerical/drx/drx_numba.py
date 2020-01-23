@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -35,19 +34,14 @@ __all__ = [
 
 
 def _args(network, factor, summary, steps, tol):
-
     X, B, P, S, V, E, A, C, Ct, f0, l0, ind_c, ind_t, u, v, M, k0, m, n, rows, cols, vals, nv = _create_arrays(network)
     inds, indi, indf, EIx, EIy, beams = _beam_data(network)
-
     if not ind_c:
         ind_c = [-1]
-
     if not ind_t:
         ind_t = [-1]
-
     ind_c = array(ind_c)
     ind_t = array(ind_t)
-
     return tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M, factor, V, inds, indi, indf, EIx, EIy, beams, C
 
 
@@ -77,33 +71,22 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
         Edge forces.
     array
         Edge lengths.
-
     """
-
     # Setup
-
     tic1 = time()
-
     args = _args(network, factor, summary, steps, tol)
-
     toc1 = time() - tic1
 
     # Solver
-
     tic2 = time()
-
     tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv, M, factor, V, inds, indi, indf, EIx, EIy, beams, C = args
-
     drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv,
                      M, factor, V, inds, indi, indf, EIx, EIy, beams)
-
     _, l = uvw_lengths(C, X)  # noqa: E741
     f = f0 + k0 * (l.ravel() - l0)
-
     toc2 = time() - tic2
 
     # Summary
-
     if summary:
         print('\n\nNumba DR -------------------')
         print('Setup time: {0:.3f} s'.format(toc1))
@@ -111,16 +94,12 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
         print('----------------------------------')
 
     # Update
-
     if update:
-
         k_i = network.key_index()
         uv_i = network.uv_index()
-
         for key in network.vertices():
             x, y, z = X[k_i[key], :]
             network.set_vertex_attributes(key, 'xyz', [x, y, z])
-
         for uv in network.edges():
             i = uv_i[uv]
             network.set_edge_attribute(uv, 'f', float(f[i]))
@@ -134,7 +113,7 @@ def drx_numba(network, factor=1.0, tol=0.1, steps=10000, summary=0, update=False
              nopython=True, cache=True, target='parallel')
 def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_t, B, P, S, rows, cols, vals, nv,
                      M, factor, V, inds, indi, indf, EIx, EIy, beams, out):
-    """ Numba accelerated dynamic relaxation solver.
+    """Numba accelerated dynamic relaxation solver.
 
     Parameters
     ----------
@@ -196,11 +175,6 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
         Nodal EIy flexural stiffnesses.
     beams : int
         Beam analysis on: 1 or off: 0.
-
-    Returns
-    -------
-    None
-
     """
     f = zeros(m)
     fx = zeros(m)
@@ -218,7 +192,6 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
     while (ts <= steps) and (res > tol):
 
         for i in range(m):
-
             xd = X[v[i], 0] - X[u[i], 0]
             yd = X[v[i], 1] - X[u[i], 1]
             zd = X[v[i], 2] - X[u[i], 2]
@@ -230,7 +203,6 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
             fz[i] = zd * q
 
         if ind_t[0] != -1:
-
             for i in ind_t:
                 if f[i] < 0:
                     fx[i] = 0
@@ -238,7 +210,6 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
                     fz[i] = 0
 
         if ind_c[0] != -1:
-
             for i in ind_c:
                 if f[i] > 0:
                     fx[i] = 0
@@ -247,9 +218,7 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
 
         if beams:
             S *= 0
-
             for i in range(len(inds)):
-
                 Xs = X[inds[i], :]
                 Xi = X[indi[i], :]
                 Xf = X[indf[i], :]
@@ -300,13 +269,11 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
         frz *= 0
 
         for i in range(nv):
-
             frx[rows[i]] += vals[i] * fx[cols[i]]
             fry[rows[i]] += vals[i] * fy[cols[i]]
             frz[rows[i]] += vals[i] * fz[cols[i]]
 
         for i in range(n):
-
             Rx = (P[i, 0] - S[i, 0] - frx[i]) * B[i, 0]
             Ry = (P[i, 1] - S[i, 1] - fry[i]) * B[i, 1]
             Rz = (P[i, 2] - S[i, 2] - frz[i]) * B[i, 2]
@@ -324,19 +291,25 @@ def drx_solver_numba(tol, steps, summary, m, n, u, v, X, f0, l0, k0, ind_c, ind_
             V *= 0
         Uo = Un
 
+        # X += V
         for i in range(n):
-
             X[i, 0] += V[i, 0]
             X[i, 1] += V[i, 1]
             X[i, 2] += V[i, 2]
 
         res = mean(Rn)
+
+        # # refresh
+        # if refresh:
+        #     if (ts % refresh == 0) or (res < tol):
+        #         print('Step:{0} Residual:{1:.3f}'.format(ts, res))
+        #         if callback:
+        #             callback(X, **kwargs)
+
         ts += 1
 
     if summary:
         print('Step:', ts - 1, ' Residual:', res)
-
-    # out = 0.
 
 
 # ==============================================================================

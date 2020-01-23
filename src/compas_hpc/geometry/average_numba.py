@@ -233,25 +233,23 @@ def center_of_mass_polyhedron_numba(vertices, faces):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+    from time import time
 
-    # from time import time
+    u = array([1., 2., 3.])
+    v = array([4., 5., 6.])
+    c = array([[0., 0., 1.], [3., 4., 1.], [6., 0., 1.]])
 
-    # u = array([1., 2., 3.])
-    # v = array([4., 5., 6.])
-    # c = array([[0., 0., 1.], [3., 4., 1.], [6., 0., 1.]])
+    tic = time()
 
-    # tic = time()
+    for i in range(10**6):
 
-    # for i in range(10**6):
+        # a = centroid_points_numba(c)
+        # a = centroid_points_xy_numba(c)
+        # a = midpoint_point_point_numba(u, v)
+        # a = midpoint_point_point_xy_numba(u, v)
+        # a = center_of_mass_polyline_numba(c)
+        # a = center_of_mass_polyline_xy_numba(c)
+        a = center_of_mass_polyhedron_numba(c, array([[0, 1, 2]]))
 
-    #     # a = centroid_points_numba(c)
-    #     # a = centroid_points_xy_numba(c)
-    #     # a = midpoint_point_point_numba(u, v)
-    #     # a = midpoint_point_point_xy_numba(u, v)
-    #     # a = center_of_mass_polyline_numba(c)
-    #     # a = center_of_mass_polyline_xy_numba(c)
-    #     a = center_of_mass_polyhedron_numba(c, array([[0, 1, 2]]))
-
-    # print(time() - tic)
-    # print(a)
+    print(time() - tic)
+    print(a)

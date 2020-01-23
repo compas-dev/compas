@@ -80,7 +80,7 @@ def eye_cl(queue, n):
 if __name__ == "__main__":
     from compas_hpc import get_cl
 
-    ctx = cl.create_some_context()
+    ctx = cl.create_some_context(interactive=False)
     queue = cl.CommandQueue(ctx)
 
     a_ = give_cl(queue, [[0, 1, 2]])

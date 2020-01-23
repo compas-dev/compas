@@ -310,19 +310,3 @@ def vstack_cl(queue, a, b, dim=4):
 
 if __name__ == "__main__":
     pass
-
-    # ctx = cl.create_some_context()
-    # queue = cl.CommandQueue(ctx)  # need to find the device association
-
-    # a = give_cl(queue, [[1., 2., 3.], [4., 5., 6.]])
-    # # a = give_cl(queue, [1.+1j, 2.+2j, 3.+3j], type='complex')
-    # a = get_cl(a)
-    # a = ones_cl(queue, (2, 2))
-    # b = zeros_cl(queue, (2, 2))
-    # c = rand_cl(queue, (1, 3))
-    # d = rand_cl(queue, (1, 2))
-    # # e = vstack_cl(queue, c, d)
-    # e = tile_cl(queue, d, (2, 2))
-
-    # print(d)
-    # print(e)
