@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-import compas_rhino
 
 from compas.geometry import Line
 from compas_rhino.geometry import RhinoGeometry

@@ -58,7 +58,7 @@ class RhinoPoint(RhinoGeometry):
 
     @classmethod
     def from_geometry(cls, geometry):
-        if not isinstance(point3d, Rhino.Geometry.Point3d):
+        if not isinstance(geometry, Rhino.Geometry.Point3d):
             geometry = Rhino.Geometry.Point3d(geometry[0], geometry[1], geometry[2])
         point = cls()
         point.geometry = geometry

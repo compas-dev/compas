@@ -3,9 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-import compas_rhino
-
-from compas.geometry import Transformation
 
 if compas.IPY:
     import Rhino
