@@ -20,13 +20,30 @@ class RhinoSurface(RhinoGeometry):
 
     __module__ = 'compas_rhino.geometry'
 
-    def __init__(self, guid):
-        super(RhinoSurface, self).__init__(guid)
+    def __init__(self):
+        super(RhinoSurface, self).__init__()
+
+    @classmethod
+    def from_guid(cls, guid):
+        obj = compas_rhino.find_object(guid)
+        surf = cls()
+        surf.guid = guid
+        surf.object = obj
+        surf.geometry = obj.Geometry
+        return surf
+
+    @classmethod
+    def from_object(cls, obj):
+        surf = cls()
+        surf.guid = obj.Id
+        surf.object = obj
+        surf.geometry = obj.Geometry
+        return surf
 
     @classmethod
     def from_selection(cls):
         guid = compas_rhino.select_surface()
-        return cls(guid)
+        return cls.from_guid(guid)
 
     def to_compas(self):
         raise NotImplementedError
@@ -486,12 +503,8 @@ if __name__ == '__main__':
 
     surface = RhinoSurface.from_selection()
 
-    # points = []
-    # for xyz in surface.heightfield():
-    #     points.append({
-    #         'pos': xyz,
-    #         'name': 'heightfield',
-    #         'color': (0, 255, 0),
-    #     })
-
-    # compas_rhino.draw_points(points, layer='Layer 01', clear=True, redraw=True)
+    print(surface.guid)
+    print(surface.object)
+    print(surface.geometry)
+    print(surface.type)
+    print(surface.name)

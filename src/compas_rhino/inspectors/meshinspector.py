@@ -66,7 +66,6 @@ class MeshVertexInspector(Conduit):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     pass
 
     # import compas

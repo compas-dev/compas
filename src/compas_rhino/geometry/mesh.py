@@ -16,13 +16,30 @@ class RhinoMesh(RhinoGeometry):
 
     __module__ = 'compas_rhino.geometry'
 
-    def __init__(self, guid):
-        super(RhinoMesh, self).__init__(guid)
+    def __init__(self):
+        super(RhinoMesh, self).__init__()
+
+    @classmethod
+    def from_guid(cls, guid):
+        obj = compas_rhino.find_object(guid)
+        mesh = cls()
+        mesh.guid = guid
+        mesh.object = obj
+        mesh.geometry = obj.Geometry
+        return mesh
+
+    @classmethod
+    def from_object(cls, obj):
+        mesh = cls()
+        mesh.guid = obj.Id
+        mesh.object = obj
+        mesh.geometry = obj.Geometry
+        return mesh
 
     @classmethod
     def from_selection(cls):
         guid = compas_rhino.select_mesh()
-        return cls(guid)
+        return cls.from_guid(guid)
 
     @property
     def vertices(self):
@@ -196,6 +213,11 @@ if __name__ == '__main__':
 
     rmesh = RhinoMesh.from_selection()
 
+    print(rmesh.guid)
+    print(rmesh.object)
+    print(rmesh.geometry)
+    print(rmesh.type)
+    print(rmesh.name)
+
     mesh = rmesh.to_compas()
-    print(len(rmesh.vertices))
-    print(mesh.number_of_vertices())
+    print(len(rmesh.vertices) == mesh.number_of_vertices())

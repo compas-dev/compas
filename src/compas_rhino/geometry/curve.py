@@ -7,7 +7,6 @@ import compas_rhino
 
 from compas.geometry import Line
 from compas.geometry import Polyline
-# from compas.geometry import Polygon
 from compas.geometry import Circle
 
 from compas_rhino.geometry import RhinoGeometry
@@ -34,20 +33,8 @@ class RhinoCurve(RhinoGeometry):
 
     __module__ = 'compas_rhino.geometry'
 
-    def __init__(self, guid):
-        super(RhinoCurve, self).__init__(guid)
-
-    @classmethod
-    def from_selection(cls):
-        """Create a ``RhinoCurve`` instance from a selected Rhino curve.
-
-        Returns
-        -------
-        RhinoCurve
-            A convenience wrapper around the Rhino curve object.
-        """
-        guid = compas_rhino.select_curve()
-        return cls(guid)
+    def __init__(self):
+        super(RhinoCurve, self).__init__()
 
     @property
     def start(self):
@@ -59,8 +46,36 @@ class RhinoCurve(RhinoGeometry):
 
     @property
     def points(self):
-        # https://github.com/mcneel/rhinoscriptsyntax/blob/a131bcbd6761b1346921fcb150f6b776140e4a0e/Scripts/rhinoscript/curve.py#L2044
         return compas_rhino.rs.CurvePoints(self.guid)
+
+    @classmethod
+    def from_guid(cls, guid):
+        obj = compas_rhino.find_object(guid)
+        curve = cls()
+        curve.guid = obj.Id
+        curve.object = obj
+        curve.geometry = obj.Geometry
+        return curve
+
+    @classmethod
+    def from_object(cls, obj):
+        curve = cls()
+        curve.guid = obj.Id
+        curve.object = obj
+        curve.geometry = obj.Geometry
+        return curve
+
+    @classmethod
+    def from_selection(cls):
+        """Create a ``RhinoCurve`` instance from a selected Rhino curve.
+
+        Returns
+        -------
+        RhinoCurve
+            A convenience wrapper around the Rhino curve object.
+        """
+        guid = compas_rhino.select_curve()
+        return cls.from_guid(guid)
 
     def to_compas(self):
         if self.is_line():
