@@ -844,7 +844,7 @@ class Network(FromToJson,
         for u, nbrs in iter(self.edge.items()):
             for v, attr in iter(nbrs.items()):
                 if data:
-                    yield u, v, attr
+                    yield (u, v), attr
                 else:
                     yield u, v
 

@@ -171,60 +171,41 @@ class EdgeFilter(object):
         3-tuple
             The next edge as a (u, v, data) tuple, if ``data=True``.
         """
-        for u, v, attr in self.edges(True):
+        for key in self.edges():
             is_match = True
+
+            attr = self.edge_attributes(key)
 
             for name, value in conditions.items():
                 method = getattr(self, name, None)
 
-                if callable(method):
-                    val = method(u, v)
-
-                    if isinstance(val, list):
-                        if value not in val:
-                            is_match = False
-                            break
-                        break
-
-                    if isinstance(value, (tuple, list)):
-                        minval, maxval = value
-
-                        if val < minval or val > maxval:
-                            is_match = False
-                            break
-                    else:
-                        if value != val:
-                            is_match = False
-                            break
-
+                if method and callable(method):
+                    val = method(key)
+                elif name in attr:
+                    val = attr[name]
                 else:
-                    if name not in attr:
+                    is_match = False
+                    break
+
+                if isinstance(val, list):
+                    if value not in val:
+                        is_match = False
+                        break
+                elif isinstance(value, (tuple, list)):
+                    minval, maxval = value
+                    if val < minval or val > maxval:
+                        is_match = False
+                        break
+                else:
+                    if value != val:
                         is_match = False
                         break
 
-                    if isinstance(attr[name], list):
-                        if value not in attr[name]:
-                            is_match = False
-                            break
-                        break
-
-                    if isinstance(value, (tuple, list)):
-                        minval, maxval = value
-
-                        if attr[name] < minval or attr[name] > maxval:
-                            is_match = False
-                            break
-                    else:
-                        if value != attr[name]:
-                            is_match = False
-                            break
-
             if is_match:
-
                 if data:
-                    yield u, v, attr
+                    yield key, attr
                 else:
-                    yield u, v
+                    yield key
 
     def edges_where_predicate(self, predicate, data=False):
         """Get edges for which a certain condition or set of conditions is true using a lambda function.
@@ -275,12 +256,12 @@ class EdgeFilter(object):
             for u, v in mesh.edges_where_predicate(lambda u, v, attr: 3 in attr['extra_attr2']):
                 print u, v
         """
-        for u, v, attr in self.edges(True):
-            if predicate(u, v, attr):
+        for key, attr in self.edges(True):
+            if predicate(key, attr):
                 if data:
-                    yield u, v, attr
+                    yield key, attr
                 else:
-                    yield u, v
+                    yield key
 
 
 class FaceFilter(object):
@@ -308,56 +289,37 @@ class FaceFilter(object):
             The next face and its attributes, if ``data=True``.
 
         """
-        for fkey, attr in self.faces(True):
+        for fkey in self.faces():
             is_match = True
+
+            attr = self.face_attributes(fkey)
 
             for name, value in conditions.items():
                 method = getattr(self, name, None)
 
-                if callable(method):
+                if method and callable(method):
                     val = method(fkey)
-
-                    if isinstance(val, list):
-                        if value not in val:
-                            is_match = False
-                            break
-                        break
-
-                    if isinstance(value, (tuple, list)):
-                        minval, maxval = value
-
-                        if val < minval or val > maxval:
-                            is_match = False
-                            break
-                    else:
-                        if value != val:
-                            is_match = False
-                            break
-
+                elif name in attr:
+                    val = attr[name]
                 else:
-                    if name not in attr:
+                    is_match = False
+                    break
+
+                if isinstance(val, list):
+                    if value not in val:
+                        is_match = False
+                        break
+                elif isinstance(value, (tuple, list)):
+                    minval, maxval = value
+                    if val < minval or val > maxval:
+                        is_match = False
+                        break
+                else:
+                    if value != val:
                         is_match = False
                         break
 
-                    if isinstance(attr[name], list):
-                        if value not in attr[name]:
-                            is_match = False
-                            break
-                        break
-
-                    if isinstance(value, (tuple, list)):
-                        minval, maxval = value
-
-                        if attr[name] < minval or attr[name] > maxval:
-                            is_match = False
-                            break
-                    else:
-                        if value != attr[name]:
-                            is_match = False
-                            break
-
             if is_match:
-
                 if data:
                     yield fkey, attr
                 else:

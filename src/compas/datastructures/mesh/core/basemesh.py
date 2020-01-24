@@ -107,30 +107,27 @@ class FaceAttributeView(AttributeView, collections.MutableMapping):
         self.attr = attr
         self.key = key
         self.custom_only = custom_only
+        self.attr.setdefault(self.key, {})
 
-    def __getitem__(self, key):
-        if self.key in self.attr and key in self.attr[self.key]:
-            return self.attr[self.key][key]
-        return self.defaults[key]
+    def __getitem__(self, name):
+        # if name in self.attr[self.key]:
+        #     return self.attr[self.key][name]
+        # return self.defaults[key]
+        return self.attr[self.key].get(name, self.defaults[name])
 
-    def __setitem__(self, key, value):
-        self.attr[self.key][key] = value
+    def __setitem__(self, name, value):
+        self.attr[self.key][name] = value
 
-    def __delitem__(self, key):
-        if self.key in self.attr:
-            if key in self.attr[self.key]:
-                del self.attr[self.key][key]
-            else:
-                raise KeyError
+    def __delitem__(self, name):
+        del self.attr[self.key][name]
 
     def __iter__(self):
         if self.custom_only:
-            if self.key in self.attr:
-                for key in self.attr[self.key]:
-                    yield key
+            for name in self.attr[self.key]:
+                yield name
         else:
-            for key in self.defaults:
-                yield key
+            for name in self.defaults:
+                yield name
 
 
 class EdgeAttributeView(AttributeView, collections.MutableMapping):
@@ -142,30 +139,27 @@ class EdgeAttributeView(AttributeView, collections.MutableMapping):
         self.attr = attr
         self.key = key
         self.custom_only = custom_only
+        if not self.key in self.attr:
+            self.attr[self.key] = {}
 
-    def __getitem__(self, key):
-        if self.key in self.attr and key in self.attr[self.key]:
-            return self.attr[self.key][key]
-        return self.defaults[key]
+    def __getitem__(self, name):
+        if name in self.attr[self.key]:
+            return self.attr[self.key][name]
+        return self.defaults[name]
 
-    def __setitem__(self, key, value):
-        self.attr[self.key][key] = value
+    def __setitem__(self, name, value):
+        self.attr[self.key][name] = value
 
-    def __delitem__(self, key):
-        if self.key in self.attr:
-            if key in self.attr[self.key]:
-                del self.attr[self.key][key]
-            else:
-                raise KeyError
+    def __delitem__(self, name):
+        del self.attr[self.key][name]
 
     def __iter__(self):
         if self.custom_only:
-            if self.key in self.attr:
-                for key in self.attr[self.key]:
-                    yield key
+            for name in self.attr[self.key]:
+                yield name
         else:
-            for key in self.defaults:
-                yield key
+            for name in self.defaults:
+                yield name
 
 
 class BaseMesh(EdgeGeometry,
@@ -1062,6 +1056,7 @@ class BaseMesh(EdgeGeometry,
         attr = attr_dict or {}
         attr.update(kwattr)
         self.face[fkey] = vertices
+        self.facedata.setdefault(fkey, attr)
         for u, v in pairwise(vertices + vertices[:1]):
             if u == v:
                 continue
@@ -1533,12 +1528,10 @@ class BaseMesh(EdgeGeometry,
                 self.facedata[key] = {}
             self.facedata[key][name] = value
             return
-        if key not in self.facedata or name not in self.facedata[key]:
-            if name in self.default_face_attributes:
-                return self.default_face_attributes[name]
-        else:
+        if key in self.facedata and name in self.facedata[key]:
             return self.facedata[key][name]
-        return None
+        if name in self.default_face_attributes:
+            return self.default_face_attributes[name]
 
     def unset_face_attribute(self, key, name):
         """Unset the attribute of a face.
@@ -1606,13 +1599,15 @@ class BaseMesh(EdgeGeometry,
             return FaceAttributeView(self.default_face_attributes, self.facedata, key)
         values = []
         for name in names:
-            if key not in self.facedata or name not in self.facedata[key]:
-                if name in self.default_face_attributes:
-                    values.append(self.default_face_attributes[name])
-                else:
-                    values.append(None)
-            else:
-                values.append(self.facedata[key][name])
+            # if key not in self.facedata or name not in self.facedata[key]:
+            #     if name in self.default_face_attributes:
+            #         values.append(self.default_face_attributes[name])
+            #     else:
+            #         values.append(None)
+            # else:
+            #     values.append(self.facedata[key][name])
+            value = self.face_attribute(key, name)
+            values.append(value)
         return values
 
     def faces_attribute(self, name, value=None, keys=None):
@@ -1738,12 +1733,12 @@ class BaseMesh(EdgeGeometry,
                 self.edgedata[v, u] = {}
             self.edgedata[u, v][name] = self.edgedata[v, u][name] = value
             return
-        if (u, v) in self.edgedata:
-            if name in self.edgedata[u, v]:
-                return self.edgedata[u, v][name]
+        if (u, v) in self.edgedata and name in self.edgedata[u, v]:
+            return self.edgedata[u, v][name]
+        if (v, u) in self.edgedata and name in self.edgedata[v, u]:
+            return self.edgedata[v, u][name]
         if name in self.default_edge_attributes:
             return self.default_edge_attributes[name]
-        return
 
     def unset_edge_attribute(self, key, name):
         """Unset the attribute of an edge.
@@ -1817,18 +1812,20 @@ class BaseMesh(EdgeGeometry,
         # get only the values of the named attributes
         values = []
         for name in names:
-            if key in self.edgedata:
-                if name in self.edgedata[key]:
-                    values.append(self.edgedata[key][name])
-                elif name in self.default_edge_attributes:
-                    values.append(self.default_edge_attributes[name])
-                else:
-                    values.append(None)
-            else:
-                if name in self.default_edge_attributes:
-                    values.append(self.default_edge_attributes[name])
-                else:
-                    values.append(None)
+            # if key in self.edgedata:
+            #     if name in self.edgedata[key]:
+            #         values.append(self.edgedata[key][name])
+            #     elif name in self.default_edge_attributes:
+            #         values.append(self.default_edge_attributes[name])
+            #     else:
+            #         values.append(None)
+            # else:
+            #     if name in self.default_edge_attributes:
+            #         values.append(self.default_edge_attributes[name])
+            #     else:
+            #         values.append(None)
+            value = self.edge_attribute(key, name)
+            values.append(value)
         return values
 
     def edges_attribute(self, name, value=None, keys=None):
@@ -2150,21 +2147,21 @@ class BaseMesh(EdgeGeometry,
     #     """
     #     return key in self.vertex
 
-    def is_vertex(self, key):
-        """Verify that a vertex is in the mesh.
+    # def is_vertex(self, key):
+    #     """Verify that a vertex is in the mesh.
 
-        Parameters
-        ----------
-        key : int
-            The identifier of the vertex.
+    #     Parameters
+    #     ----------
+    #     key : int
+    #         The identifier of the vertex.
 
-        Returns
-        -------
-        bool
-            True if the vertex is in the mesh.
-            False otherwise.
-        """
-        return key in self.vertex
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the vertex is in the mesh.
+    #         False otherwise.
+    #     """
+    #     return key in self.vertex
 
     def is_vertex_connected(self, key):
         """Verify that a vertex is connected.
@@ -2411,24 +2408,24 @@ class BaseMesh(EdgeGeometry,
     #     else:
     #         return u in self.halfedge and v in self.halfedge[u]
 
-    def is_edge(self, key):
-        """Verify that an edge is part of the mesh.
+    # def is_edge(self, key):
+    #     """Verify that an edge is part of the mesh.
 
-        Parameters
-        ----------
-        key : tuple of int
-            The identifier of the edge.
+    #     Parameters
+    #     ----------
+    #     key : tuple of int
+    #         The identifier of the edge.
 
-        Returns
-        -------
-        bool
-            True if the edge is part of the mesh.
-            False otherwise.
-        """
-        for uv in self.edges():
-            if key == uv:
-                return True
-        return False
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the edge is part of the mesh.
+    #         False otherwise.
+    #     """
+    #     for uv in self.edges():
+    #         if key == uv:
+    #             return True
+    #     return False
 
     def is_halfedge(self, key):
         """Verify that a halfedge is part of the mesh.
@@ -2522,25 +2519,25 @@ class BaseMesh(EdgeGeometry,
     # face topology
     # --------------------------------------------------------------------------
 
-    def is_face(self, fkey):
-        """Verify that a face is part of the mesh.
+    # def is_face(self, fkey):
+    #     """Verify that a face is part of the mesh.
 
-        Parameters
-        ----------
-        fkey : int
-            The identifier of the face.
+    #     Parameters
+    #     ----------
+    #     fkey : int
+    #         The identifier of the face.
 
-        Returns
-        -------
-        bool
-            True if the face exists.
-            False otherwise.
+    #     Returns
+    #     -------
+    #     bool
+    #         True if the face exists.
+    #         False otherwise.
 
-        Examples
-        --------
-        >>>
-        """
-        return fkey in self.face
+    #     Examples
+    #     --------
+    #     >>>
+    #     """
+    #     return fkey in self.face
 
     def face_vertices(self, fkey):
         """The vertices of a face.

@@ -63,30 +63,61 @@ if __name__ == "__main__":
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    mesh.update_default_face_attributes({'a': 1})
+    mesh.update_default_vertex_attributes({'v': 3})
+    mesh.update_default_face_attributes({'f': 1})
+    mesh.update_default_edge_attributes({'is_edge': True})
 
-    # for key, attr in mesh.vertices(True):
-    #     print(key, attr)
+    # key = mesh.get_any_vertex()
+    # fkey = mesh.get_any_face()
+    # ekey = mesh.get_any_edge()
 
-    # for key, attr in mesh.faces(True):
-    #     print(key, attr)
+    # mesh.vertex_attribute(key, 'v', 0)
+    # mesh.face_attribute(fkey, 'f', 5)
+    # mesh.edge_attribute(ekey, 'is_edge', False)
 
+    # print(list(mesh.vertices_where({'v': 0})))
+    # print(list(mesh.faces_where({'f': 5})))
+    # print(list(mesh.edges_where({'is_edge': False})))
+
+    # # for key, attr in mesh.vertices(True):
+    # #     print(key, attr)
+
+    # # for key, attr in mesh.faces(True):
+    # #     print(key, attr)
+
+    print()
+    print()
+    # # for key, attr in mesh.edges(True):
+    # #     print(key, attr)
+
+    for key in mesh.edges_on_boundary():
+        mesh.edge_attribute(key, 'is_edge', False)
+
+    # print()
     # for key, attr in mesh.edges(True):
     #     print(key, attr)
 
-    # xyz = mesh.vertices_attributes('xyz')
-    # print(xyz)
+    # print()
+    for key in mesh.edges_where({'is_edge': False}):
+        print(key)
 
-    # attr = mesh.vertex_attributes(0)
-    # print(attr)
+    # # print()
+    # # for key in mesh.edges_on_boundary():
+    # #     print(key, mesh.edge_attribute(key, 'is_edge'))
 
-    attr = mesh.face_attributes(0)
-    attr.custom_only = True
-    print(attr)
-    print(attr.keys())
-    print(list(attr.keys()))
+    # # xyz = mesh.vertices_attributes('xyz')
+    # # print(xyz)
 
-    # attr = mesh.edge_attributes((0, 1))
-    # print(attr)
+    # # attr = mesh.vertex_attributes(0)
+    # # print(attr)
 
-    # print(mesh)
+    # # attr = mesh.face_attributes(0)
+    # # attr.custom_only = True
+    # # print(attr)
+    # # print(attr.keys())
+    # # print(list(attr.keys()))
+
+    # # attr = mesh.edge_attributes((0, 1))
+    # # print(attr)
+
+    # # print(mesh)

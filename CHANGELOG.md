@@ -21,6 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Moved `compas_rhino.conduits` into `compas_rhino.artists`.
+- Fixed bug in `compas.datastructures.Mesh.edges_where`.
+- Fixed bug in `compas.datastructures.Mesh.faces_where`.
+- Fixed bug in `compas.datastructures.Mesh.edge_attributes`.
+- Fixed bug in `compas.datastructures.Mesh.face_attributes`.
+- Fixed bug in `compas.datastructures.Mesh.edges`.
+- Fixed bug in `compas.datastructures.Mesh.faces`.
 
 ### Removed
 
