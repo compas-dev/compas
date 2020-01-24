@@ -4,6 +4,7 @@ bump2version >=0.5.11
 check-manifest >=0.36
 doc8
 flake8
+imageio
 invoke >=0.14
 ipykernel
 ipython >=5.8
