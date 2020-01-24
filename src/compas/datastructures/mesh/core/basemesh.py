@@ -1599,13 +1599,6 @@ class BaseMesh(EdgeGeometry,
             return FaceAttributeView(self.default_face_attributes, self.facedata, key)
         values = []
         for name in names:
-            # if key not in self.facedata or name not in self.facedata[key]:
-            #     if name in self.default_face_attributes:
-            #         values.append(self.default_face_attributes[name])
-            #     else:
-            #         values.append(None)
-            # else:
-            #     values.append(self.facedata[key][name])
             value = self.face_attribute(key, name)
             values.append(value)
         return values
@@ -1812,18 +1805,6 @@ class BaseMesh(EdgeGeometry,
         # get only the values of the named attributes
         values = []
         for name in names:
-            # if key in self.edgedata:
-            #     if name in self.edgedata[key]:
-            #         values.append(self.edgedata[key][name])
-            #     elif name in self.default_edge_attributes:
-            #         values.append(self.default_edge_attributes[name])
-            #     else:
-            #         values.append(None)
-            # else:
-            #     if name in self.default_edge_attributes:
-            #         values.append(self.default_edge_attributes[name])
-            #     else:
-            #         values.append(None)
             value = self.edge_attribute(key, name)
             values.append(value)
         return values

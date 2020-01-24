@@ -34,11 +34,12 @@ try:
     import scriptcontext as sc  # noqa: F401
 except ImportError:
     pass
+else:
+    try:
+        find_object = sc.doc.Objects.Find
+    except Exception:
+        pass
 
-try:
-    find_object = sc.doc.Objects.Find
-except ImportError:
-    pass
 
 __version__ = '0.14.0'
 
