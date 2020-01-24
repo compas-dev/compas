@@ -1430,7 +1430,7 @@ class BaseMesh(EdgeGeometry,
         """
         if not keys:
             keys = self.vertices()
-        if value:
+        if value is not None:
             for key in keys:
                 self.vertex_attribute(key, name, value)
             return
@@ -1623,7 +1623,7 @@ class BaseMesh(EdgeGeometry,
         """
         if not keys:
             keys = self.faces()
-        if value:
+        if value is not None:
             for key in keys:
                 self.face_attribute(key, name, value)
             return
@@ -1829,7 +1829,7 @@ class BaseMesh(EdgeGeometry,
         """
         if not keys:
             keys = self.edges()
-        if value:
+        if value is not None:
             for key in keys:
                 self.edge_attribute(key, name, value)
             return
