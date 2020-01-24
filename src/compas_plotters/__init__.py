@@ -23,7 +23,7 @@ from __future__ import division
 from __future__ import print_function
 
 
-__version__ = '0.14.0'
+__version__ = '0.15.0'
 
 
 from .core import *  # noqa: F401 F403
