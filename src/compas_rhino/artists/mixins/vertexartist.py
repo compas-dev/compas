@@ -90,7 +90,7 @@ class VertexArtist(object):
                 'pos': self.datastructure.vertex_coordinates(key),
                 'name': self.datastructure.vertex_name(key),
                 'color': colordict[key],
-                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'layer': self.datastructure.vertex_attribute(key, 'layer', None)
             })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
@@ -142,7 +142,7 @@ class VertexArtist(object):
                 'name': self.datastructure.vertex_label_name(key),
                 'color': colordict[key],
                 'text': textdict[key],
-                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'layer': self.datastructure.vertex_attribute(key, 'layer', None)
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
