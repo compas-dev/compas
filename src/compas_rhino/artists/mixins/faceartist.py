@@ -125,7 +125,7 @@ class FaceArtist(object):
                 'points': self.datastructure.face_coordinates(fkey),
                 'name': self.datastructure.face_name(fkey),
                 'color': colordict[fkey],
-                'layer': self.datastructure.get_face_attribute(fkey, 'layer', None)
+                'layer': self.datastructure.face_attribute(fkey, 'layer', None)
             })
 
         guids = compas_rhino.draw_faces(faces, layer=self.layer, clear=False, redraw=False)
@@ -183,7 +183,7 @@ class FaceArtist(object):
                 'name': "{}.face.label.{}".format(self.datastructure.name, key),
                 'color': colordict[key],
                 'text': textdict[key],
-                'layer': self.datastructure.get_face_attribute(key, 'layer', None)
+                'layer': self.datastructure.face_attribute(key, 'layer', None)
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
