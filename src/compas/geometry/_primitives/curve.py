@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.utilities import binomial_coefficient
+from math import factorial
 
 from compas.geometry._primitives import Primitive
 from compas.geometry._primitives import Point
@@ -10,6 +10,31 @@ from compas.geometry._primitives import Vector
 
 
 __all__ = ['Bezier']
+
+
+def binomial_coefficient(n, k):
+    """Returns the binomial coefficient of the :math:`x^k` term in the
+    polynomial expansion of the binomial power :math:`(1 + x)^n`.
+
+    Notes
+    -----
+    Arranging binomial coefficients into rows for successive values of `n`,
+    and in which `k` ranges from 0 to `n`, gives a triangular array known as
+    Pascal's triangle.
+
+    Parameters
+    ----------
+    n : int
+        The number of terms.
+    k : int
+        The index of the coefficient.
+
+    Returns
+    -------
+    int
+        The coefficient.
+    """
+    return int(factorial(n) / float(factorial(k) * factorial(n - k)))
 
 
 def bernstein(n, k, t):
@@ -51,19 +76,13 @@ def bernstein(n, k, t):
 class Bezier(Primitive):
     """A Bezier curve.
 
-    A Bezier curve of degree `n` is a linear combination of `n` + 1 Bernstein
-    basis polynomials of degree `n`.
+    A Bezier curve of degree ``n`` is a linear combination of ``n + 1`` Bernstein
+    basis polynomials of degree ``n``.
 
     Parameters
     ----------
     points : sequence
         A sequence of control points, represented by their location in 3D space.
-
-    Attributes
-    ----------
-    data
-    points
-    degree
 
     Examples
     --------
@@ -90,13 +109,7 @@ class Bezier(Primitive):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the curve.
-
-        Returns
-        -------
-        dict
-            The curve's data.
-        """
+        """dict: The data dictionary that represents the curve."""
         return {'points': [list(point) for point in self.points]}
 
     @data.setter
@@ -105,19 +118,7 @@ class Bezier(Primitive):
 
     @property
     def points(self):
-        """The control points.
-
-        Parameters
-        ----------
-        points : sequence
-            A sequence of control point locations in 3d space.
-
-        Returns
-        -------
-        list
-            A list of ``Point`` objects.
-
-        """
+        """list of :class:`compas.geometry.Point`: The control points."""
         return self._points
 
     @points.setter
@@ -127,14 +128,14 @@ class Bezier(Primitive):
 
     @property
     def degree(self):
-        """The degree of the curve."""
+        """int (read-only): The degree of the curve."""
         return len(self.points) - 1
 
     # ==========================================================================
     # methods
     # ==========================================================================
 
-    def compute_point(self, t):
+    def point(self, t):
         """Compute a point on the curve.
 
         Parameters
@@ -150,9 +151,9 @@ class Bezier(Primitive):
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
-        >>> curve.compute_point(0.0)
+        >>> curve.point(0.0)
         Point(0.000, 0.000, 0.000)
-        >>> curve.compute_point(1.0)
+        >>> curve.point(1.0)
         Point(1.000, 0.000, 0.000)
         """
         n = self.degree
@@ -162,7 +163,7 @@ class Bezier(Primitive):
             point += p * b
         return point
 
-    def compute_tangent(self, t):
+    def tangent(self, t):
         """Compute the tangent vector at a point on the curve.
 
         Parameters
@@ -178,7 +179,7 @@ class Bezier(Primitive):
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
-        >>> curve.compute_tangent(0.5)
+        >>> curve.tangent(0.5)
         Vector(1.000, 0.000, 0.000)
         """
         n = self.degree
@@ -191,7 +192,7 @@ class Bezier(Primitive):
         v.unitize()
         return v
 
-    def compute_locus(self, resolution=100):
+    def locus(self, resolution=100):
         """Compute the locus of all points on the curve.
 
         Parameters
@@ -208,7 +209,7 @@ class Bezier(Primitive):
         Examples
         --------
         >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
-        >>> points = curve.compute_locus(10)
+        >>> points = curve.locus(10)
         >>> len(points) == 10
         True
         >>> points[0]
@@ -220,26 +221,8 @@ class Bezier(Primitive):
         divisor = float(resolution - 1)
         for i in range(resolution):
             t = i / divisor
-            locus.append(self.compute_point(t))
+            locus.append(self.point(t))
         return locus
-
-    # def draw(self, params=None):
-    #     import matplotlib.pyplot as plt
-    #     locus = self.compute_locus()
-    #     x, y, _ = zip(*locus)
-    #     plt.plot(x, y, '-b')
-    #     x, y, _ = zip(* self.points)
-    #     plt.plot(x, y, 'ro')
-    #     if params is not None:
-    #         for t in params:
-    #             p0 = self.compute_point(t)
-    #             v = self.compute_tangent(t)
-    #             p1 = p0 + v
-    #             plt.plot([p0[0], p1[0]], [p0[1], p1[1]], '-k')
-    #             plt.plot([p0[0]], [p0[1]], 'ok')
-    #     ax = plt.gca()
-    #     ax.set_aspect('equal')
-    #     plt.show()
 
 
 # ==============================================================================
@@ -247,9 +230,6 @@ class Bezier(Primitive):
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    # curve = Bezier([[0, 0, 0], [1, -1, 0], [2, +1, 0], [3, 0, 0]])
-    # curve.draw(params=[0.1, 0.2, 0.3, 0.4, 0.5])
 
     import doctest
     doctest.testmod(globs=globals())

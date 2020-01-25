@@ -13,17 +13,6 @@ __all__ = ['Circle']
 class Circle(Primitive):
     """A circle is defined by a plane and a radius.
 
-    Attributes
-    ----------
-    data
-    plane
-    radius
-    normal
-    diameter
-    center
-    area
-    circumference
-
     Examples
     --------
     >>> from compas.geometry import Plane
@@ -46,12 +35,12 @@ class Circle(Primitive):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
         -------
-        Circle
+        :class:`compas.geometry.Circle`
             The constructed circle.
 
         Examples
@@ -88,13 +77,7 @@ class Circle(Primitive):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the circle.
-
-        Returns
-        -------
-        dict
-            The circle data.
-        """
+        """dict : The data dictionary that represents the circle."""
         return {'plane': [list(self.plane.point), list(self.plane.normal)], 'radius': self.radius}
 
     @data.setter
@@ -104,7 +87,7 @@ class Circle(Primitive):
 
     @property
     def plane(self):
-        """Plane: The plane of the circle."""
+        """:class:`compas.geometry.Plane` : The plane of the circle."""
         return self._plane
 
     @plane.setter
@@ -113,7 +96,7 @@ class Circle(Primitive):
 
     @property
     def radius(self):
-        """float: The radius of the circle."""
+        """float : The radius of the circle."""
         return self._radius
 
     @radius.setter
@@ -122,7 +105,7 @@ class Circle(Primitive):
 
     @property
     def normal(self):
-        """Vector: The normal of the circle."""
+        """:class:`compas.geometry.Vector` : The normal of the circle."""
         return self.plane.normal
 
     @property
@@ -132,7 +115,7 @@ class Circle(Primitive):
 
     @property
     def center(self):
-        """Point: The center of the circle."""
+        """:class:`compas.geometry.Point` : The center of the circle."""
         return self.plane.point
 
     @center.setter
@@ -141,12 +124,12 @@ class Circle(Primitive):
 
     @property
     def area(self):
-        """Float: The area of the circle."""
+        """float  : The area of the circle."""
         return pi * (self.radius**2)
 
     @property
     def circumference(self):
-        """Float: The circumference of the circle."""
+        """float : The circumference of the circle."""
         return 2 * pi * self.radius
 
     # ==========================================================================
@@ -187,11 +170,11 @@ class Circle(Primitive):
     # ==========================================================================
 
     def copy(self):
-        """Makes a copy of this ``Circle``.
+        """Makes a copy of this circle.
 
         Returns
         -------
-        Circle
+        :class:`compas.geometry.Circle`
             The copy.
 
         Examples
@@ -208,13 +191,13 @@ class Circle(Primitive):
     # transformations
     # ==========================================================================
 
-    def transform(self, transformation):
+    def transform(self, T):
         """Transform the circle.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the circle.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Examples
         --------
@@ -227,19 +210,19 @@ class Circle(Primitive):
         >>> T = Transformation.from_frame(frame)
         >>> circle.transform(T)
         """
-        self.plane.transform(transformation)
+        self.plane.transform(T)
 
-    def transformed(self, transformation):
+    def transformed(self, T):
         """Returns a transformed copy of the current circle.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the circle.
+        T : :class:`compas.geometry.Transformation`
+            The transformation.
 
         Returns
         -------
-        :class:`circle`
+        :class:`compas.geometry.Circle`
             The transformed circle.
 
         Examples
@@ -254,7 +237,7 @@ class Circle(Primitive):
         >>> circle_transformed = circle.transformed(T)
         """
         circle = self.copy()
-        circle.transform(transformation)
+        circle.transform(T)
         return circle
 
 

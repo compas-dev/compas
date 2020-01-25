@@ -5,35 +5,37 @@ from __future__ import print_function
 from math import cos
 from math import pi
 from math import sin
+from math import sqrt
 
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
+from compas.geometry import Circle
+from compas.geometry import Frame
+from compas.geometry import Plane
 
-from compas.geometry._primitives import Circle
-from compas.geometry._primitives import Frame
-from compas.geometry._primitives import Plane
-from compas.geometry._primitives import Shape
-
-__all__ = ['Cylinder']
+from compas.geometry._shapes import Shape
 
 
-class Cylinder(Shape):
-    """A cylinder is defined by a circle and a height.
+__all__ = ['Cone']
+
+
+class Cone(Shape):
+    """A cone is defined by a circle and a height.
 
     Attributes
     ----------
     circle: :class:`compas.geometry.Circle`
-        The circle of the cylinder.
+        The circle of the cone.
     height: float
-        The height of the cylinder.
+        The height of the cone.
 
     Examples
     --------
     >>> from compas.geometry import Plane
-    >>> from compas.geometry import Cylinder
+    >>> from compas.geometry import Cone
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
     >>> circle = Circle(plane, 5)
-    >>> cylinder = Cylinder(circle, 7)
+    >>> cone = Cone(circle, 7)
 
     """
 
@@ -47,7 +49,7 @@ class Cylinder(Shape):
 
     @classmethod
     def from_data(cls, data):
-        """Construct a cylinder from its data representation.
+        """Construct a cone from its data representation.
 
         Parameters
         ----------
@@ -56,21 +58,21 @@ class Cylinder(Shape):
 
         Returns
         -------
-        Cylinder
-            The constructed cylinder.
+        Cone
+            The constructed cone.
 
         Examples
         --------
-        >>> from compas.geometry import Cylinder
+        >>> from compas.geometry import Cone
         >>> from compas.geometry import Circle
         >>> from compas.geometry import Plane
         >>> data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-        >>> cylinder = Cylinder.from_data(data)
+        >>> cone = Cone.from_data(data)
 
         """
-        cylinder = cls(Circle(Plane.worldXY(), 1), 1)
-        cylinder.data = data
-        return cylinder
+        cone = cls(Circle(Plane.worldXY(), 1), 1)
+        cone.data = data
+        return cone
 
     # ==========================================================================
     # descriptors
@@ -78,7 +80,7 @@ class Cylinder(Shape):
 
     @property
     def plane(self):
-        """Plane: The plane of the cylinder."""
+        """Plane: The plane of the cone."""
         return self.circle.plane
 
     @plane.setter
@@ -87,7 +89,7 @@ class Cylinder(Shape):
 
     @property
     def circle(self):
-        """float: The circle of the cylinder."""
+        """float: The circle of the cone."""
         return self._circle
 
     @circle.setter
@@ -96,7 +98,7 @@ class Cylinder(Shape):
 
     @property
     def radius(self):
-        """float: The radius of the cylinder."""
+        """float: The radius of the cone."""
         return self.circle.radius
 
     @radius.setter
@@ -105,7 +107,7 @@ class Cylinder(Shape):
 
     @property
     def height(self):
-        """float: The height of the cylinder."""
+        """float: The height of the cone."""
         return self._height
 
     @height.setter
@@ -114,22 +116,22 @@ class Cylinder(Shape):
 
     @property
     def normal(self):
-        """Vector: The normal of the cylinder."""
+        """Vector: The normal of the cone."""
         return self.plane.normal
 
     @property
     def diameter(self):
-        """float: The diameter of the cylinder."""
+        """float: The diameter of the cone."""
         return self.circle.diameter
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the cylinder.
+        """Returns the data dictionary that represents the cone.
 
         Returns
         -------
         dict
-            The cylinder data.
+            The cone data.
 
         """
         return {'circle': self.circle.data,
@@ -141,19 +143,19 @@ class Cylinder(Shape):
         self.height = data['height']
 
     def to_data(self):
-        """Returns the data dictionary that represents the cylinder.
+        """Returns the data dictionary that represents the cone.
 
         Returns
         -------
         dict
-            The cylinder data.
+            The cone data.
 
         """
         return self.data
 
     @property
     def center(self):
-        """Point: The center of the cylinder."""
+        """Point: The center of the cone."""
         return self.circle.center
 
     @center.setter
@@ -162,13 +164,14 @@ class Cylinder(Shape):
 
     @property
     def area(self):
-        """Float: The surface area of the cylinder."""
-        return (self.circle.area * 2) + (self.circle.circumference * self.height)
+        """Float: The surface area of the cone."""
+        r = self.circle.radius
+        return pi * r * (r + sqrt(self.height**2 + r**2))
 
     @property
     def volume(self):
-        """Float: The volume of the cylinder."""
-        return self.circle.area * self.height
+        """Float: The volume of the cone."""
+        return pi * self.circle.radius**2 * (self.height / 3)
 
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
@@ -179,15 +182,11 @@ class Cylinder(Shape):
 
         vertices = []
         a = 2 * pi / u
-        z = self.height / 2
         for i in range(u):
             x = self.circle.radius * cos(i * a)
             y = self.circle.radius * sin(i * a)
-            vertices.append([x, y, z])
-            vertices.append([x, y, -z])
-        # add v in bottom and top's circle center
-        vertices.append([0, 0, z])
-        vertices.append([0, 0, -z])
+            vertices.append([x, y, 0])
+        vertices.append([0, 0, self.height])
 
         # transform vertices to cylinder's plane
         frame = Frame.from_plane(self.circle.plane)
@@ -195,15 +194,11 @@ class Cylinder(Shape):
         vertices = transform_points(vertices, M)
 
         faces = []
-        # side faces
-        for i in range(0, u * 2, 2):
-            faces.append([i, i + 1, (i + 3) % (u * 2), (i + 2) % (u * 2)])
-        # top and bottom circle faces
-        for i in range(0, u * 2, 2):
-            top = [i, (i + 2) % (u * 2), len(vertices) - 2]
-            bottom = [i + 1, (i + 3) % (u * 2), len(vertices) - 1]
-            faces.append(top)
-            faces.append(bottom[::-1])
+        last = len(vertices) - 1
+        for i in range(u):
+            faces.append([i, (i + 1) % u, last])
+        faces.append([i for i in range(u)])
+        faces[-1].reverse()
 
         return vertices, faces
 
@@ -212,7 +207,7 @@ class Cylinder(Shape):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Cylinder({0}, {1})'.format(self.circle, self.height)
+        return 'Cone({0}, {1})'.format(self.circle, self.height)
 
     def __len__(self):
         return 2
@@ -245,11 +240,11 @@ class Cylinder(Shape):
     # ==========================================================================
 
     def copy(self):
-        """Makes a copy of this ``Cylinder``.
+        """Makes a copy of this ``Cone``.
 
         Returns
         -------
-        Cylinder
+        Cone
             The copy.
 
         """
@@ -261,39 +256,39 @@ class Cylinder(Shape):
     # ==========================================================================
 
     def transform(self, transformation):
-        """Transform the cylinder.
+        """Transform the cone.
 
         Parameters
         ----------
         transformation : :class:`Transformation`
-            The transformation used to transform the cylinder.
+            The transformation used to transform the cone.
 
         Examples
         --------
         >>> from compas.geometry import Frame
         >>> from compas.geometry import Transformation
         >>> from compas.geometry import Plane
-        >>> from compas.geometry import Cylinder
-        >>> cylinder = Cylinder(Plane.worldXY(), 5, 7)
+        >>> from compas.geometry import Cone
+        >>> cone = Cone(Plane.worldXY(), 5, 7)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
-        >>> cylinder.transform(T)
+        >>> cone.transform(T)
 
         """
         self.circle.transform(transformation)
 
     def transformed(self, transformation):
-        """Returns a transformed copy of the current cylinder.
+        """Returns a transformed copy of the current cone.
 
         Parameters
         ----------
         transformation : :class:`Transformation`
-            The transformation used to transform the cylinder.
+            The transformation used to transform the cone.
 
         Returns
         -------
-        :class:`cylinder`
-            The transformed cylinder.
+        :class: `Cone`
+            The transformed cone.
 
         Examples
         --------
@@ -301,16 +296,16 @@ class Cylinder(Shape):
         >>> from compas.geometry import Transformation
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Circle
-        >>> from compas.geometry import Cylinder
-        >>> cylinder = Cylinder(Circle(Plane.worldXY(), 5), 7)
+        >>> from compas.geometry import Cone
+        >>> cone = Cone(Circle(Plane.worldXY(), 5), 7)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
-        >>> circle_transformed = cylinder.transformed(T)
+        >>> circle_transformed = cone.transformed(T)
 
         """
-        cylinder = self.copy()
-        cylinder.transform(transformation)
-        return cylinder
+        cone = self.copy()
+        cone.transform(transformation)
+        return cone
 
 
 # ==============================================================================
@@ -320,17 +315,17 @@ class Cylinder(Shape):
 if __name__ == "__main__":
     from compas.geometry import Transformation
 
-    cylinder = Cylinder(Circle(Plane.worldXY(), 5), 7)
+    cone = Cone(Circle(Plane.worldXY(), 5), 7)
     frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     print(frame.normal)
     T = Transformation.from_frame(frame)
-    cylinder.transform(T)
-    print(cylinder)
+    cone.transform(T)
+    print(cone)
 
     print(Plane.worldXY().data)
     data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-    cylinder = Cylinder.from_data(data)
-    print(cylinder)
+    cone = Cone.from_data(data)
+    print(cone)
 
     import doctest
     doctest.testmod()

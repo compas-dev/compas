@@ -20,13 +20,6 @@ class Plane(Primitive):
     normal : vector
         The normal vector of the plane.
 
-    Attributes
-    ----------
-    data
-    point
-    normal
-    d
-
     Notes
     -----
     For more info on lines and linear equations, see [1]_.
@@ -37,7 +30,6 @@ class Plane(Primitive):
 
     Examples
     --------
-    >>> from compas.geometry import Plane
     >>> plane = Plane([0, 0, 0], [0, 0, 1])
     >>> plane.point
     Point(0.000, 0.000, 0.000)
@@ -72,7 +64,7 @@ class Plane(Primitive):
 
         Returns
         -------
-        Plane
+        :class:`compas.geometry.Plane`
             A plane with base point ``a`` and normal vector defined as the unitized
             cross product of the vectors ``ab`` and ``ac``.
 
@@ -105,7 +97,7 @@ class Plane(Primitive):
 
         Returns
         -------
-        Plane
+        :class:`compas.geometry.Plane`
             A plane with base point ``point`` and normal vector defined as the unitized
             cross product of vectors ``u`` and ``v``.
 
@@ -126,7 +118,7 @@ class Plane(Primitive):
 
         Returns
         -------
-        Plane
+        :class:`compas.geometry.Plane`
             The world XY plane.
 
         """
@@ -138,12 +130,12 @@ class Plane(Primitive):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
         -------
-        Plane
+        :class:`compas.geometry.Plane`
             The constructed plane.
 
         Examples
@@ -162,14 +154,7 @@ class Plane(Primitive):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the plane.
-
-        Returns
-        -------
-        dict
-            The plane data.
-
-        """
+        """dict : The data dictionary that represents the plane."""
         return {'point': list(self.point),
                 'normal': list(self.normal)}
 
@@ -180,7 +165,7 @@ class Plane(Primitive):
 
     @property
     def point(self):
-        """Point: The base point of the plane."""
+        """:class:`compas.geometry.Plane` : The base point of the plane."""
         return self._point
 
     @point.setter
@@ -189,7 +174,7 @@ class Plane(Primitive):
 
     @property
     def normal(self):
-        """Vector: The normal vector of the plane."""
+        """:class:`compas.geometry.Vector` : The normal vector of the plane."""
         return self._normal
 
     @normal.setter
@@ -199,7 +184,7 @@ class Plane(Primitive):
 
     @property
     def d(self):
-        """:obj:`float`: The *d* parameter of the linear equation describing the plane."""
+        """float: The *d* parameter of the linear equation describing the plane."""
         a, b, c = self.normal
         x, y, z = self.point
         return - a * x - b * y - c * z
@@ -257,11 +242,11 @@ class Plane(Primitive):
     # ==========================================================================
 
     def copy(self):
-        """Make a copy of this ``Plane``.
+        """Make a copy of this plane.
 
         Returns
         -------
-        Plane
+        :class:`compas.geometr.Plane`
             The copy.
 
         Examples
@@ -283,13 +268,13 @@ class Plane(Primitive):
     # transformations
     # ==========================================================================
 
-    def transform(self, transformation):
-        """Transform this ``Plane`` using a given ``Transformation``.
+    def transform(self, T):
+        """Transform this plane.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the plane.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Examples
         --------
@@ -301,16 +286,16 @@ class Plane(Primitive):
         >>> plane = Plane.worldXY()
         >>> plane.transform(T)
         """
-        self.point.transform(transformation)
-        self.normal.transform(transformation)
+        self.point.transform(T)
+        self.normal.transform(T)
 
-    def transformed(self, transformation):
+    def transformed(self, T):
         """Returns a transformed copy of the current plane.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the plane.
+        transformation : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Returns
         -------
@@ -328,7 +313,7 @@ class Plane(Primitive):
         >>> p2 = p1.transformed(T)
         """
         plane = self.copy()
-        plane.transform(transformation)
+        plane.transform(T)
         return plane
 
 

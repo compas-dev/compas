@@ -26,13 +26,6 @@ class Polyline(Primitive):
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
 
-    Attributes
-    ----------
-    data
-    points
-    lines
-    length
-
     Examples
     --------
     >>> polyline = Polyline([[0,0,0], [1,0,0], [2,0,0], [3,0,0]])
@@ -73,7 +66,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        Polyline
+        :class:`compas.geometry.Polyline`
             The constructed polyline.
 
         Examples
@@ -120,7 +113,7 @@ class Polyline(Primitive):
 
     @property
     def length(self):
-        """float: The length of the polyline."""
+        """float : The length of the polyline."""
         return sum([line.length for line in self.lines])
 
     # ==========================================================================
@@ -218,11 +211,11 @@ class Polyline(Primitive):
     # ==========================================================================
 
     def copy(self):
-        """Make a copy of this ``Polyline``.
+        """Make a copy of this polyline.
 
         Returns
         -------
-        Polyline
+        :class:`compas.geometry.Polyline`
             The copy.
 
         Examples
@@ -279,13 +272,13 @@ class Polyline(Primitive):
     # transformations
     # ==========================================================================
 
-    def transform(self, matrix):
-        """Transform this ``Polyline`` using a given transformation matrix.
+    def transform(self, T):
+        """Transform this polyline.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Examples
         --------
@@ -295,22 +288,22 @@ class Polyline(Primitive):
         >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
         >>> polyline.transform(R)
         """
-        for index, point in enumerate(transform_points(self.points, matrix)):
+        for index, point in enumerate(transform_points(self.points, T)):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
 
-    def transformed(self, matrix):
-        """Return a transformed copy of this ``Polyline`` using a given transformation matrix.
+    def transformed(self, T):
+        """Return a transformed copy of this polyline.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Returns
         -------
-        Polyline
+        :class:`compas.geometry.Polyline`
             The transformed copy.
 
         Examples
@@ -325,7 +318,7 @@ class Polyline(Primitive):
         False
         """
         polyline = self.copy()
-        polyline.transform(matrix)
+        polyline.transform(T)
         return polyline
 
 

@@ -33,14 +33,6 @@ class Vector(Primitive):
         The number of fractional digits used in the representation of the coordinates of the vector.
         Default is ``3``.
 
-    Attributes
-    ----------
-    data
-    x
-    y
-    z
-    length
-
     Examples
     --------
     >>> u = Vector(1, 0, 0)
@@ -79,17 +71,12 @@ class Vector(Primitive):
 
     @staticmethod
     def transform_collection(collection, X):
-        """Transform a collection of ``Vector`` objects.
+        """Transform a collection of vector objects.
 
         Parameters
         ----------
-        collection : list of compas.geometry.Vector
+        collection : list of :class:`compas.geometry.Vector`
             The collection of vectors.
-
-        Returns
-        -------
-        None
-            The vectors are modified in-place.
 
         Examples
         --------
@@ -111,16 +98,16 @@ class Vector(Primitive):
 
     @staticmethod
     def transformed_collection(collection, X):
-        """Create a collection of transformed ``Vector`` objects.
+        """Create a collection of transformed vectors.
 
         Parameters
         ----------
-        collection : list of compas.geometry.Vector
+        collection : list of :class:`compas.geometry.Vector`
             The collection of vectors.
 
         Returns
         -------
-        list of compas.geometry.Vector
+        list of :class:`compas.geometry.Vector`
             The transformed vectors.
 
         Examples
@@ -149,7 +136,7 @@ class Vector(Primitive):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             A vector with components ``x = 1.0, y = 0.0, z = 0.0``.
 
         Examples
@@ -165,7 +152,7 @@ class Vector(Primitive):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             A vector with components ``x = 0.0, y = 1.0, z = 0.0``.
 
         Examples
@@ -181,7 +168,7 @@ class Vector(Primitive):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             A vector with components ``x = 0.0, y = 0.0, z = 1.0``.
 
         Examples
@@ -193,18 +180,18 @@ class Vector(Primitive):
 
     @classmethod
     def from_start_end(cls, start, end):
-        """Construct a ``Vector`` from start and end points.
+        """Construct a vector from start and end points.
 
         Parameters
         ----------
-        start : point
+        start : :class:`compas.geometry.Point` or list
             The start point.
-        end : point
+        end : :class:`compas.geometry.Point` or list
             The end point.
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             The vector from start to end.
 
         Examples
@@ -226,7 +213,7 @@ class Vector(Primitive):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             The vector constructed from the provided data.
 
         Examples
@@ -242,13 +229,7 @@ class Vector(Primitive):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the vector.
-
-        Returns
-        -------
-        dict
-            The vector's data.
-        """
+        """dict : The data dictionary that represents the vector."""
         return list(self)
 
     @data.setter
@@ -259,7 +240,7 @@ class Vector(Primitive):
 
     @property
     def x(self):
-        """float: The X coordinate of the point."""
+        """float : The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -268,7 +249,7 @@ class Vector(Primitive):
 
     @property
     def y(self):
-        """float: The Y coordinate of the point."""
+        """float : The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -277,7 +258,7 @@ class Vector(Primitive):
 
     @property
     def z(self):
-        """float: The Z coordinate of the point."""
+        """float : The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -331,12 +312,13 @@ class Vector(Primitive):
     # ==========================================================================
 
     def __eq__(self, other):
-        """Is this vector equal to the other vector? Two vectors are considered
-        equal if their XYZ components are identical.
+        """Is this vector equal to the other vector?
+
+        Two vectors are considered equal if their XYZ components are identical.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The vector to compare.
 
         Returns
@@ -352,37 +334,37 @@ class Vector(Primitive):
     # ==========================================================================
 
     def __add__(self, other):
-        """Return a ``Vector`` that is the the sum of this ``Vector`` and another vector.
+        """Return a vector that is the the sum of this vector and another vector.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The vector to add.
 
         Returns
         -------
-        Vector
-            The resulting new ``Vector``.
+        :class:`compas.geometry.Vector`
+            The resulting vector.
         """
         return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
 
     def __sub__(self, other):
-        """Return a ``Vector`` that is the the difference between this ``Vector`` and another ``Vector``.
+        """Return a vector that is the the difference between this vector and another vector.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The vector to subtract.
 
         Returns
         -------
-        Vector
-            The resulting new ``Vector``.
+        :class:`compas.geometry.Vector`
+            The resulting new vector.
         """
         return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
 
     def __mul__(self, n):
-        """Return a ``Vector`` that is the scaled version of this ``Vector``.
+        """Return a vector that is the scaled version of this vector.
 
         Parameters
         ----------
@@ -391,13 +373,13 @@ class Vector(Primitive):
 
         Returns
         -------
-        Vector
-            The resulting new ``Vector``.
+        :class:`compas.geometry.Vector`
+            The resulting new vector.
         """
         return Vector(self.x * n, self.y * n, self.z * n)
 
     def __truediv__(self, n):
-        """Return a ``Vector`` that is the scaled version of this ``Vector``.
+        """Return a vector that is the scaled version of this vector.
 
         Parameters
         ----------
@@ -406,13 +388,13 @@ class Vector(Primitive):
 
         Returns
         -------
-        Vector
-            The resulting new ``Vector``.
+        :class:`compas.geometry.Vector`
+            The resulting new vector.
         """
         return Vector(self.x / n, self.y / n, self.z / n)
 
     def __pow__(self, n):
-        """Create a ``Vector`` from the components of the current ``Vector`` raised
+        """Create a vector from the components of the current vector raised
         to the given power.
 
         Parameters
@@ -422,7 +404,7 @@ class Vector(Primitive):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             A new point with raised coordinates.
         """
         return Vector(self.x ** n, self.y ** n, self.z ** n)
@@ -432,11 +414,11 @@ class Vector(Primitive):
     # ==========================================================================
 
     def __iadd__(self, other):
-        """Add the components of the other vector to this ``Vector``.
+        """Add the components of the other vector to this vector.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The vector to add.
         """
         self.x += other[0]
@@ -445,11 +427,11 @@ class Vector(Primitive):
         return self
 
     def __isub__(self, other):
-        """Subtract the components of the other vector from this ``Vector``.
+        """Subtract the components of the other vector from this vector.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The vector to subtract.
         """
         self.x -= other[0]
@@ -458,7 +440,7 @@ class Vector(Primitive):
         return self
 
     def __imul__(self, n):
-        """Multiply the components of this ``Vector`` by the given factor.
+        """Multiply the components of this vector by the given factor.
 
         Parameters
         ----------
@@ -471,7 +453,7 @@ class Vector(Primitive):
         return self
 
     def __itruediv__(self, n):
-        """Divide the components of this ``Vector`` by the given factor.
+        """Divide the components of this vector by the given factor.
 
         Parameters
         ----------
@@ -484,7 +466,7 @@ class Vector(Primitive):
         return self
 
     def __ipow__(self, n):
-        """Raise the components of this ``Vector`` to the given power.
+        """Raise the components of this vector to the given power.
 
         Parameters
         ----------
@@ -532,7 +514,7 @@ class Vector(Primitive):
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             A vector that is the sum of the vectors.
 
         Examples
@@ -606,7 +588,7 @@ class Vector(Primitive):
 
         Examples
         --------
-        >>> Vector_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
+        >>> Vector.angles_vectors([[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]], [[0.0, 1.0, 0.0], [0.0, 0.0, 2.0]])
         [(1.5707963267948966, 4.71238898038469), (1.5707963267948966, 4.71238898038469)]
         """
         return [angles_vectors(u, v) for u, v in zip(left, right)]
@@ -640,7 +622,7 @@ class Vector(Primitive):
 
     @property
     def length(self):
-        """float: The length of this ``Vector``."""
+        """float: The length of this vector."""
         return length_vector(self)
 
     # ==========================================================================
@@ -648,11 +630,11 @@ class Vector(Primitive):
     # ==========================================================================
 
     def copy(self):
-        """Make a copy of this ``Vector``.
+        """Make a copy of this vector.
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             The copy.
 
         Examples
@@ -672,7 +654,7 @@ class Vector(Primitive):
     # ==========================================================================
 
     def unitize(self):
-        """Scale this ``Vector`` to unit length.
+        """Scale this vector to unit length.
 
         Examples
         --------
@@ -687,11 +669,11 @@ class Vector(Primitive):
         self.z = self.z / length
 
     def unitized(self):
-        """Returns a unitized copy of this ``Vector``.
+        """Returns a unitized copy of this vector.
 
         Returns
         -------
-        :class:`Vector`
+        :class:`compas.geometry.Vector`
             A unitized copy of the vector.
 
         Examples
@@ -708,7 +690,7 @@ class Vector(Primitive):
         return v
 
     def scale(self, n):
-        """Scale this ``Vector`` by a factor n.
+        """Scale this vector by a factor n.
 
         Parameters
         ----------
@@ -727,7 +709,7 @@ class Vector(Primitive):
         self.z *= n
 
     def scaled(self, n):
-        """Returns a scaled copy of this ``Vector``.
+        """Returns a scaled copy of this vector.
 
         Parameters
         ----------
@@ -736,7 +718,7 @@ class Vector(Primitive):
 
         Returns
         -------
-        :class:`Vector`
+        :class:`compas.geometry.Vector`
             A scaled copy of the vector.
 
         Examples
@@ -753,11 +735,11 @@ class Vector(Primitive):
         return v
 
     def dot(self, other):
-        """The dot product of this ``Vector`` and another vector.
+        """The dot product of this vector and another vector.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The other vector.
 
         Returns
@@ -775,16 +757,16 @@ class Vector(Primitive):
         return dot_vectors(self, other)
 
     def cross(self, other):
-        """The cross product of this ``Vector`` and another vector.
+        """The cross product of this vector and another vector.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The other vector.
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             The cross product.
 
         Examples
@@ -797,11 +779,11 @@ class Vector(Primitive):
         return Vector(* cross_vectors(self, other))
 
     def angle(self, other):
-        """Compute the smallest angle between this ``Vector`` and another vector.
+        """Compute the smallest angle between this vector and another vector.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The other vector.
 
         Returns
@@ -820,13 +802,13 @@ class Vector(Primitive):
         return angle_vectors(self, other)
 
     def angle_signed(self, other, normal):
-        """Compute the signed angle between this ``Vector`` and another vector.
+        """Compute the signed angle between this vector and another vector.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The other vector.
-        normal : vector
+        normal : :class:`compas.geometry.Vector` or list
             The plane's normal spanned by this and the other vector.
 
         Returns
@@ -847,11 +829,11 @@ class Vector(Primitive):
         return angle_vectors_signed(self, other, normal)
 
     def angles(self, other):
-        """Compute both angles between this ``Vector`` and another vector.
+        """Compute both angles between this vector and another vector.
 
         Parameters
         ----------
-        other : vector
+        other : :class:`compas.geometry.Vector` or list
             The other vector.
 
         Returns
@@ -864,7 +846,7 @@ class Vector(Primitive):
         >>> from math import pi
         >>> u = Vector(1.0, 0.0, 0.0)
         >>> v = Vector(0.0, 1.0, 0.0)
-        >>> u(v)[0] == 0.5 * pi
+        >>> u.angles(v)[0] == 0.5 * pi
         True
         """
         return angles_vectors(self, other)
@@ -873,13 +855,13 @@ class Vector(Primitive):
     # transformations
     # ==========================================================================
 
-    def transform(self, matrix):
-        """Transform this ``Vector`` using a given transformation matrix.
+    def transform(self, T):
+        """Transform this vector.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Examples
         --------
@@ -891,22 +873,22 @@ class Vector(Primitive):
         >>> u
         Vector(0.000, 1.000, 0.000)
         """
-        point = transform_vectors([self], matrix)[0]
+        point = transform_vectors([self], T)[0]
         self.x = point[0]
         self.y = point[1]
         self.z = point[2]
 
-    def transformed(self, matrix):
-        """Return a transformed copy of this ``Vector`` using a given transformation matrix.
+    def transformed(self, T):
+        """Return a transformed copy of this vector.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             The transformed copy.
 
         Examples
@@ -920,7 +902,7 @@ class Vector(Primitive):
         Vector(0.000, 1.000, 0.000)
         """
         vector = self.copy()
-        vector.transform(matrix)
+        vector.transform(T)
         return vector
 
 

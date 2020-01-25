@@ -3,10 +3,10 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.geometry import subtract_vectors
+from compas.geometry import Frame
+from compas.geometry import Vector
 
-from compas.geometry._primitives import Frame
-from compas.geometry._primitives import Vector
-from compas.geometry._primitives import Shape
+from compas.geometry._shapes import Shape
 
 
 __all__ = ['Box']

@@ -8,10 +8,10 @@ from math import sin
 
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
+from compas.geometry import Frame
+from compas.geometry import Plane
 
-from compas.geometry._primitives import Frame
-from compas.geometry._primitives import Plane
-from compas.geometry._primitives import Shape
+from compas.geometry._shapes import Shape
 
 __all__ = ['Torus']
 

@@ -6,8 +6,9 @@ from math import cos
 from math import pi
 from math import sin
 
-from compas.geometry._primitives import Point
-from compas.geometry._primitives import Shape
+from compas.geometry import Point
+
+from compas.geometry._shapes import Shape
 
 __all__ = ['Sphere']
 

@@ -33,16 +33,6 @@ class Polygon(Primitive):
     points : list of point
         An ordered list of points.
 
-    Attributes
-    ----------
-    data
-    points
-    lines
-    length
-    centroid
-    area
-    normal
-
     Notes
     -----
     All ``Polygon`` objects are considered closed. Therefore the first and
@@ -75,12 +65,12 @@ class Polygon(Primitive):
 
         Parameters
         ----------
-        data : :obj:`dict`
+        data : dict
             The data dictionary.
 
         Returns
         -------
-        Polygon
+        :class:`compas.geometry.Polygon`
             The constructed polygon.
 
         Examples
@@ -98,14 +88,14 @@ class Polygon(Primitive):
 
         Parameters
         ----------
-        n : ``int``
+        n : int
             The number of sides.
-        radius : ``float``
+        radius : float
             The radius of the circle the polygon will be circumscribed to.
 
         Returns
         -------
-        polygon: ``Polygon``
+        :class:`compas.geometry.Polygon`
             The constructed polygon.
 
         Notes
@@ -124,7 +114,7 @@ class Polygon(Primitive):
         True
         >>> dot_vectors(pentagon.normal, [0.0, 0.0, 1.0]) == 1
         True
-        >>> centertofirst = subtract_vectors(pentagon.points[0], pentagon.center)
+        >>> centertofirst = subtract_vectors(pentagon.points[0], pentagon.centroid)
         >>> dot_vectors(centertofirst, [0.0, 1.0, 0.0]) == 1
         True
         """
@@ -144,13 +134,7 @@ class Polygon(Primitive):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the polygon.
-
-        Returns
-        -------
-        dict
-            The polygon data.
-        """
+        """dict : The data dictionary that represents the polygon."""
         return {'points': [list(point) for point in self.points]}
 
     @data.setter
@@ -159,7 +143,7 @@ class Polygon(Primitive):
 
     @property
     def points(self):
-        """list of Point: The points of the polygon."""
+        """list of :class:`compas.geometry.Point` : The points of the polygon."""
         return self._points
 
     @points.setter
@@ -171,24 +155,24 @@ class Polygon(Primitive):
 
     @property
     def lines(self):
-        """list of Line: The lines of the polyline."""
+        """list of :class:`compas.geometry.Line` : The lines of the polyline."""
         return self._lines
 
     @property
     def length(self):
-        """float: The length of the boundary."""
+        """float : The length of the boundary."""
         return sum([line.length for line in self.lines])
 
     @property
     def centroid(self):
-        """int: The centroid of the polygon."""
+        """int : The centroid of the polygon."""
         point = centroid_polygon(self.points)
         return Point(*point)
 
     @property
     def normal(self):
-        """Vector: The (average) normal of the polygon."""
-        o = self.center
+        """:class:`compas.geometry.Vector` : The (average) normal of the polygon."""
+        o = self.centroid
         points = self.points
         a2 = 0
         normals = []
@@ -252,11 +236,11 @@ class Polygon(Primitive):
     # ==========================================================================
 
     def copy(self):
-        """Make a copy of this ``Polygon``.
+        """Make a copy of this polygon.
 
         Returns
         -------
-        Polygon
+        :class:`compas.geometry.Polygon`
             The copy.
 
         Examples
@@ -313,13 +297,13 @@ class Polygon(Primitive):
     # transformations
     # ==========================================================================
 
-    def transform(self, matrix):
-        """Transform this ``Polygon`` using a given transformation matrix.
+    def transform(self, T):
+        """Transform this polygon.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Examples
         --------
@@ -331,22 +315,22 @@ class Polygon(Primitive):
         >>> polygon.points[0]
         Point(-0.707, 0.707, 0.000)
         """
-        for index, point in enumerate(transform_points(self.points, matrix)):
+        for index, point in enumerate(transform_points(self.points, T)):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
 
-    def transformed(self, matrix):
-        """Return a transformed copy of this ``Polygon`` using a given transformation matrix.
+    def transformed(self, T):
+        """Return a transformed copy of this polygon.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Returns
         -------
-        Polygon
+        :class:`compas.geometry.Polygon`
             The transformed copy.
 
         Examples
@@ -360,7 +344,7 @@ class Polygon(Primitive):
         False
         """
         polygon = self.copy()
-        polygon.transform(matrix)
+        polygon.transform(T)
         return polygon
 
 

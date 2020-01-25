@@ -40,21 +40,12 @@ class Point(Primitive):
         The number of fractional digits used in the representation of the coordinates of the point.
         Default is ``3``.
 
-    Attributes
-    ----------
-    data
-    x
-    y
-    z
-
     Notes
     -----
     A ``Point`` object supports direct access to its xyz coordinates through
     the dot notation, as well list-style access using indices. Indexed
     access is implemented such that the ``Point`` behaves like a circular
-    list.
-
-    For more info, see [1]_.
+    list [1]_.
 
     References
     ----------
@@ -66,20 +57,24 @@ class Point(Primitive):
     >>> p1 = Point(1, 2, 3)
     >>> p2 = Point(4, 5, 6)
 
+    The XYZ coordinates of point objects can be accessed as object attributes or by trating the points as lists.
+
     >>> p1.x
     1.0
+    >>> p1.y
+    2.0
+    >>> p1.z
+    3.0
     >>> p1[0]
     1.0
-    >>> p1[5]
+    >>> p1[1]
+    2.0
+    >>> p1[2]
     3.0
-    >>> p1[-3]
-    1.0
-    >>> p1[-6]
-    1.0
+
+    Point objects support basic arithmetic operations.
 
     >>> p1 + p2
-    Point(5.000, 7.000, 9.000)
-    >>> p1 + [4, 5, 6]
     Point(5.000, 7.000, 9.000)
     >>> p1 * 2
     Point(2.000, 4.000, 6.000)
@@ -87,6 +82,13 @@ class Point(Primitive):
     Point(1.000, 4.000, 9.000)
     >>> p1
     Point(1.000, 2.000, 3.000)
+
+    Points and lists can be used interchangeably.
+
+    >>> p1 + [4, 5, 6]
+    Point(5.000, 7.000, 9.000)
+
+    Arithmetic operations can also be applied to modify a point object in-place.
 
     >>> p1 += p2
     >>> p1 *= 2
@@ -107,11 +109,11 @@ class Point(Primitive):
 
     @staticmethod
     def transform_collection(collection, X):
-        """Transform a collection of ``Point`` objects.
+        """Transform a collection of points.
 
         Parameters
         ----------
-        collection : list of compas.geometry.Point
+        collection : list of :class:`compas.geometry.Point`
             The collection of points.
 
         Returns
@@ -139,16 +141,16 @@ class Point(Primitive):
 
     @staticmethod
     def transformed_collection(collection, X):
-        """Create a collection of transformed ``Point`` objects.
+        """Create a collection of transformed points.
 
         Parameters
         ----------
-        collection : list of compas.geometry.Point
+        collection : list of :class:`compas.geometry.Point`
             The collection of points.
 
         Returns
         -------
-        list of compas.geometry.Point
+        list of :class:`compas.geometry.Point`
             The transformed points.
 
         Examples
@@ -182,7 +184,7 @@ class Point(Primitive):
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             The constructed point.
 
         Examples
@@ -199,13 +201,7 @@ class Point(Primitive):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the point.
-
-        Returns
-        -------
-        dict
-            The point's data.
-        """
+        """dict : The data representing the point."""
         return list(self)
 
     @data.setter
@@ -216,7 +212,7 @@ class Point(Primitive):
 
     @property
     def x(self):
-        """float: The X coordinate of the point."""
+        """float : The X coordinate of the point."""
         return self._x
 
     @x.setter
@@ -225,7 +221,7 @@ class Point(Primitive):
 
     @property
     def y(self):
-        """float: The Y coordinate of the point."""
+        """float : The Y coordinate of the point."""
         return self._y
 
     @y.setter
@@ -234,7 +230,7 @@ class Point(Primitive):
 
     @property
     def z(self):
-        """float: The Z coordinate of the point."""
+        """float : The Z coordinate of the point."""
         return self._z
 
     @z.setter
@@ -288,12 +284,13 @@ class Point(Primitive):
     # ==========================================================================
 
     def __eq__(self, other):
-        """Is this point equal to the other point? Two points are considered
-        equal if their XYZ coordinates are identical.
+        """Is this point equal to the other point?
+
+        Two points are considered equal if their XYZ coordinates are identical.
 
         Parameters
         ----------
-        other : point
+        other : :class:`compas.geometry.Point` or list
             The point to compare.
 
         Returns
@@ -309,32 +306,32 @@ class Point(Primitive):
     # ==========================================================================
 
     def __add__(self, other):
-        """Return a ``Point`` that is the sum of this ``Point`` and another point.
+        """Return a point that is the sum of this point and another point.
 
         Parameters
         ----------
-        other : point
+        other : :class:`compas.geometry.Point` or list
             The point to add.
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             The resulting new point.
         """
         return Point(self.x + other[0], self.y + other[1], self.z + other[2])
 
     def __sub__(self, other):
-        """Return a ``Vector`` that is the the difference between this ``Point``
+        """Return a vector` that is the the difference between this point
         and another point.
 
         Parameters
         ----------
-        other : point
+        other : :class:`compas.geometry.Point` or list
             The point to subtract.
 
         Returns
         -------
-        Vector
+        :class:`compas.geometry.Vector`
             A vector from other to self.
         """
         x = self.x - other[0]
@@ -343,7 +340,7 @@ class Point(Primitive):
         return Vector(x, y, z)
 
     def __mul__(self, n):
-        """Create a ``Point`` from the coordinates of the current ``Point`` multiplied
+        """Create a point from the coordinates of the current point multiplied
         by the given factor.
 
         Parameters
@@ -353,13 +350,13 @@ class Point(Primitive):
 
         Returns
         -------
-        Point
-            The resulting new ``Point``.
+        :class:`compas.geometry.Point`
+            The resulting new point.
         """
         return Point(n * self.x, n * self.y, n * self.z)
 
     def __truediv__(self, n):
-        """Create a ``Point`` from the coordinates of the current ``Point``
+        """Create a point from the coordinates of the current point
         divided by the given factor.
 
         Parameters
@@ -369,13 +366,13 @@ class Point(Primitive):
 
         Returns
         -------
-        Point
-            The resulting new ``Point``.
+        :class:`compas.geometry.Point`
+            The resulting new point.
         """
         return Point(self.x / n, self.y / n, self.z / n)
 
     def __pow__(self, n):
-        """Create a ``Point`` from the coordinates of the current ``Point`` raised
+        """Create a point from the coordinates of the current point raised
         to the given power.
 
         Parameters
@@ -385,7 +382,7 @@ class Point(Primitive):
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             A new point with raised coordinates.
         """
         return Point(self.x ** n, self.y ** n, self.z ** n)
@@ -395,11 +392,11 @@ class Point(Primitive):
     # ==========================================================================
 
     def __iadd__(self, other):
-        """Add the coordinates of the other point to this ``Point``.
+        """Add the coordinates of the other point to this point.
 
         Parameters
         ----------
-        other : point
+        other : :class:`compas.geometry.Point` or list
             The point to add.
         """
         self.x += other[0]
@@ -408,11 +405,11 @@ class Point(Primitive):
         return self
 
     def __isub__(self, other):
-        """Subtract the coordinates of the other point from this ``Point``.
+        """Subtract the coordinates of the other point from this point.
 
         Parameters
         ----------
-        other : point
+        other : :class:`compas.geometry.Point` or list
             The point to subtract.
         """
         self.x -= other[0]
@@ -421,7 +418,7 @@ class Point(Primitive):
         return self
 
     def __imul__(self, n):
-        """Multiply the coordinates of this ``Point`` by the given factor.
+        """Multiply the coordinates of this point by the given factor.
 
         Parameters
         ----------
@@ -434,7 +431,7 @@ class Point(Primitive):
         return self
 
     def __itruediv__(self, n):
-        """Divide the coordinates of this ``Point`` by the given factor.
+        """Divide the coordinates of this point by the given factor.
 
         Parameters
         ----------
@@ -447,7 +444,7 @@ class Point(Primitive):
         return self
 
     def __ipow__(self, n):
-        """Raise the coordinates of this ``Point`` to the given power.
+        """Raise the coordinates of this point to the given power.
 
         Parameters
         ----------
@@ -464,7 +461,7 @@ class Point(Primitive):
     # ==========================================================================
 
     def update(self, data):
-        """Update the coordinates of this ``Point``.
+        """Update the coordinates of this point.
 
         Parameters
         ----------
@@ -483,11 +480,11 @@ class Point(Primitive):
         self.z = data[2]
 
     def copy(self):
-        """Make a copy of this ``Point``.
+        """Make a copy of this point.
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             The copy.
 
         Examples
@@ -510,7 +507,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        point : point
+        point : :class:`compas.geometry.Point` or list
             The other point.
 
         Returns
@@ -522,7 +519,7 @@ class Point(Primitive):
         --------
         >>> a = Point(0.0, 0.0, 0.0)
         >>> b = Point(1.0, 0.0, 0.0)
-        >>> a_to_point(b)
+        >>> a.distance_to_point(b)
         1.0
         """
         return distance_point_point(self, point)
@@ -532,7 +529,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        line : line
+        line : :class:`compas.geometry.Line` or tuple of points.
             The line.
 
         Returns
@@ -545,7 +542,7 @@ class Point(Primitive):
         >>> from compas.geometry import Line
         >>> point = Point(0.0, 0.0, 0.0)
         >>> line = Line(Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0))
-        >>> point_to_line(line)
+        >>> point.distance_to_line(line)
         1.0
         """
         return distance_point_line(self, line)
@@ -555,7 +552,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        plane : plane
+        plane : :class:`compas.geometry.Plane` or tuple of point and normal
             The plane.
 
         Returns
@@ -569,7 +566,7 @@ class Point(Primitive):
         >>> from compas.geometry import Vector
         >>> point = Point(0.0, 0.0, 0.0)
         >>> plane = Plane(Point(1.0, 0.0, 0.0), Vector(1.0, 0.0, 0.0))
-        >>> point_to_plane(plane)
+        >>> point.distance_to_plane(plane)
         1.0
         """
         return distance_point_plane(self, plane)
@@ -579,7 +576,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        line : line
+        line : :class:`compas.geometry.Line` or tuple of points.
             The line.
 
         Returns
@@ -603,7 +600,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        segment : segment
+        segment : :class:`compas.geometry.Line` or tuple of points.
             The segment.
 
         Returns
@@ -627,7 +624,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        polyline : polyline
+        polyline : :class:`compas.geometry.Polyline` or list of points.
             The polyline.
 
         Returns
@@ -651,7 +648,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        circle : circle
+        circle : :class:`compas.geometry.Circle` or tuple of plane and radius.
             The circle.
 
         Returns
@@ -663,11 +660,11 @@ class Point(Primitive):
         raise NotImplementedError
 
     def in_triangle(self, triangle):
-        """Determine if the point lies in the given triangle.
+        """Determine if the point lies inside the given triangle.
 
         Parameters
         ----------
-        triangle : triangle
+        triangle : :class:`compas.geometry.Polygon` or list of three points.
             The triangle.
 
         Returns
@@ -687,17 +684,17 @@ class Point(Primitive):
         return is_point_in_triangle(self, triangle)
 
     def in_polygon(self, polygon):
-        """Determine if the point lies in the given polygon.
+        """Determine if the point lies inside the given polygon.
 
         Parameters
         ----------
-        polyline : polyline
-            The polyline.
+        polygon : :class:`compas.geometry.Polygon` or list of points.
+            The polygon.
 
         Returns
         -------
         bool
-            True, if the point lies on the polyline.
+            True, if the point lies in the polygon.
             False, otherwise.
 
         Examples
@@ -713,17 +710,17 @@ class Point(Primitive):
         return is_point_in_polygon_xy(self, polygon)
 
     def in_circle(self, circle):
-        """Determine if the point lies on the given polyline.
+        """Determine if the point lies inside the given circle.
 
         Parameters
         ----------
-        polyline : polyline
-            The polyline.
+        circle : :class:`compas.geometry.Circle` or tuple of plane and radius.
+            The circle.
 
         Returns
         -------
         bool
-            True, if the point lies on the polyline.
+            True, if the point lies inside the circle.
             False, otherwise.
 
         Examples
@@ -739,19 +736,18 @@ class Point(Primitive):
         return is_point_in_circle(self, circle)
 
     def in_polyhedron(self, polyhedron):
-        """Determine if the point lies on the given polyline.
+        """Determine if the point lies inside the given polyhedron.
 
         Parameters
         ----------
-        polyline : polyline
-            The polyline.
+        polyhedron : :class:`compas.geometry.Polyhedron` or tuple of vertices and faces.
+            The polyhedron.
 
         Returns
         -------
         bool
             True, if the point lies on the polyline.
             False, otherwise.
-
         """
         raise NotImplementedError
 
@@ -760,11 +756,11 @@ class Point(Primitive):
     # ==========================================================================
 
     def transform(self, T):
-        """Transform this ``Point`` using a given transformation matrix.
+        """Transform this point.
 
         Parameters
         ----------
-        T : list of list or compas.geometry.Transformation
+        T : :class:`compas.geometry.Transformation` or list of list
             The transformation matrix.
 
         Examples
@@ -781,17 +777,17 @@ class Point(Primitive):
         self.y = point[1]
         self.z = point[2]
 
-    def transformed(self, matrix):
-        """Return a transformed copy of this ``Point`` using a given transformation matrix.
+    def transformed(self, T):
+        """Return a transformed copy of this point.
 
         Parameters
         ----------
-        matrix : list of list
+        T : :class:`compas.geometry.Transformation` or list of list
             The transformation matrix.
 
         Returns
         -------
-        Point
+        :class:`compas.geometry.Point`
             The transformed copy.
 
         Examples
@@ -804,7 +800,7 @@ class Point(Primitive):
         False
         """
         point = self.copy()
-        point.transform(matrix)
+        point.transform(T)
         return point
 
 

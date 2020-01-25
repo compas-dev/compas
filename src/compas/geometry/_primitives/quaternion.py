@@ -23,14 +23,6 @@ class Quaternion(Primitive):
     x, y, z : float
         Components of the vector (complex, imaginary) part of a quaternion.
 
-    Attributes
-    ----------
-    data
-    wxyz
-    xyzw
-    norm
-    is_unit
-
     Notes
     -----
     The default convention to represent a quaternion :math:`q` in this module is by four real values :math:`w`, :math:`x`, :math:`y`, :math:`z`.
@@ -92,6 +84,8 @@ class Quaternion(Primitive):
     True
     """
 
+    __slots__ = ['w', 'x', 'y', 'z']
+
     def __init__(self, w, x, y, z):
         self.w = float(w)
         self.x = float(x)
@@ -109,12 +103,12 @@ class Quaternion(Primitive):
 
         Parameters
         ----------
-        other
-            A Quaternion object.
+        other : :class:`compas.geometry.Quaternion` or list
+            A Quaternion.
 
         Returns
         -------
-        Quaternion
+        :class:`compas.geometry.Quaternion`
             The product P = R * Q of this quaternion (R) multiplied by other quaternion (Q).
 
         Notes
@@ -137,16 +131,16 @@ class Quaternion(Primitive):
 
     @classmethod
     def from_frame(cls, frame):
-        """Creates a ``Quaternion`` object from a ``Frame`` object.
+        """Creates a quaternion object from a frame.
 
         Parameters
         ----------
-        frame : :obj:`Frame`
+        frame : :class:`compas.geometry.Frame`
 
         Returns
         -------
-        :obj:`Quaternion`
-            The new constructed ``Quaternion`` object.
+        :class:`compas.geometry.Quaternion`
+            The new quaternion.
 
         Example
         -------
@@ -200,7 +194,7 @@ class Quaternion(Primitive):
         self.w, self.x, self.y, self.z = qu
 
     def unitized(self):
-        """Returns a :obj:`Quaternion` with a unit-length.
+        """Returns a quaternion with a unit-length.
 
         Examples
         --------
@@ -231,11 +225,11 @@ class Quaternion(Primitive):
         self.w, self.x, self.y, self.z = qc
 
     def canonized(self):
-        """Returns a :obj:`Quaternion` in canonic form.
+        """Returns a quaternion in canonic form.
 
         Returns
         -------
-        Quaternion
+        :class:`compas.geometry.Quaternion`
             A quaternion in canonic form.
 
         Examples
@@ -265,11 +259,11 @@ class Quaternion(Primitive):
         self.w, self.x, self.y, self.z = qc
 
     def conjugated(self):
-        """Returns a conjugate :obj:`Quaternion`.
+        """Returns a conjugate quaternion.
 
         Returns
         -------
-        Quaternion
+        :class:`compas.geometry.Quaternion`
             The conjugated quaternion.
 
         Examples

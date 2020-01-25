@@ -19,15 +19,6 @@ class Line(Primitive):
     p2 : point
         The second point.
 
-    Attributes
-    ----------
-    data
-    start
-    end
-    vector
-    direction
-    midpoint
-
     Notes
     -----
     For more info on lines and linear equations, see [1]_.
@@ -81,6 +72,10 @@ class Line(Primitive):
 
         Examples
         --------
+        >>> from marh import radians
+        >>> from compas.geometry import Point
+        >>> from compas.geometry import Vector
+        >>> from compas.geometry import Rotation
         >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
         >>> a = Line(Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0))
         >>> lines = [a]
@@ -110,6 +105,9 @@ class Line(Primitive):
 
         Examples
         --------
+        >>> from math import radians
+        >>> from compas.geometry import Vector
+        >>> from compas.geometry import Point
         >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
         >>> a = Line(Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0))
         >>> lines = [a]
@@ -151,13 +149,7 @@ class Line(Primitive):
 
     @property
     def data(self):
-        """Returns the data dictionary that represents the line.
-
-        Returns
-        -------
-        dict
-            The line's data.
-        """
+        """dict : The data dictionary that represents the line."""
         return {'start': list(self.start), 'end': list(self.end)}
 
     @data.setter
@@ -167,7 +159,7 @@ class Line(Primitive):
 
     @property
     def start(self):
-        """Point: the start point."""
+        """:class:`compas.geometry.Point` : The start point of the line."""
         return self._start
 
     @start.setter
@@ -176,7 +168,7 @@ class Line(Primitive):
 
     @property
     def end(self):
-        """Point: the end point."""
+        """:class:`compas.geometry.Point` : The end point of the line."""
         return self._end
 
     @end.setter
@@ -185,22 +177,22 @@ class Line(Primitive):
 
     @property
     def vector(self):
-        """Vector: A vector pointing from start to end."""
+        """:class:`compas.geometry.Vector` : A vector pointing from start to end."""
         return self.end - self.start
 
     @property
     def length(self):
-        """float: The length of the vector from start to end."""
+        """float : The length of the vector from start to end."""
         return self.vector.length
 
     @property
     def direction(self):
-        """Vector: A unit vector pointing from start and end."""
+        """:class:`compas.geometry.Vector` : A unit vector pointing from start and end."""
         return self.vector * (1 / self.length)
 
     @property
     def midpoint(self):
-        """Point: The midpoint between start and end."""
+        """:class:`compas.geometry.Point` : The midpoint between start and end."""
         v = self.direction * (0.5 * self.length)
         return self.start + v
 
@@ -249,7 +241,7 @@ class Line(Primitive):
     # ==========================================================================
 
     def point(self, t):
-        """The point from the start to the end at a specific normalized parameter.
+        """A point between start and end at a specific normalized parameter.
 
         Parameters
         ----------
@@ -287,7 +279,7 @@ class Line(Primitive):
     # ==========================================================================
 
     def copy(self):
-        """Make a copy of this ``Line``.
+        """Make a copy of this line.
 
         Returns
         -------
@@ -311,13 +303,13 @@ class Line(Primitive):
     # transformations
     # ==========================================================================
 
-    def transform(self, transformation):
-        """Transform the line.
+    def transform(self, T):
+        """Transform this line.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the line.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Examples
         --------
@@ -329,20 +321,20 @@ class Line(Primitive):
         >>> line.end
         Point(0.000, 1.000, 0.000)
         """
-        self.start.transform(transformation)
-        self.end.transform(transformation)
+        self.start.transform(T)
+        self.end.transform(T)
 
-    def transformed(self, transformation):
+    def transformed(self, T):
         """Returns a transformed copy of the current line.
 
         Parameters
         ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the line.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Returns
         -------
-        :class: `Line`
+        :class: `compas.geometry.Line`
             The transformed line.
 
         Examples
@@ -358,7 +350,7 @@ class Line(Primitive):
         Point(0.000, 1.000, 0.000)
         """
         line = self.copy()
-        line.transform(transformation)
+        line.transform(T)
         return line
 
 
