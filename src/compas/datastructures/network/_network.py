@@ -30,7 +30,7 @@ from compas.datastructures._mixins import EdgeFilter
 from compas.datastructures._mixins import FromToData
 from compas.datastructures._mixins import FromToJson
 
-from compas.datastructures.network.operations import network_split_edge
+from .core import network_split_edge
 
 
 __all__ = ['Network']
