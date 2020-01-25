@@ -9,6 +9,9 @@ __all__ = ['CommandMenu', 'CommandAction']
 
 
 class CommandMenu(object):
+    """"""
+
+    __module__ = "compas_rhino.ui"
 
     def __init__(self, menu):
         self.menu = menu
@@ -38,6 +41,9 @@ class CommandMenu(object):
 
 
 class CommandAction(object):
+    """"""
+
+    __module__ = "compas_rhino.ui"
 
     def __init__(self, name, action):
         self.name = name

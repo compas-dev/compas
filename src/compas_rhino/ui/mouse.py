@@ -15,6 +15,8 @@ __all__ = ['Mouse']
 class Mouse(MouseCallback):
     """"""
 
+    __module__ = "compas_rhino.ui"
+
     def __init__(self, parent=None):
         super(Mouse, self).__init__()
         self.parent = parent

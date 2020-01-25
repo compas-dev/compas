@@ -11,7 +11,6 @@ from .line import Line  # noqa: F401
 from .plane import Plane  # noqa: F401
 from .quaternion import Quaternion  # noqa: F401
 from .frame import Frame  # noqa: F401
-
 from .polyline import Polyline  # noqa: F401
 from .polygon import Polygon  # noqa: F401
 from .circle import Circle  # noqa: F401

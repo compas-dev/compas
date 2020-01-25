@@ -17,7 +17,7 @@ if not compas.IPY:
 __all__ = ['Rui']
 
 
-TPL_RUI = '''<?xml version="1.0" encoding="utf-8"?>
+TPL_RUI = """<?xml version="1.0" encoding="utf-8"?>
 <RhinoUI major_ver="2"
          minor_ver="0"
          guid="{0}"
@@ -59,9 +59,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
     </bitmaps>
     <scripts />
 </RhinoUI>
-'''
+"""
 
-TPL_MACRO = '''
+TPL_MACRO = """
 <macro_item guid="{0}">
     <text>
         <locale_1033>{1}</locale_1033>
@@ -80,39 +80,39 @@ TPL_MACRO = '''
         <locale_1033>{6}</locale_1033>
     </menu_text>
 </macro_item>
-'''
+"""
 
-TPL_MENUITEM = '''
+TPL_MENUITEM = """
 <menu_item guid="{0}" item_type="normal">
     <macro_id>{1}</macro_id>
 </menu_item>
-'''
+"""
 
-TPL_MENUSEPARATOR = '''
+TPL_MENUSEPARATOR = """
 <menu_item guid="{0}" item_type="separator"></menu_item>
-'''
+"""
 
-TPL_TOOLBARITEM = '''
+TPL_TOOLBARITEM = """
 <tool_bar_item guid="{0}" button_display_mode="control_only" button_style="normal">
     <left_macro_id>{1}</left_macro_id>
     <right_macro_id>{2}</right_macro_id>
 </tool_bar_item>
-'''
+"""
 
-TPL_TOOLBARSEPARATOR = '''
+TPL_TOOLBARSEPARATOR = """
 <tool_bar_item guid="{0}" button_display_mode="control_only" button_style="spacer">
 </tool_bar_item>
-'''
+"""
 
-TPL_TOOLBAR = '''
+TPL_TOOLBAR = """
 <tool_bar guid="{0}" item_display_style="{2[item_display_style]}">
     <text>
         <locale_1033>{1}</locale_1033>
     </text>
 </tool_bar>
-'''
+"""
 
-TPL_TOOLBARGROUP = '''
+TPL_TOOLBARGROUP = """
 <tool_bar_group guid="{0}"
                 dock_bar_guid32=""
                 dock_bar_guid64=""
@@ -124,16 +124,16 @@ TPL_TOOLBARGROUP = '''
         <locale_1033>{1}</locale_1033>
     </text>
 </tool_bar_group>
-'''
+"""
 
-TPL_TOOLBARGROUPITEM = '''
+TPL_TOOLBARGROUPITEM = """
 <tool_bar_group_item guid="{0}" major_version="1" minor_version="1">
     <text>
         <locale_1033>{1}</locale_1033>
     </text>
     <tool_bar_id>{2}</tool_bar_id>
 </tool_bar_group_item>
-'''
+"""
 
 
 def get_method_comments(obj):
@@ -228,14 +228,16 @@ def get_public_methods(obj):
 
 
 class Rui(object):
-    """Class for generating *.rui files.
+    """Class for generating RUI files.
 
     Parameters
     ----------
     filepath : str
-        Path to the *.rui file.
+        Path to the RUI file.
 
     """
+
+    __module__ = "compas_rhino.ui"
 
     def __init__(self, filepath):
         self.filepath = filepath

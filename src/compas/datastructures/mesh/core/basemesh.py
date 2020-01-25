@@ -994,6 +994,7 @@ class BaseMesh(EdgeGeometry,
             key = self._max_int_key = self._max_int_key + 1
         if key > self._max_int_key:
             self._max_int_key = key
+        key = int(key)
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
@@ -1043,6 +1044,7 @@ class BaseMesh(EdgeGeometry,
             return
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
+        vertices = [int(key) for key in vertices]
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
         if fkey > self._max_int_fkey:

@@ -29,6 +29,29 @@ Primitives
     Torus
     Vector
 
+Primitives
+==========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Box
+    Circle
+    Cone
+    Cylinder
+    Frame
+    Line
+    Plane
+    Point
+    Polygon
+    Polyhedron
+    Polyline
+    Quaternion
+    Sphere
+    Torus
+    Vector
+
 Transformations
 ===============
 
