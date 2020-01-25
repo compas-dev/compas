@@ -524,9 +524,10 @@ class BaseMesh(EdgeGeometry,
         >>>
         """
         obj = OBJ(filepath, precision)
-        vertices = obj.parser.vertices
-        faces = obj.parser.faces
-        edges = obj.parser.lines
+        obj.read()
+        vertices = obj.vertices
+        faces = obj.faces
+        edges = obj.lines
         if faces:
             return cls.from_vertices_and_faces(vertices, faces)
         if edges:

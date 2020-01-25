@@ -7,9 +7,6 @@ from compas import IPY
 from .core import *  # noqa: F401 F403
 from ._mesh import *  # noqa: F401 F403
 
-# ==============================================================================
-# Algorithms
-# ==============================================================================
 
 from .bbox import *  # noqa: F401 F403
 if not IPY:
@@ -17,6 +14,7 @@ if not IPY:
 from .combinatorics import *  # noqa: F401 F403
 if not IPY:
     from .contours_numpy import *  # noqa: F401 F403
+from .conway import *  # noqa: F401 F403
 from .curvature import *  # noqa: F401 F403
 if not IPY:
     from .descent_numpy import *  # noqa: F401 F403

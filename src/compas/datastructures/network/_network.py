@@ -377,9 +377,10 @@ class Network(FromToJson,
 
         """
         network = cls()
-        obj = OBJ(filepath, precision=precision)
-        vertices = obj.parser.vertices
-        edges = obj.parser.lines
+        obj = OBJ(filepath, precision)
+        obj.read()
+        vertices = obj.vertices
+        edges = obj.lines
         for i, (x, y, z) in enumerate(vertices):
             network.add_vertex(i, x=x, y=y, z=z)
         for u, v in edges:

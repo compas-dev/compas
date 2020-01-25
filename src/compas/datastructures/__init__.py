@@ -85,6 +85,27 @@ Mesh algorithms
     trimesh_remesh
     trimesh_subdivide_loop
 
+Conway Operators
+----------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    conway_dual
+    conway_join
+    conway_ambo
+    conway_kis
+    conway_needle
+    conway_zip
+    conway_truncate
+    conway_ortho
+    conway_expand
+    conway_gyro
+    conway_snub
+    conway_meta
+    conway_bevel
+
 Network
 =======
 

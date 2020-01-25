@@ -38,6 +38,17 @@ Shapes
     Torus
 
 
+Collections
+===========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    PointCollection
+    PointCollectionNumpy
+
+
 Transformations
 ===============
 

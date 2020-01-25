@@ -7,11 +7,36 @@ from math import pi
 from compas.geometry._primitives import Primitive
 from compas.geometry._primitives import Plane
 
+
 __all__ = ['Circle']
 
 
 class Circle(Primitive):
     """A circle is defined by a plane and a radius.
+
+    Parameters
+    ----------
+    plane : :class:`compas.geometry.Plane` or tuple of point and normal
+        The plane of the circle.
+    radius : float
+        The radius of the circle.
+
+    Attributes
+    ----------
+    plane : :class:`compas.geometry.Plane`
+        The plane of the circle.
+    radius : float
+        The radius.
+    center : :class:`compas.geometry.Point`
+        The base point of the plane and center of the circle.
+    normal : :class:`compas.geometry.Vector`
+        The normal vector of the plane.
+    diameter : float, read-only
+        The diameter of the circle.
+    circumference : float, read-only
+        The circumference of the circle.
+    area : float, read-only
+        The area of the circle.
 
     Examples
     --------
@@ -21,6 +46,8 @@ class Circle(Primitive):
     >>> circle = Circle(plane, 5)
     """
 
+    __module__ = "compas.geometry"
+
     __slots__ = ['_plane', '_radius']
 
     def __init__(self, plane, radius):
@@ -28,52 +55,6 @@ class Circle(Primitive):
         self._radius = None
         self.plane = plane
         self.radius = radius
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a circle from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Circle`
-            The constructed circle.
-
-        Examples
-        --------
-        >>> from compas.geometry import Circle
-        >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 5.}
-        >>> circle = Circle.from_data(data)
-        """
-        return cls(data['plane'], data['radius'])
-
-    def to_data(self):
-        """Returns the data dictionary that represents the circle.
-
-        Returns
-        -------
-        dict
-            The circle data.
-
-        Examples
-        --------
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Point
-        >>> from compas.geometry import Vector
-        >>> circle = Circle(Plane(Point(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0)), 1.0)
-        >>> circle.to_data()
-        {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 1.0}
-        """
-        return self.data
-
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
 
     @property
     def data(self):
@@ -133,7 +114,7 @@ class Circle(Primitive):
         return 2 * pi * self.radius
 
     # ==========================================================================
-    # representation
+    # customization
     # ==========================================================================
 
     def __repr__(self):
@@ -141,10 +122,6 @@ class Circle(Primitive):
 
     def __len__(self):
         return 2
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
 
     def __getitem__(self, key):
         if key == 0:
@@ -164,6 +141,52 @@ class Circle(Primitive):
 
     def __iter__(self):
         return iter([self.plane, self.radius])
+
+    # ==========================================================================
+    # from/to
+    # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a circle from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Circle`
+            The constructed circle.
+
+        Examples
+        --------
+        >>> from compas.geometry import Circle
+        >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 5.}
+        >>> circle = Circle.from_data(data)
+        """
+        return cls(data['plane'], data['radius'])
+
+    def to_data(self):
+        """Returns the data dictionary that represents the circle.
+
+        Returns
+        -------
+        dict
+            The circle data.
+
+        Examples
+        --------
+        >>> from compas.geometry import Circle
+        >>> from compas.geometry import Plane
+        >>> from compas.geometry import Point
+        >>> from compas.geometry import Vector
+        >>> circle = Circle(Plane(Point(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0)), 1.0)
+        >>> circle.to_data()
+        {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 1.0}
+        """
+        return self.data
 
     # ==========================================================================
     # helpers

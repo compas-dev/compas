@@ -8,6 +8,8 @@ __all__ = ['Primitive']
 class Primitive(object):
     """Base class for geometric primitives."""
 
+    __module__ = "compas.geometry"
+
     def __init__(self):
         pass
 

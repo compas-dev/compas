@@ -152,8 +152,6 @@ def voronoi_from_points_numpy(points):
 if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.geometry import pointcloud_xy
-    from compas.geometry import delaunay_from_points_numpy
-    from compas.topology import unify_cycles_numpy
     from compas_plotters import MeshPlotter
 
     points = pointcloud_xy(10, (0, 50))
