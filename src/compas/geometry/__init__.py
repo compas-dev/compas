@@ -430,23 +430,15 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .basic import *  # noqa: F401 F403
-
-from .analytical import *  # noqa: F401 F403
-from .distance import *  # noqa: F401 F403
-from .angles import *  # noqa: F401 F403
-from .average import *  # noqa: F401 F403
-from .normals import *  # noqa: F401 F403
-from .queries import *  # noqa: F401 F403
-from .intersections import *  # noqa: F401 F403
-from .size import *  # noqa: F401 F403
-from .quaternions import *  # noqa: F401 F403
-
-from .transformations import *  # noqa: F401 F403
+from ._core import *  # noqa: F401 F403
+from ._transformations import *  # noqa: F401 F403
+from ._primitives import *  # noqa: F401 F403
+from ._collections import *  # noqa: F401 F403
 
 from .bbox import *  # noqa: F401 F403
 from .bestfit import *  # noqa: F401 F403
 from .hull import *  # noqa: F401 F403
+from .icp import *  # noqa: F401 F403
 from .interpolation import *  # noqa: F401 F403
 from .isolines import *  # noqa: F401 F403
 from .offset import *  # noqa: F401 F403
@@ -454,9 +446,5 @@ from .planarisation import *  # noqa: F401 F403
 from .smoothing import *  # noqa: F401 F403
 from .spatial import *  # noqa: F401 F403
 from .triangulation import *  # noqa: F401 F403
-
-from .primitives import *  # noqa: F401 F403
-
-from .icp import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

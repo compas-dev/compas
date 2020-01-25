@@ -1,4 +1,4 @@
-from compas.geometry.transformations import Scale
+from compas.geometry import Scale
 
 
 def test_scale():

@@ -1,45 +1,45 @@
 import pytest
 
-from compas.geometry.transformations import matrix_inverse
-from compas.geometry.transformations import matrix_determinant
-from compas.geometry.transformations import decompose_matrix
-from compas.geometry.transformations import compose_matrix
+from compas.geometry import matrix_inverse
+from compas.geometry import matrix_determinant
+from compas.geometry import decompose_matrix
+from compas.geometry import compose_matrix
 
-from compas.geometry.transformations import identity_matrix
-from compas.geometry.transformations import matrix_from_frame
-from compas.geometry.transformations import matrix_from_euler_angles
-from compas.geometry.transformations import matrix_from_axis_and_angle
-from compas.geometry.transformations import matrix_from_axis_angle_vector
-from compas.geometry.transformations import matrix_from_basis_vectors
-from compas.geometry.transformations import matrix_from_translation
-from compas.geometry.transformations import matrix_from_orthogonal_projection
-from compas.geometry.transformations import matrix_from_parallel_projection
-from compas.geometry.transformations import matrix_from_perspective_projection
-from compas.geometry.transformations import matrix_from_perspective_entries
-from compas.geometry.transformations import matrix_from_shear_entries
-from compas.geometry.transformations import matrix_from_shear
-from compas.geometry.transformations import matrix_from_scale_factors
-from compas.geometry.transformations import matrix_from_quaternion
-from compas.geometry.transformations import euler_angles_from_matrix
-from compas.geometry.transformations import euler_angles_from_quaternion
-from compas.geometry.transformations import axis_and_angle_from_matrix
-from compas.geometry.transformations import axis_angle_vector_from_matrix
-from compas.geometry.transformations import axis_angle_from_quaternion
-from compas.geometry.transformations import quaternion_from_matrix
-from compas.geometry.transformations import quaternion_from_euler_angles
-from compas.geometry.transformations import quaternion_from_axis_angle
-from compas.geometry.transformations import basis_vectors_from_matrix
-from compas.geometry.transformations import translation_from_matrix
+from compas.geometry import identity_matrix
+from compas.geometry import matrix_from_frame
+from compas.geometry import matrix_from_euler_angles
+from compas.geometry import matrix_from_axis_and_angle
+from compas.geometry import matrix_from_axis_angle_vector
+from compas.geometry import matrix_from_basis_vectors
+from compas.geometry import matrix_from_translation
+from compas.geometry import matrix_from_orthogonal_projection
+from compas.geometry import matrix_from_parallel_projection
+from compas.geometry import matrix_from_perspective_projection
+from compas.geometry import matrix_from_perspective_entries
+from compas.geometry import matrix_from_shear_entries
+from compas.geometry import matrix_from_shear
+from compas.geometry import matrix_from_scale_factors
+from compas.geometry import matrix_from_quaternion
+from compas.geometry import euler_angles_from_matrix
+from compas.geometry import euler_angles_from_quaternion
+from compas.geometry import axis_and_angle_from_matrix
+from compas.geometry import axis_angle_vector_from_matrix
+from compas.geometry import axis_angle_from_quaternion
+from compas.geometry import quaternion_from_matrix
+from compas.geometry import quaternion_from_euler_angles
+from compas.geometry import quaternion_from_axis_angle
+from compas.geometry import basis_vectors_from_matrix
+from compas.geometry import translation_from_matrix
 
-from compas.geometry.transformations import Translation
-from compas.geometry.transformations import Rotation
+from compas.geometry import Translation
+from compas.geometry import Rotation
 
 import math
 
-from compas.geometry.primitives import Frame
-from compas.geometry.basic import allclose
-from compas.geometry.basic import normalize_vector
-from compas.geometry.basic import cross_vectors
+from compas.geometry import Frame
+from compas.geometry import allclose
+from compas.geometry import normalize_vector
+from compas.geometry import cross_vectors
 import numpy as np
 
 

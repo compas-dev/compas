@@ -1,4 +1,4 @@
-from compas.geometry.transformations import Translation
+from compas.geometry import Translation
 
 
 def test_translation():

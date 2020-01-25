@@ -1,9 +1,9 @@
-from compas.geometry.transformations import Transformation
-from compas.geometry.transformations import Translation
-from compas.geometry.transformations import Rotation
-from compas.geometry.transformations import Scale
-from compas.geometry.primitives import Frame
-from compas.geometry.primitives import Vector
+from compas.geometry import Transformation
+from compas.geometry import Translation
+from compas.geometry import Rotation
+from compas.geometry import Scale
+from compas.geometry import Frame
+from compas.geometry import Vector
 import numpy as np
 
 
