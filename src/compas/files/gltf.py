@@ -66,11 +66,10 @@ class MeshData(object):
         self.vertices = vertices
         self.faces = faces
         self.mesh_name = mesh_name
-        # self.material = None
 
 
 class GLTFScene(object):
-    """Object representing a root node of a scene.
+    """Object representing the base of a scene.
 
     Attributes
     ----------
@@ -95,8 +94,8 @@ class GLTFNode(object):
         Child nodes referenced by node_key.
     matrix : list of lists
         Matrix representing the displacement from node's parent to the node.
-    mesh_index : int or str double check this
-        Index of the associated mesh within the JSON.
+    mesh_index : int
+        Index of the associated mesh within the JSON, if any.
     weights : list of ints
         Weights used for computing morph targets in the attached mesh, if any.
     position : tuple
@@ -105,7 +104,7 @@ class GLTFNode(object):
         Matrix representing the displacement from the root node to the node.
     mesh_data : :class:`MeshData`
         Contains mesh data, if any.
-    node_key : int
+    node_key : int or str
         Key of the node used in :attr:`GLTFScene.nodes`.
     """
     def __init__(self):
@@ -156,7 +155,7 @@ class GLTF(object):
 
 class GLTFReader(object):
     """"Read the contents of a *glTF* or *glb* version 2 file using the json library.
-    Uses ideas from Khrono's Group glTF-Blender-IO.
+    Uses ideas from Khronos Group glTF-Blender-IO.
     Caution: Extensions are not supported and their data may be lost.
     Caution: Data for materials, textures, animations, images, skins and cameras are saved,
         but are not processed or used.
@@ -423,7 +422,7 @@ class GLTFReader(object):
 
 class GLTFParser(object):
     """Parse the contents of the reader to read and parse the associated binary files
-    and create objects digestible by compas.
+    and create objects digestible by COMPAS.
 
     Parameters
     ----------
@@ -433,7 +432,7 @@ class GLTFParser(object):
     ----------
     reader : :class:`GLTFReader`
     default_scene_index : int
-        index of the default scene
+        Index of the default scene.
     scenes : list of :class:`GLTFScene`
         List of dictionaries containing the information of each scene.
     """
