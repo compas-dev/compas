@@ -234,7 +234,7 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas_viewers import MeshViewer
+    from compas_viewers.meshviewer import MeshViewer
     from compas.utilities import download_file_from_remote
     from compas.topology import connected_components
 

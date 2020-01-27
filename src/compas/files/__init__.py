@@ -67,6 +67,7 @@ from __future__ import print_function
 
 from .amf import *  # noqa: F401 F403
 from .dxf import *  # noqa: F401 F403
+from .gltf import *  # noqa: F401 F403
 from .las import *  # noqa: F401 F403
 from .obj import *  # noqa: F401 F403
 from .off import *  # noqa: F401 F403
