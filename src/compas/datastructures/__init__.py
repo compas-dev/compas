@@ -24,7 +24,6 @@ Data structures
     BaseMesh
     Mesh
 
-
 Algorithms
 ----------
 
@@ -104,14 +103,17 @@ It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
 
+Data structures
+---------------
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     Network
 
-Network algorithms
-------------------
+Algorithms
+----------
 
 .. autosummary::
     :toctree: generated/
