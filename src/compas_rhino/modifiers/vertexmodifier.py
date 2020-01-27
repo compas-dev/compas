@@ -5,6 +5,7 @@ from __future__ import division
 import ast
 
 import compas
+from compas.geometry import add_vectors
 
 try:
     import Rhino
@@ -82,9 +83,7 @@ class VertexModifier(object):
             return False
 
         pos = list(gp.Point())
-        self.vertex[key]['x'] = pos[0]
-        self.vertex[key]['y'] = pos[1]
-        self.vertex[key]['z'] = pos[2]
+        self.vertex_attributes(key, 'xyz', pos)
 
         return True
 
@@ -142,9 +141,8 @@ class VertexModifier(object):
         vector = list(end - start)
 
         for key in keys:
-            self.vertex[key]['x'] += vector[0]
-            self.vertex[key]['y'] += vector[1]
-            self.vertex[key]['z'] += vector[2]
+            xyz = self.vertex_attributes(key, 'xyz')
+            self.vertex_attributes(key, 'xyz', add_vectors(xyz, vector))
 
         return True
 
@@ -172,11 +170,11 @@ class VertexModifier(object):
         if not names:
             names = self.default_vertex_attributes.keys()
         names = sorted(names)
-        values = [self.vertex[keys[0]][name] for name in names]
+        values = self.vertex_attributes(keys[0], names)
         if len(keys) > 1:
             for i, name in enumerate(names):
                 for key in keys[1:]:
-                    if values[i] != self.vertex[key][name]:
+                    if values[i] != self.vertex_attribute(key, name):
                         values[i] = '-'
                         break
         values = map(str, values)
@@ -186,9 +184,9 @@ class VertexModifier(object):
                 if value != '-':
                     for key in keys:
                         try:
-                            self.vertex[key][name] = ast.literal_eval(value)
+                            self.vertex_attribute(key, name, ast.literal_eval(value))
                         except (ValueError, TypeError):
-                            self.vertex[key][name] = value
+                            self.vertex_attribute(key, name, value)
             return True
         return False
 
