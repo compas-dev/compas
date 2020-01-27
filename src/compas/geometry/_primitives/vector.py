@@ -29,9 +29,19 @@ class Vector(Primitive):
         The Y component of the vector.
     z : float
         The Z component of the vector.
-    precision : integer, optional
-        The number of fractional digits used in the representation of the coordinates of the vector.
-        Default is ``3``.
+
+    Attributes
+    ----------
+    data : dict
+        The data representation of the vector.
+    x : float
+        The component along the X axis of the vector.
+    y : float
+        The component along the Y axis of the vector.
+    z : float
+        The component along the Z axis of the vector.
+    length : float, read-only
+        The length of the vector.
 
     Examples
     --------
@@ -59,6 +69,8 @@ class Vector(Primitive):
     Vector(0.000, 0.000, 1.000)
     """
 
+    __module__ = "compas.geometry"
+
     __slots__ = ['_x', '_y', '_z']
 
     def __init__(self, x, y, z=0):
@@ -69,65 +81,248 @@ class Vector(Primitive):
         self.y = y
         self.z = z
 
-    @staticmethod
-    def transform_collection(collection, X):
-        """Transform a collection of vector objects.
+    @property
+    def data(self):
+        """dict : The data dictionary that represents the vector."""
+        return list(self)
+
+    @data.setter
+    def data(self, data):
+        self.x = data[0]
+        self.y = data[1]
+        self.z = data[2]
+
+    @property
+    def x(self):
+        """float : The X coordinate of the point."""
+        return self._x
+
+    @x.setter
+    def x(self, x):
+        self._x = float(x)
+
+    @property
+    def y(self):
+        """float : The Y coordinate of the point."""
+        return self._y
+
+    @y.setter
+    def y(self, y):
+        self._y = float(y)
+
+    @property
+    def z(self):
+        """float : The Z coordinate of the point."""
+        return self._z
+
+    @z.setter
+    def z(self, z):
+        self._z = float(z)
+
+    @property
+    def length(self):
+        """float: The length of this vector."""
+        return length_vector(self)
+
+    # ==========================================================================
+    # customization
+    # ==========================================================================
+
+    def __repr__(self):
+        return 'Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})'.format(self.x, self.y, self.z, PRECISION[:1])
+
+    def __len__(self):
+        return 3
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            return [self[i] for i in range(*key.indices(len(self)))]
+        i = key % 3
+        if i == 0:
+            return self.x
+        if i == 1:
+            return self.y
+        if i == 2:
+            return self.z
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        i = key % 3
+        if i == 0:
+            self.x = value
+            return
+        if i == 1:
+            self.y = value
+            return
+        if i == 2:
+            self.z = value
+            return
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.x, self.y, self.z])
+
+    def __eq__(self, other):
+        """Is this vector equal to the other vector?
+
+        Two vectors are considered equal if their XYZ components are identical.
 
         Parameters
         ----------
-        collection : list of :class:`compas.geometry.Vector`
-            The collection of vectors.
-
-        Examples
-        --------
-        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
-        >>> u = Vector(1.0, 0.0, 0.0)
-        >>> vectors = [u]
-        >>> Vector.transform_collection(vectors, R)
-        >>> v = vectors[0]
-        >>> v
-        Vector(0.000, 1.000, 0.000)
-        >>> u is v
-        True
-        """
-        data = transform_vectors(collection, X)
-        for vector, xyz in zip(collection, data):
-            vector.x = xyz[0]
-            vector.y = xyz[1]
-            vector.z = xyz[2]
-
-    @staticmethod
-    def transformed_collection(collection, X):
-        """Create a collection of transformed vectors.
-
-        Parameters
-        ----------
-        collection : list of :class:`compas.geometry.Vector`
-            The collection of vectors.
+        other : :class:`compas.geometry.Vector` or list
+            The vector to compare.
 
         Returns
         -------
-        list of :class:`compas.geometry.Vector`
-            The transformed vectors.
-
-        Examples
-        --------
-        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
-        >>> u = Vector(1.0, 0.0, 0.0)
-        >>> vectors = [u]
-        >>> vectors = Vector.transformed_collection(vectors, R)
-        >>> v = vectors[0]
-        >>> v
-        Vector(0.000, 1.000, 0.000)
-        >>> u is v
-        False
+        bool
+            True if the vectors are equal.
+            False otherwise.
         """
-        vectors = [vector.copy() for vector in collection]
-        Vector.transform_collection(vectors, X)
-        return vectors
+        return self.x == other[0] and self.y == other[1] and self.z == other[2]
+
+    def __add__(self, other):
+        """Return a vector that is the the sum of this vector and another vector.
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Vector` or list
+            The vector to add.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The resulting vector.
+        """
+        return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
+
+    def __sub__(self, other):
+        """Return a vector that is the the difference between this vector and another vector.
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Vector` or list
+            The vector to subtract.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The resulting new vector.
+        """
+        return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
+
+    def __mul__(self, n):
+        """Return a vector that is the scaled version of this vector.
+
+        Parameters
+        ----------
+        n : float
+            The scaling factor.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The resulting new vector.
+        """
+        return Vector(self.x * n, self.y * n, self.z * n)
+
+    def __truediv__(self, n):
+        """Return a vector that is the scaled version of this vector.
+
+        Parameters
+        ----------
+        n : float
+            The scaling factor.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            The resulting new vector.
+        """
+        return Vector(self.x / n, self.y / n, self.z / n)
+
+    def __pow__(self, n):
+        """Create a vector from the components of the current vector raised
+        to the given power.
+
+        Parameters
+        ----------
+        n : float
+            The power.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+            A new point with raised coordinates.
+        """
+        return Vector(self.x ** n, self.y ** n, self.z ** n)
+
+    def __iadd__(self, other):
+        """Add the components of the other vector to this vector.
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Vector` or list
+            The vector to add.
+        """
+        self.x += other[0]
+        self.y += other[1]
+        self.z += other[2]
+        return self
+
+    def __isub__(self, other):
+        """Subtract the components of the other vector from this vector.
+
+        Parameters
+        ----------
+        other : :class:`compas.geometry.Vector` or list
+            The vector to subtract.
+        """
+        self.x -= other[0]
+        self.y -= other[1]
+        self.z -= other[2]
+        return self
+
+    def __imul__(self, n):
+        """Multiply the components of this vector by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+        """
+        self.x *= n
+        self.y *= n
+        self.z *= n
+        return self
+
+    def __itruediv__(self, n):
+        """Divide the components of this vector by the given factor.
+
+        Parameters
+        ----------
+        n : float
+            The multiplication factor.
+        """
+        self.x /= n
+        self.y /= n
+        self.z /= n
+        return self
+
+    def __ipow__(self, n):
+        """Raise the components of this vector to the given power.
+
+        Parameters
+        ----------
+        n : float
+            The power.
+        """
+        self.x **= n
+        self.y **= n
+        self.z **= n
+        return self
 
     # ==========================================================================
-    # factory
+    # constructors
     # ==========================================================================
 
     @classmethod
@@ -224,263 +419,65 @@ class Vector(Primitive):
         return cls(*data)
 
     # ==========================================================================
-    # descriptors
+    # static
     # ==========================================================================
 
-    @property
-    def data(self):
-        """dict : The data dictionary that represents the vector."""
-        return list(self)
-
-    @data.setter
-    def data(self, data):
-        self.x = data[0]
-        self.y = data[1]
-        self.z = data[2]
-
-    @property
-    def x(self):
-        """float : The X coordinate of the point."""
-        return self._x
-
-    @x.setter
-    def x(self, x):
-        self._x = float(x)
-
-    @property
-    def y(self):
-        """float : The Y coordinate of the point."""
-        return self._y
-
-    @y.setter
-    def y(self, y):
-        self._y = float(y)
-
-    @property
-    def z(self):
-        """float : The Z coordinate of the point."""
-        return self._z
-
-    @z.setter
-    def z(self, z):
-        self._z = float(z)
-
-    # ==========================================================================
-    # representation
-    # ==========================================================================
-
-    def __repr__(self):
-        return 'Vector({0:.{3}f}, {1:.{3}f}, {2:.{3}f})'.format(self.x, self.y, self.z, PRECISION[:1])
-
-    def __len__(self):
-        return 3
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        if isinstance(key, slice):
-            return [self[i] for i in range(*key.indices(len(self)))]
-        i = key % 3
-        if i == 0:
-            return self.x
-        if i == 1:
-            return self.y
-        if i == 2:
-            return self.z
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        i = key % 3
-        if i == 0:
-            self.x = value
-            return
-        if i == 1:
-            self.y = value
-            return
-        if i == 2:
-            self.z = value
-            return
-        raise KeyError
-
-    def __iter__(self):
-        return iter([self.x, self.y, self.z])
-
-    # ==========================================================================
-    # comparison
-    # ==========================================================================
-
-    def __eq__(self, other):
-        """Is this vector equal to the other vector?
-
-        Two vectors are considered equal if their XYZ components are identical.
+    @staticmethod
+    def transform_collection(collection, X):
+        """Transform a collection of vector objects.
 
         Parameters
         ----------
-        other : :class:`compas.geometry.Vector` or list
-            The vector to compare.
+        collection : list of :class:`compas.geometry.Vector`
+            The collection of vectors.
+
+        Examples
+        --------
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> vectors = [u]
+        >>> Vector.transform_collection(vectors, R)
+        >>> v = vectors[0]
+        >>> v
+        Vector(0.000, 1.000, 0.000)
+        >>> u is v
+        True
+        """
+        data = transform_vectors(collection, X)
+        for vector, xyz in zip(collection, data):
+            vector.x = xyz[0]
+            vector.y = xyz[1]
+            vector.z = xyz[2]
+
+    @staticmethod
+    def transformed_collection(collection, X):
+        """Create a collection of transformed vectors.
+
+        Parameters
+        ----------
+        collection : list of :class:`compas.geometry.Vector`
+            The collection of vectors.
 
         Returns
         -------
-        bool
-            True if the vectors are equal.
-            False otherwise.
+        list of :class:`compas.geometry.Vector`
+            The transformed vectors.
+
+        Examples
+        --------
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> u = Vector(1.0, 0.0, 0.0)
+        >>> vectors = [u]
+        >>> vectors = Vector.transformed_collection(vectors, R)
+        >>> v = vectors[0]
+        >>> v
+        Vector(0.000, 1.000, 0.000)
+        >>> u is v
+        False
         """
-        return self.x == other[0] and self.y == other[1] and self.z == other[2]
-
-    # ==========================================================================
-    # operators
-    # ==========================================================================
-
-    def __add__(self, other):
-        """Return a vector that is the the sum of this vector and another vector.
-
-        Parameters
-        ----------
-        other : :class:`compas.geometry.Vector` or list
-            The vector to add.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            The resulting vector.
-        """
-        return Vector(self.x + other[0], self.y + other[1], self.z + other[2])
-
-    def __sub__(self, other):
-        """Return a vector that is the the difference between this vector and another vector.
-
-        Parameters
-        ----------
-        other : :class:`compas.geometry.Vector` or list
-            The vector to subtract.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            The resulting new vector.
-        """
-        return Vector(self.x - other[0], self.y - other[1], self.z - other[2])
-
-    def __mul__(self, n):
-        """Return a vector that is the scaled version of this vector.
-
-        Parameters
-        ----------
-        n : float
-            The scaling factor.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            The resulting new vector.
-        """
-        return Vector(self.x * n, self.y * n, self.z * n)
-
-    def __truediv__(self, n):
-        """Return a vector that is the scaled version of this vector.
-
-        Parameters
-        ----------
-        n : float
-            The scaling factor.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            The resulting new vector.
-        """
-        return Vector(self.x / n, self.y / n, self.z / n)
-
-    def __pow__(self, n):
-        """Create a vector from the components of the current vector raised
-        to the given power.
-
-        Parameters
-        ----------
-        n : float
-            The power.
-
-        Returns
-        -------
-        :class:`compas.geometry.Vector`
-            A new point with raised coordinates.
-        """
-        return Vector(self.x ** n, self.y ** n, self.z ** n)
-
-    # ==========================================================================
-    # in-place operators
-    # ==========================================================================
-
-    def __iadd__(self, other):
-        """Add the components of the other vector to this vector.
-
-        Parameters
-        ----------
-        other : :class:`compas.geometry.Vector` or list
-            The vector to add.
-        """
-        self.x += other[0]
-        self.y += other[1]
-        self.z += other[2]
-        return self
-
-    def __isub__(self, other):
-        """Subtract the components of the other vector from this vector.
-
-        Parameters
-        ----------
-        other : :class:`compas.geometry.Vector` or list
-            The vector to subtract.
-        """
-        self.x -= other[0]
-        self.y -= other[1]
-        self.z -= other[2]
-        return self
-
-    def __imul__(self, n):
-        """Multiply the components of this vector by the given factor.
-
-        Parameters
-        ----------
-        n : float
-            The multiplication factor.
-        """
-        self.x *= n
-        self.y *= n
-        self.z *= n
-        return self
-
-    def __itruediv__(self, n):
-        """Divide the components of this vector by the given factor.
-
-        Parameters
-        ----------
-        n : float
-            The multiplication factor.
-        """
-        self.x /= n
-        self.y /= n
-        self.z /= n
-        return self
-
-    def __ipow__(self, n):
-        """Raise the components of this vector to the given power.
-
-        Parameters
-        ----------
-        n : float
-            The power.
-        """
-        self.x **= n
-        self.y **= n
-        self.z **= n
-        return self
-
-    # ==========================================================================
-    # static methods
-    # ==========================================================================
+        vectors = [vector.copy() for vector in collection]
+        Vector.transform_collection(vectors, X)
+        return vectors
 
     @staticmethod
     def length_vectors(vectors):
@@ -615,15 +612,6 @@ class Vector(Primitive):
         [1.5707963267948966, 1.5707963267948966]
         """
         return [angle_vectors(u, v) for u, v in zip(left, right)]
-
-    # ==========================================================================
-    # properties
-    # ==========================================================================
-
-    @property
-    def length(self):
-        """float: The length of this vector."""
-        return length_vector(self)
 
     # ==========================================================================
     # helpers
@@ -850,10 +838,6 @@ class Vector(Primitive):
         True
         """
         return angles_vectors(self, other)
-
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
 
     def transform(self, T):
         """Transform this vector.

@@ -19,14 +19,22 @@ class Line(Primitive):
     p2 : point
         The second point.
 
-    Notes
-    -----
-    For more info on lines and linear equations, see [1]_.
-
-    References
+    Attributes
     ----------
-    .. [1] Wikipedia. *Linear equation*.
-           Available at: https://en.wikipedia.org/wiki/Linear_equation.
+    data : dict
+        The data representation of the line.
+    start : :class:`compas.geometry.Point`
+        The first point of the line.
+    end : :class:`compas.geometry.Point`
+        The second point of the line.
+    vector : :class:`compas.geometry.Vector`
+        A vector pointing from ``start`` to ``end``.
+    direction : :class:`compas.geometry.Vector`
+        A unit vector pointing from ``start`` to ``end``.
+    midpoint : :class:`compas.geometry.Point`
+        A point half way between ``start`` and ``end``.
+    length : float, read-only
+        The length of the line segment between ``start`` and ``end``.
 
     Examples
     --------
@@ -48,6 +56,8 @@ class Line(Primitive):
     True
     """
 
+    __module__ = "compas.geometry"
+
     __slots__ = ['_start', '_end']
 
     def __init__(self, p1, p2):
@@ -55,6 +65,112 @@ class Line(Primitive):
         self._end = None
         self.start = p1
         self.end = p2
+
+    @property
+    def data(self):
+        """dict : The data dictionary that represents the line."""
+        return {'start': list(self.start), 'end': list(self.end)}
+
+    @data.setter
+    def data(self, data):
+        self.start = data['start']
+        self.end = data['end']
+
+    @property
+    def start(self):
+        """:class:`compas.geometry.Point` : The start point of the line."""
+        return self._start
+
+    @start.setter
+    def start(self, point):
+        self._start = Point(*point)
+
+    @property
+    def end(self):
+        """:class:`compas.geometry.Point` : The end point of the line."""
+        return self._end
+
+    @end.setter
+    def end(self, point):
+        self._end = Point(*point)
+
+    @property
+    def vector(self):
+        """:class:`compas.geometry.Vector` : A vector pointing from start to end."""
+        return self.end - self.start
+
+    @property
+    def length(self):
+        """float : The length of the vector from start to end."""
+        return self.vector.length
+
+    @property
+    def direction(self):
+        """:class:`compas.geometry.Vector` : A unit vector pointing from start and end."""
+        return self.vector * (1 / self.length)
+
+    @property
+    def midpoint(self):
+        """:class:`compas.geometry.Point` : The midpoint between start and end."""
+        v = self.direction * (0.5 * self.length)
+        return self.start + v
+
+    # ==========================================================================
+    # customization
+    # ==========================================================================
+
+    def __repr__(self):
+        return 'Line({0}, {1})'.format(self.start, self.end)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.start
+        if key == 1:
+            return self.end
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.start = value
+            return
+        if key == 1:
+            self.end = value
+            return
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.start, self.end])
+
+    def __eq__(self, other):
+        raise NotImplementedError
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a frame from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Examples
+        --------
+        >>> line = Line.from_data({'start': [0.0, 0.0, 0.0], 'end': [1.0, 0.0, 0.0]})
+        >>> line.end
+        Point(1.000, 0.000, 0.000)
+        """
+        return cls(data['start'], data['end'])
+
+    # ==========================================================================
+    # static
+    # ==========================================================================
 
     @staticmethod
     def transform_collection(collection, X):
@@ -123,121 +239,28 @@ class Line(Primitive):
         return lines
 
     # ==========================================================================
-    # factory
+    # helpers
     # ==========================================================================
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a frame from a data dict.
+    def copy(self):
+        """Make a copy of this line.
 
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
+        Returns
+        -------
+        Line
+            The copy.
 
         Examples
         --------
-        >>> line = Line.from_data({'start': [0.0, 0.0, 0.0], 'end': [1.0, 0.0, 0.0]})
-        >>> line.end
-        Point(1.000, 0.000, 0.000)
+        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> line.copy()
+        Line(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000))
         """
-        return cls(data['start'], data['end'])
+        cls = type(self)
+        return cls(self.start.copy(), self.end.copy())
 
     # ==========================================================================
-    # descriptors
-    # ==========================================================================
-
-    @property
-    def data(self):
-        """dict : The data dictionary that represents the line."""
-        return {'start': list(self.start), 'end': list(self.end)}
-
-    @data.setter
-    def data(self, data):
-        self.start = data['start']
-        self.end = data['end']
-
-    @property
-    def start(self):
-        """:class:`compas.geometry.Point` : The start point of the line."""
-        return self._start
-
-    @start.setter
-    def start(self, point):
-        self._start = Point(*point)
-
-    @property
-    def end(self):
-        """:class:`compas.geometry.Point` : The end point of the line."""
-        return self._end
-
-    @end.setter
-    def end(self, point):
-        self._end = Point(*point)
-
-    @property
-    def vector(self):
-        """:class:`compas.geometry.Vector` : A vector pointing from start to end."""
-        return self.end - self.start
-
-    @property
-    def length(self):
-        """float : The length of the vector from start to end."""
-        return self.vector.length
-
-    @property
-    def direction(self):
-        """:class:`compas.geometry.Vector` : A unit vector pointing from start and end."""
-        return self.vector * (1 / self.length)
-
-    @property
-    def midpoint(self):
-        """:class:`compas.geometry.Point` : The midpoint between start and end."""
-        v = self.direction * (0.5 * self.length)
-        return self.start + v
-
-    # ==========================================================================
-    # representation
-    # ==========================================================================
-
-    def __repr__(self):
-        return 'Line({0}, {1})'.format(self.start, self.end)
-
-    def __len__(self):
-        return 2
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.start
-        if key == 1:
-            return self.end
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.start = value
-            return
-        if key == 1:
-            self.end = value
-            return
-        raise KeyError
-
-    def __iter__(self):
-        return iter([self.start, self.end])
-
-    # ==========================================================================
-    # comparison
-    # ==========================================================================
-
-    def __eq__(self, other):
-        raise NotImplementedError
-
-    # ==========================================================================
-    # queries
+    # methods
     # ==========================================================================
 
     def point(self, t):
@@ -265,43 +288,6 @@ class Line(Primitive):
             return self.end
         v = self.direction * (t * self.length)
         return self.start + v
-
-    # ==========================================================================
-    # operators
-    # ==========================================================================
-
-    # ==========================================================================
-    # inplace operators
-    # ==========================================================================
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Make a copy of this line.
-
-        Returns
-        -------
-        Line
-            The copy.
-
-        Examples
-        --------
-        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
-        >>> line.copy()
-        Line(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000))
-        """
-        cls = type(self)
-        return cls(self.start.copy(), self.end.copy())
-
-    # ==========================================================================
-    # methods
-    # ==========================================================================
-
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
 
     def transform(self, T):
         """Transform this line.

@@ -4,23 +4,23 @@ from __future__ import division
 
 
 __all__ = [
-    'conway_dual',
-    'conway_join',
-    'conway_ambo',
-    'conway_kis',
-    'conway_needle',
-    'conway_zip',
-    'conway_truncate',
-    'conway_ortho',
-    'conway_expand',
-    'conway_gyro',
-    'conway_snub',
-    'conway_meta',
-    'conway_bevel'
+    'mesh_conway_dual',
+    'mesh_conway_join',
+    'mesh_conway_ambo',
+    'mesh_conway_kis',
+    'mesh_conway_needle',
+    'mesh_conway_zip',
+    'mesh_conway_truncate',
+    'mesh_conway_ortho',
+    'mesh_conway_expand',
+    'mesh_conway_gyro',
+    'mesh_conway_snub',
+    'mesh_conway_meta',
+    'mesh_conway_bevel'
 ]
 
 
-def conway_dual(mesh):
+def mesh_conway_dual(mesh):
     """Generates the dual mesh from a seed mesh.
 
     Parameters
@@ -62,7 +62,7 @@ def conway_dual(mesh):
     return cls.from_vertices_and_faces(vertices, faces)
 
 
-def conway_join(mesh):
+def mesh_conway_join(mesh):
     """Generates the join mesh from a seed mesh.
 
     Parameters
@@ -110,7 +110,7 @@ def conway_join(mesh):
     return join_mesh
 
 
-def conway_ambo(mesh):
+def mesh_conway_ambo(mesh):
     """Generates the ambo mesh from a seed mesh.
 
     Parameters
@@ -146,7 +146,7 @@ def conway_ambo(mesh):
     return conway_dual(conway_join(mesh))
 
 
-def conway_kis(mesh):
+def mesh_conway_kis(mesh):
     """Generates the kis mesh from a seed mesh.
 
     Parameters
@@ -191,7 +191,7 @@ def conway_kis(mesh):
     return cls.from_vertices_and_faces(vertices, faces)
 
 
-def conway_needle(mesh):
+def mesh_conway_needle(mesh):
     """Generates the needle mesh from a seed mesh.
 
     Parameters
@@ -227,7 +227,7 @@ def conway_needle(mesh):
     return conway_kis(conway_dual(mesh))
 
 
-def conway_zip(mesh):
+def mesh_conway_zip(mesh):
     """Generates the zip mesh from a seed mesh.
 
     Parameters
@@ -264,7 +264,7 @@ def conway_zip(mesh):
     return conway_dual(conway_kis(mesh))
 
 
-def conway_truncate(mesh):
+def mesh_conway_truncate(mesh):
     """Generates the truncate mesh from a seed mesh.
 
     Parameters
@@ -301,7 +301,7 @@ def conway_truncate(mesh):
     return conway_dual(conway_kis(conway_dual(mesh)))
 
 
-def conway_ortho(mesh):
+def mesh_conway_ortho(mesh):
     """Generates the ortho mesh from a seed mesh.
 
     Parameters
@@ -337,7 +337,7 @@ def conway_ortho(mesh):
     return conway_join(conway_join(mesh))
 
 
-def conway_expand(mesh):
+def mesh_conway_expand(mesh):
     """Generates the expand mesh from a seed mesh.
 
     Parameters
@@ -373,7 +373,7 @@ def conway_expand(mesh):
     return conway_ambo(conway_ambo(mesh))
 
 
-def conway_gyro(mesh):
+def mesh_conway_gyro(mesh):
     """Generates the gyro mesh from a seed mesh.
 
     Parameters
@@ -427,7 +427,7 @@ def conway_gyro(mesh):
     return cls.from_vertices_and_faces(vertices, faces)
 
 
-def conway_snub(mesh):
+def mesh_conway_snub(mesh):
     """Generates the snub mesh from a seed mesh.
 
     Parameters
@@ -463,7 +463,7 @@ def conway_snub(mesh):
     return conway_dual(conway_gyro(conway_dual(mesh)))
 
 
-def conway_meta(mesh):
+def mesh_conway_meta(mesh):
     """Generates the meta mesh from a seed mesh.
 
     Parameters
@@ -499,7 +499,7 @@ def conway_meta(mesh):
     return conway_kis(conway_join(mesh))
 
 
-def conway_bevel(mesh):
+def mesh_conway_bevel(mesh):
     """Generates the bevel mesh from a seed mesh.
 
     Parameters

@@ -36,9 +36,17 @@ class Point(Primitive):
     z : float, optional
         The Z coordinate of the point.
         Default is ``0.0``.
-    precision : integer, optional
-        The number of fractional digits used in the representation of the coordinates of the point.
-        Default is ``3``.
+
+    Attributes
+    ----------
+    data : dict
+        The data representation of the point.
+    x : float
+        The X coordinate of the point.
+    y : float
+        The Y coordinate of the point.
+    z : float
+        The Z coordinate of the point.
 
     Notes
     -----
@@ -97,6 +105,8 @@ class Point(Primitive):
     Point(100.000, 196.000, 324.000)
     """
 
+    __module__ = "compas.geometry"
+
     __slots__ = ['_x', '_y', '_z']
 
     def __init__(self, x, y, z=0.0):
@@ -106,98 +116,6 @@ class Point(Primitive):
         self.x = x
         self.y = y
         self.z = z
-
-    @staticmethod
-    def transform_collection(collection, X):
-        """Transform a collection of points.
-
-        Parameters
-        ----------
-        collection : list of :class:`compas.geometry.Point`
-            The collection of points.
-
-        Returns
-        -------
-        None
-            The points are modified in-place.
-
-        Examples
-        --------
-        >>> T = Translation([1.0, 2.0, 3.0])
-        >>> a = Point(0.0, 0.0, 0.0)
-        >>> points = [a]
-        >>> Point.transform_collection(points, T)
-        >>> b = points[0]
-        >>> b
-        Point(1.000, 2.000, 3.000)
-        >>> a is b
-        True
-        """
-        data = transform_points(collection, X)
-        for point, xyz in zip(collection, data):
-            point.x = xyz[0]
-            point.y = xyz[1]
-            point.z = xyz[2]
-
-    @staticmethod
-    def transformed_collection(collection, X):
-        """Create a collection of transformed points.
-
-        Parameters
-        ----------
-        collection : list of :class:`compas.geometry.Point`
-            The collection of points.
-
-        Returns
-        -------
-        list of :class:`compas.geometry.Point`
-            The transformed points.
-
-        Examples
-        --------
-        >>> T = Translation([1.0, 2.0, 3.0])
-        >>> a = Point(0.0, 0.0, 0.0)
-        >>> points = [a]
-        >>> points = Point.transformed_collection(points, T)
-        >>> b = points[0]
-        >>> b
-        Point(1.000, 2.000, 3.000)
-        >>> a is b
-        False
-        """
-        points = [point.copy() for point in collection]
-        Point.transform_collection(points, X)
-        return points
-
-    # ==========================================================================
-    # factory
-    # ==========================================================================
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a point from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Point`
-            The constructed point.
-
-        Examples
-        --------
-        >>> point = Point.from_data([0.0, 0.0, 0.0])
-        >>> point
-        Point(0.000, 0.000, 0.000)
-        """
-        return cls(*data)
-
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
 
     @property
     def data(self):
@@ -238,7 +156,7 @@ class Point(Primitive):
         self._z = float(z)
 
     # ==========================================================================
-    # representation
+    # customization
     # ==========================================================================
 
     def __repr__(self):
@@ -246,10 +164,6 @@ class Point(Primitive):
 
     def __len__(self):
         return 3
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
 
     def __getitem__(self, key):
         if isinstance(key, slice):
@@ -279,10 +193,6 @@ class Point(Primitive):
     def __iter__(self):
         return iter([self.x, self.y, self.z])
 
-    # ==========================================================================
-    # comparison
-    # ==========================================================================
-
     def __eq__(self, other):
         """Is this point equal to the other point?
 
@@ -300,10 +210,6 @@ class Point(Primitive):
             False otherwise.
         """
         return self.x == other[0] and self.y == other[1] and self.z == other[2]
-
-    # ==========================================================================
-    # operators
-    # ==========================================================================
 
     def __add__(self, other):
         """Return a point that is the sum of this point and another point.
@@ -387,10 +293,6 @@ class Point(Primitive):
         """
         return Point(self.x ** n, self.y ** n, self.z ** n)
 
-    # ==========================================================================
-    # in-place operators
-    # ==========================================================================
-
     def __iadd__(self, other):
         """Add the coordinates of the other point to this point.
 
@@ -455,6 +357,94 @@ class Point(Primitive):
         self.y **= n
         self.z **= n
         return self
+
+    # ==========================================================================
+    # static
+    # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a point from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            The constructed point.
+
+        Examples
+        --------
+        >>> point = Point.from_data([0.0, 0.0, 0.0])
+        >>> point
+        Point(0.000, 0.000, 0.000)
+        """
+        return cls(*data)
+
+    @staticmethod
+    def transform_collection(collection, X):
+        """Transform a collection of points.
+
+        Parameters
+        ----------
+        collection : list of :class:`compas.geometry.Point`
+            The collection of points.
+
+        Returns
+        -------
+        None
+            The points are modified in-place.
+
+        Examples
+        --------
+        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> a = Point(0.0, 0.0, 0.0)
+        >>> points = [a]
+        >>> Point.transform_collection(points, T)
+        >>> b = points[0]
+        >>> b
+        Point(1.000, 2.000, 3.000)
+        >>> a is b
+        True
+        """
+        data = transform_points(collection, X)
+        for point, xyz in zip(collection, data):
+            point.x = xyz[0]
+            point.y = xyz[1]
+            point.z = xyz[2]
+
+    @staticmethod
+    def transformed_collection(collection, X):
+        """Create a collection of transformed points.
+
+        Parameters
+        ----------
+        collection : list of :class:`compas.geometry.Point`
+            The collection of points.
+
+        Returns
+        -------
+        list of :class:`compas.geometry.Point`
+            The transformed points.
+
+        Examples
+        --------
+        >>> T = Translation([1.0, 2.0, 3.0])
+        >>> a = Point(0.0, 0.0, 0.0)
+        >>> points = [a]
+        >>> points = Point.transformed_collection(points, T)
+        >>> b = points[0]
+        >>> b
+        Point(1.000, 2.000, 3.000)
+        >>> a is b
+        False
+        """
+        points = [point.copy() for point in collection]
+        Point.transform_collection(points, X)
+        return points
 
     # ==========================================================================
     # helpers
@@ -750,10 +740,6 @@ class Point(Primitive):
             False, otherwise.
         """
         raise NotImplementedError
-
-    # ==========================================================================
-    # tranformations
-    # ==========================================================================
 
     def transform(self, T):
         """Transform this point.

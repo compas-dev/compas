@@ -33,6 +33,23 @@ class Polygon(Primitive):
     points : list of point
         An ordered list of points.
 
+    Attributes
+    ----------
+    data : dict
+        The data representation of the polygon.
+    points : list of :class:`compas.geometry.Point`
+        The polygon points.
+    lines : list of :class:`compas.geometry.Line`, read-only
+        The polygon segments.
+    centroid : :class:`compas.geometry.Point`, read-only
+        The centroid of the polygon surface.
+    normal : :class:`compas.geometry.Vector`, read-only
+        The normal vector of the polygon plane.
+    length : float, read-only
+        The length of the polygon boundary.
+    area : float, read-only
+        The area of the polygon surface.
+
     Notes
     -----
     All ``Polygon`` objects are considered closed. Therefore the first and
@@ -50,13 +67,100 @@ class Polygon(Primitive):
     1.0
     """
 
+    __module__ = "compas.geometry"
+
+    __slots__ = ["_points", "_lines"]
+
     def __init__(self, points):
         self._points = []
         self._lines = []
         self.points = points
 
+    @property
+    def data(self):
+        """dict : The data dictionary that represents the polygon."""
+        return {'points': [list(point) for point in self.points]}
+
+    @data.setter
+    def data(self, data):
+        self.points = data['points']
+
+    @property
+    def points(self):
+        """list of :class:`compas.geometry.Point` : The points of the polygon."""
+        return self._points
+
+    @points.setter
+    def points(self, points):
+        if points[-1] == points[0]:
+            del points[-1]
+        self._points = [Point(*xyz) for xyz in points]
+        self._lines = [Line(self.points[i], self.points[i + 1]) for i in range(-1, len(points) - 1)]
+
+    @property
+    def lines(self):
+        """list of :class:`compas.geometry.Line` : The lines of the polyline."""
+        return self._lines
+
+    @property
+    def length(self):
+        """float : The length of the boundary."""
+        return sum([line.length for line in self.lines])
+
+    @property
+    def centroid(self):
+        """int : The centroid of the polygon."""
+        point = centroid_polygon(self.points)
+        return Point(*point)
+
+    @property
+    def normal(self):
+        """:class:`compas.geometry.Vector` : The (average) normal of the polygon."""
+        o = self.centroid
+        points = self.points
+        a2 = 0
+        normals = []
+        for i in range(-1, len(points) - 1):
+            p1 = points[i]
+            p2 = points[i + 1]
+            u = [p1[_] - o[_] for _ in range(3)]
+            v = [p2[_] - o[_] for _ in range(3)]
+            w = cross_vectors(u, v)
+            a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
+            normals.append(w)
+        n = [sum(axis) / a2 for axis in zip(*normals)]
+        n = Vector(* n)
+        return n
+
+    @property
+    def area(self):
+        """float: The area of the polygon."""
+        return area_polygon(self.points)
+
     # ==========================================================================
-    # factory
+    # customization
+    # ==========================================================================
+
+    def __repr__(self):
+        return "Polygon({})".format(", ".join(["{}".format(point) for point in self.points]))
+
+    def __len__(self):
+        return len(self.points)
+
+    def __getitem__(self, key):
+        return self.points[key]
+
+    def __setitem__(self, key, value):
+        self.points[key] = value
+
+    def __iter__(self):
+        return iter(self.points)
+
+    def __eq__(self, other):
+        return all(a == b for a, b in zip(self, other))
+
+    # ==========================================================================
+    # constructors
     # ==========================================================================
 
     @classmethod
@@ -127,109 +231,6 @@ class Polygon(Primitive):
                      0.0]
             points.append(point)
         return cls(points)
-
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
-
-    @property
-    def data(self):
-        """dict : The data dictionary that represents the polygon."""
-        return {'points': [list(point) for point in self.points]}
-
-    @data.setter
-    def data(self, data):
-        self.points = data['points']
-
-    @property
-    def points(self):
-        """list of :class:`compas.geometry.Point` : The points of the polygon."""
-        return self._points
-
-    @points.setter
-    def points(self, points):
-        if points[-1] == points[0]:
-            del points[-1]
-        self._points = [Point(*xyz) for xyz in points]
-        self._lines = [Line(self.points[i], self.points[i + 1]) for i in range(-1, len(points) - 1)]
-
-    @property
-    def lines(self):
-        """list of :class:`compas.geometry.Line` : The lines of the polyline."""
-        return self._lines
-
-    @property
-    def length(self):
-        """float : The length of the boundary."""
-        return sum([line.length for line in self.lines])
-
-    @property
-    def centroid(self):
-        """int : The centroid of the polygon."""
-        point = centroid_polygon(self.points)
-        return Point(*point)
-
-    @property
-    def normal(self):
-        """:class:`compas.geometry.Vector` : The (average) normal of the polygon."""
-        o = self.centroid
-        points = self.points
-        a2 = 0
-        normals = []
-        for i in range(-1, len(points) - 1):
-            p1 = points[i]
-            p2 = points[i + 1]
-            u = [p1[_] - o[_] for _ in range(3)]
-            v = [p2[_] - o[_] for _ in range(3)]
-            w = cross_vectors(u, v)
-            a2 += sum(w[_] ** 2 for _ in range(3)) ** 0.5
-            normals.append(w)
-        n = [sum(axis) / a2 for axis in zip(*normals)]
-        n = Vector(* n)
-        return n
-
-    @property
-    def area(self):
-        """float: The area of the polygon."""
-        return area_polygon(self.points)
-
-    # ==========================================================================
-    # representation
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Polygon({})".format(", ".join(["{}".format(point) for point in self.points]))
-
-    def __len__(self):
-        return len(self.points)
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        return self.points[key]
-
-    def __setitem__(self, key, value):
-        self.points[key] = value
-
-    def __iter__(self):
-        return iter(self.points)
-
-    # ==========================================================================
-    # comparison
-    # ==========================================================================
-
-    def __eq__(self, other):
-        return all(a == b for a, b in zip(self, other))
-
-    # ==========================================================================
-    # operators
-    # ==========================================================================
-
-    # ==========================================================================
-    # inplace operators
-    # ==========================================================================
 
     # ==========================================================================
     # helpers

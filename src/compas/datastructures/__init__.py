@@ -14,34 +14,19 @@ It is meant for the representation of polygonal *"surface"* meshes. A mesh can b
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
 
+Data structures
+---------------
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
+    BaseMesh
     Mesh
 
-Mesh matrices
--------------
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    mesh_adjacency_matrix
-    mesh_connectivity_matrix
-    mesh_degree_matrix
-    mesh_face_matrix
-    mesh_laplacian_matrix
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    trimesh_cotangent_laplacian_matrix
-    trimesh_vertexarea_matrix
-
-Mesh algorithms
----------------
+Algorithms
+----------
 
 .. autosummary::
     :toctree: generated/
@@ -77,13 +62,18 @@ Mesh algorithms
     mesh_unify_cycles
     mesh_weld
 
+Matrices
+--------
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    trimesh_gaussian_curvature
-    trimesh_remesh
-    trimesh_subdivide_loop
+    mesh_adjacency_matrix
+    mesh_connectivity_matrix
+    mesh_degree_matrix
+    mesh_face_matrix
+    mesh_laplacian_matrix
 
 Conway Operators
 ----------------
@@ -92,19 +82,19 @@ Conway Operators
     :toctree: generated/
     :nosignatures:
 
-    conway_dual
-    conway_join
-    conway_ambo
-    conway_kis
-    conway_needle
-    conway_zip
-    conway_truncate
-    conway_ortho
-    conway_expand
-    conway_gyro
-    conway_snub
-    conway_meta
-    conway_bevel
+    mesh_conway_dual
+    mesh_conway_join
+    mesh_conway_ambo
+    mesh_conway_kis
+    mesh_conway_needle
+    mesh_conway_zip
+    mesh_conway_truncate
+    mesh_conway_ortho
+    mesh_conway_expand
+    mesh_conway_gyro
+    mesh_conway_snub
+    mesh_conway_meta
+    mesh_conway_bevel
 
 Network
 =======

@@ -24,8 +24,14 @@ __all__ = ['Mesh']
 
 
 class Mesh(BaseMesh):
+    """Implementation of the base mesh data structure that adds some of the mesh algorithms as methods.
 
-    # provide numpy versions where possible under same name?
+    Examples
+    --------
+    >>> mesh = Mesh.from_polyhedron(6)
+    """
+
+    __module__ = "compas.datastructures"
 
     bounding_box = mesh_bounding_box
     bounding_box_xy = mesh_bounding_box_xy

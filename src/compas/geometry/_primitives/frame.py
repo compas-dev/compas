@@ -35,6 +35,25 @@ class Frame(Primitive):
     yaxis : vector
         The y-axis of the frame.
 
+    Attributes
+    ----------
+    data : dict
+        The data representation of the frame.
+    point : :class:`compas.geometry.Point`
+        The base point of the frame.
+    xaxis : :class:`compas.geometry.Vector`
+        The local X axis of the frame.
+    yaxis : :class:`compas.geometry.Vector`
+        The local Y axis of the frame.
+    zaxis : :class:`compas.geometry.Vector`
+        The local Z axis of the frame.
+    normal : :class:`compas.geometry.Vector`
+        The normal vector of the base plane of the frame.
+    quaternion : :class:`compas.geometry.Quaternion`
+        The quaternion representing the rotation of the frame.
+    axis_angle_vector : :class:`compas.geometry.Vector`
+        The rotation vector of the frame.
+
     Notes
     -----
     All input vectors are orthonormalized when creating a frame, with the first
@@ -48,6 +67,8 @@ class Frame(Primitive):
     >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
     """
 
+    __module__ = "compas.geometry"
+
     def __init__(self, point, xaxis, yaxis):
         self._point = None
         self._xaxis = None
@@ -56,8 +77,117 @@ class Frame(Primitive):
         self.xaxis = xaxis
         self.yaxis = yaxis
 
+    @property
+    def point(self):
+        """:class:`compas.geometry.Point` : The base point of the frame."""
+        return self._point
+
+    @point.setter
+    def point(self, point):
+        self._point = Point(*point)
+
+    @property
+    def xaxis(self):
+        """:class:`compas.geometry.Vector` : The local X axis of the frame."""
+        return self._xaxis
+
+    @xaxis.setter
+    def xaxis(self, vector):
+        xaxis = Vector(*vector)
+        xaxis.unitize()
+        self._xaxis = xaxis
+
+    @property
+    def yaxis(self):
+        """:class:`compas.geometry.Vector` : The local Y axis of the frame."""
+        return self._yaxis
+
+    @yaxis.setter
+    def yaxis(self, vector):
+        yaxis = Vector(*vector)
+        yaxis.unitize()
+        zaxis = Vector.cross(self.xaxis, yaxis)
+        zaxis.unitize()
+        self._yaxis = Vector.cross(zaxis, self.xaxis)
+
+    @property
+    def data(self):
+        """dict : The data dictionary that represents the frame."""
+        return {'point': list(self.point),
+                'xaxis': list(self.xaxis),
+                'yaxis': list(self.yaxis)}
+
+    @data.setter
+    def data(self, data):
+        self.point = data['point']
+        self.xaxis = data['xaxis']
+        self.yaxis = data['yaxis']
+
+    @property
+    def normal(self):
+        """:class:`compas.geometry.Vector` : The normal of the base plane of the frame."""
+        return Vector(*cross_vectors(self.xaxis, self.yaxis))
+
+    @property
+    def zaxis(self):
+        """:class:`compas.geometry.Vector` : The Z axis of the frame."""
+        return self.normal
+
+    @property
+    def quaternion(self):
+        """:class:`compas.geometry.Quaternion` : The quaternion from the rotation given by the frame.
+        """
+        rotation = matrix_from_basis_vectors(self.xaxis, self.yaxis)
+        return Quaternion(*quaternion_from_matrix(rotation))
+
+    @property
+    def axis_angle_vector(self):
+        """:class:`compas.geometry.Vector` : The axis-angle vector representing the rotation of the frame."""
+        R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
+        return Vector(*axis_angle_vector_from_matrix(R))
+
     # ==========================================================================
-    # factory
+    # customization
+    # ==========================================================================
+
+    def __repr__(self):
+        return "Frame({0}, {1}, {2})".format(self.point, self.xaxis, self.yaxis)
+
+    def __len__(self):
+        return 3
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.point
+        if key == 1:
+            return self.xaxis
+        if key == 2:
+            return self.yaxis
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.point = value
+            return
+        if key == 1:
+            self.xaxis = value
+            return
+        if key == 2:
+            self.yaxis = value
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.point, self.xaxis, self.yaxis])
+
+    def __eq__(self, other, tol=1e-05):
+        for v1, v2 in zip(self, other):
+            for a, b in zip(v1, v2):
+                if math.fabs(a - b) > tol:
+                    return False
+        return True
+
+    # ==========================================================================
+    # constructors
     # ==========================================================================
 
     @classmethod
@@ -459,135 +589,6 @@ class Frame(Primitive):
         return cls(plane.point, xaxis, yaxis)
 
     # ==========================================================================
-    # descriptors
-    # ==========================================================================
-
-    @property
-    def point(self):
-        """:class:`compas.geometry.Point` : The base point of the frame."""
-        return self._point
-
-    @point.setter
-    def point(self, point):
-        self._point = Point(*point)
-
-    @property
-    def xaxis(self):
-        """:class:`compas.geometry.Vector` : The local X axis of the frame."""
-        return self._xaxis
-
-    @xaxis.setter
-    def xaxis(self, vector):
-        xaxis = Vector(*vector)
-        xaxis.unitize()
-        self._xaxis = xaxis
-
-    @property
-    def yaxis(self):
-        """:class:`compas.geometry.Vector` : The local Y axis of the frame."""
-        return self._yaxis
-
-    @yaxis.setter
-    def yaxis(self, vector):
-        yaxis = Vector(*vector)
-        yaxis.unitize()
-        zaxis = Vector.cross(self.xaxis, yaxis)
-        zaxis.unitize()
-        self._yaxis = Vector.cross(zaxis, self.xaxis)
-
-    @property
-    def data(self):
-        """dict : The data dictionary that represents the frame."""
-        return {'point': list(self.point),
-                'xaxis': list(self.xaxis),
-                'yaxis': list(self.yaxis)}
-
-    @data.setter
-    def data(self, data):
-        self.point = data['point']
-        self.xaxis = data['xaxis']
-        self.yaxis = data['yaxis']
-
-    @property
-    def normal(self):
-        """:class:`compas.geometry.Vector` : The normal of the base plane of the frame."""
-        return Vector(*cross_vectors(self.xaxis, self.yaxis))
-
-    @property
-    def zaxis(self):
-        """:class:`compas.geometry.Vector` : The Z axis of the frame."""
-        return self.normal
-
-    @property
-    def quaternion(self):
-        """:class:`compas.geometry.Quaternion` : The quaternion from the rotation given by the frame.
-        """
-        rotation = matrix_from_basis_vectors(self.xaxis, self.yaxis)
-        return Quaternion(*quaternion_from_matrix(rotation))
-
-    @property
-    def axis_angle_vector(self):
-        """:class:`compas.geometry.Vector` : The axis-angle vector representing the rotation of the frame."""
-        R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
-        return Vector(*axis_angle_vector_from_matrix(R))
-
-    # ==========================================================================
-    # representation
-    # ==========================================================================
-
-    def __repr__(self):
-        return "Frame({0}, {1}, {2})".format(self.point, self.xaxis, self.yaxis)
-
-    def __len__(self):
-        return 3
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.point
-        if key == 1:
-            return self.xaxis
-        if key == 2:
-            return self.yaxis
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.point = value
-            return
-        if key == 1:
-            self.xaxis = value
-            return
-        if key == 2:
-            self.yaxis = value
-        raise KeyError
-
-    def __iter__(self):
-        return iter([self.point, self.xaxis, self.yaxis])
-
-    # ==========================================================================
-    # comparison
-    # ==========================================================================
-
-    def __eq__(self, other, tol=1e-05):
-        for v1, v2 in zip(self, other):
-            for a, b in zip(v1, v2):
-                if math.fabs(a - b) > tol:
-                    return False
-        return True
-
-    # ==========================================================================
-    # operators
-    # ==========================================================================
-
-    # ==========================================================================
-    # inplace operators
-    # ==========================================================================
-
-    # ==========================================================================
     # helpers
     # ==========================================================================
 
@@ -641,10 +642,6 @@ class Frame(Primitive):
         """
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
-
-    # ==========================================================================
-    # coordinate frames
-    # ==========================================================================
 
     def to_local_coords(self, object_in_wcf):
         """Returns the object's coordinates in the local coordinate system of the frame.
@@ -743,10 +740,6 @@ class Frame(Primitive):
             return Point(*object_in_frame1).transformed(T)
         else:
             return object_in_frame1.transformed(T)
-
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
 
     def transform(self, T):
         """Transform the frame.

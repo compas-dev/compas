@@ -26,6 +26,17 @@ class Polyline(Primitive):
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
 
+    Attributes
+    ----------
+    data : dict
+        The data representation of the polyline.
+    points : list of :class:`compas.geometry.Point`
+        The polyline points.
+    lines : list of :class:`compas.geometry.Line`, read-only
+        The polyline segments.
+    length : float, read-only
+        The length of the polyline.
+
     Examples
     --------
     >>> polyline = Polyline([[0,0,0], [1,0,0], [2,0,0], [3,0,0]])
@@ -42,44 +53,15 @@ class Polyline(Primitive):
     >>> polyline.lines[0].length
     1.0
     """
-    __slots__ = ['_points', '_lines', '_p', '_l']
+
+    __module__ = "compas.geometry"
+
+    __slots__ = ["_points", "_lines"]
 
     def __init__(self, points):
         self._points = []
         self._lines = []
-        self._p = 0
-        self._l = 0
         self.points = points
-
-    # ==========================================================================
-    # factory
-    # ==========================================================================
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a polyline from a data dict.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Polyline`
-            The constructed polyline.
-
-        Examples
-        --------
-        >>> polyline = Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
-        >>> polyline
-        Polyline(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000))
-        """
-        return cls(data['points'])
-
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
 
     @property
     def data(self):
@@ -117,7 +99,7 @@ class Polyline(Primitive):
         return sum([line.length for line in self.lines])
 
     # ==========================================================================
-    # representation
+    # customization
     # ==========================================================================
 
     def __repr__(self):
@@ -125,10 +107,6 @@ class Polyline(Primitive):
 
     def __len__(self):
         return len(self.points)
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
 
     def __getitem__(self, key):
         return self.points[key]
@@ -139,12 +117,34 @@ class Polyline(Primitive):
     def __iter__(self):
         return iter(self.points)
 
-    # ==========================================================================
-    # comparison
-    # ==========================================================================
-
     def __eq__(self, other):
         return all(a == b for a, b in zip(self, other))
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a polyline from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Polyline`
+            The constructed polyline.
+
+        Examples
+        --------
+        >>> polyline = Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
+        >>> polyline
+        Polyline(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000))
+        """
+        return cls(data['points'])
 
     # ==========================================================================
     # queries

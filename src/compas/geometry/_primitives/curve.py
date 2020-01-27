@@ -84,6 +84,15 @@ class Bezier(Primitive):
     points : sequence
         A sequence of control points, represented by their location in 3D space.
 
+    Attributes
+    ----------
+    data : dict
+        The dictionary representation of the curve.
+    points : list of :class:`compas.geometry.Point`
+        The control points of the curve.
+    degree : int, read-only
+        The curve degree.
+
     Examples
     --------
     >>> curve = Bezier([[0.0, 0.0, 0.0], [0.5, 1.0, 0.0], [1.0, 0.0, 0.0]])
@@ -91,21 +100,13 @@ class Bezier(Primitive):
     2
     """
 
+    __module__ = "compas.geometry"
+
+    __slots__ = ["_points"]
+
     def __init__(self, points):
         self._points = []
         self.points = points
-
-    # ==========================================================================
-    # factory
-    # ==========================================================================
-
-    @classmethod
-    def from_data(cls, data):
-        return cls(data['points'])
-
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
 
     @property
     def data(self):
@@ -130,6 +131,14 @@ class Bezier(Primitive):
     def degree(self):
         """int (read-only): The degree of the curve."""
         return len(self.points) - 1
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(data['points'])
 
     # ==========================================================================
     # methods

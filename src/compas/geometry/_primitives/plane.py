@@ -20,13 +20,16 @@ class Plane(Primitive):
     normal : vector
         The normal vector of the plane.
 
-    Notes
-    -----
-    For more info on lines and linear equations, see [1]_.
-
-    References
+    Attributes
     ----------
-    .. [1] `Wikipedia: Plane (geometry) <https://en.wikipedia.org/wiki/Plane_%28geometry%29>`_
+    data : dict
+        The data representation of the plane.
+    point : :class:`compas.geometry.Point`
+        The base point of the plane.
+    normal : :class:`compas.geometry.Vector`
+        The normal of the plane.
+    d : float, read-only
+        The *d* parameter of the equation describing the plane.
 
     Examples
     --------
@@ -37,6 +40,8 @@ class Plane(Primitive):
     Vector(0.000, 0.000, 1.000)
     """
 
+    __module__ = "compas.geometry"
+
     __slots__ = ['_point', '_normal']
 
     def __init__(self, point, normal):
@@ -45,8 +50,77 @@ class Plane(Primitive):
         self.point = point
         self.normal = normal
 
+    @property
+    def data(self):
+        """dict : The data dictionary that represents the plane."""
+        return {'point': list(self.point),
+                'normal': list(self.normal)}
+
+    @data.setter
+    def data(self, data):
+        self.point = data['point']
+        self.normal = data['normal']
+
+    @property
+    def point(self):
+        """:class:`compas.geometry.Plane` : The base point of the plane."""
+        return self._point
+
+    @point.setter
+    def point(self, point):
+        self._point = Point(*point)
+
+    @property
+    def normal(self):
+        """:class:`compas.geometry.Vector` : The normal vector of the plane."""
+        return self._normal
+
+    @normal.setter
+    def normal(self, vector):
+        self._normal = Vector(*vector)
+        self._normal.unitize()
+
+    @property
+    def d(self):
+        """float: The *d* parameter of the linear equation describing the plane."""
+        a, b, c = self.normal
+        x, y, z = self.point
+        return - a * x - b * y - c * z
+
     # ==========================================================================
-    # factory
+    # customization
+    # ==========================================================================
+
+    def __repr__(self):
+        return 'Plane({0}, {1})'.format(self.point, self.normal)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.point
+        if key == 1:
+            return self.normal
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.point = value
+            return
+        if key == 1:
+            self.normal = value
+            return
+        raise KeyError
+
+    def __iter__(self):
+        return iter([self.point, self.normal])
+
+    def __eq__(self, other):
+        return self.point == other[0] and self.normal == other[1]
+
+    # ==========================================================================
+    # constructors
     # ==========================================================================
 
     @classmethod
@@ -149,95 +223,6 @@ class Plane(Primitive):
         return cls(data['point'], data['normal'])
 
     # ==========================================================================
-    # descriptors
-    # ==========================================================================
-
-    @property
-    def data(self):
-        """dict : The data dictionary that represents the plane."""
-        return {'point': list(self.point),
-                'normal': list(self.normal)}
-
-    @data.setter
-    def data(self, data):
-        self.point = data['point']
-        self.normal = data['normal']
-
-    @property
-    def point(self):
-        """:class:`compas.geometry.Plane` : The base point of the plane."""
-        return self._point
-
-    @point.setter
-    def point(self, point):
-        self._point = Point(*point)
-
-    @property
-    def normal(self):
-        """:class:`compas.geometry.Vector` : The normal vector of the plane."""
-        return self._normal
-
-    @normal.setter
-    def normal(self, vector):
-        self._normal = Vector(*vector)
-        self._normal.unitize()
-
-    @property
-    def d(self):
-        """float: The *d* parameter of the linear equation describing the plane."""
-        a, b, c = self.normal
-        x, y, z = self.point
-        return - a * x - b * y - c * z
-
-    # ==========================================================================
-    # representation
-    # ==========================================================================
-
-    def __repr__(self):
-        return 'Plane({0}, {1})'.format(self.point, self.normal)
-
-    def __len__(self):
-        return 2
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.point
-        if key == 1:
-            return self.normal
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.point = value
-            return
-        if key == 1:
-            self.normal = value
-            return
-        raise KeyError
-
-    def __iter__(self):
-        return iter([self.point, self.normal])
-
-    # ==========================================================================
-    # comparison
-    # ==========================================================================
-
-    def __eq__(self, other):
-        return self.point == other[0] and self.normal == other[1]
-
-    # ==========================================================================
-    # operators
-    # ==========================================================================
-
-    # ==========================================================================
-    # inplace operators
-    # ==========================================================================
-
-    # ==========================================================================
     # helpers
     # ==========================================================================
 
@@ -262,10 +247,6 @@ class Plane(Primitive):
 
     # ==========================================================================
     # methods
-    # ==========================================================================
-
-    # ==========================================================================
-    # transformations
     # ==========================================================================
 
     def transform(self, T):

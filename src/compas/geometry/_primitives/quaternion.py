@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import math
 
 from compas.geometry import quaternion_multiply
@@ -23,10 +27,23 @@ class Quaternion(Primitive):
     x, y, z : float
         Components of the vector (complex, imaginary) part of a quaternion.
 
+    Attributes
+    ----------
+    wxyz : list of float, read-only
+        Quaternion data listing the real part first.
+    xyzw : list of float, read-only
+        Quaternion data listing the real part last.
+    norm : float, read-only
+        The length of the quaternion.
+    is_unit : bool, read-only
+        True if the quaternion has unit length.
+
     Notes
     -----
-    The default convention to represent a quaternion :math:`q` in this module is by four real values :math:`w`, :math:`x`, :math:`y`, :math:`z`.
-    The first value :math:`w` is the scalar (real) part, and :math:`x`, :math:`y`, :math:`z` form the vector (complex, imaginary) part [1]_, so that:
+    The default convention to represent a quaternion :math:`q` in this module
+    is by four real values :math:`w`, :math:`x`, :math:`y`, :math:`z`.
+    The first value :math:`w` is the scalar (real) part,
+    and :math:`x`, :math:`y`, :math:`z` form the vector (complex, imaginary) part [1]_, so that:
 
     .. math::
 
@@ -47,7 +64,8 @@ class Quaternion(Primitive):
 
     **Quaternion as rotation.**
 
-    A rotation through an angle :math:`\theta` around an axis defined by a euclidean unit vector :math:`u = u_{x}i + u_{y}j + u_{z}k`
+    A rotation through an angle :math:`\theta` around an axis
+    defined by a euclidean unit vector :math:`u = u_{x}i + u_{y}j + u_{z}k`
     can be represented as a quaternion:
 
     .. math::
@@ -65,8 +83,8 @@ class Quaternion(Primitive):
         z = sin(\frac{\theta}{2}) u_{z}
 
     For a quaternion to represent a rotation or orientation, it must be unit-length.
-    A quaternion representing a rotation :math:`p` resulting from applying a rotation :math:`r` to a rotation :math:`q`, i.e.:
-    :math:`p = rq`,
+    A quaternion representing a rotation :math:`p` resulting from applying a rotation
+    :math:`r` to a rotation :math:`q`, i.e.: :math:`p = rq`,
     is also unit-length.
 
     References
@@ -84,6 +102,8 @@ class Quaternion(Primitive):
     True
     """
 
+    __module__ = "compas.geometry"
+
     __slots__ = ['w', 'x', 'y', 'z']
 
     def __init__(self, w, x, y, z):
@@ -91,6 +111,64 @@ class Quaternion(Primitive):
         self.x = float(x)
         self.y = float(y)
         self.z = float(z)
+
+    @property
+    def wxyz(self):
+        """list of float : Quaternion as a list of float in the "wxyz" convention.
+        """
+        return [self.w, self.x, self.y, self.z]
+
+    @property
+    def xyzw(self):
+        """list of float : Quaternion as a list of float in the "xyzw" convention.
+        """
+        return [self.x, self.y, self.z, self.w]
+
+    @property
+    def norm(self):
+        """float : The length (euclidean norm) of the quaternion.
+        """
+        return quaternion_norm(self)
+
+    @property
+    def is_unit(self):
+        """bool : ``True`` if the quaternion is unit-length or ``False`` if otherwise.
+        """
+        return quaternion_is_unit(self)
+
+    # ==========================================================================
+    # customization
+    # ==========================================================================
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.w
+        if key == 1:
+            return self.x
+        if key == 2:
+            return self.y
+        if key == 3:
+            return self.z
+        raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.w = value
+            return
+        if key == 1:
+            self.x = value
+            return
+        if key == 2:
+            self.y = value
+        if key == 3:
+            self.z = value
+        raise KeyError
+
+    def __eq__(self, other, tol=1e-05):
+        for v1, v2 in zip(self, other):
+            if math.fabs(v1 - v2) > tol:
+                return False
+        return True
 
     def __iter__(self):
         return iter(self.wxyz)
@@ -129,6 +207,10 @@ class Quaternion(Primitive):
         p = quaternion_multiply(list(self), list(other))
         return Quaternion(*p)
 
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
     @classmethod
     def from_frame(cls, frame):
         """Creates a quaternion object from a frame.
@@ -154,29 +236,9 @@ class Quaternion(Primitive):
         w, x, y, z = frame.quaternion
         return cls(w, x, y, z)
 
-    @property
-    def wxyz(self):
-        """list of float : Quaternion as a list of float in the "wxyz" convention.
-        """
-        return [self.w, self.x, self.y, self.z]
-
-    @property
-    def xyzw(self):
-        """list of float : Quaternion as a list of float in the "xyzw" convention.
-        """
-        return [self.x, self.y, self.z, self.w]
-
-    @property
-    def norm(self):
-        """float : The length (euclidean norm) of the quaternion.
-        """
-        return quaternion_norm(self)
-
-    @property
-    def is_unit(self):
-        """bool : ``True`` if the quaternion is unit-length or ``False`` if otherwise.
-        """
-        return quaternion_is_unit(self)
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def unitize(self):
         """Scales the quaternion to make it unit-length.
@@ -277,44 +339,6 @@ class Quaternion(Primitive):
         """
         qc = quaternion_conjugate(self)
         return Quaternion(*qc)
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.w
-        if key == 1:
-            return self.x
-        if key == 2:
-            return self.y
-        if key == 3:
-            return self.z
-        raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.w = value
-            return
-        if key == 1:
-            self.x = value
-            return
-        if key == 2:
-            self.y = value
-        if key == 3:
-            self.z = value
-        raise KeyError
-
-    # ==========================================================================
-    # comparison
-    # ==========================================================================
-
-    def __eq__(self, other, tol=1e-05):
-        for v1, v2 in zip(self, other):
-            if math.fabs(v1 - v2) > tol:
-                return False
-        return True
 
 
 # ==============================================================================
