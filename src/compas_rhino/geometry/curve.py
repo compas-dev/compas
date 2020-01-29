@@ -277,7 +277,7 @@ class RhinoCurve(RhinoGeometry):
 
     def closest_point(self, point, maxdist=None, return_param=False):
         maxdist = maxdist or 0.0
-        rc, t = self.geometry.ClosestPoint(Point3d(*point), maxdist)
+        rc, t = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)
         x, y, z = list(self.geometry.PointAt(t))
         if not return_param:
             return x, y, z
