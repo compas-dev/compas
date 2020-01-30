@@ -32,7 +32,7 @@ def mesh_bounding_box(mesh):
     [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
 
     """
-    xyz = mesh.vertices_attributes(list(mesh.vertices()), 'xyz')
+    xyz = mesh.vertices_attributes('xyz', keys=list(mesh.vertices()))
     return bounding_box(xyz)
 
 

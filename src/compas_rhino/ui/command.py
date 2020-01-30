@@ -59,10 +59,27 @@ class CommandAction(object):
 
 if __name__ == "__main__":
 
-    def open(x):
-        return x
+    config = {
+        "message": "FormDiagram Select",
+        "options": [
+            {"name": "Vertices", "message": "Select Vertices", "options": [
+                {"name": "Boundary", "action": None},
+                {"name": "Continuous", "action": None},
+                {"name": "Parallel", "action": None},
+            ]},
+            {"name": "Edges", "message": "Select Edges", "options": [
+                {"name": "Boundary", "action": None},
+                {"name": "Continuous", "action": None},
+                {"name": "Parallel", "action": None},
+            ]},
+            {"name": "Faces", "message": "Select Faces", "options": [
+                {"name": "Boundary", "action": None},
+                {"name": "Continuous", "action": None},
+                {"name": "Parallel", "action": None},
+            ]}
+        ]
+    }
 
-    action = CommandAction('open', open)
-
-    print(action.name)
-    print(action('test'))
+    menu = CommandMenu(config)
+    action = menu.select_action()
+    print(action)
