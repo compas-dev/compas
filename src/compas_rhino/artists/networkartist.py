@@ -32,7 +32,6 @@ class NetworkArtist(Artist):
 
     def __init__(self, network, layer=None):
         super(NetworkArtist, self).__init__(layer=layer)
-        self.datastructure = network
         self.settings.update({
             'color.vertex': (255, 255, 255),
             'color.edge': (0, 0, 0),
@@ -41,11 +40,22 @@ class NetworkArtist(Artist):
     @property
     def network(self):
         """compas.datastructures.Network: The network that should be painted."""
-        return self.datastructure
+        return self.network
 
     @network.setter
     def network(self, network):
-        self.datastructure = network
+        self.network = network
+
+    @classmethod
+    def from_data(cls, data):
+        module, attr = data['dtype'].split('/')
+        Network = getattr(__import__(module, fromlist=[attr]), attr)
+        network = Network.from_data(data['value'])
+        artist = cls(network)
+        return artist
+
+    def to_data(self):
+        return self.network.to_data()
 
     # ==========================================================================
     # clear
@@ -70,12 +80,12 @@ class NetworkArtist(Artist):
 
         """
         if not keys:
-            name = '{}.vertex.*'.format(self.datastructure.name)
+            name = '{}.vertex.*'.format(self.network.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for key in keys:
-                name = '{}.vertex.{}'.format(self.datastructure.name, key)
+                name = '{}.vertex.{}'.format(self.network.name, key)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -90,12 +100,12 @@ class NetworkArtist(Artist):
 
         """
         if not keys:
-            name = '{}.edge.*'.format(self.datastructure.name)
+            name = '{}.edge.*'.format(self.network.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for u, v in keys:
-                name = '{}.edge.{}-{}'.format(self.datastructure.name, u, v)
+                name = '{}.edge.{}-{}'.format(self.network.name, u, v)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -110,12 +120,12 @@ class NetworkArtist(Artist):
 
         """
         if not keys:
-            name = '{}.vertex.label.*'.format(self.datastructure.name)
+            name = '{}.vertex.label.*'.format(self.network.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for key in keys:
-                name = '{}.vertex.label.{}'.format(self.datastructure.name, key)
+                name = '{}.vertex.label.{}'.format(self.network.name, key)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -130,12 +140,12 @@ class NetworkArtist(Artist):
 
         """
         if not keys:
-            name = '{}.edge.label.*'.format(self.datastructure.name)
+            name = '{}.edge.label.*'.format(self.network.name)
             guids = compas_rhino.get_objects(name=name)
         else:
             guids = []
             for u, v in keys:
-                name = '{}.edge.label.{}-{}'.format(self.datastructure.name, u, v)
+                name = '{}.edge.label.{}-{}'.format(self.network.name, u, v)
                 guids += compas_rhino.get_objects(name=name)
         compas_rhino.delete_objects(guids)
 
@@ -168,11 +178,11 @@ class NetworkArtist(Artist):
         Notes
         -----
         The vertices are named using the following template:
-        ``"{}.vertex.{}".format(self.datastructure.name, key)``.
+        ``"{}.vertex.{}".format(self.network.name, key)``.
         This name is used afterwards to identify vertices in the Rhino model.
 
         """
-        keys = keys or list(self.datastructure.vertices())
+        keys = keys or list(self.network.vertices())
         colordict = color_to_colordict(color,
                                        keys,
                                        default=self.settings.get('color.vertex'),
@@ -181,10 +191,10 @@ class NetworkArtist(Artist):
         points = []
         for key in keys:
             points.append({
-                'pos': self.datastructure.vertex_coordinates(key),
-                'name': "{}.vertex.{}".format(self.datastructure.name, key),
+                'pos': self.network.vertex_coordinates(key),
+                'name': "{}.vertex.{}".format(self.network.name, key),
                 'color': colordict[key],
-                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'layer': self.network.get_vertex_attribute(key, 'layer', None)
             })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
@@ -210,11 +220,11 @@ class NetworkArtist(Artist):
         Notes
         -----
         All edges are named using the following template:
-        ``"{}.edge.{}-{}".fromat(self.datastructure.name, u, v)``.
+        ``"{}.edge.{}-{}".fromat(self.network.name, u, v)``.
         This name is used afterwards to identify edges in the Rhino model.
 
         """
-        keys = keys or list(self.datastructure.edges())
+        keys = keys or list(self.network.edges())
         colordict = color_to_colordict(color,
                                        keys,
                                        default=self.settings.get('color.edge'),
@@ -223,11 +233,11 @@ class NetworkArtist(Artist):
         lines = []
         for u, v in keys:
             lines.append({
-                'start': self.datastructure.vertex_coordinates(u),
-                'end': self.datastructure.vertex_coordinates(v),
+                'start': self.network.vertex_coordinates(u),
+                'end': self.network.vertex_coordinates(v),
                 'color': colordict[(u, v)],
-                'name': "{}.edge.{}-{}".format(self.datastructure.name, u, v),
-                'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
+                'name': "{}.edge.{}-{}".format(self.network.name, u, v),
+                'layer': self.network.get_edge_attribute((u, v), 'layer', None)
             })
 
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -257,17 +267,17 @@ class NetworkArtist(Artist):
         Notes
         -----
         All labels are assigned a name using the folling template:
-        ``"{}.vertex.label.{}".format(self.datastructure.name, key)``.
+        ``"{}.vertex.label.{}".format(self.network.name, key)``.
 
         """
         if text is None:
-            textdict = {key: str(key) for key in self.datastructure.vertices()}
+            textdict = {key: str(key) for key in self.network.vertices()}
         elif isinstance(text, dict):
             textdict = text
         elif text == 'key':
-            textdict = {key: str(key) for key in self.datastructure.vertices()}
+            textdict = {key: str(key) for key in self.network.vertices()}
         elif text == 'index':
-            textdict = {key: str(index) for index, key in enumerate(self.datastructure.vertices())}
+            textdict = {key: str(index) for index, key in enumerate(self.network.vertices())}
         else:
             raise NotImplementedError
 
@@ -280,11 +290,11 @@ class NetworkArtist(Artist):
 
         for key, text in iter(textdict.items()):
             labels.append({
-                'pos': self.datastructure.vertex_coordinates(key),
-                'name': "{}.vertex.label.{}".format(self.datastructure.name, key),
+                'pos': self.network.vertex_coordinates(key),
+                'name': "{}.vertex.label.{}".format(self.network.name, key),
                 'color': colordict[key],
                 'text': textdict[key],
-                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'layer': self.network.get_vertex_attribute(key, 'layer', None)
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
@@ -310,11 +320,11 @@ class NetworkArtist(Artist):
         Notes
         -----
         All labels are assigned a name using the folling template:
-        ``"{}.edge.{}".format(self.datastructure.name, key)``.
+        ``"{}.edge.{}".format(self.network.name, key)``.
 
         """
         if text is None:
-            textdict = {(u, v): "{}-{}".format(u, v) for u, v in self.datastructure.edges()}
+            textdict = {(u, v): "{}-{}".format(u, v) for u, v in self.network.edges()}
         elif isinstance(text, dict):
             textdict = text
         else:
@@ -329,11 +339,11 @@ class NetworkArtist(Artist):
 
         for (u, v), text in iter(textdict.items()):
             labels.append({
-                'pos': self.datastructure.edge_midpoint(u, v),
-                'name': "{}.edge.label.{}-{}".format(self.datastructure.name, u, v),
+                'pos': self.network.edge_midpoint(u, v),
+                'name': "{}.edge.label.{}-{}".format(self.network.name, u, v),
                 'color': colordict[(u, v)],
                 'text': textdict[(u, v)],
-                'layer': self.datastructure.get_edge_attribute((u, v), 'layer', None)
+                'layer': self.network.get_edge_attribute((u, v), 'layer', None)
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
