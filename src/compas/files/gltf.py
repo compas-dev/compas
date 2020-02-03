@@ -9,12 +9,17 @@ __all__ = [
 ]
 
 import base64
+import itertools
 import json
 import math
 import os
 import struct
+from collections import defaultdict
+from array import array
+from collections import defaultdict
 
 from compas.geometry import identity_matrix
+from compas.geometry import matrix_determinant
 from compas.geometry import matrix_from_quaternion
 from compas.geometry import matrix_from_scale_factors
 from compas.geometry import matrix_from_translation
@@ -28,6 +33,14 @@ COMPONENT_TYPE_UNSIGNED_SHORT = 5123
 COMPONENT_TYPE_UNSIGNED_INT = 5125
 COMPONENT_TYPE_FLOAT = 5126
 
+TYPE_SCALAR = 'SCALAR'
+TYPE_VEC2 = 'VEC2'
+TYPE_VEC3 = 'VEC3'
+TYPE_VEC4 = 'VEC4'
+TYPE_MAT2 = 'MAT2'
+TYPE_MAT3 = 'MAT3'
+TYPE_MAT4 = 'MAT4'
+
 COMPONENT_TYPE_ENUM = {
     COMPONENT_TYPE_BYTE: 'b',
     COMPONENT_TYPE_UNSIGNED_BYTE: 'B',
@@ -38,16 +51,41 @@ COMPONENT_TYPE_ENUM = {
 }
 
 NUM_COMPONENTS_BY_TYPE_ENUM = {
-    "SCALAR": 1,
-    "VEC2": 2,
-    "VEC3": 3,
-    "VEC4": 4,
-    "MAT2": 4,
-    "MAT3": 9,
-    "MAT4": 16,
+    TYPE_SCALAR: 1,
+    TYPE_VEC2: 2,
+    TYPE_VEC3: 3,
+    TYPE_VEC4: 4,
+    TYPE_MAT2: 4,
+    TYPE_MAT3: 9,
+    TYPE_MAT4: 16,
+}
+
+NUM_BYTES_BY_COMPONENT_TYPE = {
+    COMPONENT_TYPE_BYTE: 1,
+    COMPONENT_TYPE_UNSIGNED_BYTE: 1,
+    COMPONENT_TYPE_SHORT: 2,
+    COMPONENT_TYPE_UNSIGNED_SHORT: 2,
+    COMPONENT_TYPE_UNSIGNED_INT: 4,
+    COMPONENT_TYPE_FLOAT: 4,
+}
+
+MODE_BY_VERTEX_COUNT = {
+    3: None,
+    2: 1,
+    1: 0,
 }
 
 DEFAULT_ROOT_NAME = 'root'
+
+
+class Primitive(object):
+    def __init__(self, attributes, indices, material, mode, targets, extras):
+        self.attributes = attributes  # dict of position, normal, tangent, etc
+        self.indices = indices  # defines faces
+        self.material = material  # int referencing something in the json
+        self.mode = mode  # how to group the indices
+        self.targets = targets  # morph targets
+        self.extras = extras  # other stuff
 
 
 class MeshData(object):
@@ -61,11 +99,60 @@ class MeshData(object):
         List of the faces of the mesh represented by tuples of vertices referenced by index.
     mesh_name : str
         Name of the mesh, if any.
+    vertex_data : list
+        List of dictionaries containing vertex data, eg textures, if any.
+    extras : object
+        Application-specific data.
     """
-    def __init__(self, faces, vertices, mesh_name):
-        self.vertices = vertices
-        self.faces = faces
+    def __init__(self, faces=None, vertex_data=None, mesh_name=None, extras=None):
+        self._faces = None
+
+        self.vertices = []
+        self.faces = faces or []
         self.mesh_name = mesh_name
+        self.vertex_data = vertex_data or []
+        self.extras = extras
+
+    @property
+    def vertices(self):
+        return [vertex['POSITION'] for vertex in self.vertex_data]
+
+    @vertices.setter
+    def vertices(self, value):
+        self.validate_vertices(value)
+        self.vertex_data = [{'POSITION': position} for position in value]
+
+    def validate_vertices(self, vertices):
+        for vertex in vertices:
+            if len(vertex) != 3:
+                raise Exception('Invalid mesh.  Vertices are expected to be points in 3-space.')
+
+    @property
+    def faces(self):
+        return self._faces
+
+    @faces.setter
+    def faces(self, value):
+        self.validate_faces(value)
+        self._faces = value
+
+    def validate_faces(self, faces):
+        if not faces:
+            return
+        if len(faces[0]) > 3:
+            raise Exception('Invalid mesh. Expected mesh composed of points, lines xor triangles.')
+        for face in faces:
+            if len(face) != len(faces[0]):
+                # This restriction could be removed by splitting into multiple primitives.
+                raise NotImplementedError('Invalid mesh. Expected mesh composed of points, lines xor triangles.')
+
+    @classmethod
+    def from_mesh(cls, mesh):
+        vertices, faces = mesh.to_vertices_and_faces()
+        mesh_data = cls()
+        mesh_data.vertices = vertices
+        mesh_data.faces = faces
+        return mesh_data
 
 
 class GLTFScene(object):
@@ -77,10 +164,28 @@ class GLTFScene(object):
         Name of the scene, if any.
     nodes : dict
         Dictionary of (node_key, :class:`GLTFNode`) pairs.
+        Node representing the root must be named ``DEFAULT_ROOT_NAME``.
+    extras : object
+        Application-specific data.
     """
     def __init__(self):
         self.name = None
         self.nodes = {}
+        root_node = self.get_default_root_node()
+        self.nodes[root_node.name] = root_node
+
+        self.extras = None
+
+    def get_default_root_node(self):
+        root_node = GLTFNode()
+
+        root_node.name = DEFAULT_ROOT_NAME
+        root_node.position = [0, 0, 0]
+        root_node.transform = identity_matrix(4)
+        root_node.matrix = identity_matrix(4)
+        root_node.children = []
+
+        return root_node
 
 
 class GLTFNode(object):
@@ -106,30 +211,77 @@ class GLTFNode(object):
         Contains mesh data, if any.
     node_key : int or str
         Key of the node used in :attr:`GLTFScene.nodes`.
+    camera : int--only referencing the information in the JSON?
+    skin : int--only referencing the information in the JSON?
+    extras : object
+        Application-specific data.
     """
     def __init__(self):
         self.name = None
         self.children = []
-        self.matrix = None
+        self._matrix = None
         self.mesh_index = None
         self.weights = None
 
         self.position = None
         self.transform = None
-        self.mesh_data = None
-        self.node_key = None
+        self._mesh_data = None
+        self.node_key = None  # should i depend on this attribute never changing?
+        # i think this will solve my skins et al woes, but do i trust the user not to fuck with this?
+        # prefix with an underscore and hope for the best?
+        # i need to be careful as a developer not to use this outside of contexts
+        # where the damn thing was loaded from a file, seems hairy
+
+        self.camera = None
+        self.skin = None
+        self.extras = None
+
+    @property
+    def mesh_data(self):
+        return self._mesh_data
+
+    @mesh_data.setter
+    def mesh_data(self, value):
+        if not value.faces or not value.vertices:
+            raise Exception('Invalid mesh at node {}.  Meshes are expected '
+                            'to have vertices and faces.'.format(self.node_key))
+        self._mesh_data = value
+
+    @property
+    def matrix(self):
+        return self._matrix
+
+    @matrix.setter
+    def matrix(self, value):
+        if not isinstance(value, list) or not value or not isinstance(value[0], list) or not value[0]:
+            raise Exception('Invalid matrix.')
+        if len(value) != 4 or len(value[0]) != 4:
+            raise Exception('Invalid matrix.')
+        if matrix_determinant(value) == 0:
+            raise Exception('Invalid matrix. Expecting a matrix of the form TRS, '
+                            'where T is a translation, R is a rotation and S is a scaling.')
+        if value[3] != [0, 0, 0, 1]:
+            raise Exception('Invalid matrix. Expecting a matrix of the form TRS, '
+                            'where T is a translation, R is a rotation and S is a scaling.')
+        self._matrix = value
 
 
 class GLTF(object):
     """Read files in glTF format.
-
+    Caution: Cameras, materials and skins have limited support, and their data may be lost or corrupted.
+    Animations, extensions and most other application specific data are completely unsupported,
+    and their data will be lost upon import.
     See Also
     --------
     * https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
 
     """
-    def __init__(self, filepath):
+    def __init__(self, filepath=None):
         self.filepath = filepath
+        self._scenes = []
+        self.default_scene_index = None
+        self.extras = None
+        self.ancillaries = {}
 
         self._is_parsed = False
         self._reader = None
@@ -139,6 +291,19 @@ class GLTF(object):
         self._reader = GLTFReader(self.filepath)
         self._parser = GLTFParser(self._reader)
         self._is_parsed = True
+
+        self._scenes = self._parser.scenes
+        self.default_scene_index = self._parser.default_scene_index
+        self.extras = self._parser.extras
+        self.ancillaries.update({
+            attr: self._reader.json.get(attr)
+            for attr in ['cameras', 'materials', 'skins', 'images', 'textures', 'samplers']
+            if self._reader.json.get(attr)
+        })
+        # haven't added yet images, textures, samplers
+
+        self.ancillaries['image_data'] = self._reader.image_data
+        self.ancillaries['skin_data'] = self._reader.skin_data
 
     @property
     def reader(self):
@@ -151,6 +316,274 @@ class GLTF(object):
         if not self._is_parsed:
             self.read()
         return self._parser
+
+    @property
+    def scenes(self):
+        if not self._is_parsed:
+            self._is_parsed = True
+        return self._scenes
+
+    def export(self):
+        GLTFExporter(self.filepath, self.scenes, self.default_scene_index, self.extras, self.ancillaries)
+        # export to already established filepath
+        # must choose gtlf, gtlf-embedded, glb
+        # for the first, will write bin to same filepath gtlf -> bin
+
+
+class GLTFExporter(object):
+    """
+    """
+
+    def __init__(self, filepath, scenes, default_scene_index=0, extras=None, ancillaries=None):
+        self.filepath = filepath
+        self.bin_filepath = self.get_bin_filepath()  # this is inflexible, maybe want multiple .bins
+        self.scenes = scenes
+        self.default_scene_index = default_scene_index
+        self.extras = extras
+        self.ancillaries = ancillaries or {}
+
+        self._gltf_dict = None
+        self._node_key_index_dict = {}
+        self._buffer = b''  # should i make a buffer class? and this could be a list of those...
+
+        self.export()
+
+    def export(self):
+        self.validate_scenes()  # or should this be wrapped up in the creation of the dict?
+        self._gltf_dict = self.get_generic_gltf_dict()
+        self.append_scenes()
+        if self.ancillaries.get('cameras') and self.is_jsonable(self.ancillaries['cameras'], 'cameras list'):
+            for index, camera in enumerate(self.ancillaries['cameras']):
+                if not camera.get('type'):
+                    raise Exception('Invalid camera at index {}.  Expecting "type" attribute.'.format(index))
+            self._gltf_dict['cameras'] = self.ancillaries['cameras']  # trim unused cameras?, but then would have to reindex...
+        if self.ancillaries.get('materials') and self.is_jsonable(self.ancillaries['materials'], 'materials list'):
+            self._gltf_dict['materials'] = self.ancillaries['materials']
+        if self.ancillaries.get('skins') and self.is_jsonable(self.ancillaries['skins'], 'skins list'):
+            for index, skin in enumerate(self.ancillaries['skins']):
+                if not skin.get('joints'):
+                    raise Exception('Invalid skin at index {}.  Expecting "joints" attribute.'.format(index))
+                skin['joints'] = [
+                    self._node_key_index_dict.get(item)
+                    for item in skin['joints']
+                    if self._node_key_index_dict.get(item)
+                ]  # this smells buggy.
+                # gots to write some data here
+            self._gltf_dict['skins'] = self.ancillaries['skins']  # beware the bufferView index, must be changed
+
+        with open(self.filepath, 'w') as f:
+            json.dump(self._gltf_dict, f)
+
+    def is_jsonable(self, obj, obj_name):
+        try:
+            json.dumps(obj)
+        except (TypeError, OverflowError):
+            raise Exception('The {} is not a valid JSON object.'.format(obj_name))
+        return True
+
+    def validate_scenes(self):
+        # i think much of this validation should actually be happening as the object is created and manipulated
+        if self.default_scene_index is not None and not (
+            isinstance(self.default_scene_index, int) and 0 <= self.default_scene_index < len(self.scenes)
+        ):
+            raise Exception('Invalid default scene index.')
+
+        node_keys = set()
+
+        for index, scene in enumerate(self.scenes):
+            nodes = scene.nodes
+            if not nodes.get(DEFAULT_ROOT_NAME):
+                raise Exception('Cannot find root node for scene at index {}.'.format(index))
+
+            for node_key in nodes.keys():
+                if node_key == DEFAULT_ROOT_NAME:
+                    continue
+                if node_key in node_keys:
+                    raise Exception('Node keys (except roots) must be unique across scenes.')
+                node_keys.add(node_key)
+
+            visited = {node_key: False for node_key in nodes}
+            queue = [DEFAULT_ROOT_NAME]
+            while queue:
+                cur = queue.pop(0)
+                if visited[cur]:
+                    raise Exception('Scene at index {} is not a tree.'.format(index))
+                visited[cur] = True
+                queue.extend(nodes[cur].children)
+
+            for node in nodes:
+                # what is it i want to do here?
+                # transform, matrix and location are tightly linked and should be checked as one walks through the tree
+                pass
+
+    def get_generic_gltf_dict(self):
+        asset_dict = {
+            'version': '2.0'
+        }
+        if self.extras is not None:
+            asset_dict['extras'] = self.extras
+        return {
+            'asset': asset_dict
+        }
+
+    def append_scenes(self):
+        if not self.scenes:
+            return
+        nodes = []
+        scenes = []
+        for gltf_scene in self.scenes:
+            scene_dict = {}
+            if gltf_scene.nodes[DEFAULT_ROOT_NAME].children:
+                scene_dict['nodes'] = gltf_scene.children
+            if gltf_scene.name:
+                scene_dict['name'] = gltf_scene.name
+            if gltf_scene.extras:
+                scene_dict['extras'] = gltf_scene.extras
+            scenes.append(scene_dict)
+
+            descendents = {node_key: node for node_key, node in gltf_scene.nodes.items() if node_key != DEFAULT_ROOT_NAME}
+            self._node_key_index_dict.update({node_key: index + len(nodes) for index, node_key in enumerate(descendents)})
+            nodes += [None] * len(descendents)
+
+            for node_key, node in descendents.items():
+                node_dict = {}
+                if node.name:
+                    node_dict['name'] = node.name
+                if node.children:
+                    node_dict['children'] = [self._node_key_index_dict[key] for key in node.children]
+                if node.matrix:
+                    node_dict['matrix'] = self.matrix_to_col_major_order(node.matrix)
+                if node.mesh_data:
+                    node_dict['mesh'] = self.process_mesh_data(node.mesh_data)
+                if node.camera:
+                    node_dict['camera'] = node.camera
+                if node.skin:
+                    node_dict['skin'] = node.skin
+                if node.extras:
+                    node_dict['extras'] = node.extras
+
+                nodes[self._node_key_index_dict[node_key]] = node_dict
+
+        self._gltf_dict['scenes'] = scenes
+        self._gltf_dict['nodes'] = nodes
+
+    def matrix_to_col_major_order(self, matrix):
+        return [matrix[i][j] for j in range(4) for i in range(4)]
+
+    def process_mesh_data(self, mesh_data):
+        mesh_dict = {}
+        if mesh_data.mesh_name:
+            mesh_dict['name'] = mesh_data.mesh_name
+        if mesh_data.extras and self.is_jsonable(mesh_data.extras, 'mesh extras object'):
+            mesh_dict['extras'] = mesh_data.extras
+        mode = self.get_mode(mesh_data.faces)
+
+        attributes = {}
+        breaks = {0}
+        for attr_data in mesh_data.additional_attributes.values():  # wrong
+            def compare_neighbors(i):
+                return isinstance(attr_data[i - 1], type(attr_data[i]))
+
+            breaks |= set(filter(compare_neighbors, range(1, len(attr_data))))
+
+        breaks = list(breaks).sort()
+
+        indices = self.get_indices(mesh_data.faces)
+        primitives = [self.get_primitive_dict(attributes, indices, mode)]
+        mesh_dict['primitives'] = primitives
+
+        self._gltf_dict.setdefault('meshes', []).append(mesh_dict)
+        return len(self._gltf_dict['meshes']) - 1
+
+    def get_indices(self, faces):
+        data = [(item,) for item in itertools.chain(*faces)]
+        accessor_index = self.get_accessor(data, COMPONENT_TYPE_UNSIGNED_INT, TYPE_SCALAR)
+        return accessor_index
+
+    def get_accessor(self, data, component_type, type_, include_bounds=False):
+        count = len(data)
+
+        fmt_char = COMPONENT_TYPE_ENUM[component_type]
+        fmt = '<' + fmt_char * NUM_COMPONENTS_BY_TYPE_ENUM[type_]
+
+        component_size = struct.calcsize('<' + fmt_char)
+        if component_type == 'MAT2' and component_size == 1:
+            fmt = '<FFxxFFxx'.replace('F', fmt_char)
+        elif component_type == 'MAT3' and component_size == 1:
+            fmt = '<FFFxFFFxFFFx'.replace('F', fmt_char)
+        elif component_type == 'MAT3' and component_size == 2:
+            fmt = '<FFFxxFFFxxFFFxx'.replace('F', fmt_char)
+
+        component_len = struct.calcsize(fmt)
+
+        size = count * component_len
+        size += (4 - size % 4) % 4  # ensure the bytes_ length is divisible by 4,  is this right, or should it be ==0%12 when vec3(float)?
+
+        bytes_ = bytearray(size)
+
+        for i, datum in enumerate(data):
+            struct.pack_into(fmt, bytes_, i * component_len, *datum)
+
+        buffer_view_index = self.get_buffer_view(bytes_)
+        accessor_dict = {
+            'bufferView': buffer_view_index,
+            'count': count,
+            'componentType': component_type,
+            'type': type_,
+        }
+        if include_bounds:
+            minimum = tuple(map(min, zip(*data)))
+            maximum = tuple(map(min, zip(*data)))
+            accessor_dict['min'] = minimum
+            accessor_dict['max'] = maximum
+
+        self._gltf_dict.setdefault('accessors', []).append(accessor_dict)
+
+        return len(self._gltf_dict['accessors']) - 1
+
+    def get_buffer_view(self, bytes_):
+        byte_offset = self.update_buffer(bytes_)
+        buffer_view_dict = {
+            'buffer': 0,
+            'bufferLength': len(bytes_),
+            'byteOffset': byte_offset,
+        }
+
+        self._gltf_dict.setdefault('bufferViews', []).append(buffer_view_dict)
+
+        return len(self._gltf_dict['bufferViews']) - 1
+
+    def update_buffer(self, bytes_):
+        if not self._gltf_dict.get('buffers'):
+            buffer = {
+                'uri': self.bin_filepath,
+                'byteLength': 0
+            }
+            buffers = [buffer]
+            self._gltf_dict['buffers'] = buffers
+        byte_offset = self._gltf_dict['buffers'][0]['byteLength']  # len(self._buffer) ? what is more compatible with glb creation?
+        self._gltf_dict['buffers'][0]['byteLength'] += len(bytes_)
+        self._buffer += bytes_
+        return byte_offset
+
+    def get_bin_filepath(self):
+        base = os.path.splitext(self.filepath)[0]
+        return base + '.bin'
+
+    def get_mode(self, faces):
+        vertex_count = len(faces[0])
+        if vertex_count in MODE_BY_VERTEX_COUNT:
+            return MODE_BY_VERTEX_COUNT[vertex_count]
+        raise Exception('Meshes must be composed of triangles, lines or points.')
+
+    def get_primitive_dict(self, attributes, indices, mode):
+        primitive_dict = {
+            'attributes': attributes,
+            'indices': indices,
+        }
+        if mode:
+            primitive_dict['mode'] = mode
+        return primitive_dict
 
 
 class GLTFReader(object):
@@ -182,7 +615,8 @@ class GLTFReader(object):
 
         self.json = None
         self.data = []
-        self.image_data = []
+        self.image_data = []  # image-image_data having corresponding indices, will have to amend indices
+        self.skin_data = []  # same
 
         self._content = None
         self._glb_buffer = None
@@ -214,8 +648,12 @@ class GLTFReader(object):
                 self.data.append(accessor_data)
 
             for image in self.json.get('images', []):
-                image_data = self.get_image_data(image)
+                image_data = self.get_attr_data(image, 'bufferView')
                 self.image_data.append(image_data)
+
+            for skin in self.json.get('skins', []):
+                skin_data = self.get_attr_data(skin, 'inverseBindMatrices')
+                self.skin_data.append(skin_data)
 
         self.release_buffers()
 
@@ -254,10 +692,10 @@ class GLTFReader(object):
         if version != '2.0':
             raise Exception('Invalid glTF version.  Version 2.0 expected.')
 
-    def get_image_data(self, image):
-        if 'bufferView' not in image:
+    def get_attr_data(self, obj, attr):
+        if attr not in obj:
             return None
-        buffer_view_index = image['bufferView']
+        buffer_view_index = obj[attr]
         buffer_view = self.json['bufferViews'][buffer_view_index]
         buffer = self.get_buffer(buffer_view['buffer'])
         offset = buffer_view.get('byteOffset', 0)
@@ -438,18 +876,23 @@ class GLTFParser(object):
     """
     def __init__(self, reader):
         self.reader = reader
-        self.default_scene_index = None
+        self.default_scene_index = None  # maybe check that there is a scene before setting this to 0
         self.scenes = []
+        self.extras = None
 
         self.parse()
 
     def parse(self):
         self.default_scene_index = self.get_default_scene()
+        self.extras = self.get_extras()
 
         for scene in self.reader.json.get('scenes', []):
             scene_obj = self.get_initial_scene(scene)
             self.process_children('root', scene_obj)
             self.scenes.append(scene_obj)
+
+    def get_extras(self):
+        return self.reader.json.get('extras')
 
     def get_default_scene(self):
         return self.reader.json.get('scene')
@@ -457,22 +900,10 @@ class GLTFParser(object):
     def get_initial_scene(self, scene):
         scene_obj = GLTFScene()
         scene_obj.name = scene.get('name')
-
-        root_node = self.get_default_root_node(scene)
-        scene_obj.nodes[root_node.name] = root_node
+        scene_obj.extras = scene.get('extras')
+        scene_obj.nodes[DEFAULT_ROOT_NAME].children = scene.get('nodes', [])
 
         return scene_obj
-
-    def get_default_root_node(self, scene):
-        root_node = GLTFNode()
-
-        root_node.name = DEFAULT_ROOT_NAME
-        root_node.position = [0, 0, 0]
-        root_node.transform = identity_matrix(4)
-        root_node.matrix = identity_matrix(4)
-        root_node.children = scene.get('nodes', [])
-
-        return root_node
 
     def process_children(self, parent_key, scene_obj):
         child_keys = scene_obj.nodes[parent_key].children
@@ -486,6 +917,9 @@ class GLTFParser(object):
             gltf_node.matrix = self.get_matrix(node)
             gltf_node.weights = node.get('weights')
             gltf_node.mesh_index = node.get('mesh')
+            gltf_node.camera = node.get('camera')
+            gltf_node.skin = node.get('skin')
+            gltf_node.extras = node.get('extras')
 
             gltf_node.transform = multiply_matrices(scene_obj.nodes[parent_key].transform, gltf_node.matrix)
             gltf_node.position = self.inhomogeneous_transformation(gltf_node.transform, scene_obj.nodes[DEFAULT_ROOT_NAME].position)
@@ -529,38 +963,49 @@ class GLTFParser(object):
         return vector[:3]
 
     def get_mesh_data(self, gltf_node):
+        vertex_data = []
         faces = []
-        vertices = []
         mesh = self.reader.json['meshes'][gltf_node.mesh_index]
         mesh_name = mesh.get('name')
+        extras = mesh.get('extras')
         primitives = mesh['primitives']
         shift = 0
         weights = self.get_weights(mesh, gltf_node)
-        for primitive in primitives:
-
-            face_side_count = self.get_face_side_count(primitive)
-
+        for primitive_index, primitive in enumerate(primitives):
             if 'POSITION' not in primitive['attributes']:
                 continue
-            position_accessor_index = primitive['attributes']['POSITION']
-            primitive_vertices = self.reader.data[position_accessor_index]
-            if weights and 'targets' in primitive and primitive['targets'] and 'POSITION' in primitive['targets'][0]:
-                targets = primitive['targets']
-                target_data = [self.reader.data[target['POSITION']] for target in targets]
 
-                apply_morph_targets = self.get_morph_function(weights)
+            attributes = defaultdict(list)
+            face_side_count = self.get_face_side_count(primitive)
 
-                primitive_vertices = list(map(apply_morph_targets, primitive_vertices, *target_data))
+            for attr, attr_accessor_index in primitive['attributes'].items():
+                primitive_attr = self.reader.data[attr_accessor_index]
+                if weights and primitive.get('targets') and attr in primitive['targets'][0]:
+                    targets = primitive['targets']
+                    target_data = [self.reader.data[target[attr]] for target in targets]
 
-            vertices.extend(primitive_vertices)
+                    apply_morph_targets = self.get_morph_function(weights)
 
-            indices = self.get_indices(primitive, len(primitive_vertices))
+                    primitive_attr = list(map(apply_morph_targets, primitive_attr, *target_data))
+
+                attributes[attr] += primitive_attr
+
+            indices = self.get_indices(primitive, len(attributes['POSITION']))
             shifted_indices = self.shift_indices(indices, shift)
             primitive_faces = self.group_indices(shifted_indices, face_side_count)
             faces.extend(primitive_faces)
 
-            shift += len(primitive_vertices)
-        return MeshData(faces, vertices, mesh_name)
+            shift += len(attributes['POSITION'])
+            for data in attributes.values():
+                if len(data) != shift:
+                    data += [None] * (shift - len(data))
+
+            for i in range(len(attributes['POSITION'])):
+                vertex = {'PRIMITIVE': primitive_index}
+                for attr, data in attributes.items():
+                    vertex[attr] = data[i]
+                vertex_data.append(vertex)
+        return MeshData(faces, vertex_data, mesh_name, extras)
 
     def get_weights(self, mesh, gltf_node):
         weights = mesh.get('weights', None)
@@ -579,7 +1024,8 @@ class GLTFParser(object):
             return vertex_coordinate + math.fsum(map(apply_weight, weights, targets_coordinate))
 
         def apply_morph_target(vertex, *targets):
-            return tuple(map(weighted_sum, vertex, *targets))
+            return tuple(map(weighted_sum, vertex, *targets)) + ((vertex[-1],) if len(vertex) == 4 else ())
+            # revisit this, necessary because morph targets can apply to normal vectors which are 4d, but you shouldn't mess with the w component
 
         return apply_morph_target
 
@@ -621,29 +1067,35 @@ if __name__ == '__main__':
     from compas.utilities import download_file_from_remote
     from compas_viewers.multimeshviewer import MultiMeshViewer
 
-    source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxInterleaved/glTF-Binary/BoxInterleaved.glb'
-    filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'BoxInterleaved.glb')
+    # source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxInterleaved/glTF-Binary/BoxInterleaved.glb'
+    # filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'BoxInterleaved.glb')
+
+    source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/GearboxAssy/glTF/GearboxAssy.gltf'
+    filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'GearboxAssy.gltf')
+
+    # source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SimpleMorph/glTF-Embedded/SimpleMorph.gltf'
+    # filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'SimpleMorph.gltf')
 
     download_file_from_remote(source_glb, filepath_glb, overwrite=False)
 
     gltf = GLTF(filepath_glb)
 
     default_scene_index = gltf.parser.default_scene_index or 0
-    vertex_data = gltf.parser.scenes[default_scene_index].nodes
+    nodes = gltf.parser.scenes[default_scene_index].nodes
 
-    vertices = {name: gltf_node.position for name, gltf_node in vertex_data.items()}
+    vrts = {name: gltf_node.position for name, gltf_node in nodes.items()}
     edges = [
         (node.node_key, child)
         for node in gltf.parser.scenes[default_scene_index].nodes.values()
         for child in node.children
     ]
 
-    scene_tree = Network.from_vertices_and_edges(vertices, edges)
+    scene_tree = Network.from_vertices_and_edges(vrts, edges)
     scene_tree.plot()
 
     transformed_meshes = []
 
-    for vertex_name, gltf_node in vertex_data.items():
+    for vertex_name, gltf_node in nodes.items():
         if gltf_node.mesh_data is None:
             continue
         t = gltf_node.transform
