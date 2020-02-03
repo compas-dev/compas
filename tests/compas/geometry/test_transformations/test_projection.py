@@ -1,4 +1,4 @@
-from compas.geometry.transformations import Projection
+from compas.geometry import Projection
 
 
 def test_projection_orthogonal():

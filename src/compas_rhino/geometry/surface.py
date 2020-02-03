@@ -360,25 +360,25 @@ class RhinoSurface(RhinoGeometry):
     # def pull_meshes(self, meshes):
     #     pass
 
-    # def closest_point(self, xyz):
-    #     """Return the XYZ coordinates of the closest point on the surface from input XYZ-coordinates.
+    def closest_point(self, xyz):
+        """Return the XYZ coordinates of the closest point on the surface from input XYZ-coordinates.
 
-    #     Parameters
-    #     ----------
-    #     xyz : list
-    #         XYZ coordinates.
+        Parameters
+        ----------
+        xyz : list
+            XYZ coordinates.
 
-    #     Returns
-    #     -------
-    #     list
-    #         The XYZ coordinates of the closest point on the surface.
+        Returns
+        -------
+        list
+            The XYZ coordinates of the closest point on the surface.
 
-    #     """
+        """
 
-    #     return rs.EvaluateSurface(self.guid, *rs.SurfaceClosestPoint(self.guid, xyz))
+        return compas_rhino.rs.EvaluateSurface(self.guid, * compas_rhino.rs.SurfaceClosestPoint(self.guid, xyz))
 
-    # def closest_points(self, points):
-    #     return [self.closest_point(point) for point in points]
+    def closest_points(self, points):
+        return [self.closest_point(point) for point in points]
 
     # def closest_point_on_boundaries(self, xyz):
     #     """Return the XYZ coordinates of the closest point on the boundaries of the surface from input XYZ-coordinates.

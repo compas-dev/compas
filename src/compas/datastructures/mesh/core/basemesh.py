@@ -173,17 +173,15 @@ class BaseMesh(EdgeGeometry,
     ----------
     attributes : dict
         A dictionary of general mesh attributes.
-        The following items are built in:
 
-        * ``'name'`` : ``'Mesh'``
+        * ``'name': "Mesh"``
 
     default_vertex_attributes : dict
-        The default data attributes assigned to every new vertex.
-        The following items are built in:
+        The names of pre-assigned vertex attributes and their default values.
 
-        * ``'x'`` : ``0.0``,
-        * ``'y'`` : ``0.0``,
-        * ``'z'`` : ``0.0``,
+        * ``'x': 0.0``
+        * ``'y': 0.0``
+        * ``'z': 0.0``
 
     default_edge_attributes : dict
         The default data attributes assigned to every new edge.
@@ -191,8 +189,8 @@ class BaseMesh(EdgeGeometry,
         The default data attributes assigned to every new face.
     name : str
         The name of the mesh.
-        Shorthand for ``mesh.attributes['name'] = 'Mesh'``
-    adjacency : dict, **read-only**
+        Shorthand for ``mesh.attributes['name']``
+    adjacency : dict, read-only
         The vertex adjacency dictionary.
     data : dict
         The data representing the mesh.
@@ -211,7 +209,12 @@ class BaseMesh(EdgeGeometry,
 
     Examples
     --------
-    >>>
+    >>> mesh = BaseMesh.from_polyhedron(6)
+    >>> V = mesh.number_of_vertices()
+    >>> E = mesh.number_of_edges()
+    >>> F = mesh.number_of_faces()
+    >>> mesh.euler() == V - E + F
+    True
 
     """
 
@@ -524,9 +527,10 @@ class BaseMesh(EdgeGeometry,
         >>>
         """
         obj = OBJ(filepath, precision)
-        vertices = obj.parser.vertices
-        faces = obj.parser.faces
-        edges = obj.parser.lines
+        obj.read()
+        vertices = obj.vertices
+        faces = obj.faces
+        edges = obj.lines
         if faces:
             return cls.from_vertices_and_faces(vertices, faces)
         if edges:
@@ -994,6 +998,7 @@ class BaseMesh(EdgeGeometry,
             key = self._max_int_key = self._max_int_key + 1
         if key > self._max_int_key:
             self._max_int_key = key
+        key = int(key)
         if key not in self.vertex:
             self.vertex[key] = {}
             self.halfedge[key] = {}
@@ -1043,6 +1048,7 @@ class BaseMesh(EdgeGeometry,
             return
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
+        vertices = [int(key) for key in vertices]
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
         if fkey > self._max_int_fkey:

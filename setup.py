@@ -24,7 +24,8 @@ requirements = [r for r in read('requirements.txt').split('\n') if r]
 optional_requirements = {
     "viewers": ['PyOpenGL', 'PySide2'],
     "hpc": ['pyopencl', 'pycuda'],
-    "robotics": ['roslibpy']
+    "robotics": ['roslibpy'],
+    "libigl": ['igl'],
 }
 
 setup(
@@ -62,7 +63,7 @@ setup(
         "Repository": "https://github.com/compas-dev/compas",
         "Issues": "https://github.com/compas-dev/compas/issues",
     },
-    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', 'compas_plotters'],
+    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', 'compas_plotters', 'compas_hpc'],
     package_dir={'': 'src'},
     package_data={},
     data_files=[],

@@ -1,6 +1,6 @@
-from compas.geometry.transformations import Reflection
-from compas.geometry.transformations import Transformation
-from compas.geometry.primitives import Frame
+from compas.geometry import Reflection
+from compas.geometry import Transformation
+from compas.geometry import Frame
 
 
 def test_reflection():

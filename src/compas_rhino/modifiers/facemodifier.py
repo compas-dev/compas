@@ -48,9 +48,7 @@ class FaceModifier(object):
 
         if gp.CommandResult() == Rhino.Commands.Result.Success:
             pos = list(gp.Point())
-            self.face[key]['x'] = pos[0]
-            self.face[key]['y'] = pos[1]
-            self.face[key]['z'] = pos[2]
+            self.face_attributes(key, 'xyz', pos)
             return True
         return False
 
@@ -60,12 +58,12 @@ class FaceModifier(object):
             names = self.default_face_attributes.keys()
         names = sorted(names)
 
-        values = [self.facedata[keys[0]][name] for name in names]
+        values = self.face_attributes(keys[0], names)
 
         if len(keys) > 1:
             for i, name in enumerate(names):
                 for key in keys[1:]:
-                    if values[i] != self.facedata[key][name]:
+                    if values[i] != self.face_attribute(key, name):
                         values[i] = '-'
                         break
 
@@ -77,9 +75,9 @@ class FaceModifier(object):
                 if value != '-':
                     for key in keys:
                         try:
-                            self.facedata[key][name] = ast.literal_eval(value)
+                            self.face_attribute(key, name, ast.literal_eval(value))
                         except (ValueError, TypeError):
-                            self.facedata[key][name] = value
+                            self.face_attribute(key, name, value)
             return True
 
         return False

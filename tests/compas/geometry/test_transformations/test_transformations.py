@@ -1,33 +1,33 @@
 import pytest
 
-# from compas.geometry.transformations import homogenize
-# from compas.geometry.transformations import dehomogenize
-from compas.geometry.transformations import transform_points
-from compas.geometry.transformations import transform_vectors
-from compas.geometry.transformations import translate_points
-from compas.geometry.transformations import translate_points_xy
-from compas.geometry.transformations import scale_points
-from compas.geometry.transformations import scale_points_xy
-from compas.geometry.transformations import rotate_points
-from compas.geometry.transformations import rotate_points_xy
-from compas.geometry.transformations import mirror_vector_vector
-from compas.geometry.transformations import mirror_points_point
-from compas.geometry.transformations import mirror_points_point_xy
-from compas.geometry.transformations import mirror_points_line
-from compas.geometry.transformations import mirror_points_line_xy
-from compas.geometry.transformations import mirror_points_plane
-from compas.geometry.transformations import project_point_plane
-from compas.geometry.transformations import project_points_plane
-from compas.geometry.transformations import project_point_line
-from compas.geometry.transformations import project_point_line_xy
-from compas.geometry.transformations import project_points_line
-from compas.geometry.transformations import project_points_line_xy
-from compas.geometry.transformations import reflect_line_plane
-from compas.geometry.transformations import reflect_line_triangle
-from compas.geometry.transformations import orient_points
+# from compas.geometry import homogenize
+# from compas.geometry import dehomogenize
+from compas.geometry import transform_points
+from compas.geometry import transform_vectors
+from compas.geometry import translate_points
+from compas.geometry import translate_points_xy
+from compas.geometry import scale_points
+from compas.geometry import scale_points_xy
+from compas.geometry import rotate_points
+from compas.geometry import rotate_points_xy
+from compas.geometry import mirror_vector_vector
+from compas.geometry import mirror_points_point
+from compas.geometry import mirror_points_point_xy
+from compas.geometry import mirror_points_line
+from compas.geometry import mirror_points_line_xy
+from compas.geometry import mirror_points_plane
+from compas.geometry import project_point_plane
+from compas.geometry import project_points_plane
+from compas.geometry import project_point_line
+from compas.geometry import project_point_line_xy
+from compas.geometry import project_points_line
+from compas.geometry import project_points_line_xy
+from compas.geometry import reflect_line_plane
+from compas.geometry import reflect_line_triangle
+from compas.geometry import orient_points
 
-from compas.geometry.transformations import Translation
-from compas.geometry.transformations import Rotation
+from compas.geometry import Translation
+from compas.geometry import Rotation
 
 from compas.geometry import intersection_segment_segment_xy
 import numpy as np

@@ -13,21 +13,41 @@ Primitives
     :toctree: generated/
     :nosignatures:
 
-    Box
     Circle
-    Cone
-    Cylinder
     Frame
     Line
     Plane
     Point
     Polygon
-    Polyhedron
     Polyline
     Quaternion
+
+
+Shapes
+======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Box
+    Cone
+    Cylinder
+    Polyhedron
     Sphere
     Torus
-    Vector
+
+
+Collections
+===========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    PointCollection
+    PointCollectionNumpy
+
 
 Transformations
 ===============
@@ -38,12 +58,17 @@ Transformations
     :toctree: generated/
     :nosignatures:
 
+    Transformation
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     Projection
     Reflection
     Rotation
     Scale
     Shear
-    Transformation
     Translation
 
 **Functions**
@@ -159,8 +184,6 @@ Linear algebra
 Points, Vectors, Lines, Planes
 ==============================
 
-**Angles**
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -173,13 +196,8 @@ Points, Vectors, Lines, Planes
     angles_points_xy
     angles_vectors
     angles_vectors_xy
-
-**Distance**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
+    centroid_points
+    centroid_points_xy
     distance_line_line
     distance_point_line
     distance_point_line_xy
@@ -190,15 +208,6 @@ Points, Vectors, Lines, Planes
     distance_point_point_xy
     distance_point_point_sqrd
     distance_point_point_sqrd_xy
-
-**Centroids**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    centroid_points
-    centroid_points_xy
     midpoint_point_point
     midpoint_point_point_xy
     midpoint_line
@@ -208,21 +217,8 @@ Points, Vectors, Lines, Planes
 Polygons & Polyhedrons
 ======================
 
-**Centroid**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    centroid_polygon
-    centroid_polygon_xy
-    centroid_polygon_vertices
-    centroid_polygon_vertices_xy
-    centroid_polygon_edges
-    centroid_polygon_edges_xy
-    centroid_polyhedron
-
-**Area and volume**
+.. rename functions?
+   type of object first
 
 .. autosummary::
     :toctree: generated/
@@ -232,22 +228,20 @@ Polygons & Polyhedrons
     area_polygon_xy
     area_triangle
     area_triangle_xy
-    volume_polyhedron
-
-**Normals**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
+    centroid_polygon
+    centroid_polygon_xy
+    centroid_polygon_vertices
+    centroid_polygon_vertices_xy
+    centroid_polygon_edges
+    centroid_polygon_edges_xy
+    centroid_polyhedron
     normal_polygon
     normal_triangle
     normal_triangle_xy
+    volume_polyhedron
 
 Pointclouds
 ===========
-
-**Bounding Box**
 
 .. autosummary::
     :toctree: generated/
@@ -255,29 +249,15 @@ Pointclouds
 
     bounding_box
     bounding_box_xy
-    icp_numpy
-    oriented_bounding_box_numpy
-    oriented_bounding_box_xy_numpy
-
-**Convex Hull**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     convex_hull
     convex_hull_numpy
     convex_hull_xy
     convex_hull_xy_numpy
-
-**Triangulation**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     delaunay_from_points
     delaunay_from_points_numpy
+    icp_numpy
+    oriented_bounding_box_numpy
+    oriented_bounding_box_xy_numpy
     voronoi_from_points_numpy
 
 Queries
@@ -360,8 +340,8 @@ Offsets
     offset_polyline
     offset_polygon
 
-Optimisation
-============
+Other functions
+===============
 
 **Smoothing**
 
@@ -402,21 +382,6 @@ Optimisation
     bestfit_plane
     bestfit_plane_numpy
 
-Other functions
-===============
-
-**Parametric curves**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    archimedean_spiral_evaluate
-    circle_evaluate
-    ellipse_evaluate
-    helix_evaluate
-    logarithmic_spiral_evaluate
-
 **Isolines**
 
 .. autosummary::
@@ -430,23 +395,16 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .basic import *  # noqa: F401 F403
-
-from .analytical import *  # noqa: F401 F403
-from .distance import *  # noqa: F401 F403
-from .angles import *  # noqa: F401 F403
-from .average import *  # noqa: F401 F403
-from .normals import *  # noqa: F401 F403
-from .queries import *  # noqa: F401 F403
-from .intersections import *  # noqa: F401 F403
-from .size import *  # noqa: F401 F403
-from .quaternions import *  # noqa: F401 F403
-
-from .transformations import *  # noqa: F401 F403
+from ._core import *  # noqa: F401 F403
+from ._transformations import *  # noqa: F401 F403
+from ._primitives import *  # noqa: F401 F403
+from ._shapes import *  # noqa: F401 F403
+from ._collections import *  # noqa: F401 F403
 
 from .bbox import *  # noqa: F401 F403
 from .bestfit import *  # noqa: F401 F403
 from .hull import *  # noqa: F401 F403
+from .icp import *  # noqa: F401 F403
 from .interpolation import *  # noqa: F401 F403
 from .isolines import *  # noqa: F401 F403
 from .offset import *  # noqa: F401 F403
@@ -454,9 +412,5 @@ from .planarisation import *  # noqa: F401 F403
 from .smoothing import *  # noqa: F401 F403
 from .spatial import *  # noqa: F401 F403
 from .triangulation import *  # noqa: F401 F403
-
-from .primitives import *  # noqa: F401 F403
-
-from .icp import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

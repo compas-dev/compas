@@ -32,6 +32,25 @@ class OBJ(object):
         self.reader = OBJReader(filepath)
         self.parser = OBJParser(self.reader, precision=precision)
 
+    def read(self):
+        self.reader.open()
+        self.reader.pre()
+        self.reader.read()
+        self.reader.post()
+        self.parser.parse()
+
+    @property
+    def vertices(self):
+        return self.parser.vertices
+
+    @property
+    def lines(self):
+        return self.parser.lines
+
+    @property
+    def faces(self):
+        return self.parser.faces
+
 
 class OBJReader(object):
     """Read the contents of an *obj* file.
@@ -103,10 +122,10 @@ class OBJReader(object):
         self.objects = {}
         self.group = None
         # open file path and read
-        self.open()
-        self.pre()
-        self.read()
-        self.post()
+        # self.open()
+        # self.pre()
+        # self.read()
+        # self.post()
 
     def open(self):
         if self.filepath.startswith('http'):
@@ -314,7 +333,7 @@ class OBJParser(object):
         self.surfaces = None
         self.groups = None
         self.objects = None
-        self.parse()
+        # self.parse()
 
     def parse(self):
         index_key = OrderedDict()

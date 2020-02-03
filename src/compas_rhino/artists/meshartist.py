@@ -69,6 +69,17 @@ class MeshArtist(Artist):
             'on.edges': True,
             'on.faces': True}
 
+    @classmethod
+    def from_data(cls, data):
+        module, attr = data['dtype'].split('/')
+        Mesh = getattr(__import__(module, fromlist=[attr]), attr)
+        mesh = Mesh.from_data(data['value'])
+        artist = cls(mesh)
+        return artist
+
+    def to_data(self):
+        return self.mesh.to_data()
+
     # ==========================================================================
     # clear
     # ==========================================================================

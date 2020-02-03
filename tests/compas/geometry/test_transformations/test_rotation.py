@@ -1,7 +1,7 @@
-from compas.geometry.transformations import Rotation
-from compas.geometry.transformations import Transformation
-from compas.geometry.basic import allclose
-from compas.geometry.basic import normalize_vector
+from compas.geometry import Rotation
+from compas.geometry import Transformation
+from compas.geometry import allclose
+from compas.geometry import normalize_vector
 
 from compas.geometry import Frame
 import numpy as np

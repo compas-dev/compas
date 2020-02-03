@@ -37,6 +37,17 @@ class ShapeArtist(Artist):
         self._shape = shape
         self._mesh = Mesh.from_shape(shape)
 
+    @classmethod
+    def from_data(cls, data):
+        module, attr = data['dtype'].split('/')
+        Shape = getattr(__import__(module, fromlist=[attr]), attr)
+        shape = Shape.from_data(data['value'])
+        artist = cls(shape)
+        return artist
+
+    def to_data(self):
+        return self.shape.to_data()
+
     def draw(self):
         raise NotImplementedError
 

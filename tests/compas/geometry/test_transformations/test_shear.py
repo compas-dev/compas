@@ -1,4 +1,4 @@
-from compas.geometry.transformations import Shear
+from compas.geometry import Shear
 import numpy as np
 
 

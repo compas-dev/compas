@@ -8,7 +8,7 @@ from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import distance_line_line
 
-from compas.geometry.bestfit import bestfit_plane
+from compas.geometry import bestfit_plane
 
 from compas.utilities import window
 

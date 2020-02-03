@@ -2,10 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
 import compas_rhino
 
 from compas.datastructures import Mesh
 from compas_rhino.geometry import RhinoGeometry
+
+if compas.IPY:
+    import Rhino
 
 
 __all__ = ['RhinoMesh']
@@ -194,15 +198,15 @@ class RhinoMesh(RhinoGeometry):
     # def normals(self, points):
     #     pass
 
-    # def closest_point(self, point, maxdist=None):
-    #     maxdist = maxdist or 0.0
-    #     face, point = self.geometry.ClosestPoint(Point3d(*point), maxdist)
-    #     return list(point)
+    def closest_point(self, point, maxdist=None):
+        maxdist = maxdist or 0.0
+        face, point = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)
+        return list(point)
 
-    # def closest_points(self, points, maxdist=None):
-    #     # points = List[Point3d](len(points))
-    #     # points = self.geometry.PullPointsToMesh()
-    #     return [self.closest_point(point, maxdist) for point in points]
+    def closest_points(self, points, maxdist=None):
+        # points = List[Point3d](len(points))
+        # points = self.geometry.PullPointsToMesh()
+        return [self.closest_point(point, maxdist) for point in points]
 
 
 # ==============================================================================

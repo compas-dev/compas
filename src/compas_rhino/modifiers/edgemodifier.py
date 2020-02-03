@@ -60,12 +60,12 @@ class EdgeModifier(object):
         names = sorted(names)
 
         key = keys[0]
-        values = self.get_edge_attributes(key, names)
+        values = self.edge_attributes(key, names)
 
         if len(keys) > 1:
             for i, name in enumerate(names):
                 for key in keys[1:]:
-                    if values[i] != self.get_edge_attribute(key, name):
+                    if values[i] != self.edge_attribute(key, name):
                         values[i] = '-'
                         break
         values = map(str, values)
@@ -78,7 +78,7 @@ class EdgeModifier(object):
                             value = ast.literal_eval(value)
                         except (SyntaxError, ValueError, TypeError):
                             pass
-                        self.set_edge_attribute(key, name, value)
+                        self.edge_attribute(key, name, value)
 
             return True
         return False
