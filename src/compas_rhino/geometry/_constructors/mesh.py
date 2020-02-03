@@ -164,7 +164,7 @@ def mesh_from_surface_heightfield(cls, guid, density=(10, 10)):
     except Exception:
         u, v = density, density
 
-    surface = RhinoSurface(guid)
+    surface = RhinoSurface.from_guid(guid)
 
     mesh = cls()
 

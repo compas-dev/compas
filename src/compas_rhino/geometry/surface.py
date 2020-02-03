@@ -168,7 +168,7 @@ class RhinoSurface(RhinoGeometry):
         xyz = []
         if over_space:
             for guid in faces:
-                face = RhinoSurface(guid)
+                face = RhinoSurface.from_guid(guid)
                 uv = face.space(density)
                 for u, v in uv:
                     xyz.append(list(rs.EvaluateSurface(face.guid, u, v)))
