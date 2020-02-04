@@ -84,7 +84,7 @@ class RhinoSurface(RhinoGeometry):
 
     # move to compas.datastructures.Mesh.from_meshgrid(RhinoSurface.to_meshgrid(over_space=True))?
     def uv_to_compas(self, cls=None, density=(10, 10)):
-        self.heightfield_to_compas(cls=cls, density=density, over_space=True)
+        return self.heightfield_to_compas(cls=cls, density=density, over_space=True)
 
     # move to compas.datastructures.Mesh.from_meshgrid(RhinoSurface.to_meshgrid(over_space=False))?
     def heightfield_to_compas(self, cls=None, density=(10, 10), over_space=False):
