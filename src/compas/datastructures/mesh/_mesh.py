@@ -5,6 +5,7 @@ from __future__ import print_function
 from compas.datastructures.mesh.core import BaseMesh
 from compas.datastructures.mesh.core import mesh_collapse_edge
 from compas.datastructures.mesh.core import mesh_split_edge
+from compas.datastructures.mesh.core import mesh_split_face
 
 from compas.datastructures.mesh.bbox import mesh_bounding_box
 from compas.datastructures.mesh.bbox import mesh_bounding_box_xy
@@ -44,6 +45,7 @@ class Mesh(BaseMesh):
     smooth_centroid = mesh_smooth_centroid
     smooth_area = mesh_smooth_area
     split_edge = mesh_split_edge
+    split_face = mesh_split_face
     transform = mesh_transform
     transformed = mesh_transformed
     unify_cycles = mesh_unify_cycles
