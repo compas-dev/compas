@@ -27,7 +27,20 @@ class OFF(object):
     """
 
     def __init__(self, filepath):
-        self.reader = OFFReader(filepath)
+        self.filepath = filepath
+
+        self._reader = None
+        self._is_read = False
+
+    def read(self):
+        self._reader = OFFReader(self.filepath)
+        self._is_read = True
+
+    @property
+    def reader(self):
+        if not self._is_read:
+            self.read()
+        return self._reader
 
 
 class OFFReader(object):
