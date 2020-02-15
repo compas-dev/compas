@@ -304,7 +304,7 @@ def world_to_local_coords(frame, xyz):
     >>> Point(*world_to_local_coords(f, xyz)[0])
     Point(3.726, 4.088, 1.550)
     """
-    from compas.geometry.primitives import Frame  # noqa: F811
+    from compas.geometry import Frame  # noqa: F811
     T = matrix_change_basis(Frame.worldXY(), frame)
     return transform_points(xyz, T)
 
@@ -333,7 +333,7 @@ def local_to_world_coords(frame, xyz):
     >>> Point(*local_to_world_coords(f, xyz)[0])
     Point(2.000, 3.000, 5.000)
     """
-    from compas.geometry.primitives import Frame  # noqa: F811
+    from compas.geometry import Frame  # noqa: F811
     T = matrix_change_basis(frame, Frame.worldXY())
     return transform_points(xyz, T)
 
