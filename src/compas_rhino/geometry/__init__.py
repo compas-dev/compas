@@ -25,6 +25,8 @@ Specific wrappers
 
     RhinoPoint
     RhinoCurve
+    RhinoLine
+    RhinoPlane
     RhinoMesh
     RhinoSurface
 
@@ -35,10 +37,11 @@ from __future__ import print_function
 
 from ._geometry import *  # noqa: F401 F403
 
-from .point import *  # noqa: F401 F403
 from .curve import *  # noqa: F401 F403
+from .line import *  # noqa: F401 F403
 from .mesh import *  # noqa: F401 F403
+from .plane import *  # noqa: F401 F403
+from .point import *  # noqa: F401 F403
 from .surface import *  # noqa: F401 F403
-
 
 __all__ = [name for name in dir() if not name.startswith('_')]

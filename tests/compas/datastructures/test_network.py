@@ -24,12 +24,12 @@ def k5_network():
     return network
 
 
-def test_add_vertex():
+def test_add_node():
     network = Network()
-    assert network.add_vertex() == 0
-    assert network.add_vertex(x=0, y=0, z=0) == 1
-    assert network.add_vertex(key=2) == 2
-    assert network.add_vertex(key=0, x=1) == 0
+    assert network.add_node(1) == 1
+    assert network.add_node('1', x=0, y=0, z=0) == '1'
+    assert network.add_node(2) == 2
+    assert network.add_node(0, x=1) == 0
 
 
 def test_non_planar(k5_network):
