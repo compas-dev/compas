@@ -5,7 +5,7 @@ from __future__ import division
 from compas import IPY
 
 from .graph import Graph  # noqa: F401
-from .network import Network  # noqa: F401
+from .network import BaseNetwork  # noqa: F401
 
 from .operations import *  # noqa: F401 F403
 if not IPY:

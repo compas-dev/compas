@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.datastructures.mesh.core import Mesh as BaseMesh
+from compas.datastructures.mesh.core import BaseMesh
 from compas.datastructures.mesh.core import mesh_collapse_edge
 from compas.datastructures.mesh.core import mesh_split_edge
 from compas.datastructures.mesh.core import mesh_split_face

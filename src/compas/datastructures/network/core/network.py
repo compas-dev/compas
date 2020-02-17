@@ -16,11 +16,15 @@ from compas.geometry import scale_vector
 from compas.datastructures.network.core import Graph
 
 
-__all__ = ['Network']
+__all__ = ['BaseNetwork']
 
 
-class Network(Graph):
-    """Definition of a network.
+class BaseNetwork(Graph):
+    """Geometric implementation of a basic edge graph.
+
+    Methods
+    -------
+
 
     Examples
     --------
@@ -30,7 +34,7 @@ class Network(Graph):
     __module__ = "compas.datastructures"
 
     def __init__(self):
-        super(Network, self).__init__()
+        super(BaseNetwork, self).__init__()
         self._max_int_key = -1
         self.attributes.update({'name': 'Network'})
         self.default_node_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
@@ -223,7 +227,7 @@ class Network(Graph):
                 self._max_int_key = key
         except (ValueError, TypeError):
             pass
-        return super(Network, self).add_node(key, attr_dict=attr_dict, **kwattr)
+        return super(BaseNetwork, self).add_node(key, attr_dict=attr_dict, **kwattr)
 
     # --------------------------------------------------------------------------
     # modifiers
@@ -460,7 +464,7 @@ class Network(Graph):
 # ==============================================================================
 
 if __name__ == '__main__':
-    network = Network()
+    network = BaseNetwork()
     network.add_edge('a', 'b')
     network.add_edge('a', 'c')
     network.add_edge('a', 'd')

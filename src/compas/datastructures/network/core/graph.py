@@ -74,7 +74,7 @@ class EdgeAttributeView(AttributeView, collections.MutableMapping):
 
 
 class Graph(Datastructure):
-    """Definition of a graph.
+    """Base graph data structure for describing the topological relationships between nodes connected by edges.
 
     Attributes
     ----------
@@ -87,12 +87,20 @@ class Graph(Datastructure):
         corresponds to a key in the node dictionary, and maps to a dictionary
         with connected nodes. In the latter, the keys are again references
         to items in the node dictionary, and the values are dictionaries
-        of edge attributes.
+        of edge attributes. For example, an edge between node 1 and node 2 is represented as follows
+        ``Graph.edge[1][2] -> {...}``
     adjacency : dict of dict
-        A half-edge dictionary, which keeps track of
-        undirected adjacencies.
+        The edges of the graph are directed.
+        The undirected connectivity information is represented in the adjacency dict.
     attributes : dict
-        A dictionary of miscellaneous information about the network.
+        A dictionary of miscellaneous information about the graph.
+    default_node_attributes : dict
+        A dictionary mapping node attribute names to their default values.
+    default_edge_attributes : dict
+        A dictionary mapping edge attribute names to their default values.
+    data : dict
+        A dictionary representing the essential data of a graph that can be used in serialization
+        processes.
 
     Examples
     --------

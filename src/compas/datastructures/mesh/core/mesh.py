@@ -39,10 +39,10 @@ from compas.utilities import pairwise
 from compas.utilities import window
 
 
-__all__ = ['Mesh']
+__all__ = ['BaseMesh']
 
 
-class Mesh(HalfEdge):
+class BaseMesh(HalfEdge):
     """Geometric implementation of a half edge data structure for polygon meshses.
 
     Attributes
@@ -97,7 +97,7 @@ class Mesh(HalfEdge):
     __module__ = 'compas.datastructures'
 
     def __init__(self):
-        super(Mesh, self).__init__()
+        super(BaseMesh, self).__init__()
         self.attributes.update({'name': 'Mesh'})
         self.default_vertex_attributes.update({'x': 0.0, 'y': 0.0, 'z': 0.0})
 
@@ -1336,7 +1336,7 @@ if __name__ == '__main__':
     network = Network.from_obj(compas.get('lines.obj'))
     lines = network.to_lines()
 
-    mesh = Mesh.from_lines(lines, delete_boundary_face=False)
+    mesh = BaseMesh.from_lines(lines, delete_boundary_face=False)
 
     mesh.summary()
 
