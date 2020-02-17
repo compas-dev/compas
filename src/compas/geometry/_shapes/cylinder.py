@@ -37,6 +37,8 @@ class Cylinder(Shape):
 
     """
 
+    __module__ = "compas.geometry"
+
     __slots__ = ['_circle', '_height']
 
     def __init__(self, circle, height):

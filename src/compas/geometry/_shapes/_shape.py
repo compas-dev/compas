@@ -11,6 +11,8 @@ __all__ = ['Shape']
 class Shape(Primitive):
     """Base class for geometric shapes."""
 
+    __module__ = "compas.geometry"
+
     def __init__(self):
         super(Shape, self).__init__()
 

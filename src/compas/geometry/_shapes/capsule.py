@@ -35,7 +35,9 @@ class Capsule(Shape):
 
     """
 
-    __slots__ = ['_segment', '_radius']
+    __module__ = "compas.geometry"
+
+    __slots__ = ['_line', '_radius']
 
     def __init__(self, line, radius):
         self._line = None

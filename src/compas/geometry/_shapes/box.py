@@ -72,6 +72,8 @@ class Box(Shape):
 
     """
 
+    __module__ = "compas.geometry"
+
     def __init__(self, frame, xsize, ysize, zsize):
         self._frame = None
         self._xsize = None
