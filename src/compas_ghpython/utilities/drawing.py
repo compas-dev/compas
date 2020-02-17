@@ -81,9 +81,9 @@ def draw_lines(lines):
     """
     rg_lines = []
     for l in iter(lines):
-        sp = l['start']
-        ep = l['end']
-        rg_lines.append(Line(Point3d(*sp), Point3d(*ep)))
+        sp = l.start
+        ep = l.end
+        rg_lines.append(Line(Point3d(sp.x, sp.y, sp.z), Point3d(ep.x, ep.y, ep.z)))
     return rg_lines
 
 
