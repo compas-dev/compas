@@ -23,13 +23,19 @@ def network_is_connected(network):
     -----
     A network is connected if for every two vertices a path exists connecting them.
 
+    Examples
+    --------
+    >>> import compas
+    >>> from compas.datastructures import Network
+    >>> from compas.datastructures import network_is_connected
+    >>> network = Network.from_obj(compas.get('lines.obj'))
+    >>> network_is_connected(network)
+    True
     """
-    if not network.vertex:
+    if network.number_of_nodes() == 0:
         return False
-
-    nodes = breadth_first_traverse(network.adjacency, network.get_any_vertex())
-
-    return len(nodes) == network.number_of_vertices()
+    nodes = breadth_first_traverse(network.adjacency, network.get_any_node())
+    return len(nodes) == network.number_of_nodes()
 
 
 # ==============================================================================
@@ -38,4 +44,6 @@ def network_is_connected(network):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+
+    doctest.testmod(globs=globals())

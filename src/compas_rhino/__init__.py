@@ -10,7 +10,6 @@ compas_rhino
     :maxdepth: 1
 
     compas_rhino.artists
-    compas_rhino.etoforms
     compas_rhino.forms
     compas_rhino.geometry
     compas_rhino.modifiers
@@ -41,7 +40,7 @@ else:
         pass
 
 
-__version__ = '0.15.0'
+__version__ = '0.15.1'
 
 
 PURGE_ON_DELETE = True

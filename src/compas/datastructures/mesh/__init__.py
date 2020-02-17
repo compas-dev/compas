@@ -7,7 +7,6 @@ from compas import IPY
 from .core import *  # noqa: F401 F403
 from ._mesh import *  # noqa: F401 F403
 
-
 from .bbox import *  # noqa: F401 F403
 if not IPY:
     from .bbox_numpy import *  # noqa: F401 F403

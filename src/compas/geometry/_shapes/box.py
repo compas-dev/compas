@@ -15,7 +15,7 @@ __all__ = ['Box']
 class Box(Shape):
     """A box is defined by a frame and its dimensions along the frame's x-, y- and z-axes.
 
-    The bottom left corner of the box is positioned at the origin of the
+    The center of the box is positioned at the origin of the
     coordinate system defined by the frame. The box is axis-aligned to the frame.
 
     A box is a three-dimensional geometric shape with 8 vertices, 12 edges and 6
@@ -32,6 +32,39 @@ class Box(Shape):
         The size of the box in the box frame's y direction.
     zsize : float
         The size of the box in the box frame's z direction.
+
+    Attributes
+    ----------
+    frame : compas.geometry.Frame
+        The local coordinate system of the box.
+    xsize : float
+        The size of the box in the local X direction.
+    ysize : float
+        The size of the box in the local Y direction.
+    zsize : float
+        The size of the box in the local Z direction.
+    width (read-only) : float
+        Alias for ``xsize``.
+    depth (read-only) : float
+        Alias for ``ysize``.
+    height (read-only) : float
+        Alias for ``zsize``.
+    diagonal (read-only) : tuple of compas.geometry.Point
+        The start and end point of the main diagonal of the box.
+    dimensions (read-only) : list of float
+        List of sizes in local coordinate directions.
+    area (read-only) : float
+        The surface area of the box.
+    volume (read-only) : float
+        The volume of the box.
+    vertices (read-only) : list of list
+        The XYZ coordinates of the corners of the box.
+        With respect to the local Z axis, the vertices of the bottom
+        face are listed first in clockwise direction, starting at the bottom left corner.
+        The vertices of the top face are listed in counterclockwise direction.
+    faces (read-only) : list of list
+        The vertices of the faces of the box.
+        The cycle directions of the faces are such that face normals point outwards.
 
     Examples
     --------

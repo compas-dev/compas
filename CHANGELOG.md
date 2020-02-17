@@ -9,12 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added glTF support.
-
 ### Changed
 
 ### Removed
 
+
+## [0.15.1] 2020-02-16
+
+### Added
+
+- Added glTF support.
+- Added graph and halfedge data structures.
+- Added Rhino line geometry.
+- Added Rhino plane geometry.
+
+### Changed
+
+- Fixed `compas_hpc` import problem.
+- Split up topology part from geometry part for network and mesh.
+- Split up network and mesh naming conventions.
+- Reworked network face cycle finding.
+- Updated mesh from lines.
+- Updated network plotter in correspondance with network.
+- Integrated mixin functionality and removed mixins.
+
+### Removed
+
+- Removed parallelisation from network algorithms.
+- Removed numba based dr implementations.
 
 ## [0.15.0] 2020-01-24
 

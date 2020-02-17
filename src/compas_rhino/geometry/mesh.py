@@ -6,7 +6,7 @@ import compas
 import compas_rhino
 
 from compas.datastructures import Mesh
-from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.geometry._geometry import RhinoGeometry
 
 if compas.IPY:
     import Rhino
@@ -53,8 +53,10 @@ class RhinoMesh(RhinoGeometry):
     def faces(self):
         return map(list, compas_rhino.rs.MeshFaceVertices(self.guid))
 
-    def to_compas(self):
-        return Mesh.from_vertices_and_faces(self.vertices, self.faces)
+    def to_compas(self, cls=None):
+        if not cls:
+            cls = Mesh
+        return cls.from_vertices_and_faces(self.vertices, self.faces)
 
     # def get_vertex_coordinates(self):
     #     return [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]

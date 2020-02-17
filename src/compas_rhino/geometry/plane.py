@@ -6,7 +6,7 @@ import compas
 
 from compas.geometry import Plane
 from compas.geometry import Frame
-from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.geometry._geometry import RhinoGeometry
 
 if compas.IPY:
     import Rhino

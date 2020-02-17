@@ -26,19 +26,28 @@ def network_complement(network, cls=None):
     Network
         The complement network.
 
+    Examples
+    --------
+    >>> import compas
+    >>> from compas.datastructures import Network
+    >>> from compas.datastructures import network_complement
+    >>> network = Network.from_obj(compas.get('lines.obj'))
+    >>> complement = network_complement(network)
+    >>> any(complement.is_edge(u, v, directed=False) for u, v in network.edges())
+    False
+
     References
     ----------
     .. [1] Wolfram MathWorld. *Graph complement*.
            Available at: http://mathworld.wolfram.com/GraphComplement.html.
     """
-
     if not cls:
         cls = type(network)
 
-    vertices = [network.vertex_coordinates(vkey) for vkey in network.vertices()]
-    edges = [(u, v) for u, v in combinations(network.vertices(), 2) if not network.has_edge(u, v, directed=False)]
+    nodes = [network.node_coordinates(key) for key in network.nodes()]
+    edges = [(u, v) for u, v in combinations(network.nodes(), 2) if not network.has_edge(u, v, directed=False)]
 
-    return cls.from_vertices_and_edges(vertices, edges)
+    return cls.from_nodes_and_edges(nodes, edges)
 
 
 # ==============================================================================
@@ -47,4 +56,5 @@ def network_complement(network, cls=None):
 
 if __name__ == '__main__':
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

@@ -6,13 +6,22 @@ datastructures
 .. currentmodule:: compas.datastructures
 
 
-Mesh
-====
+Meshes
+======
 
 The mesh is implemented as a half-edge datastructure.
 It is meant for the representation of polygonal *"surface"* meshes. A mesh can be
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
+
+Base data structures
+--------------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    HalfEdge
 
 Data structures
 ---------------
@@ -21,7 +30,6 @@ Data structures
     :toctree: generated/
     :nosignatures:
 
-    BaseMesh
     Mesh
 
 Algorithms
@@ -95,13 +103,22 @@ Conway Operators
     mesh_conway_meta
     mesh_conway_bevel
 
-Network
-=======
+Networks
+========
 
 The network is a connectivity graph.
 It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
+
+Base data structures
+--------------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Graph
 
 Data structures
 ---------------
@@ -121,10 +138,9 @@ Algorithms
 
     network_complement
     network_count_crossings
-    network_dual
     network_embed_in_plane
     network_find_crossings
-    network_find_faces
+    network_find_cycles
     network_is_connected
     network_is_crossed
     network_is_planar
@@ -147,37 +163,6 @@ be used for the representation of subdivided/partitioned polyhedra.
 
     VolMesh
 
-Mixins
-======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    VertexAttributesManagement
-    EdgeAttributesManagement
-    FaceAttributesManagement
-
-    VertexFilter
-    EdgeFilter
-    FaceFilter
-
-    FromToData
-    FromToJson
-    FromToPickle
-
-    VertexGeometry
-    EdgeGeometry
-    FaceGeometry
-
-    VertexHelpers
-    EdgeHelpers
-    FaceHelpers
-
-    VertexMappings
-    EdgeMappings
-    FaceMappings
-
 """
 
 from __future__ import absolute_import
@@ -189,7 +174,6 @@ class Datastructure(object):
     pass
 
 
-from ._mixins import *  # noqa: F401 F402 F403
 from .network import *  # noqa: F401 F402 F403
 from .mesh import *  # noqa: F401 F402 F403
 from .volmesh import *  # noqa: F401 F402 F403

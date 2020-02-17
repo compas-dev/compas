@@ -9,14 +9,14 @@ __all__ = ['network_smooth_centroid']
 
 
 def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback=None, callback_args=None):
-    """Smooth a network by moving each vertex to the centroid of its neighbors.
+    """Smooth a network by moving each node to the centroid of its neighbors.
 
     Parameters
     ----------
     network : Mesh
         A network object.
     fixed : list, optional
-        The fixed vertices of the mesh.
+        The fixed nodes of the mesh.
     kmax : int, optional
         The maximum number of iterations.
     damping : float, optional
@@ -33,26 +33,7 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Network
-        from compas.datastructures import network_smooth_centroid
-        from compas_plotters import NetworkPlotter
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-        fixed = [key for key in network.vertices() if network.vertex_degree(key) == 1]
-
-        network_smooth_centroid(network, fixed=fixed)
-
-        plotter = NetworkPlotter(network)
-
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
-        plotter.draw_edges()
-
-        plotter.show()
+    >>>
 
     """
     if callback:
@@ -63,15 +44,15 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
     fixed = set(fixed)
 
     for k in range(kmax):
-        key_xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
+        key_xyz = {key: network.node_coordinates(key) for key in network.nodes()}
 
-        for key, attr in network.vertices(True):
+        for key, attr in network.nodes(True):
             if key in fixed:
                 continue
 
             x, y, z = key_xyz[key]
 
-            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in network.vertex_neighbors(key)])
+            cx, cy, cz = centroid_points([key_xyz[nbr] for nbr in network.neighbors(key)])
 
             attr['x'] += damping * (cx - x)
             attr['y'] += damping * (cy - y)
@@ -87,4 +68,19 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
 
 if __name__ == "__main__":
 
-    pass
+    import compas
+
+    from compas.datastructures import Network
+    from compas_plotters import NetworkPlotter
+
+    network = Network.from_obj(compas.get('grid_irregular.obj'))
+    fixed = network.leaves()
+
+    network_smooth_centroid(network, fixed=fixed)
+
+    plotter = NetworkPlotter(network, figsize=(8, 5))
+
+    plotter.draw_nodes(facecolor={key: '#ff0000' for key in fixed})
+    plotter.draw_edges()
+
+    plotter.show()

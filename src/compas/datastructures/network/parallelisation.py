@@ -18,7 +18,7 @@ def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=Non
     targets : list
         A list of target vectors.
     fixed : list, optional
-        The fixed vertices of the network.
+        The fixed nodes of the network.
         Default is ``None``.
     kmax : int, optional
         Maximum number of iterations.
@@ -36,27 +36,24 @@ def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=Non
 
     Examples
     --------
-    .. code-block:: python
-
-        #
-
+    >>>
     """
     if callback:
         if not callable(callback):
             raise Exception('The provided callback is not callable.')
 
-    free = list(set(range(network.number_of_vertices())) - set(fixed))
+    free = list(set(range(network.number_of_nodes())) - set(fixed))
     uv_e = {(u, v): index for index, (u, v) in enumerate(network.edges())}
     uv_e.update({(v, u): index for index, (u, v) in enumerate(network.edges())})
 
     # the main loop
     for k in range(kmax):
         # current coorinates and lengths
-        key_xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
+        key_xyz = {key: network.node_coordinates(key) for key in network.nodes()}
         lengths = [network.edge_length(u, v) for u, v in network.edges()]
         # the inner loop
         for key in free:
-            nbrs = network.vertex_neighbors(key)
+            nbrs = network.neighbors(key)
             n = float(len(nbrs))
             x, y, z = 0.0, 0.0, 0.0
 
@@ -79,9 +76,9 @@ def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=Non
                 y += by
                 z += bz
 
-            network.vertex[key]['x'] = x / n
-            network.vertex[key]['y'] = y / n
-            network.vertex[key]['z'] = z / n
+            network.node[key]['x'] = x / n
+            network.node[key]['y'] = y / n
+            network.node[key]['z'] = z / n
 
 
 # ==============================================================================

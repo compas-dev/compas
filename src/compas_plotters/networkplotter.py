@@ -39,19 +39,19 @@ class NetworkPlotter(Plotter):
         Title of the plot.
     network : object
         The network to plot.
-    vertexcollection : object
-        The matplotlib collection for the network vertices.
+    nodecollection : object
+        The matplotlib collection for the network nodes.
     edgecollection : object
         The matplotlib collection for the network edges.
     defaults : dict
-        Dictionary containing default attributes for vertices and edges.
+        Dictionary containing default attributes for nodes and edges.
 
-        * vertex.radius    : ``0.1``
-        * vertex.facecolor : ``'#ffffff``
-        * vertex.edgecolor : ``'#000000'``
-        * vertex.edgewidth : ``0.5``
-        * vertex.textcolor : ``'#000000'``
-        * vertex.fontsize  : ``10``
+        * node.radius    : ``0.1``
+        * node.facecolor : ``'#ffffff``
+        * node.edgecolor : ``'#000000'``
+        * node.edgewidth : ``0.5``
+        * node.textcolor : ``'#000000'``
+        * node.fontsize  : ``10``
         * edge.width       : ``1.0``
         * edge.color       : ``'#000000'``
         * edge.textcolor   : ``'#000000'``
@@ -80,7 +80,7 @@ class NetworkPlotter(Plotter):
 
         plotter = NetworkPlotter(network)
 
-        plotter.draw_vertices(
+        plotter.draw_nodes(
             text='key',
             facecolor={key: '#ff0000' for key in network.leaves()},
             radius=0.15
@@ -96,15 +96,15 @@ class NetworkPlotter(Plotter):
         super(NetworkPlotter, self).__init__(**kwargs)
         self.title = 'NetworkPlotter'
         self.datastructure = network
-        self.vertexcollection = None
+        self.nodecollection = None
         self.edgecollection = None
         self.defaults = {
-            'vertex.radius': 0.1,
-            'vertex.facecolor': '#ffffff',
-            'vertex.edgecolor': '#000000',
-            'vertex.edgewidth': 0.5,
-            'vertex.textcolor': '#000000',
-            'vertex.fontsize': kwargs.get('fontsize', 10),
+            'node.radius': 0.1,
+            'node.facecolor': '#ffffff',
+            'node.edgecolor': '#000000',
+            'node.edgewidth': 0.5,
+            'node.textcolor': '#000000',
+            'node.fontsize': kwargs.get('fontsize', 10),
 
             'edge.width': 1.0,
             'edge.color': '#000000',
@@ -113,63 +113,63 @@ class NetworkPlotter(Plotter):
         }
 
     def clear(self):
-        """Clears the network plotter edges and vertices."""
-        self.clear_vertices()
+        """Clears the network plotter edges and nodes."""
+        self.clear_nodes()
         self.clear_edges()
 
-    def clear_vertices(self):
-        """Clears the netwotk plotter vertices."""
-        if self.vertexcollection:
-            self.vertexcollection.remove()
+    def clear_nodes(self):
+        """Clears the netwotk plotter nodes."""
+        if self.nodecollection:
+            self.nodecollection.remove()
 
     def clear_edges(self):
         """Clears the network object edges."""
         if self.edgecollection:
             self.edgecollection.remove()
 
-    def draw_as_lines(self, color=None, width=None):
-        # if len(args) > 0:
-        #     return super(MeshPlotter, self).draw_lines(*args, **kwargs)
-        lines = []
-        for u, v in self.datastructure.edges():
-            lines.append({
-                'start': self.datastructure.vertex_coordinates(u, 'xy'),
-                'end': self.datastructure.vertex_coordinates(v, 'xy'),
-                'color': color,
-                'width': width,
-            })
-        return super(NetworkPlotter, self).draw_lines(lines)
+    # def draw_as_lines(self, color=None, width=None):
+    #     # if len(args) > 0:
+    #     #     return super(MeshPlotter, self).draw_lines(*args, **kwargs)
+    #     lines = []
+    #     for u, v in self.datastructure.edges():
+    #         lines.append({
+    #             'start': self.datastructure.node_coordinates(u, 'xy'),
+    #             'end': self.datastructure.node_coordinates(v, 'xy'),
+    #             'color': color,
+    #             'width': width,
+    #         })
+    #     return super(NetworkPlotter, self).draw_lines(lines)
 
-    def draw_vertices(self,
-                      keys=None,
-                      radius=None,
-                      text=None,
-                      facecolor=None,
-                      edgecolor=None,
-                      edgewidth=None,
-                      textcolor=None,
-                      fontsize=None,
-                      picker=None):
-        """Draws the network vertices.
+    def draw_nodes(self,
+                   keys=None,
+                   radius=None,
+                   text=None,
+                   facecolor=None,
+                   edgecolor=None,
+                   edgewidth=None,
+                   textcolor=None,
+                   fontsize=None,
+                   picker=None):
+        """Draws the network nodes.
 
         Parameters
         ----------
         keys : list
-            The keys of the vertices to plot.
+            The keys of the nodes to plot.
         radius : list
-            A list of radii for the vertices.
+            A list of radii for the nodes.
         text : list
-            Strings to be displayed on the vertices.
+            Strings to be displayed on the nodes.
         facecolor : list
-            Color for the vertex circle fill.
+            Color for the node circle fill.
         edgecolor : list
-            Color for the vertex circle edge.
+            Color for the node circle edge.
         edgewidth : list
-            Width for the vertex circle edge.
+            Width for the node circle edge.
         textcolor : list
-            Color for the text to be displayed on the vertices.
+            Color for the text to be displayed on the nodes.
         fontsize : list
-            Font size for the text to be displayed on the vertices.
+            Font size for the text to be displayed on the nodes.
 
         Returns
         -------
@@ -177,34 +177,34 @@ class NetworkPlotter(Plotter):
             The matplotlib point collection object.
 
         """
-        keys = keys or list(self.datastructure.vertices())
+        keys = keys or list(self.datastructure.nodes())
 
         if text == 'key':
-            text = {key: str(key) for key in self.datastructure.vertices()}
+            text = {key: str(key) for key in self.datastructure.nodes()}
         elif text == 'index':
-            text = {key: str(index) for index, key in enumerate(self.datastructure.vertices())}
+            text = {key: str(index) for index, key in enumerate(self.datastructure.nodes())}
         elif isinstance(text, basestring):
-            if text in self.datastructure.default_vertex_attributes:
-                default = self.datastructure.default_vertex_attributes[text]
+            if text in self.datastructure.default_node_attributes:
+                default = self.datastructure.default_node_attributes[text]
                 if isinstance(default, float):
-                    text = {key: '{:.1f}'.format(attr[text]) for key, attr in self.datastructure.vertices(True)}
+                    text = {key: '{:.1f}'.format(attr[text]) for key, attr in self.datastructure.nodes(True)}
                 else:
-                    text = {key: str(attr[text]) for key, attr in self.datastructure.vertices(True)}
+                    text = {key: str(attr[text]) for key, attr in self.datastructure.nodes(True)}
         else:
             pass
 
-        radiusdict = valuedict(keys, radius, self.defaults['vertex.radius'])
+        radiusdict = valuedict(keys, radius, self.defaults['node.radius'])
         textdict = valuedict(keys, text, '')
-        facecolordict = valuedict(keys, facecolor, self.defaults['vertex.facecolor'])
-        edgecolordict = valuedict(keys, edgecolor, self.defaults['vertex.edgecolor'])
-        edgewidthdict = valuedict(keys, edgewidth, self.defaults['vertex.edgewidth'])
-        textcolordict = valuedict(keys, textcolor, self.defaults['vertex.textcolor'])
-        fontsizedict = valuedict(keys, fontsize, self.defaults['vertex.fontsize'])
+        facecolordict = valuedict(keys, facecolor, self.defaults['node.facecolor'])
+        edgecolordict = valuedict(keys, edgecolor, self.defaults['node.edgecolor'])
+        edgewidthdict = valuedict(keys, edgewidth, self.defaults['node.edgewidth'])
+        textcolordict = valuedict(keys, textcolor, self.defaults['node.textcolor'])
+        fontsizedict = valuedict(keys, fontsize, self.defaults['node.fontsize'])
 
         points = []
         for key in keys:
             points.append({
-                'pos': self.datastructure.vertex_coordinates(key, 'xy'),
+                'pos': self.datastructure.node_coordinates(key, 'xy'),
                 'radius': radiusdict[key],
                 'text': textdict[key],
                 'facecolor': facecolordict[key],
@@ -215,19 +215,19 @@ class NetworkPlotter(Plotter):
             })
 
         collection = self.draw_points(points)
-        self.vertexcollection = collection
+        self.nodecollection = collection
 
         if picker:
             collection.set_picker(picker)
         return collection
 
-    def update_vertices(self, radius=0.1):
-        """Updates the plotter vertex collection based on the network."""
+    def update_nodes(self, radius=0.1):
+        """Updates the plotter node collection based on the network."""
         circles = []
-        for key in self.datastructure.vertices():
-            center = self.datastructure.vertex_coordinates(key, 'xy')
+        for key in self.datastructure.nodes():
+            center = self.datastructure.node_coordinates(key, 'xy')
             circles.append(Circle(center, radius))
-        self.vertexcollection.set_paths(circles)
+        self.nodecollection.set_paths(circles)
 
     def draw_edges(self,
                    keys=None,
@@ -277,8 +277,8 @@ class NetworkPlotter(Plotter):
         lines = []
         for u, v in keys:
             lines.append({
-                'start': self.datastructure.vertex_coordinates(u, 'xy'),
-                'end': self.datastructure.vertex_coordinates(v, 'xy'),
+                'start': self.datastructure.node_coordinates(u, 'xy'),
+                'end': self.datastructure.node_coordinates(v, 'xy'),
                 'width': widthdict[(u, v)],
                 'color': colordict[(u, v)],
                 'text': textdict[(u, v)],
@@ -294,7 +294,7 @@ class NetworkPlotter(Plotter):
         """Updates the plotter edge collection based on the network."""
         segments = []
         for u, v in self.datastructure.edges():
-            segments.append([self.datastructure.vertex_coordinates(u, 'xy'), self.datastructure.vertex_coordinates(v, 'xy')])
+            segments.append([self.datastructure.node_coordinates(u, 'xy'), self.datastructure.node_coordinates(v, 'xy')])
         self.edgecollection.set_segments(segments)
 
     # def draw_path(self, path):
@@ -322,10 +322,10 @@ if __name__ == "__main__":
 
     plotter = NetworkPlotter(network, figsize=(10, 8))
 
-    plotter.draw_vertices(radius=0.1, picker=10)
+    plotter.draw_nodes(radius=0.1, picker=10)
     plotter.draw_edges()
 
-    default = [plotter.defaults['vertex.facecolor'] for key in network.vertices()]
+    default = [plotter.defaults['node.facecolor'] for key in network.nodes()]
     highlight = '#ff0000'
 
     def on_pick(event):
@@ -334,7 +334,7 @@ if __name__ == "__main__":
         colors = default[:]
         colors[index] = highlight
 
-        plotter.vertexcollection.set_facecolor(colors)
+        plotter.nodecollection.set_facecolor(colors)
         plotter.update()
 
     plotter.register_listener(on_pick)

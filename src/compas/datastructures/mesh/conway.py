@@ -36,7 +36,7 @@ def mesh_conway_dual(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> dual = conway_dual(mesh)
+    >>> dual = mesh_conway_dual(mesh)
     >>> dual.number_of_vertices() == mesh.number_of_faces()
     True
     >>> dual.number_of_edges() == mesh.number_of_edges()
@@ -78,7 +78,7 @@ def mesh_conway_join(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> join = conway_join(mesh)
+    >>> join = mesh_conway_join(mesh)
     >>> join.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces()
     True
     >>> join.number_of_edges() == 2 * mesh.number_of_edges()
@@ -126,7 +126,7 @@ def mesh_conway_ambo(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> ambo = conway_ambo(mesh)
+    >>> ambo = mesh_conway_ambo(mesh)
     >>> ambo.number_of_vertices() == mesh.number_of_edges()
     True
     >>> ambo.number_of_edges() == 2 * mesh.number_of_edges()
@@ -143,7 +143,7 @@ def mesh_conway_ambo(mesh):
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
-    return conway_dual(conway_join(mesh))
+    return mesh_conway_dual(mesh_conway_join(mesh))
 
 
 def mesh_conway_kis(mesh):
@@ -162,7 +162,7 @@ def mesh_conway_kis(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> kis = conway_kis(mesh)
+    >>> kis = mesh_conway_kis(mesh)
     >>> kis.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces()
     True
     >>> kis.number_of_edges() == 3 * mesh.number_of_edges()
@@ -207,7 +207,7 @@ def mesh_conway_needle(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> needle = conway_needle(mesh)
+    >>> needle = mesh_conway_needle(mesh)
     >>> needle.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces()
     True
     >>> needle.number_of_edges() == 3 * mesh.number_of_edges()
@@ -224,7 +224,7 @@ def mesh_conway_needle(mesh):
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
-    return conway_kis(conway_dual(mesh))
+    return mesh_conway_kis(mesh_conway_dual(mesh))
 
 
 def mesh_conway_zip(mesh):
@@ -243,7 +243,7 @@ def mesh_conway_zip(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> zipp = conway_zip(mesh)
+    >>> zipp = mesh_conway_zip(mesh)
     >>> zipp.number_of_vertices() == 2 * mesh.number_of_edges()
     True
     >>> zipp.number_of_edges() == 3 * mesh.number_of_edges()
@@ -261,7 +261,7 @@ def mesh_conway_zip(mesh):
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
 
     """
-    return conway_dual(conway_kis(mesh))
+    return mesh_conway_dual(mesh_conway_kis(mesh))
 
 
 def mesh_conway_truncate(mesh):
@@ -280,7 +280,7 @@ def mesh_conway_truncate(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> trun = conway_truncate(mesh)
+    >>> trun = mesh_conway_truncate(mesh)
     >>> trun.number_of_vertices() == 2 * mesh.number_of_edges()
     True
     >>> trun.number_of_edges() == 3 * mesh.number_of_edges()
@@ -298,7 +298,7 @@ def mesh_conway_truncate(mesh):
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
     # same as conway_dual(conway_needle())?
-    return conway_dual(conway_kis(conway_dual(mesh)))
+    return mesh_conway_dual(mesh_conway_kis(mesh_conway_dual(mesh)))
 
 
 def mesh_conway_ortho(mesh):
@@ -317,7 +317,7 @@ def mesh_conway_ortho(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> orth = conway_ortho(mesh)
+    >>> orth = mesh_conway_ortho(mesh)
     >>> orth.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces() + mesh.number_of_edges()
     True
     >>> orth.number_of_edges() == 4 * mesh.number_of_edges()
@@ -334,7 +334,7 @@ def mesh_conway_ortho(mesh):
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
-    return conway_join(conway_join(mesh))
+    return mesh_conway_join(mesh_conway_join(mesh))
 
 
 def mesh_conway_expand(mesh):
@@ -353,7 +353,7 @@ def mesh_conway_expand(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> expa = conway_expand(mesh)
+    >>> expa = mesh_conway_expand(mesh)
     >>> expa.number_of_vertices() == 2 * mesh.number_of_edges()
     True
     >>> expa.number_of_edges() == 4 * mesh.number_of_edges()
@@ -370,7 +370,7 @@ def mesh_conway_expand(mesh):
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
-    return conway_ambo(conway_ambo(mesh))
+    return mesh_conway_ambo(mesh_conway_ambo(mesh))
 
 
 def mesh_conway_gyro(mesh):
@@ -389,7 +389,7 @@ def mesh_conway_gyro(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> gyro = conway_gyro(mesh)
+    >>> gyro = mesh_conway_gyro(mesh)
     >>> gyro.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces() + 2 * mesh.number_of_edges()
     True
     >>> gyro.number_of_edges() == 5 * mesh.number_of_edges()
@@ -443,7 +443,7 @@ def mesh_conway_snub(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> snub = conway_snub(mesh)
+    >>> snub = mesh_conway_snub(mesh)
     >>> snub.number_of_vertices() == 2 * mesh.number_of_edges()
     True
     >>> snub.number_of_edges() == 5 * mesh.number_of_edges()
@@ -460,7 +460,7 @@ def mesh_conway_snub(mesh):
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
-    return conway_dual(conway_gyro(conway_dual(mesh)))
+    return mesh_conway_dual(mesh_conway_gyro(mesh_conway_dual(mesh)))
 
 
 def mesh_conway_meta(mesh):
@@ -479,7 +479,7 @@ def mesh_conway_meta(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> meta = conway_meta(mesh)
+    >>> meta = mesh_conway_meta(mesh)
     >>> meta.number_of_vertices() == mesh.number_of_vertices() + mesh.number_of_faces() + mesh.number_of_edges()
     True
     >>> meta.number_of_edges() == 6 * mesh.number_of_edges()
@@ -496,7 +496,7 @@ def mesh_conway_meta(mesh):
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
-    return conway_kis(conway_join(mesh))
+    return mesh_conway_kis(mesh_conway_join(mesh))
 
 
 def mesh_conway_bevel(mesh):
@@ -515,7 +515,7 @@ def mesh_conway_bevel(mesh):
     Examples
     --------
     >>> mesh = Mesh.from_polyhedron(6)
-    >>> bevl = conway_bevel(mesh)
+    >>> bevl = mesh_conway_bevel(mesh)
     >>> bevl.number_of_vertices() == 4 * mesh.number_of_edges()
     True
     >>> bevl.number_of_edges() == 6 * mesh.number_of_edges()
@@ -532,7 +532,7 @@ def mesh_conway_bevel(mesh):
     .. [2] Hart, George. *Conway Notation for Polyhedron*.
            Available at: http://www.georgehart.com/virtual-polyhedra/conway_notation.html.
     """
-    return conway_truncate(conway_ambo(mesh))
+    return mesh_conway_truncate(mesh_conway_ambo(mesh))
 
 
 # ==============================================================================

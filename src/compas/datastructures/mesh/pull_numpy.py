@@ -27,7 +27,7 @@ def mesh_pull_points_numpy(mesh, points):
     # preprocess
     i_k = mesh.index_key()
     fk_fi = {fkey: index for index, fkey in enumerate(mesh.faces())}
-    vertices = array(mesh.get_vertices_attributes('xyz'), dtype=float64).reshape((-1, 3))
+    vertices = array(mesh.vertices_attributes('xyz'), dtype=float64).reshape((-1, 3))
     triangles = array([mesh.face_coordinates(fkey) for fkey in mesh.faces()], dtype=float64)
     points = array(points, dtype=float64).reshape((-1, 3))
     closest_vis = argmin(distance_matrix(points, vertices), axis=1)
@@ -226,7 +226,7 @@ if __name__ == "__main__":
     mesh = Mesh.from_obj(compas.get('hypar.obj'))
     target = mesh.copy()
 
-    points = mesh.get_vertices_attributes('xyz')
+    points = mesh.vertices_attributes('xyz')
     points[:] = [[x, y, 0] for x, y, z in points]
 
     mesh_quads_to_triangles(target)

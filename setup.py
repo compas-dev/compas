@@ -22,15 +22,15 @@ def read(*names, **kwargs):
 long_description = read('README.md')
 requirements = [r for r in read('requirements.txt').split('\n') if r]
 optional_requirements = {
-    "viewers": ['PyOpenGL', 'PySide2'],
-    "hpc": ['pyopencl', 'pycuda'],
-    "robotics": ['roslibpy'],
-    "libigl": ['igl'],
+    # "viewers": ['PyOpenGL', 'PySide2'],
+    # "hpc": ['pyopencl', 'pycuda'],
+    # "robotics": ['roslibpy'],
+    # "libigl": ['igl'],
 }
 
 setup(
     name='COMPAS',
-    version='0.15.0',
+    version='0.15.1',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -63,7 +63,7 @@ setup(
         "Repository": "https://github.com/compas-dev/compas",
         "Issues": "https://github.com/compas-dev/compas/issues",
     },
-    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', 'compas_plotters', 'compas_hpc'],
+    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', 'compas_plotters'],
     package_dir={'': 'src'},
     package_data={},
     data_files=[],

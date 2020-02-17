@@ -64,7 +64,7 @@ if __name__ == "__main__":
     m1 = Mesh.from_obj(compas.get('faces.obj'))
     m2 = m1.copy()
 
-    points = m2.get_vertices_attributes('xyz')
+    points = m2.vertices_attributes('xyz')
     x, y, z = zip(*points)
     xmin = min(x)
     xmax = max(x)

@@ -11,17 +11,6 @@ __all__ = [
 ]
 
 
-# def join_edges_network(network, ab, cd):
-#     """Join two edges of a network.
-#     """
-#     intersection = set(ab) & set(cd)
-#     if not intersection:
-#         raise Exception('The edges are not connected.')
-#     a, b = ab
-#     c, d = cd
-#     raise NotImplementedError
-
-
 def network_join_edges(network, key):
     nbrs = network.vertex_neighbors(key)
     if len(nbrs) != 2:
@@ -67,31 +56,20 @@ def network_polylines(network, splits=None):
     Examples
     --------
     Joining the lines (a, b), (b, c), (c, d), (c, e) and (e, f),
-    where a ... f are different point coordinates will resut in the following polylines (a, b, c), (c, d) and (c, e, f).
+    where a ... f are different point coordinates.
+    This will result in the following polylines (a, b, c), (c, d) and (c, e, f).
 
-    .. code-block:: python
-
-        points = [
-            [0., 0., 0.],
-            [1., 0., 0.],
-            [2., 0., 0.],
-            [2., 1., 0.],
-            [3., 0., 0.],
-            [4., 0., 0.],
-        ]
-
-        lines = [
-            (points[0], points[1]),
-            (points[1], points[2]),
-            (points[2], points[3]),
-            (points[2], points[4]),
-            (points[4], points[5]),
-        ]
-
-        network = Network.from_lines([(line[0], line[-1]) for line in lines])
-
-        print(network_polylines(network))
-
+    >>> from compas.datastructures import Network
+    >>> a = [0., 0., 0.]
+    >>> b = [1., 0., 0.]
+    >>> c = [2., 0., 0.]
+    >>> d = [2., 1., 0.]
+    >>> e = [3., 0., 0.]
+    >>> f = [4., 0., 0.]
+    >>> lines = [(a, b), (b, c), (c, d), (c, e), (e, f)]
+    >>> network = Network.from_lines(lines)
+    >>> len(network_polylines(network)) == 3
+    True
     """
     # geometric keys of split points
     if splits is None:
@@ -109,13 +87,13 @@ def network_polylines(network, splits=None):
         while polyline[0] != polyline[-1]:
 
             # ... or until both end are non-two-valent vertices
-            if len(network.vertex_neighbors(polyline[-1])) != 2 or geometric_key(network.vertex_coordinates(polyline[-1])) in stop_geom_keys:
+            if len(network.neighbors(polyline[-1])) != 2 or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys:
                 polyline = list(reversed(polyline))
-                if len(network.vertex_neighbors(polyline[-1])) != 2 or geometric_key(network.vertex_coordinates(polyline[-1])) in stop_geom_keys:
+                if len(network.neighbors(polyline[-1])) != 2 or geometric_key(network.node_coordinates(polyline[-1])) in stop_geom_keys:
                     break
 
             # add next edge
-            polyline.append([nbr for nbr in network.vertex_neighbors(polyline[-1]) if nbr != polyline[-2]][0])
+            polyline.append([nbr for nbr in network.neighbors(polyline[-1]) if nbr != polyline[-2]][0])
 
         # delete polyline edges from the list of univisted edges
         for u, v in pairwise(polyline):
@@ -126,13 +104,14 @@ def network_polylines(network, splits=None):
 
         polylines.append(polyline)
 
-    return [[network.vertex_coordinates(vkey) for vkey in polyline] for polyline in polylines]
+    return [[network.node_coordinates(vkey) for vkey in polyline] for polyline in polylines]
+
 
 # ==============================================================================
 # Main
 # ==============================================================================
 
-
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

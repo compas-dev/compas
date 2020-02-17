@@ -4,7 +4,8 @@ from __future__ import print_function
 
 from compas import IPY
 
-from .basemesh import BaseMesh  # noqa: F401
+from .halfedge import HalfEdge  # noqa: F401
+from .mesh import BaseMesh  # noqa: F401
 from .operations import *  # noqa: F401 F403
 from .clean import *  # noqa: F401 F403
 if not IPY:
