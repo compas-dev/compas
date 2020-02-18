@@ -19,6 +19,15 @@ __all__ = ['Torus']
 class Torus(Shape):
     """A torus is defined by a plane and two radii.
 
+    Parameters
+    ----------
+    plane : :class:`compas.geometry.Plane` or tuple of point and normal
+        The plane of the torus.
+    radius_axis: float
+        The radius of the axis.
+    radius_pipe: float
+        The radius of the pipe.
+
     Attributes
     ----------
     plane : :class:`compas.geometry.Plane`
@@ -27,6 +36,12 @@ class Torus(Shape):
         The radius of the axis.
     radius_pipe: float
         The radius of the pipe.
+    center (read-only): :class:`compas.geometry.Point`
+        The center of the torus.
+    area (read-only): float
+        The surface area of the torus.
+    volume (read-only): float
+        The volume of the torus.
 
     Examples
     --------

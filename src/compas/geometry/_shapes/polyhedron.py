@@ -27,7 +27,7 @@ class Polyhedron(Shape):
 
     __module__ = "compas.geometry"
 
-    def __init__(self):
+    def __init__(self, vertices, faces):
         self.vertices = None
         self.faces = None
 
@@ -118,6 +118,10 @@ class Polyhedron(Shape):
         """
         return self.data
 
+    # ==========================================================================
+    # descriptors
+    # ==========================================================================
+
     @property
     def data(self):
         """Returns the data dictionary that represents the polyhedron.
@@ -144,10 +148,10 @@ class Polyhedron(Shape):
     def is_positive(self):
         pass
 
+
 # ==============================================================================
 # Platonic solids
 # ==============================================================================
-
 
 class Tetrahedron(Polyhedron):
     """

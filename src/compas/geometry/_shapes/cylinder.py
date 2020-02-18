@@ -20,12 +20,27 @@ __all__ = ['Cylinder']
 class Cylinder(Shape):
     """A cylinder is defined by a circle and a height.
 
-    Attributes
+    Parameters
     ----------
     circle: :class:`compas.geometry.Circle`
         The circle of the cylinder.
     height: float
         The height of the cylinder.
+
+    Attributes
+    ----------
+    plane : :class:`compas.geometry.Plane`
+        The plane containing the circle.
+    circle : :class:`compas.geometry.Circle`
+        The base circle of the cylinder.
+    radius : float
+        The radius of the base circle.
+    height : float
+        The height of the cylinder.
+    normal (read-only) : :class:`compas.geometry.Vector`
+        The normal of the base plane.
+    diameter : float
+        The diameter of the cylinder.
 
     Examples
     --------
