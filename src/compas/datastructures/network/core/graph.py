@@ -111,6 +111,7 @@ class Graph(Datastructure):
 
     def __init__(self):
         super(Graph, self).__init__()
+        self._max_int_key = -1
         self.attributes = {'name': 'Graph'}
         self.node = {}
         self.edge = {}
@@ -167,7 +168,8 @@ class Graph(Datastructure):
                 'edge_attributes': self.default_edge_attributes,
                 'node': {},
                 'edge': {},
-                'adjacency': {}}
+                'adjacency': {},
+                'max_int_key': self._max_int_key}
 
         for key in self.node:
             data['node'][repr(key)] = self.node[key]
@@ -196,6 +198,7 @@ class Graph(Datastructure):
         node = data.get('node') or {}
         edge = data.get('edge') or {}
         adjacency = data.get('adjacency') or {}
+        self._max_int_key = data.get('max_int_key')
 
         self.attributes.update(attributes)
         self.default_node_attributes.update(default_node_attributes)
