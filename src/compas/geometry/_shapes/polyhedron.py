@@ -27,7 +27,7 @@ class Polyhedron(Shape):
 
     __module__ = "compas.geometry"
 
-    def __init__(self, vertices, faces):
+    def __init__(self):
         self.vertices = None
         self.faces = None
 
