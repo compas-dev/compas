@@ -444,7 +444,7 @@ class BaseMesh(HalfEdge):
         --------
         >>>
         """
-        p = Polyhedron.generate(f)
+        p = Polyhedron(f)
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod

@@ -22,12 +22,27 @@ __all__ = ['Cone']
 class Cone(Shape):
     """A cone is defined by a circle and a height.
 
+    Parameters
+    ----------
+    circle : tuple or :class:`compas.geometry.Circle`
+        The base circle of the cone.
+    height : float
+        The height of the cone.
+
     Attributes
     ----------
-    circle: :class:`compas.geometry.Circle`
-        The circle of the cone.
-    height: float
+    plane : :class:`compas.geometry.Plane`
+        The plane containing the circle.
+    circle : :class:`compas.geometry.Circle`
+        The base circle of the cone.
+    radius : float
+        The radius of the base circle.
+    height : float
         The height of the cone.
+    normal (read-only) : :class:`compas.geometry.Vector`
+        The normal of the base plane.
+    diameter : float
+        The diameter of the cone.
 
     Examples
     --------
@@ -38,6 +53,8 @@ class Cone(Shape):
     >>> cone = Cone(circle, 7)
 
     """
+
+    __module__ = "compas.geometry"
 
     __slots__ = ['_circle', '_height']
 

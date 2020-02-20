@@ -2,7 +2,8 @@
 binaryornot
 cython
 ezdxf
-imageio
+imageio <= 2.6; python_version < '3.5'
+imageio >= 2.7; python_version >= '3.5'
 matplotlib >= 2.2, < 3.0; python_version >= '2.7' and python_version < '3.0'
 matplotlib >= 2.2, < 3.1; python_version >= '3.5' and sys_platform == 'win32'
 matplotlib >= 2.2; python_version >= '3.5' and sys_platform != 'win32'

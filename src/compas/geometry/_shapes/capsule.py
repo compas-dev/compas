@@ -21,12 +21,31 @@ __all__ = ['Capsule']
 class Capsule(Shape):
     """A capsule is defined by a line segment and a radius.
 
+    Parameters
+    ----------
+    line : tuple or :class:`compas.geometry.Line`
+        The axis line of the capsule.
+    radius : float
+        The radius of the capsule.
+
     Attributes
     ----------
-    segment: :class:`compas.geometry.Line`
+    line : :class:`compas.geometry.Line`
         The axis line of the capsule.
-    radius: float
+    start : :class:`compas.geometry.Point`
+        The start point of the axis line.
+        This is the base point of the capsule.
+    end : :class:`compas.geometry.Point`
+        The end point of the axis line.
+        This is the top of the capsule.
+    radius : float
         The radius of the capsule.
+    length (read-only) : float
+        The length of the capsule axis line.
+    area (read-only) : float
+        The surface area of the capsule.
+    volume (read-only) : float
+        The volume of the capsule.
 
     Examples
     --------
@@ -35,7 +54,9 @@ class Capsule(Shape):
 
     """
 
-    __slots__ = ['_segment', '_radius']
+    __module__ = "compas.geometry"
+
+    __slots__ = ['_line', '_radius']
 
     def __init__(self, line, radius):
         self._line = None

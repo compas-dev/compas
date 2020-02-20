@@ -16,12 +16,25 @@ __all__ = ['Sphere']
 class Sphere(Shape):
     """A sphere is defined by a point and a radius.
 
-    Attributes
+    Parameters
     ----------
-    point: :class:`compas.geometry.Point` or `list` of `float`
+    point: :class:`compas.geometry.Point` list of float
         The center of the sphere.
     radius: float
         The radius of the sphere.
+
+    Attributes
+    ----------
+    point: :class:`compas.geometry.Point`
+        The center of the sphere.
+    radius: float
+        The radius of the sphere.
+    center (read-only): :class:`compas.geometry.Point`
+        The center of the sphere.
+    area (read-only): float
+        The surface area of the sphere.
+    volume (read-only): float
+        The volume of the sphere.
 
     Examples
     --------
@@ -30,8 +43,9 @@ class Sphere(Shape):
     >>> sphere1 = Sphere(Point(1, 1, 1), 5)
     >>> sphere2 = Sphere((2, 4, 1), 2)
     >>> sphere3 = Sphere([2, 4, 1], 2)
-
     """
+
+    __module__ = "compas.geometry"
 
     __slots__ = ['_point', '_radius']
 

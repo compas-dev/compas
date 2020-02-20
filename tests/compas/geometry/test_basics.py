@@ -127,7 +127,7 @@ def test_centroid_points_fails_when_input_is_not_complete_points(points):
 
 @pytest.mark.parametrize(("polyhedron", "centroid"),
                          [
-    (Polyhedron.generate(6), [0.0, 0.0, 0.0]),
+    (Polyhedron(6), [0.0, 0.0, 0.0]),
 ]
 )
 def test_centroid_polyhedron(polyhedron, centroid):
@@ -142,7 +142,7 @@ def test_centroid_polyhedron(polyhedron, centroid):
 
 @pytest.mark.parametrize(("polyhedron", "volume"),
                          [
-    (Polyhedron.generate(6), None)
+    (Polyhedron(6), None)
 ]
 )
 def test_volume_polyhedron(polyhedron, volume):
