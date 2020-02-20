@@ -33,7 +33,7 @@ class PolylineArtist(PrimitiveArtist):
         """Draw the polyline.
 
         """
-        polylines = [{'points': self.primitive.points, 'color': self.color, 'name': self.name}]
+        polylines = [{'points': map(list, self.primitive.points), 'color': self.color, 'name': self.name}]
         self.guids = compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
 
 
