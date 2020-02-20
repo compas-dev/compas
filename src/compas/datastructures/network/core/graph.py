@@ -198,8 +198,8 @@ class Graph(Datastructure):
         node = data.get('node') or {}
         edge = data.get('edge') or {}
         adjacency = data.get('adjacency') or {}
-        self._max_int_key = data.get('max_int_key')
 
+        self._max_int_key = data.get('max_int_key')
         self.attributes.update(attributes)
         self.default_node_attributes.update(default_node_attributes)
         self.default_edge_attributes.update(default_edge_attributes)
