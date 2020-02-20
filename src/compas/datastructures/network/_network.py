@@ -22,16 +22,25 @@ class Network(BaseNetwork):
 
 if __name__ == "__main__":
 
-    from compas.geometry import intersection_line_line_xy
+    # from compas.geometry import intersection_line_line_xy
     from compas.datastructures import Mesh
     from compas.datastructures import network_find_cycles
-    from compas_plotters import NetworkPlotter
+    # from compas_plotters import NetworkPlotter
     from compas_plotters import MeshPlotter
 
     # nodes = [[0, 0, 0], [1, 0, 0], [2, 0, 0], [0, 1, 0], [1, 1, 0], [2, 1, 0]]
     # edges = [[0, 1], [1, 2], [3, 4], [4, 5], [0, 3], [1, 4], [2, 5], [0, 4], [1, 5], [1, 3], [2, 4]]
 
-    data = {0: [-40.0, 55.0, 0.0], 1: [-35.0, 55.0, 0.0], 2: [-30.0, 55.0, 0.0], 4: [-35.0, 60.0, 0.0], 6: [-37.5, 57.5, 0.0], 7: [-32.5, 57.5, 0.0], 8: [-40.0, 53.82, 0.0], 10: [-30.0, 53.82, 0.0], 11: [-35.0, 61.18, 0.0]}
+    data = {
+        0: [-40.0, 55.0, 0.0],
+        1: [-35.0, 55.0, 0.0],
+        2: [-30.0, 55.0, 0.0],
+        4: [-35.0, 60.0, 0.0],
+        6: [-37.5, 57.5, 0.0],
+        7: [-32.5, 57.5, 0.0],
+        8: [-40.0, 53.82, 0.0],
+        10: [-30.0, 53.82, 0.0],
+        11: [-35.0, 61.18, 0.0]}
     # key_index = {key: index for index, key in enumerate(data)}
 
     # nodes = data.values()
