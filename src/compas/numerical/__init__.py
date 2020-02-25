@@ -15,7 +15,6 @@ Solvers
     devo_numpy
     dr
     dr_numpy
-    drx_numpy
     fd_numpy
     ga
     moga
@@ -103,7 +102,7 @@ from .topop import *  # noqa: F401 F403
 from .pca import *  # noqa: F401 F403
 from .ga import *  # noqa: F401 F403
 from .fd import *  # noqa: F401 F403
-from .drx import *  # noqa: F401 F403
+# from .drx import *  # noqa: F401 F403
 from .dr import *  # noqa: F401 F403
 from .devo import *  # noqa: F401 F403
 
