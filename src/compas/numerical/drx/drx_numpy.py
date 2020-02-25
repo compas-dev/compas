@@ -222,9 +222,6 @@ def _beam_data(structure):
         EIx = EIy = array([0.], dtype=float64)
         beams = 0
 
-    print(EIx)
-    print(EIy)
-
     return inds, indi, indf, EIx, EIy, beams
 
 
@@ -285,7 +282,8 @@ def _create_arrays(structure):
         B[i, :] = attr.get('B', [1, 1, 1])
         P[i, :] = attr.get('P', [0, 0, 0])
         X[i, :] = [attr[j] for j in 'xyz']
-    print(P)
+
+    print(X)
 
     # Edges
     m = structure.number_of_edges()
@@ -300,23 +298,25 @@ def _create_arrays(structure):
     uv_i = structure.uv_index()
     for ui, vi in structure.edges():
         i = uv_i[(ui, vi)]
-        E[i] = structure.edge_attribute(key=(ui, vi), name='E')
-        A[i] = structure.edge_attribute(key=(ui, vi), name='A')
-        if structure.edge_attribute(key=(ui, vi), name='l0'):
-            l0[i] = structure.edge_attribute(key=(ui, vi), name='l0')
+        E[i] = structure.edge_attribute((ui, vi), 'E')
+        A[i] = structure.edge_attribute((ui, vi), 'A')
+        if structure.edge_attribute((ui, vi), 'l0'):
+            l0[i] = structure.edge_attribute((ui, vi), 'l0')
         else:
             l0[i] = structure.edge_length(ui, vi)
-        if structure.edge_attribute(key=(ui, vi), name='s0'):
-            s0[i] = structure.edge_attribute(key=(ui, vi), name='s0')
+        if structure.edge_attribute((ui, vi), 's0'):
+            s0[i] = structure.edge_attribute((ui, vi), 's0')
         else:
             s0[i] = 0
         u[i] = k_i[ui]
         v[i] = k_i[vi]
-        ct = structure.edge_attribute(key=(ui, vi), name='ct')
+        ct = structure.edge_attribute((ui, vi), 'ct')
         if ct == 'c':
             ind_c.append(i)
         elif ct == 't':
             ind_t.append(i)
+    print(ind_c)
+    print(ind_t)
     f0 = s0 * A
     k0 = E * A / l0
     q0 = f0 / l0
