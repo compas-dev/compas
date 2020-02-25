@@ -13,10 +13,8 @@ import itertools
 import json
 import math
 import os
+import re
 import struct
-from collections import defaultdict
-from array import array
-from collections import defaultdict
 
 from compas.geometry import identity_matrix
 from compas.geometry import matrix_determinant
@@ -75,68 +73,141 @@ MODE_BY_VERTEX_COUNT = {
     1: 0,
 }
 
+VERTEX_COUNT_BY_MODE = {
+    0: 1,
+    1: 2,
+    4: 3,
+    None: 3,
+}
+
 DEFAULT_ROOT_NAME = 'root'
 
 
-class Primitive(object):
+def get_matrix_from_col_major_list(matrix_as_list):
+    return [[matrix_as_list[i + j * 4] for j in range(4)] for i in range(4)]
+
+
+def inhomogeneous_transformation(matrix, vector):
+    return project_vector(multiply_matrices([embed_vector(vector)], transpose_matrix(matrix))[0])
+
+
+def embed_vector(vector):
+    return vector + [1.0]
+
+
+def project_vector(vector):
+    return vector[:3]
+
+
+class SamplerData(object):
+    def __init__(self, input_, output, interpolation='LINEAR', extras=None):
+        self.input = input_
+        self.output = output
+        self.interpolation = interpolation
+        self.extras = extras
+
+
+class AnimationData(object):
+    def __init__(self, channels, samplers, name=None, extras=None):
+        self.channels = channels
+        self.samplers = samplers
+        self.name = name
+        self.extras = extras
+
+
+class SkinData(object):
+    def __init__(self, joints, inverse_bind_matrices=None, skeleton=None, name=None, extras=None):
+        self.joints = joints
+        self.inverse_bind_matrices = inverse_bind_matrices
+        self.skeleton = skeleton
+        self.name = name
+        self.extras = extras
+
+
+class ImageData(object):
+    def __init__(self, image_data=None, uri=None, mime_type=None, media_type = None, name=None, extras=None):
+        self.uri = uri
+        self.mime_type = mime_type
+        self.media_type = media_type
+        self.name = name
+        self.extras = extras
+
+        self.data = image_data
+
+
+class PrimitiveData(object):
     def __init__(self, attributes, indices, material, mode, targets, extras):
-        self.attributes = attributes  # dict of position, normal, tangent, etc
-        self.indices = indices  # defines faces
-        self.material = material  # int referencing something in the json
-        self.mode = mode  # how to group the indices
-        self.targets = targets  # morph targets
-        self.extras = extras  # other stuff
+        self.attributes = attributes or {}
+        self.indices = indices
+        self.material = material
+        self.mode = mode
+        self.targets = targets
+        self.extras = extras
 
 
-class MeshData(object):
-    """Object containing COMPAS consumable data for creating a mesh.
-
-    Attributes
-    ----------
-    vertices : list
-        List of the xyz-coordinates of the vertices of the mesh.
-    faces : list of tuples
-        List of the faces of the mesh represented by tuples of vertices referenced by index.
-    mesh_name : str
-        Name of the mesh, if any.
-    vertex_data : list
-        List of dictionaries containing vertex data, eg textures, if any.
-    extras : object
-        Application-specific data.
-    """
-    def __init__(self, faces=None, vertex_data=None, mesh_name=None, extras=None):
-        self._faces = None
-
-        self.vertices = []
-        self.faces = faces or []
+class MeshData(object):  # expose this
+    def __init__(self, mesh_name, weights, primitive_data_list, extras):
         self.mesh_name = mesh_name
-        self.vertex_data = vertex_data or []
+        self.weights = weights
+        self.primitive_data_list = primitive_data_list
         self.extras = extras
 
     @property
     def vertices(self):
-        return [vertex['POSITION'] for vertex in self.vertex_data]
+        if not self.weights:
+            return list(itertools.chain(*[primitive.attributes['POSITION'] for primitive in self.primitive_data_list]))
 
-    @vertices.setter
-    def vertices(self, value):
-        self.validate_vertices(value)
-        self.vertex_data = [{'POSITION': position} for position in value]
+        vertices = []
+        for primitive_data in self.primitive_data_list:
+            position_target_data = [target['POSITION'] for target in primitive_data.targets]
+            apply_morph_targets = self.get_morph_function(self.weights)
+            vertices += list(map(apply_morph_targets, primitive_data.attributes['POSITION'], *position_target_data))
+        return vertices
 
-    def validate_vertices(self, vertices):
-        for vertex in vertices:
-            if len(vertex) != 3:
-                raise Exception('Invalid mesh.  Vertices are expected to be points in 3-space.')
+    def get_morph_function(self, weights):
+        # Returns a function which computes for a fixed list w of scalar weights the linear combination
+        #                               vertex + sum_i(w[i] * targets[i])
+        # where vertex and targets[i] are vectors.
+
+        def apply_weight(weight, target_coordinate):
+            return weight * target_coordinate
+
+        def weighted_sum(vertex_coordinate, *targets_coordinate):
+            return vertex_coordinate + math.fsum(map(apply_weight, weights, targets_coordinate))
+
+        def apply_morph_target(vertex, *targets):
+            return tuple(map(weighted_sum, vertex, *targets)) + ((vertex[-1],) if len(vertex) == 4 else ())
+
+        return apply_morph_target
 
     @property
     def faces(self):
-        return self._faces
+        faces = []
+        shift = 0
+        for primitive_data in self.primitive_data_list:
+            shifted_indices = self.shift_indices(primitive_data.indices, shift)
+            group_size = VERTEX_COUNT_BY_MODE[primitive_data.mode]
+            grouped_indices = self.group_indices(shifted_indices, group_size)
+            faces.extend(grouped_indices)
+            shift += len(primitive_data.attributes['POSITION'])
+        return faces
 
-    @faces.setter
-    def faces(self, value):
-        self.validate_faces(value)
-        self._faces = value
+    def shift_indices(self, indices, shift):
+        return [index + shift for index in indices]
 
-    def validate_faces(self, faces):
+    def group_indices(self, indices, group_size):
+        it = [iter(indices)] * group_size
+        return list(zip(*it))
+
+    @classmethod
+    def get_mode(cls, faces):
+        vertex_count = len(faces[0])
+        if vertex_count in MODE_BY_VERTEX_COUNT:
+            return MODE_BY_VERTEX_COUNT[vertex_count]
+        raise Exception('Meshes must be composed of triangles, lines or points.')
+
+    @classmethod
+    def validate_faces(cls, faces):
         if not faces:
             return
         if len(faces[0]) > 3:
@@ -147,12 +218,38 @@ class MeshData(object):
                 raise NotImplementedError('Invalid mesh. Expected mesh composed of points, lines xor triangles.')
 
     @classmethod
+    def validate_vertices(cls, vertices):
+        if len(vertices) > 4294967295:
+            raise Exception('Invalid mesh.  Too many vertices.')
+        positions = list(vertices.values()) if isinstance(vertices, dict) else vertices
+        for position in positions:
+            if len(position) != 3:
+                raise Exception('Invalid mesh.  Vertices are expected to be points in 3-space.')
+
+    @classmethod
+    def from_vertices_and_faces(cls, vertices, faces, mesh_name=None, extras=None):
+        cls.validate_faces(faces)
+        cls.validate_vertices(vertices)
+        mode = cls.get_mode(faces)
+        if isinstance(vertices, dict):
+            index_by_key = {}
+            positions = []
+            for key, position in vertices.items():
+                positions.append(position)
+                index_by_key[key] = len(positions) - 1
+            face_list = [index_by_key[key] for key in itertools.chain(faces)]
+        else:
+            positions = vertices
+            face_list = list(itertools.chain(faces))
+
+        primitive = PrimitiveData({'POSITION': positions}, face_list, None, mode, None, None)
+
+        return cls(mesh_name, None, [primitive], extras)
+
+    @classmethod
     def from_mesh(cls, mesh):
         vertices, faces = mesh.to_vertices_and_faces()
-        mesh_data = cls()
-        mesh_data.vertices = vertices
-        mesh_data.faces = faces
-        return mesh_data
+        return cls.from_vertices_and_faces(vertices, faces)
 
 
 class GLTFScene(object):
@@ -178,14 +275,37 @@ class GLTFScene(object):
 
     def get_default_root_node(self):
         root_node = GLTFNode()
-
         root_node.name = DEFAULT_ROOT_NAME
         root_node.position = [0, 0, 0]
         root_node.transform = identity_matrix(4)
         root_node.matrix = identity_matrix(4)
         root_node.children = []
-
         return root_node
+
+    def update_node_transforms_and_positions(self):
+        queue = [DEFAULT_ROOT_NAME]
+        while queue:
+            cur_key = queue.pop(0)
+            cur = self.nodes[cur_key]
+            for child_key in cur.children:
+                child = self.nodes[child_key]
+                child.transform = multiply_matrices(
+                    cur.transform,
+                    child.matrix or child.get_matrix_from_trs()
+                )
+                child.position = inhomogeneous_transformation(child.transform, self.nodes[DEFAULT_ROOT_NAME].position)
+                queue.append(child_key)
+
+    def is_tree(self):
+        visited = {node_key: False for node_key in nodes}
+        queue = [DEFAULT_ROOT_NAME]
+        while queue:
+            cur = queue.pop(0)
+            if visited[cur]:
+                raise Exception('Scene {} is not a tree.'.format(self.name))
+            visited[cur] = True
+            queue.extend(nodes[cur].children)
+        return True
 
 
 class GLTFNode(object):
@@ -220,17 +340,16 @@ class GLTFNode(object):
         self.name = None
         self.children = []
         self._matrix = None
+        self._translation = None
+        self._rotation = None
+        self._scale = None
         self.mesh_index = None
         self.weights = None
 
         self.position = None
         self.transform = None
         self._mesh_data = None
-        self.node_key = None  # should i depend on this attribute never changing?
-        # i think this will solve my skins et al woes, but do i trust the user not to fuck with this?
-        # prefix with an underscore and hope for the best?
-        # i need to be careful as a developer not to use this outside of contexts
-        # where the damn thing was loaded from a file, seems hairy
+        self.node_key = None  # think this over
 
         self.camera = None
         self.skin = None
@@ -248,28 +367,91 @@ class GLTFNode(object):
         self._mesh_data = value
 
     @property
+    def translation(self):
+        return self._translation
+
+    @translation.setter
+    def translation(self, value):
+        if value is None:
+            self._translation = value
+            return
+        if self._matrix:
+            raise Exception('Cannot set translation when matrix is set.')
+        if not isinstance(value, list) or len(value) != 3:
+            raise Exception('Invalid translation. Translations are expected to be of the form [x, y, z].')
+        self._translation = value
+
+    @property
+    def rotation(self):
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, value):
+        if value is None:
+            self._rotation = value
+            return
+        if self._matrix:
+            raise Exception('Cannot set rotation when matrix is set.')
+        if not isinstance(value, list) or len(value) != 4 or sum([q**2 for q in value]) != 1:
+            raise Exception('Invalid rotation.  Rotations are expected to be given as '
+                            'unit quaternions of the form [q1, q2, q3, q4]')
+        self._rotation = value
+
+    @property
+    def scale(self):
+        return self._scale
+
+    @scale.setter
+    def scale(self, value):
+        if value is None:
+            self._scale = value
+            return
+        if self._matrix:
+            raise Exception('Cannot set scale when matrix is set.')
+        if not isinstance(value, list) or len(value) != 3:
+            raise Exception('Invalid scale.  Scales are expected to be of the form [s1, s2, s3]')
+        self._scale = value
+
+    @property
     def matrix(self):
+        if not self.translation and not self.rotation and not self.scale and not self._matrix:
+            return identity_matrix(4)
         return self._matrix
 
     @matrix.setter
     def matrix(self, value):
-        if not isinstance(value, list) or not value or not isinstance(value[0], list) or not value[0]:
-            raise Exception('Invalid matrix.')
+        if value is None:
+            self._matrix = value
+            return
+        if self.translation or self.rotation or self.scale:
+            raise Exception('Cannot set matrix when translation, rotation or scale is set.')
+        if not isinstance(value, list) or not value or not value[0] or not isinstance(value[0], list):
+            raise Exception('Invalid matrix. A list of lists is expected.')
         if len(value) != 4 or len(value[0]) != 4:
-            raise Exception('Invalid matrix.')
-        if matrix_determinant(value) == 0:
-            raise Exception('Invalid matrix. Expecting a matrix of the form TRS, '
-                            'where T is a translation, R is a rotation and S is a scaling.')
+            raise Exception('Invalid matrix. A 4x4 matrix is expected.')
         if value[3] != [0, 0, 0, 1]:
-            raise Exception('Invalid matrix. Expecting a matrix of the form TRS, '
-                            'where T is a translation, R is a rotation and S is a scaling.')
+            raise Exception('Invalid matrix.  A matrix without shear or skew is expected.  It must be of '
+                            'the form TRS, where T is a translation, R is a rotation and S is a scaling.')
         self._matrix = value
+
+    def get_matrix_from_trs(self):
+        matrix = identity_matrix(4)
+        if self.translation:
+            translation = matrix_from_translation(self.translation)
+            matrix = multiply_matrices(matrix, translation)
+        if self.rotation:
+            rotation = matrix_from_quaternion(self.rotation)
+            matrix = multiply_matrices(matrix, rotation)
+        if self.scale:
+            scale = matrix_from_scale_factors(self.scale)
+            matrix = multiply_matrices(matrix, scale)
+        return matrix
 
 
 class GLTF(object):
     """Read files in glTF format.
     Caution: Cameras, materials and skins have limited support, and their data may be lost or corrupted.
-    Animations, extensions and most other application specific data are completely unsupported,
+    Extensions and most other application specific data are completely unsupported,
     and their data will be lost upon import.
     See Also
     --------
@@ -281,6 +463,7 @@ class GLTF(object):
         self._scenes = []
         self.default_scene_index = None
         self.extras = None
+        # in the Exporter I don't want to call the reader
         self.ancillaries = {}
 
         self._is_parsed = False
@@ -297,13 +480,14 @@ class GLTF(object):
         self.extras = self._parser.extras
         self.ancillaries.update({
             attr: self._reader.json.get(attr)
-            for attr in ['cameras', 'materials', 'skins', 'images', 'textures', 'samplers']
+            for attr in ['cameras', 'materials', 'textures', 'samplers']
             if self._reader.json.get(attr)
         })
-        # haven't added yet images, textures, samplers
-
-        self.ancillaries['image_data'] = self._reader.image_data
-        self.ancillaries['skin_data'] = self._reader.skin_data
+        self.ancillaries.update({
+            'images': self._reader.image_data,
+            'skins': self._reader.skin_data,
+            'animations': self._reader.animation_data,
+        })
 
     @property
     def reader(self):
@@ -319,24 +503,29 @@ class GLTF(object):
 
     @property
     def scenes(self):
-        if not self._is_parsed:
-            self._is_parsed = True
         return self._scenes
 
-    def export(self):
-        GLTFExporter(self.filepath, self.scenes, self.default_scene_index, self.extras, self.ancillaries)
-        # export to already established filepath
-        # must choose gtlf, gtlf-embedded, glb
-        # for the first, will write bin to same filepath gtlf -> bin
+    @scenes.setter
+    def scenes(self, value):
+        if not self._is_parsed:
+            self._is_parsed = True
+        self._scenes = value
+
+    def export(self, embed_data=False):
+        GLTFExporter(self.filepath, self.scenes, embed_data, self.default_scene_index, self.extras, self.ancillaries)
 
 
 class GLTFExporter(object):
     """
     """
 
-    def __init__(self, filepath, scenes, default_scene_index=0, extras=None, ancillaries=None):
-        self.filepath = filepath
-        self.bin_filepath = self.get_bin_filepath()  # this is inflexible, maybe want multiple .bins
+    def __init__(self, filepath, scenes, embed_data, default_scene_index=0, extras=None, ancillaries=None):
+        self.gltf_filepath = filepath
+        self.dirname = None
+        self.filename = None
+        self.ext = None
+
+        self.embed_data = embed_data
         self.scenes = scenes
         self.default_scene_index = default_scene_index
         self.extras = extras
@@ -346,33 +535,157 @@ class GLTFExporter(object):
         self._node_key_index_dict = {}
         self._buffer = b''  # should i make a buffer class? and this could be a list of those...
 
+        self.set_path_attributes()
         self.export()
 
     def export(self):
-        self.validate_scenes()  # or should this be wrapped up in the creation of the dict?
+        self.validate_scenes()
         self._gltf_dict = self.get_generic_gltf_dict()
-        self.append_scenes()
-        if self.ancillaries.get('cameras') and self.is_jsonable(self.ancillaries['cameras'], 'cameras list'):
-            for index, camera in enumerate(self.ancillaries['cameras']):
-                if not camera.get('type'):
-                    raise Exception('Invalid camera at index {}.  Expecting "type" attribute.'.format(index))
-            self._gltf_dict['cameras'] = self.ancillaries['cameras']  # trim unused cameras?, but then would have to reindex...
-        if self.ancillaries.get('materials') and self.is_jsonable(self.ancillaries['materials'], 'materials list'):
-            self._gltf_dict['materials'] = self.ancillaries['materials']
-        if self.ancillaries.get('skins') and self.is_jsonable(self.ancillaries['skins'], 'skins list'):
-            for index, skin in enumerate(self.ancillaries['skins']):
-                if not skin.get('joints'):
-                    raise Exception('Invalid skin at index {}.  Expecting "joints" attribute.'.format(index))
-                skin['joints'] = [
-                    self._node_key_index_dict.get(item)
-                    for item in skin['joints']
-                    if self._node_key_index_dict.get(item)
-                ]  # this smells buggy.
-                # gots to write some data here
-            self._gltf_dict['skins'] = self.ancillaries['skins']  # beware the bufferView index, must be changed
+        self.add_scenes()
+        self.add_ancillaries()
+        self.add_buffer()
 
-        with open(self.filepath, 'w') as f:
-            json.dump(self._gltf_dict, f)
+        gltf_json = json.dumps(self._gltf_dict)
+
+        # how does ironpython deal with writing these things???
+        if self.ext == '.gltf':
+            with open(self.gltf_filepath, 'w') as f:
+                f.write(gltf_json)
+                # write newline?
+            if not self.embed_data and len(self._buffer) > 0:
+                with open(self.get_bin_path(), 'wb') as f:
+                    f.write(self._buffer)
+
+        if self.ext == '.glb':
+            with open(self.gltf_filepath, 'wb') as f:
+                gltf_data = gltf_json.encode()
+
+                length_gltf = len(gltf_data)
+                spaces_gltf = (4 - (length_gltf & 3)) & 3
+                length_gltf += spaces_gltf
+
+                length_bin = len(self._buffer)
+                zeros_bin = (4 - (length_bin & 3)) & 3
+                length_bin += zeros_bin
+
+                length = 12 + 8 + length_gltf
+                if length_bin > 0:
+                    length += 8 + length_bin
+
+                f.write('glTF'.encode('ascii'))  # little endian because 1 byte per character
+                f.write(struct.pack('<I', 2))
+                f.write(struct.pack('<I', length))
+
+                f.write(struct.pack('<I', length_gltf))
+                f.write('JSON'.encode('ascii'))
+                f.write(gltf_data)
+                for i in range(0, spaces_gltf):
+                    f.write(' '.encode())
+
+                if length_bin > 0:
+                    f.write(struct.pack('<I', length_bin))
+                    f.write('BIN\0'.encode())
+                    f.write(self._buffer)
+                    for i in range(0, zeros_bin):
+                        f.write('\0'.encode())
+
+    def add_buffer(self):
+        buffer = {'byteLength': len(self._buffer)}
+        if self.embed_data:
+            buffer['uri'] = 'data:application/octet-stream,base64;' + base64.b64encode(self._buffer).decode('ascii')
+        elif self.ext == '.gltf':
+            buffer['uri'] = self.get_bin_filename()
+        self._gltf_dict['buffers'] = [buffer]
+
+    def add_ancillaries(self):
+        for attr in ['cameras', 'materials', 'textures', 'samplers']:
+            if not self.ancillaries.get(attr):
+                continue
+            if self.is_jsonable(self.ancillaries[attr], '{} list'.format(attr)):
+                if attr == 'cameras':
+                    self.validate_cameras()
+                self._gltf_dict[attr] = self.ancillaries[attr]
+
+        images_list = []
+        for image_data in self.ancillaries['images']:
+            image_dict = {}
+            if image_data.name:
+                image_dict['name'] = image_data.name
+            if image_data.extras:
+                image_dict['extras'] = image_data.extras
+
+            if image_data.mime_type:
+                image_dict['mimeType'] = image_data.mime_type
+            if image_data.uri:
+                image_dict['uri'] = image_data.uri
+
+            if image_data.data and self.embed_data:
+                image_dict['uri'] = ('data:' +
+                                     (image_data.media_type if image_data.media_type else '') +
+                                     ';base64,' +
+                                     base64.b64encode(image_data.data))
+
+            if image_data.data and not self.embed_data:
+                image_dict['bufferView'] = self.get_buffer_view(image_data.data)
+
+            images_list.append(image_dict)
+        if images_list:
+            self._gltf_dict['images'] = images_list
+
+        skins_list = []
+        for skin_data in self.ancillaries['skins']:
+            skin_dict = {'joints': [
+                self._node_key_index_dict.get(item)
+                for item in skin_data.joints
+                if self._node_key_index_dict.get(item)
+            ]}
+            if skin_data.skeleton:
+                skin_dict['skeleton'] = skin_data.skeleton
+            if skin_data.name:
+                skin_dict['name'] = skin_data.name
+            if skin_data.extras:
+                skin_dict['extras'] = skin_data.extras
+            if skin_data.inverse_bind_matrices:
+                skin_dict['inverseBindMatrices'] = self.get_accessor(skin_data.inverse_bind_matrices, COMPONENT_TYPE_FLOAT, TYPE_MAT4)
+
+            skins_list.append(skin_dict)
+        if skins_list:
+            self._gltf_dict['skins'] = skins_list
+
+        animations_list = []
+        for animation_data in self.ancillaries['animations']:
+            animation_dict = {'channels': animation_data.channels}
+            samplers = []
+            for sampler_data in animation_data.samplers:
+                input_accessor = self.get_accessor(sampler_data.input, COMPONENT_TYPE_FLOAT, TYPE_SCALAR, include_bounds=True)
+                type_ = TYPE_VEC3
+                if isinstance(sampler_data.output[0], int):
+                    type_ = TYPE_SCALAR
+                elif len(sampler_data.output[0]) == 4:
+                    type_ = TYPE_VEC4
+                output_accessor = self.get_accessor(sampler_data.output, COMPONENT_TYPE_FLOAT, type_)
+                sampler_dict = {
+                    'input': input_accessor,
+                    'output': output_accessor,
+                }
+                if sampler_data.interpolation:
+                    sampler_dict['interpolation'] = sampler_data.interpolation
+                if sampler_data.extras:
+                    sampler_dict['extras'] = sampler_data.extras
+                samplers.append(sampler_dict)
+            animation_dict['samplers'] = samplers
+            if animation_data.name:
+                animation_dict['name'] = animation_data.name
+            if animation_data.extras:
+                animation_dict['extras'] = animation_data.extras
+            animations_list.append(animation_dict)
+        if animations_list:
+            self._gltf_dict['animations'] = animations_list
+
+    def validate_cameras(self):
+        for index, camera in enumerate(self.ancillaries['cameras']):
+            if not camera.get('type'):
+                raise Exception('Invalid camera at index {}.  Expecting "type" attribute.'.format(index))
 
     def is_jsonable(self, obj, obj_name):
         try:
@@ -382,7 +695,6 @@ class GLTFExporter(object):
         return True
 
     def validate_scenes(self):
-        # i think much of this validation should actually be happening as the object is created and manipulated
         if self.default_scene_index is not None and not (
             isinstance(self.default_scene_index, int) and 0 <= self.default_scene_index < len(self.scenes)
         ):
@@ -393,54 +705,30 @@ class GLTFExporter(object):
         for index, scene in enumerate(self.scenes):
             nodes = scene.nodes
             if not nodes.get(DEFAULT_ROOT_NAME):
-                raise Exception('Cannot find root node for scene at index {}.'.format(index))
+                raise Exception('Cannot find root node for scene at index {}.  '
+                                'Root node is distinguished by having {} as the node_key'.format(index, DEFAULT_ROOT_NAME))
 
             for node_key in nodes.keys():
                 if node_key == DEFAULT_ROOT_NAME:
                     continue
                 if node_key in node_keys:
                     raise Exception('Node keys (except roots) must be unique across scenes.')
-                node_keys.add(node_key)
+                node_keys.add(node_key)  # or i could uniqueify them here....
 
-            visited = {node_key: False for node_key in nodes}
-            queue = [DEFAULT_ROOT_NAME]
-            while queue:
-                cur = queue.pop(0)
-                if visited[cur]:
-                    raise Exception('Scene at index {} is not a tree.'.format(index))
-                visited[cur] = True
-                queue.extend(nodes[cur].children)
-
-            for node in nodes:
-                # what is it i want to do here?
-                # transform, matrix and location are tightly linked and should be checked as one walks through the tree
-                pass
+            scene.is_tree()
 
     def get_generic_gltf_dict(self):
-        asset_dict = {
-            'version': '2.0'
-        }
-        if self.extras is not None:
+        asset_dict = {'version': '2.0'}
+        if self.extras:
             asset_dict['extras'] = self.extras
-        return {
-            'asset': asset_dict
-        }
+        return {'asset': asset_dict}
 
-    def append_scenes(self):
+    def add_scenes(self):
         if not self.scenes:
             return
         nodes = []
         scenes = []
         for gltf_scene in self.scenes:
-            scene_dict = {}
-            if gltf_scene.nodes[DEFAULT_ROOT_NAME].children:
-                scene_dict['nodes'] = gltf_scene.children
-            if gltf_scene.name:
-                scene_dict['name'] = gltf_scene.name
-            if gltf_scene.extras:
-                scene_dict['extras'] = gltf_scene.extras
-            scenes.append(scene_dict)
-
             descendents = {node_key: node for node_key, node in gltf_scene.nodes.items() if node_key != DEFAULT_ROOT_NAME}
             self._node_key_index_dict.update({node_key: index + len(nodes) for index, node_key in enumerate(descendents)})
             nodes += [None] * len(descendents)
@@ -451,18 +739,36 @@ class GLTFExporter(object):
                     node_dict['name'] = node.name
                 if node.children:
                     node_dict['children'] = [self._node_key_index_dict[key] for key in node.children]
-                if node.matrix:
+                if node.matrix and node.matrix != identity_matrix(4):
                     node_dict['matrix'] = self.matrix_to_col_major_order(node.matrix)
+                else:
+                    if node.translation:
+                        node_dict['translation'] = node.translation
+                    if node.rotation:
+                        node_dict['rotation'] = node.rotation
+                    if node.scale:
+                        node_dict['scale'] = node.scale
                 if node.mesh_data:
                     node_dict['mesh'] = self.process_mesh_data(node.mesh_data)
-                if node.camera:
+                if node.camera is not None:
+                    # validate that camera exists?
                     node_dict['camera'] = node.camera
-                if node.skin:
+                if node.skin is not None:
+                    # validate that skin exists?
                     node_dict['skin'] = node.skin
                 if node.extras:
                     node_dict['extras'] = node.extras
 
                 nodes[self._node_key_index_dict[node_key]] = node_dict
+
+            scene_dict = {}
+            if gltf_scene.nodes[DEFAULT_ROOT_NAME].children:
+                scene_dict['nodes'] = [self._node_key_index_dict[key] for key in gltf_scene.nodes[DEFAULT_ROOT_NAME].children]
+            if gltf_scene.name:
+                scene_dict['name'] = gltf_scene.name
+            if gltf_scene.extras:
+                scene_dict['extras'] = gltf_scene.extras
+            scenes.append(scene_dict)
 
         self._gltf_dict['scenes'] = scenes
         self._gltf_dict['nodes'] = nodes
@@ -474,31 +780,47 @@ class GLTFExporter(object):
         mesh_dict = {}
         if mesh_data.mesh_name:
             mesh_dict['name'] = mesh_data.mesh_name
+        if mesh_data.weights:
+            mesh_dict['weights'] = mesh_data.weights
         if mesh_data.extras and self.is_jsonable(mesh_data.extras, 'mesh extras object'):
             mesh_dict['extras'] = mesh_data.extras
-        mode = self.get_mode(mesh_data.faces)
 
-        attributes = {}
-        breaks = {0}
-        for attr_data in mesh_data.additional_attributes.values():  # wrong
-            def compare_neighbors(i):
-                return isinstance(attr_data[i - 1], type(attr_data[i]))
+        primitives = []
+        for primitive_data in mesh_data.primitive_data_list:
+            primitive = {'indices': self.get_accessor(primitive_data.indices, COMPONENT_TYPE_UNSIGNED_INT, TYPE_SCALAR)}  # indices are wrapped? or no?
+            if primitive_data.material is not None:
+                # validate that material exists
+                primitive['material'] = primitive_data.material
+            if primitive_data.mode is not None:
+                primitive['mode'] = primitive_data.mode
+            if primitive_data.extras:
+                primitive['extras'] = primitive_data.extras
+            attributes = {}
+            for attr in primitive_data.attributes:
+                component_type = COMPONENT_TYPE_UNSIGNED_INT if attr.startswith('JOINT') else COMPONENT_TYPE_FLOAT
+                type_ = TYPE_VEC3
+                if len(primitive_data.attributes[attr][0]) == 4:
+                    type_ = TYPE_VEC4
+                if len(primitive_data.attributes[attr][0]) == 2:
+                    type_ = TYPE_VEC2
+                attributes[attr] = self.get_accessor(primitive_data.attributes[attr], component_type, type_, True)
+            if attributes:
+                primitive['attributes'] = attributes
 
-            breaks |= set(filter(compare_neighbors, range(1, len(attr_data))))
+            targets = {}
+            for attr in primitive_data.targets:
+                component_type = COMPONENT_TYPE_FLOAT
+                type_ = TYPE_VEC3
+                targets[attr] = self.get_accessor(primitive_data.attributes[attr], component_type, type_, True)
+            if targets:
+                primitive['targets'] = targets
 
-        breaks = list(breaks).sort()
+            primitives.append(primitive)
 
-        indices = self.get_indices(mesh_data.faces)
-        primitives = [self.get_primitive_dict(attributes, indices, mode)]
         mesh_dict['primitives'] = primitives
 
         self._gltf_dict.setdefault('meshes', []).append(mesh_dict)
         return len(self._gltf_dict['meshes']) - 1
-
-    def get_indices(self, faces):
-        data = [(item,) for item in itertools.chain(*faces)]
-        accessor_index = self.get_accessor(data, COMPONENT_TYPE_UNSIGNED_INT, TYPE_SCALAR)
-        return accessor_index
 
     def get_accessor(self, data, component_type, type_, include_bounds=False):
         count = len(data)
@@ -517,12 +839,14 @@ class GLTFExporter(object):
         component_len = struct.calcsize(fmt)
 
         size = count * component_len
-        size += (4 - size % 4) % 4  # ensure the bytes_ length is divisible by 4,  is this right, or should it be ==0%12 when vec3(float)?
+        size += (4 - size % 4) % 4  # ensure bytes_ length is divisible by 4
 
         bytes_ = bytearray(size)
 
         for i, datum in enumerate(data):
-            struct.pack_into(fmt, bytes_, i * component_len, *datum)
+            if isinstance(datum, int) or isinstance(datum, float):  # should i just wrap (or leave wrapped) the scalars?  if type_ == TYPE_SCALAR?
+                datum = (datum, )  # this is horrible
+            struct.pack_into(fmt, bytes_, (i * component_len), *datum)
 
         buffer_view_index = self.get_buffer_view(bytes_)
         accessor_dict = {
@@ -532,8 +856,13 @@ class GLTFExporter(object):
             'type': type_,
         }
         if include_bounds:
-            minimum = tuple(map(min, zip(*data)))
-            maximum = tuple(map(min, zip(*data)))
+            try:
+                _ = [e for e in data[0]]
+                minimum = tuple(map(min, zip(*data)))
+                maximum = tuple(map(max, zip(*data)))
+            except TypeError:
+                minimum = (min(data),)
+                maximum = (max(data),)
             accessor_dict['min'] = minimum
             accessor_dict['max'] = maximum
 
@@ -545,7 +874,7 @@ class GLTFExporter(object):
         byte_offset = self.update_buffer(bytes_)
         buffer_view_dict = {
             'buffer': 0,
-            'bufferLength': len(bytes_),
+            'byteLength': len(bytes_),
             'byteOffset': byte_offset,
         }
 
@@ -554,41 +883,28 @@ class GLTFExporter(object):
         return len(self._gltf_dict['bufferViews']) - 1
 
     def update_buffer(self, bytes_):
-        if not self._gltf_dict.get('buffers'):
-            buffer = {
-                'uri': self.bin_filepath,
-                'byteLength': 0
-            }
-            buffers = [buffer]
-            self._gltf_dict['buffers'] = buffers
-        byte_offset = self._gltf_dict['buffers'][0]['byteLength']  # len(self._buffer) ? what is more compatible with glb creation?
-        self._gltf_dict['buffers'][0]['byteLength'] += len(bytes_)
+        byte_offset = len(self._buffer)
         self._buffer += bytes_
         return byte_offset
 
-    def get_bin_filepath(self):
-        base = os.path.splitext(self.filepath)[0]
-        return base + '.bin'
+    def get_bin_path(self):
+        return os.path.join(self.dirname, self.filename + '.bin')
+        return self.dirname +  '.bin'
 
-    def get_mode(self, faces):
-        vertex_count = len(faces[0])
-        if vertex_count in MODE_BY_VERTEX_COUNT:
-            return MODE_BY_VERTEX_COUNT[vertex_count]
-        raise Exception('Meshes must be composed of triangles, lines or points.')
+    def get_bin_filename(self):
+        return self.filename + '.bin'
 
-    def get_primitive_dict(self, attributes, indices, mode):
-        primitive_dict = {
-            'attributes': attributes,
-            'indices': indices,
-        }
-        if mode:
-            primitive_dict['mode'] = mode
-        return primitive_dict
+    def set_path_attributes(self):
+        dirname, basename = os.path.split(self.gltf_filepath)
+        root, ext = os.path.splitext(basename)
+        self.dirname = dirname
+        self.filename = root
+        self.ext = ext.lower()
 
 
 class GLTFReader(object):
     """"Read the contents of a *glTF* or *glb* version 2 file using the json library.
-    Uses ideas from Khronos Group glTF-Blender-IO.
+    Uses ideas from Khronos Group's glTF-Blender-IO.
     Caution: Extensions are not supported and their data may be lost.
     Caution: Data for materials, textures, animations, images, skins and cameras are saved,
         but are not processed or used.
@@ -615,8 +931,9 @@ class GLTFReader(object):
 
         self.json = None
         self.data = []
-        self.image_data = []  # image-image_data having corresponding indices, will have to amend indices
-        self.skin_data = []  # same
+        self.image_data = []
+        self.skin_data = []
+        self.animation_data = []
 
         self._content = None
         self._glb_buffer = None
@@ -633,7 +950,6 @@ class GLTFReader(object):
         if not is_glb:
             content = self._content.tobytes().decode('utf-8')
             self.json = json.loads(content)
-
         else:
             self.load_from_glb()
 
@@ -648,14 +964,47 @@ class GLTFReader(object):
                 self.data.append(accessor_data)
 
             for image in self.json.get('images', []):
-                image_data = self.get_attr_data(image, 'bufferView')
+                image_data = ImageData()
+                image_data.name = image.get('name')
+                image_data.mime_type = image.get('mimeType')
+                image_data.extras = image.get('extras')
+
+                if 'bufferView' in image:
+                    image_data.data = self.get_attr_data(image, 'bufferView')
+                if 'uri' in image:
+                    if self.is_data_uri(image['uri']):
+                        image_data.data = base64.b64decode(self.get_data_uri_data(image['uri']))
+                        image_data.media_type = self.get_media_type(image['uri'])
+                    else:
+                        image_data.uri = image['uri']
                 self.image_data.append(image_data)
 
+            # do these belong here? i think yes for utility
             for skin in self.json.get('skins', []):
-                skin_data = self.get_attr_data(skin, 'inverseBindMatrices')
+                skin_data = SkinData(skin['joints'])
+                if 'inverseBindMatrices' in skin:
+                    skin_data.inverse_bind_matrices = self.data[skin['inverseBindMatrices']]
+                skin_data.skeleton = skin.get('skeleton')
+                skin_data.name = skin.get('name')
+                skin_data.extras = skin.get('extras')
                 self.skin_data.append(skin_data)
 
+            for animation in self.json.get('animations', []):
+                sampler_data_list = []
+                for sampler in animation['samplers']:
+                    input_ = self.data[sampler['input']]
+                    output = self.data[sampler['output']]
+                    sampler_data = SamplerData(input_, output, sampler.get('interpolation'), sampler.get('extras'))
+                    sampler_data_list.append(sampler_data)
+                animation_data = AnimationData(animation.get('channels'), sampler_data_list, animation.get('name'), animation.get('extras'))
+                self.animation_data.append(animation_data)
+
         self.release_buffers()
+
+    def get_media_type(self, string):
+        pattern = 'data:([\w/]+)(?<![;,])'
+        result = re.search(pattern, string)
+        return result.group(1)
 
     def load_from_glb(self):
         header = struct.unpack_from('<4sII', self._content)
@@ -914,6 +1263,9 @@ class GLTFParser(object):
 
             gltf_node.name = node.get('name')
             gltf_node.children = node.get('children', [])
+            gltf_node.translation = node.get('translation')
+            gltf_node.rotation = node.get('rotation')
+            gltf_node.scale = node.get('scale')
             gltf_node.matrix = self.get_matrix(node)
             gltf_node.weights = node.get('weights')
             gltf_node.mesh_index = node.get('mesh')
@@ -921,8 +1273,11 @@ class GLTFParser(object):
             gltf_node.skin = node.get('skin')
             gltf_node.extras = node.get('extras')
 
-            gltf_node.transform = multiply_matrices(scene_obj.nodes[parent_key].transform, gltf_node.matrix)
-            gltf_node.position = self.inhomogeneous_transformation(gltf_node.transform, scene_obj.nodes[DEFAULT_ROOT_NAME].position)
+            gltf_node.transform = multiply_matrices(
+                scene_obj.nodes[parent_key].transform,
+                gltf_node.matrix or gltf_node.get_matrix_from_trs()
+            )
+            gltf_node.position = inhomogeneous_transformation(gltf_node.transform, scene_obj.nodes[DEFAULT_ROOT_NAME].position)
             gltf_node.node_key = key
 
             if gltf_node.mesh_index is not None:
@@ -934,109 +1289,48 @@ class GLTFParser(object):
 
     def get_matrix(self, node):
         if 'matrix' in node:
-            return self.get_matrix_from_col_major_list(node['matrix'])
-        return self.get_matrix_from_trs(node)
-
-    def get_matrix_from_col_major_list(self, matrix_as_list):
-        return [[matrix_as_list[i + j * 4] for j in range(4)] for i in range(4)]
-
-    def get_matrix_from_trs(self, node):
-        matrix = identity_matrix(4)
-        if 'translation' in node:
-            translation = matrix_from_translation(node['translation'])
-            matrix = multiply_matrices(matrix, translation)
-        if 'rotation' in node:
-            rotation = matrix_from_quaternion(node['rotation'])
-            matrix = multiply_matrices(matrix, rotation)
-        if 'scale' in node:
-            scale = matrix_from_scale_factors(node['scale'])
-            matrix = multiply_matrices(matrix, scale)
-        return matrix
-
-    def inhomogeneous_transformation(self, matrix, vector):
-        return self.project_vector(multiply_matrices([self.embed_vector(vector)], transpose_matrix(matrix))[0])
-
-    def embed_vector(self, vector):
-        return vector + [1.0]
-
-    def project_vector(self, vector):
-        return vector[:3]
+            return get_matrix_from_col_major_list(node['matrix'])
+        return None
 
     def get_mesh_data(self, gltf_node):
-        vertex_data = []
-        faces = []
         mesh = self.reader.json['meshes'][gltf_node.mesh_index]
         mesh_name = mesh.get('name')
         extras = mesh.get('extras')
         primitives = mesh['primitives']
-        shift = 0
         weights = self.get_weights(mesh, gltf_node)
-        for primitive_index, primitive in enumerate(primitives):
+
+        primitive_data_list = []
+
+        for primitive in primitives:
             if 'POSITION' not in primitive['attributes']:
                 continue
 
-            attributes = defaultdict(list)
-            face_side_count = self.get_face_side_count(primitive)
-
+            attributes = {}
             for attr, attr_accessor_index in primitive['attributes'].items():
-                primitive_attr = self.reader.data[attr_accessor_index]
-                if weights and primitive.get('targets') and attr in primitive['targets'][0]:
-                    targets = primitive['targets']
-                    target_data = [self.reader.data[target[attr]] for target in targets]
-
-                    apply_morph_targets = self.get_morph_function(weights)
-
-                    primitive_attr = list(map(apply_morph_targets, primitive_attr, *target_data))
-
-                attributes[attr] += primitive_attr
+                attributes[attr] = self.reader.data[attr_accessor_index]
 
             indices = self.get_indices(primitive, len(attributes['POSITION']))
-            shifted_indices = self.shift_indices(indices, shift)
-            primitive_faces = self.group_indices(shifted_indices, face_side_count)
-            faces.extend(primitive_faces)
 
-            shift += len(attributes['POSITION'])
-            for data in attributes.values():
-                if len(data) != shift:
-                    data += [None] * (shift - len(data))
+            target_list = []
+            for target in primitive.get('targets', []):
+                target_data = {attr: self.reader.data[accessor_index] for attr, accessor_index in target.items()}
+                target_list.append(target_data)
 
-            for i in range(len(attributes['POSITION'])):
-                vertex = {'PRIMITIVE': primitive_index}
-                for attr, data in attributes.items():
-                    vertex[attr] = data[i]
-                vertex_data.append(vertex)
-        return MeshData(faces, vertex_data, mesh_name, extras)
+            primitive_data_list.append(PrimitiveData(
+                attributes,
+                indices,
+                primitive.get('material'),
+                primitive.get('mode'),
+                target_list,
+                primitive.get('extras'),
+            ))
+
+        return MeshData(mesh_name, weights, primitive_data_list, extras)
 
     def get_weights(self, mesh, gltf_node):
         weights = mesh.get('weights', None)
         weights = gltf_node.weights or weights
         return weights
-
-    def get_morph_function(self, weights):
-        # Returns a function which computes for a fixed list w of scalar weights the linear combination
-        #                               vertex + sum_i(w[i] * targets[i])
-        # where vertex and targets[i] are vectors.
-
-        def apply_weight(weight, target_coordinate):
-            return weight * target_coordinate
-
-        def weighted_sum(vertex_coordinate, *targets_coordinate):
-            return vertex_coordinate + math.fsum(map(apply_weight, weights, targets_coordinate))
-
-        def apply_morph_target(vertex, *targets):
-            return tuple(map(weighted_sum, vertex, *targets)) + ((vertex[-1],) if len(vertex) == 4 else ())
-            # revisit this, necessary because morph targets can apply to normal vectors which are 4d, but you shouldn't mess with the w component
-
-        return apply_morph_target
-
-    def get_face_side_count(self, primitive):
-        if 'mode' not in primitive or primitive['mode'] == 4:
-            return 3
-        if primitive['mode'] == 1:
-            return 2
-        if primitive['mode'] == 0:
-            return 1
-        raise NotImplementedError
 
     def get_indices(self, primitive, num_vertices):
         if 'indices' not in primitive:
@@ -1046,13 +1340,6 @@ class GLTFParser(object):
 
     def get_generic_indices(self, num_vertices):
         return list(range(num_vertices))
-
-    def shift_indices(self, indices, shift):
-        return [index + shift for index in indices]
-
-    def group_indices(self, indices, group_size):
-        it = [iter(indices)] * group_size
-        return list(zip(*it))
 
 
 # ==============================================================================
@@ -1070,23 +1357,35 @@ if __name__ == '__main__':
     # source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxInterleaved/glTF-Binary/BoxInterleaved.glb'
     # filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'BoxInterleaved.glb')
 
-    source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/GearboxAssy/glTF/GearboxAssy.gltf'
-    filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'GearboxAssy.gltf')
+    # source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/GearboxAssy/glTF/GearboxAssy.gltf'
+    # filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'GearboxAssy.gltf')
 
     # source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SimpleMorph/glTF-Embedded/SimpleMorph.gltf'
     # filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'SimpleMorph.gltf')
 
-    download_file_from_remote(source_glb, filepath_glb, overwrite=False)
+    # source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Embedded/Duck.gltf'
+    # filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'Duck.gltf')
+
+    # source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/MorphPrimitivesTest/glTF-Binary/MorphPrimitivesTest.glb'
+    # filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'MorphPrimitivesTest.glb')
+
+    source_glb = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SimpleMeshes/glTF/SimpleMeshes.gltf'
+    source_bin = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SimpleMeshes/glTF/triangle.bin'
+    filepath_glb = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'SimpleMeshes.gltf')
+    filepath_bin = os.path.join(compas.APPDATA, 'data', 'gltfs', 'khronos', 'triangle.bin')
+
+    download_file_from_remote(source_bin, filepath_bin, overwrite=False)
 
     gltf = GLTF(filepath_glb)
+    gltf.read()
 
-    default_scene_index = gltf.parser.default_scene_index or 0
-    nodes = gltf.parser.scenes[default_scene_index].nodes
+    default_scene_index = gltf.default_scene_index or 0
+    nodes = gltf.scenes[default_scene_index].nodes
 
     vrts = {name: gltf_node.position for name, gltf_node in nodes.items()}
     edges = [
         (node.node_key, child)
-        for node in gltf.parser.scenes[default_scene_index].nodes.values()
+        for node in gltf.scenes[default_scene_index].nodes.values()
         for child in node.children
     ]
 
