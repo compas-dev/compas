@@ -7,7 +7,7 @@ compas_hpc
 
 This package provides GPU-accelerated and compiled versions of many geometry,
 numerical and topological functions and algorithms. The package is built around
-`Numba`_, `PyCUDA`_ and `PyOpenCL`_.
+`Numba`_. Future versions will support `PyCUDA`_ and `PyOpenCL`_.
 
 .. _Numba: https://numba.pydata.org/
 .. _PyCuda: https://mathema.tician.de/software/pycuda/
@@ -31,6 +31,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ._core import *  # noqa: F401 F403
+# from ._core import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]
