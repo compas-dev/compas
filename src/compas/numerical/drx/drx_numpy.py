@@ -277,13 +277,11 @@ def _create_arrays(structure):
     S = zeros((n, 3), dtype=float64)
     V = zeros((n, 3), dtype=float64)
     k_i = structure.key_index()
-    for key, attr in structure.nodes(True):
+    for key in structure.nodes():
         i = k_i[key]
-        B[i, :] = attr.get('B', [1, 1, 1])
-        P[i, :] = attr.get('P', [0, 0, 0])
-        X[i, :] = [attr[j] for j in 'xyz']
-
-    print(X)
+        B[i, :] = structure.node_attribute(key, 'B')
+        P[i, :] = structure.node_attribute(key, 'P')
+        X[i, :] = structure.node_attributes(key, 'xyz')
 
     # Edges
     m = structure.number_of_edges()
@@ -296,32 +294,30 @@ def _create_arrays(structure):
     ind_c = []
     ind_t = []
     uv_i = structure.uv_index()
-    for ui, vi in structure.edges():
-        i = uv_i[(ui, vi)]
-        E[i] = structure.edge_attribute((ui, vi), 'E')
-        A[i] = structure.edge_attribute((ui, vi), 'A')
-        if structure.edge_attribute((ui, vi), 'l0'):
-            l0[i] = structure.edge_attribute((ui, vi), 'l0')
+    for key in structure.edges():
+        i = uv_i[key]
+        E[i] = structure.edge_attribute(key, 'E')
+        A[i] = structure.edge_attribute(key, 'A')
+        if structure.edge_attribute(key, 'l0'):
+            l0[i] = structure.edge_attribute(key, 'l0')
         else:
-            l0[i] = structure.edge_length(ui, vi)
-        if structure.edge_attribute((ui, vi), 's0'):
-            s0[i] = structure.edge_attribute((ui, vi), 's0')
+            l0[i] = structure.edge_length(*key)
+        if structure.edge_attribute(key, 's0'):
+            s0[i] = structure.edge_attribute(key, 's0')
         else:
             s0[i] = 0
-        u[i] = k_i[ui]
-        v[i] = k_i[vi]
-        ct = structure.edge_attribute((ui, vi), 'ct')
+        u[i] = k_i[key[0]]
+        v[i] = k_i[key[1]]
+        ct = structure.edge_attribute(key, 'ct')
         if ct == 'c':
             ind_c.append(i)
         elif ct == 't':
             ind_t.append(i)
-    print(ind_c)
-    print(ind_t)
     f0 = s0 * A
     k0 = E * A / l0
     q0 = f0 / l0
 
-    # Arrays
+    # Other
     C = connectivity_matrix([[k_i[i], k_i[j]] for i, j in structure.edges()], 'csr')
     Ct = C.transpose()
     M = mass_matrix(Ct=Ct, ks=k0, q=q0, c=1, tiled=False)
