@@ -86,8 +86,8 @@ def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=F
     if update:
         k_i = structure.key_index()
         for key in structure.nodes():
-            x, y, z = X[k_i[key], :]
-            structure.node_attributes(key, 'xyz', [x, y, z])
+            i = k_i[key]
+            structure.node_attributes(key, 'xyz', X[i])
         uv_i = structure.uv_index()
         for uv in structure.edges():
             i = uv_i[uv]
@@ -222,6 +222,8 @@ def _beam_data(structure):
         EIx = EIy = array([0.], dtype=float64)
         beams = 0
 
+    print(indf)
+
     return inds, indi, indf, EIx, EIy, beams
 
 
@@ -316,6 +318,8 @@ def _create_arrays(structure):
     f0 = s0 * A
     k0 = E * A / l0
     q0 = f0 / l0
+
+    print(k0)
 
     # Other
     C = connectivity_matrix([[k_i[i], k_i[j]] for i, j in structure.edges()], 'csr')
