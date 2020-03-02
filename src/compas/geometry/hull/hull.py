@@ -54,6 +54,7 @@ def convex_hull(points):
         import random
 
         from compas.geometry import distance_point_point
+        from compas.geometry import convex_hull
         from compas.datastructures import Mesh
         from compas_rhino import MeshArtist
 
