@@ -41,7 +41,7 @@ def convex_hull(points):
     .. [1] GitHubGist. *Convex Hull*.
            Available at: https://gist.github.com/anonymous/5184ba0bcab21d3dd19781efd3aae543
     .. [2] Thomas Diewald. *Convex Hull 3D - Quickhull Algorithm*.
-           Available ah: https://web.archive.org/web/20180106161310/http://thomasdiewald.com/blog/?p=1888
+           Available at: https://web.archive.org/web/20180106161310/http://thomasdiewald.com/blog/?p=1888
 
     Examples
     --------
