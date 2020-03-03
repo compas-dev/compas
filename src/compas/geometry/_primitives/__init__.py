@@ -13,6 +13,7 @@ from .frame import Frame  # noqa: F401
 from .polyline import Polyline  # noqa: F401
 from .polygon import Polygon  # noqa: F401
 from .circle import Circle  # noqa: F401
+from .ellipse import Ellipse  # noqa: F401
 from .curve import Bezier  # noqa: F401
 
 

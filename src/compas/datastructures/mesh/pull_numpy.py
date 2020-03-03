@@ -19,11 +19,11 @@ from compas.geometry import is_point_in_triangle
 
 
 __all__ = [
-    'mesh_pull_points_numpy'
+    'trimesh_pull_points_numpy'
 ]
 
 
-def mesh_pull_points_numpy(mesh, points):
+def trimesh_pull_points_numpy(mesh, points):
     # preprocess
     i_k = mesh.index_key()
     fk_fi = {fkey: index for index, fkey in enumerate(mesh.faces())}
@@ -231,16 +231,18 @@ if __name__ == "__main__":
 
     mesh_quads_to_triangles(target)
 
-    pulled = mesh_pull_points_numpy(target, points)
+    pulled = trimesh_pull_points_numpy(target, points)
 
-    plotter = MeshPlotter(mesh)
-    plotter.draw_vertices(text={key: "{:.1f}".format(attr['z']) for key, attr in mesh.vertices(True)})
+    plotter = MeshPlotter(mesh, figsize=(8, 5))
+    plotter.defaults['vertex.fontsize'] = 6
+    plotter.draw_vertices(text={key: "{:.1f}".format(attr['z']) for key, attr in mesh.vertices(True)}, radius=0.08)
     plotter.draw_faces()
     plotter.draw_points([{
         'pos': [x, y, z],
         'text': "{:.1f}".format(z),
-        'radius': 0.1,
-        'facecolor': '#00ff00'
+        'radius': 0.08,
+        'facecolor': '#00ff00',
+        'fontsize': 6
     } for x, y, z in pulled])
 
     plotter.show()

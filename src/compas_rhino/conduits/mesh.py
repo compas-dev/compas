@@ -110,29 +110,30 @@ class MeshConduit(Conduit):
             self._color = color
 
     def DrawForeground(self, e):
+        draw_line = e.Display.DrawLine
+        draw_lines = e.Display.DrawLines
+
         if self.color:
-            draw = e.Display.DrawLine
             if self.thickness:
                 for i, start, end in self.lines:
-                    draw(start, end, self.color[i], self.thickness[i])
+                    draw_line(start, end, self.color[i], self.thickness[i])
             else:
                 for i, start, end in self.lines:
-                    draw(start, end, self.color[i], self._default_thickness)
+                    draw_line(start, end, self.color[i], self._default_thickness)
 
         elif self.thickness:
-            draw = e.Display.DrawLine
             if self.color:
                 for i, start, end in self.lines:
-                    draw(start, end, self.color[i], self.thickness[i])
+                    draw_line(start, end, self.color[i], self.thickness[i])
             else:
                 for i, start, end in self.lines:
-                    draw(start, end, self._default_color, self.thickness[i])
+                    draw_line(start, end, self._default_color, self.thickness[i])
 
         else:
             lines = List[Line](self.mesh.number_of_edges())
             for i, start, end in self.lines:
                 lines.Add(Line(start, end))
-            e.Display.DrawLines(lines, self._default_color, self._default_thickness)
+            draw_lines(lines, self._default_color, self._default_thickness)
 
 
 # ==============================================================================

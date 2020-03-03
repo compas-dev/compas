@@ -29,6 +29,13 @@ class Artist(object):
         artist = artist_type(item, **kwargs)
         return artist
 
+    def viewbox(self):
+        xlim = self.plotter.axes.get_xlim()
+        ylim = self.plotter.axes.get_ylim()
+        xmin, xmax = xlim
+        ymin, ymax = ylim
+        return [[xmin, ymin], [xmax, ymin], [xmax, ymax], [xmin, ymax]]
+
     def draw(self):
         raise NotImplementedError
 
