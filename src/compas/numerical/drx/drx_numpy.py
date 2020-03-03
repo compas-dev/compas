@@ -85,13 +85,13 @@ def drx_numpy(structure, factor=1.0, tol=0.1, steps=10000, refresh=100, update=F
     # Update
     if update:
         k_i = structure.key_index()
-        for key in structure.vertices():
-            x, y, z = X[k_i[key], :]
-            structure.set_vertex_attributes(key, 'xyz', [x, y, z])
+        for key in structure.nodes():
+            i = k_i[key]
+            structure.node_attributes(key, 'xyz', X[i])
         uv_i = structure.uv_index()
         for uv in structure.edges():
             i = uv_i[uv]
-            structure.set_edge_attribute(uv, 'f', float(f[i]))
+            structure.edge_attribute(uv, 'f', float(f[i]))
 
     return X, f, l, structure
 
@@ -209,8 +209,8 @@ def _beam_data(structure):
             inds.extend(nodes[:-2])
             indi.extend(nodes[1:-1])
             indf.extend(nodes[2:])
-            EIx.extend([structure.vertex[i]['EIx'] for i in nodes[1:-1]])
-            EIy.extend([structure.vertex[i]['EIy'] for i in nodes[1:-1]])
+            EIx.extend([structure.node_attribute(i, 'EIx') for i in nodes[1:-1]])
+            EIy.extend([structure.node_attribute(i, 'EIy') for i in nodes[1:-1]])
         inds = array(inds, dtype=int32)
         indi = array(indi, dtype=int32)
         indf = array(indf, dtype=int32)
@@ -221,6 +221,8 @@ def _beam_data(structure):
         inds = indi = indf = array([0], dtype=int32)
         EIx = EIy = array([0.], dtype=float64)
         beams = 0
+
+    print(indf)
 
     return inds, indi, indf, EIx, EIy, beams
 
@@ -270,18 +272,18 @@ def _beam_shear(S, X, inds, indi, indf, EIx, EIy):
 
 def _create_arrays(structure):
     # Vertices
-    n = structure.number_of_vertices()
+    n = structure.number_of_nodes()
     B = zeros((n, 3), dtype=float64)
     P = zeros((n, 3), dtype=float64)
     X = zeros((n, 3), dtype=float64)
     S = zeros((n, 3), dtype=float64)
     V = zeros((n, 3), dtype=float64)
     k_i = structure.key_index()
-    for key, vertex in structure.vertex.items():
+    for key in structure.nodes():
         i = k_i[key]
-        B[i, :] = vertex.get('B', [1, 1, 1])
-        P[i, :] = vertex.get('P', [0, 0, 0])
-        X[i, :] = [vertex[j] for j in 'xyz']
+        B[i, :] = structure.node_attribute(key, 'B')
+        P[i, :] = structure.node_attribute(key, 'P')
+        X[i, :] = structure.node_attributes(key, 'xyz')
 
     # Edges
     m = structure.number_of_edges()
@@ -294,21 +296,21 @@ def _create_arrays(structure):
     ind_c = []
     ind_t = []
     uv_i = structure.uv_index()
-    for ui, vi in structure.edges():
-        i = uv_i[(ui, vi)]
-        E[i] = structure.get_edge_attribute(key=(ui, vi), name='E')
-        A[i] = structure.get_edge_attribute(key=(ui, vi), name='A')
-        if structure.get_edge_attribute(key=(ui, vi), name='l0'):
-            l0[i] = structure.get_edge_attribute(key=(ui, vi), name='l0')
+    for key in structure.edges():
+        i = uv_i[key]
+        E[i] = structure.edge_attribute(key, 'E')
+        A[i] = structure.edge_attribute(key, 'A')
+        if structure.edge_attribute(key, 'l0'):
+            l0[i] = structure.edge_attribute(key, 'l0')
         else:
-            l0[i] = structure.edge_length(ui, vi)
-        if structure.get_edge_attribute(key=(ui, vi), name='s0'):
-            s0[i] = structure.get_edge_attribute(key=(ui, vi), name='s0')
+            l0[i] = structure.edge_length(*key)
+        if structure.edge_attribute(key, 's0'):
+            s0[i] = structure.edge_attribute(key, 's0')
         else:
             s0[i] = 0
-        u[i] = k_i[ui]
-        v[i] = k_i[vi]
-        ct = structure.get_edge_attribute(key=(ui, vi), name='ct')
+        u[i] = k_i[key[0]]
+        v[i] = k_i[key[1]]
+        ct = structure.edge_attribute(key, 'ct')
         if ct == 'c':
             ind_c.append(i)
         elif ct == 't':
@@ -317,7 +319,9 @@ def _create_arrays(structure):
     k0 = E * A / l0
     q0 = f0 / l0
 
-    # Arrays
+    print(k0)
+
+    # Other
     C = connectivity_matrix([[k_i[i], k_i[j]] for i, j in structure.edges()], 'csr')
     Ct = C.transpose()
     M = mass_matrix(Ct=Ct, ks=k0, q=q0, c=1, tiled=False)

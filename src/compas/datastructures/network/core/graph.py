@@ -1008,7 +1008,7 @@ class Graph(Datastructure):
         """
         if key not in self.node:
             raise KeyError(key)
-        if values:
+        if values is not None:
             # use it as a setter
             for name, value in zip(names, values):
                 self.node[key][name] = value

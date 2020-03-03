@@ -40,11 +40,6 @@ PyCUDA
     :toctree: generated/
     :nosignatures:
 
-    diag_cuda
-    transpose_cuda
-    dot_cuda
-    eye_cuda
-
 PyOpenCL
 --------
 
@@ -52,17 +47,13 @@ PyOpenCL
     :toctree: generated/
     :nosignatures:
 
-    diag_cl
-    transpose_cl
-    eye_cl
-
 """
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .linalg_cl import *  # noqa: F401 F403
-from .linalg_cuda import *  # noqa: F401 F403
+# from .linalg_cl import *  # noqa: F401 F403
+# from .linalg_cuda import *  # noqa: F401 F403
 from .linalg_numba import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

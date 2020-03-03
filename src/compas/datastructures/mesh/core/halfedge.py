@@ -1224,7 +1224,7 @@ class HalfEdge(Datastructure):
         """
         if key not in self.vertex:
             raise KeyError(key)
-        if values:
+        if values is not None:
             # use it as a setter
             for name, value in zip(names, values):
                 self.vertex[key][name] = value
@@ -1305,7 +1305,7 @@ class HalfEdge(Datastructure):
         """
         if not keys:
             keys = self.vertices()
-        if values:
+        if values is not None:
             for key in keys:
                 self.vertex_attributes(key, names, values)
             return
@@ -1420,7 +1420,7 @@ class HalfEdge(Datastructure):
         """
         if key not in self.face:
             raise KeyError(key)
-        if values:
+        if values is not None:
             # use it as a setter
             for name, value in zip(names, values):
                 if key not in self.facedata:
@@ -1498,7 +1498,7 @@ class HalfEdge(Datastructure):
         """
         if not keys:
             keys = self.faces()
-        if values:
+        if values is not None:
             for key in keys:
                 self.face_attributes(key, names, values)
             return
@@ -1626,7 +1626,7 @@ class HalfEdge(Datastructure):
         u, v = key
         if u not in self.halfedge or v not in self.halfedge[u]:
             raise KeyError(key)
-        if values:
+        if values is not None:
             # use it as a setter
             for name, value in zip(names, values):
                 self.edge_attribute(key, name, value)
@@ -1704,7 +1704,7 @@ class HalfEdge(Datastructure):
         """
         if not keys:
             keys = self.edges()
-        if values:
+        if values is not None:
             for key in keys:
                 self.edge_attributes(key, names, values)
             return

@@ -416,6 +416,27 @@ def intersection_line_triangle(line, triangle, tol=1e-6):
             return x
 
 
+# def intersection_line_circle_xy(line, circle):
+#     """Compute the intersection of a line and a circle in the XY plane.
+
+#     Parameters
+#     ----------
+
+#     """
+#     x0, y0 = circle[0][:2]
+#     r = circle[1]
+#     x1, y1 = line[0][:2]
+#     x2, y2 = line[1][:2]
+#     a = y1 - y2
+#     b = x2 - x1
+#     c = x1 * y2 - x2 * y1
+#     D = sqrt(r**2 - c**2 / (a**2 + b**2))
+#     m = sqrt(D**2 / (a**2 + b**2))
+#     p1 = [x0 + b * m, y0 - a * m, 0]
+#     p2 = [x0 - b * m, y0 + a * m, 0]
+#     return p1, p2
+
+
 def intersection_plane_plane(plane1, plane2, tol=1e-6):
     """Computes the intersection of two planes
 

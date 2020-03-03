@@ -9,6 +9,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added algorithm for pulling points onto mesh.
+- Added base ellipse class to geometry primitives.
+- Added circle artist to plotters.
+- Added mesh artist to plotters.
+- Added ellipse artist to plotters.
+
+### Changed
+
+### Removed
+
+
+## [0.15.3] 2020-02-26
+
+### Added
+
+- Added optional class parameter to `RhinoMesh.to_compas`.
+- Added max int key to serialisation of graph.
+
+### Changed
+
+- Changed name of base mesh implementation to `BaseMesh`.
+- Changed name of base network implementation to `BaseNetwork`.
+- Fixed bug in face finding function.
+
+### Removed
+
+- Removed optional requirements from setup file.
+- Removed parameters from default polyhedron constructor.
+
+
+## [0.15.2] 2020-02-20
+
+### Added
+
 ### Changed
 
 ### Removed

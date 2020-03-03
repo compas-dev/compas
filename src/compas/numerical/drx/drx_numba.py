@@ -16,14 +16,21 @@ from numba import f8
 from numba import i4
 from numba import i8
 
+from numba import jit
+
+try:
+    from numba import prange
+except ImportError:
+    prange = range
+
 from compas.numerical import uvw_lengths
 
 from compas.numerical.drx.drx_numpy import _beam_data
 from compas.numerical.drx.drx_numpy import _create_arrays
 
-from compas_hpc.geometry import cross_vectors_numba as cross
-from compas_hpc.geometry import dot_vectors_numba as dot
-from compas_hpc.geometry import length_vector_numba as length
+# from compas_hpc.geometry import cross_vectors_numba as cross
+# from compas_hpc.geometry import dot_vectors_numba as dot
+# from compas_hpc.geometry import length_vector_numba as length
 
 from time import time
 
@@ -31,6 +38,64 @@ from time import time
 __all__ = [
     'drx_numba',
 ]
+
+
+@jit(f8(f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
+def length(a):
+    """Calculate the length of a vector.
+
+    Parameters
+    ----------
+    a : array
+        XYZ components of the vector.
+
+    Returns
+    -------
+    float: The length of the vector.
+    """
+    return sqrt(a[0]**2 + a[1]**2 + a[2]**2)
+
+
+@jit(f8(f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
+def dot(u, v):
+    """Compute the dot product of two vectors.
+
+    Parameters
+    ----------
+    u : array
+        XYZ components of the first vector.
+    v : array
+        XYZ components of the second vector.
+
+    Returns
+    -------
+    float
+        u . v.
+    """
+    return u[0] * v[0] + u[1] * v[1] + u[2] * v[2]
+
+
+@jit(f8[:](f8[:], f8[:]), nogil=True, nopython=True, parallel=False, cache=True)
+def cross(u, v):
+    """Compute the cross product of two vectors.
+
+    Parameters
+    ----------
+    u : array
+        XYZ components of the first vector.
+    v : array
+        XYZ components of the second vector.
+
+    Returns
+    -------
+    array
+        u X v.
+    """
+    w = zeros(3)
+    w[0] = u[1] * v[2] - u[2] * v[1]
+    w[1] = u[2] * v[0] - u[0] * v[2]
+    w[2] = u[0] * v[1] - u[1] * v[0]
+    return w
 
 
 def _args(network, factor, summary, steps, tol):
