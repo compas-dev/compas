@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added circle artist to plotters.
 - Added mesh artist to plotters.
 - Added ellipse artist to plotters.
-- Added support for robot mimic joints.
+- Added support for robot mimicking joints.
 
 ### Changed
 
