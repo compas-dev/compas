@@ -113,7 +113,7 @@ def install(version=None, packages=None):
         # Take either the CONDA environment directory or the current Python executable's directory
         python_directory = os.environ.get('CONDA_PREFIX', None) or os.path.dirname(sys.executable)
         environment_name = os.environ.get('CONDA_DEFAULT_ENV', '')
-        conda_exe = os.environ.get('CONDA_EXE', None)
+        conda_exe = os.environ.get('CONDA_EXE', '')
 
         compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
 
@@ -125,8 +125,7 @@ def install(version=None, packages=None):
             with open(compas_bootstrapper, 'w') as f:
                 f.write('ENVIRONMENT_NAME = r"{}"\n'.format(environment_name))
                 f.write('PYTHON_DIRECTORY = r"{}"\n'.format(python_directory))
-                if conda_exe:
-                    f.write('CONDA_EXE = r"{}"\n'.format(conda_exe))
+                f.write('CONDA_EXE = r"{}"\n'.format(conda_exe))
                 f.write('INSTALLED_PACKAGES = {}'.format(repr(installed_packages)))
                 results.append(('compas_bootstrapper', 'OK'))
         except:  # noqa: E722
