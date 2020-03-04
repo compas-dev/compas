@@ -611,8 +611,12 @@ class RobotModel(object):
         transformations = {}
 
         for child_joint in link.joints:
-            if child_joint.name in joint_state.keys():
+            if child_joint.name in joint_state.keys():  # if passive/mimicking joint is in the joint_state, the transformation will be calculated according to this value
                 position = joint_state[child_joint.name]
+                transformation = parent_transformation * child_joint.calculate_transformation(position)
+            elif child_joint.mimic and child_joint.mimic.joint in joint_state.keys():
+                mimicked_joint_position = joint_state[child_joint.mimic.joint]
+                position = child_joint.mimic.calculate_position(mimicked_joint_position)
                 transformation = parent_transformation * child_joint.calculate_transformation(position)
             else:
                 transformation = parent_transformation
@@ -700,9 +704,11 @@ class RobotModel(object):
         else:
             ee_link = self.get_link_by_name(link_name)
         joint = ee_link.parent_joint
-
-        transformations = self.compute_transformations(joint_state)
-        return joint.origin.transformed(transformations[joint.name])
+        if joint:
+            transformations = self.compute_transformations(joint_state)
+            return joint.origin.transformed(transformations[joint.name])
+        else:
+            return Frame.worldXY()  # if we ask forward from base link
 
     def add_link(self, name, visual_mesh=None, visual_color=None, collision_mesh=None, **kwargs):
         """Adds a link to the robot model.
