@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Fixed bugs in `compas_rhino.artists.NetworkArtist`.
+- Add conda executable path to `compas_bootstrapper.py`.
+
 ### Removed
 
 
