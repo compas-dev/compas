@@ -35,7 +35,7 @@ To run Python scripts from within VS Code, you have several options:
 .. note::
 
     On Windows, VS Code uses PowerShell as default terminal shell, which causes problems when used with Anaconda.
-    To switch to the standard Windows shell, press ``Ctrl+Shift+P``, type ``Select Default Shell``, and chose ``Command Prompt`` instead.
+    To switch to the standard Windows shell, press ``Ctrl+Shift+P``, type ``Select Default Shell``, and choose ``Command Prompt`` instead.
 
 
 Virtual environments
