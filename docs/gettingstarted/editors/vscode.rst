@@ -26,12 +26,16 @@ linter: open the ``Command Palette`` (``Ctrl+Shift+P``) and select the
 Run scripts
 ===========
 
-To run Python scripts from within VS Code, simply open the file and press ``F5``.
-This will start the script with the debugger attached, which means you can add
-breakpoints (clicking on the gutter, next to the line numbers), inspect variables
-and step into your code for debugging.
+To run Python scripts from within VS Code, you have several options:
 
-Alternatively, use ``Ctrl+F5`` to start the script without debugger.
+* Right-click on the file, and select ``Run Python File in Terminal``.
+* Open the file and press ``F5`` to start the script with the debugger attached, which means you can add breakpoints (clicking on the gutter, next to the line numbers), inspect variables and step into your code for debugging, or...
+* Open the file and press ``Ctrl+F5`` to start the script without debugger.
+
+.. note::
+
+    On Windows, VS Code uses PowerShell as default terminal shell, which causes problems when used with Anaconda.
+    To switch to the standard Windows shell, press ``Ctrl+Shift+P``, type ``Select Default Shell``, and chose ``Command Prompt`` instead.
 
 
 Virtual environments
