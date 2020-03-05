@@ -64,6 +64,10 @@ except:  # noqa: E722
     except:  # noqa: E722
         PYTHON_DIRECTORY = None
 
+try:
+    from compas_bootstrapper import CONDA_EXE
+except:
+    CONDA_EXE = None
 
 def select_python(python_executable):
     """Selects the most likely python interpreter to run.
@@ -131,6 +135,9 @@ def prepare_environment(env=None):
         lib_bin = os.path.join(PYTHON_DIRECTORY, 'lib')
         if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
             env['PATH'] += os.pathsep + lib_bin
+
+    if CONDA_EXE:
+        env['CONDA_EXE'] = CONDA_EXE
 
     return env
 
