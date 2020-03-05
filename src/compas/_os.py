@@ -66,8 +66,9 @@ except:  # noqa: E722
 
 try:
     from compas_bootstrapper import CONDA_EXE
-except:
+except:  # noqa: E722
     CONDA_EXE = None
+
 
 def select_python(python_executable):
     """Selects the most likely python interpreter to run.
