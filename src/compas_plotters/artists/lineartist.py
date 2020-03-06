@@ -30,8 +30,11 @@ class LineArtist(Artist):
         self.color = kwargs.get('color', '#000000')
 
     def clip(self):
-        box = self.viewbox()
-        print(box)
+        # box = self.viewbox()
+        xlim, ylim = self.plotter.viewbox
+        xmin, xmax = xlim
+        ymin, ymax = ylim
+        box = [[xmin, ymin], [xmax, ymin], [xmax, ymax], [xmin, ymax]]
         return intersection_line_box_xy(self.line, box)
 
     def draw(self):
