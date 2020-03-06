@@ -18,7 +18,6 @@ class PointArtist(Artist):
         super(PointArtist, self).__init__()
         self._mpl_circle = None
         self._size = None
-
         self.point = point
         self.size = kwargs.get('size', 5)
         self.facecolor = kwargs.get('facecolor', '#ffffff')
