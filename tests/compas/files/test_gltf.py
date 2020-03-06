@@ -62,16 +62,18 @@ def test_from_gltf_edges_loaded(
     textured_gltf,
 ):
     gltf = GLTF(simple_gltf)
-    assert len(gltf.parser.scenes[0].nodes) == 3
+    gltf.read()
+    assert len(gltf.content.scenes[0].nodes) == 2
 
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)
     assert len(exporter._gltf_dict['nodes']) == 2
-    assert len(exporter._gltf_dict['meshes']) == 2
+    assert len(exporter._gltf_dict['meshes']) == 1
     assert len(exporter._buffer) == exporter._gltf_dict['buffers'][0]['byteLength']
 
     gltf = GLTF(embedded_gltf)
-    assert len(gltf.parser.scenes[0].nodes) > 1
+    gltf.read()
+    assert len(gltf.content.scenes[0].nodes) > 1
 
     exporter = gltf.exporter
     exporter.embed_data = True
@@ -82,21 +84,26 @@ def test_from_gltf_edges_loaded(
     assert 'materials' not in exporter._gltf_dict
 
     gltf = GLTF(interleaved_glb)
-    assert len(gltf.parser.scenes[0].nodes) > 1
-    assert len(gltf.parser.scenes[0].nodes[1].mesh_data.vertices) == 24
+    gltf.read()
+    assert len(gltf.content.nodes) == 2
+    assert len(gltf.content.meshes[0].vertices) == 24
 
     gltf = GLTF(indexless_gltf)
-    assert len(gltf.parser.scenes[0].nodes[0].mesh_data.vertices) > 0
+    gltf.read()
+    assert len(gltf.content.meshes[0].vertices) > 0
 
     gltf = GLTF(morph_gltf)
-    assert (0.5, 1.5, 0.0) in gltf.parser.scenes[0].nodes[0].mesh_data.vertices
+    gltf.read()
+    assert (0.5, 1.5, 0.0) in gltf.content.meshes[0].vertices
 
     gltf = GLTF(sparse_gltf)
-    assert (5.0, 4.0, 0.0) in gltf.parser.scenes[0].nodes[0].mesh_data.vertices
+    gltf.read()
+    # maybe change one of these to nodes[0].vertices
+    assert (5.0, 4.0, 0.0) in gltf.content.meshes[0].vertices
 
     gltf = GLTF(animated_gltf)
     gltf.read()
-    assert len(gltf.ancillaries['animations']) > 0
+    assert len(gltf.content.ancillaries['animations']) > 0
 
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)
@@ -105,7 +112,7 @@ def test_from_gltf_edges_loaded(
 
     gltf = GLTF(textured_gltf)
     gltf.read()
-    assert len(gltf.ancillaries['materials']) > 0
+    assert len(gltf.content.ancillaries['materials']) > 0
 
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)

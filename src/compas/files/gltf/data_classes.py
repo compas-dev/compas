@@ -3,10 +3,10 @@ from __future__ import division
 from __future__ import absolute_import
 
 import itertools
-import math
 
 from compas.files.gltf.constants import MODE_BY_VERTEX_COUNT
 from compas.files.gltf.constants import VERTEX_COUNT_BY_MODE
+from compas.files.gltf.helpers import get_weighted_mesh_vertices
 
 
 class SamplerData(object):
@@ -72,39 +72,19 @@ class MeshData(object):
         List of tuples referencing the indices of :attr:`compas.files.MeshData.vertices`
         representing faces of the mesh.
     """
-    def __init__(self, primitive_data_list, mesh_name=None, weights=None, extras=None):
+    def __init__(self, primitive_data_list, mesh_key, mesh_name=None, weights=None, extras=None):
         self.mesh_name = mesh_name
         self.weights = weights
         self.primitive_data_list = primitive_data_list
         self.extras = extras
 
+        self.key = mesh_key
+
     @property
     def vertices(self):
         if not self.weights:
             return list(itertools.chain(*[primitive.attributes['POSITION'] for primitive in self.primitive_data_list]))
-
-        vertices = []
-        for primitive_data in self.primitive_data_list:
-            position_target_data = [target['POSITION'] for target in primitive_data.targets]
-            apply_morph_targets = self.get_morph_function(self.weights)
-            vertices += list(map(apply_morph_targets, primitive_data.attributes['POSITION'], *position_target_data))
-        return vertices
-
-    def get_morph_function(self, weights):
-        # Returns a function which computes for a fixed list w of scalar weights the linear combination
-        #                               vertex + sum_i(w[i] * targets[i])
-        # where vertex and targets[i] are vectors.
-
-        def apply_weight(weight, target_coordinate):
-            return weight * target_coordinate
-
-        def weighted_sum(vertex_coordinate, *targets_coordinate):
-            return vertex_coordinate + math.fsum(map(apply_weight, weights, targets_coordinate))
-
-        def apply_morph_target(vertex, *targets):
-            return tuple(map(weighted_sum, vertex, *targets)) + ((vertex[-1],) if len(vertex) == 4 else ())
-
-        return apply_morph_target
+        return get_weighted_mesh_vertices(self, self.weights)
 
     @property
     def faces(self):

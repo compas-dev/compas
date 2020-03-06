@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 import os
 
+from compas.files.gltf.gltf_content import GLTFContent
 from compas.files.gltf.gltf_exporter import GLTFExporter
 from compas.files.gltf.gltf_parser import GLTFParser
 from compas.files.gltf.gltf_reader import GLTFReader
@@ -20,10 +21,7 @@ class GLTF(object):
     """
     def __init__(self, filepath=None):
         self.filepath = filepath
-        self._scenes = []
-        self.default_scene_index = None
-        self.extras = None
-        self.ancillaries = {}
+        self._content = None
 
         self._is_parsed = False
         self._reader = None
@@ -36,19 +34,7 @@ class GLTF(object):
         self._parser = GLTFParser(self._reader)
         self._is_parsed = True
 
-        self._scenes = self._parser.scenes
-        self.default_scene_index = self._parser.default_scene_index
-        self.extras = self._parser.extras
-        self.ancillaries.update({
-            attr: self._reader.json.get(attr)
-            for attr in ['cameras', 'materials', 'textures', 'samplers']
-            if self._reader.json.get(attr)
-        })
-        self.ancillaries.update({
-            'images': self._reader.image_data,
-            'skins': self._reader.skin_data,
-            'animations': self._reader.animation_data,
-        })
+        self._content = self._parser.content
 
     @property
     def reader(self):
@@ -63,23 +49,27 @@ class GLTF(object):
         return self._parser
 
     @property
-    def scenes(self):
-        return self._scenes
+    def content(self):
+        return self._content
 
-    @scenes.setter
-    def scenes(self, value):
+    @content.setter
+    def content(self, value):
+        if not isinstance(value, GLTFContent):
+            raise Exception('Object of type GLTFContent expected.')
         if not self._is_parsed:
             self._is_parsed = True
-        self._scenes = value
+        self._content = value
 
     @property
     def exporter(self):
         if not self._exporter:
-            self._exporter = GLTFExporter(self.filepath, self.scenes, self.default_scene_index, self.extras, self.ancillaries)
+            self._exporter = GLTFExporter(self.filepath, self.content)
         return self._exporter
 
     def export(self, embed_data=False):
         self.exporter.embed_data = embed_data
+        self.content.remove_orphans()  # don't know where this should be called
+        self.content.check_is_forest()
         self.exporter.export()
 
 
@@ -103,17 +93,18 @@ if __name__ == '__main__':
     gltf = GLTF(filepath_glb)
     gltf.read()
 
-    default_scene_index = gltf.default_scene_index or 0
-    nodes = gltf.scenes[default_scene_index].nodes
+    default_scene_index = gltf.content.default_scene_index or 0
+    nodes = gltf.content.scenes[default_scene_index].nodes
 
+    # change these to the new functions
     nds = {name: gltf_node.position for name, gltf_node in nodes.items()}
     edges = [
-        (node.node_key, child)
-        for node in gltf.scenes[default_scene_index].nodes.values()
+        (node.key, child)
+        for node in gltf.content.scenes[default_scene_index].nodes.values()
         for child in node.children
     ]
 
-    scene_tree = Network.from_nodes_and_edges(nds, edges)  # grumblegrumble
+    scene_tree = Network.from_nodes_and_edges(nds, edges)  # !!!
     scene_tree.plot()
 
     transformed_meshes = []

@@ -57,5 +57,3 @@ VERTEX_COUNT_BY_MODE = {
     4: 3,
     None: 3,
 }
-
-DEFAULT_ROOT_NAME = 'root'

@@ -33,17 +33,15 @@ class GLTFNode(object):
     scale : list of floats
         List of length 3 representing the scaling displacement of the node.
         Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
-    mesh_index : int
-        Index of the associated mesh within the JSON.
+    mesh_key : int
+        Key of the mesh within :attr:`compas.files.GLTF.meshes`.
     weights : list of floats
         Weights used for computing morph targets in the attached mesh.
     position : tuple
         xyz-coordinates of the node, calculated from the matrix and tree structure.
     transform : list of lists
         Matrix representing the displacement from the root node to the node.
-    mesh_data : :class:`compas.files.MeshData`
-        Contains mesh data, if any.
-    node_key : int or str
+    key : int or str
         Key of the node used in :attr:`compas.files.GLTFScene.nodes`.
     camera : int
         Index of the camera in :attr:`compas.files.GLTF.ancillaries`.
@@ -52,35 +50,25 @@ class GLTFNode(object):
     extras : object
         Application-specific data.
     """
-    def __init__(self):
-        self.name = None
+    def __init__(self, context, name=None, extras=None):
+        self.name = name
         self.children = []
         self._matrix = None
         self._translation = None
         self._rotation = None
         self._scale = None
-        self.mesh_index = None
+        self.mesh_key = None
         self.weights = None
 
         self.position = None
         self.transform = None
-        self._mesh_data = None
-        self.node_key = None
+        self.key = None
 
         self.camera = None
         self.skin = None
-        self.extras = None
+        self.extras = extras
 
-    @property
-    def mesh_data(self):
-        return self._mesh_data
-
-    @mesh_data.setter
-    def mesh_data(self, value):
-        if not value.faces or not value.vertices:
-            raise Exception('Invalid mesh at node {}.  Meshes are expected '
-                            'to have vertices and faces.'.format(self.node_key))
-        self._mesh_data = value
+        self.context = context
 
     @property
     def translation(self):
@@ -162,3 +150,21 @@ class GLTFNode(object):
             scale = matrix_from_scale_factors(self.scale)
             matrix = multiply_matrices(matrix, scale)
         return matrix
+
+    @property
+    def mesh_data(self):
+        return self.context.get_mesh_data_for_node(self)
+
+    @property
+    def vertices(self):
+        return self.context.get_node_vertices(self)
+
+    @property
+    def faces(self):
+        return self.context.get_node_faces(self)
+
+    def add_child(self, child_name=None, child_extras=None):
+        return self.context.add_child_to_node(self, child_name, child_extras)
+
+    def add_mesh(self, mesh):
+        self.context.add_mesh_to_node(self, mesh)

@@ -10,7 +10,6 @@ import struct
 from compas.files.gltf.constants import COMPONENT_TYPE_ENUM
 from compas.files.gltf.constants import COMPONENT_TYPE_FLOAT
 from compas.files.gltf.constants import COMPONENT_TYPE_UNSIGNED_INT
-from compas.files.gltf.constants import DEFAULT_ROOT_NAME
 from compas.files.gltf.constants import NUM_COMPONENTS_BY_TYPE_ENUM
 from compas.files.gltf.constants import TYPE_MAT4
 from compas.files.gltf.constants import TYPE_SCALAR
@@ -29,39 +28,32 @@ class GLTFExporter(object):
         Location where the glTF or glb is to be written. The extension of the filepath
         determines which format will be used. If there is an accompanying binary file,
         it will be written in the same directory.
-    scenes : Iterable of :class:`compas.files.GLTFScene`
-        List or other iterable of scenes to be included in the file.
-    default_scene_index : int
-        Index of the scene to be displayed on loading the glTF.  Defaults to 0.
-    extras : object
-    ancillaries : dict
-        Dictionary containing all animation, camera, and material data.
+    content : :class:`compas.files.GLTFContent`
     embed_data : bool
         When True, all mesh and other data will be embedded as data uri's in the glTF json.
         When False, the data will be written to an external binary file or chunk.
     """
 
-    def __init__(self, filepath, scenes, default_scene_index=None, extras=None, ancillaries=None, embed_data=False):
+    def __init__(self, filepath, content, embed_data=False):
         self.gltf_filepath = filepath
-        self.dirname = None
-        self.filename = None
-        self.ext = None
+        self._dirname = None
+        self._filename = None
+        self._ext = None
 
         self.embed_data = embed_data
-        self.scenes = scenes
-        self.default_scene_index = default_scene_index
-        self.extras = extras
-        self.ancillaries = ancillaries or {}
+        self._content = content
 
         self._gltf_dict = self.get_generic_gltf_dict()
-        self._node_key_index_dict = {}
+        self._mesh_index_by_key = {key: index for index, key in enumerate(self._content.meshes.keys())}
+        self._node_index_by_key = {key: index for index, key in enumerate(self._content.nodes.keys())}
         self._buffer = b''
 
         self.load()
 
     def load(self):
         self.set_path_attributes()
-        self.validate_scenes()
+        # self.validate_scenes()
+        self.add_meshes()
         self.add_nodes()
         self.add_scenes()
         self.add_ancillaries()
@@ -70,14 +62,14 @@ class GLTFExporter(object):
     def export(self):
         gltf_json = json.dumps(self._gltf_dict, indent=4)
 
-        if self.ext == '.gltf':
+        if self._ext == '.gltf':
             with open(self.gltf_filepath, 'w') as f:
                 f.write(gltf_json)
             if not self.embed_data and len(self._buffer) > 0:
                 with open(self.get_bin_path(), 'wb') as f:
                     f.write(self._buffer)
 
-        if self.ext == '.glb':
+        if self._ext == '.glb':
             with open(self.gltf_filepath, 'wb') as f:
                 gltf_data = gltf_json.encode()
 
@@ -110,20 +102,37 @@ class GLTFExporter(object):
                     for i in range(0, zeros_bin):
                         f.write('\0'.encode())
 
+    def add_meshes(self):
+        # list comprehension would be enough for later versions of python
+        mesh_list = [None] * len(self._content.meshes.values())
+        for key, mesh_data in self._content.meshes.items():
+            mesh_list[self._mesh_index_by_key[key]] = self.get_mesh_dict(mesh_data)
+        self._gltf_dict['meshes'] = mesh_list
+
+    def get_mesh_dict(self, mesh_data):
+        mesh_dict = {'primitives': self.get_primitives(mesh_data)}
+        if mesh_data.mesh_name:
+            mesh_dict['name'] = mesh_data.mesh_name
+        if mesh_data.weights:
+            mesh_dict['weights'] = mesh_data.weights
+        if mesh_data.extras and self.is_jsonable(mesh_data.extras, 'mesh extras object'):
+            mesh_dict['extras'] = mesh_data.extras
+        return mesh_dict
+
     def add_buffer(self):
         buffer = {'byteLength': len(self._buffer)}
         if self.embed_data:
             buffer['uri'] = 'data:application/octet-stream;base64,' + base64.b64encode(self._buffer).decode('ascii')
-        elif self.ext == '.gltf':
+        elif self._ext == '.gltf':
             buffer['uri'] = self.get_bin_filename()
         self._gltf_dict['buffers'] = [buffer]
 
     def add_ancillaries(self):
         for attr in ['cameras', 'materials', 'textures', 'samplers']:
-            if not self.ancillaries.get(attr):
+            if not self._content.ancillaries.get(attr):
                 continue
-            if self.is_jsonable(self.ancillaries[attr], '{} list'.format(attr)):
-                self._gltf_dict[attr] = self.ancillaries[attr]
+            if self.is_jsonable(self._content.ancillaries[attr], '{} list'.format(attr)):
+                self._gltf_dict[attr] = self._content.ancillaries[attr]
 
         images_list = self.get_images_list()
         if images_list:
@@ -138,7 +147,7 @@ class GLTFExporter(object):
             self._gltf_dict['animations'] = animations_list
 
     def get_images_list(self):
-        return [self.get_image_dict(image_data) for image_data in self.ancillaries.get('images', [])]
+        return [self.get_image_dict(image_data) for image_data in self._content.ancillaries.get('images', [])]
 
     def get_image_dict(self, image_data):
         image_dict = {}
@@ -164,13 +173,13 @@ class GLTFExporter(object):
         )
 
     def get_skins_list(self):
-        return [self.get_skin_dict(skin_data) for skin_data in self.ancillaries.get('skins', [])]
+        return [self.get_skin_dict(skin_data) for skin_data in self._content.ancillaries.get('skins', [])]
 
     def get_skin_dict(self, skin_data):
         skin_dict = {'joints': [
-            self._node_key_index_dict.get(item)
+            self._node_index_by_key.get(item)
             for item in skin_data.joints
-            if self._node_key_index_dict.get(item)
+            if self._node_index_by_key.get(item)
         ]}
         if skin_data.skeleton:
             skin_dict['skeleton'] = skin_data.skeleton
@@ -183,7 +192,7 @@ class GLTFExporter(object):
         return skin_dict
 
     def get_animations_list(self):
-        return [self.get_animation_dict(animation_data) for animation_data in self.ancillaries.get('animations', [])]
+        return [self.get_animation_dict(animation_data) for animation_data in self._content.ancillaries.get('animations', [])]
 
     def get_animation_dict(self, animation_data):
         animation_dict = {
@@ -224,47 +233,24 @@ class GLTFExporter(object):
             raise Exception('The {} is not a valid JSON object.'.format(obj_name))
         return True
 
-    def validate_scenes(self):
-        if self.default_scene_index is not None and not (
-            isinstance(self.default_scene_index, int) and 0 <= self.default_scene_index < len(self.scenes)
-        ):
-            raise Exception('Invalid default scene index.')
-
-        node_keys = set()
-
-        for index, scene in enumerate(self.scenes):
-            nodes = scene.nodes
-            if not nodes.get(DEFAULT_ROOT_NAME):
-                raise Exception('Cannot find root node for scene at index {}.  '
-                                'Root node is distinguished by having {} as the node_key'.format(index, DEFAULT_ROOT_NAME))
-
-            for node_key in nodes.keys():
-                if node_key == DEFAULT_ROOT_NAME:
-                    continue
-                if node_key in node_keys:
-                    raise Exception('Node keys (except roots) must be unique across scenes.')
-                node_keys.add(node_key)
-
-            scene.is_tree('Scene {} is not a tree.', scene.name)
-
     def get_generic_gltf_dict(self):
         asset_dict = {'version': '2.0'}
         gltf_dict = {'asset': asset_dict}
-        if self.extras:
-            gltf_dict['extras'] = self.extras
+        if self._content.extras:
+            gltf_dict['extras'] = self._content.extras
         return gltf_dict
 
     def add_scenes(self):
-        if not self.scenes:
+        if not self._content.scenes:
             return
-        if self.default_scene_index is not None:
-            self._gltf_dict['scene'] = self.default_scene_index
-        self._gltf_dict['scenes'] = [self.get_scene_dict(gltf_scene) for gltf_scene in self.scenes]
+        if self._content.default_scene_index is not None:
+            self._gltf_dict['scene'] = self._content.default_scene_index
+        self._gltf_dict['scenes'] = [self.get_scene_dict(gltf_scene) for gltf_scene in self._content.scenes]
 
     def get_scene_dict(self, gltf_scene):
         scene_dict = {}
-        if gltf_scene.nodes[DEFAULT_ROOT_NAME].children:
-            scene_dict['nodes'] = [self._node_key_index_dict[key] for key in gltf_scene.nodes[DEFAULT_ROOT_NAME].children]
+        if gltf_scene.nodes:
+            scene_dict['nodes'] = [self._node_index_by_key[key] for key in gltf_scene.nodes]
         if gltf_scene.name:
             scene_dict['name'] = gltf_scene.name
         if gltf_scene.extras:
@@ -272,22 +258,18 @@ class GLTFExporter(object):
         return scene_dict
 
     def add_nodes(self):
-        nodes = []
-        for gltf_scene in self.scenes:
-            descendents = {node_key: node for node_key, node in gltf_scene.nodes.items() if node_key != DEFAULT_ROOT_NAME}
-            self._node_key_index_dict.update({node_key: index + len(nodes) for index, node_key in enumerate(descendents)})
-            nodes += [None] * len(descendents)
-
-            for node_key, node in descendents.items():
-                nodes[self._node_key_index_dict[node_key]] = self.get_node_dict(node)
-        self._gltf_dict['nodes'] = nodes
+        # list comprehension would be enough for later versions of python
+        node_list = [None] * len(self._content.nodes.values())
+        for key, node in self._content.nodes.items():
+            node_list[self._node_index_by_key[key]] = self.get_node_dict(node)
+        self._gltf_dict['nodes'] = node_list
 
     def get_node_dict(self, node):
         node_dict = {}
         if node.name:
             node_dict['name'] = node.name
         if node.children:
-            node_dict['children'] = [self._node_key_index_dict[key] for key in node.children]
+            node_dict['children'] = [self._node_index_by_key[key] for key in node.children]
         if node.matrix and node.matrix != identity_matrix(4):
             node_dict['matrix'] = matrix_to_col_major_order(node.matrix)
         else:
@@ -297,8 +279,8 @@ class GLTFExporter(object):
                 node_dict['rotation'] = node.rotation
             if node.scale:
                 node_dict['scale'] = node.scale
-        if node.mesh_data:
-            node_dict['mesh'] = self.process_mesh_data(node.mesh_data)
+        if node.mesh_key is not None:
+            node_dict['mesh'] = self._mesh_index_by_key[node.mesh_key]
         if node.camera is not None and self.camera_exists(node.camera):
             node_dict['camera'] = node.camera
         if node.skin is not None and self.skin_exists(node.skin):
@@ -308,25 +290,13 @@ class GLTFExporter(object):
         return node_dict
 
     def camera_exists(self, index):
-        return 0 <= index < len(self.ancillaries.get('cameras', []))
+        return 0 <= index < len(self._content.ancillaries.get('cameras', []))
 
     def skin_exists(self, index):
-        return 0 <= index < len(self.ancillaries.get('skins', []))
+        return 0 <= index < len(self._content.ancillaries.get('skins', []))
 
     def material_exists(self, index):
-        return 0 <= index < len(self.ancillaries.get('materials', []))
-
-    def process_mesh_data(self, mesh_data):
-        mesh_dict = {'primitives': self.get_primitives(mesh_data)}
-        if mesh_data.mesh_name:
-            mesh_dict['name'] = mesh_data.mesh_name
-        if mesh_data.weights:
-            mesh_dict['weights'] = mesh_data.weights
-        if mesh_data.extras and self.is_jsonable(mesh_data.extras, 'mesh extras object'):
-            mesh_dict['extras'] = mesh_data.extras
-
-        self._gltf_dict.setdefault('meshes', []).append(mesh_dict)
-        return len(self._gltf_dict['meshes']) - 1
+        return 0 <= index < len(self._content.ancillaries.get('materials', []))
 
     def get_primitives(self, mesh_data):
         primitives = []
@@ -432,14 +402,14 @@ class GLTFExporter(object):
         return byte_offset
 
     def get_bin_path(self):
-        return os.path.join(self.dirname, self.filename + '.bin')
+        return os.path.join(self._dirname, self._filename + '.bin')
 
     def get_bin_filename(self):
-        return self.filename + '.bin'
+        return self._filename + '.bin'
 
     def set_path_attributes(self):
         dirname, basename = os.path.split(self.gltf_filepath)
         root, ext = os.path.splitext(basename)
-        self.dirname = dirname
-        self.filename = root
-        self.ext = ext.lower()
+        self._dirname = dirname
+        self._filename = root
+        self._ext = ext.lower()

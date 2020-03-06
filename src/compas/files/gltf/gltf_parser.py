@@ -2,14 +2,12 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
-from compas.files.gltf.constants import DEFAULT_ROOT_NAME
 from compas.files.gltf.data_classes import MeshData
 from compas.files.gltf.data_classes import PrimitiveData
+from compas.files.gltf.gltf_content import GLTFContent
 from compas.files.gltf.gltf_node import GLTFNode
 from compas.files.gltf.gltf_scene import GLTFScene
 from compas.files.gltf.helpers import get_matrix_from_col_major_list
-from compas.geometry import multiply_matrices
-from compas.geometry import transform_points
 
 
 class GLTFParser(object):
@@ -17,11 +15,11 @@ class GLTFParser(object):
 
     Parameters
     ----------
-    reader : :class:`GLTFReader`
+    reader : :class:`compas.files.GLTFReader`
 
     Attributes
     ----------
-    reader : :class:`GLTFReader`
+    reader : :class:`compas.files.GLTFReader`
     default_scene_index : int
         Index of the default scene.
     scenes : list of :class:`compas.files.GLTFScene`
@@ -31,19 +29,32 @@ class GLTFParser(object):
     def __init__(self, reader):
         self.reader = reader
         self.default_scene_index = None
-        self.scenes = []
-        self.extras = None
+        self.content = GLTFContent()
 
         self.parse()
 
+        ancillaries = {
+            attr: self.reader.json.get(attr)
+            for attr in ['cameras', 'materials', 'textures', 'samplers']
+            if self.reader.json.get(attr)
+        }
+        ancillaries.update({
+            'images': self.reader.image_data,
+            'skins': self.reader.skin_data,
+            'animations': self.reader.animation_data,
+        })
+
+        self.content.ancillaries = ancillaries
+
     def parse(self):
         self.default_scene_index = self.get_default_scene()
-        self.extras = self.get_extras()
+        self.content.extras = self.get_extras()
 
-        for scene in self.reader.json.get('scenes', []):
-            scene_obj = self.get_initial_scene(scene)
-            self.process_children('root', scene_obj)
-            self.scenes.append(scene_obj)
+        # should make dictionaries for everything
+        # then the remove orphans method would cull unused cameras, etc...
+        self.content.scenes = [self.get_scene(scene, key) for key, scene in enumerate(self.reader.json.get('scenes', []))]
+        self.content.meshes = {key: self.get_mesh_data(mesh, key) for key, mesh in enumerate(self.reader.json.get('meshes', []))}
+        self.content.nodes = {key: self.get_gltf_node(node, key) for key, node in enumerate(self.reader.json.get('nodes', []))}
 
     def get_extras(self):
         return self.reader.json.get('extras')
@@ -51,58 +62,42 @@ class GLTFParser(object):
     def get_default_scene(self):
         return self.reader.json.get('scene')
 
-    def get_initial_scene(self, scene):
-        scene_obj = GLTFScene()
+    def get_scene(self, scene, key):
+        scene_obj = GLTFScene(self.content)
         scene_obj.name = scene.get('name')
         scene_obj.extras = scene.get('extras')
-        scene_obj.nodes[DEFAULT_ROOT_NAME].children = scene.get('nodes', [])
+        scene_obj.nodes = scene.get('nodes', [])
+        scene_obj.key = key
 
         return scene_obj
 
-    def process_children(self, parent_key, scene_obj):
-        child_keys = scene_obj.nodes[parent_key].children
-        for key in child_keys:
-            gltf_node = GLTFNode()
-
-            node = self.reader.json['nodes'][key]
-
-            gltf_node.name = node.get('name')
-            gltf_node.children = node.get('children', [])
-            gltf_node.translation = node.get('translation')
-            gltf_node.rotation = node.get('rotation')
-            gltf_node.scale = node.get('scale')
-            gltf_node.matrix = self.get_matrix(node)
-            gltf_node.weights = node.get('weights')
-            gltf_node.mesh_index = node.get('mesh')
-            gltf_node.camera = node.get('camera')
-            gltf_node.skin = node.get('skin')
-            gltf_node.extras = node.get('extras')
-
-            gltf_node.transform = multiply_matrices(
-                scene_obj.nodes[parent_key].transform,
-                gltf_node.matrix or gltf_node.get_matrix_from_trs()
-            )
-            gltf_node.position = transform_points([scene_obj.nodes[DEFAULT_ROOT_NAME].position], gltf_node.transform)[0]
-            gltf_node.node_key = key
-
-            if gltf_node.mesh_index is not None:
-                gltf_node.mesh_data = self.get_mesh_data(gltf_node)
-
-            scene_obj.nodes[key] = gltf_node
-
-            self.process_children(key, scene_obj)
+    def get_gltf_node(self, node, key):
+        gltf_node = GLTFNode(self.content)
+        gltf_node.name = node.get('name')
+        gltf_node.children = node.get('children', [])
+        gltf_node.translation = node.get('translation')
+        gltf_node.rotation = node.get('rotation')
+        gltf_node.scale = node.get('scale')
+        gltf_node.matrix = self.get_matrix(node)
+        gltf_node.weights = node.get('weights')
+        gltf_node.mesh_key = node.get('mesh')
+        gltf_node.camera = node.get('camera')
+        gltf_node.skin = node.get('skin')
+        gltf_node.extras = node.get('extras')
+        gltf_node.key = key
+        return gltf_node
 
     def get_matrix(self, node):
         if 'matrix' in node:
             return get_matrix_from_col_major_list(node['matrix'])
         return None
 
-    def get_mesh_data(self, gltf_node):
-        mesh = self.reader.json['meshes'][gltf_node.mesh_index]
+    def get_mesh_data(self, mesh, key):
         mesh_name = mesh.get('name')
         extras = mesh.get('extras')
         primitives = mesh['primitives']
-        weights = self.get_weights(mesh, gltf_node)
+        weights = mesh.get('weights')
+
 
         primitive_data_list = []
 
@@ -130,12 +125,7 @@ class GLTFParser(object):
                 primitive.get('extras'),
             ))
 
-        return MeshData(primitive_data_list, mesh_name, weights, extras)
-
-    def get_weights(self, mesh, gltf_node):
-        weights = mesh.get('weights', None)
-        weights = gltf_node.weights or weights
-        return weights
+        return MeshData(primitive_data_list, key, mesh_name, weights, extras)
 
     def get_indices(self, primitive, num_vertices):
         if 'indices' not in primitive:
