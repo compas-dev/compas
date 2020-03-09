@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [0.15.4] 2020-03-05
+
+### Added
+
 - Added algorithm for pulling points onto mesh.
 - Added base ellipse class to geometry primitives.
 - Added circle artist to plotters.
@@ -16,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added ellipse artist to plotters.
 
 ### Changed
+
+- Fixed bugs in `compas_rhino.artists.NetworkArtist`.
+- Add conda executable path to `compas_bootstrapper.py`.
 
 ### Removed
 

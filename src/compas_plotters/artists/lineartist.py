@@ -39,6 +39,7 @@ class LineArtist(Artist):
 
     def draw(self):
         points = self.clip()
+        print(points)
         if points:
             p0, p1 = points
             x0, y0 = p0[:2]
@@ -94,8 +95,8 @@ if __name__ == '__main__':
 
     plotter.draw(pause=1.0)
 
-    for i in range(9):
-        line.transform(R)
-        plotter.redraw(pause=0.01)
+    # for i in range(9):
+    #     line.transform(R)
+    #     plotter.redraw(pause=0.01)
 
     plotter.show()
