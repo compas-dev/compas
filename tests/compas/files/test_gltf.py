@@ -63,7 +63,7 @@ def test_from_gltf_edges_loaded(
 ):
     gltf = GLTF(simple_gltf)
     gltf.read()
-    assert len(gltf.content.scenes[0].nodes) == 2
+    assert len(gltf.content.scenes[0].children) == 2
 
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)
@@ -73,7 +73,7 @@ def test_from_gltf_edges_loaded(
 
     gltf = GLTF(embedded_gltf)
     gltf.read()
-    assert len(gltf.content.scenes[0].nodes) > 1
+    assert len(gltf.content.scenes[0].children) > 1
 
     exporter = gltf.exporter
     exporter.embed_data = True
@@ -103,7 +103,7 @@ def test_from_gltf_edges_loaded(
 
     gltf = GLTF(animated_gltf)
     gltf.read()
-    assert len(gltf.content.ancillaries['animations']) > 0
+    assert len(gltf.content.animations) > 0
 
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)
@@ -112,7 +112,7 @@ def test_from_gltf_edges_loaded(
 
     gltf = GLTF(textured_gltf)
     gltf.read()
-    assert len(gltf.content.ancillaries['materials']) > 0
+    assert len(gltf.content.materials) > 0
 
     exporter = gltf.exporter
     json.dumps(exporter._gltf_dict)

@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 from math import fabs
 
+from compas.files.gltf.helpers import matrix_to_col_major_order
 from compas.geometry import identity_matrix
 from compas.geometry import matrix_from_quaternion
 from compas.geometry import matrix_from_scale_factors
@@ -34,7 +35,7 @@ class GLTFNode(object):
         List of length 3 representing the scaling displacement of the node.
         Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
     mesh_key : int
-        Key of the mesh within :attr:`compas.files.GLTF.meshes`.
+        Key of the mesh within :attr:`compas.files.GLTFContent.meshes`.
     weights : list of floats
         Weights used for computing morph targets in the attached mesh.
     position : tuple
@@ -42,13 +43,16 @@ class GLTFNode(object):
     transform : list of lists
         Matrix representing the displacement from the root node to the node.
     key : int or str
-        Key of the node used in :attr:`compas.files.GLTFScene.nodes`.
+        Key of the node used in :attr:`compas.files.GLTFContent.nodes`.
     camera : int
-        Index of the camera in :attr:`compas.files.GLTF.ancillaries`.
+        Key of the camera in :attr:`compas.files.GLTFContent.cameras`.
     skin : int
-        Index of the skin in :attr:`compas.files.GLTF.ancillaries`.
+        Key of the skin in :attr:`compas.files.GLTFContent.skins`.
     extras : object
         Application-specific data.
+    extensions : object
+    context : :class:`compas.files.GLTFContent`
+        GLTF context in which the GLTFNode exists.
     """
     def __init__(self, context, name=None, extras=None):
         self.name = name
@@ -57,18 +61,84 @@ class GLTFNode(object):
         self._translation = None
         self._rotation = None
         self._scale = None
-        self.mesh_key = None
+        self._mesh_key = None
         self.weights = None
 
         self.position = None
         self.transform = None
         self.key = None
 
-        self.camera = None
-        self.skin = None
+        self._camera = None
+        self._skin = None
         self.extras = extras
+        self.extensions = None
 
         self.context = context
+        self.update_key()
+
+    def update_key(self):
+        key = len(self.context.nodes)
+        if key in self.context.nodes:
+            raise Exception('!!!')
+        self.context.nodes[key] = self
+        self.key = key
+
+    def get_dict(self, node_index_by_key, mesh_index_by_key, camera_index_by_key, skin_index_by_key):
+        node_dict = {}
+        if self.name is not None:
+            node_dict['name'] = self.name
+        if self.children:
+            node_dict['children'] = [node_index_by_key[key] for key in self.children]
+        if self.matrix and self.matrix != identity_matrix(4):
+            node_dict['matrix'] = matrix_to_col_major_order(self.matrix)
+        else:
+            if self.translation:
+                node_dict['translation'] = self.translation
+            if self.rotation:
+                node_dict['rotation'] = self.rotation
+            if self.scale:
+                node_dict['scale'] = self.scale
+        if self.mesh_key is not None:
+            node_dict['mesh'] = mesh_index_by_key[self.mesh_key]
+        if self._camera is not None:
+            node_dict['camera'] = camera_index_by_key[self._camera]
+        if self._skin is not None:
+            node_dict['skin'] = skin_index_by_key[self._skin]
+        if self.extras:
+            node_dict['extras'] = self.extras
+        if self.extensions is not None:
+            node_dict['extensions'] = self.extensions
+        return node_dict
+
+    @property
+    def mesh_key(self):
+        return self._mesh_key
+
+    @mesh_key.setter
+    def mesh_key(self, value):
+        if value is not None and value not in self.context.meshes:
+            raise Exception('Cannot find mesh {}'.format(value))
+        self._mesh_key = value
+
+    @property
+    def camera(self):
+        return self._camera
+
+    @camera.setter
+    def camera(self, value):
+        if value is not None and value not in self.context.cameras:
+            raise Exception('Cannot find camera {}'.format(value))
+        self._camera = value
+
+    @property
+    def skin(self):
+        return self._skin
+
+    @skin.setter
+    def skin(self, value):
+        if value is not None and value not in self.context.skin:
+            raise Exception('Cannot find skin {}'.format(value))
+        self._skin = value
 
     @property
     def translation(self):

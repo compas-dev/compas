@@ -14,24 +14,18 @@ from compas.files.gltf.constants import COMPONENT_TYPE_SHORT
 from compas.files.gltf.constants import COMPONENT_TYPE_UNSIGNED_BYTE
 from compas.files.gltf.constants import COMPONENT_TYPE_UNSIGNED_SHORT
 from compas.files.gltf.constants import NUM_COMPONENTS_BY_TYPE_ENUM
-from compas.files.gltf.data_classes import AnimationData
 from compas.files.gltf.data_classes import ImageData
-from compas.files.gltf.data_classes import SamplerData
-from compas.files.gltf.data_classes import SkinData
 
 
 class GLTFReader(object):
     """"Read the contents of a *glTF* or *glb* version 2 file using the json library.
     Uses ideas from Khronos Group's glTF-Blender-IO.
-    Caution: Extensions are not supported and their data may be lost.
-    Caution: Data for materials, textures, animations, images, skins and cameras are saved,
-        but are not processed or used.
+    Caution: Extensions are minimally supported and their data may be lost.
 
     Parameters
     ----------
     filepath: str
         Path to the file.
-        Binary files containing the mesh data are assumed to be in the same directory.
 
     Attributes
     ----------
@@ -42,11 +36,7 @@ class GLTFReader(object):
     data : list
         List of lists containing data read from binary files.
     image_data : list
-        List containing binary image data.
-    skin_data : list
-        List containing skin data.
-    animation_data : list
-        List containing animation data.
+        List containing image data.
     """
     def __init__(self, filepath):
         self.filepath = filepath
@@ -54,8 +44,6 @@ class GLTFReader(object):
         self.json = None
         self.data = []
         self.image_data = []
-        self.skin_data = []
-        self.animation_data = []
 
         self._content = None
         self._glb_buffer = None
@@ -96,33 +84,14 @@ class GLTFReader(object):
                 if 'uri' in image:
                     if self.is_data_uri(image['uri']):
                         image_data.data = base64.b64decode(self.get_data_uri_data(image['uri']))
-                        image_data.media_type = self.get_media_type(image['uri'])
+                        image_data.mime_type = self.get_mime_type(image['uri'])
                     else:
                         image_data.uri = image['uri']
                 self.image_data.append(image_data)
 
-            for skin in self.json.get('skins', []):
-                skin_data = SkinData(skin['joints'])
-                if 'inverseBindMatrices' in skin:
-                    skin_data.inverse_bind_matrices = self.data[skin['inverseBindMatrices']]
-                skin_data.skeleton = skin.get('skeleton')
-                skin_data.name = skin.get('name')
-                skin_data.extras = skin.get('extras')
-                self.skin_data.append(skin_data)
-
-            for animation in self.json.get('animations', []):
-                sampler_data_list = []
-                for sampler in animation['samplers']:
-                    input_ = self.data[sampler['input']]
-                    output = self.data[sampler['output']]
-                    sampler_data = SamplerData(input_, output, sampler.get('interpolation'), sampler.get('extras'))
-                    sampler_data_list.append(sampler_data)
-                animation_data = AnimationData(animation.get('channels'), sampler_data_list, animation.get('name'), animation.get('extras'))
-                self.animation_data.append(animation_data)
-
         self.release_buffers()
 
-    def get_media_type(self, string):
+    def get_mime_type(self, string):
         pattern = r'data:([\w/]+)(?<![;,])'
         result = re.search(pattern, string)
         return result.group(1)

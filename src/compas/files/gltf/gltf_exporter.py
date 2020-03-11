@@ -16,21 +16,20 @@ from compas.files.gltf.constants import TYPE_SCALAR
 from compas.files.gltf.constants import TYPE_VEC2
 from compas.files.gltf.constants import TYPE_VEC3
 from compas.files.gltf.constants import TYPE_VEC4
-from compas.files.gltf.helpers import matrix_to_col_major_order
-from compas.geometry import identity_matrix
 
 
 class GLTFExporter(object):
     """Export a glTF or glb file based on the supplied scene and ancillary data.
     Parameters
     ----------
-    filepath : str
+    gltf_filepath : str
         Location where the glTF or glb is to be written. The extension of the filepath
-        determines which format will be used. If there is an accompanying binary file,
+        determines which format will be used. If there will be an accompanying binary file,
         it will be written in the same directory.
     content : :class:`compas.files.GLTFContent`
     embed_data : bool
-        When True, all mesh and other data will be embedded as data uri's in the glTF json.
+        When True, all mesh and other data will be embedded as data uri's in the glTF json,
+        with the exception of external image data.
         When False, the data will be written to an external binary file or chunk.
     """
 
@@ -40,24 +39,61 @@ class GLTFExporter(object):
         self._filename = None
         self._ext = None
 
-        self.embed_data = embed_data
+        self._embed_data = embed_data
         self._content = content
 
-        self._gltf_dict = self.get_generic_gltf_dict()
-        self._mesh_index_by_key = {key: index for index, key in enumerate(self._content.meshes.keys())}
-        self._node_index_by_key = {key: index for index, key in enumerate(self._content.nodes.keys())}
+        self._gltf_dict = {}
+        self._mesh_index_by_key = {}
+        self._node_index_by_key = {}
+        self._scene_index_by_key = {}
+        self._camera_index_by_key = {}
+        self._skin_index_by_key = {}
+        self._material_index_by_key = {}
+        self._texture_index_by_key = {}
+        self._sampler_index_by_key = {}
+        self._image_index_by_key = {}
         self._buffer = b''
 
         self.load()
 
+    @property
+    def embed_data(self):
+        return self._embed_data
+
+    @embed_data.setter
+    def embed_data(self, value):
+        if value != self._embed_data:
+            self._embed_data = value
+            self.load()
+
     def load(self):
+        self.set_initial_gltf_dict()
+        self._mesh_index_by_key = self.get_index_by_key(self._content.meshes)
+        self._node_index_by_key = self.get_index_by_key(self._content.nodes)
+        self._scene_index_by_key = self.get_index_by_key(self._content.scenes)
+        self._camera_index_by_key = self.get_index_by_key(self._content.cameras)
+        self._skin_index_by_key = self.get_index_by_key(self._content.skins)
+        self._material_index_by_key = self.get_index_by_key(self._content.materials)
+        self._texture_index_by_key = self.get_index_by_key(self._content.textures)
+        self._sampler_index_by_key = self.get_index_by_key(self._content.samplers)
+        self._image_index_by_key = self.get_index_by_key(self._content.images)
+        self._buffer = b''
+
         self.set_path_attributes()
-        # self.validate_scenes()
         self.add_meshes()
         self.add_nodes()
         self.add_scenes()
-        self.add_ancillaries()
+        self.add_cameras()
+        self.add_skins()
+        self.add_materials()
+        self.add_textures()
+        self.add_samplers()
+        self.add_images()
+        self.add_animations()
         self.add_buffer()
+
+    def get_index_by_key(self, d):
+        return {key: index for index, key in enumerate(d)}
 
     def export(self):
         gltf_json = json.dumps(self._gltf_dict, indent=4)
@@ -65,7 +101,7 @@ class GLTFExporter(object):
         if self._ext == '.gltf':
             with open(self.gltf_filepath, 'w') as f:
                 f.write(gltf_json)
-            if not self.embed_data and len(self._buffer) > 0:
+            if not self._embed_data and len(self._buffer) > 0:
                 with open(self.get_bin_path(), 'wb') as f:
                     f.write(self._buffer)
 
@@ -102,212 +138,145 @@ class GLTFExporter(object):
                     for i in range(0, zeros_bin):
                         f.write('\0'.encode())
 
+    def add_images(self):
+        if not self._content.images:
+            return
+        images_list = [None] * len(self._content.images)
+        for key, image_data in self._content.images.items():
+            uri = self.get_image_data_uri(image_data) if self.embed_data else None
+            buffer_view = self.get_buffer_view(image_data.data) if not self.embed_data else None
+            images_list[self._image_index_by_key[key]] = image_data.get_dict(uri, buffer_view)
+        self._gltf_dict['images'] = images_list
+
+    def get_image_data_uri(self, image_data):
+        if image_data.data is None:
+            return None
+        return (
+            'data:'
+            + (image_data.mime_type if image_data.mime_type else '')
+            + ';base64,' + base64.b64encode(image_data.data).decode('ascii')
+        )
+
+    def add_samplers(self):
+        if not self._content.samplers:
+            return
+        samplers_list = [None] * len(self._content.samplers)
+        for key, sampler_data in self._content.samplers.items():
+            samplers_list[self._sampler_index_by_key[key]] = sampler_data.get_dict()
+        self._gltf_dict['samplers'] = samplers_list
+
+    def add_textures(self):
+        if not self._content.textures:
+            return
+        textures_list = [None] * len(self._content.textures)
+        for key, texture_data in self._content.textures.items():
+            textures_list[self._texture_index_by_key[key]] = texture_data.get_dict(self._sampler_index_by_key, self._image_index_by_key)
+        self._gltf_dict['textures'] = textures_list
+
+    def add_materials(self):
+        if not self._content.materials:
+            return
+        materials_list = [None] * len(self._content.materials)
+        for key, material_data in self._content.materials.items():
+            materials_list[self._material_index_by_key[key]] = material_data.get_dict(self._texture_index_by_key)
+        self._gltf_dict['materials'] = materials_list
+
+    def add_skins(self):
+        if not self._content.skins:
+            return
+        skins_list = [None] * len(self._content.skins)
+        for key, skin_data in self._content.skins.items():
+            accessor_index = self.get_accessor(skin_data.inverse_bind_matrices, COMPONENT_TYPE_FLOAT, TYPE_MAT4)
+            skins_list[self._skin_index_by_key[key]] = skin_data.get_dict(self._node_index_by_key, accessor_index)
+        self._gltf_dict['skins'] = skins_list
+
+    def add_cameras(self):
+        if not self._content.cameras:
+            return
+        camera_list = [None] * len(self._content.cameras)
+        for key, camera_data in self._content.cameras.items():
+            camera_list[self._camera_index_by_key[key]] = camera_data.get_dict()
+        self._gltf_dict['cameras'] = camera_list
+
     def add_meshes(self):
-        # list comprehension would be enough for later versions of python
-        mesh_list = [None] * len(self._content.meshes.values())
+        if not self._content.meshes:
+            return
+        mesh_list = [None] * len(self._content.meshes)
         for key, mesh_data in self._content.meshes.items():
-            mesh_list[self._mesh_index_by_key[key]] = self.get_mesh_dict(mesh_data)
+            primitives = self.get_primitives(mesh_data)
+            mesh_list[self._mesh_index_by_key[key]] = mesh_data.get_dict(primitives)
         self._gltf_dict['meshes'] = mesh_list
 
-    def get_mesh_dict(self, mesh_data):
-        mesh_dict = {'primitives': self.get_primitives(mesh_data)}
-        if mesh_data.mesh_name:
-            mesh_dict['name'] = mesh_data.mesh_name
-        if mesh_data.weights:
-            mesh_dict['weights'] = mesh_data.weights
-        if mesh_data.extras and self.is_jsonable(mesh_data.extras, 'mesh extras object'):
-            mesh_dict['extras'] = mesh_data.extras
-        return mesh_dict
-
     def add_buffer(self):
+        if not self._buffer:
+            return
         buffer = {'byteLength': len(self._buffer)}
-        if self.embed_data:
+        if self._embed_data:
             buffer['uri'] = 'data:application/octet-stream;base64,' + base64.b64encode(self._buffer).decode('ascii')
         elif self._ext == '.gltf':
             buffer['uri'] = self.get_bin_filename()
         self._gltf_dict['buffers'] = [buffer]
 
-    def add_ancillaries(self):
-        for attr in ['cameras', 'materials', 'textures', 'samplers']:
-            if not self._content.ancillaries.get(attr):
-                continue
-            if self.is_jsonable(self._content.ancillaries[attr], '{} list'.format(attr)):
-                self._gltf_dict[attr] = self._content.ancillaries[attr]
+    def add_animations(self):
+        if not self._content.animations:
+            return None
+        animation_list = []
+        for animation_data in self._content.animations.values():
+            samplers_list = self.get_animation_samplers_list(animation_data)
+            animation_list.append(animation_data.get_dict(samplers_list, self._node_index_by_key))
+        self._gltf_dict['animations'] = animation_list
 
-        images_list = self.get_images_list()
-        if images_list:
-            self._gltf_dict['images'] = images_list
+    def get_animation_samplers_list(self, animation_data):
+        sampler_index_by_key = animation_data.get_sampler_index_by_key()
+        samplers_list = [None] * len(sampler_index_by_key)
+        for key, sampler_data in animation_data.samplers_dict.items():
+            input_accessor = self.get_accessor(sampler_data.input, COMPONENT_TYPE_FLOAT, TYPE_SCALAR, include_bounds=True)
+            type_ = TYPE_VEC3
+            if isinstance(sampler_data.output[0], int) or isinstance(sampler_data.output[0], float):
+                type_ = TYPE_SCALAR
+            elif len(sampler_data.output[0]) == 4:
+                type_ = TYPE_VEC4
+            output_accessor = self.get_accessor(sampler_data.output, COMPONENT_TYPE_FLOAT, type_)
+            samplers_list[sampler_index_by_key[key]] = sampler_data.get_dict(input_accessor, output_accessor)
+        return samplers_list
 
-        skins_list = self.get_skins_list()
-        if skins_list:
-            self._gltf_dict['skins'] = skins_list
-
-        animations_list = self.get_animations_list()
-        if animations_list:
-            self._gltf_dict['animations'] = animations_list
-
-    def get_images_list(self):
-        return [self.get_image_dict(image_data) for image_data in self._content.ancillaries.get('images', [])]
-
-    def get_image_dict(self, image_data):
-        image_dict = {}
-        if image_data.name:
-            image_dict['name'] = image_data.name
-        if image_data.extras:
-            image_dict['extras'] = image_data.extras
-        if image_data.mime_type:
-            image_dict['mimeType'] = image_data.mime_type
-        if image_data.uri:
-            image_dict['uri'] = image_data.uri
-        if image_data.data and self.embed_data:
-            image_dict['uri'] = self.get_image_data_uri(image_data)
-        if image_data.data and not self.embed_data:
-            image_dict['bufferView'] = self.get_buffer_view(image_data.data)
-        return image_dict
-
-    def get_image_data_uri(self, image_data):
-        return (
-            'data:'
-            + (image_data.media_type if image_data.media_type else '')
-            + ';base64,' + base64.b64encode(image_data.data).decode('ascii')
-        )
-
-    def get_skins_list(self):
-        return [self.get_skin_dict(skin_data) for skin_data in self._content.ancillaries.get('skins', [])]
-
-    def get_skin_dict(self, skin_data):
-        skin_dict = {'joints': [
-            self._node_index_by_key.get(item)
-            for item in skin_data.joints
-            if self._node_index_by_key.get(item)
-        ]}
-        if skin_data.skeleton:
-            skin_dict['skeleton'] = skin_data.skeleton
-        if skin_data.name:
-            skin_dict['name'] = skin_data.name
-        if skin_data.extras:
-            skin_dict['extras'] = skin_data.extras
-        if skin_data.inverse_bind_matrices:
-            skin_dict['inverseBindMatrices'] = self.get_accessor(skin_data.inverse_bind_matrices, COMPONENT_TYPE_FLOAT, TYPE_MAT4)
-        return skin_dict
-
-    def get_animations_list(self):
-        return [self.get_animation_dict(animation_data) for animation_data in self._content.ancillaries.get('animations', [])]
-
-    def get_animation_dict(self, animation_data):
-        animation_dict = {
-            'channels': animation_data.channels,
-            'samplers': self.get_samplers_list(animation_data)
-        }
-        if animation_data.name:
-            animation_dict['name'] = animation_data.name
-        if animation_data.extras:
-            animation_dict['extras'] = animation_data.extras
-        return animation_dict
-
-    def get_samplers_list(self, animation_data):
-        return [self.get_sampler_dict(sampler_data) for sampler_data in animation_data.samplers]
-
-    def get_sampler_dict(self, sampler_data):
-        input_accessor = self.get_accessor(sampler_data.input, COMPONENT_TYPE_FLOAT, TYPE_SCALAR, include_bounds=True)
-        type_ = TYPE_VEC3
-        if isinstance(sampler_data.output[0], int) or isinstance(sampler_data.output[0], float):
-            type_ = TYPE_SCALAR
-        elif len(sampler_data.output[0]) == 4:
-            type_ = TYPE_VEC4
-        output_accessor = self.get_accessor(sampler_data.output, COMPONENT_TYPE_FLOAT, type_)
-        sampler_dict = {
-            'input': input_accessor,
-            'output': output_accessor,
-        }
-        if sampler_data.interpolation:
-            sampler_dict['interpolation'] = sampler_data.interpolation
-        if sampler_data.extras:
-            sampler_dict['extras'] = sampler_data.extras
-        return sampler_dict
-
-    def is_jsonable(self, obj, obj_name):
-        try:
-            json.dumps(obj)
-        except (TypeError, OverflowError):
-            raise Exception('The {} is not a valid JSON object.'.format(obj_name))
-        return True
-
-    def get_generic_gltf_dict(self):
+    def set_initial_gltf_dict(self):
         asset_dict = {'version': '2.0'}
         gltf_dict = {'asset': asset_dict}
         if self._content.extras:
             gltf_dict['extras'] = self._content.extras
-        return gltf_dict
+        if self._content.extensions:
+            gltf_dict['extensions'] = self._content.extensions
+        self._gltf_dict = gltf_dict
 
     def add_scenes(self):
         if not self._content.scenes:
             return
-        if self._content.default_scene_index is not None:
-            self._gltf_dict['scene'] = self._content.default_scene_index
-        self._gltf_dict['scenes'] = [self.get_scene_dict(gltf_scene) for gltf_scene in self._content.scenes]
-
-    def get_scene_dict(self, gltf_scene):
-        scene_dict = {}
-        if gltf_scene.nodes:
-            scene_dict['nodes'] = [self._node_index_by_key[key] for key in gltf_scene.nodes]
-        if gltf_scene.name:
-            scene_dict['name'] = gltf_scene.name
-        if gltf_scene.extras:
-            scene_dict['extras'] = gltf_scene.extras
-        return scene_dict
+        if self._content.default_scene_key is not None:
+            self._gltf_dict['scene'] = self._scene_index_by_key[self._content.default_scene_key]
+        scene_list = [None] * len(self._content.scenes.values())
+        for key, scene in self._content.scenes.items():
+            scene_list[self._scene_index_by_key[key]] = scene.get_dict(self._node_index_by_key)
+        self._gltf_dict['scenes'] = scene_list
 
     def add_nodes(self):
-        # list comprehension would be enough for later versions of python
-        node_list = [None] * len(self._content.nodes.values())
+        if not self._content.nodes:
+            return
+        node_list = [None] * len(self._content.nodes)
         for key, node in self._content.nodes.items():
-            node_list[self._node_index_by_key[key]] = self.get_node_dict(node)
+            node_list[self._node_index_by_key[key]] = node.get_dict(
+                self._node_index_by_key,
+                self._mesh_index_by_key,
+                self._camera_index_by_key,
+                self._skin_index_by_key
+            )
         self._gltf_dict['nodes'] = node_list
-
-    def get_node_dict(self, node):
-        node_dict = {}
-        if node.name:
-            node_dict['name'] = node.name
-        if node.children:
-            node_dict['children'] = [self._node_index_by_key[key] for key in node.children]
-        if node.matrix and node.matrix != identity_matrix(4):
-            node_dict['matrix'] = matrix_to_col_major_order(node.matrix)
-        else:
-            if node.translation:
-                node_dict['translation'] = node.translation
-            if node.rotation:
-                node_dict['rotation'] = node.rotation
-            if node.scale:
-                node_dict['scale'] = node.scale
-        if node.mesh_key is not None:
-            node_dict['mesh'] = self._mesh_index_by_key[node.mesh_key]
-        if node.camera is not None and self.camera_exists(node.camera):
-            node_dict['camera'] = node.camera
-        if node.skin is not None and self.skin_exists(node.skin):
-            node_dict['skin'] = node.skin
-        if node.extras:
-            node_dict['extras'] = node.extras
-        return node_dict
-
-    def camera_exists(self, index):
-        return 0 <= index < len(self._content.ancillaries.get('cameras', []))
-
-    def skin_exists(self, index):
-        return 0 <= index < len(self._content.ancillaries.get('skins', []))
-
-    def material_exists(self, index):
-        return 0 <= index < len(self._content.ancillaries.get('materials', []))
 
     def get_primitives(self, mesh_data):
         primitives = []
         for primitive_data in mesh_data.primitive_data_list:
-            primitive = {'indices': self.get_accessor(primitive_data.indices, COMPONENT_TYPE_UNSIGNED_INT, TYPE_SCALAR)}
-            if primitive_data.material is not None and self.material_exists(primitive_data.material):
-                primitive['material'] = primitive_data.material
-            if primitive_data.mode is not None:
-                primitive['mode'] = primitive_data.mode
-            if primitive_data.extras:
-                primitive['extras'] = primitive_data.extras
+            indices_accessor = self.get_accessor(primitive_data.indices, COMPONENT_TYPE_UNSIGNED_INT, TYPE_SCALAR)
+
             attributes = {}
             for attr in primitive_data.attributes:
                 component_type = COMPONENT_TYPE_UNSIGNED_INT if attr.startswith('JOINT') else COMPONENT_TYPE_FLOAT
@@ -317,8 +286,6 @@ class GLTFExporter(object):
                 if len(primitive_data.attributes[attr][0]) == 2:
                     type_ = TYPE_VEC2
                 attributes[attr] = self.get_accessor(primitive_data.attributes[attr], component_type, type_, True)
-            if attributes:
-                primitive['attributes'] = attributes
 
             targets = []
             for target in primitive_data.targets or []:
@@ -328,13 +295,15 @@ class GLTFExporter(object):
                     type_ = TYPE_VEC3
                     target_dict[attr] = self.get_accessor(target[attr], component_type, type_, True)
                 targets.append(target_dict)
-            if targets:
-                primitive['targets'] = targets
 
-            primitives.append(primitive)
+            primitive_dict = primitive_data.get_dict(indices_accessor, attributes, targets, self._material_index_by_key)
+
+            primitives.append(primitive_dict)
         return primitives
 
     def get_accessor(self, data, component_type, type_, include_bounds=False):
+        if data is None:
+            return None
         count = len(data)
 
         fmt_char = COMPONENT_TYPE_ENUM[component_type]
@@ -385,6 +354,8 @@ class GLTFExporter(object):
         return len(self._gltf_dict['accessors']) - 1
 
     def get_buffer_view(self, bytes_):
+        if not bytes_:
+            return None
         byte_offset = self.update_buffer(bytes_)
         buffer_view_dict = {
             'buffer': 0,

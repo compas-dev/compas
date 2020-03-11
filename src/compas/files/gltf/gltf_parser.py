@@ -2,8 +2,21 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
+from compas.files.gltf.data_classes import AnimationData
+from compas.files.gltf.data_classes import AnimationSamplerData
+from compas.files.gltf.data_classes import CameraData
+from compas.files.gltf.data_classes import ChannelData
+from compas.files.gltf.data_classes import MaterialData
 from compas.files.gltf.data_classes import MeshData
+from compas.files.gltf.data_classes import NormalTextureInfoData
+from compas.files.gltf.data_classes import OcclusionTextureInfoData
+from compas.files.gltf.data_classes import PBRMetallicRoughnessData
 from compas.files.gltf.data_classes import PrimitiveData
+from compas.files.gltf.data_classes import SamplerData
+from compas.files.gltf.data_classes import SkinData
+from compas.files.gltf.data_classes import TargetData
+from compas.files.gltf.data_classes import TextureData
+from compas.files.gltf.data_classes import TextureInfoData
 from compas.files.gltf.gltf_content import GLTFContent
 from compas.files.gltf.gltf_node import GLTFNode
 from compas.files.gltf.gltf_scene import GLTFScene
@@ -11,7 +24,7 @@ from compas.files.gltf.helpers import get_matrix_from_col_major_list
 
 
 class GLTFParser(object):
-    """Parse the contents of the reader and create objects digestible by COMPAS.
+    """Parse the contents of the reader into a :class:`compas.files.GLTFContent` object.
 
     Parameters
     ----------
@@ -20,41 +33,127 @@ class GLTFParser(object):
     Attributes
     ----------
     reader : :class:`compas.files.GLTFReader`
-    default_scene_index : int
-        Index of the default scene.
-    scenes : list of :class:`compas.files.GLTFScene`
-        List of dictionaries containing the information of each scene.
-    extras : object
+    content : :class:`compas.files.GLTFContent`
     """
     def __init__(self, reader):
         self.reader = reader
-        self.default_scene_index = None
         self.content = GLTFContent()
 
         self.parse()
 
-        ancillaries = {
-            attr: self.reader.json.get(attr)
-            for attr in ['cameras', 'materials', 'textures', 'samplers']
-            if self.reader.json.get(attr)
-        }
-        ancillaries.update({
-            'images': self.reader.image_data,
-            'skins': self.reader.skin_data,
-            'animations': self.reader.animation_data,
-        })
-
-        self.content.ancillaries = ancillaries
-
     def parse(self):
-        self.default_scene_index = self.get_default_scene()
+        self.content.default_scene_key = self.get_default_scene()
         self.content.extras = self.get_extras()
+        self.content.extensions = self.get_extensions()
 
-        # should make dictionaries for everything
-        # then the remove orphans method would cull unused cameras, etc...
-        self.content.scenes = [self.get_scene(scene, key) for key, scene in enumerate(self.reader.json.get('scenes', []))]
+        self.content.images = {key: image_data for key, image_data in enumerate(self.reader.image_data)}
+        self.content.samplers = {key: self.get_sampler_data(sampler) for key, sampler in enumerate(self.reader.json.get('samplers', []))}
+        self.content.textures = {key: self.get_texture_data(texture) for key, texture in enumerate(self.reader.json.get('textures', []))}
+        self.content.materials = {key: self.get_material_data(material) for key, material in enumerate(self.reader.json.get('materials', []))}
         self.content.meshes = {key: self.get_mesh_data(mesh, key) for key, mesh in enumerate(self.reader.json.get('meshes', []))}
+        self.content.cameras = {key: self.get_camera_data(camera) for key, camera in enumerate(self.reader.json.get('cameras', []))}
+
         self.content.nodes = {key: self.get_gltf_node(node, key) for key, node in enumerate(self.reader.json.get('nodes', []))}
+
+        self.content.animations = {key: self.get_animation_data(animation) for key, animation in enumerate(self.reader.json.get('animations', []))}
+        self.content.skins = {key: self.get_skin_data(skin) for key, skin in enumerate(self.reader.json.get('skins', []))}
+        self.content.scenes = {key: self.get_scene(scene, key) for key, scene in enumerate(self.reader.json.get('scenes', []))}
+        self.content.update_node_transforms_and_positions()
+
+    def get_sampler_data(self, sampler):
+        sampler_data = SamplerData()
+        sampler_data.mag_filter = sampler.get('magFilter')
+        sampler_data.min_filter = sampler.get('minFilter')
+        sampler_data.wrap_s = sampler.get('wrapS')
+        sampler_data.wrap_t = sampler.get('wrapT')
+        sampler_data.name = sampler.get('name')
+        sampler_data.extras = sampler.get('extras')
+        return sampler_data
+
+    def get_texture_data(self, texture):
+        texture_data = TextureData()
+        texture_data.sampler = texture.get('sampler')
+        texture_data.source = texture.get('source')
+        texture_data.name = texture.get('name')
+        texture_data.extras = texture.get('extras')
+        return texture_data
+
+    def get_material_data(self, material):
+        material_data = MaterialData()
+        material_data.name = material.get('name')
+        material_data.extras = material.get('extras')
+        material_data.pbr_metallic_roughness = self.get_pbr_metallic_roughness_info_data(material.get('pbrMetallicRoughness'))
+        material_data.normal_texture = self.get_normal_texture_info_data(material.get('normalTexture'))
+        material_data.occlusion_texture = self.get_occlusion_texture_info_data(material.get('occlusionTexture'))
+        material_data.emissive_texture = self.get_texture_info_data(material.get('emissiveTexture'))
+        material_data.emissive_factor = material.get('emissiveFactor')
+        material_data.alpha_mode = material.get('alphaMode')
+        material_data.alpha_cutoff = material.get('alphaCutoff')
+        material_data.double_sided = material.get('doubleSided')
+        return material_data
+
+    def get_pbr_metallic_roughness_info_data(self, texture_info):
+        if not texture_info:
+            return None
+        roughness_data = PBRMetallicRoughnessData()
+        roughness_data.base_color_factor = texture_info.get('baseColorFactor')
+        roughness_data.base_color_texture = self.get_texture_info_data(texture_info.get('baseColorTexture'))
+        roughness_data.metallic_factor = texture_info.get('metallicFactor')
+        roughness_data.roughness_factor = texture_info.get('roughnessFactor')
+        roughness_data.metallic_roughness_texture = self.get_texture_info_data(texture_info.get('metallicRoughnessTexture'))
+        roughness_data.extras = texture_info.get('extras')
+        return roughness_data
+
+    def get_texture_info_data(self, texture_info):
+        if not texture_info:
+            return None
+        texture_info_data = TextureInfoData(texture_info['index'])
+        texture_info_data.tex_coord = texture_info.get('texCoord')
+        texture_info_data.extras = texture_info.get('extras')
+        return texture_info_data
+
+    def get_occlusion_texture_info_data(self, texture_info):
+        if not texture_info:
+            return None
+        texture_info_data = OcclusionTextureInfoData(texture_info['index'])
+        texture_info_data.tex_coord = texture_info.get('texCoord')
+        texture_info_data.extras = texture_info.get('extras')
+        texture_info_data.strength = texture_info.get('strength')
+        return texture_info_data
+
+    def get_normal_texture_info_data(self, texture_info):
+        if not texture_info:
+            return None
+        texture_info_data = NormalTextureInfoData(texture_info['index'])
+        texture_info_data.tex_coord = texture_info.get('texCoord')
+        texture_info_data.extras = texture_info.get('extras')
+        texture_info_data.scale = texture_info.get('scale')
+        return texture_info_data
+
+    def get_skin_data(self, skin):
+        skin_data = SkinData(skin['joints'])
+        if 'inverseBindMatrices' in skin:
+            skin_data.inverse_bind_matrices = self.reader.data[skin['inverseBindMatrices']]
+        skin_data.skeleton = skin.get('skeleton')
+        skin_data.name = skin.get('name')
+        skin_data.extras = skin.get('extras')
+        return skin_data
+
+    def get_animation_data(self, animation):
+        sampler_data_dict = {}
+        for index, sampler in enumerate(animation['samplers']):
+            input_ = self.reader.data[sampler['input']]
+            output = self.reader.data[sampler['output']]
+            sampler_data = AnimationSamplerData(input_, output, sampler.get('interpolation'), sampler.get('extras'))
+            sampler_data_dict[index] = sampler_data
+        channel_data_list = []
+        for channel in animation['channels']:
+            target_data = TargetData(channel['target']['path'])
+            target_data.node = channel['target'].get('node')
+            target_data.extras = channel['target'].get('extras')
+            channel_data = ChannelData(channel['sampler'], target_data)
+            channel_data_list.append(channel_data)
+        return AnimationData(channel_data_list, sampler_data_dict, animation.get('name'), animation.get('extras'))
 
     def get_extras(self):
         return self.reader.json.get('extras')
@@ -62,13 +161,23 @@ class GLTFParser(object):
     def get_default_scene(self):
         return self.reader.json.get('scene')
 
+    def get_extensions(self):
+        return self.reader.json.get('extensions')
+
+    def get_camera_data(self, camera):
+        camera_data = CameraData(camera['type'])
+        camera_data.orthographic = camera.get('orthographic')
+        camera_data.perspective = camera.get('perspective')
+        camera_data.name = camera.get('name')
+        camera_data.extras = camera.get('extras')
+        return camera_data
+
     def get_scene(self, scene, key):
         scene_obj = GLTFScene(self.content)
         scene_obj.name = scene.get('name')
         scene_obj.extras = scene.get('extras')
-        scene_obj.nodes = scene.get('nodes', [])
+        scene_obj.children = scene.get('nodes', [])
         scene_obj.key = key
-
         return scene_obj
 
     def get_gltf_node(self, node, key):
@@ -97,7 +206,6 @@ class GLTFParser(object):
         extras = mesh.get('extras')
         primitives = mesh['primitives']
         weights = mesh.get('weights')
-
 
         primitive_data_list = []
 

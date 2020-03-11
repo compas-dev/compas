@@ -11,9 +11,13 @@ from compas.files.gltf.gltf_reader import GLTFReader
 
 
 class GLTF(object):
-    """Read files in glTF format.
+    """Read and create files in glTF format.
     Caution: Extensions and most other application specific data are unsupported,
     and their data may be lost upon import.
+    Attributes
+    ----------
+    filepath : str
+        Path to the location of the glTF file.
     See Also
     --------
     * https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
@@ -67,7 +71,7 @@ class GLTF(object):
         return self._exporter
 
     def export(self, embed_data=False):
-        self.exporter.embed_data = embed_data
+        self.exporter._embed_data = embed_data
         self.content.remove_orphans()  # don't know where this should be called
         self.content.check_is_forest()
         self.exporter.export()
@@ -93,27 +97,20 @@ if __name__ == '__main__':
     gltf = GLTF(filepath_glb)
     gltf.read()
 
-    default_scene_index = gltf.content.default_scene_index or 0
-    nodes = gltf.content.scenes[default_scene_index].nodes
+    default_scene_key = gltf.content.default_scene_key or 0
+    default_scene = gltf.content.scenes[default_scene_key]
+    positions, edges = default_scene.positions_and_edges
 
-    # change these to the new functions
-    nds = {name: gltf_node.position for name, gltf_node in nodes.items()}
-    edges = [
-        (node.key, child)
-        for node in gltf.content.scenes[default_scene_index].nodes.values()
-        for child in node.children
-    ]
-
-    scene_tree = Network.from_nodes_and_edges(nds, edges)  # !!!
-    scene_tree.plot()
+    # scene_tree = Network.from_nodes_and_edges(positions, edges)  # !!!
+    # scene_tree.plot()
 
     transformed_meshes = []
 
-    for vertex_name, gltf_node in nodes.items():
+    for vertex_name, gltf_node in default_scene.nodes.items():
         if gltf_node.mesh_data is None:
             continue
         t = gltf_node.transform
-        m = Mesh.from_vertices_and_faces(gltf_node.mesh_data.vertices, gltf_node.mesh_data.faces)
+        m = Mesh.from_vertices_and_faces(gltf_node.vertices, gltf_node.faces)
         transformed_mesh = mesh_transformed(m, t)
         transformed_meshes.append(transformed_mesh)
 
