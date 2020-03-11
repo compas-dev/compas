@@ -102,7 +102,7 @@ def draw_points(points, layer=None):
         obj.name = data.get('name', 'point')
         rgb = data.get('color') or [1.0, 1.0, 1.0]
         obj.color = rgb + [1.0]
-        # set_object_color(obj, rgb)
+        set_object_color(obj, rgb)
         objects[index] = obj
     link_objects(objects, layer=layer)
     delete_object(empty)
