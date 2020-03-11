@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Include MMA code from Krister Svanberg.
+
 ### Changed
 
 ### Removed
