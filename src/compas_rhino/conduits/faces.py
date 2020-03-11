@@ -8,9 +8,13 @@ from compas.utilities import color_to_rgb
 from compas_rhino.conduits import Conduit
 
 try:
+    basestring
+except NameError:
+    basestring = str
+
+try:
     from Rhino.Geometry import Point3d
     from System.Drawing.Color import FromArgb
-    from System.Collections.Generic import List
 
 except ImportError:
     compas.raise_if_ironpython()
@@ -88,7 +92,7 @@ class FacesConduit(Conduit):
 
         """
         return self._color
-    
+
     @color.setter
     def color(self, color):
         if color:

@@ -128,14 +128,12 @@ drawing
     draw_texts
 
 """
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-from .objects import *
-from .document import *
-from .layers import *
-from .misc import *
-from .drawing import *
+from .misc import *  # noqa: F401 F403
+from .document import *  # noqa: F401 F403
+from .data import *  # noqa: F401 F403
+from .objects import *  # noqa: F401 F403
+from .layers import *  # noqa: F401 F403
+from .collections import *  # noqa: F401 F403
+from .drawing import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

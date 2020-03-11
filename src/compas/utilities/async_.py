@@ -1,15 +1,12 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import sys
-import time
 import threading
 
 
-__all__ = [
-    'await_callback',
-]
+__all__ = ['await_callback']
 
 
 class ThreadExceptHookHandler(object):
@@ -19,13 +16,12 @@ class ThreadExceptHookHandler(object):
     Discussion: https://stackoverflow.com/a/31622038/269335
     PR (not yet merged): https://github.com/python/cpython/pull/8610
     Disclaimer (!): https://news.ycombinator.com/item?id=11090814
-
     """
+
     def __enter__(self):
         original_init = threading.Thread.__init__
 
         def init(self, *args, **kwargs):
-
             original_init(self, *args, **kwargs)
             original_run = self.run
 
@@ -69,13 +65,11 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
 
     Notes
     -----
-
     Exceptions thrown during the async execution are handled and re-thrown as normal
     exceptions, even if they were raised on a different thread.
 
     Examples
     --------
-
     The following example shows how to await an async function (``do_sync_stuff`` in
     the example), using this utility:
 
@@ -98,6 +92,7 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
     """
     wait_event = threading.Event()
     call_results = {}
+
     def inner_callback(*args, **kwargs):
         try:
             call_results['args'] = args
@@ -155,7 +150,6 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
         return dict_values
 
     return return_value + (dict_values,)
-
 
 
 # ==============================================================================

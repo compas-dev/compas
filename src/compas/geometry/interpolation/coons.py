@@ -89,7 +89,7 @@ def discrete_coons_patch(ab, bc, dc, ad):
             a = scale_vector(ab[0], (1 - ki) * (1 - kj))
             b = scale_vector(bc[0], ki * (1 - kj))
             c = scale_vector(dc[-1], ki * kj)
-            d = scale_vector(ad[-1] , (1 - ki) * kj)
+            d = scale_vector(ad[-1], (1 - ki) * kj)
             lin_interp_a_b_c_d = sum_vectors([a, b, c, d])
             # coons patch = first + second - third functions
             array[i][j] = subtract_vectors(add_vectors(lin_interp_ab_dc, lin_interp_bc_ad), lin_interp_a_b_c_d)
@@ -103,7 +103,7 @@ def discrete_coons_patch(ab, bc, dc, ad):
     face_vertices = []
     for i in range(n - 1):
         for j in range(m - 1):
-            face_vertices.append([i * m + j , i * m + j + 1 , (i + 1) * m + j + 1, (i + 1) * m + j])
+            face_vertices.append([i * m + j, i * m + j + 1, (i + 1) * m + j + 1, (i + 1) * m + j])
     return vertices, face_vertices
 
 

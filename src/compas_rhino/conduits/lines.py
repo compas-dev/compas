@@ -17,6 +17,11 @@ try:
 except ImportError:
     compas.raise_if_ironpython()
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 
 __all__ = ['LinesConduit']
 
@@ -60,6 +65,7 @@ class LinesConduit(Conduit):
                 conduit.redraw(pause=0.1)
 
     """
+
     def __init__(self, lines, thickness=None, color=None, **kwargs):
         super(LinesConduit, self).__init__(**kwargs)
         self._default_thickness = 1.0
@@ -89,7 +95,7 @@ class LinesConduit(Conduit):
                 len(thickness)
             except TypeError:
                 thickness = [thickness]
-            l = len(self.lines)
+            l = len(self.lines)  # noqa: E741
             t = len(thickness)
             if t < l:
                 thickness += [self._default_thickness for i in range(l - t)]
@@ -108,11 +114,11 @@ class LinesConduit(Conduit):
 
         """
         return self._color
-    
+
     @color.setter
     def color(self, color):
         if color:
-            l = len(self.lines)
+            l = len(self.lines)  # noqa: E741
             if isinstance(color, (basestring, tuple)):
                 # if a single color was provided
                 color = [color for _ in range(l)]
@@ -166,7 +172,7 @@ if __name__ == "__main__":
     from random import randint
 
     points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-    lines  = [(points[i], points[i + 1]) for i in range(99)]
+    lines = [(points[i], points[i + 1]) for i in range(99)]
 
     conduit = LinesConduit(lines, color=['#ff00ff', '#ff0000'], thickness=[1, 2, 3, 4, 5, 20])
 

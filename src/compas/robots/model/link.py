@@ -2,9 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.files import URDF
 from compas.files import URDFParser
-from compas.geometry.xforms import Transformation
 
 from compas.robots.model.geometry import Box
 from compas.robots.model.geometry import Capsule
@@ -50,11 +48,16 @@ class Inertia(object):
 class Inertial(object):
     """Inertial properties of a link.
 
-    Attributes:
-        origin: This is the pose of the inertial reference frame,
-            relative to the link reference frame.
-        mass: Mass of the link.
-        inertia: 3x3 rotational inertia matrix, represented in the inertia frame.
+    Attributes
+    ----------
+    origin:
+        This is the pose of the inertial reference frame,
+        relative to the link reference frame.
+    mass:
+        Mass of the link.
+    inertia:
+        3x3 rotational inertia matrix, represented in the inertia frame.
+
     """
 
     def __init__(self, origin=None, mass=None, inertia=None):
@@ -66,13 +69,20 @@ class Inertial(object):
 class Visual(object):
     """Visual description of a link.
 
-    Attributes:
-        geometry: Shape of the visual element.
-        origin: Reference frame of the visual element with respect
-            to the reference frame of the link.
-        name: Name of the visual element.
-        material: Material of the visual element.
-        attr: Non-standard attributes.
+    Attributes
+    ----------
+    geometry:
+        Shape of the visual element.
+    origin:
+        Reference frame of the visual element with respect
+        to the reference frame of the link.
+    name:
+        Name of the visual element.
+    material:
+        Material of the visual element.
+    attr:
+        Non-standard attributes.
+
     """
 
     def __init__(self, geometry, origin=None, name=None, material=None, **kwargs):
@@ -82,10 +92,20 @@ class Visual(object):
         self.material = material
         self.attr = kwargs
 
-    def draw(self):
-        return self.geometry.draw()
+        self.init_transformation = None  # to store the init transformation
+        self.current_transformation = None  # to store the current transformation
+        self.native_geometry = None  # to store the link's CAD native geometry
 
     def get_color(self):
+        """Get the RGBA color array assigned to the link.
+
+        Only if the link has a material assigned.
+
+        Returns
+        -------
+        :obj:`list` of :obj:`float`
+            List of 4 floats (``0.0-1.0``) indicating RGB colors and Alpha channel.
+        """
         if self.material:
             return self.material.get_color()
         else:
@@ -95,12 +115,18 @@ class Visual(object):
 class Collision(object):
     """Collidable description of a link.
 
-    Attributes:
-        geometry: Shape of the collidable element.
-        origin: Reference frame of the collidable element with respect
-            to the reference frame of the link.
-        name: Name of the collidable element.
-        attr: Non-standard attributes.
+    Attributes
+    ----------
+    geometry:
+        Shape of the collidable element.
+    origin:
+        Reference frame of the collidable element with respect
+        to the reference frame of the link.
+    name:
+        Name of the collidable element.
+    attr:
+        Non-standard attributes.
+
     """
 
     def __init__(self, geometry, origin=None, name=None, **kwargs):
@@ -109,23 +135,34 @@ class Collision(object):
         self.name = name
         self.attr = kwargs
 
-    def draw(self):
-        return self.geometry.draw()
+        self.init_transformation = None  # to store the init transformation
+        self.current_transformation = None  # to store the current transformation
+        self.native_geometry = None  # to store the link's CAD native geometry
 
 
 class Link(object):
     """Link represented as a rigid body with an inertia, visual, and collision features.
 
-    Attributes:
-        name: Name of the link itself.
-        type: Link type. Undocumented in URDF, but used by PR2.
-        visual: Visual properties of the link.
-        collision: Collision properties of the link. This can be different
-            from the visual properties of a link.
-        inertial: Inertial properties of the link.
-        attr: Non-standard attributes.
-        joints: A list of joints that are the link's children
-        parent_joint: The reference to a parent joint if it exists
+    Attributes
+    ----------
+    name:
+        Name of the link itself.
+    type:
+        Link type. Undocumented in URDF, but used by PR2.
+    visual:
+        Visual properties of the link.
+    collision:
+        Collision properties of the link. This can be different
+        from the visual properties of a link.
+    inertial:
+        Inertial properties of the link.
+    attr:
+        Non-standard attributes.
+    joints:
+        A list of joints that are the link's children
+    parent_joint:
+        The reference to a parent joint if it exists
+
     """
 
     def __init__(self, name, type=None, visual=[], collision=[], inertial=None, **kwargs):
@@ -137,8 +174,6 @@ class Link(object):
         self.attr = kwargs
         self.joints = []
         self.parent_joint = None
-
-
 
 
 URDFParser.install_parser(Link, 'robot/link')
@@ -160,3 +195,10 @@ URDFParser.install_parser(Capsule, 'robot/link/visual/geometry/capsule', 'robot/
 URDFParser.install_parser(Material, 'robot/link/visual/material')
 URDFParser.install_parser(Color, 'robot/link/visual/material/color')
 URDFParser.install_parser(Texture, 'robot/link/visual/material/texture')
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass

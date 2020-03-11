@@ -22,6 +22,7 @@ __all__ = ['SplinesConduit']
 
 class SplinesConduit(Conduit):
     """"""
+
     def __init__(self, points, lines, splines,
                  thickness=1,
                  spline_thickness=5,
@@ -65,9 +66,9 @@ if __name__ == "__main__":
     from random import randint
     import time
 
-    points    = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(10)]
-    lines     = [(i, i + 1) for i in range(0, 4)]
-    splines   = [(i, i + 1) for i in range(5, 9)]
+    points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(10)]
+    lines = [(i, i + 1) for i in range(0, 4)]
+    splines = [(i, i + 1) for i in range(5, 9)]
     thickness = [2 * i for i in range(len(splines))]
 
     try:

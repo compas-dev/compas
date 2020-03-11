@@ -30,9 +30,9 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     def __init__(self, volmesh):
         self.volmesh = volmesh
         self.defaults = {
-            'color.vertex' : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
-            'color.face'   : (210, 210, 210),
+            'color.vertex': (255, 255, 255),
+            'color.edge': (0, 0, 0),
+            'color.face': (210, 210, 210),
         }
 
     @property
@@ -51,10 +51,7 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
 
 if __name__ == "__main__":
 
-    import compas
-
     from compas.datastructures import VolMesh
-    from compas_ghpython.artists.volmeshartist import VolMeshArtist
 
     volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 

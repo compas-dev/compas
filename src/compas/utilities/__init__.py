@@ -6,16 +6,6 @@ utilities
 .. currentmodule:: compas.utilities
 
 
-animation
-=========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    gif_from_images
-
-
 async
 =====
 
@@ -55,17 +45,6 @@ datetime
     now
 
 
-functions
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    fibonacci
-    binomial_coefficient
-
-
 itertools
 =========
 
@@ -73,28 +52,10 @@ itertools
     :toctree: generated/
     :nosignatures:
 
-    take
-    tabulate
-    tail
-    consume
-    nth
-    all_equal
-    quantify
-    padnone
-    ncycles
-    dotproduct
     flatten
-    repeatfunc
     pairwise
     window
-    roundrobin
-    powerset
-    unique_justseen
-    iter_except
-    first_true
-    random_permutation
-    random_combination
-    random_combination_with_replacement
+    iterable_like
 
 
 maps
@@ -106,7 +67,7 @@ maps
 
     geometric_key
     reverse_geometric_key
-    geometric_key2
+    geometric_key_xy
     normalize_values
 
 
@@ -120,57 +81,25 @@ profiling
     print_profile
 
 
-statistics
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    average
-    variance
-    standard_deviation
-
-
-xfunc
-=====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    XFunc
-
-
 """
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from .animation import *  # noqa: F401 F403
+from .async_ import *  # noqa: F401 F403
+from .coercing import *  # noqa: F401 F403
+from .colors import *  # noqa: F401 F403
+from .datetime_ import *  # noqa: F401 F403
+from .decorators import *  # noqa: F401 F403
+from .descriptors import *  # noqa: F401 F403
+from .encoders import *  # noqa: F401 F403
+from .itertools_ import *  # noqa: F401 F403
+from .maps import *  # noqa: F401 F403
+from .profiling import *  # noqa: F401 F403
+from .remote import *  # noqa: F401 F403
+from .statistics import *  # noqa: F401 F403
+from .xfunc import *  # noqa: F401 F403
 
-def valuedict(keys, value, default):
-    value = value or default
-    if isinstance(value, dict):
-        valuedict = {key: default for key in keys}
-        valuedict.update(value)
-    else:
-        valuedict = {key: value for key in keys}
-    return valuedict
-
-
-from .animation import *
-from .async_ import *
-from .coercing import *
-from .colors import *
-from .datetime_ import *
-from .decorators import *
-from .encoders import *
-from .functions import *
-from .itertools_ import *
-from .maps import *
-from .profiling import *
-from .remote import *
-from .statistics import *
-from .xfunc import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

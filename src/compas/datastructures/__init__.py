@@ -6,16 +6,25 @@ datastructures
 .. currentmodule:: compas.datastructures
 
 
-Mesh
-====
+Meshes
+======
 
 The mesh is implemented as a half-edge datastructure.
 It is meant for the representation of polygonal *"surface"* meshes. A mesh can be
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
 
-Classes
--------
+Base data structures
+--------------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    HalfEdge
+
+Data structures
+---------------
 
 .. autosummary::
     :toctree: generated/
@@ -23,29 +32,26 @@ Classes
 
     Mesh
 
-Functions
----------
+Algorithms
+----------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    mesh_adjacency_matrix
     mesh_bounding_box
     mesh_bounding_box_xy
-    mesh_connectivity_matrix
+    mesh_connected_components
     mesh_contours_numpy
-    mesh_degree_matrix
     mesh_delete_duplicate_vertices
     mesh_dual
-    mesh_face_adjacency
-    mesh_face_matrix
-    mesh_flatness
     mesh_flip_cycles
-    mesh_geodesic_distances
+    mesh_geodesic_distances_numpy
     mesh_is_connected
     mesh_isolines_numpy
-    mesh_laplacian_matrix
+    mesh_offset
+    mesh_oriented_bounding_box_numpy
+    mesh_oriented_bounding_box_xy_numpy
     mesh_planarize_faces
     mesh_quads_to_triangles
     mesh_smooth_centroid
@@ -58,26 +64,64 @@ Functions
     mesh_subdivide_doosabin
     mesh_transform
     mesh_transformed
+    mesh_transform_numpy
+    mesh_transformed_numpy
     mesh_unify_cycles
+    mesh_weld
 
-    trimesh_cotangent_laplacian_matrix
-    trimesh_face_circle
-    trimesh_gaussian_curvature
-    trimesh_mean_curvature
-    trimesh_remesh
-    trimesh_subdivide_loop
-    trimesh_vertexarea_matrix
+Matrices
+--------
 
-Network
-=======
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    mesh_adjacency_matrix
+    mesh_connectivity_matrix
+    mesh_degree_matrix
+    mesh_face_matrix
+    mesh_laplacian_matrix
+
+Conway Operators
+----------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    mesh_conway_dual
+    mesh_conway_join
+    mesh_conway_ambo
+    mesh_conway_kis
+    mesh_conway_needle
+    mesh_conway_zip
+    mesh_conway_truncate
+    mesh_conway_ortho
+    mesh_conway_expand
+    mesh_conway_gyro
+    mesh_conway_snub
+    mesh_conway_meta
+    mesh_conway_bevel
+
+Networks
+========
 
 The network is a connectivity graph.
 It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
 
-Classes
--------
+Base data structures
+--------------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Graph
+
+Data structures
+---------------
 
 .. autosummary::
     :toctree: generated/
@@ -85,8 +129,8 @@ Classes
 
     Network
 
-Functions
----------
+Algorithms
+----------
 
 .. autosummary::
     :toctree: generated/
@@ -94,16 +138,17 @@ Functions
 
     network_complement
     network_count_crossings
-    network_dual
     network_embed_in_plane
     network_find_crossings
-    network_find_faces
+    network_find_cycles
     network_is_connected
     network_is_crossed
     network_is_planar
     network_is_planar_embedding
     network_is_xy
     network_smooth_centroid
+    network_transform
+    network_transformed
 
 VolMesh
 =======
@@ -112,21 +157,11 @@ The volmesh is a cellular mesh. It is implemented as
 a half-plane, the three-dimensional equivalent of a half-edge. It can, for example,
 be used for the representation of subdivided/partitioned polyhedra.
 
-Classes
--------
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     VolMesh
-
-Functions
----------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
 
 """
 
@@ -139,8 +174,9 @@ class Datastructure(object):
     pass
 
 
-from .network import *
-from .mesh import *
-from .volmesh import *
+from .network import *  # noqa: F401 F402 F403
+from .mesh import *  # noqa: F401 F402 F403
+from .volmesh import *  # noqa: F401 F402 F403
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

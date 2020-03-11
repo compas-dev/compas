@@ -58,7 +58,7 @@ def smooth_centroid(vertices,
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        vertices   = mesh.get_vertices_attributes('xyz')
+        vertices   = mesh.vertices_attributes('xyz')
         neighbors = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
         fixed      = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
@@ -162,7 +162,7 @@ def smooth_centerofmass(vertices,
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        vertices  = mesh.get_vertices_attributes('xyz')
+        vertices  = mesh.vertices_attributes('xyz')
         adjacency = [mesh.vertex_neighbors(key, ordered=True) for key in mesh.vertices()]
         fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
@@ -263,7 +263,7 @@ def smooth_area(vertices,
 
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-        vertices  = mesh.get_vertices_attributes('xyz')
+        vertices  = mesh.vertices_attributes('xyz')
         faces     = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
         adjacency = [mesh.vertex_faces(key, ordered=True) for key in mesh.vertices()]
         fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
@@ -301,9 +301,9 @@ def smooth_area(vertices,
     fixed = set(fixed)
 
     for k in range(kmax):
-        xyz_0      = [xyz[:] for xyz in vertices]
+        xyz_0 = [xyz[:] for xyz in vertices]
         centroid_0 = [centroid_points([vertices[index] for index in corners]) for corners in faces]
-        area_0     = [area_polygon([vertices[index] for index in corners]) for corners in faces]
+        area_0 = [area_polygon([vertices[index] for index in corners]) for corners in faces]
 
         for index, point in enumerate(xyz_0):
             if index in fixed:
@@ -313,8 +313,8 @@ def smooth_area(vertices,
             x, y, z = 0, 0, 0
             for nbr in adjacency[index]:
                 if nbr is not None:
-                    a  = area_0[nbr]
-                    c  = centroid_0[nbr]
+                    a = area_0[nbr]
+                    c = centroid_0[nbr]
                     x += a * c[0]
                     y += a * c[1]
                     z += a * c[2]
@@ -338,45 +338,47 @@ def smooth_area(vertices,
 
 if __name__ == "__main__":
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas.geometry import smooth_centerofmass
-    from compas_plotters import MeshPlotter
+    pass
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    # import compas
+    # from compas.datastructures import Mesh
+    # from compas.geometry import smooth_centerofmass
+    # from compas_plotters import MeshPlotter
 
-    # key_index = mesh.key_index()
-    # vertices  = mesh.get_vertices_attributes('xyz')
-    # faces     = [mesh.face_vertices(key) for key in mesh.faces()]
-    # neighbors = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
-    # fixed     = [key_index[key] for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+    # mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    vertices  = mesh.get_vertices_attributes('xyz')
-    faces     = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
-    adjacency = [mesh.vertex_neighbors(key, ordered=True) for key in mesh.vertices()]
-    fixed     = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
+    # # key_index = mesh.key_index()
+    # # vertices  = mesh.vertices_attributes('xyz')
+    # # faces     = [mesh.face_vertices(key) for key in mesh.faces()]
+    # # neighbors = [[key_index[nbr] for nbr in mesh.vertex_neighbors(key)] for key in mesh.vertices()]
+    # # fixed     = [key_index[key] for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start': mesh.vertex_coordinates(u, 'xy'),
-            'end'  : mesh.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
-            'width': 1.0,
-        })
+    # vertices = mesh.vertices_attributes('xyz')
+    # faces = [mesh.face_vertices(fkey) for fkey in mesh.faces()]
+    # adjacency = [mesh.vertex_neighbors(key, ordered=True) for key in mesh.vertices()]
+    # fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
 
-    smooth_centerofmass(vertices, adjacency, fixed=fixed, kmax=100)
+    # lines = []
+    # for u, v in mesh.edges():
+    #     lines.append({
+    #         'start': mesh.vertex_coordinates(u, 'xy'),
+    #         'end': mesh.vertex_coordinates(v, 'xy'),
+    #         'color': '#cccccc',
+    #         'width': 1.0,
+    #     })
 
-    for key, attr in mesh.vertices(True):
-        attr['x'] = vertices[key][0]
-        attr['y'] = vertices[key][1]
-        attr['z'] = vertices[key][2]
+    # smooth_centerofmass(vertices, adjacency, fixed=fixed, kmax=100)
 
-    plotter = MeshPlotter(mesh)
+    # for key, attr in mesh.vertices(True):
+    #     attr['x'] = vertices[key][0]
+    #     attr['y'] = vertices[key][1]
+    #     attr['z'] = vertices[key][2]
 
-    plotter.draw_lines(lines)
-    plotter.draw_vertices(text={key: mesh.vertex_degree(key) for key in mesh.vertices()}, facecolor={key: '#ff0000' for key in fixed})
-    plotter.draw_edges()
-    plotter.draw_faces(text={key: "{:.1f}".format(mesh.face_area(key)) for key in mesh.faces()})
+    # plotter = MeshPlotter(mesh)
 
-    plotter.show()
+    # plotter.draw_lines(lines)
+    # plotter.draw_vertices(text={key: mesh.vertex_degree(key) for key in mesh.vertices()}, facecolor={key: '#ff0000' for key in fixed})
+    # plotter.draw_edges()
+    # plotter.draw_faces(text={key: "{:.1f}".format(mesh.face_area(key)) for key in mesh.faces()})
+
+    # plotter.show()

@@ -23,15 +23,16 @@ def mesh_bounding_box(mesh):
 
     Returns
     -------
-    list
-        The bounding box of the mesh as a list of corner vertex coordinates.
+    list of point
+        The 8 corners of the bounding box of the mesh.
 
     Examples
     --------
-    >>>
+    >>> mesh_bounding_box(mesh)
+    [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0], [0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
 
     """
-    xyz = mesh.get_vertices_attributes('xyz')
+    xyz = mesh.vertices_attributes('xyz', keys=list(mesh.vertices()))
     return bounding_box(xyz)
 
 
@@ -45,15 +46,16 @@ def mesh_bounding_box_xy(mesh):
 
     Returns
     -------
-    box_xy
-        The bounding box.
+    list of point
+        The 4 corners of the bounding polygon in the XY plane.
 
     Examples
     --------
-    >>>
+    >>> mesh_bounding_box_xy(mesh)
+    [[0.0, 0.0, 0.0], [10.0, 0.0, 0.0], [10.0, 10.0, 0.0], [0.0, 10.0, 0.0]]
 
     """
-    xyz = mesh.get_vertices_attributes('xyz')
+    xyz = mesh.vertices_attributes('xyz')
     return bounding_box_xy(xyz)
 
 
@@ -63,4 +65,10 @@ def mesh_bounding_box_xy(mesh):
 
 if __name__ == '__main__':
 
-    pass
+    import doctest
+    import compas
+    from compas.datastructures import Mesh
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+
+    doctest.testmod()

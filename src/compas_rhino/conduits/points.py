@@ -45,7 +45,7 @@ class PointsConduit(Conduit):
     size
     color
     points : list of list of float
-        
+
 
     Examples
     --------
@@ -76,6 +76,7 @@ class PointsConduit(Conduit):
             del conduit
 
     """
+
     def __init__(self, points, size=None, color=None, **kwargs):
         super(PointsConduit, self).__init__(**kwargs)
         self._default_size = 3
@@ -124,7 +125,7 @@ class PointsConduit(Conduit):
 
         """
         return self._color
-    
+
     @color.setter
     def color(self, color):
         if color:

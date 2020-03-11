@@ -12,7 +12,15 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__all__ = ['FaceSelector']
+__all__ = [
+    'FaceSelector',
+
+    'mesh_select_faces',
+    'mesh_select_face',
+
+    'volmesh_select_faces',
+    'volmesh_select_face'
+    ]
 
 
 class FaceSelector(object):
@@ -46,6 +54,63 @@ class FaceSelector(object):
                             key = ast.literal_eval(key)
                             keys.append(key)
         return keys
+
+
+def mesh_select_faces(mesh, message='Select mesh faces.'):
+    """Select faces of a mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    message : str ("Select mesh faces.")
+        The message to display to the user.
+
+    Returns
+    -------
+    list
+        The keys of the selected faces.
+
+    See Also
+    --------
+    * :func:`mesh_select_vertices`
+    * :func:`mesh_select_edges`
+
+    """
+    return FaceSelector.select_faces(mesh)
+
+
+def mesh_select_face(mesh, message='Select face.'):
+    """Select one face of a mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    message : str ("Select a mesh face.")
+        The message to display to the user.
+
+    Returns
+    -------
+    hashable
+        The key of the selected face.
+
+    See Also
+    --------
+    * :func:`mesh_select_faces`
+
+    """
+    return FaceSelector.select_face(mesh)
+
+
+def volmesh_select_face(volmesh):
+    """"""
+    return FaceSelector.select_face(volmesh)
+
+
+def volmesh_select_faces(volmesh):
+    """"""
+    return FaceSelector.select_faces(volmesh)
 
 
 # ==============================================================================

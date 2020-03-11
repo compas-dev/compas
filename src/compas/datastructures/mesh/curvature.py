@@ -33,7 +33,7 @@ def trimesh_gaussian_curvature(mesh):
     Warning
     -------
     This function will not check if the provided mesh is actually a triangle mesh.
-    It will just treat as such...
+    It will just treat it as such...
 
     Notes
     -----
@@ -47,13 +47,9 @@ def trimesh_gaussian_curvature(mesh):
     where :math:`N(i)` are the triangles incident on vertex :math:`i` and :math:`\teta_{ij}`
     is the angle at vertex :math:`i` in triangle :math:`j`.
 
-    Examples
-    --------
-    >>>
-
     """
     pi2 = 2 * pi
-    key_xyz = {key: mesh.get_vertex_attributes(key, 'xyz') for key in mesh.vertices()}
+    key_xyz = {key: mesh.vertex_attributes(key, 'xyz') for key in mesh.vertices()}
     curvature = []
     for key in mesh.vertices():
         angles = []
@@ -65,7 +61,6 @@ def trimesh_gaussian_curvature(mesh):
                 v = vertices[vertices.index(key) - 1]
                 a = key_xyz[u]
                 b = key_xyz[v]
-                print(o, a, b)
                 angles.append(angle_points(o, a, b))
         curvature.append(pi2 - sum(angles))
     return curvature

@@ -4,7 +4,7 @@ from __future__ import division
 
 import collections
 
-from compas.geometry.distance import distance_point_point_sqrd
+from compas.geometry import distance_point_point_sqrd
 
 
 __all__ = [
@@ -232,8 +232,8 @@ if __name__ == '__main__':
 
     tree = KDTree(cloud)
 
-    n       = 50
-    nnbrs   = []
+    n = 50
+    nnbrs = []
     exclude = set()
 
     for i in range(n):
@@ -247,16 +247,16 @@ if __name__ == '__main__':
     points = []
     for index, (x, y, z) in enumerate(cloud):
         points.append({
-            'pos'      : [x, y],
+            'pos': [x, y],
             'facecolor': '#000000',
             'edgecolor': '#000000',
-            'radius'   : 1.0
+            'radius': 1.0
         })
     points.append({
-        'pos'      : point[0:2],
+        'pos': point[0:2],
         'facecolor': '#ff0000',
         'edgecolor': '#ff0000',
-        'radius'   : 5.0
+        'radius': 5.0
     })
 
     lines = []
@@ -266,10 +266,10 @@ if __name__ == '__main__':
         points[label]['radius'] = 3.0
 
         lines.append({
-            'start' : point[0:2],
-            'end'   : xyz[0:2],
-            'color' : '#000000',
-            'width' : 0.1,
+            'start': point[0:2],
+            'end': xyz[0:2],
+            'color': '#000000',
+            'width': 0.1,
         })
 
     plotter.draw_lines(lines)

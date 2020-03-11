@@ -1,4 +1,3 @@
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -20,8 +19,7 @@ __all__ = [
 
 @jit(f8[:, :](f8[:, :], f8[:, :]), nogil=True, nopython=True, parallel=False, cache=True)
 def distance_matrix_numba(A, B):
-
-    """ Distance matrix between two point clouds.
+    """Distance matrix between two point clouds.
 
     Parameters
     ----------
@@ -34,9 +32,7 @@ def distance_matrix_numba(A, B):
     -------
     array
         Distance matrix (m x n).
-
     """
-
     m = A.shape[0]
     n = B.shape[0]
     o = zeros((m, n))
@@ -59,8 +55,7 @@ def distance_matrix_numba(A, B):
 
 
 def closest_distance_field_numba(x, y, z, points):
-
-    """ Closest distance field between a grid and set of target points.
+    """Closest distance field between a grid and set of target points.
 
     Parameters
     ----------
@@ -77,10 +72,8 @@ def closest_distance_field_numba(x, y, z, points):
     -------
     array
         Distance field array (m x n x o).
-
     """
-
-    m, n, o   = x.shape
+    m, n, o = x.shape
     distances = zeros((m, n, o))
 
     for i in range(m):
@@ -98,43 +91,43 @@ def closest_distance_field_numba(x, y, z, points):
 # ==============================================================================
 
 if __name__ == "__main__":
+    pass
 
-    from numpy import hstack
-    from numpy import linspace
-    from numpy import meshgrid
-    from numpy import newaxis
+    # from numpy import hstack
+    # from numpy import linspace
+    # from numpy import meshgrid
+    # from numpy import newaxis
 
-    from compas_viewers import VtkViewer
+    # from compas.viewers import VtkViewer
 
+    # # Grid
 
-    # Grid
+    # n = 50
+    # a = linspace(-1, 1, n)
+    # xm, ym, zm = meshgrid(a, a, a)
 
-    n = 50
-    a = linspace(-1, 1, n)
-    xm, ym, zm = meshgrid(a, a, a)
+    # # Test points
 
-    # Test points
+    # x = xm.ravel()
+    # y = ym.ravel()
+    # z = zm.ravel()
 
-    x = xm.ravel()
-    y = ym.ravel()
-    z = zm.ravel()
+    # r = x**2 + y**2 + z**2
+    # lg = r < 0.05
+    # xs = x[lg][:, newaxis]
+    # ys = y[lg][:, newaxis]
+    # zs = z[lg][:, newaxis]
 
-    r  = x**2 + y**2 + z**2
-    lg = r < 0.05
-    xs = x[lg][:, newaxis]
-    ys = y[lg][:, newaxis]
-    zs = z[lg][:, newaxis]
+    # points = hstack([xs, ys, zs])
+    # print(points.shape)
 
-    points = hstack([xs, ys, zs])
-    print(points.shape)
+    # # Distances
 
-    # Distances
+    # distances = closest_distance_field_numba(xm, ym, zm, points)
 
-    distances = closest_distance_field_numba(xm, ym, zm, points)
+    # # View
 
-    # View
-
-    data   = {'voxels': distances}
-    viewer = VtkViewer(data=data)
-    viewer.setup()
-    viewer.start()
+    # data = {'voxels': distances}
+    # viewer = VtkViewer(data=data)
+    # viewer.setup()
+    # viewer.start()

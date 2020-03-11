@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.utilities import pairwise
-from compas.geometry import centroid_points
 from compas.topology import breadth_first_traverse
 
 
@@ -14,10 +12,10 @@ __all__ = [
 ]
 
 
-def _mesh_face_adjacency(mesh, nmax=10, radius=2.0):
+def _mesh_face_adjacency(mesh, nmax=10, radius=10.0):
     fkey_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
     index_fkey = {index: fkey for index, fkey in enumerate(mesh.faces())}
-    points     = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
+    points = [mesh.face_centroid(fkey) for fkey in mesh.faces()]
 
     k = min(mesh.number_of_faces(), nmax)
 
@@ -28,40 +26,38 @@ def _mesh_face_adjacency(mesh, nmax=10, radius=2.0):
         _, closest = tree.query(points, k=k, n_jobs=-1)
 
     except Exception:
-        try:
-            import Rhino
+        # try:
+        #     from Rhino.Geometry import RTree
+        #     from Rhino.Geometry import Sphere
+        #     from Rhino.Geometry import Point3d
 
-        except Exception:
-            from compas.geometry import KDTree
+        # except Exception:
+        from compas.geometry import KDTree
 
-            tree = KDTree(points)
-            closest = [tree.nearest_neighbors(point, k) for point in points]
-            closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
+        tree = KDTree(points)
+        closest = [tree.nearest_neighbors(point, k) for point in points]
+        closest = [[index for xyz, index, d in nnbrs] for nnbrs in closest]
 
-        else:
-            from Rhino.Geometry import RTree
-            from Rhino.Geometry import Sphere
-            from Rhino.Geometry import Point3d
+        # else:
+        #     tree = RTree()
+        #     for i, point in enumerate(points):
+        #         tree.Insert(Point3d(* point), i)
 
-            tree = RTree()
-            for i, point in enumerate(points):
-                tree.Insert(Point3d(* point), i)
+        #     def callback(sender, e):
+        #         data = e.Tag
+        #         data.append(e.Id)
 
-            def callback(sender, e):
-                data = e.Tag
-                data.append(e.Id)
+        #     closest = []
+        #     for i, point in enumerate(points):
+        #         sphere = Sphere(Point3d(* point), radius)
+        #         data = []
+        #         tree.Search(sphere, callback, data)
+        #         closest.append(data)
 
-            closest = []
-            for i, point in enumerate(points):
-                sphere = Sphere(Point3d(* point), radius)
-                data = []
-                tree.Search(sphere, callback, data)
-                closest.append(data)
-
-    adjacency  = {}
+    adjacency = {}
 
     for fkey in mesh.faces():
-        nbrs  = []
+        nbrs = []
         index = fkey_index[fkey]
         found = set()
 
@@ -119,7 +115,7 @@ def mesh_face_adjacency(mesh):
     if f > 100:
         return _mesh_face_adjacency(mesh)
 
-    adjacency  = {}
+    adjacency = {}
     faces = list(mesh.faces())
 
     for fkey in mesh.faces():
@@ -130,7 +126,7 @@ def mesh_face_adjacency(mesh):
         #         if fnbr is not None:
         #             faces.append(fnbr)
 
-        nbrs  = []
+        nbrs = []
         found = set()
 
         for u, v in mesh.face_halfedges(fkey):

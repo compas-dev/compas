@@ -57,7 +57,7 @@ class MatlabEngine(object):
     def __init__(self):
         self._matlab = None
         self._engine = None
-        self.engine  = None
+        self.engine = None
         self.session_name = None
         self._init()
 
@@ -186,10 +186,4 @@ class MatlabEngine(object):
 
 if __name__ == "__main__":
 
-    matlab = MatlabEngine()
-    matlab.connect()
-
-    A = matlab.double([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]])
-    res = matlab.engine.rref(A, nargout=2)
-
-    print(res)
+    pass

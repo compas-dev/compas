@@ -65,4 +65,12 @@ def mesh_dual(mesh, cls=None):
 
 if __name__ == '__main__':
 
-    pass
+    import compas
+    from compas.datastructures import Mesh
+    from compas_plotters import MeshPlotter
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    plotter = MeshPlotter(mesh_dual(mesh), figsize=(8, 5))
+    plotter.draw_edges()
+    plotter.draw_vertices()
+    plotter.show()

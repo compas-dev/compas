@@ -40,13 +40,14 @@ def gif_from_images(files,
     subrectangles : bool, optional
         Default is ``True``.
 
+    Examples
+    --------
+    >>>
     """
     if reverse:
         files.reverse()
-
     if pingpong:
         files += files[::-1]
-
     with imageio.get_writer(gif_path,
                             mode='I',
                             fps=fps,
@@ -55,7 +56,6 @@ def gif_from_images(files,
         for filename in files:
             image = imageio.imread(filename)
             writer.append_data(image)
-
     if delete_files:
         for filename in files:
             os.remove(filename)
@@ -66,10 +66,4 @@ def gif_from_images(files,
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    import compas
-
-    base  = 'example-mesh-remeshing-on-mesh'
-    files = [os.path.join(compas.TEMP, 'screenshots', base + '-' + str(i).zfill(4) + '.jpg') for i in range(5, 295, 10)]
-
-    gif_from_images(files, os.path.join(compas.TEMP, base + '.gif'))
+    pass

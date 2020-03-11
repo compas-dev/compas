@@ -4,11 +4,8 @@ from __future__ import print_function
 
 import compas
 
-# from .fd_alglib import *
-# from .fd_cpp import *
-
 if not compas.IPY:
-    from .fd_numpy import *
+    from .fd_numpy import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

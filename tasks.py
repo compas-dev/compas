@@ -127,13 +127,13 @@ def check(ctx):
 
     with chdir(BASE_FOLDER):
         log.write('Checking MANIFEST.in...')
-        ctx.run('check-manifest --ignore-bad-ideas=test.so,fd.so,smoothing.so,drx_c.so')
+        ctx.run('check-manifest')
 
         log.write('Checking metadata...')
         ctx.run('python setup.py check --strict --metadata')
 
-        # log.write('Running flake8 python linter...')
-        # ctx.run('flake8 src tests setup.py')
+        log.write('Running flake8 python linter...')
+        ctx.run('flake8 --count --statistics src tests')
 
         # log.write('Checking python imports...')
         # ctx.run('isort --check-only --diff --recursive src tests setup.py')
@@ -170,7 +170,6 @@ def prepare_changelog(ctx):
         ctx.run('git add CHANGELOG.md && git commit -m "Prepare changelog for next release"')
 
 
-
 @task(help={
       'release_type': 'Type of release follows semver rules. Must be one of: major, minor, patch.'})
 def release(ctx, release_type):
@@ -182,7 +181,7 @@ def release(ctx, release_type):
     ctx.run('invoke check test')
 
     # Bump version and git tag it
-    ctx.run('bumpversion %s --verbose' % release_type)
+    ctx.run('bump2version %s --verbose' % release_type)
 
     # Build project
     ctx.run('python setup.py clean --all sdist bdist_wheel')

@@ -40,7 +40,8 @@ def convex_hull(points):
     ----------
     .. [1] GitHubGist. *Convex Hull*.
            Available at: https://gist.github.com/anonymous/5184ba0bcab21d3dd19781efd3aae543
-    .. [2] http://thomasdiewald.com/blog/?p=1888
+    .. [2] Thomas Diewald. *Convex Hull 3D - Quickhull Algorithm*.
+           Available at: https://web.archive.org/web/20180106161310/http://thomasdiewald.com/blog/?p=1888
 
     Examples
     --------
@@ -54,6 +55,7 @@ def convex_hull(points):
         import random
 
         from compas.geometry import distance_point_point
+        from compas.geometry import convex_hull
         from compas.datastructures import Mesh
         from compas_rhino import MeshArtist
 
@@ -191,47 +193,10 @@ def convex_hull_xy(points, strict=False):
 
 if __name__ == "__main__":
 
-    # todo: distinguish between vertices of hull and internal vertices
-
-    # from compas.geometry import pointcloud_xy
-    # from compas_plotters import Plotter
-    # from compas.utilities import pairwise
-
-    # cloud = pointcloud_xy(50, (0, 100), (0, 100))
-    # hull = convex_hull_xy(cloud)
-
-    # points = []
-    # for a in cloud:
-    #     points.append({
-    #         'pos'       : a,
-    #         'facecolor' : '#0000ff',
-    #         'radius'    : 0.5
-    #     })
-
-    # lines = []
-    # for a, b in pairwise(hull + hull[:1]):
-    #     lines.append({
-    #         'start' : a,
-    #         'end'   : b,
-    #         'color' : '#ff0000',
-    #         'width' : 2.0
-    #     })
-
-    # plotter = Plotter()
-
-    # plotter.draw_points(points)
-    # plotter.draw_lines(lines)
-
-    # plotter.show()
-
     import random
-
     from compas.utilities import flatten
-    from compas.geometry import distance_point_point
-
     from compas.datastructures import Mesh
     from compas_viewers import MeshViewer
-
     from compas.topology import unify_cycles
 
     radius = 5
@@ -261,7 +226,5 @@ if __name__ == "__main__":
     mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
     viewer = MeshViewer()
-
     viewer.mesh = mesh
-
     viewer.show()

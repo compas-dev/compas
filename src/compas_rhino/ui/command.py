@@ -1,90 +1,56 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
-import compas
-
-try:
-    import rhinoscriptsyntax as rs
-
-except ImportError:
-    compas.raise_if_ironpython()
+import compas_rhino
 
 
-__all__ = ['Command', 'CommandLoop', 'command_line_menu']
+__all__ = ['CommandMenu', 'CommandAction']
 
 
-class Command(object):
-    pass
-
-
-class CommandLoop(object):
+class CommandMenu(object):
     """"""
 
-    def __init__(self):
-        self.options = None
-        self.default = None
-        self.option = None
-        self.message = None
+    __module__ = "compas_rhino.ui"
 
-    def is_option(self):
-        if not self.option:
-            return False
-        if self.option not in self.options:
-            return False
+    def __init__(self, menu):
+        self.menu = menu
 
-    def get_option(self):
-        self.option = rs.GetString(self.message, self.default, self.options)
-
-    def handle_option(self):
-        self.handlers[self.option]()
-
-    def loop(self):
-        while True:
-            self.get_option()
-            if not self.is_option():
+    def select_action(self):
+        def _select(message, options):
+            if not options:
                 return
-            self.handle_option()
+            names = [option["name"] for option in options]
+            name = compas_rhino.rs.GetString(message, names[0], names)
+            if not name:
+                return
+            if name not in names:
+                raise Exception("This option is not valid: {}".format(name))
+            for option in options:
+                if option["name"] == name:
+                    break
+            if "action" in option:
+                return option
+
+            message = option["message"]
+            options = option.get("options")
+
+            return _select(message, options)
+
+        return _select(self.menu["message"], self.menu["options"])
 
 
-def command_line_menu(interface):
-    """Create a Rhino-style command line menu.
+class CommandAction(object):
+    """"""
 
-    Parameters:
-        interface (dict) : A (nested) dictionary with interface options.
-            The structure of the dictionary is as follows:
+    __module__ = "compas_rhino.ui"
 
-                interface['options'] := [...]
-                interface['message'] := '...'
-                interface['default'] := '...'
-                interface['show']    := '...'
-                interface['ID']      := '...'
+    def __init__(self, name, action):
+        self.name = name
+        self.action = action
 
-    Return:
-        str : The selected option.
-        None : If the command is interrupted, for example by pressing ``ESC``
-
-    Examples:
-
-        .. code-block:: python
-
-            # ...
-
-    """
-    if rs.GetDocumentData(interface["ID"], interface["ID"]):
-        interface["default"] = rs.GetDocumentData(interface["ID"], interface["ID"])
-    new_options = []
-    sub_menus = {}
-    for option in interface["options"]:
-        if isinstance(option, basestring):
-            new_options.append(option)
-        else:
-            new_options.append(option["show"])
-            sub_menus[option["show"]] = option
-    result = rs.GetString(interface["message"], interface["default"], new_options)
-    interface["default"] = result
-    rs.SetDocumentData(interface["ID"], interface["ID"], result)
-    if result in sub_menus:
-        result = command_line_menu(sub_menus[result])
-    return result
+    def __call__(self, *args, **kwargs):
+        return self.action(*args, **kwargs)
 
 
 # ==============================================================================
@@ -93,28 +59,27 @@ def command_line_menu(interface):
 
 if __name__ == "__main__":
 
-    interface_3 = {
-        "options" : ["sub_sub_option_1", "sub_sub_option_2"],
-        "message" : "Select C",
-        "default" : "sub_sub_option_1",
-        "show"    : "sub_sub_menu",
-        "ID"      : "interface_3",
+    config = {
+        "message": "FormDiagram Select",
+        "options": [
+            {"name": "Vertices", "message": "Select Vertices", "options": [
+                {"name": "Boundary", "action": None},
+                {"name": "Continuous", "action": None},
+                {"name": "Parallel", "action": None},
+            ]},
+            {"name": "Edges", "message": "Select Edges", "options": [
+                {"name": "Boundary", "action": None},
+                {"name": "Continuous", "action": None},
+                {"name": "Parallel", "action": None},
+            ]},
+            {"name": "Faces", "message": "Select Faces", "options": [
+                {"name": "Boundary", "action": None},
+                {"name": "Continuous", "action": None},
+                {"name": "Parallel", "action": None},
+            ]}
+        ]
     }
 
-    interface_2 = {
-        "options" : ["sub_option_1", interface_3],
-        "message" : "Select B",
-        "default" : "sub_option_1",
-        "show"    : "sub_menu",
-        "ID"      : "interface_2",
-    }
-
-    interface_1 = {
-        "options" : ["option_1", "option_2", interface_2],
-        "message" : "Select A",
-        "default" : "option_1",
-        "show"    : None,
-        "ID"      : "interface_1"
-    }
-
-    print(command_line_menu(interface_1))
+    menu = CommandMenu(config)
+    action = menu.select_action()
+    print(action)

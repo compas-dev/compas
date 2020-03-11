@@ -2,8 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.datastructures import Mesh
-from compas.robots.resources.basic import SUPPORTED_FORMATS
 from compas.robots.resources.basic import AbstractMeshLoader
 from compas.robots.resources.basic import _mesh_import
 
@@ -41,6 +39,19 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         self.schema_prefix = 'package://' + self.support_package + '/'
 
     def build_url(self, file):
+        """Returns the corresponding url of the file.
+
+        Parameters
+        ----------
+        file : str
+            File name. Following convention, the file should reside
+            inside a ``urdf`` folder.
+
+        Returns
+        -------
+        str
+            The file's url.
+        """
         return '{}/{}/{}/{}/{}'.format(GithubPackageMeshLoader.HOST,
                                        self.repository,
                                        self.branch,
@@ -96,3 +107,11 @@ class GithubPackageMeshLoader(AbstractMeshLoader):
         # storing a temp file for these urls
         tempfile, _ = urlretrieve(url)
         return _mesh_import(url, tempfile)
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass

@@ -3,23 +3,21 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import json
 import inspect
 
 import compas
 
 import uuid
-from xml.etree import ElementTree as ET
-from xml.dom import minidom
+
+if not compas.IPY:
+    from xml.etree import ElementTree as ET
+    from xml.dom import minidom
 
 
-__all__ = [
-    'Rui',
-    'compile_rui'
-]
+__all__ = ['Rui']
 
 
-TPL_RUI = '''<?xml version="1.0" encoding="utf-8"?>
+TPL_RUI = """<?xml version="1.0" encoding="utf-8"?>
 <RhinoUI major_ver="2"
          minor_ver="0"
          guid="{0}"
@@ -61,9 +59,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</bitmap>
     </bitmaps>
     <scripts />
 </RhinoUI>
-'''
+"""
 
-TPL_MACRO = '''
+TPL_MACRO = """
 <macro_item guid="{0}">
     <text>
         <locale_1033>{1}</locale_1033>
@@ -82,39 +80,39 @@ TPL_MACRO = '''
         <locale_1033>{6}</locale_1033>
     </menu_text>
 </macro_item>
-'''
+"""
 
-TPL_MENUITEM = '''
+TPL_MENUITEM = """
 <menu_item guid="{0}" item_type="normal">
     <macro_id>{1}</macro_id>
 </menu_item>
-'''
+"""
 
-TPL_MENUSEPARATOR = '''
+TPL_MENUSEPARATOR = """
 <menu_item guid="{0}" item_type="separator"></menu_item>
-'''
+"""
 
-TPL_TOOLBARITEM = '''
+TPL_TOOLBARITEM = """
 <tool_bar_item guid="{0}" button_display_mode="control_only" button_style="normal">
     <left_macro_id>{1}</left_macro_id>
     <right_macro_id>{2}</right_macro_id>
 </tool_bar_item>
-'''
+"""
 
-TPL_TOOLBARSEPARATOR = '''
+TPL_TOOLBARSEPARATOR = """
 <tool_bar_item guid="{0}" button_display_mode="control_only" button_style="spacer">
 </tool_bar_item>
-'''
+"""
 
-TPL_TOOLBAR = '''
+TPL_TOOLBAR = """
 <tool_bar guid="{0}" item_display_style="{2[item_display_style]}">
     <text>
         <locale_1033>{1}</locale_1033>
     </text>
 </tool_bar>
-'''
+"""
 
-TPL_TOOLBARGROUP = '''
+TPL_TOOLBARGROUP = """
 <tool_bar_group guid="{0}"
                 dock_bar_guid32=""
                 dock_bar_guid64=""
@@ -126,16 +124,16 @@ TPL_TOOLBARGROUP = '''
         <locale_1033>{1}</locale_1033>
     </text>
 </tool_bar_group>
-'''
+"""
 
-TPL_TOOLBARGROUPITEM = '''
+TPL_TOOLBARGROUPITEM = """
 <tool_bar_group_item guid="{0}" major_version="1" minor_version="1">
     <text>
         <locale_1033>{1}</locale_1033>
     </text>
     <tool_bar_id>{2}</tool_bar_id>
 </tool_bar_group_item>
-'''
+"""
 
 
 def get_method_comments(obj):
@@ -192,52 +190,54 @@ def get_public_methods(obj):
     return [method for method in methods if not method[0].startswith('_')]
 
 
-def get_macros(controller, instance_name):
-    methods = get_public_methods(controller)
-    macros  = []
-    for n, o in methods:
-        annotations = get_parsed_object_comments(o, separator='=>')
-        name        = annotations.get('name') or n
-        script      = annotations.get('script') or '-_RunPythonScript ({0}.{1}())'.format(instance_name, name)
-        tooltip     = annotations.get('tooltip')
-        help_text   = annotations.get('help_text') or tooltip
-        text        = annotations.get('text') or name
-        button_text = annotations.get('button_text') or text
-        menu_text   = annotations.get('menu_text') or ' '.join(text.split('_'))
-        macros.append({
-            'name'        : instance_name + '.' + name,
-            'script'      : script,
-            'tooltip'     : tooltip,
-            'help_text'   : help_text,
-            'button_text' : button_text,
-            'menu_text'   : menu_text,
-        })
-    return macros
+# def get_macros(controller, instance_name):
+#     methods = get_public_methods(controller)
+#     macros = []
+#     for n, o in methods:
+#         annotations = get_parsed_object_comments(o, separator='=>')
+#         name = annotations.get('name') or n
+#         script = annotations.get('script') or '-_RunPythonScript ({0}.{1}())'.format(instance_name, name)
+#         tooltip = annotations.get('tooltip')
+#         help_text = annotations.get('help_text') or tooltip
+#         text = annotations.get('text') or name
+#         button_text = annotations.get('button_text') or text
+#         menu_text = annotations.get('menu_text') or ' '.join(text.split('_'))
+#         macros.append({
+#             'name': instance_name + '.' + name,
+#             'script': script,
+#             'tooltip': tooltip,
+#             'help_text': help_text,
+#             'button_text': button_text,
+#             'menu_text': menu_text,
+#         })
+#     return macros
 
 
-def find_macro(name, macros):
-    for i, macro in enumerate(macros):
-        if macro['name'] == name:
-            return i, macro
-    return None, None
+# def find_macro(name, macros):
+#     for i, macro in enumerate(macros):
+#         if macro['name'] == name:
+#             return i, macro
+#     return None, None
 
 
-def update_macro(macros, name, key, value):
-    i, macro = find_macro(name, macros)
-    if macro:
-        macro[key] = value
-    macros[i] = macro
+# def update_macro(macros, name, key, value):
+#     i, macro = find_macro(name, macros)
+#     if macro:
+#         macro[key] = value
+#     macros[i] = macro
 
 
 class Rui(object):
-    """Class for generating *.rui files.
+    """Class for generating RUI files.
 
     Parameters
     ----------
     filepath : str
-        Path to the *.rui file.
+        Path to the RUI file.
 
     """
+
+    __module__ = "compas_rhino.ui"
 
     def __init__(self, filepath):
         self.filepath = filepath
@@ -265,12 +265,12 @@ class Rui(object):
     def init(self):
         with open(self.filepath, 'w+') as f:
             f.write(TPL_RUI.format(uuid.uuid4(), uuid.uuid4()))
-        self.xml                = ET.parse(self.filepath)
-        self.root               = self.xml.getroot()
-        self.root_macros        = self.root.find('macros')
-        self.root_menus         = self.root.find('menus')
+        self.xml = ET.parse(self.filepath)
+        self.root = self.xml.getroot()
+        self.root_macros = self.root.find('macros')
+        self.root_menus = self.root.find('menus')
         self.root_toolbargroups = self.root.find('tool_bar_groups')
-        self.root_toolbars      = self.root.find('tool_bars')
+        self.root_toolbars = self.root.find('tool_bars')
 
     def parse(self):
         raise NotImplementedError
@@ -288,13 +288,13 @@ class Rui(object):
 
     def add_macros(self, macros):
         for macro in macros:
-            guid        = str(uuid.uuid4())
-            name        = macro['name']
-            script      = macro['script']
-            tooltip     = macro.get('tooltip', '')
-            help_text   = macro.get('help_text', '')
+            guid = str(uuid.uuid4())
+            name = macro['name']
+            script = macro['script']
+            tooltip = macro.get('tooltip', '')
+            help_text = macro.get('help_text', '')
             button_text = macro.get('button_text', name)
-            menu_text   = macro.get('menu_text', name.replace('_', ' '))
+            menu_text = macro.get('menu_text', name.replace('_', ' '))
             self.add_macro(name, guid, script, tooltip, help_text, button_text, menu_text)
 
     def add_macro(self, name, guid, script, tooltip, help_text, button_text, menu_text):
@@ -316,8 +316,8 @@ class Rui(object):
             root = self.root_menus
         e_menu = ET.SubElement(root, 'menu')
         e_menu.set('guid', str(uuid.uuid4()))
-        e_text        = ET.SubElement(e_menu, 'text')
-        e_locale      = ET.SubElement(e_text, 'locale_1033')
+        e_text = ET.SubElement(e_menu, 'text')
+        e_locale = ET.SubElement(e_text, 'locale_1033')
         e_locale.text = menu['name']
         for item in menu['items']:
             if item['type'] == 'normal':
@@ -333,13 +333,13 @@ class Rui(object):
                 continue
 
     def add_menuitem(self, root, macro_id):
-        guid   = uuid.uuid4()
+        guid = uuid.uuid4()
         s_item = TPL_MENUITEM.format(guid, macro_id)
         e_item = ET.fromstring(s_item)
         root.append(e_item)
 
     def add_menuseparator(self, root):
-        guid  = uuid.uuid4()
+        guid = uuid.uuid4()
         s_sep = TPL_MENUSEPARATOR.format(guid)
         e_sep = ET.fromstring(s_sep)
         root.append(e_sep)
@@ -367,11 +367,11 @@ class Rui(object):
                 left_macro = item.get('left_macro', item.get('left'))
                 if left_macro:
                     e_left = self.macros[left_macro]
-                    left_guid  = e_left.attrib['guid']
+                    left_guid = e_left.attrib['guid']
                 right_guid = None
                 right_macro = item.get('right_macro', item.get('right'))
                 if right_macro:
-                    e_right    = self.macros[right_macro]
+                    e_right = self.macros[right_macro]
                     right_guid = e_right.attrib['guid']
                 self.add_toolbaritem(e_tb, left_guid, right_guid)
                 continue
@@ -380,13 +380,13 @@ class Rui(object):
                 continue
 
     def add_toolbaritem(self, root, left_macro_id, right_macro_id):
-        guid   = uuid.uuid4()
+        guid = uuid.uuid4()
         s_item = TPL_TOOLBARITEM.format(guid, left_macro_id, right_macro_id)
         e_item = ET.fromstring(s_item)
         root.append(e_item)
 
     def add_toolbarseparator(self, root):
-        guid  = uuid.uuid4()
+        guid = uuid.uuid4()
         s_sep = TPL_TOOLBARSEPARATOR.format(guid)
         e_sep = ET.fromstring(s_sep)
         root.append(e_sep)
@@ -401,82 +401,82 @@ class Rui(object):
 
     def add_toolbargroup(self, tbg):
         options = {
-            'single_file'     : 'False',
-            'hide_single_tab' : 'False',
+            'single_file': 'False',
+            'hide_single_tab': 'False',
         }
-        guid  = uuid.uuid4()
+        guid = uuid.uuid4()
         s_tbg = TPL_TOOLBARGROUP.format(guid, tbg['name'], options)
         e_tbg = ET.fromstring(s_tbg)
         self.root_toolbargroups.append(e_tbg)
         for tb_name in tbg['toolbars']:
-            e_tb    = self.toolbars[tb_name]
+            e_tb = self.toolbars[tb_name]
             tb_guid = e_tb.attrib['guid']
             self.add_toolbargroupitem(e_tbg, tb_name, tb_guid)
 
     def add_toolbargroupitem(self, root, tb_name, tb_guid):
-        guid   = uuid.uuid4()
+        guid = uuid.uuid4()
         s_item = TPL_TOOLBARGROUPITEM.format(guid, tb_name, tb_guid)
         e_item = ET.fromstring(s_item)
         root.append(e_item)
 
 
-def compile_rui(oclass, opath, rui_config='rui_config.json'):
-    """Compile an RUI file from a MacroController class.
+# def compile_rui(oclass, opath, rui_config='rui_config.json'):
+#     """Compile an RUI file from a MacroController class.
 
-    Parameters
-    ----------
-    oclass : MacroController
-        The controller class.
-    opath : str
-        The module path of the controller class.
-    rui_config : str, optional
-        The path of the configuration file.
-        Default is ``'rui_config.json'``
+#     Parameters
+#     ----------
+#     oclass : MacroController
+#         The controller class.
+#     opath : str
+#         The module path of the controller class.
+#     rui_config : str, optional
+#         The path of the configuration file.
+#         Default is ``'rui_config.json'``
 
-    Returns
-    -------
-    None
+#     Returns
+#     -------
+#     None
 
-    Examples
-    --------
-    .. code-block:: python
+#     Examples
+#     --------
+#     .. code-block:: python
 
-        #
+#         #
 
-    """
+#     """
 
-    if not oclass.instancename:
-        raise Exception('MacroController instance name not set.')
+#     if not oclass.instancename:
+#         raise Exception('MacroController instance name not set.')
 
-    with open(os.path.join(rui_config), 'r') as fp:
-        config = json.load(fp)
+#     with open(os.path.join(rui_config), 'r') as fp:
+#         config = json.load(fp)
 
-    macros = get_macros(oclass, oclass.instancename)
+#     macros = get_macros(oclass, oclass.instancename)
 
-    init_script = [
-        '-_RunPythonScript ResetEngine (',
-        'import rhinoscriptsyntax as rs;',
-        'import sys;',
-        'import os;',
-        'path = rs.ToolbarCollectionPath(\'{}\');'.format(oclass.instancename),
-        'path = os.path.dirname(path);',
-        'sys.path.insert(0, path);',
-        'from {} import {};'.format(opath, oclass.__name__),
-        '{} = {}();'.format(oclass.instancename, oclass.__name__),
-        '{}.init();'.format(oclass.instancename),
-        ')'
-    ]
+#     init_script = [
+#         '-_RunPythonScript ResetEngine (',
+#         'import rhinoscriptsyntax as rs;',
+#         'import sys;',
+#         'import os;',
+#         'path = rs.ToolbarCollectionPath(\'{}\');'.format(oclass.instancename),
+#         'path = os.path.dirname(path);',
+#         'sys.path.insert(0, path);',
+#         'from {} import {};'.format(opath, oclass.__name__),
+#         '{} = {}();'.format(oclass.instancename, oclass.__name__),
+#         '{}.init();'.format(oclass.instancename),
+#         ')'
+#     ]
 
-    update_macro(macros, '{}.init'.format(oclass.instancename), 'script', ''.join(init_script))
+#     update_macro(macros, '{}.init'.format(oclass.instancename), 'script', ''.join(init_script))
 
-    rui = Rui('./{}.rui'.format(oclass.instancename))
+#     rui = Rui('./{}.rui'.format(oclass.instancename))
 
-    rui.init()
-    rui.add_macros(macros)
-    rui.add_menus(config['menus'])
-    rui.add_toolbars(config['toolbars'])
-    rui.add_toolbargroups(config['toolbargroups'])
-    rui.write()
+#     rui.init()
+#     rui.add_macros(macros)
+#     rui.add_menus(config['menus'])
+#     rui.add_toolbars(config['toolbars'])
+#     rui.add_toolbargroups(config['toolbargroups'])
+#     rui.write()
 
 
 # ==============================================================================

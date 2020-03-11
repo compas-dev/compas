@@ -1,4 +1,3 @@
-
 """
 ********************************************************************************
 compas_blender.artists
@@ -18,14 +17,9 @@ Artists for visualising (painting) COMPAS data structures in Blender.
 
 """
 
-from .artist import *
-from .meshartist import *
-from .networkartist import *
-from .volmeshartist import *
+from .artist import *  # noqa: F401 F403
+from .meshartist import *  # noqa: F401 F403
+from .networkartist import *  # noqa: F401 F403
+from .volmeshartist import *  # noqa: F401 F403
 
-from .artist import __all__ as a
-from .meshartist import __all__ as b
-from .networkartist import __all__ as c
-from .volmeshartist import __all__ as d
-
-__all__ = a + b + c + d
+__all__ = [name for name in dir() if not name.startswith('_')]

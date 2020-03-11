@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import os
 import json
 import importlib
 
@@ -34,12 +33,7 @@ class Dispatcher(object):
 
     Examples
     --------
-    .. code-block:: python
-
-        class Service(Dipatcher):
-
-            pass
-
+    >>>
 
     Notes
     -----
@@ -80,34 +74,40 @@ class Dispatcher(object):
 
         """
         odict = {
-            'data'    : None,
-            'error'   : None,
-            'profile' : None
+            'data': None,
+            'error': None,
+            'profile': None
         }
 
         parts = name.split('.')
 
         functionname = parts[-1]
 
-        if len(parts) > 1:
-            modulename = ".".join(parts[:-1])
-            module = importlib.import_module(modulename)
-        else:
-            module = self
-
         try:
-            function = getattr(module, functionname)
-        except AttributeError:
-            odict['error'] = "This function is not part of the API: {0}".format(functionname)
+            if len(parts) > 1:
+                modulename = ".".join(parts[:-1])
+                module = importlib.import_module(modulename)
+            else:
+                module = self
+        except Exception:
+            odict['error'] = traceback.format_exc()
+
         else:
             try:
-                idict = json.loads(args[0], cls=DataDecoder)
-            except (IndexError, TypeError):
-                odict['error'] = (
-                    "API methods require a single JSON encoded dictionary as input.\n"
-                    "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})")
+                function = getattr(module, functionname)
+            except AttributeError:
+                odict['error'] = "This function is not part of the API: {0}".format(functionname)
+
             else:
-                self._call(function, idict, odict)
+                try:
+                    idict = json.loads(args[0], cls=DataDecoder)
+                except (IndexError, TypeError):
+                    odict['error'] = (
+                        "API methods require a single JSON encoded dictionary as input.\n"
+                        "For example: input = json.dumps({'param_1': 1, 'param_2': [2, 3]})")
+
+                else:
+                    self._call(function, idict, odict)
 
         return json.dumps(odict, cls=DataEncoder)
 
@@ -133,7 +133,7 @@ class Dispatcher(object):
 
         try:
             data = function(*args, **kwargs)
-        except:
+        except Exception:
             odict['error'] = traceback.format_exc()
         else:
             odict['data'] = data
@@ -154,10 +154,11 @@ class Dispatcher(object):
             stats.strip_dirs()
             stats.sort_stats(1)
             stats.print_stats(20)
-        except:
+
+        except Exception:
             odict['error'] = traceback.format_exc()
         else:
-            odict['data']    = data
+            odict['data'] = data
             odict['profile'] = stream.getvalue()
 
 

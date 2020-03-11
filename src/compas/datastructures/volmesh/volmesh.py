@@ -4,12 +4,15 @@ from __future__ import division
 
 import pickle
 import json
-
+import collections
 from copy import deepcopy
 from ast import literal_eval
+from random import sample
+from random import choice
 
 from compas.files import OBJ
 
+from compas.utilities import geometric_key
 from compas.utilities import pairwise
 
 from compas.geometry import normalize_vector
@@ -18,66 +21,119 @@ from compas.geometry import centroid_polygon
 from compas.geometry import centroid_polyhedron
 from compas.geometry import area_polygon
 from compas.geometry import normal_polygon
+from compas.geometry import subtract_vectors
+from compas.geometry import add_vectors
+from compas.geometry import scale_vector
+from compas.geometry import distance_point_point
+from compas.geometry import midpoint_line
 
 from compas.datastructures import Datastructure
-
 from compas.datastructures import Mesh
-
-from compas.datastructures._mixins import VertexAttributesManagement
-from compas.datastructures._mixins import VertexHelpers
-from compas.datastructures._mixins import VertexFilter
-
-from compas.datastructures._mixins import EdgeAttributesManagement
-from compas.datastructures._mixins import EdgeHelpers
-from compas.datastructures._mixins import EdgeGeometry
-from compas.datastructures._mixins import EdgeFilter
-
-from compas.datastructures._mixins import FaceAttributesManagement
-from compas.datastructures._mixins import FaceHelpers
-from compas.datastructures._mixins import FaceFilter
-
-from compas.datastructures._mixins import FromToData
-from compas.datastructures._mixins import FromToJson
-from compas.datastructures._mixins import FromToPickle
-
-from compas.datastructures._mixins import VertexMappings
-from compas.datastructures._mixins import EdgeMappings
-from compas.datastructures._mixins import FaceMappings
 
 
 __all__ = ['VolMesh']
 
 
-TPL = """
-================================================================================
-Volesh summary
-================================================================================
+class AttributeView(object):
+    """Mixin for attribute dict views."""
 
-- name: {}
-- vertices: {}
-- cells: {}
+    def __str__(self):
+        s = []
+        for k, v in self.items():
+            s.append("{}: {}".format(repr(k), repr(v)))
+        return "{" + ", ".join(s) + "}"
 
-================================================================================
-"""
+    def __len__(self):
+        return len(self.defaults)
 
 
-class VolMesh(FromToPickle,
-              FromToJson,
-              FromToData,
-              VertexFilter,
-              VertexHelpers,
-              VertexMappings,
-              EdgeFilter,
-              EdgeHelpers,
-              EdgeGeometry,
-              EdgeMappings,
-              FaceFilter,
-              FaceHelpers,
-              FaceMappings,
-              VertexAttributesManagement,
-              EdgeAttributesManagement,
-              FaceAttributesManagement,
-              Datastructure):
+class VertexAttributeView(AttributeView, collections.MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of a vertex
+    combined with the default attributes of all vertices."""
+
+    def __init__(self, defaults, attr):
+        self.defaults = defaults
+        self.attr = attr
+
+    def __getitem__(self, key):
+        try:
+            return self.attr[key]
+        except KeyError:
+            return self.defaults[key]
+
+    def __setitem__(self, key, value):
+        self.attr[key] = value
+
+    def __delitem__(self, key):
+        if key in self.attr:
+            del self.attr[key]
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        for key in self.defaults:
+            yield key
+
+
+class FaceAttributeView(AttributeView, collections.MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of a face
+    combined with the default attributes of all faces."""
+
+    def __init__(self, defaults, attr, key, custom_only=False):
+        self.defaults = defaults
+        self.attr = attr
+        self.key = key
+        self.custom_only = custom_only
+        self.attr.setdefault(self.key, {})
+
+    def __getitem__(self, name):
+        return self.attr[self.key].get(name, self.defaults[name])
+
+    def __setitem__(self, name, value):
+        self.attr[self.key][name] = value
+
+    def __delitem__(self, name):
+        del self.attr[self.key][name]
+
+    def __iter__(self):
+        if self.custom_only:
+            for name in self.attr[self.key]:
+                yield name
+        else:
+            for name in self.defaults:
+                yield name
+
+
+class EdgeAttributeView(AttributeView, collections.MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of an edge
+    combined with the default attributes of all edges."""
+
+    def __init__(self, defaults, attr, key, custom_only=False):
+        self.defaults = defaults
+        self.attr = attr
+        self.key = key
+        self.custom_only = custom_only
+        self.attr.setdefault(self.key, {})
+
+    def __getitem__(self, name):
+        return self.attr[self.key].get(name, self.defaults[name])
+
+    def __setitem__(self, name, value):
+        self.attr[self.key][name] = value
+
+    def __delitem__(self, name):
+        del self.attr[self.key][name]
+
+    def __iter__(self):
+        if self.custom_only:
+            for name in self.attr[self.key]:
+                yield name
+        else:
+            for name in self.defaults:
+                yield name
+
+
+class VolMesh(Datastructure):
     """Class for working with volumetric meshes.
 
     Attributes
@@ -132,32 +188,23 @@ class VolMesh(FromToPickle,
     __module__ = 'compas.datastructures'
 
     def __init__(self):
+        super(VolMesh, self).__init__()
         self._max_int_vkey = -1
         self._max_int_fkey = -1
         self._max_int_ckey = -1
-        self._key_to_str   = False
-
-        self.vertex   = {}
-        self.edge     = {}
+        self.vertex = {}
+        # self.edge = {}
         self.halfface = {}
-        self.cell     = {}
-        self.plane    = {}
-
+        self.cell = {}
+        self.plane = {}
         self.edgedata = {}
         self.facedata = {}
         self.celldata = {}
-
-        self.attributes = {'name'                : 'VolMesh',
-                           'color.vertex'        : (255, 255, 255),
-                           'color.edge'          : (0, 0, 0),
-                           'color.face'          : (200, 200, 200),
-                           'color.normal:vertex' : (0, 255, 0),
-                           'color.normal:face'   : (0, 255, 0)}
-
+        self.attributes = {'name': 'VolMesh'}
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
-        self.default_edge_attributes   = {}
-        self.default_face_attributes   = {}
-        self.default_cell_attributes   = {}
+        self.default_edge_attributes = {}
+        self.default_face_attributes = {}
+        self.default_cell_attributes = {}
 
     # --------------------------------------------------------------------------
     # customisation
@@ -168,10 +215,18 @@ class VolMesh(FromToPickle,
         return json.dumps(self.data, sort_keys=True, indent=4)
 
     def summary(self):
-        """Print a summary of the volmesh."""
-        numv = self.number_of_vertices()
-        numc = self.number_of_cells()
-        s    = TPL.format(self.name, numv, numc)
+        """Print a summary of the mesh."""
+        tpl = "\n".join(
+            ["VolMesh summary",
+             "===============",
+             "- vertices: {}",
+             "- edges: {}",
+             "- faces: {}",
+             "- cells: {}"])
+        s = tpl.format(self.number_of_vertices(),
+                       self.number_of_edges(),
+                       self.number_of_faces(),
+                       self.number_of_cells())
         print(s)
 
     # --------------------------------------------------------------------------
@@ -221,19 +276,19 @@ class VolMesh(FromToPickle,
 
         """
         data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'dfa'         : self.default_face_attributes,
-            'dca'         : self.default_cell_attributes,
-            'vertex'      : {},
-            'edge'        : {},
-            'halfface'    : {},
-            'cell'        : {},
-            'plane'       : {},
-            'edgedata'    : {},
-            'facedata'    : {},
-            'celldata'    : {},
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'dfa': self.default_face_attributes,
+            'dca': self.default_cell_attributes,
+            'vertex': {},
+            'edge': {},
+            'halfface': {},
+            'cell': {},
+            'plane': {},
+            'edgedata': {},
+            'facedata': {},
+            'celldata': {},
             'max_int_vkey': self._max_int_vkey,
             'max_int_fkey': self._max_int_fkey,
             'max_int_ckey': self._max_int_ckey, }
@@ -297,19 +352,19 @@ class VolMesh(FromToPickle,
 
     @data.setter
     def data(self, data):
-        attributes   = data.get('attributes') or {}
-        dva          = data.get('dva') or {}
-        dea          = data.get('dea') or {}
-        dfa          = data.get('dfa') or {}
-        dca          = data.get('dca') or {}
-        vertex       = data.get('vertex') or {}
-        edge         = data.get('edge') or {}
-        halfface     = data.get('halfface') or {}
-        cell         = data.get('cell') or {}
-        plane        = data.get('plane') or {}
-        edgedata     = data.get('edgedata') or {}
-        facedata     = data.get('facedata') or {}
-        celldata     = data.get('celldata') or {}
+        attributes = data.get('attributes') or {}
+        dva = data.get('dva') or {}
+        dea = data.get('dea') or {}
+        dfa = data.get('dfa') or {}
+        dca = data.get('dca') or {}
+        vertex = data.get('vertex') or {}
+        edge = data.get('edge') or {}
+        halfface = data.get('halfface') or {}
+        cell = data.get('cell') or {}
+        plane = data.get('plane') or {}
+        edgedata = data.get('edgedata') or {}
+        facedata = data.get('facedata') or {}
+        celldata = data.get('celldata') or {}
         max_int_vkey = data.get('max_int_vkey', - 1)
         max_int_fkey = data.get('max_int_fkey', - 1)
         max_int_ckey = data.get('max_int_ckey', - 1)
@@ -390,125 +445,123 @@ class VolMesh(FromToPickle,
     # serialisation
     # --------------------------------------------------------------------------
 
-    def dump(self, filepath):
-        """Dump the data representing the volmesh to a file using Python's built-in
-        object serialisation.
+    # --------------------------------------------------------------------------
+    # constructors
+    # --------------------------------------------------------------------------
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a mesh from structured data.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        object
+            An object of the type of ``cls``.
+
+        Note
+        ----
+        This constructor method is meant to be used in conjuction with the
+        corresponding *to_data* method.
+
+        """
+        mesh = cls()
+        mesh.data = data
+        return mesh
+
+    def to_data(self):
+        """Returns a dictionary of structured data representing the mesh.
+
+        Returns
+        -------
+        dict
+            The structured data.
+
+        Note
+        ----
+        This method produces the data that can be used in conjuction with the
+        corresponding *from_data* class method.
+        """
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        """Construct a datastructure from structured data contained in a json file.
 
         Parameters
         ----------
         filepath : str
-            Path to the dump file.
-
-        """
-        data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'dfa'         : self.default_face_attributes,
-            'dca'         : self.default_cell_attributes,
-            'vertex'      : self.vertex,
-            'edge'        : self.edge,
-            'halfface'    : self.face,
-            'cell'        : self.cell,
-            'plane'       : self.plane,
-            'facedata'    : self.facedata,
-            'celldata'    : self.celldata,
-            'max_int_vkey': self._max_int_vkey,
-            'max_int_fkey': self._max_int_fkey,
-            'max_int_ckey': self._max_int_ckey,
-        }
-        with open(filepath, 'wb+') as fo:
-            pickle.dump(data, fo, protocol=pickle.HIGHEST_PROTOCOL)
-
-    def dumps(self):
-        """Dump the data representing the volmesh to a string using Python's built-in
-        object serialisation.
+            The path to the json file.
 
         Returns
         -------
-        str
-            The pickled string representation of the data.
+        object
+            An object of the type of ``cls``.
 
+        Note
+        ----
+        This constructor method is meant to be used in conjuction with the
+        corresponding *to_json* method.
         """
-        data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'dfa'         : self.default_face_attributes,
-            'dca'         : self.default_cell_attributes,
-            'vertex'      : self.vertex,
-            'edge'        : self.edge,
-            'halfface'    : self.face,
-            'cell'        : self.cell,
-            'plane'       : self.plane,
-            'facedata'    : self.facedata,
-            'celldata'    : self.celldata,
-            'max_int_vkey': self._max_int_vkey,
-            'max_int_fkey': self._max_int_fkey,
-            'max_int_ckey': self._max_int_ckey,
-        }
-        return pickle.dumps(data, protocol=pickle.HIGHEST_PROTOCOL)
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        mesh = cls()
+        mesh.data = data
+        return mesh
 
-    def load(self, filepath):
-        """Load serialised volmesh data from a pickle file.
+    def to_json(self, filepath, pretty=False):
+        """Serialise the structured data representing the data structure to json.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the json file.
+        """
+        with open(filepath, 'w+') as f:
+            if pretty:
+                json.dump(self.data, f, sort_keys=True, indent=4)
+            else:
+                json.dump(self.data, f)
+
+    @classmethod
+    def from_pickle(cls, filepath):
+        """Construct a mesh from serialised data contained in a pickle file.
 
         Parameters
         ----------
         filepath : str
             The path to the pickle file.
 
+        Returns
+        -------
+        object
+            An object of type ``cls``.
+
+        Note
+        ----
+        This constructor method is meant to be used in conjuction with the
+        corresponding *to_pickle* method.
         """
         with open(filepath, 'rb') as fo:
             data = pickle.load(fo)
+        o = cls()
+        o.data = data
+        return o
 
-        self.attributes                = data['attributes']
-        self.default_vertex_attributes = data['dva']
-        self.default_edge_attributes   = data['dea']
-        self.default_face_attributes   = data['dfa']
-        self.default_cell_attributes   = data['dca']
-        self.vertex                    = data['vertex']
-        self.edge                      = data['edge']
-        self.halfface                  = data['halfface']
-        self.cell                      = data['cell']
-        self.plane                     = data['plane']
-        self.edgedata                  = data['edgedata']
-        self.facedata                  = data['facedata']
-        self.celldata                  = data['celldata']
-        self._max_int_vkey             = data['max_int_vkey']
-        self._max_int_fkey             = data['max_int_fkey']
-        self._max_int_fkey             = data['max_int_fkey']
-
-    def loads(self, s):
-        """Load serialised volmesh data from a pickle string.
+    def to_pickle(self, filepath):
+        """Serialise the structured data representing the mesh to a pickle file.
 
         Parameters
         ----------
-        s : str
-            The pickled string.
-
+        filepath : str
+            The path to the pickle file.
         """
-        data = pickle.loads(s)
-
-        self.attributes                = data['attributes']
-        self.default_vertex_attributes = data['dva']
-        self.default_edge_attributes   = data['dea']
-        self.default_face_attributes   = data['dfa']
-        self.default_cell_attributes   = data['dca']
-        self.vertex                    = data['vertex']
-        self.edge                      = data['edge']
-        self.halfface                  = data['halfface']
-        self.cell                      = data['cell']
-        self.plane                     = data['plane']
-        self.edgedata                  = data['edgedata']
-        self.facedata                  = data['facedata']
-        self.celldata                  = data['celldata']
-        self._max_int_vkey             = data['max_int_vkey']
-        self._max_int_fkey             = data['max_int_fkey']
-        self._max_int_fkey             = data['max_int_fkey']
-
-    # --------------------------------------------------------------------------
-    # constructors
-    # --------------------------------------------------------------------------
+        with open(filepath, 'wb+') as f:
+            pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     @classmethod
     def from_obj(cls, filepath, precision=None):
@@ -528,26 +581,23 @@ class VolMesh(FromToPickle,
 
         """
         obj = OBJ(filepath, precision)
-
         vertices = obj.parser.vertices
         faces = obj.parser.faces
         groups = obj.parser.groups
-
         cells = []
-
         for name in groups:
             group = groups[name]
             cell = []
-
             for item in group:
                 if item[0] != 'f':
                     continue
                 face = faces[item[1]]
                 cell.append(face)
-
             cells.append(cell)
-
         return cls.from_vertices_and_cells(vertices, cells)
+
+    def to_obj(self, filepath):
+        raise NotImplementedError
 
     @classmethod
     def from_vertices_and_cells(cls, vertices, cells):
@@ -567,25 +617,11 @@ class VolMesh(FromToPickle,
 
         """
         volmesh = cls()
-
         for x, y, z in vertices:
             volmesh.add_vertex(x=x, y=y, z=z)
-
-        for halffaces in cells:
-            volmesh.add_cell(halffaces)
-
+        for cell in cells:
+            volmesh.add_cell(cell)
         return volmesh
-
-    @classmethod
-    def from_vertices_and_edges(cls, vertices, edges):
-        raise NotImplementedError
-
-    # --------------------------------------------------------------------------
-    # converters
-    # --------------------------------------------------------------------------
-
-    def to_obj(self, filepath):
-        raise NotImplementedError
 
     def to_vertices_and_cells(self):
         """Return the vertices and cells of a volmesh.
@@ -602,90 +638,20 @@ class VolMesh(FromToPickle,
 
         """
         key_index = self.key_index()
-
-        vertices  = [self.vertex_coordinates(vkey) for vkey in self.vertices()]
+        vertices = [self.vertex_coordinates(key) for key in self.vertices()]
         cells = []
-
         for ckey in self.cell:
-            halffaces = [[key_index[vkey] for vkey in self.halfface[fkey]] for fkey in self.halffaces()]
+            halffaces = [[key_index[key] for key in self.halfface[fkey]] for fkey in self.halffaces()]
             cells.append(halffaces)
+        return vertices, cells
 
-        return vertices, halffaces
+    # --------------------------------------------------------------------------
+    # converters
+    # --------------------------------------------------------------------------
 
     # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
-
-    def _get_vertex_key(self, vkey):
-        if vkey is None:
-            vkey = self._max_int_vkey = self._max_int_vkey + 1
-        else:
-            try:
-                i = int(vkey)
-            except (ValueError, TypeError):
-                pass
-            else:
-                if i > self._max_int_vkey:
-                    self._max_int_vkey = i
-        if self._key_to_str:
-            return str(vkey)
-        return vkey
-
-    def _get_face_key(self, fkey):
-        if fkey is None:
-            fkey = self._max_int_fkey = self._max_int_fkey + 1
-        else:
-            try:
-                i = int(fkey)
-            except (ValueError, TypeError):
-                pass
-            else:
-                if i > self._max_int_fkey:
-                    self._max_int_fkey = i
-        return fkey
-
-    def _get_cellkey(self, ckey):
-        if ckey is None:
-            ckey = self._max_int_ckey = self._max_int_ckey + 1
-        else:
-            try:
-                i = int(ckey)
-            except (ValueError, TypeError):
-                pass
-            else:
-                if i > self._max_int_ckey:
-                    self._max_int_ckey = i
-        return ckey
-
-    def _compile_vattr(self, attr_dict, kwattr):
-        attr = self.default_vertex_attributes.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        return attr
-
-    def _compile_eattr(self, attr_dict, kwattr):
-        attr = self.default_edge_attributes.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        return attr
-
-    def _compile_fattr(self, attr_dict, kwattr):
-        attr = self.default_face_attributes.copy()
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        attr.update(attr_dict)
-        return attr
-
-    def _clean_vertices(self, vertices):
-        if vertices[0] == vertices[-1]:
-            del vertices[-1]
-        if vertices[-2] == vertices[-1]:
-            del vertices[-1]
 
     def copy(self):
         """Make an independent copy of the volmesh object.
@@ -709,45 +675,146 @@ class VolMesh(FromToPickle,
         del self.edgedata
         del self.facedata
         del self.celldata
-        self.vertex        = {}
-        self.edge          = {}
-        self.halfface      = {}
-        self.cell          = {}
-        self.plane         = {}
-        self.edgedata      = {}
-        self.facedata      = {}
-        self.celldata      = {}
-        self._max_int_vkey  = -1
-        self._max_int_fkey = -1
-        self._max_int_ckey = -1
-
-    def clear_vertexdict(self):
-        """Clear only the vertices."""
-        del self.vertex
         self.vertex = {}
-        self._max_int_vkey = -1
-
-    def clear_halffacedict(self):
-        """Clear only the halffaces."""
-        del self.halfface
-        del self.facedata
+        self.edge = {}
         self.halfface = {}
-        self.facedata = {}
-        self._max_int_fkey = -1
-
-    def clear_celldict(self):
-        """Clear only the cells."""
-        del self.cell
-        del self.celldata
         self.cell = {}
+        self.plane = {}
+        self.edgedata = {}
+        self.facedata = {}
         self.celldata = {}
+        self._max_int_vkey = -1
+        self._max_int_fkey = -1
         self._max_int_ckey = -1
+
+    def get_any_vertex(self):
+        """Get the identifier of a random vertex.
+
+        Returns
+        -------
+        hashable
+            The identifier of the vertex.
+
+        """
+        return self.get_any_vertices(1)[0]
+
+    def get_any_vertices(self, n, exclude_leaves=False):
+        """Get a list of identifiers of a random set of n vertices.
+
+        Parameters
+        ----------
+        n : int
+            The number of random vertices.
+        exclude_leaves : bool (False)
+            Exclude the leaves (vertices with only one connected edge) from the set.
+            Default is to include the leaves.
+
+        Returns
+        -------
+        list
+            The identifiers of the vertices.
+
+        """
+        if exclude_leaves:
+            vertices = set(self.vertices()) - set(self.leaves())
+        else:
+            vertices = self.vertices()
+        return sample(list(vertices), n)
+
+    def get_any_face(self):
+        """Get the identifier of a random face.
+
+        Returns
+        -------
+        hashable
+            The identifier of the face.
+
+        """
+        return choice(list(self.faces()))
+
+    def get_any_face_vertex(self, fkey):
+        """Get the identifier of a random vertex of a specific face.
+
+        Parameters
+        ----------
+        fkey : hashable
+            The identifier of the face.
+
+        Returns
+        -------
+        hashable
+            The identifier of the vertex.
+
+        """
+        return self.face_vertices(fkey)[0]
+
+    def key_index(self):
+        """Returns a dictionary that maps vertex dictionary keys to the
+        corresponding index in a vertex list or array.
+
+        Returns
+        -------
+        dict
+            A dictionary of key-index pairs.
+
+        """
+        return {key: index for index, key in enumerate(self.vertices())}
+
+    def index_key(self):
+        """Returns a dictionary that maps the indices of a vertex list to
+        keys in a vertex dictionary.
+
+        Returns
+        -------
+        dict
+            A dictionary of index-key pairs.
+
+        """
+        return dict(enumerate(self.vertices()))
+
+    def key_gkey(self, precision=None):
+        """Returns a dictionary that maps vertex dictionary keys to the corresponding
+        *geometric key* up to a certain precision.
+
+        Parameters
+        ----------
+        precision : str (3f)
+            The float precision specifier used in string formatting.
+
+        Returns
+        -------
+        dict
+            A dictionary of key-geometric key pairs.
+
+        """
+        gkey = geometric_key
+        xyz = self.vertex_coordinates
+        return {key: gkey(xyz(key), precision) for key in self.vertices()}
+
+    def gkey_key(self, precision=None):
+        """Returns a dictionary that maps *geometric keys* of a certain precision
+        to the keys of the corresponding vertices.
+
+        Parameters
+        ----------
+        precision : str (3f)
+            The float precision specifier used in string formatting.
+
+        Returns
+        -------
+        dict
+            A dictionary of geometric key-key pairs.
+
+        """
+        gkey = geometric_key
+        xyz = self.vertex_coordinates
+        return {gkey(xyz(key), precision): key for key in self.vertices()}
 
     # --------------------------------------------------------------------------
     # builders
     # --------------------------------------------------------------------------
 
-    def add_vertex(self, vkey=None, attr_dict=None, **kwattr):
+    def add_vertex(self, key=None, attr_dict=None, **kwattr):
         """Add a vertex to the volmesh object.
 
         Parameters
@@ -774,21 +841,24 @@ class VolMesh(FromToPickle,
             Provided keys are returned unchanged.
 
         """
-        vkey = self._get_vertex_key(vkey)
+        if key is None:
+            key = self._max_int_vkey = self._max_int_vkey + 1
+        if key > self._max_int_vkey:
+            self._max_int_vkey = key
+        key = int(key)
 
-        attr = self.default_vertex_attributes.copy()
-        if attr_dict:
-            attr.update(attr_dict)
+        if key not in self.vertex:
+            self.vertex[key] = {}
+            self.plane[key] = {}
+            # self.edge[key] = {}
+
+        attr = attr_dict or {}
         attr.update(kwattr)
+        self.vertex[key].update(attr)
 
-        if vkey not in self.vertex:
-            self.vertex[vkey] = attr
-            self.plane[vkey]  = {}
-            self.edge[vkey]   = {}
+        return key
 
-        return vkey
-
-    def add_halfface(self, vertices, hfkey=None, attr_dict=None, **kwattr):
+    def add_halfface(self, vertices, fkey=None, attr_dict=None, **kwattr):
         """Add a halfface to the volmesh object.
 
         Parameters
@@ -828,31 +898,36 @@ class VolMesh(FromToPickle,
         highest integer key value, then the highest integer value is updated accordingly.
 
         """
-        self._clean_vertices(vertices)
-
         if len(vertices) < 3:
-            raise Exception('Corrupt halfface.')
+            return
 
-        face_attr = self._compile_fattr(attr_dict, kwattr)
-        edge_attr = self.default_edge_attributes.copy()
+        if vertices[-1] == vertices[0]:
+            vertices = vertices[:-1]
+        vertices = [int(key) for key in vertices]
 
-        hfkey = self._get_face_key(hfkey)
+        if fkey is None:
+            fkey = self._max_int_fkey = self._max_int_fkey + 1
+        if fkey > self._max_int_fkey:
+            self._max_int_fkey = fkey
 
-        self.halfface[hfkey] = vertices
-        self.facedata[hfkey] = face_attr
+        attr = attr_dict or {}
+        attr.update(kwattr)
+        self.halfface[fkey] = vertices
+        self.facedata.setdefault(fkey, attr)
 
         for i in range(-2, len(vertices) - 2):
             u = vertices[i]
             v = vertices[i + 1]
             w = vertices[i + 2]
+            if u == v or v == w:
+                continue
 
-            self.add_vertex(vkey=u)
-            self.add_vertex(vkey=v)
-            self.add_vertex(vkey=w)
+            self.add_vertex(key=u)
+            self.add_vertex(key=v)
+            self.add_vertex(key=w)
 
             if v not in self.plane[u]:
                 self.plane[u][v] = {}
-
             self.plane[u][v][w] = None
 
             if v not in self.plane[w]:
@@ -860,18 +935,17 @@ class VolMesh(FromToPickle,
             if u not in self.plane[w][v]:
                 self.plane[w][v][u] = None
 
-            if v not in self.edge[u] and u not in self.edge[v]:
-                self.edge[u][v] = edge_attr
-            if w not in self.edge[v] and v not in self.edge[w]:
-                self.edge[v][w] = edge_attr
+        #     if v not in self.edge[u] and u not in self.edge[v]:
+        #         self.edge[u][v] = {}
+        #     if w not in self.edge[v] and v not in self.edge[w]:
+        #         self.edge[v][w] = {}
 
-        u = vertices[-1]
-        v = vertices[0]
+        # u = vertices[-1]
+        # v = vertices[0]
+        # if v not in self.edge[u] and u not in self.edge[v]:
+        #     self.edge[u][v] = {}
 
-        if v not in self.edge[u] and u not in self.edge[v]:
-            self.edge[u][v] = edge_attr
-
-        return hfkey
+        return fkey
 
     def add_cell(self, halffaces, ckey=None, attr_dict=None, **kwattr):
         """Add a cell to the volmesh object.
@@ -903,26 +977,28 @@ class VolMesh(FromToPickle,
             If the provided halfface key is of an unhashable type.
 
         """
-        ckey = self._get_cellkey(ckey)
+        if ckey is None:
+            ckey = self._max_int_ckey = self._max_int_ckey + 1
+        if ckey > self._max_int_ckey:
+            self._max_int_ckey = ckey
+        ckey = int(ckey)
 
-        self.cell[ckey]     = {}
-        self.celldata[ckey] = self.default_cell_attributes
+        attr = attr_dict or {}
+        attr.update(kwattr)
+        self.cell[ckey] = {}
+        self.celldata.setdefault(ckey, attr)
 
         for vertices in halffaces:
-            hfkey = self.add_halfface(vertices)
-
-            vertices = self.halfface[hfkey]
-
+            fkey = self.add_halfface(vertices)
+            vertices = self.halfface[fkey]
             for i in range(-2, len(vertices) - 2):
                 u = vertices[i]
                 v = vertices[i + 1]
                 w = vertices[i + 2]
-
                 if u not in self.cell[ckey]:
                     self.cell[ckey][u] = {}
-
-                self.cell[ckey][u][v] = hfkey
-                self.plane[u][v][w]   = ckey
+                self.cell[ckey][u][v] = fkey
+                self.plane[u][v][w] = ckey
 
         return ckey
 
@@ -981,19 +1057,18 @@ class VolMesh(FromToPickle,
         Parameters
         ----------
         data : bool, optional
-            Return the vertex data as well as the vertex keys.
+            Return the vertex data as well as the vertex identifiers if true.
 
         Yields
         ------
-        hashable
-            The next vertex identifier (*vkey*), if ``data`` is false.
-        2-tuple
-            The next vertex as a (vkey, attr) tuple, if ``data`` is true.
+        int or tuple
+            The next vertex identifier, if ``data`` is false.
+            The next vertex identifier and attribute dict as a tuple, if ``data`` is true.
 
         """
         for vkey in self.vertex:
             if data:
-                yield vkey, self.vertex[vkey]
+                yield vkey, self.vertex_attributes(vkey)
             else:
                 yield vkey
 
@@ -1003,25 +1078,34 @@ class VolMesh(FromToPickle,
         Parameters
         ----------
         data : bool, optional
-            Return the edge data as well as the edge vertex keys.
+            Return the edge data as well as the edge identifiers if true.
 
         Yields
         ------
-        2-tuple
-            The next edge as a (u, v) tuple, if ``data`` is false.
-        3-tuple
-            The next edge as a (u, v, data) tuple, if ``data`` is true.
+        tuple
+            The next edge identifier as a tuple of vertex identifiers, if ``data`` is false.
+            The next edge identifier and attribute dict as a tuple, if ``data`` is true.
 
         """
-        for u in self.edge:
-            for v in self.edge[u]:
-
-                attr = self.edgedata.setdefault((u, v), self.default_edge_attributes.copy())
-
-                if data:
-                    yield u, v, attr
-                else:
+        seen = set()
+        for fkey in self.halfface:
+            vertices = self.halfface[fkey]
+            for u, v in pairwise(vertices + vertices[:1]):
+                if (u, v) in seen or (v, u) in seen:
+                    continue
+                seen.add((u, v))
+                seen.add((v, u))
+                if not data:
                     yield u, v
+                else:
+                    yield (u, v), self.edge_attributes((u, v))
+        # for u in self.edge:
+        #     for v in self.edge[u]:
+        #         attr = self.edgedata.setdefault((u, v), self.default_edge_attributes.copy())
+        #         if data:
+        #             yield u, v, attr
+        #         else:
+        #             yield u, v
 
     def halffaces(self, data=False):
         """Iterate over the halffaces of the volmesh.
@@ -1029,21 +1113,20 @@ class VolMesh(FromToPickle,
         Parameters
         ----------
         data : bool, optional
-            Return the halfface data as well as the halfface keys.
+            Return half-face data as well as identifiers if true.
 
         Yields
         ------
-        hashable
-            The next halfface identifier (*hfkey*), if ``data`` is ``False``.
-        2-tuple
-            The next halfface as a (hfkey, attr) tuple, if ``data`` is ``True``.
+        int or tuple
+            The next halfface identifier, if ``data`` is ``False``.
+            The next halfface identifier and attributes as a tuple, if ``data`` is ``True``.
 
         """
-        for hfkey in self.halfface:
+        for fkey in self.halfface:
             if data:
-                yield hfkey, self.facedata.setdefault(hfkey, self.default_face_attributes.copy())
+                yield fkey, self.face_attributes(fkey)
             else:
-                yield hfkey
+                yield fkey
 
     def faces(self, data=False):
         """"Iterate over the halffaces of the volmesh, and yield unique halffaces.
@@ -1055,32 +1138,32 @@ class VolMesh(FromToPickle,
 
         Yields
         ------
-        hashable
-            The next halfface identifier (*fkey*), if ``data`` is ``False``.
-        2-tuple
-            The next halfface as a (fkey, attr) tuple, if ``data`` is ``True``.
+        int or tuple
+            The next halfface identifier, if ``data`` is ``False``.
+            The next halfface identifier and attribute dict as a tuple, if ``data`` is ``True``.
 
         Note
         ----
         Volmesh faces have no topological meaning (analogous to an edge of a mesh).
-        They are only used to store data or excute mass geometric operations (i.e. planarisation).
+        They are only used to store data or excute geometric operations (i.e. planarisation).
         Between the interface of two cells, there are two interior halffaces (one from each cell).
         Only one of these two interior halffaces are returned.
-        The unique faces are found by comparing string versions of sorted vertex lists
+        The unique faces are found by comparing string versions of sorted vertex lists.
 
         """
         seen = set()
-        unique_hfkeys = []
+        fkeys = []
+
         for fkey in self.halfface:
             vertices = self.halfface_vertices(fkey)
             key = "-".join(map(str, sorted(vertices, key=int)))
             if key not in seen:
                 seen.add(key)
-                unique_hfkeys.append(fkey)
+                fkeys.append(fkey)
 
-        for fkey in unique_hfkeys:
+        for fkey in fkeys:
             if data:
-                yield fkey, self.facedata.setdefault(fkey, self.default_face_attributes.copy())
+                yield fkey, self.face_attributes(fkey)
             else:
                 yield fkey
 
@@ -1095,22 +1178,640 @@ class VolMesh(FromToPickle,
         Yields
         ------
         hashable
-            The next celle identifier (*ckey*), if ``data`` is ``False``.
+            The next cell identifier, if ``data`` is ``False``.
         2-tuple
-            The next cell as a (ckey, attr) tuple, if ``data`` is ``True``.
+            The next cell identifier and attribute dict as a tuple, if ``data`` is ``True``.
 
         """
         for ckey in self.cell:
             if data:
-                yield ckey, self.celldata.setdefault(ckey, self.default_cell_attributes.copy())
+                yield ckey, self.cell_attributes(ckey)
             else:
                 yield ckey
 
     def planes(self):
         raise NotImplementedError
 
+    def vertices_where(self):
+        raise NotImplementedError
+
+    def edges_where(self):
+        raise NotImplementedError
+
+    def faces_where(self):
+        raise NotImplementedError
+
+    def cells_where(self):
+        raise NotImplementedError
+
     # --------------------------------------------------------------------------
-    # special accessors
+    # vertex attributes
+    # --------------------------------------------------------------------------
+
+    def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
+        """Update the default vertex attributes.
+
+        Parameters
+        ----------
+        attr_dict : dict, optional
+            A dictionary of attributes with their default values.
+            Defaults to an empty ``dict``.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Note
+        ----
+        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        if they exist.
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        self.default_vertex_attributes.update(attr_dict)
+
+    def vertex_attribute(self, key, name, value=None):
+        """Get or set an attribute of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The vertex identifier.
+        name : str
+            The name of the attribute
+        value : obj, optional
+            The value of the attribute.
+
+        Returns
+        -------
+        object or None
+            The value of the attribute,
+            or ``None`` if the vertex does not exist
+            or when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the vertex does not exist.
+        """
+        if key not in self.vertex:
+            raise KeyError(key)
+        if value is not None:
+            self.vertex[key][name] = value
+            return None
+        if name in self.vertex[key]:
+            return self.vertex[key][name]
+        else:
+            if name in self.default_vertex_attributes:
+                return self.default_vertex_attributes[name]
+
+    def unset_vertex_attribute(self, key, name):
+        """Unset the attribute of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The vertex identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the vertex does not exist.
+
+        Notes
+        -----
+        Unsetting the value of a vertex attribute implicitly sets it back to the value
+        stored in the default vertex attribute dict.
+        """
+        if name in self.vertex[key]:
+            del self.vertex[key][name]
+
+    def vertex_attributes(self, key, names=None, values=None):
+        """Get or set multiple attributes of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the vertex.
+        names : list, optional
+            A list of attribute names.
+        values : list, optional
+            A list of attribute values.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is empty,
+            the function returns a dictionary of all attribute name-value pairs of the vertex.
+            If the parameter ``names`` is not empty,
+            the function returns a list of the values corresponding to the requested attribute names.
+            The function returns ``None`` if it is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the vertex does not exist.
+        """
+        if key not in self.vertex:
+            raise KeyError(key)
+        if values:
+            # use it as a setter
+            for name, value in zip(names, values):
+                self.vertex[key][name] = value
+            return
+        # use it as a getter
+        if not names:
+            # return all vertex attributes as a dict
+            return VertexAttributeView(self.default_vertex_attributes, self.vertex[key])
+        values = []
+        for name in names:
+            if name in self.vertex[key]:
+                values.append(self.vertex[key][name])
+            elif name in self.default_vertex_attributes:
+                values.append(self.default_vertex_attributes[name])
+            else:
+                values.append(None)
+        return values
+
+    def vertices_attribute(self, name, value=None, keys=None):
+        """Get or set an attribute of multiple vertices.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of vertex identifiers.
+
+        Returns
+        -------
+        list or None
+            The value of the attribute for each vertex,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the vertices does not exist.
+        """
+        if not keys:
+            keys = self.vertices()
+        if value is not None:
+            for key in keys:
+                self.vertex_attribute(key, name, value)
+            return
+        return [self.vertex_attribute(key, name) for key in keys]
+
+    def vertices_attributes(self, names=None, values=None, keys=None):
+        """Get or set multiple attributes of multiple vertices.
+
+        Parameters
+        ----------
+        names : list of str, optional
+            The names of the attribute.
+            Default is ``None``.
+        values : list of obj, optional
+            The values of the attributes.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of vertex identifiers.
+
+        Returns
+        -------
+        list or None
+            If the parameter ``names`` is ``None``,
+            the function returns a list containing an attribute dict per vertex.
+            If the parameter ``names`` is not ``None``,
+            the function returns a list containing a list of attribute values per vertex corresponding to the provided attribute names.
+            The function returns ``None`` if it is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the vertices does not exist.
+        """
+        if not keys:
+            keys = self.vertices()
+        if values:
+            for key in keys:
+                self.vertex_attributes(key, names, values)
+            return
+        return [self.vertex_attributes(key, names) for key in keys]
+
+    # --------------------------------------------------------------------------
+    # edge attributes
+    # --------------------------------------------------------------------------
+
+    def update_default_edge_attributes(self, attr_dict=None, **kwattr):
+        """Update the default edge attributes.
+
+        Parameters
+        ----------
+        attr_dict : dict, optional
+            A dictionary of attributes with their default values.
+            Defaults to an empty ``dict``.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Note
+        ----
+        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        if they exist.
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        self.default_edge_attributes.update(attr_dict)
+
+    def edge_attribute(self, key, name, value=None):
+        """Get or set an attribute of an edge.
+
+        Parameters
+        ----------
+        key : 2-tuple of int
+            The identifier of the edge as a pair of vertex identifiers.
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+            Default is ``None``.
+
+        Returns
+        -------
+        object or None
+            The value of the attribute, or ``None`` when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
+        """
+        u, v = key
+        if u not in self.halfedge or v not in self.halfedge[u]:
+            raise KeyError(key)
+        if value is not None:
+            if (u, v) not in self.edgedata:
+                self.edgedata[u, v] = {}
+            if (v, u) not in self.edgedata:
+                self.edgedata[v, u] = {}
+            self.edgedata[u, v][name] = self.edgedata[v, u][name] = value
+            return
+        if (u, v) in self.edgedata and name in self.edgedata[u, v]:
+            return self.edgedata[u, v][name]
+        if (v, u) in self.edgedata and name in self.edgedata[v, u]:
+            return self.edgedata[v, u][name]
+        if name in self.default_edge_attributes:
+            return self.default_edge_attributes[name]
+
+    def unset_edge_attribute(self, key, name):
+        """Unset the attribute of an edge.
+
+        Parameters
+        ----------
+        key : tuple of int
+            The edge identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
+
+        Notes
+        -----
+        Unsetting the value of an edge attribute implicitly sets it back to the value
+        stored in the default edge attribute dict.
+        """
+        u, v = key
+        if u not in self.halfedge or v not in self.halfedge[u]:
+            raise KeyError(key)
+        if key in self.edgedata:
+            if name in self.edgedata[key]:
+                del self.edgedata[key][name]
+        key = v, u
+        if key in self.edgedata:
+            if name in self.edgedata[key]:
+                del self.edgedata[key][name]
+
+    def edge_attributes(self, key, names=None, values=None):
+        """Get or set multiple attributes of an edge.
+
+        Parameters
+        ----------
+        key : 2-tuple of int
+            The identifier of the edge.
+        names : list, optional
+            A list of attribute names.
+        values : list, optional
+            A list of attribute values.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is empty,
+            a dictionary of all attribute name-value pairs of the edge.
+            If the parameter ``names`` is not empty,
+            a list of the values corresponding to the provided names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
+        """
+        u, v = key
+        if u not in self.halfedge or v not in self.halfedge[u]:
+            raise KeyError(key)
+        if values:
+            # use it as a setter
+            for name, value in zip(names, values):
+                self.edge_attribute(key, name, value)
+            return
+        # use it as a getter
+        if not names:
+            # get the entire attribute dict
+            return EdgeAttributeView(self.default_edge_attributes, self.edgedata, key)
+        # get only the values of the named attributes
+        values = []
+        for name in names:
+            value = self.edge_attribute(key, name)
+            values.append(value)
+        return values
+
+    def edges_attribute(self, name, value=None, keys=None):
+        """Get or set an attribute of multiple edges.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+            Default is ``None``.
+        keys : list of 2-tuple of int, optional
+            A list of edge identifiers.
+
+        Returns
+        -------
+        list or None
+            A list containing the value per edge of the requested attribute,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the edges does not exist.
+        """
+        if not keys:
+            keys = self.edges()
+        if value is not None:
+            for key in keys:
+                self.edge_attribute(key, name, value)
+            return
+        return [self.edge_attribute(key, name) for key in keys]
+
+    def edges_attributes(self, names=None, values=None, keys=None):
+        """Get or set multiple attributes of multiple edges.
+
+        Parameters
+        ----------
+        names : list of str, optional
+            The names of the attribute.
+            Default is ``None``.
+        values : list of obj, optional
+            The values of the attributes.
+            Default is ``None``.
+        keys : list of 2-tuple of int, optional
+            A list of edge identifiers.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is ``None``,
+            a list containing per edge an attribute dict with all attributes (default + custom) of the edge.
+            If the parameter ``names`` is ``None``,
+            a list containing per edge a list of attribute values corresponding to the requested names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the edges does not exist.
+        """
+        if not keys:
+            keys = self.edges()
+        if values:
+            for key in keys:
+                self.edge_attributes(key, names, values)
+            return
+        return [self.edge_attributes(key, names) for key in keys]
+
+    # --------------------------------------------------------------------------
+    # face attributes
+    # --------------------------------------------------------------------------
+
+    def update_default_face_attributes(self, attr_dict=None, **kwattr):
+        """Update the default face attributes.
+
+        Parameters
+        ----------
+        attr_dict : dict (None)
+            A dictionary of attributes with their default values.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Note
+        ----
+        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        if they exist.
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        self.default_face_attributes.update(attr_dict)
+
+    def face_attribute(self, key, name, value=None):
+        """Get or set an attribute of a face.
+
+        Parameters
+        ----------
+        key : int
+            The face identifier.
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+
+        Returns
+        -------
+        object or None
+            The value of the attribute, or ``None`` when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the face does not exist.
+        """
+        if key not in self.halfface:
+            raise KeyError(key)
+        if value is not None:
+            if key not in self.facedata:
+                self.facedata[key] = {}
+            self.facedata[key][name] = value
+            return
+        if key in self.facedata and name in self.facedata[key]:
+            return self.facedata[key][name]
+        if name in self.default_face_attributes:
+            return self.default_face_attributes[name]
+
+    def unset_face_attribute(self, key, name):
+        """Unset the attribute of a face.
+
+        Parameters
+        ----------
+        key : int
+            The face identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the face does not exist.
+
+        Notes
+        -----
+        Unsetting the value of a face attribute implicitly sets it back to the value
+        stored in the default face attribute dict.
+        """
+        if key not in self.halfface:
+            raise KeyError(key)
+        if key in self.facedata:
+            if name in self.facedata[key]:
+                del self.facedata[key][name]
+
+    def face_attributes(self, key, names=None, values=None):
+        """Get or set multiple attributes of a face.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the face.
+        names : list, optional
+            A list of attribute names.
+        values : list, optional
+            A list of attribute values.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is empty,
+            a dictionary of all attribute name-value pairs of the face.
+            If the parameter ``names`` is not empty,
+            a list of the values corresponding to the provided names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the face does not exist.
+        """
+        if key not in self.halfface:
+            raise KeyError(key)
+        if values:
+            # use it as a setter
+            for name, value in zip(names, values):
+                if key not in self.facedata:
+                    self.facedata[key] = {}
+                self.facedata[key][name] = value
+            return
+        # use it as a getter
+        if not names:
+            return FaceAttributeView(self.default_face_attributes, self.facedata, key)
+        values = []
+        for name in names:
+            value = self.face_attribute(key, name)
+            values.append(value)
+        return values
+
+    def faces_attribute(self, name, value=None, keys=None):
+        """Get or set an attribute of multiple faces.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of face identifiers.
+
+        Returns
+        -------
+        list or None
+            A list containing the value per face of the requested attribute,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the faces does not exist.
+        """
+        if not keys:
+            keys = self.faces()
+        if value is not None:
+            for key in keys:
+                self.face_attribute(key, name, value)
+            return
+        return [self.face_attribute(key, name) for key in keys]
+
+    def faces_attributes(self, names=None, values=None, keys=None):
+        """Get or set multiple attributes of multiple faces.
+
+        Parameters
+        ----------
+        names : list of str, optional
+            The names of the attribute.
+            Default is ``None``.
+        values : list of obj, optional
+            The values of the attributes.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of face identifiers.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is ``None``,
+            a list containing per face an attribute dict with all attributes (default + custom) of the face.
+            If the parameter ``names`` is ``None``,
+            a list containing per face a list of attribute values corresponding to the requested names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the faces does not exist.
+        """
+        if not keys:
+            keys = self.faces()
+        if values:
+            for key in keys:
+                self.face_attributes(key, names, values)
+            return
+        return [self.face_attributes(key, names) for key in keys]
+
+    # --------------------------------------------------------------------------
+    # cell attributes
     # --------------------------------------------------------------------------
 
     # --------------------------------------------------------------------------
@@ -1147,7 +1848,7 @@ class VolMesh(FromToPickle,
             The list of halffaces connected to a vertex.
 
         """
-        cells     = self.vertex_cells(vkey)
+        cells = self.vertex_cells(vkey)
 
         nbr_vkeys = self.plane[vkey].keys()
 
@@ -1227,14 +1928,14 @@ class VolMesh(FromToPickle,
             List of of keys identifying the adjacent halffaces.
 
         """
-        edge_ckeys     = self.plane[u][v].values()
-        ckey           = edge_ckeys[0]
+        edge_ckeys = self.plane[u][v].values()
+        ckey = edge_ckeys[0]
         ordered_hfkeys = []
 
         for i in range(len(edge_ckeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            w     = self.halfface_vertex_descendent(hfkey, v)
-            ckey  = self.plane[w][v][u]
+            w = self.halfface_vertex_descendent(hfkey, v)
+            ckey = self.plane[w][v][u]
             ordered_hfkeys.append(hfkey)
 
         return ordered_hfkeys
@@ -1255,14 +1956,14 @@ class VolMesh(FromToPickle,
             Ordered List of keys identifying the adjacent cells.
 
         """
-        edge_ckeys    = self.plane[u][v].values()
-        ckey          = edge_ckeys[0]
+        edge_ckeys = self.plane[u][v].values()
+        ckey = edge_ckeys[0]
         ordered_ckeys = [ckey]
 
         for i in range(len(edge_ckeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            w     = self.halfface_vertex_descendent(hfkey, v)
-            ckey  = self.plane[w][v][u]
+            w = self.halfface_vertex_descendent(hfkey, v)
+            ckey = self.plane[w][v][u]
             ordered_ckeys.append(ckey)
 
         return ordered_ckeys
@@ -1536,7 +2237,7 @@ class VolMesh(FromToPickle,
 
         for i in range(len(nbr_vkeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            v     = self.halfface_vertex_ancestor(hfkey, u)
+            v = self.halfface_vertex_ancestor(hfkey, u)
             ordered_vkeys.append(v)
 
         return ordered_vkeys
@@ -1564,7 +2265,7 @@ class VolMesh(FromToPickle,
 
         for i in range(len(nbr_vkeys)):
             hfkey = self.cell[ckey][u][v]
-            v     = self.halfface_vertex_ancestor(hfkey, u)
+            v = self.halfface_vertex_ancestor(hfkey, u)
             ordered_hfkeys.append(hfkey)
 
         return ordered_hfkeys
@@ -1657,8 +2358,8 @@ class VolMesh(FromToPickle,
 
         vkey_vindex = dict((vkey, index) for index, vkey in enumerate(vkeys))
 
-        vertices    = [self.vertex_coordinates(vkey) for vkey in vkeys]
-        halffaces   = [[vkey_vindex[vkey] for vkey in self.halfface[fkey]] for fkey in hfkeys]
+        vertices = [self.vertex_coordinates(vkey) for vkey in vkeys]
+        halffaces = [[vkey_vindex[vkey] for vkey in self.halfface[fkey]] for fkey in hfkeys]
 
         return vertices, halffaces
 
@@ -1764,7 +2465,125 @@ class VolMesh(FromToPickle,
     # edge geometry
     # --------------------------------------------------------------------------
 
-    # inherited from EdgeGeometryMixin
+    def edge_coordinates(self, u, v, axes='xyz'):
+        """Return the coordinates of the start and end point of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+        axes : str (xyz)
+            The axes along which the coordinates should be included.
+
+        Returns
+        -------
+        tuple
+            The coordinates of the start point and the coordinates of the end point.
+
+        """
+        return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
+
+    def edge_length(self, u, v):
+        """Return the length of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+
+        Returns
+        -------
+        float
+            The length of the edge.
+
+        """
+        a, b = self.edge_coordinates(u, v)
+        return distance_point_point(a, b)
+
+    def edge_vector(self, u, v):
+        """Return the vector of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+
+        Returns
+        -------
+        list
+            The vector from u to v.
+
+        """
+        a, b = self.edge_coordinates(u, v)
+        ab = subtract_vectors(b, a)
+        return ab
+
+    def edge_point(self, u, v, t=0.5):
+        """Return the location of a point along an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+        t : float (0.5)
+            The location of the point on the edge.
+            If the value of ``t`` is outside the range ``0-1``, the point will
+            lie in the direction of the edge, but not on the edge vector.
+
+        Returns
+        -------
+        list
+            The XYZ coordinates of the point.
+
+        """
+        a, b = self.edge_coordinates(u, v)
+        ab = subtract_vectors(b, a)
+        return add_vectors(a, scale_vector(ab, t))
+
+    def edge_midpoint(self, u, v):
+        """Return the location of the midpoint of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+
+        Returns
+        -------
+        list
+            The XYZ coordinates of the midpoint.
+
+        """
+        a, b = self.edge_coordinates(u, v)
+        return midpoint_line((a, b))
+
+    def edge_direction(self, u, v):
+        """Return the direction vector of an edge.
+
+        Parameters
+        ----------
+        u : int
+            The key of the start vertex.
+        v : int
+            The key of the end vertex.
+
+        Returns
+        -------
+        list
+            The direction vector of the edge.
+
+        """
+        return normalize_vector(self.edge_vector(u, v))
 
     # --------------------------------------------------------------------------
     # face geometry
@@ -1976,288 +2795,6 @@ class VolMesh(FromToPickle,
             attr['y'] *= factor
             attr['z'] *= factor
 
-    # --------------------------------------------------------------------------
-    # vertex attributes
-    # --------------------------------------------------------------------------
-
-    # def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
-    #     if not attr_dict:
-    #         attr_dict = {}
-    #     attr_dict.update(kwattr)
-    #     self.default_vertex_attributes.update(attr_dict)
-    #     for key in self.vertex:
-    #         attr = attr_dict.copy()
-    #         attr.update(self.vertex[key])
-    #         self.vertex[key] = attr
-
-    # def set_vertex_attribute(self, key, name, value):
-    #     self.vertex[key][name] = value
-
-    # def set_vertex_attributes(self, key, attr_dict=None, **kwattr):
-    #     attr_dict = attr_dict or {}
-    #     attr_dict.update(kwattr)
-    #     self.vertex[key].update(attr_dict)
-
-    # def set_vertices_attribute(self, name, value, keys=None):
-    #     if not keys:
-    #         for key, attr in self.vertices_iter(True):
-    #             attr[name] = value
-    #     else:
-    #         for key in keys:
-    #             self.vertex[key][name] = value
-
-    # def set_vertices_attributes(self, keys=None, attr_dict=None, **kwattr):
-    #     attr_dict = attr_dict or {}
-    #     attr_dict.update(kwattr)
-    #     if not keys:
-    #         for key, attr in self.vertices_iter(True):
-    #             attr.update(attr_dict)
-    #     else:
-    #         for key in keys:
-    #             self.vertex[key].update(attr_dict)
-
-    # def get_vertex_attribute(self, key, name, default=None):
-    #     return self.vertex[key].get(name, default)
-
-    # def get_vertex_attributes(self, key, names, defaults=None):
-    #     if not defaults:
-    #         defaults = [None] * len(names)
-    #     return [self.vertex[key].get(name, default) for name, default in zip(names, defaults)]
-
-    # def get_vertices_attribute(self, name, default=None, keys=None):
-    #     if not keys:
-    #         return [attr.get(name, default) for key, attr in self.vertices_iter(True)]
-    #     return [self.vertex[key].get(name, default) for key in keys]
-
-    # def get_vertices_attributes(self, names, defaults=None, keys=None):
-    #     if not defaults:
-    #         defaults = [None] * len(names)
-    #     temp = zip(names, defaults)
-    #     if not keys:
-    #         return [[attr.get(name, default) for name, default in temp] for key, attr in self.vertices_iter(True)]
-    #     return [[self.vertex[key].get(name, default) for name, default in temp] for key in keys]
-
-    # --------------------------------------------------------------------------
-    # edge attributes
-    # --------------------------------------------------------------------------
-
-    def update_default_edge_attributes(self, attr_dict=None, **kwattr):
-        """Update the default edge attributes (this also affects already existing edges).
-
-        Parameters
-        ----------
-        attr_dict : dict (None)
-            A dictionary of attributes with their default values.
-        kwattr : dict
-            A dictionary compiled of remaining named arguments.
-            Defaults to an empty dict.
-
-        Notes
-        -----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
-        if they exist.
-
-        """
-        if not attr_dict:
-            attr_dict = {}
-        attr_dict.update(kwattr)
-        for u, v, data in self.edges(True):
-            attr = deepcopy(attr_dict)
-            attr.update(data)
-            self.edgedata[u, v] = self.edgedata[v, u] = attr
-        self.default_edge_attributes.update(attr_dict)
-
-    def set_edge_attribute(self, key, name, value):
-        """Set one attribute of one edge.
-
-        Parameters
-        ----------
-        key : tuple of hashable
-            The identifier of the edge, in the form of a pair of vertex identifiers.
-        name : str
-            The name of the attribute.
-        value : object
-            The value of the attribute.
-
-        """
-        u, v = key
-        if (u, v) not in self.edgedata:
-            self.edgedata[u, v] = self.default_edge_attributes.copy()
-        if (v, u) in self.edgedata:
-            self.edgedata[u, v].update(self.edgedata[v, u])
-            del self.edgedata[v, u]
-            self.edgedata[v, u] = self.edgedata[u, v]
-        self.edgedata[u, v][name] = value
-
-    def set_edge_attributes(self, key, names, values):
-        """Set multiple attributes of one edge.
-
-        Parameters
-        ----------
-        key : tuple of hashable
-            The identifier of the edge, in the form of a pair of vertex identifiers.
-        names : list of str
-            The names of the attributes.
-        values : list of object
-            The values of the attributes.
-
-        """
-        for name, value in zip(names, values):
-            self.set_edge_attribute(key, name, value)
-
-
-    def set_edges_attribute(self, name, value, keys=None):
-        """Set one attribute of multiple edges.
-
-        Parameters
-        ----------
-        name : str
-            The name of the attribute.
-        value : object
-            The value of the attribute.
-        keys : list of hashable, optional
-            A list of edge identifiers.
-            Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
-
-        """
-        if not keys:
-            keys = self.edges()
-        for key in keys:
-            self.set_edge_attribute(key, name, value)
-
-    def set_edges_attributes(self, names, values, keys=None):
-        """Set multiple attributes of multiple edges.
-
-        Parameters
-        ----------
-        names : list of str
-            The names of the attributes.
-        values : list of object
-            The values of the attributes.
-        keys : list of hashable, optional
-            A list of edge identifiers.
-            Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
-
-        """
-        for name, value in zip(names, values):
-            self.set_edges_attribute(name, value, keys=keys)
-
-    def get_edge_attribute(self, key, name, value=None):
-        """Get the value of a named attribute of one edge.
-
-        Parameters
-        ----------
-        key : tuple of hashable
-            The identifier of the edge, in the form of a pair of vertex identifiers.
-        name : str
-            The name of the attribute.
-        value : object (None)
-            The default value.
-
-        Returns
-        -------
-        value
-            The value of the attribute,
-            or the default value if the attribute does not exist.
-
-        """
-        u, v = key
-        if (u, v) in self.edgedata:
-            return self.edgedata[u, v].get(name, value)
-        if (v, u) in self.edgedata:
-            return self.edgedata[v, u].get(name, value)
-        self.edgedata[u, v] = self.edgedata[v, u] = self.default_edge_attributes.copy()
-        return self.edgedata[u, v].get(name, value)
-
-    def get_edge_attributes(self, key, names, values=None):
-        """Get the value of a named attribute of one edge.
-
-        Parameters
-        ----------
-        key : tuple of hashable
-            The identifier of the edge, in the form of a pair of vertex identifiers.
-        names : list
-            A list of attribute names.
-        values : list, optional
-            A list of default values.
-            Defaults to a list of ``None``.
-
-        Returns
-        -------
-        values : list
-            A list of values.
-            Every attribute that does not exist is replaced by the corresponding
-            default value.
-
-        """
-        if not values:
-            values = [None] * len(names)
-
-        return [self.get_edge_attribute(key, name, value) for name, value in zip(names, values)]
-
-    def get_edges_attribute(self, name, value=None, keys=None):
-        """Get the value of a named attribute of multiple edges.
-
-        Parameters
-        ----------
-        name : str
-            The name of the attribute.
-        value : object (None)
-            The default value.
-        keys : iterable (None)
-            A list of edge identifiers.
-            Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
-
-        Returns
-        -------
-        values : list
-            A list of values of the named attribute of the specified edges.
-
-        """
-        if not keys:
-            keys = self.edges()
-
-        return [self.get_edge_attribute(key, name, value) for key in keys]
-
-    def get_edges_attributes(self, names, values=None, keys=None):
-        """Get the values of multiple named attribute of multiple edges.
-
-        Parameters
-        ----------
-        names : list
-            The names of the attributes.
-        values : list, optional
-            A list of default values.
-            Defaults to a list of ``None``.
-        keys : list of hashable, optional
-            A list of edge identifiers.
-            Each edge identifier is a pair of vertex identifiers.
-            Defaults to all edges.
-
-        Returns
-        -------
-        values: list of list
-            The values of the attributes of the specified edges.
-            If an attribute does not exist for a specific edge, it is replaced
-            by the default value.
-
-        """
-        if not keys:
-            keys = self.edges()
-
-        return [self.get_edge_attributes(key, names, values) for key in keys]
-
-    # --------------------------------------------------------------------------
-    # face attributes
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # cell attributes
-    # --------------------------------------------------------------------------
-
 
 # ==============================================================================
 # Main
@@ -2266,30 +2803,10 @@ class VolMesh(FromToPickle,
 if __name__ == '__main__':
 
     import compas
-    from compas.viewers import Viewer
 
-    mesh = VolMesh.from_obj(compas.get('boxes.obj'))
+    volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
-    mesh.scale(0.5)
+    volmesh.summary()
 
-    mesh = VolMesh.from_data(mesh.to_data())
-
-    viewer = Viewer()
-
-    viewer.mesh = mesh
-
-    viewer.show()
-
-    # viewer = VolMeshViewer(mesh, 600, 600, grid_on=False, zoom=5.)
-
-    # viewer.grid_on = False
-    # viewer.axes_on = False
-
-    # viewer.axes.x_color = (0.1, 0.1, 0.1)
-    # viewer.axes.y_color = (0.1, 0.1, 0.1)
-    # viewer.axes.z_color = (0.1, 0.1, 0.1)
-
-    # viewer.setup()
-
-    # viewer.camera.zoom_out(5)
-    # viewer.show()
+    for key, attr in volmesh.vertices(True):
+        print(key, attr)

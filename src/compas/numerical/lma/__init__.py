@@ -1,9 +1,11 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
+
+# import compas
+
+# if not compas.IPY:
+#     from .lma_numpy import *  # noqa: F401 F403
 
 
-from .lma_numpy import *
-
-
-__all__ = [name for name in dir() if not name.startswith('_')]
+# __all__ = [name for name in dir() if not name.startswith('_')]

@@ -26,16 +26,12 @@ from abc import abstractmethod
 
 import compas
 
-try:
+if compas.IPY:
     from System.Windows.Forms import DialogResult
     from System.Windows.Forms import FormBorderStyle
     from System.Windows.Forms import Form as WinForm
     import Rhino
-
-except ImportError:
-    if compas.is_ironpython() and compas.is_windows():
-        raise
-
+else:
     class WinForm(object):
         pass
 
@@ -70,10 +66,11 @@ class Form(WinForm):
         pass
 
 
-from .browser import BrowserForm
-from .chart import ChartForm
-from .image import ImageForm
-from .slider import SliderForm
-from .text import TextForm
+from .browser import BrowserForm  # noqa: F401 F402
+from .chart import ChartForm  # noqa: F401 F402
+from .image import ImageForm  # noqa: F401 F402
+from .slider import SliderForm  # noqa: F401 F402
+from .text import TextForm  # noqa: F401 F402
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

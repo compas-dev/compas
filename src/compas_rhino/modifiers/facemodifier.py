@@ -15,7 +15,10 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__all__ = ['FaceModifier']
+__all__ = [
+    'FaceModifier',
+    'mesh_update_face_attributes'
+]
 
 
 class FaceModifier(object):
@@ -23,8 +26,8 @@ class FaceModifier(object):
     @staticmethod
     def move_face(self, key, constraint=None, allow_off=None):
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        nbrs  = [self.face_coordinates(nbr) for nbr in self.face_neighbors(key)]
-        nbrs  = [Point3d(*xyz) for xyz in nbrs]
+        nbrs = [self.face_coordinates(nbr) for nbr in self.face_neighbors(key)]
+        nbrs = [Point3d(*xyz) for xyz in nbrs]
 
         def OnDynamicDraw(sender, e):
             for ep in nbrs:
@@ -45,9 +48,7 @@ class FaceModifier(object):
 
         if gp.CommandResult() == Rhino.Commands.Result.Success:
             pos = list(gp.Point())
-            self.face[key]['x'] = pos[0]
-            self.face[key]['y'] = pos[1]
-            self.face[key]['z'] = pos[2]
+            self.face_attributes(key, 'xyz', pos)
             return True
         return False
 
@@ -57,12 +58,12 @@ class FaceModifier(object):
             names = self.default_face_attributes.keys()
         names = sorted(names)
 
-        values = [self.facedata[keys[0]][name] for name in names]
+        values = self.face_attributes(keys[0], names)
 
         if len(keys) > 1:
             for i, name in enumerate(names):
                 for key in keys[1:]:
-                    if values[i] != self.facedata[key][name]:
+                    if values[i] != self.face_attribute(key, name):
                         values[i] = '-'
                         break
 
@@ -74,17 +75,46 @@ class FaceModifier(object):
                 if value != '-':
                     for key in keys:
                         try:
-                            self.facedata[key][name] = ast.literal_eval(value)
+                            self.face_attribute(key, name, ast.literal_eval(value))
                         except (ValueError, TypeError):
-                            self.facedata[key][name] = value
+                            self.face_attribute(key, name, value)
             return True
 
         return False
 
 
+def mesh_update_face_attributes(mesh, fkeys, names=None):
+    """Update the attributes of the faces of a mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    fkeys : tuple, list
+        The keys of the faces to update.
+    names : tuple, list (None)
+        The names of the atrtibutes to update.
+        Default is to update all attributes.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`mesh_update_attributes`
+    * :func:`mesh_update_vertex_attributes`
+    * :func:`mesh_update_edge_attributes`
+
+    """
+    return FaceModifier.update_vertex_attributes(mesh, fkeys, names=names)
+
 # ==============================================================================
 # Main
 # ==============================================================================
+
 
 if __name__ == "__main__":
 
@@ -92,7 +122,6 @@ if __name__ == "__main__":
 
     from compas.datastructures import Network
     from compas_rhino.artists.networkartist import NetworkArtist
-    from compas_rhino.modifiers.facemodifier import FaceModifier
 
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 

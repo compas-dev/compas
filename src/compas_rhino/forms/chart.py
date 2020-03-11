@@ -209,22 +209,22 @@ if __name__ == '__main__':
 
     series = [
         {
-            'name'      : 'series1',
-            'color'     : (255, 0, 0),
-            'linewidth' : 1,
-            'data'      : {str(i): random.randint(30, 70) for i in range(10)},
+            'name': 'series1',
+            'color': (255, 0, 0),
+            'linewidth': 1,
+            'data': {str(i): random.randint(30, 70) for i in range(10)},
         },
         {
-            'name'      : 'series2',
-            'color'     : (0, 255, 0),
-            'linewidth' : 1,
-            'data'      : {str(i): i ** 2 for i in range(10)},
+            'name': 'series2',
+            'color': (0, 255, 0),
+            'linewidth': 1,
+            'data': {str(i): i ** 2 for i in range(10)},
         },
         {
-            'name'      : 'series3',
-            'color'     : (0, 0, 255),
-            'linewidth' : 1,
-            'data'      : {str(i): fibonacci(i) for i in range(10)},
+            'name': 'series3',
+            'color': (0, 0, 255),
+            'linewidth': 1,
+            'data': {str(i): fibonacci(i) for i in range(10)},
         },
     ]
 

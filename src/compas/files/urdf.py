@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import inspect
+import sys
 
 from compas.files.xml_ import XML
 from compas.utilities import memoize
@@ -41,6 +42,7 @@ class URDF(object):
     .. _URDF XSD Schema: https://github.com/ros/urdfdom/blob/master/xsd/urdf.xsd
 
     """
+
     def __init__(self, xml):
         self.xml = xml
         self.robot = URDFParser.parse_element(xml.root, xml.root.tag)
@@ -217,7 +219,10 @@ def get_metadata(type):
     if hasattr(type, 'from_urdf'):
         metadata['from_urdf'] = getattr(type, 'from_urdf')
     else:
-        argspec = inspect.getargspec(type.__init__)
+        if sys.version_info[0] < 3:
+            argspec = inspect.getargspec(type.__init__)  # this is deprecated in python3
+        else:
+            argspec = inspect.getfullargspec(type.__init__)
         args = {}
 
         required = len(argspec.args)
@@ -236,8 +241,11 @@ def get_metadata(type):
                 data['sequence'] = False
 
             args[argspec.args[i]] = data
-
-        metadata['keywords'] = argspec.keywords is not None
+        if sys.version_info[0] < 3:
+            metadata['keywords'] = argspec.keywords is not None
+        else:
+            # TODO: make sure replacing keyword with kwonlyargs is correct, check at: https://docs.python.org/3/library/inspect.html#inspect.getargspec
+            metadata['keywords'] = argspec.kwonlyargs is not None
         metadata['init_args'] = args
 
     metadata['argument_map'] = getattr(type, 'argument_map', {})

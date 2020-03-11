@@ -9,9 +9,472 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [0.15.4] 2020-03-05
+
+### Added
+
+- Added algorithm for pulling points onto mesh.
+- Added base ellipse class to geometry primitives.
+- Added circle artist to plotters.
+- Added mesh artist to plotters.
+- Added ellipse artist to plotters.
+
+### Changed
+
+- Fixed bugs in `compas_rhino.artists.NetworkArtist`.
+- Add conda executable path to `compas_bootstrapper.py`.
+
+### Removed
+
+
+## [0.15.3] 2020-02-26
+
+### Added
+
+- Added optional class parameter to `RhinoMesh.to_compas`.
+- Added max int key to serialisation of graph.
+
+### Changed
+
+- Changed name of base mesh implementation to `BaseMesh`.
+- Changed name of base network implementation to `BaseNetwork`.
+- Fixed bug in face finding function.
+
+### Removed
+
+- Removed optional requirements from setup file.
+- Removed parameters from default polyhedron constructor.
+
+
+## [0.15.2] 2020-02-20
+
+### Added
+
+### Changed
+
+### Removed
+
+
+## [0.15.1] 2020-02-16
+
+### Added
+
+- Added glTF support.
+- Added graph and halfedge data structures.
+- Added Rhino line geometry.
+- Added Rhino plane geometry.
+
+### Changed
+
+- Fixed `compas_hpc` import problem.
+- Split up topology part from geometry part for network and mesh.
+- Split up network and mesh naming conventions.
+- Reworked network face cycle finding.
+- Updated mesh from lines.
+- Updated network plotter in correspondance with network.
+- Integrated mixin functionality and removed mixins.
+
+### Removed
+
+- Removed parallelisation from network algorithms.
+- Removed numba based dr implementations.
+
+## [0.15.0] 2020-01-24
+
+### Added
+
+- Added `to_compas` to `compas_rhino.geometry.RhinoPoint`.
+- Added `to_compas` to `compas_rhino.geometry.RhinoLine`.
+- Added `to_compas` to `compas_rhino.geometry.RhinoCurve`.
+- Added `to_compas` to `compas_rhino.geometry.RhinoMesh`.
+- Added `brep_to_compas` to `compas_rhino.geometry.RhinoSurface`.
+- Added `uv_to_compas` to `compas_rhino.geometry.RhinoSurface`.
+- Added `heightfield_to_compas` to `compas_rhino.geometry.RhinoSurface`.
+- Added `compas.datastructures.mesh_pull_points_numpy`.
+
+### Changed
+
+- Moved `compas_rhino.conduits` into `compas_rhino.artists`.
+- Fixed bug in `compas.datastructures.Mesh.edges_where`.
+- Fixed bug in `compas.datastructures.Mesh.faces_where`.
+- Fixed bug in `compas.datastructures.Mesh.edge_attributes`.
+- Fixed bug in `compas.datastructures.Mesh.face_attributes`.
+- Fixed bug in `compas.datastructures.Mesh.edges`.
+- Fixed bug in `compas.datastructures.Mesh.faces`.
+
+### Removed
+
+- Removed deprecated `compas.geometry.xforms`.
+- Removed deprecated `compas_rhino.helpers`.
+- Removed `compas_rhino.constructors`.
+
+## [0.14.0] 2020-01-21
+
+### Added
+
+- Added `compas.datastructures.mesh.Mesh.any_vertex`.
+- Added `compas.datastructures.mesh.Mesh.any_face`.
+- Added `compas.datastructures.mesh.Mesh.any_edge`.
+- Added `compas.datastructures.mesh.Mesh.vertex_attribute`.
+- Added `compas.datastructures.mesh.Mesh.vertex_attributes`.
+- Added `compas.datastructures.mesh.Mesh.vertices_attribute`.
+- Added `compas.datastructures.mesh.Mesh.vertices_attributes`.
+- Added `compas.datastructures.mesh.Mesh.edge_attribute`.
+- Added `compas.datastructures.mesh.Mesh.edge_attributes`.
+- Added `compas.datastructures.mesh.Mesh.edges_attribute`.
+- Added `compas.datastructures.mesh.Mesh.edges_attributes`.
+- Added `compas.datastructures.mesh.Mesh.face_attribute`.
+- Added `compas.datastructures.mesh.Mesh.face_attributes`.
+- Added `compas.datastructures.mesh.Mesh.faces_attribute`.
+- Added `compas.datastructures.mesh.Mesh.faces_attributes`.
+- Added mutable attribute view for mesh vertex/face/edge attributes.
+
+### Changed
+
+- Default Mesh vertex, face, edge attributes are no longer copied and stored explicitly per vertex, face, edge, repesctively.
+- Updating default attributes now only changes the corresponding default attribute dict.
+- Updated `mesh_quads_to_triangles` to copy only customised face attributes onto newly created faces.
+- Fixed bug in `compas.geometry.is_point_in_circle`.
+- Fixed bug in `compas.geometry.is_polygon_convex`.
+- Fixed bug in `compas.geometry.Polygon.is_convex`.
+- Renamed `compas.datastructures.Mesh.has_vertex` to `compas.datastructures.Mesh.is_vertex`.
+- Renamed `compas.datastructures.Mesh.has_face` to `compas.datastructures.Mesh.is_face`.
+- Split `compas.datastructures.Mesh.has_edge` into `compas.datastructures.Mesh.is_edge` and `compas.datastructures.Mesh.is_halfedge`.
+
+### Removed
+
+- Removed `compas.datastructures.mesh.Mesh.get_any_vertex`.
+- Removed `compas.datastructures.mesh.Mesh.get_any_face`.
+- Removed `compas.datastructures.mesh.Mesh.get_any_edge`.
+- Removed `compas.datastructures.mesh.Mesh.get_vertex_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_vertex_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_vertices_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_vertices_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_edge_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_edge_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_edges_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_edges_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_face_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_face_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.get_faces_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.get_faces_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_vertex_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_vertex_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_vertices_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_vertices_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_edge_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_edge_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_edges_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_edges_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_face_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_face_attributes`.
+- Removed `compas.datastructures.mesh.Mesh.set_faces_attribute`.
+- Removed `compas.datastructures.mesh.Mesh.set_faces_attributes`.
+- Removed `print` statement from curvature module.
+
+## [0.13.3] 2020-01-10
+
+### Added
+
+- `compas_rhino.artists.ShapeArtist` as base artist for all shape artists.
+- Added `layer`, `name`, `color` attributes to `compas_rhino.artists.PrimitiveArtist`.
+- Added `layer`, `name` attributes to `compas_rhino.artists.ShapeArtist`.
+- Added `layer`, `name` attributes to `compas_rhino.artists.MeshArtist`.
+- Added `clear_layer` method to `compas_rhino.artists.PrimitiveArtist`.
+- Added `clear_layer` method to `compas_rhino.artists.ShapeArtist`.
+- Added `clear_layer` method to `compas_rhino.artists.MeshArtist`.
+
+### Changed
+
+- Renamed `compas.utilities.maps.geometric_key2` to `geometric_key_xy`.
+- Fixed bug in mirror functions.
+- Fixed mirroring tests.
+- Moved `BaseMesh`, `matrices`, `operations` to `compas.datastructures.mesh.core`.
+- Added `transform` and `transformed` (and others) to `Mesh`. 
+
+### Removed
+
+- `compas_rhino.artists.BoxArtist`
+- Removed `layer` attribute from `compas_rhino.artists.Artist`.
+- Removed `clear_layer` method from `compas_rhino.artists.Artist`.
+
+## [0.13.2] 2020-01-06
+
+### Added
+
+- File reading functions for ascii files in `compas.files` has moved from the individual reader classes to a new parent class, `BaseReader`.
+
+### Changed
+
+- Rebased `compas_rhino.artists.MeshArtist` on new-style artist `compas_rhino.artists.Artist`.
+- Renamed `compas_rhino.artists.MeshArtist.defaults` to `compas_rhino.artists.MeshArtist.settings`.
+- Changed usage of (nonexisting) `compas_rhino.get_object` to `compas_rhino.get_objects`.
+- Integrated vertex, face, edge mixins into `compas_rhino.artists.MeshArtist`.
+- Integrated vertex, edge mixins into `compas_rhino.artists.NetworkArtist`.
+- Rebased `compas_rhino.artists.VolMeshArtist` on `compas_rhino.artists.MeshArtist`.
+
+### Removed
+
+## [0.13.0] 2019-12-16
+
+### Added
+
+- Added DOI to bibtex entry.
+- Added conversion for old mesh JSON data.
+
+### Changed
+
+- Indirectly changed mesh serialisation to JSON (by changing key conversion and moving conversion into JSON methods).
+- Moved conversion of int keys of mesh data to strings for json serialisation to from/to json.
+- Moved from/to methods for mesh into mesh definition.
+- Subdivision algorithms use fast mesh copy.
+
+### Removed
+
+- Support for non-integer vertex and face identifiers in mesh.
+
+## [0.12.4] 2019-12-11
+
+### Added
+
+### Changed
+
+### Removed
+
+## [0.12.3] 2019-12-11
+
+### Added
+- Added `mesh_subdivide_frames` to `compas.datastructures.subdivision`
+
+### Changed
+
+### Removed
+
+## [0.12.2] 2019-12-11
+
+### Added
+
+- Added `intersection_segment_polyline` to `compas.geometry.intersections`
+- Added `intersection_segment_polyline_xy` to `compas.geometry.intersections`
+- Added `from_sides_and_radius` to `compas.geometry.Polygon`
+
+### Changed
+
+- Reworked docstrings of methods in `compas.geometry.queries`
+- Set default `tol` to `1e-6` in `compas.geometry.queries`
+
+### Removed
+
+## [[0.12.1] 2019-12-10] 2019-12-10
+
+### Added
+
+- Added inherited methods to class docs.
+- Added data structure mixins to the docs.
+- Added `data` and `from_data` to `compas.geometry.Polyhedron`
+- Added explicit support for collections to `compas_blender`
+
+### Changed
+
+- Bottom face of cylinder shape should be flipped.
+- Face reading mechanism of OFF reader.
+- `compas.geometry.Box` is now centred at origin by default.
+
+### Removed
+
+- Removed `compas.remote` because it does not provide an advatage over `compas.rpc`.
+
+## [[0.11.4] 2019-11-26] 2019-11-26
+
+### Added
+
+- Added `compas_rhino.etoforms.ImageForm`.
+- Added `doc8` as dev requirement.
+
+### Changed
+
+- Changed `compas_rhino.install_plugin` to use only the plugin name, w/o the GUID.
+- Changed `iterable_like` to prevent exhausting generators passed as targets.
+
+### Removed
+
+- Removed `compas_rhino.ui.Controller`.
+- Removed `compas_rhino.ui.Button`.
+
+## [[0.11.2] 2019-11-19] 2019-11-19
+
+### Added
+
+- Added factory methods for `compas_rhino.artists._Artist`
+
+### Changed
+
+- Set `compas_rhino.artists.FrameArtist` layer clear to false by default.
+- Wrapped internals of RPC dispatch method in try-except to catch any import problems and report back on the client side.
+- Stopping of HTTP server (`compas.remote`) is now handled properly through separate thread.
+- Fixed mutable init parameters of `RobotModel`
+- Fixed bug in `mesh_quads_to_triangles` that caused face data to be deleted even when not necessary.
+- Switched to `compas.geometry.KDTree` as fallback for `scipy.spatial.cKDTree` instead of Rhino `RTree` because it currently fails.
+
+### Removed
+
+## [0.11.0] 2019-11-09
+
+### Added
+
+- Added `iterable_like` to `compas.utilities.itertools_`
+- Added `compas.geometry.icp_numpy` for pointcloud alignment using ICP.
+- Added RPC command-line utility: `$ compas_rpc {start|stop} [port]`
+- Added `__version__` to `compas_plotters`.
+- Added `compas_plotters` to `.bumpversion.cfg`.
+- Added `Colormap` to `compas.utilities`.
+- Added `is_line_line_colinear()` to `compas.geometry`
+- Added link to Github wiki for devguide.
+- Added pointcloud alignment example to docs.
+- Show git hash on `compas.__version__` if installed from git.
+- Added `autopep8` to dev requirements.
+- Added methods `add_joint` and `add_link` to `RobotModel`
+- Added support for geometric primitives to JSON data encoder and decoder.
+- Added support for `data` to all geometric primitives.
+
+### Changed
+
+- Docs are only deployed to github pages for tagged commits.
+- Fixing printing issue with `compas.geometry.Quarternion` in ironPython.
+- Fixed a missing import in `compas.geometry.Polygon`.
+- Removed unused imports in `compas.geometry.Polyline`.
+- Adjusted `compas.geometry.Quarternion.conjugate()` to in-place change, added `compas.geometry.Quarternion.conjugated()` instead which returns a new quarternion object.
+- Fixed `rotation` property of `Transformation`.
+- Simplified plugin installation (use plugin name only, without GUID).
+- Bind RPC server to `0.0.0.0` instead of `localhost`.
+- Fixed different argument naming between Rhino5 and Rhino6 of `rs.LayerVisible()` in `compas_rhino.utilities.objects`.
+
+### Removed
+
+## [0.10.0] 2019-10-28
+
+### Added
+
+- Added method for computing the determinant of the matrix of a transformation `compas.geometry.Transformation.determinant`.
+- Added method for transposing (the matrix of) a transformation in-place `compas.geometry.Transformation.transpose`.
+- Added method creating a transposed copy of a transformation `compas.geometry.Transformation.transposed`.
+- Added method for invertig (the matrix of) a transformation in-place `compas.geometry.Transformation.invert`.
+- Added `compas.geometry.Transformation.inverted` as an alias for `compas.geometry.Transformation.inverse`.
+- Added method creating a copy of a transformation instance with a given transformation concatenated `compas.geometry.Transformation.concatenated`.
+- Added method `to_vertices_and_faces` to all the classes inheriting from `compas.geometry.Shape` to create a `Mesh` representation of them.
+
+### Changed
+
+- Changed `compas.geometry.Transformation.inverse` to return an inverted copy of the transformation.
+- Changed `compas.geometry.Transformation.decompose` to `compas.geometry.Transformation.decomposed`.
+- Changed `compas.geometry.Transformation.concatenate` to add another transformation to the transformation instance.
+
+### Removed
+
+## [0.9.1] 2019-10-28
+
+### Added
+
+- Added `compas.geometry.Point.transform_collection` and `compas.geometry.Point.transformed_collection`.
+- Added `compas.geometry.Vector.transform_collection` and `compas.geometry.Vector.transformed_collection`.
+- Added `compas.geometry.Line.transform_collection` and `compas.geometry.Line.transformed_collection`.
+- Added support for new Python plugin location for Rhino 6.0 on Mac.
+- Added `compas.geometry.bestfit_frame_numpy`
+
+### Changed
+
+- Fixed transformation of start and end point of `compas.geometry.Line` to update the point objects in place.
+- Fixed return value of `compas.numerical.pca_numpy` to return mean not as nested list.
+
+### Removed
+
+
+## [0.9.0] 2019-10-21
+
+### Added
+
+- Added `matrix_change_basis`, `Transformation.change_basis`
+- Added `matrix_from_frame_to_frame`
+- Added non-numpy versions of `global_coords`, `local_coords`
+- Added static method `Frame.local_to_local_coords`
+- Added `__getitem__`, `__setitem__` and `__eq__` to `Quaternion`
+- Added `Vector.scaled` and `Vector.unitized`
+- Added `transform_frames` and respective helper functions `dehomogenize_and_unflatten_frames`, `homogenize_and_flatten_frames`
+- Added `transform_frames_numpy` and respective helper functions `dehomogenize_and_unflatten_frames_numpy`, `homogenize_and_flatten_frames_numpy`
+
+### Changed
+
+- Renamed `global_coords_numpy` and `local_coords_numpy` to `local_to_world_coords_numpy` and `world_to_local_coords_numpy`.
+- Changed parameters `origin` `uvw` of `local_to_world_coords_numpy` and `world_to_local_coords_numpy` to `frame`.
+- Fixed some returns of `Frame` and `Rotation` to use `Vector` or `Quaternion`
+- Renamed methods `Frame.represent_point/vector/frame_in_global_coordinates` and `Frame.represent_point/vector/frame_in_local_coordinates` to `Frame.to_local_coords` and `Frame.to_world_coords`.
+
+### Removed
+
+## [0.8.1] 2019-10-01
+
+### Added
+
+### Changed
+
+- Fixed unguarded import of `numpy` based transformations in mesh package.
+
+### Removed
+
+## [0.8.0] 2019-10-01
+
+### Added
+
+- Added test section for `compas.geometry.transformations`
+- Added `tol` parameter to `queries.is_colinear`
+- Added compas rhino installer for Rhino Mac 6.0 `compas_rhino.__init__`.
+- Added oriented bounding box for meshes `compas.datastructures.mesh_oriented_bounding_box_numpy`.
+- Added full testing functions for `compas.datastructures.mesh`
+- Added `draw_mesh` to `compas_ghpython.artists.MeshArtist`
+
+### Changed
+
+- Generate sphinx documentation from markdown files in repo root for top level sections.
+- Merged `compas.geometry.xforms` into `compas.geometry.transformations`
+- Fixed `AttributeError: 'Mesh' object has no attribute 'neighbors'`
+- Fixed Key error with `Mesh.boundary()`
+- Extended `offset_polygon` and `offset_polyline` to handle colinear segments
+- Fixed unsorted mesh vertex coordinates `xyz` in `compas_viewers.viewer.MeshView`
+- Changed stderr parameter from STDOUT to PIPE in `compas.rpc.Proxy` for Rhino Mac 6.0.
+- Fixed import of `delaunay_from_points` in `Mesh.from_points`.
+- More control over drawing of text labels in Rhino.
+- Extension of `face_vertex_descendant` and `face_vertex_ancestor` in `Mesh`.
+- Changed the name and meaning of the parameter `oriented` in the function `Mesh.edges_on_boundary`.
+- Add `axis` and `origin` defaults to `compas.robots.Joint`
+- Unified vertices and face import order for .obj files with python2 and 3
+- Changed python interpreter selection (e.g. RPC calls) to fallback to `python` if `pythonw` is not present on the system
+- Fixed `compas_ghpython.artists.MeshArtist` to support ngons.
+- Deprecate the method `draw` of `compas_ghpython.artists.MeshArtist` in favor of `draw_mesh`.
+- Fix icosahedron generation
+- Examples in docs/rhino updated to work with current codebase
+- Callbacks tutorial updated to work with current codebase
+- Base geometric primitives on `compas.geometry.Primitive` and `compas.geometry.Shape`
+- Separated `numpy` based tranformations into separate module.
+
+### Removed
+
+- Removed `compas_viewers` to separate repo.
+- Removed `compas_hpc` to separate repo.
+
+## [0.7.2] 2019-08-09
+
+### Added
+
 - Added `compas_rhino.geometry.RhinoGeometry` to the docs.
 - Added `compas.remote.services`.
 - Added `compas.remote.services.network.py` service for handling requests for a browser-based network viewer.
+- Possibility to call forward_kinematics on `compas.robots.RobotModel`
+- Added `compas.set_precision` function for the setting the global precision used by COMPAS as a floating point number.
 
 ### Changed
 
@@ -23,9 +486,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed processing of face keys from data getter and setter in `compas.datastructures.Network`.
 - Using `SimpleHTTPRequestHandler` instead of `BaseHTTPRequestHandler` to provide basic support for serving files via `GET`.
 - Mesh mapping on surface without creating new mesh to keep attributes in `compas_rhino.geometry.surface.py`.
+- Moving functionality from `compas_fab.artists.BaseRobotArtist` to `compas.robots.RobotModel`
+- Fix exception of null-area polygon of centroid polygon in `compas.geometry.average.py`.
+- Fix loss of precision during mesh welding in `compas.datastructures.mesh_weld`.
 
 ### Removed
-
 
 ## [0.7.1] 2019-06-29
 
@@ -41,7 +506,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Default Python to `pythonw`.
 
 ### Removed
-
 
 ## [0.7.0] 2019-06-27
 
@@ -82,7 +546,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.6.1] 2019-04-29
 
 ### Added
@@ -92,7 +555,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed bug in RPC. The services cannot have a `pass` statement as class body.
 
 ### Removed
-
 
 ## [0.6.0] 2019-04-29
 

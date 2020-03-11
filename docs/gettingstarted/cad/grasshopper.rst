@@ -26,7 +26,7 @@ component on your Grasshopper canvas, paste the following script and hit `OK`.
 
     artist = MeshArtist(mesh)
 
-    a = artist.draw()
+    a = artist.draw_mesh()
 
 
 .. figure:: /_images/gh_verify.jpg
@@ -49,20 +49,4 @@ recognizes the changes. To avoid restarting Rhino, you can use the function
     from compas_ghpython import unload_modules
 
     unload_modules('my_custom_library')
-
-
-Working with global sticky variables
-====================================
-
-.. TODO
-    Working with global sticky variables
-    https://developer.rhino3d.com/guides/rhinopython/ghpython-global-sticky/
-
-    Passing dictionaries to another component
-    my_dict = {'apples': 5, 'bananas': 7, 'pears': 3}
-    my_outlet = [my_dict]
-
-
-Freezing Grasshopper and workarounds
-====================================
 

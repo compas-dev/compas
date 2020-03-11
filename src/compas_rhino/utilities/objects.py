@@ -217,10 +217,12 @@ def select_points(message='Select points.'):
 def get_points(layer=None):
     if layer:
         rs.EnableRedraw(False)
-        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
+        # that is why we use positional instead of named arguments
+        visible = rs.LayerVisible(layer, True, True)
         guids = rs.ObjectsByType(rs.filter.point)
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
-        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.LayerVisible(layer, visible, True)
         rs.EnableRedraw(True)
     else:
         guids = rs.ObjectsByType(rs.filter.point)
@@ -278,7 +280,7 @@ def select_lines(message='Select lines.'):
     if temp:
         for guid in temp:
             if is_curve_line(guid):
-                    guids.append(guid)
+                guids.append(guid)
     return guids
 
 
@@ -295,7 +297,7 @@ def select_polylines(message='Select polylines (curves with degree = 1, and mult
     if temp:
         for guid in temp:
             if is_curve_polyline(guid):
-                    guids.append(guid)
+                guids.append(guid)
     return guids
 
 
@@ -319,10 +321,12 @@ def select_polygons(message='Select polygons (closed curves with degree = 1)'):
 def get_curves(layer=None):
     if layer:
         rs.EnableRedraw(False)
-        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
+        # that is why we use positional instead of named arguments
+        visible = rs.LayerVisible(layer, True, True)
         guids = rs.ObjectsByType(rs.filter.curve)
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
-        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.LayerVisible(layer, visible, True)
         rs.EnableRedraw(True)
     else:
         guids = rs.ObjectsByType(rs.filter.curve)
@@ -332,11 +336,13 @@ def get_curves(layer=None):
 def get_lines(layer=None):
     if layer:
         rs.EnableRedraw(False)
-        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
+        # that is why we use positional instead of named arguments
+        visible = rs.LayerVisible(layer, True, True)
         guids = rs.ObjectsByType(rs.filter.curve)
         guids = [guid for guid in guids if is_curve_line(guid)]
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
-        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.LayerVisible(layer, visible, True)
         rs.EnableRedraw(True)
     else:
         guids = rs.ObjectsByType(rs.filter.curve)
@@ -347,11 +353,13 @@ def get_lines(layer=None):
 def get_polylines(layer=None):
     if layer:
         rs.EnableRedraw(False)
-        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
+        # that is why we use positional instead of named arguments
+        visible = rs.LayerVisible(layer, True, True)
         guids = rs.ObjectsByType(rs.filter.curve)
         guids = [guid for guid in guids if is_curve_polyline(guid)]
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
-        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.LayerVisible(layer, visible, True)
         rs.EnableRedraw(True)
     else:
         guids = rs.ObjectsByType(rs.filter.curve)
@@ -362,11 +370,13 @@ def get_polylines(layer=None):
 def get_polygons(layer=None):
     if layer:
         rs.EnableRedraw(False)
-        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
+        # that is why we use positional instead of named arguments
+        visible = rs.LayerVisible(layer, True, True)
         guids = rs.ObjectsByType(rs.filter.curve)
         guids = [guid for guid in guids if is_curve_polygon(guid)]
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
-        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.LayerVisible(layer, visible, True)
         rs.EnableRedraw(True)
     else:
         guids = rs.ObjectsByType(rs.filter.curve)
@@ -473,10 +483,12 @@ def select_meshes(message='Select meshes.'):
 def get_meshes(layer=None):
     if layer:
         rs.EnableRedraw(False)
-        visible = rs.LayerVisible(layer, visible=True, force_visible=True)
+        # Argument names for LayerVisible command are not the same for Rhino5 and Rhino6
+        # that is why we use positional instead of named arguments
+        visible = rs.LayerVisible(layer, True, True)
         guids = rs.ObjectsByType(rs.filter.mesh)
         guids = list(set(guids) & set(rs.ObjectsByLayer(layer)))
-        rs.LayerVisible(layer, visible=visible, force_visible=visible)
+        rs.LayerVisible(layer, visible, True)
         rs.EnableRedraw(True)
     else:
         guids = rs.ObjectsByType(rs.filter.mesh)

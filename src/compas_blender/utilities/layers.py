@@ -1,8 +1,3 @@
-
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_blender.utilities import delete_objects
 from compas_blender.utilities import get_objects
 
@@ -58,7 +53,9 @@ def create_layers_from_dict(layers):
 # ==============================================================================
 
 def clear_layer(layer):
-    delete_objects(objects=get_objects(layer=layer))
+    objects = get_objects(layer=layer)
+    if objects:
+        delete_objects(objects=objects)
 
 
 def clear_layers(layers):
@@ -77,7 +74,7 @@ def clear_current_layer():
 def delete_layer(layer):
     collection = bpy.data.collections[layer]
     bpy.context.scene.collection.children.unlink(collection)
-    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+    # redraw()
     collection = bpy.data.collections[layer]
     bpy.data.collections.remove(collection)
 
@@ -93,6 +90,4 @@ def delete_layers(layers):
 
 if __name__ == "__main__":
 
-    clear_layer(layer='Collection 1')
-
-    print(list(bpy.data.collections))
+    pass

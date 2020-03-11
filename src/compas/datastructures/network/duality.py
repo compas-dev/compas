@@ -4,71 +4,20 @@ from __future__ import division
 
 from math import pi
 
+from compas.utilities import pairwise
 from compas.geometry import angle_vectors
 from compas.geometry import is_ccw_xy
 
 
 __all__ = [
-    'network_dual',
-    'network_find_faces',
+    'network_find_cycles',
 ]
 
 
 PI2 = 2.0 * pi
 
 
-def network_dual(network, cls=None):
-    """Construct the dual of a network.
-
-    Parameters
-    ----------
-    network : compas.datastructures.Network
-        The network object.
-    cls : compas.datastructures.Network, optional
-        The class of the dual.
-        Default is ``None``.
-        If ``None``, the cls is inferred from the type of the provided network object.
-
-    Warning
-    -------
-    A network (or a graph) has a dual if, and only if, it is planar.
-    Constructing the dual relies on the information about the faces of the
-    network, or, in other words, about the ordering of neighboring vertices
-    around a vertex. To determine the faces of the network (using :func:`find_network_faces`)
-    the network should be embedded in the plane, i.e drawn such that it is a
-    proper cell decomposition of the plane (it divides the plane in non-overlapping
-    spaces).
-
-    Examples
-    --------
-    .. code-block:: python
-
-        pass
-
-    """
-    if not cls:
-        cls = type(network)
-
-    dual = cls()
-
-    for fkey in network.faces():
-        x, y, z = network.face_center(fkey)
-        dual.add_vertex(fkey, x=x, y=y, z=z)
-
-    # for fkey, vertices in faces.items():
-    #     dual.add_face(vertices, fkey=fkey)
-
-    for u, v in network.edges():
-        f1 = network.halfedge[u][v]
-        f2 = network.halfedge[v][u]
-
-        if f1 is not None and f2 is not None:
-            dual.add_edge(f1, f2)
-
-    return dual
-
-
-def network_find_faces(network, breakpoints=None):
+def network_find_cycles(network, breakpoints=None):
     """Find the faces of a network.
 
     Parameters
@@ -96,77 +45,71 @@ def network_find_faces(network, breakpoints=None):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Network
-        from compas.datastructures import Mesh
-        from compas.datastructures import network_find_faces
-        from compas_plotters import MeshPlotter
-
-        network = Network.from_obj(compas.get('lines.obj'))
-
-        mesh = Mesh()
-
-        for key, attr in network.vertices(True):
-            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=attr['z'])
-
-        mesh.halfedge = network.halfedge
-
-        network_find_faces(mesh)
-
-        plotter = MeshPlotter(mesh)
-
-        plotter.draw_vertices()
-        plotter.draw_edges()
-        plotter.draw_faces()
-
-        plotter.show()
+    >>>
 
     """
     if not breakpoints:
         breakpoints = []
 
     for u, v in network.edges():
-        network.halfedge[u][v] = None
-        network.halfedge[v][u] = None
+        network.adjacency[u][v] = None
+        network.adjacency[v][u] = None
 
-    _sort_neighbors(network)
+    network_sort_neighbors(network)
 
     leaves = list(network.leaves())
-
     if leaves:
-        u = sorted([(key, network.vertex[key]) for key in leaves], key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+        u = sorted([(key, network.node_coordinates(key, 'xy')) for key in leaves], key=lambda x: (x[1][1], x[1][0]))[0][0]
     else:
-        u = sorted(network.vertices(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
+        u = sorted(network.nodes(True), key=lambda x: (x[1]['y'], x[1]['x']))[0][0]
 
-    v = _find_first_neighbor(u, network)
+    cycles = {}
+    found = {}
+    ckey = 0
 
-    _find_edge_face(u, v, network)
+    v = network_node_find_first_neighbor(network, u)
+    cycle = network_find_edge_cycle(network, u, v)
+    frozen = frozenset(cycle)
+    found[frozen] = ckey
+    cycles[ckey] = cycle
+    for a, b in pairwise(cycle + cycle[:1]):
+        network.adjacency[a][b] = ckey
+    ckey += 1
 
     for u, v in network.edges():
-        if network.halfedge[u][v] is None:
-            _find_edge_face(u, v, network)
-        if network.halfedge[v][u] is None:
-            _find_edge_face(v, u, network)
+        if network.adjacency[u][v] is None:
+            cycle = network_find_edge_cycle(network, u, v)
+            frozen = frozenset(cycle)
+            if frozen not in found:
+                found[frozen] = ckey
+                cycles[ckey] = cycle
+                ckey += 1
+            for a, b in pairwise(cycle + cycle[:1]):
+                network.adjacency[a][b] = found[frozen]
+        if network.adjacency[v][u] is None:
+            cycle = network_find_edge_cycle(network, v, u)
+            frozen = frozenset(cycle)
+            if frozen not in found:
+                found[frozen] = ckey
+                cycles[ckey] = cycle
+                ckey += 1
+            for a, b in pairwise(cycle + cycle[:1]):
+                network.adjacency[a][b] = found[frozen]
 
-    _break_faces(network, breakpoints)
+    cycles = _break_cycles(cycles, breakpoints)
+    return cycles
 
-    return network.face
 
-
-def _find_first_neighbor(key, network):
-    nbrs = list(network.halfedge[key].keys())
+def network_node_find_first_neighbor(network, key):
+    nbrs = network.neighbors(key)
     if len(nbrs) == 1:
         return nbrs[0]
     ab = [-1.0, -1.0, 0.0]
-    a = network.vertex_coordinates(key, 'xyz')
+    a = network.node_coordinates(key, 'xyz')
     b = [a[0] + ab[0], a[1] + ab[1], 0]
     angles = []
     for nbr in nbrs:
-        c = network.vertex_coordinates(nbr, 'xyz')
+        c = network.node_coordinates(nbr, 'xyz')
         ac = [c[0] - a[0], c[1] - a[1], 0]
         alpha = angle_vectors(ab, ac)
         if is_ccw_xy(a, b, c, True):
@@ -175,18 +118,18 @@ def _find_first_neighbor(key, network):
     return nbrs[angles.index(min(angles))]
 
 
-def _sort_neighbors(network, ccw=True):
+def network_sort_neighbors(network, ccw=True):
     sorted_neighbors = {}
-    xyz = {key: network.vertex_coordinates(key) for key in network.vertices()}
-    for key in network.vertices():
-        nbrs = network.vertex_neighbors(key)
-        sorted_neighbors[key] = _sort_vertex_neighbors(key, nbrs, xyz, ccw=ccw)
+    xyz = {key: network.node_coordinates(key) for key in network.nodes()}
+    for key in network.nodes():
+        nbrs = network.neighbors(key)
+        sorted_neighbors[key] = node_sort_neighbors(key, nbrs, xyz, ccw=ccw)
     for key, nbrs in sorted_neighbors.items():
-        network.vertex[key]['sorted_neighbors'] = nbrs[::-1]
+        network.node_attribute(key, 'neighbors', nbrs[::-1])
     return sorted_neighbors
 
 
-def _sort_vertex_neighbors(key, nbrs, xyz, ccw=True):
+def node_sort_neighbors(key, nbrs, xyz, ccw=True):
     if len(nbrs) == 1:
         return nbrs
     ordered = nbrs[0:1]
@@ -215,25 +158,24 @@ def _sort_vertex_neighbors(key, nbrs, xyz, ccw=True):
     return ordered
 
 
-def _find_edge_face(u, v, network):
+def network_find_edge_cycle(network, u, v):
     cycle = [u]
     while True:
         cycle.append(v)
-        nbrs = network.vertex[v]['sorted_neighbors']
+        nbrs = network.node_attribute(v, 'neighbors')
         nbr = nbrs[nbrs.index(u) - 1]
         u, v = v, nbr
         if v == cycle[0]:
-            # cycle.append(v)
             break
-    fkey = network.add_face(cycle)
-    return fkey
+    return cycle
 
 
-def _break_faces(network, breakpoints):
+def _break_cycles(cycles, breakpoints):
     breakpoints = set(breakpoints)
+    broken = []
 
-    for fkey in list(network.faces()):
-        vertices = network.face_vertices(fkey)
+    for fkey in cycles:
+        vertices = cycles[fkey]
 
         faces = []
         faces.append([vertices[0]])
@@ -247,6 +189,7 @@ def _break_faces(network, breakpoints):
         faces[-1].append(vertices[0])
 
         if len(faces) == 1:
+            broken.append(faces[0])
             continue
 
         if faces[0][0] not in breakpoints and faces[-1][-1] not in breakpoints:
@@ -254,15 +197,13 @@ def _break_faces(network, breakpoints):
                 faces[:] = [faces[-1] + faces[0][1:]] + faces[1:-1]
 
         if len(faces) == 1:
+            broken.append(faces[0])
             continue
 
-        del network.face[fkey]
-
-        if fkey in network.facedata:
-            del network.facedata[fkey]
-
         for vertices in faces:
-            network.add_face(vertices)
+            broken.append(vertices)
+
+    return broken
 
 
 # ==============================================================================
@@ -271,4 +212,14 @@ def _break_faces(network, breakpoints):
 
 if __name__ == '__main__':
 
-    pass
+    import compas
+    from compas.datastructures import Network
+
+    network = Network.from_obj(compas.get('lines.obj'))
+    network = Network.from_lines(network.to_lines())
+
+    network.summary()
+
+    cycles = network_find_cycles(network, network.leaves())
+    for cycle in cycles:
+        print(cycle)

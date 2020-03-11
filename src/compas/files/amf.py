@@ -13,11 +13,32 @@ class AMF(object):
     --------
     * http://www.asprs.org/wp-content/uploads/2010/12/AMF_1_4_r13.pdf
 
-
     """
+
     def __init__(self, filepath, precision=None):
-        self.reader = AMFReader(filepath)
-        self.parser = AMFParser(self.reader, precision=precision)
+        self.filepath = filepath
+        self.precision = precision
+
+        self._is_parsed = False
+        self._reader = None
+        self._parser = None
+
+    def read(self):
+        self._reader = AMFReader(self.filepath)
+        self._parser = AMFParser(self._reader, precision=self.precision)
+        self._is_parsed = True
+
+    @property
+    def reader(self):
+        if not self._is_parsed:
+            self.read()
+        return self._reader
+
+    @property
+    def parser(self):
+        if not self._is_parsed:
+            self.read()
+        return self._parser
 
 
 class AMFReader(object):

@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import sys
 import json
 import tempfile
 
@@ -19,7 +18,8 @@ except ImportError:
     import pickle
 
 try:
-    from subprocess import Popen, PIPE, STDOUT
+    from subprocess import Popen
+    from subprocess import PIPE
 except ImportError:
     try:
         from System.Diagnostics import Process
@@ -214,11 +214,11 @@ class XFunc(object):
             attr['is_fixed'] = mesh.vertex_degree(key) == 2
 
         key_index = mesh.key_index()
-        vertices  = mesh.get_vertices_attributes('xyz')
+        vertices  = mesh.vertices_attributes('xyz')
         edges     = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
         fixed     = [key_index[key] for key in mesh.vertices_where({'is_fixed': True})]
-        q         = mesh.get_edges_attribute('q', 1.0)
-        loads     = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
+        q         = mesh.edges_attribute('q')
+        loads     = mesh.vertices_attributes(('px', 'py', 'pz'))
 
         xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, q, loads)
 
@@ -237,27 +237,27 @@ class XFunc(object):
                  verbose=True, callback=None, callback_args=None, python=None,
                  paths=None, serializer='json',
                  argtypes=None, kwargtypes=None, restypes=None):
-        self._basedir       = None
-        self._tmpdir        = None
-        self._callback      = None
-        self._python        = None
-        self._serializer    = None
-        self.funcname       = funcname
-        self.basedir        = basedir
-        self.tmpdir         = tmpdir or tempfile.mkdtemp('compas_xfunc')
-        self.delete_files   = delete_files
-        self.verbose        = verbose
-        self.callback       = callback
-        self.callback_args  = callback_args
-        self.python         = compas._os.select_python(python)
-        self.paths          = paths or []
-        self.serializer     = serializer
-        self.argtypes       = argtypes
-        self.kwargtypes     = kwargtypes
-        self.restypes       = restypes
-        self.data           = None
-        self.profile        = None
-        self.error          = None
+        self._basedir = None
+        self._tmpdir = None
+        self._callback = None
+        self._python = None
+        self._serializer = None
+        self.funcname = funcname
+        self.basedir = basedir
+        self.tmpdir = tmpdir or tempfile.mkdtemp('compas_xfunc')
+        self.delete_files = delete_files
+        self.verbose = verbose
+        self.callback = callback
+        self.callback_args = callback_args
+        self.python = compas._os.select_python(python)
+        self.paths = paths or []
+        self.serializer = serializer
+        self.argtypes = argtypes
+        self.kwargtypes = kwargtypes
+        self.restypes = restypes
+        self.data = None
+        self.profile = None
+        self.error = None
 
     @property
     def basedir(self):
@@ -307,7 +307,7 @@ class XFunc(object):
 
     @serializer.setter
     def serializer(self, serializer):
-        if not serializer in ('json', 'pickle'):
+        if serializer not in ('json', 'pickle'):
             raise Exception("*serializer* should be one of {'json', 'pickle'}.")
         self._serializer = serializer
 
@@ -416,9 +416,9 @@ class XFunc(object):
             with open(self.opath, 'rb') as fo:
                 odict = pickle.load(fo)
 
-        self.data    = odict['data']
+        self.data = odict['data']
         self.profile = odict['profile']
-        self.error   = odict['error']
+        self.error = odict['error']
 
         if self.delete_files:
             try:
@@ -442,79 +442,4 @@ class XFunc(object):
 
 if __name__ == '__main__':
 
-    import random
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas.utilities import XFunc
-    from compas_rhino.artists import MeshArtist
-
-    dr = XFunc('compas.numerical.dr_numpy')
-
-    dva = {
-        'is_fixed': False,
-        'x': 0.0,
-        'y': 0.0,
-        'z': 0.0,
-        'px': 0.0,
-        'py': 0.0,
-        'pz': 0.0,
-        'rx': 0.0,
-        'ry': 0.0,
-        'rz': 0.0,
-    }
-
-    dea = {
-        'qpre': 1.0,
-        'fpre': 0.0,
-        'lpre': 0.0,
-        'linit': 0.0,
-        'E': 0.0,
-        'radius': 0.0,
-    }
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    print('mesh')
-    print(mesh.number_of_vertices())
-
-    mesh.update_default_vertex_attributes(dva)
-    mesh.update_default_edge_attributes(dea)
-
-    for key, attr in mesh.vertices(True):
-        attr['is_fixed'] = mesh.vertex_degree(key) == 2
-
-    for u, v, attr in mesh.edges(True):
-        attr['qpre'] = 1.0 * random.randint(1, 7)
-
-    k_i = mesh.key_index()
-
-    vertices = mesh.get_vertices_attributes(('x', 'y', 'z'))
-    edges    = [(k_i[u], k_i[v]) for u, v in mesh.edges()]
-    fixed    = [k_i[key] for key in mesh.vertices_where({'is_fixed': True})]
-    loads    = mesh.get_vertices_attributes(('px', 'py', 'pz'))
-    qpre     = mesh.get_edges_attribute('qpre')
-    fpre     = mesh.get_edges_attribute('fpre')
-    lpre     = mesh.get_edges_attribute('lpre')
-    linit    = mesh.get_edges_attribute('linit')
-    E        = mesh.get_edges_attribute('E')
-    radius   = mesh.get_edges_attribute('radius')
-
-    xyz, q, f, l, r = dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius, kmax=100)
-
-    for key, attr in mesh.vertices(True):
-        index = k_i[key]
-        attr['x'] = xyz[index][0]
-        attr['y'] = xyz[index][1]
-        attr['z'] = xyz[index][2]
-
-    artist = MeshArtist(mesh, layer="XFunc::Mesh")
-
-    artist.clear_layer()
-
-    artist.draw_vertices()
-    artist.draw_edges()
-    artist.draw_faces()
-
-    artist.redraw()
-
+    pass

@@ -11,13 +11,12 @@ try:
     clr.AddReference("Eto")
     clr.AddReference("Rhino.UI")
 
-except:
+except Exception:
     compas.raise_if_ironpython()
 
 try:
     import Rhino
     import Rhino.UI
-    import Eto
     import Eto.Drawing as drawing
     import Eto.Forms as forms
 
@@ -104,7 +103,7 @@ class SettingsForm(Dialog):
     def values(self):
         return self._values
 
-    def on_ok(self, sender, e):
+    def on_ok(self, sender, event):
         try:
             for i, name in enumerate(self.names):
                 value = self.table.DataStore[i][1]
@@ -118,5 +117,16 @@ class SettingsForm(Dialog):
             self.Close(False)
         self.Close(True)
 
-    def on_cancel(self, sender, e):
+    def on_cancel(self, sender, event):
         self.Close(False)
+
+    def show(self):
+        return self.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow)
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass

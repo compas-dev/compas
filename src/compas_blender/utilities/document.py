@@ -1,16 +1,4 @@
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-try:
-    import bpy
-except ImportError:
-    pass
-
-import os
-
-
 __all__ = [
     'get_document_name',
     'get_document_filename',

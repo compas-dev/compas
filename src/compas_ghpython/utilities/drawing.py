@@ -2,15 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from functools import wraps
-
 import compas
 
 try:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
 
-    from System.Collections.Generic import List
     from System.Enum import ToObject
     from System.Array import CreateInstance
     from System.Drawing import Color
@@ -121,8 +118,6 @@ def draw_faces(faces, **kwargs):
     meshes = []
     for face in iter(faces):
         points = face['points'][:]
-        name = face.get('name')
-        color = face.get('color')
         vertexcolors = face.get('vertexcolors')
 
         v = len(points)

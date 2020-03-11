@@ -7,9 +7,13 @@ from math import pi
 from copy import deepcopy
 
 from compas.geometry import centroid_points
+from compas.geometry import offset_polygon
+
+from compas.utilities import iterable_like
+from compas.utilities import pairwise
 
 from compas.datastructures.mesh._mesh import Mesh
-from compas.datastructures.mesh.operations import mesh_split_edge
+from compas.datastructures.mesh.core import mesh_split_edge
 
 
 __all__ = [
@@ -19,20 +23,21 @@ __all__ = [
     'mesh_subdivide_quad',
     'mesh_subdivide_catmullclark',
     'mesh_subdivide_doosabin',
+    'mesh_subdivide_frames',
     'trimesh_subdivide_loop',
 ]
 
 
 def mesh_fast_copy(other):
     subd = SubdMesh()
-    subd.attributes = deepcopy(other.attributes)
-    subd.default_vertex_attributes = deepcopy(other.default_vertex_attributes)
-    subd.default_face_attributes = deepcopy(other.default_face_attributes)
-    subd.default_edge_attributes = deepcopy(other.default_edge_attributes)
+    # subd.attributes = deepcopy(other.attributes)
+    # subd.default_vertex_attributes = deepcopy(other.default_vertex_attributes)
+    # subd.default_face_attributes = deepcopy(other.default_face_attributes)
+    # subd.default_edge_attributes = deepcopy(other.default_edge_attributes)
     subd.vertex = deepcopy(other.vertex)
     subd.face = deepcopy(other.face)
-    subd.edgedata = deepcopy(other.edgedata)
-    subd.facedata = deepcopy(other.facedata)
+    # subd.edgedata = deepcopy(other.edgedata)
+    # subd.facedata = deepcopy(other.facedata)
     subd.halfedge = deepcopy(other.halfedge)
     subd._max_int_key = other._max_int_key
     subd._max_int_fkey = other._max_int_fkey
@@ -40,6 +45,10 @@ def mesh_fast_copy(other):
 
 
 class SubdMesh(Mesh):
+
+    _add_vertex = Mesh.add_vertex
+    _add_face = Mesh.add_face
+    _insert_vertex = Mesh.insert_vertex
 
     def add_vertex(self, x, y, z):
         key = self._max_int_key = self._max_int_key + 1
@@ -58,13 +67,20 @@ class SubdMesh(Mesh):
         self.face[fkey] = vertices
         self.facedata[fkey] = {}
 
-        for u, v in self._cycle_keys(vertices):
+        for u, v in pairwise(vertices + vertices[:1]):
             self.halfedge[u][v] = fkey
             if u not in self.halfedge[v]:
                 self.halfedge[v][u] = None
 
         return fkey
 
+    def insert_vertex(self, fkey):
+        x, y, z = self.face_center(fkey)
+        w = self.add_vertex(x=x, y=y, z=z)
+        for u, v in self.face_halfedges(fkey):
+            self.add_face([u, v, w])
+        del self.face[fkey]
+        return w
 
 # distinguish between subd of meshes with and without boundary
 # closed vs. open
@@ -129,22 +145,65 @@ def mesh_subdivide_tri(mesh, k=1):
     Mesh
         A new subdivided mesh.
 
+    Examples
+    --------
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> k = 2
+    >>> subd = mesh_subdivide_tri(mesh, k=k)
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+    >>> k1 = sum(len(mesh.face_vertices(fkey)) for fkey in mesh.faces())
+    >>> subd.number_of_faces() == (k1 if k == 1 else k1 * 3 ** (k - 1))
+    True
+
     """
+    cls = type(mesh)
+    subd = mesh_fast_copy(mesh)
     for _ in range(k):
-        subd = mesh.copy()
-        for fkey in mesh.faces():
+        for fkey in list(subd.faces()):
             subd.insert_vertex(fkey)
-        mesh = subd
-    return mesh
+    return cls.from_data(subd.data)
 
 
 def mesh_subdivide_quad(mesh, k=1):
     """Subdivide a mesh such that all faces are quads.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh object that will be subdivided.
+    k : int
+        Optional. The number of levels of subdivision. Default is ``1``.
+
+    Returns
+    -------
+    Mesh
+        A new subdivided mesh.
+
+    Notes
+    -----
+
+
+    Examples
+    --------
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> k = 2
+    >>> subd = mesh_subdivide_quad(mesh, k=k)
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+    >>> subd.number_of_faces() == mesh.number_of_faces() * 4 ** k
+    True
+
     """
-    # cls = type(mesh)
+    cls = type(mesh)
     for _ in range(k):
-        # subd = mesh_fast_copy(mesh)
-        subd = mesh.copy()
+        subd = mesh_fast_copy(mesh)
         for u, v in list(subd.edges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
         for fkey in mesh.faces():
@@ -158,13 +217,13 @@ def mesh_subdivide_quad(mesh, k=1):
                 subd.add_face([a, key, d, c])
             del subd.face[fkey]
         mesh = subd
-    # subd = cls()
-    # subd.data = mesh.data
-    return subd
+    subd2 = cls()
+    subd2.data = mesh.data
+    return subd2
 
 
 def mesh_subdivide_corner(mesh, k=1):
-    """Subdivide a mesh by cutting croners.
+    """Subdivide a mesh by cutting corners.
 
     Parameters
     ----------
@@ -189,36 +248,29 @@ def mesh_subdivide_corner(mesh, k=1):
     meshes.
 
     """
-
+    cls = type(mesh)
     for _ in range(k):
-        subd = mesh.copy()
+        subd = mesh_fast_copy(mesh)
 
         # split every edge
         for u, v in list(subd.edges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
-
         # create 4 new faces for every old face
         for fkey in mesh.faces():
-
             descendant = {i: j for i, j in subd.face_halfedges(fkey)}
             ancestor = {j: i for i, j in subd.face_halfedges(fkey)}
-
             center = []
-
             for key in mesh.face_vertices(fkey):
                 a = ancestor[key]
                 d = descendant[key]
-
                 subd.add_face([a, key, d])
-
                 center.append(a)
-
             subd.add_face(center)
             del subd.face[fkey]
-
         mesh = subd
-
-    return mesh
+    subd2 = cls()
+    subd2.data = mesh.data
+    return subd2
 
 
 def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
@@ -246,17 +298,25 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
     Examples
     --------
-    >>>
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> k = 2
+    >>> subd = mesh_subdivide_catmullclark(mesh, k=k)
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+    >>> subd.number_of_faces() == mesh.number_of_faces() * 4 ** k
+    True
 
     """
+    cls = type(mesh)
     if not fixed:
         fixed = []
-
     fixed = set(fixed)
 
     for _ in range(k):
-
-        subd = mesh.copy()
+        subd = mesh_fast_copy(mesh)
 
         # keep track of original connectivity and vertex locations
 
@@ -359,7 +419,9 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         mesh = subd
 
-    return mesh
+    subd2 = cls()
+    subd2.data = mesh.data
+    return subd2
 
 
 def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
@@ -379,19 +441,29 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
     Mesh
         A new subdivided mesh.
 
+    Examples
+    --------
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> k = 2
+    >>> subd = mesh_subdivide_doosabin(mesh, k=k)
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+
     """
     if not fixed:
         fixed = []
 
     fixed = set(fixed)
 
-    # cls = type(mesh)
+    cls = type(mesh)
 
     for _ in range(k):
-        old_xyz      = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
+        old_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.vertices()}
         fkey_old_new = {fkey: {} for fkey in mesh.faces()}
 
-        # subd = cls()
         subd = SubdMesh()
 
         for fkey in mesh.faces():
@@ -417,16 +489,12 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
                     cy += alpha * y
                     cz += alpha * z
 
-                # fkey_old_new[fkey][old] = subd.add_vertex(x=cx, y=cy, z=cz)
                 new = subd.add_vertex(cx, cy, cz)
                 fkey_old_new[fkey][old] = new
 
                 face.append(new)
 
             subd.add_face(face)
-
-        # for fkey in mesh.faces():
-        #     subd.add_face([fkey_old_new[fkey][key] for key in mesh.face_vertices(fkey)])
 
         boundary = set(mesh.vertices_on_boundary())
 
@@ -464,7 +532,78 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
         mesh = subd
 
-    return mesh
+    subd2 = cls()
+    subd2.data = mesh.data
+    return subd2
+
+
+def mesh_subdivide_frames(mesh, offset, add_windows=False):
+    """Subdivide a mesh by creating offset frames and windows on its faces.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh object to be subdivided.
+    offset : float or dict
+        The offset distance to create the frames.
+        A single value will result in a constant offset everywhere.
+        A dictionary mapping facekey: offset will be processed accordingly.
+    add_windows : boolean
+        Optional. Flag to add window face. Default is ``False``.
+
+    Returns
+    -------
+    Mesh
+        A new subdivided mesh.
+
+    Examples
+    --------
+    >>>
+
+    """
+
+    subd = SubdMesh()
+
+    # 0. pre-compute offset distances
+    if not isinstance(offset, dict):
+        distances = iterable_like(mesh.faces(), [offset], offset)
+        offset = {fkey: od for fkey, od in zip(mesh.faces(), distances)}
+
+    # 1. add vertices
+    newkeys = {}
+    for vkey, attr in mesh.vertices(True):
+        newkeys[vkey] = subd.add_vertex(*mesh.vertex_coordinates(vkey))
+
+    # 2. add faces
+    for fkey in mesh.faces():
+        face = [newkeys[vkey] for vkey in mesh.face_vertices(fkey)]
+        d = offset.get(fkey)
+
+        # 2a. add face and break if no offset is found
+        if d is None:
+            subd.add_face(face)
+            continue
+
+        polygon = offset_polygon(mesh.face_coordinates(fkey), d)
+
+        # 2a. add offset vertices
+        window = []
+        for xyz in polygon:
+            x, y, z = xyz
+            new_vkey = subd.add_vertex(x=x, y=y, z=z)
+            window.append(new_vkey)
+
+        # 2b. frame faces
+        face = face + face[:1]
+        window = window + window[:1]
+        for sa, sb in zip(pairwise(face), pairwise(window)):
+            subd.add_face([sa[0], sa[1], sb[1], sb[0]])
+
+        # 2c. window face
+        if add_windows:
+            subd.add_face(window)
+
+    return subd
 
 
 def trimesh_subdivide_loop(mesh, k=1, fixed=None):
@@ -486,36 +625,36 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
     Examples
     --------
-    .. code-block:: python
+    Make a low poly mesh from a box shape.
+    Triangulate the faces.
+    >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
+    >>> mesh = Mesh.from_shape(box)
+    >>> mesh_quads_to_triangles(mesh)
 
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_flip_cycle_directions
-        from compas_plotters import SubdMeshViewer
+    Subdivide 2 times.
+    >>> k = 2
+    >>> subd = trimesh_subdivide_loop(mesh, k=k)
 
-        mesh = Mesh.from_polyhedron(4)
-        mesh_flip_cycle_directions(mesh)
-
-        viewer = SubdMeshViewer(mesh, subdfunc=loop_subdivision, width=600, height=600)
-
-        viewer.axes_on = False
-        viewer.grid_on = False
-
-        for _ in range(10):
-            viewer.camera.zoom_in()
-
-        viewer.setup()
-        viewer.show()
+    Compare low-poly cage with subdivision mesh.
+    >>> mesh is subd
+    False
+    >>> type(mesh) is type(subd)
+    True
+    >>> subd.number_of_faces() == mesh.number_of_faces() * (3 + 1) ** k
+    True
 
     """
+    cls = type(mesh)
+
     if not fixed:
         fixed = []
 
     fixed = set(fixed)
 
-    subd = mesh.copy()
+    subd = mesh_fast_copy(mesh)
 
     for _ in range(k):
-        key_xyz       = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
+        key_xyz = {key: subd.vertex_coordinates(key) for key in subd.vertices()}
         fkey_vertices = {fkey: subd.face_vertices(fkey)[:] for fkey in subd.faces()}
         uv_w = {(u, v): subd.face_vertex_ancestor(fkey, u) for fkey in subd.faces() for u, v in subd.face_halfedges(fkey)}
         boundary = set(subd.vertices_on_boundary())
@@ -599,7 +738,9 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
             del subd.face[fkey]
 
-    return subd
+    subd2 = cls()
+    subd2.data = subd.data
+    return subd2
 
 
 # ==============================================================================
@@ -608,34 +749,11 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
 if __name__ == "__main__":
 
-    from functools import partial
+    import doctest
 
-    import compas
-
+    import compas  # noqa: F401
     from compas.datastructures import Mesh
-    from compas.utilities import print_profile
+    from compas.datastructures import mesh_quads_to_triangles  # noqa: F401
+    from compas.geometry import Box  # noqa: F401
 
-    from compas_plotters import MeshPlotter
-
-    #mesh = Mesh.from_polyhedron(6)
-    # fixed = [mesh.get_any_vertex()]
-    # print(fixed)
-
-    #subdivide = partial(mesh_subdivide_catmullclark)
-    #subd = subdivide(mesh, k=4)
-
-    vertices = [
-        [0.5, 0.0, 0.0],
-        [0.0, 1.0, 0.0],
-        [-0.5, 0.0, 0.0]
-    ]
-    faces =[
-        [0, 1, 2]
-    ]
-
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-    subd = trimesh_subdivide_loop(mesh, k=3)
-
-    plotter = MeshPlotter(subd)
-    plotter.draw_edges()
-    plotter.show()
+    doctest.testmod(globs=globals())

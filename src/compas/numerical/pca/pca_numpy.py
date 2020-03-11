@@ -14,8 +14,7 @@ def pca_numpy(data):
 
     Parameters
     ----------
-    data : listpython
-
+    data : list
         A list of `m` observations, measuring `n` variables.
         For example, if the data are points in 2D space, the data parameter
         should contain `m` nested lists of `2` variables, the `x` and `y`
@@ -24,7 +23,7 @@ def pca_numpy(data):
     Returns
     -------
     tuple
-        * The ``mean of the data points``
+        * The ``mean of the data points``.
         * The principle directions.
           The number of principle directions is equal to the dimensionality of the data.
           For example, if the data points are locations in 3D space, three principle components will be returned.
@@ -38,7 +37,7 @@ def pca_numpy(data):
 
     Examples
     --------
-
+    >>>
     """
     X = asarray(data)
     n, dim = X.shape
@@ -61,7 +60,7 @@ def pca_numpy(data):
     # the shape of the covariance matrix is dim x dim
     # for example, if the data are 2D point coordinates, the shape of C is 2 x 2
     # the diagonal of the covariance matrix contains the variance of each variable
-    # the off-diagonal elements of the covariannce matrix contain the covariance
+    # the off-diagonal elements of the covariance matrix contain the covariance
     # of two independent variables
     C = Y.T.dot(Y) / (n - 1)
 
@@ -77,18 +76,16 @@ def pca_numpy(data):
     # => take the rows of vT, or the columns of v
     # the right-singular vectors of C (the columns of V or the rows of Vt)
     # are the eigenvectors of CtC
-
     eigenvectors = vT
 
     # eigenvalues
     # -----------
     # the nonzero singular values of C are the square roots
     # of the nonzero eigenvalues of CtC and CCt
-
     eigenvalues = s
 
     # return
-    return mean, eigenvectors, eigenvalues
+    return mean[0], eigenvectors, eigenvalues
 
 
 # ==============================================================================
@@ -97,40 +94,6 @@ def pca_numpy(data):
 
 if __name__ == "__main__":
 
-    from numpy import random
-    from numpy import asarray
+    import doctest
 
-    import matplotlib.pyplot as plt
-
-    from compas.geometry import matrix_from_axis_and_angle
-    from compas.geometry import transform_points_numpy
-
-    from compas_plotters import Axes3D
-    from compas_plotters import Cloud3D
-    from compas_plotters import Bounds
-    from compas_plotters import create_axes_3d
-
-    data = random.rand(300, 3)
-    data[:, 0] *= 10.0
-    data[:, 1] *= 1.0
-    data[:, 2] *= 4.0
-
-    a = 3.14159 * 30.0 / 180
-    Ry = matrix_from_axis_and_angle([0, 1.0, 0.0], a, rtype='array')
-
-    a = -3.14159 * 45.0 / 180
-    Rz = matrix_from_axis_and_angle([0, 0, 1.0], a, rtype='array')
-
-    R = Rz.dot(Ry)
-
-    data = transform_points_numpy(data, R)
-
-    average, vectors, values = pca_numpy(data)
-
-    axes = create_axes_3d()
-
-    Bounds(data).plot(axes)
-    Cloud3D(data).plot(axes)
-    Axes3D(average, vectors).plot(axes)
-
-    plt.show()
+    doctest.testmod(globs=globals())

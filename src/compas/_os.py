@@ -4,6 +4,7 @@ These are internal functions of the framework.
 Not intended to be used outside compas* packages.
 """
 import os
+import shutil
 import sys
 import tempfile
 
@@ -63,6 +64,11 @@ except:  # noqa: E722
     except:  # noqa: E722
         PYTHON_DIRECTORY = None
 
+try:
+    from compas_bootstrapper import CONDA_EXE
+except:  # noqa: E722
+    CONDA_EXE = None
+
 
 def select_python(python_executable):
     """Selects the most likely python interpreter to run.
@@ -76,49 +82,63 @@ def select_python(python_executable):
         Select which python executable you want to use,
         either `python` or `pythonw`.
     """
-    python_executable = python_executable or 'pythonw'
-
     if PYTHON_DIRECTORY and os.path.exists(PYTHON_DIRECTORY):
-        python = os.path.join(PYTHON_DIRECTORY, python_executable)
-        if os.path.exists(python):
-            return python
+        python_executables = [python_executable] if python_executable else ['pythonw', 'python']
 
-        python = os.path.join(PYTHON_DIRECTORY, '{0}.exe'.format(python_executable))
-        if os.path.exists(python):
-            return python
+        for python_exe in python_executables:
+            python = os.path.join(PYTHON_DIRECTORY, python_exe)
+            if os.path.exists(python):
+                return python
 
-        python = os.path.join(PYTHON_DIRECTORY, 'bin', python_executable)
-        if os.path.exists(python):
-            return python
+            python = os.path.join(PYTHON_DIRECTORY, '{0}.exe'.format(python_exe))
+            if os.path.exists(python):
+                return python
 
-        python = os.path.join(PYTHON_DIRECTORY, 'bin', '{0}.exe'.format(python_executable))
-        if os.path.exists(python):
-            return python
+            python = os.path.join(PYTHON_DIRECTORY, 'bin', python_exe)
+            if os.path.exists(python):
+                return python
 
-        if python:
-            return python
+            python = os.path.join(PYTHON_DIRECTORY, 'bin', '{0}.exe'.format(python_exe))
+            if os.path.exists(python):
+                return python
 
     # Assume a system-wide install exists
-    return python_executable
+    return python_executable or 'pythonw'
 
 
-def prepare_environment():
+def prepare_environment(env=None):
     """Prepares an environment context to run Python on.
 
     If Python is being used from a conda environment, this is roughly equivalent
     to activating the conda environment by setting up the correct environment
     variables.
+
+    Parameters
+    ----------
+    env : dict, optional
+        Dictionary of environment variables to modify. If ``None`` is passed, then
+        this will create a copy of the current ``os.environ``.
+
+    Returns
+    -------
+    dict
+        Updated environment variable dictionary.
     """
-    env = os.environ.copy()
+
+    if env is None:
+        env = os.environ.copy()
 
     if PYTHON_DIRECTORY:
         lib_bin = os.path.join(PYTHON_DIRECTORY, 'Library', 'bin')
-        if os.path.exists(lib_bin):
+        if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
             env['PATH'] += os.pathsep + lib_bin
 
         lib_bin = os.path.join(PYTHON_DIRECTORY, 'lib')
-        if os.path.exists(lib_bin):
+        if os.path.exists(lib_bin) and lib_bin not in env['PATH']:
             env['PATH'] += os.pathsep + lib_bin
+
+    if CONDA_EXE:
+        env['CONDA_EXE'] = CONDA_EXE
 
     return env
 
@@ -136,14 +156,14 @@ def _polyfill_symlinks(symlinks, raise_on_error):
     _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
 
     with open(temp_path, 'w') as mklink_cmd:
-        mklink_cmd.write('@echo off' + os.linesep)
-        mklink_cmd.write('SET /A symlink_result=0' + os.linesep)
-        mklink_cmd.write('ECHO ret=%symlink_result%' + os.linesep)
+        mklink_cmd.write('@echo off\n')
+        mklink_cmd.write('SET /A symlink_result=0\n')
+        mklink_cmd.write('ECHO ret=%symlink_result%\n')
         for i, (source, link_name) in enumerate(symlinks):
-            mklink_cmd.write("mklink /D {}{}".format(subprocess.list2cmdline([link_name, source]), os.linesep))
-            mklink_cmd.write('IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} {}'.format(2 ** i, os.linesep))
+            mklink_cmd.write("mklink /D {}\n".format(subprocess.list2cmdline([link_name, source])))
+            mklink_cmd.write('IF %ERRORLEVEL% EQU 0 SET /A symlink_result += {} \n'.format(2 ** i))
 
-        mklink_cmd.write('EXIT /B %symlink_result%' + os.linesep)
+        mklink_cmd.write('EXIT /B %symlink_result%\n')
 
     ret_value = _run_as_admin([temp_path])
 
@@ -253,6 +273,11 @@ def remove_symlink(symlink):
             os.rmdir(symlink)
         except NotADirectoryError:
             os.unlink(symlink)
+        except PermissionError:
+            if os.name != 'nt':
+                raise
+
+            _run_command_as_admin('rmdir', [symlink])
     else:
         os.unlink(symlink)
 
@@ -289,6 +314,39 @@ def remove_symlinks(symlinks, raise_on_error=False):
     return result
 
 
+def rename(src, dst):
+    """Rename a file or directory."""
+    try:
+        os.rename(src, dst)
+    except (PermissionError, OSError):
+        if os.name != 'nt':
+            raise
+
+        _run_command_as_admin('move', [src, dst])
+
+
+def remove(path):
+    """Remove path."""
+    try:
+        os.remove(path)
+    except (PermissionError, OSError):
+        if os.name != 'nt':
+            raise
+
+        _run_command_as_admin('del', [path])
+
+
+def copy(src, dst):
+    """Copy a file from source to destination."""
+    try:
+        shutil.copy(src, dst)
+    except (PermissionError, OSError):
+        if os.name != 'nt':
+            raise
+
+        _run_command_as_admin('copy', [src, dst])
+
+
 def is_admin():
     """Determines whether the current user has admin rights.
 
@@ -304,6 +362,25 @@ def is_admin():
         return bool(ctypes.windll.shell32.IsUserAnAdmin())
     except:  # noqa: E722
         return False
+
+
+def _run_command_as_admin(command, arguments):
+    """Run a single command as admin on Windows.
+
+    Parameters
+    ----------
+    command : str
+        Command name.
+    arguments : list of str
+        List of arguments.
+    """
+    _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
+
+    with open(temp_path, 'w') as remove_symlink_cmd:
+        remove_symlink_cmd.write('@echo off\n')
+        remove_symlink_cmd.write('{} {}\n'.format(command, subprocess.list2cmdline(arguments)))
+
+    _run_as_admin([temp_path])
 
 
 def _run_as_admin(command):
@@ -440,7 +517,7 @@ def _get_win_folder_with_pywin32(csidl_name):
     # not return unicode strings when there is unicode data in the
     # path.
     try:
-        dir = str(dir) if PY3 else unicode(dir)
+        dir = str(dir) if PY3 else unicode(dir)  # noqa: F821
 
         # Downgrade to short path name if have highbit chars. See
         # <http://bugs.activestate.com/show_bug.cgi?id=85099>.
@@ -487,11 +564,11 @@ def _get_win_folder_with_ctypes(csidl_name):
 
 if system == "win32":
     try:
-        import win32com.shell
+        import win32com.shell  # noqa: F401
         _get_win_folder = _get_win_folder_with_pywin32
     except ImportError:
         try:
-            from ctypes import windll
+            from ctypes import windll  # noqa: F401
             _get_win_folder = _get_win_folder_with_ctypes
         except ImportError:
             _get_win_folder = _get_win_folder_from_registry
@@ -504,6 +581,9 @@ __all__ = [
     'create_symlinks',
     'remove_symlink',
     'remove_symlinks',
+    'copy',
+    'remove',
+    'rename',
     'user_data_dir',
     'select_python',
     'prepare_environment',

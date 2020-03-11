@@ -9,7 +9,6 @@ except ImportError:
 
 from collections import deque
 
-from compas.utilities import pairwise
 from compas.geometry import distance_point_point
 
 
@@ -71,16 +70,7 @@ def depth_first_ordering(adjacency, root):
 
     Examples
     --------
-    >>> import compas
-    >>> from compas.datastructures import Network
-    >>> from compas.topology import depth_first_search as dfs
-    >>> network = Network.from_obj(compas.get('lines.obj'))
-    >>> print(dfs(network, network.get_any_vertex()))
-
-    See Also
-    --------
-    *
-
+    >>>
     """
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
     tovisit = [root]
@@ -90,14 +80,12 @@ def depth_first_ordering(adjacency, root):
     while tovisit:
         # pop the last added element from the stack
         node = tovisit.pop()
-
         if node not in visited:
             # mark the node as visited
             visited.add(node)
             ordering.append(node)
             # add the unvisited nbrs to the stack
             tovisit.extend(adjacency[node] - visited)
-
     return ordering
 
 
@@ -122,47 +110,7 @@ def depth_first_ordering(adjacency, root):
 
 #     Examples
 #     --------
-#     .. plot::
-#         :include-source:
-
-#         import compas
-#         from compas.datastructures import Mesh
-#         from compas_plotters import MeshPlotter
-#         from compas.topology import depth_first_tree
-#         from compas.utilities import pairwise
-
-#         mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-#         edges = list(mesh.edges())
-
-#         root = mesh.get_any_vertex()
-
-#         ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
-
-#         edgecolor = {}
-#         edgewidth = {}
-
-#         for u, v in pairwise(paths[0]):
-#             if not mesh.has_edge(u, v):
-#                 u, v = v, u
-#             edgecolor[(u, v)] = '#ff0000'
-#             edgewidth[(u, v)] = 3.0
-
-#         for path in paths[1:]:
-#             parent = predecessors[path[0]]
-#             for u, v in pairwise([parent] + path):
-#                 if not mesh.has_edge(u, v):
-#                     u, v = v, u
-#                 edgecolor[(u, v)] = '#00ff00'
-#                 edgewidth[(u, v)] = 3.0
-
-#         plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-#         plotter.draw_vertices(text='key', facecolor={root: '#ff0000'}, radius=0.2)
-#         plotter.draw_edges(color=edgecolor, width=edgewidth)
-
-#         plotter.show()
-
+#     >>>
 #     """
 #     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
 #     tovisit = [root]
@@ -174,28 +122,21 @@ def depth_first_ordering(adjacency, root):
 #     while tovisit:
 #         # pop the last added element from the stack
 #         node = tovisit.pop()
-
 #         if node not in visited:
 #             paths[-1].append(node)
-
 #             # mark the node as visited
 #             visited.add(node)
 #             ordering.append(node)
-
 #             # add the unvisited nbrs to the stack
 #             nodes = adjacency[node] - visited
-
 #             if nodes:
 #                 for child in nodes:
 #                     predecessors[child] = node
 #             else:
 #                 paths.append([])
-
 #             tovisit.extend(nodes)
-
 #     if not len(paths[-1]):
 #         del paths[-1]
-
 #     return ordering, predecessors, paths
 
 
@@ -238,40 +179,51 @@ def breadth_first_ordering(adjacency, root):
     Examples
     --------
     >>>
-
     """
-    tovisit  = deque([root])
-    visited  = set([root])
+    tovisit = deque([root])
+    visited = set([root])
     ordering = [root]
-
     while tovisit:
         node = tovisit.popleft()
-
         for nbr in adjacency[node]:
             if nbr not in visited:
                 tovisit.append(nbr)
                 visited.add(nbr)
                 ordering.append(nbr)
-
     return ordering
 
 
 def breadth_first_traverse(adjacency, root, callback=None):
-    """"""
-    tovisit  = deque([root])
-    visited  = set([root])
+    """Traverse an adjacency dict in "breadth-first" order.
 
+    Parameters
+    ----------
+    adjacency : dict
+        Map of every node to a list of neighbouring nodes.
+    root : int
+        The identifier of the starting node.
+    callback : callable, optional
+        A callback function applied to every traversed node and its current neighbour.
+
+    Returns
+    -------
+    set
+        The visited nodes.
+
+    Examples
+    --------
+    >>>
+    """
+    tovisit = deque([root])
+    visited = set([root])
     while tovisit:
         node = tovisit.popleft()
-
         for nbr in adjacency[node]:
             if nbr not in visited:
                 tovisit.append(nbr)
                 visited.add(nbr)
-
                 if callback:
                     callback(node, nbr)
-
     return visited
 
 
@@ -296,13 +248,14 @@ def breadth_first_paths(adjacency, root, goal):
     -----
     Due to the nature of the search, the first path returned is the shortest.
 
+    Examples
+    --------
+    >>>
     """
     adjacency = {key: set(nbrs) for key, nbrs in iter(adjacency.items())}
     tovisit = deque([(root, [root])])
-
     while tovisit:
         node, path = tovisit.popleft()
-
         for nbr in adjacency[node] - set(path):
             if nbr == goal:
                 yield path + [nbr]
@@ -334,47 +287,7 @@ def shortest_path(adjacency, root, goal):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Network
-        from compas.topology import shortest_path
-        from compas_plotters import NetworkPlotter
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
-
-        start = 21
-        end = 2
-
-        path = shortest_path(adjacency, start, end)
-
-        edges = []
-        for i in range(len(path) - 1):
-            u = path[i]
-            v = path[i + 1]
-            if v not in network.edge[u]:
-                u, v = v, u
-            edges.append([u, v])
-
-        plotter = NetworkPlotter(network)
-
-        plotter.draw_vertices(
-            text={key: key for key in path},
-            facecolor={key: '#ff0000' for key in (path[0], path[-1])},
-            radius=0.15
-        )
-
-        plotter.draw_edges(
-            color={(u, v): '#ff0000' for u, v in edges},
-            width={(u, v): 2.0 for u, v in edges}
-        )
-
-        plotter.show()
-
+    >>>
     """
     try:
         return next(breadth_first_paths(adjacency, root, goal))
@@ -412,10 +325,13 @@ def astar_shortest_path(network, root, goal):
     list, None
         The path from root to goal, or None, if no path exists between the vertices.
 
+    Examples
+    --------
+    >>>
+
     References
     ----------
     https://en.wikipedia.org/wiki/A*_search_algorithm
-
     """
     root_coords = network.vertex_coordinates(root)
     goal_coords = network.vertex_coordinates(goal)
@@ -463,12 +379,12 @@ def astar_shortest_path(network, root, goal):
         current_coords = network.vertex_coordinates(current)
         for neighbor in network.vertex_neighbors(current):
             if neighbor in visited_set:
-                continue	# Ignore the neighbor which is already evaluated.
+                continue  # Ignore the neighbor which is already evaluated.
 
             # The distance from start to a neighbor
             neighbor_coords = network.vertex_coordinates(neighbor)
             tentative_gScore = g_score[current] + distance_point_point(current_coords, neighbor_coords)
-            if neighbor not in candidates_set:	# Discover a new node
+            if neighbor not in candidates_set:  # Discover a new node
                 candidates_set.add(neighbor)
             elif tentative_gScore >= g_score[neighbor]:
                 continue
@@ -504,43 +420,7 @@ def dijkstra_distances(adjacency, weight, target):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Network
-        from compas.topology import dijkstra_distances
-        from compas_plotters import NetworkPlotter
-        from compas.utilities import i_to_red
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
-
-        weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
-        weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
-
-        target = 22
-
-        distances = dijkstra_distances(adjacency, weight, target)
-
-        plotter = NetworkPlotter(network)
-
-        dmax = max(distances.values())
-
-        facecolor = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
-        text = {key: '{:.1f}'.format(distances[key]) for key in network.vertices()}
-
-        plotter.draw_vertices(
-            text=text,
-            facecolor=facecolor,
-            radius=0.15
-        )
-        plotter.draw_edges()
-
-        plotter.show()
-
+    >>>
     """
     adjacency = {key: set(nbrs) for key, nbrs in adjacency.items()}
     distance = {key: (0 if key == target else 1e+17) for key in adjacency}
@@ -551,13 +431,10 @@ def dijkstra_distances(adjacency, weight, target):
         u = min(tovisit, key=lambda k: distance[k])
         tovisit.remove(u)
         visited.add(u)
-
         for v in adjacency[u] - visited:
             d = distance[u] + weight[(u, v)]
-
             if d < distance[v]:
                 distance[v] = d
-
     return distance
 
 
@@ -590,99 +467,7 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Network
-        from compas.topology import dijkstra_path
-        from compas_plotters import NetworkPlotter
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
-
-        weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
-        weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
-
-        start = 21
-        end = 22
-
-        path = dijkstra_path(adjacency, weight, start, end)
-
-        edges = []
-        for i in range(len(path) - 1):
-            u = path[i]
-            v = path[i + 1]
-            if v not in network.edge[u]:
-                u, v = v, u
-            edges.append([u, v])
-
-        plotter = NetworkPlotter(network)
-
-        plotter.draw_vertices(
-            text={key: key for key in path},
-            facecolor={key: '#ff0000' for key in (path[0], path[-1])},
-            radius=0.15
-        )
-
-        plotter.draw_edges(
-            color={(u, v): '#ff0000' for u, v in edges},
-            width={(u, v): 2.0 for u, v in edges},
-            text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}
-        )
-
-        plotter.show()
-
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Network
-        from compas.topology import dijkstra_path
-        from compas_plotters import NetworkPlotter
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
-
-        weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
-        weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
-
-        weight[(8, 7)] = 1000
-        weight[(7, 8)] = 1000
-
-        start = 21
-        end = 22
-
-        path = dijkstra_path(adjacency, weight, start, end)
-
-        edges = []
-        for i in range(len(path) - 1):
-            u = path[i]
-            v = path[i + 1]
-            if v not in network.edge[u]:
-                u, v = v, u
-            edges.append([u, v])
-
-        plotter = NetworkPlotter(network)
-
-        plotter.draw_vertices(
-            text={key: key for key in path},
-            facecolor={key: '#ff0000' for key in (path[0], path[-1])},
-            radius=0.15
-        )
-
-        plotter.draw_edges(
-            color={(u, v): '#ff0000' for u, v in edges},
-            width={(u, v): 2.0 for u, v in edges},
-            text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()}
-        )
-
-        plotter.show()
-
+    >>>
     """
     if not dist:
         dist = dijkstra_distances(adjacency, weight, target)
@@ -697,241 +482,8 @@ def dijkstra_path(adjacency, weight, source, target, dist=None):
 
 
 # ==============================================================================
-# other
-# ==============================================================================
-
-
-# def travel(adjacency, weights, start=None):
-#     points = list(adjacency.keys())
-#     start = start or points[0]
-#     distance = dijkstra_distances(adjacency, weights, start)
-
-#     tovisit = set(adjacency.keys())
-#     visited = set()
-
-#     tovisit.remove(start)
-#     visited.add(start)
-
-#     path = [start]
-
-#     while tovisit:
-#         u = min(tovisit, key=lambda k: distance[k])
-#         tovisit.remove(u)
-#         visited.add(u)
-
-#         path.append(u)
-
-#     return path
-
-
-# ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    testrun = 2
-
-    # ==========================================================================
-    # testrun 1
-    # ==========================================================================
-
-    # if testrun == 1:
-    #     import compas
-    #     from compas.datastructures import Mesh
-    #     from compas_plotters import MeshPlotter
-
-    #     mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    #     edges = list(mesh.edges())
-
-    #     root = mesh.get_any_vertex()
-
-    #     print(root)
-
-    #     ordering, predecessors, paths = depth_first_tree(mesh.adjacency, root)
-
-    #     edgecolor = {}
-    #     edgewidth = {}
-
-    #     for u, v in pairwise(paths[0]):
-    #         if not mesh.has_edge(u, v):
-    #             u, v = v, u
-    #         edgecolor[(u, v)] = '#ff0000'
-    #         edgewidth[(u, v)] = 5.0
-
-    #     for path in paths[1:]:
-    #         parent = predecessors[path[0]]
-    #         for u, v in pairwise([parent] + path):
-    #             if not mesh.has_edge(u, v):
-    #                 u, v = v, u
-    #             edgecolor[(u, v)] = '#00ff00'
-    #             edgewidth[(u, v)] = 5.0
-
-    #     plotter = MeshPlotter(mesh, figsize=(10, 7))
-
-    #     plotter.draw_vertices(text='key', facecolor={key: '#ff0000' for key in (root, )}, radius=0.2)
-    #     plotter.draw_edges(color=edgecolor, width=edgewidth)
-
-    #     plotter.show()
-
-    # dynamic traversal to visualize the difference
-    # between DFS and BFS
-
-    # ==========================================================================
-    # testrun 2
-    # ==========================================================================
-
-    if testrun == 2:
-        import compas
-
-        from compas.datastructures import Network
-        from compas.topology import shortest_path
-        from compas_plotters import NetworkPlotter
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
-
-        start = 21
-        end = 11
-
-        path = shortest_path(adjacency, start, end)
-
-        edges = []
-        for i in range(len(path) - 1):
-            u = path[i]
-            v = path[i + 1]
-            if v not in network.edge[u]:
-                u, v = v, u
-            edges.append([u, v])
-
-        plotter = NetworkPlotter(network, figsize=(10, 8), fontsize=6)
-
-        plotter.draw_vertices(
-            text={key: key for key in network.vertices()},
-            facecolor={key: '#ff0000' for key in (path[0], path[-1])},
-            radius=0.15
-        )
-
-        plotter.draw_edges(
-            color={(u, v): '#ff0000' for u, v in edges},
-            width={(u, v): 5.0 for u, v in edges}
-        )
-
-        plotter.show()
-
-    # ==========================================================================
-    # testrun 3
-    # ==========================================================================
-
-    if testrun == 3:
-        import compas
-
-        from compas.datastructures import Network
-        from compas.topology import dijkstra_distances
-        from compas_plotters import NetworkPlotter
-        from compas.utilities import i_to_red
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
-
-        weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
-        weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
-
-        target = 22
-
-        distances = dijkstra_distances(adjacency, weight, target)
-
-        plotter = NetworkPlotter(network, figsize=(10, 8), fontsize=6)
-
-        dmax = max(distances.values())
-
-        facecolor = {key: i_to_red(distances[key] / dmax) for key in network.vertices()}
-        text = {key: '{:.1f}'.format(distances[key]) for key in network.vertices()}
-
-        plotter.draw_vertices(
-            text=text,
-            facecolor=facecolor,
-            radius=0.15
-        )
-        plotter.draw_edges()
-
-        plotter.show()
-
-    # ==========================================================================
-    # testrun 4
-    # ==========================================================================
-
-    if testrun == 4:
-        import compas
-
-        from compas.datastructures import Network
-        from compas_plotters import NetworkPlotter
-
-        from compas.topology import dijkstra_path
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-        adjacency = {key: network.vertex_neighbors(key) for key in network.vertices()}
-
-        weight = {(u, v): network.edge_length(u, v) for u, v in network.edges()}
-        weight.update({(v, u): weight[(u, v)] for u, v in network.edges()})
-
-        heavy = [(7, 17), (9, 19)]
-
-        for u, v in heavy:
-            weight[(u, v)] = 1000.0
-            weight[(v, u)] = 1000.0
-
-        start = 21
-        via = 0
-        end = 22
-
-        index_key = network.index_key()
-
-        plotter = NetworkPlotter(network, figsize=(10, 8), fontsize=6)
-
-        def via_via(via):
-            path1 = dijkstra_path(adjacency, weight, start, via)
-            path2 = dijkstra_path(adjacency, weight, via, end)
-            path = path1 + path2[1:]
-
-            edges = []
-            for i in range(len(path) - 1):
-                u = path[i]
-                v = path[i + 1]
-                if v not in network.edge[u]:
-                    u, v = v, u
-                edges.append([u, v])
-
-            vertexcolor = {}
-            vertexcolor[start] = '#00ff00'
-            vertexcolor[end] = '#00ff00'
-            vertexcolor[via] = '#0000ff'
-
-            plotter.clear_vertices()
-            plotter.clear_edges()
-
-            plotter.draw_vertices(text={key: key for key in (start, via, end)},
-                                  textcolor={key: '#ffffff' for key in path[1:-1]},
-                                  facecolor=vertexcolor,
-                                  radius=0.15,
-                                  picker=10)
-
-            plotter.draw_edges(color={(u, v): '#ff0000' for u, v in edges},
-                               width={(u, v): 4.0 for u, v in edges},
-                               text={(u, v): '{:.1f}'.format(weight[(u, v)]) for u, v in network.edges()},
-                               fontsize=4.0)
-
-        def onpick(e):
-            index = e.ind[0]
-            via = index_key[index]
-            via_via(via)
-            plotter.update()
-
-        via_via(via)
-
-        plotter.register_listener(onpick)
-        plotter.show()
+    pass

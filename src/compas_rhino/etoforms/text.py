@@ -11,7 +11,6 @@ try:
 
     import Rhino
     import Rhino.UI
-    import Eto
     import Eto.Drawing as drawing
     import Eto.Forms as forms
 
@@ -29,9 +28,7 @@ __all__ = ['TextForm']
 
 class TextForm(Dialog):
 
-    def __init__(self, text):
-        # super(TextForm, self).__init__()
-
+    def __init__(self, text, title=None):
         self.text = text
         self.textbox = textbox = forms.TextArea()
 
@@ -47,7 +44,7 @@ class TextForm(Dialog):
         layout.EndHorizontal()
         layout.EndVertical()
 
-        self.Title = 'RBE: display text'
+        self.Title = title
         self.Padding = drawing.Padding(12)
         self.Resizable = False
         self.Content = layout
@@ -70,3 +67,14 @@ class TextForm(Dialog):
 
     def on_cancel(self, sender, e):
         self.Close(False)
+
+    def show(self):
+        return self.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow)
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass

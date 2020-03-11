@@ -5,15 +5,11 @@ from __future__ import division
 import compas
 import compas_rhino
 
-from compas_rhino.geometry import RhinoGeometry
-from compas_rhino.utilities import select_point
+from compas.geometry import Point
+from compas_rhino.geometry._geometry import RhinoGeometry
 
-try:
-    import scriptcontext as sc
-    find_object = sc.doc.Objects.Find
-
-except ImportError:
-    compas.raise_if_ironpython()
+if compas.IPY:
+    import Rhino
 
 
 __all__ = ['RhinoPoint']
@@ -24,82 +20,57 @@ class RhinoPoint(RhinoGeometry):
 
     __module__ = 'compas_rhino.geometry'
 
-    def __init__(self, guid):
-        super(RhinoPoint, self).__init__(guid)
+    def __init__(self):
+        super(RhinoPoint, self).__init__()
 
-    @classmethod
-    def from_selection(cls):
-        """Create a ``RhinoPoint`` instance from a selected Rhino point.
+    @property
+    def x(self):
+        return self.geometry.X
 
-        Returns
-        -------
-        RhinoPoint
-            A convenience wrapper around the Rhino point object.
+    @property
+    def y(self):
+        return self.geometry.Y
 
-        """
-        guid = select_point()
-        return cls(guid)
+    @property
+    def z(self):
+        return self.geometry.Z
 
     @property
     def xyz(self):
-        """list : The XYZ coordinates of the point."""
-        loc = self.geometry.Location
-        return [loc.X, loc.Y, loc.Z]
+        return [self.x, self.y, self.z]
 
-    def closest_point(self, point, maxdist=None):
-        """Find the closest point on the ``RhinoGeometry`` object to a test point.
+    @classmethod
+    def from_guid(cls, guid):
+        obj = compas_rhino.find_object(guid)
+        point = cls()
+        point.guid = guid
+        point.object = obj
+        point.geometry = obj.Geometry.Location
+        return point
 
-        Parameters
-        ----------
-        point : list of float, Rhino.Geometry.Point3d
-            The XYZ coordinates of the test point.
-        maxdist : float, optional
-            The maximum distance between the test point and the closest point on the ``RhinoGeometry`` object.
-            Default is ``None``.
+    @classmethod
+    def from_object(cls, obj):
+        point = cls()
+        point.guid = obj.Id
+        point.object = obj
+        point.geometry = obj.Geometry.Location
+        return point
 
-        Returns
-        -------
-        list of float
-            The XYZ coordinates of the closest point.
+    @classmethod
+    def from_geometry(cls, geometry):
+        if not isinstance(geometry, Rhino.Geometry.Point3d):
+            geometry = Rhino.Geometry.Point3d(geometry[0], geometry[1], geometry[2])
+        point = cls()
+        point.geometry = geometry
+        return point
 
-        Examples
-        --------
-        >>>
+    @classmethod
+    def from_selection(cls):
+        guid = compas_rhino.select_point()
+        return cls.from_guid(guid)
 
-        """
-        return self.xyz
-
-    def closest_points(self, points, maxdist=None):
-        """Find the closest points to a list of test points on the ``RhinoGeometry`` object.
-
-        Parameters
-        ----------
-        points : list of list of float
-            The list of test points.
-        maxdist : float, optional
-            The maximum distance between any of the test points and the corresponding closest points on the ``RhinoGeometry`` object.
-            Default is ``None``.
-
-        Returns
-        -------
-        list of list of float
-            The XYZ coordinates of the closest points.
-
-        Examples
-        --------
-        >>>
-
-        """
-        return [self.closest_point(point, maxdist) for point in points]
-
-    def project_to_curve(self, curve, direction=(0, 0, 1)):
-        pass
-
-    def project_to_surface(self, surface, direction=(0, 0, 1)):
-        pass
-
-    def project_to_mesh(self, mesh, direction=(0, 0, 1)):
-        pass
+    def to_compas(self):
+        return Point(self.x, self.y, self.z)
 
 
 # ==============================================================================
@@ -108,11 +79,31 @@ class RhinoPoint(RhinoGeometry):
 
 if __name__ == "__main__":
 
+    from compas.geometry import Translation
+    from compas.geometry import Rotation
+
     point = RhinoPoint.from_selection()
+    # point = RhinoPoint.from_geometry(Point3d(0, 0, 0))
+    # point = RhinoPoint.from_geometry(Point(0, 0, 0))
 
     print(point.guid)
     print(point.object)
     print(point.geometry)
-    print(point.attributes)
     print(point.type)
+    print(point.name)
+
     print(point.xyz)
+
+    p = point.to_compas()
+
+    print(p)
+
+    T = Translation([1.0, 1.0, 0.0])
+    R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], 0.5 * 3.14159)
+    X = R * T
+
+    point.transform(X)
+
+    p = point.to_compas()
+
+    print(p)

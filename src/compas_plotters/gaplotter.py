@@ -93,22 +93,22 @@ class GaPlotter(object):
             ga = json.load(fh)
 
         # self.num_var        = ga['num_var']
-        self.num_pop        = ga['num_pop']
+        self.num_pop = ga['num_pop']
         # self.boundaries     = ga['boundaries']
-        self.fit_name       = ga['fit_name']
-        self.min_fit        = ga['min_fit']
-        self.fit_type       = ga['fit_type']
+        self.fit_name = ga['fit_name']
+        self.min_fit = ga['min_fit']
+        self.fit_type = ga['fit_type']
         if ga['end_gen']:
             self.num_gen = ga['end_gen']
         else:
-            self.num_gen        = ga['num_gen']
+            self.num_gen = ga['num_gen']
         if not self.start_from_gen and self.start_from_gen != 0:
             if ga['start_from_gen']:
                 self.start_from_gen = ga['start_from_gen']
 
     def get_pop_from_pop_file(self):
-        file_pop  = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_value': {}, 'pf': {}}
-        filename  = 'generation_' + "%05d" % self.generation + '_population' + ".txt"
+        file_pop = {'binary': {}, 'decoded': {}, 'scaled': {}, 'fit_value': {}, 'pf': {}}
+        filename = 'generation_' + "%05d" % self.generation + '_population' + ".txt"
         filename = self.input_path + filename
         pf_file = open(filename, 'r')
         lines = pf_file.readlines()
@@ -196,7 +196,7 @@ class GaPlotter(object):
         if self.plot_max:
             plt.plot(max_list, color='black', lw=1, label='Maximum')
         if self.plot_avg:
-            plt.plot(avg_list, color='red' , lw=1, label='Average')
+            plt.plot(avg_list, color='red', lw=1, label='Average')
         plt.minorticks_on()
 
         plt.xlim((-self.xticks / 2.0, self.num_gen - self.start_from_gen))
@@ -213,8 +213,8 @@ class GaPlotter(object):
                 full_list = min_list
             y_min = min(full_list)
             y_max = max(full_list)
-        print ('y_max', y_max)
-        print ('y_min', y_min)
+        print('y_max', y_max)
+        print('y_min', y_min)
 
         if self.min_fit:
             plt.axhline(self.min_fit, color='red', ls=':', lw=0.5)

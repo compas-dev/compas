@@ -3,16 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 import time
-import compas
 
 from subprocess import Popen
 from subprocess import PIPE
 
-try:
-    from scipy.io import savemat
-    from scipy.io import loadmat
-except ImportError:
-    compas.raise_if_ironpython()
+from scipy.io import savemat
+from scipy.io import loadmat
 
 
 __all__ = ['MatlabProcess']
@@ -46,36 +42,32 @@ class MatlabProcess(object):
     Examples
     --------
     >>> m = MatlabProcess()
-
     >>> m.start()
     >>> m.write_value('a', 37)
     >>> m.run_command('tf = isprime(a);')
     >>> m.read_workspace()
     >>> m.stop()
     >>> print(m.ws_data)
-
     >>> m.write_value('a', 17)
     >>> m.run_command('res = isprime(a);')
     >>> m.read_value('res')
     True
-
     >>> m.run_command('res = isprime(a);', ivars={'a': 17})
     >>> m.read_value('res')
     True
-
     >>> m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None})
     {'res': True}
 
     """
 
     def __init__(self, matlab_exec=None, ws_data=None, ws_filename=None, timeout=None, verbose=True):
-        self.matlab_exec    = matlab_exec or 'matlab'
+        self.matlab_exec = matlab_exec or 'matlab'
         self.matlab_options = ['-nosplash']
-        self.ws_data        = ws_data or {}
-        self.ws_filename    = ws_filename or './workspace.mat'
-        self.timeout        = timeout or 20
-        self.process        = None
-        self.verbose        = verbose
+        self.ws_data = ws_data or {}
+        self.ws_filename = ws_filename or './workspace.mat'
+        self.timeout = timeout or 20
+        self.process = None
+        self.verbose = verbose
 
     def init(self):
         pass
@@ -228,17 +220,4 @@ class MatlabProcess(object):
 
 if __name__ == "__main__":
 
-    m = MatlabProcess()
-
-    m.start()
-
-    m.write_value('a', 37)
-    m.run_command('res = isprime(a);')
-
-    print(m.read_value('res'))
-    print(m.run_command('res = isprime(a);', ivars={'a': 17}, ovars={'res': None}))
-
-    # m.read_workspace()
-    m.stop()
-
-    print(m.ws_data)
+    pass

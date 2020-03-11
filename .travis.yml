@@ -11,7 +11,6 @@ install:
 # This works because requirements-dev.txt ends with "-e ." to install COMPAS itself
 - pip install --no-cache-dir -r requirements-dev.txt
 
-
 script:
 - invoke test
 - if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
@@ -28,5 +27,5 @@ deploy:
   target-branch: master
   local_dir: dist/docs
   on:
-    branch: master
+    # tags: true
     condition: $TRAVIS_PYTHON_VERSION = 3.6

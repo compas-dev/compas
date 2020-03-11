@@ -5,22 +5,17 @@ from __future__ import division
 import ast
 
 import compas
-import compas_rhino
 
 try:
     import Rhino
-    from Rhino.Geometry import Point3d
-
 except ImportError:
     compas.raise_if_ironpython()
 
 try:
     from compas_rhino.etoforms import PropertyListForm
-
-except:
+except ImportError:
     try:
         from Rhino.UI.Dialogs import ShowPropertyListBox
-
     except ImportError:
         compas.raise_if_ironpython()
 else:
@@ -28,18 +23,21 @@ else:
         import clr
         clr.AddReference('Rhino.UI')
         import Rhino.UI
-
     except ImportError:
         compas.raise_if_ironpython()
 
 
-__all__ = ['EdgeModifier']
+__all__ = [
+    'EdgeModifier',
+    'mesh_update_edge_attributes',
+    'network_update_edge_attributes'
+]
 
 
 def rhino_update_named_values(names, values, message='', title='Update named values'):
     try:
         dialog = PropertyListForm(names, values)
-    except:
+    except Exception:
         values = ShowPropertyListBox(message, title, names, values)
     else:
         if dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow):
@@ -62,12 +60,12 @@ class EdgeModifier(object):
         names = sorted(names)
 
         key = keys[0]
-        values = self.get_edge_attributes(key, names)
+        values = self.edge_attributes(key, names)
 
         if len(keys) > 1:
             for i, name in enumerate(names):
                 for key in keys[1:]:
-                    if values[i] != self.get_edge_attribute(key, name):
+                    if values[i] != self.edge_attribute(key, name):
                         values[i] = '-'
                         break
         values = map(str, values)
@@ -80,10 +78,67 @@ class EdgeModifier(object):
                             value = ast.literal_eval(value)
                         except (SyntaxError, ValueError, TypeError):
                             pass
-                        self.set_edge_attribute(key, name, value)
+                        self.edge_attribute(key, name, value)
 
             return True
         return False
+
+
+def mesh_update_edge_attributes(mesh, keys, names=None):
+    """Update the attributes of the edges of a mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    keys : tuple, list
+        The keys of the edges to update.
+    names : tuple, list (None)
+        The names of the atrtibutes to update.
+        Default is to update all attributes.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`mesh_update_attributes`
+    * :func:`mesh_update_vertex_attributes`
+    * :func:`mesh_update_face_attributes`
+
+    """
+    return EdgeModifier.update_edge_attributes(mesh, keys, names=names)
+
+
+def network_update_edge_attributes(network, keys, names=None):
+    """Update the attributes of the edges of a network.
+
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A network object.
+    keys : tuple, list
+        The keys of the edges to update.
+    names : tuple, list (None)
+        The names of the atrtibutes to update.
+        Default is to update all attributes.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`network_update_attributes`
+    * :func:`network_update_vertex_attributes`
+
+    """
+    return EdgeModifier.update_edge_attributes(network, keys, names=names)
 
 
 # ==============================================================================
@@ -96,7 +151,6 @@ if __name__ == "__main__":
 
     from compas.datastructures import Network
     from compas_rhino.artists.networkartist import NetworkArtist
-    from compas_rhino.modifiers.edgemodifier import EdgeModifier
 
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 

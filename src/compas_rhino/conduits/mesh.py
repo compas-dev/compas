@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas
 from compas_rhino.conduits import Conduit
+from compas.utilities import color_to_rgb
 
 try:
     from Rhino.Geometry import Point3d
@@ -76,12 +77,12 @@ class MeshConduit(Conduit):
     @thickness.setter
     def thickness(self, thickness):
         if thickness:
-            l = self.mesh.number_of_edges()
+            e = self.mesh.number_of_edges()
             t = len(thickness)
-            if t < l:
-                thickness += [self._default_thickness for i in range(l - t)]
-            elif t > l:
-                thickness[:] = thickness[:l]
+            if t < e:
+                thickness += [self._default_thickness for i in range(e - t)]
+            elif t > e:
+                thickness[:] = thickness[:e]
             self._thickness = thickness
 
     @property
@@ -95,43 +96,44 @@ class MeshConduit(Conduit):
 
         """
         return self._color
-    
+
     @color.setter
     def color(self, color):
         if color:
             color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
-            l = self.mesh.number_of_edges()
+            e = self.mesh.number_of_edges()
             c = len(color)
-            if c < l:
-                color += [self._default_color for i in range(l - c)]
-            elif c > l:
-                color[:] = color[:l]
+            if c < e:
+                color += [self._default_color for i in range(e - c)]
+            elif c > e:
+                color[:] = color[:e]
             self._color = color
 
     def DrawForeground(self, e):
+        draw_line = e.Display.DrawLine
+        draw_lines = e.Display.DrawLines
+
         if self.color:
-            draw = e.Display.DrawLine
             if self.thickness:
                 for i, start, end in self.lines:
-                    draw(start, end, self.color[i], self.thickness[i])
+                    draw_line(start, end, self.color[i], self.thickness[i])
             else:
                 for i, start, end in self.lines:
-                    draw(start, end, self.color[i], self._default_thickness)
+                    draw_line(start, end, self.color[i], self._default_thickness)
 
         elif self.thickness:
-            draw = e.Display.DrawLine
             if self.color:
                 for i, start, end in self.lines:
-                    draw(start, end, self.color[i], self.thickness[i])
+                    draw_line(start, end, self.color[i], self.thickness[i])
             else:
                 for i, start, end in self.lines:
-                    draw(start, end, self._default_color, self.thickness[i])
+                    draw_line(start, end, self._default_color, self.thickness[i])
 
         else:
             lines = List[Line](self.mesh.number_of_edges())
             for i, start, end in self.lines:
                 lines.Add(Line(start, end))
-            e.Display.DrawLines(lines, self._default_color, self._default_thickness)
+            draw_lines(lines, self._default_color, self._default_thickness)
 
 
 # ==============================================================================

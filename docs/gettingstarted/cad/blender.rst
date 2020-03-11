@@ -1,21 +1,18 @@
-********************************************************************************
+
+*******************************************************************************
 Blender
-********************************************************************************
+*******************************************************************************
 
-Blender ships with its own embedded version of Python but it is relatively
-simple to replace it with the one you have COMPAS installed on.
+Blender ships with its own embedded version of Python. Therefore, the simplest
+(and recommended) way to install COMPAS for Blender is to replace the embedded
+Python by the Python of a `conda` environment that already has COMPAS installed.
 
-.. note::
+It is important that the version of Python installed in the `conda` environment matches
+the version of Python that was originally shipped with Blender. For Blender 2.8x
+this is Python 3.7x.
 
-    The latest releases of COMPAS only support Blender 2.8. This version of Blender
-    requires Python `3.7.x`.
-
-
-Replace Python
-==============
-
-It is recommended to create a new ``conda`` environment to make sure the python
-version matches exactly what Blender expects.
+Installation
+============
 
 .. raw:: html
 
@@ -50,9 +47,7 @@ Now configure Blender to use the newly installed environment:
 
 .. code-block:: bash
 
-    cd %PROGRAMFILES%\Blender Foundation\Blender\2.80
-    ren python original_python
-    mklink /j python %CONDA_PREFIX%
+    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender\2.80"
 
 .. raw:: html
 
@@ -72,9 +67,7 @@ Now configure Blender to use the newly installed environment:
 
 .. code-block:: bash
 
-    cd /Applications/blender.app/Contents/Resources/2.80
-    mv python original_python
-    ln -s $CONDA_PREFIX python
+    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.80
 
 .. raw:: html
 
@@ -90,28 +83,14 @@ Now configure Blender to use the newly installed environment:
 Verify setup
 ============
 
-In Blender, you should now be able to use COMPAS packages without any problems.
-Simply create and run the following script to verify everything is working properly.
+In Blender, at the interactive Python prompt (>>>) import the following packages
 
 .. code-block:: python
 
-    import compas
-
-    from compas.datastructures import Mesh
-    from compas_blender.artists import MeshArtist
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    artist = MeshArtist(mesh)
-
-    artist.draw_vertices()
-    artist.draw_edges()
-    artist.draw_faces()
-
-
-.. figure:: /_images/blender_verify.png
-     :figclass: figure
-     :class: figure-img img-fluid
+    >>> import compas
+    >>> import compas_blender
+    >>> import numpy
+    >>> import scipy
 
 
 Install Python packages
@@ -120,7 +99,7 @@ Install Python packages
 After replacing the embedded version of Python with the one in the virutual
 environment, as instructed above, it is not necessary to activate the environment
 before using Blender. However, when you want to update the installed packages,
-or add more packages, make sure you do it for the Python in the virtual environment.
+or add more packages, make sure to activate the Blender environment first.
 Otherwise, the changes will not have any effect.
 
 .. code-block:: bash
@@ -132,55 +111,16 @@ Otherwise, the changes will not have any effect.
 Start Blender
 =============
 
-Both on Windows and Mac (for different reasons) Blender should be started from the command line.
-By adding the Blender executable to the `PATH` variable this is really simple.
+Blender uses the command window of your system to display error messages and other text output.
+On Windows, the output window can be brought to the front directly from the "Window" menu.
+On Mac, you should start Blender from the command line.
 
-.. raw:: html
-
-    <div class="card">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#blender_start_windows">Windows</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#blender_start_osx">OSX</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-content">
-
-.. raw:: html
-
-    <div class="tab-pane active" id="blender_start_windows">
-
-Add the path to the Blender executable to your PATH in Environment Variables.
-
-.. code-block::
-
-    %PROGRAMFILES%\Blender Foundation\Blender
-
-.. raw:: html
-
-    </div>
-    <div class="tab-pane" id="blender_start_osx">
-
-Add the following to your .bash_profile
+By adding the Blender executable to the ``PATH`` variable this is really simple.
+Just add the following to your ``.bash_profile``
 
 .. code-block:: bash
 
     export PATH="/Applications/blender.app/Contents/MacOS:$PATH"
-
-.. raw:: html
-
-    </div>
-
-.. raw:: html
-
-    </div>
-    </div>
-    </div>
 
 After that starting Blender from the command line is much simpler.
 

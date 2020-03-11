@@ -111,7 +111,7 @@ class DefaultMeshLoader(AbstractMeshLoader):
         -------
         :class:`Mesh`
             Instance of a mesh.
-        """        
+        """
         url = self._get_mesh_url(url)
         return _mesh_import(url, url)
 
@@ -127,13 +127,13 @@ class DefaultMeshLoader(AbstractMeshLoader):
         Returns
         -------
         url: str
-            Extended mesh url location if basepath in kwargs. 
-            Else, it returns url. 
+            Extended mesh url location if basepath in kwargs.
+            Else, it returns url.
         """
         if url.startswith('file:///'):
             url = url[8:]
-        
-        basepath = self.attr.get('basepath') 
+
+        basepath = self.attr.get('basepath')
         if basepath:
             return os.path.join(basepath, url)
         return url
@@ -166,6 +166,17 @@ class LocalPackageMeshLoader(AbstractMeshLoader):
         self.schema_prefix = 'package://' + self.support_package + '/'
 
     def build_path(self, *path_parts):
+        """Returns the building path.
+
+        Parameters
+        ----------
+        *path_parts: str
+            The additional foldernames that construct the path.
+
+        Returns
+        -------
+        str
+        """
         return os.path.join(self.path,
                             self.support_package,
                             *path_parts)

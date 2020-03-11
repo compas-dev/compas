@@ -54,9 +54,9 @@ utilities
 """
 from __future__ import absolute_import
 
-from .drawing import *
-from .misc import *
-from .sets import *
-from .timer import *
+from .drawing import *  # noqa: F401 F403
+from .misc import *  # noqa: F401 F403
+from .sets import *  # noqa: F401 F403
+from .timer import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

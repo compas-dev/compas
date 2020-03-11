@@ -2,13 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
-import compas
-
-try:
-    import System
-except ImportError:
-    compas.raise_if_ironpython()
+import System
 
 
 __all__ = ['MatlabClient']
@@ -41,15 +35,11 @@ class MatlabClient(object):
     Examples
     --------
     >>> matlab = MatlabClient(interactive=True)
-
     >>> A = matlab.matrix_from_list([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]])
-
     >>> matlab.put('A', A)
     >>> matlab.eval('[R, jb] = rref(A);')
-
     >>> R = matlab.get('R')
     >>> jb = matlab.get('jb')
-
     >>> print(R)
     >>> print(jb)
 
@@ -121,7 +111,7 @@ class MatlabClient(object):
 
         Examples
         --------
-        >>> MatlabClient.vector_from_list([1, 2, 3], dtype=float)
+        >>> vector = MatlabClient.vector_from_list([1, 2, 3], dtype=float)
 
         """
         n = len(a)
@@ -265,7 +255,6 @@ class MatlabClient(object):
         Examples
         --------
         >>> m = MatlabClient(verbose=True, interactive=True)
-
         >>> m.put('A', m.matrix([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]))
         >>> m.put()
         >>> m.put()
@@ -295,7 +284,6 @@ class MatlabClient(object):
         Examples
         --------
         >>> m = MatlabClient(verbose=True)
-
         >>> m.get('A')
         [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
 
@@ -322,15 +310,4 @@ class MatlabClient(object):
 
 if __name__ == "__main__":
 
-    matlab = MatlabClient(interactive=True)
-
-    A = MatlabClient.matrix_from_list([[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]])
-
-    matlab.put('A', A)
-    matlab.eval('[R, jb] = rref(A);')
-
-    R = matlab.get('R')
-    jb = matlab.get('jb')
-
-    print(R)
-    print(jb)
+    pass

@@ -2,10 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import os
 import time
 import json
-import sys
 
 import compas
 
@@ -17,7 +15,6 @@ except ImportError:
 try:
     from subprocess import Popen
     from subprocess import PIPE
-    from subprocess import STDOUT
 
 except ImportError:
     try:
@@ -28,7 +25,6 @@ except ImportError:
 import compas._os
 
 from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
 
 from compas.rpc import RPCServerError
 
@@ -85,47 +81,6 @@ class Proxy(object):
         with Proxy('compas.numerical') as numerical:
             pass
 
-    Complete example demonstrating use of the force density method in the
-    numerical package to compute equilibrium of axial force networks.
-
-    .. code-block:: python
-
-        import compas
-        import time
-
-        from compas.datastructures import Mesh
-        from compas.rpc import Proxy
-
-        numerical = Proxy('compas.numerical')
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
-        mesh.update_default_edge_attributes({'q': 1.0})
-
-        key_index = mesh.key_index()
-
-        xyz   = mesh.get_vertices_attributes('xyz')
-        edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
-        fixed = [key_index[key] for key in mesh.vertices_where({'vertex_degree': 2})]
-        q     = mesh.get_edges_attribute('q', 1.0)
-        loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
-
-        xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
-
-        for key, attr in mesh.vertices(True):
-            index = key
-            attr['x'] = xyz[index][0]
-            attr['y'] = xyz[index][1]
-            attr['z'] = xyz[index][2]
-            attr['rx'] = r[index][0]
-            attr['ry'] = r[index][1]
-            attr['rz'] = r[index][2]
-
-        for index, (u, v, attr) in enumerate(mesh.edges(True)):
-            attr['f'] = f[index][0]
-            attr['l'] = l[index][0]
-
     """
 
     def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None):
@@ -141,15 +96,22 @@ class Proxy(object):
         self.service = service
         self.package = package
 
-        self._server = self.try_reconnect()
+        self._implicitely_started_server = False
+        self._server = self._try_reconnect()
         if self._server is None:
             self._server = self.start_server()
+            self._implicitely_started_server = True
 
     def __enter__(self):
         return self
 
     def __exit__(self, *args):
-        self.stop_server()
+        # If we started the RPC server, we will try to clean up and stop it
+        # otherwise we just disconnect from it
+        if self._implicitely_started_server:
+            self.stop_server()
+        else:
+            self._server.__close()
 
     @property
     def address(self):
@@ -192,19 +154,18 @@ class Proxy(object):
     def python(self, python):
         self._python = python
 
-    def try_reconnect(self):
+    def _try_reconnect(self):
         """Try and reconnect to an existing proxy server.
 
         Returns
         -------
         ServerProxy
-            Instance of the proxy if reconnection succeeded,
-            otherwise ``None``.
+            Instance of the proxy if reconnection succeeded, otherwise ``None``.
         """
         server = ServerProxy(self.address)
         try:
             server.ping()
-        except:
+        except Exception:
             return None
         else:
             print("Reconnecting to an existing server proxy.")
@@ -224,9 +185,19 @@ class Proxy(object):
             If the server providing the requested service cannot be reached after
             100 contact attempts (*pings*).
 
+        Examples
+        --------
+        >>> p = Proxy()
+        >>> p.stop_server()
+        >>> p.start_server()
+
         """
         env = compas._os.prepare_environment()
-
+        # this part starts the server side of the RPC setup
+        # it basically launches a subprocess
+        # to start the default service
+        # the default service creates a server
+        # and registers a dispatcher for custom functionality
         try:
             Popen
         except NameError:
@@ -237,7 +208,6 @@ class Proxy(object):
                     self._process.StartInfo.EnvironmentVariables[name] = env[name]
                 else:
                     self._process.StartInfo.EnvironmentVariables.Add(name, env[name])
-
             self._process.StartInfo.UseShellExecute = False
             self._process.StartInfo.RedirectStandardOutput = True
             self._process.StartInfo.RedirectStandardError = True
@@ -246,18 +216,18 @@ class Proxy(object):
             self._process.Start()
         else:
             args = [self.python, '-m', self.service, str(self._port)]
-            self._process = Popen(args, stdout=PIPE, stderr=STDOUT, env=env)
-
+            self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=env)
+        # this starts the client side
+        # it creates a proxy for the server
+        # and tries to connect the proxy to the actual server
         server = ServerProxy(self.address)
-
         print("Starting a new proxy server...")
-
         success = False
         count = 100
         while count:
             try:
                 server.ping()
-            except:
+            except Exception:
                 time.sleep(0.1)
                 count -= 1
                 print("    {} attempts left.".format(count))
@@ -268,16 +238,21 @@ class Proxy(object):
             raise RPCServerError("The server is not available.")
         else:
             print("New proxy server started.")
-
         return server
 
     def stop_server(self):
         """Stop the remote server and terminate/kill the python process that was used to start it.
+
+        Examples
+        --------
+        >>> p = Proxy()
+        >>> p.stop_server()
+        >>> p.start_server()
         """
         print("Stopping the server proxy.")
         try:
             self._server.remote_shutdown()
-        except:
+        except Exception:
             pass
         self._terminate_process()
 
@@ -289,14 +264,13 @@ class Proxy(object):
         """
         if not self._process:
             return
-
         try:
             self._process.terminate()
-        except:
+        except Exception:
             pass
         try:
             self._process.kill()
-        except:
+        except Exception:
             pass
 
     def __getattr__(self, name):
@@ -304,11 +278,11 @@ class Proxy(object):
             name = "{}.{}".format(self.package, name)
         try:
             self._function = getattr(self._server, name)
-        except:
+        except Exception:
             raise RPCServerError()
-        return self.proxy
+        return self._proxy
 
-    def proxy(self, *args, **kwargs):
+    def _proxy(self, *args, **kwargs):
         """Callable replacement for the requested functionality.
 
         Parameters
@@ -328,27 +302,28 @@ class Proxy(object):
         The `args` and `kwargs` have to be JSON-serialisable.
         This means that, currently, only native Python objects are supported.
         The returned results will also always be in the form of built-in Python objects.
-
         """
         idict = {'args': args, 'kwargs': kwargs}
         istring = json.dumps(idict, cls=DataEncoder)
-
+        # it makes sense that there is a broken pipe error
+        # because the process is not the one receiving the feedback
+        # when there is a print statement on the server side
+        # this counts as output
+        # it should be sent as part of RPC communication
         try:
             ostring = self._function(istring)
-        except:
-            self.stop_server()
+        except Exception:
+            # not clear what the point of this is
+            # self.stop_server()
+            # if this goes wrong, it means a Fault error was generated by the server
+            # no need to stop the server for this
             raise
-
         if not ostring:
             raise RPCServerError("No output was generated.")
-
         result = json.loads(ostring)
-
         if result['error']:
             raise RPCServerError(result['error'])
-
         self.profile = result['profile']
-
         return result['data']
 
 
@@ -358,46 +333,6 @@ class Proxy(object):
 
 if __name__ == "__main__":
 
-    import compas
-    import sys
+    import doctest
 
-    from compas.datastructures import Mesh
-    from compas.rpc import Proxy
-
-    from compas_rhino.artists import MeshArtist
-
-    numerical = Proxy('compas.numerical')
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    mesh.update_default_vertex_attributes({'px': 0.0, 'py': 0.0, 'pz': 0.0})
-    mesh.update_default_edge_attributes({'q': 1.0})
-
-    key_index = mesh.key_index()
-
-    xyz   = mesh.get_vertices_attributes('xyz')
-    edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
-    fixed = [key_index[key] for key in mesh.vertices_where({'vertex_degree': 2})]
-    q     = mesh.get_edges_attribute('q', 1.0)
-    loads = mesh.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
-
-    xyz, q, f, l, r = numerical.fd_numpy(xyz, edges, fixed, q, loads)
-
-    for key, attr in mesh.vertices(True):
-        index = key
-        attr['x'] = xyz[index][0]
-        attr['y'] = xyz[index][1]
-        attr['z'] = xyz[index][2]
-        attr['rx'] = r[index][0]
-        attr['ry'] = r[index][1]
-        attr['rz'] = r[index][2]
-
-    for index, (u, v, attr) in enumerate(mesh.edges(True)):
-        attr['f'] = f[index][0]
-        attr['l'] = l[index][0]
-
-    artist = MeshArtist(mesh)
-    artist.draw_vertices()
-    artist.draw_edges()
-    artist.draw_faces()
-    artist.redraw()
+    doctest.testmod(globs=globals())

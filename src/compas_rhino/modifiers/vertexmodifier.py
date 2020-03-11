@@ -5,22 +5,19 @@ from __future__ import division
 import ast
 
 import compas
-import compas_rhino
+from compas.geometry import add_vectors
 
 try:
     import Rhino
     from Rhino.Geometry import Point3d
-
 except ImportError:
     compas.raise_if_ironpython()
 
 try:
     from compas_rhino.etoforms import PropertyListForm
-
-except:
+except ImportError:
     try:
         from Rhino.UI.Dialogs import ShowPropertyListBox
-
     except ImportError:
         compas.raise_if_ironpython()
 else:
@@ -33,13 +30,22 @@ else:
         compas.raise_if_ironpython()
 
 
-__all__ = ['VertexModifier']
+__all__ = [
+    'VertexModifier',
+
+    'mesh_update_vertex_attributes',
+    'mesh_move_vertex',
+    'mesh_move_vertices',
+
+    'network_move_vertex',
+    'network_update_vertex_attributes'
+]
 
 
 def rhino_update_named_values(names, values, message='', title='Update named values'):
     try:
         dialog = PropertyListForm(names, values)
-    except:
+    except Exception:
         values = ShowPropertyListBox(message, title, names, values)
     else:
         if dialog.ShowModal(Rhino.UI.RhinoEtoApp.MainWindow):
@@ -54,8 +60,8 @@ class VertexModifier(object):
     @staticmethod
     def move_vertex(self, key, constraint=None, allow_off=None):
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        nbrs  = [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]
-        nbrs  = [Point3d(*xyz) for xyz in nbrs]
+        nbrs = [self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)]
+        nbrs = [Point3d(*xyz) for xyz in nbrs]
 
         def OnDynamicDraw(sender, e):
             for ep in nbrs:
@@ -77,9 +83,7 @@ class VertexModifier(object):
             return False
 
         pos = list(gp.Point())
-        self.vertex[key]['x'] = pos[0]
-        self.vertex[key]['y'] = pos[1]
-        self.vertex[key]['z'] = pos[2]
+        self.vertex_attributes(key, 'xyz', pos)
 
         return True
 
@@ -137,9 +141,8 @@ class VertexModifier(object):
         vector = list(end - start)
 
         for key in keys:
-            self.vertex[key]['x'] += vector[0]
-            self.vertex[key]['y'] += vector[1]
-            self.vertex[key]['z'] += vector[2]
+            xyz = self.vertex_attributes(key, 'xyz')
+            self.vertex_attributes(key, 'xyz', add_vectors(xyz, vector))
 
         return True
 
@@ -167,11 +170,11 @@ class VertexModifier(object):
         if not names:
             names = self.default_vertex_attributes.keys()
         names = sorted(names)
-        values = [self.vertex[keys[0]][name] for name in names]
+        values = self.vertex_attributes(keys[0], names)
         if len(keys) > 1:
             for i, name in enumerate(names):
                 for key in keys[1:]:
-                    if values[i] != self.vertex[key][name]:
+                    if values[i] != self.vertex_attribute(key, name):
                         values[i] = '-'
                         break
         values = map(str, values)
@@ -181,11 +184,125 @@ class VertexModifier(object):
                 if value != '-':
                     for key in keys:
                         try:
-                            self.vertex[key][name] = ast.literal_eval(value)
+                            self.vertex_attribute(key, name, ast.literal_eval(value))
                         except (ValueError, TypeError):
-                            self.vertex[key][name] = value
+                            self.vertex_attribute(key, name, value)
             return True
         return False
+
+
+def mesh_update_vertex_attributes(mesh, keys, names=None):
+    """Update the attributes of the vertices of a mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    keys : tuple, list
+        The keys of the vertices to update.
+    names : tuple, list (None)
+        The names of the atrtibutes to update.
+        Default is to update all attributes.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`mesh_update_attributes`
+    * :func:`mesh_update_edge_attributes`
+    * :func:`mesh_update_face_attributes`
+
+    """
+    return VertexModifier.update_vertex_attributes(mesh, keys, names=names)
+
+
+def mesh_move_vertex(mesh, key, constraint=None, allow_off=False):
+    """Move on vertex of the mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    key : str
+        The vertex to move.
+    constraint : Rhino.Geometry (None)
+        A Rhino geometry object to constrain the movement to.
+        By default the movement is unconstrained.
+    allow_off : bool (False)
+        Allow the vertex to move off the constraint.
+
+    """
+    return VertexModifier.move_vertex(mesh, key, constraint=constraint, allow_off=allow_off)
+
+
+def mesh_move_vertices(mesh, keys):
+    """Move on vertices of the mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+    keys : list
+        The vertices to move.
+    constraint : Rhino.Geometry (None)
+        A Rhino geometry object to constrain the movement to.
+        By default the movement is unconstrained.
+    allow_off : bool (False)
+        Allow the vertex to move off the constraint.
+
+    """
+    return VertexModifier.move_vertices(mesh, keys)
+
+
+def network_move_vertex(network, key, constraint=None, allow_off=False):
+    """Move on vertex of the network.
+
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A network object.
+    key : str
+        The vertex to move.
+    constraint : Rhino.Geometry (None)
+        A Rhino geometry object to constrain the movement to.
+        By default the movement is unconstrained.
+    allow_off : bool (False)
+        Allow the vertex to move off the constraint.
+
+    """
+    return VertexModifier.move_vertex(network, key, constraint=constraint, allow_off=allow_off)
+
+
+def network_update_vertex_attributes(network, keys, names=None):
+    """Update the attributes of the vertices of a network.
+
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A network object.
+    keys : tuple, list
+        The keys of the vertices to update.
+    names : tuple, list (None)
+        The names of the atrtibutes to update.
+        Default is to update all attributes.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`network_update_attributes`
+    * :func:`network_update_edge_attributes`
+
+    """
+    return VertexModifier.update_vertex_attributes(network, keys, names=names)
 
 
 # ==============================================================================
@@ -198,7 +315,6 @@ if __name__ == "__main__":
 
     from compas.datastructures import Network
     from compas_rhino.artists.networkartist import NetworkArtist
-    from compas_rhino.modifiers.vertexmodifier import VertexModifier
 
     network = Network.from_obj(compas.get('grid_irregular.obj'))
 

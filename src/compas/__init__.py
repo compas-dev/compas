@@ -13,7 +13,6 @@ compas
     compas.files
     compas.geometry
     compas.numerical
-    compas.remote
     compas.robots
     compas.rpc
     compas.topology
@@ -25,16 +24,17 @@ from __future__ import print_function
 
 import os
 import sys
+import decimal
 
 import compas._os
 
 
-__author__    = 'Tom Van Mele and many others (see AUTHORS.md)'
+__author__ = 'Tom Van Mele and many others (see AUTHORS.md)'
 __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+__license__ = 'MIT License'
+__email__ = 'vanmelet@ethz.ch'
 
-__version__ = '0.7.1'
+__version__ = '0.15.4'
 
 
 PY3 = sys.version_info[0] == 3
@@ -49,6 +49,27 @@ APPTEMP = compas._os.absjoin(APPDATA, 'temp')
 
 PRECISION = '3f'
 
+# Check if COMPAS is installed from git
+# If that's the case, try to append the current head's hash to __version__
+try:
+    git_head_file = compas._os.absjoin(HOME, '.git', 'HEAD')
+
+    if os.path.exists(git_head_file):
+        # git head file contains one line that looks like this:
+        # ref: refs/heads/master
+        with open(git_head_file, 'r') as git_head:
+            _, ref_path = git_head.read().strip().split(' ')
+            ref_path = ref_path.split('/')
+
+            git_head_refs_file = compas._os.absjoin(HOME, '.git', *ref_path)
+
+        if os.path.exists(git_head_refs_file):
+            with open(git_head_refs_file, 'r') as git_head_ref:
+                git_commit = git_head_ref.read().strip()
+                __version__ += '-' + git_commit[:8]
+except Exception:
+    pass
+
 
 __all__ = [
     'raise_if_windows',
@@ -59,6 +80,14 @@ __all__ = [
 
 
 def is_windows():
+    """Check if the operating system is Windows.
+
+    Returns
+    -------
+    bool
+        True if the OS is Windows. False otherwise
+
+    """
     return os.name == 'nt'
 
 
@@ -66,6 +95,14 @@ WINDOWS = is_windows()
 
 
 def is_linux():
+    """Check if the operating system is Linux.
+
+    Returns
+    -------
+    bool
+        True if the OS is Linux. False otherwise
+
+    """
     return os.name == 'posix'
 
 
@@ -73,6 +110,14 @@ LINUX = is_linux()
 
 
 def is_mono():
+    """Check if the operating system is running on Mono.
+
+    Returns
+    -------
+    bool
+        True if the OS is running on Mono. False otherwise
+
+    """
     return 'mono' in sys.version.lower()
 
 
@@ -80,6 +125,14 @@ MONO = is_mono()
 
 
 def is_ironpython():
+    """Check if the Python implementation is IronPython.
+
+    Returns
+    -------
+    bool
+        True if the implementation is IronPython. False otherwise
+
+    """
     return 'ironpython' in sys.version.lower()
 
 
@@ -104,6 +157,35 @@ def raise_if_not_ironpython():
 def raise_if_ironpython():
     if IPY:
         raise
+
+
+def set_precision(precision):
+    """Set the precision used by geometric maps.
+
+    Parameters
+    ----------
+    precision : float
+        The precision as a floating point number.
+        For example, ``0.0001``.
+
+    Notes
+    -----
+    This function converts the floating point number to a string formatting
+    specifier and assigns the specifier to ``compas.PRECISION``.
+
+    Examples
+    --------
+    >>> compas.set_precision(0.001)
+    >>> compas.PRECISION
+    '3f'
+
+    """
+    global PRECISION
+    precision = str(precision)
+    d = decimal.Decimal(precision).as_tuple()
+    if d.exponent < 0:
+        e = - d.exponent
+        PRECISION = "{}f".format(e)
 
 
 # ==============================================================================
@@ -163,7 +245,7 @@ def get(filename):
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://raw.githubusercontent.com/compas-dev/compas/master/data/{}".format(filename)
+        return "https://github.com/compas-dev/compas/raw/master/data/{}".format(filename)
 
 
 def get_bunny(localstorage=None):

@@ -15,18 +15,23 @@ except ImportError:
     compas.raise_if_ironpython()
 
 
-__all__ = ['Modifier']
+__all__ = [
+    'Modifier',
+    'mesh_update_attributes',
+    'network_move',
+    'network_update_attributes'
+]
 
 
 class Modifier(object):
 
     @staticmethod
     def move(self):
-        color  = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+        color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
         origin = {key: self.vertex_coordinates(key) for key in self.self.vertices()}
         vertex = {key: self.vertex_coordinates(key) for key in self.self.vertices()}
-        edges  = self.edges()
-        start  = compas_rhino.pick_point('Point to move from?')
+        edges = self.edges()
+        start = compas_rhino.pick_point('Point to move from?')
 
         if not start:
             return False
@@ -65,7 +70,7 @@ class Modifier(object):
 
     @staticmethod
     def update_attributes(self):
-        names  = sorted(self.attributes.keys())
+        names = sorted(self.attributes.keys())
         values = [str(self.attributes[name]) for name in names]
         values = compas_rhino.update_named_values(names, values)
         if values:
@@ -78,13 +83,76 @@ class Modifier(object):
         return False
 
 
+def mesh_update_attributes(mesh):
+    """Update the attributes of a mesh.
+
+    Parameters
+    ----------
+    mesh : compas.datastructures.Mesh
+        A mesh object.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`mesh_update_vertex_attributes`
+    * :func:`mesh_update_edge_attributes`
+    * :func:`mesh_update_face_attributes`
+
+    """
+    return Modifier.update_attributes(mesh)
+
+
+def network_move(network):
+    """Move the entire network.
+
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A network object.
+
+    See Also
+    --------
+    * :func:`network_move_vertex`
+
+    """
+    return Modifier.move(network)
+
+
+def network_update_attributes(network):
+    """Update the attributes of a network.
+
+    Parameters
+    ----------
+    network : compas.datastructures.Network
+        A network object.
+
+    Returns
+    -------
+    bool
+        ``True`` if the update was successful.
+        ``False`` otherwise.
+
+    See Also
+    --------
+    * :func:`network_update_vertex_attributes`
+    * :func:`network_update_edge_attributes`
+
+    """
+    return Modifier.update_attributes(network)
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    import compas
+    pass
 
     # from compas.datastructures import Network
     # from compas_rhino.artists.networkartist import NetworkArtist

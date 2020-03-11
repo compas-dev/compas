@@ -28,8 +28,8 @@ class SliderForm(Form):
     def __init__(self, minval, maxval, step, value):
         self.minval = minval
         self.maxval = maxval
-        self.step   = step
-        self.value  = value
+        self.step = step
+        self.value = value
         super(SliderForm, self).__init__()
 
     def init(self):
@@ -82,19 +82,19 @@ if __name__ == '__main__':
 
         def __init__(self, slider):
             super(Pipe, self).__init__()
-            self.slider   = slider
-            self.base     = Point3d(0, 0, 0)
-            self.normal   = Point3d(0, 0, 1) - self.base
-            self.height   = 30
-            self.plane    = Plane(self.base, self.normal)
-            self.color    = Color.FromArgb(255, 0, 0)
+            self.slider = slider
+            self.base = Point3d(0, 0, 0)
+            self.normal = Point3d(0, 0, 1) - self.base
+            self.height = 30
+            self.plane = Plane(self.base, self.normal)
+            self.color = Color.FromArgb(255, 0, 0)
             self.material = DisplayMaterial(self.color)
 
         def DrawForeground(self, e):
-            radius   = self.slider.trackbar.Value
-            circle   = Circle(self.plane, radius)
+            radius = self.slider.trackbar.Value
+            circle = Circle(self.plane, radius)
             cylinder = Cylinder(circle, self.height)
-            brep     = cylinder.ToBrep(True, True)
+            brep = cylinder.ToBrep(True, True)
             e.Display.DrawBrepShaded(brep, self.material)
 
     try:

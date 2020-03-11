@@ -2,16 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry.transformations import transform_points
-from compas.geometry.transformations import transform_vectors
-
+from compas.geometry._primitives import Primitive
 from compas.geometry._primitives import Point
 
 
 __all__ = ['Line']
 
 
-class Line(object):
+class Line(Primitive):
     """A line is defined by two points.
 
     Parameters
@@ -21,33 +19,44 @@ class Line(object):
     p2 : point
         The second point.
 
+    Attributes
+    ----------
+    data : dict
+        The data representation of the line.
+    start : :class:`compas.geometry.Point`
+        The first point of the line.
+    end : :class:`compas.geometry.Point`
+        The second point of the line.
+    vector : :class:`compas.geometry.Vector`
+        A vector pointing from ``start`` to ``end``.
+    direction : :class:`compas.geometry.Vector`
+        A unit vector pointing from ``start`` to ``end``.
+    midpoint : :class:`compas.geometry.Point`
+        A point half way between ``start`` and ``end``.
+    length : float, read-only
+        The length of the line segment between ``start`` and ``end``.
+
     Examples
     --------
     >>> line = Line([0, 0, 0], [1, 1, 1])
+    >>> line
+    Line(Point(0.000, 0.000, 0.000), Point(1.000, 1.000, 1.000))
     >>> line.midpoint
     Point(0.500, 0.500, 0.500)
-    >>> line.length
-    1.73205080757
+    >>> line.length == sqrt(1 + 1 + 1)
+    True
     >>> line.direction
-    Vector(0.577, 0.577, 0.577, 1.000)
+    Vector(0.577, 0.577, 0.577)
 
-    >>> type(line.start)
-    <class 'compas.geometry.objects.point.Point'>
-    >>> type(line.midpoint)
-    <class 'compas.geometry.objects.point.Point'>
-    >>> type(line.direction)
-    <class 'compas.geometry.objects.vector.Vector'>
-
-    Notes
-    -----
-    For more info on lines and linear equations, see [1]_.
-
-    References
-    ----------
-    .. [1] Wikipedia. *Linear equation*.
-           Available at: https://en.wikipedia.org/wiki/Linear_equation.
-
+    >>> type(line.start) == Point
+    True
+    >>> type(line.midpoint) == Point
+    True
+    >>> type(line.direction) == Vector
+    True
     """
+
+    __module__ = "compas.geometry"
 
     __slots__ = ['_start', '_end']
 
@@ -57,17 +66,19 @@ class Line(object):
         self.start = p1
         self.end = p2
 
-    # ==========================================================================
-    # factory
-    # ==========================================================================
+    @property
+    def data(self):
+        """dict : The data dictionary that represents the line."""
+        return {'start': list(self.start), 'end': list(self.end)}
 
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
+    @data.setter
+    def data(self, data):
+        self.start = data['start']
+        self.end = data['end']
 
     @property
     def start(self):
-        """Point: the start point."""
+        """:class:`compas.geometry.Point` : The start point of the line."""
         return self._start
 
     @start.setter
@@ -76,7 +87,7 @@ class Line(object):
 
     @property
     def end(self):
-        """Point: the end point."""
+        """:class:`compas.geometry.Point` : The end point of the line."""
         return self._end
 
     @end.setter
@@ -85,27 +96,27 @@ class Line(object):
 
     @property
     def vector(self):
-        """Vector: A vector pointing from start to end."""
+        """:class:`compas.geometry.Vector` : A vector pointing from start to end."""
         return self.end - self.start
 
     @property
     def length(self):
-        """float: The length of the vector from start to end."""
+        """float : The length of the vector from start to end."""
         return self.vector.length
 
     @property
     def direction(self):
-        """Vector: A unit vector pointing from start and end."""
+        """:class:`compas.geometry.Vector` : A unit vector pointing from start and end."""
         return self.vector * (1 / self.length)
 
     @property
     def midpoint(self):
-        """Point: The midpoint between start and end."""
+        """:class:`compas.geometry.Point` : The midpoint between start and end."""
         v = self.direction * (0.5 * self.length)
         return self.start + v
 
     # ==========================================================================
-    # representation
+    # customization
     # ==========================================================================
 
     def __repr__(self):
@@ -113,10 +124,6 @@ class Line(object):
 
     def __len__(self):
         return 2
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
 
     def __getitem__(self, key):
         if key == 0:
@@ -137,52 +144,117 @@ class Line(object):
     def __iter__(self):
         return iter([self.start, self.end])
 
-    # ==========================================================================
-    # comparison
-    # ==========================================================================
-
     def __eq__(self, other):
         raise NotImplementedError
 
     # ==========================================================================
-    # queries
+    # constructors
     # ==========================================================================
 
-    def point(self, t):
-        """Point: The point from the start to the end at a specific normalized parameter."""
+    @classmethod
+    def from_data(cls, data):
+        """Construct a frame from a data dict.
 
-        if t < 0 or t > 1:
-            return None
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
 
-        if t == 0:
-            return self.start
-
-        if t == 1:
-            return self.end
-
-        v = self.direction * (t * self.length)
-        return self.start + v
-
-    # ==========================================================================
-    # operators
-    # ==========================================================================
+        Examples
+        --------
+        >>> line = Line.from_data({'start': [0.0, 0.0, 0.0], 'end': [1.0, 0.0, 0.0]})
+        >>> line.end
+        Point(1.000, 0.000, 0.000)
+        """
+        return cls(data['start'], data['end'])
 
     # ==========================================================================
-    # inplace operators
+    # static
     # ==========================================================================
+
+    @staticmethod
+    def transform_collection(collection, X):
+        """Transform a collection of ``Line`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Line
+            The collection of lines.
+
+        Returns
+        -------
+        None
+            The lines are modified in-place.
+
+        Examples
+        --------
+        >>> from marh import radians
+        >>> from compas.geometry import Point
+        >>> from compas.geometry import Vector
+        >>> from compas.geometry import Rotation
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> a = Line(Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0))
+        >>> lines = [a]
+        >>> Line.transform_collection(lines, R)
+        >>> b = lines[0]
+        >>> b.end
+        Point(0.000, 1.000, 0.000)
+        >>> a is b
+        True
+        """
+        points = [line.start for line in collection] + [line.end for line in collection]
+        Point.transform_collection(points, X)
+
+    @staticmethod
+    def transformed_collection(collection, X):
+        """Create a collection of transformed ``Line`` objects.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Line
+            The collection of lines.
+
+        Returns
+        -------
+        list of compas.geometry.Line
+            The transformed lines.
+
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Vector
+        >>> from compas.geometry import Point
+        >>> R = Rotation.from_axis_and_angle(Vector.Zaxis(), radians(90))
+        >>> a = Line(Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0))
+        >>> lines = [a]
+        >>> lines = Line.transformed_collection(lines, R)
+        >>> b = lines[0]
+        >>> b.end
+        Point(0.000, 1.000, 0.000)
+        >>> a is b
+        False
+        """
+        lines = [line.copy() for line in collection]
+        Line.transform_collection(lines, X)
+        return lines
 
     # ==========================================================================
     # helpers
     # ==========================================================================
 
     def copy(self):
-        """Make a copy of this ``Line``.
+        """Make a copy of this line.
 
         Returns
         -------
         Line
             The copy.
 
+        Examples
+        --------
+        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> line.copy()
+        Line(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000))
         """
         cls = type(self)
         return cls(self.start.copy(), self.end.copy())
@@ -191,38 +263,80 @@ class Line(object):
     # methods
     # ==========================================================================
 
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
-
-    def transform(self, matrix):
-        """Transform this ``Plane`` using a given transformation matrix.
+    def point(self, t):
+        """A point between start and end at a specific normalized parameter.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
-
-        """
-        self.start = transform_points([self.start], matrix)[0]
-        self.end = transform_points([self.end], matrix)[0]
-
-    def transformed(self, matrix):
-        """Return a transformed copy of this ``Line`` using a given transformation matrix.
-
-        Parameters
-        ----------
-        matrix : list of list
-            The transformation matrix.
+        t : float
+            The line parameter.
 
         Returns
         -------
-        Line
-            The transformed copy.
+        Point
+            A point on the line.
 
+        Examples
+        --------
+        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> line.point(0.5)
+        Point(0.500, 0.000, 0.000)
+        """
+        if t == 0:
+            return self.start
+        if t == 1:
+            return self.end
+        v = self.direction * (t * self.length)
+        return self.start + v
+
+    def transform(self, T):
+        """Transform this line.
+
+        Parameters
+        ----------
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
+
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> line.transform(R)
+        >>> line.end
+        Point(0.000, 1.000, 0.000)
+        """
+        self.start.transform(T)
+        self.end.transform(T)
+
+    def transformed(self, T):
+        """Returns a transformed copy of the current line.
+
+        Parameters
+        ----------
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
+
+        Returns
+        -------
+        :class: `compas.geometry.Line`
+            The transformed line.
+
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> l1 = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> l2 = l1.transformed(R)
+        >>> l1.end
+        Point(1.000, 0.000, 0.000)
+        >>> l2.end
+        Point(0.000, 1.000, 0.000)
         """
         line = self.copy()
-        line.transform(matrix)
+        line.transform(T)
         return line
 
 
@@ -232,14 +346,13 @@ class Line(object):
 
 if __name__ == '__main__':
 
-    l1 = Line([0, 0, 0], [1, 1, 1])
+    import doctest
 
-    print(l1)
+    from math import sqrt     # noqa F401
+    from math import radians  # noqa F401
 
-    print(type(l1.start))
-    print(l1.midpoint)
-    print(l1.point(.75))
-    print(type(l1.midpoint))
-    print(l1.length)
-    print(l1.direction)
-    print(type(l1.direction))
+    from compas.geometry import Rotation  # noqa F401
+    from compas.geometry import Point     # noqa F401
+    from compas.geometry import Vector    # noqa F401
+
+    doctest.testmod(globs=globals())

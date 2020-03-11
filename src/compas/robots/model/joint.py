@@ -66,13 +66,16 @@ class Dynamics(object):
 class Limit(object):
     """Joint limit properties.
 
-    Attributes:
-        effort: Maximum joint effort.
-        velocity: Maximum joint velocity.
-        lower: Lower joint limit (radians for revolute joints, meter for
-            prismatic joints).
-        upper: Upper joint limit (radians for revolute joints, meter for
-            prismatic joints).
+    Attributes
+    ----------
+    effort : :obj:`float`
+        Maximum joint effort.
+    velocity : :obj:`float`
+        Maximum joint velocity.
+    lower : :obj:`float`
+        Lower joint limit (radians for revolute joints, meter for prismatic joints).
+    upper : :obj:`float`
+        Upper joint limit (radians for revolute joints, meter for prismatic joints).
     """
 
     def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0):
@@ -82,6 +85,17 @@ class Limit(object):
         self.upper = float(upper)
 
     def scale(self, factor):
+        """Scale the upper and lower limits by a given factor.
+
+        Parameters
+        ----------
+        factor : :obj:`float`
+            Scale factor.
+
+        Returns
+        -------
+        None
+        """
         self.lower *= factor
         self.upper *= factor
 
@@ -106,7 +120,19 @@ class SafetyController(object):
 
 
 class Axis(object):
-    """Representation of an axis or vector."""
+    """Representation of an axis or vector.
+
+    Attributes
+    ----------
+    x : :obj:`float`
+        X coordinate.
+    y: :obj:`float`
+        Y coordinate.
+    z : :obj:`float`
+        Z coordinate.
+    attr : :obj:`dict`
+        Additional axis attributes.
+    """
 
     def __init__(self, xyz='0 0 0', **kwargs):
         # We are not using Vector here because we
@@ -118,18 +144,44 @@ class Axis(object):
         self.attr = kwargs
 
     def copy(self):
+        """Create a copy of the axis instance."""
         cls = type(self)
         return cls("%f %f %f" % (self.x, self.y, self.z))
 
     def transform(self, transformation):
+        """Transform the axis in place.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the axis.
+        """
         xyz = transform_vectors(
             [[self.x, self.y, self.z]], transformation.matrix)
         self.x = xyz[0][0]
         self.y = xyz[0][1]
         self.z = xyz[0][2]
 
+    def transformed(self, transformation):
+        """Return a transformed copy of the axis.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the axis.
+
+        Returns
+        -------
+        :class:`Axis`
+            The transformed axis.
+        """
+        xyz = transform_vectors(
+            [[self.x, self.y, self.z]], transformation.matrix)
+        return Vector(xyz[0][0], xyz[0][1], xyz[0][2])
+
     @property
     def vector(self):
+        """Vector of the axis."""
         return Vector(self.x, self.y, self.z)
 
     def __str__(self):
@@ -140,30 +192,43 @@ class Joint(object):
     """Representation of the kinematics and dynamics of a joint and its safety
     limits.
 
-    Attributes:
-        name: Unique name for the joint.
-        type: Joint type.
-        origin: Transformation from the parent link to the child link frame.
-        parent: Name of the parent link.
-        child: Name of the child link.
-        axis: Joint axis specified in the joint frame. Represents the axis of
-            rotation for revolute joints, the axis of translation for prismatic
-            joints, and the surface normal for planar joints. The axis is
-            specified in the joint frame of reference.
-        calibration: Reference positions of the joint, used to calibrate the
-            absolute position of the joint.
-        dynamics: Physical properties of the joint. These values are used to
-            specify modeling properties of the joint, particularly useful for
-            simulation.
-        limit: Joint limit properties.
-        safety_controller: Safety controller properties.
-        mimic: Used to specify that the defined joint mimics another existing
-            joint.
-        attr: Non-standard attributes.
-        child_link: the joint's child link
-        position (float): The current position of the joint. This depends on the
-            joint type, i.e. for revolute joints, it will be the rotation angle
-            in radians, for prismatic joints the translation in meters.
+    Attributes
+    ----------
+    name : :obj:`str`
+        Unique name for the joint.
+    type : :obj:`int`
+        Joint type.
+    origin : :class:`Origin`
+        Transformation from the parent link to the child link frame.
+    parent : :class:`ParentLink` or str
+        Parent link instance or parent link name.
+    child : :class:`ChildLink` or str
+        Child link instance or name of child link.
+    axis : :class:`Axis`
+        Joint axis specified in the joint frame. Represents the axis of
+        rotation for revolute joints, the axis of translation for prismatic
+        joints, and the surface normal for planar joints. The axis is
+        specified in the joint frame of reference.
+    calibration : :class`Calibration`
+        Reference positions of the joint, used to calibrate the absolute position of the joint.
+    dynamics : :class:`Dynamics`
+        Physical properties of the joint. These values are used to
+        specify modeling properties of the joint, particularly useful for
+        simulation.
+    limit : :class:`Limit`
+        Joint limit properties.
+    safety_controller : :class:`SafetyController`
+        Safety controller properties.
+    mimic : :class:`Mimic`
+        Used to specify that the defined joint mimics another existing joint.
+    attr : :obj:`dict`
+        Non-standard attributes.
+    child_link
+        Joint's child link
+    position : :obj:`float`
+        The current position of the joint. This depends on the
+        joint type, i.e. for revolute joints, it will be the rotation angle
+        in radians, for prismatic joints the translation in meters.
     """
 
     REVOLUTE = 0
@@ -184,8 +249,8 @@ class Joint(object):
         self.type = Joint.SUPPORTED_TYPES.index(type)
         self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
         self.child = child if isinstance(child, ChildLink) else ChildLink(child)
-        self.origin = origin
-        self.axis = axis
+        self.origin = origin or Origin.from_euler_angles([0., 0., 0.])
+        self.axis = axis or Axis()
         self.calibration = calibration
         self.dynamics = dynamics
         self.limit = limit
@@ -194,12 +259,10 @@ class Joint(object):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
-        self.init_origin = origin.copy() if origin else None
-        self.init_axis = axis.copy() if axis else None
 
         switcher = {
             Joint.REVOLUTE: self.calculate_revolute_transformation,
-            Joint.CONTINUOUS: self.calculate_continous_transformation,
+            Joint.CONTINUOUS: self.calculate_continuous_transformation,
             Joint.PRISMATIC: self.calculate_prismatic_transformation,
             Joint.FIXED: self.calculate_fixed_transformation,
             Joint.FLOATING: self.calculate_floating_transformation,
@@ -210,41 +273,45 @@ class Joint(object):
 
     @property
     def current_transformation(self):
+        """Current transformation of the joint."""
         if self.origin:
             return Transformation.from_frame(self.origin)
         else:
             return Transformation()
 
-    @property
-    def init_transformation(self):
-        if self.init_origin:
-            return Transformation.from_frame(self.init_origin)
-        else:
-            return Transformation()
-
-    @property
-    def reset_transformation(self):
-        return self.init_transformation * self.current_transformation.inverse()
-
-    def reset_transform(self):
-        if self.init_origin:
-            self.origin = self.init_origin.copy()
-        if self.init_axis:
-            self.axis = self.init_axis.copy()
-
     def transform(self, transformation):
+        """Transform the joint in place.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the joint.
+
+        Returns
+        -------
+        None
+        """
         if self.origin:
             self.origin.transform(transformation)
         if self.axis:
             self.axis.transform(transformation)
 
-    def create(self, transformation):
+    def _create(self, transformation):
+        """Internal method to initialize the transformation tree.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+            The transformation used to transform the joint.
+
+        Returns
+        -------
+        None
+        """
         if self.origin:
             self.origin.transform(transformation)
-            self.init_origin = self.origin.copy()
         if self.axis:
             self.axis.transform(self.current_transformation)
-            self.init_axis = self.axis.copy()
 
     def calculate_revolute_transformation(self, position):
         """Returns a transformation of a revolute joint.
@@ -252,20 +319,37 @@ class Joint(object):
         A revolute joint rotates about the axis and has a limited range
         specified by the upper and lower limits.
 
-        Args:
-            position (float): the angle in radians
+        Parameters
+        ----------
+        position : :obj:`float`
+            Angle in radians.
+
+        Returns
+        -------
+        :class:`Rotation`
+            Transformation of type rotation for the revolute joint.
         """
+        if not self.limit:
+            raise ValueError('Revolute joints are required to define a limit')
+
         position = max(min(position, self.limit.upper), self.limit.lower)
-        return self.calculate_continous_transformation(position)
+        return self.calculate_continuous_transformation(position)
 
-    def calculate_continous_transformation(self, position):
-        """Returns a transformation of a continous joint.
+    def calculate_continuous_transformation(self, position):
+        """Returns a transformation of a continuous joint.
 
-        A continous joint rotates about the axis and has no upper and lower
+        A continuous joint rotates about the axis and has no upper and lower
         limits.
 
-        Args:
-            position (float): the angle in radians
+        Parameters
+        ----------
+        position : :obj:`float`
+            Angle in radians
+
+        Returns
+        -------
+        :class:`Rotation`
+            Transformation of type rotation for the continuous joint.
         """
         return Rotation.from_axis_and_angle(self.axis.vector, position, self.origin.point)
 
@@ -275,9 +359,20 @@ class Joint(object):
         A prismatic joint slides along the axis and has a limited range
         specified by the upper and lower limits.
 
-        Args:
-            position (float): the movement in meters.
+        Parameters
+        ----------
+        position : :obj:`float`
+            Translation movement in meters.
+
+        Returns
+        -------
+        :class:`Translation`
+            Transformation of type translation for the prismatic joint.
+
         """
+        if not self.limit:
+            raise ValueError('Prismatic joints are required to define a limit')
+
         position = max(min(position, self.limit.upper), self.limit.lower)
         return Translation(self.axis.vector * position)
 
@@ -287,6 +382,12 @@ class Joint(object):
 
         The fixed joint is is not really a joint because it cannot move. All
         degrees of freedom are locked.
+
+        Returns
+        -------
+        :class:`Translation`
+            Identity transformation.
+
         """
         return Transformation()
 
@@ -309,25 +410,36 @@ class Joint(object):
 
         This function is overwitten in the init based on the joint type.
 
-        Args:
-            position (float): radians or meters.
+        Parameters
+        ----------
+        position : :obj:`float`
+            Position in radians or meters depending on the joint type.
         """
         pass
 
     def is_configurable(self):
         """Returns ``True`` if the joint can be configured, otherwise ``False``."""
         return self.type != Joint.FIXED
-    
+
     def is_scalable(self):
         """Returns ``True`` if the joint can be scaled, otherwise ``False``."""
         return self.type in [Joint.PLANAR, Joint.PRISMATIC]
 
     def scale(self, factor):
+        """Scale the joint origin and limit (only if scalable) by a given factor.
+
+        Parameters
+        ----------
+        factor : :obj:`float`
+            Scale factor.
+
+        Returns
+        -------
+        None
+        """
         self.origin.scale(factor)
-        self.init_origin.point *= factor
         if self.is_scalable():
             self.limit.scale(factor)
-
 
 
 URDFParser.install_parser(Joint, 'robot/joint')

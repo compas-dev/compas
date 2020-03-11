@@ -2,12 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from functools import partial
+from compas.geometry import transform_points
 
-from compas.geometry.transformations import transform_points
-
-from compas.geometry.distance import distance_point_point
-
+from compas.geometry._primitives import Primitive
 from compas.geometry._primitives import Point
 from compas.geometry._primitives import Line
 
@@ -15,7 +12,7 @@ from compas.geometry._primitives import Line
 __all__ = ['Polyline']
 
 
-class Polyline(object):
+class Polyline(Primitive):
     """A polyline is a sequence of points connected by line segments.
 
     A polyline is a piecewise linear element.
@@ -29,39 +26,57 @@ class Polyline(object):
         An ordered list of points.
         Each consecutive pair of points forms a segment of the polyline.
 
+    Attributes
+    ----------
+    data : dict
+        The data representation of the polyline.
+    points : list of :class:`compas.geometry.Point`
+        The polyline points.
+    lines : list of :class:`compas.geometry.Line`, read-only
+        The polyline segments.
+    length : float, read-only
+        The length of the polyline.
+
     Examples
     --------
     >>> polyline = Polyline([[0,0,0], [1,0,0], [2,0,0], [3,0,0]])
     >>> polyline.length
     3.0
 
-    >>> type(polyline.points[0])
-    <class 'point.Point'>
+    >>> type(polyline.points[0]) == Point
+    True
     >>> polyline.points[0].x
     0.0
 
-    >>> type(polyline.lines[0])
-    <class 'line.Line'>
+    >>> type(polyline.lines[0]) == Line
+    True
     >>> polyline.lines[0].length
     1.0
-
     """
-    __slots__ = ['_points', '_lines', '_p', '_l']
+
+    __module__ = "compas.geometry"
+
+    __slots__ = ["_points", "_lines"]
 
     def __init__(self, points):
         self._points = []
         self._lines = []
-        self._p = 0
-        self._l = 0
         self.points = points
 
-    # ==========================================================================
-    # factory
-    # ==========================================================================
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the polyline.
 
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
+        Returns
+        -------
+        dict
+            The polyline's data.
+        """
+        return {'points': [list(point) for point in self.points]}
+
+    @data.setter
+    def data(self, data):
+        self.points = data['points']
 
     @property
     def points(self):
@@ -71,9 +86,7 @@ class Polyline(object):
     @points.setter
     def points(self, points):
         self._points = [Point(*xyz) for xyz in points]
-        self._p = len(points)
-        self._lines = [Line(self._points[i], self._points[i + 1]) for i in range(0, self._p - 1)]
-        self._l = len(self._lines)
+        self._lines = [Line(self._points[i], self._points[i + 1]) for i in range(0, len(self._points) - 1)]
 
     @property
     def lines(self):
@@ -81,71 +94,89 @@ class Polyline(object):
         return self._lines
 
     @property
-    def p(self):
-        """int: The number of points."""
-        return self._p
-
-    @property
-    def l(self):
-        """int: The number of lines."""
-        return self._l
-
-    @property
     def length(self):
-        """float: The length of the polyline."""
+        """float : The length of the polyline."""
         return sum([line.length for line in self.lines])
 
     # ==========================================================================
-    # representation
+    # customization
     # ==========================================================================
 
     def __repr__(self):
-        return 'Polyline({0})'.format(", ".join(map(lambda point: format(point, ""), self.points)))
+        return "Polyline({})".format(", ".join(["{}".format(point) for point in self.points]))
 
     def __len__(self):
-        return self.p
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
+        return len(self.points)
 
     def __getitem__(self, key):
-        if key < self.p:
-            return self.points[key]
-        raise KeyError
+        return self.points[key]
 
     def __setitem__(self, key, value):
-        if key < self.p:
-            self.points[key] = value
-            return
-        raise KeyError
+        self.points[key] = value
 
     def __iter__(self):
         return iter(self.points)
 
+    def __eq__(self, other):
+        return all(a == b for a, b in zip(self, other))
+
     # ==========================================================================
-    # comparison
+    # constructors
     # ==========================================================================
 
-    def __eq__(self, other):
-        raise NotImplementedError
+    @classmethod
+    def from_data(cls, data):
+        """Construct a polyline from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Polyline`
+            The constructed polyline.
+
+        Examples
+        --------
+        >>> polyline = Polyline.from_data({'points': [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]]})
+        >>> polyline
+        Polyline(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(1.000, 1.000, 0.000))
+        """
+        return cls(data['points'])
 
     # ==========================================================================
     # queries
     # ==========================================================================
 
-    def point(self, t, snap = False):
-        """Point: The point from the start to the end at a specific normalized parameter.
-        If snap is True, return the closest polyline point."""
+    def point(self, t, snap=False):
+        """Point on the polyline at a specific normalized parameter.
 
+        Parameters
+        ----------
+        t : float
+            The parameter value.
+        snap : bool, optional
+            If True, return the closest polyline point.
+
+        Returns
+        -------
+        Point
+            The point on the polyline.
+
+        Examples
+        --------
+        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
+        >>> polyline.point(0.75)
+        Point(1.000, 0.500, 0.000)
+        """
         if t < 0 or t > 1:
             return None
 
         points = self.points
-
         if t == 0:
             return points[0]
-
         if t == 1:
             return points[-1]
 
@@ -153,24 +184,17 @@ class Polyline(object):
 
         x = 0
         i = 0
-
         while x <= t:
-
             line = Line(points[i], points[i + 1])
             line_length = line.length
-
             dx = line_length / polyline_length
-
             if x + dx > t:
-
                 if snap:
                     if t - x < x + dx - t:
                         return line.start
                     else:
                         return line.end
-
                 return line.point((t - x) * polyline_length / line_length)
-
             x += dx
             i += 1
 
@@ -187,13 +211,21 @@ class Polyline(object):
     # ==========================================================================
 
     def copy(self):
-        """Make a copy of this ``Polyline``.
+        """Make a copy of this polyline.
 
         Returns
         -------
-        Polyline
+        :class:`compas.geometry.Polyline`
             The copy.
 
+        Examples
+        --------
+        >>> p1 = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
+        >>> p2 = p1.copy()
+        >>> p1 == p2
+        True
+        >>> p1 is p2
+        False
         """
         cls = type(self)
         return cls([point.copy() for point in self.points])
@@ -204,6 +236,16 @@ class Polyline(object):
 
     def is_selfintersecting(self):
         """Determine if the polyline is self-intersecting.
+
+        Returns
+        -------
+        bool
+            True if the polyline is self-intersecting.
+            False otherwise.
+
+        Examples
+        --------
+        >>>
         """
         raise NotImplementedError
 
@@ -215,6 +257,14 @@ class Polyline(object):
         bool
             True if the polyline is closed, False otherwise.
 
+        Examples
+        --------
+        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
+        >>> polyline.is_closed()
+        False
+        >>> polyline.points.append(polyline.points[0])
+        >>> polyline.is_closed()
+        True
         """
         return self.points[0] == self.points[-1]
 
@@ -222,36 +272,53 @@ class Polyline(object):
     # transformations
     # ==========================================================================
 
-    def transform(self, matrix):
-        """Transform this ``Polyline`` using a given transformation matrix.
+    def transform(self, T):
+        """Transform this polyline.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
+        Examples
+        --------
+        >>> from math import radians
+        >>> from compas.geometry import Rotation
+        >>> polyline = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]])
+        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
+        >>> polyline.transform(R)
         """
-        for index, point in enumerate(transform_points(self.points, matrix)):
+        for index, point in enumerate(transform_points(self.points, T)):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
 
-    def transformed(self, matrix):
-        """Return a transformed copy of this ``Polyline`` using a given transformation matrix.
+    def transformed(self, T):
+        """Return a transformed copy of this polyline.
 
         Parameters
         ----------
-        matrix : list of list
-            The transformation matrix.
+        T : :class:`compas.geometry.Transformation` or list of list
+            The transformation.
 
         Returns
         -------
-        Polyline
+        :class:`compas.geometry.Polyline`
             The transformed copy.
 
+        Examples
+        --------
+        >>> from compas.geometry import Scale
+        >>> p1 = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]])
+        >>> S = Scale([1.0, 1.0, 1.0])
+        >>> p2 = p1.transformed(S)
+        >>> p1 == p2
+        True
+        >>> p1 is p2
+        False
         """
         polyline = self.copy()
-        polyline.transform(matrix)
+        polyline.transform(T)
         return polyline
 
 
@@ -261,19 +328,6 @@ class Polyline(object):
 
 if __name__ == '__main__':
 
-    from math import pi
+    import doctest
 
-    from compas.geometry import matrix_from_axis_and_angle
-    from compas_plotters import Plotter
-
-
-    M = matrix_from_axis_and_angle([0, 0, 1.0], pi / 2)
-    p = Polyline([[0, 0, 0], [1, 0, 0], [2, 0, 0], [3, 0, 0]])
-    q = p.transformed(M)
-
-    #plotter = Plotter(figsize=(10, 7))
-
-    #plotter.draw_polygons([{'points': p.points}, {'points': q.points}])
-    #plotter.show()
-
-    print(p.point(.7, snap = True))
+    doctest.testmod(globs=globals())

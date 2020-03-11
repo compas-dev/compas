@@ -33,7 +33,16 @@ def update_component(ghenv, delay):
     ghdoc = ghcomp.OnPingDocument()
 
     def callback(ghdoc):
-        ghcomp.ExpireSolution(False)
+        if ghdoc.SolutionState != gh.Kernel.GH_ProcessStep.Process:
+            ghcomp.ExpireSolution(False)
 
     ghdoc.ScheduleSolution(
         delay, gh.Kernel.GH_Document.GH_ScheduleDelegate(callback))
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+    pass

@@ -20,9 +20,31 @@ class PLY(object):
     * http://paulbourke.net/dataformats/ply/
 
     """
+
     def __init__(self, filepath, precision=None):
-        self.reader = PLYReader(filepath)
-        self.parser = PLYParser(self.reader, precision=precision)
+        self.filepath = filepath
+        self.precision = precision
+
+        self._is_parsed = False
+        self._reader = None
+        self._parser = None
+
+    def read(self):
+        self._reader = PLYReader(self.filepath)
+        self._parser = PLYParser(self._reader, precision=self.precision)
+        self._is_parsed = True
+
+    @property
+    def reader(self):
+        if not self._is_parsed:
+            self.read()
+        return self._reader
+
+    @property
+    def parser(self):
+        if not self._is_parsed:
+            self.read()
+        return self._parser
 
 
 class PLYReader(object):
@@ -31,54 +53,54 @@ class PLYReader(object):
     keywords = ['ply', 'format', 'comment', 'element', 'property', 'end_header']
 
     property_types = {
-        'char'   : int,
-        'uchar'  : int,
-        'short'  : int,
-        'ushort' : int,
-        'int'    : int,
-        'uint'   : int,
-        'float'  : float,
-        'double' : float,
+        'char': int,
+        'uchar': int,
+        'short': int,
+        'ushort': int,
+        'int': int,
+        'uint': int,
+        'float': float,
+        'double': float,
     }
 
     binary_property_types = {
-        'int8'   : 'i1',
-        'char'   : 'i1',
-        'uint8'  : 'u1',
-        'uchar'  : 'u1',
-        'int16'  : 'i2',
-        'short'  : 'i2',
-        'uint16' : 'u2',
-        'ushort' : 'u2',
-        'int32'  : 'i4',
-        'int'    : 'i4',
-        'uint32' : 'u4',
-        'uint'   : 'u4',
+        'int8': 'i1',
+        'char': 'i1',
+        'uint8': 'u1',
+        'uchar': 'u1',
+        'int16': 'i2',
+        'short': 'i2',
+        'uint16': 'u2',
+        'ushort': 'u2',
+        'int32': 'i4',
+        'int': 'i4',
+        'uint32': 'u4',
+        'uint': 'u4',
         'float32': 'f4',
-        'float'  : 'f4',
+        'float': 'f4',
         'float64': 'f8',
-        'double' : 'f8'
+        'double': 'f8'
     }
 
     number_of_bytes_per_type = {
-        'char'  : 1,
-        'uchar' : 1,
-        'short' : 2,
+        'char': 1,
+        'uchar': 1,
+        'short': 2,
         'ushort': 2,
-        'int'   : 4,
-        'uint'  : 4,
-        'float' : 4,
+        'int': 4,
+        'uint': 4,
+        'float': 4,
         'double': 8
     }
 
     struct_format_per_type = {
-        'char'  : 'c',
-        'uchar' : 'B',
-        'short' : 'h',
+        'char': 'c',
+        'uchar': 'B',
+        'short': 'h',
         'ushort': 'H',
-        'int'   : 'i',
-        'uint'  : 'I',
-        'float' : 'f',
+        'int': 'i',
+        'uint': 'I',
+        'float': 'f',
         'double': 'd'
     }
 
@@ -409,10 +431,10 @@ class PLYParser(object):
 
     def __init__(self, reader, precision=None):
         self.precision = precision
-        self.reader    = reader
-        self.vertices  = None
-        self.edges     = None
-        self.faces     = None
+        self.reader = reader
+        self.vertices = None
+        self.edges = None
+        self.faces = None
         self.parse()
 
     def parse(self):
@@ -426,9 +448,7 @@ class PLYParser(object):
 
 if __name__ == "__main__":
 
-    import os
     import compas
-
     from compas.datastructures import Mesh
 
     ply = PLY(compas.get_bunny())

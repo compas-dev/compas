@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
+# flake8: noqa
 from __future__ import print_function
 
 import io
@@ -19,16 +20,17 @@ def read(*names, **kwargs):
 
 
 long_description = read('README.md')
-requirements = read('requirements.txt').split('\n')
+requirements = [r for r in read('requirements.txt').split('\n') if r]
 optional_requirements = {
-    "viewers"  : ['PyOpenGL', 'PySide2', 'vtk'],
-    "hpc"      : ['pyopencl', 'pycuda'],
-    "robotics" : ['roslibpy']
+    # "viewers": ['PyOpenGL', 'PySide2'],
+    # "hpc": ['pyopencl', 'pycuda'],
+    # "robotics": ['roslibpy'],
+    # "libigl": ['igl'],
 }
 
 setup(
     name='COMPAS',
-    version='0.7.1',
+    version='0.15.4',
     description='The COMPAS framework',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -51,16 +53,17 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: CPython',
     ],
-    keywords=['architecture', 'fabrication', 'engineering'],
+    keywords=['architecture', 'engineering', 'fabrication', 'construction'],
     project_urls={
         "Documentation": "http://compas-dev.github.io",
         "Forum": "https://forum.compas-framework.org/",
         "Repository": "https://github.com/compas-dev/compas",
         "Issues": "https://github.com/compas-dev/compas/issues",
     },
-    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', 'compas_plotters', 'compas_viewers'],
+    packages=['compas', 'compas_rhino', 'compas_blender', 'compas_ghpython', 'compas_plotters'],
     package_dir={'': 'src'},
     package_data={},
     data_files=[],
@@ -69,8 +72,12 @@ setup(
     install_requires=requirements,
     python_requires='>=2.7',
     extras_require=optional_requirements,
-    entry_points={},
+    entry_points={
+        'console_scripts': [
+            'compas_rpc=compas.rpc.__main__:main',
+            'compas_install_rhinoplugin=compas_rhino.install_plugin:main'
+        ]
+    },
     ext_modules=[],
-    cmdclass={},
-    scripts=[]
+    cmdclass={}
 )

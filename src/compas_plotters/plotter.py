@@ -9,10 +9,11 @@ import subprocess
 
 from contextlib import contextmanager
 
-import matplotlib
 import matplotlib.pyplot as plt
 
 from matplotlib.patches import Circle
+from matplotlib.patches import FancyArrowPatch
+from matplotlib.patches import ArrowStyle
 
 from compas_plotters.core.drawing import create_axes_xy
 from compas_plotters.core.drawing import draw_xpoints_xy
@@ -114,6 +115,7 @@ class Plotter(object):
         plotter.show()
 
     """
+
     def __init__(self, figsize=(16.0, 12.0), dpi=100.0, tight=True, axes=None, **kwargs):
         """Initialises a plotter object"""
         self._axes = None
@@ -133,23 +135,23 @@ class Plotter(object):
         # color
         # size/thickness
         self.defaults = {
-            'point.radius'    : 0.1,
-            'point.facecolor' : '#ffffff',
-            'point.edgecolor' : '#000000',
-            'point.edgewidth' : 0.5,
-            'point.textcolor' : '#000000',
-            'point.fontsize'  : kwargs.get('fontsize', 10),
+            'point.radius': 0.1,
+            'point.facecolor': '#ffffff',
+            'point.edgecolor': '#000000',
+            'point.edgewidth': 0.5,
+            'point.textcolor': '#000000',
+            'point.fontsize': kwargs.get('fontsize', 10),
 
-            'line.width'    : 1.0,
-            'line.color'    : '#000000',
+            'line.width': 1.0,
+            'line.color': '#000000',
             'line.textcolor': '#000000',
-            'line.fontsize' : kwargs.get('fontsize', 10),
+            'line.fontsize': kwargs.get('fontsize', 10),
 
-            'polygon.facecolor' : '#ffffff',
-            'polygon.edgecolor' : '#000000',
-            'polygon.edgewidth' : 0.1,
-            'polygon.textcolor' : '#000000',
-            'polygon.fontsize'  : kwargs.get('fontsize', 10),
+            'polygon.facecolor': '#ffffff',
+            'polygon.edgecolor': '#000000',
+            'polygon.edgewidth': 0.1,
+            'polygon.textcolor': '#000000',
+            'polygon.fontsize': kwargs.get('fontsize', 10),
         }
 
     @property
@@ -317,7 +319,8 @@ class Plotter(object):
         """Displays the plot.
 
         """
-        self.axes.autoscale()
+        if autoscale:
+            self.axes.autoscale()
         if self.tight:
             plt.tight_layout()
         plt.show()
@@ -595,6 +598,20 @@ class Plotter(object):
 
         """
         return draw_xarrows_xy(arrows, self.axes)
+
+    def draw_arrows2(self, arrows):
+        for data in arrows:
+            a = data['start'][:2]
+            b = data['end'][:2]
+            color = data.get('color', (0.0, 0.0, 0.0))
+            style = ArrowStyle("Simple, head_length=.1, head_width=.1, tail_width=.02")
+            arrow = FancyArrowPatch(a, b,
+                                    arrowstyle=style,
+                                    edgecolor=color,
+                                    facecolor=color,
+                                    zorder=2000,
+                                    mutation_scale=100)
+            self.axes.add_patch(arrow)
 
     def update(self, pause=0.0001):
         """Updates and pauses the plot.

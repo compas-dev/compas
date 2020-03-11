@@ -9,30 +9,41 @@ __all__ = ['DataDecoder', 'DataEncoder']
 
 
 class DataEncoder(json.JSONEncoder):
-    """Dump"""
+    """Data encoder for custom JSON serialisation with support for COMPAS data structures and geometric primitives."""
 
     def default(self, o):
-        from compas.datastructures import Datastructure
+        # from compas.datastructures import Datastructure
+        # from compas.geometry import Primitive
 
-        if isinstance(o, Datastructure):
-            return {
-                'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
-                'value': o.to_data()
-            }
+        # if isinstance(o, Datastructure):
+        #     return {'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
+        #             'value': o.to_data()}
+
+        # if isinstance(o, Primitive):
+        #     return {'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
+        #             'value': o.to_data()}
+
+        try:
+            value = o.to_data()
+        except AttributeError:
+            pass
+        else:
+            return {'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
+                    'value': value}
 
         try:
             import numpy as np
         except ImportError:
-            return super(DataEncoder, self).default(o)
-
-        if isinstance(o, np.ndarray):
-            return o.tolist()
+            pass
+        else:
+            if isinstance(o, np.ndarray):
+                return o.tolist()
 
         return super(DataEncoder, self).default(o)
 
 
 class DataDecoder(json.JSONDecoder):
-    """Load"""
+    """Data decoder for custom JSON serialisation with support for COMPAS data structures and geometric primitives."""
 
     def __init__(self, *args, **kwargs):
         super(DataDecoder, self).__init__(object_hook=self.object_hook, *args, **kwargs)

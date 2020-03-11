@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from collections import OrderedDict
+
 try:
     from urllib.request import urlopen
 except ImportError:
@@ -25,9 +27,49 @@ class OBJ(object):
     * http://paulbourke.net/dataformats/obj/
 
     """
+
     def __init__(self, filepath, precision=None):
-        self.reader = OBJReader(filepath)
-        self.parser = OBJParser(self.reader, precision=precision)
+        self.filepath = filepath
+        self.precision = precision
+
+        self._is_parsed = False
+        self._reader = None
+        self._parser = None
+
+    def read(self):
+        self._reader = OBJReader(self.filepath)
+        self._parser = OBJParser(self._reader, precision=self.precision)
+        self._is_parsed = True
+
+        self._reader.open()
+        self._reader.pre()
+        self._reader.read()
+        self._reader.post()
+        self._parser.parse()
+
+    @property
+    def reader(self):
+        if not self._is_parsed:
+            self.read()
+        return self._reader
+
+    @property
+    def parser(self):
+        if not self._is_parsed:
+            self.read()
+        return self._parser
+
+    @property
+    def vertices(self):
+        return self.parser.vertices
+
+    @property
+    def lines(self):
+        return self.parser.lines
+
+    @property
+    def faces(self):
+        return self.parser.faces
 
 
 class OBJReader(object):
@@ -100,10 +142,10 @@ class OBJReader(object):
         self.objects = {}
         self.group = None
         # open file path and read
-        self.open()
-        self.pre()
-        self.read()
-        self.post()
+        # self.open()
+        # self.pre()
+        # self.read()
+        # self.post()
 
     def open(self):
         if self.filepath.startswith('http'):
@@ -294,27 +336,28 @@ class OBJReader(object):
 
 class OBJParser(object):
     """"""
+
     def __init__(self, reader, precision=None):
         self.precision = precision
-        self.reader    = reader
-        self.vertices  = None
-        self.weights   = None
-        self.textures  = None
-        self.normals   = None
-        self.points    = None
-        self.lines     = None
+        self.reader = reader
+        self.vertices = None
+        self.weights = None
+        self.textures = None
+        self.normals = None
+        self.points = None
+        self.lines = None
         self.polylines = None
-        self.faces     = None
-        self.curves    = None
-        self.curves2   = None
-        self.surfaces  = None
-        self.groups    = None
-        self.objects   = None
-        self.parse()
+        self.faces = None
+        self.curves = None
+        self.curves2 = None
+        self.surfaces = None
+        self.groups = None
+        self.objects = None
+        # self.parse()
 
     def parse(self):
-        index_key = {}
-        vertex = {}
+        index_key = OrderedDict()
+        vertex = OrderedDict()
 
         for i, xyz in enumerate(iter(self.reader.vertices)):
             key = geometric_key(xyz, self.precision)
@@ -324,12 +367,12 @@ class OBJParser(object):
         key_index = {key: index for index, key in enumerate(vertex)}
         index_index = {index: key_index[key] for index, key in iter(index_key.items())}
 
-        self.vertices  = [xyz for xyz in iter(vertex.values())]
-        self.points    = [index_index[index] for index in self.reader.points]
-        self.lines     = [[index_index[index] for index in line] for line in self.reader.lines if len(line) == 2]
+        self.vertices = [xyz for xyz in iter(vertex.values())]
+        self.points = [index_index[index] for index in self.reader.points]
+        self.lines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) == 2]
         self.polylines = [[index_index[index] for index in line] for line in self.reader.lines if len(line) > 2]
-        self.faces     = [[index_index[index] for index in face] for face in self.reader.faces]
-        self.groups    = self.reader.groups
+        self.faces = [[index_index[index] for index in face] for face in self.reader.faces]
+        self.groups = self.reader.groups
 
 
 # ==============================================================================

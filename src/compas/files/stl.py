@@ -16,8 +16,29 @@ __all__ = [
 class STL(object):
 
     def __init__(self, filepath, precision=None):
-        self.reader = STLReader(filepath)
-        self.parser = STLParser(self.reader, precision=precision)
+        self.filepath = filepath
+        self.precision = precision
+
+        self._is_parsed = False
+        self._reader = None
+        self._parser = None
+
+    def read(self):
+        self._reader = STLReader(self.filepath)
+        self._parser = STLParser(self._reader, precision=self.precision)
+        self._is_parsed = True
+
+    @property
+    def reader(self):
+        if not self._is_parsed:
+            self.read()
+        return self._reader
+
+    @property
+    def parser(self):
+        if not self._is_parsed:
+            self.read()
+        return self._parser
 
 
 class STLReader(object):
@@ -52,7 +73,8 @@ class STLReader(object):
                 self.read_binary()
         except Exception:
             # raise if it was already detected as binary, but failed anyway
-            if is_binary: raise
+            if is_binary:
+                raise
 
             # else, ascii parsing failed, try binary
             is_binary = True
@@ -196,9 +218,9 @@ class STLParser(object):
 
     def __init__(self, reader, precision=None):
         self.precision = precision
-        self.reader    = reader
-        self.vertices  = None
-        self.faces     = None
+        self.reader = reader
+        self.vertices = None
+        self.faces = None
         self.parse()
 
     def parse(self):
@@ -233,10 +255,9 @@ if __name__ == "__main__":
     import compas
 
     from compas.datastructures import Mesh
-    from compas_viewers import MeshViewer
+    from compas_viewers.meshviewer import MeshViewer
     from compas.utilities import download_file_from_remote
     from compas.topology import connected_components
-
 
     source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
     filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
@@ -264,7 +285,7 @@ if __name__ == "__main__":
 
     for vertexgroup, facegroup in zip(vertexgroups, facegroups):
         key_index = {key: index for index, key in enumerate(vertexgroup)}
-        vertices = mesh.get_vertices_attributes('xyz', keys=vertexgroup)
+        vertices = mesh.vertices_attributes('xyz', keys=vertexgroup)
         faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in facegroup]
 
         meshes.append(Mesh.from_vertices_and_faces(vertices, faces))

@@ -29,14 +29,11 @@ from contextlib import contextmanager
 
 import compas
 
-try:
+if compas.IPY:
     import Rhino
     import scriptcontext as sc
     from Rhino.Display import DisplayConduit
-
-except ImportError:
-    compas.raise_if_ironpython()
-
+else:
     class DisplayConduit(object):
         pass
 
@@ -71,11 +68,11 @@ class Conduit(DisplayConduit):
             time.sleep(pause)
 
 
-from .mesh import *
-from .faces import *
-from .labels import *
-from .lines import *
-from .points import *
-# from .splines import *
+from .mesh import *  # noqa: F401 F403
+from .faces import *  # noqa: F401 F403
+from .labels import *  # noqa: F401 F403
+from .lines import *  # noqa: F401 F403
+from .points import *  # noqa: F401 F403
+# from .splines import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

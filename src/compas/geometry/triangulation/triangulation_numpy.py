@@ -87,7 +87,7 @@ def voronoi_from_points_numpy(points):
 
         mesh.add_face([0, 1, 2, 3])
 
-        sites = mesh.get_vertices_attributes('xy')
+        sites = mesh.vertices_attributes('xy')
         voronoi = voronoi_from_points_numpy(sites)
 
         points = []
@@ -150,20 +150,16 @@ def voronoi_from_points_numpy(points):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     from compas.datastructures import Mesh
     from compas.geometry import pointcloud_xy
-    from compas.geometry import delaunay_from_points_numpy
     from compas_plotters import MeshPlotter
 
-    points = pointcloud_xy(20, (0, 50))
+    points = pointcloud_xy(10, (0, 50))
     faces = delaunay_from_points_numpy(points)
 
     delaunay = Mesh.from_vertices_and_faces(points, faces)
 
-    plotter = MeshPlotter(delaunay, figsize=(12, 8))
-
+    plotter = MeshPlotter(delaunay, figsize=(8, 5))
     plotter.draw_vertices(radius=0.1)
     plotter.draw_faces()
-
     plotter.show()

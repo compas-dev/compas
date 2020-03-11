@@ -3,8 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 
-from .smoothing import *
-# from .smoothing_cpp import *
+from .smoothing import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

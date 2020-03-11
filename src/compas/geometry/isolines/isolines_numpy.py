@@ -130,7 +130,6 @@ if __name__ == "__main__":
     from compas.datastructures import Mesh
     from compas.geometry import centroid_points
     from compas.geometry import distance_point_point
-    from compas.geometry import scalarfield_contours_numpy
 
     mesh = Mesh.from_obj(compas.get('faces.obj'))
 
@@ -142,8 +141,8 @@ if __name__ == "__main__":
 
     levels, contours = scalarfield_contours_numpy(xy, distances)
 
-    # xy = [mesh.vertex_coordinates(key, 'xy') for key in mesh.vertices()]
-    # z = [mesh.get_vertex_attribute(key, 'z') for key in mesh.vertices()]
+    # xy = [mesh.vertex_attributes(key, 'xy') for key in mesh.vertices()]
+    # z = [mesh.vertex_attribute(key, 'z') for key in mesh.vertices()]
     # levels, contours = scalarfield_contours_numpy(xy, z)
 
     # levels, contours = mesh_contours_numpy(mesh)

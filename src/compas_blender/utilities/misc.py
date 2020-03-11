@@ -1,4 +1,3 @@
-
 try:
     import bpy
 except ImportError:
@@ -6,6 +5,7 @@ except ImportError:
 
 
 __all__ = [
+    'redraw',
     'get_tolerance',
     'screenshot_current_view',
     'wait',
@@ -24,6 +24,10 @@ __all__ = [
 # ==============================================================================
 # Misc
 # ==============================================================================
+
+def redraw():
+    bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)
+
 
 def get_tolerance():
     raise NotImplementedError
