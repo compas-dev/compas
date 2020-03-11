@@ -44,9 +44,9 @@ class VertexArtist(object):
         for key in keys:
             points.append({
                 'pos': self.datastructure.vertex_coordinates(key),
-                'name': self.datastructure.vertex_name(key),
+                'name': "{}.vertex.{}".format(self.datastructure.name, key),
                 'color': colordict[key],
-                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'layer': self.datastructure.vertex_attribute(key, 'layer')
             })
         return compas_ghpython.draw_points(points)
 
@@ -91,10 +91,10 @@ class VertexArtist(object):
         for key, text in iter(textdict.items()):
             labels.append({
                 'pos': self.datastructure.vertex_coordinates(key),
-                'name': self.datastructure.vertex_label_name(key),
+                'name': "{}.vertex.label.{}".format(self.datastructure.name, key),
                 'color': colordict[key],
                 'text': textdict[key],
-                'layer': self.datastructure.get_vertex_attribute(key, 'layer', None)
+                'layer': self.datastructure.vertex_attribute(key, 'layer')
             })
 
         return compas_ghpython.draw_labels(labels)
