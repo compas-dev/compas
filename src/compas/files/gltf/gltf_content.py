@@ -226,10 +226,10 @@ class GLTFContent(object):
         return GLTFScene(self, name=name, extras=extras)
 
     def add_node_to_scene(self, scene, node_name=None, node_extras=None):
-        if scene not in self.scenes:
+        if scene not in self.scenes.values():
             raise Exception('Cannot find scene.')
         node = GLTFNode(self, node_name, node_extras)
-        scene.nodes.append(node.key)
+        scene.children.append(node.key)
         return node
 
     def add_child_to_node(self, parent_node, child_name=None, child_extras=None):
