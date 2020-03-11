@@ -27,7 +27,6 @@ from compas.geometry import Ellipse
 from compas.datastructures import Mesh
 
 from .artist import Artist
-
 from .pointartist import PointArtist
 from .vectorartist import VectorArtist
 from .segmentartist import SegmentArtist  # noqa: F401
