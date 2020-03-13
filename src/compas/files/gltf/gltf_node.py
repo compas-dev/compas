@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 from math import fabs
 
+from compas.files.gltf.gltf_children import GLTFChildren
 from compas.files.gltf.helpers import matrix_to_col_major_order
 from compas.geometry import identity_matrix
 from compas.geometry import matrix_from_quaternion
@@ -42,7 +43,7 @@ class GLTFNode(object):
         xyz-coordinates of the node, calculated from the matrix and tree structure.
     transform : list of lists
         Matrix representing the displacement from the root node to the node.
-    key : int or str
+    key : int
         Key of the node used in :attr:`compas.files.GLTFContent.nodes`.
     camera : int
         Key of the camera in :attr:`compas.files.GLTFContent.cameras`.
@@ -56,7 +57,7 @@ class GLTFNode(object):
     """
     def __init__(self, context, name=None, extras=None):
         self.name = name
-        self.children = []
+        self._children = GLTFChildren(context, [])
         self._matrix = None
         self._translation = None
         self._rotation = None
@@ -66,7 +67,7 @@ class GLTFNode(object):
 
         self.position = None
         self.transform = None
-        self.key = None
+        self._key = None
 
         self._camera = None
         self._skin = None
@@ -74,14 +75,18 @@ class GLTFNode(object):
         self.extensions = None
 
         self.context = context
-        self.update_key()
+        self._set_key()
 
-    def update_key(self):
+    def _set_key(self):
         key = len(self.context.nodes)
-        if key in self.context.nodes:
-            raise Exception('!!!')
+        while key in self.context.nodes:
+            key += 1
         self.context.nodes[key] = self
-        self.key = key
+        self._key = key
+
+    @property
+    def key(self):
+        return self._key
 
     def get_dict(self, node_index_by_key, mesh_index_by_key, camera_index_by_key, skin_index_by_key):
         node_dict = {}
@@ -109,6 +114,14 @@ class GLTFNode(object):
         if self.extensions is not None:
             node_dict['extensions'] = self.extensions
         return node_dict
+
+    @property
+    def children(self):
+        return self._children
+
+    @children.setter
+    def children(self, value):
+        self._children = GLTFChildren(self.context, value or [])
 
     @property
     def mesh_key(self):
@@ -237,4 +250,4 @@ class GLTFNode(object):
         return self.context.add_child_to_node(self, child_name, child_extras)
 
     def add_mesh(self, mesh):
-        self.context.add_mesh_to_node(self, mesh)
+        return self.context.add_mesh_to_node(self, mesh)

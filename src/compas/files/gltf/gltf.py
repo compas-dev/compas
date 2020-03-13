@@ -4,7 +4,6 @@ from __future__ import absolute_import
 
 import os
 
-from compas.files.gltf.gltf_content import GLTFContent
 from compas.files.gltf.gltf_exporter import GLTFExporter
 from compas.files.gltf.gltf_parser import GLTFParser
 from compas.files.gltf.gltf_reader import GLTFReader
@@ -58,8 +57,6 @@ class GLTF(object):
 
     @content.setter
     def content(self, value):
-        if not isinstance(value, GLTFContent):
-            raise Exception('Object of type GLTFContent expected.')
         if not self._is_parsed:
             self._is_parsed = True
         self._content = value
@@ -71,8 +68,8 @@ class GLTF(object):
         return self._exporter
 
     def export(self, embed_data=False):
-        self.exporter._embed_data = embed_data
-        self.content.remove_orphans()  # don't know where this should be called
+        self.exporter.embed_data = embed_data
+        self.content.remove_orphans()
         self.content.check_is_forest()
         self.exporter.export()
 

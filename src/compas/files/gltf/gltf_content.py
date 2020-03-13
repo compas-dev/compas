@@ -2,12 +2,13 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
-from compas.files.gltf.data_classes import MeshData
+from compas.files.gltf.gltf_mesh import GLTFMesh
 from compas.files.gltf.gltf_node import GLTFNode
 from compas.files.gltf.gltf_scene import GLTFScene
 from compas.files.gltf.helpers import get_weighted_mesh_vertices
 from compas.geometry import transform_points
 from compas.geometry import multiply_matrices
+from compas.utilities import download_file_from_remote
 
 
 class GLTFContent(object):
@@ -82,9 +83,9 @@ class GLTFContent(object):
         def visit_node(key):
             node = self.nodes[key]
             node_visit_log[key] = True
-            if node.mesh_key:
+            if node.mesh_key is not None:
                 mesh_visit_log[node.mesh_key] = True
-            if node.camera:
+            if node.camera is not None:
                 camera_visit_log[node.camera] = True
             for child_key in node.children:
                 visit_node(child_key)
@@ -131,8 +132,9 @@ class GLTFContent(object):
 
         # walk through existing meshes and update materials visit log
         for mesh in self.meshes.values():
-            if mesh.material:
-                material_visit_log[mesh.material] = True
+            for primitive in mesh.primitive_data_list:
+                if primitive.material is not None:
+                    material_visit_log[mesh.material] = True
 
         # remove unvisited materials
         for key, visited in material_visit_log.items():
@@ -141,16 +143,16 @@ class GLTFContent(object):
 
         # walk through existing materials and update textures visit log
         for material in self.materials.values():
-            if material.normal_texture:
+            if material.normal_texture is not None:
                 texture_visit_log[material.normal_texture.index] = True
-            if material.occlusion_texture:
+            if material.occlusion_texture is not None:
                 texture_visit_log[material.occlusion_texture.index] = True
-            if material.emissive_texture:
+            if material.emissive_texture is not None:
                 texture_visit_log[material.emissive_texture.index] = True
-            if material.pbr_metallic_roughness:
-                if material.pbr_metallic_roughness.base_color_texture:
+            if material.pbr_metallic_roughness is not None:
+                if material.pbr_metallic_roughness.base_color_texture is not None:
                     texture_visit_log[material.pbr_metallic_roughness.base_color_texture.index] = True
-                if material.pbr_metallic_roughness.metallic_roughness_texture:
+                if material.pbr_metallic_roughness.metallic_roughness_texture is not None:
                     texture_visit_log[material.pbr_metallic_roughness.metallic_roughness_texture.index] = True
 
         # remove unvisited textures
@@ -160,9 +162,9 @@ class GLTFContent(object):
 
         # walk through existing textures and update visit logs of samplers and images
         for texture in self.textures.values():
-            if texture.sampler:
+            if texture.sampler is not None:
                 sampler_visit_log[texture.sampler] = True
-            if texture.source:
+            if texture.source is not None:
                 image_visit_log[texture.source] = True
 
         # remove unvisited samplers
@@ -238,13 +240,7 @@ class GLTFContent(object):
         return child_node
 
     def add_mesh(self, mesh):
-        mesh_data = MeshData.from_mesh(mesh)
-        key = len(self.meshes)
-        if key in self.meshes:
-            raise Exception('!!!')
-        mesh_data.key = key
-        self.meshes[key] = mesh_data
-        return mesh_data
+        return GLTFMesh.from_mesh(self, mesh)
 
     def add_mesh_to_node(self, node, mesh):
         if isinstance(mesh, int):
@@ -282,3 +278,35 @@ class GLTFContent(object):
         visit(scene, 'root')
 
         return positions_dict, edges_list
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+
+    import os
+    import compas
+
+    from compas.datastructures import Mesh
+    from compas.files.gltf.gltf import GLTF
+
+    source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
+    stl_filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
+    gltf_filepath = os.path.join(compas.APPDATA, 'data', 'gltfs', 'double_link_1.gltf')
+
+    download_file_from_remote(source, stl_filepath, overwrite=False)
+
+    mesh = Mesh.from_stl(stl_filepath)
+    cnt = GLTFContent()
+    scene = cnt.add_scene()
+    node_1 = scene.add_child(node_name='Node1')
+    mesh_data = node_1.add_mesh(mesh)
+    node_2 = node_1.add_child(child_name='Node2')
+    node_2.translation = [0, 0, 5]
+    node_2.add_mesh(mesh_data.key)
+
+    gltf = GLTF(gltf_filepath)
+    gltf.content = cnt
+    gltf.export(embed_data=True)

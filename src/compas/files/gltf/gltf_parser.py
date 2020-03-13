@@ -7,7 +7,6 @@ from compas.files.gltf.data_classes import AnimationSamplerData
 from compas.files.gltf.data_classes import CameraData
 from compas.files.gltf.data_classes import ChannelData
 from compas.files.gltf.data_classes import MaterialData
-from compas.files.gltf.data_classes import MeshData
 from compas.files.gltf.data_classes import NormalTextureInfoData
 from compas.files.gltf.data_classes import OcclusionTextureInfoData
 from compas.files.gltf.data_classes import PBRMetallicRoughnessData
@@ -18,6 +17,7 @@ from compas.files.gltf.data_classes import TargetData
 from compas.files.gltf.data_classes import TextureData
 from compas.files.gltf.data_classes import TextureInfoData
 from compas.files.gltf.gltf_content import GLTFContent
+from compas.files.gltf.gltf_mesh import GLTFMesh
 from compas.files.gltf.gltf_node import GLTFNode
 from compas.files.gltf.gltf_scene import GLTFScene
 from compas.files.gltf.helpers import get_matrix_from_col_major_list
@@ -50,14 +50,15 @@ class GLTFParser(object):
         self.content.samplers = {key: self.get_sampler_data(sampler) for key, sampler in enumerate(self.reader.json.get('samplers', []))}
         self.content.textures = {key: self.get_texture_data(texture) for key, texture in enumerate(self.reader.json.get('textures', []))}
         self.content.materials = {key: self.get_material_data(material) for key, material in enumerate(self.reader.json.get('materials', []))}
-        self.content.meshes = {key: self.get_mesh_data(mesh, key) for key, mesh in enumerate(self.reader.json.get('meshes', []))}
         self.content.cameras = {key: self.get_camera_data(camera) for key, camera in enumerate(self.reader.json.get('cameras', []))}
-
-        self.content.nodes = {key: self.get_gltf_node(node, key) for key, node in enumerate(self.reader.json.get('nodes', []))}
-
+        for mesh in self.reader.json.get('meshes', []):
+            self.add_gltf_mesh(mesh)
+        for node in self.reader.json.get('nodes', []):
+            self.add_gltf_node(node)
+        for scene in self.reader.json.get('scenes', []):
+            self.add_gltf_scene(scene)
         self.content.animations = {key: self.get_animation_data(animation) for key, animation in enumerate(self.reader.json.get('animations', []))}
         self.content.skins = {key: self.get_skin_data(skin) for key, skin in enumerate(self.reader.json.get('skins', []))}
-        self.content.scenes = {key: self.get_scene(scene, key) for key, scene in enumerate(self.reader.json.get('scenes', []))}
         self.content.update_node_transforms_and_positions()
 
     def get_sampler_data(self, sampler):
@@ -172,18 +173,18 @@ class GLTFParser(object):
         camera_data.extras = camera.get('extras')
         return camera_data
 
-    def get_scene(self, scene, key):
+    def add_gltf_scene(self, scene):
         scene_obj = GLTFScene(self.content)
         scene_obj.name = scene.get('name')
         scene_obj.extras = scene.get('extras')
         scene_obj.children = scene.get('nodes', [])
-        scene_obj.key = key
-        return scene_obj
 
-    def get_gltf_node(self, node, key):
+    def add_gltf_node(self, node):
         gltf_node = GLTFNode(self.content)
         gltf_node.name = node.get('name')
-        gltf_node.children = node.get('children', [])
+        # Accessing protected attribute to bypass validation:
+        # Nodes may reference children that haven't yet been added to the GLTFContent
+        gltf_node.children._value = node.get('children', [])
         gltf_node.translation = node.get('translation')
         gltf_node.rotation = node.get('rotation')
         gltf_node.scale = node.get('scale')
@@ -193,15 +194,13 @@ class GLTFParser(object):
         gltf_node.camera = node.get('camera')
         gltf_node.skin = node.get('skin')
         gltf_node.extras = node.get('extras')
-        gltf_node.key = key
-        return gltf_node
 
     def get_matrix(self, node):
         if 'matrix' in node:
             return get_matrix_from_col_major_list(node['matrix'])
         return None
 
-    def get_mesh_data(self, mesh, key):
+    def add_gltf_mesh(self, mesh):
         mesh_name = mesh.get('name')
         extras = mesh.get('extras')
         primitives = mesh['primitives']
@@ -232,8 +231,7 @@ class GLTFParser(object):
                 target_list,
                 primitive.get('extras'),
             ))
-
-        return MeshData(primitive_data_list, key, mesh_name, weights, extras)
+        GLTFMesh(primitive_data_list, self.content, mesh_name, weights, extras)
 
     def get_indices(self, primitive, num_vertices):
         if 'indices' not in primitive:

@@ -4,7 +4,7 @@ import os
 import pytest
 
 import compas
-from compas.files import GLTF
+from compas.files import GLTF, GLTFContent
 
 compas.PRECISION = '12f'
 
@@ -98,8 +98,9 @@ def test_from_gltf_edges_loaded(
 
     gltf = GLTF(sparse_gltf)
     gltf.read()
-    # maybe change one of these to nodes[0].vertices
     assert (5.0, 4.0, 0.0) in gltf.content.meshes[0].vertices
+    assert len(gltf.content.meshes[0].faces) > 0
+    assert (5.0, 4.0, 0.0) in gltf.content.nodes[0].vertices
 
     gltf = GLTF(animated_gltf)
     gltf.read()
@@ -121,3 +122,24 @@ def test_from_gltf_edges_loaded(
     assert len(exporter._gltf_dict['images']) > 0
     assert len(exporter._gltf_dict['textures']) > 0
     assert 'animations' not in exporter._gltf_dict
+
+    content = GLTFContent()
+    scene = content.add_scene()
+    assert len(content.scenes) == 1
+
+    node_0 = scene.add_child()
+    assert len(content.nodes) == 1
+    assert len(scene.children) == 1
+    assert len(node_0.children) == 0
+
+    node_0.add_child()
+    assert len(content.nodes) == 2
+    assert len(node_0.children) == 1
+    assert len(scene.nodes) == 2
+    assert len(scene.positions_and_edges[0]) == 3
+
+    node_0.children = []
+    content.remove_orphans()
+    assert len(node_0.children) == 0
+    assert len(content.nodes) == 1
+    assert len(scene.nodes) == 1

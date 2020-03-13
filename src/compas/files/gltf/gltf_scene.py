@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
+from compas.files.gltf.gltf_children import GLTFChildren
+
 
 class GLTFScene(object):
     """Object representing the COMPAS consumable part of a glTF scene.
@@ -10,7 +12,7 @@ class GLTFScene(object):
     ----------
     name : str
         Name of the scene.
-    children : list
+    children : GLTFChildren
         List of keys referencing :attr:`compas.files.GLTFScene.context.nodes`.
     extras : object
     extensions : object
@@ -19,20 +21,24 @@ class GLTFScene(object):
     """
     def __init__(self, context, name=None, extras=None, extensions=None):
         self.name = name
-        self._children = []
+        self._children = GLTFChildren(context, [])
         self.extras = extras
         self.extensions = extensions
 
-        self.key = None
+        self._key = None
         self.context = context
-        self.update_key()
+        self._set_key()
 
-    def update_key(self):
+    def _set_key(self):
         key = len(self.context.scenes)
-        if key in self.context.scenes:
-            raise Exception('!!!')
+        while key in self.context.scenes:
+            key += 1
         self.context.scenes[key] = self
-        self.key = key
+        self._key = key
+
+    @property
+    def key(self):
+        return self._key
 
     def get_dict(self, node_index_by_key):
         scene_dict = {}
@@ -52,11 +58,7 @@ class GLTFScene(object):
 
     @children.setter
     def children(self, value):
-        # !!! damn mutability
-        for key in value:
-            if key not in self.context.nodes:
-                raise Exception('Cannot find node {}'.format(key))
-        self._children = value
+        self._children = GLTFChildren(self.context, value or [])
 
     @property
     def nodes(self):

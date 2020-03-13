@@ -268,7 +268,7 @@ class GLTFExporter(object):
                 self._node_index_by_key,
                 self._mesh_index_by_key,
                 self._camera_index_by_key,
-                self._skin_index_by_key
+                self._skin_index_by_key,
             )
         self._gltf_dict['nodes'] = node_list
 
