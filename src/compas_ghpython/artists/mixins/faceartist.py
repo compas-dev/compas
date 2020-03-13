@@ -55,9 +55,9 @@ class FaceArtist(object):
         for fkey in keys:
             faces.append({
                 'points': self.datastructure.face_coordinates(fkey),
-                'name': self.datastructure.face_name(fkey),
+                'name': "{}.face.{}".format(self.datastructure.name, fkey),
                 'color': colordict[fkey],
-                'layer': self.datastructure.get_face_attribute(fkey, 'layer', None)
+                'layer': self.datastructure.face_attribute(fkey, 'layer')
             })
 
         meshes = compas_ghpython.draw_faces(faces)
@@ -113,7 +113,7 @@ class FaceArtist(object):
                 'name': "{}.face.label.{}".format(self.datastructure.name, key),
                 'color': colordict[key],
                 'text': textdict[key],
-                'layer': self.datastructure.get_face_attribute(key, 'layer', None)
+                'layer': self.datastructure.face_attribute(key, 'layer')
             })
         return compas_ghpython.draw_labels(labels)
 

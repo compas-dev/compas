@@ -529,7 +529,7 @@ class BaseMesh(HalfEdge):
         return cls.from_vertices_and_faces(vertices, faces)
 
     def to_polygons(self):
-        raise NotImplementedError
+        return [self.face_coordinates(fkey) for fkey in self.faces()]
 
     # --------------------------------------------------------------------------
     # helpers
