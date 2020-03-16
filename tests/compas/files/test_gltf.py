@@ -4,7 +4,8 @@ import os
 import pytest
 
 import compas
-from compas.files import GLTF, GLTFContent
+from compas.files import GLTF
+from compas.files import GLTFContent
 
 compas.PRECISION = '12f'
 

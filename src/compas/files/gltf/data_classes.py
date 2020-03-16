@@ -121,7 +121,7 @@ class TextureInfoData(object):
 
 class OcclusionTextureInfoData(TextureInfoData):
     def __init__(self, index, tex_coord=None, extras=None, extensions=None, strength=None):
-        super(OcclusionTextureInfoData).__init__(index, tex_coord, extras, extensions)
+        super(OcclusionTextureInfoData, self).__init__(index, tex_coord, extras, extensions)
         self.strength = strength
 
     def to_dict(self, texture_index_by_key):
@@ -145,7 +145,7 @@ class OcclusionTextureInfoData(TextureInfoData):
 
 class NormalTextureInfoData(TextureInfoData):
     def __init__(self, index, tex_coord=None, extras=None, extensions=None, scale=None):
-        super(NormalTextureInfoData).__init__(index, tex_coord, extras, extensions)
+        super(NormalTextureInfoData, self).__init__(index, tex_coord, extras, extensions)
         self.scale = scale
 
     def to_dict(self, texture_index_by_key):
