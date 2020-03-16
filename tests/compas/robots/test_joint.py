@@ -23,7 +23,7 @@ def test_prismatic_calculate_transformation():
     assert t == Translation([550, 0, 0])
 
 
-def test_mimic_calculate_transformation():
+def test_mimic_calculate_position():
     multiplier = 5.0
     offset = 100.
     j1 = Joint('j1', 'prismatic', None, None, axis=Axis('1 0 0'))
