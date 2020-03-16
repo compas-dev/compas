@@ -103,10 +103,13 @@ class Limit(object):
 class Mimic(object):
     """Description of joint mimic."""
 
-    def __init__(self, joint, multiplier=1.0, offset=0):
-        self.joint = joint
-        self.multiplier = multiplier
-        self.offset = offset
+    def __init__(self, joint, multiplier=1.0, offset=0.):
+        self.joint = joint  # == joint name
+        self.multiplier = float(multiplier)
+        self.offset = float(offset)
+
+    def calculate_position(self, mimicked_joint_position):
+        return self.multiplier * mimicked_joint_position + self.offset
 
 
 class SafetyController(object):
