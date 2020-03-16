@@ -17,6 +17,21 @@ class GLTF(object):
     ----------
     filepath : str
         Path to the location of the glTF file.
+    content : :class:`compas.files.GLTFContent`
+    reader : :class:`compas.files.GLTFReader`
+    parser : :class:`compas.files.GLTFParser`
+    exporter : :class: `compas.files.GLTFExporter`
+
+    Methods
+    -------
+    read()
+        Read the glTF located at :attr:`compas.files.GLTF.filepath` and load its content.
+    export(embed_data)
+        Export the content of this :class:`compas.files.GLTF` to the location
+        :attr:`compas.files.GLTF.filepath`, with file format determined by the given extension.
+        When the flag `embed_data` set to `True`, mesh and other data will be embedded in the glTF,
+        and no external binary file will be created.  The default value is `False`.
+
     See Also
     --------
     * https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
@@ -69,8 +84,6 @@ class GLTF(object):
 
     def export(self, embed_data=False):
         self.exporter.embed_data = embed_data
-        self.content.remove_orphans()
-        self.content.check_is_forest()
         self.exporter.export()
 
 
@@ -82,7 +95,7 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas.datastructures import Mesh, Network, mesh_transformed
+    from compas.datastructures import Mesh, mesh_transformed
     from compas.utilities import download_file_from_remote
     from compas_viewers.multimeshviewer import MultiMeshViewer
 
@@ -96,10 +109,6 @@ if __name__ == '__main__':
 
     default_scene_key = gltf.content.default_scene_key or 0
     default_scene = gltf.content.scenes[default_scene_key]
-    positions, edges = default_scene.positions_and_edges
-
-    # scene_tree = Network.from_nodes_and_edges(positions, edges)  # !!!
-    # scene_tree.plot()
 
     transformed_meshes = []
 

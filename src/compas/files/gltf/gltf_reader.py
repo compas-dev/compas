@@ -45,7 +45,7 @@ class GLTFReader(object):
         self.data = []
         self.image_data = []
 
-        self._content = None
+        self._bin_content = None
         self._glb_buffer = None
         self._buffers = {}
 
@@ -53,103 +53,93 @@ class GLTFReader(object):
 
     def read(self):
         with open(self.filepath, 'rb') as f:
-            self._content = memoryview(f.read())
+            self._bin_content = memoryview(f.read())
 
-        is_glb = self._content[:4] == b'glTF'
+        is_glb = self._bin_content[:4] == b'glTF'
 
         if not is_glb:
-            content = self._content.tobytes().decode('utf-8')
+            content = self._bin_content.tobytes().decode('utf-8')
             self.json = json.loads(content)
         else:
-            self.load_from_glb()
+            self._load_from_glb()
 
-        self.release_buffer(self._content)
-        self._content = None
+        self._release_buffer(self._bin_content)
+        self._bin_content = None
 
-        self.check_version()
+        self._check_version()
 
         if self.json:
             for accessor in self.json.get('accessors', []):
-                accessor_data = self.access_data(accessor)
+                accessor_data = self._access_data(accessor)
                 self.data.append(accessor_data)
 
             for image in self.json.get('images', []):
-                image_data = ImageData()
-                image_data.name = image.get('name')
-                image_data.mime_type = image.get('mimeType')
-                image_data.extras = image.get('extras')
-
+                mime_type = self.get_mime_type(image.get('uri'))
+                data = None
                 if 'bufferView' in image:
-                    image_data.data = self.get_attr_data(image, 'bufferView')
-                if 'uri' in image:
-                    if self.is_data_uri(image['uri']):
-                        image_data.data = base64.b64decode(self.get_data_uri_data(image['uri']))
-                        image_data.mime_type = self.get_mime_type(image['uri'])
-                    else:
-                        image_data.uri = image['uri']
+                    data = self._get_attr_data(image, 'bufferView')
+                if 'uri' in image and self.is_data_uri(image['uri']):
+                    data = base64.b64decode(self.get_data_uri_data(image['uri']))
+
+                image_data = ImageData.from_dict(image, data, mime_type)
                 self.image_data.append(image_data)
 
-        self.release_buffers()
+        self._release_buffers()
 
-    def get_mime_type(self, string):
-        pattern = r'data:([\w/]+)(?<![;,])'
-        result = re.search(pattern, string)
-        return result.group(1)
-
-    def load_from_glb(self):
-        header = self.unpack_content('<4sII')
+    def _load_from_glb(self):
+        header = self._unpack_content('<4sII')
         file_size = header[2]
 
-        if file_size != len(self._content):
+        if file_size != len(self._bin_content):
             raise Exception('Bad glTF.  File size does not match.')
 
         offset = 12
 
         # load json
-        type_, _length, json_bytes, offset = self.load_chunk(offset)
+        type_, _length, json_bytes, offset = self._load_chunk(offset)
         if type_ != b'JSON':
             raise Exception('Bad glTF.  First chunk not in JSON format')
         json_str = json_bytes.tobytes().decode('utf-8')
         self.json = json.loads(json_str)
 
         # load binary buffer
-        if offset < len(self._content):
-            type_, _length, bytes_, offset = self.load_chunk(offset)
+        if offset < len(self._bin_content):
+            type_, _length, bytes_, offset = self._load_chunk(offset)
             if type_ == b'BIN\0':
                 self._glb_buffer = bytes_
 
-    def load_chunk(self, offset):
-        chunk_header = self.unpack_content('<I4s', offset)
+    def _load_chunk(self, offset):
+        chunk_header = self._unpack_content('<I4s', offset)
         length = chunk_header[0]
         type_ = chunk_header[1]
-        data = self._content[offset + 8: offset + 8 + length]
+        data = self._bin_content[offset + 8: offset + 8 + length]
 
         return type_, length, data, offset + 8 + length
 
-    def unpack_content(self, fmt, offset=0):
+    def _unpack_content(self, fmt, offset=0):
         try:
-            chunk = struct.unpack_from(fmt, self._content, offset)
+            chunk = struct.unpack_from(fmt, self._bin_content, offset)
         except TypeError:
             # for Python 2.7 compatibility
-            chunk = struct.unpack_from(fmt, self._content.tobytes(), offset)
+            chunk = struct.unpack_from(fmt, self._bin_content.tobytes(), offset)
         return chunk
 
-    def check_version(self):
+    def _check_version(self):
         version = self.json['asset']['version']
         if version != '2.0':
             raise Exception('Invalid glTF version.  Version 2.0 expected.')
 
-    def get_attr_data(self, obj, attr):
+    def _get_attr_data(self, obj, attr):
         if attr not in obj:
             return None
         buffer_view_index = obj[attr]
         buffer_view = self.json['bufferViews'][buffer_view_index]
-        buffer = self.get_buffer(buffer_view['buffer'])
+        buffer = self._get_buffer(buffer_view['buffer'])
         offset = buffer_view.get('byteOffset', 0)
         length = buffer_view['byteLength']
         return buffer[offset: offset + length].tobytes()
 
-    def access_data(self, accessor):
+    def _access_data(self, accessor):
         count = accessor['count']
         component_type = accessor['componentType']
         type_ = accessor['type']
@@ -162,7 +152,7 @@ class GLTFReader(object):
 
         if 'bufferView' in accessor:
             buffer_view_index = accessor['bufferView']
-            data = self.read_from_buffer_view(
+            data = self._read_from_buffer_view(
                 buffer_view_index,
                 count,
                 component_type,
@@ -179,7 +169,7 @@ class GLTFReader(object):
             sparse_indices_data = sparse_data['indices']
             sparse_indices_buffer_view_index = sparse_indices_data['bufferView']
             sparse_indices_component_type = sparse_indices_data['componentType']
-            sparse_indices = self.read_from_buffer_view(
+            sparse_indices = self._read_from_buffer_view(
                 sparse_indices_buffer_view_index,
                 sparse_count,
                 sparse_indices_component_type,
@@ -189,7 +179,7 @@ class GLTFReader(object):
 
             sparse_values_data = sparse_data['values']
             sparse_values_buffer_view_index = sparse_values_data['bufferView']
-            sparse_values = self.read_from_buffer_view(
+            sparse_values = self._read_from_buffer_view(
                 sparse_values_buffer_view_index,
                 sparse_count,
                 component_type,
@@ -218,10 +208,7 @@ class GLTFReader(object):
 
         return data
 
-    def get_generic_data(self, num_components, count):
-        return [(0, ) * num_components for _ in range(count)]
-
-    def read_from_buffer_view(self, buffer_view_index, count, component_type, accessor_offset, num_components):
+    def _read_from_buffer_view(self, buffer_view_index, count, component_type, accessor_offset, num_components):
         buffer_view = self.json['bufferViews'][buffer_view_index]
 
         buffer_view_offset = buffer_view.get('byteOffset', 0)
@@ -248,7 +235,7 @@ class GLTFReader(object):
         unpack_from = struct.Struct(format_).unpack_from
 
         buffer_index = buffer_view['buffer']
-        buffer = self.get_buffer(buffer_index)
+        buffer = self._get_buffer(buffer_index)
 
         data = [
             unpack_from(buffer[i: i + byte_stride].tobytes())
@@ -260,7 +247,7 @@ class GLTFReader(object):
 
         return data
 
-    def get_buffer(self, buffer_index):
+    def _get_buffer(self, buffer_index):
         if buffer_index in self._buffers:
             return self._buffers[buffer_index]
 
@@ -280,19 +267,33 @@ class GLTFReader(object):
 
         return buffer
 
-    def release_buffer(self, buffer):
+    def _release_buffer(self, buffer):
         try:
             buffer.release()
         except AttributeError:
             # AttributeError indicates using Python <3.2
             pass
 
-    def release_buffers(self):
-        self.release_buffer(self._glb_buffer)
+    def _release_buffers(self):
+        self._release_buffer(self._glb_buffer)
         self._glb_buffer = None
         for i in range(len(self._buffers)):
-            self.release_buffer(self._buffers[i])
+            self._release_buffer(self._buffers[i])
         self._buffers = {}
+
+    def get_filepath(self, uri):
+        dir_path = os.path.dirname(self.filepath)
+        return os.path.join(dir_path, uri)
+
+    def get_mime_type(self, string):
+        if string is None or not self.is_data_uri(string):
+            return None
+        pattern = r'data:([\w/]+)(?<![;,])'
+        result = re.search(pattern, string)
+        return result.group(1)
+
+    def get_generic_data(self, num_components, count):
+        return [(0, ) * num_components for _ in range(count)]
 
     def is_data_uri(self, uri):
         return uri.startswith('data:')
@@ -300,7 +301,3 @@ class GLTFReader(object):
     def get_data_uri_data(self, uri):
         split_uri = uri.split(',')
         return split_uri[-1]
-
-    def get_filepath(self, uri):
-        dir_path = os.path.dirname(self.filepath)
-        return os.path.join(dir_path, uri)

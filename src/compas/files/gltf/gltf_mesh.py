@@ -21,16 +21,43 @@ class GLTFMesh(object):
     primitive_data_list : list
         List of objects defining the geometry and material of the mesh.
     extras : object
+    extensions : object
+    context : GLTFContent
+        GLTF context in which the mesh exists.
+    key : int
+        Key of the mesh used in :attr:`compas.files.GLTFMesh.context.meshes`.
     vertices : list
         List of xyz-tuples representing the points of the mesh.
     faces : list
         List of tuples referencing the indices of :attr:`compas.files.MeshData.vertices`
         representing faces of the mesh.
-    key : int
-        Key of the mesh used in :attr:`compas.files.GLTFContent.meshes`.
-    extensions : object
-    context : :class:`compas.files.GLTFContent`
-        GLTF context in which the GLTFMesh exists.
+
+    Methods
+    -------
+    shift_indices(list indices, int shift)
+        Given a list of indices, returns a list of indices, all shifted by `shift`.
+    group_indices(list indices, int group_size)
+        Returns a list of the elements of `indices` grouped into tuples of size `group_size`.
+    get_mode(list faces)
+        Returns the glTF mode of a list of faces.
+    validate_faces(list faces)
+        Raises an exception if not all faces in `faces` are defining either all triangles, lines
+        or points.
+    validate_vertices(list vertices)
+        Raise an exception if there are either too many vertices, or the vertices do not
+        represent points in 3-space.
+    from_vertices_and_faces(GLTFContent context, list vertices, list faces, str mesh_name, object extras)
+        Construct a :class:`compas.files.GLTFMesh` object from lists of vertices and faces.
+        Vertices can be given as either a list of xyz-tuples or -lists, in which case
+        the faces reference vertices by index, or vertices can be given as a dictionary of
+        key-value pairs where the values are xyz-tuples or -lists and the faces reference the keys.
+    from_mesh(Mesh mesh)
+        Construct a :class:`compas.files.MeshData` object from a :class:`compas.datastructures.Mesh`.
+    to_dict(list primitives)
+        Returns a JSONable dictionary object in accordance with glTF specifications.
+    from_dict(dict mesh, GLTFContent context, list primitive_data_list)
+        Creates a :class:`compas.files.GLTFMesh` from a glTF node dictionary
+        and inserts it in the provided context.
     """
     def __init__(self, primitive_data_list, context, mesh_name=None, weights=None, extras=None, extensions=None):
         self.mesh_name = mesh_name
@@ -53,18 +80,6 @@ class GLTFMesh(object):
     @property
     def key(self):
         return self._key
-
-    def get_dict(self, primitives):
-        mesh_dict = {'primitives': primitives}
-        if self.mesh_name is not None:
-            mesh_dict['name'] = self.mesh_name
-        if self.weights is not None:
-            mesh_dict['weights'] = self.weights
-        if self.extras is not None:
-            mesh_dict['extras'] = self.extras
-        if self.extensions is not None:
-            mesh_dict['extensions'] = self.extensions
-        return mesh_dict
 
     @property
     def vertices(self):
@@ -121,11 +136,6 @@ class GLTFMesh(object):
 
     @classmethod
     def from_vertices_and_faces(cls, context, vertices, faces, mesh_name=None, extras=None):
-        """Construct a :class:`compas.files.MeshData` object from lists of vertices and faces.
-        Vertices can be given as either a list of xyz-tuples or -lists, in which case
-        the faces reference vertices by index, or vertices can be given as a dictionary of
-        key-value pairs where the values are xyz-tuples or -lists and the faces reference the keys.
-        """
         cls.validate_faces(faces)
         cls.validate_vertices(vertices)
         mode = cls.get_mode(faces)
@@ -146,7 +156,30 @@ class GLTFMesh(object):
 
     @classmethod
     def from_mesh(cls, context, mesh):
-        """Construct a :class:`compas.files.MeshData` object from a :class:`compas.datastructures.Mesh`.
-        """
         vertices, faces = mesh.to_vertices_and_faces()
         return cls.from_vertices_and_faces(context, vertices, faces)
+
+    def to_dict(self, primitives):
+        mesh_dict = {'primitives': primitives}
+        if self.mesh_name is not None:
+            mesh_dict['name'] = self.mesh_name
+        if self.weights is not None:
+            mesh_dict['weights'] = self.weights
+        if self.extras is not None:
+            mesh_dict['extras'] = self.extras
+        if self.extensions is not None:
+            mesh_dict['extensions'] = self.extensions
+        return mesh_dict
+
+    @classmethod
+    def from_dict(cls, mesh, context, primitive_data_list):
+        if not mesh:
+            return None
+        return cls(
+            primitive_data_list=primitive_data_list,
+            context=context,
+            mesh_name=mesh.get('name'),
+            weights=mesh.get('weights'),
+            extras=mesh.get('extras'),
+            extensions=mesh.get('extensions'),
+        )

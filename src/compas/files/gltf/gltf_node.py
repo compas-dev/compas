@@ -5,6 +5,7 @@ from __future__ import absolute_import
 from math import fabs
 
 from compas.files.gltf.gltf_children import GLTFChildren
+from compas.files.gltf.helpers import get_matrix_from_col_major_list
 from compas.files.gltf.helpers import matrix_to_col_major_order
 from compas.geometry import identity_matrix
 from compas.geometry import matrix_from_quaternion
@@ -20,8 +21,8 @@ class GLTFNode(object):
     ----------
     name : str
         Name of the node.
-    children : list
-        Child nodes referenced by node_key.
+    children : GLTFChildren
+        Validated list of keys referencing :attr:`compas.files.GLTFNode.context.nodes`.
     matrix : list of lists
         Matrix representing the displacement from node's parent to the node.
         Default value is the identity matrix.
@@ -36,7 +37,7 @@ class GLTFNode(object):
         List of length 3 representing the scaling displacement of the node.
         Cannot be set when :attr:`compas.files.GLTFNode.matrix` is set.
     mesh_key : int
-        Key of the mesh within :attr:`compas.files.GLTFContent.meshes`.
+        Key of the mesh within :attr:`compas.files.GLTFNode.context.meshes`.
     weights : list of floats
         Weights used for computing morph targets in the attached mesh.
     position : tuple
@@ -44,18 +45,42 @@ class GLTFNode(object):
     transform : list of lists
         Matrix representing the displacement from the root node to the node.
     key : int
-        Key of the node used in :attr:`compas.files.GLTFContent.nodes`.
+        Key of the node used in :attr:`compas.files.GLTFNode.context.nodes`.
     camera : int
-        Key of the camera in :attr:`compas.files.GLTFContent.cameras`.
+        Key of the camera in :attr:`compas.files.GLTFNode.context.cameras`.
     skin : int
-        Key of the skin in :attr:`compas.files.GLTFContent.skins`.
+        Key of the skin in :attr:`compas.files.GLTFNode.context.skins`.
     extras : object
         Application-specific data.
     extensions : object
-    context : :class:`compas.files.GLTFContent`
-        GLTF context in which the GLTFNode exists.
+    context : GLTFContent
+        GLTF context in which the node exists.
+    mesh_data : GLTFMesh
+        GLTFMesh used by this node.
+    vertices : list
+        List of xyz-coordinates of the points of the mesh used by this node.
+    faces : list
+        List of tuples of indices of the vertices of the faces of the mesh used by this node.
+
+    Methods
+    -------
+    get_matrix_from_trs()
+        If the node's displacement from the origin is given by its translation, rotation and
+        scale attributes, this method returns the matrix given by the composition of these
+        attributes.
+    add_child(str child_name, object child_extras)
+        Creates a :class:`compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
+        (default `None`), and adds this node to the children of this node.
+    add_mesh(Union[int, Mesh] mesh)
+        Adds an existing mesh to this node if `mesh` is a valid mesh key, or creates and adds a
+        mesh to this node and its context.
+    to_dict(dict node_index_by_key, dict mesh_index_by_key, dict camera_index_by_key, dict skin_index_by_key)
+        Returns a JSONable dictionary object in accordance with glTF specifications.
+    from_dict(dict node, GLTFContent context)
+        Creates a :class:`compas.files.GLTFNode` from a glTF node dictionary
+        and inserts it in the provided context.
     """
-    def __init__(self, context, name=None, extras=None):
+    def __init__(self, context, name=None, extras=None, extensions=None):
         self.name = name
         self._children = GLTFChildren(context, [])
         self._matrix = None
@@ -72,7 +97,7 @@ class GLTFNode(object):
         self._camera = None
         self._skin = None
         self.extras = extras
-        self.extensions = None
+        self.extensions = extensions
 
         self.context = context
         self._set_key()
@@ -87,33 +112,6 @@ class GLTFNode(object):
     @property
     def key(self):
         return self._key
-
-    def get_dict(self, node_index_by_key, mesh_index_by_key, camera_index_by_key, skin_index_by_key):
-        node_dict = {}
-        if self.name is not None:
-            node_dict['name'] = self.name
-        if self.children:
-            node_dict['children'] = [node_index_by_key[key] for key in self.children]
-        if self.matrix and self.matrix != identity_matrix(4):
-            node_dict['matrix'] = matrix_to_col_major_order(self.matrix)
-        else:
-            if self.translation:
-                node_dict['translation'] = self.translation
-            if self.rotation:
-                node_dict['rotation'] = self.rotation
-            if self.scale:
-                node_dict['scale'] = self.scale
-        if self.mesh_key is not None:
-            node_dict['mesh'] = mesh_index_by_key[self.mesh_key]
-        if self._camera is not None:
-            node_dict['camera'] = camera_index_by_key[self._camera]
-        if self._skin is not None:
-            node_dict['skin'] = skin_index_by_key[self._skin]
-        if self.extras:
-            node_dict['extras'] = self.extras
-        if self.extensions is not None:
-            node_dict['extensions'] = self.extensions
-        return node_dict
 
     @property
     def children(self):
@@ -201,7 +199,7 @@ class GLTFNode(object):
 
     @property
     def matrix(self):
-        if not self.translation and not self.rotation and not self.scale and not self._matrix:
+        if not (self.translation or self.rotation or self.scale or self._matrix):
             return identity_matrix(4)
         return self._matrix
 
@@ -221,6 +219,18 @@ class GLTFNode(object):
                             'the form TRS, where T is a translation, R is a rotation and S is a scaling.')
         self._matrix = value
 
+    @property
+    def mesh_data(self):
+        return self.context.meshes.get(self.mesh_key)
+
+    @property
+    def vertices(self):
+        return self.context.get_node_vertices(self)
+
+    @property
+    def faces(self):
+        return self.context.get_node_faces(self)
+
     def get_matrix_from_trs(self):
         matrix = identity_matrix(4)
         if self.translation:
@@ -234,20 +244,59 @@ class GLTFNode(object):
             matrix = multiply_matrices(matrix, scale)
         return matrix
 
-    @property
-    def mesh_data(self):
-        return self.context.get_mesh_data_for_node(self)
-
-    @property
-    def vertices(self):
-        return self.context.get_node_vertices(self)
-
-    @property
-    def faces(self):
-        return self.context.get_node_faces(self)
-
     def add_child(self, child_name=None, child_extras=None):
         return self.context.add_child_to_node(self, child_name, child_extras)
 
     def add_mesh(self, mesh):
         return self.context.add_mesh_to_node(self, mesh)
+
+    def to_dict(self, node_index_by_key, mesh_index_by_key, camera_index_by_key, skin_index_by_key):
+        node_dict = {}
+        if self.name is not None:
+            node_dict['name'] = self.name
+        if self.children:
+            node_dict['children'] = [node_index_by_key[key] for key in self.children]
+        if self.matrix and self.matrix != identity_matrix(4):
+            node_dict['matrix'] = matrix_to_col_major_order(self.matrix)
+        else:
+            if self.translation:
+                node_dict['translation'] = self.translation
+            if self.rotation:
+                node_dict['rotation'] = self.rotation
+            if self.scale:
+                node_dict['scale'] = self.scale
+        if self.mesh_key is not None:
+            node_dict['mesh'] = mesh_index_by_key[self.mesh_key]
+        if self._camera is not None:
+            node_dict['camera'] = camera_index_by_key[self._camera]
+        if self._skin is not None:
+            node_dict['skin'] = skin_index_by_key[self._skin]
+        if self.extras:
+            node_dict['extras'] = self.extras
+        if self.extensions is not None:
+            node_dict['extensions'] = self.extensions
+        return node_dict
+
+    @classmethod
+    def from_dict(cls, node, context):
+        if not node:
+            return None
+        gltf_node = cls(
+            context=context,
+            name=node.get('name'),
+            extras=node.get('extras'),
+            extensions=node.get('extensions'),
+        )
+        # Accessing protected attribute to bypass validation:
+        # Nodes may reference children that haven't yet been added to the GLTFContent
+        gltf_node.children._value = node.get('children', [])
+
+        gltf_node.translation = node.get('translation')
+        gltf_node.rotation = node.get('rotation')
+        gltf_node.scale = node.get('scale')
+        gltf_node.matrix = get_matrix_from_col_major_list(node['matrix']) if 'matrix' in node else None
+        gltf_node.weights = node.get('weights')
+        gltf_node.mesh_key = node.get('mesh')
+        gltf_node.camera = node.get('camera')
+        gltf_node.skin = node.get('skin')
+        return gltf_node

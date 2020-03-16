@@ -22,7 +22,7 @@ class SamplerData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self):
+    def to_dict(self):
         sampler_dict = {}
         if self.mag_filter is not None:
             sampler_dict['magFilter'] = self.mag_filter
@@ -40,6 +40,20 @@ class SamplerData(object):
             sampler_dict['extensions'] = self.extensions
         return sampler_dict
 
+    @classmethod
+    def from_dict(cls, sampler):
+        if not sampler:
+            return None
+        return cls(
+            mag_filter=sampler.get('magFilter'),
+            min_filter=sampler.get('minFilter'),
+            wrap_s=sampler.get('wrapS'),
+            wrap_t=sampler.get('wrapT'),
+            name=sampler.get('name'),
+            extras=sampler.get('extras'),
+            extensions=sampler.get('extensions'),
+        )
+
 
 class TextureData(object):
     def __init__(self, sampler=None, source=None, name=None, extras=None, extensions=None):
@@ -49,7 +63,7 @@ class TextureData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self, sampler_index_by_key, image_index_by_key):
+    def to_dict(self, sampler_index_by_key, image_index_by_key):
         texture_dict = {}
         if self.sampler is not None:
             texture_dict['sampler'] = sampler_index_by_key[self.sampler]
@@ -63,6 +77,18 @@ class TextureData(object):
             texture_dict['extensions'] = self.extensions
         return texture_dict
 
+    @classmethod
+    def from_dict(cls, texture):
+        if not texture:
+            return None
+        return cls(
+            sampler=texture.get('sampler'),
+            source=texture.get('source'),
+            name=texture.get('name'),
+            extras=texture.get('extras'),
+            extensions=texture.get('extensions'),
+        )
+
 
 class TextureInfoData(object):
     def __init__(self, index, tex_coord=None, extras=None, extensions=None):
@@ -71,7 +97,7 @@ class TextureInfoData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self, texture_index_by_key):
+    def to_dict(self, texture_index_by_key):
         texture_info_dict = {'index': texture_index_by_key[self.index]}
         if self.tex_coord is not None:
             texture_info_dict['texCoord'] = self.tex_coord
@@ -81,17 +107,40 @@ class TextureInfoData(object):
             texture_info_dict['extensions'] = self.extensions
         return texture_info_dict
 
+    @classmethod
+    def from_dict(cls, texture_info):
+        if not texture_info:
+            return None
+        return cls(
+            index=texture_info['index'],
+            tex_coord=texture_info.get('texCoord'),
+            extras=texture_info.get('extras'),
+            extensions=texture_info.get('extensions'),
+        )
+
 
 class OcclusionTextureInfoData(TextureInfoData):
     def __init__(self, index, tex_coord=None, extras=None, extensions=None, strength=None):
         super(OcclusionTextureInfoData).__init__(index, tex_coord, extras, extensions)
         self.strength = strength
 
-    def get_dict(self, texture_index_by_key):
-        texture_info_dict = super(OcclusionTextureInfoData).get_dict(texture_index_by_key)
+    def to_dict(self, texture_index_by_key):
+        texture_info_dict = super(OcclusionTextureInfoData).to_dict(texture_index_by_key)
         if self.strength is not None:
             texture_info_dict['strength'] = self.strength
         return texture_info_dict
+
+    @classmethod
+    def from_dict(cls, texture_info):
+        if not texture_info:
+            return None
+        return cls(
+            index=texture_info['index'],
+            tex_coord=texture_info.get('texCoord'),
+            extras=texture_info.get('extras'),
+            extensions=texture_info.get('extensions'),
+            strength=texture_info.get('strength'),
+        )
 
 
 class NormalTextureInfoData(TextureInfoData):
@@ -99,11 +148,23 @@ class NormalTextureInfoData(TextureInfoData):
         super(NormalTextureInfoData).__init__(index, tex_coord, extras, extensions)
         self.scale = scale
 
-    def get_dict(self, texture_index_by_key):
-        texture_info_dict = super(NormalTextureInfoData).get_dict(texture_index_by_key)
+    def to_dict(self, texture_index_by_key):
+        texture_info_dict = super(NormalTextureInfoData).to_dict(texture_index_by_key)
         if self.scale is not None:
             texture_info_dict['scale'] = self.scale
         return texture_info_dict
+
+    @classmethod
+    def from_dict(cls, texture_info):
+        if not texture_info:
+            return None
+        return cls(
+            index=texture_info['index'],
+            tex_coord=texture_info.get('texCoord'),
+            extras=texture_info.get('extras'),
+            extensions=texture_info.get('extensions'),
+            scale=texture_info.get('scale'),
+        )
 
 
 class PBRMetallicRoughnessData(object):
@@ -125,21 +186,35 @@ class PBRMetallicRoughnessData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self, texture_index_by_key):
+    def to_dict(self, texture_index_by_key):
         roughness_dict = {}
         if self.base_color_factor is not None:
             roughness_dict['baseColorFactor'] = self.base_color_factor
         if self.base_color_texture is not None:
-            roughness_dict['baseColorTexture'] = self.base_color_texture.get_dict(texture_index_by_key)
+            roughness_dict['baseColorTexture'] = self.base_color_texture.to_dict(texture_index_by_key)
         if self.metallic_factor is not None:
             roughness_dict['metallicFactor'] = self.metallic_factor
         if self.metallic_roughness_texture is not None:
-            roughness_dict['metallicRoughnessTexture'] = self.metallic_roughness_texture.get_dict(texture_index_by_key)
+            roughness_dict['metallicRoughnessTexture'] = self.metallic_roughness_texture.to_dict(texture_index_by_key)
         if self.extras is not None:
             roughness_dict['extras'] = self.extras
         if self.extensions is not None:
             roughness_dict['extensions'] = self.extensions
         return roughness_dict
+
+    @classmethod
+    def from_dict(cls, texture_info):
+        if not texture_info:
+            return None
+        return cls(
+            base_color_factor=texture_info.get('baseColorFactor'),
+            base_color_texture=TextureInfoData.from_dict(texture_info.get('baseColorTexture')),
+            metallic_factor=texture_info.get('metallicFactor'),
+            roughness_factor=texture_info.get('roughnessFactor'),
+            metallic_roughness_texture=TextureInfoData.from_dict(texture_info.get('metallicRoughnessTexture')),
+            extras=texture_info.get('extras'),
+            extensions=texture_info.get('extensions'),
+        )
 
 
 class MaterialData(object):
@@ -169,20 +244,20 @@ class MaterialData(object):
         self.double_sided = double_sided
         self.extensions = extensions
 
-    def get_dict(self, texture_index_by_key):
+    def to_dict(self, texture_index_by_key):
         material_dict = {}
         if self.name is not None:
             material_dict['name'] = self.name
         if self.extras is not None:
             material_dict['extras'] = self.extras
         if self.pbr_metallic_roughness is not None:
-            material_dict['pbrMetallicRoughness'] = self.pbr_metallic_roughness.get_dict(texture_index_by_key)
+            material_dict['pbrMetallicRoughness'] = self.pbr_metallic_roughness.to_dict(texture_index_by_key)
         if self.normal_texture is not None:
-            material_dict['normalTexture'] = self.normal_texture.get_dict(texture_index_by_key)
+            material_dict['normalTexture'] = self.normal_texture.to_dict(texture_index_by_key)
         if self.occlusion_texture is not None:
-            material_dict['materialTexture'] = self.occlusion_texture.get_dict(texture_index_by_key)
+            material_dict['materialTexture'] = self.occlusion_texture.to_dict(texture_index_by_key)
         if self.emissive_texture is not None:
-            material_dict['emissiveTexture'] = self.emissive_texture.get_dict(texture_index_by_key)
+            material_dict['emissiveTexture'] = self.emissive_texture.to_dict(texture_index_by_key)
         if self.emissive_factor is not None:
             material_dict['emissiveFactor'] = self.emissive_factor
         if self.alpha_mode is not None:
@@ -195,6 +270,24 @@ class MaterialData(object):
             material_dict['extensions'] = self.extensions
         return material_dict
 
+    @classmethod
+    def from_dict(cls, material):
+        if not material:
+            return None
+        return cls(
+            name=material.get('name'),
+            extras=material.get('extras'),
+            pbr_metallic_roughness=PBRMetallicRoughnessData.from_dict(material.get('pbrMetallicRoughness')),
+            normal_texture=NormalTextureInfoData.from_dict(material.get('normalTexture')),
+            occlusion_texture=OcclusionTextureInfoData.from_dict(material.get('occlusionTexture')),
+            emissive_texture=TextureInfoData.from_dict(material.get('emissiveTexture')),
+            emissive_factor=material.get('emissiveFactor'),
+            alpha_mode=material.get('alphaMode'),
+            alpha_cutoff=material.get('alphaCutoff'),
+            double_sided=material.get('doubleSided'),
+            extensions=material.get('extensions'),
+        )
+
 
 class CameraData(object):
     def __init__(self, type_, orthographic=None, perspective=None, name=None, extras=None, extensions=None):
@@ -205,7 +298,7 @@ class CameraData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self):
+    def to_dict(self):
         camera_dict = {'type': self.type}
         if self.orthographic is not None:
             camera_dict['orthographic'] = self.orthographic
@@ -219,6 +312,19 @@ class CameraData(object):
             camera_dict['extensions'] = self.extensions
         return camera_dict
 
+    @classmethod
+    def from_dict(cls, camera):
+        if not camera:
+            return None
+        return cls(
+            type_=camera['type'],
+            orthographic=camera.get('orthographic'),
+            perspective=camera.get('perspective'),
+            name=camera.get('name'),
+            extras=camera.get('extras'),
+            extensions=camera.get('extensions'),
+        )
+
 
 class AnimationSamplerData(object):
     def __init__(self, input_, output, interpolation=None, extras=None, extensions=None):
@@ -228,7 +334,7 @@ class AnimationSamplerData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self, input_accessor, output_accessor):
+    def to_dict(self, input_accessor, output_accessor):
         sampler_dict = {
             'input': input_accessor,
             'output': output_accessor,
@@ -241,6 +347,18 @@ class AnimationSamplerData(object):
             sampler_dict['extensions'] = self.extensions
         return sampler_dict
 
+    @classmethod
+    def from_dict(cls, sampler, input_, output):
+        if not sampler:
+            return None
+        return cls(
+            input_=input_,
+            output=output,
+            interpolation=sampler.get('interpolation'),
+            extras=sampler.get('extras'),
+            extensions=sampler.get('extensions'),
+        )
+
 
 class TargetData(object):
     def __init__(self, path, node=None, extras=None, extensions=None):
@@ -249,7 +367,7 @@ class TargetData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self, node_index_by_key):
+    def to_dict(self, node_index_by_key):
         target_dict = {
             'path': self.path
         }
@@ -261,6 +379,17 @@ class TargetData(object):
             target_dict['extensions'] = self.extensions
         return target_dict
 
+    @classmethod
+    def from_dict(cls, target):
+        if not target:
+            return None
+        return cls(
+            path=target['path'],
+            node=target.get('node'),
+            extras=target.get('extras'),
+            extensions=target.get('extensions'),
+        )
+
 
 class ChannelData(object):
     def __init__(self, sampler, target, extras=None, extensions=None):
@@ -269,16 +398,27 @@ class ChannelData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self, node_index_by_key, sampler_index_by_key):
+    def to_dict(self, node_index_by_key, sampler_index_by_key):
         channel_dict = {
             'sampler': sampler_index_by_key[self.sampler],
-            'target': self.target.get_dict(node_index_by_key),
+            'target': self.target.to_dict(node_index_by_key),
         }
         if self.extras is not None:
             channel_dict['extras'] = self.extras
         if self.extensions is not None:
             channel_dict['extensions'] = self.extensions
         return channel_dict
+
+    @classmethod
+    def from_dict(cls, channel):
+        if not channel:
+            return None
+        return cls(
+            sampler=channel['sampler'],
+            target=TargetData.from_dict(channel['target']),
+            extras=channel.get('extras'),
+            extensions=channel.get('extensions'),
+        )
 
 
 class AnimationData(object):
@@ -291,9 +431,9 @@ class AnimationData(object):
 
         self._sampler_index_by_key = None
 
-    def get_dict(self, samplers_list, node_index_by_key):
+    def to_dict(self, samplers_list, node_index_by_key):
         channels = [
-            channel_data.get_dict(node_index_by_key, self._sampler_index_by_key)
+            channel_data.to_dict(node_index_by_key, self._sampler_index_by_key)
             for channel_data in self.channels
         ]
         animation_dict = {
@@ -312,6 +452,18 @@ class AnimationData(object):
         self._sampler_index_by_key = {key: index for index, key in enumerate(self.samplers_dict)}
         return self._sampler_index_by_key
 
+    @classmethod
+    def from_dict(cls, animation, channel_data_list, sampler_dict):
+        if not animation:
+            return None
+        return cls(
+            channels=channel_data_list,
+            samplers_dict=sampler_dict,
+            name=animation.get('name'),
+            extras=animation.get('extras'),
+            extensions=animation.get('extensions'),
+        )
+
 
 class SkinData(object):
     def __init__(self, joints, inverse_bind_matrices=None, skeleton=None, name=None, extras=None, extensions=None):
@@ -322,7 +474,7 @@ class SkinData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self, node_index_by_key, accessor_index):
+    def to_dict(self, node_index_by_key, accessor_index):
         skin_dict = {'joints': [
             node_index_by_key.get(item)
             for item in self.joints
@@ -340,18 +492,31 @@ class SkinData(object):
             skin_dict['extensions'] = self.extensions
         return skin_dict
 
+    @classmethod
+    def from_dict(cls, skin, inverse_bind_matrices):
+        if not skin:
+            return None
+        return cls(
+            joints=skin['joints'],
+            inverse_bind_matrices=inverse_bind_matrices,
+            skeleton=skin.get('skeleton'),
+            name=skin.get('name'),
+            extras=skin.get('extras'),
+            extensions=skin.get('extensions'),
+        )
+
 
 class ImageData(object):
-    def __init__(self, image_data=None, uri=None, mime_type=None, name=None, extras=None, extensions=None):
+    def __init__(self, data=None, uri=None, mime_type=None, name=None, extras=None, extensions=None):
         self.uri = uri
         self.mime_type = mime_type
         self.name = name
         self.extras = extras
         self.extensions = extensions
 
-        self.data = image_data
+        self.data = data
 
-    def get_dict(self, uri, buffer_view):
+    def to_dict(self, uri, buffer_view):
         image_dict = {}
         if self.name is not None:
             image_dict['name'] = self.name
@@ -369,6 +534,19 @@ class ImageData(object):
             image_dict['extensions'] = self.extensions
         return image_dict
 
+    @classmethod
+    def from_dict(cls, image, data, mime_type):
+        if not image:
+            return None
+        return cls(
+            uri=image.get('uri'),
+            mime_type=image.get('mimeType') or mime_type,
+            name=image.get('name'),
+            extras=image.get('extras'),
+            extensions=image.get('extensions'),
+            data=data,
+        )
+
 
 class PrimitiveData(object):
     def __init__(self, attributes, indices=None, material=None, mode=None, targets=None, extras=None, extensions=None):
@@ -380,7 +558,7 @@ class PrimitiveData(object):
         self.extras = extras
         self.extensions = extensions
 
-    def get_dict(self, indices_accessor, attributes_dict, targets_dict, material_index_by_key):
+    def to_dict(self, indices_accessor, attributes_dict, targets_dict, material_index_by_key):
         primitive_dict = {'indices': indices_accessor}
         if self.material is not None:
             primitive_dict['material'] = material_index_by_key[self.material]
@@ -395,3 +573,17 @@ class PrimitiveData(object):
         if self.extensions is not None:
             primitive_dict['extensions'] = self.extensions
         return primitive_dict
+
+    @classmethod
+    def from_dict(cls, primitive, attributes, indices, target_list):
+        if not primitive:
+            return None
+        return cls(
+            attributes=attributes,
+            indices=indices,
+            material=primitive.get('material'),
+            mode=primitive.get('mode'),
+            targets=target_list,
+            extras=primitive.get('extras'),
+            extensions=primitive.get('extensions'),
+        )

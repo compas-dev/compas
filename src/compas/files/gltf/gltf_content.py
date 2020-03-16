@@ -40,6 +40,42 @@ class GLTFContent(object):
         Dictionary containing (int, :class:`compas.files.data_classes.ImageData`) pairs.
     extras : object
     extensions : object
+
+    Methods
+    -------
+    check_if_forest()
+        Raises an exception if :attr:`compas.files.GLTFContent.nodes` is not a disjoint
+        union of rooted trees.
+    remove_orphans()
+        Removes orphaned objects.
+    update_node_transforms_and_positions()
+        Walks through all nodes and updates their transforms and positions.  To be used when
+        scene or nodes have been added or the nodes' matrices or TRS attributes have been set or updated.
+    update_scene_transforms_and_positions(GLTFScene scene)
+        Walks through the scene tree and updates transforms and positions.  To be used when
+        nodes have been added or the nodes' matrices or TRS attributes have been set or updated.
+    get_node_faces(GLTFNode node)
+        Returns the faces of the mesh at `node`, if any.
+    get_node_vertices(GLTFNode node)
+        Returns the vertices of the mesh at `node`, if any.
+    add_scene(str name, object extras)
+        Adds a scene to the content with name `name` (default `None`) and extras `extras` (default `None`)
+    add_node_to_scene(GLTFScene scene, str node_name, object node_extras)
+        Creates a :class:`compas.files.GLTFNode` with name `node_name` (default `None`) and extras `node_extras`
+        (default `None`), and adds this node to the children of `scene`.
+    add_child_to_node(GLTFNode parent_node, str child_name, object child_extras)
+        Creates a :class:`compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
+        (default `None`), and adds this node to the children of `parent_node`.
+    add_mesh(Mesh mesh)
+        Creates a :class:`compas.files.MeshData` object from a :class:`compas.datastructures.Mesh`, and adds this
+        to the content.
+    add_mesh_to_node(GLTFNode node, Union[Mesh, int] mesh)
+        Adds an existing mesh to `node` if `mesh` is a valid mesh key, or through `add_mesh` creates and adds a
+        mesh to `node`.
+    get_nodes_from_scene(GLTFScene scene)
+        Returns dictionary of nodes in the given scene, without a specified root.
+    get_scene_positions_and_edges(GLTFScene scene)
+        Returns a tuple containing a dictionary of positions and a list of tuples representing edges.
     """
     def __init__(self):
         self.scenes = {}
@@ -56,7 +92,7 @@ class GLTFContent(object):
         self.extras = None
         self.extensions = None
 
-    def check_is_forest(self):
+    def check_if_forest(self):
         visited_nodes = set()
 
         def visit(key):
@@ -96,19 +132,13 @@ class GLTFContent(object):
                 visit_node(node_key)
 
         # remove unvisited nodes
-        for key, visited in node_visit_log.items():
-            if not visited:
-                del self.nodes[key]
+        self._remove_unvisited(node_visit_log, self.nodes)
 
         # remove unvisited meshes
-        for key, visited in mesh_visit_log.items():
-            if not visited:
-                del self.meshes[key]
+        self._remove_unvisited(mesh_visit_log, self.meshes)
 
         # remove unvisited cameras
-        for key, visited in camera_visit_log.items():
-            if not visited:
-                del self.cameras[key]
+        self._remove_unvisited(camera_visit_log, self.cameras)
 
         # remove animations referencing no existing nodes
         for animation_key, animation in self.animations.items():
@@ -118,7 +148,11 @@ class GLTFContent(object):
                     animation.channels.remove(channel)
                 else:
                     visited_sampler_keys.append(channel.sampler)
-            animation.samplers_dict = {key: value for key, value in animation.samplers_dict if key in visited_sampler_keys}
+            animation.samplers_dict = {
+                key: animation.samplers_dict[key]
+                for key in animation.samplers_dict
+                if key in visited_sampler_keys
+            }
             if not animation.samplers_dict:
                 del self.animations[animation_key]
 
@@ -134,12 +168,10 @@ class GLTFContent(object):
         for mesh in self.meshes.values():
             for primitive in mesh.primitive_data_list:
                 if primitive.material is not None:
-                    material_visit_log[mesh.material] = True
+                    material_visit_log[primitive.material] = True
 
         # remove unvisited materials
-        for key, visited in material_visit_log.items():
-            if not visited:
-                del self.materials[key]
+        self._remove_unvisited(material_visit_log, self.materials)
 
         # walk through existing materials and update textures visit log
         for material in self.materials.values():
@@ -156,9 +188,7 @@ class GLTFContent(object):
                     texture_visit_log[material.pbr_metallic_roughness.metallic_roughness_texture.index] = True
 
         # remove unvisited textures
-        for key, visited in texture_visit_log.items():
-            if not visited:
-                del self.textures[key]
+        self._remove_unvisited(texture_visit_log, self.textures)
 
         # walk through existing textures and update visit logs of samplers and images
         for texture in self.textures.values():
@@ -168,24 +198,21 @@ class GLTFContent(object):
                 image_visit_log[texture.source] = True
 
         # remove unvisited samplers
-        for key, visited in sampler_visit_log.items():
-            if not visited:
-                del self.samplers[key]
+        self._remove_unvisited(sampler_visit_log, self.samplers)
 
         # remove unvisited images
-        for key, visited in image_visit_log.items():
+        self._remove_unvisited(image_visit_log, self.images)
+
+    def _remove_unvisited(self, log, dictionary):
+        for key, visited in log.items():
             if not visited:
-                del self.images[key]
+                del dictionary[key]
 
     def update_node_transforms_and_positions(self):
-        """Method to walk through all nodes and update their transforms and positions.  To be used in
-        the case that the nodes' matrices or TRS attributes have been set or updated."""
         for scene in self.scenes.values():
             self.update_scene_transforms_and_positions(scene)
 
     def update_scene_transforms_and_positions(self, scene):
-        """Method to walk through the scene tree and update the transforms and positions.  To be used in
-        the case that the nodes' matrices or TRS attributes have been set or updated."""
         origin = [0, 0, 0]
         for node_key in scene.children:
             node = self.nodes[node_key]
@@ -204,22 +231,16 @@ class GLTFContent(object):
                     child.position = transform_points([origin], child.transform)[0]
                     queue.append(child_key)
 
-    def find_mesh(self, mesh_key):
-        if mesh_key not in self.meshes:
-            raise Exception('Mesh {} not found.'.format(mesh_key))
-        return self.meshes[mesh_key]
-
-    def get_mesh_data_for_node(self, node):
-        if node.mesh_key is None:
-            return None
-        return self.find_mesh(node.mesh_key)
-
     def get_node_faces(self, node):
-        mesh_data = self.get_mesh_data_for_node(node)
+        mesh_data = self.meshes.get(node.mesh_key)
+        if mesh_data is None:
+            return None
         return mesh_data.faces
 
     def get_node_vertices(self, node):
-        mesh_data = self.get_mesh_data_for_node(node)
+        mesh_data = self.meshes.get(node.mesh_key)
+        if mesh_data is None:
+            return None
         if node.weights is None:
             return mesh_data.vertices
         return get_weighted_mesh_vertices(mesh_data, node.weights)
@@ -244,14 +265,13 @@ class GLTFContent(object):
 
     def add_mesh_to_node(self, node, mesh):
         if isinstance(mesh, int):
-            mesh_data = self.find_mesh(mesh)
+            mesh_data = self.meshes[mesh]
         else:
             mesh_data = self.add_mesh(mesh)
         node.mesh_key = mesh_data.key
         return mesh_data
 
     def get_nodes_from_scene(self, scene):
-        """Returns dictionary of nodes in the given scene, without a specified root."""
         node_dict = {}
 
         def visit(key):
@@ -265,7 +285,6 @@ class GLTFContent(object):
         return node_dict
 
     def get_scene_positions_and_edges(self, scene):
-        """Returns a tuple containing a dictionary of positions and a list of tuples representing edges."""
         positions_dict = {'root': [0, 0, 0]}
         edges_list = []
 
@@ -294,9 +313,10 @@ if __name__ == '__main__':
 
     source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
     stl_filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
-    gltf_filepath = os.path.join(compas.APPDATA, 'data', 'gltfs', 'double_link_1.gltf')
 
     download_file_from_remote(source, stl_filepath, overwrite=False)
+
+    gltf_filepath = os.path.join(compas.APPDATA, 'data', 'gltfs', 'double_link_1.gltf')
 
     mesh = Mesh.from_stl(stl_filepath)
     cnt = GLTFContent()
