@@ -62,27 +62,3 @@ class GLTFChildren(object):
 
     def copy(self):
         return self._value.copy()
-
-
-class Children(object):
-    def __init__(self, value):
-        for v in value:
-            self.check(v)
-        self._value = value
-
-    def __repr__(self):
-        return repr(self._value)
-
-    def __iter__(self):
-        return iter(self._value)
-
-    def __bool__(self):
-        return bool(self._value)
-
-    def check(self, v):
-        if v not in [1, 2, 3]:
-            raise Exception('Nope')
-
-    def append(self, value):
-        self.check(value)
-        self._value.append(value)
