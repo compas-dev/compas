@@ -14,14 +14,14 @@ __all__ = [
 ]
 
 
-def mesh_offset(mesh, offset=1.0, cls=None):
+def mesh_offset(mesh, distance=1.0, cls=None):
     """Offset a mesh.
 
     Parameters
     ----------
     mesh : Mesh
         A Mesh to offset.
-    offset : real
+    distance : float
         The offset distance.
 
     Returns
@@ -30,22 +30,28 @@ def mesh_offset(mesh, offset=1.0, cls=None):
         The offset mesh.
 
     """
-    if cls is None:
-        cls = type(mesh)
+    # if cls is None:
+    #     cls = type(mesh)
 
-    # new coordinates of vertex keys
-    vertex_map = {}
-    for i, vkey in enumerate(mesh.vertices()):
-        if len(mesh.vertex_neighbors(vkey)) == 0:
-            vertex_map[vkey] = i, [0, 0, 0]
-        else:
-            vertex_map[vkey] = i, add_vectors(mesh.vertex_coordinates(vkey),
-                                              scale_vector(mesh.vertex_normal(vkey), offset))
+    # # new coordinates of vertex keys
+    # vertex_map = {}
+    # for i, vkey in enumerate(mesh.vertices()):
+    #     if len(mesh.vertex_neighbors(vkey)) == 0:
+    #         vertex_map[vkey] = i, [0, 0, 0]
+    #     else:
+    #         vertex_map[vkey] = i, add_vectors(mesh.vertex_coordinates(vkey), scale_vector(mesh.vertex_normal(vkey), offset))
 
-    vertices = [xyz for i, xyz in vertex_map.values()]
-    faces = [[vertex_map[vkey][0] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
+    # vertices = [xyz for i, xyz in vertex_map.values()]
+    # faces = [[vertex_map[vkey][0] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
 
-    return cls.from_vertices_and_faces(vertices, faces)
+    offset = mesh.copy()
+
+    for key in offset.vertices():
+        normal = mesh.vertex_normal(key)
+        xyz = mesh.vertex_coordinates(key)
+        offset.vertex_attributes(key, 'xyz', add_vectors(xyz, scale_vector(normal, distance)))
+
+    return offset
 
 
 def mesh_thicken(mesh, thickness=1.0, cls=None):

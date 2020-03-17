@@ -14,6 +14,11 @@ compas_blender
     compas_blender.utilities
 
 """
+try:
+    import bpy  # noqa: F401
+except ImportError:
+    pass
+
 from .utilities import *  # noqa: F401 F403
 
 

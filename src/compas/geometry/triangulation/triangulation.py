@@ -71,7 +71,7 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     from compas.datastructures import Mesh
     from compas.datastructures import trimesh_swap_edge
 
-    def super_triangle(coords):
+    def super_triangle(coords, ccw=True):
         centpt = centroid_points(coords)
         bbpts = bounding_box(coords)
         dis = distance_point_point(bbpts[0], bbpts[2])
@@ -82,6 +82,8 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
         pt1 = add_vectors(centpt, v1)
         pt2 = add_vectors(centpt, v2)
         pt3 = add_vectors(centpt, v3)
+        if ccw:
+            return pt1, pt3, pt2
         return pt1, pt2, pt3
 
     mesh = Mesh()
@@ -103,59 +105,36 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     mesh.add_face(super_keys)
 
     # iterate over points
-    for i, pt in enumerate(points):
-        key = i
-
+    for key, point in enumerate(points):
         # newtris should be intialised here
 
         # check in which triangle this point falls
         for fkey in list(mesh.faces()):
-            # abc = mesh.face_coordinates(fkey) #This is slower
-            # This is faster:
-            keya, keyb, keyc = mesh.face_vertices(fkey)
+            abc = mesh.face_coordinates(fkey)
 
-            dicta = mesh.vertex[keya]
-            dictb = mesh.vertex[keyb]
-            dictc = mesh.vertex[keyc]
-
-            a = [dicta['x'], dicta['y']]
-            b = [dictb['x'], dictb['y']]
-            c = [dictc['x'], dictc['y']]
-
-            if is_point_in_triangle_xy(pt, [a, b, c], True):
+            if is_point_in_triangle_xy(point, abc, True):
                 # generate 3 new triangles (faces) and delete surrounding triangle
-                key, newtris = mesh.insert_vertex(fkey, key=key, xyz=pt, return_fkeys=True)
+                key, newtris = mesh.insert_vertex(fkey, key=key, xyz=point, return_fkeys=True)
                 break
 
         while newtris:
             fkey = newtris.pop()
 
-            # get opposite_face
-            keys = mesh.face_vertices(fkey)
-            s = list(set(keys) - set([key]))
-            u, v = s[0], s[1]
-            fkey1 = mesh.halfedge[u][v]
+            face = mesh.face_vertices(fkey)
+            i = face.index(key)
+            u = face[i - 2]
+            v = face[i - 1]
 
-            if fkey1 != fkey:
-                fkey_op, u, v = fkey1, u, v
-            else:
-                fkey_op, u, v = mesh.halfedge[v][u], u, v
+            nbr = mesh.halfedge[v][u]
 
-            if fkey_op:
-                keya, keyb, keyc = mesh.face_vertices(fkey_op)
-                dicta = mesh.vertex[keya]
-                a = [dicta['x'], dicta['y']]
-                dictb = mesh.vertex[keyb]
-                b = [dictb['x'], dictb['y']]
-                dictc = mesh.vertex[keyc]
-                c = [dictc['x'], dictc['y']]
-
+            if nbr is not None:
+                a, b, c = mesh.face_coordinates(nbr)
                 circle = circle_from_points_xy(a, b, c)
 
-                if is_point_in_circle_xy(pt, circle):
-                    fkey, fkey_op = trimesh_swap_edge(mesh, u, v)
+                if is_point_in_circle_xy(point, circle):
+                    fkey, nbr = trimesh_swap_edge(mesh, u, v)
                     newtris.append(fkey)
-                    newtris.append(fkey_op)
+                    newtris.append(nbr)
 
     # Delete faces adjacent to supertriangle
     for key in super_keys:
@@ -260,20 +239,20 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
 if __name__ == "__main__":
 
-    pass
+    from compas.datastructures import Mesh
+    from compas.geometry import pointcloud_xy
+    from compas_plotters import MeshPlotter
 
-    # from compas.datastructures import Mesh
-    # from compas.geometry import pointcloud_xy
-    # from compas_plotters import MeshPlotter
+    points = pointcloud_xy(200, (0, 50))
+    faces = delaunay_from_points(points)
 
-    # points = pointcloud_xy(20, (0, 50))
-    # faces = delaunay_from_points(points)
+    delaunay = Mesh.from_vertices_and_faces(points, faces)
 
-    # delaunay = Mesh.from_vertices_and_faces(points, faces)
+    plotter = MeshPlotter(delaunay, figsize=(8, 5))
 
-    # plotter = MeshPlotter(delaunay, figsize=(12, 8))
+    facecolor = {fkey: (255, 0, 0) if delaunay.face_normal(fkey)[2] > 0 else (0, 0, 255) for fkey in delaunay.faces()}
 
-    # plotter.draw_vertices(radius=0.1)
-    # plotter.draw_faces()
-
-    # plotter.show()
+    plotter.draw_vertices(keys=list(delaunay.vertices_on_boundary()), radius=0.5)
+    plotter.draw_faces(facecolor=facecolor)
+    plotter.draw_edges(keys=list(delaunay.edges_on_boundary()))
+    plotter.show()
