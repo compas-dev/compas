@@ -35,8 +35,8 @@ Adding vertices and edges
     >>> a = network.add_vertex()
     >>> b = network.add_vertex(x=1.0)
     >>> c = network.add_vertex(y=1.0)
-    >>> d = network.add_vertex(x==1.0)
-    >>> e = network.add_vertex(y==1.0)
+    >>> d = network.add_vertex(x=-1.0)
+    >>> e = network.add_vertex(y=-1.0)
 
 
 .. code-block:: python
