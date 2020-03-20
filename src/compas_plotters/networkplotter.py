@@ -146,19 +146,19 @@ class NetworkPlotter(Plotter):
         ----------
         keys : list
             The keys of the nodes to plot.
-        radius : {list, dict}
+        radius : {float, dict}
             A list of radii for the nodes.
-        text : {list, dict}
+        text : {{'index', 'key'}, str, dict}
             Strings to be displayed on the nodes.
-        facecolor : {list, dict}
+        facecolor : {color, dict}
             Color for the node circle fill.
-        edgecolor : {list, dict}
+        edgecolor : {color, dict}
             Color for the node circle edge.
-        edgewidth : {list, dict}
+        edgewidth : {float, dict}
             Width for the node circle edge.
-        textcolor : {list, dict}
+        textcolor : {color, dict}
             Color for the text to be displayed on the nodes.
-        fontsize : {list, dict}
+        fontsize : {int, dict}
             Font size for the text to be displayed on the nodes.
 
         Returns
@@ -232,15 +232,15 @@ class NetworkPlotter(Plotter):
         ----------
         keys : list
             The keys of the edges to plot.
-        width : {list, dict}
+        width : {float, dict}
             Width of the network edges.
-        color : {list, dict}
+        color : {color, dict}
             Color for the edge lines.
-        text : {list, dict}
+        text : {{'index', 'key'}, str, dict}
             Strings to be displayed on the edges.
-        textcolor : {list, dict}
+        textcolor : {color, dict}
             Color for the text to be displayed on the edges.
-        fontsize : {list, dict}
+        fontsize : {int, dict}
             Font size for the text to be displayed on the edges.
 
         Returns
