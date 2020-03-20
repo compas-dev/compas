@@ -23,7 +23,37 @@ from compas_plotters.core.drawing import draw_xpolygons_xy
 from compas_plotters.core.drawing import draw_xarrows_xy
 
 
-__all__ = ['Plotter']
+__all__ = ['Plotter',
+           'valuedict']
+
+
+def valuedict(keys, value, default):
+    """
+     Build value dictionary from a list of keys and a value.
+
+     Parameters
+     ----------
+     keys: list
+         The list of keys
+     value: {dict, int, float, str, None}
+         A value or the already formed dictionary
+     default: {int, float, str}
+         A default value to set if no value
+
+     Returns
+     -------
+     dict
+         A dictionary
+
+     Note
+     ----
+     This standalone and generic function is only required by plotters.
+
+     """
+    if isinstance(value, dict):
+        return {key: value.get(key, default) for key in keys}
+    else:
+        return dict.fromkeys(keys, value or default)
 
 
 class Plotter(object):
@@ -724,3 +754,5 @@ if __name__ == "__main__":
                     callback=callback)
 
     plotter.show()
+
+

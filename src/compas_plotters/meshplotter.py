@@ -13,20 +13,10 @@ from matplotlib.patches import Polygon
 from compas.utilities import color_to_rgb
 from compas.utilities import pairwise
 
-from compas_plotters.plotter import Plotter
+from compas_plotters.plotter import Plotter, valuedict
 
 
 __all__ = ['MeshPlotter']
-
-
-def valuedict(keys, value, default):
-    value = value or default
-    if isinstance(value, dict):
-        valuedict = {key: default for key in keys}
-        valuedict.update(value)
-    else:
-        valuedict = {key: value for key in keys}
-    return valuedict
 
 
 class MeshPlotter(Plotter):
@@ -153,19 +143,19 @@ class MeshPlotter(Plotter):
         ----------
         keys : list
             The keys of the vertices to plot.
-        radius : list
+        radius : {list, dict}
             A list of radii for the vertices.
-        text : list
+        text : {list, dict}
             Strings to be displayed on the vertices.
-        facecolor : list
+        facecolor : {list, dict}
             Color for the vertex circle fill.
-        edgecolor : list
+        edgecolor : {list, dict}
             Color for the vertex circle edge.
-        edgewidth : list
+        edgewidth : {list, dict}
             Width for the vertex circle edge.
-        textcolor : list
+        textcolor : {list, dict}
             Color for the text to be displayed on the vertices.
-        fontsize : list
+        fontsize : {list, dict}
             Font size for the text to be displayed on the vertices.
 
         Returns
@@ -315,11 +305,11 @@ class MeshPlotter(Plotter):
         ----------
         keys : list
             The keys of the edges to plot.
-        width : list
+        width : {list, dict}
             Width of the mesh edges.
-        color : list
+        color : {list, dict}
             Color for the edge lines.
-        text : dict
+        text : {list, dict}
             Strings to be displayed on the edges.
         textcolor : rgb tuple or dict of rgb tuples
             Color for the text to be displayed on the edges.
@@ -402,17 +392,17 @@ class MeshPlotter(Plotter):
         ----------
         keys : list
             The keys of the edges to plot.
-        text : list
+        text : {list, dict}
             Strings to be displayed on the edges.
-        facecolor : list
+        facecolor : {list, dict}
             Color for the face fill.
-        edgecolor : list
+        edgecolor : {list, dict}
             Color for the face edge.
-        edgewidth : list
+        edgewidth : {list, dict}
             Width for the face edge.
-        textcolor : list
+        textcolor : {list, dict}
             Color for the text to be displayed on the edges.
-        fontsize : list
+        fontsize : {list, dict}
             Font size for the text to be displayed on the edges.
 
         Returns
