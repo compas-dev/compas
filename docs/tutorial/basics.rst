@@ -42,7 +42,7 @@ In all packages, functionality is made available at the first sub-package level.
 Core functionality
 ------------------
 
-The core functionallity of the framework is written entirely in CPython such that it can easily be used across platform,
+The core functionality of the framework is written entirely in CPython such that it can easily be used across platform,
 in various coding environments, and inside software tools the provide a Python scripting interface.
 
 To speed up computation, some functionality is based on Numpy/Scipy.
