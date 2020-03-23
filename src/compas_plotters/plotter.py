@@ -754,5 +754,3 @@ if __name__ == "__main__":
                     callback=callback)
 
     plotter.show()
-
-
