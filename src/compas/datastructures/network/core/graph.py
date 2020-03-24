@@ -3,7 +3,10 @@ from __future__ import absolute_import
 from __future__ import division
 
 import json
-import collections
+try:
+    from collections.abc import MutableMapping  # python > 3.3
+except ImportError:
+    from collections import MutableMapping      # python 2.7
 from random import sample
 from random import choice
 from copy import deepcopy
@@ -29,7 +32,7 @@ class AttributeView(object):
         return len(self.defaults)
 
 
-class NodeAttributeView(AttributeView, collections.MutableMapping):
+class NodeAttributeView(AttributeView, MutableMapping):
     """Mutable Mapping that provides a read/write view of the custom attributes of a node
     combined with the default attributes of all nodes."""
 
@@ -51,7 +54,7 @@ class NodeAttributeView(AttributeView, collections.MutableMapping):
             yield name
 
 
-class EdgeAttributeView(AttributeView, collections.MutableMapping):
+class EdgeAttributeView(AttributeView, MutableMapping):
     """Mutable Mapping that provides a read/write view of the custom attributes of an edge
     combined with the default attributes of all edges."""
 
