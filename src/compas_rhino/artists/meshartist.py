@@ -355,8 +355,7 @@ class MeshArtist(Artist):
             points.append({
                 'pos': self.mesh.vertex_coordinates(key),
                 'name': "{}.vertex.{}".format(self.mesh.name, key),
-                'color': colordict[key],
-                'layer': self.mesh.vertex_attribute(key, 'layer')
+                'color': colordict[key]
             })
         return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
@@ -398,8 +397,7 @@ class MeshArtist(Artist):
             faces.append({
                 'points': self.mesh.face_coordinates(fkey),
                 'name': "{}.face.{}".format(self.mesh.name, fkey),
-                'color': colordict[fkey],
-                'layer': self.mesh.face_attribute(fkey, 'layer')
+                'color': colordict[fkey]
             })
 
         guids = compas_rhino.draw_faces(faces, layer=self.layer, clear=False, redraw=False)
@@ -450,8 +448,7 @@ class MeshArtist(Artist):
                 'start': self.mesh.vertex_coordinates(u),
                 'end': self.mesh.vertex_coordinates(v),
                 'color': colordict[(u, v)],
-                'name': "{}.edge.{}-{}".format(self.mesh.name, u, v),
-                'layer': self.mesh.edge_attribute((u, v), 'layer')
+                'name': "{}.edge.{}-{}".format(self.mesh.name, u, v)
             })
 
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -563,8 +560,7 @@ class MeshArtist(Artist):
                 'pos': self.mesh.vertex_coordinates(key),
                 'name': "{}.vertex.label.{}".format(self.mesh.name, key),
                 'color': colordict[key],
-                'text': textdict[key],
-                'layer': self.mesh.vertex_attribute(key, 'layer')
+                'text': textdict[key]
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
@@ -613,8 +609,7 @@ class MeshArtist(Artist):
                 'pos': self.mesh.face_center(key),
                 'name': "{}.face.label.{}".format(self.mesh.name, key),
                 'color': colordict[key],
-                'text': textdict[key],
-                'layer': self.mesh.face_attribute(key, 'layer')
+                'text': textdict[key]
             })
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
@@ -661,8 +656,7 @@ class MeshArtist(Artist):
                 'pos': self.mesh.edge_midpoint(u, v),
                 'name': "{}.edge.label.{}-{}".format(self.mesh.name, u, v),
                 'color': colordict[(u, v)],
-                'text': textdict[(u, v)],
-                'layer': self.mesh.edge_attribute((u, v), 'layer')
+                'text': textdict[(u, v)]
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)

@@ -4,7 +4,7 @@ from __future__ import division
 
 from matplotlib.patches import Circle
 
-from compas_plotters.plotter import Plotter
+from compas_plotters.plotter import Plotter, valuedict
 
 try:
     basestring
@@ -13,16 +13,6 @@ except NameError:
 
 
 __all__ = ['NetworkPlotter']
-
-
-def valuedict(keys, value, default):
-    value = value or default
-    if isinstance(value, dict):
-        valuedict = {key: default for key in keys}
-        valuedict.update(value)
-    else:
-        valuedict = {key: value for key in keys}
-    return valuedict
 
 
 class NetworkPlotter(Plotter):
@@ -156,19 +146,19 @@ class NetworkPlotter(Plotter):
         ----------
         keys : list
             The keys of the nodes to plot.
-        radius : list
+        radius : {float, dict}
             A list of radii for the nodes.
-        text : list
+        text : {{'index', 'key'}, str, dict}
             Strings to be displayed on the nodes.
-        facecolor : list
+        facecolor : {color, dict}
             Color for the node circle fill.
-        edgecolor : list
+        edgecolor : {color, dict}
             Color for the node circle edge.
-        edgewidth : list
+        edgewidth : {float, dict}
             Width for the node circle edge.
-        textcolor : list
+        textcolor : {color, dict}
             Color for the text to be displayed on the nodes.
-        fontsize : list
+        fontsize : {int, dict}
             Font size for the text to be displayed on the nodes.
 
         Returns
@@ -242,15 +232,15 @@ class NetworkPlotter(Plotter):
         ----------
         keys : list
             The keys of the edges to plot.
-        width : list
+        width : {float, dict}
             Width of the network edges.
-        color : list
+        color : {color, dict}
             Color for the edge lines.
-        text : list
+        text : {{'index', 'key'}, str, dict}
             Strings to be displayed on the edges.
-        textcolor : list
+        textcolor : {color, dict}
             Color for the text to be displayed on the edges.
-        fontsize : list
+        fontsize : {int, dict}
             Font size for the text to be displayed on the edges.
 
         Returns
