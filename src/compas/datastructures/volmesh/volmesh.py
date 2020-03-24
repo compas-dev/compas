@@ -4,7 +4,10 @@ from __future__ import division
 
 import pickle
 import json
-import collections
+try:
+    from collections.abc import MutableMapping  # python > 3.3
+except ImportError:
+    from collections import MutableMapping      # python 2.7
 from copy import deepcopy
 from ast import literal_eval
 from random import sample
@@ -47,7 +50,7 @@ class AttributeView(object):
         return len(self.defaults)
 
 
-class VertexAttributeView(AttributeView, collections.MutableMapping):
+class VertexAttributeView(AttributeView, MutableMapping):
     """Mutable Mapping that provides a read/write view of the custom attributes of a vertex
     combined with the default attributes of all vertices."""
 
@@ -75,7 +78,7 @@ class VertexAttributeView(AttributeView, collections.MutableMapping):
             yield key
 
 
-class FaceAttributeView(AttributeView, collections.MutableMapping):
+class FaceAttributeView(AttributeView, MutableMapping):
     """Mutable Mapping that provides a read/write view of the custom attributes of a face
     combined with the default attributes of all faces."""
 
@@ -104,7 +107,7 @@ class FaceAttributeView(AttributeView, collections.MutableMapping):
                 yield name
 
 
-class EdgeAttributeView(AttributeView, collections.MutableMapping):
+class EdgeAttributeView(AttributeView, MutableMapping):
     """Mutable Mapping that provides a read/write view of the custom attributes of an edge
     combined with the default attributes of all edges."""
 
