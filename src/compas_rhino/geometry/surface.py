@@ -96,10 +96,10 @@ class RhinoSurface(RhinoGeometry):
         faces = []
         for i in range(u - 1):
             for j in range(v - 1):
-                face = ((i + 0) * v + j,
-                        (i + 0) * v + j + 1,
+                face = [(i + 0) * v + j,
+                        (i + 1) * v + j,
                         (i + 1) * v + j + 1,
-                        (i + 1) * v + j)
+                        (i + 0) * v + j + 1]
                 faces.append(face)
         cls = cls or Mesh
         return cls.from_vertices_and_faces(vertices, faces)
