@@ -1184,16 +1184,9 @@ class BaseMesh(HalfEdge):
         >>>
 
         """
-        vertices = set()
-
-        for key, nbrs in iter(self.halfedge.items()):
-            for nbr, face in iter(nbrs.items()):
-                if face is None:
-                    vertices.add(key)
-                    vertices.add(nbr)
-
-        vertices = list(vertices)
-
+        vertices = self.vertices_on_boundaries(grouped=False)
+        if not vertices:
+            return vertices
         if not ordered:
             return vertices
 
@@ -1201,20 +1194,51 @@ class BaseMesh(HalfEdge):
 
         vertices = []
         start = key
-
         while 1:
             for nbr, fkey in iter(self.halfedge[key].items()):
                 if fkey is None:
                     vertices.append(nbr)
                     key = nbr
                     break
-
             if key == start:
                 break
-
         return vertices
 
-    def vertices_on_boundaries(self):
+    def faces_on_boundary(self):
+        """Find the faces on the boundary.
+
+        Returns
+        -------
+        list
+            The faces on the boundary.
+        """
+        faces = []
+        for u, v in self.edges_on_boundary():
+            fkey = self.halfedge[v][u]
+            faces.append(fkey)
+        return faces
+
+    def edges_on_boundary(self, oriented=False):
+        """Find the edges on the boundary.
+
+        Parameters
+        ----------
+        oriented : bool, optional
+            If ``False`` (default) the edges are aligned head-to-tail along the boundary.
+            If ``True`` the edges have the same orientation as in the mesh.
+
+        Returns
+        -------
+        edges : list
+            The boundary edges.
+        """
+        vertices = self.vertices_on_boundary(ordered=True)
+        edges = list(pairwise(vertices))
+        if not oriented:
+            return edges
+        return [(u, v) if self.has_edge((u, v)) is None else (v, u) for u, v in edges]
+
+    def vertices_on_boundaries(self, grouped=True):
         """Find the vertices on all boundaries of the mesh.
 
         Returns
@@ -1225,7 +1249,6 @@ class BaseMesh(HalfEdge):
         Examples
         --------
         >>>
-
         """
         vertices_set = set()
         for key, nbrs in iter(self.halfedge.items()):
@@ -1233,12 +1256,15 @@ class BaseMesh(HalfEdge):
                 if face is None:
                     vertices_set.add(key)
                     vertices_set.add(nbr)
-
         vertices_all = list(vertices_set)
-        boundaries = []
+        if not vertices_all:
+            return vertices_all
+        if not grouped:
+            return vertices_all
 
         key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
 
+        boundaries = []
         while vertices_all:
             vertices = []
             start = key
@@ -1254,73 +1280,15 @@ class BaseMesh(HalfEdge):
                     break
             if vertices_all:
                 key = vertices_all[0]
-
         return boundaries
 
-    def faces_on_boundary(self):
-        """Find the faces on the boundary.
-
-        Returns
-        -------
-        list
-            The faces on the boundary.
-
-        """
-        faces = OrderedDict()
-        for key, nbrs in iter(self.halfedge.items()):
-            for nbr, fkey in iter(nbrs.items()):
-                if fkey is None:
-                    faces[self.halfedge[nbr][key]] = 1
-        return faces.keys()
-
-    def edges_on_boundary(self, chained=False):
-        """Find the edges on the boundary.
-
-        Parameters
-        ----------
-        chained : bool (``False``)
-            Indicate whether the boundary edges should be chained head to tail.
-            Note that chaining the edges will essentially return half-edges that
-            point outwards to the space outside.
-
-        Returns
-        -------
-        boundary_edges : list
-            The boundary edges.
-
-        """
-        boundary_edges = [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
-        if not chained:
-            return boundary_edges
-        # this is not "chained"
-        # it is "oriented"
-        return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]
-
-    # def boundaries(self):
-    #     """Collect the mesh boundaries as lists of vertices.
-
-    #     Parameters
-    #     ----------
-    #     mesh : Mesh
-    #         Mesh.
-
-    #     Returns
-    #     -------
-    #     boundaries : list
-    #         List of boundaries as lists of vertex keys.
-    #     """
-    #     # get all boundary edges pointing outwards
-    #     boundary_edges = OrderedDict([(u, v) for u, v in self.edges_on_boundary(True)])
-    #     # find the boundaries
-    #     boundaries = []
-    #     while len(boundary_edges) > 0:
-    #         boundary = list(boundary_edges.popitem())
-    #         # get consecuvite vertex until the boundary is closed
-    #         while boundary[0] != boundary[-1]:
-    #             boundary.append(boundary_edges[boundary[-1]])
-    #             boundary_edges.pop(boundary[-2])
-    #         boundaries.append(boundary[: -1])
-    #     return boundaries
+    def edges_on_boundaries(self):
+        """"""
+        vertexgroups = self.vertices_on_boundaries()
+        edgegroups = []
+        for vertices in vertexgroups:
+            edgegroups.append(list(pairwise(vertices)))
+        return edgegroups
 
 
 # ==============================================================================
