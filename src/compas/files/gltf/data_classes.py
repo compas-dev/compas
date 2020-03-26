@@ -42,7 +42,7 @@ class SamplerData(object):
 
     @classmethod
     def from_dict(cls, sampler):
-        if not sampler:
+        if sampler is None:
             return None
         return cls(
             mag_filter=sampler.get('magFilter'),
@@ -79,7 +79,7 @@ class TextureData(object):
 
     @classmethod
     def from_dict(cls, texture):
-        if not texture:
+        if texture is None:
             return None
         return cls(
             sampler=texture.get('sampler'),
@@ -109,7 +109,7 @@ class TextureInfoData(object):
 
     @classmethod
     def from_dict(cls, texture_info):
-        if not texture_info:
+        if texture_info is None:
             return None
         return cls(
             index=texture_info['index'],
@@ -132,7 +132,7 @@ class OcclusionTextureInfoData(TextureInfoData):
 
     @classmethod
     def from_dict(cls, texture_info):
-        if not texture_info:
+        if texture_info is None:
             return None
         return cls(
             index=texture_info['index'],
@@ -156,7 +156,7 @@ class NormalTextureInfoData(TextureInfoData):
 
     @classmethod
     def from_dict(cls, texture_info):
-        if not texture_info:
+        if texture_info is None:
             return None
         return cls(
             index=texture_info['index'],
@@ -171,10 +171,10 @@ class PBRMetallicRoughnessData(object):
     def __init__(
         self,
         base_color_factor=None,
-        base_color_texture=None,  # TextureInfoData
+        base_color_texture=None,
         metallic_factor=None,
         roughness_factor=None,
-        metallic_roughness_texture=None,  # TextureInfoData
+        metallic_roughness_texture=None,
         extras=None,
         extensions=None,
     ):
@@ -204,7 +204,7 @@ class PBRMetallicRoughnessData(object):
 
     @classmethod
     def from_dict(cls, texture_info):
-        if not texture_info:
+        if texture_info is None:
             return None
         return cls(
             base_color_factor=texture_info.get('baseColorFactor'),
@@ -272,7 +272,7 @@ class MaterialData(object):
 
     @classmethod
     def from_dict(cls, material):
-        if not material:
+        if material is None:
             return None
         return cls(
             name=material.get('name'),
@@ -314,7 +314,7 @@ class CameraData(object):
 
     @classmethod
     def from_dict(cls, camera):
-        if not camera:
+        if camera is None:
             return None
         return cls(
             type_=camera['type'],
@@ -349,7 +349,7 @@ class AnimationSamplerData(object):
 
     @classmethod
     def from_dict(cls, sampler, input_, output):
-        if not sampler:
+        if sampler is None:
             return None
         return cls(
             input_=input_,
@@ -381,7 +381,7 @@ class TargetData(object):
 
     @classmethod
     def from_dict(cls, target):
-        if not target:
+        if target is None:
             return None
         return cls(
             path=target['path'],
@@ -411,7 +411,7 @@ class ChannelData(object):
 
     @classmethod
     def from_dict(cls, channel):
-        if not channel:
+        if channel is None:
             return None
         return cls(
             sampler=channel['sampler'],
@@ -454,7 +454,7 @@ class AnimationData(object):
 
     @classmethod
     def from_dict(cls, animation, channel_data_list, sampler_dict):
-        if not animation:
+        if animation is None:
             return None
         return cls(
             channels=channel_data_list,
@@ -494,7 +494,7 @@ class SkinData(object):
 
     @classmethod
     def from_dict(cls, skin, inverse_bind_matrices):
-        if not skin:
+        if skin is None:
             return None
         return cls(
             joints=skin['joints'],
@@ -536,7 +536,7 @@ class ImageData(object):
 
     @classmethod
     def from_dict(cls, image, data, mime_type):
-        if not image:
+        if image is None:
             return None
         return cls(
             uri=image.get('uri'),
@@ -576,7 +576,7 @@ class PrimitiveData(object):
 
     @classmethod
     def from_dict(cls, primitive, attributes, indices, target_list):
-        if not primitive:
+        if primitive is None:
             return None
         return cls(
             attributes=attributes,

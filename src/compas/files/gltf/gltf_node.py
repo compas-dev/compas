@@ -279,7 +279,7 @@ class GLTFNode(object):
 
     @classmethod
     def from_dict(cls, node, context):
-        if not node:
+        if node is None:
             return None
         gltf_node = cls(
             context=context,

@@ -90,7 +90,7 @@ class GLTFScene(object):
 
     @classmethod
     def from_dict(cls, scene, context):
-        if not scene:
+        if scene is None:
             return None
         return cls(
             context=context,

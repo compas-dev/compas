@@ -173,7 +173,7 @@ class GLTFMesh(object):
 
     @classmethod
     def from_dict(cls, mesh, context, primitive_data_list):
-        if not mesh:
+        if mesh is None:
             return None
         return cls(
             primitive_data_list=primitive_data_list,
