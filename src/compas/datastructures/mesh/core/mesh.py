@@ -1184,7 +1184,14 @@ class BaseMesh(HalfEdge):
         >>>
 
         """
-        vertices = self.vertices_on_boundaries(grouped=False)
+        vertices_set = set()
+        for key, nbrs in iter(self.halfedge.items()):
+            for nbr, face in iter(nbrs.items()):
+                if face is None:
+                    vertices_set.add(key)
+                    vertices_set.add(nbr)
+        vertices = list(vertices_set)
+
         if not vertices:
             return vertices
         if not ordered:
@@ -1204,20 +1211,6 @@ class BaseMesh(HalfEdge):
                 break
         return vertices
 
-    def faces_on_boundary(self):
-        """Find the faces on the boundary.
-
-        Returns
-        -------
-        list
-            The faces on the boundary.
-        """
-        faces = []
-        for u, v in self.edges_on_boundary():
-            fkey = self.halfedge[v][u]
-            faces.append(fkey)
-        return faces
-
     def edges_on_boundary(self, oriented=False):
         """Find the edges on the boundary.
 
@@ -1233,12 +1226,27 @@ class BaseMesh(HalfEdge):
             The boundary edges.
         """
         vertices = self.vertices_on_boundary(ordered=True)
-        edges = list(pairwise(vertices))
+        edges = list(pairwise(vertices + vertices[:1]))
         if not oriented:
             return edges
         return [(u, v) if self.has_edge((u, v)) is None else (v, u) for u, v in edges]
 
-    def vertices_on_boundaries(self, grouped=True):
+    def faces_on_boundary(self):
+        """Find the faces on the boundary.
+
+        Returns
+        -------
+        list
+            The faces on the boundary.
+        """
+        faces = []
+        for u, v in self.edges_on_boundary():
+            fkey = self.halfedge[v][u]
+            if fkey not in faces:
+                faces.append(fkey)
+        return faces
+
+    def vertices_on_boundaries(self):
         """Find the vertices on all boundaries of the mesh.
 
         Returns
@@ -1257,9 +1265,8 @@ class BaseMesh(HalfEdge):
                     vertices_set.add(key)
                     vertices_set.add(nbr)
         vertices_all = list(vertices_set)
+
         if not vertices_all:
-            return vertices_all
-        if not grouped:
             return vertices_all
 
         key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
@@ -1298,20 +1305,20 @@ class BaseMesh(HalfEdge):
 if __name__ == '__main__':
 
     import compas
-    from compas.datastructures import Network
+    from compas.datastructures import Mesh
     from compas_plotters import MeshPlotter
 
-    network = Network.from_obj(compas.get('lines.obj'))
-    lines = network.to_lines()
+    mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
 
-    mesh = BaseMesh.from_lines(lines, delete_boundary_face=False)
-
-    mesh.summary()
+    edges = mesh.edges_on_boundary()
+    print(len(edges))
+    faces = mesh.faces_on_boundary()
+    print(len(faces))
 
     plotter = MeshPlotter(mesh, figsize=(8, 5))
 
     plotter.draw_vertices()
-    plotter.draw_faces()
+    plotter.draw_faces(text='key')
     plotter.draw_edges()
 
     plotter.show()
