@@ -152,15 +152,15 @@ class RhinoCurve(RhinoGeometry):
         """
         return compas_rhino.rs.IsCurveClosed(self.guid)
 
-    # def length(self):
-    #     """Return the length of the curve.
+    def length(self):
+        """Return the length of the curve.
 
-    #     Returns
-    #     -------
-    #     float
-    #         The curve's length.
-    #     """
-    #     return rs.CurveLength(self.guid)
+        Returns
+        -------
+        float
+            The curve's length.
+        """
+        return compas_rhino.rs.CurveLength(self.guid)
 
     # def control_points(self):
     #     """Get the control points of a curve.
@@ -201,27 +201,27 @@ class RhinoCurve(RhinoGeometry):
     #     sc.doc.Views.Redraw()
     #     return grip
 
-    # def space(self, density):
-    #     space = []
-    #     density = int(density)
-    #     if rs.IsCurve(self.guid):
-    #         domain = rs.CurveDomain(self.guid)
-    #         u = (domain[1] - domain[0]) / (density - 1)
-    #         for i in range(density):
-    #             space.append(domain[0] + u * i)
-    #     elif rs.IsPolyCurve(self.guid):
-    #         rs.EnableRedraw(False)
-    #         segments = rs.ExplodeCurves(self.guid)
-    #         for segment in segments:
-    #             domain = rs.CurveDomain(segment)
-    #             u = (domain[1] - domain[0]) / (density - 1)
-    #             for i in range(density):
-    #                 space.append(domain[0] + u * i)
-    #         rs.DeleteObjects(segments)
-    #         rs.EnableRedraw(True)
-    #     else:
-    #         raise Exception('Object is not a curve.')
-    #     return space
+    def space(self, density):
+        space = []
+        density = int(density)
+        if compas_rhino.rs.IsCurve(self.guid):
+            domain = compas_rhino.rs.CurveDomain(self.guid)
+            u = (domain[1] - domain[0]) / (density - 1)
+            for i in range(density):
+                space.append(domain[0] + u * i)
+        elif compas_rhino.rs.IsPolyCurve(self.guid):
+            compas_rhino.rs.EnableRedraw(False)
+            segments = compas_rhino.rs.ExplodeCurves(self.guid)
+            for segment in segments:
+                domain = compas_rhino.rs.CurveDomain(segment)
+                u = (domain[1] - domain[0]) / (density - 1)
+                for i in range(density):
+                    space.append(domain[0] + u * i)
+            compas_rhino.rs.DeleteObjects(segments)
+            compas_rhino.rs.EnableRedraw(True)
+        else:
+            raise Exception('Object is not a curve.')
+        return space
 
     # def heightfield(self, density):
     #     heightfield = []
@@ -255,25 +255,25 @@ class RhinoCurve(RhinoGeometry):
     #     ]
     #     return tangents
 
-    # def divide(self, number_of_segments, over_space=False):
-    #     points = []
-    #     rs.EnableRedraw(False)
-    #     if over_space:
-    #         space = self.space(number_of_segments + 1)
-    #         if space:
-    #             points = [list(rs.EvaluateCurve(self.guid, param)) for param in space]
-    #     else:
-    #         points = rs.DivideCurve(self.guid, number_of_segments, create_points=False, return_points=True)
-    #         points[:] = map(list, points)
-    #     rs.EnableRedraw(True)
-    #     return points
+    def divide(self, number_of_segments, over_space=False):
+        points = []
+        compas_rhino.rs.EnableRedraw(False)
+        if over_space:
+            space = self.space(number_of_segments + 1)
+            if space:
+                points = [list(compas_rhino.rs.EvaluateCurve(self.guid, param)) for param in space]
+        else:
+            points = compas_rhino.rs.DivideCurve(self.guid, number_of_segments, create_points=False, return_points=True)
+            points[:] = map(list, points)
+        compas_rhino.rs.EnableRedraw(True)
+        return points
 
-    # def divide_length(self, length_of_segments):
-    #     rs.EnableRedraw(False)
-    #     points = rs.DivideCurveLength(self.guid, length_of_segments, create_points=False, return_points=True)
-    #     points[:] = map(list, points)
-    #     rs.EnableRedraw(True)
-    #     return points
+    def divide_length(self, length_of_segments):
+        compas_rhino.rs.EnableRedraw(False)
+        points = compas_rhino.rs.DivideCurveLength(self.guid, length_of_segments, create_points=False, return_points=True)
+        points[:] = map(list, points)
+        compas_rhino.rs.EnableRedraw(True)
+        return points
 
     def closest_point(self, point, maxdist=None, return_param=False):
         maxdist = maxdist or 0.0
