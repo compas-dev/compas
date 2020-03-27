@@ -45,13 +45,19 @@ class RhinoMesh(RhinoGeometry):
         guid = compas_rhino.select_mesh()
         return cls.from_guid(guid)
 
+    @classmethod
+    def from_geometry(cls, geometry):
+        mesh = cls()
+        mesh.geometry = geometry
+        return mesh
+
     @property
     def vertices(self):
-        return [map(float, vertex) for vertex in compas_rhino.rs.MeshVertices(self.guid)]
+        return [map(float, vertex) for vertex in compas_rhino.rs.MeshVertices(self.geometry)]
 
     @property
     def faces(self):
-        return map(list, compas_rhino.rs.MeshFaceVertices(self.guid))
+        return map(list, compas_rhino.rs.MeshFaceVertices(self.geometry))
 
     def to_compas(self, cls=None):
         if not cls:
