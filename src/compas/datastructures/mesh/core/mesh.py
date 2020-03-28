@@ -4,7 +4,6 @@ from __future__ import print_function
 
 import collections
 import sys
-from collections import OrderedDict
 from math import pi
 
 from compas.datastructures.mesh.core.halfedge import HalfEdge
@@ -281,8 +280,20 @@ class BaseMesh(HalfEdge):
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
-    def to_off(self, filepath):
-        raise NotImplementedError
+    def to_off(self, filepath, **kwargs):
+        """Write a mesh object to an OFF file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+
+        Examples
+        --------
+        >>>
+        """
+        off = OFF(filepath)
+        off.write(self, **kwargs)
 
     @classmethod
     def from_lines(cls, lines, delete_boundary_face=False, precision=None):

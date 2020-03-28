@@ -7,10 +7,13 @@ try:
 except ImportError:
     from urllib2 import urlopen
 
+import compas
+
 
 __all__ = [
     'OFF',
     'OFFReader',
+    'OFFWriter',
 ]
 
 
@@ -28,13 +31,21 @@ class OFF(object):
 
     def __init__(self, filepath):
         self.filepath = filepath
-
         self._reader = None
         self._is_read = False
+        self._writer = None
 
     def read(self):
         self._reader = OFFReader(self.filepath)
+        self._reader.open()
+        self._reader.pre()
+        self._reader.read()
+        self._reader.post()
         self._is_read = True
+
+    def write(self, mesh, **kwargs):
+        self._writer = OFFWriter(self.filepath, mesh, **kwargs)
+        self._writer.write()
 
     @property
     def reader(self):
@@ -55,33 +66,15 @@ class OFFReader(object):
     ----------
     vertices : list
         Vertex coordinates.
-    weights : list
-        Vertex weights.
-    textures : list
-        Vertex textures.
-    normals : list
-        Vertex normals.
-    points : list
-        Point objects, referencing the list of vertices.
-    lines : list
-        Line objects, referencing the list of vertices.
     faces : list
         Face objects, referencing the list of vertices.
-    curves : list
-        Curves
-    curves2 : list
-        Curves
-    surfaces : list
-        Surfaces
 
     Notes
     -----
-    For more info, see [1]_.
+    The OFF reader currently only supports reading of vertices and faces of polygon meshes.
 
     References
     ----------
-    .. [1] Bourke, P. *Object Files*.
-           Available at: http://paulbourke.net/dataformats/obj/.
 
     """
 
@@ -93,10 +86,6 @@ class OFFReader(object):
         self.v = 0
         self.f = 0
         self.e = 0
-        self.open()
-        self.pre()
-        self.read()
-        self.post()
 
     def open(self):
         if self.filepath.startswith('http'):
@@ -158,36 +147,78 @@ class OFFReader(object):
                 self.v, self.f, self.e = int(parts[0]), int(parts[1]), int(parts[2])
                 break
 
-        for line in self.content:
+        while len(self.vertices) < self.v:
+            line = next(self.content)
             parts = line.split()
-            if not parts:
-                self.face = None
-                continue
+            if parts:
+                self.vertices.append([float(axis) for axis in parts[:3]])
 
-            if len(parts) == 3:
-                self.vertices.append([float(axis) for axis in parts])
-                continue
-
-            if len(parts) > 1:
+        while len(self.faces) < self.f:
+            line = next(self.content)
+            parts = line.split()
+            if parts:
                 f = int(parts[0])
-                face = [int(index) for index in parts[1:]]
-                while len(face) < f:
-                    line = next(self.content)
-                    line = line.strip()
-                    if not line:
-                        break
-                    parts = line.split()
-                    if not parts:
-                        break
-                    face += [int(index) for index in parts]
+                face = [int(index) for index in parts[1:f + 1]]
+                # if len(parts[1:]) >= f:
+                #     face = [int(index) for index in parts[1:f + 1]]
+                # else:
+                #     # add support for color info
+                #     face = [int(index) for index in parts[1:]]
+                #     while len(face) < f:
+                #         line = next(self.content)
+                #         line = line.strip()
+                #         if not line:
+                #             break
+                #         parts = line.split()
+                #         if not parts:
+                #             break
+                #         face += [int(index) for index in parts]
                 if len(face) == f:
                     self.faces.append(face)
 
-            # if len(parts) > 3:
-            #     f = int(parts[0])
-            #     if f == len(parts[1:]):
-            #         self.faces.append([int(index) for index in parts[1:]])
-            #     continue
+
+class OFFWriter(object):
+
+    def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
+        self.filepath = filepath
+        self.mesh = mesh
+        self.author = author
+        self.email = email
+        self.date = date
+        self.precision = precision or compas.PRECISION
+        self.vertex_tpl = "{0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
+        self.v = mesh.number_of_vertices()
+        self.f = mesh.number_of_faces()
+        self.e = mesh.number_of_edges()
+        self.file = None
+
+    def write(self):
+        with open(self.filepath, 'w') as self.file:
+            self.write_header()
+            self.write_vertices()
+            self.write_faces()
+
+    def write_header(self):
+        self.file.write("OFF\n")
+        if self.author:
+            self.file.write("# author: {}\n".format(self.author))
+        if self.email:
+            self.file.write("# email: {}\n".format(self.email))
+        if self.date:
+            self.file.write("# date: {}\n".format(self.date))
+        self.file.write("{} {} {}\n".format(self.v, self.f, self.e))
+
+    def write_vertices(self):
+        for key in self.mesh.vertices():
+            x, y, z = self.mesh.vertex_coordinates(key)
+            self.file.write(self.vertex_tpl.format(x, y, z))
+
+    def write_faces(self):
+        key_index = self.mesh.key_index()
+        for fkey in self.mesh.faces():
+            vertices = self.mesh.face_vertices(fkey)
+            v = len(vertices)
+            self.file.write("{0} {1}\n".format(v, " ".join([str(key_index[key]) for key in vertices])))
 
 
 # ==============================================================================
@@ -195,9 +226,14 @@ class OFFReader(object):
 # ==============================================================================
 if __name__ == '__main__':
 
-    import compas
+    import os
+    from compas.datastructures import Mesh
 
-    off = OFF(compas.get('cube.off'))
+    FILE = os.path.join(compas.DATA, 'tubemesh.off')
 
+    mesh = Mesh.from_json(compas.get('tubemesh.json'))
+    mesh.to_off(FILE, author="Tom Van Mele")
+
+    off = OFF(FILE)
     print(len(off.reader.vertices) == off.reader.v)
     print(len(off.reader.faces) == off.reader.f)
