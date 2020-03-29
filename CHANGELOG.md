@@ -9,9 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added classmethod ``from_geometry`` to ``RhinoMesh``
+- Added classmethod `from_geometry` to `RhinoMesh`.
+- Added conversion to polygons to `BaseMesh`.
+- Re-added length, divide, space methods of `RhinoCurve`.
+- Added basic OFF file writing.
+- Added basic PLY file writing.
 
 ### Changed
+
+- Fixed object naming in artists of `compas_ghpython`.
+- Resizing of Rhino property form.
+- Fixed orientation of `RhinoSurface` discretisation.
+- Check for existence of object in Rhino purge functions.
+- Fixed bug in mesh boundary functions.
 
 ### Removed
 
