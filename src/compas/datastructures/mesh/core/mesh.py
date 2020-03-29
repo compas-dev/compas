@@ -219,8 +219,20 @@ class BaseMesh(HalfEdge):
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
-    def to_ply(self, filepath):
-        raise NotImplementedError
+    def to_ply(self, filepath, **kwargs):
+        """Write a mesh object to a PLY file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+
+        Examples
+        --------
+        >>>
+        """
+        ply = PLY(filepath)
+        ply.write(self, **kwargs)
 
     @classmethod
     def from_stl(cls, filepath):

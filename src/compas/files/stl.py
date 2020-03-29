@@ -18,7 +18,6 @@ class STL(object):
     def __init__(self, filepath, precision=None):
         self.filepath = filepath
         self.precision = precision
-
         self._is_parsed = False
         self._reader = None
         self._parser = None
@@ -65,7 +64,6 @@ class STLReader(object):
                 is_binary = False
             else:
                 is_binary = True
-
         try:
             if not is_binary:
                 self.read_ascii()
@@ -75,7 +73,6 @@ class STLReader(object):
             # raise if it was already detected as binary, but failed anyway
             if is_binary:
                 raise
-
             # else, ascii parsing failed, try binary
             is_binary = True
             self.read_binary()
