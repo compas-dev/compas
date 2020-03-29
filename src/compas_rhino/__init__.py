@@ -40,7 +40,7 @@ else:
         pass
 
 
-__version__ = '0.15.4'
+__version__ = '0.15.5'
 
 
 PURGE_ON_DELETE = True
