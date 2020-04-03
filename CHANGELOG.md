@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added classmethod ``from_geometry`` to ``RhinoMesh``
 - Added ``intersection_sphere_line``
 - Added ``intersection_plane_circle``
+- Added ``tangent_points_to_circle_xy``
 
 ### Changed
 
