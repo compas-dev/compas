@@ -22,7 +22,7 @@ except ImportError:
 from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '0.15.4'
+__version__ = '0.15.5'
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

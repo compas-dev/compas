@@ -9,12 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+
 - Added classmethod ``from_geometry`` to ``RhinoMesh``
 - Added ``intersection_sphere_line``
 - Added ``intersection_plane_circle``
 - Added ``tangent_points_to_circle_xy``
 
 ### Changed
+
+### Removed
+
+
+## [0.15.5] 2020-03-29
+
+### Added
+
+- Added classmethod `from_geometry` to `RhinoMesh`.
+- Added conversion to polygons to `BaseMesh`.
+- Re-added length, divide, space methods of `RhinoCurve`.
+- Added basic OFF file writing.
+- Added basic PLY file writing.
+
+### Changed
+
+- Fixed object naming in artists of `compas_ghpython`.
+- Resizing of Rhino property form.
+- Fixed orientation of `RhinoSurface` discretisation.
+- Check for existence of object in Rhino purge functions.
+- Fixed bug in mesh boundary functions.
 
 ### Removed
 

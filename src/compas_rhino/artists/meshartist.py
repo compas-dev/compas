@@ -57,6 +57,8 @@ class MeshArtist(Artist):
         self.layer = layer
         self.name = name
         self.mesh = mesh
+        # update this to plurals
+        # make settings an optional parameter
         self.settings = {
             'color.vertex': (255, 255, 255),
             'color.edge': (0, 0, 0),
@@ -69,6 +71,7 @@ class MeshArtist(Artist):
             'show.edges': True,
             'show.faces': True}
 
+    # this should be removed
     @classmethod
     def from_data(cls, data):
         module, attr = data['dtype'].split('/')
@@ -77,12 +80,17 @@ class MeshArtist(Artist):
         artist = cls(mesh)
         return artist
 
+    # this should be removed
     def to_data(self):
         return self.mesh.to_data()
 
     # ==========================================================================
     # clear
     # ==========================================================================
+
+    # all the clear functions should be removed
+    # except clear_layer
+    # all other clearing should be based on guids
 
     def clear_layer(self):
         """Clear the main layer of the artist."""

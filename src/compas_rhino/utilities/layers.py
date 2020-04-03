@@ -183,6 +183,7 @@ def delete_layers(layers):
             if 'layers' in attr:
                 recurse(attr['layers'], fullname)
             to_delete.append(fullname)
+
     rs.EnableRedraw(False)
     recurse(layers)
     for layer in to_delete:

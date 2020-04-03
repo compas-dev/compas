@@ -34,6 +34,9 @@ class Scale(Transformation):
     def __init__(self, scale_factors):
         self.matrix = matrix_from_scale_factors(scale_factors)
 
+    @property
+    def scale_factors(self):
+        return self.matrix[0][0], self.matrix[1][1], self.matrix[2][2]
 
 # ==============================================================================
 # Main
