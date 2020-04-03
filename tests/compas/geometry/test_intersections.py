@@ -1,6 +1,6 @@
+from compas.geometry import allclose
 from compas.geometry import intersection_sphere_line
 from compas.geometry import intersection_plane_circle
-from compas.geometry import allclose
 
 
 def test_intersection_sphere_line():
