@@ -107,8 +107,7 @@ if __name__ == '__main__':
     gltf = GLTF(filepath_glb)
     gltf.read()
 
-    default_scene_key = gltf.content.default_scene_key or 0
-    default_scene = gltf.content.scenes[default_scene_key]
+    default_scene = gltf.content.default_or_first_scene
 
     transformed_meshes = []
 

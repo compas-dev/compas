@@ -81,7 +81,7 @@ class GLTFReader(object):
                 if 'uri' in image and self.is_data_uri(image['uri']):
                     data = base64.b64decode(self.get_data_uri_data(image['uri']))
 
-                image_data = ImageData.from_dict(image, data, mime_type)
+                image_data = ImageData.from_data(image, data, mime_type)
                 self.image_data.append(image_data)
 
         self._release_buffers()

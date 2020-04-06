@@ -76,7 +76,7 @@ class GLTFScene(object):
     def add_child(self, node_name=None, node_extras=None):
         return self.context.add_node_to_scene(self, node_name, node_extras)
 
-    def to_dict(self, node_index_by_key):
+    def to_data(self, node_index_by_key):
         scene_dict = {}
         if self.children:
             scene_dict['nodes'] = [node_index_by_key[key] for key in self.children]
@@ -89,7 +89,7 @@ class GLTFScene(object):
         return scene_dict
 
     @classmethod
-    def from_dict(cls, scene, context):
+    def from_data(cls, scene, context):
         if scene is None:
             return None
         return cls(

@@ -250,7 +250,7 @@ class GLTFNode(object):
     def add_mesh(self, mesh):
         return self.context.add_mesh_to_node(self, mesh)
 
-    def to_dict(self, node_index_by_key, mesh_index_by_key, camera_index_by_key, skin_index_by_key):
+    def to_data(self, node_index_by_key, mesh_index_by_key, camera_index_by_key, skin_index_by_key):
         node_dict = {}
         if self.name is not None:
             node_dict['name'] = self.name
@@ -278,7 +278,7 @@ class GLTFNode(object):
         return node_dict
 
     @classmethod
-    def from_dict(cls, node, context):
+    def from_data(cls, node, context):
         if node is None:
             return None
         gltf_node = cls(
@@ -289,7 +289,7 @@ class GLTFNode(object):
         )
         # Accessing protected attribute to bypass validation:
         # Nodes may reference children that haven't yet been added to the GLTFContent
-        gltf_node.children._value = node.get('children', [])
+        gltf_node.children._values = node.get('children', [])
 
         gltf_node.translation = node.get('translation')
         gltf_node.rotation = node.get('rotation')

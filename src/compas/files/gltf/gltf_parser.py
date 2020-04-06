@@ -41,11 +41,11 @@ class GLTFParser(object):
         self.content.extensions = self._get_extensions()
 
         self.content.images = {key: image_data for key, image_data in enumerate(self.reader.image_data)}
-        self.content.samplers = {key: SamplerData.from_dict(sampler) for key, sampler in enumerate(self.reader.json.get('samplers', []))}
-        self.content.textures = {key: TextureData.from_dict(texture) for key, texture in enumerate(self.reader.json.get('textures', []))}
-        self.content.materials = {key: MaterialData.from_dict(material) for key, material in enumerate(self.reader.json.get('materials', []))}
-        self.content.cameras = {key: CameraData.from_dict(camera) for key, camera in enumerate(self.reader.json.get('cameras', []))}
-        self.content.skins = {key: SkinData.from_dict(skin, self.reader.data[skin['inverseBindMatrices']]) for key, skin in enumerate(self.reader.json.get('skins', []))}
+        self.content.samplers = {key: SamplerData.from_data(sampler) for key, sampler in enumerate(self.reader.json.get('samplers', []))}
+        self.content.textures = {key: TextureData.from_data(texture) for key, texture in enumerate(self.reader.json.get('textures', []))}
+        self.content.materials = {key: MaterialData.from_data(material) for key, material in enumerate(self.reader.json.get('materials', []))}
+        self.content.cameras = {key: CameraData.from_data(camera) for key, camera in enumerate(self.reader.json.get('cameras', []))}
+        self.content.skins = {key: SkinData.from_data(skin, self.reader.data[skin['inverseBindMatrices']]) for key, skin in enumerate(self.reader.json.get('skins', []))}
         self.content.animations = {key: self._get_animation_data(animation) for key, animation in enumerate(self.reader.json.get('animations', []))}
 
         for mesh in self.reader.json.get('meshes', []):
@@ -62,9 +62,9 @@ class GLTFParser(object):
         for index, sampler in enumerate(animation['samplers']):
             input_ = self.reader.data[sampler['input']]
             output = self.reader.data[sampler['output']]
-            sampler_data_dict[index] = AnimationSamplerData.from_dict(sampler, input_, output)
-        channel_data_list = [ChannelData.from_dict(channel) for channel in animation['channels']]
-        return AnimationData.from_dict(animation, channel_data_list, sampler_data_dict)
+            sampler_data_dict[index] = AnimationSamplerData.from_data(sampler, input_, output)
+        channel_data_list = [ChannelData.from_data(channel) for channel in animation['channels']]
+        return AnimationData.from_data(animation, channel_data_list, sampler_data_dict)
 
     def _get_extras(self):
         return self.reader.json.get('extras')
@@ -76,10 +76,10 @@ class GLTFParser(object):
         return self.reader.json.get('extensions')
 
     def _add_gltf_scene(self, scene):
-        GLTFScene.from_dict(scene, self.content)
+        GLTFScene.from_data(scene, self.content)
 
     def _add_gltf_node(self, node):
-        GLTFNode.from_dict(node, self.content)
+        GLTFNode.from_data(node, self.content)
 
     def _add_gltf_mesh(self, mesh):
         primitive_data_list = []
@@ -98,11 +98,11 @@ class GLTFParser(object):
                 target_data = {attr: self.reader.data[accessor_index] for attr, accessor_index in target.items()}
                 target_list.append(target_data)
 
-            primitive_data = PrimitiveData.from_dict(primitive, attributes, indices, target_list)
+            primitive_data = PrimitiveData.from_data(primitive, attributes, indices, target_list)
 
             primitive_data_list.append(primitive_data)
 
-        GLTFMesh.from_dict(mesh, self.content, primitive_data_list)
+        GLTFMesh.from_data(mesh, self.content, primitive_data_list)
 
     def _get_indices(self, primitive, num_vertices):
         if 'indices' not in primitive:

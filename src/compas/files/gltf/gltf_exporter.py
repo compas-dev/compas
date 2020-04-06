@@ -153,12 +153,12 @@ class GLTFExporter(object):
             return
         images_list = [None] * len(self._content.images)
         for key, image_data in self._content.images.items():
-            uri = self._get_image_data_uri(image_data) if self.embed_data else None
-            buffer_view = self._get_buffer_view(image_data.data) if not self.embed_data else None
-            images_list[self._image_index_by_key[key]] = image_data.to_dict(uri, buffer_view)
+            uri = self._construct_image_data_uri(image_data) if self.embed_data else None
+            buffer_view = self._construct_buffer_view(image_data.data) if not self.embed_data else None
+            images_list[self._image_index_by_key[key]] = image_data.to_data(uri, buffer_view)
         self._gltf_dict['images'] = images_list
 
-    def _get_image_data_uri(self, image_data):
+    def _construct_image_data_uri(self, image_data):
         if image_data.data is None:
             return None
         return (
@@ -172,7 +172,7 @@ class GLTFExporter(object):
             return
         samplers_list = [None] * len(self._content.samplers)
         for key, sampler_data in self._content.samplers.items():
-            samplers_list[self._sampler_index_by_key[key]] = sampler_data.to_dict()
+            samplers_list[self._sampler_index_by_key[key]] = sampler_data.to_data()
         self._gltf_dict['samplers'] = samplers_list
 
     def _add_textures(self):
@@ -180,7 +180,7 @@ class GLTFExporter(object):
             return
         textures_list = [None] * len(self._content.textures)
         for key, texture_data in self._content.textures.items():
-            textures_list[self._texture_index_by_key[key]] = texture_data.to_dict(self._sampler_index_by_key, self._image_index_by_key)
+            textures_list[self._texture_index_by_key[key]] = texture_data.to_data(self._sampler_index_by_key, self._image_index_by_key)
         self._gltf_dict['textures'] = textures_list
 
     def _add_materials(self):
@@ -188,7 +188,7 @@ class GLTFExporter(object):
             return
         materials_list = [None] * len(self._content.materials)
         for key, material_data in self._content.materials.items():
-            materials_list[self._material_index_by_key[key]] = material_data.to_dict(self._texture_index_by_key)
+            materials_list[self._material_index_by_key[key]] = material_data.to_data(self._texture_index_by_key)
         self._gltf_dict['materials'] = materials_list
 
     def _add_skins(self):
@@ -196,8 +196,8 @@ class GLTFExporter(object):
             return
         skins_list = [None] * len(self._content.skins)
         for key, skin_data in self._content.skins.items():
-            accessor_index = self._get_accessor(skin_data.inverse_bind_matrices, COMPONENT_TYPE_FLOAT, TYPE_MAT4)
-            skins_list[self._skin_index_by_key[key]] = skin_data.to_dict(self._node_index_by_key, accessor_index)
+            accessor_index = self._construct_accessor(skin_data.inverse_bind_matrices, COMPONENT_TYPE_FLOAT, TYPE_MAT4)
+            skins_list[self._skin_index_by_key[key]] = skin_data.to_data(self._node_index_by_key, accessor_index)
         self._gltf_dict['skins'] = skins_list
 
     def _add_cameras(self):
@@ -205,7 +205,7 @@ class GLTFExporter(object):
             return
         camera_list = [None] * len(self._content.cameras)
         for key, camera_data in self._content.cameras.items():
-            camera_list[self._camera_index_by_key[key]] = camera_data.to_dict()
+            camera_list[self._camera_index_by_key[key]] = camera_data.to_data()
         self._gltf_dict['cameras'] = camera_list
 
     def _add_meshes(self):
@@ -213,8 +213,8 @@ class GLTFExporter(object):
             return
         mesh_list = [None] * len(self._content.meshes)
         for key, mesh_data in self._content.meshes.items():
-            primitives = self._get_primitives(mesh_data)
-            mesh_list[self._mesh_index_by_key[key]] = mesh_data.to_dict(primitives)
+            primitives = self._construct_primitives(mesh_data)
+            mesh_list[self._mesh_index_by_key[key]] = mesh_data.to_data(primitives)
         self._gltf_dict['meshes'] = mesh_list
 
     def _add_buffer(self):
@@ -232,22 +232,22 @@ class GLTFExporter(object):
             return None
         animation_list = []
         for animation_data in self._content.animations.values():
-            samplers_list = self._get_animation_samplers_list(animation_data)
-            animation_list.append(animation_data.to_dict(samplers_list, self._node_index_by_key))
+            samplers_list = self._construct_animation_samplers_list(animation_data)
+            animation_list.append(animation_data.to_data(samplers_list, self._node_index_by_key))
         self._gltf_dict['animations'] = animation_list
 
-    def _get_animation_samplers_list(self, animation_data):
+    def _construct_animation_samplers_list(self, animation_data):
         sampler_index_by_key = animation_data.get_sampler_index_by_key()
         samplers_list = [None] * len(sampler_index_by_key)
         for key, sampler_data in animation_data.samplers_dict.items():
-            input_accessor = self._get_accessor(sampler_data.input, COMPONENT_TYPE_FLOAT, TYPE_SCALAR, include_bounds=True)
+            input_accessor = self._construct_accessor(sampler_data.input, COMPONENT_TYPE_FLOAT, TYPE_SCALAR, include_bounds=True)
             type_ = TYPE_VEC3
             if isinstance(sampler_data.output[0], int) or isinstance(sampler_data.output[0], float):
                 type_ = TYPE_SCALAR
             elif len(sampler_data.output[0]) == 4:
                 type_ = TYPE_VEC4
-            output_accessor = self._get_accessor(sampler_data.output, COMPONENT_TYPE_FLOAT, type_)
-            samplers_list[sampler_index_by_key[key]] = sampler_data.to_dict(input_accessor, output_accessor)
+            output_accessor = self._construct_accessor(sampler_data.output, COMPONENT_TYPE_FLOAT, type_)
+            samplers_list[sampler_index_by_key[key]] = sampler_data.to_data(input_accessor, output_accessor)
         return samplers_list
 
     def _set_initial_gltf_dict(self):
@@ -266,7 +266,7 @@ class GLTFExporter(object):
             self._gltf_dict['scene'] = self._scene_index_by_key[self._content.default_scene_key]
         scene_list = [None] * len(self._content.scenes.values())
         for key, scene in self._content.scenes.items():
-            scene_list[self._scene_index_by_key[key]] = scene.to_dict(self._node_index_by_key)
+            scene_list[self._scene_index_by_key[key]] = scene.to_data(self._node_index_by_key)
         self._gltf_dict['scenes'] = scene_list
 
     def _add_nodes(self):
@@ -274,7 +274,7 @@ class GLTFExporter(object):
             return
         node_list = [None] * len(self._content.nodes)
         for key, node in self._content.nodes.items():
-            node_list[self._node_index_by_key[key]] = node.to_dict(
+            node_list[self._node_index_by_key[key]] = node.to_data(
                 self._node_index_by_key,
                 self._mesh_index_by_key,
                 self._camera_index_by_key,
@@ -282,10 +282,10 @@ class GLTFExporter(object):
             )
         self._gltf_dict['nodes'] = node_list
 
-    def _get_primitives(self, mesh_data):
+    def _construct_primitives(self, mesh_data):
         primitives = []
         for primitive_data in mesh_data.primitive_data_list:
-            indices_accessor = self._get_accessor(primitive_data.indices, COMPONENT_TYPE_UNSIGNED_INT, TYPE_SCALAR)
+            indices_accessor = self._construct_accessor(primitive_data.indices, COMPONENT_TYPE_UNSIGNED_INT, TYPE_SCALAR)
 
             attributes = {}
             for attr in primitive_data.attributes:
@@ -295,7 +295,7 @@ class GLTFExporter(object):
                     type_ = TYPE_VEC4
                 if len(primitive_data.attributes[attr][0]) == 2:
                     type_ = TYPE_VEC2
-                attributes[attr] = self._get_accessor(primitive_data.attributes[attr], component_type, type_, True)
+                attributes[attr] = self._construct_accessor(primitive_data.attributes[attr], component_type, type_, True)
 
             targets = []
             for target in primitive_data.targets or []:
@@ -303,15 +303,15 @@ class GLTFExporter(object):
                 for attr in target:
                     component_type = COMPONENT_TYPE_FLOAT
                     type_ = TYPE_VEC3
-                    target_dict[attr] = self._get_accessor(target[attr], component_type, type_, True)
+                    target_dict[attr] = self._construct_accessor(target[attr], component_type, type_, True)
                 targets.append(target_dict)
 
-            primitive_dict = primitive_data.to_dict(indices_accessor, attributes, targets, self._material_index_by_key)
+            primitive_dict = primitive_data.to_data(indices_accessor, attributes, targets, self._material_index_by_key)
 
             primitives.append(primitive_dict)
         return primitives
 
-    def _get_accessor(self, data, component_type, type_, include_bounds=False):
+    def _construct_accessor(self, data, component_type, type_, include_bounds=False):
         if data is None:
             return None
         count = len(data)
@@ -341,7 +341,7 @@ class GLTFExporter(object):
             else:
                 struct.pack_into(fmt, bytes_, (i * component_len), *datum)
 
-        buffer_view_index = self._get_buffer_view(bytes_)
+        buffer_view_index = self._construct_buffer_view(bytes_)
         accessor_dict = {
             'bufferView': buffer_view_index,
             'count': count,
@@ -350,10 +350,14 @@ class GLTFExporter(object):
         }
         if include_bounds:
             try:
+                # Here we check if ``data`` contains tuples,
+                # and compute min/max per coordinate.
                 _ = [e for e in data[0]]
                 minimum = tuple(map(min, zip(*data)))
                 maximum = tuple(map(max, zip(*data)))
             except TypeError:
+                # Here, ``data`` must contain primitives and not tuples,
+                # so min and max are more simply computed.
                 minimum = (min(data),)
                 maximum = (max(data),)
             accessor_dict['min'] = minimum
@@ -363,7 +367,7 @@ class GLTFExporter(object):
 
         return len(self._gltf_dict['accessors']) - 1
 
-    def _get_buffer_view(self, bytes_):
+    def _construct_buffer_view(self, bytes_):
         if not bytes_:
             return None
         byte_offset = self._update_buffer(bytes_)

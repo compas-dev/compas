@@ -92,6 +92,11 @@ class GLTFContent(object):
         self.extras = None
         self.extensions = None
 
+    @property
+    def default_or_first_scene(self):
+        key = self.default_scene_key or 0
+        return self.scenes[key]
+
     def check_if_forest(self):
         visited_nodes = set()
 

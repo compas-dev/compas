@@ -4,10 +4,11 @@ from __future__ import absolute_import
 
 import itertools
 
-from compas.files.gltf.constants import MODE_BY_VERTEX_COUNT
 from compas.files.gltf.constants import VERTEX_COUNT_BY_MODE
 from compas.files.gltf.data_classes import PrimitiveData
 from compas.files.gltf.helpers import get_weighted_mesh_vertices
+from compas.files.gltf.helpers import get_unweighted_primitive_vertices
+from compas.files.gltf.helpers import get_mode
 
 
 class GLTFMesh(object):
@@ -84,7 +85,7 @@ class GLTFMesh(object):
     @property
     def vertices(self):
         if not self.weights:
-            return list(itertools.chain(*[primitive.attributes['POSITION'] for primitive in self.primitive_data_list]))
+            return get_unweighted_primitive_vertices(self.primitive_data_list)
         return get_weighted_mesh_vertices(self, self.weights)
 
     @property
@@ -105,13 +106,6 @@ class GLTFMesh(object):
     def group_indices(self, indices, group_size):
         it = [iter(indices)] * group_size
         return list(zip(*it))
-
-    @classmethod
-    def get_mode(cls, faces):
-        vertex_count = len(faces[0])
-        if vertex_count in MODE_BY_VERTEX_COUNT:
-            return MODE_BY_VERTEX_COUNT[vertex_count]
-        raise Exception('Meshes must be composed of triangles, lines or points.')
 
     @classmethod
     def validate_faces(cls, faces):
@@ -138,7 +132,7 @@ class GLTFMesh(object):
     def from_vertices_and_faces(cls, context, vertices, faces, mesh_name=None, extras=None):
         cls.validate_faces(faces)
         cls.validate_vertices(vertices)
-        mode = cls.get_mode(faces)
+        mode = get_mode(faces)
         if isinstance(vertices, dict):
             index_by_key = {}
             positions = []
@@ -159,7 +153,7 @@ class GLTFMesh(object):
         vertices, faces = mesh.to_vertices_and_faces()
         return cls.from_vertices_and_faces(context, vertices, faces)
 
-    def to_dict(self, primitives):
+    def to_data(self, primitives):
         mesh_dict = {'primitives': primitives}
         if self.mesh_name is not None:
             mesh_dict['name'] = self.mesh_name
@@ -172,7 +166,7 @@ class GLTFMesh(object):
         return mesh_dict
 
     @classmethod
-    def from_dict(cls, mesh, context, primitive_data_list):
+    def from_data(cls, mesh, context, primitive_data_list):
         if mesh is None:
             return None
         return cls(
