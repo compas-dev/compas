@@ -18,7 +18,7 @@ from compas.files.gltf.data_classes import ImageData
 
 
 class GLTFReader(object):
-    """"Read the contents of a *glTF* or *glb* version 2 file using the json library.
+    """Read the contents of a *glTF* or *glb* version 2 file using the json library.
     Uses ideas from Khronos Group's glTF-Blender-IO.
     Caution: Extensions are minimally supported and their data may be lost.
 
@@ -53,7 +53,7 @@ class GLTFReader(object):
 
     def read(self):
         with open(self.filepath, 'rb') as f:
-            self._bin_content = memoryview(f.read())
+            self._bin_content = self._get_memoryview(f.read())
 
         is_glb = self._bin_content[:4] == b'glTF'
 
@@ -257,11 +257,11 @@ class GLTFReader(object):
             buffer = self._glb_buffer
         elif self.is_data_uri(uri):
             string = self.get_data_uri_data(uri)
-            buffer = memoryview(base64.b64decode(string))
+            buffer = self._get_memoryview(base64.b64decode(string))
         else:
             filepath = self.get_filepath(uri)
             with open(filepath, 'rb') as f:
-                buffer = memoryview(f.read())
+                buffer = self._get_memoryview(f.read())
 
         self._buffers[buffer_index] = buffer
 
@@ -280,6 +280,15 @@ class GLTFReader(object):
         for i in range(len(self._buffers)):
             self._release_buffer(self._buffers[i])
         self._buffers = {}
+
+    def _get_memoryview(self, content):
+        try:
+            mv = memoryview(content)
+        except TypeError:
+            # Exception occurs when using IronPython 2.7.8.
+            # See https://github.com/IronLanguages/ironpython2/issues/374#issuecomment-390658569
+            mv = memoryview(bytearray(content))
+        return mv
 
     def get_filepath(self, uri):
         dir_path = os.path.dirname(self.filepath)

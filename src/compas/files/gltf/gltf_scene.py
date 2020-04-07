@@ -25,16 +25,6 @@ class GLTFScene(object):
     positions_and_edges : tuple
         Tuple containing a dictionary of positions and a list of tuples representing edges.
 
-    Methods
-    -------
-    add_child(str node_name, object node_extras)
-        Creates a :class:`compas.files.GLTFNode` with name `node_name` (default `None`)
-        and extras `node_extras` (default `None`), and adds this node to the children of `scene`.
-    to_dict(dict node_index_by_key)
-        Returns a JSONable dictionary object in accordance with glTF specifications.
-    from_dict(dict scene, GLTFContent context)
-        Creates a :class:`compas.files.GLTFScene` from a glTF scene dictionary
-        and inserts it in the provided context.
     """
     def __init__(self, context, children=None, name=None, extras=None, extensions=None):
         self.name = name
@@ -74,9 +64,30 @@ class GLTFScene(object):
         return self.context.get_scene_positions_and_edges(self)
 
     def add_child(self, node_name=None, node_extras=None):
+        """Creates a :class:`compas.files.GLTFNode` and adds this node to the children of `scene`.
+
+        Parameters
+        ----------
+        node_name : str
+        node_extras : object
+
+        Returns
+        -------
+        :class:`compas.fikes.GLTFNode`
+        """
         return self.context.add_node_to_scene(self, node_name, node_extras)
 
     def to_data(self, node_index_by_key):
+        """Returns a JSONable dictionary object in accordance with glTF specifications.
+
+        Parameters
+        ----------
+        node_index_by_key : dict
+
+        Returns
+        -------
+        dict
+        """
         scene_dict = {}
         if self.children:
             scene_dict['nodes'] = [node_index_by_key[key] for key in self.children]
@@ -90,6 +101,18 @@ class GLTFScene(object):
 
     @classmethod
     def from_data(cls, scene, context):
+        """Creates a :class:`compas.files.GLTFScene` from a glTF scene dictionary
+        and inserts it in the provided context.
+
+        Parameters
+        ----------
+        scene : dict
+        context : :class:`compas.files.GLTFContent`
+
+        Returns
+        -------
+        :class:`compas.files.GLTFScene`
+        """
         if scene is None:
             return None
         return cls(

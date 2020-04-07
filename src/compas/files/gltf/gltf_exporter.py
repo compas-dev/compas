@@ -20,6 +20,7 @@ from compas.files.gltf.constants import TYPE_VEC4
 
 class GLTFExporter(object):
     """Export a glTF or glb file based on the supplied scene and ancillary data.
+
     Parameters
     ----------
     filepath : str
@@ -28,16 +29,10 @@ class GLTFExporter(object):
         it will be written in the same directory.
     content : :class:`compas.files.GLTFContent`
     embed_data : bool
-        When True, all mesh and other data will be embedded as data uri's in the glTF json,
+        When ``True``, all mesh and other data will be embedded as data uri's in the glTF json,
         with the exception of external image data.
-        When False, the data will be written to an external binary file or chunk.
+        When ``False``, the data will be written to an external binary file or chunk.
 
-    Methods
-    -------
-    load()
-        Creates the json object and the binary data (if any) to be written.
-    export()
-        Writes the json to *.gltf* or *.glb*, and binary data to *.bin* as required.
     """
 
     def __init__(self, filepath, content, embed_data=False):
@@ -74,6 +69,12 @@ class GLTFExporter(object):
             self.load()
 
     def load(self):
+        """Creates the json object and the binary data (if any) to be written.
+
+        Returns
+        -------
+
+        """
         self._content.remove_orphans()
         self._content.check_if_forest()
 
@@ -106,6 +107,12 @@ class GLTFExporter(object):
         return {key: index for index, key in enumerate(d)}
 
     def export(self):
+        """Writes the json to *.gltf* or *.glb*, and binary data to *.bin* as required.
+
+        Returns
+        -------
+
+        """
         gltf_json = json.dumps(self._gltf_dict, indent=4)
 
         if self._ext == '.gltf':

@@ -13,6 +13,7 @@ from compas.files.gltf.helpers import get_mode
 
 class GLTFMesh(object):
     """Object containing mesh data in a format compatible with the glTF standard.
+
     Attributes
     ----------
     mesh_name : str
@@ -30,35 +31,9 @@ class GLTFMesh(object):
     vertices : list
         List of xyz-tuples representing the points of the mesh.
     faces : list
-        List of tuples referencing the indices of :attr:`compas.files.MeshData.vertices`
+        List of tuples referencing the indices of :attr:`compas.files.GLTFMesh.vertices`
         representing faces of the mesh.
 
-    Methods
-    -------
-    shift_indices(list indices, int shift)
-        Given a list of indices, returns a list of indices, all shifted by `shift`.
-    group_indices(list indices, int group_size)
-        Returns a list of the elements of `indices` grouped into tuples of size `group_size`.
-    get_mode(list faces)
-        Returns the glTF mode of a list of faces.
-    validate_faces(list faces)
-        Raises an exception if not all faces in `faces` are defining either all triangles, lines
-        or points.
-    validate_vertices(list vertices)
-        Raise an exception if there are either too many vertices, or the vertices do not
-        represent points in 3-space.
-    from_vertices_and_faces(GLTFContent context, list vertices, list faces, str mesh_name, object extras)
-        Construct a :class:`compas.files.GLTFMesh` object from lists of vertices and faces.
-        Vertices can be given as either a list of xyz-tuples or -lists, in which case
-        the faces reference vertices by index, or vertices can be given as a dictionary of
-        key-value pairs where the values are xyz-tuples or -lists and the faces reference the keys.
-    from_mesh(Mesh mesh)
-        Construct a :class:`compas.files.MeshData` object from a :class:`compas.datastructures.Mesh`.
-    to_dict(list primitives)
-        Returns a JSONable dictionary object in accordance with glTF specifications.
-    from_dict(dict mesh, GLTFContent context, list primitive_data_list)
-        Creates a :class:`compas.files.GLTFMesh` from a glTF node dictionary
-        and inserts it in the provided context.
     """
     def __init__(self, primitive_data_list, context, mesh_name=None, weights=None, extras=None, extensions=None):
         self.mesh_name = mesh_name
@@ -101,14 +76,47 @@ class GLTFMesh(object):
         return faces
 
     def shift_indices(self, indices, shift):
+        """Given a list of indices, returns a list of indices, all shifted by ``shift``.
+
+        Parameters
+        ----------
+        indices : list
+        shift : int
+
+        Returns
+        -------
+        list
+        """
         return [index + shift for index in indices]
 
     def group_indices(self, indices, group_size):
+        """Returns a list of the elements of ``indices`` grouped into tuples of size ``group_size``.
+
+        Parameters
+        ----------
+        indices : list
+        group_size : int
+
+        Returns
+        -------
+        list
+        """
         it = [iter(indices)] * group_size
         return list(zip(*it))
 
     @classmethod
     def validate_faces(cls, faces):
+        """Raises an exception if not all faces in ``faces`` are defining either all triangles, lines
+        or points.
+
+        Parameters
+        ----------
+        faces : list
+
+        Returns
+        -------
+
+        """
         if not faces:
             return
         if len(faces[0]) > 3:
@@ -120,6 +128,17 @@ class GLTFMesh(object):
 
     @classmethod
     def validate_vertices(cls, vertices):
+        """Raise an exception if there are either too many vertices, or the vertices do not
+        represent points in 3-space.
+
+        Parameters
+        ----------
+        vertices : list
+
+        Returns
+        -------
+
+        """
         if len(vertices) > 4294967295:
             # This restriction could be removed by splitting into multiple primitives.
             raise Exception('Invalid mesh.  Too many vertices.')
@@ -130,6 +149,23 @@ class GLTFMesh(object):
 
     @classmethod
     def from_vertices_and_faces(cls, context, vertices, faces, mesh_name=None, extras=None):
+        """Construct a :class:`compas.files.GLTFMesh` object from lists of vertices and faces.
+        Vertices can be given as either a list of xyz-tuples or -lists, in which case
+        the faces reference vertices by index, or vertices can be given as a dictionary of
+        key-value pairs where the values are xyz-tuples or -lists and the faces reference the keys.
+
+        Parameters
+        ----------
+        context : :class:`compas.files.GLTFContent`
+        vertices : Union[list, dict]
+        faces : list
+        mesh_name : str
+        extras : object
+
+        Returns
+        -------
+        :class:`compas.files.GLTFMesh`
+        """
         cls.validate_faces(faces)
         cls.validate_vertices(vertices)
         mode = get_mode(faces)
@@ -150,10 +186,31 @@ class GLTFMesh(object):
 
     @classmethod
     def from_mesh(cls, context, mesh):
+        """Construct a :class:`compas.files.GLTFMesh` object from a compas mesh.
+
+        Parameters
+        ----------
+        context : :class:`compas.files.GLTFContent`
+        mesh : :class:`compas.datastructures.Mesh`
+
+        Returns
+        -------
+        :class:`compas.files.GLTFMesh`
+        """
         vertices, faces = mesh.to_vertices_and_faces()
         return cls.from_vertices_and_faces(context, vertices, faces)
 
     def to_data(self, primitives):
+        """Returns a JSONable dictionary object in accordance with glTF specifications.
+
+        Parameters
+        ----------
+        primitives : list
+
+        Returns
+        -------
+        dict
+        """
         mesh_dict = {'primitives': primitives}
         if self.mesh_name is not None:
             mesh_dict['name'] = self.mesh_name
@@ -167,6 +224,19 @@ class GLTFMesh(object):
 
     @classmethod
     def from_data(cls, mesh, context, primitive_data_list):
+        """Creates a :class:`compas.files.GLTFMesh` from a glTF node dictionary
+        and inserts it in the provided context.
+
+        Parameters
+        ----------
+        mesh : dict
+        context : :class:`compas.files.GLTFContent`
+        primitive_data_list : list
+
+        Returns
+        -------
+        :class:`compas.files.GLTFMesh`
+        """
         if mesh is None:
             return None
         return cls(

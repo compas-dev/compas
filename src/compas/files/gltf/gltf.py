@@ -13,6 +13,7 @@ class GLTF(object):
     """Read and create files in glTF format.
     Caution: Extensions and most other application specific data are unsupported,
     and their data may be lost upon import.
+
     Attributes
     ----------
     filepath : str
@@ -20,17 +21,7 @@ class GLTF(object):
     content : :class:`compas.files.GLTFContent`
     reader : :class:`compas.files.GLTFReader`
     parser : :class:`compas.files.GLTFParser`
-    exporter : :class: `compas.files.GLTFExporter`
-
-    Methods
-    -------
-    read()
-        Read the glTF located at :attr:`compas.files.GLTF.filepath` and load its content.
-    export(embed_data)
-        Export the content of this :class:`compas.files.GLTF` to the location
-        :attr:`compas.files.GLTF.filepath`, with file format determined by the given extension.
-        When the flag `embed_data` set to `True`, mesh and other data will be embedded in the glTF,
-        and no external binary file will be created.  The default value is `False`.
+    exporter : :class:`compas.files.GLTFExporter`
 
     See Also
     --------
@@ -48,6 +39,7 @@ class GLTF(object):
         self._exporter = None
 
     def read(self):
+        """Read the glTF located at :attr:`compas.files.GLTF.filepath` and load its content."""
         self._reader = GLTFReader(self.filepath)
         self._parser = GLTFParser(self._reader)
         self._is_parsed = True
@@ -83,6 +75,19 @@ class GLTF(object):
         return self._exporter
 
     def export(self, embed_data=False):
+        """Export the content of this :class:`compas.files.GLTF` to the location
+        :attr:`compas.files.GLTF.filepath`, with file format determined by the given extension.
+
+        Parameters
+        ----------
+        embed_data : bool
+            When set to ``True``, mesh and other data will be embedded in the glTF,
+            and no external binary file will be created.  The default value is ``False``.
+
+        Returns
+        -------
+
+        """
         self.exporter.embed_data = embed_data
         self.exporter.export()
 

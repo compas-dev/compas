@@ -14,6 +14,7 @@ from compas.utilities import download_file_from_remote
 class GLTFContent(object):
     """
     Class for managing the content of a glTF file.
+
     Attributes
     ----------
     scenes : dict
@@ -23,7 +24,7 @@ class GLTFContent(object):
     nodes : dict
         Dictionary containing (int, :class:`compas.files.GLTFNode`) pairs.
     meshes : dict
-        Dictionary containing (int, :class:`compas.files.MeshData`) pairs.
+        Dictionary containing (int, :class:`compas.files.GLTFMesh`) pairs.
     cameras : dict
         Dictionary containing (int, :class:`compas.files.data_classes.CameraData`) pairs.
     animations : dict
@@ -41,41 +42,6 @@ class GLTFContent(object):
     extras : object
     extensions : object
 
-    Methods
-    -------
-    check_if_forest()
-        Raises an exception if :attr:`compas.files.GLTFContent.nodes` is not a disjoint
-        union of rooted trees.
-    remove_orphans()
-        Removes orphaned objects.
-    update_node_transforms_and_positions()
-        Walks through all nodes and updates their transforms and positions.  To be used when
-        scene or nodes have been added or the nodes' matrices or TRS attributes have been set or updated.
-    update_scene_transforms_and_positions(GLTFScene scene)
-        Walks through the scene tree and updates transforms and positions.  To be used when
-        nodes have been added or the nodes' matrices or TRS attributes have been set or updated.
-    get_node_faces(GLTFNode node)
-        Returns the faces of the mesh at `node`, if any.
-    get_node_vertices(GLTFNode node)
-        Returns the vertices of the mesh at `node`, if any.
-    add_scene(str name, object extras)
-        Adds a scene to the content with name `name` (default `None`) and extras `extras` (default `None`)
-    add_node_to_scene(GLTFScene scene, str node_name, object node_extras)
-        Creates a :class:`compas.files.GLTFNode` with name `node_name` (default `None`) and extras `node_extras`
-        (default `None`), and adds this node to the children of `scene`.
-    add_child_to_node(GLTFNode parent_node, str child_name, object child_extras)
-        Creates a :class:`compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
-        (default `None`), and adds this node to the children of `parent_node`.
-    add_mesh(Mesh mesh)
-        Creates a :class:`compas.files.MeshData` object from a :class:`compas.datastructures.Mesh`, and adds this
-        to the content.
-    add_mesh_to_node(GLTFNode node, Union[Mesh, int] mesh)
-        Adds an existing mesh to `node` if `mesh` is a valid mesh key, or through `add_mesh` creates and adds a
-        mesh to `node`.
-    get_nodes_from_scene(GLTFScene scene)
-        Returns dictionary of nodes in the given scene, without a specified root.
-    get_scene_positions_and_edges(GLTFScene scene)
-        Returns a tuple containing a dictionary of positions and a list of tuples representing edges.
     """
     def __init__(self):
         self.scenes = {}
@@ -98,6 +64,13 @@ class GLTFContent(object):
         return self.scenes[key]
 
     def check_if_forest(self):
+        """Raises an exception if :attr:`compas.files.GLTFContent.nodes` is not a disjoint
+        union of rooted trees.
+
+        Returns
+        -------
+
+        """
         visited_nodes = set()
 
         def visit(key):
@@ -113,6 +86,12 @@ class GLTFContent(object):
                 visit(node_key)
 
     def remove_orphans(self):
+        """Removes orphaned objects.
+
+        Returns
+        -------
+
+        """
         node_visit_log = {key: False for key in self.nodes}
         mesh_visit_log = {key: False for key in self.meshes}
         camera_visit_log = {key: False for key in self.cameras}
@@ -214,10 +193,28 @@ class GLTFContent(object):
                 del dictionary[key]
 
     def update_node_transforms_and_positions(self):
+        """Walks through all nodes and updates their transforms and positions.  To be used when
+        scene or nodes have been added or the nodes' matrices or TRS attributes have been set or updated.
+
+        Returns
+        -------
+
+        """
         for scene in self.scenes.values():
             self.update_scene_transforms_and_positions(scene)
 
     def update_scene_transforms_and_positions(self, scene):
+        """Walks through the scene tree and updates transforms and positions.  To be used when
+        nodes have been added or the nodes' matrices or TRS attributes have been set or updated.
+
+        Parameters
+        ----------
+        scene : :class:`compas.files.GLTFScene`
+
+        Returns
+        -------
+
+        """
         origin = [0, 0, 0]
         for node_key in scene.children:
             node = self.nodes[node_key]
@@ -237,12 +234,32 @@ class GLTFContent(object):
                     queue.append(child_key)
 
     def get_node_faces(self, node):
+        """Returns the faces of the mesh at ``node``, if any.
+
+        Parameters
+        ----------
+        node : :class:`compas.files.GLTFNode`
+
+        Returns
+        -------
+        list
+        """
         mesh_data = self.meshes.get(node.mesh_key)
         if mesh_data is None:
             return None
         return mesh_data.faces
 
     def get_node_vertices(self, node):
+        """Returns the vertices of the mesh at ``node``, if any.
+
+        Parameters
+        ----------
+        node : :class:`compas.files.GLTFNode`
+
+        Returns
+        -------
+        list
+        """
         mesh_data = self.meshes.get(node.mesh_key)
         if mesh_data is None:
             return None
@@ -251,9 +268,32 @@ class GLTFContent(object):
         return get_weighted_mesh_vertices(mesh_data, node.weights)
 
     def add_scene(self, name=None, extras=None):
+        """Adds a scene to the content.
+
+        Parameters
+        ----------
+        name : str
+        extras : object
+
+        Returns
+        -------
+        :class:`compas.files.GLTFScene`
+        """
         return GLTFScene(self, name=name, extras=extras)
 
     def add_node_to_scene(self, scene, node_name=None, node_extras=None):
+        """Creates a :class:`compas.files.GLTFNode` and adds this node to the children of ``scene``.
+
+        Parameters
+        ----------
+        scene : :class:`compas.files.GLTFScene`
+        node_name : str
+        node_extras : object
+
+        Returns
+        -------
+        :class:`compas.files.GLTFNode`
+        """
         if scene not in self.scenes.values():
             raise Exception('Cannot find scene.')
         node = GLTFNode(self, node_name, node_extras)
@@ -261,14 +301,49 @@ class GLTFContent(object):
         return node
 
     def add_child_to_node(self, parent_node, child_name=None, child_extras=None):
+        """Creates a :class:`compas.files.GLTFNode` and adds this node to the children of ``parent_node``.
+
+        Parameters
+        ----------
+        parent_node : :class:`compas.files.GLTFNode`
+        child_name : str
+        child_extras : object
+
+        Returns
+        -------
+        :class:`compas.files.GLTFNode`
+        """
         child_node = GLTFNode(self, child_name, child_extras)
         parent_node.children.append(child_node.key)
         return child_node
 
     def add_mesh(self, mesh):
+        """Creates a :class:`compas.files.GLTFMesh` object from a compas mesh, and adds this
+        to the content.
+
+        Parameters
+        ----------
+        mesh : :class:`compas.datastructures.Mesh`
+
+        Returns
+        -------
+        :class:`compas.files.GLTFMesh`
+        """
         return GLTFMesh.from_mesh(self, mesh)
 
     def add_mesh_to_node(self, node, mesh):
+        """Adds an existing mesh to ``node`` if ``mesh`` is a valid mesh key, or through ``add_mesh`` creates and adds a
+        mesh to ``node``.
+
+        Parameters
+        ----------
+        node : :class:`compas.files.GLTFNode`
+        mesh : Union[:class:`compas.datastructures.Mesh`, int]
+
+        Returns
+        -------
+        :class:`compas.files.GLTFMesh`
+        """
         if isinstance(mesh, int):
             mesh_data = self.meshes[mesh]
         else:
@@ -277,6 +352,16 @@ class GLTFContent(object):
         return mesh_data
 
     def get_nodes_from_scene(self, scene):
+        """Returns dictionary of nodes in the given scene, without a specified root.
+
+        Parameters
+        ----------
+        scene : :class:`compas.files.GLTFScene`
+
+        Returns
+        -------
+        dict
+        """
         node_dict = {}
 
         def visit(key):
@@ -290,6 +375,16 @@ class GLTFContent(object):
         return node_dict
 
     def get_scene_positions_and_edges(self, scene):
+        """Returns a tuple containing a dictionary of positions and a list of tuples representing edges.
+
+        Parameters
+        ----------
+        scene : :class:`compas.files.GLTFScene`
+
+        Returns
+        -------
+        tuple
+        """
         positions_dict = {'root': [0, 0, 0]}
         edges_list = []
 

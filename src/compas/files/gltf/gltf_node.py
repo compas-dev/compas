@@ -62,23 +62,6 @@ class GLTFNode(object):
     faces : list
         List of tuples of indices of the vertices of the faces of the mesh used by this node.
 
-    Methods
-    -------
-    get_matrix_from_trs()
-        If the node's displacement from the origin is given by its translation, rotation and
-        scale attributes, this method returns the matrix given by the composition of these
-        attributes.
-    add_child(str child_name, object child_extras)
-        Creates a :class:`compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
-        (default `None`), and adds this node to the children of this node.
-    add_mesh(Union[int, Mesh] mesh)
-        Adds an existing mesh to this node if `mesh` is a valid mesh key, or creates and adds a
-        mesh to this node and its context.
-    to_dict(dict node_index_by_key, dict mesh_index_by_key, dict camera_index_by_key, dict skin_index_by_key)
-        Returns a JSONable dictionary object in accordance with glTF specifications.
-    from_dict(dict node, GLTFContent context)
-        Creates a :class:`compas.files.GLTFNode` from a glTF node dictionary
-        and inserts it in the provided context.
     """
     def __init__(self, context, name=None, extras=None, extensions=None):
         self.name = name
@@ -232,6 +215,14 @@ class GLTFNode(object):
         return self.context.get_node_faces(self)
 
     def get_matrix_from_trs(self):
+        """If the node's displacement from the origin is given by its translation, rotation and
+        scale attributes, this method returns the matrix given by the composition of these
+        attributes.
+
+        Returns
+        -------
+
+        """
         matrix = identity_matrix(4)
         if self.translation:
             translation = matrix_from_translation(self.translation)
@@ -245,12 +236,48 @@ class GLTFNode(object):
         return matrix
 
     def add_child(self, child_name=None, child_extras=None):
+        """Creates a :class:`compas.files.GLTFNode` with name `child_name` (default `None`) and extras `child_extras`
+        (default `None`), and adds this node to the children of this node.
+
+        Parameters
+        ----------
+        child_name : str
+        child_extras : object
+
+        Returns
+        -------
+        :class:`compas.files.GLTFNode`
+        """
         return self.context.add_child_to_node(self, child_name, child_extras)
 
     def add_mesh(self, mesh):
+        """Adds an existing mesh to this node if `mesh` is a valid mesh key, or creates and adds a
+        mesh to this node and its context.
+
+        Parameters
+        ----------
+        mesh : Union[int, Mesh]
+
+        Returns
+        -------
+
+        """
         return self.context.add_mesh_to_node(self, mesh)
 
     def to_data(self, node_index_by_key, mesh_index_by_key, camera_index_by_key, skin_index_by_key):
+        """Returns a JSONable dictionary object in accordance with glTF specifications.
+
+        Parameters
+        ----------
+        node_index_by_key : dict
+        mesh_index_by_key : dict
+        camera_index_by_key : dict
+        skin_index_by_key : dict
+
+        Returns
+        -------
+        dict
+        """
         node_dict = {}
         if self.name is not None:
             node_dict['name'] = self.name
@@ -279,6 +306,18 @@ class GLTFNode(object):
 
     @classmethod
     def from_data(cls, node, context):
+        """Creates a :class:`compas.files.GLTFNode` from a glTF node dictionary
+        and inserts it in the provided context.
+
+        Parameters
+        ----------
+        node : dict
+        context : :class:`compas.files.GLTFContent`
+
+        Returns
+        -------
+        :class:`compas.files.GLTFNode`
+        """
         if node is None:
             return None
         gltf_node = cls(
