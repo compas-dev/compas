@@ -59,6 +59,20 @@ XML
     XML
     XMLReader
 
+GLTF
+====
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    GLTF
+    GLTFReader
+    GLTFParser
+    GLTFContent
+    GLTFMesh
+    GLTFExporter
+
 """
 
 from __future__ import absolute_import
