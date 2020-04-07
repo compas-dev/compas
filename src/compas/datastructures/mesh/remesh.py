@@ -131,6 +131,9 @@ def trimesh_remesh(mesh,
             visited = set()
 
             for u, v in list(mesh.edges()):
+                if u in fixed and v in fixed:
+                    continue
+
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) <= lmax + dlmax:
@@ -149,6 +152,9 @@ def trimesh_remesh(mesh,
             visited = set()
 
             for u, v in list(mesh.edges()):
+                if u in fixed and v in fixed:
+                    continue
+
                 if u in visited or v in visited:
                     continue
                 if mesh.edge_length(u, v) >= lmin - dlmin:
@@ -168,6 +174,9 @@ def trimesh_remesh(mesh,
             visited = set()
 
             for u, v in list(mesh.edges()):
+                if u in fixed and v in fixed:
+                    continue
+
                 if u in visited or v in visited:
                     continue
 

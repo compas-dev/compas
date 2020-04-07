@@ -3,12 +3,14 @@ from __future__ import absolute_import
 from __future__ import division
 
 import struct
+import compas
 
 
 __all__ = [
     'PLY',
     'PLYReader',
     'PLYParser',
+    'PLYWriter',
 ]
 
 
@@ -24,15 +26,19 @@ class PLY(object):
     def __init__(self, filepath, precision=None):
         self.filepath = filepath
         self.precision = precision
-
         self._is_parsed = False
         self._reader = None
         self._parser = None
+        self._writer = None
 
     def read(self):
         self._reader = PLYReader(self.filepath)
         self._parser = PLYParser(self._reader, precision=self.precision)
         self._is_parsed = True
+
+    def write(self, mesh, **kwargs):
+        self._writer = PLYWriter(self.filepath, mesh, **kwargs)
+        self._writer.write()
 
     @property
     def reader(self):
@@ -165,7 +171,7 @@ class PLYReader(object):
 
             line = file.readline().rstrip()
 
-            if line != 'ply':
+            if line.lower() != 'ply':
                 raise Exception('not a valid ply file')
 
             self.start_header = file.tell()
@@ -181,14 +187,12 @@ class PLYReader(object):
                 if line.startswith('format'):
                     element_type = None
                     self.format = line[len('format') + 1:].split(' ')[0]
-                    continue
 
-                if line.startswith('comment'):
+                elif line.startswith('comment'):
                     element_type = None
                     self.comments.append(line[len('comment') + 1:])
-                    continue
 
-                if line.startswith('element'):
+                elif line.startswith('element'):
                     parts = line.split()
                     element_type = parts[1]
                     if element_type == 'vertex':
@@ -203,9 +207,8 @@ class PLYReader(object):
                     else:
                         element_type = None
                         raise Exception
-                    continue
 
-                if line.startswith('property'):
+                elif line.startswith('property'):
                     parts = line.split()
                     if element_type == 'vertex':
                         property_type = parts[1]
@@ -229,12 +232,14 @@ class PLYReader(object):
                     else:
                         element_type = None
                         raise Exception
-                    continue
 
-                if line == 'end_header':
+                elif line == 'end_header':
                     element_type = None
                     self.end_header = file.tell()
                     break
+
+                else:
+                    pass
 
     # ==========================================================================
     # read the data
@@ -442,17 +447,74 @@ class PLYParser(object):
         self.faces = [face['vertex_indices'] for face in self.reader.faces]
 
 
+class PLYWriter(object):
+    """"""
+
+    def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
+        self.filepath = filepath
+        self.mesh = mesh
+        self.author = author
+        self.email = email
+        self.date = date
+        self.precision = precision or compas.PRECISION
+        self.vertex_tpl = "{0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
+        self.v = mesh.number_of_vertices()
+        self.f = mesh.number_of_faces()
+        self.e = mesh.number_of_edges()
+        self.file = None
+
+    def write(self):
+        with open(self.filepath, 'w') as self.file:
+            self.write_header()
+            self.write_vertices()
+            self.write_faces()
+
+    def write_header(self):
+        self.file.write("PLY\n")
+        self.file.write("format ascii 1.0\n")
+        if self.author:
+            self.file.write("comment author: {}\n".format(self.author))
+        if self.email:
+            self.file.write("comment email: {}\n".format(self.email))
+        if self.date:
+            self.file.write("comment date: {}\n".format(self.date))
+        self.file.write("element vertex {}\n".format(self.v))
+        self.file.write("property float x\n")
+        self.file.write("property float y\n")
+        self.file.write("property float z\n")
+        self.file.write("element face {}\n".format(self.f))
+        self.file.write("property list uchar int vertex_indices\n")
+        self.file.write("end_header\n")
+
+    def write_vertices(self):
+        for key in self.mesh.vertices():
+            x, y, z = self.mesh.vertex_coordinates(key)
+            self.file.write(self.vertex_tpl.format(x, y, z))
+
+    def write_faces(self):
+        key_index = self.mesh.key_index()
+        for fkey in self.mesh.faces():
+            vertices = self.mesh.face_vertices(fkey)
+            v = len(vertices)
+            self.file.write("{0} {1}\n".format(v, " ".join([str(key_index[key]) for key in vertices])))
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    import compas
+    import os
     from compas.datastructures import Mesh
 
-    ply = PLY(compas.get_bunny())
+    FILE = os.path.join(compas.DATA, 'tubemesh.ply')
 
-    mesh = Mesh.from_vertices_and_faces(ply.parser.vertices, ply.parser.faces)
+    mesh = Mesh.from_json(compas.get('tubemesh.json'))
+    mesh.to_ply(FILE, author="Tom Van Mele")
 
-    print(mesh.summary())
+    ply = PLY(FILE)
+    print(len(ply.reader.vertices) == ply.reader.number_of_vertices)
+    print(len(ply.reader.faces) == ply.reader.number_of_faces)
+    print(len(ply.reader.faces))
+    print(ply.reader.number_of_faces)

@@ -39,13 +39,12 @@ class OBJ(object):
     def read(self):
         self._reader = OBJReader(self.filepath)
         self._parser = OBJParser(self._reader, precision=self.precision)
-        self._is_parsed = True
-
         self._reader.open()
         self._reader.pre()
         self._reader.read()
         self._reader.post()
         self._parser.parse()
+        self._is_parsed = True
 
     @property
     def reader(self):

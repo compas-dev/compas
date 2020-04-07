@@ -39,7 +39,6 @@ class PropertyListForm(Dialog):
         self.table = table = forms.GridView()
         table.ShowHeader = True
         table.DataStore = [[name, value] for name, value in zip(self.names, self.values)]
-        table.Height = 300
 
         c1 = forms.GridColumn()
         c1.HeaderText = 'Name'
@@ -53,18 +52,17 @@ class PropertyListForm(Dialog):
         c2.DataCell = forms.TextBoxCell(1)
         table.Columns.Add(c2)
 
-        layout = forms.DynamicLayout()
-        layout.AddRow(table)
-        layout.Add(None)
-        layout.BeginVertical()
-        layout.BeginHorizontal()
-        layout.AddRow(None, self.ok, self.cancel)
-        layout.EndHorizontal()
-        layout.EndVertical()
+        tab_items = forms.StackLayoutItem(table, True)
+        layout = forms.StackLayout()
+        layout.Items.Add(tab_items)
+        layout.HorizontalContentAlignment = forms.HorizontalAlignment.Stretch
+        sub_layout = forms.DynamicLayout()
+        sub_layout.AddRow(None, self.ok, self.cancel)
+        layout.Items.Add(forms.StackLayoutItem(sub_layout))
 
         self.Title = 'RBE: update a list of properties'
         self.Padding = drawing.Padding(12)
-        self.Resizable = False
+        self.Resizable = True
         self.Content = layout
         self.ClientSize = drawing.Size(400, 600)
 

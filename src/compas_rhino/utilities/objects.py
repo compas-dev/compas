@@ -118,10 +118,13 @@ def delete_objects(guids, purge=None):
     if purge and purge_object:
         purge_objects(guids)
     else:
+        rs.EnableRedraw(False)
         for guid in guids:
             if rs.IsObjectHidden(guid):
                 rs.ShowObject(guid)
         rs.DeleteObjects(guids)
+        rs.EnableRedraw(True)
+        sc.doc.Views.Redraw()
 
 
 def delete_objects_by_name(name, purge=None):
@@ -135,11 +138,14 @@ def delete_objects_by_name(name, purge=None):
 def purge_objects(guids):
     if not purge_object:
         raise RuntimeError('Cannot purge outside Rhino script context')
+    rs.EnableRedraw(False)
     for guid in guids:
-        if rs.IsObjectHidden(guid):
-            rs.ShowObject(guid)
-        o = find_object(guid)
-        purge_object(o.RuntimeSerialNumber)
+        if rs.IsObject(guid):
+            if rs.IsObjectHidden(guid):
+                rs.ShowObject(guid)
+            o = find_object(guid)
+            purge_object(o.RuntimeSerialNumber)
+    rs.EnableRedraw(True)
     sc.doc.Views.Redraw()
 
 

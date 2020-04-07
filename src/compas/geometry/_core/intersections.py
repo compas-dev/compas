@@ -35,8 +35,10 @@ __all__ = [
     'intersection_line_plane',
     'intersection_line_triangle',
     'intersection_segment_plane',
+    'intersection_plane_circle',
     'intersection_plane_plane',
     'intersection_plane_plane_plane',
+    'intersection_sphere_line',
     'intersection_sphere_sphere',
     'intersection_ellipse_line_xy',
     'intersection_segment_polyline',
@@ -734,6 +736,111 @@ def intersection_segment_polyline_xy(segment, polyline, tol=1e-6):
         if pt:
             return pt
 
+
+def intersection_sphere_line(sphere, line):
+    """Computes the intersection of a sphere and a line.
+
+    There are 3 cases of sphere-line intersection : 1) they intersect in 2
+    points, 2) they intersect in 1 point (line tangent to sphere), or 3) they
+    do not intersect.
+
+    Parameters
+    ----------
+    sphere : tuple
+        center, radius of the sphere.
+    line : tuple
+        xyz coordinates of two points defining the line.
+
+    Returns
+    -------
+    None
+        If there is no intersection.
+    point : tuple
+        One intersection point.
+    points : tuple
+        Two intersection points.
+
+    Examples
+    --------
+    >>> sphere = (3.0, 7.0, 4.0), 10.0
+    >>> line = (1.0, 0, 0.5), (2.0, 1.0, 0.5)
+    >>> ipt1, ipt2 = intersection_sphere_line(sphere, line)
+    >>> Point(*ipt1), Point(*ipt2)
+    (Point(11.634, 10.634, 0.500), Point(-0.634, -1.634, 0.500))
+
+    References
+    --------
+    https://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection
+
+    """
+
+    l1, l2 = line
+    sp, radius = sphere
+
+    a = (l2[0] - l1[0])**2 + (l2[1] - l1[1])**2 + (l2[2] - l1[2])**2
+    b = 2.0 * ((l2[0] - l1[0]) * (l1[0] - sp[0]) +
+               (l2[1] - l1[1]) * (l1[1] - sp[1]) +
+               (l2[2] - l1[2]) * (l1[2] - sp[2]))
+
+    c = sp[0]**2 + sp[1]**2 + sp[2]**2 + l1[0]**2 + l1[1]**2 + l1[2]**2 - 2.0 * (sp[0] * l1[0] + sp[1] * l1[1] + sp[2] * l1[2]) - radius**2
+
+    i = b * b - 4.0 * a * c
+
+    if i < 0.0:  # case 3: no intersection
+        return None
+    elif i == 0.0:  # case 2: one intersection
+        mu = -b / (2.0 * a)
+        ipt = (l1[0] + mu * (l2[0] - l1[0]), l1[1] + mu * (l2[1] - l1[1]), l1[2] + mu * (l2[2] - l1[2]))
+        return ipt
+    elif i > 0.0:  # case 1: two intersections
+        # 1.
+        mu = (-b + sqrt(i)) / (2.0 * a)
+        ipt1 = (l1[0] + mu * (l2[0] - l1[0]), l1[1] + mu * (l2[1] - l1[1]), l1[2] + mu * (l2[2] - l1[2]))
+        # 2.
+        mu = (-b - sqrt(i)) / (2.0 * a)
+        ipt2 = (l1[0] + mu * (l2[0] - l1[0]), l1[1] + mu * (l2[1] - l1[1]), l1[2] + mu * (l2[2] - l1[2]))
+        return ipt1, ipt2
+
+
+def intersection_plane_circle(plane, circle):
+    """Computes the intersection of a plane and a circle.
+
+    There are 4 cases of plane-circle intersection : 1) they do not intersect,
+    2) they coincide (circle.plane == plane), 3) they intersect in 2
+    points (secant), 4) they intersect in 1 point (tangent).
+
+    Parameters
+    ----------
+    plane : tuple
+        point, normal of the plane.
+    circle : tuple
+        (point, normal), radius of the circle
+
+    Returns
+    -------
+    None
+        If there is no intersection or circle plane is parallel to plane
+    point : tuple
+        One intersection point.
+    points : tuple
+        Two intersection points.
+
+    Examples
+    --------
+    >>> plane = (0, 0, 0), (0, 0, 1)
+    >>> circle = ((3.0, 7.0, 4.0), (0, 1, 0)), 10.0
+    >>> ipt1, ipt2 = intersection_plane_circle(plane, circle)
+    >>> Point(*ipt1), Point(*ipt2)
+    (Point(-6.165, 7.000, 0.000), Point(12.165, 7.000, 0.000))
+    """
+    circle_plane, circle_radius = circle
+    line = intersection_plane_plane(plane, circle_plane)
+    if not line:
+        return None
+    circle_point = circle_plane[0]
+    sphere = circle_point, circle_radius
+    return intersection_sphere_line(sphere, line)
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -741,4 +848,5 @@ def intersection_segment_polyline_xy(segment, polyline, tol=1e-6):
 
 if __name__ == "__main__":
     import doctest
+    from compas.geometry import Point
     doctest.testmod(globs=globals())

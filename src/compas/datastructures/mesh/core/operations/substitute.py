@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-
 __all__ = [
     'mesh_substitute_vertex_in_faces'
 ]
@@ -48,7 +47,7 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
 
     # apply to all faces if there is none chosen
     if fkeys is None:
-        fkeys = mesh.faces()
+        fkeys = list(mesh.faces())
 
     # substitute vertices
     for fkey in fkeys:
