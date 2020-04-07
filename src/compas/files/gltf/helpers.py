@@ -51,6 +51,7 @@ def get_unweighted_primitive_vertices(primitive_data_list):
     """This returns the vertices within a primitive without any weighted morph targets applied."""
     return list(itertools.chain(*[primitive.attributes['POSITION'] for primitive in primitive_data_list]))
 
+
 def get_mode(faces):
     vertex_count = len(faces[0])
     if vertex_count in MODE_BY_VERTEX_COUNT:
