@@ -154,13 +154,15 @@ class BaseMesh(HalfEdge):
             lines = [(vertices[u], vertices[v], 0) for u, v in edges]
             return cls.from_lines(lines)
 
-    def to_obj(self, filepath):
+    def to_obj(self, filepath, precision=None, **kwargs):
         """Write the mesh to an OBJ file.
 
         Parameters
         ----------
         filepath : str
             Full path of the file.
+        precision: str, optional
+            The precision of the geometric map that is used to connect the lines.
 
         Warning
         -------
@@ -169,22 +171,13 @@ class BaseMesh(HalfEdge):
 
         Examples
         --------
-        .. code-block:: python
-
-            pass
-
+        >>>
         """
-        key_index = self.key_index()
-        with open(filepath, 'w+') as f:
-            for key, attr in self.vertices(True):
-                f.write('v {0[x]:.3f} {0[y]:.3f} {0[z]:.3f}\n'.format(attr))
-            for fkey in self.faces():
-                vertices = self.face_vertices(fkey)
-                vertices = [key_index[key] + 1 for key in vertices]
-                f.write(' '.join(['f'] + [str(index) for index in vertices]) + '\n')
+        obj = OBJ(filepath, precision=precision)
+        obj.write(self, **kwargs)
 
     @classmethod
-    def from_ply(cls, filepath):
+    def from_ply(cls, filepath, precision=None):
         """Construct a mesh object from the data described in a PLY file.
 
         Parameters

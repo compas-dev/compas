@@ -9,6 +9,7 @@ try:
 except ImportError:
     from urllib2 import urlopen
 
+import compas
 from compas.utilities import geometric_key
 
 
@@ -16,6 +17,7 @@ __all__ = [
     'OBJ',
     'OBJReader',
     'OBJParser',
+    'OBJWriter',
 ]
 
 
@@ -31,10 +33,10 @@ class OBJ(object):
     def __init__(self, filepath, precision=None):
         self.filepath = filepath
         self.precision = precision
-
         self._is_parsed = False
         self._reader = None
         self._parser = None
+        self._writer = None
 
     def read(self):
         self._reader = OBJReader(self.filepath)
@@ -45,6 +47,10 @@ class OBJ(object):
         self._reader.post()
         self._parser.parse()
         self._is_parsed = True
+
+    def write(self, mesh, **kwargs):
+        self._writer = OBJWriter(self.filepath, mesh, precision=self.precision, **kwargs)
+        self._writer.write()
 
     @property
     def reader(self):
@@ -374,17 +380,87 @@ class OBJParser(object):
         self.groups = self.reader.groups
 
 
+class OBJWriter(object):
+
+    def __init__(self, filepath, mesh, precision=None, author=None, email=None, date=None):
+        self.filepath = filepath
+        self.mesh = mesh
+        self.author = author
+        self.email = email
+        self.date = date
+        self.precision = precision or compas.PRECISION
+        self.vertex_tpl = "v {0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
+        self.v = mesh.number_of_vertices()
+        self.f = mesh.number_of_faces()
+        self.e = mesh.number_of_edges()
+        self.file = None
+
+    def write(self):
+        with open(self.filepath, 'w') as self.file:
+            self.write_header()
+            self.write_vertices()
+            self.write_faces()
+
+    def write_header(self):
+        self.file.write("# OBJ\n")
+        self.file.write("# COMPAS\n")
+        self.file.write("# version: {}\n".format(compas.__version__))
+        self.file.write("# precision: {}\n".format(self.precision))
+        self.file.write("# V F E: {} {} {}\n".format(self.v, self.f, self.e))
+        if self.author:
+            self.file.write("# author: {}\n".format(self.author))
+        if self.email:
+            self.file.write("# email: {}\n".format(self.email))
+        if self.date:
+            self.file.write("# date: {}\n".format(self.date))
+        self.file.write("\n")
+
+    # this is not the same as adding point objects (like faces)
+    def write_vertices(self):
+        for key in self.mesh.vertices():
+            x, y, z = self.mesh.vertex_coordinates(key)
+            self.file.write(self.vertex_tpl.format(x, y, z))
+
+    def write_faces(self):
+        key_index = self.mesh.key_index()
+        for fkey in self.mesh.faces():
+            vertices = self.mesh.face_vertices(fkey)
+            vertices = [key_index[key] + 1 for key in vertices]
+            vertices_str = " ".join([str(index) for index in vertices])
+            self.file.write("f {0}\n".format(vertices_str))
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == '__main__':
 
-    import compas
+    import os
+    from compas.datastructures import Mesh
+    from compas_plotters import MeshPlotter
 
-    obj = OBJ(compas.get('faces.obj'))
+    FILE = os.path.join(compas.DATA, 'tubemesh.obj')
 
-    print(obj.parser.vertices)
-    print(obj.parser.lines)
-    print(obj.parser.points)
-    print(obj.parser.faces)
+    mesh1 = Mesh.from_json(compas.get('tubemesh.json'))
+
+    mesh1.to_obj(FILE, precision='12f', author="Tom Van Mele")
+
+    obj = OBJ(FILE)
+
+    mesh2 = Mesh.from_obj(FILE)
+
+    v1 = mesh1.number_of_vertices()
+    f1 = mesh1.number_of_faces()
+    v2 = mesh2.number_of_vertices()
+    f2 = mesh2.number_of_faces()
+
+    print(v1 == v2)
+    print(f1 == f2)
+    print(len(obj.vertices) == v2)
+    print(len(obj.faces) == f2)
+
+    plotter = MeshPlotter(mesh2, figsize=(5, 8))
+    plotter.draw_vertices()
+    plotter.draw_faces()
+    plotter.show()

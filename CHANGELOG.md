@@ -8,13 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 ### Added
+
 - Extended glTF support.
-
-
 - Added classmethod ``from_geometry`` to ``RhinoMesh``
 - Added ``intersection_sphere_line``
 - Added ``intersection_plane_circle``
 - Added ``tangent_points_to_circle_xy``
+- Added basic OBJ file writing.
+- Added ``Mesh.to_obj``.
 
 ### Changed
 
@@ -30,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Re-added length, divide, space methods of `RhinoCurve`.
 - Added basic OFF file writing.
 - Added basic PLY file writing.
+- Added ``Mesh.to_ply``.
+- Added ``Mesh.to_off``.
 
 ### Changed
 
