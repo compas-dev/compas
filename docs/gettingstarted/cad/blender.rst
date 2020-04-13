@@ -41,6 +41,9 @@ If you wish to install a new python environment with COMPAS, open the command pr
     conda config --add channels conda-forge
     conda create -n blender python=3.7 COMPAS
 
+.. note::
+    we called the environment *blender* but you can use any name
+
 Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:
 
 .. code-block:: bash
