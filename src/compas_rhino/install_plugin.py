@@ -3,8 +3,8 @@ import imp
 
 import compas_rhino
 
-from compas._os import create_symlink
-from compas._os import remove_symlink
+from compas._os import create_symlinks
+from compas._os import remove_symlinks
 
 
 __all__ = ['install_plugin']
@@ -100,8 +100,8 @@ def install_plugin(plugin, version=None):
 
     print('Installing PlugIn {} to Rhino PythonPlugIns.'.format(plugin_name))
 
-    remove_symlink(destination)
-    create_symlink(source, destination)
+    remove_symlinks([destination])
+    create_symlinks([(source, destination)])
 
     print()
     print('PlugIn {} Installed.'.format(plugin_name))
