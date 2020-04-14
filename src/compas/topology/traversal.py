@@ -263,6 +263,29 @@ def breadth_first_paths(adjacency, root, goal):
                 tovisit.append((nbr, path + [nbr]))
 
 
+def breadth_first_tree(adjacency, root):
+    tovisit  = deque([root])
+    visited  = set([root])
+    ordering = [root]
+    predecessors = {}
+    paths = []
+    while tovisit:
+        node = tovisit.popleft()
+        is_leaf = len(set(adjacency[node]) - visited) == 0
+        for nbr in adjacency[node]:
+            if nbr not in visited:
+                predecessors[nbr]=node
+                tovisit.append(nbr)
+                visited.add(nbr)
+                ordering.append(nbr)
+        else:
+            path = [node]
+            while path[-1] in predecessors:
+                path.append(predecessors[path[-1]])
+            paths.append(reversed(path))
+    return ordering, predecessors, paths
+
+
 # ==============================================================================
 # shortest
 # ==============================================================================

@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import fabs
+from math import sqrt
 
 from compas.utilities import pairwise
 
@@ -493,8 +494,8 @@ def sort_points(point, cloud):
     Returns
     -------
     list
-        A list containing the points of the cloud sorted by their distance to the base points.
-        Each item in the list contains the distance to the base point, the XYZ coordinates
+        A list containing the points of the cloud sorted by their squared distance to the base points.
+        Each item in the list contains the squared distance to the base point, the XYZ coordinates
         of the point in the cloud, and the index of the point in the original cloud.
 
     Notes
@@ -524,8 +525,8 @@ def sort_points_xy(point, cloud):
     Returns
     -------
     list
-        A list containing the points of the cloud sorted by their distance to the base points.
-        Each item in the list contains the distance to the base point, the XYZ coordinates
+        A list containing the points of the cloud sorted by their squared distance to the base points.
+        Each item in the list contains the squared distance to the base point, the XYZ coordinates
         of the point in the cloud, and the index of the point in the original cloud.
 
     Notes
@@ -568,7 +569,8 @@ def closest_point_in_cloud(point, cloud):
 
     """
     data = sort_points(point, cloud)
-    return data[0]
+    d, xyz, index = data[0]
+    return sqrt(d), xyz, index
 
 
 def closest_points_in_cloud_numpy(points, cloud, threshold=10**7, distances=True, num_nbrs=1):
@@ -649,7 +651,8 @@ def closest_point_in_cloud_xy(point, cloud):
 
     """
     data = sort_points_xy(point, cloud)
-    return data[0]
+    d, xyz, index = data[0]
+    return sqrt(d), xyz, index
 
 
 def closest_point_on_line(point, line):
