@@ -34,40 +34,56 @@ Installation
 
     <div class="tab-pane active" id="replace_python_windows">
 
-Open the command prompt and type the following to install a new python
-environment with COMPAS:
+If you wish to install a new python environment with COMPAS, open the command prompt and type the following:
 
 .. code-block:: bash
 
     conda config --add channels conda-forge
     conda create -n blender python=3.7 COMPAS
-    conda activate blender
 
-Now configure Blender to use the newly installed environment:
+.. note::
+    we called the environment *blender* but you can use any name
+
+Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:
 
 .. code-block:: bash
 
-    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender\2.80"
+    conda activate blender
+    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender 2.82\2.82"
+
+.. note::
+    change ``conda activate blender`` with ``conda activate name_of_your_environment`` if you want to link another environment.
+
+.. warning::
+    the path ``%PROGRAMFILES%\Blender Foundation\Blender 2.82\2.82`` might be different if you have another version of Blender intalled. Check your version of Blender and change the path accordingly.
 
 .. raw:: html
 
     </div>
     <div class="tab-pane" id="replace_python_osx">
 
-Open the Terminal and type the following to install a new python
-environment with COMPAS:
+If you wish to install a new python environment with COMPAS, open the Terminal and type the following:
 
 .. code-block:: bash
 
     conda config --add channels conda-forge
     conda create -n blender python=3.7 COMPAS
-    conda activate blender
 
-Now configure Blender to use the newly installed environment:
+.. note::
+    we called the environment *blender* but you can use any name
+
+Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:
 
 .. code-block:: bash
 
-    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.80
+    conda activate blender
+    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.82
+
+.. note::
+    change ``conda activate blender`` with ``conda activate name_of_your_environment`` if you want to link another environment.
+
+.. warning::
+    the path ``/Applications/blender.app/Contents/Resources/2.82`` might be different if you have another version of Blender intalled. Check your version of Blender and change the path accordingly.
 
 .. raw:: html
 
@@ -107,6 +123,8 @@ Otherwise, the changes will not have any effect.
     conda activate blender
     conda install ...
 
+.. note:: 
+    if you want to use blender with a different environment, you simply have to activate that environment and floow the same procedure described above.
 
 Start Blender
 =============
