@@ -212,7 +212,7 @@ class Joint(object):
         rotation for revolute joints, the axis of translation for prismatic
         joints, and the surface normal for planar joints. The axis is
         specified in the joint frame of reference.
-    calibration : :class`Calibration`
+    calibration : :class:`Calibration`
         Reference positions of the joint, used to calibrate the absolute position of the joint.
     dynamics : :class:`Dynamics`
         Physical properties of the joint. These values are used to
@@ -226,7 +226,7 @@ class Joint(object):
         Used to specify that the defined joint mimics another existing joint.
     attr : :obj:`dict`
         Non-standard attributes.
-    child_link
+    child_link : :class:`compas.robot.Link`
         Joint's child link
     position : :obj:`float`
         The current position of the joint. This depends on the
@@ -234,13 +234,20 @@ class Joint(object):
         in radians, for prismatic joints the translation in meters.
     """
 
+    #: Revolute joint type
     REVOLUTE = 0
+    #: Continous joint type
     CONTINUOUS = 1
+    #: Prismatic joint type
     PRISMATIC = 2
+    #: Fixed joint type
     FIXED = 3
+    #: Floating joint type
     FLOATING = 4
+    #: Planar joint type
     PLANAR = 5
 
+    #: List of supported joint types
     SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic', 'fixed',
                        'floating', 'planar')
 
