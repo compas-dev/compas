@@ -347,7 +347,6 @@ class Plotter(object):
 
     def show(self, autoscale=True):
         """Displays the plot.
-
         """
         if autoscale:
             self.axes.autoscale()
