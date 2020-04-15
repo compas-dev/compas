@@ -22,12 +22,12 @@ compas
 
 from __future__ import print_function
 
+import decimal
+import io
 import os
 import sys
-import decimal
 
 import compas._os
-
 
 __author__ = 'Tom Van Mele and many others (see AUTHORS.md)'
 __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
@@ -57,14 +57,14 @@ try:
     if os.path.exists(git_head_file):
         # git head file contains one line that looks like this:
         # ref: refs/heads/master
-        with open(git_head_file, 'r') as git_head:
+        with io.open(git_head_file, 'r') as git_head:
             _, ref_path = git_head.read().strip().split(' ')
             ref_path = ref_path.split('/')
 
             git_head_refs_file = compas._os.absjoin(HOME, '.git', *ref_path)
 
         if os.path.exists(git_head_refs_file):
-            with open(git_head_refs_file, 'r') as git_head_ref:
+            with io.open(git_head_refs_file, 'r') as git_head_ref:
                 git_commit = git_head_ref.read().strip()
                 __version__ += '-' + git_commit[:8]
 except Exception:
@@ -307,8 +307,8 @@ def get_bunny(localstorage=None):
 
         urlretrieve(url, destination)
 
-        with tarfile.open(destination) as file:
-            file.extractall(localstorage)
+        with tarfile.open(destination) as f:
+            f.extractall(localstorage)
 
         os.remove(destination)
 

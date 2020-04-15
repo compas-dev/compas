@@ -3,16 +3,11 @@
 These are internal functions of the framework.
 Not intended to be used outside compas* packages.
 """
+import io
 import os
 import shutil
 import sys
 import tempfile
-
-try:
-    NotADirectoryError
-except NameError:
-    class NotADirectoryError(Exception):
-        pass
 
 PY3 = sys.version_info[0] == 3
 system = sys.platform
@@ -155,7 +150,7 @@ def _polyfill_symlinks(symlinks, raise_on_error):
     """Create multiple symlinks using the polyfill implementation."""
     _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
 
-    with open(temp_path, 'w') as mklink_cmd:
+    with io.open(temp_path, 'w') as mklink_cmd:
         mklink_cmd.write('@echo off\n')
         mklink_cmd.write('SET /A symlink_result=0\n')
         mklink_cmd.write('ECHO ret=%symlink_result%\n')
@@ -376,7 +371,7 @@ def _run_command_as_admin(command, arguments):
     """
     _handle, temp_path = tempfile.mkstemp(suffix='.cmd', text=True)
 
-    with open(temp_path, 'w') as remove_symlink_cmd:
+    with io.open(temp_path, 'w') as remove_symlink_cmd:
         remove_symlink_cmd.write('@echo off\n')
         remove_symlink_cmd.write('{} {}\n'.format(command, subprocess.list2cmdline(arguments)))
 
@@ -506,35 +501,35 @@ def _get_win_folder_from_registry(csidl_name):
         _winreg.HKEY_CURRENT_USER,
         r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders"
     )
-    dir, type = _winreg.QueryValueEx(key, shell_folder_name)
-    return dir
+    directory, _type = _winreg.QueryValueEx(key, shell_folder_name)
+    return directory
 
 
 def _get_win_folder_with_pywin32(csidl_name):
     from win32com.shell import shellcon, shell
-    dir = shell.SHGetFolderPath(0, getattr(shellcon, csidl_name), 0, 0)
+    directory = shell.SHGetFolderPath(0, getattr(shellcon, csidl_name), 0, 0)
     # Try to make this a unicode path because SHGetFolderPath does
     # not return unicode strings when there is unicode data in the
     # path.
     try:
-        dir = str(dir) if PY3 else unicode(dir)  # noqa: F821
+        directory = str(directory) if PY3 else unicode(directory)  # noqa: F821
 
         # Downgrade to short path name if have highbit chars. See
         # <http://bugs.activestate.com/show_bug.cgi?id=85099>.
         has_high_char = False
-        for c in dir:
+        for c in directory:
             if ord(c) > 255:
                 has_high_char = True
                 break
         if has_high_char:
             try:
                 import win32api
-                dir = win32api.GetShortPathName(dir)
+                directory = win32api.GetShortPathName(directory)
             except ImportError:
                 pass
     except UnicodeError:
         pass
-    return dir
+    return directory
 
 
 def _get_win_folder_with_ctypes(csidl_name):
