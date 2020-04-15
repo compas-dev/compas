@@ -192,8 +192,7 @@ class Axis(object):
 
 
 class Joint(object):
-    """Representation of the kinematics and dynamics of a joint and its safety
-    limits.
+    """Representation of the kinematics and dynamics of a joint and its safety limits.
 
     Attributes
     ----------
@@ -226,28 +225,38 @@ class Joint(object):
         Used to specify that the defined joint mimics another existing joint.
     attr : :obj:`dict`
         Non-standard attributes.
-    child_link : :class:`compas.robot.Link`
+    child_link : :class:`Link`
         Joint's child link
     position : :obj:`float`
         The current position of the joint. This depends on the
         joint type, i.e. for revolute joints, it will be the rotation angle
         in radians, for prismatic joints the translation in meters.
+
+    Class Attributes
+    ----------------
+    REVOLUTE : :obj:`int`
+        Revolute joint type.
+    CONTINUOUS : :obj:`int`
+        Continous joint type.
+    PRISMATIC : :obj:`int`
+        Prismatic joint type.
+    FIXED : :obj:`int`
+        Fixed joint type.
+    FLOATING : :obj:`int`
+        Floating joint type.
+    PLANAR : :obj:`int`
+        Planar joint type.
+    SUPPORTED_TYPES : :obj:`list` of :obj:`str`
+        String representations of the supported joint types.
     """
 
-    #: Revolute joint type
     REVOLUTE = 0
-    #: Continous joint type
     CONTINUOUS = 1
-    #: Prismatic joint type
     PRISMATIC = 2
-    #: Fixed joint type
     FIXED = 3
-    #: Floating joint type
     FLOATING = 4
-    #: Planar joint type
     PLANAR = 5
 
-    #: List of supported joint types
     SUPPORTED_TYPES = ('revolute', 'continuous', 'prismatic', 'fixed',
                        'floating', 'planar')
 
