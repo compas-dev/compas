@@ -10,7 +10,7 @@ matplotlib >= 2.2; python_version >= '3.5' and sys_platform != 'win32'
 networkx
 llvmlite >= 0.31, < 0.32; python_version < '3.6'
 numba < 0.48; python_version < '3.6'
-numba
+numba; python_version >= '3.6'
 numpy >= 1.15.4
 pillow
 planarity
