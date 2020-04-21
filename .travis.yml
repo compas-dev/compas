@@ -38,7 +38,6 @@ jobs:
         - choco install ironpython --version=2.7.8.1
         - ipy -X:Frames -m ensurepip
         - ipy -X:Frames -m pip install invoke
-        - ipy -X:Frames -m pip install pytest
       env:
         - TRAVIS_PYTHON_IMPLEMENTATION="ironpython"
 
