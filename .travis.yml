@@ -40,7 +40,7 @@ jobs:
         - ipy tests/ipy_test_runner.py
       env:
         - TRAVIS_PYTHON_IMPLEMENTATION="ironpython"
-        - IRONPYTHONPATH=$PATH/src
+        - IRONPYTHONPATH=$TRAVIS_BUILD_DIR/src
 
 # all three OSes agree about 'pip3'
 before_install:
