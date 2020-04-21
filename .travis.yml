@@ -40,24 +40,24 @@ jobs:
 # all three OSes agree about 'pip3'
 before_install:
 - if [[ "$TRAVIS_PYTHON_IMPLEMENTATION" == "cpython" ]]; then
-    pip3 install --upgrade pip;
-    pip3 install Cython --install-option="--no-cython-compile";
+    pip3 install --upgrade pip
+    pip3 install Cython --install-option="--no-cython-compile"
   else
-    ipy -X:Frames -m ensurepip;
-    ipy -X:Frames -m pip install invoke;
+    ipy -X:Frames -m ensurepip
+    ipy -X:Frames -m pip install invoke
   fi
 
 install:
 - if [[ "$TRAVIS_PYTHON_IMPLEMENTATION" == "cpython" ]]; then
-    pip3 install --no-cache-dir -r requirements-dev.txt;
+    pip3 install --no-cache-dir -r requirements-dev.txt
   fi
 
 script:
 - if [[ "$TRAVIS_PYTHON_IMPLEMENTATION" == "cpython" ]]; then
-    invoke test;
+    invoke test
 
     if [[ "$TRAVIS_GENERATE_DOCS" == "true" ]]; then
-      invoke docs;
+      invoke docs
     fi
   fi
 
