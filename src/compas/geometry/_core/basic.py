@@ -110,7 +110,8 @@ def allclose(l1, l2, tol=1e-05):
     .. [1] https://docs.scipy.org/doc/numpy/reference/generated/numpy.allclose.html
 
     """
-    if any(fabs(a - b) > tol for a, b in zip(l1, l2)):
+
+    if any(not allclose(a, b, tol) if hasattr(a, '__iter__') else fabs(a - b) > tol for a, b in zip(l1, l2)):
         return False
     return True
 
