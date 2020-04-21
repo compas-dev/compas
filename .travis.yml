@@ -36,10 +36,11 @@ jobs:
       language: shell
       before_install:
         - choco install ironpython --version=2.7.8.1
-        - ipy -X:Frames -m ensurepip
-        - ipy -X:Frames -m pip install invoke
+      script:
+        - ipy tests\ipy_test_runner.py
       env:
         - TRAVIS_PYTHON_IMPLEMENTATION="ironpython"
+        - IRONPYTHONPATH=$PATH/src
 
 # all three OSes agree about 'pip3'
 before_install:
@@ -55,6 +56,8 @@ install:
 
 script:
 - invoke test
+
+after_success:
 - if [[ "$TRAVIS_GENERATE_DOCS" == "true" ]]; then
     invoke docs;
   fi
