@@ -20,8 +20,7 @@ jobs:
       language: shell       # 'language: python' is an error on Travis CI Windows
       before_install:
         - choco install python --version=3.8.0
-        # The next two lines are duplicated because the base before_install is overwritten
-        - pip3 install --upgrade pip
+        - pip3 install --user --upgrade pip
         - pip3 install cython --install-option="--no-cython-compile"
       env:
         - PATH=/c/Python38:/c/Python38/Scripts:$PATH
