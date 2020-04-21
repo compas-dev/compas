@@ -18,7 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added ``Mesh.to_obj``.
 
 ### Changed
+
 - Updated Blender installation docs for latest release.
+- Fixed ``robot.forward_kinematics()`` when requested for base link.
 
 ### Removed
 
