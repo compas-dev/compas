@@ -1,20 +1,64 @@
-language: python
+# Based on https://docs.travis-ci.com/user/languages/python/#running-python-tests-on-multiple-operating-systems
+language: python            # this works for Linux but is an error on macOS or Windows
 
-python:
-  - "2.7"
-  - "3.6"
+jobs:
+  include:
+    # Latest python releases on all 3 OSes
+    - name: "Python 3.8 on Xenial Linux"
+      python: 3.8           # this works for Linux but is ignored on macOS or Windows
+      env:
+        - TRAVIS_GENERATE_DOCS=true
+        - TRAVIS_PYTHON_IMPLEMENTATION = "cpython"
+    - name: "Python 3.7 on macOS"
+      os: osx
+      osx_image: xcode11.2  # Python 3.7.4 running on macOS 10.14.4
+      language: shell       # 'language: python' is an error on Travis CI macOS
+      env:
+        - TRAVIS_PYTHON_IMPLEMENTATION = "cpython"
+    - name: "Python 3.8 on Windows"
+      os: windows           # Windows 10.0.17134 N/A Build 17134
+      language: shell       # 'language: python' is an error on Travis CI Windows
+      before_install:
+        - choco install python --version=3.8.0
+      env:
+        - PATH=/c/Python38:/c/Python38/Scripts:$PATH
+        - TRAVIS_PYTHON_IMPLEMENTATION = "cpython"
+    # Older Python releases
+    - name: "Python 3.6 on Xenial Linux"
+      python: 3.6
+      env:
+        - TRAVIS_PYTHON_IMPLEMENTATION = "cpython"
+    # IronPython monstrosity
+    - name: "IronPython 2.7: Windows"
+      os: windows
+      language: shell
+      before_install:
+        - choco install ironpython --version=2.7.8.1
+      env:
+        - TRAVIS_PYTHON_IMPLEMENTATION = "ironpython"
 
+# all three OSes agree about 'pip3'
 before_install:
-- pip install Cython --install-option="--no-cython-compile"
+- if [[ "$TRAVIS_PYTHON_IMPLEMENTATION" == "cpython" ]]; then
+    pip3 install --upgrade pip
+    pip3 install Cython --install-option="--no-cython-compile"
+  else
+    ipy -X:Frames -m ensurepip
+    ipy -X:Frames -m pip install invoke
+  fi
 
 install:
-# This works because requirements-dev.txt ends with "-e ." to install COMPAS itself
-- pip install --no-cache-dir -r requirements-dev.txt
+- if [[ "$TRAVIS_PYTHON_IMPLEMENTATION" == "cpython" ]]; then
+    pip3 install --no-cache-dir -r requirements-dev.txt;
+  fi
 
 script:
-- invoke test
-- if [[ "$TRAVIS_PYTHON_VERSION" == "3.6" ]]; then
-    invoke docs;
+- if [[ "$TRAVIS_PYTHON_IMPLEMENTATION" == "cpython" ]]; then
+    invoke test
+
+    if [[ "$TRAVIS_GENERATE_DOCS" == "true" ]]; then
+      invoke docs
+    fi
   fi
 
 deploy:
@@ -28,4 +72,4 @@ deploy:
   local_dir: dist/docs
   on:
     # tags: true
-    condition: $TRAVIS_PYTHON_VERSION = 3.6
+    condition: $TRAVIS_GENERATE_DOCS = true
