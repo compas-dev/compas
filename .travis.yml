@@ -20,6 +20,9 @@ jobs:
       language: shell       # 'language: python' is an error on Travis CI Windows
       before_install:
         - choco install python --version=3.8.0
+        # The next two lines are duplicated because the base before_install is overwritten
+        - pip3 install --upgrade pip
+        - pip3 install cython --install-option="--no-cython-compile"
       env:
         - PATH=/c/Python38:/c/Python38/Scripts:$PATH
         - TRAVIS_PYTHON_IMPLEMENTATION="cpython"
@@ -34,31 +37,29 @@ jobs:
       language: shell
       before_install:
         - choco install ironpython --version=2.7.8.1
+        - ipy -X:Frames -m ensurepip
+        - ipy -X:Frames -m pip install invoke
       env:
         - TRAVIS_PYTHON_IMPLEMENTATION="ironpython"
 
 # all three OSes agree about 'pip3'
 before_install:
 - if [[ "$TRAVIS_PYTHON_IMPLEMENTATION" == "cpython" ]]; then
-    pip3 install --upgrade pip
-    pip3 install Cython --install-option="--no-cython-compile"
-  else
-    ipy -X:Frames -m ensurepip
-    ipy -X:Frames -m pip install invoke
+    pip3 install --upgrade pip;
+    pip3 install cython --install-option="--no-cython-compile";
   fi
 
 install:
 - if [[ "$TRAVIS_PYTHON_IMPLEMENTATION" == "cpython" ]]; then
-    pip3 install --no-cache-dir -r requirements-dev.txt
+    pip3 install --no-cache-dir -r requirements-dev.txt;
   fi
 
 script:
 - if [[ "$TRAVIS_PYTHON_IMPLEMENTATION" == "cpython" ]]; then
-    invoke test
-
-    if [[ "$TRAVIS_GENERATE_DOCS" == "true" ]]; then
-      invoke docs
-    fi
+    invoke test;
+  fi
+- if [[ "$TRAVIS_GENERATE_DOCS" == "true" ]]; then
+    invoke docs;
   fi
 
 deploy:
