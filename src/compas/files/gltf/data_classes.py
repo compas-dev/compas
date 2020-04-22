@@ -524,12 +524,12 @@ class ImageData(object):
             image_dict['extras'] = self.extras
         if self.mime_type is not None:
             image_dict['mimeType'] = self.mime_type
-        if self.uri is not None:
-            image_dict['uri'] = self.uri
         if uri is not None:
             image_dict['uri'] = uri
-        if buffer_view is not None:
+        elif buffer_view is not None:
             image_dict['bufferView'] = buffer_view
+        elif self.uri is not None:
+            image_dict['uri'] = self.uri
         if self.extensions is not None:
             image_dict['extensions'] = self.extensions
         return image_dict
