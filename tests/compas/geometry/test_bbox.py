@@ -1,10 +1,9 @@
 import pytest
 
+import compas
 from compas.geometry import allclose
 from compas.geometry import bounding_box
 from compas.geometry import bounding_box_xy
-from compas.geometry import oriented_bounding_box_numpy
-from compas.geometry import oriented_bounding_box_xy_numpy
 
 
 @pytest.mark.parametrize('coords,expected', [
@@ -36,6 +35,11 @@ def test_bounding_box(coords, expected):
      [[6.754970846941253, -53.56071108254564], [6.73462, -53.57518], [6.738658767139154, -53.58086061378051], [6.759009614080408, -53.56639169632614]]]
 ])
 def test_oriented_bounding_box_xy_numpy(coords, expected):
+    if compas.IPY:
+        return
+
+    from compas.geometry import oriented_bounding_box_xy_numpy
+
     assert expected == oriented_bounding_box_xy_numpy(coords)
 
 
@@ -50,6 +54,11 @@ def test_oriented_bounding_box_xy_numpy(coords, expected):
     ]
 ])
 def test_oriented_bounding_box_numpy(coords, expected):
+    if compas.IPY:
+        return
+
+    from compas.geometry import oriented_bounding_box_numpy
+
     results = oriented_bounding_box_numpy(coords).tolist()
     for result, expected_values in zip(results, expected):
         assert allclose(result, expected_values, tol=1e-3)

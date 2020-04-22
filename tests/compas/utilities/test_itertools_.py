@@ -19,7 +19,7 @@ def test_iterable_like_string_and_float(target, base, fillvalue):
                          [(['foo', 'bar', 'baz'], {'key_1': 'a', 'key_2': 'b'}, 'key_3')])
 def test_iterable_like_list_and_dict(target, base, fillvalue):
     a = list(iterable_like(target, base, fillvalue))
-    assert a == ['key_1', 'key_2', 'key_3']
+    assert sorted(a) == ['key_1', 'key_2', 'key_3']
 
 
 @pytest.mark.parametrize(("target", "base", "fillvalue"),
