@@ -37,7 +37,7 @@ jobs:
       before_install:
         - choco install ironpython --version=2.7.8.1
       script:
-        - ipy tests/ipy_test_runner.py
+        - ipy tests/ipy_test_runner.py --test-dir=tests --exclude tests/compas/files/test_base_reader.py
       env:
         - TRAVIS_PYTHON_IMPLEMENTATION="ironpython"
         - IRONPYTHONPATH=$TRAVIS_BUILD_DIR/src

@@ -108,8 +108,9 @@ if __name__ == '__main__':
 
     for test_module in discover_tests(args.test_dir, pattern):
         if args.exclude:
-            if test_module in args.exclude:
-                print('Skipping {} module'.format(test_module))
+            test_module_replaced = test_module.replace('\\', '/')
+            if test_module_replaced in args.exclude:
+                print('Skipping {} module'.format(test_module_replaced))
                 continue
 
         print(test_module, end=' ')
