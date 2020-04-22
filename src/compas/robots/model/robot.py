@@ -6,23 +6,22 @@ import itertools
 
 from compas.files import URDF
 from compas.files import URDFParser
+from compas.geometry import Frame
 from compas.geometry import Transformation
-from compas.topology import shortest_path
-
 from compas.robots.model.geometry import Color
-from compas.robots.model.geometry import Material
-from compas.robots.model.geometry import Texture
 from compas.robots.model.geometry import Geometry
+from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
+from compas.robots.model.geometry import Texture
 from compas.robots.model.joint import Axis
 from compas.robots.model.joint import Joint
 from compas.robots.model.joint import Limit
+from compas.robots.model.link import Collision
 from compas.robots.model.link import Link
 from compas.robots.model.link import Visual
-from compas.robots.model.link import Collision
 from compas.robots.resources import DefaultMeshLoader
-
+from compas.topology import shortest_path
 
 __all__ = ['RobotModel']
 
