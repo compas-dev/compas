@@ -1,18 +1,17 @@
-import pytest
-
 from math import pi
 
-from compas.geometry import angle_vectors
-from compas.geometry import angles_vectors
-from compas.geometry import length_vector
-from compas.geometry import subtract_vectors
-
-from compas.geometry import centroid_points
-from compas.geometry import centroid_polyhedron
-from compas.geometry import volume_polyhedron
+import pytest
 
 from compas.geometry import Polyhedron
-
+from compas.geometry import allclose
+from compas.geometry import angle_vectors
+from compas.geometry import angles_vectors
+from compas.geometry import centroid_points
+from compas.geometry import centroid_polyhedron
+from compas.geometry import close
+from compas.geometry import length_vector
+from compas.geometry import subtract_vectors
+from compas.geometry import volume_polyhedron
 
 # ==============================================================================
 # angles
@@ -34,7 +33,7 @@ from compas.geometry import Polyhedron
 ]
 )
 def test_angle_vectors(u, v, angle):
-    assert angle_vectors(u, v) == pytest.approx(angle)
+    assert close(angle_vectors(u, v), angle)
 
 
 @pytest.mark.parametrize(("u", "v"),
@@ -65,7 +64,7 @@ def test_angle_vectors_fails_when_input_is_zero(u, v):
 )
 def test_angles_vectors(u, v, angles):
     a, b = angles
-    assert angles_vectors(u, v) == (pytest.approx(a), pytest.approx(b))
+    assert allclose(angles_vectors(u, v), (a, b))
 
 
 @pytest.mark.parametrize(("u", "v"),
@@ -101,7 +100,7 @@ def test_centroid_points(points, centroid):
         x, y, z = 0.0, 0.0, 0.0
     else:
         x, y, z = centroid
-    assert centroid_points(points) == [pytest.approx(x, 0.001), pytest.approx(y, 0.001), pytest.approx(z, 0.001)]
+    assert allclose(centroid_points(points), (x, y, z), tol=1e-03)
 
 
 @pytest.mark.parametrize(("points"),
@@ -132,8 +131,7 @@ def test_centroid_points_fails_when_input_is_not_complete_points(points):
 )
 def test_centroid_polyhedron(polyhedron, centroid):
     x, y, z = centroid
-    assert centroid_polyhedron(polyhedron) == [pytest.approx(x, 0.001), pytest.approx(y, 0.001), pytest.approx(z, 0.001)]
-
+    assert allclose(centroid_polyhedron(polyhedron), (x, y, z))
 
 # ==============================================================================
 # size
@@ -151,4 +149,4 @@ def test_volume_polyhedron(polyhedron, volume):
             polyhedron.vertices[0], polyhedron.vertices[1]))
         volume = L * L * L
     V = volume_polyhedron(polyhedron)
-    assert V == pytest.approx(volume, 0.001)
+    assert close(V, volume)
