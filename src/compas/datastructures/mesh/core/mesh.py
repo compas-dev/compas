@@ -1004,7 +1004,7 @@ class BaseMesh(HalfEdge):
         fkey : int
             The identifier of the face.
         axes : str, optional
-            The axes alon which to take the coordinates.
+            The axes along which to take the coordinates.
             Should be a combination of ``'x'``, ``'y'``, ``'z'``.
             Default is ``'xyz'``.
 
