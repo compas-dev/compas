@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 
+import array
 import base64
 import json
 import os
@@ -16,6 +17,16 @@ from compas.files.gltf.constants import TYPE_SCALAR
 from compas.files.gltf.constants import TYPE_VEC2
 from compas.files.gltf.constants import TYPE_VEC3
 from compas.files.gltf.constants import TYPE_VEC4
+
+
+
+# This fails on IronPython 2.7.8 (eg. Rhino 6 on Windows)
+# but works on IronPython 2.7.9 (Rhino 6 on Mac)
+try:
+    struct.pack_into('<I', bytearray(4), 0, 0)
+    USE_BYTEARRAY_BUFFERS = True
+except:
+    USE_BYTEARRAY_BUFFERS = False
 
 
 class GLTFExporter(object):
@@ -340,7 +351,10 @@ class GLTFExporter(object):
         size = count * component_len
         size += (4 - size % 4) % 4
 
-        bytes_ = bytearray(size)
+        if USE_BYTEARRAY_BUFFERS:
+            bytes_ = bytearray(size)
+        else:
+            bytes_ = array.array('B', [0] * size)
 
         for i, datum in enumerate(data):
             if isinstance(datum, int) or isinstance(datum, float):
@@ -390,6 +404,9 @@ class GLTFExporter(object):
 
     def _update_buffer(self, bytes_):
         byte_offset = len(self._buffer)
+        # If bytes_ was not created as bytearray, cast now
+        if not USE_BYTEARRAY_BUFFERS:
+            bytes_ = bytearray(bytes_)
         self._buffer += bytes_
         return byte_offset
 

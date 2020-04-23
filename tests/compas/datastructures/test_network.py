@@ -1,7 +1,7 @@
 import pytest
 
+import compas
 from compas.datastructures import Network
-from compas.datastructures import network_is_planar
 
 
 @pytest.fixture
@@ -33,9 +33,18 @@ def test_add_node():
 
 
 def test_non_planar(k5_network):
+    if compas.IPY:
+        return
+
+    from compas.datastructures import network_is_planar
     assert network_is_planar(k5_network) is not True
 
 
 def test_planar(k5_network):
+    if compas.IPY:
+        return
+
+    from compas.datastructures import network_is_planar
+
     k5_network.delete_edge('a', 'b')  # Delete (a, b) edge to make K5 planar
     assert network_is_planar(k5_network) is True
