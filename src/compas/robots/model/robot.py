@@ -868,7 +868,6 @@ if __name__ == '__main__':
     import os
     import doctest
     from compas import HERE
-    from compas.geometry import Frame
     from compas.geometry import Sphere  # noqa: F401
     from compas.datastructures import Mesh  # noqa: F401
     from compas.robots import GithubPackageMeshLoader  # noqa: F401

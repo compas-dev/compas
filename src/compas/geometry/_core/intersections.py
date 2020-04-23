@@ -848,5 +848,5 @@ def intersection_plane_circle(plane, circle):
 
 if __name__ == "__main__":
     import doctest
-    from compas.geometry import Point
+    from compas.geometry import Point    # noqa: F401
     doctest.testmod(globs=globals())

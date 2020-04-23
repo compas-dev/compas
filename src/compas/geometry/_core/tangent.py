@@ -42,5 +42,5 @@ def tangent_points_to_circle_xy(circle, point):
 
 if __name__ == "__main__":
     import doctest
-    from compas.geometry import Point
+    from compas.geometry import Point    # noqa: F401
     doctest.testmod(globs=globals())
