@@ -1,10 +1,8 @@
+from compas.geometry import Frame
 from compas.geometry import Rotation
 from compas.geometry import Transformation
 from compas.geometry import allclose
 from compas.geometry import normalize_vector
-
-from compas.geometry import Frame
-import numpy as np
 
 
 def test_from_basis_vectors():
@@ -15,14 +13,14 @@ def test_from_basis_vectors():
          [0.6807833515407016, 0.7282315114847181, -0.07882160714891209, 0.0],
          [0.2703110366411609, -0.14975954908850603, 0.9510541192112079, 0.0],
          [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(R, r)
+    assert allclose(R, r)
 
 
 def test_from_frame():
     f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     T = Transformation.from_frame(f1)
     f2 = Frame.from_transformation(T)
-    assert np.allclose(f1, f2)
+    assert allclose(f1, f2)
 
 
 def test_from_quaternion():
@@ -54,7 +52,7 @@ def test_from_euler_angles():
     Ry = Rotation.from_axis_and_angle(yaxis, beta)
     Rz = Rotation.from_axis_and_angle(zaxis, gamma)
     R2 = Rx * Ry * Rz
-    assert np.allclose(R1, R2)
+    assert allclose(R1, R2)
 
 
 def test_quaternion():
@@ -93,4 +91,4 @@ def test_basis_vectors():
     args = False, 'xyz'
     R1 = Rotation.from_euler_angles(ea1, *args)
     R2 = [[-0.5847122176808724, -0.18803656702967916, 0.789147560317086], [-0.6544178905170501, -0.4655532858863264, -0.5958165511058404]]
-    assert np.allclose(R1.basis_vectors, R2)
+    assert allclose(R1.basis_vectors, R2)

@@ -28,7 +28,8 @@ class RhinoCurve(RhinoGeometry):
 
     Examples
     --------
-    >>>
+    >>> rhinocurve = RhinoCurve.from_guid(guid)
+    >>> curve = rhinocurve.to_compas()
     """
 
     __module__ = 'compas_rhino.geometry'
@@ -223,6 +224,37 @@ class RhinoCurve(RhinoGeometry):
             raise Exception('Object is not a curve.')
         return space
 
+    def divide(self, number_of_segments, over_space=False):
+        points = []
+        compas_rhino.rs.EnableRedraw(False)
+        if over_space:
+            space = self.space(number_of_segments + 1)
+            if space:
+                points = [list(compas_rhino.rs.EvaluateCurve(self.guid, param)) for param in space]
+        else:
+            points = compas_rhino.rs.DivideCurve(self.guid, number_of_segments, create_points=False, return_points=True)
+            points[:] = map(list, points)
+        compas_rhino.rs.EnableRedraw(True)
+        return points
+
+    def divide_length(self, length_of_segments):
+        compas_rhino.rs.EnableRedraw(False)
+        points = compas_rhino.rs.DivideCurveLength(self.guid, length_of_segments, create_points=False, return_points=True)
+        points[:] = map(list, points)
+        compas_rhino.rs.EnableRedraw(True)
+        return points
+
+    def closest_point(self, point, maxdist=None, return_param=False):
+        maxdist = maxdist or 0.0
+        rc, t = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)
+        x, y, z = list(self.geometry.PointAt(t))
+        if not return_param:
+            return x, y, z
+        return x, y, z, t
+
+    def closest_points(self, points, maxdist=None):
+        return [self.closest_point(point, maxdist) for point in points]
+
     # def heightfield(self, density):
     #     heightfield = []
     #     space = self.space(density)
@@ -254,37 +286,6 @@ class RhinoCurve(RhinoGeometry):
     #         for point, vector in zip(points, tangents)
     #     ]
     #     return tangents
-
-    def divide(self, number_of_segments, over_space=False):
-        points = []
-        compas_rhino.rs.EnableRedraw(False)
-        if over_space:
-            space = self.space(number_of_segments + 1)
-            if space:
-                points = [list(compas_rhino.rs.EvaluateCurve(self.guid, param)) for param in space]
-        else:
-            points = compas_rhino.rs.DivideCurve(self.guid, number_of_segments, create_points=False, return_points=True)
-            points[:] = map(list, points)
-        compas_rhino.rs.EnableRedraw(True)
-        return points
-
-    def divide_length(self, length_of_segments):
-        compas_rhino.rs.EnableRedraw(False)
-        points = compas_rhino.rs.DivideCurveLength(self.guid, length_of_segments, create_points=False, return_points=True)
-        points[:] = map(list, points)
-        compas_rhino.rs.EnableRedraw(True)
-        return points
-
-    def closest_point(self, point, maxdist=None, return_param=False):
-        maxdist = maxdist or 0.0
-        rc, t = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)
-        x, y, z = list(self.geometry.PointAt(t))
-        if not return_param:
-            return x, y, z
-        return x, y, z, t
-
-    def closest_points(self, points, maxdist=None):
-        return [self.closest_point(point, maxdist) for point in points]
 
 
 # ==============================================================================
