@@ -228,13 +228,15 @@ class BaseMesh(HalfEdge):
         ply.write(self, **kwargs)
 
     @classmethod
-    def from_stl(cls, filepath):
+    def from_stl(cls, filepath, precision=None):
         """Construct a mesh object from the data described in a STL file.
 
         Parameters
         ----------
         filepath : str
             The path to the file.
+        precision: str, optional
+            The precision of the geometric map that is used to connect the lines.
 
         Returns
         -------
@@ -252,7 +254,7 @@ class BaseMesh(HalfEdge):
         --------
         >>>
         """
-        stl = STL(filepath)
+        stl = STL(filepath, precision)
         vertices = stl.parser.vertices
         faces = stl.parser.faces
         mesh = cls.from_vertices_and_faces(vertices, faces)

@@ -55,8 +55,7 @@ def ur5():
                       )
 
 
-@pytest.fixture
-def programatic_robot_model():
+def test_programatic_robot_model():
     robot = RobotModel("robot")
     link0 = robot.add_link("link0")
     link1 = robot.add_link("link1")

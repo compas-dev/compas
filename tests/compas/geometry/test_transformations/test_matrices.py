@@ -1,46 +1,42 @@
+import math
+
 import pytest
 
-from compas.geometry import matrix_inverse
-from compas.geometry import matrix_determinant
-from compas.geometry import decompose_matrix
+from compas.geometry import Frame
+from compas.geometry import Rotation
+from compas.geometry import Translation
+from compas.geometry import allclose
+from compas.geometry import axis_and_angle_from_matrix
+from compas.geometry import axis_angle_from_quaternion
+from compas.geometry import axis_angle_vector_from_matrix
+from compas.geometry import basis_vectors_from_matrix
 from compas.geometry import compose_matrix
-
+from compas.geometry import cross_vectors
+from compas.geometry import decompose_matrix
+from compas.geometry import euler_angles_from_matrix
+from compas.geometry import euler_angles_from_quaternion
 from compas.geometry import identity_matrix
-from compas.geometry import matrix_from_frame
-from compas.geometry import matrix_from_euler_angles
+from compas.geometry import matrix_determinant
 from compas.geometry import matrix_from_axis_and_angle
 from compas.geometry import matrix_from_axis_angle_vector
 from compas.geometry import matrix_from_basis_vectors
-from compas.geometry import matrix_from_translation
+from compas.geometry import matrix_from_euler_angles
+from compas.geometry import matrix_from_frame
 from compas.geometry import matrix_from_orthogonal_projection
 from compas.geometry import matrix_from_parallel_projection
-from compas.geometry import matrix_from_perspective_projection
 from compas.geometry import matrix_from_perspective_entries
-from compas.geometry import matrix_from_shear_entries
-from compas.geometry import matrix_from_shear
-from compas.geometry import matrix_from_scale_factors
+from compas.geometry import matrix_from_perspective_projection
 from compas.geometry import matrix_from_quaternion
-from compas.geometry import euler_angles_from_matrix
-from compas.geometry import euler_angles_from_quaternion
-from compas.geometry import axis_and_angle_from_matrix
-from compas.geometry import axis_angle_vector_from_matrix
-from compas.geometry import axis_angle_from_quaternion
-from compas.geometry import quaternion_from_matrix
-from compas.geometry import quaternion_from_euler_angles
-from compas.geometry import quaternion_from_axis_angle
-from compas.geometry import basis_vectors_from_matrix
-from compas.geometry import translation_from_matrix
-
-from compas.geometry import Translation
-from compas.geometry import Rotation
-
-import math
-
-from compas.geometry import Frame
-from compas.geometry import allclose
+from compas.geometry import matrix_from_scale_factors
+from compas.geometry import matrix_from_shear
+from compas.geometry import matrix_from_shear_entries
+from compas.geometry import matrix_from_translation
+from compas.geometry import matrix_inverse
 from compas.geometry import normalize_vector
-from compas.geometry import cross_vectors
-import numpy as np
+from compas.geometry import quaternion_from_axis_angle
+from compas.geometry import quaternion_from_euler_angles
+from compas.geometry import quaternion_from_matrix
+from compas.geometry import translation_from_matrix
 
 
 @pytest.fixture
@@ -90,7 +86,7 @@ def test_matrix_from_frame():
          [0.6807833515407016, 0.7282315441900513, -0.0788216106888398, 1.0],
          [0.2703110366411609, -0.14975955581430114, 0.9510541619236438, 1.0],
          [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(T, t)
+    assert allclose(T, t)
 
 
 def test_matrix_from_euler_angles():
@@ -101,7 +97,7 @@ def test_matrix_from_euler_angles():
          [0.6544178905170501, 0.23906322244658262, 0.7173464994301357, 0.0],
          [-0.479425538604203, 0.8648134986574489, 0.14916020070358058, 0.0],
          [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(R, r)
+    assert allclose(R, r)
 
 
 def test_euler_angles_from_matrix():
@@ -109,7 +105,7 @@ def test_euler_angles_from_matrix():
     args = True, 'xyz'
     R = matrix_from_euler_angles(ea1, *args)
     ea2 = euler_angles_from_matrix(R, *args)
-    assert np.allclose(ea1, ea2)
+    assert allclose(ea1, ea2)
 
 
 def test_matrix_from_axis_angle_vector():
@@ -120,7 +116,7 @@ def test_matrix_from_axis_angle_vector():
          [0.09224781823368366, 0.9957251324831573, 0.004669108322156158, 0.0],
          [0.037628871037522216, -0.008171760019527692, 0.9992583701939277, 0.0],
          [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(R, r)
+    assert allclose(R, r)
 
 
 def test_matrix_from_basis_vectors():
@@ -131,13 +127,13 @@ def test_matrix_from_basis_vectors():
          [0.6807833515407016, 0.7282315114847181, -0.07882160714891209, 0.0],
          [0.2703110366411609, -0.14975954908850603, 0.9510541192112079, 0.0],
          [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(R, r)
+    assert allclose(R, r)
 
 
 def test_matrix_from_translation():
     T = matrix_from_translation([1, 2, 3])
     t = [[1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 2.0], [0.0, 0.0, 1.0, 3.0], [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(T, t)
+    assert allclose(T, t)
 
 
 def test_matrix_from_orthogonal_projection():
@@ -145,7 +141,7 @@ def test_matrix_from_orthogonal_projection():
     normal = [0, 0, 1]
     P = matrix_from_orthogonal_projection(point, normal)
     p = [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(P, p)
+    assert allclose(P, p)
 
 
 def test_matrix_from_parallel_projection():
@@ -154,7 +150,7 @@ def test_matrix_from_parallel_projection():
     direction = [1, 1, 1]
     P = matrix_from_parallel_projection(point, normal, direction)
     p = [[1.0, 0.0, -1.0, 0.0], [0.0, 1.0, -1.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(P, p)
+    assert allclose(P, p)
 
 
 def test_matrix_from_perspective_projection():
@@ -163,7 +159,7 @@ def test_matrix_from_perspective_projection():
     perspective = [1, 1, 0]
     P = matrix_from_perspective_projection(point, normal, perspective)
     p = [[0.0, 0.0, -1.0, 0.0], [0.0, 0.0, -1.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, -1.0, 0.0]]
-    assert np.allclose(P, p)
+    assert allclose(P, p)
 
 
 def test_matrix_from_perspective_entries():
@@ -184,7 +180,7 @@ def test_matrix_from_shear():
          [-0.015932758420861955, 1.0449014100951564, -0.024623353923150296, -0.04634984267887115],
          [-0.023899137631292932, 0.06735211514273462, 0.9630649691152746, -0.0695247640183067],
          [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(S, s)
+    assert allclose(S, s)
 
 
 def test_matrix_from_scale_factors():
@@ -199,14 +195,14 @@ def test_matrix_from_quaternion():
          [0.5774003396942752, 0.8156659006893796, -0.0360275751823359, 0.0],
          [0.22332300929163754, -0.11533619742231993, 0.9678968927964832, 0.0],
          [0.0, 0.0, 0.0, 1.0]]
-    assert np.allclose(R, r)
+    assert allclose(R, r)
 
 
 def test_euler_angles_from_quaternion():
     axis = [1.0, 0.0, 0.0]
     angle = math.pi/2
     q = quaternion_from_axis_angle(axis, angle)
-    assert np.allclose(euler_angles_from_quaternion(q), [math.pi/2, 0, 0])
+    assert allclose(euler_angles_from_quaternion(q), [math.pi/2, 0, 0])
 
 
 def test_axis_and_angle_from_matrix():
@@ -242,7 +238,7 @@ def test_quaternion_from_matrix():
 def test_quaternion_from_euler_angles():
     axis = [1.0, 0.0, 0.0]
     angle = math.pi/2
-    assert np.allclose(quaternion_from_axis_angle(axis, angle), quaternion_from_euler_angles([math.pi/2, 0, 0]))
+    assert allclose(quaternion_from_axis_angle(axis, angle), quaternion_from_euler_angles([math.pi/2, 0, 0]))
 
 
 def test_quaternion_from_axis_angle():
@@ -256,8 +252,8 @@ def test_basis_vectors_from_matrix():
     f = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     R = matrix_from_frame(f)
     xaxis, yaxis = basis_vectors_from_matrix(R)
-    assert np.allclose(xaxis, [0.6807833515407016, 0.6807833515407016, 0.2703110366411609])
-    assert np.allclose(yaxis, [-0.6687681911461376, 0.7282315441900513, -0.14975955581430114])
+    assert allclose(xaxis, [0.6807833515407016, 0.6807833515407016, 0.2703110366411609])
+    assert allclose(yaxis, [-0.6687681911461376, 0.7282315441900513, -0.14975955581430114])
 
 
 def test_translation_from_matrix():
