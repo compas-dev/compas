@@ -1,4 +1,5 @@
 # import pytest
+import os
 import compas
 import json
 
@@ -116,6 +117,7 @@ def test_to_obj():
     assert mesh.number_of_faces() == 25
     assert mesh.number_of_vertices() == 36
     assert mesh.number_of_edges() == 60
+    os.remove(compas.get('temp.obj'))
 
 
 def test_to_vertices_and_faces():
