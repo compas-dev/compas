@@ -7,6 +7,7 @@ jobs:
     - name: "Python 3.8 on Xenial Linux"
       python: 3.8           # this works for Linux but is ignored on macOS or Windows
       env:
+        - TRAVIS_RUN_LINTER=true
         - TRAVIS_GENERATE_DOCS=true
         - TRAVIS_PYTHON_IMPLEMENTATION="cpython"
     - name: "Python 3.7 on macOS"
@@ -55,6 +56,9 @@ install:
   fi
 
 script:
+- if [[ "$TRAVIS_RUN_LINTER" == "true" ]]; then
+    invoke lint;
+  fi
 - invoke test
 
 after_success:

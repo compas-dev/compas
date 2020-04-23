@@ -122,18 +122,24 @@ def docs(ctx, doctest=False, rebuild=True, check_links=False):
 
 
 @task()
+def lint(ctx):
+    """Check the consistency of coding style."""
+    log.write('Running flake8 python linter...')
+    ctx.run('flake8 src')
+
+
+@task()
 def check(ctx):
     """Check the consistency of documentation, coding style and a few other things."""
 
     with chdir(BASE_FOLDER):
+        lint(ctx)
+
         log.write('Checking MANIFEST.in...')
         ctx.run('check-manifest')
 
         log.write('Checking metadata...')
         ctx.run('python setup.py check --strict --metadata')
-
-        log.write('Running flake8 python linter...')
-        ctx.run('flake8 --count --statistics src tests')
 
         # log.write('Checking python imports...')
         # ctx.run('isort --check-only --diff --recursive src tests setup.py')

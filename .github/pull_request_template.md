@@ -7,11 +7,15 @@
 - [ ] Bug fix in a **backwards-compatible** manner.
 - [ ] New feature in a **backwards-compatible** manner.
 - [ ] Breaking change: bug fix or new feature that involve incompatible API changes.
+- [ ] Other (e.g. doc update, configuration, etc)
 
 ### Checklist
 
-1. [ ] Add the change to the `CHANGELOG.md` file in the `Unreleased` section under the most fitting heading: `Added`, `Changed`, `Removed`.
-1. [ ] Run all tests on your computer (i.e. `invoke test`).
-1. [ ] If you add new functions/classes, check that:
-   1. [ ] Are available on a second-level import, e.g. `compas.datastructures.Mesh`.
-   1. [ ] Add unit tests (especially important for algorithm implementations).
+_Put an `x` in the boxes that apply. You can also fill these out after creating the PR. If you're unsure about any of them, don't hesitate to ask. We're here to help! This is simply a reminder of what we are going to look for before merging your code._
+
+- [ ] I added a line to the `CHANGELOG.md` file in the `Unreleased` section under the most fitting heading (e.g. `Added`, `Changed`, `Removed`).
+- [ ] I ran all tests on my computer and it's all green (i.e. `invoke test`).
+- [ ] I ran lint on my computer and there are no errors (i.e. `invoke lint`).
+- [ ] I added new functions/classes and made them available on a second-level import, e.g. `compas.datastructures.Mesh`.
+- [ ] I have added tests that prove my fix is effective or that my feature works.
+- [ ] I have added necessary documentation (if appropriate)
