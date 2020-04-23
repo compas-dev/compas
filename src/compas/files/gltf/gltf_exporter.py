@@ -19,13 +19,12 @@ from compas.files.gltf.constants import TYPE_VEC3
 from compas.files.gltf.constants import TYPE_VEC4
 
 
-
 # This fails on IronPython 2.7.8 (eg. Rhino 6 on Windows)
 # but works on IronPython 2.7.9 (Rhino 6 on Mac)
 try:
     struct.pack_into('<I', bytearray(4), 0, 0)
     USE_BYTEARRAY_BUFFERS = True
-except:
+except TypeError:
     USE_BYTEARRAY_BUFFERS = False
 
 
