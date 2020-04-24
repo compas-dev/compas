@@ -7,14 +7,15 @@ compas_rhino.geometry
 
 Object-oriented convenience wrappers for Rhino geometry objects.
 
-Base class
-==========
+Bases
+=====
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     RhinoGeometry
+
 
 Specific wrappers
 =================
