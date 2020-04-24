@@ -33,6 +33,26 @@ Artists for visualising (painting) COMPAS objects in Rhino.
     world_.draw()
 
 
+.. note::
+
+    In the (hopefully very near) future, creating artists explicitly as in the example above will no longer be necessary.
+    The creation of artists will be handled by adding objects to a configurable Rhino scene.
+    This scene will uniformise the representation of and intercation with COMPAS objects across
+    CAD software, platforms, and visualisation tools.
+
+
+Bases
+=====
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Artist
+    PrimitiveArtist
+    ShapeArtist
+
+
 Primitive Artists
 =================
 
@@ -52,7 +72,6 @@ Shape Artists
 .. autosummary::
     :toctree: generated/
     :nosignatures:
-
 
 
 Data Structure Artists
@@ -96,9 +115,8 @@ Artist.register(Point, PointArtist)
 Artist.register(Frame, FrameArtist)
 Artist.register(Line, LineArtist)
 Artist.register(Polyline, PolylineArtist)
-
 Artist.register(Box, BoxArtist)
-
 Artist.register(Mesh, MeshArtist)
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

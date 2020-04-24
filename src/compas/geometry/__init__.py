@@ -17,7 +17,6 @@ Bases
     Shape
     Collection
     CollectionNumpy
-    Transformation
 
 
 Primitives
@@ -80,6 +79,7 @@ Transformations
     Rotation
     Scale
     Shear
+    Transformation
     Translation
 
 **Functions**
