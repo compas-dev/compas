@@ -6,6 +6,16 @@ datastructures
 .. currentmodule:: compas.datastructures
 
 
+Bases
+=====
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Datastructure
+
+
 Meshes
 ======
 
@@ -14,14 +24,15 @@ It is meant for the representation of polygonal *"surface"* meshes. A mesh can b
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
 
-Base data structures
---------------------
+Bases
+-----
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     HalfEdge
+    BaseMesh
 
 Data structures
 ---------------
@@ -103,6 +114,7 @@ Conway Operators
     mesh_conway_meta
     mesh_conway_bevel
 
+
 Networks
 ========
 
@@ -111,14 +123,15 @@ It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
 
-Base data structures
---------------------
+Bases
+-----
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     Graph
+    BaseNetwork
 
 Data structures
 ---------------
@@ -149,6 +162,7 @@ Algorithms
     network_smooth_centroid
     network_transform
     network_transformed
+
 
 VolMesh
 =======
