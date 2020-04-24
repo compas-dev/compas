@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Blender installation docs for latest release.
 - Fixed ``robot.forward_kinematics()`` when requested for base link.
 - Fixed bug in ``to_compas`` conversion of Rhino meshes.
+- Fixed bug where ``compas.geometry.Primitive`` derived classes cannot be serialized by jsonpickle.
 
 ### Removed
 
