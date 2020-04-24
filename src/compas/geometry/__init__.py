@@ -6,6 +6,20 @@ geometry
 .. currentmodule:: compas.geometry
 
 
+Bases
+=====
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Primitive
+    Shape
+    Collection
+    CollectionNumpy
+    Transformation
+
+
 Primitives
 ==========
 
@@ -14,6 +28,7 @@ Primitives
     :nosignatures:
 
     Circle
+    Ellipse
     Frame
     Line
     Plane
@@ -21,6 +36,7 @@ Primitives
     Polygon
     Polyline
     Quaternion
+    Vector
 
 
 Shapes
@@ -31,6 +47,7 @@ Shapes
     :nosignatures:
 
     Box
+    Capsule
     Cone
     Cylinder
     Polyhedron
@@ -53,12 +70,6 @@ Transformations
 ===============
 
 **XForms**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Transformation
 
 .. autosummary::
     :toctree: generated/

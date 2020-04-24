@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.geometry import subtract_vectors
+from compas.geometry import centroid_points
 from compas.geometry import Frame
 from compas.geometry import Vector
 
@@ -291,14 +292,13 @@ class Box(Shape):
         b = bbox[1]
         d = bbox[3]
         e = bbox[4]
-        xaxis = Vector(*subtract_vectors(d, a))
-        yaxis = Vector(*subtract_vectors(b, a))
-        zaxis = Vector(*subtract_vectors(e, a))
+        xaxis = Vector.from_start_end(a, d)
+        yaxis = Vector.from_start_end(a, b)
+        zaxis = Vector.from_start_end(a, e)
         xsize = xaxis.length
         ysize = yaxis.length
         zsize = zaxis.length
-        frame = Frame(a, xaxis, yaxis)
-        frame.point += frame.xaxis * 0.5 * xsize + frame.yaxis * 0.5 * ysize + frame.zaxis * 0.5 * zsize
+        frame = Frame(centroid_points(bbox), xaxis, yaxis)
         return cls(frame, xsize, ysize, zsize)
 
     @classmethod

@@ -80,10 +80,15 @@ from .networkartist import NetworkArtist  # noqa: F401
 from .meshartist import MeshArtist  # noqa: F401
 from .volmeshartist import VolMeshArtist  # noqa: F401
 
+from .shapeartist import ShapeArtist  # noqa: F401
+from .boxartist import BoxArtist
+
 from compas.geometry import Frame
 from compas.geometry import Line
 from compas.geometry import Polyline
 from compas.geometry import Point
+
+from compas.geometry import Box
 
 from compas.datastructures import Mesh
 
@@ -91,6 +96,8 @@ Artist.register(Point, PointArtist)
 Artist.register(Frame, FrameArtist)
 Artist.register(Line, LineArtist)
 Artist.register(Polyline, PolylineArtist)
+
+Artist.register(Box, BoxArtist)
 
 Artist.register(Mesh, MeshArtist)
 
