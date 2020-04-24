@@ -23,13 +23,29 @@ class RhinoCurve(RhinoGeometry):
 
     Parameters
     ----------
-    guid : str or System.Guid
-        The GUID of the Rhino curve object.
+    None
+
+    Attributes
+    ----------
+    start : Rhino.Geometry.Point3d, read-only
+        The start point of the curve.
+    end : Rhino.Geometry.Point3d, read-only
+        The end point of the curve.
+    points : list of RhinoGeometry.Point3d, read-only
+        List of points between start and end, defining the geometry of the curve.
 
     Examples
     --------
     >>> rhinocurve = RhinoCurve.from_guid(guid)
     >>> curve = rhinocurve.to_compas()
+    >>> if rhinocurve.is_line():
+    ...     isinstance(curve, compas.geometry.Line)
+    ...
+    True
+    >>> if rhinocurve.is_polyline():
+    ...     isinstance(curve, compas.geometry.Polyline)
+    ...
+    True
     """
 
     __module__ = 'compas_rhino.geometry'
@@ -51,6 +67,18 @@ class RhinoCurve(RhinoGeometry):
 
     @classmethod
     def from_guid(cls, guid):
+        """Construct a curve from the GUID of an existing Rhino curve object.
+
+        Parameters
+        ----------
+        guid : str
+            The GUID of the Rhino curve object.
+
+        Returns
+        -------
+        curve : compas_rhino.geometry.RhinoCurve
+            The wrapped curve.
+        """
         obj = compas_rhino.find_object(guid)
         curve = cls()
         curve.guid = obj.Id
@@ -60,6 +88,18 @@ class RhinoCurve(RhinoGeometry):
 
     @classmethod
     def from_object(cls, obj):
+        """Construct a curve from an existing Rhino curve object.
+
+        Parameters
+        ----------
+        obj : Rhino.DocObjects.CurveObject
+            The Rhino curve object.
+
+        Returns
+        -------
+        curve : compas_rhino.geometry.RhinoCurve
+            The wrapped curve.
+        """
         curve = cls()
         curve.guid = obj.Id
         curve.object = obj
@@ -68,17 +108,33 @@ class RhinoCurve(RhinoGeometry):
 
     @classmethod
     def from_selection(cls):
-        """Create a ``RhinoCurve`` instance from a selected Rhino curve.
+        """Construct a curve by selecting an existing Rhino curve object.
+
+        Parameters
+        ----------
+        None
 
         Returns
         -------
-        RhinoCurve
-            A convenience wrapper around the Rhino curve object.
+        curve : compas_rhino.geometry.RhinoCurve
+            The wrapped curve.
         """
         guid = compas_rhino.select_curve()
         return cls.from_guid(guid)
 
     def to_compas(self):
+        """Convert the curve to an equivalent geometry object.
+
+        Returns
+        -------
+        compas.geometry.Line
+            If the curve is a line (if it is a linear segment between two points).
+        compas.geometry.Polyline
+            If the curve is a polyline (if it is comprised of multiple line segments).
+        compas.geometry.Circle
+            If the curve is a circle.
+
+        """
         if self.is_line():
             return Line(self.start, self.end)
         if self.is_polyline():
@@ -134,9 +190,30 @@ class RhinoCurve(RhinoGeometry):
         return success and polyline.Count >= 2
 
     def is_polygon(self):
+        """Determine if the curve is the boundary of a polygon.
+
+        Returns
+        -------
+        bool
+            True if the curve is a polygon.
+            False otherwise.
+
+        Notes
+        -----
+        A curve is a polygon if it consists of linear segments between a sequence of points,
+        without self-intersections and if it is closed.
+        """
         return self.is_polyline() and self.is_closed()
 
     def is_circle(self):
+        """Determine if the curve is a circle.
+
+        Returns
+        -------
+        bool
+            True if the curve is a polygon.
+            False otherwise.
+        """
         return self.geometry.IsCircle()
 
     def is_nurbs(self):
@@ -162,45 +239,6 @@ class RhinoCurve(RhinoGeometry):
             The curve's length.
         """
         return compas_rhino.rs.CurveLength(self.guid)
-
-    # def control_points(self):
-    #     """Get the control points of a curve.
-
-    #     Returns
-    #     -------
-    #     list
-    #         Control point objects.
-    #     """
-    #     return self.object.GetGrips()
-
-    # def control_point_coordinates(self):
-    #     """Get the coordinates of the control points of a curve.
-
-    #     Returns
-    #     -------
-    #     list
-    #         Control point coordinates.
-    #     """
-    #     return [control.CurrentLocation for control in self.control_points()]
-
-    # def control_points_on(self):
-    #     self.object.GripsOn = True
-    #     sc.doc.Views.Redraw()
-
-    # def control_points_off(self):
-    #     self.object.GripsOn = False
-    #     sc.doc.Views.Redraw()
-
-    # def select_control_point(self):
-    #     self.control_points_on()
-    #     rc, grip = Rhino.Input.RhinoGet.GetGrip("Select control point.")
-    #     if rc != Rhino.Commands.Result.Success:
-    #         return
-    #     if grip.OwnerId != self.guid:
-    #         return
-    #     grip.Select(True, True)
-    #     sc.doc.Views.Redraw()
-    #     return grip
 
     def space(self, density):
         space = []
@@ -255,29 +293,21 @@ class RhinoCurve(RhinoGeometry):
     def closest_points(self, points, maxdist=None):
         return [self.closest_point(point, maxdist) for point in points]
 
-    # def heightfield(self, density):
-    #     heightfield = []
-    #     space = self.space(density)
-    #     if space:
-    #         xyz = [rs.EvaluateCurve(self.guid, param) for param in space]
-    #         heightfield = map(list, xyz)
-    #     return heightfield
+    def tangents(self, points):
+        tangents = []
+        if compas_rhino.rs.IsPolyCurve(self.guid):
+            pass
+        elif compas_rhino.rs.IsCurve(self.guid):
+            for point in points:
+                param = compas_rhino.rs.CurveClosestPoint(self.guid, point)
+                vector = list(compas_rhino.rs.CurveTangent(self.guid, param))
+                tangents.append(vector)
+        else:
+            raise Exception('Object is not a curve.')
+        return tangents
 
     # def curvature(self):
     #     raise NotImplementedError
-
-    # def tangents(self, points):
-    #     tangents = []
-    #     if rs.IsPolyCurve(self.guid):
-    #         pass
-    #     elif rs.IsCurve(self.guid):
-    #         for point in points:
-    #             param = rs.CurveClosestPoint(self.guid, point)
-    #             vector = list(rs.CurveTangent(self.guid, param))
-    #             tangents.append(vector)
-    #     else:
-    #         raise Exception('Object is not a curve.')
-    #     return tangents
 
     # def descent(self, points):
     #     tangents = self.tangents(points)
@@ -286,6 +316,45 @@ class RhinoCurve(RhinoGeometry):
     #         for point, vector in zip(points, tangents)
     #     ]
     #     return tangents
+
+    # def control_points(self):
+    #     """Get the control points of a curve.
+
+    #     Returns
+    #     -------
+    #     list
+    #         Control point objects.
+    #     """
+    #     return self.object.GetGrips()
+
+    # def control_point_coordinates(self):
+    #     """Get the coordinates of the control points of a curve.
+
+    #     Returns
+    #     -------
+    #     list
+    #         Control point coordinates.
+    #     """
+    #     return [control.CurrentLocation for control in self.control_points()]
+
+    # def control_points_on(self):
+    #     self.object.GripsOn = True
+    #     sc.doc.Views.Redraw()
+
+    # def control_points_off(self):
+    #     self.object.GripsOn = False
+    #     sc.doc.Views.Redraw()
+
+    # def select_control_point(self):
+    #     self.control_points_on()
+    #     rc, grip = Rhino.Input.RhinoGet.GetGrip("Select control point.")
+    #     if rc != Rhino.Commands.Result.Success:
+    #         return
+    #     if grip.OwnerId != self.guid:
+    #         return
+    #     grip.Select(True, True)
+    #     sc.doc.Views.Redraw()
+    #     return grip
 
 
 # ==============================================================================

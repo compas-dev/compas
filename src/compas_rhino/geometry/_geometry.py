@@ -68,6 +68,9 @@ class RhinoGeometry(object):
     def from_selection(cls):
         raise NotImplementedError
 
+    def to_compas(self, cls=None):
+        raise NotImplementedError
+
     def transform(self, T):
         if not isinstance(T, Rhino.Geometry.Transform):
             M = Rhino.Geometry.Transform(0.0)
