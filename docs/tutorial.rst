@@ -14,3 +14,5 @@ Tutorial
     tutorial/rpc
     tutorial/callbacks
     tutorial/geomaps
+    tutorial/rhino
+    tutorial/blender

@@ -69,7 +69,7 @@ Collections
 Transformations
 ===============
 
-**XForms**
+**Classes**
 
 .. autosummary::
     :toctree: generated/
