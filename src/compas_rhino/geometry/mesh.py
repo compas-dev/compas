@@ -62,7 +62,15 @@ class RhinoMesh(RhinoGeometry):
     def to_compas(self, cls=None):
         if not cls:
             cls = Mesh
-        return cls.from_vertices_and_faces(self.vertices, self.faces)
+        faces = []
+        for face in self.faces:
+            if face[0] == face[-1]:
+                faces.append(face[:-1])
+            elif face[-2] == face[-1]:
+                faces.append(face[:-1])
+            else:
+                faces.append(face)
+        return cls.from_vertices_and_faces(self.vertices, faces)
 
     # def get_vertex_coordinates(self):
     #     return [map(float, vertex) for vertex in rs.MeshVertices(self.guid)]
