@@ -37,11 +37,3 @@ class Scale(Transformation):
     @property
     def scale_factors(self):
         return self.matrix[0][0], self.matrix[1][1], self.matrix[2][2]
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass
