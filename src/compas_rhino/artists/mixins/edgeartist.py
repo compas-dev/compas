@@ -90,9 +90,10 @@ class EdgeArtist(object):
                                        normalize=False)
         lines = []
         for u, v in keys:
+            start, end = self.datastructure.edge_coordinates(u, v)
             lines.append({
-                'start': self.datastructure.vertex_coordinates(u),
-                'end': self.datastructure.vertex_coordinates(v),
+                'start': start,
+                'end': end,
                 'color': colordict[(u, v)],
                 'name': self.datastructure.edge_name(u, v),
                 'layer': self.datastructure.edge_attribute((u, v), 'layer', None)
