@@ -11,4 +11,4 @@ if __name__ == '__main__':
     pytest.load_fake_module('Rhino')
     pytest.load_fake_module('Rhino.Geometry', fake_types=['RTree', 'Sphere', 'Point3d'])
 
-    pytest.run(HERE, ['tests/compas/files/test_base_reader.py'])
+    pytest.run(HERE)
