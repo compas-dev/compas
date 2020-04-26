@@ -30,7 +30,7 @@ class EdgeArtist(object):
         else:
             guids = []
             for u, v in keys:
-                name = self.datastructure.edge_name(u, v)
+                name = self.datastructure.edge_attribute((u, v), 'name')
                 guid = compas_rhino.get_object(name=name)
                 guids.append(guid)
         compas_rhino.delete_objects(guids)
@@ -95,8 +95,8 @@ class EdgeArtist(object):
                 'start': start,
                 'end': end,
                 'color': colordict[(u, v)],
-                'name': self.datastructure.edge_name(u, v),
-                'layer': self.datastructure.edge_attribute((u, v), 'layer', None)
+                'name': self.datastructure.edge_attribute((u, v), 'name'),
+                'layer': self.datastructure.edge_attribute((u, v), 'layer')
             })
 
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -142,10 +142,10 @@ class EdgeArtist(object):
         for (u, v), text in iter(textdict.items()):
             labels.append({
                 'pos': self.datastructure.edge_midpoint(u, v),
-                'name': self.datastructure.edge_label_name(u, v),
+                'name': self.datastructure.edge_attribute((u, v), 'name'),
                 'color': colordict[(u, v)],
                 'text': textdict[(u, v)],
-                'layer': self.datastructure.edge_attribute((u, v), 'layer', None)
+                'layer': self.datastructure.edge_attribute((u, v), 'layer')
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
