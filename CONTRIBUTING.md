@@ -20,7 +20,9 @@ When [proposing a new feature](https://github.com/compas-dev/compas/issues) plea
 ## Code contributions
 
 We accept code contributions through pull requests.
-In short, this is how that works.
+In short, this is how that works. See the
+[Developer Guide](https://github.com/compas-dev/compas/wiki/Developer-Guide) for
+more details.
 
 1. Fork [the repository](https://github.com/compas-dev/compas) and clone the fork.
 2. Create a virtual environment using your tool of choice (e.g. `virtualenv`, `conda`, etc).
