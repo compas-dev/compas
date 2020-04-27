@@ -10,6 +10,8 @@ class Primitive(object):
 
     __module__ = "compas.geometry"
 
+    __slots__ = []
+
     def __init__(self):
         pass
 
