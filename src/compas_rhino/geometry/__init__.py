@@ -30,6 +30,7 @@ Specific wrappers
     RhinoPlane
     RhinoMesh
     RhinoSurface
+    RhinoVector
 
 """
 from __future__ import absolute_import
@@ -44,5 +45,6 @@ from .mesh import *  # noqa: F401 F403
 from .plane import *  # noqa: F401 F403
 from .point import *  # noqa: F401 F403
 from .surface import *  # noqa: F401 F403
+from .vector import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]
