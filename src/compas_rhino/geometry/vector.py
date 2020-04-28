@@ -3,7 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import compas_rhino
-from compas_rhino.geometry._geometry import RhinoGeometry
+from compas_rhino.geometry import RhinoPoint
 
 import compas
 from compas.geometry import Vector
@@ -15,60 +15,30 @@ if compas.IPY:
 __all__ = ['RhinoVector']
 
 
-class RhinoVector(RhinoGeometry):
+class RhinoVector(RhinoPoint):
     """Convenience wrapper for a Rhino Vector object."""
-
-    __module__ = 'compas_rhino.geometry'
 
     def __init__(self):
         super(RhinoVector, self).__init__()
 
-    @property
-    def x(self):
-        return self.geometry.X
-
-    @property
-    def y(self):
-        return self.geometry.Y
-
-    @property
-    def z(self):
-        return self.geometry.Z
-
-    @property
-    def xyz(self):
-        return [self.x, self.y, self.z]
-
-    @classmethod
-    def from_guid(cls, guid):
-        obj = compas_rhino.find_object(guid)
-        vector = cls()
-        vector.guid = guid
-        vector.object = obj
-        vector.geometry = obj.Geometry.Location
-        return vector
-
-    @classmethod
-    def from_object(cls, obj):
-        vector = cls()
-        vector.guid = obj.Id
-        vector.object = obj
-        vector.geometry = obj.Geometry.Location
-        return vector
-
     @classmethod
     def from_geometry(cls, geometry):
+        """Create instance from RhinoCommon object
+
+        Parameters
+        ----------
+        geometry : :class:`Rhino.Geometry.Vector3d` or :obj:`list` of :obj:`float`
+            Geometry to create instance from.
+
+        Note
+        ----
+        Also accepts :class:`Rhino.Geometry.Point3d` as an input.
+        """
         if not isinstance(geometry, (Rhino.Geometry.Vector3d, Rhino.Geometry.Point3d)):
             geometry = Rhino.Geometry.Vector3d(geometry[0], geometry[1], geometry[2])
         vector = cls()
         vector.geometry = geometry
         return vector
-
-    @classmethod
-    def from_selection(cls):
-        # Uses select_point since you can't select a vector
-        guid = compas_rhino.select_point()
-        return cls.from_guid(guid)
 
     def to_compas(self):
         return Vector(self.x, self.y, self.z)
