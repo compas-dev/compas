@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+- Fixed bug in `draw_edges` in `compas_rhino`'s `EdgeArtist`.
+- Fixed bug in `draw_edges` in `compas_ghpython`'s `EdgeArtist`.
+
+### Removed
+
+
+## [0.15.6] 2020-04-27
+
+### Added
+
 - Extended glTF support.
 - Added classmethod ``from_geometry`` to ``RhinoMesh``
 - Added ``intersection_sphere_line``
@@ -23,8 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Blender installation docs for latest release.
 - Fixed ``robot.forward_kinematics()`` when requested for base link.
 - Fixed bug in ``to_compas`` conversion of Rhino meshes.
-- Fixed bug in `draw_edges` in `compas_rhino`'s `EdgeArtist`.
-- Fixed bug in `draw_edges` in `compas_ghpython`'s `EdgeArtist`.
+- Fixed bug where ``compas.geometry.Primitive`` derived classes cannot be serialized by jsonpickle.
 
 ### Removed
 

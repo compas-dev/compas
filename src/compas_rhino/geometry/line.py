@@ -15,7 +15,15 @@ __all__ = ['RhinoLine']
 
 
 class RhinoLine(RhinoGeometry):
-    """Convenience wrapper for a Rhino point object."""
+    """Convenience wrapper for a Rhino point object.
+
+    Attributes
+    ----------
+    start : Rhino.Geometry.Point3d, read-only
+        The starting point of the line.
+    end : Rhino.Geometry.Point3d
+        The end point of the line.
+    """
 
     __module__ = 'compas_rhino.geometry'
 

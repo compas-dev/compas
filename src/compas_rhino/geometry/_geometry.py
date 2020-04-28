@@ -15,7 +15,24 @@ TYPES = []
 
 
 class RhinoGeometry(object):
-    """Base class for Rhino geometry objects."""
+    """Base class for Rhino geometry objects.
+
+    Attributes
+    ----------
+    name : str
+        The name of the object.
+
+    Methods
+    -------
+    The following methods provide alternative ways for construction
+    :class:`compas_rhino.geometry.RhinoGeometry` objects.
+
+    from_guid
+    from_object
+    from_geometry
+    from_selection
+
+    """
 
     __module__ = 'compas_rhino.geometry'
 
