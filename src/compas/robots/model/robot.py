@@ -818,7 +818,7 @@ class RobotModel(object):
         if axis:
             axis = Axis('{} {} {}'.format(*list(axis)))
         if limit:
-            upper, lower = limit
+            lower, upper = limit
             limit = Limit(lower=lower, upper=upper)
 
         type_str = Joint.SUPPORTED_TYPES[type]
