@@ -59,7 +59,7 @@ install:
   fi
 
 script:
-- python3 -m compas
+- python3 -m compas || python -m compas
 - if [[ "$TRAVIS_RUN_LINTER" == "true" ]]; then
     invoke lint;
   fi
