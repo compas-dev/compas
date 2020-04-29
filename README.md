@@ -30,13 +30,10 @@ But it can also be installed using `pip`:
 pip install COMPAS
 ```
 
-To verify your setup, start Python from the command line and run the following:
+To verify your setup, run the following:
 
-```python
->>> import compas
->>> import compas_rhino
->>> import compas_blender
->>> import compas_ghpython
+```bash
+python -m compas
 ```
 
 ## First Steps
