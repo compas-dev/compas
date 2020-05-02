@@ -255,6 +255,7 @@ def draw_network(network):
 
     return points_rg, lines_rg
 
+
 def draw_circles(circles):
     """Draw circles in Grasshopper.
     """
