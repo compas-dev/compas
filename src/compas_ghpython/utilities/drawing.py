@@ -47,6 +47,7 @@ __all__ = [
     'draw_spheres',
     'draw_mesh',
     'draw_network',
+    'draw_circles',
 ]
 
 
@@ -253,6 +254,16 @@ def draw_network(network):
     lines_rg = draw_lines(lines)
 
     return points_rg, lines_rg
+
+def draw_circles(circles):
+    """Draw circles in Grasshopper.
+    """
+    rg_circles = []
+    for c in iter(circles):
+        point, normal = c['plane']
+        radius = c['radius']
+        rg_circles.append(Circle(Plane(Point3d(*point), Vector3d(*normal)), radius))
+    return rg_circles
 
 
 if __name__ == '__main__':
