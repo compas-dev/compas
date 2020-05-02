@@ -237,16 +237,16 @@ def draw_network(network):
     """Draw a network in Grasshopper.
     """
     points = []
-    for key, attr in network.vertices(True):
+    for key, attr in network.nodes(True):
         points.append({
-            'pos': network.vertex_coordinates(key),
+            'pos': network.node_coordinates(key),
         })
 
     lines = []
-    for u, v, attr in network.edges(True):
+    for (u, v), attr in network.edges(True):
         lines.append({
-            'start': network.vertex_coordinates(u),
-            'end': network.vertex_coordinates(v),
+            'start': network.node_coordinates(u),
+            'end': network.node_coordinates(v),
         })
 
     points_rg = draw_points(points)
