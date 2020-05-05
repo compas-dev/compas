@@ -278,7 +278,7 @@ class Joint(object):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
-
+        self._calculate_transformation = None
     @property
     def current_transformation(self):
         """Current transformation of the joint."""
