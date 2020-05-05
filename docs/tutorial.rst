@@ -10,9 +10,5 @@ Tutorial
     tutorial/geometry
     tutorial/networks
     tutorial/meshes
-    tutorial/serialization
-    tutorial/rpc
-    tutorial/callbacks
-    tutorial/geomaps
     tutorial/rhino
     tutorial/blender

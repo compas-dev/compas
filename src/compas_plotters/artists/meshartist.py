@@ -63,7 +63,7 @@ class MeshArtist(Artist):
                 'start': self.mesh.vertex_attributes(u, 'xy'),
                 'end': self.mesh.vertex_attributes(v, 'xy'),
                 'width': 1.0,
-                'color': (255, 0, 0)
+                'color': (0, 0, 0)
             })
         collection = draw_xlines_xy(lines, self.plotter.axes)
         self._mpl_edgecollection = collection
