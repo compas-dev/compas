@@ -424,16 +424,19 @@ class Joint(object):
             Position in radians or meters depending on the joint type.
         """
 
-        switcher = {
-            Joint.REVOLUTE: self.calculate_revolute_transformation,
-            Joint.CONTINUOUS: self.calculate_continuous_transformation,
-            Joint.PRISMATIC: self.calculate_prismatic_transformation,
-            Joint.FIXED: self.calculate_fixed_transformation,
-            Joint.FLOATING: self.calculate_floating_transformation,
-            Joint.PLANAR: self.calculate_planar_transformation
-        }
-        # set the transformation function according to the type
-        return switcher.get(self.type)(position)
+        # Set the transformation function according to the type
+        if not self._calculate_transformation:
+            switcher = {
+                Joint.REVOLUTE: self.calculate_revolute_transformation,
+                Joint.CONTINUOUS: self.calculate_continuous_transformation,
+                Joint.PRISMATIC: self.calculate_prismatic_transformation,
+                Joint.FIXED: self.calculate_fixed_transformation,
+                Joint.FLOATING: self.calculate_floating_transformation,
+                Joint.PLANAR: self.calculate_planar_transformation
+            }
+            self._calculate_transformation = switcher.get(self.type)
+
+        return self._calculate_transformation(position)
 
     def is_configurable(self):
         """Returns ``True`` if the joint can be configured, otherwise ``False``."""
