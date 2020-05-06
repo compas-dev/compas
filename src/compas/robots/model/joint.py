@@ -278,7 +278,7 @@ class Joint(object):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
-        self._calculate_transformation = None
+
     @property
     def current_transformation(self):
         """Current transformation of the joint."""
@@ -425,7 +425,7 @@ class Joint(object):
         """
 
         # Set the transformation function according to the type
-        if not self._calculate_transformation:
+        if not hasattr(self, '_calculate_transformation'):
             switcher = {
                 Joint.REVOLUTE: self.calculate_revolute_transformation,
                 Joint.CONTINUOUS: self.calculate_continuous_transformation,
