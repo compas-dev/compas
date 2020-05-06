@@ -10,5 +10,6 @@ Tutorial
     tutorial/geometry
     tutorial/networks
     tutorial/meshes
+    tutorial/robots
     tutorial/rhino
     tutorial/blender

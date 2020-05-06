@@ -49,5 +49,5 @@ Table of Contents
    api
    devguide
    license
-   changelog
    citing
+   changelog
