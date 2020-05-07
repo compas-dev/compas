@@ -6,16 +6,6 @@ datastructures
 .. currentmodule:: compas.datastructures
 
 
-Bases
-=====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Datastructure
-
-
 Meshes
 ======
 
@@ -24,24 +14,22 @@ It is meant for the representation of polygonal *"surface"* meshes. A mesh can b
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
 
-Bases
------
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Mesh
+
+
+Data structure
+--------------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     HalfEdge
-    BaseMesh
 
-Data structures
----------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Mesh
 
 Algorithms
 ----------
@@ -123,24 +111,22 @@ It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
 
-Bases
------
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Network
+
+
+Data structure
+--------------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     Graph
-    BaseNetwork
 
-Data structures
----------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Network
 
 Algorithms
 ----------

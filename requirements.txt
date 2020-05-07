@@ -15,5 +15,4 @@ pillow
 planarity
 scipy >= 1.1
 sympy
-trimesh
 watchdog

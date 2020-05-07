@@ -18,6 +18,14 @@ Or it can be used in scripts in the
 Functionality for processing Rhino Geometry, and visualisation of COMPAS objects (shapes, primitives, data structures)
 is provided by :mod:`compas_rhino`.
 
+.. Visualisation: basic usage
+
+.. Working with CAD geometry: RhinoGeometry
+
+.. Scene objects
+
+.. Non-Python implementations
+
 
 Rhino Geometry
 ==============
