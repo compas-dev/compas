@@ -39,14 +39,30 @@ Basic Usage
 Supported data types
 ====================
 
+The RPC service is able to serialize objects that implement the ``to_data/from_data`` protocol
+of COMPAS, as well as all python built-ins, ``numpy`` arrays and ``numpy`` primitive data types.
+
+.. note::
+
+    RPC implies that data needs to be converted back and forth. Internally, RPC uses JSON as a serialization
+    format. This means that some floating-point precision loss will occur when passing around ``numpy`` values.
 
 Switching packages
 ==================
 
+The RPC proxy is usually initialized with one package name, but it can be switched at any point.
+The following example shows how to calculate the inverse of a ``numpy`` matrix using ``scipy``
+lineal algebra functions.
 
-Starting and Stopping
-=====================
+.. code-block:: python
 
+    from compas.rpc import Proxy
+    proxy = Proxy('numpy')
+
+    A = proxy.array([[1,2],[3,4]])
+
+    proxy.package = 'scipy.linalg'
+    r = proxy.inv(A)
 
 Starting an RPC server manually
 ===============================
