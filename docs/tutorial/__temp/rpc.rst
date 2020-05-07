@@ -31,9 +31,9 @@ Basic Usage
 .. code-block:: python
 
     from compas.rpc import Proxy
-    numerical = Proxy('compas.numerical')
 
-    result = numerical.fd_numpy(...)
+    with Proxy('compas.numerical') as numerical:
+        result = numerical.fd_numpy(...)
 
 
 Supported data types
@@ -57,12 +57,13 @@ lineal algebra functions.
 .. code-block:: python
 
     from compas.rpc import Proxy
-    proxy = Proxy('numpy')
 
-    A = proxy.array([[1,2],[3,4]])
+    with Proxy('numpy') as proxy:
 
-    proxy.package = 'scipy.linalg'
-    r = proxy.inv(A)
+        A = proxy.array([[1, 2], [3, 4]])
+
+        proxy.package = 'scipy.linalg'
+        r = proxy.inv(A)
 
 Starting an RPC server manually
 ===============================
