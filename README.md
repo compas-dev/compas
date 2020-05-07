@@ -38,7 +38,7 @@ python -m compas
 
 ## First Steps
 
-* <https://compas-dev.github.io/main/examples.html>
+* <https://compas-dev.github.io/main/gettingstarted.html>
 * <https://compas-dev.github.io/main/tutorial.html>
 * <https://compas-dev.github.io/main/api.html>
 
