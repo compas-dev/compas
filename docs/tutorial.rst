@@ -11,5 +11,6 @@ Tutorial
     tutorial/networks
     tutorial/meshes
     tutorial/robots
+    tutorial/rpc
     tutorial/rhino
     tutorial/blender
