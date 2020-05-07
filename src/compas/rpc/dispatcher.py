@@ -1,9 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import json
 import importlib
+import json
+import pstats
+import sys
+import traceback
+
+from compas.utilities import DataDecoder
+from compas.utilities import DataEncoder
 
 try:
     from cStringIO import StringIO
@@ -17,12 +23,6 @@ try:
     from cProfile import Profile
 except ImportError:
     from profile import Profile
-
-import pstats
-import traceback
-
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
 
 
 __all__ = ['Dispatcher']
@@ -43,6 +43,13 @@ class Dispatcher(object):
     such that the errors can be rethrown on the client side.
 
     """
+    def on_module_imported(self, module, newly_loaded_modules):
+        """Event triggered when a module is successfully imported.
+
+        Override this method when subclassing in order to handle the what happens
+        after a module has been imported.
+        """
+        pass
 
     def _dispatch(self, name, args):
         """Dispatcher method for XMLRPC API calls.
@@ -86,7 +93,14 @@ class Dispatcher(object):
         try:
             if len(parts) > 1:
                 modulename = ".".join(parts[:-1])
+
+                modules_before_import = set(sys.modules.keys())
+
+                # Trigger import
                 module = importlib.import_module(modulename)
+
+                newly_loaded_modules = set(sys.modules.keys()) - modules_before_import
+                self.on_module_imported(module, newly_loaded_modules)
             else:
                 module = self
         except Exception:

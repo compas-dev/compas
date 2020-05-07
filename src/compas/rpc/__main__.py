@@ -8,8 +8,8 @@ except ImportError:
     from xmlrpc.client import ServerProxy
 
 
-def start(port, **kwargs):
-    start_service(port)
+def start(port, autoreload, **kwargs):
+    start_service(port, autoreload)
 
 
 def stop(port, **kwargs):
@@ -48,7 +48,9 @@ def main():
     start_command = commands.add_parser('start', help='Start RPC server')
     start_command.add_argument(
         '--port', '-p', action='store', default=1753, type=int, help='RPC port number')
-    start_command.set_defaults(func=start)
+    start_command.add_argument('--autoreload', dest='autoreload', action='store_true', help='Autoreload modules')
+    start_command.add_argument('--no-autoreload', dest='autoreload', action='store_false', help='Do not autoreload modules')
+    start_command.set_defaults(autoreload=True, func=start)
 
     # Command: stop
     stop_command = commands.add_parser(

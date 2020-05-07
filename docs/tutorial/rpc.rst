@@ -4,20 +4,25 @@ Remote Procedure Calls
 
 * :mod:`compas.rpc`
 
+Remote Procedure Calls (``RPC``) is a mechanism to transparently execute code in
+a remote process or computer. This is especially useful in scenarios where COMPAS
+runs inside an IronPython host (eg. Rhino) and needs to execute code that only
+runs on CPython (eg. code that requires ``numpy``).
+
+COMPAS provides **two ways to achieve** this: ``rcp`` and `XFunc``.
+
 Through ``Xfunc``, COMPAS provides a mechanism for calling Python functions through
-a separately launched subprocess. This provides the posibility of, for example,
-using functionality that relies on CPython-specific packages (such as Numpy) directly
-from Rhino.
+a separately launched subprocess.
 
 A drawback of the ``Xfunc`` mechanism is that evey call launches a new Python
 (sub)process with all the overhead that that entails. For infrequent calls to
 long-running processes this is not an issue. However, for frequent calls to function
 that are expected to run quickly, this is not ideal.
 
-The principle of RPC is to start a server that handles all requests. The advantage
-is that once the server is started, no additional processes have to launched and
-the server can handle the requests without any overhead. Therefore, the response
-time is much faster than with ``XFunc``.
+The second mechanism is the ``rpc`` module. The principle of RPC is to start a server
+that handles all requests. The advantage is that once the server is started,
+no additional processes have to launched and the server can handle the requests
+without any overhead. Therefore, the response time is much faster than with ``XFunc``.
 
 
 Basic Usage
@@ -55,13 +60,13 @@ To start a new RPC server use the following command on the terminal
 
 ::
 
-    $ compas_rpc start <port>
+    $ compas_rpc start [--port PORT]
 
 Conversely, to stop an existing RPC server:
 
 ::
 
-    $ compas_rpc stop <port>
+    $ compas_rpc stop [--port PORT]
 
 
 .. note::
