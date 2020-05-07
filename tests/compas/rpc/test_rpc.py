@@ -3,12 +3,12 @@ from compas.rpc import Proxy
 
 
 def test_basic_rpc_call():
-    with Proxy('numpy') as p:
+    with Proxy('numpy', python='python3') as p:
         assert p.arange(20) == list(range(20))
 
 
 def test_switch_package():
-    with Proxy('numpy') as proxy:
+    with Proxy('numpy', python='python3') as proxy:
 
         A = proxy.array([[1, 2], [3, 4]])
 
