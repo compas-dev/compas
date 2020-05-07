@@ -320,7 +320,9 @@ class Proxy(object):
             raise
         if not ostring:
             raise RPCServerError("No output was generated.")
-        result = json.loads(ostring)
+
+        result = json.loads(ostring, cls=DataDecoder)
+
         if result['error']:
             raise RPCServerError(result['error'])
         self.profile = result['profile']
