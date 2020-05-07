@@ -10,12 +10,14 @@ jobs:
         - TRAVIS_RUN_LINTER=true
         - TRAVIS_GENERATE_DOCS=true
         - TRAVIS_PYTHON_IMPLEMENTATION="cpython"
+        - TRAVIS_RPC_PYTHON_EXE="python3"
     - name: "Python 3.7 on macOS"
       os: osx
       osx_image: xcode11.2  # Python 3.7.4 running on macOS 10.14.4
       language: shell       # 'language: python' is an error on Travis CI macOS
       env:
         - TRAVIS_PYTHON_IMPLEMENTATION="cpython"
+        - TRAVIS_RPC_PYTHON_EXE="python3"
     - name: "Python 3.8 on Windows"
       os: windows           # Windows 10.0.17134 N/A Build 17134
       language: shell       # 'language: python' is an error on Travis CI Windows
@@ -31,20 +33,28 @@ jobs:
       python: 3.6
       env:
         - TRAVIS_PYTHON_IMPLEMENTATION="cpython"
+        - TRAVIS_RPC_PYTHON_EXE="python3"
     # IronPython monstrosity
     - name: "IronPython 2.7: Windows"
       os: windows
       language: shell
+      # We install both ironpython and cpython versions, to be able to unit test RPC
       before_install:
         - choco install ironpython --version=2.7.8.1
         - ipy -X:Frames -m ensurepip
         - ipy -X:Frames -m pip install ironpython-pytest
+        - choco install python --version=3.8.0
+        - pip3 install --user --upgrade pip
+        - pip3 install cython --install-option="--no-cython-compile"
+      install:
+        - pip3 install --no-cache-dir -r requirements-dev.txt
       script:
         - ipy -m compas
         - ipy tests/ipy_test_runner.py
       env:
         - TRAVIS_PYTHON_IMPLEMENTATION="ironpython"
         - IRONPYTHONPATH=$TRAVIS_BUILD_DIR/src
+        - PATH=/c/Python38:/c/Python38/Scripts:$PATH
 
 # all three OSes agree about 'pip3'
 before_install:

@@ -1,14 +1,18 @@
+import os
+
 from compas.geometry import allclose
 from compas.rpc import Proxy
 
 
 def test_basic_rpc_call():
-    with Proxy('numpy', python='python3') as p:
+    python_exec = os.environ.get('TRAVIS_RPC_PYTHON_EXE')
+    with Proxy('numpy', python=python_exec) as p:
         assert p.arange(20) == list(range(20))
 
 
 def test_switch_package():
-    with Proxy('numpy', python='python3') as proxy:
+    python_exec = os.environ.get('TRAVIS_RPC_PYTHON_EXE')
+    with Proxy('numpy', python=python_exec) as proxy:
 
         A = proxy.array([[1, 2], [3, 4]])
 
