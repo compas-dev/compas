@@ -44,10 +44,11 @@ Table of Contents
    :titlesonly:
 
    Introduction <self>
+   installation
    gettingstarted
    tutorial
    api
+   changelog
    devguide
    license
    citing
-   changelog
