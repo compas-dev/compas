@@ -40,7 +40,7 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description='COMPAS RCP command-line utility')
+        description='COMPAS RPC command-line utility')
 
     commands = parser.add_subparsers(help='Valid RPC commands')
 
