@@ -59,6 +59,8 @@ class Proxy(object):
         This is particularly useful during development. The server will monitor changes to the files
         that were loaded as a result of accessing the specified `package` and if any change is detected,
         it will unload the module, so that the next invocation uses a fresh version.
+    capture_output : bool, ``True`` to capture the stdout/stderr output of the remote process, otherwise ``False.
+        In general, ``capture_output`` should be ``True`` when using a ``pythonw`` as executable (default).
 
     Notes
     -----
@@ -87,7 +89,7 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None, autoreload=True):
+    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None, autoreload=True, capture_output=True):
         self._package = None
         self._python = compas._os.select_python(python)
         self._url = url
@@ -100,6 +102,7 @@ class Proxy(object):
         self.service = service
         self.package = package
         self.autoreload = autoreload
+        self.capture_output = capture_output
 
         self._implicitely_started_server = False
         self._server = self._try_reconnect()
@@ -207,21 +210,25 @@ class Proxy(object):
             Popen
         except NameError:
             self._process = Process()
-
             for name in env:
                 if self._process.StartInfo.EnvironmentVariables.ContainsKey(name):
                     self._process.StartInfo.EnvironmentVariables[name] = env[name]
                 else:
                     self._process.StartInfo.EnvironmentVariables.Add(name, env[name])
             self._process.StartInfo.UseShellExecute = False
-            self._process.StartInfo.RedirectStandardOutput = True
-            self._process.StartInfo.RedirectStandardError = True
+            self._process.StartInfo.RedirectStandardOutput = self.capture_output
+            self._process.StartInfo.RedirectStandardError = self.capture_output
             self._process.StartInfo.FileName = self.python
             self._process.StartInfo.Arguments = '-m {0} --port {1} --{2}autoreload'.format(self.service, self._port, '' if self.autoreload else 'no-')
             self._process.Start()
         else:
             args = [self.python, '-m', self.service, '--port', str(self._port), '--{}autoreload'.format('' if self.autoreload else 'no-')]
-            self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=env)
+            kwargs = dict(env=env)
+            if self.capture_output:
+                kwargs['stdout'] = PIPE
+                kwargs['stderr'] = PIPE
+
+            self._process = Popen(args, **kwargs)
         # this starts the client side
         # it creates a proxy for the server
         # and tries to connect the proxy to the actual server
