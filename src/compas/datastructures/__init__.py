@@ -44,6 +44,8 @@ Algorithms
     mesh_contours_numpy
     mesh_delete_duplicate_vertices
     mesh_dual
+    mesh_explode
+    mesh_face_adjacency
     mesh_flip_cycles
     mesh_geodesic_distances_numpy
     mesh_is_connected
@@ -67,6 +69,13 @@ Algorithms
     mesh_transformed_numpy
     mesh_unify_cycles
     mesh_weld
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    meshes_join
+
 
 Matrices
 --------
@@ -101,6 +110,21 @@ Conway Operators
     mesh_conway_snub
     mesh_conway_meta
     mesh_conway_bevel
+
+
+Triangle Meshes
+===============
+
+Algorithms
+----------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    trimesh_descent
+    trimesh_face_circle
+    trimesh_gaussian_curvature
 
 
 Networks
