@@ -17,6 +17,7 @@ from .conway import *  # noqa: F401 F403
 from .curvature import *  # noqa: F401 F403
 if not IPY:
     from .descent_numpy import *  # noqa: F401 F403
+from .cut import *  # noqa: F401 F403
 from .duality import *  # noqa: F401 F403
 from .explode import *  # noqa: F401 F403
 if not IPY:

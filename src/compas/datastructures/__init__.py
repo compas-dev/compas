@@ -42,6 +42,7 @@ Algorithms
     mesh_bounding_box_xy
     mesh_connected_components
     mesh_contours_numpy
+    mesh_cut_by_plane
     mesh_delete_duplicate_vertices
     mesh_dual
     mesh_explode
