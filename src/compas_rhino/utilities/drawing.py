@@ -129,13 +129,13 @@ def draw_labels(labels, **kwargs):
 
     """
     guids = []
-    for l in iter(labels):
-        pos = l['pos']
-        text = l['text']
-        name = l.get('name', '')
-        color = l.get('color', None)
-        size = l.get('fontsize', 10)
-        font = l.get('font', 'Arial Regular')
+    for label in iter(labels):
+        pos = label['pos']
+        text = label['text']
+        name = label.get('name', '')
+        color = label.get('color', None)
+        size = label.get('fontsize', 10)
+        font = label.get('font', 'Arial Regular')
         dot = TextDot(str(text), Point3d(*pos))
         dot.FontHeight = size
         dot.FontFace = font
@@ -195,14 +195,14 @@ def draw_lines(lines, **kwargs):
     width properties.
     """
     guids = []
-    for l in iter(lines):
-        sp = l['start']
-        ep = l['end']
-        name = l.get('name', '')
-        color = l.get('color')
-        arrow = l.get('arrow')
-        layer = l.get('layer')
-        width = l.get('width')
+    for line in iter(lines):
+        sp = line['start']
+        ep = line['end']
+        name = line.get('name', '')
+        color = line.get('color')
+        arrow = line.get('arrow')
+        layer = line.get('layer')
+        width = line.get('width')
         guid = add_line(Point3d(*sp), Point3d(*ep))
         if not guid:
             continue

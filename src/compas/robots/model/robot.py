@@ -743,7 +743,7 @@ class RobotModel(object):
         >>> link = robot.add_link('link0', visual_mesh=mesh)
         """
 
-        all_link_names = [l.name for l in self.links]
+        all_link_names = [l.name for l in self.links]  # noqa: E741
         if name in all_link_names:
             raise ValueError("Link name '%s' already used in chain." % name)
 

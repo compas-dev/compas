@@ -613,12 +613,12 @@ class MOGA(object):
         for i in range(self.num_i_pareto_front):
             self.new_pop_cd.append(self.crowding_distance[i])
 
-    def get_sorting_indices(self, l, reverse=False):
+    def get_sorting_indices(self, floats, reverse=False):
         """Reurns the indices that would sort a list of floats.
 
         Parameters
         ----------
-        l: list
+        floats: list
             The list of floats to be sorted.
         reverse: bool
             If true the sorting will be done from top to bottom.
@@ -628,7 +628,7 @@ class MOGA(object):
         sorting_index: list
             The list of indices that would sort the given list of floats.
         """
-        sorting_index = [i for (v, i) in sorted((v, i) for (i, v) in enumerate(l))]
+        sorting_index = [i for (v, i) in sorted((v, i) for (i, v) in enumerate(floats))]
         if reverse is True:
             sorting_index = list(reversed(sorting_index))
         return sorting_index
