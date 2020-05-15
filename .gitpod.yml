@@ -1,3 +1,2 @@
 tasks:
-  - command: pip3 install cython --install-option="--no-cython-compile" 
-    init: pip3 install -r ./requirements.txt
+  - init: pip3 install cython --install-option="--no-cython-compile" && pip3 install -r ./requirements.txt
