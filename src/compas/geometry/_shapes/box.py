@@ -236,8 +236,7 @@ class Box(Shape):
 
         Notes
         -----
-        The bottom left corner of the box is positioned at the origin of the
-        coordinates system. The box is axis-aligned.
+        The box is axis-aligned to the world coordinate system and centered at the origin.
 
         Examples
         --------
@@ -291,8 +290,8 @@ class Box(Shape):
         b = bbox[1]
         d = bbox[3]
         e = bbox[4]
-        xaxis = Vector.from_start_end(a, d)
-        yaxis = Vector.from_start_end(a, b)
+        xaxis = Vector.from_start_end(a, b)
+        yaxis = Vector.from_start_end(a, d)
         zaxis = Vector.from_start_end(a, e)
         xsize = xaxis.length
         ysize = yaxis.length
@@ -323,24 +322,22 @@ class Box(Shape):
         >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
 
         """
-        # this should put the frame at the centroid of the box
-        # not at the bottom left corner
         if height == 0:
             raise Exception('The box should have a height.')
 
         x1, y1, z1 = corner1
         x2, y2, z2 = corner2
 
+        if z1 != z2:
+            raise Exception('Corners should be in the same horizontal plane.')
+
         xaxis = Vector(x2 - x1, 0, 0)
         yaxis = Vector(0, y2 - y1, 0)
         width = xaxis.length
         depth = yaxis.length
+        point = [0.5 * (x1 + x2), 0.5 * (y1 + y2), z1 + 0.5 * height]
+        frame = Frame(point, xaxis, yaxis)
 
-        if z1 != z2:
-            raise Exception('Corners should be in the same horizontal plane.')
-
-        frame = Frame(corner1, xaxis, yaxis)
-        frame.point += frame.xaxis * 0.5 * width + frame.yaxis * 0.5 * depth + frame.zaxis * 0.5 * height
         return cls(frame, width, depth, height)
 
     @classmethod
@@ -379,9 +376,9 @@ class Box(Shape):
         width = xaxis.length
         depth = yaxis.length
         height = zaxis.length
+        point = [0.5 * (x1 + x2), 0.5 * (y1 + y2), 0.5 * (z1 + z2)]
+        frame = Frame(point, xaxis, yaxis)
 
-        frame = Frame(d1, xaxis, yaxis)
-        frame.point += frame.xaxis * 0.5 * width + frame.yaxis * 0.5 * depth + frame.zaxis * 0.5 * height
         return cls(frame, width, depth, height)
 
     @property

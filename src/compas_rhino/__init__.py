@@ -6,18 +6,29 @@ compas_rhino
 .. currentmodule:: compas_rhino
 
 
+Common
+======
+
 .. toctree::
     :maxdepth: 1
 
     compas_rhino.artists
+    compas_rhino.geometry
+    compas_rhino.utilities
+
+
+Rhino-specific
+==============
+
+.. toctree::
+    :maxdepth: 1
+
     compas_rhino.conduits
     compas_rhino.etoforms
     compas_rhino.forms
-    compas_rhino.geometry
     compas_rhino.modifiers
     compas_rhino.selectors
     compas_rhino.ui
-    compas_rhino.utilities
 
 """
 from __future__ import absolute_import
