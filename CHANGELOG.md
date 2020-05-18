@@ -11,8 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoVector`. 
 
 ### Changed
-- Fixed fallback value getter in `FaceAttributeView.__get_item__`.
-- Fixed fallback value getter in `EdgeAttributeView.__get_item__`.
+- Fixed bug in `FaceAttributeView.__get_item__`: access to default was tried before attrs.
+- Fixed bug in `EdgeAttributeView.__get_item__`: access to default was tried before attrs.
+- Changed `VertexAttributeView.__get_item__` to follow access logic of `FaceAttributeView`.
 
 ### Removed
 
