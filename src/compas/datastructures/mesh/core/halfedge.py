@@ -44,7 +44,7 @@ class VertexAttributeView(AttributeView, MutableMapping):
         self.attr = attr
 
     def __getitem__(self, key):
-        return self.attr[key] or self.defaults[key]
+        return self.attr.get(key) or self.defaults[key]
 
     def __setitem__(self, key, value):
         self.attr[key] = value
@@ -72,7 +72,7 @@ class FaceAttributeView(AttributeView, MutableMapping):
         self.attr.setdefault(self.key, {})
 
     def __getitem__(self, name):
-        return self.attr[self.key][name] or self.defaults[name]
+        return self.attr[self.key].get(name) or self.defaults[name]
 
     def __setitem__(self, name, value):
         self.attr[self.key][name] = value
@@ -101,7 +101,7 @@ class EdgeAttributeView(AttributeView, MutableMapping):
         self.attr.setdefault(self.key, {})
 
     def __getitem__(self, name):
-        return self.attr[self.key][name] or self.defaults[name]
+        return self.attr[self.key].get(name) or self.defaults[name]
 
     def __setitem__(self, name, value):
         self.attr[self.key][name] = value
