@@ -11,24 +11,14 @@ Install in a conda environment (recommended)
 The recommended way to install COMPAS is with `conda <https://conda.io/docs/>`_.
 
 
-In a nutshell
--------------
+All-in-one
+----------
 
 Create an environment named "project", install Python 3.7 and COMPAS (use the ``conda-forge`` channel), say "yes" to all questions asked.
 
 .. code-block:: bash
 
     conda create -n project python=3.7 COMPAS -c conda-forge --yes
-
-
-Verify
-------
-
-.. code-block:: bash
-
-    conda activate project
-    python -m compas
-    '0.15.6'
 
 
 Step-by-Step
@@ -43,6 +33,18 @@ Step-by-Step
     conda create -n project python=3.7
     conda activate project
     conda install COMPAS -c conda-forge
+
+
+Verify
+------
+
+.. code-block:: bash
+
+    conda activate project
+    python
+    >>> import compas
+    >>> compas.__version__
+    '0.15.6'
 
 
 Install with pip
