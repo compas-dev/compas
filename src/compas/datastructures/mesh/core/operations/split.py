@@ -162,15 +162,25 @@ def mesh_split_face(mesh, fkey, u, v):
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`~compas.datastructures.Mesh`
         Instance of a mesh
-    fkey : str
+    fkey : :obj:`str`
         The face key.
-    u : str
+    u : hashable
         The key of the first split vertex.
-    v : str
+    v : hashable
         The key of the second split vertex.
 
+    Returns
+    -------
+    :obj:`tuple` of :obj:`int`
+        Keys of the created faces.
+
+    Raises
+    ------
+    :exc:`ValueError`
+        If the split vertices does not belong to the split face or if the split
+        vertices are neighbors.
     """
     if u not in mesh.face[fkey] or v not in mesh.face[fkey]:
         raise ValueError('The split vertices do not belong to the split face.')
