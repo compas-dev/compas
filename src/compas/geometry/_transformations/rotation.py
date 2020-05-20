@@ -29,10 +29,26 @@ __all__ = ['Rotation']
 
 
 class Rotation(Transformation):
-    """``Rotation`` extends ``Transformation`` to represent a 4x4 rotation matrix.
+    """Creates a ``Rotation`` that represent a 4x4 rotation matrix.
 
     The class contains methods for converting rotation matrices to axis-angle
     representations, Euler angles, quaternion and basis vectors.
+
+    Parameters
+    ----------
+    axis : list of float
+        Three numbers that represent the axis of rotation.
+    angle : float
+        The rotation angle in radians.
+    point : :class:`Point` or list of float
+        A point to perform a rotation around an origin other than [0, 0, 0].
+
+    Attributes
+    ----------
+    quaternion
+    axis_and_angle
+    axis_angle_vector
+    basis_vectors
 
     Examples
     --------
@@ -48,8 +64,9 @@ class Rotation(Transformation):
     >>> f2 = Frame.worldXY()
     >>> f1 == f2.transformed(Rx * Ry * Rz)
     True
-
     """
+
+    __module__ = 'compas.geometry'
 
     @classmethod
     def from_basis_vectors(cls, xaxis, yaxis):
@@ -57,9 +74,9 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        xaxis : :class:`Vector`
+        xaxis : compas.geometry.Vector or list
             The x-axis of the frame.
-        yaxis : :class:`Vector`
+        yaxis : compas.geometry.Vector or list
             The y-axis of the frame.
 
         Examples
@@ -81,9 +98,7 @@ class Rotation(Transformation):
 
     @classmethod
     def from_frame(cls, frame):
-        """Computes a change of basis transformation from world XY to frame.
-
-        It is the same as from_frame_to_frame(Frame.worldXY(), frame).
+        """Computes the rotational transformation from world XY to frame.
 
         Parameters
         ----------
@@ -101,7 +116,9 @@ class Rotation(Transformation):
         """
         R = cls()
         R.matrix = matrix_from_frame(frame)
-        R.matrix[0][3], R.matrix[1][3], R.matrix[2][3] = [0., 0., 0.]
+        R.matrix[0][3] = 0.0
+        R.matrix[1][3] = 0.0
+        R.matrix[2][3] = 0.0
         return R
 
     @classmethod
@@ -110,7 +127,7 @@ class Rotation(Transformation):
 
         Parameters
         ----------
-        quaternion : :class:`Quaternion`
+        quaternion : compas.geometry.Quaternion or list
             Four numbers that represents the four coefficient values of a quaternion.
 
         Examples
@@ -143,7 +160,6 @@ class Rotation(Transformation):
         >>> allclose(aav1, aav2)
         True
         """
-
         axis_angle_vector = list(axis_angle_vector)
         angle = length_vector(axis_angle_vector)
         return cls.from_axis_and_angle(axis_angle_vector, angle, point)
@@ -181,7 +197,7 @@ class Rotation(Transformation):
         if the axis of rotation points towards the observer.
 
         """
-        M = matrix_from_axis_and_angle(axis, angle, point)
+        M = matrix_from_axis_and_angle(axis, angle, point=point)
         return cls(M)
 
     @classmethod
@@ -223,7 +239,7 @@ class Rotation(Transformation):
         True
         """
         M = matrix_from_euler_angles(euler_angles, static, axes)
-        return Rotation(M)
+        return cls(M)
 
     @property
     def quaternion(self):
@@ -340,3 +356,14 @@ if __name__ == "__main__":
     from compas.geometry import allclose  # noqa: F401
 
     doctest.testmod(globs=globals())
+
+    f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    R = Rotation.from_frame(f1)
+    args = False, 'xyz'
+    alpha, beta, gamma = R.euler_angles(*args)
+    xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
+    Rx = Rotation.from_axis_and_angle(xaxis, alpha)
+    Ry = Rotation.from_axis_and_angle(yaxis, beta)
+    Rz = Rotation.from_axis_and_angle(zaxis, gamma)
+    f2 = Frame.worldXY()
+    print(f1 == f2.transformed(Rx * Ry * Rz))

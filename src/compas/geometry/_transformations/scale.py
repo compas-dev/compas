@@ -23,17 +23,31 @@ class Scale(Transformation):
 
     Parameters
     ----------
-    scale_factors : :obj:`list` of :obj:`float`
-        A list of 3 numbers defining the scaling factors in x, y, and z respectively.
+    factors : list of float
+        A list of 3 scale factors.
 
     Examples
     --------
     >>> S = Scale([1, 2, 3])
+    >>> S.matrix[0][0] == 1
+    True
+    >>> S.matrix[1][1] == 2
+    True
+    >>> S.matrix[2][2] == 3
+    True
     """
 
-    def __init__(self, scale_factors):
-        self.matrix = matrix_from_scale_factors(scale_factors)
+    __module__ = 'compas.geometry'
 
-    @property
-    def scale_factors(self):
-        return self.matrix[0][0], self.matrix[1][1], self.matrix[2][2]
+    def __init__(self, factors):
+        super(Scale, self).__init__(matrix_from_scale_factors(factors))
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+
+    import doctest
+    doctest.testmod()

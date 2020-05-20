@@ -14,6 +14,7 @@ Ippoliti for providing code and documentation.
 from compas.geometry import dot_vectors
 from compas.geometry import normalize_vector
 
+from compas.geometry._transformations import identity_matrix
 from compas.geometry._transformations import Transformation
 
 
@@ -24,47 +25,56 @@ class Reflection(Transformation):
     """Creates a ``Reflection`` that mirrors points at a plane, defined by
     point and normal vector.
 
-    Parameters
-    ----------
-    point : :obj:`list` of :obj:`float`
-        The point of the mirror plane.
-    normal : :obj:`list` of :obj:`float`
-        The normal of the mirror plane.
-
     Examples
     --------
     >>> point = [1, 1, 1]
     >>> normal = [0, 0, 1]
-    >>> R1 = Reflection(point, normal)
-    >>> R2 = Transformation.from_matrix([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
+    >>> R1 = Reflection.from_plane((point, normal))
+    >>> R2 = Transformation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
     >>> R1 == R2
     True
-
     """
 
-    def __init__(self, point, normal):
-        super(Reflection, self).__init__()
-
-        normal = normalize_vector((list(normal)))
-
-        for i in range(3):
-            for j in range(3):
-                self.matrix[i][j] -= 2.0 * normal[i] * normal[j]
-
-        for i in range(3):
-            self.matrix[i][3] = 2 * dot_vectors(point, normal) *\
-                normal[i]
-
     @classmethod
-    def from_frame(cls, frame):
-        """Creates a ``Reflection`` that mirrors at the ``Frame``.
+    def from_plane(cls, plane):
+        """Creates a reflection object that mirrors wrt the given plane.
 
         Parameters
         ----------
-        frame : :class:`Frame`
+        plane : compas.geometry.Plane or (point, normal)
+            The reflection plane.
 
+        Returns
+        -------
+        Reflection
+            The reflection transformation.
         """
-        return cls(frame.point, frame.normal)
+        point, normal = plane
+        matrix = identity_matrix(4)
+        normal = normalize_vector((list(normal)))
+        for i in range(3):
+            for j in range(3):
+                matrix[i][j] -= 2.0 * normal[i] * normal[j]
+        for i in range(3):
+            matrix[i][3] = 2 * dot_vectors(point, normal) * normal[i]
+        return cls(matrix)
+
+    @classmethod
+    def from_frame(cls, frame):
+        """Creates a reflection object that mirrors wrt the given frame.
+
+        Parameters
+        ----------
+        frame : compas.geometry.Frame or (point, xaxis, yaxis, zaxis)
+
+        Returns
+        -------
+        Reflection
+            The reflection transformation.
+        """
+        point, x, y, z = frame
+        plane = point, z
+        return cls.from_plane(plane)
 
 
 # ==============================================================================

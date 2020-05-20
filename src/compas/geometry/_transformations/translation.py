@@ -20,16 +20,26 @@ __all__ = ['Translation']
 class Translation(Transformation):
     """Creates a translation transformation.
 
-    Args:
-        translation (:obj:`list` of :obj:`float`): a list of 3 numbers
-            defining the translation in x, y, and z.
+    Parameters
+    ----------
+    vector : compas.geometry.Vector or list of float
+        A translation vector.
 
-    Example:
-        >>> T = Translation([1, 2, 3])
+    Examples
+    --------
+    >>> T = Translation([1, 2, 3])
+    >>> T.matrix[0][3] == 1
+    True
+    >>> T.matrix[1][3] == 2
+    True
+    >>> T.matrix[2][3] == 3
+    True
     """
 
-    def __init__(self, translation):
-        self.matrix = matrix_from_translation(translation)
+    __module__ = 'compas.geometry'
+
+    def __init__(self, vector):
+        super(Translation, self).__init__(matrix_from_translation(vector))
 
 
 # ==============================================================================
@@ -38,4 +48,5 @@ class Translation(Transformation):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod()

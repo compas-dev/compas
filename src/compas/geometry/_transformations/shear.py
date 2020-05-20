@@ -26,38 +26,42 @@ class Shear(Transformation):
     A point P is transformed by the shear matrix into P" such that
     the vector P-P" is parallel to the direction vector and its extent is
     given by the angle of P-P'-P", where P' is the orthogonal projection
-    of P onto the shear plane (defined by point and normal).
-
-    Parameters
-    ----------
-    angle : :obj:`float`
-        The angle in radians.
-    direction : :obj:`list` of :obj:`float`
-        The direction vector as list of 3 numbers.
-        It must be orthogonal to the normal vector.
-    point : :obj:`list` of :obj:`float`
-        The point of the shear plane as list of 3 numbers.
-    normal : :obj:`list` of :obj:`float`
-        The normal of the shear plane as list of 3 numbers.
-
-    Raises
-    ------
-    ValueError
-        If direction and normal are not orthogonal.
-
-    Examples
-    --------
-    >>> angle = 0.1
-    >>> direction = [0.1, 0.2, 0.3]
-    >>> point = [4, 3, 1]
-    >>> normal = cross_vectors(direction, [1, 0.3, -0.1])
-    >>> S = Shear(angle, direction, point, normal)
+    of P onto the shear plane.
     """
 
-    def __init__(self, angle=0., direction=[1, 0, 0],
-                 point=[1, 1, 1], normal=[0, 0, 1]):
+    @classmethod
+    def from_angle_direction_plane(cls, angle, direction, plane):
+        """
+        Parameters
+        ----------
+        angle : :obj:`float`
+            The angle in radians.
+        direction : :obj:`list` of :obj:`float`
+            The direction vector as list of 3 numbers.
+            It must be orthogonal to the normal vector (i.e. it must lie in the shear plane).
+        plane : compas.geometry.Plane or (point, normal)
+            The shear plane defined by a point and normal.
 
-        self.matrix = matrix_from_shear(angle, direction, point, normal)
+        Raises
+        ------
+        ValueError
+            If the shear direction does not lie in the shear plane.
+
+        Returns
+        -------
+        Shear
+            The shear transformation object.
+
+        Examples
+        --------
+        >>> angle = 0.1
+        >>> direction = [0.1, 0.2, 0.3]
+        >>> point = [4, 3, 1]
+        >>> normal = cross_vectors(direction, [1, 0.3, -0.1])
+        >>> S = Shear.from_angle_direction_plane(angle, direction, (point, normal))
+        """
+        point, normal = plane
+        return cls(matrix_from_shear(angle, direction, point, normal))
 
     @classmethod
     def from_entries(cls, shear_entries):
@@ -72,8 +76,7 @@ class Shear(Transformation):
         --------
         >>> S = Shear.from_entries([1, 2, 3])
         """
-        M = matrix_from_shear_entries(shear_entries)
-        return cls.from_matrix(M)
+        return cls(matrix_from_shear_entries(shear_entries))
 
 
 # ==============================================================================

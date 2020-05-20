@@ -177,7 +177,7 @@ class Frame(Primitive):
         raise KeyError
 
     def __iter__(self):
-        return iter([self.point, self.xaxis, self.yaxis])
+        return iter([self.point, self.xaxis, self.yaxis, self.zaxis])
 
     def __eq__(self, other, tol=1e-05):
         for v1, v2 in zip(self, other):
@@ -339,7 +339,7 @@ class Frame(Primitive):
         >>> f1 == f2
         True
         """
-        xaxis, yaxis = transformation.basis_vectors
+        xaxis, yaxis = transformation.basis
         point = transformation.translation
         return cls(point, xaxis, yaxis)
 
@@ -643,12 +643,12 @@ class Frame(Primitive):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    def to_local_coords(self, object_in_wcf):
+    def to_local_coords(self, object_in_wcs):
         """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
         ----------
-        object_in_wcf : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
+        object_in_wcs : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
             An object in the world coordinate frame.
 
         Returns
@@ -670,10 +670,10 @@ class Frame(Primitive):
         Point(2.000, 2.000, 2.000)
         """
         T = Transformation.change_basis(Frame.worldXY(), self)
-        if isinstance(object_in_wcf, list):
-            return Point(*object_in_wcf).transformed(T)
+        if isinstance(object_in_wcs, list):
+            return Point(*object_in_wcs).transformed(T)
         else:
-            return object_in_wcf.transformed(T)
+            return object_in_wcs.transformed(T)
 
     def to_world_coords(self, object_in_lcs):
         """Returns the object's coordinates in the global coordinate frame.
@@ -762,7 +762,7 @@ class Frame(Primitive):
         # replace this by function call
         X = T * Transformation.from_frame(self)
         point = X.translation
-        xaxis, yaxis = X.basis_vectors
+        xaxis, yaxis = X.basis
         self.point = point
         self.xaxis = xaxis
         self.yaxis = yaxis
