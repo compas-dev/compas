@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas_rhino.geometry.RhinoSurface.brep_to_compas`.
 * Fixed bug in `compas.geometry.Box.from_bounding_box`
 * Fixed bug in `compas.geometry.Box.from_width_height_depth`
+* Fixed scaling bug in `compas.geometry.Sphere`
 
 ### Removed
 
