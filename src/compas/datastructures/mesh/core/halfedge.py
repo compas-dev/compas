@@ -2,10 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-try:
-    from collections.abc import MutableMapping  # python > 3.3
-except ImportError:
-    from collections import MutableMapping      # python 2.7
 import json
 import pickle
 from collections import OrderedDict
@@ -14,108 +10,16 @@ from ast import literal_eval
 from random import sample
 from random import choice
 
+from compas.datastructures.mesh.core import VertexAttributeView
+from compas.datastructures.mesh.core import EdgeAttributeView
+from compas.datastructures.mesh.core import FaceAttributeView
+
 from compas.datastructures import Datastructure
 from compas.utilities import pairwise
 from compas.utilities import window
 
 
 __all__ = ['HalfEdge']
-
-
-class AttributeView(object):
-    """Mixin for attribute dict views."""
-
-    def __str__(self):
-        s = []
-        for k, v in self.items():
-            s.append("{}: {}".format(repr(k), repr(v)))
-        return "{" + ", ".join(s) + "}"
-
-    def __len__(self):
-        return len(self.defaults)
-
-
-class VertexAttributeView(AttributeView, MutableMapping):
-    """Mutable Mapping that provides a read/write view of the custom attributes of a vertex
-    combined with the default attributes of all vertices."""
-
-    def __init__(self, defaults, attr):
-        self.defaults = defaults
-        self.attr = attr
-
-    def __getitem__(self, key):
-        return self.attr.get(key) or self.defaults[key]
-
-    def __setitem__(self, key, value):
-        self.attr[key] = value
-
-    def __delitem__(self, key):
-        if key in self.attr:
-            del self.attr[key]
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        for key in self.defaults:
-            yield key
-
-
-class FaceAttributeView(AttributeView, MutableMapping):
-    """Mutable Mapping that provides a read/write view of the custom attributes of a face
-    combined with the default attributes of all faces."""
-
-    def __init__(self, defaults, attr, key, custom_only=False):
-        self.defaults = defaults
-        self.attr = attr
-        self.key = key
-        self.custom_only = custom_only
-        self.attr.setdefault(self.key, {})
-
-    def __getitem__(self, name):
-        return self.attr[self.key].get(name) or self.defaults[name]
-
-    def __setitem__(self, name, value):
-        self.attr[self.key][name] = value
-
-    def __delitem__(self, name):
-        del self.attr[self.key][name]
-
-    def __iter__(self):
-        if self.custom_only:
-            for name in self.attr[self.key]:
-                yield name
-        else:
-            for name in self.defaults:
-                yield name
-
-
-class EdgeAttributeView(AttributeView, MutableMapping):
-    """Mutable Mapping that provides a read/write view of the custom attributes of an edge
-    combined with the default attributes of all edges."""
-
-    def __init__(self, defaults, attr, key, custom_only=False):
-        self.defaults = defaults
-        self.attr = attr
-        self.key = key
-        self.custom_only = custom_only
-        self.attr.setdefault(self.key, {})
-
-    def __getitem__(self, name):
-        return self.attr[self.key].get(name) or self.defaults[name]
-
-    def __setitem__(self, name, value):
-        self.attr[self.key][name] = value
-
-    def __delitem__(self, name):
-        del self.attr[self.key][name]
-
-    def __iter__(self):
-        if self.custom_only:
-            for name in self.attr[self.key]:
-                yield name
-        else:
-            for name in self.defaults:
-                yield name
 
 
 class HalfEdge(Datastructure):
@@ -1232,7 +1136,7 @@ class HalfEdge(Datastructure):
         # use it as a getter
         if not names:
             # return all vertex attributes as a dict
-            return VertexAttributeView(self.default_vertex_attributes, self.vertex[key])
+            return VertexAttributeView(self.default_vertex_attributes, self.vertex, key)
         values = []
         for name in names:
             if name in self.vertex[key]:
