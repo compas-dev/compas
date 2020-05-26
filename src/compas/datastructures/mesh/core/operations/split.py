@@ -181,6 +181,22 @@ def mesh_split_face(mesh, fkey, u, v):
     :exc:`ValueError`
         If the split vertices does not belong to the split face or if the split
         vertices are neighbors.
+
+    Example
+    -------
+    >>> import compas
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_obj(compas.get("faces.obj"))
+    >>> fkey = mesh.get_any_face()
+    >>> # u and v defines the new edge after splitting
+    >>> u = mesh.get_any_face_vertex(fkey)
+    >>> v = mesh.face_vertex_descendant(fkey, u, n=2)
+    >>> mesh.number_of_faces()  # faces before split
+    25
+    >>> mesh_split_face(mesh, fkey, u, v)
+    (25, 26)
+    >>> mesh.number_of_faces()  # faces after split
+    26
     """
     if u not in mesh.face[fkey] or v not in mesh.face[fkey]:
         raise ValueError('The split vertices do not belong to the split face.')
