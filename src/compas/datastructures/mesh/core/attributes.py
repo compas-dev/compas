@@ -14,7 +14,7 @@ __all__ = ['VertexAttributeView', 'FaceAttributeView', 'EdgeAttributeView']
 class AttributeView(object):
     """Mixin for attribute dict views."""
 
-    def __init__(self, defaults, attr, key, custom_only):
+    def __init__(self, defaults, attr, key, custom_only=False):
         self.defaults = defaults
         self.attr = attr
         self.key = key
@@ -53,7 +53,7 @@ class VertexAttributeView(AttributeView, MutableMapping):
     combined with the default attributes of all vertices."""
 
     def __init__(self, defaults, attr, key, custom_only=False):
-        super().__init__(defaults, attr, key, custom_only)
+        super(VertexAttributeView, self).__init__(defaults, attr, key, custom_only)
 
 
 class EdgeAttributeView(AttributeView, MutableMapping):
@@ -61,7 +61,7 @@ class EdgeAttributeView(AttributeView, MutableMapping):
     combined with the default attributes of all edges."""
 
     def __init__(self, defaults, attr, key, custom_only=False):
-        super().__init__(defaults, attr, key, custom_only)
+        super(EdgeAttributeView, self).__init__(defaults, attr, key, custom_only)
 
 
 class FaceAttributeView(AttributeView, MutableMapping):
@@ -69,4 +69,4 @@ class FaceAttributeView(AttributeView, MutableMapping):
     combined with the default attributes of all faces."""
 
     def __init__(self, defaults, attr, key, custom_only=False):
-        super().__init__(defaults, attr, key, custom_only)
+        super(FaceAttributeView, self).__init__(defaults, attr, key, custom_only)
