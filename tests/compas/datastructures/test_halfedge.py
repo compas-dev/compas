@@ -24,72 +24,145 @@ def mesh():
     he = HalfEdge()
 
     for vertex in vertices:
-        he.add_vertex(attr_dict={c: xyz for c, xyz in zip("xyz", vertex)})
+        he.add_vertex(x=vertex[0], y=vertex[1], z=vertex[2])
 
     for face in faces:
         he.add_face(face)
 
     return he
 
+
 @pytest.fixture
-def mesh_default_attrs(mesh, default_kwattr):
-    mesh.update_default_vertex_attributes(default_kwattr)
-    mesh.update_default_face_attributes(default_kwattr)
-    mesh.update_default_edge_attributes(default_kwattr)
-    return mesh
+def vertex_key():
+    return 2
 
 
 @pytest.fixture
-def default_kwattr():
-    return {"foo": "bar"}
+def face_key():
+    return 1
 
 
 @pytest.fixture
-def custom_kwattr():
-    return {"moo": "baz", 0: "0", "1": 1}
+def edge_key():
+    return (0, 1)
 
-
-def iterators():
-    return ["vertices", "faces", "edges"]
 
 # ==============================================================================
-# Tests - Custom Attributes
+# Tests - Vertex Attributes
 # ==============================================================================
 
-def test_set_vertex_attribute_custom(mesh, custom_kwattr):
-    key = mesh.get_any_vertex()
-    for name, value in custom_kwattr.items():
-        mesh.vertex_attribute(key=key, name=name, value=value)
-        assert name in mesh.vertex_attributes(key=key)
-
-
-def test_set_face_attribute_custom(mesh, custom_kwattr):
-    key = mesh.get_any_face()
-    for name, value in custom_kwattr.items():
-        mesh.face_attribute(key=key, name=name, value=value)
-        assert name in mesh.face_attributes(key=key)
-
-
-def test_set_edge_attribute_custom(mesh, custom_kwattr):
-    key = (0, 1)
-    for name, value in custom_kwattr.items():
-        mesh.edge_attribute(key=key, name=name, value=value)
-        assert name in mesh.edge_attributes(key=key)
-
-# ==============================================================================
-# Tests - Default Attributes
-# ==============================================================================
-
-@pytest.mark.parametrize("iterator", iterators())
-def test_get_attributes_default(mesh_default_attrs, default_kwattr, iterator):
-    for vkey, attr in getattr(mesh_default_attrs, iterator)(True):
-        for k, v in default_kwattr.items():
-            assert k in attr
-
-
-@pytest.mark.parametrize("iterator", iterators())
-def test_get_attributes_not_in_default(mesh_default_attrs, custom_kwattr, iterator):
+def test_vertex_attributes_key_not_found(mesh):
     with pytest.raises(KeyError):
-        for vkey, attr in getattr(mesh_default_attrs, iterator)(True):
-            for k, v in custom_kwattr.items():
-                _ = attr[k]
+        mesh.vertex_attributes(key=mesh.number_of_vertices() + 1)
+
+
+def test_vertex_attributes_from_defaults(mesh):
+    mesh.update_default_vertex_attributes({"foo": "bar"})
+    assert mesh.vertex_attributes(key=mesh.get_any_vertex())["foo"] == "bar"
+
+
+def test_vertex_attributes_not_in_defaults(mesh):
+    mesh.update_default_vertex_attributes({"foo": "bar"})
+    attrs = mesh.vertex_attributes(key=mesh.get_any_vertex())
+    with pytest.raises(KeyError):
+        attrs["baz"]
+
+
+def test_get_vertex_attribute_from_view(mesh, vertex_key):
+    mesh.vertex_attribute(key=vertex_key, name="foo", value="bar")
+    attrs = mesh.vertex_attributes(key=vertex_key)
+    assert attrs["foo"] == "bar"
+
+
+def test_set_vertex_attribute_in_view(mesh, vertex_key):
+    attrs = mesh.vertex_attributes(key=vertex_key)
+    attrs["foo"] = "bar"
+    assert mesh.vertex_attribute(key=vertex_key, name="foo") == "bar"
+
+
+def test_del_vertex_attribute_in_view(mesh, vertex_key):
+    mesh.vertex_attribute(key=vertex_key, name="foo", value="bar")
+    attrs = mesh.vertex_attributes(key=vertex_key)
+    del attrs["foo"]
+    with pytest.raises(KeyError):
+        attrs["foo"]
+
+
+# ==============================================================================
+# Tests - Face Attributes
+# ==============================================================================
+
+def test_face_attributes_is_empty(mesh):
+    assert mesh.face_attributes(key=mesh.get_any_face()) == {}
+
+
+def test_face_attributes_from_defaults(mesh):
+    mesh.update_default_face_attributes({"foo": "bar"})
+    assert mesh.face_attributes(key=mesh.get_any_face())["foo"] == "bar"
+
+
+def test_face_attributes_not_in_defaults(mesh):
+    mesh.update_default_face_attributes({"foo": "bar"})
+    attrs = mesh.face_attributes(key=mesh.get_any_face())
+    with pytest.raises(KeyError):
+        attrs["baz"]
+
+
+def test_get_face_attribute_from_view(mesh, face_key):
+    mesh.face_attribute(key=face_key, name="foo", value="bar")
+    attrs = mesh.face_attributes(key=face_key)
+    assert attrs["foo"] == "bar"
+
+
+def test_set_face_attribute_in_view(mesh, face_key):
+    attrs = mesh.face_attributes(key=face_key)
+    attrs["foo"] = "bar"
+    assert mesh.face_attribute(key=face_key, name="foo") == "bar"
+
+
+def test_del_face_attribute_in_view(mesh, face_key):
+    mesh.face_attribute(key=face_key, name="foo", value="bar")
+    attrs = mesh.face_attributes(key=face_key)
+    del attrs["foo"]
+    with pytest.raises(KeyError):
+        attrs["foo"]
+
+
+# ==============================================================================
+# Tests - Edge Attributes
+# ==============================================================================
+
+def test_edge_attributes_is_empty(mesh, edge_key):
+    assert mesh.edge_attributes(key=edge_key) == {}
+
+
+def test_edge_attributes_from_defaults(mesh, edge_key):
+    mesh.update_default_edge_attributes({"foo": "bar"})
+    assert mesh.edge_attributes(key=edge_key)["foo"] == "bar"
+
+
+def test_edge_attributes_not_in_defaults(mesh, edge_key):
+    mesh.update_default_edge_attributes({"foo": "bar"})
+    attrs = mesh.edge_attributes(key=edge_key)
+    with pytest.raises(KeyError):
+        attrs["baz"]
+
+
+def test_get_edge_attribute_from_view(mesh, edge_key):
+    mesh.edge_attribute(key=edge_key, name="foo", value="bar")
+    attrs = mesh.edge_attributes(key=edge_key)
+    assert attrs["foo"] == "bar"
+
+
+def test_set_edge_attribute_in_view(mesh, edge_key):
+    attrs = mesh.edge_attributes(key=edge_key)
+    attrs["foo"] = "bar"
+    assert mesh.edge_attribute(key=edge_key, name="foo") == "bar"
+
+
+def test_del_edge_attribute_in_view(mesh, edge_key):
+    mesh.edge_attribute(key=edge_key, name="foo", value="bar")
+    attrs = mesh.edge_attributes(key=edge_key)
+    del attrs["foo"]
+    with pytest.raises(KeyError):
+        attrs["foo"]
