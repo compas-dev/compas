@@ -19,7 +19,6 @@ class AttributeView(object):
         self.attr = attr
         self.key = key
         self.custom_only = custom_only
-        self.attr.setdefault(self.key, {})
 
     def __str__(self):
         s = []
@@ -62,6 +61,7 @@ class EdgeAttributeView(AttributeView, MutableMapping):
 
     def __init__(self, defaults, attr, key, custom_only=False):
         super(EdgeAttributeView, self).__init__(defaults, attr, key, custom_only)
+        self.attr.setdefault(self.key, {})
 
 
 class FaceAttributeView(AttributeView, MutableMapping):
@@ -70,3 +70,4 @@ class FaceAttributeView(AttributeView, MutableMapping):
 
     def __init__(self, defaults, attr, key, custom_only=False):
         super(FaceAttributeView, self).__init__(defaults, attr, key, custom_only)
+        self.attr.setdefault(self.key, {})
