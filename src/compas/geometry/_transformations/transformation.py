@@ -49,8 +49,18 @@ class Transformation(object):
 
     Attributes
     ----------
-    matrix : list of list of float
+    matrix : 4x4 list of list of float
         A 4x4 transformation matrix.
+    list : 16x1 list of float, read-only
+        A flattened transformation matrix.
+    determinant : float, read-only
+        The determinant of the transformation matrix.
+    scale : list of float, read-only
+        The scale factors of the transformation matrix.
+    translation : compas.geometry.Vector, read-only
+        The translation vector of the transformation matrix.
+    rotation : compas.geometry.Rotation, read-only
+        The rotation of the transformation.
 
     Examples
     --------
@@ -66,6 +76,8 @@ class Transformation(object):
     def __init__(self, matrix=None):
         """Construct a transformation from a 4x4 transformation matrix.
         """
+        if not matrix:
+            matrix = identity_matrix(4)
         self.matrix = matrix
 
     def __mul__(self, other):
@@ -97,17 +109,17 @@ class Transformation(object):
         except BaseException:
             return False
 
-    def copy(self):
-        """Returns a copy of the transformation.
-        """
-        cls = type(self)
-        return cls(self.matrix.copy())
-
     def __repr__(self):
         return "Transformation({})".format(self.matrix)
 
     def __len__(self):
         return len(self.matrix)
+
+    def copy(self):
+        """Returns a copy of the transformation.
+        """
+        cls = type(self)
+        return cls(self.matrix.copy())
 
     @classmethod
     def from_data(cls, data):
@@ -128,7 +140,6 @@ class Transformation(object):
         >>> matrix = [[1, 0, 0, 3], [0, 1, 0, 4], [0, 0, 1, 5], [0, 0, 0, 1]]
         >>> data = {'matrix': matrix}
         >>> T = Transformation.from_data(data)
-
         """
         return cls(data['matrix'])
 
@@ -139,6 +150,14 @@ class Transformation(object):
         -------
         dict
             A dictionary with a transformation matrix stored under the key "matrix".
+
+        Examples
+        --------
+        >>> matrix = [[1, 0, 0, 3], [0, 1, 0, 4], [0, 0, 1, 5], [0, 0, 0, 1]]
+        >>> data = {'matrix': matrix}
+        >>> T = Transformation.from_data(data)
+        >>> T.to_data() == data
+        True
         """
         return {'matrix': self.matrix}
 
@@ -188,6 +207,7 @@ class Transformation(object):
                 matrix[i][j] = float(numbers[i * 4 + j])
         return cls(matrix)
 
+    # should not one of the two just have a "to" function
     @classmethod
     def from_frame(cls, frame):
         """Computes a transformation from world XY to frame.
@@ -253,7 +273,7 @@ class Transformation(object):
         return cls(multiply_matrices(T2.matrix, matrix_inverse(T1.matrix)))
 
     @classmethod
-    def change_basis(cls, frame_from, frame_to):
+    def from_change_of_basis(cls, frame_from, frame_to):
         """Computes a change of basis transformation between two frames.
 
         A basis change is essentially a remapping of geometry from one
@@ -282,40 +302,106 @@ class Transformation(object):
         T2 = cls.from_frame(frame_to)
         return cls(multiply_matrices(matrix_inverse(T2.matrix), T1.matrix))
 
+    # @property
+    # def scale(self):
+    #     """The scale component of the transformation matrix.
+
+    #     Returns
+    #     -------
+    #     compas.geometry.Scale
+    #         The scale component of the transformation.
+    #     """
+    #     S, H, R, T, P = self.decomposed()
+    #     return S
+
+    # @property
+    # def shear(self):
+    #     """The shear component of the transformation matrix.
+
+    #     Returns
+    #     -------
+    #     compas.geometry.Shear
+    #         The shear component of the transformation.
+    #     """
+    #     S, H, R, T, P = self.decomposed()
+    #     return H
+
     @property
     def rotation(self):
-        """Returns the rotation components of the transformation matrix.
+        """The rotation component of the transformation matrix.
+
+        Returns
+        -------
+        compas.geometry.Rotation
+            The rotation component of the transformation.
         """
-        Sc, Sh, R, T, P = self.decomposed()
+        S, H, R, T, P = self.decomposed()
         return R
 
-    @property
-    def translation(self):
-        """Returns the translation components of the transformation matrix.
-        """
-        return translation_from_matrix(self.matrix)
+    # @property
+    # def translation(self):
+    #     """The translation component of the transformation matrix.
+
+    #     Returns
+    #     -------
+    #     compas.geometry.Translation
+    #         The translation component of the transformation.
+    #     """
+    #     S, H, R, T, P = self.decomposed()
+    #     return T
+
+    # @property
+    # def projection(self):
+    #     """The projection component of the transformation matrix.
+
+    #     Returns
+    #     -------
+    #     compas.geometry.Projection
+    #         The projectionn component of the transformation.
+    #     """
+    #     S, H, R, T, P = self.decomposed()
+    #     return P
 
     @property
-    def scale(self):
-        """Returns the scale components of the transformation matrix.
-        """
-        return [self.matrix[0][0], self.matrix[1][1], self.matrix[2][2]]
+    def translation_vector(self):
+        from compas.geometry import Vector
+        vector = translation_from_matrix(self.matrix)
+        return Vector(*vector)
 
     @property
-    def basis(self):
-        """Returns the basis vectors from the ``Rotation`` component of the ``Transformation``.
+    def basis_vectors(self):
+        """The basis vectors from the rotation component of the transformation matrix.
+
+        Returns
+        -------
+        tuple of :class:`compas.geometry.Vector`
+            The basis vectors of the rotation component of the tranformation.
         """
         from compas.geometry import Vector
-        sc, sh, a, t, p = decompose_matrix(self.matrix)
-        R = matrix_from_euler_angles(a, static=True, axes='xyz')
-        xv, yv = basis_vectors_from_matrix(R)
-        return Vector(*xv), Vector(*yv)
+        x, y = basis_vectors_from_matrix(self.rotation.matrix)
+        return Vector(*x), Vector(*y)
 
     @property
     def list(self):
         """Flattens the 4x4 transformation matrix into a list of 16 numbers.
+
+        Returns
+        -------
+        list
+            The transformation matrix as a flattened list in row-major order.
         """
         return [a for c in self.matrix for a in c]
+
+    @property
+    def determinant(self):
+        """The determinant of the matrix of the transformation.
+
+        Returns
+        -------
+        float
+            The determinant of the matrix of this transformation.
+        """
+        return matrix_determinant(self.matrix)
 
     def transpose(self):
         """Transpose the matrix of this transformation.
@@ -332,7 +418,7 @@ class Transformation(object):
 
         Returns
         -------
-        T: :class:`compas.geometry.Transformation`
+        Transformation
             The transposed transformation object.
         """
         T = self.copy()
@@ -359,7 +445,6 @@ class Transformation(object):
         >>> I = Transformation(identity_matrix(4))
         >>> I == T * T.inverse()
         True
-
         """
         T = self.copy()
         T.invert()
@@ -367,19 +452,9 @@ class Transformation(object):
 
     inverted = inverse
 
-    def determinant(self):
-        """The determinant of the matrix of the transformation.
-
-        Returns
-        -------
-        float
-            The determinant of the matrix of this transformation.
-        """
-        return matrix_determinant(self.matrix)
-
     def decomposed(self):
         """Decompose the ``Transformation`` into its ``Scale``, ``Shear``,
-        ``Rotation``, ``Translation`` and ``Perspective`` components.
+        ``Rotation``, ``Translation`` and ``Projection`` components.
 
         Returns
         -------
@@ -394,10 +469,10 @@ class Transformation(object):
         >>> scale1 = [0.123, 2, 0.5]
         >>> T1 = Translation.from_vector(trans1)
         >>> R1 = Rotation.from_euler_angles(angle1)
-        >>> S1 = Scale.from_factors(scale1)
-        >>> M = (T1 * R1) * S1
-        >>> Sc, Sh, R, T, P = M.decomposed()
-        >>> S1 == Sc
+        >>> S1 = Scale(scale1)
+        >>> M = T1 * R1 * S1
+        >>> S, H, R, T, P = M.decomposed()
+        >>> S1 == S
         True
         >>> R1 == R
         True
@@ -409,13 +484,13 @@ class Transformation(object):
         from compas.geometry import Rotation  # noqa: F811
         from compas.geometry import Translation  # noqa: F811
         from compas.geometry import Projection
-        sc, sh, a, t, p = decompose_matrix(self.matrix)
-        Sc = Scale.from_factors(sc)
-        Sh = Shear.from_entries(sh)
+        s, h, a, t, p = decompose_matrix(self.matrix)
+        S = Scale(s)
+        H = Shear.from_entries(h)
         R = Rotation.from_euler_angles(a, static=True, axes='xyz')
-        T = Translation.from_vector(t)
+        T = Translation(t)
         P = Projection.from_entries(p)
-        return Sc, Sh, R, T, P
+        return S, H, R, T, P
 
     def concatenate(self, other):
         """Concatenate another transformation to this transformation.
@@ -441,12 +516,12 @@ class Transformation(object):
 
         Parameters
         ----------
-        other: :class:`compas.geometry.Transformation`
+        other : :class:`compas.geometry.Transformation`
             The transformation object to concatenate.
 
         Returns
         -------
-        T: :class:`compas.geometry.Transformation`
+        T : :class:`compas.geometry.Transformation`
             The new transformation that is the concatenation of this one and the other.
 
         Notes
@@ -478,8 +553,30 @@ if __name__ == "__main__":
 
     X1 = Transformation.from_frame_to_frame(world, frame)
     X2 = Transformation.from_frame(frame)
-    X3 = Transformation.change_basis(frame, world)
+    X3 = Transformation.from_change_of_basis(frame, world)
 
     print(X1.matrix)
     print(X2.matrix)
     print(X3.matrix)
+
+    print(X3.basis)
+
+    trans1 = [1, 2, 3]
+    angle1 = [-2.142, 1.141, -0.142]
+    scale1 = [0.123, 2, 0.5]
+    T1 = Translation(trans1)
+    R1 = Rotation.from_euler_angles(angle1)
+    S1 = Scale(scale1)
+    M = T1 * R1 * S1
+    S, H, R, T, P = M.decomposed()
+    print(S1 == S)
+    print(R1 == R)
+    print(T1 == T)
+
+    S, H, R, T, P = X3.decomposed()
+
+    print(S)
+    print(H)
+    print(R)
+    print(T)
+    print(P)

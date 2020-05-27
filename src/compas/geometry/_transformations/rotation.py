@@ -20,8 +20,8 @@ from compas.geometry._transformations import matrix_from_axis_and_angle
 from compas.geometry._transformations import axis_and_angle_from_matrix
 from compas.geometry._transformations import matrix_from_quaternion
 from compas.geometry._transformations import quaternion_from_matrix
-from compas.geometry._transformations import basis_vectors_from_matrix
 from compas.geometry._transformations import matrix_from_frame
+from compas.geometry._transformations import basis_vectors_from_matrix
 from compas.geometry._transformations import Transformation
 
 
@@ -66,7 +66,58 @@ class Rotation(Transformation):
     True
     """
 
+    # properties
+    # axis
+    # angle
+    # direction
+    # anglevector
+    # eulerangles
+    # rotating_eulerangles
+    # ???
+
     __module__ = 'compas.geometry'
+
+    # the default behaviour of providing a transformation matrix
+    # should either be checked
+    # or no longer allowed
+    # the default init/constructor should therefore be overwritten
+    # the default sould be axis-and-angle
+
+    @classmethod
+    def from_axis_and_angle(cls, axis, angle, point=[0, 0, 0]):
+        """Calculates a ``Rotation`` from a rotation axis and an angle and an optional point of rotation.
+
+        The rotation is based on the right hand rule, i.e. anti-clockwise if the
+        axis of rotation points towards the observer.
+
+        Parameters
+        ----------
+        axis : list of float
+            Three numbers that represent the axis of rotation.
+        angle : float
+            The rotation angle in radians.
+        point : :class:`Point` or list of float
+            A point to perform a rotation around an origin other than [0, 0, 0].
+
+        Examples
+        --------
+        >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
+        >>> angle1 = 0.1
+        >>> R = Rotation.from_axis_and_angle(axis1, angle1)
+        >>> axis2, angle2 = R.axis_and_angle
+        >>> allclose(axis1, axis2)
+        True
+        >>> allclose([angle1], [angle2])
+        True
+
+        Notes
+        -----
+        The rotation is based on the right hand rule, i.e. anti-clockwise
+        if the axis of rotation points towards the observer.
+
+        """
+        M = matrix_from_axis_and_angle(axis, angle, point=point)
+        return cls(M)
 
     @classmethod
     def from_basis_vectors(cls, xaxis, yaxis):
@@ -163,42 +214,6 @@ class Rotation(Transformation):
         axis_angle_vector = list(axis_angle_vector)
         angle = length_vector(axis_angle_vector)
         return cls.from_axis_and_angle(axis_angle_vector, angle, point)
-
-    @classmethod
-    def from_axis_and_angle(cls, axis, angle, point=[0, 0, 0]):
-        """Calculates a ``Rotation`` from a rotation axis and an angle and an optional point of rotation.
-
-        The rotation is based on the right hand rule, i.e. anti-clockwise if the
-        axis of rotation points towards the observer.
-
-        Parameters
-        ----------
-        axis : list of float
-            Three numbers that represent the axis of rotation.
-        angle : float
-            The rotation angle in radians.
-        point : :class:`Point` or list of float
-            A point to perform a rotation around an origin other than [0, 0, 0].
-
-        Examples
-        --------
-        >>> axis1 = normalize_vector([-0.043, -0.254, 0.617])
-        >>> angle1 = 0.1
-        >>> R = Rotation.from_axis_and_angle(axis1, angle1)
-        >>> axis2, angle2 = R.axis_and_angle
-        >>> allclose(axis1, axis2)
-        True
-        >>> allclose([angle1], [angle2])
-        True
-
-        Notes
-        -----
-        The rotation is based on the right hand rule, i.e. anti-clockwise
-        if the axis of rotation points towards the observer.
-
-        """
-        M = matrix_from_axis_and_angle(axis, angle, point=point)
-        return cls(M)
 
     @classmethod
     def from_euler_angles(cls, euler_angles, static=True, axes='xyz'):
@@ -302,6 +317,12 @@ class Rotation(Transformation):
         axis, angle = self.axis_and_angle
         return axis.scaled(angle)
 
+    # split up into two properties
+    # euler_angles
+    # rotating_euler_angles
+    # xyz seems irelevant
+    # could be added to base Transformation
+    # always relevant
     def euler_angles(self, static=True, axes='xyz'):
         """Returns Euler angles from the ``Rotation`` according to specified
         axis sequence and rotation type.
@@ -309,11 +330,12 @@ class Rotation(Transformation):
         Parameters
         ----------
         static : bool, optional
-            If true the rotations are applied to a static frame. If not, to a
-            rotational. Defaults to True.
+            If true the rotations are applied to a static frame.
+            If not, to a rotational.
+            Defaults to True.
         axes : str, optional
-            A 3 character string specifying the order of the axes. Defaults to
-            'xyz'.
+            A 3 character string specifying the order of the axes.
+            Defaults to 'xyz'.
 
         Returns
         -------
@@ -336,8 +358,8 @@ class Rotation(Transformation):
 
         Returns
         -------
-        tuple: (:class:`Vector`, :class:`Vector`)
-
+        tuple of (:class:`Vector`, :class:`Vector`)
+            The basis vectors.
         """
         from compas.geometry import Vector
         xaxis, yaxis = basis_vectors_from_matrix(self.matrix)

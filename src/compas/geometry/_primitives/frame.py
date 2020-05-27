@@ -137,8 +137,8 @@ class Frame(Primitive):
     def quaternion(self):
         """:class:`compas.geometry.Quaternion` : The quaternion from the rotation given by the frame.
         """
-        rotation = matrix_from_basis_vectors(self.xaxis, self.yaxis)
-        return Quaternion(*quaternion_from_matrix(rotation))
+        R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
+        return Quaternion(*quaternion_from_matrix(R))
 
     @property
     def axis_angle_vector(self):
@@ -312,6 +312,13 @@ class Frame(Primitive):
         >>> f1 == f2
         True
         """
+        # should there be a check to verify the transformation
+        # is a proper rotation?
+        # similar to the check in basis_vectors_from_matrix?
+        # the check could attached to the transformation object
+        # there seems to be no guarantee that the translation part is zero
+        # is it ignored by this method?
+        # or should it be added?
         xaxis, yaxis = rotation.basis_vectors
         return cls(point, xaxis, yaxis)
 
@@ -339,8 +346,12 @@ class Frame(Primitive):
         >>> f1 == f2
         True
         """
-        xaxis, yaxis = transformation.basis
-        point = transformation.translation
+        # should there be a check to verify the transformation
+        # is a proper rotation?
+        # similar to the check in basis_vectors_from_matrix?
+        # the check could attached to the transformation object
+        xaxis, yaxis = transformation.basis_vectors
+        point = transformation.translation_vector
         return cls(point, xaxis, yaxis)
 
     @classmethod
@@ -511,6 +522,8 @@ class Frame(Primitive):
         xaxis, yaxis = basis_vectors_from_matrix(R)
         return cls(point, xaxis, yaxis)
 
+    # this seems to be a bit of a hack
+    # (first creating a world XY and then replacing its data)
     @classmethod
     def from_data(cls, data):
         """Construct a frame from its data representation.
@@ -540,6 +553,9 @@ class Frame(Primitive):
         frame.data = data
         return frame
 
+    # why is the plane normal converted to a list?
+    # the index of max finding can be optimised quite a bit
+    # this procedure should be handed off to some orthonormalisation procedure
     @classmethod
     def from_plane(cls, plane):
         """Constructs a frame from a plane.
@@ -574,7 +590,7 @@ class Frame(Primitive):
         # first point
         coords = [0, 0, 0]  # x, y, z
         # z = (d - a*0 + b*0)/c, if idx == 2
-        v = d/coeffs[idx]
+        v = d / coeffs[idx]
         coords[idx] = v
         pt1_in_plane = Point(*coords)
         # second point
@@ -643,6 +659,7 @@ class Frame(Primitive):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
+    # rename
     def to_local_coords(self, object_in_wcs):
         """Returns the object's coordinates in the local coordinate system of the frame.
 
@@ -669,12 +686,13 @@ class Frame(Primitive):
         >>> frame.to_world_coords(pl)
         Point(2.000, 2.000, 2.000)
         """
-        T = Transformation.change_basis(Frame.worldXY(), self)
+        T = Transformation.from_change_of_basis(Frame.worldXY(), self)
         if isinstance(object_in_wcs, list):
             return Point(*object_in_wcs).transformed(T)
         else:
             return object_in_wcs.transformed(T)
 
+    # rename
     def to_world_coords(self, object_in_lcs):
         """Returns the object's coordinates in the global coordinate frame.
 
@@ -701,12 +719,13 @@ class Frame(Primitive):
         >>> frame.to_local_coords(pw)
         Point(1.632, -0.090, 0.573)
         """
-        T = Transformation.change_basis(self, Frame.worldXY())
+        T = Transformation.from_change_of_basis(self, Frame.worldXY())
         if isinstance(object_in_lcs, list):
             return Point(*object_in_lcs).transformed(T)
         else:
             return object_in_lcs.transformed(T)
 
+    # ?!
     @staticmethod
     def local_to_local_coords(frame1, frame2, object_in_frame1):
         """Returns the object's coordinates in frame1 in the local coordinates of frame2.
@@ -735,7 +754,7 @@ class Frame(Primitive):
         >>> Frame.local_to_local_coords(frame2, frame1, p2)
         Point(2.000, 2.000, 2.000)
         """
-        T = Transformation.change_basis(frame1, frame2)
+        T = Transformation.from_change_of_basis(frame1, frame2)
         if isinstance(object_in_frame1, list):
             return Point(*object_in_frame1).transformed(T)
         else:
@@ -761,8 +780,8 @@ class Frame(Primitive):
         """
         # replace this by function call
         X = T * Transformation.from_frame(self)
-        point = X.translation
-        xaxis, yaxis = X.basis
+        point = X.translation_vector
+        xaxis, yaxis = X.basis_vectors
         self.point = point
         self.xaxis = xaxis
         self.yaxis = yaxis

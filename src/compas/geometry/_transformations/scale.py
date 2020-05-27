@@ -24,11 +24,13 @@ class Scale(Transformation):
     Parameters
     ----------
     factors : list of float
-        A list of 3 scale factors.
+        Scale factor in the X-direction.
+        Scale factor in the Y-direction.
+        Scale factor in the Z-direction.
 
     Examples
     --------
-    >>> S = Scale([1, 2, 3])
+    >>> S = Scale(1, 2, 3)
     >>> S.matrix[0][0] == 1
     True
     >>> S.matrix[1][1] == 2
@@ -39,8 +41,15 @@ class Scale(Transformation):
 
     __module__ = 'compas.geometry'
 
+    # the default behaviour of providing a transformation matrix
+    # should either be checked
+    # or no longer allowed
+    # the default init/constructor should therefore be overwritten
     def __init__(self, factors):
         super(Scale, self).__init__(matrix_from_scale_factors(factors))
+
+    # there should be a property factors
+    # this can have an equivalent yet more expensive version on the base object
 
 
 # ==============================================================================

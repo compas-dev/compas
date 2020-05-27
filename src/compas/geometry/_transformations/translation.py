@@ -34,12 +34,37 @@ class Translation(Transformation):
     True
     >>> T.matrix[2][3] == 3
     True
+
+    >>> from compas.geometry import Vector
+    >>> T = Translation(Vector(1, 2, 3))
+    >>> T.matrix[0][3] == 1
+    True
+    >>> T.matrix[1][3] == 2
+    True
+    >>> T.matrix[2][3] == 3
+    True
     """
 
     __module__ = 'compas.geometry'
 
+    # the default behaviour of providing a transformation matrix
+    # should either be checked
+    # or no longer allowed
+    # the default init/constructor should therefore be overwritten
     def __init__(self, vector):
         super(Translation, self).__init__(matrix_from_translation(vector))
+
+    # there could/should be a shortcut for this
+    # from the base translation object
+    # this is always relevant/true
+    # basis vectors are also already part of the default behaviour
+    @property
+    def vector(self):
+        from compas.geometry import Vector
+        x = self.matrix[0][3]
+        y = self.matrix[1][3]
+        z = self.matrix[2][3]
+        return Vector(x, y, z)
 
 
 # ==============================================================================

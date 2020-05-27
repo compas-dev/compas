@@ -29,6 +29,14 @@ class Shear(Transformation):
     of P onto the shear plane.
     """
 
+    # the default behaviour of providing a transformation matrix
+    # should either be checked
+    # or no longer allowed
+    # the default init/constructor should therefore be overwritten
+
+    # def __init__(self, angle=0., direction=[1, 0, 0], point=[1, 1, 1], normal=[0, 0, 1]):
+    #    self.matrix = matrix_from_shear(angle, direction, point, normal)
+
     @classmethod
     def from_angle_direction_plane(cls, angle, direction, plane):
         """
@@ -36,7 +44,7 @@ class Shear(Transformation):
         ----------
         angle : :obj:`float`
             The angle in radians.
-        direction : :obj:`list` of :obj:`float`
+        direction : compas.geometry.Vector or :obj:`list` of :obj:`float`
             The direction vector as list of 3 numbers.
             It must be orthogonal to the normal vector (i.e. it must lie in the shear plane).
         plane : compas.geometry.Plane or (point, normal)

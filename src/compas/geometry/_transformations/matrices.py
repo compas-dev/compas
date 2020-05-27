@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import math
+from math import fabs
 
 from copy import deepcopy
 
@@ -45,7 +46,7 @@ __all__ = [
 
     'matrix_from_frame',
     'matrix_from_frame_to_frame',
-    'matrix_change_basis',
+    'matrix_from_change_of_basis',
     'matrix_from_euler_angles',
     'matrix_from_axis_and_angle',
     'matrix_from_axis_angle_vector',
@@ -239,14 +240,11 @@ def decompose_matrix(M):
     .. [1] Slabaugh, 1999. *Computing Euler angles from a rotation matrix*.
            Available at: http://www.gregslabaugh.net/publications/euler.pdf
     """
-
     detM = matrix_determinant(M)  # raises ValueError if matrix is not squared
-
     if detM == 0:
         ValueError("The matrix is singular.")
 
     Mt = transpose_matrix(M)
-
     if abs(Mt[3][3]) < _EPS:
         raise ValueError('The element [3,3] of the matrix is zero.')
 
@@ -256,12 +254,12 @@ def decompose_matrix(M):
 
     translation = [M[0][3], M[1][3], M[2][3]]
 
-    # scale, shear, rotation
-    # copy Mt[:3, :3] into row
+    # scale, shear, angles
     scale = [0.0, 0.0, 0.0]
     shear = [0.0, 0.0, 0.0]
     angles = [0.0, 0.0, 0.0]
 
+    # copy Mt[:3, :3] into row
     row = [[0, 0, 0] for i in range(3)]
     for i in range(3):
         for j in range(3):
@@ -270,22 +268,28 @@ def decompose_matrix(M):
     scale[0] = norm_vector(row[0])
     for i in range(3):
         row[0][i] /= scale[0]
+
     shear[0] = dot_vectors(row[0], row[1])
     for i in range(3):
         row[1][i] -= row[0][i] * shear[0]
+
     scale[1] = norm_vector(row[1])
     for i in range(3):
         row[1][i] /= scale[1]
     shear[0] /= scale[1]
+
     shear[1] = dot_vectors(row[0], row[2])
     for i in range(3):
         row[2][i] -= row[0][i] * shear[1]
+
     shear[2] = dot_vectors(row[1], row[2])
     for i in range(3):
         row[2][i] -= row[0][i] * shear[2]
+
     scale[2] = norm_vector(row[2])
     for i in range(3):
         row[2][i] /= scale[2]
+
     shear[1] /= scale[2]
     shear[2] /= scale[2]
 
@@ -295,16 +299,12 @@ def decompose_matrix(M):
 
     # angles
     if row[0][2] != -1. and row[0][2] != 1.:
-
         beta1 = math.asin(-row[0][2])
         # beta2 = math.pi - beta1
-
         alpha1 = math.atan2(row[1][2] / math.cos(beta1), row[2][2] / math.cos(beta1))
         # alpha2 = math.atan2(row[1][2] / math.cos(beta2), row[2][2] / math.cos(beta2))
-
         gamma1 = math.atan2(row[0][1] / math.cos(beta1), row[0][0] / math.cos(beta1))
         # gamma2 = math.atan2(row[0][1] / math.cos(beta2), row[0][0] / math.cos(beta2))
-
         angles = [alpha1, beta1, gamma1]
         # TODO: check for alpha2, beta2, gamma2 needed?
     else:
@@ -318,12 +318,11 @@ def decompose_matrix(M):
         angles = [alpha, beta, gamma]
 
     # perspective
-    if math.fabs(Mt[0][3]) > _EPS and math.fabs(Mt[1][3]) > _EPS and math.fabs(Mt[2][3]) > _EPS:
+    if fabs(Mt[0][3]) > _EPS and fabs(Mt[1][3]) > _EPS and fabs(Mt[2][3]) > _EPS:
         P = deepcopy(Mt)
         P[0][3], P[1][3], P[2][3], P[3][3] = 0.0, 0.0, 0.0, 1.0
         Ptinv = matrix_inverse(transpose_matrix(P))
-        perspective = multiply_matrix_vector(Ptinv, [Mt[0][3], Mt[1][3],
-                                                     Mt[2][3], Mt[3][3]])
+        perspective = multiply_matrix_vector(Ptinv, [Mt[0][3], Mt[1][3], Mt[2][3], Mt[3][3]])
     else:
         perspective = [0.0, 0.0, 0.0, 1.0]
 
@@ -374,11 +373,11 @@ def compose_matrix(scale=None, shear=None, angles=None,
         R = matrix_from_euler_angles(angles, static=True, axes="xyz")
         M = multiply_matrices(M, R)
     if shear is not None:
-        Sh = matrix_from_shear_entries(shear)
-        M = multiply_matrices(M, Sh)
+        H = matrix_from_shear_entries(shear)
+        M = multiply_matrices(M, H)
     if scale is not None:
-        Sc = matrix_from_scale_factors(scale)
-        M = multiply_matrices(M, Sc)
+        S = matrix_from_scale_factors(scale)
+        M = multiply_matrices(M, S)
     for i in range(4):
         for j in range(4):
             M[i][j] /= M[3][3]
@@ -437,7 +436,7 @@ def matrix_from_frame_to_frame(frame_from, frame_to):
     return multiply_matrices(T2, matrix_inverse(T1))
 
 
-def matrix_change_basis(frame_from, frame_to):
+def matrix_from_change_of_basis(frame_from, frame_to):
     """Computes a change of basis transformation between two frames.
 
     A basis change is essentially a remapping of geometry from one
@@ -454,7 +453,7 @@ def matrix_change_basis(frame_from, frame_to):
     >>> from compas.geometry import Point, Frame
     >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
     >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    >>> T = matrix_change_basis(f1, f2)
+    >>> T = matrix_from_change_of_basis(f1, f2)
     """
     T1 = matrix_from_frame(frame_from)
     T2 = matrix_from_frame(frame_to)
@@ -1094,7 +1093,7 @@ def matrix_from_perspective_entries(perspective):
 
     Notes
     -----
-    .. code-block:: python
+    .. code-block:: none
 
         [ .  .  .  . ]
         [ .  .  .  . ]
@@ -1124,7 +1123,7 @@ def matrix_from_shear_entries(shear_entries):
 
     Notes
     -----
-    .. code-block:: python
+    .. code-block:: none
 
         [ .  0  1  . ]
         [ .  .  2  . ]
@@ -1189,8 +1188,7 @@ def matrix_from_shear(angle, direction, point, normal):
         for i in range(3):
             M[i][j] += angle * direction[i] * normal[j]
 
-    M[0][3], M[1][3], M[2][3] = scale_vector(
-        direction, -angle * dot_vectors(point, normal))
+    M[0][3], M[1][3], M[2][3] = scale_vector(direction, -angle * dot_vectors(point, normal))
 
     return M
 

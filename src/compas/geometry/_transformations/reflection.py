@@ -14,7 +14,6 @@ Ippoliti for providing code and documentation.
 from compas.geometry import dot_vectors
 from compas.geometry import normalize_vector
 
-from compas.geometry._transformations import identity_matrix
 from compas.geometry._transformations import Transformation
 
 
@@ -27,13 +26,23 @@ class Reflection(Transformation):
 
     Examples
     --------
-    >>> point = [1, 1, 1]
-    >>> normal = [0, 0, 1]
-    >>> R1 = Reflection.from_plane((point, normal))
-    >>> R2 = Transformation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
-    >>> R1 == R2
+    point = [1, 1, 1]
+    normal = [0, 0, 1]
+    R1 = Reflection.from_plane((point, normal))
+    R2 = Transformation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
+    R1 == R2
     True
     """
+
+    def __init__(self, plane):
+        super(Reflection, self).__init__()
+        point, normal = plane
+        normal = normalize_vector((list(normal)))
+        for i in range(3):
+            for j in range(3):
+                self.matrix[i][j] -= 2.0 * normal[i] * normal[j]
+        for i in range(3):
+            self.matrix[i][3] = 2 * dot_vectors(point, normal) * normal[i]
 
     @classmethod
     def from_plane(cls, plane):
@@ -49,15 +58,7 @@ class Reflection(Transformation):
         Reflection
             The reflection transformation.
         """
-        point, normal = plane
-        matrix = identity_matrix(4)
-        normal = normalize_vector((list(normal)))
-        for i in range(3):
-            for j in range(3):
-                matrix[i][j] -= 2.0 * normal[i] * normal[j]
-        for i in range(3):
-            matrix[i][3] = 2 * dot_vectors(point, normal) * normal[i]
-        return cls(matrix)
+        return cls(plane)
 
     @classmethod
     def from_frame(cls, frame):
@@ -83,4 +84,8 @@ class Reflection(Transformation):
 
 if __name__ == "__main__":
 
-    pass
+    point = [1, 1, 1]
+    normal = [0, 0, 1]
+    R1 = Reflection.from_plane((point, normal))
+    R2 = Transformation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
+    print(R1 == R2)

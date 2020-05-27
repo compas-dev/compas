@@ -75,7 +75,7 @@ def test_rotation_property():
 def test_translation():
     trans1 = [1, 2, 3]
     T1 = Translation(trans1)
-    assert T1.translation == trans1
+    assert T1.translation_vector == trans1
 
 
 def test_basis_vectors():

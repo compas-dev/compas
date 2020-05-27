@@ -28,7 +28,7 @@ from compas.geometry import intersection_line_triangle
 
 from compas.geometry._transformations import matrix_from_axis_and_angle
 from compas.geometry._transformations import matrix_from_scale_factors
-from compas.geometry._transformations import matrix_change_basis
+from compas.geometry._transformations import matrix_from_change_of_basis
 
 
 __all__ = [
@@ -305,7 +305,7 @@ def world_to_local_coords(frame, xyz):
     Point(3.726, 4.088, 1.550)
     """
     from compas.geometry import Frame  # noqa: F811
-    T = matrix_change_basis(Frame.worldXY(), frame)
+    T = matrix_from_change_of_basis(Frame.worldXY(), frame)
     return transform_points(xyz, T)
 
 
@@ -334,7 +334,7 @@ def local_to_world_coords(frame, xyz):
     Point(2.000, 3.000, 5.000)
     """
     from compas.geometry import Frame  # noqa: F811
-    T = matrix_change_basis(frame, Frame.worldXY())
+    T = matrix_from_change_of_basis(frame, Frame.worldXY())
     return transform_points(xyz, T)
 
 
