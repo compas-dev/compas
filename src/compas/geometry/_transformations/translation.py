@@ -89,7 +89,7 @@ class Translation(Transformation):
         return cls(matrix_from_translation(vector))
 
     @property
-    def vector(self):
+    def translation_vector(self):
         from compas.geometry import Vector
         x = self.matrix[0][3]
         y = self.matrix[1][3]

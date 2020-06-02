@@ -14,6 +14,7 @@ Ippoliti for providing code and documentation.
 from compas.geometry import dot_vectors
 from compas.geometry import normalize_vector
 
+from compas.geometry._transformations import identity_matrix
 from compas.geometry._transformations import Transformation
 
 
@@ -34,15 +35,10 @@ class Reflection(Transformation):
     True
     """
 
-    def __init__(self, plane):
-        super(Reflection, self).__init__()
-        point, normal = plane
-        normal = normalize_vector((list(normal)))
-        for i in range(3):
-            for j in range(3):
-                self.matrix[i][j] -= 2.0 * normal[i] * normal[j]
-        for i in range(3):
-            self.matrix[i][3] = 2 * dot_vectors(point, normal) * normal[i]
+    def __init__(self, matrix=None):
+        if matrix:
+            pass
+        super(Reflection, self).__init__(matrix=matrix)
 
     @classmethod
     def from_plane(cls, plane):
@@ -58,7 +54,17 @@ class Reflection(Transformation):
         Reflection
             The reflection transformation.
         """
-        return cls(plane)
+        point, normal = plane
+        normal = normalize_vector((list(normal)))
+        matrix = identity_matrix(4)
+        for i in range(3):
+            for j in range(3):
+                matrix[i][j] -= 2.0 * normal[i] * normal[j]
+        for i in range(3):
+            matrix[i][3] = 2 * dot_vectors(point, normal) * normal[i]
+        R = cls()
+        R.matrix = matrix
+        return R
 
     @classmethod
     def from_frame(cls, frame):
@@ -73,7 +79,8 @@ class Reflection(Transformation):
         Reflection
             The reflection transformation.
         """
-        point, x, y, z = frame
+        point = frame.point
+        z = frame.zaxis
         plane = point, z
         return cls.from_plane(plane)
 

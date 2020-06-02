@@ -470,10 +470,10 @@ class Transformation(object):
         from compas.geometry import Translation  # noqa: F811
         from compas.geometry import Projection
         s, h, a, t, p = decompose_matrix(self.matrix)
-        S = Scale(s)
+        S = Scale.from_factors(s)
         H = Shear.from_entries(h)
         R = Rotation.from_euler_angles(a, static=True, axes='xyz')
-        T = Translation(t)
+        T = Translation.from_vector(t)
         P = Projection.from_entries(p)
         return S, H, R, T, P
 

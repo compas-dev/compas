@@ -49,10 +49,11 @@ class Shear(Transformation):
 
     def __init__(self, matrix=None):
         if matrix:
-            _, shear, _, _, _ = decompose_matrix(matrix)
-            check = matrix_from_shear_entries(shear)
-            if not allclose(flatten(matrix), flatten(check)):
-                raise ValueError('This is not a proper shear matrix.')
+            # _, shear, _, _, _ = decompose_matrix(matrix)
+            # check = matrix_from_shear_entries(shear)
+            # if not allclose(flatten(matrix), flatten(check)):
+            #     raise ValueError('This is not a proper shear matrix.')
+            pass
         super(Shear, self).__init__(matrix=matrix)
 
     @classmethod
