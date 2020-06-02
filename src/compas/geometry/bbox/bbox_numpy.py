@@ -9,7 +9,7 @@ from numpy import argmin
 from numpy import amax
 from numpy import amin
 from numpy import dot
-from numpy import ptp
+# from numpy import ptp
 from numpy import sum
 
 from scipy.spatial import ConvexHull
@@ -266,11 +266,11 @@ if __name__ == "__main__":
     import numpy  # noqa: F401
     import math  # noqa: F401
 
-    from compas.geometry import bounding_box  # noqa: F401
+    from compas.geometry import bounding_box  # noqa: F401 F811
     from compas.geometry import subtract_vectors  # noqa: F401
     from compas.geometry import length_vector  # noqa: F401
     from compas.geometry import Rotation  # noqa: F401
-    from compas.geometry import transform_points_numpy  # noqa: F401
+    from compas.geometry import transform_points_numpy  # noqa: F401 F811
     from compas.geometry import allclose  # noqa: F401
     from compas.geometry import close  # noqa: F401
 

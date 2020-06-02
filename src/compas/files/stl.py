@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import struct
+import compas
 from compas.utilities import geometric_key
 
 
@@ -10,6 +11,7 @@ __all__ = [
     'STL',
     'STLReader',
     'STLParser',
+    'STLWriter'
 ]
 
 
@@ -21,11 +23,16 @@ class STL(object):
         self._is_parsed = False
         self._reader = None
         self._parser = None
+        self._writer = None
 
     def read(self):
         self._reader = STLReader(self.filepath)
         self._parser = STLParser(self._reader, precision=self.precision)
         self._is_parsed = True
+
+    def write(self, mesh, **kwargs):
+        self._writer = STLWriter(self.filepath, mesh, **kwargs)
+        self._writer.write()
 
     @property
     def reader(self):
@@ -240,6 +247,37 @@ class STLParser(object):
             faces.append(face)
         self.vertices = vertices
         self.faces = faces
+
+
+class STLWriter(object):
+    """"""
+
+    def __init__(self, filepath, mesh, author=None, email=None, date=None, precision=None):
+        self.filepath = filepath
+        self.mesh = mesh
+        self.author = author
+        self.email = email
+        self.date = date
+        self.precision = precision or compas.PRECISION
+        self.vertex_tpl = "{0:." + self.precision + "}" + " {1:." + self.precision + "}" + " {2:." + self.precision + "}\n"
+        self.v = mesh.number_of_vertices()
+        self.f = mesh.number_of_faces()
+        self.e = mesh.number_of_edges()
+        self.file = None
+
+    def write(self):
+        with open(self.filepath, 'w') as self.file:
+            self.file.write('solid {}\n'.format(self.mesh.name))
+            for face in self.mesh.faces():
+                nx, ny, nz = self.mesh.face_normal(face)
+                vertices = self.mesh.face_coordinates(face)
+                self.file.write('facet normal {} {} {}\n'.format(nx, ny, nz))
+                self.file.write('    outer loop\n')
+                for x, y, z in vertices:
+                    self.file.write('        vertex {} {} {}\n'.format(x, y, z))
+                self.file.write('    endloop\n')
+                self.file.write('endfacet\n')
+            self.file.write('endsolid {}\n'.format(self.mesh.name))
 
 
 # ==============================================================================
