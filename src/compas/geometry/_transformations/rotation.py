@@ -10,10 +10,14 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
+from compas.utilities import flatten
+
 from compas.geometry import normalize_vector
 from compas.geometry import cross_vectors
 from compas.geometry import length_vector
+from compas.geometry import allclose
 
+from compas.geometry._transformations import decompose_matrix
 from compas.geometry._transformations import matrix_from_euler_angles
 from compas.geometry._transformations import euler_angles_from_matrix
 from compas.geometry._transformations import matrix_from_axis_and_angle
@@ -29,26 +33,21 @@ __all__ = ['Rotation']
 
 
 class Rotation(Transformation):
-    """Creates a ``Rotation`` that represent a 4x4 rotation matrix.
+    """Create a rotation transformation.
 
     The class contains methods for converting rotation matrices to axis-angle
     representations, Euler angles, quaternion and basis vectors.
 
     Parameters
     ----------
-    axis : list of float
-        Three numbers that represent the axis of rotation.
-    angle : float
-        The rotation angle in radians.
-    point : :class:`Point` or list of float
-        A point to perform a rotation around an origin other than [0, 0, 0].
+    matrix : 4x4 matrix-like, optional
+        A 4x4 matrix (or similar) representing a rotation.
 
-    Attributes
-    ----------
-    quaternion
-    axis_and_angle
-    axis_angle_vector
-    basis_vectors
+    Raises
+    ------
+    ValueError
+        If the default constructor is used,
+        and the provided transformation matrix is not a rotation.
 
     Examples
     --------
@@ -66,22 +65,15 @@ class Rotation(Transformation):
     True
     """
 
-    # properties
-    # axis
-    # angle
-    # direction
-    # anglevector
-    # eulerangles
-    # rotating_eulerangles
-    # ???
-
     __module__ = 'compas.geometry'
 
-    # the default behaviour of providing a transformation matrix
-    # should either be checked
-    # or no longer allowed
-    # the default init/constructor should therefore be overwritten
-    # the default sould be axis-and-angle
+    def __init__(self, matrix=None):
+        if matrix:
+            _, _, angles, _, _ = decompose_matrix(matrix)
+            check = matrix_from_euler_angles(angles)
+            if not allclose(flatten(matrix), flatten(check)):
+                raise ValueError('This is not a proper rotation matrix.')
+        super(Rotation, self).__init__(matrix=matrix)
 
     @classmethod
     def from_axis_and_angle(cls, axis, angle, point=[0, 0, 0]):
@@ -116,8 +108,9 @@ class Rotation(Transformation):
         if the axis of rotation points towards the observer.
 
         """
-        M = matrix_from_axis_and_angle(axis, angle, point=point)
-        return cls(M)
+        R = cls()
+        R.matrix = matrix_from_axis_and_angle(axis, angle, point=point)
+        return R
 
     @classmethod
     def from_basis_vectors(cls, xaxis, yaxis):
@@ -139,12 +132,14 @@ class Rotation(Transformation):
         xaxis = normalize_vector(list(xaxis))
         yaxis = normalize_vector(list(yaxis))
         zaxis = cross_vectors(xaxis, yaxis)
-        yaxis = cross_vectors(zaxis, xaxis)  # correction
-
+        yaxis = cross_vectors(zaxis, xaxis)
+        matrix = [
+            [xaxis[0], yaxis[0], zaxis[0], 0],
+            [xaxis[1], yaxis[1], zaxis[1], 0],
+            [xaxis[2], yaxis[2], zaxis[2], 0],
+            [0, 0, 0, 1]]
         R = cls()
-        R.matrix[0][0], R.matrix[1][0], R.matrix[2][0] = xaxis
-        R.matrix[0][1], R.matrix[1][1], R.matrix[2][1] = yaxis
-        R.matrix[0][2], R.matrix[1][2], R.matrix[2][2] = zaxis
+        R.matrix = matrix
         return R
 
     @classmethod
@@ -166,10 +161,13 @@ class Rotation(Transformation):
         True
         """
         R = cls()
-        R.matrix = matrix_from_frame(frame)
-        R.matrix[0][3] = 0.0
-        R.matrix[1][3] = 0.0
-        R.matrix[2][3] = 0.0
+        matrix = matrix_from_frame(frame)
+        # does thi mean that rotation matrices should be pure?
+        # i.e. have no translational component?
+        matrix[0][3] = 0.0
+        matrix[1][3] = 0.0
+        matrix[2][3] = 0.0
+        R.matrix = matrix
         return R
 
     @classmethod
@@ -189,8 +187,9 @@ class Rotation(Transformation):
         >>> allclose(q1, q2, tol=1e-3)
         True
         """
-        R = matrix_from_quaternion(quaternion)
-        return cls(R)
+        R = cls()
+        R.matrix = matrix_from_quaternion(quaternion)
+        return R
 
     @classmethod
     def from_axis_angle_vector(cls, axis_angle_vector, point=[0, 0, 0]):
@@ -211,6 +210,8 @@ class Rotation(Transformation):
         >>> allclose(aav1, aav2)
         True
         """
+        # same question as with the plane normal conversion
+        # is this perhaps a Rhino thing?
         axis_angle_vector = list(axis_angle_vector)
         angle = length_vector(axis_angle_vector)
         return cls.from_axis_and_angle(axis_angle_vector, angle, point)
@@ -253,8 +254,9 @@ class Rotation(Transformation):
         >>> R1 == R2
         True
         """
-        M = matrix_from_euler_angles(euler_angles, static, axes)
-        return cls(M)
+        R = cls()
+        R.matrix = matrix_from_euler_angles(euler_angles, static, axes)
+        return R
 
     @property
     def quaternion(self):

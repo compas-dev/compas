@@ -10,7 +10,9 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
-
+from compas.utilities import flatten
+from compas.geometry import allclose
+from compas.geometry._transformations import decompose_matrix
 from compas.geometry._transformations import matrix_from_shear_entries
 from compas.geometry._transformations import matrix_from_shear
 from compas.geometry._transformations import Transformation
@@ -20,22 +22,38 @@ __all__ = ['Shear']
 
 
 class Shear(Transformation):
-    """Constructs a ``Shear`` transformation by an angle along the
-    direction vector on the shear plane (defined by point and normal).
+    """Create a shear transformation.
 
     A point P is transformed by the shear matrix into P" such that
     the vector P-P" is parallel to the direction vector and its extent is
     given by the angle of P-P'-P", where P' is the orthogonal projection
     of P onto the shear plane.
+
+    Parameters
+    ----------
+    matrix : 4x4 matrix-like, optional
+        A 4x4 matrix (or similar) representing a shear transformation.
+
+    Raises
+    ------
+    ValueError
+        If the default constructor is used,
+        and the provided transformation matrix is not a shear matrix.
+
+    Examples
+    --------
+    >>>
     """
 
-    # the default behaviour of providing a transformation matrix
-    # should either be checked
-    # or no longer allowed
-    # the default init/constructor should therefore be overwritten
+    __module__ = 'compas.geometry'
 
-    # def __init__(self, angle=0., direction=[1, 0, 0], point=[1, 1, 1], normal=[0, 0, 1]):
-    #    self.matrix = matrix_from_shear(angle, direction, point, normal)
+    def __init__(self, matrix=None):
+        if matrix:
+            _, shear, _, _, _ = decompose_matrix(matrix)
+            check = matrix_from_shear_entries(shear)
+            if not allclose(flatten(matrix), flatten(check)):
+                raise ValueError('This is not a proper shear matrix.')
+        super(Shear, self).__init__(matrix=matrix)
 
     @classmethod
     def from_angle_direction_plane(cls, angle, direction, plane):

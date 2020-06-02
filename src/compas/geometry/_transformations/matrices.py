@@ -77,6 +77,27 @@ __all__ = [
 ]
 
 
+def is_matrix_square(M):
+    """Verify that a matrix is square.
+
+    Parameters
+    ----------
+    M : list of list
+        The matrix.
+
+    Returns
+    -------
+    bool
+        True if the length of every row is equal to the number of rows.
+        False otherwise.
+    """
+    number_of_rows = len(M)
+    for row in M:
+        if len(row) != number_of_rows:
+            return False
+    return True
+
+
 def matrix_determinant(M, check=True):
     """Calculates the determinant of a square matrix M.
 
@@ -101,28 +122,27 @@ def matrix_determinant(M, check=True):
     dim = len(M)
 
     if check:
-        for c in M:
-            if len(c) != dim:
-                raise ValueError("Not a square matrix")
+        if not is_matrix_square(M):
+            raise ValueError("Not a square matrix")
 
     if (dim == 2):
         return M[0][0] * M[1][1] - M[0][1] * M[1][0]
-    else:
-        i = 1
-        t = 0
-        sum = 0
-        for t in range(dim):
-            d = {}
-            for t1 in range(1, dim):
-                m = 0
-                d[t1] = []
-                for m in range(dim):
-                    if (m != t):
-                        d[t1].append(M[t1][m])
-            M1 = [d[x] for x in d]
-            sum = sum + i * M[0][t] * matrix_determinant(M1, check=False)
-            i = i * (-1)
-        return sum
+
+    i = 1
+    t = 0
+    D = 0
+    for t in range(dim):
+        d = {}
+        for t1 in range(1, dim):
+            m = 0
+            d[t1] = []
+            for m in range(dim):
+                if (m != t):
+                    d[t1].append(M[t1][m])
+        M1 = [d[x] for x in d]
+        D = D + i * M[0][t] * matrix_determinant(M1, check=False)
+        i = i * (-1)
+    return D
 
 
 def matrix_inverse(M):
@@ -144,7 +164,7 @@ def matrix_inverse(M):
 
     Returns
     -------
-   list of list of float
+    list of list of float
         The inverted matrix.
 
     Examples
@@ -167,27 +187,26 @@ def matrix_inverse(M):
     def matrix_minor(m, i, j):
         return [row[:j] + row[j + 1:] for row in (m[:i] + m[i + 1:])]
 
-    detM = matrix_determinant(M)  # raises ValueError if matrix is not squared
+    D = matrix_determinant(M)  # raises ValueError if matrix is not squared
 
-    if detM == 0:
+    if D == 0:
         ValueError("The matrix is singular.")
 
     if len(M) == 2:
-        return [[M[1][1] / detM, -1 * M[0][1] / detM],
-                [-1 * M[1][0] / detM, M[0][0] / detM]]
-    else:
-        cofactors = []
-        for r in range(len(M)):
-            cofactor_row = []
-            for c in range(len(M)):
-                minor = matrix_minor(M, r, c)
-                cofactor_row.append(((-1) ** (r + c)) * matrix_determinant(minor))
-            cofactors.append(cofactor_row)
-        cofactors = transpose_matrix(cofactors)
-        for r in range(len(cofactors)):
-            for c in range(len(cofactors)):
-                cofactors[r][c] = cofactors[r][c] / detM
-        return cofactors
+        return [[M[1][1] / D, -1 * M[0][1] / D], [-1 * M[1][0] / D, M[0][0] / D]]
+
+    cofactors = []
+    for r in range(len(M)):
+        cofactor_row = []
+        for c in range(len(M)):
+            minor = matrix_minor(M, r, c)
+            cofactor_row.append(((-1) ** (r + c)) * matrix_determinant(minor))
+        cofactors.append(cofactor_row)
+    cofactors = transpose_matrix(cofactors)
+    for r in range(len(cofactors)):
+        for c in range(len(cofactors)):
+            cofactors[r][c] = cofactors[r][c] / D
+    return cofactors
 
 
 def decompose_matrix(M):

@@ -177,7 +177,7 @@ class Frame(Primitive):
         raise KeyError
 
     def __iter__(self):
-        return iter([self.point, self.xaxis, self.yaxis, self.zaxis])
+        return iter([self.point, self.xaxis, self.yaxis])
 
     def __eq__(self, other, tol=1e-05):
         for v1, v2 in zip(self, other):
@@ -312,13 +312,6 @@ class Frame(Primitive):
         >>> f1 == f2
         True
         """
-        # should there be a check to verify the transformation
-        # is a proper rotation?
-        # similar to the check in basis_vectors_from_matrix?
-        # the check could attached to the transformation object
-        # there seems to be no guarantee that the translation part is zero
-        # is it ignored by this method?
-        # or should it be added?
         xaxis, yaxis = rotation.basis_vectors
         return cls(point, xaxis, yaxis)
 
@@ -346,10 +339,6 @@ class Frame(Primitive):
         >>> f1 == f2
         True
         """
-        # should there be a check to verify the transformation
-        # is a proper rotation?
-        # similar to the check in basis_vectors_from_matrix?
-        # the check could attached to the transformation object
         xaxis, yaxis = transformation.basis_vectors
         point = transformation.translation_vector
         return cls(point, xaxis, yaxis)
@@ -522,8 +511,6 @@ class Frame(Primitive):
         xaxis, yaxis = basis_vectors_from_matrix(R)
         return cls(point, xaxis, yaxis)
 
-    # this seems to be a bit of a hack
-    # (first creating a world XY and then replacing its data)
     @classmethod
     def from_data(cls, data):
         """Construct a frame from its data representation.
@@ -549,8 +536,7 @@ class Frame(Primitive):
         >>> frame.yaxis
         Vector(0.000, 1.000, 0.000)
         """
-        frame = cls.worldXY()
-        frame.data = data
+        frame = cls(data['point'], data['xaxis'], data['yaxis'])
         return frame
 
     # why is the plane normal converted to a list?

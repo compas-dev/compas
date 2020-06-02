@@ -19,7 +19,7 @@ from compas.geometry._transformations import identity_matrix
 from compas.geometry._transformations import matrix_inverse
 from compas.geometry._transformations import matrix_determinant
 from compas.geometry._transformations import matrix_from_frame
-from compas.geometry._transformations import matrix_from_euler_angles
+# from compas.geometry._transformations import matrix_from_euler_angles
 from compas.geometry._transformations import basis_vectors_from_matrix
 from compas.geometry._transformations import translation_from_matrix
 from compas.geometry._transformations import decompose_matrix
@@ -46,21 +46,6 @@ class Transformation(object):
     ----------
     matrix : list of list of float, optional
         The 4x4 transformation matrix.
-
-    Attributes
-    ----------
-    matrix : 4x4 list of list of float
-        A 4x4 transformation matrix.
-    list : 16x1 list of float, read-only
-        A flattened transformation matrix.
-    determinant : float, read-only
-        The determinant of the transformation matrix.
-    scale : list of float, read-only
-        The scale factors of the transformation matrix.
-    translation : compas.geometry.Vector, read-only
-        The translation vector of the transformation matrix.
-    rotation : compas.geometry.Rotation, read-only
-        The rotation of the transformation.
 
     Examples
     --------
@@ -302,29 +287,29 @@ class Transformation(object):
         T2 = cls.from_frame(frame_to)
         return cls(multiply_matrices(matrix_inverse(T2.matrix), T1.matrix))
 
-    # @property
-    # def scale(self):
-    #     """The scale component of the transformation matrix.
+    @property
+    def scale(self):
+        """The scale component of the transformation matrix.
 
-    #     Returns
-    #     -------
-    #     compas.geometry.Scale
-    #         The scale component of the transformation.
-    #     """
-    #     S, H, R, T, P = self.decomposed()
-    #     return S
+        Returns
+        -------
+        compas.geometry.Scale
+            The scale component of the transformation.
+        """
+        S, H, R, T, P = self.decomposed()
+        return S
 
-    # @property
-    # def shear(self):
-    #     """The shear component of the transformation matrix.
+    @property
+    def shear(self):
+        """The shear component of the transformation matrix.
 
-    #     Returns
-    #     -------
-    #     compas.geometry.Shear
-    #         The shear component of the transformation.
-    #     """
-    #     S, H, R, T, P = self.decomposed()
-    #     return H
+        Returns
+        -------
+        compas.geometry.Shear
+            The shear component of the transformation.
+        """
+        S, H, R, T, P = self.decomposed()
+        return H
 
     @property
     def rotation(self):
@@ -338,29 +323,29 @@ class Transformation(object):
         S, H, R, T, P = self.decomposed()
         return R
 
-    # @property
-    # def translation(self):
-    #     """The translation component of the transformation matrix.
+    @property
+    def translation(self):
+        """The translation component of the transformation matrix.
 
-    #     Returns
-    #     -------
-    #     compas.geometry.Translation
-    #         The translation component of the transformation.
-    #     """
-    #     S, H, R, T, P = self.decomposed()
-    #     return T
+        Returns
+        -------
+        compas.geometry.Translation
+            The translation component of the transformation.
+        """
+        S, H, R, T, P = self.decomposed()
+        return T
 
-    # @property
-    # def projection(self):
-    #     """The projection component of the transformation matrix.
+    @property
+    def projection(self):
+        """The projection component of the transformation matrix.
 
-    #     Returns
-    #     -------
-    #     compas.geometry.Projection
-    #         The projectionn component of the transformation.
-    #     """
-    #     S, H, R, T, P = self.decomposed()
-    #     return P
+        Returns
+        -------
+        compas.geometry.Projection
+            The projectionn component of the transformation.
+        """
+        S, H, R, T, P = self.decomposed()
+        return P
 
     @property
     def translation_vector(self):
