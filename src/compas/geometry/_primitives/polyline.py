@@ -320,6 +320,119 @@ class Polyline(Primitive):
         polyline = self.copy()
         polyline.transform(T)
         return polyline
+    
+    def shortened(self, start_distance= 0, end_distance= 0):
+        """ Returns a new polyline which is shorter than the original in one end side, other or both by a given distance
+        
+        Parameters
+        ----------
+        start_distance : float.
+            distance to shorten from the starting point of the polyline
+        end_distance : float.
+            distance to shorten from the ending point of the polyline
+
+        Returns
+        -------
+        :class:`compas.geometry.Polyline`
+            The transformed copy.
+        """
+        polyline = self.copy()
+        if start_distance !=0 or end_distance!=0:
+            new_list_of_points=[]
+            acum_length=0
+            switch=True
+            for i, line in enumerate(self.lines):
+                acum_length += line.length
+                if acum_length < start_distance:
+                    continue
+                elif acum_length > start_distance and switch:
+                    if start_distance == 0:
+                        new_list_of_points.append(line.start)
+                    else:
+                        new_list_of_points.append(self.point(start_distance/self.length))
+                    switch=False
+                else:
+                    if end_distance==0:
+                        if i!= len(self.lines)-1:
+                            new_list_of_points.append(line.start)
+                        else:
+                            new_list_of_points.append(line.start)
+                            new_list_of_points.append(line.end)
+                    else:
+                        if acum_length < (self.length - end_distance):
+                            new_list_of_points.append(line.start)
+                        else:
+                            new_list_of_points.append(line.start)
+                            new_list_of_points.append(self.point(1-(end_distance/self.length)))
+                            break
+            polyline.points(new_list_of_points)
+        return polyline
+
+    def rebuild(self, number):
+        """ rebuilds a polyline with evenly spaced points based on a number of interpolations
+        Returns new rebuilt polyline
+
+        Parameters
+        ----------
+        number : float.
+            number of points for the amount of definition of the polyline
+
+        Returns
+        -------
+        :class:`compas.geometry.Polyline`
+            The transformed copy.
+        """
+        decs = 100000 # decimals in order to do floated range
+        step = int((1/number)*decs)
+        new_pt_list = [self.point(i/decs) for i in range(0, decs, step) if self.point(i/decs) and (i/decs) < 1]
+        new_pt_list.append(self.point(1))
+        pt_list = [Point(x,y,z) for x,y,z in new_pt_list]
+        return self.points(pt_list)
+    
+    def divide_by_count(self, number =10, includeEnds= False): # compas
+        """ Divides a polyline by count. Returns list of Points from the division
+
+        Parameters
+        ----------
+        number : integer.
+            number of divisions
+        includeEnds : boolean
+            True if including start and ending points.
+            False if not including start and ending points.
+
+        Returns
+        -------
+        points : list of points resulting from dividing the polyline
+        """
+        points = [self.point(i * float(1/ number)) for i in range(number)]
+        if includeEnds:
+            points.append(self.point(1))
+        else:
+            points.pop(0)
+        return points
+    
+    def tween(self, polyline_two, number=50):
+        """ Creates an average polyline between two polylines interpolating their points
+
+        Parameters
+        ----------
+        polyline_two : compas.geometry.Polyline
+            polyline to create the tween polyline
+        number : number of points of the tween polyline
+
+        Returns
+        -------
+        tween_polyline : compas.geometry.Polyline
+        """
+        rebuilt_polyline_one = self.rebuild(number)
+        rebuilt_polyline_two = self.rebuild(polyline_two, number)
+        lines = [Line(point_one, point_two) for point_one, point_two in zip(rebuilt_polyline_one.points, rebuilt_polyline_two.points)]
+        tween_points = [line.midpoint for line in lines]
+        tween_polyline = self.copy()
+        tween_polyline.points(tween_points)
+        return tween_polyline
+
+
 
 
 # ==============================================================================

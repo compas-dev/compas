@@ -382,6 +382,37 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
 
     return None
 
+def intersection_polyline_plane(polyline, plane, expected_number_of_intersections=2, tol=1e-6):
+    """ Calculates the intersection point of a plane with a polyline. 
+        returns a list of intersections 
+        by default it will allow two intersections. reduce expected_number_of_intersections to speed up.
+
+    Parameters
+    ----------
+    polyline : compas.geometry.Polyline
+        polyline to test intersection
+    plane : compas.Geometry.Plane
+        plane to compute intersection
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    intersection_pts : list of compas.geometry.Point
+        if there are intersection points, return point(s) in a list
+    """
+    intersection_pts = []
+    max_iter =0
+    for segment in polyline.lines:
+        pt = intersection_segment_plane(segment, plane, tol)
+        if pt and max_iter < expected_number_of_intersections:
+            intersection_pts.append(pt)
+            max_iter += 1
+        else:
+            break
+    if len(intersection_pts)>0:
+        return intersection_pts
 
 def intersection_line_triangle(line, triangle, tol=1e-6):
     """Computes the intersection point of a line (ray) and a triangle

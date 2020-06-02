@@ -4,6 +4,8 @@ from __future__ import division
 
 from compas.geometry._primitives import Primitive
 from compas.geometry._primitives import Point
+# from compas.geometry import Translation
+# from compas.geometry.Vector import scale
 
 
 __all__ = ['Line']
@@ -339,7 +341,43 @@ class Line(Primitive):
         line.transform(T)
         return line
 
+    def divide_by_count(self, number=10, includeEnds = False):
+        """ Returns List of points from dividing the line by specific number of divisions
+        Parameters
+        ----------
+        number : integer
+            number of divisions
+        includeEnds : boolean
+            True if including start and end point in division points
+            False if not including start and end point in division points
 
+        Returns
+        -------
+        list of compas.geometry.Point 
+
+        Examples
+        --------
+        >>> line.divide_by_count(10,True)
+        """
+        if includeEnds:
+            return [self.point(i * float(1/ number)) for i in range(int(number)+1)]
+        else:
+            return [self.point(i * float(1/ number)) for i in range(int(number)+1) if i!=0 or i!= number]
+    
+    # def extend(self, start_extension=0, end_extension=0):
+    #     """ Extends the given line from one side or the other depending on the given values
+    #     """
+    #     if start_extension !=0:
+    #         vec_s = self.direction.copy()
+    #         vec_s.scale(-start_extension)
+    #         translation = Translation(vec_s)
+    #         self.start.transform(translation)
+    #     if end_extension !=0:
+    #         vec_e = self.direction.copy()
+    #         vec_e.scale(end_extension)
+    #         translation = Translation(vec_e)
+    #         self.end.transform(translation)
+    #     return self
 # ==============================================================================
 # Main
 # ==============================================================================

@@ -352,6 +352,30 @@ def angles_points_xy(a, b, c, deg=False):
     v = subtract_vectors_xy(c, a)
     return angles_vectors_xy(u, v, deg)
 
+def angle_planes(a, b, deg=False):
+    r""" Compute the smallest angle between the two normal vectors of two planes.
+
+    Parameters
+    ----------
+    a :  :class:`compas.geometry.Plane`
+    b :  :class:`compas.geometry.Plane`
+    deg : boolean
+        returns angles in degrees if True
+
+    Returns
+    -------
+    float
+        The smallest angle in radians (in degrees if deg == True).
+        The angle is always positive.
+
+    Examples
+    --------
+    >>> angle_planes(plane_a, plane_b, True)
+
+    """
+
+    return angle_vectors(a.normal, b.normal, True)
+
 
 # ==============================================================================
 # Main

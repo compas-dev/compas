@@ -24,3 +24,4 @@
 - Anton Johansson <<anton@tetov.se>> [@tetov](https://github.com/tetov)
 - Victor Leung <<yck011522@gmail.com>> [@yck011522](https://github.com/yck011522)
 - Robin Jodon <<robin.jodon@epfl.ch>> [@rojodon](https://github.com/rjodon)
+- Nik Eftekhar Olivo <<nik.eftekhar.olivo@gmail.com>> [@nikeftekhar](https://github.com/nikeftekhar)
