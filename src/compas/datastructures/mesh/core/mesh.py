@@ -260,8 +260,9 @@ class BaseMesh(HalfEdge):
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
-    def to_stl(self, filepath):
-        raise NotImplementedError
+    def to_stl(self, filepath, precision=None, **kwargs):
+        stl = STL(filepath, precision)
+        stl.write(self, **kwargs)
 
     @classmethod
     def from_off(cls, filepath):
