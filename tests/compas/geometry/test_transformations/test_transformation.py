@@ -17,8 +17,8 @@ def test_copy():
 
 
 def test_from_matrix():
-    t = Transformation().matrix
-    assert Transformation.from_matrix(t).matrix == t
+    matrix = Transformation().matrix
+    assert Transformation.from_matrix(matrix).matrix == matrix
 
 
 def test_from_list():
@@ -38,7 +38,8 @@ def test_from_frame():
 def test_inverse():
     f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     T = Transformation.from_frame(f)
-    assert Transformation() == T * T.inverse()
+    identity = T * T.inverse()
+    assert Transformation() == identity
 
 
 def test_decomposed():
