@@ -10,9 +10,9 @@ following online resources:
 Many thanks to Christoph Gohlke, Martin John Baker, Sachin Joglekar and Andrew
 Ippoliti for providing code and documentation.
 """
-from compas.utilities import flatten
-from compas.geometry import allclose
-from compas.geometry._transformations import decompose_matrix
+# from compas.utilities import flatten
+# from compas.geometry import allclose
+# from compas.geometry._transformations import decompose_matrix
 from compas.geometry._transformations import matrix_from_shear_entries
 from compas.geometry._transformations import matrix_from_shear
 from compas.geometry._transformations import Transformation
