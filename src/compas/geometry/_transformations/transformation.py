@@ -104,7 +104,12 @@ class Transformation(object):
         """Returns a copy of the transformation.
         """
         cls = type(self)
-        return cls(self.matrix.copy())
+        matrix = [
+            self.matrix[0][:],
+            self.matrix[1][:],
+            self.matrix[2][:],
+            self.matrix[3][:]]
+        return cls(matrix)
 
     @classmethod
     def from_data(cls, data):
