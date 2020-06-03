@@ -374,7 +374,7 @@ def angle_planes(a, b, deg=False):
 
     """
 
-    return angle_vectors(a.normal, b.normal, True)
+    return angle_vectors(a.normal, b.normal, deg)
 
 
 # ==============================================================================

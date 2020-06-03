@@ -4,9 +4,6 @@ from __future__ import division
 
 from compas.geometry._primitives import Primitive
 from compas.geometry._primitives import Point
-# from compas.geometry import Translation
-# from compas.geometry.Vector import scale
-
 
 __all__ = ['Line']
 
@@ -364,20 +361,6 @@ class Line(Primitive):
         else:
             return [self.point(i * float(1/ number)) for i in range(int(number)+1) if i!=0 or i!= number]
     
-    # def extend(self, start_extension=0, end_extension=0):
-    #     """ Extends the given line from one side or the other depending on the given values
-    #     """
-    #     if start_extension !=0:
-    #         vec_s = self.direction.copy()
-    #         vec_s.scale(-start_extension)
-    #         translation = Translation(vec_s)
-    #         self.start.transform(translation)
-    #     if end_extension !=0:
-    #         vec_e = self.direction.copy()
-    #         vec_e.scale(end_extension)
-    #         translation = Translation(vec_e)
-    #         self.end.transform(translation)
-    #     return self
 # ==============================================================================
 # Main
 # ==============================================================================

@@ -190,7 +190,6 @@ def offset_polyline(polyline, distance, normal=[0.0, 0.0, 1.0], tol=1e-6):
 
     return offset
 
-
 def intersect_lines(l1, l2, tol):
     """
     """
