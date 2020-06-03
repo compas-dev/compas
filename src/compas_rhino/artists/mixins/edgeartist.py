@@ -30,7 +30,7 @@ class EdgeArtist(object):
         else:
             guids = []
             for u, v in keys:
-                name = self.datastructure.edge_attribute((u, v), 'name')
+                name = "{}.edge.{}-{}".format(self.datastructure.name, u, v)
                 guid = compas_rhino.get_object(name=name)
                 guids.append(guid)
         compas_rhino.delete_objects(guids)
