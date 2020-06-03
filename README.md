@@ -30,18 +30,15 @@ But it can also be installed using `pip`:
 pip install COMPAS
 ```
 
-To verify your setup, start Python from the command line and run the following:
+To verify your setup, run the following:
 
-```python
->>> import compas
->>> import compas_rhino
->>> import compas_blender
->>> import compas_ghpython
+```bash
+python -m compas
 ```
 
 ## First Steps
 
-* <https://compas-dev.github.io/main/examples.html>
+* <https://compas-dev.github.io/main/gettingstarted.html>
 * <https://compas-dev.github.io/main/tutorial.html>
 * <https://compas-dev.github.io/main/api.html>
 
@@ -56,7 +53,7 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 
 ## Contributing
 
-If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/contributing.html).
+If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/devguide.html).
 
 ## Changelog
 

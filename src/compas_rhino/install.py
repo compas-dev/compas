@@ -41,7 +41,7 @@ def install(version=None, packages=None):
 
     Parameters
     ----------
-    version : {'5.0', '6.0'}, optional
+    version : {'5.0', '6.0', '7.0'}, optional
         The version number of Rhino.
         Default is ``'6.0'``.
     packages : list of str, optional
@@ -61,7 +61,7 @@ def install(version=None, packages=None):
 
     """
 
-    if version not in ('5.0', '6.0'):
+    if version not in ('5.0', '6.0', '7.0'):
         version = '6.0'
 
     print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))

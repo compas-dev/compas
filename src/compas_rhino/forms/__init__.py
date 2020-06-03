@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-compas_rhino.forms
+forms
 ********************************************************************************
 
 .. currentmodule:: compas_rhino.forms
@@ -66,11 +66,11 @@ class Form(WinForm):
         pass
 
 
-from .browser import BrowserForm  # noqa: F401 F402
-from .chart import ChartForm  # noqa: F401 F402
-from .image import ImageForm  # noqa: F401 F402
-from .slider import SliderForm  # noqa: F401 F402
-from .text import TextForm  # noqa: F401 F402
+from .browser import BrowserForm  # noqa: F401 E402
+from .chart import ChartForm  # noqa: F401 E402
+from .image import ImageForm  # noqa: F401 E402
+from .slider import SliderForm  # noqa: F401 E402
+from .text import TextForm  # noqa: F401 E402
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

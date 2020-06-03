@@ -1,6 +1,6 @@
 """
 ********************************************************************************
-compas_rhino.conduits
+conduits
 ********************************************************************************
 
 .. currentmodule:: compas_rhino.conduits
@@ -68,11 +68,11 @@ class Conduit(DisplayConduit):
             time.sleep(pause)
 
 
-from .mesh import *  # noqa: F401 F403
-from .faces import *  # noqa: F401 F403
-from .labels import *  # noqa: F401 F403
-from .lines import *  # noqa: F401 F403
-from .points import *  # noqa: F401 F403
-# from .splines import *  # noqa: F401 F403
+from .mesh import *  # noqa: F401 E402 F403
+from .faces import *  # noqa: F401 E402 F403
+from .labels import *  # noqa: F401 E402 F403
+from .lines import *  # noqa: F401 E402 F403
+from .points import *  # noqa: F401 E402 F403
+# from .splines import *  # noqa: F401 E402 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

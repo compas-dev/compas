@@ -645,6 +645,55 @@ class BaseMesh(HalfEdge):
             return w, fkeys
         return w
 
+    def join(self, other):
+        """Add the vertices and faces of another mesh to the current mesh.
+
+        Parameters
+        ----------
+        other : compas.datastructures.Mesh
+            The other mesh.
+
+        Returns
+        -------
+        None
+            The mesh is modified in place.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box
+        >>> from compas.geometry import Translation
+        >>> from compas.datastructures import Mesh
+        >>> a = Box.from_width_height_depth(1, 1, 1)
+        >>> b = Box.from_width_height_depth(1, 1, 1)
+        >>> T = Translation([2, 0, 0])
+        >>> b.transform(T)
+        >>> a = Mesh.from_shape(a)
+        >>> b = Mesh.from_shape(b)
+        >>> a.number_of_vertices()
+        8
+        >>> a.number_of_faces()
+        6
+        >>> b.number_of_vertices()
+        8
+        >>> b.number_of_faces()
+        6
+        >>> a.join(b)
+        >>> a.number_of_vertices()
+        16
+        >>> a.number_of_faces()
+        12
+        """
+        self.default_vertex_attributes.update(other.default_vertex_attributes)
+        self.default_edge_attributes.update(other.default_edge_attributes)
+        self.default_face_attributes.update(other.default_face_attributes)
+        vertex_old_new = {}
+        for vertex, attr in other.vertices(True):
+            key = self.add_vertex(attr_dict=attr)
+            vertex_old_new[vertex] = key
+        for face, attr in other.faces(True):
+            vertices = [vertex_old_new[key] for key in other.face_vertices(face)]
+            self.add_face(vertices, attr_dict=attr)
+
     # --------------------------------------------------------------------------
     # accessors
     # --------------------------------------------------------------------------
@@ -1326,21 +1375,25 @@ class BaseMesh(HalfEdge):
 
 if __name__ == '__main__':
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas_plotters import MeshPlotter
+    import doctest
 
-    mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
+    doctest.testmod(globs=globals())
 
-    edges = mesh.edges_on_boundary()
-    print(len(edges))
-    faces = mesh.faces_on_boundary()
-    print(len(faces))
+    # import compas
+    # from compas.datastructures import Mesh
+    # from compas_plotters import MeshPlotter
 
-    plotter = MeshPlotter(mesh, figsize=(8, 5))
+    # mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
 
-    plotter.draw_vertices()
-    plotter.draw_faces(text='key')
-    plotter.draw_edges()
+    # edges = mesh.edges_on_boundary()
+    # print(len(edges))
+    # faces = mesh.faces_on_boundary()
+    # print(len(faces))
 
-    plotter.show()
+    # plotter = MeshPlotter(mesh, figsize=(8, 5))
+
+    # plotter.draw_vertices()
+    # plotter.draw_faces(text='key')
+    # plotter.draw_edges()
+
+    # plotter.show()

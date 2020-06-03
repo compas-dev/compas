@@ -37,7 +37,7 @@ def mesh_fast_copy(other):
     subd.vertex = deepcopy(other.vertex)
     subd.face = deepcopy(other.face)
     # subd.edgedata = deepcopy(other.edgedata)
-    # subd.facedata = deepcopy(other.facedata)
+    subd.facedata = deepcopy(other.facedata)
     subd.halfedge = deepcopy(other.halfedge)
     subd._max_int_key = other._max_int_key
     subd._max_int_fkey = other._max_int_fkey
@@ -67,7 +67,9 @@ class SubdMesh(Mesh):
         self.face[fkey] = vertices
         self.facedata[fkey] = {}
 
-        for u, v in pairwise(vertices + vertices[:1]):
+        for i in range(-1, len(vertices) - 1):
+            u = vertices[i]
+            v = vertices[i + 1]
             self.halfedge[u][v] = fkey
             if u not in self.halfedge[v]:
                 self.halfedge[v][u] = None
@@ -183,10 +185,6 @@ def mesh_subdivide_quad(mesh, k=1):
     Mesh
         A new subdivided mesh.
 
-    Notes
-    -----
-
-
     Examples
     --------
     >>> box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)
@@ -202,23 +200,28 @@ def mesh_subdivide_quad(mesh, k=1):
 
     """
     cls = type(mesh)
+    subd = mesh_fast_copy(mesh)
+    for face in subd.faces():
+        subd.facedata[face]['path'] = [face]
     for _ in range(k):
-        subd = mesh_fast_copy(mesh)
+        faces = {face: subd.face_vertices(face)[:] for face in subd.faces()}
+        face_centroid = {face: subd.face_centroid(face) for face in subd.faces()}
         for u, v in list(subd.edges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
-        for fkey in mesh.faces():
-            descendant = {i: j for i, j in subd.face_halfedges(fkey)}
-            ancestor = {j: i for i, j in subd.face_halfedges(fkey)}
-            x, y, z = mesh.face_centroid(fkey)
+        for face, vertices in faces.items():
+            descendant = {i: j for i, j in subd.face_halfedges(face)}
+            ancestor = {j: i for i, j in subd.face_halfedges(face)}
+            x, y, z = face_centroid[face]
             c = subd.add_vertex(x=x, y=y, z=z)
-            for key in mesh.face_vertices(fkey):
-                a = ancestor[key]
-                d = descendant[key]
-                subd.add_face([a, key, d, c])
-            del subd.face[fkey]
-        mesh = subd
+            for i, vertex in enumerate(vertices):
+                a = ancestor[vertex]
+                d = descendant[vertex]
+                newface = subd.add_face([a, vertex, d, c])
+                subd.facedata[newface]['path'] = subd.facedata[face]['path'] + [i]
+            del subd.face[face]
+            del subd.facedata[face]
     subd2 = cls()
-    subd2.data = mesh.data
+    subd2.data = subd.data
     return subd2
 
 
@@ -251,7 +254,6 @@ def mesh_subdivide_corner(mesh, k=1):
     cls = type(mesh)
     for _ in range(k):
         subd = mesh_fast_copy(mesh)
-
         # split every edge
         for u, v in list(subd.edges()):
             mesh_split_edge(subd, u, v, allow_boundary=True)
@@ -750,10 +752,28 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 if __name__ == "__main__":
 
     import doctest
-
     import compas  # noqa: F401
-    from compas.datastructures import Mesh
     from compas.datastructures import mesh_quads_to_triangles  # noqa: F401
+    from compas.datastructures import Mesh
     from compas.geometry import Box  # noqa: F401
-
     doctest.testmod(globs=globals())
+
+    # from compas.datastructures import Mesh
+    # from compas.geometry import Box
+    # from compas.utilities import print_profile
+    # from compas_viewers.multimeshviewer import MultiMeshViewer
+
+    # subdivide = print_profile(mesh_subdivide_quad)
+
+    # box = Box.from_width_height_depth(10.0, 10.0, 10.0)
+    # mesh = Mesh.from_shape(box)
+    # mesh.default_face_attributes.update(path=[])
+    # subd = subdivide(mesh, k=3)
+
+    # print(subd.face_attribute(subd.get_any_face(), 'path'))
+
+    # # print(mesh.number_of_faces())
+
+    # viewer = MultiMeshViewer()
+    # viewer.meshes = [subd]
+    # viewer.show()

@@ -6,16 +6,6 @@ datastructures
 .. currentmodule:: compas.datastructures
 
 
-Bases
-=====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Datastructure
-
-
 Meshes
 ======
 
@@ -24,24 +14,22 @@ It is meant for the representation of polygonal *"surface"* meshes. A mesh can b
 connected or disconnected. A mesh can be closed or open. A mesh can be comprised
 of only vertices.
 
-Bases
------
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Mesh
+
+
+Data structure
+--------------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     HalfEdge
-    BaseMesh
 
-Data structures
----------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Mesh
 
 Algorithms
 ----------
@@ -54,8 +42,11 @@ Algorithms
     mesh_bounding_box_xy
     mesh_connected_components
     mesh_contours_numpy
+    mesh_cut_by_plane
     mesh_delete_duplicate_vertices
     mesh_dual
+    mesh_explode
+    mesh_face_adjacency
     mesh_flip_cycles
     mesh_geodesic_distances_numpy
     mesh_is_connected
@@ -79,6 +70,13 @@ Algorithms
     mesh_transformed_numpy
     mesh_unify_cycles
     mesh_weld
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    meshes_join
+
 
 Matrices
 --------
@@ -115,6 +113,21 @@ Conway Operators
     mesh_conway_bevel
 
 
+Triangle Meshes
+===============
+
+Algorithms
+----------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    trimesh_descent
+    trimesh_face_circle
+    trimesh_gaussian_curvature
+
+
 Networks
 ========
 
@@ -123,24 +136,22 @@ It is meant for the representation of networks of vertices connected by edges.
 The edges are directed. A network does not have faces. A network can be connected
 or disconnected. A network with vertices only is also a valid network.
 
-Bases
------
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Network
+
+
+Data structure
+--------------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     Graph
-    BaseNetwork
 
-Data structures
----------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Network
 
 Algorithms
 ----------
@@ -188,9 +199,9 @@ class Datastructure(object):
     pass
 
 
-from .network import *  # noqa: F401 F402 F403
-from .mesh import *  # noqa: F401 F402 F403
-from .volmesh import *  # noqa: F401 F402 F403
+from .network import *  # noqa: F401 E402 F403
+from .mesh import *  # noqa: F401 E402 F403
+from .volmesh import *  # noqa: F401 E402 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

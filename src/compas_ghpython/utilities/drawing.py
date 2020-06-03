@@ -47,6 +47,7 @@ __all__ = [
     'draw_spheres',
     'draw_mesh',
     'draw_network',
+    'draw_circles',
 ]
 
 
@@ -80,9 +81,9 @@ def draw_lines(lines):
     """Draw lines.
     """
     rg_lines = []
-    for l in iter(lines):
-        sp = l['start']
-        ep = l['end']
+    for line in iter(lines):
+        sp = line['start']
+        ep = line['end']
         rg_lines.append(Line(Point3d(*sp), Point3d(*ep)))
     return rg_lines
 
@@ -237,22 +238,33 @@ def draw_network(network):
     """Draw a network in Grasshopper.
     """
     points = []
-    for key, attr in network.vertices(True):
+    for key, attr in network.nodes(True):
         points.append({
-            'pos': network.vertex_coordinates(key),
+            'pos': network.node_coordinates(key),
         })
 
     lines = []
-    for u, v, attr in network.edges(True):
+    for (u, v), attr in network.edges(True):
         lines.append({
-            'start': network.vertex_coordinates(u),
-            'end': network.vertex_coordinates(v),
+            'start': network.node_coordinates(u),
+            'end': network.node_coordinates(v),
         })
 
     points_rg = draw_points(points)
     lines_rg = draw_lines(lines)
 
     return points_rg, lines_rg
+
+
+def draw_circles(circles):
+    """Draw circles in Grasshopper.
+    """
+    rg_circles = []
+    for c in iter(circles):
+        point, normal = c['plane']
+        radius = c['radius']
+        rg_circles.append(Circle(Plane(Point3d(*point), Vector3d(*normal)), radius))
+    return rg_circles
 
 
 if __name__ == '__main__':

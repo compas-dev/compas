@@ -75,8 +75,7 @@ setup(
     extras_require=optional_requirements,
     entry_points={
         'console_scripts': [
-            'compas_rpc=compas.rpc.__main__:main',
-            'compas_install_rhinoplugin=compas_rhino.install_plugin:main'
+            'compas_rpc=compas.rpc.__main__:main'
         ]
     },
     ext_modules=[],

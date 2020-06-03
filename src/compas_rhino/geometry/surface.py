@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import compas
 import compas_rhino
 
 from compas.datastructures import Mesh
@@ -10,6 +11,11 @@ from compas_rhino.geometry._geometry import RhinoGeometry
 # from compas.geometry import angle_vectors
 # from compas.geometry import distance_point_point
 from compas.utilities import geometric_key
+
+try:
+    import Rhino
+except ImportError:
+    compas.raise_if_ironpython()
 
 
 __all__ = ['RhinoSurface']
@@ -51,9 +57,7 @@ class RhinoSurface(RhinoGeometry):
     def brep_to_compas(self, cls=None):
         if not self.geometry.HasBrepForm:
             return
-        success, brep = self.geometry.TryConvertBrep()
-        if not success:
-            return
+        brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
 
         gkey_xyz = {}
         faces = []

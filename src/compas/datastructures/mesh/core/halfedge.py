@@ -240,19 +240,19 @@ class HalfEdge(Datastructure):
         format, which only allows for dict keys that are strings.
 
         """
-        vertex = {}
-        face = {}
-        facedata = {}
+        # vertex = {}
+        # face = {}
+        # facedata = {}
         edgedata = {}
 
-        for key in self.vertex:
-            vertex[repr(key)] = self.vertex[key]
+        # for key in self.vertex:
+        #     vertex[repr(key)] = self.vertex[key]
 
-        for key in self.face:
-            face[repr(key)] = [repr(k) for k in self.face[key]]
+        # for key in self.face:
+        #     face[repr(key)] = [repr(k) for k in self.face[key]]
 
-        for key in self.facedata:
-            facedata[repr(key)] = self.facedata[key]
+        # for key in self.facedata:
+        #     facedata[repr(key)] = self.facedata[key]
 
         for key in self.edgedata:
             edgedata[repr(key)] = self.edgedata[key]
@@ -261,9 +261,9 @@ class HalfEdge(Datastructure):
                 'dva': self.default_vertex_attributes,
                 'dea': self.default_edge_attributes,
                 'dfa': self.default_face_attributes,
-                'vertex': vertex,
-                'face': face,
-                'facedata': facedata,
+                'vertex': self.vertex,
+                'face': self.face,
+                'facedata': self.facedata,
                 'edgedata': edgedata,
                 'max_int_key': self._max_int_key,
                 'max_int_fkey': self._max_int_fkey}
@@ -295,12 +295,12 @@ class HalfEdge(Datastructure):
         self.edgedata = {}
 
         for key, attr in iter(vertex.items()):
-            self.add_vertex(literal_eval(key), attr_dict=attr)
+            self.add_vertex(int(key), attr_dict=attr)
 
         for fkey, vertices in iter(face.items()):
             attr = facedata.get(fkey) or {}
-            vertices = [literal_eval(k) for k in vertices]
-            self.add_face(vertices, fkey=literal_eval(fkey), attr_dict=attr)
+            # vertices = [int(k) for k in vertices]
+            self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
 
         for uv, attr in iter(edgedata.items()):
             self.edgedata[literal_eval(uv)] = attr or {}

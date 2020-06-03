@@ -21,5 +21,6 @@ exclude requirements-dev.txt
 exclude pytest.ini .bumpversion.cfg .editorconfig
 exclude tasks.py
 exclude CODE_OF_CONDUCT.md CONTRIBUTING.md
+exclude .gitpod.yml
 
 global-exclude *.py[cod] __pycache__ *.dylib *.nb[ic] .DS_Store

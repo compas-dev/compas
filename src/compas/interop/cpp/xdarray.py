@@ -2,13 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import ctypes
+# import ctypes
 
 from ctypes import c_int
 from ctypes import c_float
 from ctypes import c_double
 from ctypes import POINTER
-from ctypes import CFUNCTYPE
+# from ctypes import CFUNCTYPE
 
 
 __all__ = [
@@ -216,28 +216,30 @@ def eye():
 
 if __name__ == "__main__":
 
-    import time
+    pass
 
-    try:
-        lib = ctypes.cdll.LoadLibrary('_test/test.so')
-    except (WindowsError, OSError, ImportError):
-        lib = ctypes.windll.LoadLibrary('_test/test.dll')
+    # import time
 
-    vectors = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [1.0, 1.0, 1.0]]
+    # try:
+    #     lib = ctypes.cdll.LoadLibrary('_test/test.so')
+    # except (WindowsError, OSError, ImportError):
+    #     lib = ctypes.windll.LoadLibrary('_test/test.dll')
 
-    m = len(vectors)
+    # vectors = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [1.0, 1.0, 1.0]]
 
-    lengths = [0.0 for _ in range(m)]
+    # m = len(vectors)
 
-    def callback(i, l):
-        print("Calling back about vector {}: length = {}".format(i, l))
-        time.sleep(0.1)
+    # lengths = [0.0 for _ in range(m)]
 
-    c_vectors = Array2D(vectors, 'double')
-    c_lengths = Array1D(lengths, 'double')
-    c_callback = CFUNCTYPE(None, c_int, c_double)
+    # def callback(i, l):
+    #     print("Calling back about vector {}: length = {}".format(i, l))
+    #     time.sleep(0.1)
 
-    lib.length.argtypes = [c_int, c_vectors.ctype, c_lengths.ctype, c_callback]
-    lib.length(c_int(m), c_vectors.cdata, c_lengths.cdata, c_callback(callback))
+    # c_vectors = Array2D(vectors, 'double')
+    # c_lengths = Array1D(lengths, 'double')
+    # c_callback = CFUNCTYPE(None, c_int, c_double)
 
-    print(c_lengths.pydata)
+    # lib.length.argtypes = [c_int, c_vectors.ctype, c_lengths.ctype, c_callback]
+    # lib.length(c_int(m), c_vectors.cdata, c_lengths.cdata, c_callback(callback))
+
+    # print(c_lengths.pydata)

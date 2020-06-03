@@ -109,7 +109,7 @@ class Cylinder(Shape):
 
     @circle.setter
     def circle(self, circle):
-        self._circle = circle
+        self._circle = Circle(circle[0], circle[1])
 
     @property
     def radius(self):

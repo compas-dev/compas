@@ -9,7 +9,7 @@ from numpy import argmin
 from numpy import amax
 from numpy import amin
 from numpy import dot
-from numpy import ptp
+# from numpy import ptp
 from numpy import sum
 
 from scipy.spatial import ConvexHull
@@ -18,11 +18,18 @@ from scipy.spatial import ConvexHull
 from compas.geometry import local_axes
 from compas.geometry import world_to_local_coords_numpy
 from compas.geometry import local_to_world_coords_numpy
+from compas.geometry import transform_points_numpy
+from compas.geometry import Frame
+from compas.geometry import Transformation
+from compas.numerical import pca_numpy
+
+from compas.geometry.bbox.bbox import bounding_box
 
 
 __all__ = [
     'oriented_bounding_box_numpy',
     'oriented_bounding_box_xy_numpy',
+    'oabb_numpy'
 ]
 
 
@@ -118,12 +125,14 @@ def oriented_bounding_box_numpy(points):
         xyz = points[hull.vertices]
         frame = [a, uvw[0], uvw[1]]
         rst = world_to_local_coords_numpy(frame, xyz)
-        dr, ds, dt = ptp(rst, axis=0)
+        rmin, smin, tmin = amin(rst, axis=0)
+        rmax, smax, tmax = amax(rst, axis=0)
+        dr = rmax - rmin
+        ds = smax - smin
+        dt = tmax - tmin
         v = dr * ds * dt
 
         if volume is None or v < volume:
-            rmin, smin, tmin = amin(rst, axis=0)
-            rmax, smax, tmax = amax(rst, axis=0)
             bbox = [
                 [rmin, smin, tmin],
                 [rmax, smin, tmin],
@@ -235,6 +244,17 @@ def oriented_bounding_box_xy_numpy(points):
     return [point.tolist() for point in min(boxes, key=lambda b: b[1])[0]]
 
 
+def oabb_numpy(points):
+    origin, (xaxis, yaxis, zaxis), values = pca_numpy(points)
+    frame = Frame(origin, xaxis, yaxis)
+    world = Frame.worldXY()
+    X = Transformation.from_frame_to_frame(frame, world)
+    points = transform_points_numpy(points, X)
+    bbox = bounding_box(points)
+    bbox = transform_points_numpy(bbox, X.inverse())
+    return bbox
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -246,11 +266,11 @@ if __name__ == "__main__":
     import numpy  # noqa: F401
     import math  # noqa: F401
 
-    from compas.geometry import bounding_box  # noqa: F401
+    from compas.geometry import bounding_box  # noqa: F401 F811
     from compas.geometry import subtract_vectors  # noqa: F401
     from compas.geometry import length_vector  # noqa: F401
     from compas.geometry import Rotation  # noqa: F401
-    from compas.geometry import transform_points_numpy  # noqa: F401
+    from compas.geometry import transform_points_numpy  # noqa: F401 F811
     from compas.geometry import allclose  # noqa: F401
     from compas.geometry import close  # noqa: F401
 
