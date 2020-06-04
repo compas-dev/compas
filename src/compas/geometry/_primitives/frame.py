@@ -14,6 +14,7 @@ from compas.geometry import euler_angles_from_matrix
 from compas.geometry import matrix_from_euler_angles
 from compas.geometry import decompose_matrix
 from compas.geometry import Transformation
+from compas.geometry import argmax
 
 from compas.geometry._primitives import Primitive
 from compas.geometry._primitives import Point
@@ -539,8 +540,6 @@ class Frame(Primitive):
         frame = cls(data['point'], data['xaxis'], data['yaxis'])
         return frame
 
-    # why is the plane normal converted to a list?
-    # the index of max finding can be optimised quite a bit
     # this procedure should be handed off to some orthonormalisation procedure
     @classmethod
     def from_plane(cls, plane):
@@ -566,28 +565,18 @@ class Frame(Primitive):
         >>> allclose(frame.normal, plane.normal)
         True
         """
-        # plane equation: a*x + b*y + c*z = d
-        d = Vector(*plane.point).dot(plane.normal)
-        # select 2 arbitrary points in the plane from which we create the xaxis
-        coeffs = list(plane.normal)  # a, b, c
-        # select a coeff with a value != 0
-        coeffs_abs = [math.fabs(x) for x in coeffs]
-        idx = coeffs_abs.index(max(coeffs_abs))
-        # first point
-        coords = [0, 0, 0]  # x, y, z
-        # z = (d - a*0 + b*0)/c, if idx == 2
-        v = d / coeffs[idx]
-        coords[idx] = v
-        pt1_in_plane = Point(*coords)
-        # second point
-        coords = [1, 1, 1]  # x, y, z
-        coords[idx] = 0
-        # z = (d - a*1 + b*1)/c, if idx == 2
-        v = (d - sum([a*x for a, x in zip(coeffs, coords)]))/coeffs[idx]
-        coords[idx] = v
-        pt2_in_plane = Point(*coords)
-        xaxis = pt2_in_plane - pt1_in_plane
-        yaxis = plane.normal.cross(xaxis)
+        normal = plane.normal
+        # To construct a frame we need to find a vector v that is perpendicular
+        # to the plane's normal. This means that the dot-product of v with the
+        # normal must be equal to 0, which is true for the following vectors:
+        vectors = [Vector(-normal.y, normal.x, 0),
+                   Vector(0, -normal.z, normal.y),
+                   Vector(normal.z, 0, -normal.x)]
+        # But if we are unlucky, one of these vectors is (0, 0, 0), so we
+        # choose the vector with the longest length as xaxis.
+        idx = argmax([v.length for v in vectors])
+        xaxis = vectors[idx]
+        yaxis = normal.cross(xaxis)
         return cls(plane.point, xaxis, yaxis)
 
     # ==========================================================================
