@@ -635,7 +635,7 @@ class Frame(Primitive):
         return euler_angles_from_matrix(R, static, axes)
 
     # rename
-    def to_local_coords(self, object_in_wcf):
+    def to_local_coordinates(self, object_in_wcf):
         """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
@@ -657,8 +657,8 @@ class Frame(Primitive):
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw = Point(2, 2, 2) # point in wcf
-        >>> pl = frame.to_local_coords(pw) # point in frame
-        >>> frame.to_world_coords(pl)
+        >>> pl = frame.to_local_coordinates(pw) # point in frame
+        >>> frame.to_world_coordinates(pl)
         Point(2.000, 2.000, 2.000)
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self)
@@ -668,7 +668,7 @@ class Frame(Primitive):
             return object_in_wcf.transformed(T)
 
     # rename
-    def to_world_coords(self, object_in_lcf):
+    def to_world_coordinates(self, object_in_lcf):
         """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
@@ -690,8 +690,8 @@ class Frame(Primitive):
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pl = Point(1.632, -0.090, 0.573) # point in frame
-        >>> pw = frame.to_world_coords(pl) # point in wcf
-        >>> frame.to_local_coords(pw)
+        >>> pw = frame.to_world_coordinates(pl) # point in wcf
+        >>> frame.to_local_coordinates(pw)
         Point(1.632, -0.090, 0.573)
         """
         T = Transformation.from_change_of_basis(self, Frame.worldXY())
@@ -702,7 +702,7 @@ class Frame(Primitive):
 
     # ?!
     @staticmethod
-    def local_to_local_coords(frame1, frame2, object_in_frame1):
+    def local_to_local_coordinates(frame1, frame2, object_in_frame1):
         """Returns the object's coordinates in frame1 in the local coordinates of frame2.
 
         Parameters
@@ -725,8 +725,8 @@ class Frame(Primitive):
         >>> frame1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> frame2 = Frame([2, 1, 3], [1., 0., 0.], [0., 1., 0.])
         >>> p1 = Point(2, 2, 2) # point in frame1
-        >>> p2 = Frame.local_to_local_coords(frame1, frame2, p1) # point in frame2
-        >>> Frame.local_to_local_coords(frame2, frame1, p2)
+        >>> p2 = Frame.local_to_local_coordinates(frame1, frame2, p1) # point in frame2
+        >>> Frame.local_to_local_coordinates(frame2, frame1, p2)
         Point(2.000, 2.000, 2.000)
         """
         T = Transformation.from_change_of_basis(frame1, frame2)

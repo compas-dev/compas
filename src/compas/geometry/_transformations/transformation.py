@@ -285,7 +285,7 @@ class Transformation(object):
         >>> p_f1 = Point(1, 1, 1)  # point in f1
         >>> p_f1.transformed(T)  # point represented in f2
         Point(1.395, 0.955, 1.934)
-        >>> Frame.local_to_local_coords(f1, f2, p_f1)
+        >>> Frame.local_to_local_coordinates(f1, f2, p_f1)
         Point(1.395, 0.955, 1.934)
         """
         T1 = cls.from_frame(frame_from)
