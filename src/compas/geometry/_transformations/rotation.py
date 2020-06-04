@@ -148,7 +148,7 @@ class Rotation(Transformation):
 
         Notes
         -----
-        Creating a rotation from a frame means that we omit all translational 
+        Creating a rotation from a frame means that we omit all translational
         components. If that is unwanted, use ``Transformation.from_frame(frame)``.
 
         Parameters
