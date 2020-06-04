@@ -95,8 +95,5 @@ class Reflection(Transformation):
 
 if __name__ == "__main__":
 
-    point = [1, 1, 1]
-    normal = [0, 0, 1]
-    R1 = Reflection.from_plane((point, normal))
-    R2 = Transformation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
-    print(R1 == R2)
+    import doctest
+    doctest.testmod(globs=globals())
