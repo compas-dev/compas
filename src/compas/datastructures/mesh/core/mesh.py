@@ -1385,6 +1385,5 @@ class BaseMesh(HalfEdge):
 
 if __name__ == '__main__':
 
-    # import doctest
-    # doctest.testmod(globs=globals())
-
+    import doctest
+    doctest.testmod(globs=globals())
