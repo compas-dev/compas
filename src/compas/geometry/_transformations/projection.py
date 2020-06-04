@@ -52,16 +52,14 @@ class Projection(Transformation):
                 raise ValueError('This is not a proper projection matrix.')
         super(Projection, self).__init__(matrix=matrix)
 
-    # rename
     @classmethod
-    def orthogonal(cls, point, normal):
-        """Returns an orthogonal ``Projection`` to project onto a plane
-        defined by point and normal.
+    def from_plane(cls, plane):
+        """Returns an orthogonal ``Projection`` to project onto a plane.
 
         Parameters
         ----------
-        point : list of float
-        normal : list of float
+        plane : compas.geometry.Plane or (point, normal)
+            The plane to project onto.
 
         Returns
         -------
@@ -72,23 +70,25 @@ class Projection(Transformation):
         --------
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
-        >>> P = Projection.orthogonal(point, normal)
+        >>> plane = Plane(point, normal)
+        >>> P = Projection.from_plane(plane)
         """
         P = cls()
+        point, normal = plane
         P.matrix = matrix_from_orthogonal_projection(point, normal)
         return P
 
-    # rename
     @classmethod
-    def parallel(cls, point, normal, direction):
-        """Returns a parallel ``Projection`` to project onto a plane defined
-        by point, normal and direction.
+    def from_plane_and_direction(cls, plane, direction):
+        """Returns a parallel ``Projection`` to project onto a plane along a
+        specific direction.
 
         Parameters
         ----------
-        point : list of float
-        normal : list of float
-        direction : list of float
+        plane : compas.geometry.Plane or (point, normal)
+            The plane to project onto.
+        direction : compas.geometry.Vector or list of float
+            The direction of projection direction.
 
         Returns
         -------
@@ -99,25 +99,24 @@ class Projection(Transformation):
         --------
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
+        >>> plane = Plane(point, normal)
         >>> direction = [1, 1, 1]
-        >>> P = Projection.parallel(point, normal, direction)
+        >>> P = Projection.from_plane_and_direction(plane, direction)
         """
         P = cls()
+        point, normal = plane
         P.matrix = matrix_from_parallel_projection(point, normal, direction)
         return P
 
-    # rename
-    # what does perspective represent?
     @classmethod
-    def perspective(cls, point, normal, perspective):
-        """Returns a perspective ``Projection`` to project onto a plane
-        defined by point, normal and perspective.
+    def from_plane_and_point(cls, plane, center_of_projection):
+        """Returns a perspective ``Projection`` to project onto a plane along lines that emanate from a single point, called the center of projection.
 
         Parameters
         ----------
-        point : list of float
-        normal : list of float
-        perspective : list of float
+        plane : compas.geometry.Plane or (point, normal)
+            The plane to project onto.
+        center_of_projection : compas.geometry.Point or list of float
 
         Returns
         -------
@@ -128,11 +127,13 @@ class Projection(Transformation):
         --------
         >>> point = [0, 0, 0]
         >>> normal = [0, 0, 1]
-        >>> perspective = [1, 1, 0]
-        >>> P = Projection.perspective(point, normal, perspective)
+        >>> plane = Plane(point, normal)
+        >>> center_of_projection = [1, 1, 0]
+        >>> P = Projection.from_plane_and_point(plane, center_of_projection)
         """
         P = cls()
-        P.matrix = matrix_from_perspective_projection(point, normal, perspective)
+        point, normal = plane
+        P.matrix = matrix_from_perspective_projection(point, normal, center_of_projection)
         return P
 
     @classmethod
@@ -162,5 +163,4 @@ class Projection(Transformation):
 if __name__ == "__main__":
 
     import doctest
-
     doctest.testmod(globs=globals())
