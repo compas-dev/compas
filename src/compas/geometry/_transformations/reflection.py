@@ -12,6 +12,7 @@ Ippoliti for providing code and documentation.
 """
 
 from compas.geometry import dot_vectors
+from compas.geometry import cross_vectors
 from compas.geometry import normalize_vector
 
 from compas.geometry._transformations import identity_matrix
@@ -72,17 +73,20 @@ class Reflection(Transformation):
 
         Parameters
         ----------
-        frame : compas.geometry.Frame or (point, xaxis, yaxis, zaxis)
+        frame : compas.geometry.Frame or (point, xaxis, yaxis)
 
         Returns
         -------
         Reflection
             The reflection transformation.
         """
-        point = frame.point
-        z = frame.zaxis
-        plane = point, z
-        return cls.from_plane(plane)
+        if isinstance(frame, (tuple, list)):
+            point = frame[0]
+            zaxis = cross_vectors(frame[1], frame[2])
+        else:
+            point = frame.point
+            zaxis = frame.zaxis
+        return cls.from_plane((point, zaxis))
 
 
 # ==============================================================================
