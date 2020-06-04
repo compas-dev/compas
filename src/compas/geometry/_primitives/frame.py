@@ -635,12 +635,12 @@ class Frame(Primitive):
         return euler_angles_from_matrix(R, static, axes)
 
     # rename
-    def to_local_coords(self, object_in_wcs):
+    def to_local_coords(self, object_in_wcf):
         """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
         ----------
-        object_in_wcs : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
+        object_in_wcf : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
             An object in the world coordinate frame.
 
         Returns
@@ -662,18 +662,18 @@ class Frame(Primitive):
         Point(2.000, 2.000, 2.000)
         """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self)
-        if isinstance(object_in_wcs, list):
-            return Point(*object_in_wcs).transformed(T)
+        if isinstance(object_in_wcf, list):
+            return Point(*object_in_wcf).transformed(T)
         else:
-            return object_in_wcs.transformed(T)
+            return object_in_wcf.transformed(T)
 
     # rename
-    def to_world_coords(self, object_in_lcs):
+    def to_world_coords(self, object_in_lcf):
         """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
         ----------
-        object_in_lcs : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
+        object_in_lcf : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
             An object in local coordinate system of the frame.
 
         Returns
@@ -695,10 +695,10 @@ class Frame(Primitive):
         Point(1.632, -0.090, 0.573)
         """
         T = Transformation.from_change_of_basis(self, Frame.worldXY())
-        if isinstance(object_in_lcs, list):
-            return Point(*object_in_lcs).transformed(T)
+        if isinstance(object_in_lcf, list):
+            return Point(*object_in_lcf).transformed(T)
         else:
-            return object_in_lcs.transformed(T)
+            return object_in_lcf.transformed(T)
 
     # ?!
     @staticmethod
