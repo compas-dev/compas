@@ -634,7 +634,6 @@ class Frame(Primitive):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    # rename
     def to_local_coordinates(self, object_in_wcf):
         """Returns the object's coordinates in the local coordinate system of the frame.
 
@@ -667,7 +666,6 @@ class Frame(Primitive):
         else:
             return object_in_wcf.transformed(T)
 
-    # rename
     def to_world_coordinates(self, object_in_lcf):
         """Returns the object's coordinates in the global coordinate frame.
 
