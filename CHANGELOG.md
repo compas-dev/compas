@@ -14,7 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.datastructures.Mesh.join(other)`.
 
 ### Changed
+- Fixed bug in `FaceAttributeView.__get_item__`: access to default was tried before attrs.
+- Fixed bug in `EdgeAttributeView.__get_item__`: access to default was tried before attrs.
+- Changed `VertexAttributeView.__get_item__` to follow access logic of `FaceAttributeView`.
 
+* Fixed bug in `draw_edges` in `compas_rhino`'s `EdgeArtist`.
+* Fixed bug in `draw_edges` in `compas_ghpython`'s `EdgeArtist`.
 * Fixed bug in `compas_rhino.geometry.RhinoSurface.brep_to_compas`.
 * Fixed bug in `compas.geometry.Box.from_bounding_box`
 * Fixed bug in `compas.geometry.Box.from_width_height_depth`
