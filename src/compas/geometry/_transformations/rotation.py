@@ -146,6 +146,11 @@ class Rotation(Transformation):
     def from_frame(cls, frame):
         """Computes the rotational transformation from world XY to frame.
 
+        Notes
+        -----
+        Creating a rotation from a frame means that we omit all translational 
+        components. If that is unwanted, use ``Transformation.from_frame(frame)``.
+
         Parameters
         ----------
         frame : :class:`Frame`
@@ -162,8 +167,6 @@ class Rotation(Transformation):
         """
         R = cls()
         matrix = matrix_from_frame(frame)
-        # does thi mean that rotation matrices should be pure?
-        # i.e. have no translational component?
         matrix[0][3] = 0.0
         matrix[1][3] = 0.0
         matrix[2][3] = 0.0
