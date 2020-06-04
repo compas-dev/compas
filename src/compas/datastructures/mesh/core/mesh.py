@@ -154,7 +154,7 @@ class BaseMesh(HalfEdge):
             lines = [(vertices[u], vertices[v], 0) for u, v in edges]
             return cls.from_lines(lines)
 
-    def to_obj(self, filepath, precision=None, **kwargs):
+    def to_obj(self, filepath, precision=None, unweld=False, **kwargs):
         """Write the mesh to an OBJ file.
 
         Parameters
@@ -163,18 +163,18 @@ class BaseMesh(HalfEdge):
             Full path of the file.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
+        unweld : bool, optional
+            If true, all faces have their own unique vertices.
+            If false, vertices are shared between faces if this is also the case in the mesh.
+            Default is ``False``.
 
         Warning
         -------
-        Currently this function only writes geometric data about the vertices and
+        This function only writes geometric data about the vertices and
         the faces to the file.
-
-        Examples
-        --------
-        >>>
         """
         obj = OBJ(filepath, precision=precision)
-        obj.write(self, **kwargs)
+        obj.write(self, unweld=unweld, **kwargs)
 
     @classmethod
     def from_ply(cls, filepath, precision=None):
@@ -189,12 +189,6 @@ class BaseMesh(HalfEdge):
         -------
         Mesh :
             A mesh object.
-
-        Note
-        ----
-        There are a few sample files available for testing and debugging:
-
-        * bunny.ply
 
         Examples
         --------
@@ -243,13 +237,6 @@ class BaseMesh(HalfEdge):
         Mesh :
             A mesh object.
 
-        Note
-        ----
-        There are a few sample files available for testing and debugging:
-
-        * cube_ascii.stl
-        * cube_binary.stl
-
         Examples
         --------
         >>>
@@ -261,6 +248,28 @@ class BaseMesh(HalfEdge):
         return mesh
 
     def to_stl(self, filepath, precision=None, **kwargs):
+        """Write a mesh to an STL file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+        precision : str, optional
+            Rounding precision for the vertex coordinates.
+            Default is ``"3f"``.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        STL files only support triangle faces.
+        However, the writer does not perform any checks
+        and will just treat every face as a triangle.
+        It is your responsibility to convert all faces of your mesh to triangles.
+        For example, with :func:`compas.datastructures.mesh_quads_to_triangles`.
+        """
         stl = STL(filepath, precision)
         stl.write(self, **kwargs)
 
@@ -1376,25 +1385,6 @@ class BaseMesh(HalfEdge):
 
 if __name__ == '__main__':
 
-    import doctest
+    # import doctest
+    # doctest.testmod(globs=globals())
 
-    doctest.testmod(globs=globals())
-
-    # import compas
-    # from compas.datastructures import Mesh
-    # from compas_plotters import MeshPlotter
-
-    # mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-
-    # edges = mesh.edges_on_boundary()
-    # print(len(edges))
-    # faces = mesh.faces_on_boundary()
-    # print(len(faces))
-
-    # plotter = MeshPlotter(mesh, figsize=(8, 5))
-
-    # plotter.draw_vertices()
-    # plotter.draw_faces(text='key')
-    # plotter.draw_edges()
-
-    # plotter.show()
