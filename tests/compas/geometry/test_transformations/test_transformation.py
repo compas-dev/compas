@@ -70,7 +70,6 @@ def test_rotation():
 def test_rotation_property():
     T = Transformation()
     R = T.rotation
-    assert isinstance(R, Rotation)
     assert R.matrix == [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
 
 
