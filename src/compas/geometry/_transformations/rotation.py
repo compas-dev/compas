@@ -213,9 +213,6 @@ class Rotation(Transformation):
         >>> allclose(aav1, aav2)
         True
         """
-        # same question as with the plane normal conversion
-        # is this perhaps a Rhino thing?
-        axis_angle_vector = list(axis_angle_vector)
         angle = length_vector(axis_angle_vector)
         return cls.from_axis_and_angle(axis_angle_vector, angle, point)
 
