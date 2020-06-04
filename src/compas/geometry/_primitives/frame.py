@@ -297,7 +297,7 @@ class Frame(Primitive):
             The rotation defines the orientation of the frame.
         point : list of float, optional
             The origin of the frame.
-            Defaults to [0, 0, 0].
+            Defaults to ``[0, 0, 0]``.
 
         Returns
         -------
@@ -368,8 +368,8 @@ class Frame(Primitive):
         >>> allclose(ea1, ea2)
         True
         """
-        sc, sh, a, point, p = decompose_matrix(matrix)
-        R = matrix_from_euler_angles(a, static=True, axes='xyz')
+        _, _, angles, point, _ = decompose_matrix(matrix)
+        R = matrix_from_euler_angles(angles, static=True, axes='xyz')
         xaxis, yaxis = basis_vectors_from_matrix(R)
         return cls(point, xaxis, yaxis)
 
@@ -493,7 +493,7 @@ class Frame(Primitive):
             Defaults to 'xyz'.
         point : list of float, optional
             The point of the frame.
-            Defaults to [0, 0, 0].
+            Defaults to ``[0, 0, 0]``.
 
         Returns
         -------
@@ -540,7 +540,6 @@ class Frame(Primitive):
         frame = cls(data['point'], data['xaxis'], data['yaxis'])
         return frame
 
-    # this procedure should be handed off to some orthonormalisation procedure
     @classmethod
     def from_plane(cls, plane):
         """Constructs a frame from a plane.
@@ -565,19 +564,19 @@ class Frame(Primitive):
         >>> allclose(frame.normal, plane.normal)
         True
         """
-        normal = plane.normal
+        point, normal = plane
         # To construct a frame we need to find a vector v that is perpendicular
         # to the plane's normal. This means that the dot-product of v with the
         # normal must be equal to 0, which is true for the following vectors:
-        vectors = [Vector(-normal.y, normal.x, 0),
-                   Vector(0, -normal.z, normal.y),
-                   Vector(normal.z, 0, -normal.x)]
+        vectors = [Vector(-normal[1], normal[0], 0),
+                   Vector(0, -normal[2], normal[1]),
+                   Vector(normal[2], 0, -normal[0])]
         # But if we are unlucky, one of these vectors is (0, 0, 0), so we
         # choose the vector with the longest length as xaxis.
         idx = argmax([v.length for v in vectors])
         xaxis = vectors[idx]
-        yaxis = normal.cross(xaxis)
-        return cls(plane.point, xaxis, yaxis)
+        yaxis = cross_vectors(normal, xaxis)
+        return cls(point, xaxis, yaxis)
 
     # ==========================================================================
     # helpers
@@ -730,8 +729,7 @@ class Frame(Primitive):
         T = Transformation.from_change_of_basis(frame1, frame2)
         if isinstance(object_in_frame1, list):
             return Point(*object_in_frame1).transformed(T)
-        else:
-            return object_in_frame1.transformed(T)
+        return object_in_frame1.transformed(T)
 
     def transform(self, T):
         """Transform the frame.

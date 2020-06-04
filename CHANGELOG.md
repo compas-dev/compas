@@ -12,12 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas_rhino.geometry.RhinoVector`.
 * Added basic mesh cutting (`compas.datastructures.Mesh.cut()`).
 * Added `compas.datastructures.Mesh.join(other)`.
+* Added `compas.geometry.argmin` and `compas.geometry.argmax`.
 
 ### Changed
 
 * Fixed bug in `compas_rhino.geometry.RhinoSurface.brep_to_compas`.
 * Fixed bug in `compas.geometry.Box.from_bounding_box`
 * Fixed bug in `compas.geometry.Box.from_width_height_depth`
+* Fixed inconsistencies in `compas.geometry._transformations`.
 
 ### Removed
 
