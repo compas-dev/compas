@@ -1085,7 +1085,6 @@ def translation_from_matrix(M):
     return [M[0][3], M[1][3], M[2][3]]
 
 
-
 def matrix_from_orthogonal_projection(plane):
     """Returns an orthogonal projection matrix to project onto a plane.
 
