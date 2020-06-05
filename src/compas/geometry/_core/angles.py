@@ -377,7 +377,6 @@ def angle_planes(a, b, deg=False):
     plane_b = ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
     >>> angle_planes(plane_a, plane_b, True)
     90.0
-
     """
     return angle_vectors(a[1], b[1], deg)
 
