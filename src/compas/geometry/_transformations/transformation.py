@@ -536,33 +536,33 @@ if __name__ == "__main__":
     import doctest
     doctest.testmod(globs=globals())
 
-    world = Frame.worldXY()
-    frame = Frame([1.0, 1.0, 1.0], [0, 0, -1], [1, 0, 0])
+    # world = Frame.worldXY()
+    # frame = Frame([1.0, 1.0, 1.0], [0, 0, -1], [1, 0, 0])
 
-    X1 = Transformation.from_frame_to_frame(world, frame)
-    X2 = Transformation.from_frame(frame)
-    X3 = Transformation.from_change_of_basis(frame, world)
+    # X1 = Transformation.from_frame_to_frame(world, frame)
+    # X2 = Transformation.from_frame(frame)
+    # X3 = Transformation.from_change_of_basis(frame, world)
 
-    print(X1.matrix)
-    print(X2.matrix)
-    print(X3.matrix)
+    # print(X1.matrix)
+    # print(X2.matrix)
+    # print(X3.matrix)
 
-    trans1 = [1, 2, 3]
-    angle1 = [-2.142, 1.141, -0.142]
-    scale1 = [0.123, 2, 0.5]
-    T1 = Translation.from_vector(trans1)
-    R1 = Rotation.from_euler_angles(angle1)
-    S1 = Scale.from_factors(scale1)
-    M = T1 * R1 * S1
-    S, H, R, T, P = M.decomposed()
-    print(S1 == S)
-    print(R1 == R)
-    print(T1 == T)
+    # trans1 = [1, 2, 3]
+    # angle1 = [-2.142, 1.141, -0.142]
+    # scale1 = [0.123, 2, 0.5]
+    # T1 = Translation.from_vector(trans1)
+    # R1 = Rotation.from_euler_angles(angle1)
+    # S1 = Scale.from_factors(scale1)
+    # M = T1 * R1 * S1
+    # S, H, R, T, P = M.decomposed()
+    # print(S1 == S)
+    # print(R1 == R)
+    # print(T1 == T)
 
-    S, H, R, T, P = X3.decomposed()
+    # S, H, R, T, P = X3.decomposed()
 
-    print(S)
-    print(H)
-    print(R)
-    print(T)
-    print(P)
+    # print(S)
+    # print(H)
+    # print(R)
+    # print(T)
+    # print(P)
