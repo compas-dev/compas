@@ -42,8 +42,6 @@ class Projection(Transformation):
     >>>
     """
 
-    __module__ = 'compas.geometry'
-
     def __init__(self, matrix=None):
         if matrix:
             _, _, _, _, perspective = decompose_matrix(matrix)
@@ -74,8 +72,7 @@ class Projection(Transformation):
         >>> P = Projection.from_plane(plane)
         """
         P = cls()
-        point, normal = plane
-        P.matrix = matrix_from_orthogonal_projection(point, normal)
+        P.matrix = matrix_from_orthogonal_projection(plane)
         return P
 
     @classmethod
@@ -104,8 +101,7 @@ class Projection(Transformation):
         >>> P = Projection.from_plane_and_direction(plane, direction)
         """
         P = cls()
-        point, normal = plane
-        P.matrix = matrix_from_parallel_projection(point, normal, direction)
+        P.matrix = matrix_from_parallel_projection(plane, direction)
         return P
 
     @classmethod
@@ -117,6 +113,7 @@ class Projection(Transformation):
         plane : compas.geometry.Plane or (point, normal)
             The plane to project onto.
         center_of_projection : compas.geometry.Point or list of float
+            The camera view point.
 
         Returns
         -------
@@ -132,8 +129,7 @@ class Projection(Transformation):
         >>> P = Projection.from_plane_and_point(plane, center_of_projection)
         """
         P = cls()
-        point, normal = plane
-        P.matrix = matrix_from_perspective_projection(point, normal, center_of_projection)
+        P.matrix = matrix_from_perspective_projection(plane, center_of_projection)
         return P
 
     @classmethod
@@ -163,4 +159,5 @@ class Projection(Transformation):
 if __name__ == "__main__":
 
     import doctest
+    from compas.geometry import Plane
     doctest.testmod(globs=globals())
