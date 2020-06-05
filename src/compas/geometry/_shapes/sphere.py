@@ -279,6 +279,9 @@ class Sphere(Shape):
         ----------
         transformation : :class:`Transformation`
             The transformation used to transform the Sphere.
+            Note that non-similarity preserving transformations will not change
+            the sphere into an ellipsoid. In such case, the radius of the sphere
+            will be scaled by the largest scale factor of the threee axis.
 
         Examples
         --------
