@@ -1085,18 +1085,14 @@ def translation_from_matrix(M):
     return [M[0][3], M[1][3], M[2][3]]
 
 
-# should this not be a plane?
-# plane = point, normal
-def matrix_from_orthogonal_projection(point, normal):
-    """Returns an orthogonal projection matrix to project onto a plane defined
-    by point and normal.
+
+def matrix_from_orthogonal_projection(plane):
+    """Returns an orthogonal projection matrix to project onto a plane.
 
     Parameters
     ----------
-    point : list of float
-        Base point of the plane.
-    normal : list of float
-        Normal vector of the plane.
+    plane : compas.geometry.Plane or (point, normal)
+        The plane to project onto.
 
     Returns
     -------
@@ -1107,9 +1103,11 @@ def matrix_from_orthogonal_projection(point, normal):
     --------
     >>> point = [0, 0, 0]
     >>> normal = [0, 0, 1]
-    >>> P = matrix_from_orthogonal_projection(point, normal)
+    >>> plane = (point, normal)
+    >>> P = matrix_from_orthogonal_projection(plane)
 
     """
+    point, normal = plane
     T = identity_matrix(4)
     normal = normalize_vector(normal)
 
@@ -1121,18 +1119,13 @@ def matrix_from_orthogonal_projection(point, normal):
     return T
 
 
-# should this not be a plane?
-# plane = point, normal
-def matrix_from_parallel_projection(point, normal, direction):
-    """Returns an parallel projection matrix to project onto a plane defined by
-    point, normal and direction.
+def matrix_from_parallel_projection(plane, direction):
+    """Returns an parallel projection matrix to project onto a plane.
 
     Parameters
     ----------
-    point : list of float
-        Base point of the plane.
-    normal : list of float
-        Normal vector of the plane.
+    plane : compas.geometry.Plane or (point, normal)
+        The plane to project onto.
     direction : list of float
         Direction of the projection.
 
@@ -1140,10 +1133,12 @@ def matrix_from_parallel_projection(point, normal, direction):
     --------
     >>> point = [0, 0, 0]
     >>> normal = [0, 0, 1]
+    >>> plane = (point, normal)
     >>> direction = [1, 1, 1]
-    >>> P = matrix_from_parallel_projection(point, normal, direction)
+    >>> P = matrix_from_parallel_projection(plane, direction)
 
     """
+    point, normal = plane
     T = identity_matrix(4)
     normal = normalize_vector(normal)
 
@@ -1156,42 +1151,41 @@ def matrix_from_parallel_projection(point, normal, direction):
     return T
 
 
-def matrix_from_perspective_projection(point, normal, perspective):
-    """Returns a perspective projection matrix to project onto a plane defined
-    by point, normal and perspective.
+def matrix_from_perspective_projection(plane, center_of_projection):
+    """Returns a perspective projection matrix to project onto a plane along lines that emanate from a single point, called the center of projection.
 
     Parameters
     ----------
-    point : list of float
-        Base point of the projection plane.
-    normal : list of float
-        Normal vector of the projection plane.
-    perspective : list of float
-        Perspective of the projection.
+    plane : compas.geometry.Plane or (point, normal)
+        The plane to project onto.
+    center_of_projection : compas.geometry.Point or list of float
+        The camera view point.
 
     Examples
     --------
     >>> point = [0, 0, 0]
     >>> normal = [0, 0, 1]
-    >>> perspective = [1, 1, 0]
-    >>> P = matrix_from_perspective_projection(point, normal, perspective)
+    >>> plane = (point, normal)
+    >>> center_of_projection = [1, 1, 0]
+    >>> P = matrix_from_perspective_projection(plane, center_of_projection)
 
     """
+    point, normal = plane
     T = identity_matrix(4)
     normal = normalize_vector(normal)
 
-    T[0][0] = T[1][1] = T[2][2] = dot_vectors(subtract_vectors(perspective, point), normal)
+    T[0][0] = T[1][1] = T[2][2] = dot_vectors(subtract_vectors(center_of_projection, point), normal)
 
     for j in range(3):
         for i in range(3):
-            T[i][j] -= perspective[i] * normal[j]
+            T[i][j] -= center_of_projection[i] * normal[j]
 
-    T[0][3], T[1][3], T[2][3] = scale_vector(perspective, dot_vectors(point, normal))
+    T[0][3], T[1][3], T[2][3] = scale_vector(center_of_projection, dot_vectors(point, normal))
 
     for i in range(3):
         T[3][i] -= normal[i]
 
-    T[3][3] = dot_vectors(perspective, normal)
+    T[3][3] = dot_vectors(center_of_projection, normal)
 
     return T
 
