@@ -56,8 +56,6 @@ class Transformation(object):
     >>> Tinv = T.inverse()
     """
 
-    __module__ = 'compas.geometry'
-
     def __init__(self, matrix=None):
         """Construct a transformation from a 4x4 transformation matrix.
         """
@@ -281,7 +279,7 @@ class Transformation(object):
         >>> from compas.geometry import Point, Frame
         >>> f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])
         >>> f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.change_basis(f1, f2)
+        >>> T = Transformation.from_change_of_basis(f1, f2)
         >>> p_f1 = Point(1, 1, 1)  # point in f1
         >>> p_f1.transformed(T)  # point represented in f2
         Point(1.395, 0.955, 1.934)
@@ -459,7 +457,7 @@ class Transformation(object):
         >>> scale1 = [0.123, 2, 0.5]
         >>> T1 = Translation.from_vector(trans1)
         >>> R1 = Rotation.from_euler_angles(angle1)
-        >>> S1 = Scale(scale1)
+        >>> S1 = Scale.from_factors(scale1)
         >>> M = T1 * R1 * S1
         >>> S, H, R, T, P = M.decomposed()
         >>> S1 == S
