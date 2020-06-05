@@ -12,7 +12,7 @@ from scipy.interpolate import griddata
 
 import matplotlib.pyplot as plt
 
-from compas.geometry import scalarfield_contours_numpy
+from compas.numerical import scalarfield_contours_numpy
 
 
 __all__ = [

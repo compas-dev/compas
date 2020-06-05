@@ -105,6 +105,7 @@ from .fd import *  # noqa: F401 F403
 # from .drx import *  # noqa: F401 F403
 from .dr import *  # noqa: F401 F403
 from .devo import *  # noqa: F401 F403
+from .isolines import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

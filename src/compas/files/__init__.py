@@ -5,22 +5,6 @@ files
 
 .. currentmodule:: compas.files
 
-=========== ======= =======
-File Format Reading Writing
-=========== ======= =======
-3MF         -       -
-AMF         -       -
-DXF         -       -
-OBJ         Yes     Yes
-OFF         Yes     Yes
-PLY         Yes     Yes
-STL         Yes     Yes
-STP         -       -
-URDF        Yes     Yes
-XML         -       -
-GLTF        Yes     Yes
-=========== ======= =======
-
 
 3MF
 ===
