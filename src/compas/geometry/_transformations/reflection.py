@@ -23,16 +23,15 @@ __all__ = ['Reflection']
 
 
 class Reflection(Transformation):
-    """Creates a ``Reflection`` that mirrors points at a plane, defined by
-    point and normal vector.
+    """Creates a ``Reflection`` that mirrors points at a plane.
 
     Examples
     --------
-    point = [1, 1, 1]
-    normal = [0, 0, 1]
-    R1 = Reflection.from_plane((point, normal))
-    R2 = Transformation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
-    R1 == R2
+    >>> point = [1, 1, 1]
+    >>> normal = [0, 0, 1]
+    >>> R1 = Reflection.from_plane((point, normal))
+    >>> R2 = Transformation([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 2], [0, 0, 0, 1]])
+    >>> R1 == R2
     True
     """
 
