@@ -72,8 +72,6 @@ class Box(Shape):
 
     """
 
-    __module__ = "compas.geometry"
-
     def __init__(self, frame, xsize, ysize, zsize):
         self._frame = None
         self._xsize = None
@@ -177,17 +175,42 @@ class Box(Shape):
         g = c + zaxis * height
         h = b + zaxis * height
 
-        return [list(pt) for pt in [a, b, c, d, e, f, g, h]]
+        # return [list(pt) for pt in [a, b, c, d, e, f, g, h]]
+        return [a, b, c, d, e, f, g, h]
 
     @property
     def faces(self):
         """list of list: The faces of the box defined as lists of vertex indices."""
-        return [[0, 1, 2, 3],
-                [0, 3, 5, 4],
-                [3, 2, 6, 5],
-                [2, 1, 7, 6],
-                [1, 0, 4, 7],
-                [4, 5, 6, 7]]
+        return [[0, 1, 2, 3],  # bottom
+                [0, 3, 5, 4],  # front
+                [3, 2, 6, 5],  # right
+                [2, 1, 7, 6],  # back
+                [1, 0, 4, 7],  # left
+                [4, 5, 6, 7]]  # top
+
+    @property
+    def bottom(self):
+        return [0, 1, 2, 3]
+
+    @property
+    def front(self):
+        return [0, 3, 5, 4]
+
+    @property
+    def right(self):
+        return [3, 2, 6, 5]
+
+    @property
+    def back(self):
+        return [2, 1, 7, 6]
+
+    @property
+    def left(self):
+        return [1, 0, 4, 7]
+
+    @property
+    def top(self):
+        return [4, 5, 6, 7]
 
     # ==========================================================================
     # factory

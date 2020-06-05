@@ -38,27 +38,7 @@ def tween_points(points1, points2, num):
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        from compas.geometry import tween_points
-        from compas_plotters import Plotter
-
-        points1 = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0]]
-        points2 = [[0.0, 0.0, 0.0], [1.0, 3.0, 0.0], [2.0, 1.0, 0.0], [3.0, 0.0, 0.0]]
-
-        tweens = tween_points(points1, points2, 5)
-
-        polylines = [{'points': points1, 'width': 1.0}]
-
-        for points in tweens:
-            polylines.append({'points': points, 'width': 0.5})
-
-        polylines.append({'points': points2, 'width': 1.0})
-
-        plotter = Plotter()
-        plotter.draw_polylines(polylines)
-        plotter.show()
+    >>>
 
     Notes
     -----
@@ -115,20 +95,23 @@ def tween_points_distance(points1, points2, dist, index=None):
 
 if __name__ == "__main__":
 
-    from compas_plotters import Plotter
+    # from compas_plotters import Plotter
 
-    points1 = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0]]
-    points2 = [[0.0, 0.0, 0.0], [1.0, 3.0, 0.0], [2.0, 1.0, 0.0], [3.0, 0.0, 0.0]]
+    # points1 = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0]]
+    # points2 = [[0.0, 0.0, 0.0], [1.0, 3.0, 0.0], [2.0, 1.0, 0.0], [3.0, 0.0, 0.0]]
 
-    tweens = tween_points(points1, points2, 5)
+    # tweens = tween_points(points1, points2, 5)
 
-    polylines = [{'points': points1, 'width': 1.0}]
+    # polylines = [{'points': points1, 'width': 1.0}]
 
-    for points in tweens:
-        polylines.append({'points': points, 'width': 0.5})
+    # for points in tweens:
+    #     polylines.append({'points': points, 'width': 0.5})
 
-    polylines.append({'points': points2, 'width': 1.0})
+    # polylines.append({'points': points2, 'width': 1.0})
 
-    plotter = Plotter(figsize=(10, 7))
-    plotter.draw_polylines(polylines)
-    plotter.show()
+    # plotter = Plotter(figsize=(10, 7))
+    # plotter.draw_polylines(polylines)
+    # plotter.show()
+
+    import doctest
+    doctest.testmod(globs=globals())

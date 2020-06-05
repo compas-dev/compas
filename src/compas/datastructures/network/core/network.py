@@ -25,16 +25,10 @@ __all__ = ['BaseNetwork']
 class BaseNetwork(Graph):
     """Geometric implementation of a basic edge graph.
 
-    Methods
-    -------
-
-
     Examples
     --------
     >>>
     """
-
-    __module__ = "compas.datastructures"
 
     def __init__(self):
         super(BaseNetwork, self).__init__()
@@ -479,19 +473,23 @@ class BaseNetwork(Graph):
 # ==============================================================================
 
 if __name__ == '__main__':
-    network = BaseNetwork()
-    network.add_edge('a', 'b')
-    network.add_edge('a', 'c')
-    network.add_edge('a', 'd')
-    network.add_edge('a', 'e')
 
-    network.add_edge('b', 'c')
-    network.add_edge('b', 'd')
-    network.add_edge('b', 'e')
+    # network = BaseNetwork()
+    # network.add_edge('a', 'b')
+    # network.add_edge('a', 'c')
+    # network.add_edge('a', 'd')
+    # network.add_edge('a', 'e')
 
-    network.add_edge('c', 'd')
-    network.add_edge('c', 'e')
+    # network.add_edge('b', 'c')
+    # network.add_edge('b', 'd')
+    # network.add_edge('b', 'e')
 
-    network.add_edge('d', 'e')
+    # network.add_edge('c', 'd')
+    # network.add_edge('c', 'e')
 
-    network.summary()
+    # network.add_edge('d', 'e')
+
+    # network.summary()
+
+    import doctest
+    doctest.testmod(globs=globals())

@@ -54,8 +54,6 @@ class Polyline(Primitive):
     1.0
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ["_points", "_lines"]
 
     def __init__(self, points):

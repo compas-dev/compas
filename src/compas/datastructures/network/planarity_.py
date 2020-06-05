@@ -318,26 +318,29 @@ def network_embed_in_plane(network, fix=None, straightline=True):
 
 if __name__ == '__main__':
 
-    import compas
+    # import compas
 
-    from compas.datastructures import Network
-    from compas_plotters import NetworkPlotter
+    # from compas.datastructures import Network
+    # from compas_plotters import NetworkPlotter
 
-    network = Network.from_obj(compas.get('lines.obj'))
+    # network = Network.from_obj(compas.get('lines.obj'))
 
-    network.add_edge(6, 15)
+    # network.add_edge(6, 15)
 
-    if not network_is_planar(network):
-        crossings = network_find_crossings(network)
-    else:
-        crossings = []
+    # if not network_is_planar(network):
+    #     crossings = network_find_crossings(network)
+    # else:
+    #     crossings = []
 
-    print(crossings)
+    # print(crossings)
 
-    plotter = NetworkPlotter(network, figsize=(8, 5))
-    plotter.defaults['node.fontsize'] = 6
+    # plotter = NetworkPlotter(network, figsize=(8, 5))
+    # plotter.defaults['node.fontsize'] = 6
 
-    plotter.draw_nodes(radius=0.15, text={key: key for key in network.nodes()})
-    plotter.draw_edges(color={edge: '#ff0000' for edges in crossings for edge in edges})
+    # plotter.draw_nodes(radius=0.15, text={key: key for key in network.nodes()})
+    # plotter.draw_edges(color={edge: '#ff0000' for edges in crossings for edge in edges})
 
-    plotter.show()
+    # plotter.show()
+
+    import doctest
+    doctest.testmod(globs=globals())

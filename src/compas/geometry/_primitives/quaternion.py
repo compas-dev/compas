@@ -102,8 +102,6 @@ class Quaternion(Primitive):
     True
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['w', 'x', 'y', 'z']
 
     def __init__(self, w, x, y, z):

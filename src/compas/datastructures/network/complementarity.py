@@ -33,7 +33,7 @@ def network_complement(network, cls=None):
     >>> from compas.datastructures import network_complement
     >>> network = Network.from_obj(compas.get('lines.obj'))
     >>> complement = network_complement(network)
-    >>> any(complement.is_edge(u, v, directed=False) for u, v in network.edges())
+    >>> any(complement.has_edge(u, v, directed=False) for u, v in network.edges())
     False
 
     References

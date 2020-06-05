@@ -25,8 +25,6 @@ class VolMeshArtist(MeshArtist):
 
     """
 
-    __module__ = "compas_rhino.artists"
-
     def __init__(self, volmesh, layer=None):
         super(VolMeshArtist, self).__init__(volmesh, layer=layer)
 

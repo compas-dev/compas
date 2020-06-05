@@ -25,8 +25,6 @@ class RhinoLine(RhinoGeometry):
         The end point of the line.
     """
 
-    __module__ = 'compas_rhino.geometry'
-
     def __init__(self):
         super(RhinoLine, self).__init__()
 

@@ -15,8 +15,6 @@ __all__ = [
 
 class EdgeArtist(object):
 
-    __module__ = "compas_blender.artists.mixins"
-
     def clear_edges(self, keys=None):
         collection_name = "{}.edges".format(self.datastructure.name)
         collection = bpy.data.collections.get(collection_name)

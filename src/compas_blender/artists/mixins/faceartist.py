@@ -13,8 +13,6 @@ __all__ = ['FaceArtist']
 
 class FaceArtist(object):
 
-    __module__ = "compas_blender.artists.mixins"
-
     def clear_faces(self, keys=None):
         collection_name = "{}.faces".format(self.datastructure.name)
         collection = bpy.data.collections.get(collection_name)

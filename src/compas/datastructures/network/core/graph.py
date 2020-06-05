@@ -110,8 +110,6 @@ class Graph(Datastructure):
     >>>
     """
 
-    __module__ = "compas.datastructures"
-
     def __init__(self):
         super(Graph, self).__init__()
         self._max_int_key = -1
@@ -1526,4 +1524,6 @@ class Graph(Datastructure):
 # ==============================================================================
 
 if __name__ == '__main__':
-    pass
+
+    import doctest
+    doctest.testmod(globs=globals())

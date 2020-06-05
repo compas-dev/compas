@@ -100,8 +100,6 @@ class Bezier(Primitive):
     2
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ["_points"]
 
     def __init__(self, points):

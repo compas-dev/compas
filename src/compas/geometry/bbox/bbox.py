@@ -26,8 +26,7 @@ def bounding_box(points):
 
     Examples
     --------
-    >>> from compas.geometry import pointcloud
-    >>> points = numpy.random
+    >>>
 
     """
     x, y, z = zip(*points)
@@ -66,9 +65,7 @@ def bounding_box_xy(points):
 
     Examples
     --------
-    .. code-block:: python
-
-        #
+    >>>
 
     """
     x, y = islice(zip(*points), 2)
@@ -87,4 +84,6 @@ def bounding_box_xy(points):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    import doctest
+    doctest.testmod(globs=globals())

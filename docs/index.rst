@@ -48,7 +48,8 @@ Table of Contents
    gettingstarted
    tutorial
    api
-   changelog
    devguide
+   roadmap
+   changelog
    license
    citing

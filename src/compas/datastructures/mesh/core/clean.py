@@ -38,6 +38,11 @@ def mesh_delete_duplicate_vertices(mesh, precision=None):
     >>> for x, y, z in mesh.vertices_attributes('xyz', keys=list(mesh.vertices())[:5]):
     ...     mesh.add_vertex(x=x, y=y, z=z)
     ...
+    36
+    37
+    38
+    39
+    40
     >>> mesh.number_of_vertices()
     41
     >>> mesh_delete_duplicate_vertices(mesh)

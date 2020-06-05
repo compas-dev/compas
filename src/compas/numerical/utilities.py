@@ -91,4 +91,5 @@ def unset_array_print_precision():
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

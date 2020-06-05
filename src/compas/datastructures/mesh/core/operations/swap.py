@@ -71,4 +71,6 @@ def trimesh_swap_edge(mesh, u, v, allow_boundary=True):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    import doctest
+    doctest.testmod(globs=globals())

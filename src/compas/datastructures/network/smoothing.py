@@ -68,19 +68,22 @@ def network_smooth_centroid(network, fixed=None, kmax=100, damping=1.0, callback
 
 if __name__ == "__main__":
 
-    import compas
+    # import compas
 
-    from compas.datastructures import Network
-    from compas_plotters import NetworkPlotter
+    # from compas.datastructures import Network
+    # from compas_plotters import NetworkPlotter
 
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
-    fixed = network.leaves()
+    # network = Network.from_obj(compas.get('grid_irregular.obj'))
+    # fixed = network.leaves()
 
-    network_smooth_centroid(network, fixed=fixed)
+    # network_smooth_centroid(network, fixed=fixed)
 
-    plotter = NetworkPlotter(network, figsize=(8, 5))
+    # plotter = NetworkPlotter(network, figsize=(8, 5))
 
-    plotter.draw_nodes(facecolor={key: '#ff0000' for key in fixed})
-    plotter.draw_edges()
+    # plotter.draw_nodes(facecolor={key: '#ff0000' for key in fixed})
+    # plotter.draw_edges()
 
-    plotter.show()
+    # plotter.show()
+
+    import doctest
+    doctest.testmod(globs=globals())

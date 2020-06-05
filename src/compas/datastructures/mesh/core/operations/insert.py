@@ -32,18 +32,19 @@ def mesh_add_vertex_to_face_edge(mesh, key, fkey, v):
     --------
     Consider the following points and one face definition and the resulting mesh.
 
+    >>> from compas.datastructures import Mesh
     >>> points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.5, 0.0, 0.0]]
     >>> faces = [[0, 1, 2, 3]]
     >>> mesh = Mesh.from_vertices_and_faces(points, faces)
-    >>> mesh.face_degree(0)
+    >>> len(mesh.face_vertices(0))
     4
     >>> mesh.vertex_degree(4)
     0
 
     To add the isolated vertex to the single mesh face
 
-    >>> mesh_add_vertex_to_face_edge(mesh, 4, 0, 0, 1)
-    >>> mesh.face_degree(0)
+    >>> mesh_add_vertex_to_face_edge(mesh, 4, 0, 1)
+    >>> len(mesh.face_vertices(0))
     5
     >>> mesh.vertex_degree(4)
     2
@@ -102,21 +103,7 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
 
     Examples
     --------
-    >>> from compas.datastructures import Mesh
-    >>> from compas.plotters import MeshPlotter
-    >>> vertices = [[1.0, 0.0, 0.0], [1.0, 2.0, 0.0], [0.0, 1.0, 0.0], [2.0, 1.0, 0.0], [0.0, 0.0, 0.0]]
-    >>> faces = [[0, 1, 2], [0, 3, 1]]
-    >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
-    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
-    >>> mesh_insert_vertex_on_edge(mesh, 0, 1)
-    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
-    >>> mesh_insert_vertex_on_edge(mesh, 0, 2, 4)
-    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
-    >>> plotter = MeshPlotter(mesh)
-    >>> plotter.draw_vertices(text='key')
-    >>> plotter.draw_edges()
-    >>> plotter.draw_faces(text='key')
-    >>> plotter.show()
+    >>>
 
     """
 
@@ -145,4 +132,5 @@ def mesh_insert_vertex_on_edge(mesh, u, v, vkey=None):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

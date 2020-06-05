@@ -16,4 +16,6 @@ from .queries import *  # noqa: F401 F403
 from .intersections import *  # noqa: F401 F403
 from .tangent import *  # noqa: F401 F403
 
+from .kdtree import *  # noqa: F401 F403
+
 __all__ = [name for name in dir() if not name.startswith('_')]

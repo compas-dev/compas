@@ -69,8 +69,6 @@ class Vector(Primitive):
     Vector(0.000, 0.000, 1.000)
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_x', '_y', '_z']
 
     def __init__(self, x, y, z=0):

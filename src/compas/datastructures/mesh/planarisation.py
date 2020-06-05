@@ -121,4 +121,5 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

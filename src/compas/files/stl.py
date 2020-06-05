@@ -248,45 +248,47 @@ class STLParser(object):
 
 if __name__ == "__main__":
 
-    import os
-    import compas
+    import doctest
+    doctest.testmod(globs=globals())
 
-    from compas.datastructures import Mesh
-    from compas_viewers.meshviewer import MeshViewer
-    from compas.utilities import download_file_from_remote
-    from compas.topology import connected_components
+    # import os
 
-    source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
-    filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
+    # from compas.datastructures import Mesh
+    # from compas_viewers.meshviewer import MeshViewer
+    # from compas.utilities import download_file_from_remote
+    # from compas.topology import connected_components
 
-    download_file_from_remote(source, filepath, overwrite=False)
+    # source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
+    # filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
 
-    stl = STL(filepath, precision='6f')
+    # download_file_from_remote(source, filepath, overwrite=False)
 
-    mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
+    # stl = STL(filepath, precision='6f')
 
-    vertexgroups = connected_components(mesh.halfedge)
-    facegroups = [[] for _ in range(len(vertexgroups))]
+    # mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
 
-    vertexsets = list(map(set, vertexgroups))
+    # vertexgroups = connected_components(mesh.halfedge)
+    # facegroups = [[] for _ in range(len(vertexgroups))]
 
-    for fkey in mesh.faces():
-        vertices = set(mesh.face_vertices(fkey))
+    # vertexsets = list(map(set, vertexgroups))
 
-        for i, vertexset in enumerate(vertexsets):
-            if vertices.issubset(vertexset):
-                facegroups[i].append(fkey)
-                break
+    # for fkey in mesh.faces():
+    #     vertices = set(mesh.face_vertices(fkey))
 
-    meshes = []
+    #     for i, vertexset in enumerate(vertexsets):
+    #         if vertices.issubset(vertexset):
+    #             facegroups[i].append(fkey)
+    #             break
 
-    for vertexgroup, facegroup in zip(vertexgroups, facegroups):
-        key_index = {key: index for index, key in enumerate(vertexgroup)}
-        vertices = mesh.vertices_attributes('xyz', keys=vertexgroup)
-        faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in facegroup]
+    # meshes = []
 
-        meshes.append(Mesh.from_vertices_and_faces(vertices, faces))
+    # for vertexgroup, facegroup in zip(vertexgroups, facegroups):
+    #     key_index = {key: index for index, key in enumerate(vertexgroup)}
+    #     vertices = mesh.vertices_attributes('xyz', keys=vertexgroup)
+    #     faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in facegroup]
 
-    viewer = MeshViewer()
-    viewer.mesh = meshes[0]
-    viewer.show()
+    #     meshes.append(Mesh.from_vertices_and_faces(vertices, faces))
+
+    # viewer = MeshViewer()
+    # viewer.mesh = meshes[0]
+    # viewer.show()
