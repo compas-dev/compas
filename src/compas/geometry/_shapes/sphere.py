@@ -294,7 +294,7 @@ class Sphere(Shape):
         """
         self.point.transform(transformation)
         Sc, _Sh, _R, _Tl, _P = transformation.decomposed()
-        self.radius *= max(Sc.scale_factors)
+        self.radius *= max([Sc[0,0],Sc[1,1],Sc[2,2]])
 
     def transformed(self, transformation):
         """Returns a transformed copy of the current sphere.
