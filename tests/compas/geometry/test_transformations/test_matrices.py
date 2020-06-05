@@ -145,7 +145,7 @@ def test_matrix_from_translation():
 def test_matrix_from_orthogonal_projection():
     point = [0, 0, 0]
     normal = [0, 0, 1]
-    P = matrix_from_orthogonal_projection(point, normal)
+    P = matrix_from_orthogonal_projection((point, normal))
     p = [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0]]
     assert allclose(P, p)
 
@@ -154,7 +154,7 @@ def test_matrix_from_parallel_projection():
     point = [0, 0, 0]
     normal = [0, 0, 1]
     direction = [1, 1, 1]
-    P = matrix_from_parallel_projection(point, normal, direction)
+    P = matrix_from_parallel_projection((point, normal), direction)
     p = [[1.0, 0.0, -1.0, 0.0], [0.0, 1.0, -1.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0]]
     assert allclose(P, p)
 
@@ -163,7 +163,7 @@ def test_matrix_from_perspective_projection():
     point = [0, 0, 0]
     normal = [0, 0, 1]
     perspective = [1, 1, 0]
-    P = matrix_from_perspective_projection(point, normal, perspective)
+    P = matrix_from_perspective_projection((point, normal), perspective)
     p = [[0.0, 0.0, -1.0, 0.0], [0.0, 0.0, -1.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, -1.0, 0.0]]
     assert allclose(P, p)
 
