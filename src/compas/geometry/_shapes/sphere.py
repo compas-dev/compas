@@ -293,7 +293,7 @@ class Sphere(Shape):
 
         """
         self.point.transform(transformation)
-        Sc, _Sh, _R, _Tl, _P = transformation.decomposed()
+        Sc, _, _, _, _ = transformation.decomposed()
         self.radius *= max([Sc[0, 0], Sc[1, 1], Sc[2, 2]])
 
     def transformed(self, transformation):
