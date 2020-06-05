@@ -12,8 +12,8 @@ from numpy.linalg import lstsq
 # from scipy.linalg import svd
 from scipy.optimize import leastsq
 
-from compas.geometry import world_to_local_coords_numpy
-from compas.geometry import local_to_world_coords_numpy
+from compas.geometry import world_to_local_coordinates_numpy
+from compas.geometry import local_to_world_coordinates_numpy
 
 from compas.numerical import pca_numpy
 
@@ -117,7 +117,7 @@ def bestfit_circle_numpy(points):
     o, uvw, _ = pca_numpy(points)
     frame = [o, uvw[1], uvw[2]]
 
-    rst = world_to_local_coords_numpy(frame, points)
+    rst = world_to_local_coordinates_numpy(frame, points)
 
     x = rst[:, 0]
     y = rst[:, 1]
@@ -151,7 +151,7 @@ def bestfit_circle_numpy(points):
     # print(residu)
 
     # convert the location of the center point back to global coordinates.
-    xyz = local_to_world_coords_numpy(frame, [[c[0], c[1], 0.0]])[0]
+    xyz = local_to_world_coordinates_numpy(frame, [[c[0], c[1], 0.0]])[0]
     return xyz, uvw[2], R
 
 

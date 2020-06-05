@@ -16,8 +16,8 @@ from scipy.spatial import ConvexHull
 # from scipy.spatial import QhullError
 
 from compas.geometry import local_axes
-from compas.geometry import world_to_local_coords_numpy
-from compas.geometry import local_to_world_coords_numpy
+from compas.geometry import world_to_local_coordinates_numpy
+from compas.geometry import local_to_world_coordinates_numpy
 from compas.geometry import transform_points_numpy
 from compas.geometry import Frame
 from compas.geometry import Transformation
@@ -124,7 +124,7 @@ def oriented_bounding_box_numpy(points):
         uvw = local_axes(a, b, c)
         xyz = points[hull.vertices]
         frame = [a, uvw[0], uvw[1]]
-        rst = world_to_local_coords_numpy(frame, xyz)
+        rst = world_to_local_coordinates_numpy(frame, xyz)
         rmin, smin, tmin = amin(rst, axis=0)
         rmax, smax, tmax = amax(rst, axis=0)
         dr = rmax - rmin
@@ -143,7 +143,7 @@ def oriented_bounding_box_numpy(points):
                 [rmax, smax, tmax],
                 [rmin, smax, tmax],
             ]
-            bbox = local_to_world_coords_numpy(frame, bbox)
+            bbox = local_to_world_coordinates_numpy(frame, bbox)
             volume = v
 
     return bbox

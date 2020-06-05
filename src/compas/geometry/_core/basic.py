@@ -9,6 +9,8 @@ from random import uniform
 __all__ = [
     'close',
     'allclose',
+    'argmin',
+    'argmax',
     'add_vectors',
     'add_vectors_xy',
     'sum_vectors',
@@ -115,6 +117,63 @@ def allclose(l1, l2, tol=1e-05):
         return False
     return True
 
+
+def argmax(values):
+    """Returns the index of the first maximum value within an array.
+
+    Parameters
+    ----------
+    values : list of float
+        A list of values.
+
+    Notes
+    -----
+    NumPy's *argmax* function [1]_ is different, it returns an array of indices.
+
+    Examples
+    --------
+    >>> argmax([2, 4, 4, 3])
+    1
+
+    Returns
+    -------
+    int
+        The index of the first maximum value within an array.
+
+    References
+    ----------
+    .. [1] https://numpy.org/doc/stable/reference/generated/numpy.argmax.html
+    """
+    return max(range(len(values)), key=lambda i: values[i])
+
+
+def argmin(values):
+    """Returns the index of the first minimum value within an array.
+
+    Parameters
+    ----------
+    values : list of float
+        A list of values.
+
+    Notes
+    -----
+    NumPy's *argmin* function [1]_ is different, it returns an array of indices.
+
+    Examples
+    --------
+    >>> argmin([4, 2, 2, 3])
+    1
+
+    Returns
+    -------
+    int
+        The index of the first minimum value within an array.
+
+    References
+    ----------
+    .. [1] https://numpy.org/doc/stable/reference/generated/numpy.argmin.html
+    """
+    return min(range(len(values)), key=lambda i: values[i])
 
 # ==============================================================================
 # these return something of smaller dimension/length/...

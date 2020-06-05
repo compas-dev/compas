@@ -20,7 +20,7 @@ def test_prismatic_calculate_transformation():
     limit = Limit(lower=0, upper=1000)
     j1 = Joint('j1', 'prismatic', None, None, axis=Axis('1 0 0'), limit=limit)
     t = j1.calculate_transformation(550)
-    assert t == Translation([550, 0, 0])
+    assert t == Translation.from_vector([550, 0, 0])
 
 
 def test_mimic_calculate_position():

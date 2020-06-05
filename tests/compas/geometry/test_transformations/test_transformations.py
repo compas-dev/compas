@@ -33,7 +33,7 @@ from compas.geometry import translate_points_xy
 
 @pytest.fixture
 def T():
-    return Translation([1, 2, 3])
+    return Translation.from_vector([1, 2, 3])
 
 
 @pytest.fixture
