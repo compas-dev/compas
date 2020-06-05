@@ -86,4 +86,6 @@ def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=Non
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    import doctest
+    doctest.testmod(globs=globals())

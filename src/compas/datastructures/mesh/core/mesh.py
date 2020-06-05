@@ -22,7 +22,7 @@ from compas.geometry import centroid_polygon
 from compas.geometry import cross_vectors
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
-from compas.geometry import flatness
+from compas.geometry import distance_line_line
 from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
@@ -84,6 +84,7 @@ class BaseMesh(HalfEdge):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> V = mesh.number_of_vertices()
     >>> E = mesh.number_of_edges()
@@ -190,12 +191,7 @@ class BaseMesh(HalfEdge):
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-
-            mesh = Mesh.from_obj(compas.get('bunny.ply'))
+        >>>
 
         """
         ply = PLY(filepath)
@@ -1135,13 +1131,16 @@ class BaseMesh(HalfEdge):
         """
         return area_polygon(self.face_coordinates(fkey))
 
-    def face_flatness(self, fkey):
+    def face_flatness(self, fkey, maxdev=0.02):
         """Compute the flatness of the mesh face.
 
         Parameters
         ----------
         fkey : int
             The identifier of the face.
+        maxdev : float, optional
+            A maximum value for the allowed deviation from flatness.
+            Default is ``0.02``.
 
         Returns
         -------
@@ -1158,9 +1157,13 @@ class BaseMesh(HalfEdge):
         -------
         This method only makes sense for quadrilateral faces.
         """
-        vertices = self.face_coordinates(fkey)
-        face = range(len(self.face_vertices(fkey)))
-        return flatness(vertices, [face])[0]
+        vertices = self.face_vertices(fkey)
+        f = len(vertices)
+        points = self.vertices_attributes('xyz', keys=vertices)
+        lengths = [distance_point_point(a, b) for a, b in pairwise(points + points[:1])]
+        length = sum(lengths) / f
+        d = distance_line_line((points[0], points[2]), (points[1], points[3]))
+        return (d / length) / maxdev
 
     def face_aspect_ratio(self, fkey):
         """Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.

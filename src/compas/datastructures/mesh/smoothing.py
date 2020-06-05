@@ -38,27 +38,7 @@ def mesh_smooth_centroid(mesh, fixed=None, kmax=100, damping=0.5, callback=None,
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_smooth_centroid
-        from compas_plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-        fixed = list(mesh.vertices_where({'vertex_degree': 2}))
-
-        mesh_smooth_centroid(mesh, fixed=fixed)
-
-        plotter = MeshPlotter(mesh)
-
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
-        plotter.draw_faces()
-        plotter.draw_edges()
-
-        plotter.show()
+    >>>
 
     """
     if callback:
@@ -112,27 +92,7 @@ def mesh_smooth_centerofmass(mesh, fixed=None, kmax=100, damping=0.5, callback=N
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_smooth_centerofmass
-        from compas_plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-        fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
-
-        mesh_smooth_centerofmass(mesh, fixed=fixed)
-
-        plotter = MeshPlotter(mesh)
-
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
-        plotter.draw_faces()
-        plotter.draw_edges()
-
-        plotter.show()
+    >>>
 
     """
     if callback:
@@ -186,27 +146,7 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas.datastructures import mesh_smooth_area
-        from compas_plotters import MeshPlotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-        fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
-
-        mesh_smooth_area(mesh, fixed=fixed)
-
-        plotter = MeshPlotter(mesh)
-
-        plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
-        plotter.draw_faces()
-        plotter.draw_edges()
-
-        plotter.show()
+    >>>
 
     """
     if callback:
@@ -260,30 +200,33 @@ def mesh_smooth_area(mesh, fixed=None, kmax=100, damping=0.5, callback=None, cal
 
 if __name__ == "__main__":
 
-    import compas
+    # import compas
 
-    from compas.datastructures import Mesh
-    from compas_plotters import MeshPlotter
+    # from compas.datastructures import Mesh
+    # from compas_plotters import MeshPlotter
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    # mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    fixed = list(mesh.vertices_where({'vertex_degree': 2}))
+    # fixed = list(mesh.vertices_where({'vertex_degree': 2}))
 
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start': mesh.vertex_coordinates(u, 'xy'),
-            'end': mesh.vertex_coordinates(v, 'xy'),
-            'color': '#cccccc',
-            'width': 1.0,
-        })
+    # lines = []
+    # for u, v in mesh.edges():
+    #     lines.append({
+    #         'start': mesh.vertex_coordinates(u, 'xy'),
+    #         'end': mesh.vertex_coordinates(v, 'xy'),
+    #         'color': '#cccccc',
+    #         'width': 1.0,
+    #     })
 
-    mesh_smooth_area(mesh, fixed=fixed, kmax=100)
+    # mesh_smooth_area(mesh, fixed=fixed, kmax=100)
 
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
+    # plotter = MeshPlotter(mesh, figsize=(10, 7))
 
-    plotter.draw_lines(lines)
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
-    plotter.draw_edges()
+    # plotter.draw_lines(lines)
+    # plotter.draw_vertices(facecolor={key: '#ff0000' for key in fixed})
+    # plotter.draw_edges()
 
-    plotter.show()
+    # plotter.show()
+
+    import doctest
+    doctest.testmod(globs=globals())

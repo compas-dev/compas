@@ -304,19 +304,20 @@ class Capsule(Shape):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.geometry import Transformation
 
-    capsule = Capsule(Line((1, 2, 3), (4, 5, 6)), 1.3)
-    frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    print(frame.normal)
-    T = Transformation.from_frame(frame)
-    capsule.transform(T)
-    print(capsule)
+    # from compas.geometry import Transformation
 
-    print(Plane.worldXY().data)
-    data = {'line': Line((1, 2, 3), (5, 4, 2)).data, 'radius': 1.2}
-    capsule = Capsule.from_data(data)
-    print(capsule)
+    # capsule = Capsule(Line((1, 2, 3), (4, 5, 6)), 1.3)
+    # frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    # print(frame.normal)
+    # T = Transformation.from_frame(frame)
+    # capsule.transform(T)
+    # print(capsule)
+
+    # print(Plane.worldXY().data)
+    # data = {'line': Line((1, 2, 3), (5, 4, 2)).data, 'radius': 1.2}
+    # capsule = Capsule.from_data(data)
+    # print(capsule)
 
     import doctest
     doctest.testmod()

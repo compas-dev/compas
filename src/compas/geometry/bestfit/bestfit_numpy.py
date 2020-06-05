@@ -215,4 +215,4 @@ def bestfit_sphere_numpy(points):
 if __name__ == "__main__":
 
     import doctest
-    doctest.testmod()
+    doctest.testmod(globs=globals())

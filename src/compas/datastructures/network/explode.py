@@ -80,24 +80,27 @@ def network_explode(network, cls=None):
 
 if __name__ == "__main__":
 
-    from compas.datastructures import Network
+    # from compas.datastructures import Network
 
-    nodes = [
-        [0.0, 0.0, 0.0],
-        [1.0, 0.0, 0.0],
-        [2.0, 0.0, 0.0],
-        [3.0, 0.0, 0.0],
-        [4.0, 0.0, 0.0],
-    ]
+    # nodes = [
+    #     [0.0, 0.0, 0.0],
+    #     [1.0, 0.0, 0.0],
+    #     [2.0, 0.0, 0.0],
+    #     [3.0, 0.0, 0.0],
+    #     [4.0, 0.0, 0.0],
+    # ]
 
-    edges = [
-        (0, 1),
-        (2, 3),
-        (3, 4),
-    ]
+    # edges = [
+    #     (0, 1),
+    #     (2, 3),
+    #     (3, 4),
+    # ]
 
-    network = Network.from_nodes_and_edges(nodes, edges)
+    # network = Network.from_nodes_and_edges(nodes, edges)
 
-    print(network_disconnected_nodes(network))
-    print(network_disconnected_edges(network))
-    print(network_explode(network))
+    # print(network_disconnected_nodes(network))
+    # print(network_disconnected_edges(network))
+    # print(network_explode(network))
+
+    import doctest
+    doctest.testmod(globs=globals())

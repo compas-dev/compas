@@ -2803,11 +2803,14 @@ class VolMesh(Datastructure):
 
 if __name__ == '__main__':
 
-    import compas
+    # import compas
 
-    volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
+    # volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
 
-    volmesh.summary()
+    # volmesh.summary()
 
-    for key, attr in volmesh.vertices(True):
-        print(key, attr)
+    # for key, attr in volmesh.vertices(True):
+    #     print(key, attr)
+
+    import doctest
+    doctest.testmod(globs=globals())

@@ -79,4 +79,5 @@ def mesh_transformed_numpy(mesh, transformation):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

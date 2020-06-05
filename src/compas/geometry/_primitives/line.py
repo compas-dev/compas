@@ -186,7 +186,7 @@ class Line(Primitive):
 
         Examples
         --------
-        >>> from marh import radians
+        >>> from math import radians
         >>> from compas.geometry import Point
         >>> from compas.geometry import Vector
         >>> from compas.geometry import Rotation

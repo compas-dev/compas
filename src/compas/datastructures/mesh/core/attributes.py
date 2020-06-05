@@ -71,3 +71,13 @@ class FaceAttributeView(AttributeView, MutableMapping):
     def __init__(self, defaults, attr, key, custom_only=False):
         super(FaceAttributeView, self).__init__(defaults, attr, key, custom_only)
         self.attr.setdefault(self.key, {})
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == '__main__':
+
+    import doctest
+    doctest.testmod(globs=globals())

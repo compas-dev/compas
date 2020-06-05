@@ -111,4 +111,5 @@ def discrete_coons_patch(ab, bc, dc, ad):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

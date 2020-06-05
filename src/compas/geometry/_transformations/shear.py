@@ -85,6 +85,6 @@ if __name__ == "__main__":
     import doctest
 
     from compas.geometry import Shear  # noqa: F401 F811
-    from compas.geomtry import cross_vectors  # noqa: F401
+    from compas.geometry import cross_vectors  # noqa: F401
 
     doctest.testmod(globs=globals())

@@ -199,8 +199,9 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
     ----------
     mesh : compas.datastructures.Mesh
         Instance of mesh.
-    rtype : {'array', 'csc', 'csr', 'coo', 'list'}
+    rtype : {'array', 'csc', 'csr', 'coo', 'list'}, optional
         Format of the result.
+        Default is ``"csr"``.
 
     Returns
     -------
@@ -229,7 +230,7 @@ def mesh_laplacian_matrix(mesh, rtype='csr'):
 
     Examples
     --------
-    >>> L = mesh_laplacian_matrix(mesh)
+    >>> L = mesh_laplacian_matrix(mesh, rtype='array')
     >>> type(L)
     <class 'numpy.ndarray'>
 

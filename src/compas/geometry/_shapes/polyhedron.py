@@ -63,7 +63,7 @@ class Polyhedron(Shape):
         >>> p = Polyhedron(4)
         >>> q = Polyhedron.from_data(p.data)
         """
-        p = cls.generate(len(data.get('faces')))
+        p = cls(len(data.get('faces')))
         p.data = data
         return p
 

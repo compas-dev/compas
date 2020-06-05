@@ -2541,4 +2541,6 @@ class HalfEdge(Datastructure):
 # ==============================================================================
 
 if __name__ == '__main__':
-    pass
+
+    import doctest
+    doctest.testmod(globs=globals())

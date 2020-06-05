@@ -52,17 +52,7 @@ def offset_line(line, distance, normal=[0.0, 0.0, 1.0]):
 
     Examples
     --------
-    .. code-block:: python
-
-        line = [(0.0, 0.0, 0.0), (3.0, 3.0, 0.0)]
-
-        distance = 0.2 # constant offset
-        line_offset = offset_line(line, distance)
-        print(line_offset)
-
-        distance = [0.2, 0.1] # variable offset
-        line_offset = offset_line(line, distance)
-        print(line_offset)
+    >>>
 
     """
 
@@ -112,30 +102,7 @@ def offset_polygon(polygon, distance, tol=1e-6):
 
     Examples
     --------
-    .. code-block:: python
-
-        polygon = [
-            (0.0, 0.0, 0.0),
-            (3.0, 0.0, 1.0),
-            (3.0, 3.0, 2.0),
-            (1.5, 1.5, 2.0),
-            (0.0, 3.0, 1.0),
-            (0.0, 0.0, 0.0)
-            ]
-
-        distance = 0.5 # constant offset
-        polygon_offset = offset_polygon(polygon, distance)
-        print(polygon_offset)
-
-        distance = [
-            (0.1, 0.2),
-            (0.2, 0.3),
-            (0.3, 0.4),
-            (0.4, 0.3),
-            (0.3, 0.1)
-            ] # variable offset
-        polygon_offset = offset_polygon(polygon, distance)
-        print(polygon_offset)
+    >>>
 
     """
     normal = normal_polygon(polygon)
@@ -233,6 +200,7 @@ def offset_segments(point_list, distances, normal):
         segments.append(offset_line(line, distance, normal))
     return segments
 
+
 # ==============================================================================
 # Main
 # ==============================================================================
@@ -240,31 +208,34 @@ def offset_segments(point_list, distances, normal):
 
 if __name__ == "__main__":
 
-    import compas
+    # import compas
 
-    from compas_plotters import MeshPlotter
-    from compas.datastructures import Mesh
+    # from compas_plotters import MeshPlotter
+    # from compas.datastructures import Mesh
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    # mesh = Mesh.from_obj(compas.get('faces.obj'))
 
-    polygons = []
-    lines = []
-    for fkey in mesh.faces():
-        points = mesh.face_coordinates(fkey)
-        offset = offset_polyline(points, 0.1)
-        polygons.append({
-            'points': offset,
-            'edgecolor': '#ff0000'
-        })
-        for a, b in zip(points, offset):
-            lines.append({
-                'start': a,
-                'end': b,
-                'color': '#00ff00'
-            })
+    # polygons = []
+    # lines = []
+    # for fkey in mesh.faces():
+    #     points = mesh.face_coordinates(fkey)
+    #     offset = offset_polyline(points, 0.1)
+    #     polygons.append({
+    #         'points': offset,
+    #         'edgecolor': '#ff0000'
+    #     })
+    #     for a, b in zip(points, offset):
+    #         lines.append({
+    #             'start': a,
+    #             'end': b,
+    #             'color': '#00ff00'
+    #         })
 
-    plotter = MeshPlotter(mesh, figsize=(12, 9))
-    plotter.draw_faces()
-    plotter.draw_polylines(polygons)
-    plotter.draw_lines(lines)
-    plotter.show()
+    # plotter = MeshPlotter(mesh, figsize=(12, 9))
+    # plotter.draw_faces()
+    # plotter.draw_polylines(polygons)
+    # plotter.draw_lines(lines)
+    # plotter.show()
+
+    import doctest
+    doctest.testmod(globs=globals())

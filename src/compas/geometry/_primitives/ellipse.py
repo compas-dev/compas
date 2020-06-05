@@ -237,7 +237,7 @@ class Ellipse(Primitive):
         >>> from compas.geometry import Transformation
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Ellipse
-        >>> ellipse = Ellipse(Plane.worldXY(), 5)
+        >>> ellipse = Ellipse(Plane.worldXY(), 8, 5)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> ellipse.transform(T)
@@ -263,7 +263,7 @@ class Ellipse(Primitive):
         >>> from compas.geometry import Transformation
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Ellipse
-        >>> ellipse = Ellipse(Plane.worldXY(), 5)
+        >>> ellipse = Ellipse(Plane.worldXY(), 8, 5)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> ellipse_transformed = ellipse.transformed(T)

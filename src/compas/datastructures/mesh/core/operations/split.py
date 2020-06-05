@@ -230,4 +230,5 @@ def mesh_split_face(mesh, fkey, u, v):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())
