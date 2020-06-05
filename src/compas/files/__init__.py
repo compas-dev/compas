@@ -60,6 +60,7 @@ but OBJ files can contain scale information in a human readable comment line. [W
     OBJReader
     OBJParser
 
+
 PLY
 ===
 
@@ -79,6 +80,7 @@ the file format, one in ASCII, the other in binary. [Wikipedia_PLY]_
     PLYReader
     PLYParser
 
+
 STL
 ===
 
@@ -90,6 +92,7 @@ STL
     STLReader
     STLParser
 
+
 URDF
 ====
 
@@ -100,6 +103,7 @@ URDF
     URDF
     URDFParser
 
+
 XML
 ===
 
@@ -109,6 +113,7 @@ XML
 
     XML
     XMLReader
+
 
 GLTF
 ====
@@ -123,19 +128,6 @@ GLTF
     GLTFContent
     GLTFMesh
     GLTFExporter
-
-
-References
-==========
-
-.. [Wikipedia_3MF] https://en.wikipedia.org/wiki/3D_Manufacturing_Format
-
-.. [Wikipedia_AMF] https://en.wikipedia.org/wiki/Additive_manufacturing_file_format
-
-.. [Wikipedia_OBJ] https://en.wikipedia.org/wiki/Wavefront_.obj_file
-
-.. [Wikipedia_PLY] https://en.wikipedia.org/wiki/PLY_(file_format)
-
 
 """
 

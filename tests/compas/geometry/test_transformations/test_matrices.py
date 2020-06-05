@@ -41,7 +41,7 @@ from compas.geometry import translation_from_matrix
 
 @pytest.fixture
 def T():
-    return Translation([1, 2, 3])
+    return Translation.from_vector([1, 2, 3])
 
 
 @pytest.fixture
@@ -55,10 +55,16 @@ def test_matrix_determinant(R, T):
 
 
 def test_matrix_inverse(R, T):
-    assert matrix_inverse(R.matrix) == [
-        [1.0, -0.0, 0.0, -0.0], [-0.0, -0.4480736161291701, 0.8939966636005579, 0.0], [0.0, -0.8939966636005579, -0.4480736161291701, -0.0], [-0.0, 0.0, -0.0, 1.0]]
-    assert matrix_inverse(T.matrix) == [
-        [1.0, -0.0, 0.0, -1.0], [-0.0, 1.0, -0.0, -2.0], [0.0, -0.0, 1.0, -3.0], [-0.0, 0.0, -0.0, 1.0]]
+    assert allclose(matrix_inverse(R.matrix),
+                    [[1.0, -0.0, 0.0, -0.0],
+                     [-0.0, -0.4480736161291701, 0.8939966636005579, 0.0],
+                     [0.0, -0.8939966636005579, -0.4480736161291701, -0.0],
+                     [-0.0, 0.0, -0.0, 1.0]])
+    assert allclose(matrix_inverse(T.matrix),
+                    [[1.0, -0.0, 0.0, -1.0],
+                     [-0.0, 1.0, -0.0, -2.0],
+                     [0.0, -0.0, 1.0, -3.0],
+                     [-0.0, 0.0, -0.0, 1.0]])
 
 
 def test_decompose_matrix(R, T):
@@ -139,7 +145,7 @@ def test_matrix_from_translation():
 def test_matrix_from_orthogonal_projection():
     point = [0, 0, 0]
     normal = [0, 0, 1]
-    P = matrix_from_orthogonal_projection(point, normal)
+    P = matrix_from_orthogonal_projection((point, normal))
     p = [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0]]
     assert allclose(P, p)
 
@@ -148,7 +154,7 @@ def test_matrix_from_parallel_projection():
     point = [0, 0, 0]
     normal = [0, 0, 1]
     direction = [1, 1, 1]
-    P = matrix_from_parallel_projection(point, normal, direction)
+    P = matrix_from_parallel_projection((point, normal), direction)
     p = [[1.0, 0.0, -1.0, 0.0], [0.0, 1.0, -1.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0]]
     assert allclose(P, p)
 
@@ -157,7 +163,7 @@ def test_matrix_from_perspective_projection():
     point = [0, 0, 0]
     normal = [0, 0, 1]
     perspective = [1, 1, 0]
-    P = matrix_from_perspective_projection(point, normal, perspective)
+    P = matrix_from_perspective_projection((point, normal), perspective)
     p = [[0.0, 0.0, -1.0, 0.0], [0.0, 0.0, -1.0, 0.0], [0.0, 0.0, 0.0, 0.0], [0.0, 0.0, -1.0, 0.0]]
     assert allclose(P, p)
 
