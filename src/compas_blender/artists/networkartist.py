@@ -10,8 +10,6 @@ __all__ = [
 
 class NetworkArtist(EdgeArtist, VertexArtist, Artist):
 
-    __module__ = "compas_blender.artists"
-
     def __init__(self, network, layer=None):
         super().__init__(layer=layer)
         self.network = network

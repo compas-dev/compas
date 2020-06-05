@@ -56,8 +56,6 @@ class Line(Primitive):
     True
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_start', '_end']
 
     def __init__(self, p1, p2):

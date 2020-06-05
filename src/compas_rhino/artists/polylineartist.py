@@ -27,8 +27,6 @@ class PolylineArtist(PrimitiveArtist):
 
     """
 
-    __module__ = "compas_rhino.artists"
-
     def draw(self):
         """Draw the polyline.
 

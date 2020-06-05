@@ -28,8 +28,6 @@ class NetworkArtist(Artist):
 
     """
 
-    __module__ = "compas_rhino.artists"
-
     def __init__(self, network, layer=None, name=None):
         super(NetworkArtist, self).__init__()
         self.layer = layer

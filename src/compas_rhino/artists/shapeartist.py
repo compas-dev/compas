@@ -18,8 +18,6 @@ class ShapeArtist(Artist):
 
     """
 
-    __module__ = "compas_rhino.artists"
-
     def __init__(self, shape, name=None, layer=None):
         super(ShapeArtist, self).__init__()
         self._shape = None

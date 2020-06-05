@@ -45,8 +45,6 @@ class Sphere(Shape):
     >>> sphere3 = Sphere([2, 4, 1], 2)
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_point', '_radius']
 
     def __init__(self, point, radius):

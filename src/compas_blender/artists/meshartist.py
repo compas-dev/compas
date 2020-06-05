@@ -33,8 +33,6 @@ class MeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
 
     """
 
-    __module__ = "compas_blender.artists"
-
     def __init__(self, mesh, layer=None):
         super().__init__(layer=layer)
         self.mesh = mesh

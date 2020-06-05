@@ -51,8 +51,6 @@ class Torus(Shape):
 
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
 
     def __init__(self, plane, radius_axis, radius_pipe):

@@ -27,8 +27,6 @@ class FrameArtist(PrimitiveArtist):
 
     """
 
-    __module__ = "compas_rhino.artists"
-
     def __init__(self, frame, layer=None, name=None, scale=1.0):
         super(FrameArtist, self).__init__(frame, layer=layer, name=name)
         self.scale = scale

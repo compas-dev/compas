@@ -25,16 +25,10 @@ __all__ = ['BaseNetwork']
 class BaseNetwork(Graph):
     """Geometric implementation of a basic edge graph.
 
-    Methods
-    -------
-
-
     Examples
     --------
     >>>
     """
-
-    __module__ = "compas.datastructures"
 
     def __init__(self):
         super(BaseNetwork, self).__init__()

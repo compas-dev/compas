@@ -105,8 +105,6 @@ class Point(Primitive):
     Point(100.000, 196.000, 324.000)
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_x', '_y', '_z']
 
     def __init__(self, x, y, z=0.0):

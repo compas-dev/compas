@@ -12,8 +12,6 @@ __all__ = ['EdgeArtist']
 
 class EdgeArtist(object):
 
-    __module__ = "compas_rhino.artists.mixins"
-
     def clear_edges(self, keys=None):
         """Clear all edges previously drawn by the ``EdgeArtist``.
 
@@ -30,7 +28,7 @@ class EdgeArtist(object):
         else:
             guids = []
             for u, v in keys:
-                name = self.datastructure.edge_name(u, v)
+                name = "{}.edge.{}-{}".format(self.datastructure.name, u, v)
                 guid = compas_rhino.get_object(name=name)
                 guids.append(guid)
         compas_rhino.delete_objects(guids)
@@ -90,12 +88,13 @@ class EdgeArtist(object):
                                        normalize=False)
         lines = []
         for u, v in keys:
+            start, end = self.datastructure.edge_coordinates(u, v)
             lines.append({
-                'start': self.datastructure.vertex_coordinates(u),
-                'end': self.datastructure.vertex_coordinates(v),
+                'start': start,
+                'end': end,
                 'color': colordict[(u, v)],
-                'name': self.datastructure.edge_name(u, v),
-                'layer': self.datastructure.edge_attribute((u, v), 'layer', None)
+                'name': "{}.edge.{}-{}".format(self.datastructure.name, u, v),
+                'layer': self.datastructure.edge_attribute((u, v), 'layer')
             })
 
         return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -141,10 +140,10 @@ class EdgeArtist(object):
         for (u, v), text in iter(textdict.items()):
             labels.append({
                 'pos': self.datastructure.edge_midpoint(u, v),
-                'name': self.datastructure.edge_label_name(u, v),
+                'name': "{}.edge.{}-{}".format(self.datastructure.name, u, v),
                 'color': colordict[(u, v)],
                 'text': textdict[(u, v)],
-                'layer': self.datastructure.edge_attribute((u, v), 'layer', None)
+                'layer': self.datastructure.edge_attribute((u, v), 'layer')
             })
 
         return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)

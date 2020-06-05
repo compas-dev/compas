@@ -25,8 +25,6 @@ class Polyhedron(Shape):
 
     """
 
-    __module__ = "compas.geometry"
-
     def __init__(self, fcount):
         self.vertices = None
         self.faces = None

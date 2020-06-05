@@ -20,6 +20,7 @@ from compas.datastructures.mesh.smoothing import mesh_smooth_centroid
 from compas.datastructures.mesh.smoothing import mesh_smooth_area
 from compas.datastructures.mesh.transformations import mesh_transform
 from compas.datastructures.mesh.transformations import mesh_transformed
+from compas.datastructures.mesh.triangulation import mesh_quads_to_triangles
 
 
 __all__ = ['Mesh']
@@ -32,8 +33,6 @@ class Mesh(BaseMesh):
     --------
     >>> mesh = Mesh.from_polyhedron(6)
     """
-
-    __module__ = "compas.datastructures"
 
     bounding_box = mesh_bounding_box
     bounding_box_xy = mesh_bounding_box_xy
@@ -51,6 +50,7 @@ class Mesh(BaseMesh):
     transform = mesh_transform
     transformed = mesh_transformed
     unify_cycles = mesh_unify_cycles
+    quads_to_triangles = mesh_quads_to_triangles
 
     def to_trimesh(self):
         # convert to mesh with only triangle faces

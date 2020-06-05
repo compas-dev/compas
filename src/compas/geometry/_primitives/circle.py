@@ -46,8 +46,6 @@ class Circle(Primitive):
     >>> circle = Circle(plane, 5)
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_plane', '_radius']
 
     def __init__(self, plane, radius):

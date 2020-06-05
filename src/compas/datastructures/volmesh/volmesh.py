@@ -188,8 +188,6 @@ class VolMesh(Datastructure):
 
     """
 
-    __module__ = 'compas.datastructures'
-
     def __init__(self):
         super(VolMesh, self).__init__()
         self._max_int_vkey = -1

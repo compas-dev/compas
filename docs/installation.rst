@@ -75,7 +75,8 @@ Note that the same is possible in combination with ``conda`` environments.
 Known Issues
 ============
 
-If you encounter a problem that is not described here, please file an issue using the `Issue Tracker <https:// >`_.
+If you encounter a problem that is not described here,
+please file an issue using the `Issue Tracker <https://github.com/compas-dev/compas/issues>`_.
 
 
 Installing Planarity

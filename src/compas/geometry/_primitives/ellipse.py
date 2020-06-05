@@ -46,8 +46,6 @@ class Ellipse(Primitive):
     >>> ellipse = Ellipse(plane, 2, 1)
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_plane', '_major', '_minor']
 
     def __init__(self, plane, major, minor):

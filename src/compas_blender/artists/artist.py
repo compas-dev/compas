@@ -9,8 +9,6 @@ __all__ = ['Artist']
 
 class Artist(object):
 
-    __module__ = "compas_blender.artists"
-
     def __init__(self, layer=None):
         self.layer = layer
         self.defaults = {

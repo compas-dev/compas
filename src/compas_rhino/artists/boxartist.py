@@ -16,8 +16,6 @@ class BoxArtist(ShapeArtist):
 
     """
 
-    __module__ = "compas_rhino.artists"
-
     def draw(self):
         pass
 
