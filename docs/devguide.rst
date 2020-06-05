@@ -134,8 +134,8 @@ Per package, the APIs of the contained module are collected in ``__all__`` varia
 
 
 
-Numpy/Numba/CLI/... implementations
-===================================
+Multiple implementations
+========================
 
 
 Testing

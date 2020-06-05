@@ -93,8 +93,6 @@ class BaseMesh(HalfEdge):
 
     """
 
-    __module__ = 'compas.datastructures'
-
     def __init__(self):
         super(BaseMesh, self).__init__()
         self.attributes.update({'name': 'Mesh'})

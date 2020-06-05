@@ -58,9 +58,7 @@ def discrete_coons_patch(ab, bc, dc, ad):
 
     Examples
     --------
-    .. code-block:: python
-
-        #
+    >>>
 
     """
     if not ab:
@@ -100,11 +98,11 @@ def discrete_coons_patch(ab, bc, dc, ad):
         vertices += array[i]
 
     # create face vertex list
-    face_vertices = []
+    faces = []
     for i in range(n - 1):
         for j in range(m - 1):
-            face_vertices.append([i * m + j, i * m + j + 1, (i + 1) * m + j + 1, (i + 1) * m + j])
-    return vertices, face_vertices
+            faces.append([i * m + j, i * m + j + 1, (i + 1) * m + j + 1, (i + 1) * m + j])
+    return vertices, faces
 
 
 # ==============================================================================

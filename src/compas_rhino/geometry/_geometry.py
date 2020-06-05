@@ -34,8 +34,6 @@ class RhinoGeometry(object):
 
     """
 
-    __module__ = 'compas_rhino.geometry'
-
     def __init__(self):
         self.guid = None
         self.object = None

@@ -48,8 +48,6 @@ class RhinoCurve(RhinoGeometry):
     True
     """
 
-    __module__ = 'compas_rhino.geometry'
-
     def __init__(self):
         super(RhinoCurve, self).__init__()
 

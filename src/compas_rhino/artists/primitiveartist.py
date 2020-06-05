@@ -29,8 +29,6 @@ class PrimitiveArtist(Artist):
 
     """
 
-    __module__ = "compas_rhino.artists"
-
     def __init__(self, primitive, name=None, color=None, layer=None):
         super(PrimitiveArtist, self).__init__()
         self.primitive = primitive

@@ -34,8 +34,6 @@ class Mesh(BaseMesh):
     >>> mesh = Mesh.from_polyhedron(6)
     """
 
-    __module__ = "compas.datastructures"
-
     bounding_box = mesh_bounding_box
     bounding_box_xy = mesh_bounding_box_xy
     collapse_edge = mesh_collapse_edge

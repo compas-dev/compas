@@ -11,8 +11,6 @@ __all__ = ['Network']
 
 class Network(BaseNetwork):
 
-    __module__ = "compas.datastructures"
-
     split_edge = network_split_edge
 
 

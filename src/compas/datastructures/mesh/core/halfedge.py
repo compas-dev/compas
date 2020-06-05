@@ -59,8 +59,6 @@ class HalfEdge(Datastructure):
     >>>
     """
 
-    __module__ = 'compas.datastructures'
-
     def __init__(self):
         super(HalfEdge, self).__init__()
         self._max_int_key = -1
