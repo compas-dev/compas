@@ -16,19 +16,15 @@ __all__ = [
 ]
 
 def intersection_mesh_line(mesh, line):
-    """ Computes intersection between mesh faces and line
-
+    """Computes intersection between mesh faces and line
     First extracts faces from the mesh and computes the intersection between 
     a triangular face and a line, or two triangles of a quad face and a line.
-    
     After one single intersection, stops searching for more.
-
     Returns one point from line-mesh intersection if intersection occurs.
 
     Parameters
     ----------
     mesh : compas.datastructures.Mesh
-
     line : compas.geometry.Line
 
     Returns
@@ -58,20 +54,16 @@ def intersection_mesh_line(mesh, line):
         return None
 
 def intersection_mesh_plane(mesh, plane):
-    """ Calculates the keys of the points of the intersection of a mesh with a plane
-
-    Returns list of keys from points of the mesh.
+    """Calculates the keys of the points of the intersection of a mesh with a plane
 
     Parameters
     ----------
     mesh : compas.datastructures.Mesh
-
     plane : compas.geometry.Plane
 
     Returns
     -------
-    intersections : list of points as keys from mesh
-
+    intersections: list of points as keys from mesh
     """
       
     intersections = [] 
@@ -94,22 +86,17 @@ def intersection_mesh_plane(mesh, plane):
     return intersections
 
 def mesh_vertices_to_points(mesh, v_keys):
-    """ Computes compas points from vertex keys from specific mesh
+    """Computes compas points from vertex keys from specific mesh
     Returns list of compas points from a list of indexes of the vertexes of a mesh
+
     Parameters
     ----------
     mesh : compas.datastructures.Mesh
-
     v_keys : list of vertex indexes of a mesh
 
     Returns
     -------
-    intersections : list of points as keys from mesh
-
+    list of compas.geometry.Point 
     """
-    points = []
-    for v_key in v_keys:
-        x,y,z = mesh.vertex_attributes(v_key, 'xyz')
-        pt = Point(x,y,z)
-        points.append(pt)
-    return points
+    coordinates = [mesh.vertex_attributes(v_key, 'xyz') for v_key in v_keys]
+    return [Point(x,y,z) for x,y,z in coordinates]

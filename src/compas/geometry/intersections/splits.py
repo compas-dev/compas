@@ -4,10 +4,8 @@ from __future__ import division
 
 from compas.datastructures import Mesh
 from compas.geometry import Polyline
-
 from compas.geometry import intersection_segment_plane
-from compas.geometry import intersection_mesh_plane
-
+from compas.geometry.intersections import intersection_mesh_plane
 from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 
@@ -17,18 +15,17 @@ __all__ = [
 ]
 
 def split_polyline_plane(polyline, plane):
-    """ Splits a polyline by a plane, returns a list of polylines, if there has been intersections
+    """Splits a polyline by a plane, returns a list of polylines, if there has been intersections
     Returns list of the splitted polylines
 
     Parameters
     ----------
-    mesh : compas.datastructures.Polyline
-
+    polyline : compas.datastructures.Polyline
     plane : compas.geometry.Plane
 
     Returns
     -------
-    polylines : list of compas.geometry.Polylines
+    polylines : list of compas.geometry.Polyline
     """
     splitted_polylines_points=[]
     sublist=[]
@@ -49,18 +46,16 @@ def split_polyline_plane(polyline, plane):
 def split_mesh_plane(mesh, plane, open=True): #compas
     """ Calculates all the intersections between edges of the mesh and cutting plane,
     and splits every mesh edge at the intersection point, if it exists.
-
     Returns a list of the resulting splitted meshes.
 
     Parameters
     ----------
     mesh : compas.datastructures.Mesh
-
     plane : compas.geometry.Plane
 
     Returns
     -------
-    splitted_meshes : list of compas.geometry.Polylines
+    splitted_meshes : list of compas.datastructures.Mesh
     """
     def mesh_from_split(self, mesh, v_keys, f_keys, intersections, open=True): # compas
         """ Returns a mesh from the positive or negative verts, faces and the intersection verts of a splitted mesh

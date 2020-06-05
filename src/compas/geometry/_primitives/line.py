@@ -338,8 +338,9 @@ class Line(Primitive):
         line.transform(T)
         return line
 
-    def divide_by_count(self, number=10, includeEnds = False):
-        """ Returns List of points from dividing the line by specific number of divisions
+    def divide_by_count(self, number=10, includeEnds=False):
+        """Returns List of points from dividing the line by specific number of divisions
+
         Parameters
         ----------
         number : integer
@@ -350,11 +351,13 @@ class Line(Primitive):
 
         Returns
         -------
-        list of compas.geometry.Point 
+        list of: compas.geometry.Point // Point as sequence of values xyz)
 
-        Examples
+        Example
         --------
-        >>> line.divide_by_count(10,True)
+        >>> line = Line([0.0,0.0,0.0],[5.0,0.0,0.0])
+        >>> line.divide_by_count(5, True)
+        [[0.0,0.0,0.0],[1.0,0.0,0.0],[2.0,0.0,0.0],[3.0,0.0,0.0],[4.0,0.0,0.0],[5.0,0.0,0.0]]
         """
         if includeEnds:
             return [self.point(i * float(1/ number)) for i in range(int(number)+1)]

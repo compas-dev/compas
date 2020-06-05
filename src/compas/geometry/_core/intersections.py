@@ -33,6 +33,7 @@ __all__ = [
     'intersection_line_box_xy',
     'intersection_circle_circle_xy',
     'intersection_line_plane',
+    'intersection_polyline_plane',
     'intersection_line_triangle',
     'intersection_segment_plane',
     'intersection_plane_circle',
@@ -382,10 +383,10 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
 
     return None
 
-def intersection_polyline_plane(polyline, plane, expected_number_of_intersections=2, tol=1e-6):
-    """ Calculates the intersection point of a plane with a polyline. 
-        returns a list of intersections 
-        by default it will allow two intersections. reduce expected_number_of_intersections to speed up.
+def intersection_polyline_plane(polyline, plane, expected_number_of_intersections=None, tol=1e-6):
+    """Calculates the intersection point of a plane with a polyline. 
+    returns a list of intersections 
+    by default it will allow two intersections. Reduce expected_number_of_intersections to speed up.
 
     Parameters
     ----------
@@ -402,17 +403,21 @@ def intersection_polyline_plane(polyline, plane, expected_number_of_intersection
     intersection_pts : list of compas.geometry.Point
         if there are intersection points, return point(s) in a list
     """
-    intersection_pts = []
+    if not expected_number_of_intersections:
+        expected_number_of_intersections = len(polyline)
+    intersection_points = []
     max_iter =0
-    for segment in polyline.lines:
+    for segment in pairwise(polyline):
         pt = intersection_segment_plane(segment, plane, tol)
         if pt and max_iter < expected_number_of_intersections:
-            intersection_pts.append(pt)
+            intersection_points.append(pt)
             max_iter += 1
         else:
             break
-    if len(intersection_pts)>0:
-        return intersection_pts
+    if len(intersection_points)>0:
+        return intersection_points
+        
+    return None
 
 def intersection_line_triangle(line, triangle, tol=1e-6):
     """Computes the intersection point of a line (ray) and a triangle

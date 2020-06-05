@@ -321,8 +321,8 @@ class Polyline(Primitive):
         polyline.transform(T)
         return polyline
     
-    def shortened(self, start_distance= 0, end_distance= 0):
-        """ Returns a new polyline which is shorter than the original in one end side, other or both by a given distance
+    def shorten(self, start_distance=0, end_distance=0):
+        """Returns a new polyline which is shorter than the original in one end side, other or both by a given distance
         
         Parameters
         ----------
@@ -336,9 +336,8 @@ class Polyline(Primitive):
         :class:`compas.geometry.Polyline`
             The transformed copy.
         """
-        polyline = self.copy()
         if start_distance !=0 or end_distance!=0:
-            new_list_of_points=[]
+            points=[]
             acum_length=0
             switch=True
             for i, line in enumerate(self.lines):
@@ -347,50 +346,49 @@ class Polyline(Primitive):
                     continue
                 elif acum_length > start_distance and switch:
                     if start_distance == 0:
-                        new_list_of_points.append(line.start)
+                        points.append(line.start)
                     else:
-                        new_list_of_points.append(self.point(start_distance/self.length))
+                        points.append(self.point(start_distance/self.length))
                     switch=False
                 else:
                     if end_distance==0:
                         if i!= len(self.lines)-1:
-                            new_list_of_points.append(line.start)
+                            points.append(line.start)
                         else:
-                            new_list_of_points.append(line.start)
-                            new_list_of_points.append(line.end)
+                            points.append(line.start)
+                            points.append(line.end)
                     else:
                         if acum_length < (self.length - end_distance):
-                            new_list_of_points.append(line.start)
+                            points.append(line.start)
                         else:
-                            new_list_of_points.append(line.start)
-                            new_list_of_points.append(self.point(1-(end_distance/self.length)))
+                            points.append(line.start)
+                            points.append(self.point(1-(end_distance/self.length)))
                             break
-            polyline.points(new_list_of_points)
-        return polyline
+            return points
+        return self
 
-    def rebuild(self, number):
-        """ rebuilds a polyline with evenly spaced points based on a number of interpolations
+    def rebuild(self, number=20, decimals=100000):
+        """Reconstructs a polyline with evenly spaced points based on a number of interpolations
         Returns new rebuilt polyline
 
         Parameters
         ----------
-        number : float.
+        number : integer.
             number of points for the amount of definition of the polyline
 
         Returns
         -------
-        :class:`compas.geometry.Polyline`
-            The transformed copy.
+        list of equally spaced points on the polyline
         """
-        decs = 100000 # decimals in order to do floated range
-        step = int((1/number)*decs)
-        new_pt_list = [self.point(i/decs) for i in range(0, decs, step) if self.point(i/decs) and (i/decs) < 1]
-        new_pt_list.append(self.point(1))
-        pt_list = [Point(x,y,z) for x,y,z in new_pt_list]
-        return self.points(pt_list)
+        points = [self.point(i * float(1/ number)) for i in range(number)]
+        points.append(self.point(1))
+        point_list = [Point(x,y,z) for x,y,z in points]
+        polyline = self.copy
+        polyline.points(point_list)
+        return polyline
     
-    def divide_by_count(self, number =10, includeEnds= False): # compas
-        """ Divides a polyline by count. Returns list of Points from the division
+    def divide_by_count(self, number =10, includeEnds= False):
+        """Divides a polyline by count. Returns list of Points from the division
 
         Parameters
         ----------
@@ -412,7 +410,7 @@ class Polyline(Primitive):
         return points
     
     def tween(self, polyline_two, number=50):
-        """ Creates an average polyline between two polylines interpolating their points
+        """Creates an average polyline between two polylines interpolating their points
 
         Parameters
         ----------
@@ -422,15 +420,12 @@ class Polyline(Primitive):
 
         Returns
         -------
-        tween_polyline : compas.geometry.Polyline
+        list of compas.geometry.Point
         """
         rebuilt_polyline_one = self.rebuild(number)
-        rebuilt_polyline_two = self.rebuild(polyline_two, number)
-        lines = [Line(point_one, point_two) for point_one, point_two in zip(rebuilt_polyline_one.points, rebuilt_polyline_two.points)]
-        tween_points = [line.midpoint for line in lines]
-        tween_polyline = self.copy()
-        tween_polyline.points(tween_points)
-        return tween_polyline
+        rebuilt_polyline_two = polyline_two.rebuild(number)
+        lines = [Line(point_one, point_two) for point_one, point_two in zip(rebuilt_polyline_one, rebuilt_polyline_two)]
+        return [line.midpoint for line in lines]
 
 # ==============================================================================
 # Main

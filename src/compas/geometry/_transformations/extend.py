@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 def extend_line(line, start_extension=0, end_extension=0):
-    """ Extends the given line from one end or the other, or both, depending on the given values
+    """Extends the given line from one end or the other, or both, depending on the given values
 
     Parameters
     ----------
@@ -32,10 +32,9 @@ def extend_line(line, start_extension=0, end_extension=0):
 
     Examples
     --------
-    .. code-block:: python
-
-        extended_line = extend_line(line, 10, 10)
-
+    >>> line = Line([0.0,0.0,0.0],[1.0,0.0,0.0])
+    >>> extended_line = extend_line(line, 1, 1)
+    Line([-1.0,0.0,0.0],[2.0,0.0,0.0])
     """
     def calculate_translation(line, distance):
         vector = line.direction.copy()
@@ -52,7 +51,7 @@ def extend_line(line, start_extension=0, end_extension=0):
     return line
 
 def extend_polyline(polyline, start_extension= 0, end_extension= 0):
-    """ Extends a polyline by line from the vectors on segments at extremes
+    """Extends a polyline by line from the vectors on segments at extreme sides
 
     Parameters
     ----------
@@ -69,28 +68,28 @@ def extend_polyline(polyline, start_extension= 0, end_extension= 0):
 
     Examples
     --------
-    .. code-block:: python
-
-        extended_polyline = extend_polyline(polyline, 10, 10)
+    >>> polyline = Polyline([0.0,0.0,0.0],[1.0,0.0,0.0],[2.0,1.0,0.0],[3.0,1.0,0.0],[4.0,0.0,0.0],[5.0,0.0,0.0])
+    >>> extended_polyline = extend_polyline(polyline, 1, 1)
+    Polyline([-1.0,0.0,0.0],[0.0,0.0,0.0],[1.0,0.0,0.0],[2.0,1.0,0.0],[3.0,1.0,0.0],[4.0,0.0,0.0],[5.0,0.0,0.0],[6.0,0.0,0.0])
     """
     def calculate_translation_vector(vector, distance):
         vector.unitize()
         vector.scale(distance)
         return Translation(vector)
 
-    new_pts = polyline.points
+    points = polyline.points
     if start_extension != 0:
-        init_pt = polyline.points[0]
-        vec = Vector.from_start_end(polyline.points[1], init_pt)
+        point_start = polyline.points[0]
+        vec = Vector.from_start_end(polyline.points[1], point_start)
         translation = calculate_translation_vector(vec, start_extension)
-        new_pt_start = init_pt.transformed(translation)
-        new_pts.insert(0, new_pt_start)
+        new_point_start = point_start.transformed(translation)
+        points.insert(0, new_point_start)
         
     if end_extension != 0:
-        end_pt = polyline.points[-1] 
-        vec_end = Vector.from_start_end(polyline.points[-2], end_pt)
+        point_end = polyline.points[-1] 
+        vec_end = Vector.from_start_end(polyline.points[-2], point_end)
         translation = calculate_translation_vector(vec_end, end_extension)
-        new_pt_end = end_pt.transformed(translation)
-        new_pts.append(new_pt_end)
+        new_point_end = point_end.transformed(translation)
+        points.append(new_point_end)
 
-    return Polyline(new_pts)
+    return Polyline(points)

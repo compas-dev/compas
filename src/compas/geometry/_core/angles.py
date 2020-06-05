@@ -27,6 +27,7 @@ __all__ = [
     'angle_vectors_xy',
     'angle_points',
     'angle_points_xy',
+    'angle_planes',
 ]
 
 
@@ -353,12 +354,14 @@ def angles_points_xy(a, b, c, deg=False):
     return angles_vectors_xy(u, v, deg)
 
 def angle_planes(a, b, deg=False):
-    r""" Compute the smallest angle between the two normal vectors of two planes.
+    """Compute the smallest angle between the two normal vectors of two planes.
 
     Parameters
     ----------
-    a :  :class:`compas.geometry.Plane`
-    b :  :class:`compas.geometry.Plane`
+    a : tuple of a point and a vector. Point as a sequence of float(XYZ) coordinates. Vector as a sequence of float(XY(Z)) coordinates. 
+        first plane
+    b : tuple of a point and a vector. Point as a sequence of float(XYZ) coordinates. Vector as a sequence of float(XY(Z)) coordinates. 
+        second plane
     deg : boolean
         returns angles in degrees if True
 
@@ -370,11 +373,13 @@ def angle_planes(a, b, deg=False):
 
     Examples
     --------
+    plane_a = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
+    plane_b = ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
     >>> angle_planes(plane_a, plane_b, True)
+    90.0
 
     """
-
-    return angle_vectors(a.normal, b.normal, deg)
+    return angle_vectors(a[1], b[1], deg)
 
 
 # ==============================================================================
