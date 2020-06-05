@@ -45,8 +45,6 @@ class Scale(Transformation):
     True
     """
 
-    __module__ = 'compas.geometry'
-
     def __init__(self, matrix=None):
         if matrix:
             scale, _, _, _, _ = decompose_matrix(matrix)

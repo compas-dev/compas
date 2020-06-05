@@ -64,8 +64,6 @@ class Rotation(Transformation):
     True
     """
 
-    __module__ = 'compas.geometry'
-
     def __init__(self, matrix=None):
         if matrix:
             _, _, angles, _, _ = decompose_matrix(matrix)

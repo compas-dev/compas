@@ -62,8 +62,6 @@ class Translation(Transformation):
     True
     """
 
-    __module__ = 'compas.geometry'
-
     def __init__(self, matrix=None):
         if matrix:
             _, _, _, translation, _ = decompose_matrix(matrix)

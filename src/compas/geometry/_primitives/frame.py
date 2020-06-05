@@ -68,8 +68,6 @@ class Frame(Primitive):
     >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
     """
 
-    __module__ = "compas.geometry"
-
     def __init__(self, point, xaxis, yaxis):
         self._point = None
         self._xaxis = None
