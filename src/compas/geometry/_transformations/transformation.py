@@ -549,14 +549,12 @@ if __name__ == "__main__":
     print(X2.matrix)
     print(X3.matrix)
 
-    print(X3.basis)
-
     trans1 = [1, 2, 3]
     angle1 = [-2.142, 1.141, -0.142]
     scale1 = [0.123, 2, 0.5]
-    T1 = Translation(trans1)
+    T1 = Translation.from_vector(trans1)
     R1 = Rotation.from_euler_angles(angle1)
-    S1 = Scale(scale1)
+    S1 = Scale.from_factors(scale1)
     M = T1 * R1 * S1
     S, H, R, T, P = M.decomposed()
     print(S1 == S)
