@@ -16,16 +16,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Fixed bug in `compas_rhino.geometry.RhinoSurface.brep_to_compas`.
-* Fixed bug in `compas.geometry.Box.from_bounding_box`
-* Fixed bug in `compas.geometry.Box.from_width_height_depth`
-* Fixed inconsistencies in `compas.geometry._transformations`.
-* Renamed `compas.geometry.Frame.to_local_coords` to `compas.geometry.Frame.to_local_coordinates`
-* Renamed `compas.geometry.Frame.to_world_coords` to `compas.geometry.Frame.to_world_coordinates`
-* Renamed `compas.geometry.Transformation.change_basis` to `compas.geometry.Transformation.from_change_basis`
-* Renamed `compas.geometry.Projection.orthogonal` to `compas.geometry.Projection.from_plane` and changed input params
-* Renamed `compas.geometry.Projection.parallel` to `compas.geometry.Projection.from_plane_and_direction` and changed input params
-* Renamed `compas.geometry.Projection.perspective` to `compas.geometry.Projection.from_plane_and_point` and changed input params
+* Fixed bug in ``compas_rhino.geometry.RhinoSurface.brep_to_compas``.
+* Fixed bug in ``compas.geometry.Box.from_bounding_box``
+* Fixed bug in ``compas.geometry.Box.from_width_height_depth``
+* Fixed inconsistencies in ``compas.geometry._transformations``.
+* Renamed ``compas.geometry.Frame.to_local_coords`` to ``compas.geometry.Frame.to_local_coordinates``
+* Renamed ``compas.geometry.Frame.to_world_coords`` to ``compas.geometry.Frame.to_world_coordinates``
+* Renamed ``compas.geometry.Transformation.change_basis`` to ``compas.geometry.Transformation.from_change_basis``
+* Renamed ``compas.geometry.matrix_change_basis`` to ``compas.geometry.matrix_from_change_basis``
+* Renamed ``compas.geometry.Projection.orthogonal`` to ``compas.geometry.Projection.from_plane`` and changed input params
+* Renamed ``compas.geometry.Projection.parallel`` to ``compas.geometry.Projection.from_plane_and_direction`` and changed input params
+* Renamed ``compas.geometry.Projection.perspective`` to ``compas.geometry.Projection.from_plane_and_point`` and changed input params
+* Changed constructor of all ``compas.geometry.Transformation`` and derivatives. Preferred way of creating any ``compas.geometry.Transformation`` is with the classmethods ``from_*``
+* Changed params (point, normal) into plane for ``compas.geometry.matrix_from_parallel_projection``, ``compas.geometry.matrix_from_orthogonal_projection`` and ``compas.geometry.matrix_from_perspective_projection``
+
 
 ### Removed
 
