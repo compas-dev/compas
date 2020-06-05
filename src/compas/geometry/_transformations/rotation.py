@@ -51,7 +51,6 @@ class Rotation(Transformation):
 
     Examples
     --------
-    >>> from compas.geometry import Frame
     >>> f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
     >>> R = Rotation.from_frame(f1)
     >>> args = False, 'xyz'
@@ -380,14 +379,3 @@ if __name__ == "__main__":
     from compas.geometry import allclose  # noqa: F401 F811
 
     doctest.testmod(globs=globals())
-
-    f1 = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    R = Rotation.from_frame(f1)
-    args = False, 'xyz'
-    alpha, beta, gamma = R.euler_angles(*args)
-    xaxis, yaxis, zaxis = [1, 0, 0], [0, 1, 0], [0, 0, 1]
-    Rx = Rotation.from_axis_and_angle(xaxis, alpha)
-    Ry = Rotation.from_axis_and_angle(yaxis, beta)
-    Rz = Rotation.from_axis_and_angle(zaxis, gamma)
-    f2 = Frame.worldXY()
-    print(f1 == f2.transformed(Rx * Ry * Rz))
