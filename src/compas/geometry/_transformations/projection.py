@@ -159,5 +159,5 @@ class Projection(Transformation):
 if __name__ == "__main__":
 
     import doctest
-    from compas.geometry import Plane
+    from compas.geometry import Plane  # noqa: F401
     doctest.testmod(globs=globals())
