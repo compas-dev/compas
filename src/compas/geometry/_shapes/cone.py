@@ -54,8 +54,6 @@ class Cone(Shape):
 
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_circle', '_height']
 
     def __init__(self, circle, height):
@@ -286,7 +284,9 @@ class Cone(Shape):
         >>> from compas.geometry import Transformation
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Cone
-        >>> cone = Cone(Plane.worldXY(), 5, 7)
+        >>> from compas.geometry import Circle
+        >>> circle = Circle(Plane.worldXY(), 5)
+        >>> cone = Cone(circle, 7)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> cone.transform(T)
@@ -314,7 +314,8 @@ class Cone(Shape):
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Circle
         >>> from compas.geometry import Cone
-        >>> cone = Cone(Circle(Plane.worldXY(), 5), 7)
+        >>> circle = Circle(Plane.worldXY(), 5)
+        >>> cone = Cone(circle, 7)
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> T = Transformation.from_frame(frame)
         >>> circle_transformed = cone.transformed(T)
@@ -330,19 +331,20 @@ class Cone(Shape):
 # ==============================================================================
 
 if __name__ == "__main__":
-    from compas.geometry import Transformation
 
-    cone = Cone(Circle(Plane.worldXY(), 5), 7)
-    frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    print(frame.normal)
-    T = Transformation.from_frame(frame)
-    cone.transform(T)
-    print(cone)
+    # from compas.geometry import Transformation
 
-    print(Plane.worldXY().data)
-    data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-    cone = Cone.from_data(data)
-    print(cone)
+    # cone = Cone(Circle(Plane.worldXY(), 5), 7)
+    # frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    # print(frame.normal)
+    # T = Transformation.from_frame(frame)
+    # cone.transform(T)
+    # print(cone)
+
+    # print(Plane.worldXY().data)
+    # data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
+    # cone = Cone.from_data(data)
+    # print(cone)
 
     import doctest
     doctest.testmod()

@@ -51,8 +51,6 @@ class Torus(Shape):
 
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
 
     def __init__(self, plane, radius_axis, radius_pipe):
@@ -152,7 +150,7 @@ class Torus(Shape):
         True
 
         """
-        return {'plane': Plane.worldXY(),
+        return {'plane': Plane.worldXY().to_data(),
                 'radius_axis': self.radius_axis,
                 'radius_pipe': self.radius_pipe}
 
@@ -175,7 +173,7 @@ class Torus(Shape):
         >>> from compas.geometry import Plane
         >>> from compas.geometry import Torus
         >>> torus = Torus(Plane.worldXY(), 5, 2)
-        >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
+        >>> sdict = {'plane': Plane.worldXY().to_data(), 'radius_axis': 5.0, 'radius_pipe': 2.0}
         >>> sdict == torus.to_data()
         True
 
@@ -335,19 +333,20 @@ class Torus(Shape):
 
 
 if __name__ == '__main__':
-    from compas.geometry import Transformation
 
-    torus = Torus(Plane.worldXY(), 5, 2)
-    frame = Frame([5, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    T = Transformation.from_frame(frame)
-    torus.transform(T)
-    print(torus)
+    # from compas.geometry import Transformation
 
-    torus = Torus(Plane.worldXY(), 5, 2)
-    print(torus.data)
-    print(torus)
-    torus = Torus.from_data(torus.data)
-    print(torus)
+    # torus = Torus(Plane.worldXY(), 5, 2)
+    # frame = Frame([5, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+    # T = Transformation.from_frame(frame)
+    # torus.transform(T)
+    # print(torus)
+
+    # torus = Torus(Plane.worldXY(), 5, 2)
+    # print(torus.data)
+    # print(torus)
+    # torus = Torus.from_data(torus.data)
+    # print(torus)
 
     import doctest
     doctest.testmod()

@@ -121,4 +121,5 @@ def mesh_geodesic_distances_numpy(mesh, sources, m=1.0):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

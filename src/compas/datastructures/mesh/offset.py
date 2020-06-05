@@ -96,4 +96,6 @@ def mesh_thicken(mesh, thickness=1.0, cls=None):
 # ==============================================================================
 
 if __name__ == '__main__':
-    pass
+
+    import doctest
+    doctest.testmod(globs=globals())

@@ -18,8 +18,6 @@ __all__ = ['RhinoPlane']
 class RhinoPlane(RhinoGeometry):
     """Convenience wrapper for a Rhino point object."""
 
-    __module__ = 'compas_rhino.geometry'
-
     def __init__(self):
         super(RhinoPlane, self).__init__()
 

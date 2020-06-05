@@ -14,11 +14,10 @@ from numpy import nan_to_num
 from numpy import nonzero
 from numpy import seterr
 from numpy import sum
-from numpy import zeros
 from numpy import absolute
+from numpy import cross
 from numpy.linalg import cond
 
-from scipy import cross
 from scipy.linalg import cho_factor
 from scipy.linalg import cho_solve
 from scipy.linalg import lstsq
@@ -90,9 +89,9 @@ def nullspace(A, tol=0.001):
     Examples
     --------
     >>> nullspace(array([[2, 3, 5], [-4, 2, 3]]))
-    [[-0.03273859]
-     [-0.85120177]
-     [ 0.52381647]]
+    array([[-0.03273853],
+           [-0.85120179],
+           [ 0.52381648]])
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -168,7 +167,7 @@ def dof(A, tol=0.001, condition=False):
     Examples
     --------
     >>> dof([[2, -1, 3,], [1, 0, 1], [0, 2, -1], [1, 1, 4]], condition=True)
-    (0, 1, 5.073597)
+    (0, 1, 5.073596551276727)
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -202,7 +201,7 @@ def pivots(U, tol=None):
     Examples
     --------
     >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-    >>> n = rref(A, algo='sympy')
+    >>> n = rref_sympy(A)
     >>> pivots(n)
     [0, 1]
 
@@ -240,7 +239,7 @@ def nonpivots(U, tol=None):
     Examples
     --------
     >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-    >>> n = rref(A, algo='sympy')
+    >>> n = rref_sympy(A)
     >>> nonpivots(n)
     [2, 3]
 
@@ -271,12 +270,7 @@ def rref(A, tol=None):
 
     Examples
     --------
-    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-    >>> n = rref(A, algo='sympy')
-    >>> array(n)
-    [[1.0 0 1.0 3.0]
-     [0 1.0 0.667 0.333]
-     [0 0 0 0]]
+    >>>
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -338,11 +332,11 @@ def rref_sympy(A, tol=None):
     Examples
     --------
     >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-    >>> n = rref(A, algo='sympy')
+    >>> n = rref_sympy(A)
     >>> array(n)
-    [[1.0 0 1.0 3.0]
-     [0 1.0 0.667 0.333]
-     [0 0 0 0]]
+    array([[1, 0, 1.00000000000000, 3.00000000000000],
+           [0, 1, 0.666666666666667, 0.333333333333333],
+           [0, 0, 0, 0]], dtype=object)
 
     """
     import sympy
@@ -373,12 +367,7 @@ def rref_matlab(A, ifile, ofile, tol=None):
 
     Examples
     --------
-    >>> A = [[1, 0, 1, 3], [2, 3, 4, 7], [-1, -3, -3, -4]]
-    >>> n = rref(A, algo='sympy')
-    >>> array(n)
-    [[1.0 0 1.0 3.0]
-     [0 1.0 0.667 0.333]
-     [0 0 0 0]]
+    >>>
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -458,9 +447,9 @@ def _chofactor(A):
     Examples
     --------
     >>> _chofactor(array([[25, 15, -5], [15, 18, 0], [-5, 0, 11]]))
-    (array([[  5.,   3.,  -1.],
-            [ 15.,   3.,   1.],
-            [ -5.,   0.,   3.]]), False)
+    (array([[ 5.,  3., -1.],
+           [15.,  3.,  1.],
+           [-5.,  0.,  3.]]), False)
 
     """
     return cho_factor(A)
@@ -525,14 +514,13 @@ def uvw_lengths(C, X):
 
     Examples
     --------
+    >>> from compas.numerical import connectivity_matrix
     >>> C = connectivity_matrix([[0, 1], [1, 2]], 'csr')
     >>> X = array([[0, 0, 0], [1, 1, 0], [0, 0, 1]])
-    >>> uvw
-    array([[ 1,  1,  0],
-           [-1, -1,  1]])
-    >>> l
-    array([[ 1.41421356],
-           [ 1.73205081]])
+    >>> uvw_lengths(C, X)
+    (array([[ 1.,  1.,  0.],
+           [-1., -1.,  1.]]), array([[1.41421356],
+           [1.73205081]]))
 
     """
     uvw = C.dot(X)
@@ -561,9 +549,9 @@ def normrow(A):
     Examples
     --------
     >>> normrow(array([[2, -1, 3,], [1, 0, 1], [0, 2, -1]]))
-    [[ 3.74165739]
-     [ 1.41421356]
-     [ 2.23606798]]
+    array([[3.74165739],
+           [1.41421356],
+           [2.23606798]])
 
     """
     A = atleast_2d(asarray(A, dtype=float))
@@ -632,8 +620,8 @@ def rot90(vectors, axes):
     >>> vectors = array([[2, 1, 3], [2, 6, 8]])
     >>> axes = array([[7, 0, 1], [4, 4, 2]])
     >>> rot90(vectors, axes)
-    [[-0.18456235 -3.50668461  1.29193644]
-     [ 5.3748385  -7.5247739   4.2998708 ]]
+    array([[-0.18456235, -3.50668461,  1.29193644],
+           [ 5.3748385 , -7.5247739 ,  4.2998708 ]])
 
     """
     return normalizerow(cross(axes, vectors)) * normrow(vectors)
@@ -675,7 +663,9 @@ def solve_with_known(A, b, x, known):
     >>> b = array([[1], [3], [5]])
     >>> x = array([[0.3], [0], [0]])
     >>> solve_with_known(A, b, x, [0])
-    array([ 0.3, 0.4, 0.0])
+    array([[ 3.00000000e-01],
+           [ 4.00000000e-01],
+           [-6.05576195e-17]])
 
     """
     eps = 1 / sys.float_info.epsilon
@@ -727,7 +717,9 @@ def spsolve_with_known(A, b, x, known):
     >>> b = array([[1], [3], [5]])
     >>> x = array([[0.3], [0], [0]])
     >>> solve_with_known(A, b, x, [0])
-    array([ 0.3, 0.4, 0.0])
+    array([[ 3.00000000e-01],
+           [ 4.00000000e-01],
+           [-6.05576195e-17]])
 
     """
     unknown = list(set(range(x.shape[0])) - set(known))
@@ -744,36 +736,39 @@ def spsolve_with_known(A, b, x, known):
 
 if __name__ == '__main__':
 
-    import numpy as np
+    # import numpy as np
 
-    np.set_printoptions(precision=3, threshold=10000, linewidth=1000)
+    # np.set_printoptions(precision=3, threshold=10000, linewidth=1000)
 
-    E = array([[2, 3, 5], [-4, 2, 3]], dtype=float)
+    # E = array([[2, 3, 5], [-4, 2, 3]], dtype=float)
 
-    null = nullspace(E)
+    # null = nullspace(E)
 
-    assert np.allclose(zeros((E.shape[0], 1)), E.dot(null), atol=1e-6), 'E.dot(null) not aproximately zero'
+    # assert np.allclose(zeros((E.shape[0], 1)), E.dot(null), atol=1e-6), 'E.dot(null) not aproximately zero'
 
-    m, n = E.shape
-    s, t = null.shape
+    # m, n = E.shape
+    # s, t = null.shape
 
-    print(m, n)
-    print(s, t)
+    # print(m, n)
+    # print(s, t)
 
-    assert n == s, 'num_cols of E should be equal to num_rows of null(E)'
+    # assert n == s, 'num_cols of E should be equal to num_rows of null(E)'
 
-    print(rank(E))
-    print(dof(E))
+    # print(rank(E))
+    # print(dof(E))
 
-    print(len(pivots(rref(E))))
-    print(len(nonpivots(rref(E))))
+    # print(len(pivots(rref(E))))
+    # print(len(nonpivots(rref(E))))
 
-    # ifile = './data/ifile.mat'
-    # ofile = './data/ofile.mat'
+    # # ifile = './data/ifile.mat'
+    # # ofile = './data/ofile.mat'
 
-    # with open(ifile, 'wb+') as fp: pass
-    # with open(ofile, 'wb+') as fp: pass
+    # # with open(ifile, 'wb+') as fp: pass
+    # # with open(ofile, 'wb+') as fp: pass
 
-    # print nonpivots(rref(E, algo='qr'))
-    # print nonpivots(rref(E, algo='sympy'))
-    # print nonpivots(rref(E, algo='matlab', ifile=ifile, ofile=ofile))
+    # # print nonpivots(rref(E, algo='qr'))
+    # # print nonpivots(rref(E, algo='sympy'))
+    # # print nonpivots(rref(E, algo='matlab', ifile=ifile, ofile=ofile))
+
+    import doctest
+    doctest.testmod(globs=globals())

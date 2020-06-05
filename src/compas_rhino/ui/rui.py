@@ -237,8 +237,6 @@ class Rui(object):
 
     """
 
-    __module__ = "compas_rhino.ui"
-
     def __init__(self, filepath):
         self.filepath = filepath
         self.macros = {}

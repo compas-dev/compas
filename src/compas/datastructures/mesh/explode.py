@@ -78,4 +78,5 @@ def mesh_explode(mesh, cls=None):
 
 if __name__ == '__main__':
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

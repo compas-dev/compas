@@ -30,9 +30,9 @@ def network_transform(network, transformation):
     --------
     >>>
     """
-    vertices = [network.vertex_coordinates(key) for key in network.vertices()]
+    vertices = [network.node_coordinates(key) for key in network.nodes()]
     xyz = transform_points(vertices, transformation)
-    for index, (key, attr) in enumerate(network.vertices(True)):
+    for index, (key, attr) in enumerate(network.nodes(True)):
         attr['x'] = xyz[index][0]
         attr['y'] = xyz[index][1]
         attr['z'] = xyz[index][2]
@@ -72,4 +72,6 @@ def network_transformed(network, transformation):
 # ==============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    import doctest
+    doctest.testmod(globs=globals())

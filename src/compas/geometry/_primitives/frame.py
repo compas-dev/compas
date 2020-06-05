@@ -14,6 +14,7 @@ from compas.geometry import euler_angles_from_matrix
 from compas.geometry import matrix_from_euler_angles
 from compas.geometry import decompose_matrix
 from compas.geometry import Transformation
+from compas.geometry import argmax
 
 from compas.geometry._primitives import Primitive
 from compas.geometry._primitives import Point
@@ -66,8 +67,6 @@ class Frame(Primitive):
     >>> f = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
     >>> f = Frame(Point(0, 0, 0), Vector(1, 0, 0), Point(0, 1, 0))
     """
-
-    __module__ = "compas.geometry"
 
     def __init__(self, point, xaxis, yaxis):
         self._point = None
@@ -137,8 +136,8 @@ class Frame(Primitive):
     def quaternion(self):
         """:class:`compas.geometry.Quaternion` : The quaternion from the rotation given by the frame.
         """
-        rotation = matrix_from_basis_vectors(self.xaxis, self.yaxis)
-        return Quaternion(*quaternion_from_matrix(rotation))
+        R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
+        return Quaternion(*quaternion_from_matrix(R))
 
     @property
     def axis_angle_vector(self):
@@ -296,7 +295,7 @@ class Frame(Primitive):
             The rotation defines the orientation of the frame.
         point : list of float, optional
             The origin of the frame.
-            Defaults to [0, 0, 0].
+            Defaults to ``[0, 0, 0]``.
 
         Returns
         -------
@@ -340,7 +339,7 @@ class Frame(Primitive):
         True
         """
         xaxis, yaxis = transformation.basis_vectors
-        point = transformation.translation
+        point = transformation.translation_vector
         return cls(point, xaxis, yaxis)
 
     @classmethod
@@ -367,8 +366,8 @@ class Frame(Primitive):
         >>> allclose(ea1, ea2)
         True
         """
-        sc, sh, a, point, p = decompose_matrix(matrix)
-        R = matrix_from_euler_angles(a, static=True, axes='xyz')
+        _, _, angles, point, _ = decompose_matrix(matrix)
+        R = matrix_from_euler_angles(angles, static=True, axes='xyz')
         xaxis, yaxis = basis_vectors_from_matrix(R)
         return cls(point, xaxis, yaxis)
 
@@ -492,7 +491,7 @@ class Frame(Primitive):
             Defaults to 'xyz'.
         point : list of float, optional
             The point of the frame.
-            Defaults to [0, 0, 0].
+            Defaults to ``[0, 0, 0]``.
 
         Returns
         -------
@@ -536,8 +535,7 @@ class Frame(Primitive):
         >>> frame.yaxis
         Vector(0.000, 1.000, 0.000)
         """
-        frame = cls.worldXY()
-        frame.data = data
+        frame = cls(data['point'], data['xaxis'], data['yaxis'])
         return frame
 
     @classmethod
@@ -564,29 +562,19 @@ class Frame(Primitive):
         >>> allclose(frame.normal, plane.normal)
         True
         """
-        # plane equation: a*x + b*y + c*z = d
-        d = Vector(*plane.point).dot(plane.normal)
-        # select 2 arbitrary points in the plane from which we create the xaxis
-        coeffs = list(plane.normal)  # a, b, c
-        # select a coeff with a value != 0
-        coeffs_abs = [math.fabs(x) for x in coeffs]
-        idx = coeffs_abs.index(max(coeffs_abs))
-        # first point
-        coords = [0, 0, 0]  # x, y, z
-        # z = (d - a*0 + b*0)/c, if idx == 2
-        v = d/coeffs[idx]
-        coords[idx] = v
-        pt1_in_plane = Point(*coords)
-        # second point
-        coords = [1, 1, 1]  # x, y, z
-        coords[idx] = 0
-        # z = (d - a*1 + b*1)/c, if idx == 2
-        v = (d - sum([a*x for a, x in zip(coeffs, coords)]))/coeffs[idx]
-        coords[idx] = v
-        pt2_in_plane = Point(*coords)
-        xaxis = pt2_in_plane - pt1_in_plane
-        yaxis = plane.normal.cross(xaxis)
-        return cls(plane.point, xaxis, yaxis)
+        point, normal = plane
+        # To construct a frame we need to find a vector v that is perpendicular
+        # to the plane's normal. This means that the dot-product of v with the
+        # normal must be equal to 0, which is true for the following vectors:
+        vectors = [Vector(-normal[1], normal[0], 0),
+                   Vector(0, -normal[2], normal[1]),
+                   Vector(normal[2], 0, -normal[0])]
+        # But if we are unlucky, one of these vectors is (0, 0, 0), so we
+        # choose the vector with the longest length as xaxis.
+        idx = argmax([v.length for v in vectors])
+        xaxis = vectors[idx]
+        yaxis = cross_vectors(normal, xaxis)
+        return cls(point, xaxis, yaxis)
 
     # ==========================================================================
     # helpers
@@ -643,7 +631,7 @@ class Frame(Primitive):
         R = matrix_from_basis_vectors(self.xaxis, self.yaxis)
         return euler_angles_from_matrix(R, static, axes)
 
-    def to_local_coords(self, object_in_wcf):
+    def to_local_coordinates(self, object_in_wcf):
         """Returns the object's coordinates in the local coordinate system of the frame.
 
         Parameters
@@ -665,22 +653,22 @@ class Frame(Primitive):
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pw = Point(2, 2, 2) # point in wcf
-        >>> pl = frame.to_local_coords(pw) # point in frame
-        >>> frame.to_world_coords(pl)
+        >>> pl = frame.to_local_coordinates(pw) # point in frame
+        >>> frame.to_world_coordinates(pl)
         Point(2.000, 2.000, 2.000)
         """
-        T = Transformation.change_basis(Frame.worldXY(), self)
+        T = Transformation.from_change_of_basis(Frame.worldXY(), self)
         if isinstance(object_in_wcf, list):
             return Point(*object_in_wcf).transformed(T)
         else:
             return object_in_wcf.transformed(T)
 
-    def to_world_coords(self, object_in_lcs):
+    def to_world_coordinates(self, object_in_lcf):
         """Returns the object's coordinates in the global coordinate frame.
 
         Parameters
         ----------
-        object_in_lcs : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
+        object_in_lcf : :class:`compas.geometry.Point` or :class:`compas.geometry.Vector` or :class:`compas.geometry.Frame` or list of float
             An object in local coordinate system of the frame.
 
         Returns
@@ -697,18 +685,19 @@ class Frame(Primitive):
         >>> from compas.geometry import Point
         >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> pl = Point(1.632, -0.090, 0.573) # point in frame
-        >>> pw = frame.to_world_coords(pl) # point in wcf
-        >>> frame.to_local_coords(pw)
+        >>> pw = frame.to_world_coordinates(pl) # point in wcf
+        >>> frame.to_local_coordinates(pw)
         Point(1.632, -0.090, 0.573)
         """
-        T = Transformation.change_basis(self, Frame.worldXY())
-        if isinstance(object_in_lcs, list):
-            return Point(*object_in_lcs).transformed(T)
+        T = Transformation.from_change_of_basis(self, Frame.worldXY())
+        if isinstance(object_in_lcf, list):
+            return Point(*object_in_lcf).transformed(T)
         else:
-            return object_in_lcs.transformed(T)
+            return object_in_lcf.transformed(T)
 
+    # ?!
     @staticmethod
-    def local_to_local_coords(frame1, frame2, object_in_frame1):
+    def local_to_local_coordinates(frame1, frame2, object_in_frame1):
         """Returns the object's coordinates in frame1 in the local coordinates of frame2.
 
         Parameters
@@ -731,15 +720,14 @@ class Frame(Primitive):
         >>> frame1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
         >>> frame2 = Frame([2, 1, 3], [1., 0., 0.], [0., 1., 0.])
         >>> p1 = Point(2, 2, 2) # point in frame1
-        >>> p2 = Frame.local_to_local_coords(frame1, frame2, p1) # point in frame2
-        >>> Frame.local_to_local_coords(frame2, frame1, p2)
+        >>> p2 = Frame.local_to_local_coordinates(frame1, frame2, p1) # point in frame2
+        >>> Frame.local_to_local_coordinates(frame2, frame1, p2)
         Point(2.000, 2.000, 2.000)
         """
-        T = Transformation.change_basis(frame1, frame2)
+        T = Transformation.from_change_of_basis(frame1, frame2)
         if isinstance(object_in_frame1, list):
             return Point(*object_in_frame1).transformed(T)
-        else:
-            return object_in_frame1.transformed(T)
+        return object_in_frame1.transformed(T)
 
     def transform(self, T):
         """Transform the frame.
@@ -761,7 +749,7 @@ class Frame(Primitive):
         """
         # replace this by function call
         X = T * Transformation.from_frame(self)
-        point = X.translation
+        point = X.translation_vector
         xaxis, yaxis = X.basis_vectors
         self.point = point
         self.xaxis = xaxis

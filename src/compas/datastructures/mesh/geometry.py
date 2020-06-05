@@ -42,4 +42,5 @@ def trimesh_face_circle(mesh, fkey):
 
 if __name__ == '__main__':
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

@@ -382,7 +382,7 @@ class Joint(object):
             raise ValueError('Prismatic joints are required to define a limit')
 
         position = max(min(position, self.limit.upper), self.limit.lower)
-        return Translation(self.axis.vector * position)
+        return Translation.from_vector(self.axis.vector * position)
 
     # does this ever happen?
     def calculate_fixed_transformation(self, position):

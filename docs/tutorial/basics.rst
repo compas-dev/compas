@@ -68,3 +68,6 @@ An artist is available for every data structure, geometric primitive and shape.
     from compas.datastructures import Mesh
     from compas_rhino.artists import MeshArtist
 
+    mesh = Mesh.from_polyhedron(6)
+    artist = MeshArtist(mesh)
+    artist.draw()

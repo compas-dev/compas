@@ -34,4 +34,5 @@ def mesh_quads_to_triangles(mesh, check_angles=False):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

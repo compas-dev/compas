@@ -15,8 +15,6 @@ __all__ = [
 
 class VertexArtist(object):
 
-    __module__ = "compas_blender.artists.mixins"
-
     def clear_vertices(self, keys=None):
         collection_name = "{}.vertices".format(self.datastructure.name)
         collection = bpy.data.collections.get(collection_name)

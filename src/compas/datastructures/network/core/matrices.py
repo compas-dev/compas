@@ -31,7 +31,7 @@ def _return_matrix(M, rtype):
 
 
 def network_adjacency_matrix(network, rtype='array'):
-    """Creates a vertex adjacency matrix from a Network datastructure.
+    """Creates a node adjacency matrix from a Network datastructure.
 
     Parameters
     ----------
@@ -47,12 +47,12 @@ def network_adjacency_matrix(network, rtype='array'):
 
     """
     key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbors(key)] for key in network.vertices()]
+    adjacency = [[key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
     return adjacency_matrix(adjacency, rtype=rtype)
 
 
 def network_degree_matrix(network, rtype='array'):
-    """Creates a vertex degree matrix from a Network datastructure.
+    """Creates a node degree matrix from a Network datastructure.
 
     Parameters
     ----------
@@ -64,11 +64,11 @@ def network_degree_matrix(network, rtype='array'):
     Returns
     -------
     array-like
-        Constructed vertex degree matrix.
+        Constructed node degree matrix.
 
     """
     key_index = network.key_index()
-    adjacency = [[key_index[nbr] for nbr in network.vertex_neighbors(key)] for key in network.vertices()]
+    adjacency = [[key_index[nbr] for nbr in network.neighbors(key)] for key in network.nodes()]
     return degree_matrix(adjacency, rtype=rtype)
 
 
@@ -112,28 +112,13 @@ def network_laplacian_matrix(network, normalize=False, rtype='array'):
 
     Notes
     -----
-    ``d = L.dot(xyz)`` is currently a vector that points from the centroid to the vertex.
+    ``d = L.dot(xyz)`` is currently a vector that points from the centroid to the node.
     Therefore ``c = xyz - d``. By changing the signs in the laplacian, the dsiplacement
     vectors could be used in a more natural way ``c = xyz + d``.
 
     Examples
     --------
-    .. plot::
-        :include-source:
-
-        from numpy import array
-
-        import compas
-        from compas.datastructures import Network
-        from compas.numerical import network_laplacian_matrix
-
-        network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-        xy = array([network.vertex_coordinates(key, 'xy') for key in network.vertices()])
-        L  = network_laplacian_matrix(network, normalize=True, rtype='csr')
-        d  = L.dot(xy)
-
-        lines = [{'start': xy[i], 'end': xy[i] - d[i]} for i, k in enumerate(network.vertices())]
+    >>>
 
     """
     key_index = network.key_index()
@@ -147,13 +132,16 @@ def network_laplacian_matrix(network, normalize=False, rtype='array'):
 
 if __name__ == "__main__":
 
-    import compas
+    # import compas
 
-    from compas.datastructures import Network
+    # from compas.datastructures import Network
 
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
+    # network = Network.from_obj(compas.get('grid_irregular.obj'))
 
-    A = network_adjacency_matrix(network)
-    C = network_connectivity_matrix(network)
-    L = network_laplacian_matrix(network, normalize=True, rtype='csr')
-    D = network_degree_matrix(network)
+    # A = network_adjacency_matrix(network)
+    # C = network_connectivity_matrix(network)
+    # L = network_laplacian_matrix(network, normalize=True, rtype='csr')
+    # D = network_degree_matrix(network)
+
+    import doctest
+    doctest.testmod(globs=globals())

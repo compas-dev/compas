@@ -139,41 +139,44 @@ def convex_hull_xy_numpy(points):
 
 if __name__ == "__main__":
 
-    # todo: distinguish between vertices of hull and internal vertices
+    import doctest
+    doctest.testmod(globs=globals())
 
-    import random
+    # # todo: distinguish between vertices of hull and internal vertices
 
-    from compas.geometry import distance_point_point
+    # import random
 
-    from compas.datastructures import Mesh
-    from compas.datastructures import mesh_unify_cycles
-    from compas_viewers import MeshViewer
+    # from compas.geometry import distance_point_point
 
-    radius = 5
-    origin = (0., 0., 0.)
-    count = 0
-    points = []
+    # from compas.datastructures import Mesh
+    # from compas.datastructures import mesh_unify_cycles
+    # from compas_viewers import MeshViewer
 
-    while count < 1000:
-        x = (random.random() - 0.5) * radius * 2
-        y = (random.random() - 0.5) * radius * 2
-        z = (random.random() - 0.5) * radius * 2
-        pt = x, y, z
+    # radius = 5
+    # origin = (0., 0., 0.)
+    # count = 0
+    # points = []
 
-        if distance_point_point(origin, pt) <= radius:
-            points.append(pt)
-            count += 1
+    # while count < 1000:
+    #     x = (random.random() - 0.5) * radius * 2
+    #     y = (random.random() - 0.5) * radius * 2
+    #     z = (random.random() - 0.5) * radius * 2
+    #     pt = x, y, z
 
-    vertices, faces = convex_hull_numpy(points)
+    #     if distance_point_point(origin, pt) <= radius:
+    #         points.append(pt)
+    #         count += 1
 
-    i_index = {i: index for index, i in enumerate(vertices)}
+    # vertices, faces = convex_hull_numpy(points)
 
-    vertices = [points[index] for index in vertices]
-    faces = [[i_index[i] for i in face] for face in faces]
+    # i_index = {i: index for index, i in enumerate(vertices)}
 
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-    mesh_unify_cycles(mesh)
+    # vertices = [points[index] for index in vertices]
+    # faces = [[i_index[i] for i in face] for face in faces]
 
-    viewer = MeshViewer()
-    viewer.mesh = mesh
-    viewer.show()
+    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    # mesh_unify_cycles(mesh)
+
+    # viewer = MeshViewer()
+    # viewer.mesh = mesh
+    # viewer.show()
