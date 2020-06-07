@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas.datastructures.Mesh.transform_numpy`.
+* Added exceptions module.
+* Added `PluginNotInstalledError`.
+* Added `compas.geometry.booleans`.
+
 ### Changed
 
 ### Removed
