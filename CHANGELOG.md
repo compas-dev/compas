@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Renamed ``compas.geometry.Projection.perspective`` to ``compas.geometry.Projection.from_plane_and_point`` and changed input params
 * Changed constructor of all ``compas.geometry.Transformation`` and derivatives. Preferred way of creating any ``compas.geometry.Transformation`` is with the classmethods ``from_*``
 * Changed params (point, normal) into plane for ``compas.geometry.matrix_from_parallel_projection``, ``compas.geometry.matrix_from_orthogonal_projection`` and ``compas.geometry.matrix_from_perspective_projection``
+* Fixed scaling bug in `compas.geometry.Sphere`
 
 ### Removed
 
