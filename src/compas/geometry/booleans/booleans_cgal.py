@@ -3,13 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 
 try:
-    import compas_cgal  # noqa: F401
-except ImportError:
-    pass
-else:
     from compas_cgal.booleans import boolean_union
     from compas_cgal.booleans import boolean_difference
     from compas_cgal.booleans import boolean_intersection
+except ImportError:
+    pass
 
 
 from compas.exceptions import PluginNotInstalledError
