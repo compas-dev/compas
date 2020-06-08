@@ -277,6 +277,9 @@ class Sphere(Shape):
         ----------
         transformation : :class:`Transformation`
             The transformation used to transform the Sphere.
+            Note that non-similarity preserving transformations will not change
+            the sphere into an ellipsoid. In such case, the radius of the sphere
+            will be scaled by the largest scale factor of the threee axis.
 
         Examples
         --------
@@ -289,9 +292,9 @@ class Sphere(Shape):
         >>> sphere.transform(T)
 
         """
-        Sc, Sh, R, Tl, P = transformation.decomposed()
-        self.point.transform(Tl)
-        self.radius *= max(Sc.scale_factors)
+        self.point.transform(transformation)
+        Sc, _, _, _, _ = transformation.decomposed()
+        self.radius *= max([Sc[0, 0], Sc[1, 1], Sc[2, 2]])
 
     def transformed(self, transformation):
         """Returns a transformed copy of the current sphere.
