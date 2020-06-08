@@ -540,10 +540,10 @@ class HalfEdge(Datastructure):
         --------
         >>>
         """
-        if len(vertices) < 3:
-            return
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
+        if len(vertices) < 3:
+            return
         vertices = [int(key) for key in vertices]
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
