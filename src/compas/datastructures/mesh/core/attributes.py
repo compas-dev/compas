@@ -29,10 +29,7 @@ class AttributeView(object):
         return len(self.defaults)
 
     def __getitem__(self, name):
-        try:
-            return self.attr[name]
-        except KeyError:
-            return self.defaults[name]
+        return self.attr.get(name, self.defaults[name])
 
     def __setitem__(self, name, value):
         self.attr[name] = value
