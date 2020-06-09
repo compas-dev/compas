@@ -1134,7 +1134,7 @@ class HalfEdge(Datastructure):
         # use it as a getter
         if not names:
             # return all vertex attributes as a dict
-            return VertexAttributeView(self.default_vertex_attributes, self.vertex, key)
+            return VertexAttributeView(self.default_vertex_attributes, self.vertex[key])
         values = []
         for name in names:
             if name in self.vertex[key]:
@@ -1331,7 +1331,7 @@ class HalfEdge(Datastructure):
             return
         # use it as a getter
         if not names:
-            return FaceAttributeView(self.default_face_attributes, self.facedata, key)
+            return FaceAttributeView(self.default_face_attributes, self.facedata.setdefault(key, {}))
         values = []
         for name in names:
             value = self.face_attribute(key, name)
@@ -1536,7 +1536,7 @@ class HalfEdge(Datastructure):
         # use it as a getter
         if not names:
             # get the entire attribute dict
-            return EdgeAttributeView(self.default_edge_attributes, self.edgedata, key)
+            return EdgeAttributeView(self.default_edge_attributes, self.edgedata.setdefault(key, {}))
         # get only the values of the named attributes
         values = []
         for name in names:

@@ -68,10 +68,10 @@ def test_vertex_attributes_not_in_defaults(mesh):
         attrs["baz"]
 
 
-def test_get_vertex_attribute_from_view(mesh, vertex_key):
-    mesh.vertex_attribute(key=vertex_key, name="foo", value="bar")
-    attrs = mesh.vertex_attributes(key=vertex_key)
-    assert attrs["foo"] == "bar"
+# def test_get_vertex_attribute_from_view(mesh, vertex_key):
+#     mesh.vertex_attribute(key=vertex_key, name="foo", value="bar")
+#     attrs = mesh.vertex_attributes(key=vertex_key)
+#     assert attrs["foo"] == "bar"
 
 
 def test_set_vertex_attribute_in_view(mesh, vertex_key):
@@ -108,10 +108,10 @@ def test_face_attributes_not_in_defaults(mesh):
         attrs["baz"]
 
 
-def test_get_face_attribute_from_view(mesh, face_key):
-    mesh.face_attribute(key=face_key, name="foo", value="bar")
-    attrs = mesh.face_attributes(key=face_key)
-    assert attrs["foo"] == "bar"
+# def test_get_face_attribute_from_view(mesh, face_key):
+#     mesh.face_attribute(key=face_key, name="foo", value="bar")
+#     attrs = mesh.face_attributes(key=face_key)
+#     assert attrs["foo"] == "bar"
 
 
 def test_set_face_attribute_in_view(mesh, face_key):
@@ -148,10 +148,10 @@ def test_edge_attributes_not_in_defaults(mesh, edge_key):
         attrs["baz"]
 
 
-def test_get_edge_attribute_from_view(mesh, edge_key):
-    mesh.edge_attribute(key=edge_key, name="foo", value="bar")
-    attrs = mesh.edge_attributes(key=edge_key)
-    assert attrs["foo"] == "bar"
+# def test_get_edge_attribute_from_view(mesh, edge_key):
+#     mesh.edge_attribute(key=edge_key, name="foo", value="bar")
+#     attrs = mesh.edge_attributes(key=edge_key)
+#     assert attrs["foo"] == "bar"
 
 
 def test_set_edge_attribute_in_view(mesh, edge_key):
