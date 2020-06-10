@@ -2,11 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-try:
-    from collections.abc import MutableMapping  # python > 3.3
-except ImportError:
-    from collections import MutableMapping      # python 2.7
-
+from ._mutablemapping import MutableMapping
 
 __all__ = ['VertexAttributeView', 'FaceAttributeView', 'EdgeAttributeView']
 
@@ -15,6 +11,7 @@ class AttributeView(object):
     """Mixin for attribute dict views."""
 
     def __init__(self, defaults, attr, custom_only=False):
+        super(AttributeView, self).__init__()
         self.defaults = defaults
         self.attr = attr
         self.custom_only = custom_only
