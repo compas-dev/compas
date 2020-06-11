@@ -31,7 +31,7 @@ class Mapping(object):
     """
 
     def get(self, key, default=None):
-        'D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.'
+        'D.get(k[,d]) => D[k] if k in D, else d.  d defaults to None.'
         try:
             return self[key]
         except KeyError:
@@ -46,19 +46,19 @@ class Mapping(object):
             return True
 
     def keys(self):
-        "D.keys() -> a set-like object providing a view on D's keys"
+        "D.keys() => a set-like object providing a view on D's keys"
         return stdlib_collections.KeysView(self)
 
     def items(self):
-        "D.items() -> a set-like object providing a view on D's items"
+        "D.items() => a set-like object providing a view on D's items"
         return stdlib_collections.ItemsView(self)
 
     def values(self):
-        "D.values() -> an object providing a view on D's values"
+        "D.values() => an object providing a view on D's values"
         return stdlib_collections.ValuesView(self)
 
     def __eq__(self, other):
-        if not isinstance(other, Mapping) and not isinstance(other, stdlib_collections.Mapping):
+        if not isinstance(other, (Mapping, stdlib_collections.Mapping)):
             return NotImplemented
         return dict(self.items()) == dict(other.items())
 
@@ -79,7 +79,7 @@ class MutableMapping(Mapping):
     __marker = object()
 
     def pop(self, key, default=__marker):
-        '''D.pop(k[,d]) -> v, remove specified key and return the corresponding value.
+        '''D.pop(k[,d]) => v, remove specified key and return the corresponding value.
           If key is not found, d is returned if given, otherwise KeyError is raised.
         '''
         try:
@@ -93,7 +93,7 @@ class MutableMapping(Mapping):
             return value
 
     def popitem(self):
-        '''D.popitem() -> (k, v), remove and return some (key, value) pair
+        '''D.popitem() => (k, v), remove and return some (key, value) pair
            as a 2-tuple; but raise KeyError if D is empty.
         '''
         try:
@@ -105,22 +105,22 @@ class MutableMapping(Mapping):
         return key, value
 
     def clear(self):
-        'D.clear() -> None.  Remove all items from D.'
+        'D.clear() => None.  Remove all items from D.'
         try:
             while True:
                 self.popitem()
         except KeyError:
             pass
 
-    def update(*args, **kwds):
-        ''' D.update([E, ]**F) -> None.  Update D from mapping/iterable E and F.
-            If E present and has a .keys() method, does:     for k in E: D[k] = E[k]
-            If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
-            In either case, this is followed by: for k, v in F.items(): D[k] = v
+    def update(*args, **kwargs):
+        '''D.update([E, ]**F) => None.  Update D from mapping/iterable E and F.
+
+        If E present and has a .keys() method, does: for k in E: D[k] = E[k]
+        If E present and lacks .keys() method, does: for (k, v) in E: D[k] = v
+        In either case, this is followed by: for k, v in F.items(): D[k] = v
         '''
         if not args:
-            raise TypeError("descriptor 'update' of 'MutableMapping' object "
-                            "needs an argument")
+            raise TypeError("'update' of 'MutableMapping' object needs an argument")
         self = args[0]
         args = args[1:]
         if len(args) > 1:
@@ -128,7 +128,7 @@ class MutableMapping(Mapping):
                             len(args))
         if args:
             other = args[0]
-            if isinstance(other, Mapping) or isinstance(other, stdlib_collections.Mapping):
+            if isinstance(other, (Mapping, stdlib_collections.Mapping)):
                 for key in other:
                     self[key] = other[key]
             elif hasattr(other, "keys"):
@@ -137,11 +137,11 @@ class MutableMapping(Mapping):
             else:
                 for key, value in other:
                     self[key] = value
-            for key, value in kwds.items():
+            for key, value in kwargs.items():
                 self[key] = value
 
     def setdefault(self, key, default=None):
-        'D.setdefault(k[,d]) -> D.get(k,d), also set D[k]=d if k not in D'
+        'D.setdefault(k[,d]) => D.get(k,d), also set D[k]=d if k not in D'
         try:
             return self[key]
         except KeyError:
