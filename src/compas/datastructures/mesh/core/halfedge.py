@@ -81,10 +81,10 @@ class HalfEdge(Datastructure):
         """Generate a readable representation of the data of the mesh."""
         return json.dumps(self.data, sort_keys=True, indent=4)
 
-    def __iter__(self):
-        v, f = self.to_vertices_and_faces()
-        yield v
-        yield f
+    # def __iter__(self):
+    #     v, f = self.to_vertices_and_faces()
+    #     yield v
+    #     yield f
 
     def summary(self):
         """Print a summary of the mesh."""
