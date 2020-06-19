@@ -1,7 +1,11 @@
+******
 Basics
-======
+******
 
-By installing COMPAS (see :ref:`Installation`), the following packages are installed:
+.. highlight:: python
+
+
+By installing COMPAS (see :ref:`installation`), the following packages are installed:
 
 * :mod:`compas`
 * :mod:`compas_blender`
@@ -15,32 +19,19 @@ The packages :mod:`compas_rhino`, :mod:`compas_ghpython`, and :mod:`compas_blend
 
 
 Code structure
---------------
+==============
 
 In all packages, functionality is made available at the first sub-package level.
 
-.. code-block:: python
+::
 
-    from compas.datastructures import Mesh
-    from compas.geometry import Point
-    from compas.numerical import dr_numpy
-
-.. code-block:: python
-
-    # Rhino only
-
-    from compas_rhino.artists import MeshArtist
-    from compas_rhino.geometry import RhinoSurface
-
-.. code-block:: python
-
-    # Blender only
-
-    from compas_blender.artists import MeshArtist
+    >>> from compas.datastructures import Mesh
+    >>> from compas.geometry import Point
+    >>> from compas.numerical import dr_numpy
 
 
 Core functionality
-------------------
+==================
 
 The core functionality of the framework is written entirely in CPython such that it can easily be used across platform,
 in various coding environments, and inside software tools the provide a Python scripting interface.
@@ -48,26 +39,20 @@ in various coding environments, and inside software tools the provide a Python s
 To speed up computation, some functionality is based on Numpy/Scipy.
 These functions are suffixed with ``_numpy``.
 
-They are available in all environments except for Rhino and GHPython since Numpy and Scipy are not available for IronPython.
-``_numpy`` functions can be used in Rhino or Grasshopper through Remote Procedure Calls (:mod:`compas.rpc`)
+Numpy/Scipy function variants are available in all environments except for Rhino and GHPython since Numpy and Scipy are not available for IronPython.
+However, ``_numpy`` functions can be used in Rhino or Grasshopper through Remote Procedure Calls (:mod:`compas.rpc`)
+
+
+Plugin functionality
+====================
+
+*PLACEHOLDER*
 
 
 CAD integration
----------------
+===============
 
-:mod:`compas` can be used directly in CAD software that provides support for Python scripting.
+:mod:`compas` can be used directly in any CAD software that provides support for Python scripting.
 The CAD packages (:mod:`compas_rhino`, :mod:`compas_ghpython`, :mod:`compas_blender`)
-provide classes and functionality for visualizing COMPAS data structures and geometry,
-for processing native CAD geometry, and for building simple UIs.
-
-Visualization is handled by *Artists*.
-An artist is available for every data structure, geometric primitive and shape.
-
-.. code-block:: python
-
-    from compas.datastructures import Mesh
-    from compas_rhino.artists import MeshArtist
-
-    mesh = Mesh.from_polyhedron(6)
-    artist = MeshArtist(mesh)
-    artist.draw()
+provide specific support for visualizing COMPAS objects, for processing native CAD geometry,
+and for building simple UIs, in Rhino, Grasshopper and Blender, respectively.
