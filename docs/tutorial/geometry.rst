@@ -113,19 +113,27 @@ Many of the basic functions are also available as object methods.::
 
     >>> x.cross(y)
     Vector(0.000, 0.000, 1.000)
+
     >>> x.scale(3)
     None
+
     >>> x[0]
     3.0
+
     >>> x.scaled(3)
     Vector(9.000, 0.000, 0.000)
+
     >>> x[0]
     3.0
+
     >>> x.dot(y)
     0.0
+
     >>> x.normalize()
+
     >>> x.cross([0, 1, 0])
     Vector(0.000, 0.000, 1.000)
+
     >>> x.angle(y)
     1.5707963267948966
 
@@ -209,20 +217,28 @@ Primitives also provide easy access to many of the geometric properties of the r
 ::
 
     >>> line = Line([0, 0, 0], [2, 0, 0])
+
     >>> line.start
     Point(0.000, 0.000, 0.000)
+
     >>> line.start.x
     0.0
+
     >>> line.end
     Point(2.000, 0.000, 0.000)
+
     >>> line.vector
     Vector(2.000, 0.000, 0.000)
+
     >>> line.vector[0]
     2.0
+
     >>> line.direction
     Vector(1.000, 0.000, 0.000)
+
     >>> line.midpoint
     Point(1.000, 0.000, 0.000)
+
     >>> line.length
     2.0
 

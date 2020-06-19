@@ -26,21 +26,21 @@ Basic Usage
 ===========
 
 The basic usage of RPC is simple.
-For example, consider a CPython script using the Force Desnity method.::
+For example, consider a CPython script using the Force Desnity method. ::
 
     >>> from compas.numerical import fd_numpy
     >>> result = fd_numpy(...)
 
 This script does not work in Rhino or GH because Numpy is not available.
 Therefore, instead of importing and calling the function directly,
-we call it through a proxy object.::
+we call it through a proxy object. ::
 
     >>> from compas.rpc import Proxy
     >>> numerical = Proxy('compas.numerical')
     >>> result = numerical.fd_numpy(...)
 
 To use functions from more than one package in the same script, simply change the package attribute
-of the proxy object, which determines where the proxy will look for the requested function.::
+of the proxy object, which determines where the proxy will look for the requested function. ::
 
     >>> from compas.rpc import Proxy
     >>> proxy = Proxy()
@@ -51,7 +51,7 @@ of the proxy object, which determines where the proxy will look for the requeste
     >>> proxy.package = 'compas.geometry'
     >>> proxy.bestfit_plane_numpy(...)
 
-The use of :mod:`compas.rpc` is not restricted to COMPAS packages only.::
+The use of :mod:`compas.rpc` is not restricted to COMPAS packages only. ::
 
     >>> from compas.rpc import Proxy
     >>> linalg = Proxy('scipy.linalg')
@@ -86,7 +86,7 @@ For example, to load functionality from a different conda environment, or to
 load changes that were made to the packages in the environment after it was started.
 This happens frequently while a package is still under active development.
 
-Stopping and starting the server is easy.::
+Stopping and starting the server is easy. ::
 
     >>> from compas.rpc import Proxy
     >>> proxy = Proxy()
@@ -94,7 +94,7 @@ Stopping and starting the server is easy.::
     >>> proxy.start_server()
 
 To restart the server after every call, you can use a context manager.
-When used in this way, RPC behaves much like its predecessor ``XFunc``.::
+When used in this way, RPC behaves much like its predecessor ``XFunc``. ::
 
     >>> with Proxy('compas.numerical') as numerical:
     ...     numerical.fd_numpy(...)

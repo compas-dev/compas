@@ -4,14 +4,6 @@ Data structures
 
 .. currentmodule:: compas.datastructures
 
-.. toctree::
-    :maxdepth: 1
-    :titlesonly:
-
-    networks
-    meshes
-
-
 Why data structures?
 ====================
 

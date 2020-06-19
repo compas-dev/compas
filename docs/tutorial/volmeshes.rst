@@ -1,8 +1,8 @@
-.. _working-with-meshes:
+.. _working-with-volmeshes:
 
-*******************
-Working with meshes
-*******************
+******************************
+Working with volumetric meshes
+******************************
 
 .. highlight:: python
 
@@ -42,13 +42,13 @@ Constructors
 
 Building a mesh vertex per vertex and face per face is fine for very simple meshes,
 but quickly becomes tedious for meshes of relevant size.
-Alternative constructors can be used to simplify this process based on specific inputs. ::
+Alternative constructors can be used to simplify this process based on specific inputs.::
 
     >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
     >>> mesh = Mesh.from_polygons(polygons)
     >>> mesh = Mesh.from_shape(box)
 
-For strictly two-dimensional inputs in the XY plane, the following can also be used. ::
+For strictly two-dimensional inputs in the XY plane, the following can also be used.::
 
     >>> mesh = Mesh.from_lines(lines)
     >>> mesh = Mesh.from_points(points)
@@ -57,7 +57,7 @@ For strictly two-dimensional inputs in the XY plane, the following can also be u
 This process is only successful if the input lines form a planar graph.
 ``from_points`` generates a delaunay triangulation of the provided points in the XY plane.
 
-For every ``from_`` function there is a corresponding ``to_`` function that basically accomplishes the exact opposite. ::
+For every ``from_`` function there is a corresponding ``to_`` function that basically accomplishes the exact opposite.::
 
     >>>
 
@@ -65,11 +65,11 @@ For every ``from_`` function there is a corresponding ``to_`` function that basi
 Geometry Formats
 ================
 
-The mesh also supports constructors based on common geometry formats for 3D polygon mesh geometry. ::
+The mesh also supports constructors based on common geometry formats for 3D polygon mesh geometry.::
 
     >>> mesh = Mesh.from_obj(filepath)
     >>> mesh = Mesh.from_off(filepath)
-    >>> mesh = Mesh.from_ply(filepath)å
+    >>> mesh = Mesh.from_ply(filepath)
     >>> mesh = Mesh.from_stl(filepath)
 
 As mentioned above, for every ``from_`` there is a ``to_``.::
@@ -111,7 +111,7 @@ Note that these methods return generator objects that have to be consumed by ite
     ...     print(edge)
     ...
 
-To obtain actual lists of components, the results from the accessor functions have to be converted explicitly. ::
+To obtain actual lists of components, the results from the accessor functions have to be converted explicitly.::
 
     >>> vertices = list(mesh.vertices())
     >>> edges = list(mesh.edges())
@@ -124,7 +124,7 @@ Identifiers of edges are pairs of vertex ids in the form of a tuple.
 Note that adding and removing elements will not cause identifiers to be renumbered.
 Therefore, after certain topological operations (e.g. subdivision), vertex and face identifiers no longer necessarily form contiguous sequences.
 This needs to be taken into account when converting sequences of vertices, faces, and edges to lists, for example for numerical calculation.
-To transparently convert non-contiguous sequences of identifiers to contiguous list indices, use "key/index maps". ::
+To transparently convert non-contiguous sequences of identifiers to contiguous list indices, use "key/index maps".::
 
     >>> key_index = mesh.key_index()
     >>> vertices = list(mesh.vertices())
@@ -132,7 +132,7 @@ To transparently convert non-contiguous sequences of identifiers to contiguous l
     >>> faces = [[key_index[key] for key in mesh.face_vertices(face)] for face in mesh.faces()]
 
 The key/index map simply maps vertex identifiers to the corresponding index in the contiguous sequence that is created
-when convertig a sequence of identifiers to a list. The ordering of these identifiers can be completely random, but is always consistent. ::
+when convertig a sequence of identifiers to a list. The ordering of these identifiers can be completely random, but is always consistent.::
 
     >>> key_index = {key: index for index, key in enumerate(mesh.vertices())}
 
@@ -142,6 +142,7 @@ Topology
 
 Through its half-edge dtaa structure, a mesh can answer several topological questions
 about itself and its components.
+
 
 ::
 
