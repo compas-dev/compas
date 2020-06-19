@@ -4,7 +4,7 @@ from __future__ import division
 
 import collections
 
-from compas.geometry._core.distance import distance_point_point_sqrd
+from compas.geometry._core import distance_point_point_sqrd
 
 
 __all__ = [

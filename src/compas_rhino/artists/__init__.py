@@ -22,15 +22,15 @@ Artists for visualising (painting) COMPAS objects in Rhino.
     ab = Line(a, b)
     world = Frame.worldXY()
 
-    a_ = PointArtist(a, color=(0, 0, 0))
-    b_ = PointArtist(b, color=(255, 255, 255))
-    ab_ = LineArtist(ab, color=(128, 128, 128))
-    world_ = FrameArtist(world)
+    a_artist = PointArtist(a, color=(0, 0, 0))
+    b_artist = PointArtist(b, color=(255, 255, 255))
+    ab_artist = LineArtist(ab, color=(128, 128, 128))
+    world_artist = FrameArtist(world)
 
-    a_.draw()
-    b_.draw()
-    ab_.draw()
-    world_.draw()
+    a_artist.draw()
+    b_artist.draw()
+    ab_artist.draw()
+    world_artist.draw()
 
 
 .. note::

@@ -389,6 +389,8 @@ from __future__ import division
 from __future__ import print_function
 
 from ._core import *  # noqa: F401 F403
+from ._predicates import *  # noqa: F401 F403
+from ._intersections import *  # noqa: F401 F403
 from ._transformations import *  # noqa: F401 F403
 from ._primitives import *  # noqa: F401 F403
 from ._shapes import *  # noqa: F401 F403

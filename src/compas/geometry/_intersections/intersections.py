@@ -7,20 +7,20 @@ from math import sqrt
 
 from compas.utilities import pairwise
 
-from compas.geometry._core import allclose
-from compas.geometry._core import add_vectors
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import scale_vector
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import length_vector_xy
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import normalize_vector
-from compas.geometry._core import centroid_points
-from compas.geometry._core import distance_point_point
-from compas.geometry._core import is_point_on_segment
-from compas.geometry._core import is_point_on_segment_xy
-from compas.geometry._core import is_point_in_triangle
+from compas.geometry import allclose
+from compas.geometry import add_vectors
+from compas.geometry import subtract_vectors
+from compas.geometry import scale_vector
+from compas.geometry import cross_vectors
+from compas.geometry import dot_vectors
+from compas.geometry import length_vector_xy
+from compas.geometry import subtract_vectors_xy
+from compas.geometry import normalize_vector
+from compas.geometry import centroid_points
+from compas.geometry import distance_point_point
+from compas.geometry import is_point_on_segment
+from compas.geometry import is_point_on_segment_xy
+from compas.geometry import is_point_in_triangle
 
 
 __all__ = [

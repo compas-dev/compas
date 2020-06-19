@@ -103,22 +103,16 @@ def test_centroid_points(points, centroid):
     assert allclose(centroid_points(points), (x, y, z), tol=1e-03)
 
 
-@pytest.mark.parametrize(("points"),
-                         [
-    [0.0, 0.0, 0.0]
-]
-)
+@pytest.mark.parametrize(("points"), [[0.0, 0.0, 0.0]])
 def test_centroid_points_fails_when_input_is_not_list_of_lists(points):
     with pytest.raises(TypeError):
         centroid_points(points)
 
 
-@pytest.mark.parametrize(("points"),
-                         [
+@pytest.mark.parametrize(("points"), [
     [[0.0, 0.0, 0.0], [0.0, 0.0]],
     [[0.0, 0.0]],
-]
-)
+])
 def test_centroid_points_fails_when_input_is_not_complete_points(points):
     with pytest.raises(ValueError):
         centroid_points(points)

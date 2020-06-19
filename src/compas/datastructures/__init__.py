@@ -170,7 +170,6 @@ Algorithms
     network_is_planar
     network_is_planar_embedding
     network_is_xy
-    network_smooth_centroid
     network_transform
     network_transformed
 
