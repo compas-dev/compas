@@ -26,6 +26,9 @@ class AttributeView(object):
         return len(self.defaults)
 
     def __getitem__(self, name):
+        if name not in self.attr:
+            if name not in self.defaults:
+                raise KeyError
         return self.attr.get(name, self.defaults.get(name))
 
     def __setitem__(self, name, value):
