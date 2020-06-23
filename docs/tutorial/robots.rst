@@ -229,7 +229,7 @@ Another common scenario is to load robot models from a running ROS system.
 `ROS (Robot Operating System) <https://www.ros.org/>`_ is a very complex and
 mature tool, and its setup is beyond the scope of this tutorial, but
 an overview of some of the installation options is available
-`here <https://gramaziokohler.github.io/compas_fab/latest/backends/ros.html`_.
+`here <https://gramaziokohler.github.io/compas_fab/latest/backends/ros.html>`_.
 Once ROS is configured on your system, the most convenient way to load the
 robot model is to use **COMPAS FAB** and its ROS integration.
 The following snippet shows how to load the robot model currently active in ROS:
