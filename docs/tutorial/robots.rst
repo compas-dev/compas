@@ -136,8 +136,8 @@ of joints:
 * **Fixed**: Not really a joint because it cannot move, all degrees of freedom
   are locked.
 
-Working with robots models
---------------------------
+Building robots models
+======================
 
 Robot models are represented by the :class:`compas.robots.RobotModel` class.
 There are various ways to construct a robot model. The following snippet
