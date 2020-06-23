@@ -18,7 +18,7 @@ Points and Vectors
 ==================
 
 In Python, the simplest way to represent a point or a vector is through a list of XYZ components.
-To retrieve or modify one of the components, simply access the correspoding index in the list.::
+To retrieve or modify one of the components, simply access the corresponding index in the list.::
 
     >>> point = [1, 1, 1]
     >>> point[0]
