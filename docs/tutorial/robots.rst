@@ -21,7 +21,7 @@ One of the most basic concepts related to robotics that COMPAS provides are
 coordinate frames, which are described using the :class:`compas.geometry.Frame` class.
 
 In any robotic setup, there exist multiple coordinate frames, and each one is defined
-in relation to each other. Examples of typical coordinate frames are:
+in relation to the next. Examples of typical coordinate frames are:
 
 * World coordinate frame (``WCF``)
 * Robot coordinate frame (``RCF``)
@@ -37,8 +37,8 @@ in relation to each other. Examples of typical coordinate frames are:
 
 A coordinate frame is defined as a point and two orthonormal base vectors
 (``xaxis``, ``yaxis``). Both the point and the vectors can be defined
-using simple lists of XYZ components or using classes. The following
-two examples are equivalent:
+using simple lists of XYZ components or using classes. Frames are
+right-handed coordinate systems. The following two examples are equivalent:
 
 ::
 
@@ -104,7 +104,7 @@ Robot models
 ============
 
 Robotic arms, like those typically used in digital fabrication, are fundamentally
-kinematic chains of rigid bodies, i.e.. **links**, connected by **joints** to
+kinematic chains of rigid bodies, i.e. **links**, connected by **joints** to
 provide constrained motion. Kinematics is a subdomain of mechanics, and contrary
 to dynamics, it concerns the laws of motion without considering forces.
 
@@ -126,11 +126,12 @@ the collision checking process.
 Joints
 ------
 
-Joints are the connecting elements between links. There are three main types
+Joints are the connecting elements between links. There are four main types
 of joints:
 
 * **Revolute**: A hinge joint that rotates along the axis and has a limited
   range specified by the upper and lower limits.
+* **Continuous**: A hinge joint that rotates along the axis and has no limits.
 * **Prismatic**: A sliding joint that slides along the axis, and has a limited
   range specified by the upper and lower limits.
 * **Fixed**: Not really a joint because it cannot move, all degrees of freedom
@@ -164,7 +165,7 @@ shows how to construct one programmatically:
     >>> l6 = Link('link_6')
     >>> links = [l0, l1, l2, l3, l4, l5, l6]
     >>> joints = [j1, j2, j3, j4, j5, j6]
-    >>> robot = RobotModel('johnny', joints=joints, links=links)
+    >>> robot = RobotModel('johnny-5', joints=joints, links=links)
     >>> robot.get_configurable_joint_names()
     ['joint_1', 'joint_2', 'joint_3', 'joint_4', 'joint_5', 'joint_6']
 
@@ -224,9 +225,14 @@ its linked geometry directly from a Github repository:
     >>> print(model)
     Robot name=abb_irb6640, Links=11, Joints=10 (6 configurable)
 
-Finally, the most convenient way to load a complex robot model is to leverage
-**COMPAS FAB** and its ROS integration. The following snippet shows how to load the
-robot model currently active in ROS:
+Another common scenario is to load robot models from a running ROS system.
+`ROS (Robot Operating System) <https://www.ros.org/>`_ is a very complex and
+mature tool, and its setup is beyond the scope of this tutorial, but
+an overview of some of the installation options is available
+`here <https://gramaziokohler.github.io/compas_fab/latest/backends/ros.html`_.
+Once ROS is configured on your system, the most convenient way to load the
+robot model is to use **COMPAS FAB** and its ROS integration.
+The following snippet shows how to load the robot model currently active in ROS:
 
 ::
 
