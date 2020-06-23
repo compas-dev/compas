@@ -4,19 +4,21 @@
 Installation
 ************
 
-.. describe cross-platfrom ness like on homepage
+.. describe cross-platform ness like on homepage
 
 
-Install in a conda environment (recommended)
-============================================
+Install with conda
+==================
 
-The recommended way to install COMPAS is with `conda <https://conda.io/docs/>`_.
+The **recommended** way to install COMPAS is with `conda <https://conda.io/docs/>`_
+using an environment.
 
 
 All-in-one
 ----------
 
-Create an environment named "project", install Python 3.7 and COMPAS (use the ``conda-forge`` channel), say "yes" to all questions asked.
+Create an environment and give it a name, e.g. ``"project"``, install Python 3.7
+and COMPAS (use the ``conda-forge`` channel), say "yes" to all questions asked.
 
 .. code-block:: bash
 
