@@ -7,20 +7,20 @@ from math import sqrt
 
 from compas.utilities import pairwise
 
-from compas.geometry import allclose
-from compas.geometry import add_vectors
-from compas.geometry import subtract_vectors
-from compas.geometry import scale_vector
-from compas.geometry import cross_vectors
-from compas.geometry import dot_vectors
-from compas.geometry import length_vector_xy
-from compas.geometry import subtract_vectors_xy
-from compas.geometry import normalize_vector
-from compas.geometry import centroid_points
-from compas.geometry import distance_point_point
-from compas.geometry import is_point_on_segment
-from compas.geometry import is_point_on_segment_xy
-from compas.geometry import is_point_in_triangle
+from compas.geometry._core import allclose
+from compas.geometry._core import add_vectors
+from compas.geometry._core import subtract_vectors
+from compas.geometry._core import scale_vector
+from compas.geometry._core import cross_vectors
+from compas.geometry._core import dot_vectors
+from compas.geometry._core import length_vector_xy
+from compas.geometry._core import subtract_vectors_xy
+from compas.geometry._core import normalize_vector
+from compas.geometry._core import centroid_points
+from compas.geometry._core import distance_point_point
+from compas.geometry._core import is_point_on_segment
+from compas.geometry._core import is_point_on_segment_xy
+from compas.geometry._core import is_point_in_triangle
 
 
 __all__ = [
@@ -33,6 +33,7 @@ __all__ = [
     'intersection_line_box_xy',
     'intersection_circle_circle_xy',
     'intersection_line_plane',
+    'intersection_polyline_plane',
     'intersection_line_triangle',
     'intersection_segment_plane',
     'intersection_plane_circle',
@@ -379,6 +380,43 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
     if 0.0 <= ratio and ratio <= 1.0:
         ab = scale_vector(ab, ratio)
         return add_vectors(a, ab)
+
+    return None
+
+
+def intersection_polyline_plane(polyline, plane, expected_number_of_intersections=None, tol=1e-6):
+    """Calculate the intersection point of a plane with a polyline. 
+    Return a list of intersection points.
+    By default it will allow two intersections. Reduce expected_number_of_intersections to speed up.
+
+    Parameters
+    ----------
+    polyline : compas.geometry.Polyline
+        polyline to test intersection
+    plane : compas.Geometry.Plane
+        plane to compute intersection
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    intersection_pts : list of compas.geometry.Point
+        if there are intersection points, return point(s) in a list
+    """
+    if not expected_number_of_intersections:
+        expected_number_of_intersections = len(polyline)
+    intersection_points = []
+    max_iter = 0
+    for segment in pairwise(polyline):
+        pt = intersection_segment_plane(segment, plane, tol)
+        if pt and max_iter < expected_number_of_intersections:
+            intersection_points.append(pt)
+            max_iter += 1
+        else:
+            break
+    if len(intersection_points) > 0:
+        return intersection_points
 
     return None
 
