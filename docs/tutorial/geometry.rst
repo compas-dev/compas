@@ -18,7 +18,7 @@ Points and Vectors
 ==================
 
 In Python, the simplest way to represent a point or a vector is through a list of XYZ components.
-To retrieve or modify one of the components, simply access the correspoding index in the list. ::
+To retrieve or modify one of the components, simply access the corresponding index in the list::
 
     >>> point = [1, 1, 1]
     >>> point[0]
@@ -31,7 +31,7 @@ To retrieve or modify one of the components, simply access the correspoding inde
 
 
 To add two points, compute the length of a vector, ... you can apply simple math to the items
-of these lists.::
+of these lists::
 
     >>> a = [1, 0, 0]
     >>> b = [0, 1, 0]
@@ -93,7 +93,7 @@ and bind many of the basic geometry functions as methods.
 
 
 Operators such as ``+`` or ``*`` involving COMPAS geometry objects always return a new COMPAS geometry object.
-However, the result type is not always the same as the type of the inputs. ::
+However, the result type is not always the same as the type of the inputs::
 
     >>> a = Point(0, 0, 0)
     >>> b = Point(1, 1, 0)
@@ -101,7 +101,7 @@ However, the result type is not always the same as the type of the inputs. ::
     Vector(1.000, 1.000, 0.000)
 
 
-Basic functions, on the other hand, always return native Python objects, regardless of the input. ::
+Basic functions, on the other hand, always return native Python objects, regardless of the input::
 
     >>> x = Vector(1, 0, 0)
     >>> y = Vector(0, 1, 0)
@@ -109,7 +109,7 @@ Basic functions, on the other hand, always return native Python objects, regardl
     [0.0, 0.0, 1.0]
 
 
-Many of the basic functions are also available as object methods. ::
+Many of the basic functions are also available as object methods::
 
     >>> x.cross(y)
     Vector(0.000, 0.000, 1.000)
@@ -288,7 +288,7 @@ Transformations
 All transformations of geometric objects are based on :class:`Transformation`,
 which defines a general projective or affine transformation in eucledian space,
 represented by a 4x4 transformation matrix.
-The default transformation is an identity. ::
+The default transformation is an identity::
 
     >>> from compas.geometry import Transformation
     >>> X = Transformation()
@@ -299,7 +299,7 @@ The default transformation is an identity. ::
 
 
 The base transformation object provides alternative constructors
-to create transformations between different coordinate systems represented by frames. ::
+to create transformations between different coordinate systems represented by frames::
 
     >>> X = Transformation.from_frame(frame)
     >>> X = Transformation.from_frame_to_frame(frame1, frame2)
@@ -307,14 +307,14 @@ to create transformations between different coordinate systems represented by fr
 
 
 :class:`Translation`, :class:`Rotation`, :class:`Scale`, :class:`Shear`, and :class:`Projection`
-define specific transformations. ::
+define specific transformations::
 
     >>> import math
     >>> from compas.geometry import Rotation
     >>> R = Rotation.from_axis_and_angle([0, 0, 1], math.radians(90))
 
 All primitives support transformations through the methods :func:`Primitive.transform` and  :func:`Primitive.transformed`.
-The former modifies the object in place, whereas the latter returns a new object. ::
+The former modifies the object in place, whereas the latter returns a new object::
 
     >>> point = Point(1, 0, 0)
     >>> point.transformed(R)
@@ -326,7 +326,7 @@ The former modifies the object in place, whereas the latter returns a new object
 
 
 All transformation objects support matrix multiplication with the ``*`` operator.
-Remember that the multiplication order of transformation matrices is important! ::
+Remember that the multiplication order of transformation matrices is important!::
 
     >>> T = Translation.from_vector([1, 1, 0])
     >>> R = Rotation.from_axis_and_angle([0, 0, 1], math.radians(90))
@@ -339,7 +339,7 @@ Remember that the multiplication order of transformation matrices is important! 
 
 Note that points and vectors behave different in transformations.
 Applying the same transformation above to a vector instead of a point,
-we get a different result, because the translation component is ignored. ::
+we get a different result, because the translation component is ignored::
 
     >>> vector = Vector(1, 0, 0)
     >>> vector.transformed(R * T)
@@ -351,7 +351,7 @@ we get a different result, because the translation component is ignored. ::
 .. make axis optional
 .. add deg option (default is True)
 
-Note that geometries are not implicitly linked. ::
+Note that geometries are not implicitly linked::
 
     >>> a = Point(0, 0, 0)
     >>> b = Point(1, 0, 0)
@@ -383,7 +383,7 @@ The default constructor, corresponds to the canonical representation of the geom
 
 After construction, all shapes are axis-aligned and centered at the origin.
 To move shapes to different locations in 3D space, change their orientations,
-or modify their geometry, use transformations. ::
+or modify their geometry, use transformations::
 
     >>> b1 = Box(Frame.worldXY(), 5, 1, 3)
     >>> b2 = Box.from_width_height_depth(5, 1, 3)
@@ -395,7 +395,7 @@ Boolean Operations
 ==================
 
 3D boolean operations are not supported in COMPAS by default,
-but are available if the plugin :mod:`compas_cgal` is installed. ::
+but are available if the plugin :mod:`compas_cgal` is installed::
 
     >>>
 

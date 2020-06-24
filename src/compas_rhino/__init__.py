@@ -108,50 +108,50 @@ def _get_ironpython_lib_path_mac(version):
     return os.path.join(*lib_paths.get(version) + ['Resources', 'ManagedPlugIns', 'RhinoDLR_Python.rhp', 'Lib'])
 
 
-# def _get_python_plugins_path(version):
-#     version = _check_rhino_version(version)
+def _get_python_plugins_path(version):
+    version = _check_rhino_version(version)
 
-#     if compas._os.system == 'win32':
-#         python_plugins_path = _get_python_plugins_path_win32(version)
-#     elif compas._os.system == 'darwin':
-#         python_plugins_path = _get_python_plugins_path_mac(version)
-#     else:
-#         raise Exception('Unsupported platform')
+    if compas._os.system == 'win32':
+        python_plugins_path = _get_python_plugins_path_win32(version)
+    elif compas._os.system == 'darwin':
+        python_plugins_path = _get_python_plugins_path_mac(version)
+    else:
+        raise Exception('Unsupported platform')
 
-#     return python_plugins_path
-
-
-# def _get_python_plugins_path_win32(version):
-#     appdata = os.getenv('APPDATA')
-#     return os.path.join(appdata,
-#                         'McNeel',
-#                         'Rhinoceros',
-#                         '{}'.format(version),
-#                         'Plug-ins',
-#                         'PythonPlugins')
+    return python_plugins_path
 
 
-# def _get_python_plugins_path_mac(version):
-#     if version == '6.0':
-#         path = os.path.join(
-#             os.environ['HOME'],
-#             'Library',
-#             'Application Support',
-#             'McNeel',
-#             'Rhinoceros',
-#             '6.0',
-#             'Plug-ins',
-#             'PythonPlugIns')
-#     else:
-#         path = os.path.join(
-#             os.environ['HOME'],
-#             'Library',
-#             'Application Support',
-#             'McNeel',
-#             'Rhinoceros',
-#             'MacPlugIns',
-#             'PythonPlugIns')
-#     return path
+def _get_python_plugins_path_win32(version):
+    appdata = os.getenv('APPDATA')
+    return os.path.join(appdata,
+                        'McNeel',
+                        'Rhinoceros',
+                        '{}'.format(version),
+                        'Plug-ins',
+                        'PythonPlugins')
+
+
+def _get_python_plugins_path_mac(version):
+    if version == '6.0':
+        path = os.path.join(
+            os.environ['HOME'],
+            'Library',
+            'Application Support',
+            'McNeel',
+            'Rhinoceros',
+            '6.0',
+            'Plug-ins',
+            'PythonPlugIns')
+    else:
+        path = os.path.join(
+            os.environ['HOME'],
+            'Library',
+            'Application Support',
+            'McNeel',
+            'Rhinoceros',
+            'MacPlugIns',
+            'PythonPlugIns')
+    return path
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
