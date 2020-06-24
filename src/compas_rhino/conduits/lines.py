@@ -76,93 +76,91 @@ class LinesConduit(Conduit):
         self.thickness = thickness
         self.color = color
 
-    # @property
-    # def thickness(self):
-    #     """list : Individual line thicknesses.
+    @property
+    def thickness(self):
+        """list : Individual line thicknesses.
 
-    #     Parameters
-    #     ----------
-    #     thickness : list of int
-    #         The thickness of each line.
+        Parameters
+        ----------
+        thickness : list of int
+            The thickness of each line.
 
-    #     """
-    #     return self._thickness
+        """
+        return self._thickness
 
-    # @thickness.setter
-    # def thickness(self, thickness):
-    #     if thickness:
-    #         try:
-    #             len(thickness)
-    #         except TypeError:
-    #             thickness = [thickness]
-    #         l = len(self.lines)  # noqa: E741
-    #         t = len(thickness)
-    #         if t < l:
-    #             thickness += [self._default_thickness for i in range(l - t)]
-    #         elif t > l:
-    #             thickness[:] = thickness[:l]
-    #         self._thickness = thickness
+    @thickness.setter
+    def thickness(self, thickness):
+        if thickness:
+            try:
+                len(thickness)
+            except TypeError:
+                thickness = [thickness]
+            l = len(self.lines)  # noqa: E741
+            t = len(thickness)
+            if t < l:
+                thickness += [self._default_thickness for i in range(l - t)]
+            elif t > l:
+                thickness[:] = thickness[:l]
+            self._thickness = thickness
 
-    # @property
-    # def color(self):
-    #     """list : Individual line colors.
+    @property
+    def color(self):
+        """list : Individual line colors.
 
-    #     Parameters
-    #     ----------
-    #     color : list of str or 3-tuple
-    #         The color specification of each line in hex or RGB(255) format.
+        Parameters
+        ----------
+        color : list of str or 3-tuple
+            The color specification of each line in hex or RGB(255) format.
 
-    #     """
-    #     return self._color
+        """
+        return self._color
 
-    # @color.setter
-    # def color(self, color):
-    #     if color:
-    #         l = len(self.lines)  # noqa: E741
-    #         if isinstance(color, (basestring, tuple)):
-    #             # if a single color was provided
-    #             color = [color for _ in range(l)]
-    #         # convert the specified colors to windows system colors
-    #         color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
-    #         c = len(color)
-    #         if c < l:
-    #             # pad the list with default colors
-    #             color += [self._default_color for i in range(l - c)]
-    #         elif c > l:
-    #             # resize to the number of lines
-    #             color[:] = color[:l]
-    #         # assign to the protected attribute
-    #         self._color = color
+    @color.setter
+    def color(self, color):
+        if color:
+            l = len(self.lines)  # noqa: E741
+            if isinstance(color, (basestring, tuple)):
+                # if a single color was provided
+                color = [color for _ in range(l)]
+            # convert the specified colors to windows system colors
+            color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
+            c = len(color)
+            if c < l:
+                # pad the list with default colors
+                color += [self._default_color for i in range(l - c)]
+            elif c > l:
+                # resize to the number of lines
+                color[:] = color[:l]
+            # assign to the protected attribute
+            self._color = color
 
     def DrawForeground(self, e):
-        # try:
-        #     if self.color:
-        #         draw = e.Display.DrawLine
-        #         if self.thickness:
-        #             for i, (start, end) in enumerate(self.lines):
-        #                 draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
-        #         else:
-        #             for i, (start, end) in enumerate(self.lines):
-        #                 draw(Point3d(*start), Point3d(*end), self.color[i], self._default_thickness)
+        try:
+            if self.color:
+                draw = e.Display.DrawLine
+                if self.thickness:
+                    for i, (start, end) in enumerate(self.lines):
+                        draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
+                else:
+                    for i, (start, end) in enumerate(self.lines):
+                        draw(Point3d(*start), Point3d(*end), self.color[i], self._default_thickness)
 
-        #     elif self.thickness:
-        #         draw = e.Display.DrawLine
-        #         if self.color:
-        #             for i, (start, end) in enumerate(self.lines):
-        #                 draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
-        #         else:
-        #             for i, (start, end) in enumerate(self.lines):
-        #                 draw(Point3d(*start), Point3d(*end), self._default_color, self.thickness[i])
+            elif self.thickness:
+                draw = e.Display.DrawLine
+                if self.color:
+                    for i, (start, end) in enumerate(self.lines):
+                        draw(Point3d(*start), Point3d(*end), self.color[i], self.thickness[i])
+                else:
+                    for i, (start, end) in enumerate(self.lines):
+                        draw(Point3d(*start), Point3d(*end), self._default_color, self.thickness[i])
 
-        #     else:
-
-        lines = List[Line](len(self.lines))
-        for start, end in self.lines:
-            lines.Add(Line(Point3d(start[0], start[1], 0), Point3d(end[0], end[1], 0)))
-        e.Display.DrawLines(lines, self._default_color, self._default_thickness)
-
-        # except Exception as e:
-        #     print(e)
+            else:
+                lines = List[Line](len(self.lines))
+                for start, end in self.lines:
+                    lines.Add(Line(Point3d(*start), Point3d(*end)))
+                e.Display.DrawLines(lines, self._default_color, self._default_thickness)
+        except Exception as e:
+            print(e)
 
 
 # ==============================================================================
