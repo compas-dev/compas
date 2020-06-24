@@ -57,6 +57,10 @@ class RhinoMesh(RhinoGeometry):
     def faces(self):
         return map(list, compas_rhino.rs.MeshFaceVertices(self.geometry))
 
+    # @classmethod
+    # def from_compas(cls, mesh):
+    #     pass
+
     def to_compas(self, cls=None):
         if not cls:
             cls = Mesh
