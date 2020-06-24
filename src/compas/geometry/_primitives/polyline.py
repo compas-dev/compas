@@ -54,6 +54,8 @@ class Polyline(Primitive):
     1.0
     """
 
+    __module__ = "compas.geometry"
+
     __slots__ = ["_points", "_lines"]
 
     def __init__(self, points):
@@ -318,7 +320,107 @@ class Polyline(Primitive):
         polyline = self.copy()
         polyline.transform(T)
         return polyline
+    
+    def shorten(self, start_distance=0, end_distance=0):
+        """Return a new polyline which is shorter than the original in one end side, other or both by a given distance.
+        
+        Parameters
+        ----------
+        start_distance : float.
+            distance to shorten from the starting point of the polyline
+        end_distance : float.
+            distance to shorten from the ending point of the polyline
 
+        Returns
+        -------
+        :class:`compas.geometry.Polyline`
+            The transformed copy.
+        """
+        if start_distance != 0 or end_distance != 0:
+            points = []
+            acum_length = 0
+            switch = True
+            for i, line in enumerate(self.lines):
+                acum_length += line.length
+                if acum_length < start_distance:
+                    continue
+                elif acum_length > start_distance and switch:
+                    if start_distance == 0:
+                        points.append(line.start)
+                    else:
+                        points.append(self.point(start_distance/self.length))
+                    switch = False
+                else:
+                    points.append(line.start)
+                    if end_distance == 0:
+                        if i == len(self.lines)-1:
+                            points.append(line.end)
+                    else:
+                        if acum_length >= (self.length - end_distance):
+                            points.append(self.point(1-(end_distance/self.length)))
+                            break
+            return points
+        return self
+
+    def rebuild(self, number=20):
+        """Reconstruct a polyline with evenly spaced points based on a number of interpolations
+        Returns new rebuilt polyline
+
+        Parameters
+        ----------
+        number : integer.
+            number of points for the amount of definition of the polyline
+
+        Returns
+        -------
+        list of equally spaced points on the polyline
+        """
+        points = [self.point(i * float(1 / number)) for i in range(number)]
+        points.append(self.point(1))
+        new_points = [Point(x, y, z) for x, y, z in points]
+        rebuilt_polyline = self.copy()
+        rebuilt_polyline.points = new_points
+        return rebuilt_polyline
+
+    def divide_by_count(self, number=10, include_ends=False):
+        """Divide a polyline by count. Returns list of Points from the division
+
+        Parameters
+        ----------
+        number : integer.
+            number of divisions
+        includeEnds : boolean
+            True if including start and ending points.
+            False if not including start and ending points.
+
+        Returns
+        -------
+        points : list of points resulting from dividing the polyline
+        """
+        points = [self.point(i * float(1 / number)) for i in range(number)]
+        if include_ends:
+            points.append(self.point(1))
+        else:
+            points.pop(0)
+        return points
+
+    def tween(self, polyline_two, number=50):
+        """Create an average polyline between two polylines interpolating their points
+
+        Parameters
+        ----------
+        polyline_two : compas.geometry.Polyline
+            polyline to create the tween polyline
+        number : number of points of the tween polyline
+
+        Returns
+        -------
+        list of compas.geometry.Point
+        """
+        rebuilt_polyline_one = self.rebuild(number)
+        rebuilt_polyline_two = polyline_two.rebuild(number)
+        lines = [Line(point_one, point_two) for point_one, point_two in zip(rebuilt_polyline_one, rebuilt_polyline_two)]
+        return [line.midpoint for line in lines]
 
 # ==============================================================================
 # Main

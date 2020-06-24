@@ -5,7 +5,6 @@ from __future__ import division
 from compas.geometry._primitives import Primitive
 from compas.geometry._primitives import Point
 
-
 __all__ = ['Line']
 
 
@@ -55,6 +54,8 @@ class Line(Primitive):
     >>> type(line.direction) == Vector
     True
     """
+
+    __module__ = "compas.geometry"
 
     __slots__ = ['_start', '_end']
 
@@ -337,7 +338,32 @@ class Line(Primitive):
         line.transform(T)
         return line
 
+    def divide_by_count(self, number=10, include_ends=False):
+        """Return list of points from dividing the line by specific number of divisions
 
+        Parameters
+        ----------
+        number : integer
+            number of divisions
+        includeEnds : boolean
+            True if including start and end point in division points
+            False if not including start and end point in division points
+
+        Returns
+        -------
+        list of: compas.geometry.Point // Point as sequence of values xyz)
+
+        Example
+        --------
+        >>> line = Line([0.0,0.0,0.0],[5.0,0.0,0.0])
+        >>> line.divide_by_count(5, True)
+        [[0.0,0.0,0.0],[1.0,0.0,0.0],[2.0,0.0,0.0],[3.0,0.0,0.0],[4.0,0.0,0.0],[5.0,0.0,0.0]]
+        """
+        if include_ends:
+            return [self.point(i * float(1 / number)) for i in range(int(number)+1)]
+        else:
+            return [self.point(i * float(1 / number)) for i in range(int(number)+1) if i != 0 or i != number]
+    
 # ==============================================================================
 # Main
 # ==============================================================================
