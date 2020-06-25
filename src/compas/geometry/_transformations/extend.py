@@ -35,7 +35,7 @@ def extend_line(line, start_extension=0, end_extension=0):
     --------
     >>> line = Line([0.0,0.0,0.0],[1.0,0.0,0.0])
     >>> extended_line = extend_line(line, 1, 1)
-    Line([-1.0,0.0,0.0],[2.0,0.0,0.0])
+    Line([-1.0, 0.0, 0.0], [2.0, 0.0, 0.0])
     """
     def calculate_translation(line, distance):
         vector = line.direction.copy()
