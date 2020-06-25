@@ -7,20 +7,20 @@ from math import sqrt
 
 from compas.utilities import pairwise
 
-from compas.geometry._core import allclose
-from compas.geometry._core import add_vectors
-from compas.geometry._core import subtract_vectors
-from compas.geometry._core import scale_vector
-from compas.geometry._core import cross_vectors
-from compas.geometry._core import dot_vectors
-from compas.geometry._core import length_vector_xy
-from compas.geometry._core import subtract_vectors_xy
-from compas.geometry._core import normalize_vector
-from compas.geometry._core import centroid_points
-from compas.geometry._core import distance_point_point
-from compas.geometry._core import is_point_on_segment
-from compas.geometry._core import is_point_on_segment_xy
-from compas.geometry._core import is_point_in_triangle
+from compas.geometry import allclose
+from compas.geometry import add_vectors
+from compas.geometry import subtract_vectors
+from compas.geometry import scale_vector
+from compas.geometry import cross_vectors
+from compas.geometry import dot_vectors
+from compas.geometry import length_vector_xy
+from compas.geometry import subtract_vectors_xy
+from compas.geometry import normalize_vector
+from compas.geometry import centroid_points
+from compas.geometry import distance_point_point
+from compas.geometry import is_point_on_segment
+from compas.geometry import is_point_on_segment_xy
+from compas.geometry import is_point_in_triangle
 
 
 __all__ = [
@@ -385,9 +385,7 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
 
 
 def intersection_polyline_plane(polyline, plane, expected_number_of_intersections=None, tol=1e-6):
-    """Calculate the intersection point of a plane with a polyline. 
-    Return a list of intersection points.
-    By default it will allow two intersections. Reduce expected_number_of_intersections to speed up.
+    """Calculate the intersection point of a plane with a polyline. Reduce expected_number_of_intersections to speed up.
 
     Parameters
     ----------
@@ -417,7 +415,6 @@ def intersection_polyline_plane(polyline, plane, expected_number_of_intersection
             break
     if len(intersection_points) > 0:
         return intersection_points
-
     return None
 
 

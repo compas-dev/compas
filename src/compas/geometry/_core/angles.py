@@ -359,9 +359,9 @@ def angle_planes(a, b, deg=False):
 
     Parameters
     ----------
-    a : tuple of a point and a vector. Point as a sequence of float(XYZ) coordinates. Vector as a sequence of float(XY(Z)) coordinates. 
+    a : tuple of a point and a vector. Point as a sequence of float(XYZ) coordinates. Vector as a sequence of float(XY(Z)) coordinates.
         first plane
-    b : tuple of a point and a vector. Point as a sequence of float(XYZ) coordinates. Vector as a sequence of float(XY(Z)) coordinates. 
+    b : tuple of a point and a vector. Point as a sequence of float(XYZ) coordinates. Vector as a sequence of float(XY(Z)) coordinates.
         second plane
     deg : boolean
         returns angles in degrees if True
