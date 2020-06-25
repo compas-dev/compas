@@ -55,8 +55,6 @@ class Line(Primitive):
     True
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ['_start', '_end']
 
     def __init__(self, p1, p2):
@@ -356,18 +354,18 @@ class Line(Primitive):
 
         Example
         --------
-        >>> line = Line([0.0,0.0,0.0],[5.0,0.0,0.0])
+        >>> line = Line([0.0, 0.0, 0.0], [5.0 ,0.0, 0.0])
         >>> line.divide_by_count(5, True)
-        [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0], [4.0, 0.0, 0.0], [5.0, 0.0, 0.0]]
+        [Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(2.000, 0.000, 0.000), Point(3.000, 0.000, 0.000), Point(4.000, 0.000, 0.000), Point(5.000, 0.000, 0.000)]
         """
         if include_ends:
             return [self.point(i * float(1 / number)) for i in range(int(number)+1)]
         else:
             return [self.point(i * float(1.0 / number)) for i in range(int(number) + 1) if i != 0 or i != number]
-    
 # ==============================================================================
 # Main
 # ==============================================================================
+
 
 if __name__ == '__main__':
 

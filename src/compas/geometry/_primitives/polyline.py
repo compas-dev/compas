@@ -54,8 +54,6 @@ class Polyline(Primitive):
     1.0
     """
 
-    __module__ = "compas.geometry"
-
     __slots__ = ["_points", "_lines"]
 
     def __init__(self, points):
@@ -320,10 +318,10 @@ class Polyline(Primitive):
         polyline = self.copy()
         polyline.transform(T)
         return polyline
-    
+
     def shorten(self, start_distance=0, end_distance=0):
         """Return a new polyline which is shorter than the original in one end side, other or both by a given distance.
-        
+
         Parameters
         ----------
         start_distance : float.
@@ -373,13 +371,13 @@ class Polyline(Primitive):
 
         Returns
         -------
-        list of equally spaced points on the polyline
+        :class: 'compas.geometry.Polyline'
+            the rebuilt copy
         """
-        points = [self.point(i * float(1 / number)) for i in range(number)]
-        points.append(self.point(1))
-        new_points = [Point(x, y, z) for x, y, z in points]
         rebuilt_polyline = self.copy()
-        rebuilt_polyline.points = new_points
+        points = [self.point(i * float(1.0 / number)) for i in range(number)]
+        points.append(self.point(1))
+        rebuilt_polyline.points = [Point(x, y, z) for x, y, z in points]
         return rebuilt_polyline
 
     def divide_by_count(self, number=10, include_ends=False):
@@ -395,7 +393,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        points : list of points resulting from dividing the polyline
+        list of :class: 'compas.geometry.Point'
         """
         points = [self.point(i * float(1.0 / number)) for i in range(number)]
         if include_ends:
@@ -415,7 +413,7 @@ class Polyline(Primitive):
 
         Returns
         -------
-        list of compas.geometry.Point
+        list of :class: 'compas.geometry.Point'
         """
         rebuilt_polyline_one = self.rebuild(number)
         rebuilt_polyline_two = polyline_two.rebuild(number)
@@ -425,6 +423,7 @@ class Polyline(Primitive):
 # ==============================================================================
 # Main
 # ==============================================================================
+
 
 if __name__ == '__main__':
 

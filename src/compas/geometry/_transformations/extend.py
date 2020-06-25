@@ -3,10 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.geometry import Translation
-from compas.geometry import Line
 from compas.geometry import Polyline
 from compas.geometry import Vector
-from compas.geometry import Point
 
 __all__ = [
     'extend_line',
@@ -29,11 +27,11 @@ def extend_line(line, start_extension=0, end_extension=0):
     Returns
     -------
     extended line : tuple
-        Two points defining the offset line.
+        Two points defining the extended line.
 
     Examples
     --------
-    >>> line = Line([0.0,0.0,0.0],[1.0,0.0,0.0])
+    >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
     >>> extended_line = extend_line(line, 1, 1)
     Line([-1.0, 0.0, 0.0], [2.0, 0.0, 0.0])
     """
@@ -70,9 +68,9 @@ def extend_polyline(polyline, start_extension=0, end_extension=0):
 
     Examples
     --------
-    >>> polyline = Polyline([0.0,0.0,0.0],[1.0,0.0,0.0],[2.0,1.0,0.0],[3.0,1.0,0.0],[4.0,0.0,0.0],[5.0,0.0,0.0])
+    >>> polyline = Polyline([0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 1.0, 0.0], [3.0, 1.0, 0.0], [4.0, 0.0, 0.0], [5.0, 0.0, 0.0])
     >>> extended_polyline = extend_polyline(polyline, 1, 1)
-    Polyline([-1.0,0.0,0.0],[0.0,0.0,0.0],[1.0,0.0,0.0],[2.0,1.0,0.0],[3.0,1.0,0.0],[4.0,0.0,0.0],[5.0,0.0,0.0],[6.0,0.0,0.0])
+    Polyline([-1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 1.0, 0.0], [3.0, 1.0, 0.0], [4.0, 0.0, 0.0], [5.0, 0.0, 0.0], [6.0, 0.0, 0.0])
     """
     def calculate_translation_vector(vector, distance):
         vector.unitize()

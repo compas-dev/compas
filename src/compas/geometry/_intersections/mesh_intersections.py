@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.datastructures import Mesh
 from compas.geometry import Point
 from compas.geometry import length_vector
 from compas.geometry import subtract_vectors
@@ -17,11 +16,7 @@ __all__ = [
 
 
 def intersection_mesh_line(mesh, line):
-    """Compute intersection between mesh faces and line
-    First extracts faces from the mesh and computes the intersection between 
-    a triangular face and a line, or two triangles of a quad face and a line.
-    After one single intersection, stops searching for more.
-    Returns one point from line-mesh intersection if intersection occurs.
+    """Compute intersection between mesh faces and line. After one single intersection, stops searching for more.
 
     Parameters
     ----------
@@ -53,6 +48,7 @@ def intersection_mesh_line(mesh, line):
     else:
         return None
 
+
 def intersection_mesh_plane(mesh, plane, tol=0.0001):
     """Calculate the keys of the points of the intersection of a mesh with a plane
 
@@ -65,24 +61,22 @@ def intersection_mesh_plane(mesh, plane, tol=0.0001):
     -------
     intersections: list of points as keys from mesh
     """
-      
-    intersections = [] 
+    intersections = []
     for u, v in list(mesh.edges()):
-        a = mesh.vertex_attributes(u,'xyz')
-        b = mesh.vertex_attributes(v,'xyz')
-        inters = intersection_segment_plane((a,b), plane)
-        if not inters:
+        a = mesh.vertex_attributes(u, 'xyz')
+        b = mesh.vertex_attributes(v, 'xyz')
+        intersection = intersection_segment_plane((a, b), plane)
+        if not intersection:
             continue
-        len_a_inters = length_vector(subtract_vectors(inters, a))
+        len_a_inters = length_vector(subtract_vectors(intersection, a))
         len_a_b = length_vector(subtract_vectors(b, a))
         t = len_a_inters / len_a_b
-        if t >= 1.0: 
+        if t >= 1.0:
             t = 1 - tol
         elif t <= 0.0:
             t = tol
         intersection_key = mesh.split_edge(u, v, t=t, allow_boundary=True)
         intersections.append(intersection_key)
-    
     return intersections
 
 
@@ -97,6 +91,6 @@ def mesh_vertices_to_points(mesh, v_keys):
 
     Returns
     -------
-    list of compas.geometry.Point 
+    list of compas.geometry.Point
     """
     return [Point(*mesh.vertex_attributes(v_key, 'xyz')) for v_key in v_keys]
