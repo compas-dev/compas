@@ -37,18 +37,19 @@ def intersection_mesh_line(mesh, line):
         if not vertex_keys:
             continue
         vertices = [mesh.vertex_attributes(vkey, 'xyz') for vkey in vertex_keys]
-        if len(vertex_keys) == 3 or len(vertex_keys) == 4:
-            triangle = [vertices[0], vertices[1], vertices[2]]
-            intersection = intersection_line_triangle(line, triangle)
-            if intersection:
-                return Point(intersection[0], intersection[1], intersection[2])
-            if len(vertex_keys) == 4:
-                triangle_2 = [vertices[2], vertices[3], vertices[0]]
-                intersection_2 = intersection_line_triangle(line, triangle_2)
-                if intersection_2:
-                    return Point(intersection_2[0], intersection_2[1], intersection_2[2])
-        else:
+        if len(vertex_keys) not in (3, 4):
             continue
+
+        triangle = [vertices[0], vertices[1], vertices[2]]
+        intersection = intersection_line_triangle(line, triangle)
+        if intersection:
+            return Point(intersection[0], intersection[1], intersection[2])
+
+        if len(vertex_keys) == 4:
+            triangle_2 = [vertices[2], vertices[3], vertices[0]]
+            intersection_2 = intersection_line_triangle(line, triangle_2)
+            if intersection_2:
+                return Point(intersection_2[0], intersection_2[1], intersection_2[2])
     else:
         return None
 
