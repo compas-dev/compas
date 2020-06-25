@@ -397,7 +397,7 @@ class Polyline(Primitive):
         -------
         points : list of points resulting from dividing the polyline
         """
-        points = [self.point(i * float(1 / number)) for i in range(number)]
+        points = [self.point(i * float(1.0 / number)) for i in range(number)]
         if include_ends:
             points.append(self.point(1))
         else:
