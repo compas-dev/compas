@@ -40,7 +40,7 @@ def split_polyline_plane(polyline, plane):
             splitted_polylines_points.append(sublist)
             sublist = []
             sublist.append(temp_intersection)
-        if i == len(pairwise(polyline))-1:
+        if i == len(pairwise(polyline)) - 1:
             sublist.append(segment.end)
             splitted_polylines_points.append(sublist)
 
