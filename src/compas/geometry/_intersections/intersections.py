@@ -401,7 +401,7 @@ def intersection_polyline_plane(polyline, plane, expected_number_of_intersection
 
     Returns
     -------
-    intersection_pts : list of compas.geometry.Point
+    list of :class:`compas.geometry.Point`
         if there are intersection points, return point(s) in a list
     """
     if not expected_number_of_intersections:
