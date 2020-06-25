@@ -99,5 +99,4 @@ def mesh_vertices_to_points(mesh, v_keys):
     -------
     list of compas.geometry.Point 
     """
-    coordinates = [mesh.vertex_attributes(v_key, 'xyz') for v_key in v_keys]
-    return [Point(x, y, z) for x, y, z in coordinates]
+    return [Point(*mesh.vertex_attributes(v_key, 'xyz')) for v_key in v_keys]
