@@ -351,7 +351,8 @@ class Line(Primitive):
 
         Returns
         -------
-        list of: compas.geometry.Point // Point as sequence of values xyz)
+        list of :class:`compas.geometry.Point`
+            Point as sequence of values xyz
 
         Example
         --------
