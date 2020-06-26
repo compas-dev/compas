@@ -359,12 +359,12 @@ def angle_planes(a, b, deg=False):
 
     Parameters
     ----------
-    a : tuple of a point and a vector. Point as a sequence of float(XYZ) coordinates. Vector as a sequence of float(XY(Z)) coordinates.
-        first plane
-    b : tuple of a point and a vector. Point as a sequence of float(XYZ) coordinates. Vector as a sequence of float(XY(Z)) coordinates.
-        second plane
+    a : point and vector or :class:`compas.geometry.Plane`
+        The first plane.
+    b : point and vector or :class:`compas.geometry.Plane`
+        The second plane.
     deg : boolean
-        returns angles in degrees if True
+        Returns angle in degrees if True.
 
     Returns
     -------
@@ -374,8 +374,8 @@ def angle_planes(a, b, deg=False):
 
     Examples
     --------
-    plane_a = ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
-    plane_b = ([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
+    plane_a = [0.0, 0.0, 0.0], [0.0, 0.0, 1.0]
+    plane_b = [0.0, 0.0, 0.0], [1.0, 0.0, 0.0]
     >>> angle_planes(plane_a, plane_b, True)
     90.0
     """

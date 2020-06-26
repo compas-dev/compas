@@ -389,33 +389,31 @@ def intersection_polyline_plane(polyline, plane, expected_number_of_intersection
 
     Parameters
     ----------
-    polyline : compas.geometry.Polyline
-        polyline to test intersection
-    plane : compas.Geometry.Plane
-        plane to compute intersection
+    polyline : :class:`compas.geometry.Polyline` or sequence of points
+        Polyline to test intersection.
+    plane : :class:`compas.geometry.Plane` or point and vector
+        Plane to compute intersection.
+    expected_number_of_intersections : integer, optional
+        Number of useful or expected intersections.
+        Default is the number of lines conforming the polyline.
     tol : float, optional
         A tolerance for membership verification.
         Default is ``1e-6``.
 
     Returns
     -------
-    list of :class:`compas.geometry.Point`
-        if there are intersection points, return point(s) in a list
+    List of points.
     """
     if not expected_number_of_intersections:
         expected_number_of_intersections = len(polyline)
-    intersection_points = []
-    max_iter = 0
+    intersections = []
     for segment in pairwise(polyline):
-        pt = intersection_segment_plane(segment, plane, tol)
-        if pt and max_iter < expected_number_of_intersections:
-            intersection_points.append(pt)
-            max_iter += 1
-        else:
+        if len(intersections) == expected_number_of_intersections:
             break
-    if len(intersection_points) > 0:
-        return intersection_points
-    return None
+        point = intersection_segment_plane(segment, plane, tol)
+        if point:
+            intersections.append(point)
+    return intersections
 
 
 def intersection_line_triangle(line, triangle, tol=1e-6):
