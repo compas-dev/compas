@@ -374,8 +374,8 @@ def angle_planes(a, b, deg=False):
 
     Examples
     --------
-    plane_a = [0.0, 0.0, 0.0], [0.0, 0.0, 1.0]
-    plane_b = [0.0, 0.0, 0.0], [1.0, 0.0, 0.0]
+    >>> plane_a = [0.0, 0.0, 0.0], [0.0, 0.0, 1.0]
+    >>> plane_b = [0.0, 0.0, 0.0], [1.0, 0.0, 0.0]
     >>> angle_planes(plane_a, plane_b, True)
     90.0
     """
