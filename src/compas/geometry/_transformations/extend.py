@@ -72,24 +72,23 @@ def extend_polyline(polyline, start_extension=0, end_extension=0):
     >>> extended_polyline = extend_polyline(polyline, 1, 1)
     Polyline([-1.0, 0.0, 0.0], [0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 1.0, 0.0], [3.0, 1.0, 0.0], [4.0, 0.0, 0.0], [5.0, 0.0, 0.0], [6.0, 0.0, 0.0])
     """
-    def calculate_translation_vector(vector, distance):
+    def move_point(point, vector, distance):
         vector.unitize()
         vector.scale(distance)
-        return Translation(vector)
+        move = Translation(vector)
+        return point.transformed(move)
 
     points = polyline.points
     if start_extension != 0:
         point_start = polyline.points[0]
         vec = Vector.from_start_end(polyline.points[1], point_start)
-        translation = calculate_translation_vector(vec, start_extension)
-        new_point_start = point_start.transformed(translation)
+        new_point_start = move_point(point_start, vec, start_extension)
         points.insert(0, new_point_start)
 
     if end_extension != 0:
         point_end = polyline.points[-1]
         vec_end = Vector.from_start_end(polyline.points[-2], point_end)
-        translation = calculate_translation_vector(vec_end, end_extension)
-        new_point_end = point_end.transformed(translation)
+        new_point_end = move_point(point_end, vec_end, end_extension)
         points.append(new_point_end)
 
     return Polyline(points)

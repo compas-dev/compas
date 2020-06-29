@@ -45,8 +45,8 @@ def intersection_mesh_line(mesh, line):
             intersection_2 = intersection_line_triangle(line, triangle_2)
             if intersection_2:
                 return Point(intersection_2[0], intersection_2[1], intersection_2[2])
-    else:
-        return None
+                
+    return None
 
 
 def intersection_mesh_plane(mesh, plane, tol=0.0001):

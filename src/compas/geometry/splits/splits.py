@@ -48,8 +48,22 @@ def split_polyline_plane(polyline, plane):
 
 
 def _mesh_from_split(mesh, v_keys, f_keys, intersections, open=True):
-    """ Return a mesh from the positive or negative verts, faces and the intersection verts of a splitted mesh
-    open = true for open splits, open= False for closed splits
+    """Return a mesh from the positive or negative verts, faces and the intersection verts of a splitted mesh
+
+    Parameters
+    ----------
+    v_keys : list of integers
+        list of keys from vertices of the mesh as integers
+    f_keys : list of faces
+        list of face keys(list of vertices forming the face)
+    intersections : list of integers
+        list of keys from the intersection of a mesh with a plane
+    open : boolean
+        True if the result remains open, False if the resulting mesh is closed
+
+    Returns
+    -------
+    compas.datastructures.Mesh
     """
     vertices = {key: mesh.vertex_coordinates(key) for key in v_keys + intersections}
     faces = [mesh.face_vertices(f_key) for f_key in f_keys]
@@ -60,7 +74,7 @@ def _mesh_from_split(mesh, v_keys, f_keys, intersections, open=True):
 
 
 def split_mesh_plane(mesh, plane, open=True):
-    """ Calculate all the intersections between edges of the mesh and cutting plane,
+    """Calculate all the intersections between edges of the mesh and cutting plane,
     and splits every mesh edge at the intersection point, if it exists.
     Returns a list of the resulting splitted meshes.
 
