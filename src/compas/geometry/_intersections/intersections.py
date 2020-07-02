@@ -33,6 +33,7 @@ __all__ = [
     'intersection_line_box_xy',
     'intersection_circle_circle_xy',
     'intersection_line_plane',
+    'intersection_polyline_plane',
     'intersection_line_triangle',
     'intersection_segment_plane',
     'intersection_plane_circle',
@@ -381,6 +382,38 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
         return add_vectors(a, ab)
 
     return None
+
+
+def intersection_polyline_plane(polyline, plane, expected_number_of_intersections=None, tol=1e-6):
+    """Calculate the intersection point of a plane with a polyline. Reduce expected_number_of_intersections to speed up.
+
+    Parameters
+    ----------
+    polyline : :class:`compas.geometry.Polyline` or sequence of points
+        Polyline to test intersection.
+    plane : :class:`compas.geometry.Plane` or point and vector
+        Plane to compute intersection.
+    expected_number_of_intersections : integer, optional
+        Number of useful or expected intersections.
+        Default is the number of lines conforming the polyline.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    List of points.
+    """
+    if not expected_number_of_intersections:
+        expected_number_of_intersections = len(polyline)
+    intersections = []
+    for segment in pairwise(polyline):
+        if len(intersections) == expected_number_of_intersections:
+            break
+        point = intersection_segment_plane(segment, plane, tol)
+        if point:
+            intersections.append(point)
+    return intersections
 
 
 def intersection_line_triangle(line, triangle, tol=1e-6):

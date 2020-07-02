@@ -5,6 +5,7 @@ import pytest
 from compas.geometry import Polyhedron
 from compas.geometry import allclose
 from compas.geometry import angle_vectors
+from compas.geometry import angle_planes
 from compas.geometry import angles_vectors
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polyhedron
@@ -77,6 +78,17 @@ def test_angles_vectors(u, v, angles):
 def test_angles_vectors_fails_when_input_is_zero(u, v):
     with pytest.raises(ZeroDivisionError):
         angles_vectors(u, v)
+
+
+@pytest.mark.parametrize(("a", "b", "angle"), [
+    ([[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]], 0.5 * pi),
+    ([[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], [[0.0, 0.0, 0.0], [0.0, 1.0, 0.0]], 0.5 * pi),
+    ([[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], [[0.0, 0.0, 0.0], [0.0, 0.0, +1.0]], 0.0),
+    ([[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], [[0.0, 0.0, 0.0], [0.0, 0.0, -1.0]], pi),
+])
+def test_angle_planes(a, b, angle):
+    assert close(angle_planes(a, b), angle)
+
 
 # ==============================================================================
 # average
