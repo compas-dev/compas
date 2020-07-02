@@ -30,7 +30,7 @@ __all__ = [
 ]
 
 
-def angle_vectors(u, v, deg=False):
+def angle_vectors(u, v, deg=False, tol=1e-4):
     """Compute the smallest angle between two vectors.
 
     Parameters
@@ -53,7 +53,10 @@ def angle_vectors(u, v, deg=False):
     >>> angle_vectors([0.0, 1.0, 0.0], [1.0, 0.0, 0.0])
 
     """
-    a = dot_vectors(u, v) / (length_vector(u) * length_vector(v))
+    L = length_vector(u) * length_vector(v)
+    if L < tol:
+        return 0
+    a = dot_vectors(u, v) / L
     a = max(min(a, 1), -1)
 
     if deg:
@@ -105,7 +108,7 @@ def angle_vectors_signed(u, v, normal, deg=False, threshold=1e-3):
         return angle
 
 
-def angle_vectors_xy(u, v, deg=False):
+def angle_vectors_xy(u, v, deg=False, tol=1e-4):
     """Compute the smallest angle between the XY components of two vectors.
 
     Parameters
@@ -128,7 +131,10 @@ def angle_vectors_xy(u, v, deg=False):
     >>>
 
     """
-    a = dot_vectors_xy(u, v) / (length_vector_xy(u) * length_vector_xy(v))
+    L = length_vector_xy(u) * length_vector_xy(v)
+    if L < tol:
+        return 0
+    a = dot_vectors_xy(u, v) / L
     a = max(min(a, 1), -1)
     if deg:
         return degrees(acos(a))

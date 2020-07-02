@@ -58,7 +58,7 @@ def install_plugin(plugin, version=None):
         python -m compas_rhino.install_plugin -v 5.0 ui/Rhino/XXX
 
     """
-    if version not in ('5.0', '6.0'):
+    if version not in ('5.0', '6.0', '7.0'):
         version = '6.0'
 
     if not os.path.isdir(plugin):
@@ -109,23 +109,20 @@ def install_plugin(plugin, version=None):
     print('Restart Rhino and open the Python editor at least once to make it available.')
 
 
-def main():
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+
     import argparse
 
     parser = argparse.ArgumentParser(
         description='COMPAS Rhino PLugin Installation command-line utility.')
 
     parser.add_argument('plugin', help="The path to the plugin directory.")
-    parser.add_argument('-v', '--version', help="The version of Rhino.")
+    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0'], default='6.0', help="The version of Rhino.")
 
     args = parser.parse_args()
 
     install_plugin(args.plugin, version=args.version)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    main()

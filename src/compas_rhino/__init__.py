@@ -132,15 +132,14 @@ def _get_python_plugins_path_win32(version):
 
 
 def _get_python_plugins_path_mac(version):
-    if version == '6.0':
+    if version == '5.0':
         path = os.path.join(
             os.environ['HOME'],
             'Library',
             'Application Support',
             'McNeel',
             'Rhinoceros',
-            '6.0',
-            'Plug-ins',
+            'MacPlugIns',
             'PythonPlugIns')
     else:
         path = os.path.join(
@@ -149,7 +148,8 @@ def _get_python_plugins_path_mac(version):
             'Application Support',
             'McNeel',
             'Rhinoceros',
-            'MacPlugIns',
+            '{}'.format(version),
+            'Plug-ins',
             'PythonPlugIns')
     return path
 
