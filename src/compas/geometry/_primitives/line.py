@@ -359,9 +359,9 @@ class Line(Primitive):
         [Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000), Point(2.000, 0.000, 0.000), Point(3.000, 0.000, 0.000), Point(4.000, 0.000, 0.000), Point(5.000, 0.000, 0.000)]
         """
         if include_ends:
-            return [self.point(i * float(1 / number)) for i in range(int(number)+1)]
+            return [self.point(i * float(1.0 / number)) for i in range(int(number) + 1)]
         else:
-            return [self.point(i * float(1.0 / number)) for i in range(int(number) + 1) if i != 0 or i != number]
+            return [self.point(i * float(1.0 / number)) for i in range(int(number)) if i != 0]
 # ==============================================================================
 # Main
 # ==============================================================================
