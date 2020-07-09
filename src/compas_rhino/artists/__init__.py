@@ -87,6 +87,8 @@ Data Structure Artists
 
 """
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from .artist import Artist
 from .primitiveartist import PrimitiveArtist  # noqa: F401
