@@ -52,12 +52,12 @@ def install(version=None, packages=None):
     --------
     .. code-block:: python
 
-        >>> import compas_rhino
-        >>> compas_rhino.install('6.0')
+        import compas_rhino
+        compas_rhino.install('6.0')
 
-    .. code-block:: python
+    .. code-block:: bash
 
-        $ python -m compas_rhino.install -v 6.0
+        python -m compas_rhino.install -v 6.0
 
     """
 

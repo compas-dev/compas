@@ -43,6 +43,7 @@ class Artist(object):
         if not self.guids:
             return
         compas_rhino.delete_objects(self.guids)
+        self.guids = []
 
 
 # ==============================================================================

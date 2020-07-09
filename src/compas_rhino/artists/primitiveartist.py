@@ -26,6 +26,12 @@ class PrimitiveArtist(Artist):
     ----------
     primitive: :class:`compas.geometry.Primitive`
         A reference to the geometry of the primitive.
+    name : str
+        The name of the primitive.
+    color : tuple
+        The RGB components of the base color of the primitive.
+    layer : str
+        The layer in which the primitive should be contained.
 
     """
 
@@ -36,16 +42,16 @@ class PrimitiveArtist(Artist):
         self.color = color
         self.layer = layer
 
-    @classmethod
-    def from_data(cls, data):
-        module, attr = data['dtype'].split('/')
-        Primitive = getattr(__import__(module, fromlist=[attr]), attr)
-        primitive = Primitive.from_data(data['value'])
-        artist = cls(primitive)
-        return artist
+    # @classmethod
+    # def from_data(cls, data):
+    #     module, attr = data['dtype'].split('/')
+    #     Primitive = getattr(__import__(module, fromlist=[attr]), attr)
+    #     primitive = Primitive.from_data(data['value'])
+    #     artist = cls(primitive)
+    #     return artist
 
-    def to_data(self):
-        return self.primitive.to_data()
+    # def to_data(self):
+    #     return self.primitive.to_data()
 
     def clear_layer(self):
         """Clear the main layer of the artist."""

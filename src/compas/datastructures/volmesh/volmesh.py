@@ -194,7 +194,6 @@ class VolMesh(Datastructure):
         self._max_int_fkey = -1
         self._max_int_ckey = -1
         self.vertex = {}
-        # self.edge = {}
         self.halfface = {}
         self.cell = {}
         self.plane = {}
@@ -258,7 +257,6 @@ class VolMesh(Datastructure):
         * 'dea'          => dict
         * 'dfa'          => dict
         * 'vertex'       => dict
-        * 'edge'         => dict
         * 'halfface'     => dict
         * 'cell'         => dict
         * 'plane'        => dict
@@ -283,7 +281,6 @@ class VolMesh(Datastructure):
             'dfa': self.default_face_attributes,
             'dca': self.default_cell_attributes,
             'vertex': {},
-            'edge': {},
             'halfface': {},
             'cell': {},
             'plane': {},
@@ -301,13 +298,6 @@ class VolMesh(Datastructure):
             key_rkey[vkey] = rkey
             data['vertex'][rkey] = self.vertex[vkey]
             data['plane'][rkey] = {}
-            data['edge'][rkey] = {}
-
-        for u in self.edge:
-            ru = key_rkey[u]
-            for v in self.edge[u]:
-                rv = key_rkey[v]
-                data['edge'][ru][rv] = self.edge[u][v]
 
         for f in self.halfface:
             _f = repr(f)
@@ -359,7 +349,6 @@ class VolMesh(Datastructure):
         dfa = data.get('dfa') or {}
         dca = data.get('dca') or {}
         vertex = data.get('vertex') or {}
-        edge = data.get('edge') or {}
         halfface = data.get('halfface') or {}
         cell = data.get('cell') or {}
         plane = data.get('plane') or {}
@@ -370,7 +359,7 @@ class VolMesh(Datastructure):
         max_int_fkey = data.get('max_int_fkey', - 1)
         max_int_ckey = data.get('max_int_ckey', - 1)
 
-        if not vertex or not edge or not plane or not halfface or not cell:
+        if not vertex or not plane or not halfface or not cell:
             return
 
         self.clear()
@@ -387,16 +376,6 @@ class VolMesh(Datastructure):
             if attr:
                 self.vertex[k].update(attr)
             self.plane[k] = {}
-            self.edge[k] = {}
-
-        for _u, nbrs in edge.iteritems():
-            nbrs = nbrs or {}
-            u = literal_eval(_u)
-            for _v, attr in nbrs.iteritems():
-                v = literal_eval(_v)
-                self.edge[u][v] = self.default_edge_attributes.copy()
-                if attr:
-                    self.edge[u][v].update(attr)
 
         for _f in halfface:
             f = literal_eval(_f)
@@ -669,7 +648,6 @@ class VolMesh(Datastructure):
     def clear(self):
         """Clear all the volmesh data."""
         del self.vertex
-        del self.edge
         del self.halfface
         del self.cell
         del self.plane
@@ -677,7 +655,6 @@ class VolMesh(Datastructure):
         del self.facedata
         del self.celldata
         self.vertex = {}
-        self.edge = {}
         self.halfface = {}
         self.cell = {}
         self.plane = {}
@@ -851,7 +828,6 @@ class VolMesh(Datastructure):
         if key not in self.vertex:
             self.vertex[key] = {}
             self.plane[key] = {}
-            # self.edge[key] = {}
 
         attr = attr_dict or {}
         attr.update(kwattr)
@@ -936,16 +912,6 @@ class VolMesh(Datastructure):
             if u not in self.plane[w][v]:
                 self.plane[w][v][u] = None
 
-        #     if v not in self.edge[u] and u not in self.edge[v]:
-        #         self.edge[u][v] = {}
-        #     if w not in self.edge[v] and v not in self.edge[w]:
-        #         self.edge[v][w] = {}
-
-        # u = vertices[-1]
-        # v = vertices[0]
-        # if v not in self.edge[u] and u not in self.edge[v]:
-        #     self.edge[u][v] = {}
-
         return fkey
 
     def add_cell(self, halffaces, ckey=None, attr_dict=None, **kwattr):
@@ -1020,9 +986,6 @@ class VolMesh(Datastructure):
         raise NotImplementedError
 
     def cull_vertices(self):
-        raise NotImplementedError
-
-    def cull_edges(self):
         raise NotImplementedError
 
     def cull_halffaces(self):
@@ -1100,13 +1063,6 @@ class VolMesh(Datastructure):
                     yield u, v
                 else:
                     yield (u, v), self.edge_attributes((u, v))
-        # for u in self.edge:
-        #     for v in self.edge[u]:
-        #         attr = self.edgedata.setdefault((u, v), self.default_edge_attributes.copy())
-        #         if data:
-        #             yield u, v, attr
-        #         else:
-        #             yield u, v
 
     def halffaces(self, data=False):
         """Iterate over the halffaces of the volmesh.

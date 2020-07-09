@@ -30,9 +30,15 @@ class PolylineArtist(PrimitiveArtist):
     def draw(self):
         """Draw the polyline.
 
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
         """
         polylines = [{'points': map(list, self.primitive.points), 'color': self.color, 'name': self.name}]
-        self.guids = compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
+        guids = compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
+        self.guids = guids
+        return guids
 
 
 # ==============================================================================

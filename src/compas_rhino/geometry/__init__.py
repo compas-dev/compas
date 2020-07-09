@@ -37,7 +37,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ._geometry import *  # noqa: F401 F403
+from .geometry import *  # noqa: F401 F403
 
 from .curve import *  # noqa: F401 F403
 from .line import *  # noqa: F401 F403

@@ -19,7 +19,7 @@ def uninstall(version=None, packages=None):
 
     Parameters
     ----------
-    version : {'5.0', '6.0'}, optional
+    version : {'5.0', '6.0', '7.0'}, optional
         The version number of Rhino.
         Default is ``'6.0'``.
     packages : list of str, optional
@@ -30,12 +30,12 @@ def uninstall(version=None, packages=None):
     --------
     .. code-block:: python
 
-        >>> import compas_rhino
-        >>> compas_rhino.uninstall('6.0')
+        import compas_rhino
+        compas_rhino.uninstall('6.0')
 
-    .. code-block:: python
+    .. code-block:: bash
 
-        $ python -m compas_rhino.uninstall -v 6.0
+        python -m compas_rhino.uninstall -v 6.0
 
     """
     if version not in ('5.0', '6.0', '7.0'):

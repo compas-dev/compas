@@ -31,7 +31,7 @@ __all__ = [
 ]
 
 
-def angle_vectors(u, v, deg=False, tol=1e-4):
+def angle_vectors(u, v, deg=False, tol=0.0):
     """Compute the smallest angle between two vectors.
 
     Parameters
@@ -55,7 +55,7 @@ def angle_vectors(u, v, deg=False, tol=1e-4):
 
     """
     L = length_vector(u) * length_vector(v)
-    if L < tol:
+    if tol and L < tol:
         return 0
     a = dot_vectors(u, v) / L
     a = max(min(a, 1), -1)

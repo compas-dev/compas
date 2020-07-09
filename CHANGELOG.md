@@ -13,15 +13,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added exceptions module.
 * Added `PluginNotInstalledError`.
 * Added `compas.geometry.booleans`.
+* Added tolerance parameter to angle functions.
+* Added support for Rhino 7 in install/uninstall routines.
+* Added install/uninstall for Rhino plugins (with support for Rhino 7).
 
 ### Changed
 
 * Fixed scaling bug in `compas.geometry.Sphere`
 * Fixed bug in `compas.datastructures.Mesh.add_vertex`.
 * Fixed performance issue affecting IronPython when iterating over vertices and their attributes.
+* Changed return value of drawing functions of `compas_rhino.artists.MeshArtist` to list of GUID.
+* Changed return value of drawing functions of `compas_rhino.artists.NetworkArtist` to list of GUID.
+* Moved "inspectors" to `compas_rhino.objects`.
 
 ### Removed
 
+* Removed CGAL based boolean implementations.
+* Removed artist mixins from `compas_rhino`.
+* Removed `clear_` functions from `compas_rhino.artists.MeshArtist`.
+* Removed `clear_` functions from `compas_rhino.artists.NetworkArtist`.
+* Removed `to_data`, `from_data` from `compas_rhino.artists`.
+* Removed `compas_rhino.artists.BoxArtist` stub.
+* Removed references to "edge" dict from `compas.datastructures.VolMesh`.
 
 ## [0.16.0] 2020-06-05
 

@@ -30,11 +30,18 @@ class LineArtist(PrimitiveArtist):
     def draw(self):
         """Draw the line.
 
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+
         """
         start = list(self.primitive.start)
         end = list(self.primitive.end)
         lines = [{'start': start, 'end': end, 'color': self.color, 'name': self.name}]
-        self.guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+        guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+        self.guids = guids
+        return guids
 
     # @staticmethod
     # def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):

@@ -19,7 +19,7 @@ def uninstall_plugin(plugin, version=None):
     ----------
     plugin : str
         The name of the plugin.
-    version : str, optional
+    version : {'5.0', '6.0', '7.0'}, optional
         The version of Rhino for which the plugin should be uninstalled.
         Default is ``'6.0'``.
 
@@ -34,9 +34,7 @@ def uninstall_plugin(plugin, version=None):
         python -m compas_rhino.uninstall_plugin XXX
 
     """
-    raise NotImplementedError
-
-    if version not in ('5.0', '6.0'):
+    if version not in ('5.0', '6.0', '7.0'):
         version = '6.0'
 
     python_plugins_path = compas_rhino._get_python_plugins_path(version)
@@ -61,7 +59,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('plugin', help="The name of the plugin.")
-    parser.add_argument('-v', '--version', help="The version of Rhino.")
+    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0'], default='6.0', help="The version of Rhino.")
 
     args = parser.parse_args()
 

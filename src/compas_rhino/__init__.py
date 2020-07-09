@@ -13,7 +13,10 @@ Common
     :maxdepth: 1
 
     compas_rhino.artists
+    compas_rhino.forms
     compas_rhino.geometry
+    compas_rhino.objects
+    compas_rhino.ui
     compas_rhino.utilities
 
 
@@ -25,10 +28,8 @@ Rhino-specific
 
     compas_rhino.conduits
     compas_rhino.etoforms
-    compas_rhino.forms
     compas_rhino.modifiers
     compas_rhino.selectors
-    compas_rhino.ui
 
 """
 from __future__ import absolute_import

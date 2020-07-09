@@ -9,7 +9,7 @@ from compas.geometry import Line
 from compas.geometry import Polyline
 from compas.geometry import Circle
 
-from compas_rhino.geometry._geometry import RhinoGeometry
+from compas_rhino.geometry import RhinoGeometry
 
 if compas.IPY:
     import Rhino

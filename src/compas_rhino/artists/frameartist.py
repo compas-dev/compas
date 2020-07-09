@@ -17,9 +17,18 @@ class FrameArtist(PrimitiveArtist):
     ----------
     frame : compas.geometry.Frame
         A COMPAS frame.
-    layer : str (optional)
+    layer : str, optional
         The name of the layer that will contain the frame.
         Default value is ``None``, in which case the current layer will be used.
+    name : str, optional
+        The name of the frame.
+    scale : float, optional
+        The scale of the vectors representing the axes of the frame.
+        Default is ``1.0``.
+
+    Attributes
+    ----------
+
 
     Examples
     --------
@@ -58,6 +67,7 @@ class FrameArtist(PrimitiveArtist):
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         self.guids = guids
+        return guids
 
 
 # ==============================================================================

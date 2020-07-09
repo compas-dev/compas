@@ -17,7 +17,7 @@ def install_plugin(plugin, version=None):
     ----------
     plugin : str
         The path to the plugin folder.
-    version : str, optional
+    version : {'5.0', '6.0', '7.0'}, optional
         The version of Rhino for which the plugin should be installed.
         Default is ``'6.0'``.
 
@@ -41,7 +41,7 @@ def install_plugin(plugin, version=None):
     and contains at least a "dev" folder with a ``__plugin__.py`` file with
 
     * the GUID of the tool: ``id={...}``, and
-    * the name of the tool: ``title="RV2"``,
+    * the name of the tool: ``title="..."``,
 
     it can be installed with the following command,
 
@@ -50,12 +50,12 @@ def install_plugin(plugin, version=None):
         cd ~/Code/compas_xxx
         python -m compas_rhino.install_plugin ui/Rhino/XXX
 
-    or the following, if the plugin should be installed for Rhino5.
+    or the following, if the plugin should be installed for Rhino 7.
 
     .. code-block:: bash
 
         cd ~/Code/compas_xxx
-        python -m compas_rhino.install_plugin -v 5.0 ui/Rhino/XXX
+        python -m compas_rhino.install_plugin -v 7.0 ui/Rhino/XXX
 
     """
     if version not in ('5.0', '6.0', '7.0'):

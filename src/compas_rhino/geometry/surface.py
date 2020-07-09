@@ -6,7 +6,7 @@ import compas
 import compas_rhino
 
 from compas.datastructures import Mesh
-from compas_rhino.geometry._geometry import RhinoGeometry
+from compas_rhino.geometry import RhinoGeometry
 # from compas.geometry import subtract_vectors
 # from compas.geometry import angle_vectors
 # from compas.geometry import distance_point_point

@@ -29,12 +29,14 @@ class PointArtist(PrimitiveArtist):
 
         Returns
         -------
-        guid: str
-            The GUID of the created Rhino object.
+        list
+            The GUIDs of the created Rhino objects.
 
         """
         points = [{'pos': list(self.primitive), 'color': self.color, 'name': self.name}]
-        self.guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+        self.guids = guids
+        return guids
 
     @staticmethod
     def draw_collection(collection, color=None, name=None, layer=None, clear=False, group_collection=False, group_name=None):
