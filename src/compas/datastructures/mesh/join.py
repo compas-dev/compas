@@ -30,10 +30,6 @@ def mesh_weld(mesh, precision=None, cls=None):
     mesh
         The welded mesh.
 
-    Examples
-    --------
-    >>> 
-
     """
     if cls is None:
         cls = type(mesh)
@@ -126,10 +122,6 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
     -------
     mesh
         The joined and welded mesh.
-
-    Examples
-    --------
-    >>>
 
     """
     return mesh_weld(meshes_join(meshes, cls=cls), precision=precision)
