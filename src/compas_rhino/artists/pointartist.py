@@ -20,7 +20,12 @@ class PointArtist(PrimitiveArtist):
 
     Examples
     --------
-    >>>
+    >>> point = [0,0,0]
+    
+    artist = PointArtist(point, layer ="COMPAS::points")
+    artist.clear_layer()
+    artist.draw()
+    artist.redraw()
 
     """
 
