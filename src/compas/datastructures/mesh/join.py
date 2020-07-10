@@ -30,6 +30,10 @@ def mesh_weld(mesh, precision=None, cls=None):
     mesh
         The welded mesh.
 
+    Examples
+    --------
+    >>> 
+
     """
     if cls is None:
         cls = type(mesh)
@@ -61,6 +65,38 @@ def meshes_join(meshes, cls=None):
     mesh
         The joined mesh.
 
+    Examples
+    --------
+    >>>from compas.datastructures import Mesh
+    from compas.datastructures import meshes_join
+    from compas_rhino.artists import MeshArtist
+
+    vertices_1 = [
+        [0, 0, 0],
+        [0, 500, 0],
+        [500, 500,0],
+        [500, 0,0]
+        ]
+        
+    vertices_2 = [
+        [500, 0, 0],
+        [500, 500, 0],
+        [1000, 500, 0],
+        [1000, 0, 0]
+    ]    
+
+    face = [[0, 1, 2, 3]]
+    mesh_1 = Mesh.from_vertices_and_faces(vertices_1, face)
+    mesh_2 = Mesh.from_vertices_and_faces(vertices_2, face)
+
+    mesh = meshes_join([mesh_1, mesh_2])
+
+    artist = MeshArtist(mesh, layer='COMPAS::test')
+    artist.clear_layer()
+    artist.draw_faces(join_faces=True)
+    artist.draw_edges()
+    artist.redraw()
+
     """
     if cls is None:
         cls = type(meshes[0])
@@ -90,6 +126,10 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
     -------
     mesh
         The joined and welded mesh.
+
+    Examples
+    --------
+    >>>
 
     """
     return mesh_weld(meshes_join(meshes, cls=cls), precision=precision)
