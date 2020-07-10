@@ -205,10 +205,12 @@ Points, Vectors, Lines, Planes
     angle_points_xy
     angle_vectors
     angle_vectors_xy
+    angle_vectors_signed
     angles_points
     angles_points_xy
     angles_vectors
     angles_vectors_xy
+    angle_planes
     centroid_points
     centroid_points_xy
     distance_line_line
