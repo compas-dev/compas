@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added tolerance parameter to angle functions.
 * Added support for Rhino 7 in install/uninstall routines.
 * Added install/uninstall for Rhino plugins (with support for Rhino 7).
+* Added base class for all COMPAS objects `compas.base.Base`.
+* Added base class for all Rhino objects representing COMPAS objects `compas_rhino.objects.Object`.
+* Added mesh object representing COMPAS meshes in Rhino `compas_rhino.objects.MeshObject`.
 
 ### Changed
 
@@ -25,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed return value of drawing functions of `compas_rhino.artists.MeshArtist` to list of GUID.
 * Changed return value of drawing functions of `compas_rhino.artists.NetworkArtist` to list of GUID.
 * Moved "inspectors" to `compas_rhino.objects`.
+* Moved "modifiers" to `compas_rhino.objects`.
 
 ### Removed
 

@@ -1,0 +1,208 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import compas_rhino
+from compas_rhino.objects import Object
+
+
+__all__ = ['MeshObject']
+
+
+class MeshObject(Object):
+    """Base class for COMPAS Rhino objects.
+
+    Parameters
+    ----------
+    scene : :class:`compas.scenes.Scene`
+        A scene object.
+    mesh : :class:`compas.datastructures.Mesh`
+        A mesh object.
+
+    Attributes
+    ----------
+    guid_vertex : dict
+        Dictionary mapping Rhino object GUIDs to COMPAS mesh vertex identifiers.
+    guid_face : dict
+        Dictionary mapping Rhino object GUIDs to COMPAS mesh face identifiers.
+    guid_edge : dict
+        Dictionary mapping Rhino object GUIDs to COMPAS mesh edge identifiers.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        import compas
+        from compas.datastructures import Mesh
+        from compas_rhino.objects import MeshObject
+
+        mesh = Mesh.from_off(compas.get('tubemesh.off'))
+        meshobject = MeshObject(None, mesh, 'MeshObject', 'COMPAS::MeshObject', True)
+        meshobject.draw()
+        meshobject.redraw()
+        vertices = meshobject.select_vertices()
+
+        print vertices
+
+    """
+
+    def __init__(self, scene, mesh, name=None, layer=None, visible=True, settings=None):
+        super(MeshObject, self).__init__(scene, mesh, name, layer, visible)
+        self._guid_vertex = {}
+        self._guid_face = {}
+        self._guid_edge = {}
+        self.settings = settings
+
+    @property
+    def mesh(self):
+        return self.item
+
+    @mesh.setter
+    def mesh(self, mesh):
+        self.item = mesh
+
+    @property
+    def guid_vertex(self):
+        if not self._guid_vertex:
+            self._guid_vertex = {}
+        return self._guid_vertex
+
+    @guid_vertex.setter
+    def guid_vertex(self, values):
+        self._guid_vertex = dict(values)
+
+    @property
+    def guid_face(self):
+        if not self._guid_face:
+            self._guid_face = {}
+        return self._guid_face
+
+    @guid_face.setter
+    def guid_face(self, values):
+        self._guid_face = dict(values)
+
+    @property
+    def guid_edge(self):
+        if not self._guid_edge:
+            self._guid_edge = {}
+        return self._guid_edge
+
+    @guid_edge.setter
+    def guid_edge(self, values):
+        self._guid_edge = dict(values)
+
+    def clear(self):
+        guids_vertices = list(self.guid_vertex.keys())
+        guids_faces = list(self.guid_face.keys())
+        guids_edges = list(self.guid_edge.keys())
+        guids = guids_vertices + guids_faces + guids_edges
+        compas_rhino.delete_objects(guids, purge=True)
+        self._guid_vertex = {}
+        self._guid_face = {}
+        self._guid_edge = {}
+
+    def draw(self, clear_layer=True, redraw=False):
+        """Draw the object representing the mesh.
+
+        Parameters
+        ----------
+        clear_layer : bool, optional
+            Clear the layer of the object.
+            Default is ``True``.
+        redraw : bool, optional
+            Redraw the Rhino view.
+            Default is ``False``.
+        """
+        self.clear()
+        if clear_layer:
+            self.clear_layer()
+        if not self.visible:
+            return
+        # vertices
+        if self.settings.get('show.vertices'):
+            vertices = list(self.mesh.vertices())
+            guids = self.artist.draw_vertices(vertices)
+            self.guid_vertex = zip(guids, vertices)
+        # faces
+        if self.settings.get('show.faces'):
+            faces = list(self.mesh.faces())
+            guids = self.artist.draw_faces(faces, join_faces=True)
+            self.guid_face = zip(guids, faces)
+        # edges
+        if self.settings.get('show.edges'):
+            edges = list(self.mesh.edges())
+            guids = self.artist.draw_edges(edges)
+            self.guid_edge = zip(guids, edges)
+        # redraw the scene
+        if redraw:
+            self.redraw()
+
+    def select(self):
+        pass
+
+    def select_vertices(self):
+        """Select vertices of the mesh.
+
+        Returns
+        -------
+        list
+            A list of vertex identifiers.
+        """
+        guids = compas_rhino.select_points()
+        vertices = [self.guid_vertex[guid] for guid in guids if guid in self.guid_vertex]
+        return vertices
+
+    def select_faces(self):
+        """Select faces of the mesh.
+
+        Returns
+        -------
+        list
+            A list of face identifiers.
+
+        Notes
+        -----
+        This is only possible if the mesh was drawn with individual, unjoined faces.
+
+        """
+        guids = compas_rhino.select_meshes()
+        faces = [self.guid_face[guid] for guid in guids if guid in self.guid_face]
+        return faces
+
+    def select_edges(self):
+        """Select edges of the mesh.
+
+        Returns
+        -------
+        list
+            A list of edge identifiers.
+        """
+        guids = compas_rhino.select_lines()
+        edges = [self.guid_edge[guid] for guid in guids if guid in self.guid_edge]
+        return edges
+
+    def modify(self):
+        pass
+
+    def modify_vertices(self, vertices):
+        pass
+
+    def modify_faces(self, faces):
+        pass
+
+    def modify_edges(self, edges):
+        pass
+
+    def move(self):
+        pass
+
+    def move_vertices(self, vertices):
+        pass
+
+
+# ============================================================================
+# Main
+# ============================================================================
+
+if __name__ == "__main__":
+    pass

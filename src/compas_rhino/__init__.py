@@ -28,7 +28,6 @@ Rhino-specific
 
     compas_rhino.conduits
     compas_rhino.etoforms
-    compas_rhino.modifiers
     compas_rhino.selectors
 
 """
