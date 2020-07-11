@@ -61,6 +61,17 @@ def meshes_join(meshes, cls=None):
     mesh
         The joined mesh.
 
+    Examples
+    --------
+    >>>from compas.datastructures import Mesh
+    >>>from compas.datastructures import meshes_join
+    >>>vertices_1 = [[0, 0, 0],[0, 500, 0],[500, 500,0],[500, 0,0]]
+    >>>vertices_2 = [[500, 0, 0],[500, 500, 0],[1000, 500, 0],[1000, 0, 0]]
+    >>>face = [[0, 1, 2, 3]]
+    >>>mesh_1 = Mesh.from_vertices_and_faces(vertices_1, face)
+    >>>mesh_2 = Mesh.from_vertices_and_faces(vertices_2, face)
+    >>>mesh = meshes_join([mesh_1, mesh_2])
+
     """
     if cls is None:
         cls = type(meshes[0])
