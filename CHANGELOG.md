@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed return value of drawing functions of `compas_rhino.artists.NetworkArtist` to list of GUID.
 * Moved "inspectors" to `compas_rhino.objects`.
 * Moved "modifiers" to `compas_rhino.objects`.
+* Connection attempts can now be set for `compas.Proxy.start_server` using the
+  attribute `Proxy.max_conn_attempts`.
 
 ### Removed
 
