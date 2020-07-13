@@ -72,8 +72,17 @@ class Form(WinForm):
         pass
 
     def show(self):
+        """Show the form as a modal dialog.
+
+        Returns
+        -------
+        bool
+            ``True`` if the dialog was closed using the OK button.
+            ``False`` otherwise.
+        """
         if Rhino.UI.Dialogs.ShowSemiModal(self) == DialogResult.OK:
             return True
+        return False
 
     def on_form_closed(self, sender, eargs):
         pass

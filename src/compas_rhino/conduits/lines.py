@@ -38,8 +38,10 @@ class LinesConduit(Conduit):
 
     Attributes
     ----------
-    color
-    thickness
+    color : list of RGB colors
+        A color specification per line.
+    thickness : list of float
+        A thickness value per line.
     lines : list
         A list of start-end point pairs that define the lines.
 
@@ -51,7 +53,6 @@ class LinesConduit(Conduit):
 
         points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
         lines  = [(points[i], points[i + 1]) for i in range(99)]
-
         conduit = LinesConduit(lines)
 
         with conduit.enabled():
@@ -74,14 +75,6 @@ class LinesConduit(Conduit):
 
     @property
     def thickness(self):
-        """list : Individual line thicknesses.
-
-        Parameters
-        ----------
-        thickness : list of int
-            The thickness of each line.
-
-        """
         return self._thickness
 
     @thickness.setter
@@ -101,14 +94,6 @@ class LinesConduit(Conduit):
 
     @property
     def color(self):
-        """list : Individual line colors.
-
-        Parameters
-        ----------
-        color : list of str or 3-tuple
-            The color specification of each line in hex or RGB(255) format.
-
-        """
         return self._color
 
     @color.setter
@@ -116,18 +101,13 @@ class LinesConduit(Conduit):
         if color:
             l = len(self.lines)  # noqa: E741
             if isinstance(color, (basestring, tuple)):
-                # if a single color was provided
                 color = [color for _ in range(l)]
-            # convert the specified colors to windows system colors
             color[:] = [FromArgb(* color_to_rgb(c)) for c in color]
             c = len(color)
             if c < l:
-                # pad the list with default colors
                 color += [self._default_color for i in range(l - c)]
             elif c > l:
-                # resize to the number of lines
                 color[:] = color[:l]
-            # assign to the protected attribute
             self._color = color
 
     def DrawForeground(self, e):
@@ -164,16 +144,4 @@ class LinesConduit(Conduit):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    from random import randint
-
-    points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-    lines = [(points[i], points[i + 1]) for i in range(99)]
-
-    conduit = LinesConduit(lines, color=['#ff00ff', '#ff0000'], thickness=[1, 2, 3, 4, 5, 20])
-
-    with conduit.enabled():
-        for i in range(100):
-            points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-            conduit.lines = [(points[i], points[i + 1]) for i in range(99)]
-            conduit.redraw(pause=0.1)
+    pass

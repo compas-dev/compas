@@ -26,7 +26,6 @@ Classes
     :toctree: generated/
     :nosignatures:
 
-    MeshConduit
     FacesConduit
     LinesConduit
     PointsConduit
@@ -98,7 +97,6 @@ class Conduit(Rhino.Display.DisplayConduit):
             time.sleep(pause)
 
 
-from .mesh import *  # noqa: F401 E402 F403
 from .faces import *  # noqa: F401 E402 F403
 from .labels import *  # noqa: F401 E402 F403
 from .lines import *  # noqa: F401 E402 F403

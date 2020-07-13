@@ -53,28 +53,6 @@ class FacesConduit(Conduit):
         faces = polyhedron.faces
         vertices = polyhedron.vertices
         polygons = [[vertices[index] for index in face] for face in faces]
-
-        try:
-            conduit = FacesConduit(polygons)
-            conduit.enable()
-            conduit.redraw(pause=5.0)
-
-        except Exception as e:
-            print e
-
-        finally:
-            conduit.disable()
-            del conduit
-
-    .. code-block:: python
-
-        from compas.geometry import Polyhedron
-        from compas_rhino.conduits import FacesConduit
-
-        polyhedron = Polyhedron.generate(6)
-        faces = polyhedron.faces
-        vertices = polyhedron.vertices
-        polygons = [[vertices[index] for index in face] for face in faces]
         conduit = FacesConduit(polygons)
 
         with conduit.enabled():
