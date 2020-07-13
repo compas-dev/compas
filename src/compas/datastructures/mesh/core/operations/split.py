@@ -182,8 +182,8 @@ def mesh_split_face(mesh, fkey, u, v):
         If the split vertices does not belong to the split face or if the split
         vertices are neighbors.
 
-    Example
-    -------
+    Examples
+    --------
     >>> import compas
     >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_obj(compas.get("faces.obj"))

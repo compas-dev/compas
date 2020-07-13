@@ -161,8 +161,8 @@ def volume_polyhedron(polyhedron):
               &= \frac{1}{6} \sum_{i=0}^{N-1} a_{i} \cdot \hat n_{i}
         \end{align}
 
-    Warning
-    -------
+    Warnings
+    --------
     The volume computed by this funtion is only correct if the polyhedron is convex,
     has planar faces, and is positively oriented (all face normals point outwards).
 

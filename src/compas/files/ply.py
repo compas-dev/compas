@@ -17,9 +17,9 @@ __all__ = [
 class PLY(object):
     """Polygon file format, or Stanford triangle format.
 
-    See Also
-    --------
-    * http://paulbourke.net/dataformats/ply/
+    References
+    ----------
+    .. [1] http://paulbourke.net/dataformats/ply/
 
     """
 

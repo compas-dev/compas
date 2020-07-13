@@ -211,8 +211,8 @@ class BaseNetwork(Graph):
 
             Each face is a list of indices referencing the list of node coordinates.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
         """
         key_index = dict((key, index) for index, key in enumerate(self.nodes()))

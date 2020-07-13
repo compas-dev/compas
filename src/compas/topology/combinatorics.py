@@ -29,8 +29,8 @@ def vertex_coloring(adjacency):
     .. [1] Chu-Carroll, M. *Graph Coloring Algorithms*.
            Available at: http://scienceblogs.com/goodmath/2007/06/28/graph-coloring-algorithms-1/.
 
-    Warning
-    -------
+    Warnings
+    --------
     This is a greedy algorithm, so it might be slow for large networks.
 
     Examples

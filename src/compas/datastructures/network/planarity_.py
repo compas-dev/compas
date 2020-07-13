@@ -182,8 +182,8 @@ def network_is_planar(network):
     the plane exists, and, furthermore, that straight-line embedding in the plane
     exists.
 
-    Warning
-    -------
+    Warnings
+    --------
     This function uses the python binding of the *edge addition planarity suite*.
     It is available on Anaconda: https://anaconda.org/conda-forge/python-planarity.
 
@@ -237,8 +237,8 @@ def network_embed_in_plane(network, fix=None, straightline=True):
     ImportError
         If NetworkX is not installed.
 
-    Warning
-    -------
+    Warnings
+    --------
     This function uses the Python package NetworkX. NetworkX can be *pip installed*.
 
     Examples

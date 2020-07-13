@@ -92,8 +92,8 @@ def convex_hull_numpy(points):
 def convex_hull_xy_numpy(points):
     """Compute the convex hull of a set of points in the XY plane.
 
-    Warning
-    -------
+    Warnings
+    --------
     This function requires Numpy ands Scipy.
 
     Parameters

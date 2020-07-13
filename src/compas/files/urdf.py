@@ -27,9 +27,8 @@ class URDF(object):
     robot : object
         Root element of the URDF model, i.e. a robot instance.
 
-    See Also
-    --------
-
+    References
+    ----------
     A detailed description of the model is available on the `URDF Model wiki`_.
     This package parses URDF v1.0 according to the `URDF XSD Schema`_.
 
@@ -58,7 +57,6 @@ class URDF(object):
 
         Examples
         --------
-
         >>> from compas.files import URDF
         >>> urdf = URDF.from_file('/urdf/ur5.urdf')
         """
@@ -75,7 +73,6 @@ class URDF(object):
 
         Examples
         --------
-
         >>> from compas.files import URDF
         >>> urdf = URDF.from_string('<robot name="panda"/>')
         """

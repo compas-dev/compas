@@ -127,8 +127,8 @@ class BaseMesh(HalfEdge):
         Mesh
             A mesh object.
 
-        Note
-        ----
+        Notes
+        -----
         There are a few sample files available for testing and debugging:
 
         * faces.obj
@@ -167,8 +167,8 @@ class BaseMesh(HalfEdge):
             If false, vertices are shared between faces if this is also the case in the mesh.
             Default is ``False``.
 
-        Warning
-        -------
+        Warnings
+        --------
         This function only writes geometric data about the vertices and
         the faces to the file.
         """
@@ -442,8 +442,8 @@ class BaseMesh(HalfEdge):
 
             Each face is a list of indices referencing the list of vertex coordinates.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
         """
         key_index = self.key_index()
@@ -821,8 +821,8 @@ class BaseMesh(HalfEdge):
         float
             The tributary are.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
 
         """
@@ -1147,14 +1147,14 @@ class BaseMesh(HalfEdge):
         float
             The flatness.
 
-        Note
-        ----
+        Notes
+        -----
         Flatness is computed as the ratio of the distance between the diagonals
         of the face to the average edge length. A practical limit on this value
         realted to manufacturing is 0.02 (2%).
 
-        Warning
-        -------
+        Warnings
+        --------
         This method only makes sense for quadrilateral faces.
         """
         vertices = self.face_vertices(fkey)
@@ -1256,8 +1256,8 @@ class BaseMesh(HalfEdge):
         list
             The vertices of the boundary.
 
-        Warning
-        -------
+        Warnings
+        --------
         If the vertices are requested in order, and the mesh has multiple borders,
         currently only the vertices of one of the borders will be returned.
 

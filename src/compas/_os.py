@@ -228,8 +228,8 @@ def create_symlink(source, link_name):
     link_name: str
         Link name.
 
-    Note
-    ----
+    Notes
+    -----
     This function is a polyfill of the native ``os.symlink``
     for Python 2.x on Windows platforms.
     """

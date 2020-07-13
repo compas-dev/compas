@@ -247,8 +247,8 @@ class Graph(Datastructure):
         object
             An object of the type of ``cls``.
 
-        Note
-        ----
+        Notes
+        -----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_data* method.
 
@@ -265,8 +265,8 @@ class Graph(Datastructure):
         dict
             The structured data.
 
-        Note
-        ----
+        Notes
+        -----
         This method produces the data that can be used in conjuction with the
         corresponding *from_data* class method.
         """
@@ -286,8 +286,8 @@ class Graph(Datastructure):
         object
             An object of the type of ``cls``.
 
-        Note
-        ----
+        Notes
+        -----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_json* method.
         """

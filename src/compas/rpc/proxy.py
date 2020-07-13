@@ -297,8 +297,8 @@ class Proxy(object):
         object
             The result returned by the remote function.
 
-        Warning
-        -------
+        Warnings
+        --------
         The `args` and `kwargs` have to be JSON-serialisable.
         This means that, currently, only native Python objects are supported.
         The returned results will also always be in the form of built-in Python objects.

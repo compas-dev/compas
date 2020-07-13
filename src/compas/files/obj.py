@@ -24,9 +24,9 @@ __all__ = [
 class OBJ(object):
     """Read and write files in OBJ format.
 
-    See Also
-    --------
-    * http://paulbourke.net/dataformats/obj/
+    References
+    ----------
+    .. [1] http://paulbourke.net/dataformats/obj/
 
     """
 

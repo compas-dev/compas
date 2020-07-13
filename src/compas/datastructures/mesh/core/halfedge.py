@@ -27,32 +27,13 @@ class HalfEdge(Datastructure):
 
     Attributes
     ----------
-    attributes : dict
-        A dictionary of general attributes.
-    default_vertex_attributes : dict
-        The names of pre-assigned vertex attributes and their default values.
-    default_edge_attributes : dict
-        The default data attributes assigned to every new edge.
-    default_face_attributes : dict
-        The default data attributes assigned to every new face.
-    name : str
-        Shorthand for ``HalfEdge.attributes['name']``
-    adjacency : dict, read-only
-        The vertex adjacency dictionary.
-    data : dict
-        The data representing the mesh.
-        The dict has the following structure:
-
-        * 'attributes'   => dict
-        * 'dva'          => dict
-        * 'dea'          => dict
-        * 'dfa'          => dict
-        * 'vertex'       => dict
-        * 'face'         => dict
-        * 'facedata'     => dict
-        * 'edgedata'     => dict
-        * 'max_int_key'  => int
-        * 'max_int_fkey' => int
+    attributes
+    default_vertex_attributes
+    default_edge_attributes
+    default_face_attributes
+    name
+    adjacency
+    data
 
     Examples
     --------
@@ -137,8 +118,8 @@ class HalfEdge(Datastructure):
         * 'max_int_key'  => int
         * 'max_int_fkey' => int
 
-        Note
-        ----
+        Notes
+        -----
         All dictionary keys are converted to their representation value (``repr(key)``)
         to ensure compatibility of all allowed key types with the JSON serialisation
         format, which only allows for dict keys that are strings.
@@ -230,8 +211,8 @@ class HalfEdge(Datastructure):
         object
             An object of the type of ``cls``.
 
-        Note
-        ----
+        Notes
+        -----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_data* method.
 
@@ -248,7 +229,7 @@ class HalfEdge(Datastructure):
         dict
             The structured data.
 
-        Note
+        Notes
         ----
         This method produces the data that can be used in conjuction with the
         corresponding *from_data* class method.
@@ -269,8 +250,8 @@ class HalfEdge(Datastructure):
         object
             An object of the type of ``cls``.
 
-        Note
-        ----
+        Notes
+        -----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_json* method.
         """
@@ -308,8 +289,8 @@ class HalfEdge(Datastructure):
         object
             An object of type ``cls``.
 
-        Note
-        ----
+        Notes
+        -----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_pickle* method.
         """
@@ -716,7 +697,7 @@ class HalfEdge(Datastructure):
             The next edge as a (u, v) tuple, if ``data`` is false.
             The next edge as a ((u, v), data) tuple, if ``data`` is true.
 
-        Note
+        Notes
         ----
         Mesh edges have no topological meaning. They are only used to store data.
         Edges are not automatically created when vertices and faces are added to
@@ -728,8 +709,8 @@ class HalfEdge(Datastructure):
         edges is *as they come out*. However, as long as the toplogy remains
         unchanged, the order is consistent.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
         """
         seen = set()
@@ -1035,8 +1016,8 @@ class HalfEdge(Datastructure):
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
-        ----
+        Notes
+        -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
         """
@@ -1229,7 +1210,7 @@ class HalfEdge(Datastructure):
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
+        Notes
         ----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
@@ -1423,7 +1404,7 @@ class HalfEdge(Datastructure):
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
+        Notes
         ----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
@@ -1921,16 +1902,16 @@ class HalfEdge(Datastructure):
             If the vertex lies on the boundary of the mesh,
             an ordered list always starts and ends with with boundary vertices.
 
-        Note
-        ----
+        Notes
+        -----
         Due to the nature of the ordering algorithm, the neighbors cycle around
         the node in the opposite direction as the cycling direction of the faces.
         For some algorithms this produces the expected results. For others it doesn't.
         For example, a dual mesh constructed relying on these conventions will have
         oposite face cycle directions compared to the original.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
         """
         temp = list(self.halfedge[key])
@@ -1979,12 +1960,12 @@ class HalfEdge(Datastructure):
         list
             The vertices in the neighborhood.
 
-        Note
-        ----
+        Notes
+        -----
         The vertices in the neighborhood are unordered.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
 
         """
@@ -2068,8 +2049,8 @@ class HalfEdge(Datastructure):
         list
             The faces connected to a vertex.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
         """
         if not ordered:
@@ -2088,8 +2069,8 @@ class HalfEdge(Datastructure):
     def has_edge(self, key):
         """Verify that the mesh contains a specific edge.
 
-        Warning
-        -------
+        Warnings
+        --------
         This method may produce unexpected results.
 
         Parameters
@@ -2277,8 +2258,8 @@ class HalfEdge(Datastructure):
         list
             The identifiers of the neighboring faces.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
 
         """
@@ -2433,8 +2414,8 @@ class HalfEdge(Datastructure):
         None
             If the faces are not adjacent.
 
-        Note
-        ----
+        Notes
+        -----
         For use in form-finding algorithms, that rely on form-force duality information,
         further checks relating to the orientation of the corresponding are required.
         """

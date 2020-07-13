@@ -106,8 +106,8 @@ class CLRXMLTreeParser(ET.XMLParser):
         data : str
             raw XML read from a stream
 
-        Note
-        ----
+        Notes
+        -----
         All *data* across calls to this method are buffered
         internally; the parser itself is not actually created
         until the :meth:`close` method is called.
