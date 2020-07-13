@@ -5,7 +5,7 @@ from __future__ import division
 import compas
 import compas_rhino
 from compas.geometry import Line
-from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.geometry.base import BaseRhinoGeometry
 
 if compas.RHINO:
     import Rhino
@@ -14,7 +14,7 @@ if compas.RHINO:
 __all__ = ['RhinoLine']
 
 
-class RhinoLine(RhinoGeometry):
+class RhinoLine(BaseRhinoGeometry):
     """Wrapper for a Rhino line objects.
 
     Attributes

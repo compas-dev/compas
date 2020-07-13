@@ -42,15 +42,15 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
     'matplotlib.sphinxext.plot_directive',
     'm2r',
     'nbsphinx',
-    'sphinx.ext.viewcode'
 ]
 
 # autodoc options
 
-autodoc_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr"]
+autodoc_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy"]
 
 autodoc_default_flags = [
     'undoc-members',
@@ -64,11 +64,11 @@ autoclass_content = "class"
 # autosummary options
 
 autosummary_generate = True
-autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr"]
+autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy"]
 
 # napoleon options
 
-napoleon_google_docstring = True
+napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 napoleon_include_init_with_doc = False
 napoleon_include_private_with_doc = False

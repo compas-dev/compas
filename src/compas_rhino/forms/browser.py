@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-from compas_rhino.forms import Form
+from compas_rhino.forms.base import BaseForm
 
 if compas.RHINO:
     from System import Uri
@@ -22,7 +22,7 @@ except NameError:
 __all__ = ['BrowserForm']
 
 
-class BrowserForm(Form):
+class BrowserForm(BaseForm):
     """A form for displaying web pages.
 
     Parameters

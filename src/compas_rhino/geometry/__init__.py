@@ -15,7 +15,7 @@ Base Classes
     :toctree: generated/
     :nosignatures:
 
-    RhinoGeometry
+    BaseRhinoGeometry
 
 
 Classes
@@ -36,7 +36,7 @@ Classes
 """
 from __future__ import absolute_import
 
-from .geometry import *  # noqa: F401 F403
+from .base import *  # noqa: F401 F403
 
 from .curve import *  # noqa: F401 F403
 from .line import *  # noqa: F401 F403

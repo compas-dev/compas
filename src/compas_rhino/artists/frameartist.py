@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_rhino
 
-from compas_rhino.artists import PrimitiveArtist
+from compas_rhino.artists.primitiveartist import PrimitiveArtist
 
 
 __all__ = ['FrameArtist']

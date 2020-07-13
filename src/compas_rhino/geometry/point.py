@@ -6,7 +6,7 @@ import compas
 import compas_rhino
 
 from compas.geometry import Point
-from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.geometry.base import BaseRhinoGeometry
 
 if compas.RHINO:
     import Rhino
@@ -15,7 +15,7 @@ if compas.RHINO:
 __all__ = ['RhinoPoint']
 
 
-class RhinoPoint(RhinoGeometry):
+class RhinoPoint(BaseRhinoGeometry):
     """Wrapper for Rhino point objects.
 
     Attributes

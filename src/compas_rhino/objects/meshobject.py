@@ -3,13 +3,16 @@ from __future__ import division
 from __future__ import print_function
 
 import compas_rhino
-from compas_rhino.objects import Object
+from compas_rhino.objects.base import BaseObject
+from compas_rhino.objects.modifiers import VertexModifier
+from compas_rhino.objects.modifiers import FaceModifier
+from compas_rhino.objects.modifiers import EdgeModifier
 
 
 __all__ = ['MeshObject']
 
 
-class MeshObject(Object):
+class MeshObject(BaseObject):
     """Base class for COMPAS Rhino objects.
 
     Parameters
@@ -40,9 +43,12 @@ class MeshObject(Object):
         meshobject = MeshObject(None, mesh, 'MeshObject', 'COMPAS::MeshObject', True)
         meshobject.draw()
         meshobject.redraw()
+
         vertices = meshobject.select_vertices()
 
-        print vertices
+        if meshobject.modify_vertices(vertices):
+            meshobject.draw()
+            meshobject.redraw()
 
     """
 
@@ -182,22 +188,76 @@ class MeshObject(Object):
         return edges
 
     def modify(self):
-        pass
+        raise NotImplementedError
 
     def modify_vertices(self, vertices):
-        pass
+        """Modify the attributes of the vertices of the mesh item.
+
+        Parameters
+        ----------
+        vertices : list
+            The identifiers of the vertices of which the attributes will be updated.
+
+        Returns
+        -------
+        bool
+            ``True`` if the attributes were successfully updated.
+            ``False`` otherwise.
+
+        Notes
+        -----
+        This method will produce a dialog for editing the attributes of the vertices.
+
+        """
+        return VertexModifier.update_vertex_attributes(self, vertices)
 
     def modify_faces(self, faces):
-        pass
+        """Modify the attributes of the faces of the mesh item.
+
+        Parameters
+        ----------
+        faces : list
+            The identifiers of the faces of which the attributes will be updated.
+
+        Returns
+        -------
+        bool
+            ``True`` if the attributes were successfully updated.
+            ``False`` otherwise.
+
+        Notes
+        -----
+        This method will produce a dialog for editing the attributes of the faces.
+
+        """
+        return FaceModifier.update_face_attributes(self, faces)
 
     def modify_edges(self, edges):
-        pass
+        """Modify the attributes of the edges of the mesh item.
+
+        Parameters
+        ----------
+        edges : list
+            The identifiers of the edges of which the attributes will be updated.
+
+        Returns
+        -------
+        bool
+            ``True`` if the attributes were successfully updated.
+            ``False`` otherwise.
+
+        Notes
+        -----
+        This method will produce a dialog for editing the attributes of the edges.
+
+        """
+        return EdgeModifier.update_edge_attributes(self, edges)
 
     def move(self):
-        pass
+        raise NotImplementedError
 
     def move_vertices(self, vertices):
-        pass
+        raise NotImplementedError
 
 
 # ============================================================================

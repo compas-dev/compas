@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-from compas_rhino.forms import Form
+from compas_rhino.forms.base import BaseForm
 
 if compas.RHINO:
     from System.Windows.Forms import TextBox
@@ -17,7 +17,7 @@ if compas.RHINO:
 __all__ = ['TextForm']
 
 
-class TextForm(Form):
+class TextForm(BaseForm):
     """A form for text."""
 
     def __init__(self, text, title='TextForm', width=800, height=600):

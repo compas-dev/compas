@@ -4,13 +4,14 @@ from __future__ import division
 
 import compas_rhino
 
-__all__ = ["Artist"]
+
+__all__ = ["BaseArtist"]
 
 
 _ITEM_ARTIST = {}
 
 
-class Artist(object):
+class BaseArtist(object):
     """Base class for all artists.
 
     Attributes
@@ -29,6 +30,20 @@ class Artist(object):
 
     @staticmethod
     def build(item, **kwargs):
+        """Build an artist corresponding to the item type.
+
+        Parameters
+        ----------
+        kwargs : dict, optional
+            The keyword arguments (kwargs) collected in a dict.
+            For relevant options, see the parameter lists of the matching artist type.
+
+        Returns
+        -------
+        :class:`compas_rhino.artists.BaseArtist`
+            An artist of the type matching the provided item according to an item-artist map.
+            The map is created by registering item-artist type pairs using ``~BaseArtist.register``.
+        """
         artist_type = _ITEM_ARTIST[type(item)]
         artist = artist_type(item, **kwargs)
         return artist

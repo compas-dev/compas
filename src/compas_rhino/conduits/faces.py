@@ -5,7 +5,7 @@ from __future__ import division
 import compas
 from compas.utilities import color_to_rgb
 
-from compas_rhino.conduits import Conduit
+from compas_rhino.conduits.base import BaseConduit
 
 try:
     basestring
@@ -20,7 +20,7 @@ if compas.RHINO:
 __all__ = ['FacesConduit']
 
 
-class FacesConduit(Conduit):
+class FacesConduit(BaseConduit):
     """A Rhino display conduit for faces.
 
     Parameters
@@ -42,8 +42,8 @@ class FacesConduit(Conduit):
     faces : list of list of int
         The faces defined as lists of indices in ``vertices``.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         from compas.geometry import Polyhedron

@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_rhino
 
-from compas_rhino.artists import Artist
+from compas_rhino.artists.base import BaseArtist
 
 from compas.utilities import color_to_colordict
 from compas.utilities import pairwise
@@ -16,7 +16,7 @@ from compas.geometry import centroid_polygon
 __all__ = ['MeshArtist']
 
 
-class MeshArtist(Artist):
+class MeshArtist(BaseArtist):
     """A mesh artist defines functionality for visualising COMPAS meshes in Rhino.
 
     Parameters

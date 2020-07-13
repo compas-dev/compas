@@ -15,7 +15,7 @@ Base Classes
     :toctree: generated/
     :nosignatures:
 
-    Artist
+    BaseArtist
     PrimitiveArtist
     ShapeArtist
 
@@ -55,7 +55,8 @@ Artists for Data Structures
 """
 from __future__ import absolute_import
 
-from .artist import Artist
+from .base import BaseArtist
+
 from .primitiveartist import PrimitiveArtist  # noqa: F401
 from .shapeartist import ShapeArtist  # noqa: F401
 
@@ -76,12 +77,12 @@ from compas.geometry import Frame
 from compas.datastructures import Mesh
 from compas.datastructures import Network
 
-Artist.register(Point, PointArtist)
-Artist.register(Frame, FrameArtist)
-Artist.register(Line, LineArtist)
-Artist.register(Polyline, PolylineArtist)
-Artist.register(Mesh, MeshArtist)
-Artist.register(Network, NetworkArtist)
+BaseArtist.register(Point, PointArtist)
+BaseArtist.register(Frame, FrameArtist)
+BaseArtist.register(Line, LineArtist)
+BaseArtist.register(Polyline, PolylineArtist)
+BaseArtist.register(Mesh, MeshArtist)
+BaseArtist.register(Network, NetworkArtist)
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

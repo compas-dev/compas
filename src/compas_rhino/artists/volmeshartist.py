@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas_rhino.artists import MeshArtist
+from compas_rhino.artists.meshartist import MeshArtist
 
 
 __all__ = ['VolMeshArtist']

@@ -6,7 +6,7 @@ import compas
 import compas_rhino
 
 from compas.datastructures import Mesh
-from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.geometry.base import BaseRhinoGeometry
 
 if compas.RHINO:
     import Rhino
@@ -15,7 +15,7 @@ if compas.RHINO:
 __all__ = ['RhinoMesh']
 
 
-class RhinoMesh(RhinoGeometry):
+class RhinoMesh(BaseRhinoGeometry):
     """Wrapper for Rhino mesh objects.
 
     Attributes

@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-from compas_rhino.forms import Form
+from compas_rhino.forms.base import BaseForm
 
 if compas.RHINO:
     from System.Windows.Forms import PictureBox
@@ -71,7 +71,7 @@ def image_from_local(source):
     return Image.FromFile(source)
 
 
-class ImageForm(Form):
+class ImageForm(BaseForm):
     """A form for displaying images.
 
     Parameters

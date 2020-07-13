@@ -11,7 +11,7 @@ from compas_rhino.utilities import create_layers_from_path
 from compas_rhino.utilities import clear_layer
 from compas_rhino.utilities import clear_current_layer
 
-try:
+if compas.RHINO:
     import rhinoscriptsyntax as rs
     import scriptcontext as sc
 
@@ -52,14 +52,10 @@ try:
 
     TOL = sc.doc.ModelAbsoluteTolerance
 
-except ImportError:
-    compas.raise_if_ironpython()
-
-else:
-    try:
-        find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
-    except SystemError:
-        find_layer_by_fullpath = None
+try:
+    find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
+except SystemError:
+    find_layer_by_fullpath = None
 
 
 __all__ = [
@@ -84,27 +80,21 @@ def wrap_drawfunc(f):
         layer = kwargs.get('layer', None)
         clear = kwargs.get('clear', False)
         redraw = kwargs.get('redraw', True)
-
         if layer:
             if not rs.IsLayer(layer):
                 create_layers_from_path(layer)
             previous = rs.CurrentLayer(layer)
-
         if clear:
             if not layer:
                 clear_current_layer()
             else:
                 clear_layer(layer)
-
         rs.EnableRedraw(False)
         res = f(*args, **kwargs)
-
         if redraw:
             rs.EnableRedraw(True)
-
         if layer:
             rs.CurrentLayer(previous)
-
         return res
     return wrapper
 
@@ -117,15 +107,27 @@ def draw_labels(labels, **kwargs):
     ----------
     labels : list of dict
         A list of labels dictionaries.
-        A label dictionary has the following structure:
 
-        .. code-block:: python
+    Returns
+    -------
+    list of GUID
 
-            {
-                'pos'  : [x, y, z],
-                'text' : '',
-                'name' : ''
-            }
+    Notes
+    -----
+    A label dict has the following schema:
+
+    .. code-block:: python
+
+        from schema import Schema, And, Optional
+
+        Schema({
+            'pos': And(list, lambda x: len(x) == 3),
+            'text': And(str, len),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('fontsize', default=10): Or(int, float),
+            Optional('font', default="Arial Regular"): str
+        })
 
     """
     guids = []
@@ -160,6 +162,31 @@ def draw_labels(labels, **kwargs):
 @wrap_drawfunc
 def draw_points(points, **kwargs):
     """Draw points and optionally set individual name, layer, and color properties.
+
+    Parameters
+    ----------
+    labels : list of dict
+        A list of point dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A point dict has the following schema:
+
+    .. code-block:: python
+
+        from schema import Schema, And, Optional
+
+        Schema({
+            'pos': And(list, lambda x: len(x) == 3),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('layer', default=None): str
+        })
+
     """
     guids = []
     for p in iter(points):
@@ -193,6 +220,34 @@ def draw_points(points, **kwargs):
 def draw_lines(lines, **kwargs):
     """Draw lines and optionally set individual name, color, arrow, layer, and
     width properties.
+
+    Parameters
+    ----------
+    labels : list of dict
+        A list of line dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A line dict has the following schema:
+
+    .. code-block:: python
+
+        from schema import Schema, And, Optional
+
+        Schema({
+            'start': And(list, lambda x: len(x) == 3),
+            'end': And(list, lambda x: len(x) == 3),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('layer', default=None): str,
+            Optional('arrow', default=None): str,
+            Optional('width', default=None): Or(int, float),
+        })
+
     """
     guids = []
     for line in iter(lines):
@@ -236,6 +291,34 @@ def draw_lines(lines, **kwargs):
 def draw_geodesics(geodesics, **kwargs):
     """Draw geodesic lines on specified surfaces, and optionally set individual
     name, color, arrow, and layer properties.
+
+    Parameters
+    ----------
+    labels : list of dict
+        A list of geodesic dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A geodesic dict has the following schema:
+
+    .. code-block:: python
+
+        from schema import Schema, And, Optional
+
+        Schema({
+            'start': And(list, lambda x: len(x) == 3),
+            'end': And(list, lambda x: len(x) == 3),
+            'srf': Or(str, System.Guid),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('layer', default=None): str,
+            Optional('arrow', default=None): str,
+        })
+
     """
     guids = []
     for g in iter(geodesics):
@@ -277,6 +360,32 @@ def draw_geodesics(geodesics, **kwargs):
 def draw_polylines(polylines, **kwargs):
     """Draw polylines, and optionally set individual name, color, arrow, and
     layer properties.
+
+    Parameters
+    ----------
+    labels : list of dict
+        A list of polyline dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A polyline dict has the following schema:
+
+    .. code-block:: python
+
+        from schema import Schema, And, Optional
+
+        Schema({
+            'points': And(list, lambda x: all(len(point) == 3 for point in x),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('layer', default=None): str,
+            Optional('arrow', default=None): str
+        })
+
     """
     guids = []
     for p in iter(polylines):
@@ -317,6 +426,45 @@ def draw_polylines(polylines, **kwargs):
 def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
+
+    Parameters
+    ----------
+    faces : list of dict
+        A list of brep dictionaries.
+    srf : GUID, optional
+        A target surface.
+    u : int, optional
+        Default is 10.
+    v : int, optional
+        Default is 10.
+
+    Other Parameters
+    ----------------
+    trim : bool, optional
+    tangency : bool, optional
+    spacing : float, optional
+    flex : float, optional
+    pull : float, optional
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A brep dict has the following schema:
+
+    .. code-block:: python
+
+        from schema import Schema, And, Optional
+
+        Schema({
+            'points': And(list, lambda x: len(x) > 3 and all(len(point) == 3 for point in x),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('layer', default=None): str,
+        })
+
     """
     guids = []
     for f in iter(faces):
@@ -369,6 +517,36 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
 
 @wrap_drawfunc
 def draw_cylinders(cylinders, cap=False, **kwargs):
+    """Draw cylinders and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    cylinders : list of dict
+        A list of cylinder dictionaries.
+    cap : bool, optional
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A cylinder dict has the following schema:
+
+    .. code-block:: python
+
+        from schema import Schema, And, Optional
+
+        Schema({
+            'start': And(list, lambda x: len(x) == 3),
+            'end': And(list, lambda x: len(x) == 3),
+            'radius': And(Or(int, float), lambda x: x > 0.0),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('layer', default=None): str,
+        })
+
+    """
     guids = []
     for c in iter(cylinders):
         start = c['start']
@@ -415,6 +593,39 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
 
 @wrap_drawfunc
 def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
+    """Draw pipes and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    pipes : list of dict
+        A list of pipe dictionaries.
+
+    Other Parameters
+    ----------------
+    cap : {0, 1, 2}, optional
+    fir : float, optional
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A cylinder dict has the following schema:
+
+    .. code-block:: python
+
+        from schema import Schema, And, Optional
+
+        Schema({
+            'points': And(list, lambda x: all(len(point) == 3 for point in x)),
+            'radius': And(Or(int, float), lambda x: x > 0.0),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('layer', default=None): str,
+        })
+
+    """
     guids = []
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians

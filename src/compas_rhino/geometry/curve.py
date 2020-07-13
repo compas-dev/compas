@@ -9,7 +9,7 @@ from compas.geometry import Line
 from compas.geometry import Polyline
 from compas.geometry import Circle
 
-from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.geometry.base import BaseRhinoGeometry
 
 if compas.RHINO:
     import scriptcontext as sc
@@ -19,7 +19,7 @@ if compas.RHINO:
 __all__ = ['RhinoCurve']
 
 
-class RhinoCurve(RhinoGeometry):
+class RhinoCurve(BaseRhinoGeometry):
     """Wrapper for Rhino curve objects.
 
     Parameters

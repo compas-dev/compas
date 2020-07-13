@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-from compas_rhino.conduits import Conduit
+from compas_rhino.conduits.base import BaseConduit
 from compas.utilities import color_to_rgb
 
 if compas.RHINO:
@@ -14,7 +14,7 @@ if compas.RHINO:
 __all__ = ['LabelsConduit']
 
 
-class LabelsConduit(Conduit):
+class LabelsConduit(BaseConduit):
     """A Rhino display conduit for labels.
 
     Parameters
@@ -35,8 +35,8 @@ class LabelsConduit(Conduit):
         A list of label tuples.
         Each tuple contains a position and text for the label.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         from random import randint

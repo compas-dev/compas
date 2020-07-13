@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas_rhino.artists import Artist
+from compas_rhino.artists.base import BaseArtist
 
 from compas.utilities import color_to_colordict
 
@@ -11,7 +11,7 @@ from compas.utilities import color_to_colordict
 __all__ = ['NetworkArtist']
 
 
-class NetworkArtist(Artist):
+class NetworkArtist(BaseArtist):
     """A network artist defines functionality for visualising COMPAS networks in Rhino.
 
     Parameters

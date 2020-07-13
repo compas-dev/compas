@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import compas
 from compas.geometry import Vector
-from compas_rhino.geometry import RhinoPoint
+from compas_rhino.geometry.point import RhinoPoint
 
 if compas.RHINO:
     import Rhino

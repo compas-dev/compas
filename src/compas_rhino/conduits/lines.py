@@ -5,7 +5,7 @@ from __future__ import division
 import compas
 
 from compas.utilities import color_to_rgb
-from compas_rhino.conduits import Conduit
+from compas_rhino.conduits.base import BaseConduit
 
 if compas.RHINO:
     from Rhino.Geometry import Point3d
@@ -22,7 +22,7 @@ except NameError:
 __all__ = ['LinesConduit']
 
 
-class LinesConduit(Conduit):
+class LinesConduit(BaseConduit):
     """A Rhino display conduit for lines.
 
     Parameters
@@ -45,8 +45,8 @@ class LinesConduit(Conduit):
     lines : list
         A list of start-end point pairs that define the lines.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         from random import randint

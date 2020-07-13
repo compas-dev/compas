@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-from compas_rhino.forms import Form
+from compas_rhino.forms.base import BaseForm
 
 if compas.RHINO:
     import clr
@@ -26,7 +26,7 @@ class Series(object):
     pass
 
 
-class ChartForm(Form):
+class ChartForm(BaseForm):
     """A form for displaying charts.
 
     Parameters

@@ -12,10 +12,10 @@ if compas.RHINO:
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
-__all__ = ['RhinoGeometry']
+__all__ = ['BaseRhinoGeometry']
 
 
-class RhinoGeometry(ABC):
+class BaseRhinoGeometry(ABC):
     """Base class for Rhino geometry objects.
 
     Attributes
@@ -35,6 +35,7 @@ class RhinoGeometry(ABC):
     """
 
     def __init__(self):
+        super(BaseRhinoGeometry, self).__init__()
         self.guid = None
         self.object = None
         self.geometry = None
@@ -78,7 +79,7 @@ class RhinoGeometry(ABC):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoGeometry`
+        :class:`compas_rhino.geometry.BaseRhinoGeometry`
             The Rhino object wrapper.
         """
         obj = compas_rhino.find_object(guid)
@@ -99,7 +100,7 @@ class RhinoGeometry(ABC):
 
         Returns
         -------
-        :class:`compas_rhino.geometry.RhinoGeometry`
+        :class:`compas_rhino.geometry.BaseRhinoGeometry`
             The Rhino object wrapper.
         """
         wrapper = cls()
