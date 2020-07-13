@@ -55,48 +55,34 @@ objects
     :toctree: generated/
     :nosignatures:
 
-    get_objects
-    get_object_names
-    get_object_attributes
-    get_object_attributes_from_name
     delete_object
     delete_objects
-    purge_objects
-    get_points
-    get_curves
-    get_lines
-    get_polylines
-    get_polygons
-    get_point_coordinates
     get_line_coordinates
+    get_objects
+    get_object_attributes
+    get_object_attributes_from_name
+    get_object_layers
+    get_object_types
+    get_object_names
+    get_object_name
+    get_point_coordinates
     get_polyline_coordinates
     get_polygon_coordinates
-    get_meshes
-    get_mesh_face_vertices
-    get_mesh_vertex_coordinates
-    get_mesh_vertex_colors
-    set_mesh_vertex_colors
-    get_mesh_vertices_and_faces
-    get_mesh_vertex_index
-    get_mesh_face_index
-    get_mesh_edge_index
-    select_point
-    select_points
+    purge_objects
     select_curve
     select_curves
     select_line
     select_lines
-    select_polyline
-    select_polylines
-    select_polygon
-    select_polygons
-    select_surface
-    select_surfaces
     select_mesh
     select_meshes
-    is_curve_line
-    is_curve_polyline
-    is_curve_polygon
+    select_point
+    select_points
+    select_polygon
+    select_polygons
+    select_polyline
+    select_polylines
+    select_surface
+    select_surfaces
 
 
 misc
@@ -149,6 +135,16 @@ geometry
 
     uv_points_from_surface
 
+
+constructors
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    volmesh_from_polysurfaces
+
 """
 from __future__ import absolute_import
 
@@ -158,5 +154,6 @@ from .objects import *  # noqa: F401 F403
 from .misc import *  # noqa: F401 F403
 from .drawing import *  # noqa: F401 F403
 from .geometry import *  # noqa: F401 F403
+from .constructors import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]
