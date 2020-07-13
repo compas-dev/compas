@@ -138,7 +138,8 @@ def install(version=None, packages=None):
             exit_code = -1
 
     print('\nCompleted.')
-    sys.exit(exit_code)
+    if exit_code != 0:
+        sys.exit(exit_code)
 
 
 # ==============================================================================

@@ -55,6 +55,8 @@ class Proxy(object):
     port : int, optional
         The port number on the remote server.
         Default is ``1753``.
+    max_conn_attempts: :obj:`int`, optional
+        Amount of attempts to connect to RPC server before time out.
 
     Notes
     -----
@@ -83,11 +85,12 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None):
+    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None, max_conn_attempts=100):
         self._package = None
         self._python = compas._os.select_python(python)
         self._url = url
         self._port = port
+        self.max_conn_attempts = max_conn_attempts
         self._service = None
         self._process = None
         self._function = None
@@ -183,7 +186,8 @@ class Proxy(object):
         ------
         RPCServerError
             If the server providing the requested service cannot be reached after
-            100 contact attempts (*pings*).
+            100 contact attempts (*pings*). The number of attempts is set by
+            :attr:`Proxy.max_conn_attempts`.
 
         Examples
         --------
@@ -223,14 +227,14 @@ class Proxy(object):
         server = ServerProxy(self.address)
         print("Starting a new proxy server...")
         success = False
-        count = 100
-        while count:
+        attempt_count = 0
+        while attempt_count < self.max_conn_attempts:
             try:
                 server.ping()
             except Exception:
                 time.sleep(0.1)
-                count -= 1
-                print("    {} attempts left.".format(count))
+                attempt_count += 1
+                print("    {} attempts left.".format(self.max_conn_attempts - attempt_count))
             else:
                 success = True
                 break
