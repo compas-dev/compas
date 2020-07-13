@@ -7,15 +7,11 @@ import compas
 from compas.utilities import color_to_rgb
 from compas_rhino.conduits import Conduit
 
-try:
+if compas.RHINO:
     from Rhino.Geometry import Point3d
     from Rhino.Geometry import Line
-
     from System.Collections.Generic import List
     from System.Drawing.Color import FromArgb
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 try:
     basestring

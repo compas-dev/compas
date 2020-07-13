@@ -50,6 +50,8 @@ extensions = [
 
 # autodoc options
 
+autodoc_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr"]
+
 autodoc_default_flags = [
     'undoc-members',
     'show-inheritance',
@@ -62,6 +64,7 @@ autoclass_content = "class"
 # autosummary options
 
 autosummary_generate = True
+autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr"]
 
 # napoleon options
 

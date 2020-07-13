@@ -11,7 +11,7 @@ __all__ = ['LineArtist']
 
 
 class LineArtist(PrimitiveArtist):
-    """Artist for drawing ``Line`` objects.
+    """Artist for drawing lines.
 
     Parameters
     ----------

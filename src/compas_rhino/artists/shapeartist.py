@@ -10,7 +10,7 @@ __all__ = ['ShapeArtist']
 
 
 class ShapeArtist(Artist):
-    """Base artist for drawing ``Shape`` objects.
+    """Base class for artists for geometric shapes.
 
     Examples
     --------

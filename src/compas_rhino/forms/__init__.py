@@ -6,8 +6,18 @@ forms
 .. currentmodule:: compas_rhino.forms
 
 
-Windows forms for ...
+Base Classes
+============
 
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Form
+
+
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
@@ -20,24 +30,27 @@ Windows forms for ...
     TextForm
 
 """
+from __future__ import absolute_import
 
 from abc import ABCMeta
 from abc import abstractmethod
 
 import compas
 
-if compas.IPY:
+if compas.RHINO:
+    import Rhino
+    import System
     from System.Windows.Forms import DialogResult
     from System.Windows.Forms import FormBorderStyle
-    from System.Windows.Forms import Form as WinForm
-    import Rhino
+    WinForm = System.Windows.Forms.Form
+
 else:
     class WinForm(object):
         pass
 
 
 class Form(WinForm):
-    """"""
+    """Base class for Windows forms."""
 
     __metaclass__ = ABCMeta
 

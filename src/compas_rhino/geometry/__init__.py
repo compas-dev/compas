@@ -7,8 +7,9 @@ geometry
 
 Object-oriented convenience wrappers for Rhino geometry objects.
 
-Bases
-=====
+
+Base Classes
+============
 
 .. autosummary::
     :toctree: generated/
@@ -17,8 +18,8 @@ Bases
     RhinoGeometry
 
 
-Specific wrappers
-=================
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
@@ -34,8 +35,6 @@ Specific wrappers
 
 """
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 from .geometry import *  # noqa: F401 F403
 

@@ -16,7 +16,7 @@ __all__ = ['PointArtist']
 
 
 class PointArtist(PrimitiveArtist):
-    """Artist for drawing ``Point`` objects.
+    """Artist for drawing points.
 
     Examples
     --------

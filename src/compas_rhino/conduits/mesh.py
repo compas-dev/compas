@@ -6,15 +6,11 @@ import compas
 from compas_rhino.conduits import Conduit
 from compas.utilities import color_to_rgb
 
-try:
+if compas.RHINO:
     from Rhino.Geometry import Point3d
     from Rhino.Geometry import Line
-
     from System.Collections.Generic import List
     from System.Drawing.Color import FromArgb
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['MeshConduit']

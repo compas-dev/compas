@@ -11,7 +11,7 @@ _ITEM_ARTIST = {}
 
 
 class Artist(object):
-    """Base class for all ``Artist`` objects.
+    """Base class for all artists.
 
     Attributes
     ----------

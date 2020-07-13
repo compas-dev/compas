@@ -5,52 +5,29 @@ compas_rhino
 
 .. currentmodule:: compas_rhino
 
-
-Common
-======
-
 .. toctree::
     :maxdepth: 1
 
     compas_rhino.artists
+    compas_rhino.conduits
     compas_rhino.forms
     compas_rhino.geometry
     compas_rhino.objects
     compas_rhino.ui
     compas_rhino.utilities
 
-
-Rhino-specific
-==============
-
-.. toctree::
-    :maxdepth: 1
-
-    compas_rhino.conduits
-    compas_rhino.etoforms
-    compas_rhino.selectors
-
 """
 from __future__ import absolute_import
 
 import os
+import compas
 import compas._os
 from .utilities import *  # noqa: F401 F403
 
-try:
+if compas.RHINO:
     import rhinoscriptsyntax as rs  # noqa: F401
-except ImportError:
-    pass
-
-try:
     import scriptcontext as sc  # noqa: F401
-except ImportError:
-    pass
-else:
-    try:
-        find_object = sc.doc.Objects.Find
-    except Exception:
-        pass
+    find_object = sc.doc.Objects.Find
 
 
 __version__ = '0.16.0'

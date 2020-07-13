@@ -12,37 +12,22 @@ from compas_rhino.geometry import RhinoGeometry
 # from compas.geometry import distance_point_point
 from compas.utilities import geometric_key
 
-try:
+if compas.RHINO:
     import Rhino
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['RhinoSurface']
 
 
 class RhinoSurface(RhinoGeometry):
-    """"""
+    """Wrapper for Rhino surface objects."""
 
     def __init__(self):
         super(RhinoSurface, self).__init__()
 
     @classmethod
-    def from_guid(cls, guid):
-        obj = compas_rhino.find_object(guid)
-        surf = cls()
-        surf.guid = guid
-        surf.object = obj
-        surf.geometry = obj.Geometry
-        return surf
-
-    @classmethod
-    def from_object(cls, obj):
-        surf = cls()
-        surf.guid = obj.Id
-        surf.object = obj
-        surf.geometry = obj.Geometry
-        return surf
+    def from_geometry(cls):
+        raise NotImplementedError
 
     @classmethod
     def from_selection(cls):
@@ -502,11 +487,4 @@ class RhinoSurface(RhinoGeometry):
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    surface = RhinoSurface.from_selection()
-
-    print(surface.guid)
-    print(surface.object)
-    print(surface.geometry)
-    print(surface.type)
-    print(surface.name)
+    pass

@@ -5,17 +5,13 @@ from __future__ import division
 import compas
 from compas_rhino.forms import Form
 
-try:
+if compas.RHINO:
     from System import Uri
     from System.Windows.Forms import WebBrowser
     from System.Windows.Forms import StatusStrip
     from System.Windows.Forms import ToolStripStatusLabel
     from System.Windows.Forms import FormBorderStyle
     from System.Windows.Forms import DockStyle
-
-except ImportError:
-    if compas.is_ironpython() and compas.is_windows():
-        raise
 
 try:
     basestring
@@ -27,7 +23,7 @@ __all__ = ['BrowserForm']
 
 
 class BrowserForm(Form):
-    """A windows form for displaying web pages.
+    """A form for displaying web pages.
 
     Parameters
     ----------

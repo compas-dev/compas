@@ -6,12 +6,9 @@ import compas
 from compas_rhino.conduits import Conduit
 from compas.utilities import color_to_rgb
 
-try:
+if compas.RHINO:
     from Rhino.Geometry import Point3d
     from System.Drawing.Color import FromArgb
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['LabelsConduit']
@@ -32,7 +29,8 @@ class LabelsConduit(Conduit):
 
     Attributes
     ----------
-    color
+    color : list of RGB colors
+        A color specification per label.
     labels : list
         A list of label tuples.
         Each tuple contains a position and text for the label.
@@ -75,14 +73,6 @@ class LabelsConduit(Conduit):
 
     @property
     def color(self):
-        """list : Individual label colors.
-
-        Parameters
-        ----------
-        color : list of str or 3-tuple
-            The specification of background and text color of each face in hex or RGB(255) format.
-
-        """
         return self._colors
 
     @color.setter

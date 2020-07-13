@@ -11,7 +11,7 @@ from compas.geometry import Circle
 
 from compas_rhino.geometry import RhinoGeometry
 
-if compas.IPY:
+if compas.RHINO:
     import scriptcontext as sc
     import Rhino
 
@@ -20,7 +20,7 @@ __all__ = ['RhinoCurve']
 
 
 class RhinoCurve(RhinoGeometry):
-    """Wrapper for Rhino curves.
+    """Wrapper for Rhino curve objects.
 
     Parameters
     ----------
@@ -28,11 +28,11 @@ class RhinoCurve(RhinoGeometry):
 
     Attributes
     ----------
-    start : Rhino.Geometry.Point3d, read-only
+    start (read-only) : Rhino.Geometry.Point3d
         The start point of the curve.
-    end : Rhino.Geometry.Point3d, read-only
+    end (read-only) : Rhino.Geometry.Point3d
         The end point of the curve.
-    points : list of RhinoGeometry.Point3d, read-only
+    points (read-only) : list of RhinoGeometry.Point3d
         List of points between start and end, defining the geometry of the curve.
 
     Notes
@@ -76,49 +76,12 @@ class RhinoCurve(RhinoGeometry):
         return compas_rhino.rs.CurvePoints(self.guid)
 
     @classmethod
-    def from_guid(cls, guid):
-        """Construct a curve from the GUID of an existing Rhino curve object.
-
-        Parameters
-        ----------
-        guid : str
-            The GUID of the Rhino curve object.
-
-        Returns
-        -------
-        curve : compas_rhino.geometry.RhinoCurve
-            The wrapped curve.
-        """
-        obj = compas_rhino.find_object(guid)
-        curve = cls()
-        curve.guid = obj.Id
-        curve.object = obj
-        curve.geometry = obj.Geometry
-        return curve
-
-    @classmethod
-    def from_object(cls, obj):
-        """Construct a curve from an existing Rhino curve object.
-
-        Parameters
-        ----------
-        obj : Rhino.DocObjects.CurveObject
-            The Rhino curve object.
-
-        Returns
-        -------
-        curve : compas_rhino.geometry.RhinoCurve
-            The wrapped curve.
-        """
-        curve = cls()
-        curve.guid = obj.Id
-        curve.object = obj
-        curve.geometry = obj.Geometry
-        return curve
+    def from_geometry(cls, geometry):
+        raise NotImplementedError
 
     @classmethod
     def from_selection(cls):
-        """Construct a curve by selecting an existing Rhino curve object.
+        """Construct a curve wrapper by selecting an existing Rhino curve object.
 
         Parameters
         ----------
@@ -126,7 +89,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        curve : compas_rhino.geometry.RhinoCurve
+        :class:`compas_rhino.geometry.RhinoCurve`
             The wrapped curve.
         """
         guid = compas_rhino.select_curve()
@@ -137,11 +100,11 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        compas.geometry.Line
+        :class:`compas.geometry.Line`
             If the curve is a line (if it is a linear segment between two points).
-        compas.geometry.Polyline
+        :class:`compas.geometry.Polyline`
             If the curve is a polyline (if it is comprised of multiple line segments).
-        compas.geometry.Circle
+        :class:`compas.geometry.Circle`
             If the curve is a circle.
 
         """
@@ -488,8 +451,4 @@ class RhinoCurve(RhinoGeometry):
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    curve = RhinoCurve.from_selection()
-
-    print(curve.is_line())
-    print(curve.to_compas())
+    pass

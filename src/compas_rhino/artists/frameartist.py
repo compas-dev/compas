@@ -11,7 +11,7 @@ __all__ = ['FrameArtist']
 
 
 class FrameArtist(PrimitiveArtist):
-    """Artist for drawing ``Frame`` objects.
+    """Artist for drawing frames.
 
     Parameters
     ----------

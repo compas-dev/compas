@@ -5,18 +5,13 @@ from __future__ import division
 import compas
 from compas_rhino.forms import Form
 
-try:
+if compas.RHINO:
     import clr
     from System.Drawing import Size
     from System.Drawing import Point
     from System.Drawing import Color
-
     clr.AddReference("System.Windows.Forms.DataVisualization")
     from System.Windows.Forms.DataVisualization import Charting
-
-except ImportError:
-    if compas.is_ironpython() and compas.is_windows():
-        raise
 
 try:
     basestring
@@ -32,7 +27,7 @@ class Series(object):
 
 
 class ChartForm(Form):
-    """A windows form for displaying charts.
+    """A form for displaying charts.
 
     Parameters
     ----------

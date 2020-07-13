@@ -11,7 +11,7 @@ __all__ = ['PolylineArtist']
 
 
 class PolylineArtist(PrimitiveArtist):
-    """Artist for drawing ``Polyline`` objects.
+    """Artist for drawing polylines.
 
     Parameters
     ----------

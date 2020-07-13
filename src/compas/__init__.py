@@ -139,6 +139,18 @@ def is_ironpython():
 IPY = is_ironpython()
 
 
+def is_rhino():
+    try:
+        import Rhino  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
+
+
+RHINO = is_rhino()
+
+
 def raise_if_not_windows():
     if not WINDOWS:
         raise
@@ -191,7 +203,6 @@ def set_precision(precision):
 # ==============================================================================
 # data
 # ==============================================================================
-
 
 def get(filename):
     """Get the full path to one of the sample data files.

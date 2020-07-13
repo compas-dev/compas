@@ -12,12 +12,9 @@ try:
 except NameError:
     basestring = str
 
-try:
+if compas.RHINO:
     from Rhino.Geometry import Point3d
     from System.Drawing.Color import FromArgb
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['FacesConduit']
@@ -38,7 +35,8 @@ class FacesConduit(Conduit):
 
     Attributes
     ----------
-    color
+    color : list of RGB colors
+        The color specification per face.
     vertices : list of list of float
         The coordinates of the vertices of the faces.
     faces : list of list of int
@@ -48,22 +46,18 @@ class FacesConduit(Conduit):
     -------
     .. code-block:: python
 
-        import time
         from compas.geometry import Polyhedron
         from compas_rhino.conduits import FacesConduit
 
         polyhedron = Polyhedron.generate(6)
-
         faces = polyhedron.faces
         vertices = polyhedron.vertices
-
         polygons = [[vertices[index] for index in face] for face in faces]
 
         try:
             conduit = FacesConduit(polygons)
             conduit.enable()
-            conduit.redraw()
-            time.sleep(5.0)
+            conduit.redraw(pause=5.0)
 
         except Exception as e:
             print e
@@ -71,6 +65,20 @@ class FacesConduit(Conduit):
         finally:
             conduit.disable()
             del conduit
+
+    .. code-block:: python
+
+        from compas.geometry import Polyhedron
+        from compas_rhino.conduits import FacesConduit
+
+        polyhedron = Polyhedron.generate(6)
+        faces = polyhedron.faces
+        vertices = polyhedron.vertices
+        polygons = [[vertices[index] for index in face] for face in faces]
+        conduit = FacesConduit(polygons)
+
+        with conduit.enabled():
+            conduit.redraw(pause=5.0)
 
     """
     def __init__(self, vertices, faces, color=None, **kwargs):
@@ -83,33 +91,22 @@ class FacesConduit(Conduit):
 
     @property
     def color(self):
-        """list : Individual face colors.
-
-        Parameters
-        ----------
-        color : list of str or 3-tuple
-            The color specification of each face in hex or RGB(255) format.
-
-        """
         return self._color
 
     @color.setter
     def color(self, color):
-        if color:
-            f = len(self.faces)
-            if isinstance(color, (basestring, tuple)):
-                # if a single color was provided
-                color = [color for _ in range(f)]
-            # convert to windows system colors
-            color = [FromArgb(* color_to_rgb(c)) for c in color]
-            # pad the color specification
-            c = len(color)
-            if c < f:
-                color += [self._default_color for _ in range(f - c)]
-            elif c > f:
-                color[:] = color[:f]
-            # assign to the protected value
-            self._color = color
+        if not color:
+            return
+        f = len(self.faces)
+        if isinstance(color, (basestring, tuple)):
+            color = [color for _ in range(f)]
+        color = [FromArgb(* color_to_rgb(c)) for c in color]
+        c = len(color)
+        if c < f:
+            color += [self._default_color for _ in range(f - c)]
+        elif c > f:
+            color[:] = color[:f]
+        self._color = color
 
     def DrawForeground(self, e):
         for i, face in enumerate(self.faces):
@@ -125,20 +122,4 @@ class FacesConduit(Conduit):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    from random import shuffle
-    from compas.geometry import Polyhedron
-
-    polyhedron = Polyhedron.generate(6)
-
-    faces = polyhedron.faces
-    vertices = polyhedron.vertices
-    colors = [(255, 255, 255), (255, 0, 0), (255, 255, 0), (0, 255, 0), (0, 255, 255), (0, 0, 255)]
-
-    conduit = FacesConduit(vertices, faces, color=colors)
-
-    with conduit.enabled():
-        for i in range(10):
-            shuffle(colors)
-            conduit.color = colors
-            conduit.redraw(pause=1.0)
+    pass

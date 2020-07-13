@@ -9,7 +9,7 @@ __all__ = ["PrimitiveArtist"]
 
 
 class PrimitiveArtist(Artist):
-    """Base class for all artists for ``compas.geometry.Primitive``.
+    """Base class for artists for geometry primitives.
 
     Parameters
     ----------
