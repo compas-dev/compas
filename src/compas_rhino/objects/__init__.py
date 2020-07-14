@@ -6,16 +6,6 @@ objects
 .. currentmodule:: compas_rhino.objects
 
 
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseObject
-
-
 Classes
 =======
 
@@ -24,6 +14,16 @@ Classes
     :nosignatures:
 
     MeshObject
+
+
+Base Classes
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    BaseObject
 
 
 """

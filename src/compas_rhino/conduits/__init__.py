@@ -9,16 +9,6 @@ conduits
 Definition of display conduits.
 
 
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseConduit
-
-
 Classes
 =======
 
@@ -30,6 +20,16 @@ Classes
     LinesConduit
     PointsConduit
     LabelsConduit
+
+
+Base Classes
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    BaseConduit
 
 """
 from __future__ import absolute_import

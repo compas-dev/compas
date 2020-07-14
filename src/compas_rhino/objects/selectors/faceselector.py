@@ -6,10 +6,8 @@ import ast
 
 import compas
 
-try:
+if compas.RHINO:
     import rhinoscriptsyntax as rs
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = [

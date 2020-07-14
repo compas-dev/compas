@@ -11,51 +11,52 @@ from compas_rhino.utilities import create_layers_from_path
 from compas_rhino.utilities import clear_layer
 from compas_rhino.utilities import clear_current_layer
 
-if compas.RHINO:
-    import rhinoscriptsyntax as rs
-    import scriptcontext as sc
-
+if compas.IPY:
     from System.Collections.Generic import List
     from System.Drawing.Color import FromArgb
     from System.Enum import ToObject
 
-    from Rhino.Geometry import Point3d
-    from Rhino.Geometry import Vector3d
-    from Rhino.Geometry import Polyline
-    from Rhino.Geometry import PolylineCurve
-    from Rhino.Geometry import GeometryBase
-    from Rhino.Geometry import Brep
-    from Rhino.Geometry import Cylinder
-    from Rhino.Geometry import Circle
-    from Rhino.Geometry import Plane
-    from Rhino.Geometry import PipeCapMode
-    from Rhino.Geometry import Curve
-    from Rhino.Geometry import Sphere
-    from Rhino.Geometry import TextDot
-    from Rhino.Geometry import Mesh as RhinoMesh
-    from Rhino.DocObjects.ObjectColorSource import ColorFromObject
-    from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
-    from Rhino.DocObjects.ObjectDecoration import EndArrowhead
-    from Rhino.DocObjects.ObjectDecoration import StartArrowhead
-    from Rhino.DocObjects.ObjectPlotWeightSource import PlotWeightFromObject
+    if compas.RHINO:
+        import rhinoscriptsyntax as rs
+        import scriptcontext as sc
 
-    find_object = sc.doc.Objects.Find
-    add_point = sc.doc.Objects.AddPoint
-    add_line = sc.doc.Objects.AddLine
-    add_dot = sc.doc.Objects.AddTextDot
-    add_curve = sc.doc.Objects.AddCurve
-    add_polyline = sc.doc.Objects.AddPolyline
-    add_brep = sc.doc.Objects.AddBrep
-    add_sphere = sc.doc.Objects.AddSphere
-    add_mesh = sc.doc.Objects.AddMesh
-    add_circle = sc.doc.Objects.AddCircle
+        from Rhino.Geometry import Point3d
+        from Rhino.Geometry import Vector3d
+        from Rhino.Geometry import Polyline
+        from Rhino.Geometry import PolylineCurve
+        from Rhino.Geometry import GeometryBase
+        from Rhino.Geometry import Brep
+        from Rhino.Geometry import Cylinder
+        from Rhino.Geometry import Circle
+        from Rhino.Geometry import Plane
+        from Rhino.Geometry import PipeCapMode
+        from Rhino.Geometry import Curve
+        from Rhino.Geometry import Sphere
+        from Rhino.Geometry import TextDot
+        from Rhino.Geometry import Mesh as RhinoMesh
+        from Rhino.DocObjects.ObjectColorSource import ColorFromObject
+        from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
+        from Rhino.DocObjects.ObjectDecoration import EndArrowhead
+        from Rhino.DocObjects.ObjectDecoration import StartArrowhead
+        from Rhino.DocObjects.ObjectPlotWeightSource import PlotWeightFromObject
 
-    TOL = sc.doc.ModelAbsoluteTolerance
+        find_object = sc.doc.Objects.Find
+        add_point = sc.doc.Objects.AddPoint
+        add_line = sc.doc.Objects.AddLine
+        add_dot = sc.doc.Objects.AddTextDot
+        add_curve = sc.doc.Objects.AddCurve
+        add_polyline = sc.doc.Objects.AddPolyline
+        add_brep = sc.doc.Objects.AddBrep
+        add_sphere = sc.doc.Objects.AddSphere
+        add_mesh = sc.doc.Objects.AddMesh
+        add_circle = sc.doc.Objects.AddCircle
 
-try:
-    find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
-except SystemError:
-    find_layer_by_fullpath = None
+        TOL = sc.doc.ModelAbsoluteTolerance
+
+        try:
+            find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
+        except SystemError:
+            find_layer_by_fullpath = None
 
 
 __all__ = [

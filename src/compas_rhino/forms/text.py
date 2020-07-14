@@ -5,7 +5,7 @@ from __future__ import division
 import compas
 from compas_rhino.forms.base import BaseForm
 
-if compas.RHINO:
+if compas.IPY:
     from System.Windows.Forms import TextBox
     from System.Windows.Forms import DockStyle
     from System.Windows.Forms import ScrollBars

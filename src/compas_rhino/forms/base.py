@@ -5,16 +5,20 @@ from __future__ import division
 import abc
 import compas
 
-if compas.RHINO:
-    import Rhino
+if compas.IPY:
     import System
     from System.Windows.Forms import DialogResult
     from System.Windows.Forms import FormBorderStyle
+
     WinForm = System.Windows.Forms.Form
+
+    if compas.RHINO:
+        import Rhino
 
 else:
     class WinForm(object):
         pass
+
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 

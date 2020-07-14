@@ -13,7 +13,6 @@ compas_rhino
     compas_rhino.forms
     compas_rhino.geometry
     compas_rhino.objects
-    compas_rhino.ui
     compas_rhino.utilities
 
 """

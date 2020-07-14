@@ -14,13 +14,10 @@ if compas.RHINO:
     import Rhino.UI
     from Rhino.Geometry import Point3d
 
-try:
-    from compas_rhino.etoforms import PropertyListForm
-except ImportError:
     try:
-        from Rhino.UI.Dialogs import ShowPropertyListBox
+        from compas_rhino.etoforms import PropertyListForm
     except ImportError:
-        compas.raise_if_ironpython()
+        from Rhino.UI.Dialogs import ShowPropertyListBox
 
 
 __all__ = [

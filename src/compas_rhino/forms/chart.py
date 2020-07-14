@@ -5,7 +5,7 @@ from __future__ import division
 import compas
 from compas_rhino.forms.base import BaseForm
 
-if compas.RHINO:
+if compas.IPY:
     import clr
     from System.Drawing import Size
     from System.Drawing import Point

@@ -6,9 +6,11 @@ import compas
 from compas_rhino.conduits.base import BaseConduit
 from compas.utilities import color_to_rgb
 
-if compas.RHINO:
-    from Rhino.Geometry import Point3d
+if compas.IPY:
     from System.Drawing.Color import FromArgb
+
+    if compas.RHINO:
+        from Rhino.Geometry import Point3d
 
 
 __all__ = ['LabelsConduit']

@@ -7,11 +7,8 @@ import ast
 import compas
 from compas.utilities import geometric_key
 
-
-try:
+if compas.RHINO:
     import rhinoscriptsyntax as rs
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = [

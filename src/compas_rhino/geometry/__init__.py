@@ -8,16 +8,6 @@ geometry
 Object-oriented convenience wrappers for Rhino geometry objects.
 
 
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseRhinoGeometry
-
-
 Classes
 =======
 
@@ -32,6 +22,16 @@ Classes
     RhinoMesh
     RhinoSurface
     RhinoVector
+
+
+Base Classes
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    BaseRhinoGeometry
 
 """
 from __future__ import absolute_import

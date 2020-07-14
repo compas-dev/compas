@@ -6,10 +6,6 @@ utilities
 .. currentmodule:: compas_rhino.utilities
 
 
-This package contains many convenience functions for working and interacting
-with Rhino.
-
-
 document
 ========
 
@@ -70,29 +66,6 @@ objects
     select_polylines
     select_surface
     select_surfaces
-
-
-misc
-====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    wait
-    get_tolerance
-    toggle_toolbargroup
-    pick_point
-    browse_for_folder
-    browse_for_file
-    print_display_on
-    display_message
-    display_text
-    display_image
-    display_html
-    update_settings
-    update_named_values
-    screenshot_current_view
 
 
 drawing

@@ -6,16 +6,6 @@ forms
 .. currentmodule:: compas_rhino.forms
 
 
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseForm
-
-
 Classes
 =======
 
@@ -28,6 +18,17 @@ Classes
     ImageForm
     SliderForm
     TextForm
+
+
+Base Classes
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    BaseForm
+
 
 """
 from __future__ import absolute_import

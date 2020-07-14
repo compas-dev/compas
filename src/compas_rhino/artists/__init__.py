@@ -8,20 +8,11 @@ artists
 Artists for visualising (painting) COMPAS objects in Rhino.
 
 
-Base Classes
-============
+Classes
+========
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseArtist
-    PrimitiveArtist
-    ShapeArtist
-
-
-Artists for Primitives
-======================
+For Primitives
+--------------
 
 .. autosummary::
     :toctree: generated/
@@ -33,16 +24,16 @@ Artists for Primitives
     FrameArtist
 
 
-Artists for Shapes
-==================
+For Shapes
+----------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
 
-Artists for Data Structures
-===========================
+For Data Structures
+-------------------
 
 .. autosummary::
     :toctree: generated/
@@ -51,6 +42,19 @@ Artists for Data Structures
     MeshArtist
     NetworkArtist
     VolMeshArtist
+
+
+Base Classes
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    BaseArtist
+    PrimitiveArtist
+    ShapeArtist
+
 
 """
 from __future__ import absolute_import

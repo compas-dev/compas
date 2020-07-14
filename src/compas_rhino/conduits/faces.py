@@ -12,9 +12,11 @@ try:
 except NameError:
     basestring = str
 
-if compas.RHINO:
-    from Rhino.Geometry import Point3d
+if compas.IPY:
     from System.Drawing.Color import FromArgb
+
+    if compas.RHINO:
+        from Rhino.Geometry import Point3d
 
 
 __all__ = ['FacesConduit']

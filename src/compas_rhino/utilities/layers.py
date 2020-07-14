@@ -12,10 +12,10 @@ if compas.RHINO:
 
     find_object = sc.doc.Objects.Find
 
-try:
-    purge_object = sc.doc.Objects.Purge
-except AttributeError:
-    purge_object = None
+    try:
+        purge_object = sc.doc.Objects.Purge
+    except AttributeError:
+        purge_object = None
 
 
 __all__ = [
@@ -155,18 +155,18 @@ def create_layers_from_dict(layers):
     --------
     .. code-block:: python
 
-        create_layers_from_dict({
-            'COMPAS', {'layers': {
-                'Datastructures': {'color': (255, 0, 0), 'layers': {
-                    'Mesh': {},
-                    'Network': {}
-                }},
-                'Geometry': {'color': (0, 0, 255),'layers': {
-                    'Point': {},
-                    'Vector': {}
-                }},
-            }}
-        })
+        layers = {'COMPAS', {'layers': {
+            'Datastructures': {'color': (255, 0, 0), 'layers': {
+                'Mesh': {},
+                'Network': {}
+            }},
+            'Geometry': {'color': (0, 0, 255),'layers': {
+                'Point': {},
+                'Vector': {}
+            }},
+        }}}
+
+        create_layers_from_dict(layers)
 
     """
     def recurse(layers, parent=None):

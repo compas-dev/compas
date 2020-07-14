@@ -7,18 +7,20 @@ import json
 import compas
 import compas_rhino
 
-if compas.RHINO:
+if compas.IPY:
     import System
-    import Rhino
-    import rhinoscriptsyntax as rs
-    import scriptcontext as sc
 
-    find_object = sc.doc.Objects.Find
+    if compas.RHINO:
+        import Rhino
+        import rhinoscriptsyntax as rs
+        import scriptcontext as sc
 
-try:
-    purge_object = sc.doc.Objects.Purge
-except (NameError, AttributeError):
-    purge_object = None
+        find_object = sc.doc.Objects.Find
+
+        try:
+            purge_object = sc.doc.Objects.Purge
+        except AttributeError:
+            purge_object = None
 
 
 __all__ = [
@@ -210,6 +212,16 @@ def purge_objects(guids):
 
 
 def get_object_layers(guids):
+    """Get the layer names of multiple objects.
+
+    Parameters
+    ----------
+    guids : list of GUID
+
+    Returns
+    -------
+
+    """
     return [rs.ObjectLayer(guid) for guid in guids]
 
 

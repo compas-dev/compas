@@ -7,12 +7,12 @@ import ast
 import compas
 import compas_rhino
 
-try:
+if compas.RHINO:
     import Rhino
+    import clr
+    clr.AddReference('Rhino.UI')
+    import Rhino.UI
     from Rhino.Geometry import Point3d
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = [
@@ -117,23 +117,4 @@ def mesh_update_face_attributes(mesh, fkeys, names=None):
 
 
 if __name__ == "__main__":
-
-    import compas
-
-    from compas.datastructures import Network
-    from compas_rhino.artists.networkartist import NetworkArtist
-
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    artist = NetworkArtist(network)
-
-    artist.clear()
-    artist.draw_vertices()
-    artist.draw_edges()
-    artist.redraw()
-
-    if FaceModifier.move_face(network, 0):
-        artist.clear()
-        artist.draw_vertices()
-        artist.draw_edges()
-        artist.redraw()
+    pass
