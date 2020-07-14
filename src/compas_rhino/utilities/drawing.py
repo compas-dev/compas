@@ -118,13 +118,11 @@ def draw_labels(labels, **kwargs):
 
     .. code-block:: python
 
-        from schema import Schema, And, Optional
-
         Schema({
             'pos': And(list, lambda x: len(x) == 3),
             'text': And(str, len),
             Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
             Optional('fontsize', default=10): Or(int, float),
             Optional('font', default="Arial Regular"): str
         })
@@ -178,12 +176,10 @@ def draw_points(points, **kwargs):
 
     .. code-block:: python
 
-        from schema import Schema, And, Optional
-
         Schema({
             'pos': And(list, lambda x: len(x) == 3),
             Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
             Optional('layer', default=None): str
         })
 
@@ -236,13 +232,11 @@ def draw_lines(lines, **kwargs):
 
     .. code-block:: python
 
-        from schema import Schema, And, Optional
-
         Schema({
             'start': And(list, lambda x: len(x) == 3),
             'end': And(list, lambda x: len(x) == 3),
             Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
             Optional('layer', default=None): str,
             Optional('arrow', default=None): str,
             Optional('width', default=None): Or(int, float),
@@ -307,14 +301,12 @@ def draw_geodesics(geodesics, **kwargs):
 
     .. code-block:: python
 
-        from schema import Schema, And, Optional
-
         Schema({
             'start': And(list, lambda x: len(x) == 3),
             'end': And(list, lambda x: len(x) == 3),
             'srf': Or(str, System.Guid),
             Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
             Optional('layer', default=None): str,
             Optional('arrow', default=None): str,
         })
@@ -376,12 +368,10 @@ def draw_polylines(polylines, **kwargs):
 
     .. code-block:: python
 
-        from schema import Schema, And, Optional
-
         Schema({
             'points': And(list, lambda x: all(len(point) == 3 for point in x),
             Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
             Optional('layer', default=None): str,
             Optional('arrow', default=None): str
         })
@@ -456,12 +446,10 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
 
     .. code-block:: python
 
-        from schema import Schema, And, Optional
-
         Schema({
             'points': And(list, lambda x: len(x) > 3 and all(len(point) == 3 for point in x),
             Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
             Optional('layer', default=None): str,
         })
 
@@ -535,14 +523,12 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
 
     .. code-block:: python
 
-        from schema import Schema, And, Optional
-
         Schema({
             'start': And(list, lambda x: len(x) == 3),
             'end': And(list, lambda x: len(x) == 3),
             'radius': And(Or(int, float), lambda x: x > 0.0),
             Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
             Optional('layer', default=None): str,
         })
 
@@ -611,17 +597,15 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
 
     Notes
     -----
-    A cylinder dict has the following schema:
+    A pipe dict has the following schema:
 
     .. code-block:: python
 
-        from schema import Schema, And, Optional
-
         Schema({
-            'points': And(list, lambda x: all(len(point) == 3 for point in x)),
+            'points': And(list, lambda x: all(len(y) == 3 for y in x)),
             'radius': And(Or(int, float), lambda x: x > 0.0),
             Optional('name', default=''): str,
-            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= c <= 255 for c in x)),
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
             Optional('layer', default=None): str,
         })
 
@@ -668,6 +652,32 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
 
 @wrap_drawfunc
 def draw_spheres(spheres, **kwargs):
+    """Draw spheres and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    spheres : list of dict
+        A list of sphere dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A sphere dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'pos': And(list, lambda x: len(x) == 3),
+            'radius': And(Or(int, float), lambda x: x > 0.0),
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
+        })
+
+    """
     guids = []
     for s in iter(spheres):
         pos = s['pos']
@@ -701,6 +711,25 @@ def draw_spheres(spheres, **kwargs):
 
 @wrap_drawfunc
 def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
+    """Draw a mesh and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    vertices : :obj:`list` of point
+        A list of point locations.
+    faces : :obj:`list` of :obj:`list` of :obj:`int`
+        A list of faces as lists of indices into ``vertices``.
+    name : :obj:`str`, optional
+    color : RGB :obj:`tuple`, optional
+    disjoint : :obj:`bool`, optional
+        Draw the mesh with disjoint faces.
+        Default is ``False``.
+
+    Returns
+    -------
+    list of GUID
+
+    """
     points = []
     mesh = RhinoMesh()
     if disjoint:
@@ -732,11 +761,36 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
         if name:
             attr.Name = name
         obj.CommitChanges()
-    return guid
+    return [guid]
 
 
 @wrap_drawfunc
 def draw_faces(faces, **kwargs):
+    """Draw faces as individual meshes and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    faces : list of dict
+        A list of face dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A face dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'points': And(len, lambda x: all(len(y) == 3 for y in x)),
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('vertexcolors', default=None): And(len, lambda x: all(0 <= y <= 255 for y in x)),
+        })
+
+    """
     guids = []
     for face in iter(faces):
         points = face['points'][:]
@@ -787,6 +841,32 @@ def _face_to_max_quad(points, face):
 
 @wrap_drawfunc
 def draw_circles(circles, **kwargs):
+    """Draw circles and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    circles : list of dict
+        A list of circle dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A circle dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'plane': lambda x: len(x[0]) == 3 and len(x[1]) == 3,
+            'radius': And(Or(int, float), lambda x: x > 0),
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str
+        })
+
+    """
     guids = []
     for data in iter(circles):
         point, normal = data['plane']
