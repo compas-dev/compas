@@ -13,23 +13,18 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        name: [
-          'Python 3.x on Linux',
-          'Python 3.x on MacOS',
-          'Python 3.x on Windows',
-        ]
         include:
-          - name: 'Python 3.x on Linux'
+          - name: 'Python 3.8 on Linux'
             os: ubuntu-latest
-            python-version: [3.6, 3.7, 3.8]
+            python-version: 3.8
             env:
               CI_GENERATE_DOCS: true
-          - name: 'Python 3.x on MacOS'
+          - name: 'Python 3.7 on MacOS'
             os: macos-latest
-            python-version: [3.6, 3.7, 3.8]
-          - name: 'Python 3.x on Windows'
+            python-version: 3.7
+          - name: 'Python 3.8 on Windows'
             os: windows-latest
-            python-version: [3.6, 3.7, 3.8]
+            python-version: 3.8
     steps:
       - uses: actions/checkout@v2
 
