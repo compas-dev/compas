@@ -1,0 +1,70 @@
+name: basic
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        name: [
+          'Python 3.x on Linux',
+          'Python 3.x on MacOS',
+          'Python 3.x on Windows',
+        ]
+        include:
+          - name: 'Python 3.x on Linux'
+            os: ubuntu-latest
+            python-version: [3.6, 3.7, 3.8]
+            env:
+              CI_GENERATE_DOCS: true
+          - name: 'Python 3.x on MacOS'
+            os: macos-latest
+            python-version: [3.6, 3.7, 3.8]
+          - name: 'Python 3.x on Windows'
+            os: windows-latest
+            python-version: [3.6, 3.7, 3.8]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install cython --install-option='--no-cython-compile'
+
+      - name: Install
+        run: |
+          pip install --no-cache-dir -r requirements-dev.txt
+
+      - name: Lint with flake8
+        run: |
+          invoke lint
+
+      - name: Test with pytest
+        run: |
+          invoke test
+
+      - name: Generate docs
+        if: ${{ env.CI_GENERATE_DOCS == true }}
+        run: |
+            invoke docs
+
+      - name: Deploy docs
+        if: ${{ env.CI_GENERATE_DOCS == true }}
+        uses: actions/upload-artifact@v1
+        with:
+          name: dist/docs
+          path: compas-dev/main
+
+
