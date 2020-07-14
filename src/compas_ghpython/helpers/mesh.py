@@ -14,12 +14,11 @@ __all__ = [
 
 
 def mesh_draw(mesh, color=None):
-    """
-    Draw a mesh object in Rhino.
+    """Draw a mesh object in Rhino.
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         The mesh object.
     color : str, tuple, list, dict (None)
         The vertex color specification.
@@ -36,7 +35,6 @@ def mesh_draw(mesh, color=None):
     RGB colors specified as values between 0 and 255, should be integers.
     RGB colors specified as values between 0.0 and 1.0, should be floats.
     """
-
     artist = MeshArtist(mesh)
     return artist.draw_mesh(color)
 
@@ -48,7 +46,7 @@ def mesh_draw_vertices(mesh,
 
     Parameters
     ----------
-    mesh : compas.datastructures.Mesh
+    mesh : :class:`compas.datastructures.Mesh`
         A mesh object.
     keys : list (None)
         A list of vertex keys identifying which vertices to draw.
@@ -63,9 +61,8 @@ def mesh_draw_vertices(mesh,
 
     Notes
     -----
-    The vertices are named using the following template:
-    ``"{}.vertex.{}".format(self.mesh.attributes['name'], key)``.
-    This name is used afterwards to identify vertices of the meshin the Rhino model.
+    The vertices are named using the following template: ``"{mesh.name}.vertex.{id}"``.
+    This name can be used afterwards to identify vertices of the mesh in the Rhino model.
 
     Examples
     --------
@@ -89,8 +86,7 @@ def mesh_draw_edges(mesh,
 
     Notes
     -----
-    All edges are named using the following template:
-    ``"{}.edge.{}-{}".fromat(self.mesh.attributes['name'], u, v)``.
+    All edges are named using the following template: ``"{mesh.name}.edge.{u}-{v}"``.
 
     Examples
     --------
@@ -118,8 +114,7 @@ def mesh_draw_faces(mesh,
 
     Notes
     -----
-    The faces are named using the following template:
-    ``"{}.face.{}".format(self.mesh.attributes['name'], key)``.
+    The faces are named using the following template: ``"{mesh.name}.face.{id}"``.
 
     Examples
     --------

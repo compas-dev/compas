@@ -4,10 +4,8 @@ from __future__ import print_function
 
 import compas
 
-try:
+if compas.RHINO:
     from Rhino.Geometry import Transform
-except ImportError:
-    compas.raise_if_ironpython()
 
 # TODO: This file should actually move to compas_rhino
 
@@ -85,7 +83,7 @@ def xtransformed(geo, transformation):
 
     Returns
     -------
-    :class:`Rhino.Geometry.GeometryBase`)
+    :class:`Rhino.Geometry.GeometryBase`
         The transformed geometry
     """
     T = xform_from_transformation(transformation)
