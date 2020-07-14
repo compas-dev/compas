@@ -3,20 +3,19 @@ from __future__ import division
 from __future__ import print_function
 
 import abc
-from compas_rhino.artists import Artist
+from compas_rhino.artists import BaseArtist
 
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
-# https://stackoverflow.com/questions/35673474/using-abc-abcmeta-in-a-way-it-is-compatible-both-with-python-2-7-and-python-3-5
 
 
-__all__ = ['Object']
+__all__ = ['BaseObject']
 
 
 _ITEM_OBJECT = {}
 
 
-class Object(ABC):
+class BaseObject(ABC):
     """Abstract base class for COMPAS Rhino objects.
 
     Attributes
@@ -53,6 +52,7 @@ class Object(ABC):
     """
 
     def __init__(self, scene, item, name=None, layer=None, visible=True, settings=None):
+        super(BaseObject, self).__init__()
         self._scene = None
         self._item = None
         self._artist = None
@@ -89,7 +89,7 @@ class Object(ABC):
     @item.setter
     def item(self, item):
         self._item = item
-        self._artist = Artist.build(item)
+        self._artist = BaseArtist.build(item)
         self.settings = self._artist.settings
 
     @property

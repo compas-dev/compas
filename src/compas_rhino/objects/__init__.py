@@ -13,7 +13,7 @@ Base Classes
     :toctree: generated/
     :nosignatures:
 
-    Object
+    BaseObject
 
 
 Classes
@@ -28,16 +28,14 @@ Classes
 
 """
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from .object import Object
+from .base import BaseObject
 from .meshobject import MeshObject
 
 from compas.datastructures import Mesh
 
 
-Object.register(Mesh, MeshObject)
+BaseObject.register(Mesh, MeshObject)
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

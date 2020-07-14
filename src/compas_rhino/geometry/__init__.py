@@ -7,18 +7,19 @@ geometry
 
 Object-oriented convenience wrappers for Rhino geometry objects.
 
-Bases
-=====
+
+Base Classes
+============
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    RhinoGeometry
+    BaseRhinoGeometry
 
 
-Specific wrappers
-=================
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/
@@ -34,10 +35,8 @@ Specific wrappers
 
 """
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from .geometry import *  # noqa: F401 F403
+from .base import *  # noqa: F401 F403
 
 from .curve import *  # noqa: F401 F403
 from .line import *  # noqa: F401 F403

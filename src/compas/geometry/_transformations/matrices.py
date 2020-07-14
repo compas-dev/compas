@@ -1397,8 +1397,8 @@ def quaternion_from_axis_angle(axis, angle):
     list
         Quaternion as a list of four real values ``[qw, qx, qy, qz]``.
 
-    Example
-    -------
+    Examples
+    --------
     >>> axis =  [1.0, 0.0, 0.0]
     >>> angle = math.pi/2
     >>> q = quaternion_from_axis_angle(axis, angle)
@@ -1425,8 +1425,8 @@ def axis_angle_from_quaternion(q):
     angle : float
         Angle of rotation in radians.
 
-    Example
-    -------
+    Examples
+    --------
     >>> q = [1., 1., 0., 0.]
     >>> axis, angle = axis_angle_from_quaternion(q)
     >>> allclose(axis, [1., 0., 0.])

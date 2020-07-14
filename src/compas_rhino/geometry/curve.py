@@ -9,17 +9,18 @@ from compas.geometry import Line
 from compas.geometry import Polyline
 from compas.geometry import Circle
 
-from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.geometry.base import BaseRhinoGeometry
 
-if compas.IPY:
+if compas.RHINO:
+    import scriptcontext as sc
     import Rhino
 
 
 __all__ = ['RhinoCurve']
 
 
-class RhinoCurve(RhinoGeometry):
-    """Wrapper for Rhino curves.
+class RhinoCurve(BaseRhinoGeometry):
+    """Wrapper for Rhino curve objects.
 
     Parameters
     ----------
@@ -27,12 +28,23 @@ class RhinoCurve(RhinoGeometry):
 
     Attributes
     ----------
-    start : Rhino.Geometry.Point3d, read-only
+    start (read-only) : Rhino.Geometry.Point3d
         The start point of the curve.
-    end : Rhino.Geometry.Point3d, read-only
+    end (read-only) : Rhino.Geometry.Point3d
         The end point of the curve.
-    points : list of RhinoGeometry.Point3d, read-only
+    points (read-only) : list of RhinoGeometry.Point3d
         List of points between start and end, defining the geometry of the curve.
+
+    Notes
+    -----
+    Rhino curve object wrappers have the following constructors:
+
+    * ``from_guid``
+    * ``from_object``
+    * ``from_selection``
+
+    To convert a Rhino curve object to a COMPAS object, use ``to_compas``.
+    Currently, conversion to COMPAS objects is only supported for lines and polylines.
 
     Examples
     --------
@@ -64,49 +76,12 @@ class RhinoCurve(RhinoGeometry):
         return compas_rhino.rs.CurvePoints(self.guid)
 
     @classmethod
-    def from_guid(cls, guid):
-        """Construct a curve from the GUID of an existing Rhino curve object.
-
-        Parameters
-        ----------
-        guid : str
-            The GUID of the Rhino curve object.
-
-        Returns
-        -------
-        curve : compas_rhino.geometry.RhinoCurve
-            The wrapped curve.
-        """
-        obj = compas_rhino.find_object(guid)
-        curve = cls()
-        curve.guid = obj.Id
-        curve.object = obj
-        curve.geometry = obj.Geometry
-        return curve
-
-    @classmethod
-    def from_object(cls, obj):
-        """Construct a curve from an existing Rhino curve object.
-
-        Parameters
-        ----------
-        obj : Rhino.DocObjects.CurveObject
-            The Rhino curve object.
-
-        Returns
-        -------
-        curve : compas_rhino.geometry.RhinoCurve
-            The wrapped curve.
-        """
-        curve = cls()
-        curve.guid = obj.Id
-        curve.object = obj
-        curve.geometry = obj.Geometry
-        return curve
+    def from_geometry(cls, geometry):
+        raise NotImplementedError
 
     @classmethod
     def from_selection(cls):
-        """Construct a curve by selecting an existing Rhino curve object.
+        """Construct a curve wrapper by selecting an existing Rhino curve object.
 
         Parameters
         ----------
@@ -114,7 +89,7 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        curve : compas_rhino.geometry.RhinoCurve
+        :class:`compas_rhino.geometry.RhinoCurve`
             The wrapped curve.
         """
         guid = compas_rhino.select_curve()
@@ -125,11 +100,11 @@ class RhinoCurve(RhinoGeometry):
 
         Returns
         -------
-        compas.geometry.Line
+        :class:`compas.geometry.Line`
             If the curve is a line (if it is a linear segment between two points).
-        compas.geometry.Polyline
+        :class:`compas.geometry.Polyline`
             If the curve is a polyline (if it is comprised of multiple line segments).
-        compas.geometry.Circle
+        :class:`compas.geometry.Circle`
             If the curve is a circle.
 
         """
@@ -238,22 +213,47 @@ class RhinoCurve(RhinoGeometry):
         """
         return compas_rhino.rs.CurveLength(self.guid)
 
-    def space(self, density):
+    def space(self, n):
+        """Construct a list of parameter values along the curve's parameter space.
+
+        Parameters
+        ----------
+        n : {2, 3, ...}
+            The number of parameter values in the list.
+            Minimum is ``2``.
+
+        Raises
+        ------
+        ValueError
+            If the number of requested parameters is smaller than 2.
+
+        Returns
+        -------
+        list
+            A list of parameter values in the curve's parameter space between its start and end.
+            The number of values in the list is equal to ``n``.
+
+        Notes
+        -----
+        If the curve is a polycurve, ``n`` values are returned per segment.
+        """
         space = []
-        density = int(density)
+        n = int(n)
+        if n < 2:
+            raise ValueError("The number of parameters should be at least two: {}".format(n))
         if compas_rhino.rs.IsCurve(self.guid):
             domain = compas_rhino.rs.CurveDomain(self.guid)
-            u = (domain[1] - domain[0]) / (density - 1)
-            for i in range(density):
-                space.append(domain[0] + u * i)
+            du = (domain[1] - domain[0]) / (n - 1)
+            for i in range(n):
+                space.append(domain[0] + i * du)
         elif compas_rhino.rs.IsPolyCurve(self.guid):
             compas_rhino.rs.EnableRedraw(False)
             segments = compas_rhino.rs.ExplodeCurves(self.guid)
             for segment in segments:
                 domain = compas_rhino.rs.CurveDomain(segment)
-                u = (domain[1] - domain[0]) / (density - 1)
-                for i in range(density):
-                    space.append(domain[0] + u * i)
+                du = (domain[1] - domain[0]) / (n - 1)
+                for i in range(n):
+                    space.append(domain[0] + i * du)
             compas_rhino.rs.DeleteObjects(segments)
             compas_rhino.rs.EnableRedraw(True)
         else:
@@ -261,6 +261,21 @@ class RhinoCurve(RhinoGeometry):
         return space
 
     def divide(self, number_of_segments, over_space=False):
+        """Divide the curve into a numer of segments.
+
+        Parameters
+        ----------
+        number_of_segments : int
+            The number of curve segments after division.
+        over_space : bool, optional
+            Use the parameter space to divide the curve.
+            Default is ``False``.
+
+        Returns
+        -------
+        list
+            A list of point locations.
+        """
         points = []
         compas_rhino.rs.EnableRedraw(False)
         if over_space:
@@ -274,24 +289,82 @@ class RhinoCurve(RhinoGeometry):
         return points
 
     def divide_length(self, length_of_segments):
+        """Divide a curve into segments of specific length.
+
+        Parameters
+        ----------
+        length_of_segments : float
+            The length of each segment.
+
+        Returns
+        -------
+        list
+            A list of point locations.
+        """
         compas_rhino.rs.EnableRedraw(False)
         points = compas_rhino.rs.DivideCurveLength(self.guid, length_of_segments, create_points=False, return_points=True)
         points[:] = map(list, points)
         compas_rhino.rs.EnableRedraw(True)
         return points
 
-    def closest_point(self, point, maxdist=None, return_param=False):
-        maxdist = maxdist or 0.0
+    def closest_point(self, point, maxdist=0.0, return_param=False):
+        """Compute the closest point on a curve to a point in space.
+
+        Parameters
+        ----------
+        point : point
+            A point location.
+        maxdist : float, optional
+            The maximum distance between the point on the curve and the curve.
+            Default is ``0.0``.
+        return_param : bool, optional
+            Return not only the point coordinates, but also the parameter of the point on the curve.
+            Default is ``False``.
+
+        Returns
+        -------
+        list
+            The XYZ coordinates of the closest point, if ``return_param`` is ``False``.
+            The XYZ coordinates of the closest point and the curve parameter, if ``return_param`` is ``True``.
+
+        """
         rc, t = self.geometry.ClosestPoint(Rhino.Geometry.Point3d(*point), maxdist)
         x, y, z = list(self.geometry.PointAt(t))
         if not return_param:
-            return x, y, z
-        return x, y, z, t
+            return [x, y, z]
+        return [x, y, z, t]
 
-    def closest_points(self, points, maxdist=None):
+    def closest_points(self, points, maxdist=0.0):
+        """Compute the closest points on the curve to a list of point locations.
+
+        Parameters
+        ----------
+        points : list
+            The point locations.
+        maxdist : float, optional
+            The maximum distance between the closest points and the curve.
+            Default is ``0.0``.
+
+        Returns
+        -------
+        list
+            A list of closest point locations.
+        """
         return [self.closest_point(point, maxdist) for point in points]
 
     def tangents(self, points):
+        """Compute the curve tangent vectors at specified points on the curve.
+
+        Parameters
+        ----------
+        points : list
+            The points where the tangents should be computed.
+
+        Returns
+        -------
+        list
+            A list of tangent vectors.
+        """
         tangents = []
         if compas_rhino.rs.IsPolyCurve(self.guid):
             pass
@@ -304,55 +377,73 @@ class RhinoCurve(RhinoGeometry):
             raise Exception('Object is not a curve.')
         return tangents
 
-    # def curvature(self):
-    #     raise NotImplementedError
+    def descent(self, points):
+        """Compute descent vectors at the specified points.
 
-    # def descent(self, points):
-    #     tangents = self.tangents(points)
-    #     tangents = [
-    #         (point, vector) if vector[2] < 0 else (point, [-v for v in vector])
-    #         for point, vector in zip(points, tangents)
-    #     ]
-    #     return tangents
+        Parameters
+        ----------
+        points : list
+            The points where the descent vectors have to be computed.
 
-    # def control_points(self):
-    #     """Get the control points of a curve.
+        Returns
+        -------
+        list
+            A list of descent vectors.
+        """
+        tangents = self.tangents(points)
+        tangents = [
+            (point, vector) if vector[2] < 0 else (point, [-v for v in vector])
+            for point, vector in zip(points, tangents)
+        ]
+        return tangents
 
-    #     Returns
-    #     -------
-    #     list
-    #         Control point objects.
-    #     """
-    #     return self.object.GetGrips()
+    def control_points(self):
+        """Get the control points of a curve.
 
-    # def control_point_coordinates(self):
-    #     """Get the coordinates of the control points of a curve.
+        Returns
+        -------
+        list
+            Control point objects.
+        """
+        return self.object.GetGrips()
 
-    #     Returns
-    #     -------
-    #     list
-    #         Control point coordinates.
-    #     """
-    #     return [control.CurrentLocation for control in self.control_points()]
+    def control_point_coordinates(self):
+        """Get the coordinates of the control points of a curve.
 
-    # def control_points_on(self):
-    #     self.object.GripsOn = True
-    #     sc.doc.Views.Redraw()
+        Returns
+        -------
+        list
+            Control point coordinates.
+        """
+        return [control.CurrentLocation for control in self.control_points()]
 
-    # def control_points_off(self):
-    #     self.object.GripsOn = False
-    #     sc.doc.Views.Redraw()
+    def control_points_on(self):
+        """Turn the control points on."""
+        self.object.GripsOn = True
+        sc.doc.Views.Redraw()
 
-    # def select_control_point(self):
-    #     self.control_points_on()
-    #     rc, grip = Rhino.Input.RhinoGet.GetGrip("Select control point.")
-    #     if rc != Rhino.Commands.Result.Success:
-    #         return
-    #     if grip.OwnerId != self.guid:
-    #         return
-    #     grip.Select(True, True)
-    #     sc.doc.Views.Redraw()
-    #     return grip
+    def control_points_off(self):
+        """Turn the control points off."""
+        self.object.GripsOn = False
+        sc.doc.Views.Redraw()
+
+    def select_control_point(self):
+        """Select a control point of the curve.
+
+        Returns
+        -------
+        GUID
+            The id of the selected control point.
+        """
+        self.control_points_on()
+        rc, grip = Rhino.Input.RhinoGet.GetGrip("Select control point.")
+        if rc != Rhino.Commands.Result.Success:
+            return
+        if grip.OwnerId != self.guid:
+            return
+        grip.Select(True, True)
+        sc.doc.Views.Redraw()
+        return grip
 
 
 # ==============================================================================
@@ -360,8 +451,4 @@ class RhinoCurve(RhinoGeometry):
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    curve = RhinoCurve.from_selection()
-
-    print(curve.is_line())
-    print(curve.to_compas())
+    pass

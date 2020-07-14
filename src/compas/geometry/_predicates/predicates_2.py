@@ -281,8 +281,8 @@ def is_point_in_convex_polygon_xy(point, polygon):
         ``True`` if the point is in the convex polygon
         ``False`` otherwise.
 
-    Warning
-    -------
+    Warnings
+    --------
     Does not work for concave polygons.
 
     """
@@ -312,8 +312,8 @@ def is_point_in_polygon_xy(point, polygon):
         The polygon is assumed to be closed.
         The first and last vertex in the sequence should not be the same.
 
-    Warning
-    -------
+    Warnings
+    --------
     A boundary check is not yet implemented. This should include a tolerance value.
 
     Returns

@@ -267,8 +267,8 @@ class VolMesh(Datastructure):
         * 'max_int_fkey' => int
         * 'max_int_ckey' => int
 
-        Note
-        ----
+        Notes
+        -----
         All dictionary keys are converted to their representation value (``repr(key)``)
         to ensure compatibility of all allowed key types with the JSON serialisation
         format, which only allows for dict keys that are strings.
@@ -443,8 +443,8 @@ class VolMesh(Datastructure):
         object
             An object of the type of ``cls``.
 
-        Note
-        ----
+        Notes
+        -----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_data* method.
 
@@ -461,8 +461,8 @@ class VolMesh(Datastructure):
         dict
             The structured data.
 
-        Note
-        ----
+        Notes
+        -----
         This method produces the data that can be used in conjuction with the
         corresponding *from_data* class method.
         """
@@ -482,8 +482,8 @@ class VolMesh(Datastructure):
         object
             An object of the type of ``cls``.
 
-        Note
-        ----
+        Notes
+        -----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_json* method.
         """
@@ -521,8 +521,8 @@ class VolMesh(Datastructure):
         object
             An object of type ``cls``.
 
-        Note
-        ----
+        Notes
+        -----
         This constructor method is meant to be used in conjuction with the
         corresponding *to_pickle* method.
         """
@@ -1099,8 +1099,8 @@ class VolMesh(Datastructure):
             The next halfface identifier, if ``data`` is ``False``.
             The next halfface identifier and attribute dict as a tuple, if ``data`` is ``True``.
 
-        Note
-        ----
+        Notes
+        -----
         Volmesh faces have no topological meaning (analogous to an edge of a mesh).
         They are only used to store data or excute geometric operations (i.e. planarisation).
         Between the interface of two cells, there are two interior halffaces (one from each cell).
@@ -1177,8 +1177,8 @@ class VolMesh(Datastructure):
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
-        ----
+        Notes
+        -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
         """
@@ -1376,8 +1376,8 @@ class VolMesh(Datastructure):
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
-        ----
+        Notes
+        -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
         """
@@ -1585,8 +1585,8 @@ class VolMesh(Datastructure):
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
-        ----
+        Notes
+        -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
         """
@@ -1976,8 +1976,8 @@ class VolMesh(Datastructure):
         hfkey
             Identifier of the opposite halfface.
 
-        Note
-        ----
+        Notes
+        -----
         For a boundary halfface, the opposite hlafface is None.
 
         """

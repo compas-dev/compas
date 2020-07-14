@@ -43,9 +43,9 @@ class STL(object):
 class STLReader(object):
     """Standard triangle library format.
 
-    See Also
-    --------
-    * http://paulbourke.net/dataformats/stl/
+    References
+    ----------
+    .. [1] http://paulbourke.net/dataformats/stl/
 
     """
 

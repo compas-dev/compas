@@ -3,21 +3,14 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-
 from compas.utilities import geometric_key
 
-try:
+if compas.RHINO:
     import Rhino
     import scriptcontext as sc
 
-except ImportError:
-    compas.raise_if_ironpython()
 
-
-__all__ = [
-    'volmesh_from_polysurfaces',
-    'volmesh_from_wireframe'
-]
+__all__ = ['volmesh_from_polysurfaces']
 
 
 def volmesh_from_polysurfaces(cls, guids):
@@ -32,28 +25,27 @@ def volmesh_from_polysurfaces(cls, guids):
     * and add the faces of a brep to the cell
     * create a volmesh from the found vertices and cells
 
-    Parameters:
-        cls (compas.datastructures.volmesh.VolMesh):
-            The class of volmesh.
-        guids (sequence of str or System.Guid):
-            The *globally unique identifiers* of the polysurfaces.
+    Parameters
+    ----------
+    cls : :class:`compas.datastructures.VolMesh`
+        The class of volmesh.
+    guids : sequence of str or System.Guid
+        The *globally unique identifiers* of the polysurfaces.
 
-    Returns:
-        compas.datastructures.volmesh.Volmesh: The volumetric mesh object.
+    Returns
+    -------
+    :class:`compas.datastructures.Volmesh`
+        The volumetric mesh object.
 
     """
     gkey_xyz = {}
     cells = []
-
     for guid in guids:
         cell = []
         obj = sc.doc.Objects.Find(guid)
-
         if not obj.Geometry.HasBrepForm:
             continue
-
         brep = Rhino.Geometry.Brep.TryConvertBrep(obj.Geometry)
-
         for loop in brep.Loops:
             curve = loop.To3dCurve()
             segments = curve.Explode()
@@ -73,16 +65,10 @@ def volmesh_from_polysurfaces(cls, guids):
                 gkey_xyz[ep_gkey] = ep
             cell.append(face)
         cells.append(cell)
-
     gkey_index = dict((gkey, index) for index, gkey in enumerate(gkey_xyz))
     vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
     cells = [[[gkey_index[gkey] for gkey in face] for face in cell] for cell in cells]
-
     return cls.from_vertices_and_cells(vertices, cells)
-
-
-def volmesh_from_wireframe(cls, edges):
-    raise NotImplementedError
 
 
 # ==============================================================================

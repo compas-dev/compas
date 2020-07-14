@@ -3,19 +3,15 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-from compas_rhino.forms import Form
+from compas_rhino.forms.base import BaseForm
 
-try:
+if compas.RHINO:
     from System.Windows.Forms import PictureBox
     from System.Windows.Forms import PictureBoxSizeMode
     from System.Windows.Forms import DockStyle
     from System.Drawing import Image
     from System.Net import WebClient
     from System.IO import MemoryStream
-
-except ImportError:
-    if compas.is_ironpython() and compas.is_windows():
-        raise
 
 try:
     basestring
@@ -75,8 +71,8 @@ def image_from_local(source):
     return Image.FromFile(source)
 
 
-class ImageForm(Form):
-    """Windows form for displaying images.
+class ImageForm(BaseForm):
+    """A form for displaying images.
 
     Parameters
     ----------

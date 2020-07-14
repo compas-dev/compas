@@ -86,6 +86,7 @@ class GLTFMesh(object):
         Returns
         -------
         list
+
         """
         return [index + shift for index in indices]
 
@@ -100,6 +101,7 @@ class GLTFMesh(object):
         Returns
         -------
         list
+
         """
         it = [iter(indices)] * group_size
         return list(zip(*it))
@@ -165,6 +167,7 @@ class GLTFMesh(object):
         Returns
         -------
         :class:`compas.files.GLTFMesh`
+
         """
         cls.validate_faces(faces)
         cls.validate_vertices(vertices)

@@ -222,8 +222,8 @@ class Quaternion(Primitive):
         :class:`compas.geometry.Quaternion`
             The new quaternion.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from compas.geometry import Frame
         >>> q = [1., -2., 3., -4.]
         >>> F = Frame.from_quaternion(q)

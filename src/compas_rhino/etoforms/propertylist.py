@@ -4,25 +4,17 @@ from __future__ import division
 
 import compas
 
-try:
+if compas.RHINO:
     import clr
     clr.AddReference("Eto")
     clr.AddReference("Rhino.UI")
-
-except Exception:
-    compas.raise_if_ironpython()
-
-try:
     import Rhino
     import Rhino.UI
     import Eto.Drawing as drawing
     import Eto.Forms as forms
-
     Dialog = forms.Dialog[bool]
 
-except ImportError:
-    compas.raise_if_ironpython()
-
+else:
     class Dialog:
         pass
 

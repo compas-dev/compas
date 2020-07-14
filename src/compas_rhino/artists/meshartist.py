@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_rhino
 
-from compas_rhino.artists import Artist
+from compas_rhino.artists.base import BaseArtist
 
 from compas.utilities import color_to_colordict
 from compas.utilities import pairwise
@@ -16,7 +16,7 @@ from compas.geometry import centroid_polygon
 __all__ = ['MeshArtist']
 
 
-class MeshArtist(Artist):
+class MeshArtist(BaseArtist):
     """A mesh artist defines functionality for visualising COMPAS meshes in Rhino.
 
     Parameters
@@ -58,16 +58,20 @@ class MeshArtist(Artist):
         # update this to plurals
         # make settings an optional parameter
         self.settings = {
-            'color.vertex': (255, 255, 255),
-            'color.edge': (0, 0, 0),
-            'color.face': (210, 210, 210),
-            'color.normal:vertex': (0, 255, 0),
-            'color.normal:face': (0, 255, 0),
-            'scale.normal:vertex': 0.1,
-            'scale.normal:face': 0.1,
+            'color.vertices': (255, 255, 255),
+            'color.edges': (0, 0, 0),
+            'color.faces': (210, 210, 210),
+            'color.vertex_normals': (0, 255, 0),
+            'color.face_normals': (0, 255, 0),
+            'scale.vertex_normals': 0.1,
+            'scale.face_normals': 0.1,
             'show.vertices': True,
             'show.edges': True,
-            'show.faces': True}
+            'show.faces': True,
+            'show.vertex_labels': False,
+            'show.face_labels': False,
+            'show.edge_labels': False,
+            'join_faces': True}
 
     # ==========================================================================
     # clear
@@ -84,10 +88,42 @@ class MeshArtist(Artist):
     # components
     # ==========================================================================
 
-    def draw(self):
-        self.draw_faces()
-        self.draw_vertices()
-        self.draw_edges()
+    def draw(self, settings=None):
+        """Draw the mesh using the chosen visualisation settings.
+
+        Parameters
+        ----------
+        settings : dict, optional
+            Dictionary of visualisation settings that will be merged with the settings of the artist.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+
+        Notes
+        -----
+        This method will attempt to clear all previously drawn elements by this artist.
+        However, clearing the artist layer has to be done explicitly with a call to ``MeshArtist.clear_layer``.
+
+        """
+        self.clear()
+        if not settings:
+            settings = {}
+        self.settings.update(settings)
+        if self.settings['show.vertices']:
+            self.draw_vertices()
+            if self.settings['show.vertex_labels']:
+                self.draw_vertexlabels()
+        if self.settings['show.faces']:
+            self.draw_faces(join_faces=self.settings['join_faces'])
+            if self.settings['show.face_labels']:
+                self.draw_facelabels()
+        if self.settings['show.edges']:
+            self.draw_edges()
+            if self.settings['show.edge_labels']:
+                self.draw_edgelabels()
+        return self.guids
 
     def draw_mesh(self, color=None, disjoint=False):
         """Draw the mesh as a consolidated RhinoMesh.
@@ -147,7 +183,7 @@ class MeshArtist(Artist):
             Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
             To apply the same color to all vertices, provide a single color specification.
             Individual colors can be assigned using a dictionary of key-color pairs.
-            Missing keys will be assigned the default vertex color (``self.settings['color.vertex']``).
+            Missing keys will be assigned the default vertex color (``self.settings['color.vertices']``).
             The default is ``None``, in which case all vertices are assigned the default vertex color.
 
         Returns
@@ -163,7 +199,7 @@ class MeshArtist(Artist):
         keys = keys or list(self.mesh.vertices())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.settings.get('color.vertex'),
+                                       default=self.settings.get('color.vertices'),
                                        colorformat='rgb',
                                        normalize=False)
         points = []
@@ -210,7 +246,7 @@ class MeshArtist(Artist):
 
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.settings.get('color.face'),
+                                       default=self.settings.get('color.faces'),
                                        colorformat='rgb',
                                        normalize=False)
         faces = []
@@ -262,7 +298,7 @@ class MeshArtist(Artist):
         keys = keys or list(self.mesh.edges())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.settings.get('color.edge'),
+                                       default=self.settings.get('color.edges'),
                                        colorformat='rgb',
                                        normalize=False)
         lines = []
@@ -305,13 +341,13 @@ class MeshArtist(Artist):
 
         Notes
         -----
-        All vertex normals are named using the following template: ``"{mesh.name}.vertex.normal.{id}"``.
+        All vertex normals are named using the following template: ``"{mesh.name}.vertex_normal.{id}"``.
         This name can be used afterwards to identify vertex normals in the Rhino model.
 
         """
         keys = keys or list(self.mesh.vertices())
-        scale = scale or self.settings.get('scale.normal:vertex')
-        color = color or self.settings.get('color.normal:vertex')
+        scale = scale or self.settings.get('scale.vertex_normals')
+        color = color or self.settings.get('color.vertex_normals')
         lines = []
         for key in keys:
             a = self.mesh.vertex_coordinates(key)
@@ -321,7 +357,7 @@ class MeshArtist(Artist):
                 'start': a,
                 'end': b,
                 'color': color,
-                'name': "{}.vertex.normal.{}".format(self.mesh.name, key),
+                'name': "{}.vertex_normal.{}".format(self.mesh.name, key),
                 'arrow': 'end'})
 
         guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -352,13 +388,13 @@ class MeshArtist(Artist):
 
         Notes
         -----
-        All face normals are named using the following template: ``"{mesh.name}.face.normal.{id}"``.
+        All face normals are named using the following template: ``"{mesh.name}.face_normal.{id}"``.
         This name can be used afterwards to identify face normals in the Rhino model.
 
         """
         keys = keys or list(self.mesh.faces())
-        scale = scale or self.settings.get('scale.normal:face')
-        color = color or self.settings.get('color.normal:face')
+        scale = scale or self.settings.get('scale.face_normals')
+        color = color or self.settings.get('color.face_normals')
         lines = []
         for key in self.mesh.faces():
             a = self.mesh.face_centroid(key)
@@ -367,7 +403,7 @@ class MeshArtist(Artist):
             lines.append({
                 'start': a,
                 'end': b,
-                'name': "{}.face.normal.{}".format(self.mesh.name, key),
+                'name': "{}.face_normal.{}".format(self.mesh.name, key),
                 'color': color,
                 'arrow': 'end'})
         guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -392,7 +428,7 @@ class MeshArtist(Artist):
             Tuples are interpreted as RGB component specifications.
             If a dictionary of specififcations is provided,
             the keys should refer to vertex keys and the values should be color specifications in the form of strings or tuples.
-            The default value is ``None``, in which case the labels are assigned the default vertex color (``self.settings['color.vertex']``).
+            The default value is ``None``, in which case the labels are assigned the default vertex color (``self.settings['color.vertices']``).
 
         Returns
         -------
@@ -401,7 +437,7 @@ class MeshArtist(Artist):
 
         Notes
         -----
-        All vertex labels are named using the following template: ``"{mesh.name}.vertex.label.{id}"``.
+        All vertex labels are named using the following template: ``"{mesh.name}.vertex_label.{id}"``.
         This name can be used afterwards to identify vertices in the Rhino model.
 
         """
@@ -418,14 +454,14 @@ class MeshArtist(Artist):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.settings.get('color.vertex'),
+                                       default=self.settings.get('color.vertices'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
                 'pos': self.mesh.vertex_coordinates(key),
-                'name': "{}.vertex.label.{}".format(self.mesh.name, key),
+                'name': "{}.vertex_label.{}".format(self.mesh.name, key),
                 'color': colordict[key],
                 'text': textdict[key]})
 
@@ -447,7 +483,7 @@ class MeshArtist(Artist):
             Tuples are interpreted as RGB component specifications.
             If a dictionary of specififcations is provided,
             the keys should refer to face keys and the values should be color specifications in the form of strings or tuples.
-            The default value is ``None``, in which case the labels are assigned the default face color (``self.settings['color.face']``).
+            The default value is ``None``, in which case the labels are assigned the default face color (``self.settings['color.faces']``).
 
         Returns
         -------
@@ -456,7 +492,7 @@ class MeshArtist(Artist):
 
         Notes
         -----
-        The face labels are named using the following template: ``"{mesh.name}.face.label.{id}"``.
+        The face labels are named using the following template: ``"{mesh.name}.face_label.{id}"``.
         This name is used afterwards to identify faces and face labels in the Rhino model.
 
         """
@@ -473,7 +509,7 @@ class MeshArtist(Artist):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.settings.get('color.face'),
+                                       default=self.settings.get('color.faces'),
                                        colorformat='rgb',
                                        normalize=False)
 
@@ -481,7 +517,7 @@ class MeshArtist(Artist):
         for key, text in iter(textdict.items()):
             labels.append({
                 'pos': self.mesh.face_center(key),
-                'name': "{}.face.label.{}".format(self.mesh.name, key),
+                'name': "{}.face_label.{}".format(self.mesh.name, key),
                 'color': colordict[key],
                 'text': textdict[key]})
 
@@ -512,7 +548,7 @@ class MeshArtist(Artist):
 
         Notes
         -----
-        The edge labels are named using the following template: ``"{mesh.name}.edge.label.{u}-{v}"``.
+        The edge labels are named using the following template: ``"{mesh.name}.edge_label.{u}-{v}"``.
         This name can be used afterwards to identify edges in the Rhino model.
 
         """
@@ -525,14 +561,14 @@ class MeshArtist(Artist):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.settings.get('color.edge'),
+                                       default=self.settings.get('color.edges'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []
         for (u, v), text in iter(textdict.items()):
             labels.append({
                 'pos': self.mesh.edge_midpoint(u, v),
-                'name': "{}.edge.label.{}-{}".format(self.mesh.name, u, v),
+                'name': "{}.edge_label.{}-{}".format(self.mesh.name, u, v),
                 'color': colordict[(u, v)],
                 'text': textdict[(u, v)]})
 

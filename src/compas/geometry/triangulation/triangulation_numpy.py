@@ -31,8 +31,8 @@ def delaunay_from_points_numpy(points):
         The faces of the triangulation.
         Each face is a triplet of indices referring to the list of point coordinates.
 
-    Example
-    -------
+    Examples
+    --------
     >>>
 
     """

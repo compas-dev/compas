@@ -595,8 +595,8 @@ class RobotModel(object):
         dict of str: :class:`Transformation`
             A dictionary with the joint names as keys and values are the joint's respective transformation.
 
-        Example
-        -------
+        Examples
+        --------
         >>> names = robot.get_configurable_joint_names()
         >>> values = [-2.238, -1.153, -2.174, 0.185, 0.667, 0.000]
         >>> joint_state = dict(zip(names, values))

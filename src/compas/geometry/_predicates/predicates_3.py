@@ -358,7 +358,7 @@ def is_point_in_triangle(point, triangle):
 
     See Also
     --------
-    ``is_point_in_triangle_xy``
+    compas.geometry.is_point_in_triangle_xy
 
     """
     def is_on_same_side(p1, p2, segment):

@@ -3,21 +3,18 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-from compas_rhino.conduits import Conduit
+from compas_rhino.conduits.base import BaseConduit
 from compas.utilities import color_to_rgb
 
-try:
+if compas.RHINO:
     from Rhino.Geometry import Point3d
     from System.Drawing.Color import FromArgb
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['LabelsConduit']
 
 
-class LabelsConduit(Conduit):
+class LabelsConduit(BaseConduit):
     """A Rhino display conduit for labels.
 
     Parameters
@@ -32,37 +29,27 @@ class LabelsConduit(Conduit):
 
     Attributes
     ----------
-    color
+    color : list of RGB colors
+        A color specification per label.
     labels : list
         A list of label tuples.
         Each tuple contains a position and text for the label.
 
-    Example
-    -------
+    Examples
+    --------
     .. code-block:: python
 
         from random import randint
-        import time
         from compas_rhino.conduits import LabelsConduit
 
         labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
 
-        try:
-            conduit = LabelsConduit(labels)
-            conduit.enable()
+        conduit = LabelsConduit(labels)
 
+        with conduit.enabled():
             for i in range(100):
-                labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
-                conduit.labels = labels
-                conduit.redraw()
-                time.sleep(0.1)
-
-        except Exception as e:
-            print e
-
-        finally:
-            conduit.disable()
-            del conduit
+                conduit.labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
+                conduit.redraw(pause=0.1)
 
     """
     def __init__(self, labels, color=None, **kwargs):
@@ -75,14 +62,6 @@ class LabelsConduit(Conduit):
 
     @property
     def color(self):
-        """list : Individual label colors.
-
-        Parameters
-        ----------
-        color : list of str or 3-tuple
-            The specification of background and text color of each face in hex or RGB(255) format.
-
-        """
         return self._colors
 
     @color.setter
@@ -111,25 +90,4 @@ class LabelsConduit(Conduit):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    from random import randint
-    import time
-
-    labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
-
-    try:
-        conduit = LabelsConduit(labels)
-        conduit.enable()
-
-        for i in range(100):
-            labels = [([1.0 * randint(0, 100), 1.0 * randint(0, 100), 0.0], str(i)) for i in range(100)]
-            conduit.labels = labels
-            conduit.redraw()
-            time.sleep(0.1)
-
-    except Exception as e:
-        print(e)
-
-    finally:
-        conduit.disable()
-        del conduit
+    pass

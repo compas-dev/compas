@@ -3,9 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-from compas_rhino.forms import Form
+from compas_rhino.forms.base import BaseForm
 
-try:
+if compas.RHINO:
     from System.Windows.Forms import TextBox
     from System.Windows.Forms import DockStyle
     from System.Windows.Forms import ScrollBars
@@ -13,15 +13,12 @@ try:
     from System.Drawing import FontFamily
     from System.Environment import NewLine
 
-except ImportError:
-    compas.raise_if_ironpython()
-
 
 __all__ = ['TextForm']
 
 
-class TextForm(Form):
-    """"""
+class TextForm(BaseForm):
+    """A form for text."""
 
     def __init__(self, text, title='TextForm', width=800, height=600):
         self.text = text

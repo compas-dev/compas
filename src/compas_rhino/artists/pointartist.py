@@ -9,14 +9,14 @@ except NameError:
 
 import compas_rhino
 from compas.utilities import iterable_like
-from compas_rhino.artists import PrimitiveArtist
+from compas_rhino.artists.primitiveartist import PrimitiveArtist
 
 
 __all__ = ['PointArtist']
 
 
 class PointArtist(PrimitiveArtist):
-    """Artist for drawing ``Point`` objects.
+    """Artist for drawing points.
 
     Examples
     --------
