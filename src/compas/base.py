@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import abc
+from compas.utilities import abstractclassmethod
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 # https://stackoverflow.com/questions/35673474/using-abc-abcmeta-in-a-way-it-is-compatible-both-with-python-2-7-and-python-3-5
@@ -30,7 +31,7 @@ class Base(ABC):
     def data(self, data):
         pass
 
-    @abc.abstractclassmethod
+    @abstractclassmethod
     def from_data(cls, data):
         pass
 
@@ -38,7 +39,7 @@ class Base(ABC):
     def to_data(self):
         pass
 
-    @abc.abstractclassmethod
+    @abstractclassmethod
     def from_json(cls, filepath):
         pass
 

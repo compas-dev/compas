@@ -6,6 +6,8 @@ import abc
 import compas
 import compas_rhino
 
+from compas.utilities import abstractclassmethod
+
 if compas.RHINO:
     import Rhino
 
@@ -109,11 +111,11 @@ class BaseRhinoGeometry(ABC):
         wrapper.geometry = obj.Geometry
         return wrapper
 
-    @abc.abstractclassmethod
+    @abstractclassmethod
     def from_geometry(cls, geometry):
         pass
 
-    @abc.abstractclassmethod
+    @abstractclassmethod
     def from_selection(cls):
         pass
 
