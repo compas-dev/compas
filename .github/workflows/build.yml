@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print variables
-        run: echo "${{ toJson(github) }}
+        run: echo "${{ toJson(github) }}"
 
   build-packages:
     runs-on: ${{ matrix.os }}
@@ -70,5 +70,6 @@ jobs:
       - name: Deploy docs
         uses: actions/upload-artifact@v1
         with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           name: docs
-          path: ${{ github.organization }}/main
+          path: ${{ github.repository_owner }}/main
