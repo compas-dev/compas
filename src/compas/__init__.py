@@ -151,6 +151,18 @@ def is_rhino():
 RHINO = is_rhino()
 
 
+def is_grasshopper():
+    try:
+        import Grasshopper  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
+
+
+GH = is_grasshopper()
+
+
 def raise_if_not_windows():
     if not WINDOWS:
         raise
