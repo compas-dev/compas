@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print variables
-        run: echo "${{ toJson(github) }}
+        run: echo "${{ toJson(github) }}"
 
   build-packages:
     runs-on: ${{ matrix.os }}
