@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import compas_ghpython
+
 from compas_ghpython.artists.mixins import EdgeArtist
 from compas_ghpython.artists.mixins import FaceArtist
 from compas_ghpython.artists.mixins import VertexArtist

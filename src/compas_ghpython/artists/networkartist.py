@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
 from compas_ghpython.artists.mixins import VertexArtist
 from compas_ghpython.artists.mixins import EdgeArtist
 

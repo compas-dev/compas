@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
 from compas_ghpython.artists.mixins import VertexArtist
 from compas_ghpython.artists.mixins import EdgeArtist
 from compas_ghpython.artists.mixins import FaceArtist
@@ -44,19 +42,10 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist):
     def volmesh(self, volmesh):
         self.datastructure = volmesh
 
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
-
 if __name__ == "__main__":
-
-    from compas.datastructures import VolMesh
-
-    volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
-
-    artist = VolMeshArtist(volmesh)
-
-    vertices = artist.draw_vertices()
-    faces = artist.draw_faces()
-    edges = artist.draw_edges()
+    pass
