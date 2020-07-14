@@ -9,6 +9,11 @@ on:
       - master
 
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print variables
+        run: echo "${{ toJson(github) }}
 
   build-packages:
     runs-on: ${{ matrix.os }}
