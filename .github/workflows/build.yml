@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.8]
 
     steps:
       - uses: actions/checkout@v2
@@ -62,14 +62,11 @@ jobs:
       - name: Build docs with sphinx
         run: |
           invoke docs
-      - name: Upload docs
-        uses: actions/upload-artifact@v1
-        with:
-          name: docs
-          path: dist/docs
       - name: Deploy docs
-        uses: actions/upload-artifact@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          name: docs
-          path: ${{ github.repository_owner }}/main
+        run: |
+          git config --global user.name "brgcode"
+          git config --global user.email "van.mele@arch.eth.ch"
+          git remote add docsrepo https://github.com/compas-dev/main
+          git add -A
+          git commit -m "docs update"
+          git push docsrepo master
