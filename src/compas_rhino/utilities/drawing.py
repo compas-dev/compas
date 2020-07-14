@@ -728,7 +728,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
 
     Returns
     -------
-    list of GUID
+    str or GUID
 
     """
     points = []
@@ -762,7 +762,7 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
         if name:
             attr.Name = name
         obj.CommitChanges()
-    return [guid]
+    return guid
 
 
 @wrap_drawfunc
