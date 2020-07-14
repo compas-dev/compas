@@ -4,12 +4,14 @@ from __future__ import print_function
 
 import json
 import pickle
+import schema
 from collections import OrderedDict
 from copy import deepcopy
 from ast import literal_eval
 from random import sample
 from random import choice
 
+import compas
 from compas.datastructures.mesh.core import VertexAttributeView
 from compas.datastructures.mesh.core import EdgeAttributeView
 from compas.datastructures.mesh.core import FaceAttributeView
@@ -40,6 +42,52 @@ class HalfEdge(Datastructure):
     >>>
     """
 
+    DATASCHEMA = schema.Schema({
+        "compas": str,
+        "datatype": str,
+        "data": {
+            "attributes": dict,
+            "dva": dict,
+            "dea": dict,
+            "dfa": dict,
+            "vertex": dict,
+            "face": dict,
+            "facedata": dict,
+            "edgedata": dict,
+            "max_int_key": schema.And(int, lambda x: x >= -1),
+            "max_int_fkey": schema.And(int, lambda x: x >= -1)
+        }
+    })
+
+    JSONSCHEMA = {
+        "$schema": "http://json-schema.org/schema",
+        "$id": "https://github.com/compas-dev/compas/schemas/mesh.json",
+        "$compas": compas.__version__,
+
+        "type": "object",
+        "poperties": {
+            "compas": {"type": "string"},
+            "datatype": {"type": "string"},
+            "data": {
+                "type": "object",
+                "properties": {
+                    "attributes":   {"type": "object"},
+                    "dva":          {"type": "object"},
+                    "dea":          {"type": "object"},
+                    "dfa":          {"type": "object"},
+                    "vertex":       {"type": "object"},
+                    "face":         {"type": "object"},
+                    "facedata":     {"type": "object"},
+                    "edgedata":     {"type": "object"},
+                    "max_int_key":  {"type": "number"},
+                    "max_int_fkey": {"type": "number"}
+                },
+                "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
+            }
+        },
+        "required": ["compas", "datatype", "data"]
+    }
+
     def __init__(self):
         super(HalfEdge, self).__init__()
         self._max_int_key = -1
@@ -61,11 +109,6 @@ class HalfEdge(Datastructure):
     def __str__(self):
         """Generate a readable representation of the data of the mesh."""
         return json.dumps(self.data, sort_keys=True, indent=4)
-
-    # def __iter__(self):
-    #     v, f = self.to_vertices_and_faces()
-    #     yield v
-    #     yield f
 
     def summary(self):
         """Print a summary of the mesh."""

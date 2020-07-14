@@ -3,6 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 import abc
+import json
+import jsonschema
+import schema
+
+from compas.utilities import DataEncoder
+from compas.utilities import DataDecoder
 from compas.utilities import abstractclassmethod
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
@@ -21,7 +27,27 @@ class Base(ABC):
         The fundamental data describing the object.
         The structure of the data dict is defined by the implementing classes.
 
+    Class Attributes
+    ----------------
+    SCHEMA : dict
+        The JSON schema
+
     """
+
+    DATASCHEMA = schema.Schema({})
+    JSONSCHEMA = {}
+
+    def validate_data(self):
+        self.DATASCHEMA.validate(self.data)
+
+    def validate_data_to_json(self):
+        jsondata = json.dump(self.data, cls=DataEncoder)
+        jsonschema.validate(jsondata, schema=self.JSONSCHEMA)
+
+    def validate_json_to_data(self):
+        jsondata = json.dump(self.data, cls=DataEncoder)
+        data = json.load(jsondata, cls=DataDecoder)
+        return self.DATASCHEMA.validate(data)
 
     @abc.abstractproperty
     def data(self):

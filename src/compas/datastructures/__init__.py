@@ -190,11 +190,12 @@ be used for the representation of subdivided/partitioned polyhedra.
 """
 
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 
-class Datastructure(object):
+from compas.base import Base
+
+
+class Datastructure(Base):
     pass
 
 
