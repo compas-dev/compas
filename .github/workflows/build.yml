@@ -58,12 +58,12 @@ jobs:
         run: |
           invoke docs
       - name: Upload docs
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v1
         with:
           name: docs
           path: dist/docs
       - name: Deploy docs
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v1
         with:
           name: docs
           path: ${{ github.organization }}/main
