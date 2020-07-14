@@ -6,7 +6,11 @@ from __future__ import division
 import functools
 
 
-__all__ = ['memoize']
+__all__ = [
+    'abstractstatic',
+    'abstractclassmethod',
+    'memoize'
+]
 
 
 class abstractstatic(staticmethod):
@@ -20,11 +24,29 @@ class abstractstatic(staticmethod):
 
     __slots__ = ()
 
+    __isabstractmethod__ = True
+
     def __init__(self, function):
-        super(abstractstatic, self).__init__(function)
         function.__isabstractmethod__ = True
+        super(abstractstatic, self).__init__(function)
+
+
+class abstractclassmethod(classmethod):
+    """Decorator for declaring a class method abstract.
+
+    Parameters
+    ----------
+    function : callable
+        The class method to declare abstract.
+    """
+
+    __slots__ = ()
 
     __isabstractmethod__ = True
+
+    def __init__(self, function):
+        function.__isabstractmethod__ = True
+        super(abstractclassmethod, self).__init__(function)
 
 
 def memoize(func, *args, **kwargs):
