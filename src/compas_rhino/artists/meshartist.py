@@ -166,9 +166,9 @@ class MeshArtist(BaseArtist):
                 continue
         layer = self.layer
         name = "{}.mesh".format(self.mesh.name)
-        guids = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
-        self.guids += guids
-        return guids
+        guid = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
+        self.guids += [guid]
+        return guid
 
     def draw_vertices(self, keys=None, color=None):
         """Draw a selection of vertices.
