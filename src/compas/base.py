@@ -3,16 +3,15 @@ from __future__ import absolute_import
 from __future__ import division
 
 import abc
-import json
-import jsonschema
-import schema
+# import json
+# import jsonschema
+# import schema
 
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
+# from compas.utilities import DataEncoder
+# from compas.utilities import DataDecoder
 from compas.utilities import abstractclassmethod
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
-# https://stackoverflow.com/questions/35673474/using-abc-abcmeta-in-a-way-it-is-compatible-both-with-python-2-7-and-python-3-5
 
 
 __all__ = ['Base']
@@ -29,25 +28,27 @@ class Base(ABC):
 
     Class Attributes
     ----------------
-    SCHEMA : dict
-        The JSON schema
+    DATASCHEMA : :class:`schema.Schema`
+        The schema of the data dict.
+    JSONSCHEMA : dict
+        The schema of the serialised data dict.
 
     """
 
-    DATASCHEMA = schema.Schema({})
-    JSONSCHEMA = {}
+    # DATASCHEMA = schema.Schema({})
+    # JSONSCHEMA = {}
 
-    def validate_data(self):
-        self.DATASCHEMA.validate(self.data)
+    # def validate_data(self):
+    #     self.DATASCHEMA.validate(self.data)
 
-    def validate_data_to_json(self):
-        jsondata = json.dump(self.data, cls=DataEncoder)
-        jsonschema.validate(jsondata, schema=self.JSONSCHEMA)
+    # def validate_data_to_json(self):
+    #     jsondata = json.dump(self.data, cls=DataEncoder)
+    #     # jsonschema.validate(jsondata, schema=self.JSONSCHEMA)
 
-    def validate_json_to_data(self):
-        jsondata = json.dump(self.data, cls=DataEncoder)
-        data = json.load(jsondata, cls=DataDecoder)
-        return self.DATASCHEMA.validate(data)
+    # def validate_json_to_data(self):
+    #     jsondata = json.dump(self.data, cls=DataEncoder)
+    #     data = json.load(jsondata, cls=DataDecoder)
+    #     return self.DATASCHEMA.validate(data)
 
     @abc.abstractproperty
     def data(self):
