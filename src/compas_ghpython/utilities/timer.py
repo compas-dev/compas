@@ -4,10 +4,8 @@ from __future__ import print_function
 
 import compas
 
-try:
+if compas.GH:
     import Grasshopper as gh
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = [
@@ -20,11 +18,18 @@ def update_component(ghenv, delay):
 
     After the specified delay, the GH component will be automatically updated.
 
-    Args:
-        ghenv (:class:`GhPython.Component.PythonEnvironment`): just available
-            from within the GHPython component.
+    Parameters
+    ----------
+    ghenv : :class:`GhPython.Component.PythonEnvironment`
+        The current GHPython environment.
+    delay : :obj:`int`
+        Time in milliseconds until the update is performed.
 
-        delay (:obj:`int`): Time in milliseconds until the update is performed.
+    Raises
+    ------
+    ValueError
+        If the delay is less than zero.
+
     """
     if delay <= 0:
         raise ValueError('Delay must be greater than zero')

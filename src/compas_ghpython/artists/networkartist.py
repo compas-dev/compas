@@ -42,18 +42,10 @@ class NetworkArtist(EdgeArtist, VertexArtist):
     def network(self, network):
         self.datastructure = network
 
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
-
 if __name__ == "__main__":
-
-    from compas.datastructures import Network
-
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    artist = NetworkArtist(network)
-
-    vertices = artist.draw_vertices()
-    edges = artist.draw_edges()
+    pass
