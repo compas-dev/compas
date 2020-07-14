@@ -72,7 +72,8 @@ after_success:
 
 deploy:
   provider: pages
-  skip_cleanup: true
+  edge: true
+  cleanup: false
   keep_history: true
   github_token: $GITHUB_TOKEN
   repo: compas-dev/main
