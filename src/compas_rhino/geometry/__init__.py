@@ -5,33 +5,61 @@ geometry
 
 .. currentmodule:: compas_rhino.geometry
 
-Object-oriented convenience wrappers for Rhino geometry objects.
+.. rst-class:: lead
 
+Wrappers for Rhino objects that can be used to convert Rhino geometry and data to COMPAS objects.
 
-Classes
-=======
+.. code-block:: python
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+    import compas_rhino
+    from compas_rhino.geometry import RhinoMesh
 
-    RhinoPoint
-    RhinoCurve
-    RhinoLine
-    RhinoPlane
-    RhinoMesh
-    RhinoSurface
-    RhinoVector
+    guid = compas_rhino.select_mesh()
+    mesh = RhinoMesh.from_guid(guid).to_compas()
 
+----
+
+RhinoPoint
+==========
+
+.. autoclass:: RhinoPoint
+
+RhinoVector
+===========
+
+.. autoclass:: RhinoVector
+
+RhinoLine
+=========
+
+.. autoclass:: RhinoLine
+
+RhinoPlane
+==========
+
+.. autoclass:: RhinoPlane
+
+RhinoMesh
+=========
+
+.. autoclass:: RhinoMesh
+
+RhinoCurve
+==========
+
+.. autoclass:: RhinoCurve
+
+RhinoSurface
+============
+
+.. autoclass:: RhinoSurface
+
+----
 
 Base Classes
 ============
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseRhinoGeometry
+.. autoclass:: BaseRhinoGeometry
 
 """
 from __future__ import absolute_import

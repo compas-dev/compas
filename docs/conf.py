@@ -54,10 +54,10 @@ extensions = [
 
 autodoc_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy"]
 
-autodoc_default_flags = [
-    'undoc-members',
-    'show-inheritance',
-]
+autodoc_default_options = {
+    'undoc-members': True,
+    'show-inheritance': True,
+}
 
 autodoc_member_order = 'alphabetical'
 

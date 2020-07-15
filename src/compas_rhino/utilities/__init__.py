@@ -6,19 +6,6 @@ utilities
 .. currentmodule:: compas_rhino.utilities
 
 
-document
-========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    get_document_basename
-    get_document_filename
-    get_document_filepath
-    get_document_dirname
-
-
 layers
 ======
 
@@ -84,16 +71,6 @@ drawing
     draw_pipes
     draw_spheres
     draw_mesh
-
-
-geometry
-========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    uv_points_from_surface
 
 
 constructors

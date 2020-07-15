@@ -5,16 +5,35 @@ objects
 
 .. currentmodule:: compas_rhino.objects
 
+.. rst-class:: lead
 
-Classes
-=======
+Objects provide a high-level way to interact with both COMPAS and Rhino objects in Rhino.
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+.. code-block:: python
 
-    MeshObject
+    import compas
+    from compas.datastructures import Mesh
+    from compas_rhino.objects import MeshObject
 
+    mesh = Mesh.from_off(compas.get('tubemesh.off'))
+    meshobject = MeshObject(None, mesh, 'MeshObject', 'COMPAS::MeshObject', True)
+    meshobject.draw()
+    meshobject.redraw()
+
+    vertices = meshobject.select_vertices()
+
+    if meshobject.modify_vertices(vertices):
+        meshobject.draw()
+        meshobject.redraw()
+
+----
+
+MeshObject
+==========
+
+.. autoclass:: MeshObject
+
+----
 
 Base Classes
 ============

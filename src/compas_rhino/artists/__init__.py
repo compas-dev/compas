@@ -5,14 +5,30 @@ artists
 
 .. currentmodule:: compas_rhino.artists
 
-Artists for visualising (painting) COMPAS objects in Rhino.
+.. rst-class:: lead
 
+Artists for visualising (painting) COMPAS objects in Rhino.
+Artists convert COMPAS objects to Rhino geometry and data.
+
+.. code-block:: python
+
+    import compas
+    from compas.datastructures import Mesh
+    from compas_rhino.artists import MeshArtist
+
+    mesh = Mesh.from_off(compas.get('tubemesh.off'))
+
+    artist = MeshArtist(mesh, layer='COMPAS::tubemesh.off')
+    artist.clear_layer()
+    artist.draw_faces()
+    artist.redraw()
+
+    print artist.guids
+
+----
 
 Classes
 ========
-
-For Primitives
---------------
 
 .. autosummary::
     :toctree: generated/
@@ -22,23 +38,6 @@ For Primitives
     LineArtist
     PolylineArtist
     FrameArtist
-
-
-For Shapes
-----------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-
-For Data Structures
--------------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     MeshArtist
     NetworkArtist
     VolMeshArtist

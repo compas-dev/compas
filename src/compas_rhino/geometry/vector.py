@@ -14,7 +14,20 @@ __all__ = ['RhinoVector']
 
 
 class RhinoVector(RhinoPoint):
-    """Wrapper for a Rhino vector objects."""
+    """Wrapper for a Rhino vector objects.
+
+    Attributes
+    ----------
+    x (read-only) : float
+        The X coordinate.
+    y (read-only) : float
+        The Y coordinate.
+    z (read-only) : float
+        The Z coordinate.
+    xyz (read-only) : list
+        The XYZ coordinates.
+
+    """
 
     def __init__(self):
         super(RhinoVector, self).__init__()

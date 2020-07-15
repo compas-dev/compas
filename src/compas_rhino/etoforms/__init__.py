@@ -9,6 +9,8 @@ etoforms
 
     In the future, Eto forms will be merged into the normal forms package.
 
+Classes
+=======
 
 .. autosummary::
     :toctree: generated/

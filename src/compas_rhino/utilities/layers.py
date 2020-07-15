@@ -292,24 +292,8 @@ def delete_layers(layers):
 
         create_layers(layers)
 
-    * COMPAS
-      * Datastructures
-        * Mesh
-        * Network
-
-    .. code-block:: python
-
         delete_layers(['COMPAS::Datastructures::Network'])
-
-    * COMPAS
-      * Datastructures
-        * Mesh
-
-    .. code-block:: python
-
         delete_layers({'COMPAS': {'layers': {'Datastructures': {'layers': {'Mesh': {}}}}}})
-
-    Will remove all remaining layers.
 
     """
     to_delete = []

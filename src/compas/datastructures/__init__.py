@@ -29,6 +29,7 @@ Data structure
     :nosignatures:
 
     HalfEdge
+    BaseMesh
 
 
 Algorithms

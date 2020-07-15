@@ -29,12 +29,6 @@ class RhinoPoint(BaseRhinoGeometry):
     xyz (read-only) : list
         The XYZ coordinates.
 
-    Examples
-    --------
-    .. code-block:: python
-
-        point = RhinoPoint.from_selection().to_compas()
-
     """
 
     def __init__(self):

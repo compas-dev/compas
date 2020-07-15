@@ -33,12 +33,6 @@ class RhinoPlane(BaseRhinoGeometry):
     In Rhino, a plane and a frame are equivalent.
     Therefore, the COMPAS conversion function of this class returns a frame object instead of a plane.
 
-    Examples
-    --------
-    .. code-block:: python
-
-        frame = RhinoPlane.from_selection().to_compas()
-
     """
 
     def __init__(self):
