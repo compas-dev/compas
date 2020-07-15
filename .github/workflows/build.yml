@@ -39,6 +39,9 @@ jobs:
       - name: Lint with flake8
         run: |
           invoke lint
+      - name: Test import
+        run: |
+          python -m compas
       - name: Test with pytest
         run: |
           invoke test
