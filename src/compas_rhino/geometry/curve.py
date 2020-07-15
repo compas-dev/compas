@@ -35,17 +35,6 @@ class RhinoCurve(BaseRhinoGeometry):
     points (read-only) : list of RhinoGeometry.Point3d
         List of points between start and end, defining the geometry of the curve.
 
-    Notes
-    -----
-    Rhino curve object wrappers have the following constructors:
-
-    * ``from_guid``
-    * ``from_object``
-    * ``from_selection``
-
-    To convert a Rhino curve object to a COMPAS object, use ``to_compas``.
-    Currently, conversion to COMPAS objects is only supported for lines and polylines.
-
     Examples
     --------
     >>> rhinocurve = RhinoCurve.from_guid(guid)

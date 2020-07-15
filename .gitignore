@@ -108,7 +108,8 @@ ENV/
 # compas
 # ------------------------------------------------------------------------------
 
-docs/__build/
+dist/docs
+
 docs/api/generated/
 
 *.3dmbak
@@ -131,13 +132,8 @@ data/ctralie
 data/models
 data/ctralie
 
-docs/api/generated/
-docs/__build
-
 *.pickle
 
 .DS_Store
 
 .vscode
-
-rpc.txt

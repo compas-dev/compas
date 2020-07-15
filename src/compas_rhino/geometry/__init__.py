@@ -19,6 +19,13 @@ Wrappers for Rhino objects that can be used to convert Rhino geometry and data t
 
 ----
 
+BaseRhinoGeometry
+=================
+
+.. autoclass:: BaseRhinoGeometry
+
+----
+
 RhinoPoint
 ==========
 
@@ -53,13 +60,6 @@ RhinoSurface
 ============
 
 .. autoclass:: RhinoSurface
-
-----
-
-Base Classes
-============
-
-.. autoclass:: BaseRhinoGeometry
 
 """
 from __future__ import absolute_import
