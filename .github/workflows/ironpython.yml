@@ -1,0 +1,29 @@
+name: ironpython
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: windows-ironpython
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setting IronPython path
+        run: echo "::set-env name=IRONPYTHONPATH::$env:GITHUB_WORKSPACE/src"
+      - name: Install dependencies
+        run: |
+          choco install ironpython --version=2.7.8.1
+          ipy -X:Frames -m ensurepip
+          ipy -X:Frames -m pip install ironpython-pytest
+      - name: Test import
+        run: |
+          ipy -m compas
+      - name: Run tests
+        run: |
+          ipy tests/ipy_test_runner.py
