@@ -28,9 +28,6 @@ def mesh_bounding_box(mesh):
 
     Examples
     --------
-    # >>> from compas.datastructures import Mesh
-    # >>> from compas.datastructures import mesh_bounding_box
-    # >>> mesh = Mesh.from_polyhedron(4)
     >>> mesh_bbox = mesh_bounding_box(mesh)
     >>> print(type(mesh_bbox))
     <class 'list'>
