@@ -51,6 +51,27 @@ class RhinoPoint(BaseRhinoGeometry):
         return [self.x, self.y, self.z]
 
     @classmethod
+    def from_guid(cls, guid):
+        """Construct a Rhino object wrapper from the GUID of an existing Rhino object.
+
+        Parameters
+        ----------
+        guid : str
+            The GUID of the Rhino object.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.BaseRhinoGeometry`
+            The Rhino object wrapper.
+        """
+        obj = compas_rhino.find_object(guid)
+        wrapper = cls()
+        wrapper.guid = obj.Id
+        wrapper.object = obj
+        wrapper.geometry = obj.Geometry.Location
+        return wrapper
+
+    @classmethod
     def from_geometry(cls, geometry):
         """Construct a point wrapper from an existing geometry object.
 
