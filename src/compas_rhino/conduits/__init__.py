@@ -51,6 +51,7 @@ Faces Conduit
 =============
 
 .. autoclass:: FacesConduit
+    :no-show-inheritance:
 
 ----
 
@@ -58,6 +59,7 @@ Lines Conduit
 =============
 
 .. autoclass:: LinesConduit
+    :no-show-inheritance:
 
 ----
 
@@ -65,6 +67,7 @@ Points Conduit
 =============
 
 .. autoclass:: PointsConduit
+    :no-show-inheritance:
 
 ----
 
@@ -72,6 +75,7 @@ Labels Conduit
 ==============
 
 .. autoclass:: LabelsConduit
+    :no-show-inheritance:
 
 """
 from __future__ import absolute_import

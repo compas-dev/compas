@@ -32,6 +32,7 @@ RhinoPoint
 
 .. autoclass:: RhinoPoint
     :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
 
 ----
 
@@ -40,6 +41,7 @@ RhinoVector
 
 .. autoclass:: RhinoVector
     :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
 
 ----
 
@@ -48,6 +50,7 @@ RhinoLine
 
 .. autoclass:: RhinoLine
     :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
 
 ----
 
@@ -56,6 +59,7 @@ RhinoPlane
 
 .. autoclass:: RhinoPlane
     :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
 
 ----
 
@@ -64,6 +68,7 @@ RhinoMesh
 
 .. autoclass:: RhinoMesh
     :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
 
 ----
 
@@ -72,6 +77,7 @@ RhinoCurve
 
 .. autoclass:: RhinoCurve
     :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
 
 ----
 
@@ -80,6 +86,7 @@ RhinoSurface
 
 .. autoclass:: RhinoSurface
     :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
 
 """
 from __future__ import absolute_import

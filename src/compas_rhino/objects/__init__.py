@@ -41,6 +41,7 @@ MeshObject
 
 .. autoclass:: MeshObject
     :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
+    :no-show-inheritance:
 
 """
 from __future__ import absolute_import
