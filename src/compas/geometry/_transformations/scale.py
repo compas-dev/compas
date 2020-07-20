@@ -86,7 +86,7 @@ class Scale(Transformation):
         """
         S = cls()
         if frame:
-            from compas.geometry import Frame
+            from compas.geometry import Frame  # noqa: F811
             Tl = matrix_from_change_of_basis(Frame.worldXY(), frame)
             Sc = matrix_from_scale_factors(factors)
             Tw = matrix_from_change_of_basis(frame, Frame.worldXY())
@@ -103,5 +103,5 @@ class Scale(Transformation):
 if __name__ == '__main__':
 
     import doctest
-    from compas.geometry import Point, Frame
+    from compas.geometry import Point, Frame  # noqa: F811, F401
     doctest.testmod(globs=globals())
