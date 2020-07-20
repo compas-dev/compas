@@ -9,12 +9,6 @@ on:
       - master
 
 jobs:
-  # debug:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Print variables
-  #       run: echo "${{ toJson(github) }}"
-
   build-packages:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -69,7 +63,9 @@ jobs:
         run: |
           cd dist/docs
           git init
+          git config --global user.name "brgcode"
+          git config --global user.email "van.mele@arch.eth.ch"
           git add .
           git commit -m "Updating docs"
-          git remote add origin git@github.com:compas-dev/compas.git
+          git remote add origin https://compas-dev:${{ secrets.GITHUB_TOKEN }}@github.com/compas-dev/compas.git
           git push --force origin master:gh-pages
