@@ -229,7 +229,7 @@ intersphinx_mapping = {
 html_theme = 'compas'
 html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
-    'navbar_active': 'main',
+    'navbar_active': 'compas',
 }
 html_context = {}
 html_static_path = []
