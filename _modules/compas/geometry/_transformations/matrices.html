@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - compas.geometry._transformations.matrices</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/plugins.html">Plugins</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <!-- social -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+      </ul>
+      <!-- social -->
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <h1 class="display-4 p-0 mb-5">Source code for compas.geometry._transformations.matrices</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">scale_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">normalize_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">cross_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">dot_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">multiply_matrix_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">length_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">allclose</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">multiply_matrices</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">transpose_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">norm_vector</span>
+
+<span class="n">_EPS</span> <span class="o">=</span> <span class="mf">1e-16</span>
+<span class="sd">&quot;&quot;&quot;eps for testing whether a number is close to zero&quot;&quot;&quot;</span>
+
+<span class="n">_SPEC2TUPLE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;sxyz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;sxyx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;sxzy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="s1">&#39;sxzx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;syzx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;syzy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="s1">&#39;syxz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;syxy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;szxy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="s1">&#39;szxz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;szyx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;szyz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="s1">&#39;rzyx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;rxyx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;ryzx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s1">&#39;rxzx&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;rxzy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;ryzy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s1">&#39;rzxy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;ryxy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;ryxz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s1">&#39;rzxz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;rxyz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;rzyz&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="sd">&quot;&quot;&quot;used for Euler angles: to map rotation type and axes to tuples of inner axis, parity, repetition, frame&quot;&quot;&quot;</span>
+
+<span class="n">_NEXT_SPEC</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;matrix_determinant&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_inverse&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;decompose_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;compose_matrix&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;identity_matrix&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;matrix_from_frame&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_frame_to_frame&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_change_of_basis&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_euler_angles&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_axis_and_angle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_axis_angle_vector&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_basis_vectors&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_translation&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_orthogonal_projection&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_parallel_projection&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_perspective_projection&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_perspective_entries&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_shear_entries&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_shear&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_scale_factors&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;matrix_from_quaternion&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;euler_angles_from_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;euler_angles_from_quaternion&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;axis_and_angle_from_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;axis_angle_vector_from_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;axis_angle_from_quaternion&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;quaternion_from_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quaternion_from_euler_angles&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;quaternion_from_axis_angle&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;basis_vectors_from_matrix&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;translation_from_matrix&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">is_matrix_square</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verify that a matrix is square.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : list of list</span>
+<span class="sd">        The matrix.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the length of every row is equal to the number of rows.</span>
+<span class="sd">        False otherwise.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; M = identity_matrix(4)</span>
+<span class="sd">    &gt;&gt;&gt; is_matrix_square(M)</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">number_of_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">M</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">!=</span> <span class="n">number_of_rows</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
+
+
+<span class="k">def</span> <span class="nf">matrix_minor</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">row</span><span class="p">[:</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">row</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="p">(</span><span class="n">M</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])]</span>
+
+
+<span class="k">def</span> <span class="nf">matrix_determinant</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the determinant of a square matrix M.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : list of list of float</span>
+<span class="sd">        A square matrix of any dimension.</span>
+<span class="sd">    check : bool</span>
+<span class="sd">        If ``True``, checks if matrix is squared.</span>
+<span class="sd">        Default is ``True``.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the matrix is not square.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The determinant.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; M = identity_matrix(4)</span>
+<span class="sd">    &gt;&gt;&gt; matrix_determinant(M)</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">check</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_matrix_square</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not a square matrix&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">D</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+        <span class="n">D</span> <span class="o">+=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="n">c</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">*</span> <span class="n">matrix_determinant</span><span class="p">(</span><span class="n">matrix_minor</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">D</span>
+
+
+<span class="k">def</span> <span class="nf">matrix_inverse</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the inverse of a square matrix M.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : list of list of float</span>
+<span class="sd">        A square matrix of any dimension.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the matrix is not squared</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the matrix is singular.</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the matrix is not invertible.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        The inverted matrix.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import Frame</span>
+<span class="sd">    &gt;&gt;&gt; f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">    &gt;&gt;&gt; T = matrix_from_frame(f)</span>
+<span class="sd">    &gt;&gt;&gt; I = multiply_matrices(T, matrix_inverse(T))</span>
+<span class="sd">    &gt;&gt;&gt; I2 = identity_matrix(4)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(I[0], I2[0])</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; allclose(I[1], I2[1])</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; allclose(I[2], I2[2])</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; allclose(I[3], I2[3])</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">matrix_determinant</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">D</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The matrix is singular.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[[</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">D</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">D</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">D</span><span class="p">,</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">D</span><span class="p">]]</span>
+
+    <span class="n">cofactors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)):</span>
+        <span class="n">cofactor_row</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)):</span>
+            <span class="n">cofactor_row</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span> <span class="o">*</span> <span class="n">matrix_determinant</span><span class="p">(</span><span class="n">matrix_minor</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">)))</span>
+        <span class="n">cofactors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cofactor_row</span><span class="p">)</span>
+
+    <span class="n">cofactors</span> <span class="o">=</span> <span class="n">transpose_matrix</span><span class="p">(</span><span class="n">cofactors</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cofactors</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cofactors</span><span class="p">)):</span>
+            <span class="n">cofactors</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">cofactors</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">/</span> <span class="n">D</span>
+
+    <span class="k">return</span> <span class="n">cofactors</span>
+
+
+<span class="k">def</span> <span class="nf">decompose_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the components of rotation, translation, scale, shear, and</span>
+<span class="sd">    perspective of a given transformation matrix M. [1]_</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : :obj:`list` of :obj:`list` of :obj:`float`</span>
+<span class="sd">        The square matrix of any dimension.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If matrix is singular or degenerative.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple (scale, shear, angles, translation, perspective)</span>
+<span class="sd">        * scale (:obj:`list` of :obj:`float`)</span>
+<span class="sd">          - The 3 scale factors in x-, y-, and z-direction.</span>
+<span class="sd">        * shear (:obj:`list` of :obj:`float`)</span>
+<span class="sd">          - The 3 shear factors for x-y, x-z, and y-z axes.</span>
+<span class="sd">        * angles (:obj:`list` of :obj:`float`)</span>
+<span class="sd">          - The rotation specified through the 3 Euler angles about static x, y, z axes.</span>
+<span class="sd">        * translation (:obj:`list` of :obj:`float`)</span>
+<span class="sd">          - The 3 values of translation.</span>
+<span class="sd">        * perspective (:obj:`list` of :obj:`float`)</span>
+<span class="sd">          - The 4 perspective entries of the matrix.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; trans1 = [1, 2, 3]</span>
+<span class="sd">    &gt;&gt;&gt; angle1 = [-2.142, 1.141, -0.142]</span>
+<span class="sd">    &gt;&gt;&gt; scale1 = [0.123, 2, 0.5]</span>
+<span class="sd">    &gt;&gt;&gt; T = matrix_from_translation(trans1)</span>
+<span class="sd">    &gt;&gt;&gt; R = matrix_from_euler_angles(angle1)</span>
+<span class="sd">    &gt;&gt;&gt; S = matrix_from_scale_factors(scale1)</span>
+<span class="sd">    &gt;&gt;&gt; M = multiply_matrices(multiply_matrices(T, R), S)</span>
+<span class="sd">    &gt;&gt;&gt; # M = compose_matrix(scale1, None, angle1, trans1, None)</span>
+<span class="sd">    &gt;&gt;&gt; scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(scale1, scale2)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; allclose(angle1, angle2)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; allclose(trans1, trans2)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Slabaugh, 1999. *Computing Euler angles from a rotation matrix*.</span>
+<span class="sd">           Available at: http://www.gregslabaugh.net/publications/euler.pdf</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fabs</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span>
+    <span class="n">cos</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span>
+    <span class="n">atan2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span>
+    <span class="n">asin</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">asin</span>
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+
+    <span class="n">detM</span> <span class="o">=</span> <span class="n">matrix_determinant</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>  <span class="c1"># raises ValueError if matrix is not squared</span>
+    <span class="k">if</span> <span class="n">detM</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The matrix is singular.&quot;</span><span class="p">)</span>
+
+    <span class="n">Mt</span> <span class="o">=</span> <span class="n">transpose_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Mt</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">_EPS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The element [3,3] of the matrix is zero.&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">Mt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">/=</span> <span class="n">Mt</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="n">translation</span> <span class="o">=</span> <span class="p">[</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]]</span>
+
+    <span class="c1"># scale, shear, angles</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">shear</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+    <span class="n">angles</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+
+    <span class="c1"># copy Mt[:3, :3] into row</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">row</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">Mt</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+
+    <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm_vector</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">shear</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">shear</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm_vector</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">shear</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">shear</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">shear</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">shear</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">shear</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">scale</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm_vector</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">shear</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">shear</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">/=</span> <span class="n">scale</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">scale</span><span class="p">]</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span>
+
+    <span class="c1"># angles</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mf">1.</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="mf">1.</span><span class="p">:</span>
+        <span class="n">beta1</span> <span class="o">=</span> <span class="n">asin</span><span class="p">(</span><span class="o">-</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="c1"># beta2 = pi - beta1</span>
+        <span class="n">alpha1</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">beta1</span><span class="p">),</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">beta1</span><span class="p">))</span>
+        <span class="c1"># alpha2 = atan2(row[1][2] / cos(beta2), row[2][2] / cos(beta2))</span>
+        <span class="n">gamma1</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">beta1</span><span class="p">),</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">cos</span><span class="p">(</span><span class="n">beta1</span><span class="p">))</span>
+        <span class="c1"># gamma2 = atan2(row[0][1] / cos(beta2), row[0][0] / cos(beta2))</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="p">[</span><span class="n">alpha1</span><span class="p">,</span> <span class="n">beta1</span><span class="p">,</span> <span class="n">gamma1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mf">1.</span><span class="p">:</span>
+            <span class="n">beta</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">/</span> <span class="mf">2.</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">+</span> <span class="n">atan2</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># row[0][2] == 1</span>
+            <span class="n">beta</span> <span class="o">=</span> <span class="o">-</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="o">-</span><span class="n">gamma</span> <span class="o">+</span> <span class="n">atan2</span><span class="p">(</span><span class="o">-</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="p">[</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">]</span>
+
+    <span class="c1"># perspective</span>
+    <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">Mt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">_EPS</span> <span class="ow">and</span> <span class="n">fabs</span><span class="p">(</span><span class="n">Mt</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">_EPS</span> <span class="ow">and</span> <span class="n">fabs</span><span class="p">(</span><span class="n">Mt</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">_EPS</span><span class="p">:</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">Mt</span><span class="p">)</span>
+        <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">P</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">P</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span>
+        <span class="n">Ptinv</span> <span class="o">=</span> <span class="n">matrix_inverse</span><span class="p">(</span><span class="n">transpose_matrix</span><span class="p">(</span><span class="n">P</span><span class="p">))</span>
+        <span class="n">perspective</span> <span class="o">=</span> <span class="n">multiply_matrix_vector</span><span class="p">(</span><span class="n">Ptinv</span><span class="p">,</span> <span class="p">[</span><span class="n">Mt</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">Mt</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">Mt</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">Mt</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">perspective</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">scale</span><span class="p">,</span> <span class="n">shear</span><span class="p">,</span> <span class="n">angles</span><span class="p">,</span> <span class="n">translation</span><span class="p">,</span> <span class="n">perspective</span>
+
+
+<span class="k">def</span> <span class="nf">compose_matrix</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shear</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">angles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">translation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">perspective</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates a matrix from the components of scale, shear, euler_angles,</span>
+<span class="sd">    translation and perspective.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scale : :obj:`list` of :obj:`float`</span>
+<span class="sd">        The 3 scale factors in x-, y-, and z-direction.</span>
+<span class="sd">    shear : :obj:`list` of :obj:`float`</span>
+<span class="sd">        The 3 shear factors for x-y, x-z, and y-z axes.</span>
+<span class="sd">    angles : :obj:`list` of :obj:`float`</span>
+<span class="sd">        The rotation specified through the 3 Euler angles about static x, y, z axes.</span>
+<span class="sd">    translation : :obj:`list` of :obj:`float`</span>
+<span class="sd">        The 3 values of translation.</span>
+<span class="sd">    perspective : :obj:`list` of :obj:`float`</span>
+<span class="sd">        The 4 perspective entries of the matrix.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        The 4x4 matrix that combines the provided transformation components.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; trans1 = [1, 2, 3]</span>
+<span class="sd">    &gt;&gt;&gt; angle1 = [-2.142, 1.141, -0.142]</span>
+<span class="sd">    &gt;&gt;&gt; scale1 = [0.123, 2, 0.5]</span>
+<span class="sd">    &gt;&gt;&gt; M = compose_matrix(scale1, None, angle1, trans1, None)</span>
+<span class="sd">    &gt;&gt;&gt; scale2, shear2, angle2, trans2, persp2 = decompose_matrix(M)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(scale1, scale2)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; allclose(angle1, angle2)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; allclose(trans1, trans2)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span> <span class="k">else</span> <span class="mf">0.</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">perspective</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">matrix_from_perspective_entries</span><span class="p">(</span><span class="n">perspective</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">translation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">matrix_from_translation</span><span class="p">(</span><span class="n">translation</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">angles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_euler_angles</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xyz&quot;</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">shear</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">matrix_from_shear_entries</span><span class="p">(</span><span class="n">shear</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">S</span> <span class="o">=</span> <span class="n">matrix_from_scale_factors</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">/=</span> <span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">M</span>
+
+
+<span class="k">def</span> <span class="nf">identity_matrix</span><span class="p">(</span><span class="n">dim</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct an identity matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dim : int</span>
+<span class="sd">        The number of rows and/or columns of the matrix.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list</span>
+<span class="sd">        A list of ``dim`` lists, with each list containing ``dim`` elements.</span>
+<span class="sd">        The items on the &quot;diagonal&quot; are one.</span>
+<span class="sd">        All other items are zero.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; identity_matrix(4)</span>
+<span class="sd">    [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0.0, 0.0, 1.0]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="mf">1.</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span> <span class="k">else</span> <span class="mf">0.</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim</span><span class="p">)]</span>
+
+
+<div class="viewcode-block" id="matrix_from_frame"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_frame.html#compas.geometry.matrix_from_frame">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes a change of basis transformation from world XY to the frame.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frame : :class:`compas.geometry.Frame`</span>
+<span class="sd">        A frame describing the targeted Cartesian coordinate system</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        A 4x4 transformation matrix representing the transformation from</span>
+<span class="sd">        world coordinates to frame coordinates.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import Frame</span>
+<span class="sd">    &gt;&gt;&gt; f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">    &gt;&gt;&gt; T = matrix_from_frame(f)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">xaxis</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">yaxis</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">zaxis</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">point</span>
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<span class="k">def</span> <span class="nf">matrix_from_frame_to_frame</span><span class="p">(</span><span class="n">frame_from</span><span class="p">,</span> <span class="n">frame_to</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes a transformation between two frames.</span>
+
+<span class="sd">    This transformation allows to transform geometry from one Cartesian</span>
+<span class="sd">    coordinate system defined by &quot;frame_from&quot; to another Cartesian</span>
+<span class="sd">    coordinate system defined by &quot;frame_to&quot;.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frame_from : :class:`Frame`</span>
+<span class="sd">        A frame defining the original Cartesian coordinate system</span>
+<span class="sd">    frame_to : :class:`Frame`</span>
+<span class="sd">        A frame defining the targeted Cartesian coordinate system</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        A 4x4 transformation matrix representing the transformation</span>
+<span class="sd">        from one frame to another.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])</span>
+<span class="sd">    &gt;&gt;&gt; f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">    &gt;&gt;&gt; T = matrix_from_frame_to_frame(f1, f2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">T1</span> <span class="o">=</span> <span class="n">matrix_from_frame</span><span class="p">(</span><span class="n">frame_from</span><span class="p">)</span>
+    <span class="n">T2</span> <span class="o">=</span> <span class="n">matrix_from_frame</span><span class="p">(</span><span class="n">frame_to</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">T2</span><span class="p">,</span> <span class="n">matrix_inverse</span><span class="p">(</span><span class="n">T1</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">matrix_from_change_of_basis</span><span class="p">(</span><span class="n">frame_from</span><span class="p">,</span> <span class="n">frame_to</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes a change of basis transformation between two frames.</span>
+
+<span class="sd">    A basis change is essentially a remapping of geometry from one</span>
+<span class="sd">    coordinate system to another.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    frame_from : :class:`Frame`</span>
+<span class="sd">        A frame defining the original Cartesian coordinate system</span>
+<span class="sd">    frame_to : :class:`Frame`</span>
+<span class="sd">        A frame defining the targeted Cartesian coordinate system</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        A 4x4 transformation matrix representing a change of basis.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import Point, Frame</span>
+<span class="sd">    &gt;&gt;&gt; f1 = Frame([2, 2, 2], [0.12, 0.58, 0.81], [-0.80, 0.53, -0.26])</span>
+<span class="sd">    &gt;&gt;&gt; f2 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">    &gt;&gt;&gt; T = matrix_from_change_of_basis(f1, f2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">T1</span> <span class="o">=</span> <span class="n">matrix_from_frame</span><span class="p">(</span><span class="n">frame_from</span><span class="p">)</span>
+    <span class="n">T2</span> <span class="o">=</span> <span class="n">matrix_from_frame</span><span class="p">(</span><span class="n">frame_to</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">matrix_inverse</span><span class="p">(</span><span class="n">T2</span><span class="p">),</span> <span class="n">T1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="matrix_from_euler_angles"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_euler_angles.html#compas.geometry.matrix_from_euler_angles">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_euler_angles</span><span class="p">(</span><span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates a rotation matrix from Euler angles.</span>
+
+<span class="sd">    In 3D space any orientation can be achieved by composing three elemental</span>
+<span class="sd">    rotations, rotations about the axes (x,y,z) of a coordinate system. A</span>
+<span class="sd">    triple of Euler angles can be interpreted in 24 ways, which depends on if</span>
+<span class="sd">    the rotations are applied to a static (extrinsic) or rotating (intrinsic)</span>
+<span class="sd">    frame and the order of axes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    euler_angles : list of float</span>
+<span class="sd">        Three numbers that represent the angles of rotations about the defined axes.</span>
+<span class="sd">    static : bool, optional</span>
+<span class="sd">        If true the rotations are applied to a static frame.</span>
+<span class="sd">        If not, to a rotational.</span>
+<span class="sd">        Default is ``True``.</span>
+<span class="sd">    axes : {&#39;xyz&#39;, &#39;yzx&#39;, &#39;zxy&#39;}, optional</span>
+<span class="sd">        A 3 character string specifying order of the axes.</span>
+<span class="sd">        Default is ``&#39;xyz&#39;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        A 4x4 transformation matrix representing a rotation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; ea1 = 1.4, 0.5, 2.3</span>
+<span class="sd">    &gt;&gt;&gt; R = matrix_from_euler_angles(ea1)</span>
+<span class="sd">    &gt;&gt;&gt; ea2 = euler_angles_from_matrix(R)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(ea1, ea2)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_SPEC2TUPLE</span>
+    <span class="k">global</span> <span class="n">_NEXT_SPEC</span>
+
+    <span class="n">sin</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span>
+    <span class="n">cos</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span>
+
+    <span class="n">ai</span><span class="p">,</span> <span class="n">aj</span><span class="p">,</span> <span class="n">ak</span> <span class="o">=</span> <span class="n">euler_angles</span>
+
+    <span class="k">if</span> <span class="n">static</span><span class="p">:</span>
+        <span class="n">firstaxis</span><span class="p">,</span> <span class="n">parity</span><span class="p">,</span> <span class="n">repetition</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">_SPEC2TUPLE</span><span class="p">[</span><span class="s2">&quot;s&quot;</span> <span class="o">+</span> <span class="n">axes</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">firstaxis</span><span class="p">,</span> <span class="n">parity</span><span class="p">,</span> <span class="n">repetition</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">_SPEC2TUPLE</span><span class="p">[</span><span class="s2">&quot;r&quot;</span> <span class="o">+</span> <span class="n">axes</span><span class="p">]</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="n">firstaxis</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">_NEXT_SPEC</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">parity</span><span class="p">]</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">_NEXT_SPEC</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">parity</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">frame</span><span class="p">:</span>
+        <span class="n">ai</span><span class="p">,</span> <span class="n">ak</span> <span class="o">=</span> <span class="n">ak</span><span class="p">,</span> <span class="n">ai</span>
+    <span class="k">if</span> <span class="n">parity</span><span class="p">:</span>
+        <span class="n">ai</span><span class="p">,</span> <span class="n">aj</span><span class="p">,</span> <span class="n">ak</span> <span class="o">=</span> <span class="o">-</span><span class="n">ai</span><span class="p">,</span> <span class="o">-</span><span class="n">aj</span><span class="p">,</span> <span class="o">-</span><span class="n">ak</span>
+
+    <span class="n">si</span><span class="p">,</span> <span class="n">sj</span><span class="p">,</span> <span class="n">sk</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">ai</span><span class="p">),</span> <span class="n">sin</span><span class="p">(</span><span class="n">aj</span><span class="p">),</span> <span class="n">sin</span><span class="p">(</span><span class="n">ak</span><span class="p">)</span>
+    <span class="n">ci</span><span class="p">,</span> <span class="n">cj</span><span class="p">,</span> <span class="n">ck</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">ai</span><span class="p">),</span> <span class="n">cos</span><span class="p">(</span><span class="n">aj</span><span class="p">),</span> <span class="n">cos</span><span class="p">(</span><span class="n">ak</span><span class="p">)</span>
+    <span class="n">cc</span><span class="p">,</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">ci</span> <span class="o">*</span> <span class="n">ck</span><span class="p">,</span> <span class="n">ci</span> <span class="o">*</span> <span class="n">sk</span>
+    <span class="n">sc</span><span class="p">,</span> <span class="n">ss</span> <span class="o">=</span> <span class="n">si</span> <span class="o">*</span> <span class="n">ck</span><span class="p">,</span> <span class="n">si</span> <span class="o">*</span> <span class="n">sk</span>
+
+    <span class="n">M</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">1.</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">y</span> <span class="k">else</span> <span class="mf">0.</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="n">repetition</span><span class="p">:</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">si</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">ci</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">sk</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">cj</span> <span class="o">*</span> <span class="n">ss</span> <span class="o">+</span> <span class="n">cc</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">cj</span> <span class="o">*</span> <span class="n">cs</span> <span class="o">-</span> <span class="n">sc</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">sj</span> <span class="o">*</span> <span class="n">ck</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">sc</span> <span class="o">+</span> <span class="n">cs</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">cc</span> <span class="o">-</span> <span class="n">ss</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">ck</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">sc</span> <span class="o">-</span> <span class="n">cs</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">cc</span> <span class="o">+</span> <span class="n">ss</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">sk</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">ss</span> <span class="o">+</span> <span class="n">cc</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sj</span> <span class="o">*</span> <span class="n">cs</span> <span class="o">-</span> <span class="n">sc</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">sj</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">si</span>
+        <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cj</span> <span class="o">*</span> <span class="n">ci</span>
+
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<div class="viewcode-block" id="euler_angles_from_matrix"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.euler_angles_from_matrix.html#compas.geometry.euler_angles_from_matrix">[docs]</a><span class="k">def</span> <span class="nf">euler_angles_from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns Euler angles from the rotation matrix M according to specified</span>
+<span class="sd">    axis sequence and type of rotation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : list of list of float</span>
+<span class="sd">        The 3x3 or 4x4 matrix in row-major order.</span>
+<span class="sd">    static : bool, optional</span>
+<span class="sd">        If true the rotations are applied to a static frame.</span>
+<span class="sd">        If not, to a rotational.</span>
+<span class="sd">        Defaults to True.</span>
+<span class="sd">    axes : str, optional</span>
+<span class="sd">        A 3 character string specifying order of the axes.</span>
+<span class="sd">        Defaults to &#39;xyz&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of float</span>
+<span class="sd">        The 3 Euler angles.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; ea1 = 1.4, 0.5, 2.3</span>
+<span class="sd">    &gt;&gt;&gt; R = matrix_from_euler_angles(ea1)</span>
+<span class="sd">    &gt;&gt;&gt; ea2 = euler_angles_from_matrix(R)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(ea1, ea2)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_SPEC2TUPLE</span>
+    <span class="k">global</span> <span class="n">_NEXT_SPEC</span>
+    <span class="k">global</span> <span class="n">_EPS</span>
+
+    <span class="n">atan2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span>
+    <span class="n">sqrt</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span>
+
+    <span class="k">if</span> <span class="n">static</span><span class="p">:</span>
+        <span class="n">firstaxis</span><span class="p">,</span> <span class="n">parity</span><span class="p">,</span> <span class="n">repetition</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">_SPEC2TUPLE</span><span class="p">[</span><span class="s2">&quot;s&quot;</span> <span class="o">+</span> <span class="n">axes</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">firstaxis</span><span class="p">,</span> <span class="n">parity</span><span class="p">,</span> <span class="n">repetition</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">_SPEC2TUPLE</span><span class="p">[</span><span class="s2">&quot;r&quot;</span> <span class="o">+</span> <span class="n">axes</span><span class="p">]</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="n">firstaxis</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">_NEXT_SPEC</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">parity</span><span class="p">]</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">_NEXT_SPEC</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">parity</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">repetition</span><span class="p">:</span>
+        <span class="n">sy</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">sy</span> <span class="o">&gt;</span> <span class="n">_EPS</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">])</span>
+            <span class="n">ay</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">sy</span><span class="p">,</span> <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">az</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="o">-</span><span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">ay</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">sy</span><span class="p">,</span> <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">az</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cy</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">cy</span> <span class="o">&gt;</span> <span class="n">_EPS</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">k</span><span class="p">])</span>
+            <span class="n">ay</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="o">-</span><span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">cy</span><span class="p">)</span>
+            <span class="n">az</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="o">-</span><span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">ay</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="o">-</span><span class="n">M</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">cy</span><span class="p">)</span>
+            <span class="n">az</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">if</span> <span class="n">parity</span><span class="p">:</span>
+        <span class="n">ax</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">az</span> <span class="o">=</span> <span class="o">-</span><span class="n">ax</span><span class="p">,</span> <span class="o">-</span><span class="n">ay</span><span class="p">,</span> <span class="o">-</span><span class="n">az</span>
+    <span class="k">if</span> <span class="n">frame</span><span class="p">:</span>
+        <span class="n">ax</span><span class="p">,</span> <span class="n">az</span> <span class="o">=</span> <span class="n">az</span><span class="p">,</span> <span class="n">ax</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">ax</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">az</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_axis_and_angle"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_axis_and_angle.html#compas.geometry.matrix_from_axis_and_angle">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_axis_and_angle</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates a rotation matrix from an rotation axis, an angle and an optional</span>
+<span class="sd">    point of rotation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    axis : list of float</span>
+<span class="sd">        Three numbers that represent the axis of rotation.</span>
+<span class="sd">    angle : float</span>
+<span class="sd">        The rotation angle in radians.</span>
+<span class="sd">    point : list of float, optional</span>
+<span class="sd">        A point to perform a rotation around an origin other than [0, 0, 0].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        A 4x4 transformation matrix representing a rotation.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The rotation is based on the right hand rule, i.e. anti-clockwise if the</span>
+<span class="sd">    axis of rotation points towards the observer.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; axis1 = normalize_vector([-0.043, -0.254, 0.617])</span>
+<span class="sd">    &gt;&gt;&gt; angle1 = 0.1</span>
+<span class="sd">    &gt;&gt;&gt; R = matrix_from_axis_and_angle(axis1, angle1)</span>
+<span class="sd">    &gt;&gt;&gt; axis2, angle2 = axis_and_angle_from_matrix(R)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(axis1, axis2)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; allclose([angle1], [angle2])</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">point</span><span class="p">:</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+
+    <span class="n">axis</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">):</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>
+
+    <span class="n">sina</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">cosa</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="p">[[</span><span class="n">cosa</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">cosa</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">cosa</span><span class="p">]]</span>
+
+    <span class="n">outer_product</span> <span class="o">=</span> <span class="p">[[</span><span class="n">axis</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">axis</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">cosa</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="p">[[</span><span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">outer_product</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">sina</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="n">axis</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">axis</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+         <span class="p">[</span><span class="n">axis</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+         <span class="p">[</span><span class="o">-</span><span class="n">axis</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">]]</span>
+
+    <span class="n">M</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">m</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+
+    <span class="c1"># rotation about axis, angle AND point includes also translation</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">multiply_matrix_vector</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_axis_angle_vector"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_axis_angle_vector.html#compas.geometry.matrix_from_axis_angle_vector">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_axis_angle_vector</span><span class="p">(</span><span class="n">axis_angle_vector</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates a rotation matrix from an axis-angle vector.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    axis_angle_vector : list of float</span>
+<span class="sd">        Three numbers that represent the axis of rotation and angle of rotation</span>
+<span class="sd">        through the vector&#39;s magnitude.</span>
+<span class="sd">    point : list of float, optional</span>
+<span class="sd">        A point to perform a rotation around an origin other than [0, 0, 0].</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        The 4x4 transformation matrix representing a rotation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; aav1 = [-0.043, -0.254, 0.617]</span>
+<span class="sd">    &gt;&gt;&gt; R = matrix_from_axis_angle_vector(aav1)</span>
+<span class="sd">    &gt;&gt;&gt; aav2 = axis_angle_vector_from_matrix(R)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(aav1, aav2)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">axis_angle_vector</span><span class="p">)</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">axis_angle_vector</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">matrix_from_axis_and_angle</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="axis_and_angle_from_matrix"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.axis_and_angle_from_matrix.html#compas.geometry.axis_and_angle_from_matrix">[docs]</a><span class="k">def</span> <span class="nf">axis_and_angle_from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the axis and the angle of the rotation matrix M.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fabs</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span>
+    <span class="n">sqrt</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span>
+
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># margin to allow for rounding errors</span>
+    <span class="n">eps2</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># margin to distinguish between 0 and 180 degrees</span>
+
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">eps</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nb">all</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">eps2</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span> <span class="ow">and</span>
+                <span class="n">fabs</span><span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">eps2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">0</span>
+
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+        <span class="n">xx</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">yy</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">zz</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">4</span>
+        <span class="n">xz</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">4</span>
+        <span class="n">yz</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">4</span>
+        <span class="n">root_half</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">xx</span> <span class="o">&gt;</span> <span class="n">yy</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">xx</span> <span class="o">&gt;</span> <span class="n">zz</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">xx</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">root_half</span><span class="p">,</span> <span class="n">root_half</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">xy</span> <span class="o">/</span> <span class="n">x</span><span class="p">,</span> <span class="n">xz</span> <span class="o">/</span> <span class="n">x</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">yy</span> <span class="o">&gt;</span> <span class="n">zz</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">yy</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="n">root_half</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">root_half</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">yy</span><span class="p">)</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="n">xy</span> <span class="o">/</span> <span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">yz</span> <span class="o">/</span> <span class="n">y</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">zz</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="n">root_half</span><span class="p">,</span> <span class="n">root_half</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">zz</span><span class="p">)</span>
+                <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="n">xz</span> <span class="o">/</span> <span class="n">z</span><span class="p">,</span> <span class="n">yz</span> <span class="o">/</span> <span class="n">z</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">axis</span><span class="p">,</span> <span class="n">angle</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span>
+        <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span>
+        <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># should this also be an eps?</span>
+    <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.001</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">((</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">angle</span></div>
+
+
+<div class="viewcode-block" id="axis_angle_vector_from_matrix"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.axis_angle_vector_from_matrix.html#compas.geometry.axis_angle_vector_from_matrix">[docs]</a><span class="k">def</span> <span class="nf">axis_angle_vector_from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the axis-angle vector of the rotation matrix M.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">axis</span><span class="p">,</span> <span class="n">angle</span> <span class="o">=</span> <span class="n">axis_and_angle_from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_quaternion"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_quaternion.html#compas.geometry.matrix_from_quaternion">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_quaternion</span><span class="p">(</span><span class="n">quaternion</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates a rotation matrix from quaternion coefficients.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    quaternion : list of float</span>
+<span class="sd">        Four numbers that represents the four coefficient values of a quaternion.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        The 4x4 transformation matrix representing a rotation.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If quaternion is invalid.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; q1 = [0.945, -0.021, -0.125, 0.303]</span>
+<span class="sd">    &gt;&gt;&gt; R = matrix_from_quaternion(q1)</span>
+<span class="sd">    &gt;&gt;&gt; q2 = quaternion_from_matrix(R)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(q1, q2, tol=1e-03)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sqrt</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span>
+
+    <span class="n">q</span> <span class="o">=</span> <span class="n">quaternion</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># dot product</span>
+
+    <span class="c1"># perhaps this should not be hard-coded?</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1.0e-15</span>
+
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid quaternion, dot product must be != 0.&quot;</span><span class="p">)</span>
+
+    <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">q</span><span class="p">]</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="p">[[</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">q</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>  <span class="c1"># outer_product</span>
+
+    <span class="n">rotation</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">[</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">],</span>
+        <span class="p">[</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">rotation</span></div>
+
+
+<div class="viewcode-block" id="quaternion_from_matrix"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.quaternion_from_matrix.html#compas.geometry.quaternion_from_matrix">[docs]</a><span class="k">def</span> <span class="nf">quaternion_from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the 4 quaternion coefficients from a rotation matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    M : list of list of float</span>
+<span class="sd">        The coefficients of the rotation matrix, row per row.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of float</span>
+<span class="sd">        The quaternion coefficients.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; q1 = [0.945, -0.021, -0.125, 0.303]</span>
+<span class="sd">    &gt;&gt;&gt; R = matrix_from_quaternion(q1)</span>
+<span class="sd">    &gt;&gt;&gt; q2 = quaternion_from_matrix(R)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(q1, q2, tol=1e-03)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sqrt</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span>
+
+    <span class="n">qw</span><span class="p">,</span> <span class="n">qx</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">qz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">trace</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">trace</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">qw</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">/</span> <span class="n">s</span>
+        <span class="n">qx</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">s</span>
+        <span class="n">qy</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">s</span>
+        <span class="n">qz</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">s</span>
+
+    <span class="k">elif</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="ow">and</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">qw</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+        <span class="n">qx</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">s</span>
+        <span class="n">qy</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+        <span class="n">qz</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+
+    <span class="k">elif</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">qw</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+        <span class="n">qx</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+        <span class="n">qy</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">s</span>
+        <span class="n">qz</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">qw</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+        <span class="n">qx</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+        <span class="n">qy</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">s</span>
+        <span class="n">qz</span> <span class="o">=</span> <span class="mf">0.25</span> <span class="o">*</span> <span class="n">s</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">qw</span><span class="p">,</span> <span class="n">qx</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">qz</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_basis_vectors"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_basis_vectors.html#compas.geometry.matrix_from_basis_vectors">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_basis_vectors</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates a rotation matrix from basis vectors (= orthonormal vectors).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xaxis : list of float</span>
+<span class="sd">        The x-axis of the frame.</span>
+<span class="sd">    yaxis : list of float</span>
+<span class="sd">        The y-axis of the frame.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        A 4x4 transformation matrix representing a rotation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; xaxis = [0.68, 0.68, 0.27]</span>
+<span class="sd">    &gt;&gt;&gt; yaxis = [-0.67, 0.73, -0.15]</span>
+<span class="sd">    &gt;&gt;&gt; R = matrix_from_basis_vectors(xaxis, yaxis)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. code-block:: none</span>
+
+<span class="sd">        [ x0  y0  z0  0 ]</span>
+<span class="sd">        [ x1  y1  z1  0 ]</span>
+<span class="sd">        [ x2  y2  z2  0 ]</span>
+<span class="sd">        [  0   0   0  1 ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xaxis</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">xaxis</span><span class="p">))</span>
+    <span class="n">yaxis</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">yaxis</span><span class="p">))</span>
+    <span class="n">zaxis</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
+    <span class="n">yaxis</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">zaxis</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">)</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">xaxis</span>
+    <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">yaxis</span>
+    <span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">zaxis</span>
+    <span class="k">return</span> <span class="n">R</span></div>
+
+
+<div class="viewcode-block" id="basis_vectors_from_matrix"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.basis_vectors_from_matrix.html#compas.geometry.basis_vectors_from_matrix">[docs]</a><span class="k">def</span> <span class="nf">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the basis vectors from the rotation matrix R.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If rotation matrix is invalid.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of two vectors</span>
+<span class="sd">        The X and Y basis vectors of the rotation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import Frame</span>
+<span class="sd">    &gt;&gt;&gt; f = Frame([0, 0, 0], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">    &gt;&gt;&gt; R = matrix_from_frame(f)</span>
+<span class="sd">    &gt;&gt;&gt; xaxis, yaxis = basis_vectors_from_matrix(R)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xaxis</span> <span class="o">=</span> <span class="p">[</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">yaxis</span> <span class="o">=</span> <span class="p">[</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">zaxis</span> <span class="o">=</span> <span class="p">[</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">allclose</span><span class="p">(</span><span class="n">zaxis</span><span class="p">,</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Matrix is invalid rotation matrix.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_translation"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_translation.html#compas.geometry.matrix_from_translation">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_translation</span><span class="p">(</span><span class="n">translation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a 4x4 translation matrix in row-major order.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    translation : list of float</span>
+<span class="sd">        The x, y and z components of the translation.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        The 4x4 transformation matrix representing a translation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; T = matrix_from_translation([1, 2, 3])</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. code-block:: none</span>
+
+<span class="sd">        [ .  .  .  0 ]</span>
+<span class="sd">        [ .  .  .  1 ]</span>
+<span class="sd">        [ .  .  .  2 ]</span>
+<span class="sd">        [ .  .  .  . ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">translation</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">translation</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">translation</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<span class="k">def</span> <span class="nf">translation_from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the 3 values of translation from the matrix M.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="matrix_from_orthogonal_projection"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_orthogonal_projection.html#compas.geometry.matrix_from_orthogonal_projection">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_orthogonal_projection</span><span class="p">(</span><span class="n">plane</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns an orthogonal projection matrix to project onto a plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    plane : compas.geometry.Plane or (point, normal)</span>
+<span class="sd">        The plane to project onto.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of list of float</span>
+<span class="sd">        The 4x4 transformation matrix representing an orthogonal projection.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; point = [0, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; normal = [0, 0, 1]</span>
+<span class="sd">    &gt;&gt;&gt; plane = (point, normal)</span>
+<span class="sd">    &gt;&gt;&gt; P = matrix_from_orthogonal_projection(plane)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">point</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">plane</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">normal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">normal</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>  <span class="c1"># outer_product</span>
+
+    <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_parallel_projection"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_parallel_projection.html#compas.geometry.matrix_from_parallel_projection">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_parallel_projection</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns an parallel projection matrix to project onto a plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    plane : compas.geometry.Plane or (point, normal)</span>
+<span class="sd">        The plane to project onto.</span>
+<span class="sd">    direction : list of float</span>
+<span class="sd">        Direction of the projection.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; point = [0, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; normal = [0, 0, 1]</span>
+<span class="sd">    &gt;&gt;&gt; plane = (point, normal)</span>
+<span class="sd">    &gt;&gt;&gt; direction = [1, 1, 1]</span>
+<span class="sd">    &gt;&gt;&gt; P = matrix_from_parallel_projection(plane, direction)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">point</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">plane</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">direction</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">normal</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="n">scale</span>
+
+    <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_perspective_projection"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_perspective_projection.html#compas.geometry.matrix_from_perspective_projection">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_perspective_projection</span><span class="p">(</span><span class="n">plane</span><span class="p">,</span> <span class="n">center_of_projection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a perspective projection matrix to project onto a plane along lines that emanate from a single point, called the center of projection.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    plane : compas.geometry.Plane or (point, normal)</span>
+<span class="sd">        The plane to project onto.</span>
+<span class="sd">    center_of_projection : compas.geometry.Point or list of float</span>
+<span class="sd">        The camera view point.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; point = [0, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; normal = [0, 0, 1]</span>
+<span class="sd">    &gt;&gt;&gt; plane = (point, normal)</span>
+<span class="sd">    &gt;&gt;&gt; center_of_projection = [1, 1, 0]</span>
+<span class="sd">    &gt;&gt;&gt; P = matrix_from_perspective_projection(plane, center_of_projection)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">point</span><span class="p">,</span> <span class="n">normal</span> <span class="o">=</span> <span class="n">plane</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+
+    <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">center_of_projection</span><span class="p">,</span> <span class="n">point</span><span class="p">),</span> <span class="n">normal</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">center_of_projection</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">normal</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+    <span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">center_of_projection</span><span class="p">,</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">T</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">-=</span> <span class="n">normal</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="n">T</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">center_of_projection</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_perspective_entries"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_perspective_entries.html#compas.geometry.matrix_from_perspective_entries">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_perspective_entries</span><span class="p">(</span><span class="n">perspective</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a matrix from perspective entries.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    values : list of float</span>
+<span class="sd">        The 4 perspective entries of a matrix.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. code-block:: none</span>
+
+<span class="sd">        [ .  .  .  . ]</span>
+<span class="sd">        [ .  .  .  . ]</span>
+<span class="sd">        [ .  .  .  . ]</span>
+<span class="sd">        [ 0  1  2  3 ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">perspective</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">perspective</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">perspective</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">perspective</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_shear_entries"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_shear_entries.html#compas.geometry.matrix_from_shear_entries">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_shear_entries</span><span class="p">(</span><span class="n">shear_entries</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a shear matrix from the 3 factors for x-y, x-z, and y-z axes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    shear_entries : list of float</span>
+<span class="sd">        The 3 shear factors for x-y, x-z, and y-z axes.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; Sh = matrix_from_shear_entries([1, 2, 3])</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. code-block:: none</span>
+
+<span class="sd">        [ .  0  1  . ]</span>
+<span class="sd">        [ .  .  2  . ]</span>
+<span class="sd">        [ .  .  .  . ]</span>
+<span class="sd">        [ .  .  .  . ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">shear_entries</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">shear_entries</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">shear_entries</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_shear"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_shear.html#compas.geometry.matrix_from_shear">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_shear</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Constructs a shear matrix by an angle along the direction vector on the</span>
+<span class="sd">    shear plane (defined by point and normal).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    angle : float</span>
+<span class="sd">        The angle in radians.</span>
+<span class="sd">    direction : list of float</span>
+<span class="sd">        The direction vector as list of 3 numbers.</span>
+<span class="sd">        It must be orthogonal to the normal vector.</span>
+<span class="sd">    point : list of float</span>
+<span class="sd">        The point of the shear plane as list of 3 numbers.</span>
+<span class="sd">    normal : list of float</span>
+<span class="sd">        The normal of the shear plane as list of 3 numbers.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If direction and normal are not orthogonal.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    A point P is transformed by the shear matrix into P&quot; such that</span>
+<span class="sd">    the vector P-P&quot; is parallel to the direction vector and its extent is</span>
+<span class="sd">    given by the angle of P-P&#39;-P&quot;, where P&#39; is the orthogonal projection</span>
+<span class="sd">    of P onto the shear plane (defined by point and normal).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; angle = 0.1</span>
+<span class="sd">    &gt;&gt;&gt; direction = [0.1, 0.2, 0.3]</span>
+<span class="sd">    &gt;&gt;&gt; point = [4, 3, 1]</span>
+<span class="sd">    &gt;&gt;&gt; normal = cross_vectors(direction, [1, 0.3, -0.1])</span>
+<span class="sd">    &gt;&gt;&gt; S = matrix_from_shear(angle, direction, point, normal)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fabs</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span>
+
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">normal</span><span class="p">)</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">direction</span><span class="p">))</span> <span class="o">&gt;</span> <span class="n">_EPS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Direction and normal vectors are not orthogonal&#39;</span><span class="p">)</span>
+
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">angle</span> <span class="o">*</span> <span class="n">direction</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">normal</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="o">-</span><span class="n">angle</span> <span class="o">*</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<div class="viewcode-block" id="matrix_from_scale_factors"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.matrix_from_scale_factors.html#compas.geometry.matrix_from_scale_factors">[docs]</a><span class="k">def</span> <span class="nf">matrix_from_scale_factors</span><span class="p">(</span><span class="n">scale_factors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a 4x4 scaling transformation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scale_factors : list of float</span>
+<span class="sd">        Three numbers defining the scaling factors in x, y, and z respectively.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; Sc = matrix_from_scale_factors([1, 2, 3])</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        [ 0  .  .  . ]</span>
+<span class="sd">        [ .  1  .  . ]</span>
+<span class="sd">        [ .  .  2  . ]</span>
+<span class="sd">        [ .  .  .  . ]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">identity_matrix</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale_factors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale_factors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">M</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">scale_factors</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">M</span></div>
+
+
+<div class="viewcode-block" id="quaternion_from_euler_angles"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.quaternion_from_euler_angles.html#compas.geometry.quaternion_from_euler_angles">[docs]</a><span class="k">def</span> <span class="nf">quaternion_from_euler_angles</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a quaternion from Euler angles.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    euler_angles : list</span>
+<span class="sd">        Three numbers that represent the angles of rotations about the specified axes.</span>
+<span class="sd">    static : bool, optional</span>
+<span class="sd">        If ``True``, the rotations are applied to a static frame.</span>
+<span class="sd">        If ``False``, the rotations are applied to a rotational frame.</span>
+<span class="sd">        Defaults to ``True``.</span>
+<span class="sd">    axes : str, optional</span>
+<span class="sd">        A three-character string specifying the order of the axes.</span>
+<span class="sd">        Defaults to ``&#39;xyz&#39;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Quaternion as a list of four real values ``[w, x, y, z]``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">matrix_from_euler_angles</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">q</span></div>
+
+
+<div class="viewcode-block" id="euler_angles_from_quaternion"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.euler_angles_from_quaternion.html#compas.geometry.euler_angles_from_quaternion">[docs]</a><span class="k">def</span> <span class="nf">euler_angles_from_quaternion</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns Euler angles from a quaternion.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    quaternion : list</span>
+<span class="sd">        Quaternion as a list of four real values ``[w, x, y, z]``.</span>
+<span class="sd">    static : bool, optional</span>
+<span class="sd">        If ``True``, the rotations are applied to a static frame.</span>
+<span class="sd">        If ``False``, the rotations are applied to a rotational frame.</span>
+<span class="sd">        Defaults to ``True``.</span>
+<span class="sd">    axes : str, optional</span>
+<span class="sd">        A three-character string specifying the order of the axes.</span>
+<span class="sd">        Defaults to ``&#39;xyz&#39;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Euler angles as a list of three real values ``[a, b, c]``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">matrix_from_quaternion</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">euler_angles_from_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">e</span></div>
+
+
+<div class="viewcode-block" id="quaternion_from_axis_angle"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.quaternion_from_axis_angle.html#compas.geometry.quaternion_from_axis_angle">[docs]</a><span class="k">def</span> <span class="nf">quaternion_from_axis_angle</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a quaternion describing a rotation around the given axis by the given angle.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    axis : list</span>
+<span class="sd">        Coordinates ``[x, y, z]`` of the rotation axis vector.</span>
+<span class="sd">    angle : float</span>
+<span class="sd">        Angle of rotation in radians.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; axis =  [1.0, 0.0, 0.0]</span>
+<span class="sd">    &gt;&gt;&gt; angle = math.pi/2</span>
+<span class="sd">    &gt;&gt;&gt; q = quaternion_from_axis_angle(axis, angle)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(q, [math.sqrt(2)/2, math.sqrt(2)/2, 0, 0])</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">matrix_from_axis_and_angle</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">q</span></div>
+
+
+<div class="viewcode-block" id="axis_angle_from_quaternion"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.axis_angle_from_quaternion.html#compas.geometry.axis_angle_from_quaternion">[docs]</a><span class="k">def</span> <span class="nf">axis_angle_from_quaternion</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns an axis and an angle of rotation from the given quaternion.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    q : list</span>
+<span class="sd">        Quaternion as a list of four real values ``[qw, qx, qy, qz]``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    axis : list</span>
+<span class="sd">        Coordinates ``[x, y, z]`` of the rotation axis vector.</span>
+<span class="sd">    angle : float</span>
+<span class="sd">        Angle of rotation in radians.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; q = [1., 1., 0., 0.]</span>
+<span class="sd">    &gt;&gt;&gt; axis, angle = axis_angle_from_quaternion(q)</span>
+<span class="sd">    &gt;&gt;&gt; allclose(axis, [1., 0., 0.])</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; allclose([angle], [math.pi/2], 1e-6)</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">matrix_from_quaternion</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+    <span class="n">axis</span><span class="p">,</span> <span class="n">angle</span> <span class="o">=</span> <span class="n">axis_and_angle_from_matrix</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">axis</span><span class="p">,</span> <span class="n">angle</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">doctest</span>
+
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>  <span class="c1"># noqa: F401</span>
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Transformation</span>  <span class="c1"># noqa: F401</span>
+
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
+</code></pre></div>
+        
+      </main>
+      <!-- main -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+
+  <!-- <footer class="bg-dark py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3 d-flex flex-even my-4 ml-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Core</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_blender</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_ghpython</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_plotters</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_rhino</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Plugins</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_cgal</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_gmsh</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_libigl</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_shapeop</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Extensions</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fab</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fea(2)</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_tia</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_vol</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4 mr-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-3 mb-3 mt-0 footer-title">Resources</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">About</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Collaboration in research</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Transfer to industry</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Open source</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Quality assurance</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.16.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../../../_static/underscore.js"></script>
+  <script src="../../../../_static/doctools.js"></script>
+  <script src="../../../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+  });
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>

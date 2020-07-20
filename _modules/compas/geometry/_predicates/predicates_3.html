@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - compas.geometry._predicates.predicates_3</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/plugins.html">Plugins</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <!-- social -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+      </ul>
+      <!-- social -->
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <h1 class="display-4 p-0 mb-5">Source code for compas.geometry._predicates.predicates_3</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="c1"># from math import pi</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">fabs</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">sample</span>
+
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">window</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">cross_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">dot_vectors</span>
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">normalize_vector</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">distance_point_plane</span>
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">distance_point_line</span>
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">closest_point_on_segment</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">area_triangle</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;is_colinear&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_line_line_colinear&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_coplanar&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_polygon_convex&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_on_plane&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_infront_plane&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_on_line&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_on_segment&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_on_polyline&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_in_triangle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_in_circle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_intersection_line_line&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_intersection_segment_segment&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_intersection_line_triangle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_intersection_line_plane&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_intersection_segment_plane&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_intersection_plane_plane&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="is_colinear"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_colinear.html#compas.geometry.is_colinear">[docs]</a><span class="k">def</span> <span class="nf">is_colinear</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if three points are colinear.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : tuple, list, Point</span>
+<span class="sd">        Point 1.</span>
+<span class="sd">    b : tuple, list, Point</span>
+<span class="sd">        Point 2.</span>
+<span class="sd">    c : tuple, list, Point</span>
+<span class="sd">        Point 3.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for membership verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the points are colinear.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">area_triangle</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span></div>
+
+
+<span class="k">def</span> <span class="nf">is_line_line_colinear</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span> <span class="n">line2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if two lines are colinear.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    line1 : 2-tuple of points, Line</span>
+<span class="sd">        Line 1.</span>
+<span class="sd">    line2 : 2-tuple of points, Line</span>
+<span class="sd">        Line 2.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for colinearity verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the lines are colinear.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">line1</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">line2</span>
+    <span class="k">return</span> <span class="n">is_colinear</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_colinear</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="is_coplanar"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_coplanar.html#compas.geometry.is_coplanar">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if the points are coplanar.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    points : sequence</span>
+<span class="sd">        A sequence of locations in three-dimensional space.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for planarity validation.</span>
+<span class="sd">        Default is ``0.01``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the points are coplanar.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Compute the normal vector (cross product) of the vectors formed by the first</span>
+<span class="sd">    three points. Include one more vector at a time to compute a new normal and</span>
+<span class="sd">    compare with the original normal. If their cross product is not zero, they</span>
+<span class="sd">    are not parallel, which means the point are not in the same plane.</span>
+
+<span class="sd">    Four points are coplanar if the volume of the tetrahedron defined by them is</span>
+<span class="sd">    0. Coplanarity is equivalent to the statement that the pair of lines</span>
+<span class="sd">    determined by the four points are not skew, and can be equivalently stated</span>
+<span class="sd">    in vector form as (x2 - x0).[(x1 - x0) x (x3 - x2)] = 0.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tol2</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">v01</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">v02</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">v23</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">v02</span><span class="p">,</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">v01</span><span class="p">,</span> <span class="n">v23</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol2</span>
+
+    <span class="c1"># len(points) &gt; 4</span>
+    <span class="c1"># compare length of cross product vector to tolerance</span>
+
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">wuv</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">tol2</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">tol2</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">tol2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="is_polygon_convex"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_polygon_convex.html#compas.geometry.is_polygon_convex">[docs]</a><span class="k">def</span> <span class="nf">is_polygon_convex</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a polygon is convex.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    polygon : sequence of sequence of floats</span>
+<span class="sd">        The XYZ coordinates of the corners of the polygon.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Use this function for *spatial* polygons.</span>
+<span class="sd">    If the polygon is in a horizontal plane, use :func:`is_polygon_convex_xy` instead.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the polygon is convex.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    is_polygon_convex_xy</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; polygon = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.4, 0.4, 0.0], [0.0, 1.0, 0.0]]</span>
+<span class="sd">    &gt;&gt;&gt; is_polygon_convex(polygon)</span>
+<span class="sd">    False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">polygon</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">oa</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+    <span class="n">ob</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+    <span class="n">n0</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">oa</span><span class="p">,</span> <span class="n">ob</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">o</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">window</span><span class="p">(</span><span class="n">polygon</span> <span class="o">+</span> <span class="n">polygon</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="n">oa</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+        <span class="n">ob</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">oa</span><span class="p">,</span> <span class="n">ob</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n0</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="is_point_on_plane"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_on_plane.html#compas.geometry.is_point_on_plane">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a point lies on a plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : sequence of float</span>
+<span class="sd">        XYZ coordinates.</span>
+<span class="sd">    plane : tuple</span>
+<span class="sd">        Base point and normal defining a plane.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for membership verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the point is in on the plane.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">distance_point_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span></div>
+
+
+<div class="viewcode-block" id="is_point_infront_plane"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_infront_plane.html#compas.geometry.is_point_infront_plane">[docs]</a><span class="k">def</span> <span class="nf">is_point_infront_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a point lies in front of a plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : sequence of float</span>
+<span class="sd">        XYZ coordinates.</span>
+<span class="sd">    plane : tuple</span>
+<span class="sd">        Base point and normal defining a plane.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for membership verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the point is in front of the plane.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">tol</span></div>
+
+
+<div class="viewcode-block" id="is_point_on_line"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_on_line.html#compas.geometry.is_point_on_line">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a point lies on a line.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : sequence of float</span>
+<span class="sd">        XYZ coordinates.</span>
+<span class="sd">    line : tuple</span>
+<span class="sd">        Two points defining a line.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for membership verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the point is in on the line.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">distance_point_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span></div>
+
+
+<div class="viewcode-block" id="is_point_on_segment"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_on_segment.html#compas.geometry.is_point_on_segment">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_segment</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a point lies on a given line segment.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : sequence of float</span>
+<span class="sd">        XYZ coordinates.</span>
+<span class="sd">    segment : tuple</span>
+<span class="sd">        Two points defining the line segment.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for membership verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the point is on the line segment.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">segment</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">d_ab</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">d_ab</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">d_pa</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+    <span class="n">d_pb</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">d_pa</span> <span class="o">+</span> <span class="n">d_pb</span> <span class="o">&lt;=</span> <span class="n">d_ab</span> <span class="o">+</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_point_on_polyline"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_on_polyline.html#compas.geometry.is_point_on_polyline">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_polyline</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">polyline</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a point is on a polyline.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : sequence of float</span>
+<span class="sd">        XYZ coordinates.</span>
+<span class="sd">    polyline : sequence of sequence of float</span>
+<span class="sd">        XYZ coordinates of the points of the polyline.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        The tolerance for membership verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the point is on the polyline.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">polyline</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">polyline</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">polyline</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">closest_point_on_segment</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_point_in_triangle"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_in_triangle.html#compas.geometry.is_point_in_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">triangle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a point is in the interior of a triangle.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : sequence of float</span>
+<span class="sd">        XYZ coordinates.</span>
+<span class="sd">    triangle : sequence of sequence of float</span>
+<span class="sd">        XYZ coordinates of the triangle corners.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the point is in inside the triangle.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Should the point be on the same plane as the triangle?</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    compas.geometry.is_point_in_triangle_xy</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">is_on_same_side</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">segment</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+        <span class="n">c2</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">triangle</span>
+
+    <span class="k">if</span> <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span> <span class="ow">and</span> \
+       <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span> <span class="ow">and</span> \
+       <span class="n">is_on_same_side</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_point_in_circle"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_in_circle.html#compas.geometry.is_point_in_circle">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_circle</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">circle</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a point lies in a circle.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : sequence of float</span>
+<span class="sd">        XYZ coordinates of a 3D point.</span>
+<span class="sd">    circle : tuple</span>
+<span class="sd">        center, radius, normal</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the point lies in the circle.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plane</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">circle</span>
+    <span class="k">if</span> <span class="n">is_point_on_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;=</span> <span class="n">radius</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_intersection_line_line"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_intersection_line_line.html#compas.geometry.is_intersection_line_line">[docs]</a><span class="k">def</span> <span class="nf">is_intersection_line_line</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verifies if two lines intersect.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    l1 : tuple</span>
+<span class="sd">        A sequence of XYZ coordinates of two 3D points representing two points on the line.</span>
+<span class="sd">    l2 : tuple</span>
+<span class="sd">        A sequence of XYZ coordinates of two 3D points representing two points on the line.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for intersection verification. Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True``if the lines intersect in one point.</span>
+<span class="sd">        ``False`` if the lines are skew, parallel or lie on top of each other.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">l1</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">l2</span>
+
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+    <span class="n">e2</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+
+    <span class="c1"># check for parallel lines</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># check for intersection</span>
+    <span class="n">d_vector</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">d_vector</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_intersection_segment_segment"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_intersection_segment_segment.html#compas.geometry.is_intersection_segment_segment">[docs]</a><span class="k">def</span> <span class="nf">is_intersection_segment_segment</span><span class="p">():</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="is_intersection_line_triangle"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_intersection_line_triangle.html#compas.geometry.is_intersection_line_triangle">[docs]</a><span class="k">def</span> <span class="nf">is_intersection_line_triangle</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verifies if a line (ray) intersects with a triangle.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    line : tuple</span>
+<span class="sd">        Two points defining the line.</span>
+<span class="sd">    triangle : sequence of sequence of float</span>
+<span class="sd">        XYZ coordinates of the triangle corners.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for intersection verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the line (ray) intersects with the triangle.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Based on the Moeller Trumbore intersection algorithm.</span>
+<span class="sd">    The line is treated as continues, directed ray and not as line segment with a start and end point</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">triangle</span>
+    <span class="c1"># direction vector and base point of line</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Find vectors for two edges sharing V1</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="n">e2</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="c1"># Begin calculating determinant - also used to calculate u parameter</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
+    <span class="c1"># if determinant is near zero, ray lies in plane of triangle</span>
+    <span class="n">det</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+    <span class="c1"># NOT CULLING</span>
+    <span class="k">if</span> <span class="n">det</span> <span class="o">&gt;</span> <span class="o">-</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">det</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">inv_det</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">det</span>
+    <span class="c1"># calculate distance from V1 to ray origin</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+    <span class="c1"># Calculate u parameter and make_blocks bound</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
+
+    <span class="c1"># The intersection lies outside of the triangle</span>
+    <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">u</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Prepare to make_blocks v parameter</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+    <span class="c1"># Calculate V parameter and make_blocks bound</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
+
+    <span class="c1"># The intersection lies outside of the triangle</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">u</span> <span class="o">+</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_det</span>
+
+    <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># No hit</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_intersection_line_plane"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_intersection_line_plane.html#compas.geometry.is_intersection_line_plane">[docs]</a><span class="k">def</span> <span class="nf">is_intersection_line_plane</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a line (ray) intersects with a plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    line : tuple</span>
+<span class="sd">        Two points defining the line.</span>
+<span class="sd">    plane : tuple</span>
+<span class="sd">        The base point and normal defining the plane.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for intersection verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the line intersects with the plane.</span>
+<span class="sd">        ``False`` otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pt1</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pt2</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">p_norm</span> <span class="o">=</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pt2</span><span class="p">,</span> <span class="n">pt1</span><span class="p">)</span>
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">p_norm</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_intersection_segment_plane"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_intersection_segment_plane.html#compas.geometry.is_intersection_segment_plane">[docs]</a><span class="k">def</span> <span class="nf">is_intersection_segment_plane</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a line segment intersects with a plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    segment : tuple</span>
+<span class="sd">        Two points defining the segment.</span>
+<span class="sd">    plane : tuple</span>
+<span class="sd">        The base point and normal defining the plane.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for intersection verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the segment intersects with the plane, ``False`` otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pt1</span> <span class="o">=</span> <span class="n">segment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">pt2</span> <span class="o">=</span> <span class="n">segment</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">p_cent</span> <span class="o">=</span> <span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">p_norm</span> <span class="o">=</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pt2</span><span class="p">,</span> <span class="n">pt1</span><span class="p">)</span>
+    <span class="n">dot</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">p_norm</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="n">v2</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">pt1</span><span class="p">,</span> <span class="n">p_cent</span><span class="p">)</span>
+        <span class="n">fac</span> <span class="o">=</span> <span class="o">-</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">p_norm</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span> <span class="o">/</span> <span class="n">dot</span>
+        <span class="k">if</span> <span class="n">fac</span> <span class="o">&gt;</span> <span class="mf">0.</span> <span class="ow">and</span> <span class="n">fac</span> <span class="o">&lt;</span> <span class="mf">1.</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_intersection_plane_plane"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_intersection_plane_plane.html#compas.geometry.is_intersection_plane_plane">[docs]</a><span class="k">def</span> <span class="nf">is_intersection_plane_plane</span><span class="p">(</span><span class="n">plane1</span><span class="p">,</span> <span class="n">plane2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verifies if two planes intersect.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    plane1 : tuple</span>
+<span class="sd">        The base point and normal (normalized) defining the 1st plane.</span>
+<span class="sd">    plane2 : tuple</span>
+<span class="sd">        The base point and normal (normalized) defining the 2nd plane.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for intersection verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if plane1 intersects with plane2.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># check for parallelity of planes</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">plane1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plane2</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
+</code></pre></div>
+        
+      </main>
+      <!-- main -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+
+  <!-- <footer class="bg-dark py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3 d-flex flex-even my-4 ml-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Core</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_blender</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_ghpython</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_plotters</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_rhino</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Plugins</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_cgal</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_gmsh</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_libigl</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_shapeop</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Extensions</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fab</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fea(2)</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_tia</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_vol</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4 mr-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-3 mb-3 mt-0 footer-title">Resources</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">About</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Collaboration in research</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Transfer to industry</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Open source</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Quality assurance</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.16.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../../../_static/underscore.js"></script>
+  <script src="../../../../_static/doctools.js"></script>
+  <script src="../../../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+  });
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>

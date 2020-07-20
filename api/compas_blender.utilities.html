@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - utilities</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
+
+  
+    <link rel="next" title="get_document_name" href="generated/compas_blender.utilities.get_document_name.html" />
+  
+  
+  
+    <link rel="prev" title="ui" href="compas_blender.ui.html" />
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/plugins.html">Plugins</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <!-- social -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+      </ul>
+      <!-- social -->
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <span class="target" id="module-compas_blender.utilities"></span><div class="section" id="utilities">
+<h1 class="display-4 p-0 mb-5">utilities</h1>
+<p>This package contains many convenience functions for working and interacting
+with Blender.</p>
+<div class="section" id="document">
+<h2>document</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_document_name.html#compas_blender.utilities.get_document_name" title="compas_blender.utilities.get_document_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_document_name</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_document_filename.html#compas_blender.utilities.get_document_filename" title="compas_blender.utilities.get_document_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_document_filename</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_document_path.html#compas_blender.utilities.get_document_path" title="compas_blender.utilities.get_document_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_document_path</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_document_dirname.html#compas_blender.utilities.get_document_dirname" title="compas_blender.utilities.get_document_dirname"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_document_dirname</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="layers">
+<h2>layers</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.create_layer.html#compas_blender.utilities.create_layer" title="compas_blender.utilities.create_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_layer</span></code></a>(layer)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.create_layers.html#compas_blender.utilities.create_layers" title="compas_blender.utilities.create_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_layers</span></code></a>(layers)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.create_layers_from_path.html#compas_blender.utilities.create_layers_from_path" title="compas_blender.utilities.create_layers_from_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_layers_from_path</span></code></a>(path[, separator])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.create_layers_from_paths.html#compas_blender.utilities.create_layers_from_paths" title="compas_blender.utilities.create_layers_from_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_layers_from_paths</span></code></a>(paths[, separator])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.create_layers_from_dict.html#compas_blender.utilities.create_layers_from_dict" title="compas_blender.utilities.create_layers_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_layers_from_dict</span></code></a>(layers)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.clear_layer.html#compas_blender.utilities.clear_layer" title="compas_blender.utilities.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>(layer)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.clear_layers.html#compas_blender.utilities.clear_layers" title="compas_blender.utilities.clear_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layers</span></code></a>(layers)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.clear_current_layer.html#compas_blender.utilities.clear_current_layer" title="compas_blender.utilities.clear_current_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_current_layer</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.delete_layer.html#compas_blender.utilities.delete_layer" title="compas_blender.utilities.delete_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_layer</span></code></a>(layer)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.delete_layers.html#compas_blender.utilities.delete_layers" title="compas_blender.utilities.delete_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_layers</span></code></a>(layers)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="misc">
+<h2>misc</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_tolerance.html#compas_blender.utilities.get_tolerance" title="compas_blender.utilities.get_tolerance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_tolerance</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.screenshot_current_view.html#compas_blender.utilities.screenshot_current_view" title="compas_blender.utilities.screenshot_current_view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">screenshot_current_view</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.wait.html#compas_blender.utilities.wait" title="compas_blender.utilities.wait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.browse_for_folder.html#compas_blender.utilities.browse_for_folder" title="compas_blender.utilities.browse_for_folder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">browse_for_folder</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.browse_for_file.html#compas_blender.utilities.browse_for_file" title="compas_blender.utilities.browse_for_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">browse_for_file</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.display_message.html#compas_blender.utilities.display_message" title="compas_blender.utilities.display_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_message</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.display_text.html#compas_blender.utilities.display_text" title="compas_blender.utilities.display_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_text</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.display_image.html#compas_blender.utilities.display_image" title="compas_blender.utilities.display_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_image</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.display_html.html#compas_blender.utilities.display_html" title="compas_blender.utilities.display_html"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_html</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.update_settings.html#compas_blender.utilities.update_settings" title="compas_blender.utilities.update_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_settings</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.update_attributes.html#compas_blender.utilities.update_attributes" title="compas_blender.utilities.update_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_attributes</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.update_named_values.html#compas_blender.utilities.update_named_values" title="compas_blender.utilities.update_named_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_named_values</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="objects">
+<h2>objects</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.delete_object.html#compas_blender.utilities.delete_object" title="compas_blender.utilities.delete_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_object</span></code></a>(obj)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.delete_objects.html#compas_blender.utilities.delete_objects" title="compas_blender.utilities.delete_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_objects</span></code></a>(objects)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.delete_object_by_name.html#compas_blender.utilities.delete_object_by_name" title="compas_blender.utilities.delete_object_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_object_by_name</span></code></a>(name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.delete_objects_by_names.html#compas_blender.utilities.delete_objects_by_names" title="compas_blender.utilities.delete_objects_by_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_objects_by_names</span></code></a>(names)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_object_by_name.html#compas_blender.utilities.get_object_by_name" title="compas_blender.utilities.get_object_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_object_by_name</span></code></a>(name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_objects_by_names.html#compas_blender.utilities.get_objects_by_names" title="compas_blender.utilities.get_objects_by_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_objects_by_names</span></code></a>(names)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_objects.html#compas_blender.utilities.get_objects" title="compas_blender.utilities.get_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_objects</span></code></a>([names, color, layer, type])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_object_name.html#compas_blender.utilities.get_object_name" title="compas_blender.utilities.get_object_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_object_name</span></code></a>(obj)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_objects_names.html#compas_blender.utilities.get_objects_names" title="compas_blender.utilities.get_objects_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_objects_names</span></code></a>(objects)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_objects_layers.html#compas_blender.utilities.get_objects_layers" title="compas_blender.utilities.get_objects_layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_objects_layers</span></code></a>(objects)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_objects_types.html#compas_blender.utilities.get_objects_types" title="compas_blender.utilities.get_objects_types"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_objects_types</span></code></a>(objects)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_objects_coordinates.html#compas_blender.utilities.get_objects_coordinates" title="compas_blender.utilities.get_objects_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_objects_coordinates</span></code></a>(objects)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_object_property.html#compas_blender.utilities.get_object_property" title="compas_blender.utilities.get_object_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_object_property</span></code></a>(obj, property_name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_objects_property.html#compas_blender.utilities.get_objects_property" title="compas_blender.utilities.get_objects_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_objects_property</span></code></a>(objects, property_name)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_points.html#compas_blender.utilities.get_points" title="compas_blender.utilities.get_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_points</span></code></a>([layer])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_curves.html#compas_blender.utilities.get_curves" title="compas_blender.utilities.get_curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_curves</span></code></a>([layer])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_meshes.html#compas_blender.utilities.get_meshes" title="compas_blender.utilities.get_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_meshes</span></code></a>([layer])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_points_coordinates.html#compas_blender.utilities.get_points_coordinates" title="compas_blender.utilities.get_points_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_points_coordinates</span></code></a>([objects])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.get_curves_coordinates.html#compas_blender.utilities.get_curves_coordinates" title="compas_blender.utilities.get_curves_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_curves_coordinates</span></code></a>(objects)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_object.html#compas_blender.utilities.select_object" title="compas_blender.utilities.select_object"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_object</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_objects.html#compas_blender.utilities.select_objects" title="compas_blender.utilities.select_objects"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_objects</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_point.html#compas_blender.utilities.select_point" title="compas_blender.utilities.select_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_point</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_points.html#compas_blender.utilities.select_points" title="compas_blender.utilities.select_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_points</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_curve.html#compas_blender.utilities.select_curve" title="compas_blender.utilities.select_curve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_curve</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_curves.html#compas_blender.utilities.select_curves" title="compas_blender.utilities.select_curves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_curves</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_surface.html#compas_blender.utilities.select_surface" title="compas_blender.utilities.select_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_surface</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_surfaces.html#compas_blender.utilities.select_surfaces" title="compas_blender.utilities.select_surfaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_surfaces</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_mesh.html#compas_blender.utilities.select_mesh" title="compas_blender.utilities.select_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_mesh</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.select_meshes.html#compas_blender.utilities.select_meshes" title="compas_blender.utilities.select_meshes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select_meshes</span></code></a>([message])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_select.html#compas_blender.utilities.set_select" title="compas_blender.utilities.set_select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_select</span></code></a>([objects])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_deselect.html#compas_blender.utilities.set_deselect" title="compas_blender.utilities.set_deselect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_deselect</span></code></a>([objects])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_objects_layer.html#compas_blender.utilities.set_objects_layer" title="compas_blender.utilities.set_objects_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_objects_layer</span></code></a>(objects, layer)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_objects_coordinates.html#compas_blender.utilities.set_objects_coordinates" title="compas_blender.utilities.set_objects_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_objects_coordinates</span></code></a>(objects, coords)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_objects_rotations.html#compas_blender.utilities.set_objects_rotations" title="compas_blender.utilities.set_objects_rotations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_objects_rotations</span></code></a>(objects, rotations)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_objects_scales.html#compas_blender.utilities.set_objects_scales" title="compas_blender.utilities.set_objects_scales"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_objects_scales</span></code></a>(objects, scales)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_objects_show_names.html#compas_blender.utilities.set_objects_show_names" title="compas_blender.utilities.set_objects_show_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_objects_show_names</span></code></a>(objects[, show])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_objects_visible.html#compas_blender.utilities.set_objects_visible" title="compas_blender.utilities.set_objects_visible"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_objects_visible</span></code></a>(objects[, visible])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_object_property.html#compas_blender.utilities.set_object_property" title="compas_blender.utilities.set_object_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_object_property</span></code></a>(obj, property_name, …)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.set_objects_property.html#compas_blender.utilities.set_objects_property" title="compas_blender.utilities.set_objects_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_objects_property</span></code></a>(objects, property_name, …)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="drawing">
+<h2>drawing</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.create_material.html#compas_blender.utilities.create_material" title="compas_blender.utilities.create_material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_material</span></code></a>(rgb[, alpha])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_points.html#compas_blender.utilities.draw_points" title="compas_blender.utilities.draw_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_points</span></code></a>(points[, layer])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_lines.html#compas_blender.utilities.draw_lines" title="compas_blender.utilities.draw_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_lines</span></code></a>(lines[, layer, centroid])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_geodesics.html#compas_blender.utilities.draw_geodesics" title="compas_blender.utilities.draw_geodesics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_geodesics</span></code></a>(geodesics, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_breps.html#compas_blender.utilities.draw_breps" title="compas_blender.utilities.draw_breps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_breps</span></code></a>(faces, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_cylinders.html#compas_blender.utilities.draw_cylinders" title="compas_blender.utilities.draw_cylinders"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_cylinders</span></code></a>(cylinders[, div, layer])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_pipes.html#compas_blender.utilities.draw_pipes" title="compas_blender.utilities.draw_pipes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_pipes</span></code></a>(pipes, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_forces.html#compas_blender.utilities.draw_forces" title="compas_blender.utilities.draw_forces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_forces</span></code></a>(forces, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_spheres.html#compas_blender.utilities.draw_spheres" title="compas_blender.utilities.draw_spheres"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_spheres</span></code></a>(spheres[, div, layer])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_cubes.html#compas_blender.utilities.draw_cubes" title="compas_blender.utilities.draw_cubes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_cubes</span></code></a>(cubes, layer)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_mesh.html#compas_blender.utilities.draw_mesh" title="compas_blender.utilities.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a>(vertices[, edges, faces, name, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_faces.html#compas_blender.utilities.draw_faces" title="compas_blender.utilities.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>(faces, **kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_pointcloud.html#compas_blender.utilities.draw_pointcloud" title="compas_blender.utilities.draw_pointcloud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_pointcloud</span></code></a>(points[, layer])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.utilities.draw_texts.html#compas_blender.utilities.draw_texts" title="compas_blender.utilities.draw_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_texts</span></code></a>(texts[, layer])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+        
+      </main>
+      <!-- main -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../api.html">API Reference</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.artists.html">artists</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.geometry.html">geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.ui.html">ui</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">utilities</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.html">compas_plotters</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">utilities</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#document">document</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#layers">layers</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#misc">misc</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#objects">objects</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#drawing">drawing</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+
+  <!-- <footer class="bg-dark py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3 d-flex flex-even my-4 ml-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Core</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_blender</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_ghpython</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_plotters</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_rhino</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Plugins</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_cgal</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_gmsh</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_libigl</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_shapeop</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Extensions</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fab</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fea(2)</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_tia</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_vol</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4 mr-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-3 mb-3 mt-0 footer-title">Resources</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">About</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Collaboration in research</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Transfer to industry</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Open source</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Quality assurance</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.16.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../_static/underscore.js"></script>
+  <script src="../_static/doctools.js"></script>
+  <script src="../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+  });
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>
