@@ -28,22 +28,19 @@ Objects provide a high-level way to interact with both COMPAS and Rhino objects 
 
 ----
 
+BaseObject
+==========
+
+.. autoclass:: BaseObject
+    :members: clear, draw, select, modify, move
+
+----
+
 MeshObject
 ==========
 
 .. autoclass:: MeshObject
-
-----
-
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    BaseObject
-
+    :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
 
 """
 from __future__ import absolute_import

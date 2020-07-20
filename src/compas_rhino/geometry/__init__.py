@@ -23,6 +23,7 @@ BaseRhinoGeometry
 =================
 
 .. autoclass:: BaseRhinoGeometry
+    :members: from_geometry, from_selection, to_compas, from_guid, from_object, transform
 
 ----
 
@@ -30,36 +31,55 @@ RhinoPoint
 ==========
 
 .. autoclass:: RhinoPoint
+    :members: from_geometry, from_selection, to_compas
+
+----
 
 RhinoVector
 ===========
 
 .. autoclass:: RhinoVector
+    :members: from_geometry, from_selection, to_compas
+
+----
 
 RhinoLine
 =========
 
 .. autoclass:: RhinoLine
+    :members: from_geometry, from_selection, to_compas
+
+----
 
 RhinoPlane
 ==========
 
 .. autoclass:: RhinoPlane
+    :members: from_geometry, from_selection, to_compas
+
+----
 
 RhinoMesh
 =========
 
 .. autoclass:: RhinoMesh
+    :members: from_geometry, from_selection, to_compas
+
+----
 
 RhinoCurve
 ==========
 
 .. autoclass:: RhinoCurve
+    :members: from_geometry, from_selection, to_compas
+
+----
 
 RhinoSurface
 ============
 
 .. autoclass:: RhinoSurface
+    :members: from_geometry, from_selection, to_compas
 
 """
 from __future__ import absolute_import

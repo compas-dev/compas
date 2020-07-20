@@ -39,27 +39,39 @@ with less of a performance penalty than with regular geometry objects.
 
 ----
 
-Classes
-=======
+BaseConduit
+===========
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+.. autoclass:: BaseConduit
+    :members: enabled, enable, disable, redraw
 
-    FacesConduit
-    LinesConduit
-    PointsConduit
-    LabelsConduit
+----
 
+Faces Conduit
+=============
 
-Base Classes
-============
+.. autoclass:: FacesConduit
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+----
 
-    BaseConduit
+Lines Conduit
+=============
+
+.. autoclass:: LinesConduit
+
+----
+
+Points Conduit
+=============
+
+.. autoclass:: PointsConduit
+
+----
+
+Labels Conduit
+==============
+
+.. autoclass:: LabelsConduit
 
 """
 from __future__ import absolute_import

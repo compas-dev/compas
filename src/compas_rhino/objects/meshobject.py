@@ -144,7 +144,7 @@ class MeshObject(BaseObject):
             self.redraw()
 
     def select(self):
-        pass
+        raise NotImplementedError
 
     def select_vertices(self):
         """Select vertices of the mesh.

@@ -25,13 +25,6 @@ class BaseRhinoGeometry(ABC):
     name : str
         The name of the object.
 
-    Methods
-    -------
-    from_geometry
-    from_guid
-    from_object
-    from_selection
-
     """
 
     def __init__(self):

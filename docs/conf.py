@@ -59,7 +59,7 @@ autodoc_default_options = {
     'show-inheritance': True,
 }
 
-autodoc_member_order = 'alphabetical'
+autodoc_member_order = 'groupwise'
 
 autoclass_content = "class"
 

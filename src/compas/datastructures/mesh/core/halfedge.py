@@ -571,9 +571,10 @@ class HalfEdge(Datastructure):
         """
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
+        vertices = [int(key) for key in vertices]
+        vertices[:] = [u for u, v in pairwise(vertices + vertices[:1]) if u != v]
         if len(vertices) < 3:
             return
-        vertices = [int(key) for key in vertices]
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
         if fkey > self._max_int_fkey:
@@ -583,8 +584,6 @@ class HalfEdge(Datastructure):
         self.face[fkey] = vertices
         self.facedata.setdefault(fkey, attr)
         for u, v in pairwise(vertices + vertices[:1]):
-            if u == v:
-                continue
             self.halfedge[u][v] = fkey
             if u not in self.halfedge[v]:
                 self.halfedge[v][u] = None
