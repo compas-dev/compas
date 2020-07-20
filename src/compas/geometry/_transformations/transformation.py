@@ -447,7 +447,7 @@ class Transformation(object):
         Returns
         -------
         5-tuple of Transformation
-            The scale, shear, rotation, tranlation, and projection components
+            The scale, shear, rotation, translation, and projection components
             of the current transformation.
 
         Examples
