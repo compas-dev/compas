@@ -19,8 +19,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: [3.6, 3.7, 3.8]
+        os: [ubuntu-latest]
+        python-version: [3.6]
 
     steps:
       - uses: actions/checkout@v2
@@ -69,6 +69,8 @@ jobs:
         run: |
           cd dist/docs
           git init
+          git config --global user.name "brgcode"
+          git config --global user.email "van.mele@arch.eth.ch"
           git add .
           git commit -m "Updating docs"
           git remote add origin git@github.com:compas-dev/compas.git
