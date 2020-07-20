@@ -112,8 +112,6 @@ def docs(ctx, doctest=False, rebuild=True, check_links=False):
         clean(ctx)
 
     with chdir(BASE_FOLDER):
-        ctx.run('sphinx-autogen docs/**.rst')
-
         if doctest:
             ctx.run('sphinx-build -E -b doctest docs dist/docs')
 
