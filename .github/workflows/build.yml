@@ -9,11 +9,11 @@ on:
       - master
 
 jobs:
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print variables
-        run: echo "${{ toJson(github) }}"
+  # debug:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Print variables
+  #       run: echo "${{ toJson(github) }}"
 
   build-packages:
     runs-on: ${{ matrix.os }}
@@ -46,35 +46,30 @@ jobs:
         run: |
           invoke test
 
-#   build-docs:
-#     needs: build-packages
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Set up Python
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: 3.8
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install cython --install-option='--no-cython-compile'
-#       - name: Install
-#         run: |
-#           pip install --no-cache-dir -r requirements-dev.txt
-#       - name: Build docs with sphinx
-#         run: |
-#           invoke docs
-#       - name: Upload docs
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: docs
-#           path: dist/docs
-#       - name: Deploy docs
-#         run: |
-#           git config --global user.name "brgcode"
-#           git config --global user.email "van.mele@arch.eth.ch"
-#           git remote set-url origin https://compas-dev:${{ secrets.GITHUB_TOKEN }}@github.com/compas-dev/main
-#           git add -A
-#           git commit -m "docs update"
-#           git push origin master
+  # build-docs:
+  #   needs: build-packages
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: 3.8
+  #     - name: Install dependencies
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install cython --install-option='--no-cython-compile'
+  #     - name: Install
+  #       run: |
+  #         pip install --no-cache-dir -r requirements-dev.txt
+  #     - name: Build docs with sphinx
+  #       run: |
+  #         invoke docs
+  #     - name: Deploy docs
+  #       run: |
+  #         git config --global user.name "brgcode"
+  #         git config --global user.email "van.mele@arch.eth.ch"
+  #         git remote set-url origin https://compas-dev:${{ secrets.GITHUB_TOKEN }}@github.com/compas-dev/main
+  #         git add dist/docs
+  #         git commit -m "docs update"
+  #         git push origin master
