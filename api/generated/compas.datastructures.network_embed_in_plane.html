@@ -89,13 +89,13 @@
 <h1 class="display-4 p-0 mb-5">network_embed_in_plane</h1>
 <dl class="function">
 <dt id="compas.datastructures.network_embed_in_plane">
-<code class="sig-prename descclassname">compas.datastructures.</code><code class="sig-name descname">network_embed_in_plane</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">fix=None</em>, <em class="sig-param">straightline=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/network/planarity_.html#network_embed_in_plane"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">compas.datastructures.</code><code class="sig-name descname">network_embed_in_plane</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">fixed=None</em>, <em class="sig-param">straightline=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/network/planarity_.html#network_embed_in_plane"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Embed the network in the plane.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>network</strong> (<em>Network</em>) – A network object.</p></li>
-<li><p><strong>fix</strong> (<em>list (None)</em>) – Two fixed points.</p></li>
+<li><p><strong>fixed</strong> (<em>list (None)</em>) – Two fixed points.</p></li>
 <li><p><strong>straightline</strong> (<em>bool (True)</em>) – Embed using straight lines.</p></li>
 </ul>
 </dd>
@@ -107,10 +107,6 @@ False otherwise.</p>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ImportError" title="(in Python v3.8)"><strong>ImportError</strong></a> – If NetworkX is not installed.</p>
 </dd>
 </dl>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This function uses the Python package NetworkX. NetworkX can be <em>pip installed</em>.</p>
-</div>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
