@@ -15,7 +15,8 @@ from compas.geometry import allclose
 from compas.geometry import multiply_matrices
 from compas.geometry._transformations import decompose_matrix
 from compas.geometry._transformations import matrix_from_scale_factors
-from compas.geometry._transformations import matrix_from_change_of_basis
+from compas.geometry._transformations import matrix_from_frame
+from compas.geometry._transformations import matrix_inverse
 from compas.geometry._transformations import Transformation
 
 __all__ = ['Scale']
@@ -69,6 +70,9 @@ class Scale(Transformation):
         ----------
         factors : list of float
             The scale factors along X, Y, Z.
+        frame : :class:`compas.geometry.Frame`, optional
+            The anchor frame for the scaling transformation.
+            Defaults to ``None``.
 
         Returns
         -------
@@ -86,10 +90,9 @@ class Scale(Transformation):
         """
         S = cls()
         if frame:
-            from compas.geometry import Frame  # noqa: F811
-            Tl = matrix_from_change_of_basis(Frame.worldXY(), frame)
+            Tw = matrix_from_frame(frame)
+            Tl = matrix_inverse(Tw)
             Sc = matrix_from_scale_factors(factors)
-            Tw = matrix_from_change_of_basis(frame, Frame.worldXY())
             S.matrix = multiply_matrices(multiply_matrices(Tw, Sc), Tl)
         else:
             S.matrix = matrix_from_scale_factors(factors)
