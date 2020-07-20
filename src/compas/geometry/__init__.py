@@ -16,7 +16,6 @@ Bases
     Primitive
     Shape
     Collection
-    CollectionNumpy
 
 
 Primitives
@@ -62,7 +61,6 @@ Collections
     :nosignatures:
 
     PointCollection
-    PointCollectionNumpy
 
 
 Transformations

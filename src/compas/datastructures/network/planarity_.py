@@ -68,7 +68,7 @@ def network_is_crossed(network):
 
 
 def _are_edges_crossed(edges, vertices):
-    for (u1, v1), (u2, v2) in product(network.edges(), network.edges()):
+    for (u1, v1), (u2, v2) in product(edges, edges):
         if u1 == u2 or v1 == v2 or u1 == v2 or u2 == v1:
             continue
         a = vertices[u1]
