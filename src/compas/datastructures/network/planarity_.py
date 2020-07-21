@@ -8,12 +8,15 @@ from math import pi
 
 from itertools import product
 
-import planarity
+import compas
 
 from compas.geometry import angle_vectors_xy
 from compas.geometry import is_intersection_segment_segment_xy
 from compas.geometry import is_ccw_xy
 from compas.geometry import subtract_vectors_xy
+
+if not compas.IPY:
+    import planarity
 
 
 __all__ = [
