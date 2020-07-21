@@ -228,7 +228,7 @@
     <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mf">0.0</span></div>
 
 
-<span class="k">def</span> <span class="nf">intersection_segment_segment</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<div class="viewcode-block" id="intersection_segment_segment"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_segment_segment.html#compas.geometry.intersection_segment_segment">[docs]</a><span class="k">def</span> <span class="nf">intersection_segment_segment</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute the intersection of two lines segments.</span>
 
 <span class="sd">    Parameters</span>
@@ -255,7 +255,7 @@
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">if</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">ab</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">])</span></div>
 
 
 <span class="k">def</span> <span class="nf">intersection_line_segment</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
