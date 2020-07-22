@@ -3,9 +3,10 @@ from __future__ import division
 from __future__ import print_function
 
 import inspect
+import json
 import sys
 
-from compas.base import DataBaseClass
+from compas.base import Base
 from compas.files.xml_ import XML
 from compas.utilities import memoize
 
@@ -197,7 +198,7 @@ class URDFParser(object):
         return result
 
 
-class URDFGenericElement(DataBaseClass):
+class URDFGenericElement(Base):
     """Generic representation for all URDF elements that
     are not explicitly supported."""
 
@@ -230,6 +231,19 @@ class URDFGenericElement(DataBaseClass):
         generic.elements = [cls.from_data(d) for d in data['elements']]
         generic.text = data['text']
         return generic
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
 
 @memoize

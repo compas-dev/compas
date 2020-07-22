@@ -2,7 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.base import DataBaseClass
+import json
+
+from compas.base import Base
 from compas.files import URDFParser
 from compas.files.urdf import URDFGenericElement
 
@@ -20,7 +22,7 @@ from compas.robots.model.geometry import Texture
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
 
-class Mass(DataBaseClass):
+class Mass(Base):
     """Represents a value of mass usually related to a link."""
 
     def __init__(self, value):
@@ -42,8 +44,21 @@ class Mass(DataBaseClass):
     def from_data(cls, data):
         return cls(**data)
 
+    def to_data(self):
+        return self.data
 
-class Inertia(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Inertia(Base):
     """Rotational inertia matrix (3x3) represented in the inertia frame.
 
     Since the rotational inertia matrix is symmetric, only 6 above-diagonal
@@ -84,8 +99,21 @@ class Inertia(DataBaseClass):
     def from_data(cls, data):
         return cls(**data)
 
+    def to_data(self):
+        return self.data
 
-class Inertial(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Inertial(Base):
     """Inertial properties of a link.
 
     Attributes
@@ -126,8 +154,21 @@ class Inertial(DataBaseClass):
         inertial.data = data
         return inertial
 
+    def to_data(self):
+        return self.data
 
-class Visual(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Visual(Base):
     """Visual description of a link.
 
     Attributes
@@ -182,6 +223,19 @@ class Visual(DataBaseClass):
         visual.data = data
         return visual
 
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
     def get_color(self):
         """Get the RGBA color array assigned to the link.
 
@@ -198,7 +252,7 @@ class Visual(DataBaseClass):
             return None
 
 
-class Collision(DataBaseClass):
+class Collision(Base):
     """Collidable description of a link.
 
     Attributes
@@ -248,8 +302,21 @@ class Collision(DataBaseClass):
         visual.data = data
         return visual
 
+    def to_data(self):
+        return self.data
 
-class Link(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Link(Base):
     """Link represented as a rigid body with an inertia, visual, and collision features.
 
     Attributes
@@ -313,6 +380,19 @@ class Link(DataBaseClass):
         link = cls(data['name'])
         link.data = data
         return link
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
 
 URDFParser.install_parser(Link, 'robot/link')

@@ -3,7 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import itertools
+import json
 
+from compas.base import Base
 from compas.files import URDF
 from compas.files import URDFParser
 from compas.files.urdf import URDFGenericElement
@@ -27,7 +29,7 @@ from compas.topology import shortest_path
 __all__ = ['RobotModel']
 
 
-class RobotModel(object):
+class RobotModel(Base):
     """RobotModel is the root element of the model.
 
     Instances of this class represent an entire robot as defined in an URDF
@@ -111,6 +113,16 @@ class RobotModel(object):
         robot_model = cls(data['name'])
         robot_model.data = data
         return robot_model
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""

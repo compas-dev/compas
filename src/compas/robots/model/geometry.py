@@ -2,8 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import json
+
 import compas.geometry
-from compas.base import DataBaseClass
+from compas.base import Base
 from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 from compas.utilities import hex_to_rgb
@@ -119,7 +121,7 @@ class Origin(Frame):
         self.point = self.point * factor
 
 
-class BaseShape(DataBaseClass):
+class BaseShape(Base):
     """Base class for all 3D shapes.
 
     Attributes
@@ -131,6 +133,31 @@ class BaseShape(DataBaseClass):
     def __init__(self):
         super(BaseShape, self).__init__()
         self.geometry = None
+
+    @property
+    def data(self):
+        raise NotImplementedError
+
+    @data.setter
+    def data(self, data):
+        raise NotImplementedError
+
+    @classmethod
+    def from_data(cls, data):
+        raise NotImplementedError
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
 
 class Box(BaseShape):
@@ -379,7 +406,7 @@ class MeshDescriptor(BaseShape):
         return md
 
 
-class Color(DataBaseClass):
+class Color(Base):
     """Color represented in RGBA.
 
     Parameters
@@ -419,8 +446,21 @@ class Color(DataBaseClass):
         color.data = data
         return color
 
+    def to_data(self):
+        return self.data
 
-class Texture(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Texture(Base):
     """Texture description.
 
     Parameters
@@ -456,8 +496,21 @@ class Texture(DataBaseClass):
     def from_data(cls, data):
         return cls(**data)
 
+    def to_data(self):
+        return self.data
 
-class Material(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Material(Base):
     """Material description.
 
     Parameters
@@ -505,6 +558,19 @@ class Material(DataBaseClass):
         material.data = data
         return material
 
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
     def get_color(self):
         """Get the RGBA color array of the material.
 
@@ -537,7 +603,7 @@ TYPE_CLASS_ENUM = {
 }
 
 
-class Geometry(DataBaseClass):
+class Geometry(Base):
     """Geometrical description of the shape of a link.
 
     Parameters
@@ -600,6 +666,19 @@ class Geometry(DataBaseClass):
         geo = cls(box=class_.from_data(data['shape']))
         geo.data = data
         return geo
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
     @property
     def geo(self):

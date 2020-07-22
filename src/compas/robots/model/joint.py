@@ -2,7 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.base import DataBaseClass
+import json
+
+from compas.base import Base
 from compas.files import URDFParser
 from compas.files.urdf import URDFGenericElement
 from compas.geometry import Vector
@@ -28,7 +30,7 @@ __all__ = [
 ]
 
 
-class ParentLink(DataBaseClass):
+class ParentLink(Base):
     """Describes a parent relation between a joint its parent link."""
 
     def __init__(self, link):
@@ -52,8 +54,21 @@ class ParentLink(DataBaseClass):
     def from_data(cls, data):
         return cls(data['link'])
 
+    def to_data(self):
+        return self.data
 
-class ChildLink(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class ChildLink(Base):
     """Describes a child relation between a joint and its child link."""
 
     def __init__(self, link):
@@ -77,8 +92,21 @@ class ChildLink(DataBaseClass):
     def from_data(cls, data):
         return cls(data['link'])
 
+    def to_data(self):
+        return self.data
 
-class Calibration(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Calibration(Base):
     """Reference positions of the joint, used to calibrate the absolute position."""
 
     def __init__(self, rising=0.0, falling=0.0, reference_position=0.0):
@@ -107,8 +135,21 @@ class Calibration(DataBaseClass):
         calibration.data = data
         return calibration
 
+    def to_data(self):
+        return self.data
 
-class Dynamics(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Dynamics(Base):
     """Physical properties of the joint used for simulation of dynamics."""
 
     def __init__(self, damping=0.0, friction=0.0):
@@ -134,8 +175,21 @@ class Dynamics(DataBaseClass):
         dynamics.data = data
         return dynamics
 
+    def to_data(self):
+        return self.data
 
-class Limit(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Limit(Base):
     """Joint limit properties.
 
     Attributes
@@ -179,6 +233,19 @@ class Limit(DataBaseClass):
         limit.data = data
         return limit
 
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
     def scale(self, factor):
         """Scale the upper and lower limits by a given factor.
 
@@ -195,7 +262,7 @@ class Limit(DataBaseClass):
         self.upper *= factor
 
 
-class Mimic(DataBaseClass):
+class Mimic(Base):
     """Description of joint mimic."""
 
     def __init__(self, joint, multiplier=1.0, offset=0.):
@@ -224,11 +291,24 @@ class Mimic(DataBaseClass):
         mimic.data = data
         return mimic
 
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
     def calculate_position(self, mimicked_joint_position):
         return self.multiplier * mimicked_joint_position + self.offset
 
 
-class SafetyController(DataBaseClass):
+class SafetyController(Base):
     """Safety controller properties."""
 
     def __init__(self, k_velocity, k_position=0.0, soft_lower_limit=0.0, soft_upper_limit=0.0):
@@ -260,8 +340,21 @@ class SafetyController(DataBaseClass):
         sc.data = data
         return sc
 
+    def to_data(self):
+        return self.data
 
-class Axis(DataBaseClass):
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Axis(Base):
     """Representation of an axis or vector.
 
     Attributes
@@ -308,6 +401,19 @@ class Axis(DataBaseClass):
         axis.data = data
         return axis
 
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
     def copy(self):
         """Create a copy of the axis instance."""
         cls = type(self)
@@ -353,7 +459,7 @@ class Axis(DataBaseClass):
         return "[%.3f, %.3f, %.3f]" % (self.x, self.y, self.z)
 
 
-class Joint(DataBaseClass):
+class Joint(Base):
     """Representation of the kinematics and dynamics of a joint and its safety limits.
 
     Attributes
@@ -486,6 +592,19 @@ class Joint(DataBaseClass):
         )
         joint.data = data
         return joint
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
     @property
     def current_transformation(self):

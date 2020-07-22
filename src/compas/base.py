@@ -16,7 +16,6 @@ ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 __all__ = [
     'Base',
-    'DataBaseClass',
 ]
 
 
@@ -76,40 +75,6 @@ class Base(ABC):
     @abc.abstractmethod
     def to_json(self, filepath):
         pass
-
-
-class DataBaseClass(object):
-    """Non-abstract base class for compas objects not compatible with ``__slots__``."""
-    @classmethod
-    def from_data(cls, data):
-        """Construct the object from its data representation.
-        """
-        raise NotImplementedError
-
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the object.
-
-        Returns
-        -------
-        dict
-            The object's data.
-        """
-        raise NotImplementedError
-
-    @data.setter
-    def data(self, data):
-        raise NotImplementedError
-
-    def to_data(self):
-        """Returns the data dictionary that represents the object.
-
-        Returns
-        -------
-        dict
-            The object's data.
-        """
-        return self.data
 
 
 # ==============================================================================
