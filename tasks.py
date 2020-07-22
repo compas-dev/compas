@@ -131,6 +131,13 @@ def lint(ctx):
 
 
 @task()
+def testdocs(ctx):
+    """Test the examples in the ."""
+    log.write('Running doctest...')
+    ctx.run('sphinx-build -E -b doctest docs dist/docs')
+
+
+@task()
 def check(ctx):
     """Check the consistency of documentation, coding style and a few other things."""
 
@@ -142,9 +149,6 @@ def check(ctx):
 
         log.write('Checking metadata...')
         ctx.run('python setup.py check --strict --metadata')
-
-        # log.write('Checking python imports...')
-        # ctx.run('isort --check-only --diff --recursive src tests setup.py')
 
 
 @task(help={

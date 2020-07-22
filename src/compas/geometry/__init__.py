@@ -344,6 +344,7 @@ Intersections
     intersection_line_triangle
     intersection_plane_plane
     intersection_plane_plane_plane
+    intersection_segment_segment
     intersection_segment_segment_xy
     intersection_segment_plane
 

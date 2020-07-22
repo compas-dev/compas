@@ -16,7 +16,6 @@ from compas.geometry import dot_vectors
 from compas.geometry import length_vector_xy
 from compas.geometry import subtract_vectors_xy
 from compas.geometry import normalize_vector
-from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import is_point_on_segment
 from compas.geometry import is_point_on_segment_xy
@@ -25,13 +24,8 @@ from compas.geometry import is_point_in_triangle
 
 __all__ = [
     'intersection_line_line',
-    'intersection_line_line_xy',
     'intersection_segment_segment',
-    'intersection_segment_segment_xy',
     'intersection_line_segment',
-    'intersection_line_segment_xy',
-    'intersection_line_box_xy',
-    'intersection_circle_circle_xy',
     'intersection_line_plane',
     'intersection_polyline_plane',
     'intersection_line_triangle',
@@ -41,8 +35,14 @@ __all__ = [
     'intersection_plane_plane_plane',
     'intersection_sphere_line',
     'intersection_sphere_sphere',
-    'intersection_ellipse_line_xy',
     'intersection_segment_polyline',
+
+    'intersection_line_line_xy',
+    'intersection_segment_segment_xy',
+    'intersection_line_segment_xy',
+    'intersection_line_box_xy',
+    'intersection_circle_circle_xy',
+    'intersection_ellipse_line_xy',
     'intersection_segment_polyline_xy'
 ]
 
@@ -62,16 +62,43 @@ def intersection_line_line(l1, l2, tol=1e-6):
 
     Returns
     -------
-    list
-        XYZ coordinates of the two points marking the shortest distance between the lines.
+    tuple
+        Two intersection points.
+
         If the lines intersect, these two points are identical.
-        If the lines are skewed and thus only have an apparent intersection, the two
-        points are different.
-        If the lines are parallel, the return value is [None, None].
+        If the lines are skewed and thus only have an apparent intersection, the two points are different.
+
+        In all other cases the return is `(None, None)`.
 
     Examples
     --------
-    >>>
+    The 2 intersection points of intersecting lines are identical.
+
+    >>> l1 = [0, 0, 0], [1, 0, 0]
+    >>> l2 = [0, 0, 0], [0, 1, 0]
+    >>> intersection_line_line(l1, l2)
+    ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
+
+    Note that lines extend beyond their start and end points.
+
+    >>> l1 = [0, 0, 0], [1, 0, 0]
+    >>> l2 = [2, 0, 0], [0, 1, 0]
+    >>> intersection_line_line(l1, l2)
+    ([2.0, 0.0, 0.0], [2.0, 0.0, 0.0])
+
+    Skew lines have two different intersection points.
+
+    >>> l1 = [0, 0, 0], [1, 0, 0]
+    >>> l2 = [0, 0, 1], [0, 1, 1]
+    >>> intersection_line_line(l1, l2)
+    ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
+
+    Parallel lines don't intersect.
+
+    >>> l1 = [0, 0, 0], [1, 0, 0]
+    >>> l2 = [0, 0, 0], [1, 0, 0]
+    >>> intersection_line_line(l1, l2)
+    (None, None)
 
     """
     a, b = l1
@@ -90,58 +117,10 @@ def intersection_line_line(l1, l2, tol=1e-6):
     i1 = intersection_line_plane(l1, plane_2, tol=tol)
     i2 = intersection_line_plane(l2, plane_1, tol=tol)
 
+    if not i1 or not i2:
+        return None, None
+
     return i1, i2
-
-
-def intersection_line_line_xy(l1, l2, tol=1e-6):
-    """Compute the intersection of two lines, assuming they lie on the XY plane.
-
-    Parameters
-    ----------
-    ab : tuple
-        XY(Z) coordinates of two points defining a line.
-    cd : tuple
-        XY(Z) coordinates of two points defining another line.
-    tol : float, optional
-        A tolerance for membership verification.
-        Default is ``1e-6``.
-
-    Returns
-    -------
-    None
-        If there is no intersection point (parallel lines).
-    list
-        XYZ coordinates of intersection point if one exists (Z = 0).
-
-    Notes
-    -----
-    Only if the lines are parallel, there is no intersection point [1]_.
-
-    References
-    ----------
-    .. [1] Wikipedia. *Line-line intersection*.
-           Available at: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-
-    """
-    a, b = l1
-    c, d = l2
-
-    x1, y1 = a[0], a[1]
-    x2, y2 = b[0], b[1]
-    x3, y3 = c[0], c[1]
-    x4, y4 = d[0], d[1]
-
-    d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
-
-    if fabs(d) <= tol:
-        return None
-
-    a = (x1 * y2 - y1 * x2)
-    b = (x3 * y4 - y3 * x4)
-    x = (a * (x3 - x4) - (x1 - x2) * b) / d
-    y = (a * (y3 - y4) - (y1 - y2) * b) / d
-
-    return x, y, 0.0
 
 
 def intersection_segment_segment(ab, cd, tol=1e-6):
@@ -159,140 +138,92 @@ def intersection_segment_segment(ab, cd, tol=1e-6):
 
     Returns
     -------
-    None
-        If there is no intersection point.
-    list
-        XYZ coordinates of intersection point if one exists.
+    tuple
+        Two intersection points.
+
+        If the segments intersect and the intersection points lie on the respective segments, the two points are identical.
+        If the segments are skew and the apparent intersection points lie on the respective segments, the two points are different.
+
+        In all other cases the return is `(None, None)`.
+
+    Examples
+    --------
+    The 2 intersection points of intersecting segments are identical.
+
+    >>> s1 = [0, 0, 0], [1, 0, 0]
+    >>> s2 = [0, 0, 0], [0, 1, 0]
+    >>> intersection_segment_segment(s1, s2)
+    ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])
+
+    Unlike lines, segments don't extend beyond their start and end points.
+
+    >>> s1 = [0, 0, 0], [1, 0, 0]
+    >>> s2 = [2, 0, 0], [0, 1, 0]
+    >>> intersection_segment_segment(s1, s2)
+    (None, None)
+
+    Skew segments have two different intersection points.
+
+    >>> s1 = [0, 0, 0], [1, 0, 0]
+    >>> s2 = [0, 0, 1], [0, 1, 1]
+    >>> intersection_segment_segment(s1, s2)
+    ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])
+
+    Parallel segments don't intersect.
+
+    >>> s1 = [0, 0, 0], [1, 0, 0]
+    >>> s2 = [0, 0, 0], [1, 0, 0]
+    >>> intersection_segment_segment(s1, s2)
+    (None, None)
 
     """
     x1, x2 = intersection_line_line(ab, cd, tol=tol)
 
     if not x1 or not x2:
-        return None
+        return None, None
 
-    if is_point_on_segment(x1, ab, tol=tol) and is_point_on_segment(x2, cd, tol=tol):
-        return centroid_points([x1, x2])
+    if not is_point_on_segment(x1, ab, tol=tol):
+        return None, None
+
+    if not is_point_on_segment(x2, cd, tol=tol):
+        return None, None
+
+    return x1, x2
 
 
 def intersection_line_segment(line, segment, tol=1e-6):
-    """"""
-    x = intersection_line_line(line, segment, tol=tol)
-
-    if not x:
-        return None
-
-    if is_point_on_segment(x, segment, tol=tol):
-        return x
-
-
-def intersection_line_segment_xy(line, segment, tol=1e-6):
-    """"""
-    x = intersection_line_line_xy(line, segment, tol=tol)
-
-    if not x:
-        return None
-
-    if is_point_on_segment_xy(x, segment, tol=tol):
-        return x
-
-
-def intersection_line_box_xy(line, box, tol=1e-6):
-    points = []
-    for segment in pairwise(box + box[:1]):
-        x = intersection_line_segment_xy(line, segment, tol=tol)
-        if x:
-            points.append(x)
-    if len(points) < 3:
-        return points
-    if len(points) == 3:
-        a, b, c = points
-        if allclose(a, b, tol=tol):
-            return [a, c]
-        if allclose(b, c, tol=tol):
-            return [a, b]
-        return [a, b]
-    return [a, c]
-
-
-def intersection_segment_segment_xy(ab, cd, tol=1e-6):
-    """Compute the intersection of two lines segments, assuming they lie in the XY plane.
+    """Compute the intersection of a line and a segment.
 
     Parameters
     ----------
-    ab : tuple
-        XY(Z) coordinates of two points defining a line segment.
-    cd : tuple
-        XY(Z) coordinates of two points defining another line segment.
+    line : tuple
+        Two points defining a line.
+    segment : tuple
+        Two points defining a line segment.
     tol : float, optional
         A tolerance for membership verification.
-        Default is ``0.0``.
+        Default is ``1e-6``.
 
     Returns
     -------
-    None
-        If there is no intersection point.
-    list
-        XYZ coordinates of intersection point if one exists.
+    tuple
+        Two intersection points.
+
+        If the line and segment intersect and the second intersection point lies on the segment, the two points are identical.
+        If the line and segment are skew and the second apparent intersection point lies on the segment, the two points are different.
+
+        In all other cases the return is `(None, None)`.
 
     """
-    intx_pt = intersection_line_line_xy(ab, cd)
+    x1, x2 = intersection_line_line(line, segment, tol=tol)
 
-    if not intx_pt:
-        return None
+    if not x1 or not x2:
+        return None, None
 
-    if not is_point_on_segment_xy(intx_pt, ab, tol=tol):
-        return None
+    if not is_point_on_segment(x2, segment, tol=tol):
+        return None, None
 
-    if not is_point_on_segment_xy(intx_pt, cd, tol=tol):
-        return None
-
-    return intx_pt
-
-
-def intersection_circle_circle():
-    raise NotImplementedError
-
-
-def intersection_circle_circle_xy(circle1, circle2):
-    """Calculates the intersection points of two circles in 2d lying in the XY plane.
-
-    Parameters
-    ----------
-    circle1 : tuple
-        center, radius of the first circle in the xy plane.
-    circle2 : tuple
-        center, radius of the second circle in the xy plane.
-
-    Returns
-    -------
-    points : list of tuples
-        the intersection points if there are any
-    None
-        if there are no intersection points
-
-    """
-    p1, r1 = circle1[0], circle1[1]
-    p2, r2 = circle2[0], circle2[1]
-
-    d = length_vector_xy(subtract_vectors_xy(p2, p1))
-
-    if d > r1 + r2:
-        return None
-
-    if d < fabs(r1 - r2):
-        return None
-
-    if (d == 0) and (r1 == r2):
-        return None
-
-    a = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
-    h = (r1 * r1 - a * a) ** 0.5
-    cx2 = p1[0] + a * (p2[0] - p1[0]) / d
-    cy2 = p1[1] + a * (p2[1] - p1[1]) / d
-    i1 = ((cx2 + h * (p2[1] - p1[1]) / d), (cy2 - h * (p2[0] - p1[0]) / d), 0)
-    i2 = ((cx2 - h * (p2[1] - p1[1]) / d), (cy2 + h * (p2[0] - p1[0]) / d), 0)
-
-    return i1, i2
+    return x1, x2
 
 
 def intersection_line_plane(line, plane, tol=1e-6):
@@ -308,11 +239,9 @@ def intersection_line_plane(line, plane, tol=1e-6):
         A tolerance for membership verification.
         Default is ``1e-6``.
 
-
     Returns
     -------
-    point : tuple
-        if the line (ray) intersects with the plane, None otherwise.
+    point or None
 
     """
     a, b = line
@@ -353,8 +282,7 @@ def intersection_segment_plane(segment, plane, tol=1e-6):
 
     Returns
     -------
-    point : tuple
-        if the line segment intersects with the plane, None otherwise.
+    point or None
 
     """
     a, b = segment
@@ -402,7 +330,8 @@ def intersection_polyline_plane(polyline, plane, expected_number_of_intersection
 
     Returns
     -------
-    List of points.
+    list of points
+
     """
     if not expected_number_of_intersections:
         expected_number_of_intersections = len(polyline)
@@ -432,10 +361,7 @@ def intersection_line_triangle(line, triangle, tol=1e-6):
 
     Returns
     -------
-    point : tuple
-        The intersectin point.
-    None
-        If the intersection does not exist.
+    point or None
 
     """
     a, b, c = triangle
@@ -449,27 +375,6 @@ def intersection_line_triangle(line, triangle, tol=1e-6):
     if x:
         if is_point_in_triangle(x, triangle):
             return x
-
-
-# def intersection_line_circle_xy(line, circle):
-#     """Compute the intersection of a line and a circle in the XY plane.
-
-#     Parameters
-#     ----------
-
-#     """
-#     x0, y0 = circle[0][:2]
-#     r = circle[1]
-#     x1, y1 = line[0][:2]
-#     x2, y2 = line[1][:2]
-#     a = y1 - y2
-#     b = x2 - x1
-#     c = x1 * y2 - x2 * y1
-#     D = sqrt(r**2 - c**2 / (a**2 + b**2))
-#     m = sqrt(D**2 / (a**2 + b**2))
-#     p1 = [x0 + b * m, y0 - a * m, 0]
-#     p2 = [x0 - b * m, y0 + a * m, 0]
-#     return p1, p2
 
 
 def intersection_plane_plane(plane1, plane2, tol=1e-6):
@@ -526,8 +431,7 @@ def intersection_plane_plane_plane(plane1, plane2, plane3, tol=1e-6):
 
     Returns
     -------
-    point : tuple
-        The intersection point. None if two (or all three) planes are parallel.
+    point or None
 
     Notes
     -----
@@ -633,62 +537,8 @@ def intersection_sphere_sphere(sphere1, sphere2):
     return "circle", (ci, ri, normal)
 
 
-def intersection_ellipse_line_xy(ellipse, line):
-    """Computes the intersection of an ellipse and a line in the XY plane.
-
-    Parameters
-    ----------
-    ellipse : tuple
-        The lengths a, b of the ellipse' semiaxes.
-    line : tuple
-        XY(Z) coordinates of two points defining another line.
-
-    Returns
-    -------
-    None
-        If there is no intersection.
-    tuple
-        Either 1 or 2 intersection points.
-
-    Examples
-    --------
-    >>> ellipse = 6., 2.5
-    >>> p1 = (4.1, 2.8, 0.)
-    >>> p2 = (3.4, -3.1, 0.)
-    >>> i1, i2 = intersection_ellipse_line_xy(ellipse, [p1, p2])
-
-    References
-    ----------
-    .. [1] C# Helper. *Calculate where a line segment and an ellipse intersect in C#*.
-           Available at: http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/
-
-    """
-    x1, y1 = line[0][0], line[0][1]
-    x2, y2 = line[1][0], line[1][1]
-
-    a, b = ellipse
-
-    A = (x2 - x1)**2/a**2 + (y2 - y1)**2/b**2
-    B = 2*x1*(x2 - x1)/a**2 + 2*y1*(y2 - y1)/b**2
-    C = x1**2/a**2 + y1**2/b**2 - 1
-
-    discriminant = B**2 - 4*A*C
-    if discriminant == 0:
-        t = -B/(2*A)
-        return (x1 + (x2 - x1)*t, y1 + (y2 - y1)*t, 0.0)
-    elif discriminant > 0:
-        t1 = (-B + sqrt(discriminant))/(2*A)
-        t2 = (-B - sqrt(discriminant))/(2*A)
-        p1 = (x1 + (x2 - x1)*t1, y1 + (y2 - y1)*t1, 0.0)
-        p2 = (x1 + (x2 - x1)*t2, y1 + (y2 - y1)*t2, 0.0)
-        return p1, p2
-    else:
-        return None
-
-
 def intersection_segment_polyline(segment, polyline, tol=1e-6):
-    """
-    Calculate the intersection point of a segment and a polyline.
+    """Calculate the intersection point of a segment and a polyline.
 
     Parameters
     ----------
@@ -702,10 +552,7 @@ def intersection_segment_polyline(segment, polyline, tol=1e-6):
 
     Returns
     -------
-    None
-        If there is no intersection point.
-    point : list of tuple
-        XYZ coordinates of the first intersection point if it exists.
+    point or None
 
     Examples
     --------
@@ -728,48 +575,6 @@ def intersection_segment_polyline(segment, polyline, tol=1e-6):
             return pt
 
 
-def intersection_segment_polyline_xy(segment, polyline, tol=1e-6):
-    """
-    Calculate the intersection point of a segment and a polyline on the XY-plane.
-
-    Parameters
-    ----------
-    segment : sequence of sequence of float
-        XY(Z) coordinates of two points defining a line segment.
-    polyline : sequence of sequence of float
-        XY(Z) coordinates of the points of the polyline.
-    tol : float, optional
-        The tolerance for intersection verification.
-        Default is ``1e-6``.
-
-    Returns
-    -------
-    None
-        If there is no intersection point.
-    point : list of tuple
-        XYZ coordinates of the first intersection point if one exists (Z = 0).
-
-    Examples
-    --------
-    >>> from compas.geometry._core import is_point_on_polyline_xy
-    >>> from compas.geometry._core import is_point_on_segment_xy
-    >>> from compas.geometry._core import distance_point_point
-    >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]
-    >>> s = [(0.5, -0.5, 0.0), (0.5, 0.5, 0.0)]
-    >>> intpt = intersection_segment_polyline_xy(s, p)
-    >>> is_point_on_polyline_xy(intpt, p)
-    True
-    >>> is_point_on_segment_xy(intpt, s)
-    True
-    >>> distance_point_point((0.5, 0.0, 0.0), intpt) < 1e-6
-    True
-    """
-    for cd in pairwise(polyline):
-        pt = intersection_segment_segment_xy(segment, cd, tol)
-        if pt:
-            return pt
-
-
 def intersection_sphere_line(sphere, line):
     """Computes the intersection of a sphere and a line.
 
@@ -786,12 +591,7 @@ def intersection_sphere_line(sphere, line):
 
     Returns
     -------
-    None
-        If there is no intersection.
-    point : tuple
-        One intersection point.
-    points : tuple
-        Two intersection points.
+    None or point or list of points
 
     Examples
     --------
@@ -851,12 +651,7 @@ def intersection_plane_circle(plane, circle):
 
     Returns
     -------
-    None
-        If there is no intersection or circle plane is parallel to plane
-    point : tuple
-        One intersection point.
-    points : tuple
-        Two intersection points.
+    None or point or list of points
 
     Examples
     --------
@@ -874,10 +669,278 @@ def intersection_plane_circle(plane, circle):
     sphere = circle_point, circle_radius
     return intersection_sphere_line(sphere, line)
 
+
+# ==============================================================================
+# XY
+# ==============================================================================
+
+
+def intersection_line_line_xy(l1, l2, tol=1e-6):
+    """Compute the intersection of two lines, assuming they lie on the XY plane.
+
+    Parameters
+    ----------
+    ab : tuple
+        XY(Z) coordinates of two points defining a line.
+    cd : tuple
+        XY(Z) coordinates of two points defining another line.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    point or None
+        XYZ coordinates of intersection point if one exists, with Z = 0.
+        Otherwise, None.
+
+    """
+    a, b = l1
+    c, d = l2
+
+    x1, y1 = a[0], a[1]
+    x2, y2 = b[0], b[1]
+    x3, y3 = c[0], c[1]
+    x4, y4 = d[0], d[1]
+
+    d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+
+    if fabs(d) <= tol:
+        return None
+
+    a = (x1 * y2 - y1 * x2)
+    b = (x3 * y4 - y3 * x4)
+    x = (a * (x3 - x4) - (x1 - x2) * b) / d
+    y = (a * (y3 - y4) - (y1 - y2) * b) / d
+
+    return [x, y, 0.0]
+
+
+def intersection_line_segment_xy(line, segment, tol=1e-6):
+    """"""
+    x = intersection_line_line_xy(line, segment, tol=tol)
+
+    if not x:
+        return None
+
+    if is_point_on_segment_xy(x, segment, tol=tol):
+        return x
+
+
+def intersection_line_box_xy(line, box, tol=1e-6):
+    points = []
+    for segment in pairwise(box + box[:1]):
+        x = intersection_line_segment_xy(line, segment, tol=tol)
+        if x:
+            points.append(x)
+    if len(points) < 3:
+        return points
+    if len(points) == 3:
+        a, b, c = points
+        if allclose(a, b, tol=tol):
+            return [a, c]
+        if allclose(b, c, tol=tol):
+            return [a, b]
+        return [a, b]
+    return [a, c]
+
+
+def intersection_segment_segment_xy(ab, cd, tol=1e-6):
+    """Compute the intersection of two lines segments, assuming they lie in the XY plane.
+
+    Parameters
+    ----------
+    ab : tuple
+        XY(Z) coordinates of two points defining a line segment.
+    cd : tuple
+        XY(Z) coordinates of two points defining another line segment.
+    tol : float, optional
+        A tolerance for membership verification.
+        Default is ``0.0``.
+
+    Returns
+    -------
+    None
+        If there is no intersection point.
+    list
+        XYZ coordinates of intersection point if one exists.
+
+    """
+    intx_pt = intersection_line_line_xy(ab, cd)
+
+    if not intx_pt:
+        return None
+
+    if not is_point_on_segment_xy(intx_pt, ab, tol=tol):
+        return None
+
+    if not is_point_on_segment_xy(intx_pt, cd, tol=tol):
+        return None
+
+    return intx_pt
+
+
+def intersection_circle_circle_xy(circle1, circle2):
+    """Calculates the intersection points of two circles in 2d lying in the XY plane.
+
+    Parameters
+    ----------
+    circle1 : tuple
+        center, radius of the first circle in the xy plane.
+    circle2 : tuple
+        center, radius of the second circle in the xy plane.
+
+    Returns
+    -------
+    points : list of tuples
+        the intersection points if there are any
+    None
+        if there are no intersection points
+
+    """
+    p1, r1 = circle1[0], circle1[1]
+    p2, r2 = circle2[0], circle2[1]
+
+    d = length_vector_xy(subtract_vectors_xy(p2, p1))
+
+    if d > r1 + r2:
+        return None
+
+    if d < fabs(r1 - r2):
+        return None
+
+    if (d == 0) and (r1 == r2):
+        return None
+
+    a = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
+    h = (r1 * r1 - a * a) ** 0.5
+    cx2 = p1[0] + a * (p2[0] - p1[0]) / d
+    cy2 = p1[1] + a * (p2[1] - p1[1]) / d
+    i1 = ((cx2 + h * (p2[1] - p1[1]) / d), (cy2 - h * (p2[0] - p1[0]) / d), 0)
+    i2 = ((cx2 - h * (p2[1] - p1[1]) / d), (cy2 + h * (p2[0] - p1[0]) / d), 0)
+
+    return i1, i2
+
+
+def intersection_segment_polyline_xy(segment, polyline, tol=1e-6):
+    """
+    Calculate the intersection point of a segment and a polyline on the XY-plane.
+
+    Parameters
+    ----------
+    segment : sequence of sequence of float
+        XY(Z) coordinates of two points defining a line segment.
+    polyline : sequence of sequence of float
+        XY(Z) coordinates of the points of the polyline.
+    tol : float, optional
+        The tolerance for intersection verification.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    None
+        If there is no intersection point.
+    point : list of tuple
+        XYZ coordinates of the first intersection point if one exists (Z = 0).
+
+    Examples
+    --------
+    >>> from compas.geometry._core import is_point_on_polyline_xy
+    >>> from compas.geometry._core import is_point_on_segment_xy
+    >>> from compas.geometry._core import distance_point_point
+    >>> p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]
+    >>> s = [(0.5, -0.5, 0.0), (0.5, 0.5, 0.0)]
+    >>> intpt = intersection_segment_polyline_xy(s, p)
+    >>> is_point_on_polyline_xy(intpt, p)
+    True
+    >>> is_point_on_segment_xy(intpt, s)
+    True
+    >>> distance_point_point((0.5, 0.0, 0.0), intpt) < 1e-6
+    True
+    """
+    for cd in pairwise(polyline):
+        pt = intersection_segment_segment_xy(segment, cd, tol)
+        if pt:
+            return pt
+
+
+def intersection_ellipse_line_xy(ellipse, line):
+    """Computes the intersection of an ellipse and a line in the XY plane.
+
+    Parameters
+    ----------
+    ellipse : tuple
+        The lengths a, b of the ellipse' semiaxes.
+    line : tuple
+        XY(Z) coordinates of two points defining another line.
+
+    Returns
+    -------
+    None
+        If there is no intersection.
+    tuple
+        Either 1 or 2 intersection points.
+
+    Examples
+    --------
+    >>> ellipse = 6., 2.5
+    >>> p1 = (4.1, 2.8, 0.)
+    >>> p2 = (3.4, -3.1, 0.)
+    >>> i1, i2 = intersection_ellipse_line_xy(ellipse, [p1, p2])
+
+    References
+    ----------
+    .. [1] C# Helper. *Calculate where a line segment and an ellipse intersect in C#*.
+           Available at: http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/
+
+    """
+    x1, y1 = line[0][0], line[0][1]
+    x2, y2 = line[1][0], line[1][1]
+
+    a, b = ellipse
+
+    A = (x2 - x1)**2/a**2 + (y2 - y1)**2/b**2
+    B = 2*x1*(x2 - x1)/a**2 + 2*y1*(y2 - y1)/b**2
+    C = x1**2/a**2 + y1**2/b**2 - 1
+
+    discriminant = B**2 - 4*A*C
+    if discriminant == 0:
+        t = -B/(2*A)
+        return (x1 + (x2 - x1)*t, y1 + (y2 - y1)*t, 0.0)
+    elif discriminant > 0:
+        t1 = (-B + sqrt(discriminant))/(2*A)
+        t2 = (-B - sqrt(discriminant))/(2*A)
+        p1 = (x1 + (x2 - x1)*t1, y1 + (y2 - y1)*t1, 0.0)
+        p2 = (x1 + (x2 - x1)*t2, y1 + (y2 - y1)*t2, 0.0)
+        return p1, p2
+    else:
+        return None
+
+
+# def intersection_line_circle_xy(line, circle):
+#     """Compute the intersection of a line and a circle in the XY plane.
+
+#     Parameters
+#     ----------
+
+#     """
+#     x0, y0 = circle[0][:2]
+#     r = circle[1]
+#     x1, y1 = line[0][:2]
+#     x2, y2 = line[1][:2]
+#     a = y1 - y2
+#     b = x2 - x1
+#     c = x1 * y2 - x2 * y1
+#     D = sqrt(r**2 - c**2 / (a**2 + b**2))
+#     m = sqrt(D**2 / (a**2 + b**2))
+#     p1 = [x0 + b * m, y0 - a * m, 0]
+#     p2 = [x0 - b * m, y0 + a * m, 0]
+#     return p1, p2
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
-
 
 if __name__ == "__main__":
     import doctest
