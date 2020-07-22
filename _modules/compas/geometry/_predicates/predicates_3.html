@@ -525,7 +525,24 @@
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<div class="viewcode-block" id="is_intersection_segment_segment"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_intersection_segment_segment.html#compas.geometry.is_intersection_segment_segment">[docs]</a><span class="k">def</span> <span class="nf">is_intersection_segment_segment</span><span class="p">():</span>
+<div class="viewcode-block" id="is_intersection_segment_segment"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_intersection_segment_segment.html#compas.geometry.is_intersection_segment_segment">[docs]</a><span class="k">def</span> <span class="nf">is_intersection_segment_segment</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Verifies if two segments intersect.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    s1 : tuple</span>
+<span class="sd">        Two 3D points representing the segment.</span>
+<span class="sd">    s2 : tuple</span>
+<span class="sd">        Two 3D points representing the segment.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for intersection verification. Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    --------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True``if the segments intersect in one point.</span>
+<span class="sd">        ``False`` if the segments are skew, parallel or lie on top of each other.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 

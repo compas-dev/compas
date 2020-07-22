@@ -100,7 +100,6 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">length_vector_xy</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors_xy</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">normalize_vector</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">is_point_on_segment</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">is_point_on_segment_xy</span>
@@ -109,13 +108,8 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;intersection_line_line&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;intersection_line_line_xy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;intersection_segment_segment&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;intersection_segment_segment_xy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;intersection_line_segment&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;intersection_line_segment_xy&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;intersection_line_box_xy&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;intersection_circle_circle_xy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;intersection_line_plane&#39;</span><span class="p">,</span>
     <span class="s1">&#39;intersection_polyline_plane&#39;</span><span class="p">,</span>
     <span class="s1">&#39;intersection_line_triangle&#39;</span><span class="p">,</span>
@@ -125,8 +119,14 @@
     <span class="s1">&#39;intersection_plane_plane_plane&#39;</span><span class="p">,</span>
     <span class="s1">&#39;intersection_sphere_line&#39;</span><span class="p">,</span>
     <span class="s1">&#39;intersection_sphere_sphere&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;intersection_ellipse_line_xy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;intersection_segment_polyline&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;intersection_line_line_xy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;intersection_segment_segment_xy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;intersection_line_segment_xy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;intersection_line_box_xy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;intersection_circle_circle_xy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;intersection_ellipse_line_xy&#39;</span><span class="p">,</span>
     <span class="s1">&#39;intersection_segment_polyline_xy&#39;</span>
 <span class="p">]</span>
 
@@ -146,16 +146,43 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    list</span>
-<span class="sd">        XYZ coordinates of the two points marking the shortest distance between the lines.</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Two intersection points.</span>
+
 <span class="sd">        If the lines intersect, these two points are identical.</span>
-<span class="sd">        If the lines are skewed and thus only have an apparent intersection, the two</span>
-<span class="sd">        points are different.</span>
-<span class="sd">        If the lines are parallel, the return value is [None, None].</span>
+<span class="sd">        If the lines are skewed and thus only have an apparent intersection, the two points are different.</span>
+
+<span class="sd">        In all other cases the return is `(None, None)`.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    The 2 intersection points of intersecting lines are identical.</span>
+
+<span class="sd">    &gt;&gt;&gt; l1 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; l2 = [0, 0, 0], [0, 1, 0]</span>
+<span class="sd">    &gt;&gt;&gt; intersection_line_line(l1, l2)</span>
+<span class="sd">    ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])</span>
+
+<span class="sd">    Note that lines extend beyond their start and end points.</span>
+
+<span class="sd">    &gt;&gt;&gt; l1 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; l2 = [2, 0, 0], [0, 1, 0]</span>
+<span class="sd">    &gt;&gt;&gt; intersection_line_line(l1, l2)</span>
+<span class="sd">    ([2.0, 0.0, 0.0], [2.0, 0.0, 0.0])</span>
+
+<span class="sd">    Skew lines have two different intersection points.</span>
+
+<span class="sd">    &gt;&gt;&gt; l1 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; l2 = [0, 0, 1], [0, 1, 1]</span>
+<span class="sd">    &gt;&gt;&gt; intersection_line_line(l1, l2)</span>
+<span class="sd">    ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])</span>
+
+<span class="sd">    Parallel lines don&#39;t intersect.</span>
+
+<span class="sd">    &gt;&gt;&gt; l1 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; l2 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; intersection_line_line(l1, l2)</span>
+<span class="sd">    (None, None)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">l1</span>
@@ -174,58 +201,10 @@
     <span class="n">i1</span> <span class="o">=</span> <span class="n">intersection_line_plane</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">plane_2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
     <span class="n">i2</span> <span class="o">=</span> <span class="n">intersection_line_plane</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span> <span class="n">plane_1</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">i1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">i2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
     <span class="k">return</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span></div>
-
-
-<div class="viewcode-block" id="intersection_line_line_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_line_line_xy.html#compas.geometry.intersection_line_line_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_line_line_xy</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the intersection of two lines, assuming they lie on the XY plane.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    ab : tuple</span>
-<span class="sd">        XY(Z) coordinates of two points defining a line.</span>
-<span class="sd">    cd : tuple</span>
-<span class="sd">        XY(Z) coordinates of two points defining another line.</span>
-<span class="sd">    tol : float, optional</span>
-<span class="sd">        A tolerance for membership verification.</span>
-<span class="sd">        Default is ``1e-6``.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">        If there is no intersection point (parallel lines).</span>
-<span class="sd">    list</span>
-<span class="sd">        XYZ coordinates of intersection point if one exists (Z = 0).</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    Only if the lines are parallel, there is no intersection point [1]_.</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] Wikipedia. *Line-line intersection*.</span>
-<span class="sd">           Available at: https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">l1</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">l2</span>
-
-    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">x4</span><span class="p">,</span> <span class="n">y4</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y3</span> <span class="o">-</span> <span class="n">y4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x3</span> <span class="o">-</span> <span class="n">x4</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">x3</span> <span class="o">*</span> <span class="n">y4</span> <span class="o">-</span> <span class="n">y3</span> <span class="o">*</span> <span class="n">x4</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">x3</span> <span class="o">-</span> <span class="n">x4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">y3</span> <span class="o">-</span> <span class="n">y4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
-
-    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mf">0.0</span></div>
 
 
 <div class="viewcode-block" id="intersection_segment_segment"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_segment_segment.html#compas.geometry.intersection_segment_segment">[docs]</a><span class="k">def</span> <span class="nf">intersection_segment_segment</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
@@ -243,140 +222,92 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">        If there is no intersection point.</span>
-<span class="sd">    list</span>
-<span class="sd">        XYZ coordinates of intersection point if one exists.</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Two intersection points.</span>
+
+<span class="sd">        If the segments intersect and the intersection points lie on the respective segments, the two points are identical.</span>
+<span class="sd">        If the segments are skew and the apparent intersection points lie on the respective segments, the two points are different.</span>
+
+<span class="sd">        In all other cases the return is `(None, None)`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    The 2 intersection points of intersecting segments are identical.</span>
+
+<span class="sd">    &gt;&gt;&gt; s1 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; s2 = [0, 0, 0], [0, 1, 0]</span>
+<span class="sd">    &gt;&gt;&gt; intersection_segment_segment(s1, s2)</span>
+<span class="sd">    ([0.0, 0.0, 0.0], [0.0, 0.0, 0.0])</span>
+
+<span class="sd">    Unlike lines, segments don&#39;t extend beyond their start and end points.</span>
+
+<span class="sd">    &gt;&gt;&gt; s1 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; s2 = [2, 0, 0], [0, 1, 0]</span>
+<span class="sd">    &gt;&gt;&gt; intersection_segment_segment(s1, s2)</span>
+<span class="sd">    (None, None)</span>
+
+<span class="sd">    Skew segments have two different intersection points.</span>
+
+<span class="sd">    &gt;&gt;&gt; s1 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; s2 = [0, 0, 1], [0, 1, 1]</span>
+<span class="sd">    &gt;&gt;&gt; intersection_segment_segment(s1, s2)</span>
+<span class="sd">    ([0.0, 0.0, 0.0], [0.0, 0.0, 1.0])</span>
+
+<span class="sd">    Parallel segments don&#39;t intersect.</span>
+
+<span class="sd">    &gt;&gt;&gt; s1 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; s2 = [0, 0, 0], [1, 0, 0]</span>
+<span class="sd">    &gt;&gt;&gt; intersection_segment_segment(s1, s2)</span>
+<span class="sd">    (None, None)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">intersection_line_line</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">x1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">x2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">ab</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">])</span></div>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">ab</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span></div>
 
 
 <span class="k">def</span> <span class="nf">intersection_line_segment</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">intersection_line_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">if</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">x</span>
-
-
-<span class="k">def</span> <span class="nf">intersection_line_segment_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">intersection_line_line_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">if</span> <span class="n">is_point_on_segment_xy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">x</span>
-
-
-<span class="k">def</span> <span class="nf">intersection_line_box_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">box</span> <span class="o">+</span> <span class="n">box</span><span class="p">[:</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">intersection_line_segment_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">x</span><span class="p">:</span>
-            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">points</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">points</span>
-        <span class="k">if</span> <span class="n">allclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">allclose</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
-
-
-<div class="viewcode-block" id="intersection_segment_segment_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_segment_segment_xy.html#compas.geometry.intersection_segment_segment_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_segment_segment_xy</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the intersection of two lines segments, assuming they lie in the XY plane.</span>
+    <span class="sd">&quot;&quot;&quot;Compute the intersection of a line and a segment.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    ab : tuple</span>
-<span class="sd">        XY(Z) coordinates of two points defining a line segment.</span>
-<span class="sd">    cd : tuple</span>
-<span class="sd">        XY(Z) coordinates of two points defining another line segment.</span>
+<span class="sd">    line : tuple</span>
+<span class="sd">        Two points defining a line.</span>
+<span class="sd">    segment : tuple</span>
+<span class="sd">        Two points defining a line segment.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for membership verification.</span>
-<span class="sd">        Default is ``0.0``.</span>
+<span class="sd">        Default is ``1e-6``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">        If there is no intersection point.</span>
-<span class="sd">    list</span>
-<span class="sd">        XYZ coordinates of intersection point if one exists.</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Two intersection points.</span>
+
+<span class="sd">        If the line and segment intersect and the second intersection point lies on the segment, the two points are identical.</span>
+<span class="sd">        If the line and segment are skew and the second apparent intersection point lies on the segment, the two points are different.</span>
+
+<span class="sd">        In all other cases the return is `(None, None)`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">intx_pt</span> <span class="o">=</span> <span class="n">intersection_line_line_xy</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">)</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">intersection_line_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">intx_pt</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">x1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">x2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment_xy</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">ab</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment</span><span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment_xy</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">return</span> <span class="n">intx_pt</span></div>
-
-
-<span class="k">def</span> <span class="nf">intersection_circle_circle</span><span class="p">():</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-
-<div class="viewcode-block" id="intersection_circle_circle_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_circle_circle_xy.html#compas.geometry.intersection_circle_circle_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_circle_circle_xy</span><span class="p">(</span><span class="n">circle1</span><span class="p">,</span> <span class="n">circle2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculates the intersection points of two circles in 2d lying in the XY plane.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    circle1 : tuple</span>
-<span class="sd">        center, radius of the first circle in the xy plane.</span>
-<span class="sd">    circle2 : tuple</span>
-<span class="sd">        center, radius of the second circle in the xy plane.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    points : list of tuples</span>
-<span class="sd">        the intersection points if there are any</span>
-<span class="sd">    None</span>
-<span class="sd">        if there are no intersection points</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">p1</span><span class="p">,</span> <span class="n">r1</span> <span class="o">=</span> <span class="n">circle1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">circle1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">p2</span><span class="p">,</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">circle2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">circle2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="n">d</span> <span class="o">=</span> <span class="n">length_vector_xy</span><span class="p">(</span><span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p1</span><span class="p">))</span>
-
-    <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">fabs</span><span class="p">(</span><span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">r1</span> <span class="o">==</span> <span class="n">r2</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
-    <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-    <span class="n">cx2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span>
-    <span class="n">cy2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span>
-    <span class="n">i1</span> <span class="o">=</span> <span class="p">((</span><span class="n">cx2</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="p">(</span><span class="n">cy2</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">i2</span> <span class="o">=</span> <span class="p">((</span><span class="n">cx2</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="p">(</span><span class="n">cy2</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span></div>
+    <span class="k">return</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
 
 
 <div class="viewcode-block" id="intersection_line_plane"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_line_plane.html#compas.geometry.intersection_line_plane">[docs]</a><span class="k">def</span> <span class="nf">intersection_line_plane</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
@@ -392,11 +323,9 @@
 <span class="sd">        A tolerance for membership verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
 
-
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    point : tuple</span>
-<span class="sd">        if the line (ray) intersects with the plane, None otherwise.</span>
+<span class="sd">    point or None</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">line</span>
@@ -437,8 +366,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    point : tuple</span>
-<span class="sd">        if the line segment intersects with the plane, None otherwise.</span>
+<span class="sd">    point or None</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">segment</span>
@@ -486,7 +414,8 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    List of points.</span>
+<span class="sd">    list of points</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">expected_number_of_intersections</span><span class="p">:</span>
         <span class="n">expected_number_of_intersections</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">polyline</span><span class="p">)</span>
@@ -516,10 +445,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    point : tuple</span>
-<span class="sd">        The intersectin point.</span>
-<span class="sd">    None</span>
-<span class="sd">        If the intersection does not exist.</span>
+<span class="sd">    point or None</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">triangle</span>
@@ -533,27 +459,6 @@
     <span class="k">if</span> <span class="n">x</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">is_point_in_triangle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">triangle</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">x</span></div>
-
-
-<span class="c1"># def intersection_line_circle_xy(line, circle):</span>
-<span class="c1">#     &quot;&quot;&quot;Compute the intersection of a line and a circle in the XY plane.</span>
-
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     x0, y0 = circle[0][:2]</span>
-<span class="c1">#     r = circle[1]</span>
-<span class="c1">#     x1, y1 = line[0][:2]</span>
-<span class="c1">#     x2, y2 = line[1][:2]</span>
-<span class="c1">#     a = y1 - y2</span>
-<span class="c1">#     b = x2 - x1</span>
-<span class="c1">#     c = x1 * y2 - x2 * y1</span>
-<span class="c1">#     D = sqrt(r**2 - c**2 / (a**2 + b**2))</span>
-<span class="c1">#     m = sqrt(D**2 / (a**2 + b**2))</span>
-<span class="c1">#     p1 = [x0 + b * m, y0 - a * m, 0]</span>
-<span class="c1">#     p2 = [x0 - b * m, y0 + a * m, 0]</span>
-<span class="c1">#     return p1, p2</span>
 
 
 <div class="viewcode-block" id="intersection_plane_plane"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_plane_plane.html#compas.geometry.intersection_plane_plane">[docs]</a><span class="k">def</span> <span class="nf">intersection_plane_plane</span><span class="p">(</span><span class="n">plane1</span><span class="p">,</span> <span class="n">plane2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
@@ -610,8 +515,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    point : tuple</span>
-<span class="sd">        The intersection point. None if two (or all three) planes are parallel.</span>
+<span class="sd">    point or None</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -717,62 +621,8 @@
     <span class="k">return</span> <span class="s2">&quot;circle&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">ci</span><span class="p">,</span> <span class="n">ri</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">intersection_ellipse_line_xy</span><span class="p">(</span><span class="n">ellipse</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Computes the intersection of an ellipse and a line in the XY plane.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    ellipse : tuple</span>
-<span class="sd">        The lengths a, b of the ellipse&#39; semiaxes.</span>
-<span class="sd">    line : tuple</span>
-<span class="sd">        XY(Z) coordinates of two points defining another line.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">        If there is no intersection.</span>
-<span class="sd">    tuple</span>
-<span class="sd">        Either 1 or 2 intersection points.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; ellipse = 6., 2.5</span>
-<span class="sd">    &gt;&gt;&gt; p1 = (4.1, 2.8, 0.)</span>
-<span class="sd">    &gt;&gt;&gt; p2 = (3.4, -3.1, 0.)</span>
-<span class="sd">    &gt;&gt;&gt; i1, i2 = intersection_ellipse_line_xy(ellipse, [p1, p2])</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] C# Helper. *Calculate where a line segment and an ellipse intersect in C#*.</span>
-<span class="sd">           Available at: http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">ellipse</span>
-
-    <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">B</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">x1</span><span class="o">*</span><span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y1</span><span class="o">*</span><span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">/</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y1</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
-
-    <span class="n">discriminant</span> <span class="o">=</span> <span class="n">B</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">C</span>
-    <span class="k">if</span> <span class="n">discriminant</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="n">B</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">discriminant</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">t1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">+</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">discriminant</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="p">)</span>
-        <span class="n">t2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">-</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">discriminant</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="p">)</span>
-        <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">*</span><span class="n">t1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">*</span><span class="n">t1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
-        <span class="n">p2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">*</span><span class="n">t2</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">*</span><span class="n">t2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-
-
 <span class="k">def</span> <span class="nf">intersection_segment_polyline</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">polyline</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the intersection point of a segment and a polyline.</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the intersection point of a segment and a polyline.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -786,10 +636,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">        If there is no intersection point.</span>
-<span class="sd">    point : list of tuple</span>
-<span class="sd">        XYZ coordinates of the first intersection point if it exists.</span>
+<span class="sd">    point or None</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -812,48 +659,6 @@
             <span class="k">return</span> <span class="n">pt</span>
 
 
-<span class="k">def</span> <span class="nf">intersection_segment_polyline_xy</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">polyline</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the intersection point of a segment and a polyline on the XY-plane.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    segment : sequence of sequence of float</span>
-<span class="sd">        XY(Z) coordinates of two points defining a line segment.</span>
-<span class="sd">    polyline : sequence of sequence of float</span>
-<span class="sd">        XY(Z) coordinates of the points of the polyline.</span>
-<span class="sd">    tol : float, optional</span>
-<span class="sd">        The tolerance for intersection verification.</span>
-<span class="sd">        Default is ``1e-6``.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">        If there is no intersection point.</span>
-<span class="sd">    point : list of tuple</span>
-<span class="sd">        XYZ coordinates of the first intersection point if one exists (Z = 0).</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from compas.geometry._core import is_point_on_polyline_xy</span>
-<span class="sd">    &gt;&gt;&gt; from compas.geometry._core import is_point_on_segment_xy</span>
-<span class="sd">    &gt;&gt;&gt; from compas.geometry._core import distance_point_point</span>
-<span class="sd">    &gt;&gt;&gt; p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]</span>
-<span class="sd">    &gt;&gt;&gt; s = [(0.5, -0.5, 0.0), (0.5, 0.5, 0.0)]</span>
-<span class="sd">    &gt;&gt;&gt; intpt = intersection_segment_polyline_xy(s, p)</span>
-<span class="sd">    &gt;&gt;&gt; is_point_on_polyline_xy(intpt, p)</span>
-<span class="sd">    True</span>
-<span class="sd">    &gt;&gt;&gt; is_point_on_segment_xy(intpt, s)</span>
-<span class="sd">    True</span>
-<span class="sd">    &gt;&gt;&gt; distance_point_point((0.5, 0.0, 0.0), intpt) &lt; 1e-6</span>
-<span class="sd">    True</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">cd</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">polyline</span><span class="p">):</span>
-        <span class="n">pt</span> <span class="o">=</span> <span class="n">intersection_segment_segment_xy</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">pt</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">pt</span>
-
-
 <span class="k">def</span> <span class="nf">intersection_sphere_line</span><span class="p">(</span><span class="n">sphere</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Computes the intersection of a sphere and a line.</span>
 
@@ -870,12 +675,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">        If there is no intersection.</span>
-<span class="sd">    point : tuple</span>
-<span class="sd">        One intersection point.</span>
-<span class="sd">    points : tuple</span>
-<span class="sd">        Two intersection points.</span>
+<span class="sd">    None or point or list of points</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -935,12 +735,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">        If there is no intersection or circle plane is parallel to plane</span>
-<span class="sd">    point : tuple</span>
-<span class="sd">        One intersection point.</span>
-<span class="sd">    points : tuple</span>
-<span class="sd">        Two intersection points.</span>
+<span class="sd">    None or point or list of points</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -958,10 +753,278 @@
     <span class="n">sphere</span> <span class="o">=</span> <span class="n">circle_point</span><span class="p">,</span> <span class="n">circle_radius</span>
     <span class="k">return</span> <span class="n">intersection_sphere_line</span><span class="p">(</span><span class="n">sphere</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># XY</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<div class="viewcode-block" id="intersection_line_line_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_line_line_xy.html#compas.geometry.intersection_line_line_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_line_line_xy</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the intersection of two lines, assuming they lie on the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ab : tuple</span>
+<span class="sd">        XY(Z) coordinates of two points defining a line.</span>
+<span class="sd">    cd : tuple</span>
+<span class="sd">        XY(Z) coordinates of two points defining another line.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for membership verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    point or None</span>
+<span class="sd">        XYZ coordinates of intersection point if one exists, with Z = 0.</span>
+<span class="sd">        Otherwise, None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">l1</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">l2</span>
+
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x3</span><span class="p">,</span> <span class="n">y3</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x4</span><span class="p">,</span> <span class="n">y4</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y3</span> <span class="o">-</span> <span class="n">y4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x3</span> <span class="o">-</span> <span class="n">x4</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fabs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">x3</span> <span class="o">*</span> <span class="n">y4</span> <span class="o">-</span> <span class="n">y3</span> <span class="o">*</span> <span class="n">x4</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">x3</span> <span class="o">-</span> <span class="n">x4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">y3</span> <span class="o">-</span> <span class="n">y4</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">intersection_line_segment_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">intersection_line_line_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">is_point_on_segment_xy</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+
+<span class="k">def</span> <span class="nf">intersection_line_box_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">box</span> <span class="o">+</span> <span class="n">box</span><span class="p">[:</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">intersection_line_segment_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">:</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">points</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">points</span>
+        <span class="k">if</span> <span class="n">allclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">allclose</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="intersection_segment_segment_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_segment_segment_xy.html#compas.geometry.intersection_segment_segment_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_segment_segment_xy</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the intersection of two lines segments, assuming they lie in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ab : tuple</span>
+<span class="sd">        XY(Z) coordinates of two points defining a line segment.</span>
+<span class="sd">    cd : tuple</span>
+<span class="sd">        XY(Z) coordinates of two points defining another line segment.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for membership verification.</span>
+<span class="sd">        Default is ``0.0``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        If there is no intersection point.</span>
+<span class="sd">    list</span>
+<span class="sd">        XYZ coordinates of intersection point if one exists.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">intx_pt</span> <span class="o">=</span> <span class="n">intersection_line_line_xy</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">intx_pt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment_xy</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">ab</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_segment_xy</span><span class="p">(</span><span class="n">intx_pt</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">intx_pt</span></div>
+
+
+<div class="viewcode-block" id="intersection_circle_circle_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_circle_circle_xy.html#compas.geometry.intersection_circle_circle_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_circle_circle_xy</span><span class="p">(</span><span class="n">circle1</span><span class="p">,</span> <span class="n">circle2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the intersection points of two circles in 2d lying in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    circle1 : tuple</span>
+<span class="sd">        center, radius of the first circle in the xy plane.</span>
+<span class="sd">    circle2 : tuple</span>
+<span class="sd">        center, radius of the second circle in the xy plane.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    points : list of tuples</span>
+<span class="sd">        the intersection points if there are any</span>
+<span class="sd">    None</span>
+<span class="sd">        if there are no intersection points</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p1</span><span class="p">,</span> <span class="n">r1</span> <span class="o">=</span> <span class="n">circle1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">circle1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">p2</span><span class="p">,</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">circle2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">circle2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="n">length_vector_xy</span><span class="p">(</span><span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">p1</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;</span> <span class="n">fabs</span><span class="p">(</span><span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">r1</span> <span class="o">==</span> <span class="n">r2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">r2</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">*</span> <span class="n">r1</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+    <span class="n">cx2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span>
+    <span class="n">cy2</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span>
+    <span class="n">i1</span> <span class="o">=</span> <span class="p">((</span><span class="n">cx2</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="p">(</span><span class="n">cy2</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">i2</span> <span class="o">=</span> <span class="p">((</span><span class="n">cx2</span> <span class="o">-</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="p">(</span><span class="n">cy2</span> <span class="o">+</span> <span class="n">h</span> <span class="o">*</span> <span class="p">(</span><span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">d</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span></div>
+
+
+<span class="k">def</span> <span class="nf">intersection_segment_polyline_xy</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">polyline</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the intersection point of a segment and a polyline on the XY-plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    segment : sequence of sequence of float</span>
+<span class="sd">        XY(Z) coordinates of two points defining a line segment.</span>
+<span class="sd">    polyline : sequence of sequence of float</span>
+<span class="sd">        XY(Z) coordinates of the points of the polyline.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        The tolerance for intersection verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        If there is no intersection point.</span>
+<span class="sd">    point : list of tuple</span>
+<span class="sd">        XYZ coordinates of the first intersection point if one exists (Z = 0).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry._core import is_point_on_polyline_xy</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry._core import is_point_on_segment_xy</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry._core import distance_point_point</span>
+<span class="sd">    &gt;&gt;&gt; p = [(0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (2.0, 0.0, 0.0)]</span>
+<span class="sd">    &gt;&gt;&gt; s = [(0.5, -0.5, 0.0), (0.5, 0.5, 0.0)]</span>
+<span class="sd">    &gt;&gt;&gt; intpt = intersection_segment_polyline_xy(s, p)</span>
+<span class="sd">    &gt;&gt;&gt; is_point_on_polyline_xy(intpt, p)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; is_point_on_segment_xy(intpt, s)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; distance_point_point((0.5, 0.0, 0.0), intpt) &lt; 1e-6</span>
+<span class="sd">    True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">cd</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">polyline</span><span class="p">):</span>
+        <span class="n">pt</span> <span class="o">=</span> <span class="n">intersection_segment_segment_xy</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pt</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pt</span>
+
+
+<span class="k">def</span> <span class="nf">intersection_ellipse_line_xy</span><span class="p">(</span><span class="n">ellipse</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes the intersection of an ellipse and a line in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ellipse : tuple</span>
+<span class="sd">        The lengths a, b of the ellipse&#39; semiaxes.</span>
+<span class="sd">    line : tuple</span>
+<span class="sd">        XY(Z) coordinates of two points defining another line.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    None</span>
+<span class="sd">        If there is no intersection.</span>
+<span class="sd">    tuple</span>
+<span class="sd">        Either 1 or 2 intersection points.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; ellipse = 6., 2.5</span>
+<span class="sd">    &gt;&gt;&gt; p1 = (4.1, 2.8, 0.)</span>
+<span class="sd">    &gt;&gt;&gt; p2 = (3.4, -3.1, 0.)</span>
+<span class="sd">    &gt;&gt;&gt; i1, i2 = intersection_ellipse_line_xy(ellipse, [p1, p2])</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] C# Helper. *Calculate where a line segment and an ellipse intersect in C#*.</span>
+<span class="sd">           Available at: http://csharphelper.com/blog/2017/08/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c/</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">ellipse</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">x1</span><span class="o">*</span><span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">/</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y1</span><span class="o">*</span><span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">/</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">x1</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y1</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="n">discriminant</span> <span class="o">=</span> <span class="n">B</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">C</span>
+    <span class="k">if</span> <span class="n">discriminant</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="n">B</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">discriminant</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">+</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">discriminant</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">B</span> <span class="o">-</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">discriminant</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="p">)</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">*</span><span class="n">t1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">*</span><span class="n">t1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">*</span><span class="n">t2</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">*</span><span class="n">t2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="c1"># def intersection_line_circle_xy(line, circle):</span>
+<span class="c1">#     &quot;&quot;&quot;Compute the intersection of a line and a circle in the XY plane.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     x0, y0 = circle[0][:2]</span>
+<span class="c1">#     r = circle[1]</span>
+<span class="c1">#     x1, y1 = line[0][:2]</span>
+<span class="c1">#     x2, y2 = line[1][:2]</span>
+<span class="c1">#     a = y1 - y2</span>
+<span class="c1">#     b = x2 - x1</span>
+<span class="c1">#     c = x1 * y2 - x2 * y1</span>
+<span class="c1">#     D = sqrt(r**2 - c**2 / (a**2 + b**2))</span>
+<span class="c1">#     m = sqrt(D**2 / (a**2 + b**2))</span>
+<span class="c1">#     p1 = [x0 + b * m, y0 - a * m, 0]</span>
+<span class="c1">#     p2 = [x0 - b * m, y0 + a * m, 0]</span>
+<span class="c1">#     return p1, p2</span>
+
+
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Main</span>
 <span class="c1"># ==============================================================================</span>
-
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">doctest</span>

@@ -89,8 +89,22 @@
 <h1 class="display-4 p-0 mb-5">is_intersection_segment_segment</h1>
 <dl class="function">
 <dt id="compas.geometry.is_intersection_segment_segment">
-<code class="sig-prename descclassname">compas.geometry.</code><code class="sig-name descname">is_intersection_segment_segment</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/_predicates/predicates_3.html#is_intersection_segment_segment"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">compas.geometry.</code><code class="sig-name descname">is_intersection_segment_segment</code><span class="sig-paren">(</span><em class="sig-param">s1</em>, <em class="sig-param">s2</em>, <em class="sig-param">tol=1e-06</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/_predicates/predicates_3.html#is_intersection_segment_segment"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Verifies if two segments intersect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s1</strong> (<em>tuple</em>) – Two 3D points representing the segment.</p></li>
+<li><p><strong>s2</strong> (<em>tuple</em>) – Two 3D points representing the segment.</p></li>
+<li><p><strong>tol</strong> (<em>float, optional</em>) – A tolerance for intersection verification. Default is <code class="docutils literal notranslate"><span class="pre">1e-6</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True``if</span> <span class="pre">the</span> <span class="pre">segments</span> <span class="pre">intersect</span> <span class="pre">in</span> <span class="pre">one</span> <span class="pre">point.</span>
+<span class="pre">``False</span></code> if the segments are skew, parallel or lie on top of each other.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 
