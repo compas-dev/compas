@@ -12,10 +12,12 @@ Ippoliti for providing code and documentation.
 """
 from compas.utilities import flatten
 from compas.geometry import allclose
+from compas.geometry import multiply_matrices
 from compas.geometry._transformations import decompose_matrix
 from compas.geometry._transformations import matrix_from_scale_factors
+from compas.geometry._transformations import matrix_from_frame
+from compas.geometry._transformations import matrix_inverse
 from compas.geometry._transformations import Transformation
-
 
 __all__ = ['Scale']
 
@@ -43,6 +45,13 @@ class Scale(Transformation):
     True
     >>> S[2, 2] == 3
     True
+
+    >>> point = Point(2, 5, 0)
+    >>> frame = Frame(point, (1, 0, 0), (0, 1, 0))
+    >>> points = [point, Point(2, 10, 0)]
+    >>> S = Scale.from_factors([2.] * 3, frame)
+    >>> [p.transformed(S) for p in points]
+    [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
     """
 
     def __init__(self, matrix=None):
@@ -54,21 +63,39 @@ class Scale(Transformation):
         super(Scale, self).__init__(matrix=matrix)
 
     @classmethod
-    def from_factors(cls, factors):
+    def from_factors(cls, factors, frame=None):
         """Construct a scale transformation from scale factors.
 
         Parameters
         ----------
         factors : list of float
             The scale factors along X, Y, Z.
+        frame : :class:`compas.geometry.Frame`, optional
+            The anchor frame for the scaling transformation.
+            Defaults to ``None``.
 
         Returns
         -------
         Scale
             A scale transformation.
+
+        Examples
+        --------
+        >>> point = Point(2, 5, 0)
+        >>> frame = Frame(point, (1, 0, 0), (0, 1, 0))
+        >>> points = [point, Point(2, 10, 0)]
+        >>> S = Scale.from_factors([2.] * 3, frame)
+        >>> [p.transformed(S) for p in points]
+        [Point(2.000, 5.000, 0.000), Point(2.000, 15.000, 0.000)]
         """
         S = cls()
-        S.matrix = matrix_from_scale_factors(factors)
+        if frame:
+            Tw = matrix_from_frame(frame)
+            Tl = matrix_inverse(Tw)
+            Sc = matrix_from_scale_factors(factors)
+            S.matrix = multiply_matrices(multiply_matrices(Tw, Sc), Tl)
+        else:
+            S.matrix = matrix_from_scale_factors(factors)
         return S
 
 
@@ -79,4 +106,5 @@ class Scale(Transformation):
 if __name__ == '__main__':
 
     import doctest
-    doctest.testmod()
+    from compas.geometry import Point, Frame  # noqa: F811, F401
+    doctest.testmod(globs=globals())
