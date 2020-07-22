@@ -3,6 +3,8 @@ from __future__ import division
 from __future__ import print_function
 
 import compas.geometry
+from compas.base import DataBaseClass
+from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 from compas.utilities import hex_to_rgb
 
@@ -117,7 +119,7 @@ class Origin(Frame):
         self.point = self.point * factor
 
 
-class BaseShape(object):
+class BaseShape(DataBaseClass):
     """Base class for all 3D shapes.
 
     Attributes
@@ -127,6 +129,7 @@ class BaseShape(object):
     """
 
     def __init__(self):
+        super(BaseShape, self).__init__()
         self.geometry = None
 
 
@@ -156,6 +159,25 @@ class Box(BaseShape):
         super(Box, self).__init__()
         self.size = _parse_floats(size)
         self.geometry = compas.geometry.Box(Frame.worldXY(), *self.size)
+
+    @property
+    def data(self):
+        return {
+            'type': 'box',
+            'size': self.size,
+            'geometry': self.geometry.data,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.size = data['size']
+        self.geometry = compas.geometry.Box.from_data(data['geometry'])
+
+    @classmethod
+    def from_data(cls, data):
+        box = cls('1 1 1')
+        box.data = data
+        return box
 
 
 class Cylinder(BaseShape):
@@ -192,6 +214,27 @@ class Cylinder(BaseShape):
         circle = compas.geometry.Circle(plane, self.radius)
         self.geometry = compas.geometry.Cylinder(circle, self.length)
 
+    @property
+    def data(self):
+        return {
+            'type': 'cylinder',
+            'radius': self.radius,
+            'length': self.length,
+            'geometry': self.geometry.data,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.radius = data['radius']
+        self.length = data['length']
+        self.geometry = compas.geometry.Cylinder.from_data(data['geometry'])
+
+    @classmethod
+    def from_data(cls, data):
+        cyl = cls(data['radius'], data['length'])
+        cyl.data = data
+        return cyl
+
 
 class Sphere(BaseShape):
     """3D shape primitive representing a sphere.
@@ -220,6 +263,25 @@ class Sphere(BaseShape):
         self.radius = float(radius)
         self.geometry = compas.geometry.Sphere((0, 0, 0), radius)
 
+    @property
+    def data(self):
+        return {
+            'type': 'sphere',
+            'radius': self.radius,
+            'geometry': self.geometry.data,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.radius = data['radius']
+        self.geometry = compas.geometry.Sphere.from_data(data['sphere'])
+
+    @classmethod
+    def from_data(cls, data):
+        sph = cls(data['radius'])
+        sph.data = data
+        return sph
+
 
 class Capsule(BaseShape):
     """3D shape primitive representing a capsule.
@@ -247,6 +309,25 @@ class Capsule(BaseShape):
         super(Capsule, self).__init__()
         self.radius = float(radius)
         self.length = float(length)
+
+    @property
+    def data(self):
+        return {
+            'type': 'capsule',
+            'radius': self.radius,
+            'length': self.length,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.radius = data['radius']
+        self.length = data['length']
+
+    @classmethod
+    def from_data(cls, data):
+        cap = cls(data['radius'], data['length'])
+        cap.data = data
+        return cap
 
 
 class MeshDescriptor(BaseShape):
@@ -278,8 +359,27 @@ class MeshDescriptor(BaseShape):
         self.filename = filename
         self.scale = _parse_floats(scale)
 
+    @property
+    def data(self):
+        return {
+            'type': 'mesh',
+            'filename': self.filename,
+            'scale': self.scale,
+        }
 
-class Color(object):
+    @data.setter
+    def data(self, data):
+        self.filename = data['filename']
+        self.scale = data['scale']
+
+    @classmethod
+    def from_data(cls, data):
+        md = cls('')
+        md.data = data
+        return md
+
+
+class Color(DataBaseClass):
     """Color represented in RGBA.
 
     Parameters
@@ -300,10 +400,27 @@ class Color(object):
     """
 
     def __init__(self, rgba):
+        super(Color, self).__init__()
         self.rgba = _parse_floats(rgba)
 
+    @property
+    def data(self):
+        return {
+            'rgba': self.rgba,
+        }
 
-class Texture(object):
+    @data.setter
+    def data(self, data):
+        self.rgba = data['rgba']
+
+    @classmethod
+    def from_data(cls, data):
+        color = cls('1 1 1')
+        color.data = data
+        return color
+
+
+class Texture(DataBaseClass):
     """Texture description.
 
     Parameters
@@ -322,10 +439,25 @@ class Texture(object):
     """
 
     def __init__(self, filename):
+        super(Texture, self).__init__()
         self.filename = filename
 
+    @property
+    def data(self):
+        return {
+            'filename': self.filename,
+        }
 
-class Material(object):
+    @data.setter
+    def data(self, data):
+        self.filename = data['filename']
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(**data)
+
+
+class Material(DataBaseClass):
     """Material description.
 
     Parameters
@@ -348,9 +480,30 @@ class Material(object):
     """
 
     def __init__(self, name=None, color=None, texture=None):
+        super(Material, self).__init__()
         self.name = name
         self.color = color
         self.texture = texture
+
+    @property
+    def data(self):
+        return {
+            'name': self.name,
+            'color': self.color.data,
+            'texture': self.texture.data if self.texture else None,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.name = data['name']
+        self.color = Color.from_data(data['color'])
+        self.texture = Texture.from_data(data['texture']) if data['texture'] else None
+
+    @classmethod
+    def from_data(cls, data):
+        material = cls()
+        material.data = data
+        return material
 
     def get_color(self):
         """Get the RGBA color array of the material.
@@ -375,7 +528,16 @@ class Material(object):
         return None
 
 
-class Geometry(object):
+TYPE_CLASS_ENUM = {
+    'box': Box,
+    'cylinder': Cylinder,
+    'sphere': Sphere,
+    'capsule': Capsule,
+    'mesh': MeshDescriptor,
+}
+
+
+class Geometry(DataBaseClass):
     """Geometrical description of the shape of a link.
 
     Parameters
@@ -409,6 +571,7 @@ class Geometry(object):
     """
 
     def __init__(self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs):
+        super(Geometry, self).__init__()
         self.shape = box or cylinder or sphere or capsule or mesh
         self.attr = kwargs
         if not self.shape:
@@ -417,6 +580,26 @@ class Geometry(object):
 
         if 'geometry' not in dir(self.shape):
             raise TypeError('Shape implementation does not define a geometry accessor')
+
+    @property
+    def data(self):
+        return {
+            'shape': self.shape.data,
+            'attr': {k: v.data for k, v in self.attr.items()},
+        }
+
+    @data.setter
+    def data(self, data):
+        class_ = TYPE_CLASS_ENUM[data['shape']['type']]
+        self.shape = class_.from_data(data['shape'])
+        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+
+    @classmethod
+    def from_data(cls, data):
+        class_ = TYPE_CLASS_ENUM[data['shape']['type']]
+        geo = cls(box=class_.from_data(data['shape']))
+        geo.data = data
+        return geo
 
     @property
     def geo(self):

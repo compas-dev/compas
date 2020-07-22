@@ -6,6 +6,7 @@ import itertools
 
 from compas.files import URDF
 from compas.files import URDFParser
+from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.robots.model.geometry import Color
@@ -61,6 +62,55 @@ class RobotModel(object):
         self._rebuild_tree()
         self._create(self.root, Transformation())
         self._scale_factor = 1.
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the :class:`RobotModel`.
+
+        Returns
+        -------
+        dict
+            The RobotModel's data.
+        """
+        return {
+            'name': self.name,
+            'joints': [joint.data for joint in self.joints],
+            'links': [link.data for link in self.links],
+            'materials': [material.data for material in self.materials],
+            'attr': {k: v.data for k, v in self.attr.items()},
+            '_scale_factor': self._scale_factor,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.name = data['name']
+        self.joints = [Joint.from_data(d) for d in data['joints']]
+        self.links = [Link.from_data(d) for d in data['links']]
+        self.materials = [Material.from_data(d) for d in data['materials']]
+        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+        self._scale_factor = data['_scale_factor']
+
+        self._rebuild_tree()
+
+    def to_data(self):
+        """Returns the data dictionary that represents the :class:`RobotModel`.
+        To be used in conjunction with :meth:`compas.robot.RobotModel.from_data()`.
+
+        Returns
+        -------
+        dict
+            The RobotModel's data.
+        """
+        return self.data
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct the :class:`compas.robots.RobotModel` from its data representation.
+        To be used in conjunction with :meth:`compas.robot.RobotModel.to_data()`.
+        """
+        robot_model = cls(data['name'])
+        robot_model.data = data
+        return robot_model
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
@@ -399,7 +449,7 @@ class RobotModel(object):
 
         Returns
         -------
-        :class: `compas.robots.Link`
+        :class:`compas.robots.Link`
 
         Examples
         --------
@@ -537,7 +587,7 @@ class RobotModel(object):
 
         for item in itertools.chain(link.visual, link.collision):
             if item.origin:
-                # transform visual or collison geometry with the transformation specified in origin
+                # transform visual or collision geometry with the transformation specified in origin
                 transformation = Transformation.from_frame(item.origin)
                 item.init_transformation = parent_transformation * transformation
             else:

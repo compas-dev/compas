@@ -2,7 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.base import DataBaseClass
 from compas.files import URDFParser
+from compas.files.urdf import URDFGenericElement
 
 from compas.robots.model.geometry import Box
 from compas.robots.model.geometry import Capsule
@@ -18,17 +20,30 @@ from compas.robots.model.geometry import Texture
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
 
-class Mass(object):
+class Mass(DataBaseClass):
     """Represents a value of mass usually related to a link."""
 
     def __init__(self, value):
+        super(Mass, self).__init__()
         self.value = float(value)
 
     def __str__(self):
         return str(self.value)
 
+    @property
+    def data(self):
+        return {'value': self.value}
 
-class Inertia(object):
+    @data.setter
+    def data(self, data):
+        self.value = data['value']
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(**data)
+
+
+class Inertia(DataBaseClass):
     """Rotational inertia matrix (3x3) represented in the inertia frame.
 
     Since the rotational inertia matrix is symmetric, only 6 above-diagonal
@@ -37,6 +52,7 @@ class Inertia(object):
     """
 
     def __init__(self, ixx=0., ixy=0., ixz=0., iyy=0., iyz=0., izz=0.):
+        super(Inertia, self).__init__()
         self.ixx = float(ixx)
         self.ixy = float(ixy)
         self.ixz = float(ixz)
@@ -44,8 +60,32 @@ class Inertia(object):
         self.iyz = float(iyz)
         self.izz = float(izz)
 
+    @property
+    def data(self):
+        return {
+            'ixx': self.ixx,
+            'ixy': self.ixy,
+            'ixz': self.ixz,
+            'iyy': self.iyy,
+            'iyz': self.iyz,
+            'izz': self.izz,
+        }
 
-class Inertial(object):
+    @data.setter
+    def data(self, data):
+        self.ixx = data.get('ixx', 0.)
+        self.ixy = data.get('ixy', 0.)
+        self.ixz = data.get('ixz', 0.)
+        self.iyy = data.get('iyy', 0.)
+        self.iyz = data.get('iyz', 0.)
+        self.izz = data.get('izz', 0.)
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(**data)
+
+
+class Inertial(DataBaseClass):
     """Inertial properties of a link.
 
     Attributes
@@ -61,12 +101,33 @@ class Inertial(object):
     """
 
     def __init__(self, origin=None, mass=None, inertia=None):
+        super(Inertial, self).__init__()
         self.origin = origin
         self.mass = mass
         self.inertia = inertia
 
+    @property
+    def data(self):
+        return {
+            'origin': self.origin.data if self.origin else None,
+            'mass': self.mass.data if self.mass else None,
+            'inertia': self.inertia.data if self.inertia else None,
+        }
 
-class Visual(object):
+    @data.setter
+    def data(self, data):
+        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.mass = Mass.from_data(data['mass']) if data['mass'] else None
+        self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
+
+    @classmethod
+    def from_data(cls, data):
+        inertial = cls()
+        inertial.data = data
+        return inertial
+
+
+class Visual(DataBaseClass):
     """Visual description of a link.
 
     Attributes
@@ -86,6 +147,7 @@ class Visual(object):
     """
 
     def __init__(self, geometry, origin=None, name=None, material=None, **kwargs):
+        super(Visual, self).__init__()
         self.geometry = geometry
         self.origin = origin
         self.name = name
@@ -95,6 +157,30 @@ class Visual(object):
         self.init_transformation = None  # to store the init transformation
         self.current_transformation = None  # to store the current transformation
         self.native_geometry = None  # to store the link's CAD native geometry
+
+    @property
+    def data(self):
+        return {
+            'geometry': self.geometry.data,
+            'origin': self.origin.data if self.origin else None,
+            'name': self.name,
+            'material': self.material.data if self.material else None,
+            'attr': {k: v.data for k, v in self.attr.items()},
+        }
+
+    @data.setter
+    def data(self, data):
+        self.geometry = Geometry.from_data(data['geometry'])
+        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.name = data['name']
+        self.material = Material.from_data(data['material']) if data['material'] else None
+        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+
+    @classmethod
+    def from_data(cls, data):
+        visual = cls(Geometry.from_data(data['geometry']))
+        visual.data = data
+        return visual
 
     def get_color(self):
         """Get the RGBA color array assigned to the link.
@@ -112,7 +198,7 @@ class Visual(object):
             return None
 
 
-class Collision(object):
+class Collision(DataBaseClass):
     """Collidable description of a link.
 
     Attributes
@@ -130,6 +216,7 @@ class Collision(object):
     """
 
     def __init__(self, geometry, origin=None, name=None, **kwargs):
+        super(Collision, self).__init__()
         self.geometry = geometry
         self.origin = origin
         self.name = name
@@ -139,8 +226,30 @@ class Collision(object):
         self.current_transformation = None  # to store the current transformation
         self.native_geometry = None  # to store the link's CAD native geometry
 
+    @property
+    def data(self):
+        return {
+            'geometry': self.geometry.data,
+            'origin': self.origin.data if self.origin else None,
+            'name': self.name,
+            'attr': {k: v.data for k, v in self.attr.items()},
+        }
 
-class Link(object):
+    @data.setter
+    def data(self, data):
+        self.geometry = Geometry.from_data(data['geometry'])
+        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.name = data['name']
+        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+
+    @classmethod
+    def from_data(cls, data):
+        visual = cls(Geometry.from_data(data['geometry']))
+        visual.data = data
+        return visual
+
+
+class Link(DataBaseClass):
     """Link represented as a rigid body with an inertia, visual, and collision features.
 
     Attributes
@@ -166,6 +275,7 @@ class Link(object):
     """
 
     def __init__(self, name, type=None, visual=[], collision=[], inertial=None, **kwargs):
+        super(Link, self).__init__()
         self.name = name
         self.type = type
         self.visual = visual
@@ -174,6 +284,35 @@ class Link(object):
         self.attr = kwargs
         self.joints = []
         self.parent_joint = None
+
+    @property
+    def data(self):
+        return {
+            'name': self.name,
+            'type': self.type,  # !!!
+            'visual': [visual.data for visual in self.visual],
+            'collision': [collision.data for collision in self.collision],
+            'inertial': self.inertial.data if self.inertial else None,
+            'attr': {k: v.data for k, v in self.attr.items()},
+            'joints': [joint.data for joint in self.joints],
+        }
+
+    @data.setter
+    def data(self, data):
+        from compas.robots.model.joint import Joint
+        self.name = data['name']
+        self.type = data['type']
+        self.visual = [Visual.from_data(d) for d in data['visual']]
+        self.collision = [Collision.from_data(d) for d in data['collision']]
+        self.inertial = Inertial.from_data(data['inertial']) if data['inertial'] else None
+        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+        self.joints = [Joint.from_data(d) for d in data['joints']]
+
+    @classmethod
+    def from_data(cls, data):
+        link = cls(data['name'])
+        link.data = data
+        return link
 
 
 URDFParser.install_parser(Link, 'robot/link')

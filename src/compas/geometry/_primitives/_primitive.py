@@ -2,47 +2,18 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from compas.base import DataBaseClass
+
 __all__ = ['Primitive']
 
 
-class Primitive(object):
+class Primitive(DataBaseClass):
     """Base class for geometric primitives."""
 
     __slots__ = []
 
     def __init__(self):
-        pass
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a primitive from its data representation.
-        """
-        raise NotImplementedError
-
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the primitive.
-
-        Returns
-        -------
-        dict
-            The primitive's data.
-        """
-        raise NotImplementedError
-
-    @data.setter
-    def data(self, data):
-        raise NotImplementedError
-
-    def to_data(self):
-        """Returns the data dictionary that represents the primitive.
-
-        Returns
-        -------
-        dict
-            The primitive's data.
-        """
-        return self.data
+        super(Primitive, self).__init__()
 
     def copy(self):
         """Makes a copy of this primitive.

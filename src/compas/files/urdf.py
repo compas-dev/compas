@@ -5,6 +5,7 @@ from __future__ import print_function
 import inspect
 import sys
 
+from compas.base import DataBaseClass
 from compas.files.xml_ import XML
 from compas.utilities import memoize
 
@@ -196,9 +197,9 @@ class URDFParser(object):
         return result
 
 
-class URDFGenericElement(object):
+class URDFGenericElement(DataBaseClass):
     """Generic representation for all URDF elements that
-    are not explicitely supported."""
+    are not explicitly supported."""
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
@@ -207,6 +208,28 @@ class URDFGenericElement(object):
         el.elements = elements
         el.text = text
         return el
+
+    @property
+    def data(self):
+        return {
+            'attr': self.attr,
+            'elements': [d.data for d in self.elements],
+            'text': self.text,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.attr = data['attr']
+        self.elements = [URDFGenericElement.from_data(d) for d in data['elements']]
+        self.text = data['text']
+
+    @classmethod
+    def from_data(cls, data):
+        generic = cls()
+        generic.attr = data['attr']
+        generic.elements = [cls.from_data(d) for d in data['elements']]
+        generic.text = data['text']
+        return generic
 
 
 @memoize
