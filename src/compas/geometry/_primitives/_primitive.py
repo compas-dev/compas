@@ -5,8 +5,12 @@ from __future__ import print_function
 
 __all__ = ['Primitive']
 
+import json
 
-class Primitive(object):
+from compas.base import Base
+
+
+class Primitive(Base):
     """Base class for geometric primitives."""
 
     __slots__ = []
@@ -14,15 +18,9 @@ class Primitive(object):
     def __init__(self):
         pass
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct the object from its data representation.
-        """
-        raise NotImplementedError
-
     @property
     def data(self):
-        """Returns the data dictionary that represents the object.
+        """Returns the data dictionary that represents the primitive.
 
         Returns
         -------
@@ -36,7 +34,7 @@ class Primitive(object):
         raise NotImplementedError
 
     def to_data(self):
-        """Returns the data dictionary that represents the object.
+        """Returns the data dictionary that represents the primitive.
 
         Returns
         -------
@@ -44,6 +42,56 @@ class Primitive(object):
             The object's data.
         """
         return self.data
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a primitive from its data representation.
+
+        Returns
+        -------
+        object
+            An object of the type of ``cls``.
+
+        Notes
+        -----
+        This constructor method is meant to be used in conjunction with the
+        corresponding *to_data* method.
+        """
+        raise NotImplementedError
+
+    def to_json(self, filepath):
+        """Serialise the structured data representing the primitive to json.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the json file.
+        """
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+    @classmethod
+    def from_json(cls, filepath):
+        """Construct a primitive from structured data contained in a json file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the json file.
+
+        Returns
+        -------
+        object
+            An object of the type of ``cls``.
+
+        Notes
+        -----
+        This constructor method is meant to be used in conjunction with the
+        corresponding *to_json* method.
+        """
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
 
     def copy(self):
         """Makes a copy of this primitive.
