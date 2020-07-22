@@ -340,7 +340,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This constructor method is meant to be used in conjuction with the</span>
+<span class="sd">        This constructor method is meant to be used in conjunction with the</span>
 <span class="sd">        corresponding *to_data* method.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -358,7 +358,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        ----</span>
-<span class="sd">        This method produces the data that can be used in conjuction with the</span>
+<span class="sd">        This method produces the data that can be used in conjunction with the</span>
 <span class="sd">        corresponding *from_data* class method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
@@ -379,7 +379,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This constructor method is meant to be used in conjuction with the</span>
+<span class="sd">        This constructor method is meant to be used in conjunction with the</span>
 <span class="sd">        corresponding *to_json* method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
@@ -418,7 +418,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This constructor method is meant to be used in conjuction with the</span>
+<span class="sd">        This constructor method is meant to be used in conjunction with the</span>
 <span class="sd">        corresponding *to_pickle* method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
@@ -1144,7 +1144,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,</span>
+<span class="sd">        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,</span>
 <span class="sd">        if they exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
@@ -1338,7 +1338,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        ----</span>
-<span class="sd">        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,</span>
+<span class="sd">        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,</span>
 <span class="sd">        if they exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
@@ -1532,7 +1532,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        ----</span>
-<span class="sd">        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,</span>
+<span class="sd">        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,</span>
 <span class="sd">        if they exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">attr_dict</span><span class="p">:</span>
@@ -1921,12 +1921,12 @@
         <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="HalfEdge.euler"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.euler.html#compas.datastructures.HalfEdge.euler">[docs]</a>    <span class="k">def</span> <span class="nf">euler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the Euler characterisic.</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the Euler characteristic.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
-<span class="sd">            The Euler chracteristic.</span>
+<span class="sd">            The Euler characteristic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">V</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">vkey</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vkey</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">])</span>
         <span class="n">E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
@@ -2125,11 +2125,6 @@
 <div class="viewcode-block" id="HalfEdge.vertex_min_degree"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.vertex_min_degree.html#compas.datastructures.HalfEdge.vertex_min_degree">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_min_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the minimum degree of all vertices.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        key : int</span>
-<span class="sd">            The identifier of the vertex.</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
@@ -2141,11 +2136,6 @@
 
 <div class="viewcode-block" id="HalfEdge.vertex_max_degree"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.vertex_max_degree.html#compas.datastructures.HalfEdge.vertex_max_degree">[docs]</a>    <span class="k">def</span> <span class="nf">vertex_max_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the maximum degree of all vertices.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        key : int</span>
-<span class="sd">            The identifier of the vertex.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2243,7 +2233,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        tuple</span>
 <span class="sd">            The identifiers of the adjacent faces.</span>
-<span class="sd">            If the edge is on the bboundary, one of the identifiers is ``None``.</span>
+<span class="sd">            If the edge is on the boundary, one of the identifiers is ``None``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span></div>
 
@@ -2442,11 +2432,6 @@
 <div class="viewcode-block" id="HalfEdge.face_min_degree"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.face_min_degree.html#compas.datastructures.HalfEdge.face_min_degree">[docs]</a>    <span class="k">def</span> <span class="nf">face_min_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the minimum degree of all faces.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        fkey : int</span>
-<span class="sd">            Identifier of the face.</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
@@ -2458,11 +2443,6 @@
 
 <div class="viewcode-block" id="HalfEdge.face_max_degree"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.face_max_degree.html#compas.datastructures.HalfEdge.face_max_degree">[docs]</a>    <span class="k">def</span> <span class="nf">face_max_degree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the maximum degree of all faces.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        fkey : int</span>
-<span class="sd">            Identifier of the face.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
