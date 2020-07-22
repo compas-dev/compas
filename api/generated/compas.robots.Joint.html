@@ -90,7 +90,7 @@
 <dl class="class">
 <dt id="compas.robots.Joint">
 <em class="property">class </em><code class="sig-prename descclassname">compas.robots.</code><code class="sig-name descname">Joint</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">type</em>, <em class="sig-param">parent</em>, <em class="sig-param">child</em>, <em class="sig-param">origin=None</em>, <em class="sig-param">axis=None</em>, <em class="sig-param">calibration=None</em>, <em class="sig-param">dynamics=None</em>, <em class="sig-param">limit=None</em>, <em class="sig-param">safety_controller=None</em>, <em class="sig-param">mimic=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/robots/model/joint.html#Joint"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.base.Base</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Representation of the kinematics and dynamics of a joint and its safety limits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -121,7 +121,7 @@ in radians, for prismatic joints the translation in meters.</p></li>
 <dt class="field-even">Class Attributes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>REVOLUTE</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Revolute joint type.</p></li>
-<li><p><strong>CONTINUOUS</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Continuous joint type.</p></li>
+<li><p><strong>CONTINUOUS</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Continous joint type.</p></li>
 <li><p><strong>PRISMATIC</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Prismatic joint type.</p></li>
 <li><p><strong>FIXED</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Fixed joint type.</p></li>
 <li><p><strong>FLOATING</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>) – Floating joint type.</p></li>
@@ -161,12 +161,6 @@ in radians, for prismatic joints the translation in meters.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Joint.calculate_transformation.html#compas.robots.Joint.calculate_transformation" title="compas.robots.Joint.calculate_transformation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_transformation</span></code></a>(position)</p></td>
 <td><p>Returns the transformation of the joint.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Joint.from_data.html#compas.robots.Joint.from_data" title="compas.robots.Joint.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Joint.from_json.html#compas.robots.Joint.from_json" title="compas.robots.Joint.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p></p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Joint.is_configurable.html#compas.robots.Joint.is_configurable" title="compas.robots.Joint.is_configurable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_configurable</span></code></a>()</p></td>
 <td><p>Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the joint can be configured, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></td>
 </tr>
@@ -175,12 +169,6 @@ in radians, for prismatic joints the translation in meters.</p></li>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Joint.scale.html#compas.robots.Joint.scale" title="compas.robots.Joint.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(factor)</p></td>
 <td><p>Scale the joint origin and limit (only if scalable) by a given factor.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Joint.to_data.html#compas.robots.Joint.to_data" title="compas.robots.Joint.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.Joint.to_json.html#compas.robots.Joint.to_json" title="compas.robots.Joint.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.robots.Joint.transform.html#compas.robots.Joint.transform" title="compas.robots.Joint.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
 <td><p>Transform the joint in place.</p></td>
