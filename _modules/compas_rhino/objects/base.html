@@ -102,12 +102,27 @@
 <div class="viewcode-block" id="BaseObject"><a class="viewcode-back" href="../../../api/compas_rhino.objects.html#compas_rhino.objects.BaseObject">[docs]</a><span class="k">class</span> <span class="nc">BaseObject</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Abstract base class for COMPAS Rhino objects.</span>
 
-<span class="sd">    Attributes</span>
+<span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    scene : :class:`compas.scenes.Scene`</span>
-<span class="sd">        A scene object.</span>
 <span class="sd">    item : {:class:`compas.geometry.Geometry`, :class:`compas.datastructures.Datastructure`}</span>
 <span class="sd">        A COMPAS geometry object or data structure.</span>
+<span class="sd">    scene : :class:`compas.scenes.Scene`, optional</span>
+<span class="sd">        A scene object.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        The name of the object.</span>
+<span class="sd">    layer : str, optional</span>
+<span class="sd">        The layer for drawing.</span>
+<span class="sd">    visible : bool, optional</span>
+<span class="sd">        Toggle for the visibility of the object.</span>
+<span class="sd">    settings : dict, optional</span>
+<span class="sd">        A dictionary of settings.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    item : {:class:`compas.geometry.Geometry`, :class:`compas.datastructures.Datastructure`}</span>
+<span class="sd">        A COMPAS geometry object or data structure.</span>
+<span class="sd">    scene : :class:`compas.scenes.Scene`</span>
+<span class="sd">        A scene object.</span>
 <span class="sd">    artist : :class:`compas_rhino.artists.Artist`</span>
 <span class="sd">        The artist matching the type of ``item``.</span>
 <span class="sd">    name : str</span>
@@ -125,7 +140,7 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    This is an Abstract Base Class (ABC).</span>
-<span class="sd">    The following methods declared as abstract and have to be overwritten:</span>
+<span class="sd">    The following methods declared as abstract have to be overwritten:</span>
 
 <span class="sd">    * ``clear``</span>
 <span class="sd">    * ``draw``</span>
@@ -137,8 +152,8 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BaseObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_scene</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_item</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scene</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_artist</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">scene</span>
@@ -204,23 +219,23 @@
         <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Clear the layer of the object.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Redraw the Rhino scene/view.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
-
 <div class="viewcode-block" id="BaseObject.clear"><a class="viewcode-back" href="../../../api/compas_rhino.objects.html#compas_rhino.objects.BaseObject.clear">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear all previously created Rhino objects.&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
+    <span class="k">def</span> <span class="nf">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear the layer of the object.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
+
 <div class="viewcode-block" id="BaseObject.draw"><a class="viewcode-back" href="../../../api/compas_rhino.objects.html#compas_rhino.objects.BaseObject.draw">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the object representing the item.&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
+
+    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Redraw the Rhino scene/view.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
 
 <div class="viewcode-block" id="BaseObject.select"><a class="viewcode-back" href="../../../api/compas_rhino.objects.html#compas_rhino.objects.BaseObject.select">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
     <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
