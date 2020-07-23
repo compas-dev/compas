@@ -121,24 +121,24 @@
 
     <span class="n">dual</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
 
-    <span class="n">fkey_centroid</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
-    <span class="n">outer</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">()</span>
-    <span class="n">inner</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">outer</span><span class="p">))</span>
-    <span class="n">vertices</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">faces</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">face_centroid</span> <span class="o">=</span> <span class="p">{</span><span class="n">face</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
+    <span class="n">inner</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">()))</span>
+    <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">face_vertices</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">inner</span><span class="p">:</span>
-        <span class="n">fkeys</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">fkeys</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">fkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
-                <span class="n">vertices</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">fkey_centroid</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
-        <span class="n">faces</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">fkeys</span>
+    <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">inner</span><span class="p">:</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vertex_xyz</span><span class="p">:</span>
+                <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">face</span><span class="p">]</span> <span class="o">=</span> <span class="n">face_centroid</span><span class="p">[</span><span class="n">face</span><span class="p">]</span>
+        <span class="n">face_vertices</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="o">=</span> <span class="n">faces</span>
 
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="ow">in</span> <span class="n">vertices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">dual</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertex_xyz</span><span class="p">:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
+        <span class="n">dual</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">faces</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">dual</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">face_vertices</span><span class="p">:</span>
+        <span class="n">dual</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face_vertices</span><span class="p">[</span><span class="n">face</span><span class="p">],</span> <span class="n">fkey</span><span class="o">=</span><span class="n">face</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">dual</span></div>
 

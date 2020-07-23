@@ -86,21 +86,22 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
-
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Primitive&#39;</span><span class="p">]</span>
 
-<span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">compas.base</span> <span class="kn">import</span> <span class="n">Base</span>
-
-
-<div class="viewcode-block" id="Primitive"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Primitive.html#compas.geometry.Primitive">[docs]</a><span class="k">class</span> <span class="nc">Primitive</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<div class="viewcode-block" id="Primitive"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Primitive.html#compas.geometry.Primitive">[docs]</a><span class="k">class</span> <span class="nc">Primitive</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for geometric primitives.&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="Primitive.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Primitive.__init__.html#compas.geometry.Primitive.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Primitive.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Primitive.from_data.html#compas.geometry.Primitive.from_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a primitive from its data representation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -109,7 +110,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict</span>
-<span class="sd">            The object&#39;s data.</span>
+<span class="sd">            The primitive&#39;s data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
@@ -123,59 +124,9 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict</span>
-<span class="sd">            The object&#39;s data.</span>
+<span class="sd">            The primitive&#39;s data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
-
-<div class="viewcode-block" id="Primitive.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Primitive.from_data.html#compas.geometry.Primitive.from_data">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a primitive from its data representation.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        object</span>
-<span class="sd">            An object of the type of ``cls``.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This constructor method is meant to be used in conjunction with the</span>
-<span class="sd">        corresponding *to_data* method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
-
-<div class="viewcode-block" id="Primitive.to_json"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Primitive.to_json.html#compas.geometry.Primitive.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Serialise the structured data representing the primitive to json.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        filepath : str</span>
-<span class="sd">            The path to the json file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Primitive.from_json"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Primitive.from_json.html#compas.geometry.Primitive.from_json">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a primitive from structured data contained in a json file.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        filepath : str</span>
-<span class="sd">            The path to the json file.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        object</span>
-<span class="sd">            An object of the type of ``cls``.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This constructor method is meant to be used in conjunction with the</span>
-<span class="sd">        corresponding *to_json* method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Primitive.copy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Primitive.copy.html#compas.geometry.Primitive.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Makes a copy of this primitive.</span>
