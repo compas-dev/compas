@@ -590,7 +590,7 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
     Other Parameters
     ----------------
     cap : {0, 1, 2}, optional
-    fir : float, optional
+    fit : float, optional
 
     Returns
     -------

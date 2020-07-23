@@ -51,12 +51,11 @@ class BaseObject(ABC):
 
     """
 
-    def __init__(self, scene, item, name=None, layer=None, visible=True, settings=None):
+    def __init__(self, item, scene=None, name=None, layer=None, visible=True, settings=None):
         super(BaseObject, self).__init__()
         self._scene = None
         self._item = None
         self._artist = None
-        self._guid = None
         self._settings = {}
         self.scene = scene
         self.item = item
@@ -95,14 +94,6 @@ class BaseObject(ABC):
     @property
     def artist(self):
         return self._artist
-
-    @property
-    def guid(self):
-        return self._guid
-
-    @guid.setter
-    def guid(self, guid):
-        self._guid = guid
 
     @property
     def name(self):

@@ -52,12 +52,11 @@ class MeshObject(BaseObject):
 
     """
 
-    def __init__(self, scene, mesh, name=None, layer=None, visible=True, settings=None):
-        super(MeshObject, self).__init__(scene, mesh, name, layer, visible)
+    def __init__(self, mesh, scene=None, name=None, layer=None, visible=True, settings=None):
+        super(MeshObject, self).__init__(mesh, scene, name, layer, visible, settings)
         self._guid_vertex = {}
         self._guid_face = {}
         self._guid_edge = {}
-        self.settings = settings
 
     @property
     def mesh(self):
