@@ -18,12 +18,27 @@ _ITEM_OBJECT = {}
 class BaseObject(ABC):
     """Abstract base class for COMPAS Rhino objects.
 
-    Attributes
+    Parameters
     ----------
-    scene : :class:`compas.scenes.Scene`
-        A scene object.
     item : {:class:`compas.geometry.Geometry`, :class:`compas.datastructures.Datastructure`}
         A COMPAS geometry object or data structure.
+    scene : :class:`compas.scenes.Scene`, optional
+        A scene object.
+    name : str, optional
+        The name of the object.
+    layer : str, optional
+        The layer for drawing.
+    visible : bool, optional
+        Toggle for the visibility of the object.
+    settings : dict, optional
+        A dictionary of settings.
+
+    Attributes
+    ----------
+    item : {:class:`compas.geometry.Geometry`, :class:`compas.datastructures.Datastructure`}
+        A COMPAS geometry object or data structure.
+    scene : :class:`compas.scenes.Scene`
+        A scene object.
     artist : :class:`compas_rhino.artists.Artist`
         The artist matching the type of ``item``.
     name : str
@@ -41,7 +56,7 @@ class BaseObject(ABC):
     Notes
     -----
     This is an Abstract Base Class (ABC).
-    The following methods declared as abstract and have to be overwritten:
+    The following methods declared as abstract have to be overwritten:
 
     * ``clear``
     * ``draw``
@@ -53,8 +68,8 @@ class BaseObject(ABC):
 
     def __init__(self, item, scene=None, name=None, layer=None, visible=True, settings=None):
         super(BaseObject, self).__init__()
-        self._scene = None
         self._item = None
+        self._scene = None
         self._artist = None
         self._settings = {}
         self.scene = scene
@@ -120,23 +135,23 @@ class BaseObject(ABC):
         if settings:
             self._settings.update(settings)
 
-    def clear_layer(self):
-        """Clear the layer of the object."""
-        self.artist.clear_layer()
-
-    def redraw(self):
-        """Redraw the Rhino scene/view."""
-        self.artist.redraw()
-
     @abc.abstractmethod
     def clear(self):
         """Clear all previously created Rhino objects."""
         pass
 
+    def clear_layer(self):
+        """Clear the layer of the object."""
+        self.artist.clear_layer()
+
     @abc.abstractmethod
     def draw(self):
         """Draw the object representing the item."""
         pass
+
+    def redraw(self):
+        """Redraw the Rhino scene/view."""
+        self.artist.redraw()
 
     @abc.abstractmethod
     def select(self):

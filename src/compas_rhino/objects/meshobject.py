@@ -13,14 +13,22 @@ __all__ = ['MeshObject']
 
 
 class MeshObject(BaseObject):
-    """Base class for COMPAS Rhino objects.
+    """Class for representing COMPAS meshes in Rhino.
 
     Parameters
     ----------
-    scene : :class:`compas.scenes.Scene`
-        A scene object.
     mesh : :class:`compas.datastructures.Mesh`
-        A mesh object.
+        A mesh data structure.
+    scene : :class:`compas.scenes.Scene`, optional
+        A scene object.
+    name : str, optional
+        The name of the object.
+    layer : str, optional
+        The layer for drawing.
+    visible : bool, optional
+        Toggle for the visibility of the object.
+    settings : dict, optional
+        A dictionary of settings.
 
     Attributes
     ----------
@@ -40,13 +48,15 @@ class MeshObject(BaseObject):
         from compas_rhino.objects import MeshObject
 
         mesh = Mesh.from_off(compas.get('tubemesh.off'))
-        meshobject = MeshObject(None, mesh, 'MeshObject', 'COMPAS::MeshObject', True)
+        meshobject = MeshObject(mesh, name='MeshObject', layer='COMPAS::MeshObject', visible=True)
+        meshobject.clear()
+        meshobject.clear_layer()
         meshobject.draw()
         meshobject.redraw()
 
         vertices = meshobject.select_vertices()
-
         if meshobject.modify_vertices(vertices):
+            meshobject.clear()
             meshobject.draw()
             meshobject.redraw()
 
@@ -106,21 +116,17 @@ class MeshObject(BaseObject):
         self._guid_face = {}
         self._guid_edge = {}
 
-    def draw(self, clear_layer=True, redraw=False):
+    def draw(self):
         """Draw the object representing the mesh.
 
         Parameters
         ----------
-        clear_layer : bool, optional
-            Clear the layer of the object.
-            Default is ``True``.
-        redraw : bool, optional
-            Redraw the Rhino view.
-            Default is ``False``.
+        None
+
+        Returns
+        -------
+        None
         """
-        self.clear()
-        if clear_layer:
-            self.clear_layer()
         if not self.visible:
             return
         # vertices
@@ -138,11 +144,14 @@ class MeshObject(BaseObject):
             edges = list(self.mesh.edges())
             guids = self.artist.draw_edges(edges)
             self.guid_edge = zip(guids, edges)
-        # redraw the scene
-        if redraw:
-            self.redraw()
 
     def select(self):
+        raise NotImplementedError
+
+    def modify(self):
+        raise NotImplementedError
+
+    def move(self):
         raise NotImplementedError
 
     def select_vertices(self):
@@ -185,9 +194,6 @@ class MeshObject(BaseObject):
         guids = compas_rhino.select_lines()
         edges = [self.guid_edge[guid] for guid in guids if guid in self.guid_edge]
         return edges
-
-    def modify(self):
-        raise NotImplementedError
 
     def modify_vertices(self, vertices):
         """Modify the attributes of the vertices of the mesh item.
@@ -251,12 +257,6 @@ class MeshObject(BaseObject):
 
         """
         return EdgeModifier.update_edge_attributes(self, edges)
-
-    def move(self):
-        raise NotImplementedError
-
-    def move_vertices(self, vertices):
-        raise NotImplementedError
 
 
 # ============================================================================
