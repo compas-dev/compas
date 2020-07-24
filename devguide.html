@@ -101,7 +101,7 @@ of the core COMPAS packages:</p>
 <h2>Setup/Installation</h2>
 <p>To set up a developer environment</p>
 <ol class="arabic simple">
-<li><p>Fork [the repository](<a class="reference external" href="https://github.com/compas-dev/compas">https://github.com/compas-dev/compas</a>) and clone the fork.</p></li>
+<li><p>Fork <a class="reference external" href="https://github.com/compas-dev/compas">the repository</a> and clone the fork.</p></li>
 <li><p>Create a virtual environment using your tool of choice (e.g. <cite>virtualenv</cite>, <cite>conda</cite>, etc).</p></li>
 </ol>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n compas-dev <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7
@@ -143,17 +143,17 @@ The procedure for submitting a PR is the following.</p>
 </code></pre></div>
 </div>
 <ol class="arabic simple" start="2">
-<li><p>Add yourself to <cite>AUTHORS.md</cite>.</p></li>
+<li><p>Add yourself to <code class="docutils literal notranslate"><span class="pre">AUTHORS.md</span></code>.</p></li>
 <li><p>Commit your changes and push your branch to GitHub.</p></li>
-<li><p>Create a [pull request](<a class="reference external" href="https://help.github.com/articles/about-pull-requests/">https://help.github.com/articles/about-pull-requests/</a>) through the GitHub website.</p></li>
+<li><p>Create a <a class="reference external" href="https://help.github.com/articles/about-pull-requests/">pull request</a> through the GitHub website.</p></li>
 </ol>
-<p>During development, use [pyinvoke](<a class="reference external" href="http://docs.pyinvoke.org/">http://docs.pyinvoke.org/</a>) tasks on the
+<p>During development, use <a class="reference external" href="http://docs.pyinvoke.org/">pyinvoke</a> tasks on the
 command line to ease recurring operations:</p>
 <ul class="simple">
-<li><p><cite>invoke clean</cite>: Clean all generated artifacts.</p></li>
-<li><p><cite>invoke check</cite>: Run various code and documentation style checks.</p></li>
-<li><p><cite>invoke docs</cite>: Generate documentation.</p></li>
-<li><p><cite>invoke test</cite>: Run all tests and checks in one swift command.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">clean</span></code>: Clean all generated artifacts.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">check</span></code>: Run various code and documentation style checks.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">docs</span></code>: Generate documentation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">invoke</span> <span class="pre">test</span></code>: Run all tests and checks in one swift command.</p></li>
 </ul>
 </div>
 <div class="section" id="style-guide">
@@ -209,6 +209,126 @@ Per package, the APIs of the contained module are collected in <code class="docu
 </code></pre></div>
 </div>
 </div>
+<div class="section" id="plugins">
+<span id="id1"></span><h2>Plugins</h2>
+<p>COMPAS has an extensible architecture based on plugins that allows to
+customize and extend the functionality of the core framework.</p>
+<p>For a plugin to work, there needs to exist a counterpart to be connected to.
+This means there are two components involved:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> interface: the <strong>extension point</strong> that COMPAS defines
+as the counterpart for plugins to connect to.</p></li>
+<li><p><a class="reference internal" href="api/generated/compas.plugins.plugin.html#compas.plugins.plugin" title="compas.plugins.plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.plugin()</span></code></a> implementation: a <strong>concrete implementation</strong> of the
+<code class="docutils literal notranslate"><span class="pre">pluggable</span></code> interface.</p></li>
+</ul>
+<p>Both of these components are declared using decorators:</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@pluggable</span>
+<span class="k">def</span> <span class="nf">do_hard_stuff</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="nd">@plugin</span><span class="p">(</span><span class="n">pluggable_name</span><span class="o">=</span><span class="s1">&#39;do_hard_stuff&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">do_hard_stuff_numpy</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="c1"># NOTE: Here use the power of numpy to do hard stuff very fast</span>
+    <span class="c1"># ..</span>
+</code></pre></div>
+</div>
+<p>Once these parts are implemented, the program could simply
+call the function <code class="docutils literal notranslate"><span class="pre">do_hard_stuff</span></code> and the appropriate plugin
+implementation using <code class="docutils literal notranslate"><span class="pre">numpy</span></code> would be called automatically.</p>
+<div class="section" id="why-are-plugins-important">
+<h3>Why are plugins important?</h3>
+<p>The example above is just a single code block, but the power of plugins comes
+from the ability to split those two parts -the <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a>
+and the <a class="reference internal" href="api/generated/compas.plugins.plugin.html#compas.plugins.plugin" title="compas.plugins.plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.plugin()</span></code></a>- into completely different files, folders
+or even entire projects and still work the same way.</p>
+<p>Additionally, COMPAS is able to pick the most suitable plugin implementation
+for its current execution context. For instance, one could have two implementations
+of the same <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> definition, one using <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and
+another one using <code class="docutils literal notranslate"><span class="pre">Rhino</span> <span class="pre">SDK</span></code> and have the correct one automatically selected
+based on where your script is executing.</p>
+</div>
+<div class="section" id="how-to-make-plugins-discoverable">
+<h3>How to make plugins discoverable?</h3>
+<p>COMPAS plugin discovery is based on naming conventions. This is mainly due to
+the need to support IronPython inside Rhino, which lacks <code class="docutils literal notranslate"><span class="pre">setuptools</span></code>
+infrastructure. For more details, check
+<a class="reference external" href="https://packaging.python.org/guides/creating-and-discovering-plugins/#using-naming-convention">these python guidelines</a>.</p>
+<p>A COMPAS plugin needs to fulfill two conditions:</p>
+<ul class="simple">
+<li><p><strong>Name</strong>: The package name should be prefixed with <code class="docutils literal notranslate"><span class="pre">compas</span></code>, eg. <code class="docutils literal notranslate"><span class="pre">compas_cgal</span></code>.</p></li>
+<li><p><strong>Metadata</strong>: The package should define a bit of metadata listing the modules that contain plugins.
+This is done declaring a variable called <code class="docutils literal notranslate"><span class="pre">__all_plugins__</span></code>,
+eg. <code class="docutils literal notranslate"><span class="pre">__all_plugins__</span> <span class="pre">=</span> <span class="pre">['compas_cgal.booleans']</span></code>.</p></li>
+</ul>
+<p>COMPAS automatically discovers plugins searching over all available packages in the system,
+and picks up those prefixed with the <code class="docutils literal notranslate"><span class="pre">compas</span></code> word.
+All packages are included in the search: packages installed with <code class="docutils literal notranslate"><span class="pre">pip</span></code>, packages made
+available through the <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> / <code class="docutils literal notranslate"><span class="pre">IRONPYTHONPATH</span></code>, local packages, etc.</p>
+<p>Once a package is found, the metadata in <code class="docutils literal notranslate"><span class="pre">__all_plugins__</span></code> is read and all modules
+listed are analyzed to look for functions decorated with the <a class="reference internal" href="api/generated/compas.plugins.plugin.html#compas.plugins.plugin" title="compas.plugins.plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.plugin()</span></code></a>
+decorator.</p>
+</div>
+<div class="section" id="a-complete-example">
+<h3>A complete example</h3>
+<p>Let’s explore a complete example to gain a better understanding.</p>
+<div class="section" id="extension-point">
+<h4>Extension point</h4>
+<p>For the sake of example, we are going to assume that <code class="docutils literal notranslate"><span class="pre">compas</span></code> core defines
+the following <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> interface:</p>
+<p><strong>compas/geometry/booleans/__init__.py</strong></p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;booleans&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">boolean_union_mesh_mesh</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div>
+</div>
+</div>
+<div class="section" id="plugin">
+<h4>Plugin</h4>
+<p>Now let’s write a plugin that implements this interface:</p>
+<p><strong>compas_plugin_sample/__init__.py</strong></p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">__all_plugins__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;compas_plugin_sample.boolean_trimesh&#39;</span><span class="p">]</span>
+</code></pre></div>
+</div>
+<p><strong>compas_plugin_sample/boolean_trimesh.py</strong></p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">trimesh</span>
+
+<span class="nd">@plugin</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;booleans&#39;</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;trimesh&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">boolean_union_mesh_mesh</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="n">va</span><span class="p">,</span> <span class="n">fa</span> <span class="o">=</span> <span class="n">A</span>
+    <span class="n">at</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">Trimesh</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">va</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="n">fa</span><span class="p">)</span>
+
+    <span class="n">vb</span><span class="p">,</span> <span class="n">fb</span> <span class="o">=</span> <span class="n">B</span>
+    <span class="n">bt</span> <span class="o">=</span> <span class="n">trimesh</span><span class="o">.</span><span class="n">Trimesh</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">vb</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="n">fb</span><span class="p">)</span>
+
+    <span class="n">r</span> <span class="o">=</span> <span class="n">at</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">bt</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;scad&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">faces</span>
+</code></pre></div>
+</div>
+<p><strong>Voilà!</strong> We have a trimesh-based boolean union plugin!</p>
+</div>
+</div>
+<div class="section" id="advanced-options">
+<h3>Advanced options</h3>
+<p>There are a few additional options that plugins can use:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">requires</span></code>: List of required python modules. COMPAS will filter out plugins if their
+requirements list is not satisfied at runtime. This allows to have multiple implementations
+of the same operation and have them selected based on which packages are installed.
+on the system. Eg. <cite>requires=[‘scipy’]</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tryfirst</span></code> and <code class="docutils literal notranslate"><span class="pre">trylast</span></code>: Plugins cannot control the exact priority they will have
+but they can indicate whether to try to prioritize them or demote them as fallback using
+these two boolean parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pluggable_name</span></code>: Usually, the name of the decorated plugin method matches that of the
+pluggable interface. When that is not the case, the pluggable name can be specified via
+this parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">domain</span></code>: extension points are unambiguously identified by a URL that combines domain,
+category and pluggable name. All COMPAS core plugins use the same domain, but other
+packages could potentially decide to use a different domain to ensure collision-free
+naming of pluggable extension points.</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="multiple-implementations">
 <h2>Multiple implementations</h2>
 </div>
@@ -259,6 +379,17 @@ Per package, the APIs of the contained module are collected in <code class="docu
 <li class="nav-item"><a class="nav-link reference internal" href="#style-guide">Style guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#documentation">Documentation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#code-structure">Code structure</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#plugins">Plugins</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#why-are-plugins-important">Why are plugins important?</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#how-to-make-plugins-discoverable">How to make plugins discoverable?</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#a-complete-example">A complete example</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#extension-point">Extension point</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#plugin">Plugin</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#advanced-options">Advanced options</a></li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#multiple-implementations">Multiple implementations</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#testing">Testing</a></li>
 </ul>
