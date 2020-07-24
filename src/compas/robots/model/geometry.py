@@ -48,6 +48,21 @@ def _parse_floats(values):
     return [float(i) for i in values.split()]
 
 
+def _attr_to_data(attr):
+    return {k: v.data if hasattr(v, 'data') else v for k, v in attr.items()}
+
+
+def _generic_from_data_or_data(data):
+    try:
+        data = URDFGenericElement.from_data(data)
+    finally:
+        return data
+
+
+def _attr_from_data(data):
+    return {k: _generic_from_data_or_data(d) for k, d in data.items()}
+
+
 class Origin(Frame):
     """Reference frame represented by an instance of :class:`Frame`.
 
@@ -301,7 +316,7 @@ class Sphere(BaseShape):
     @data.setter
     def data(self, data):
         self.radius = data['radius']
-        self.geometry = compas.geometry.Sphere.from_data(data['sphere'])
+        self.geometry = compas.geometry.Sphere.from_data(data['geometry'])
 
     @classmethod
     def from_data(cls, data):

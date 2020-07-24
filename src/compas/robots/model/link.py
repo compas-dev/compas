@@ -6,7 +6,7 @@ import json
 
 from compas.base import Base
 from compas.files import URDFParser
-from compas.files.urdf import URDFGenericElement
+from compas.geometry import Transformation
 
 from compas.robots.model.geometry import Box
 from compas.robots.model.geometry import Capsule
@@ -18,6 +18,8 @@ from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Sphere
 from compas.robots.model.geometry import Texture
+from compas.robots.model.geometry import _attr_to_data
+from compas.robots.model.geometry import _attr_from_data
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
@@ -206,7 +208,9 @@ class Visual(Base):
             'origin': self.origin.data if self.origin else None,
             'name': self.name,
             'material': self.material.data if self.material else None,
-            'attr': {k: v.data for k, v in self.attr.items()},
+            'attr': _attr_to_data(self.attr),
+            'init_transformation': self.init_transformation.data if self.init_transformation else None,
+            'current_transformation': self.current_transformation.data if self.current_transformation else None,
         }
 
     @data.setter
@@ -215,7 +219,9 @@ class Visual(Base):
         self.origin = Origin.from_data(data['origin']) if data['origin'] else None
         self.name = data['name']
         self.material = Material.from_data(data['material']) if data['material'] else None
-        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+        self.attr = _attr_from_data(data['attr'])
+        self.init_transformation = Transformation.from_data(data['init_transformation']) if data['init_transformation'] else None
+        self.current_transformation = Transformation.from_data(data['current_transformation']) if data['current_transformation'] else None
 
     @classmethod
     def from_data(cls, data):
@@ -286,7 +292,9 @@ class Collision(Base):
             'geometry': self.geometry.data,
             'origin': self.origin.data if self.origin else None,
             'name': self.name,
-            'attr': {k: v.data for k, v in self.attr.items()},
+            'attr': _attr_to_data(self.attr),
+            'init_transformation': self.init_transformation.data if self.init_transformation else None,
+            'current_transformation': self.current_transformation.data if self.current_transformation else None,
         }
 
     @data.setter
@@ -294,7 +302,9 @@ class Collision(Base):
         self.geometry = Geometry.from_data(data['geometry'])
         self.origin = Origin.from_data(data['origin']) if data['origin'] else None
         self.name = data['name']
-        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+        self.attr = _attr_from_data(data['attr'])
+        self.init_transformation = Transformation.from_data(data['init_transformation']) if data['init_transformation'] else None
+        self.current_transformation = Transformation.from_data(data['current_transformation']) if data['current_transformation'] else None
 
     @classmethod
     def from_data(cls, data):
@@ -356,11 +366,11 @@ class Link(Base):
     def data(self):
         return {
             'name': self.name,
-            'type': self.type,  # !!!
+            'type': self.type,
             'visual': [visual.data for visual in self.visual],
             'collision': [collision.data for collision in self.collision],
             'inertial': self.inertial.data if self.inertial else None,
-            'attr': {k: v.data for k, v in self.attr.items()},
+            'attr': _attr_to_data(self.attr),
             'joints': [joint.data for joint in self.joints],
         }
 
@@ -372,7 +382,7 @@ class Link(Base):
         self.visual = [Visual.from_data(d) for d in data['visual']]
         self.collision = [Collision.from_data(d) for d in data['collision']]
         self.inertial = Inertial.from_data(data['inertial']) if data['inertial'] else None
-        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+        self.attr = _attr_from_data(data['attr'])
         self.joints = [Joint.from_data(d) for d in data['joints']]
 
     @classmethod

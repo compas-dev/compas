@@ -6,7 +6,6 @@ import json
 
 from compas.base import Base
 from compas.files import URDFParser
-from compas.files.urdf import URDFGenericElement
 from compas.geometry import Vector
 from compas.geometry import transform_vectors
 from compas.geometry import Rotation
@@ -14,6 +13,8 @@ from compas.geometry import Transformation
 from compas.geometry import Translation
 
 from compas.robots.model.geometry import Origin
+from compas.robots.model.geometry import _attr_to_data
+from compas.robots.model.geometry import _attr_from_data
 from compas.robots.model.geometry import _parse_floats
 
 
@@ -385,7 +386,7 @@ class Axis(Base):
             'x': self.x,
             'y': self.y,
             'z': self.z,
-            'attr': {k: v.data for k, v in self.attr.items()},
+            'attr': _attr_to_data(self.attr),
         }
 
     @data.setter
@@ -393,7 +394,7 @@ class Axis(Base):
         self.x = data['x']
         self.y = data['y']
         self.z = data['z']
-        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+        self.attr = _attr_from_data(data['attr'])
 
     @classmethod
     def from_data(cls, data):
@@ -562,7 +563,7 @@ class Joint(Base):
             'limit': self.limit.data if self.limit else None,
             'safety_controller': self.safety_controller.data if self.safety_controller else None,
             'mimic': self.mimic.data if self.mimic else None,
-            'attr': {k: v.data for k, v in self.attr.items()},
+            'attr': _attr_to_data(self.attr),
             'position': self.position,
         }
 
@@ -579,7 +580,7 @@ class Joint(Base):
         self.limit = Limit.from_data(data['limit']) if data['limit'] else None
         self.safety_controller = SafetyController.from_data(data['safety_controller']) if data['safety_controller'] else None
         self.mimic = Mimic.from_data(data['mimic']) if data['mimic'] else None
-        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+        self.attr = _attr_from_data(data['attr'])
         self.position = data['position']
 
     @classmethod

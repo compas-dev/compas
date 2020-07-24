@@ -8,7 +8,6 @@ import json
 from compas.base import Base
 from compas.files import URDF
 from compas.files import URDFParser
-from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.robots.model.geometry import Color
@@ -17,6 +16,8 @@ from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Texture
+from compas.robots.model.geometry import _attr_to_data
+from compas.robots.model.geometry import _attr_from_data
 from compas.robots.model.joint import Axis
 from compas.robots.model.joint import Joint
 from compas.robots.model.joint import Limit
@@ -79,7 +80,7 @@ class RobotModel(Base):
             'joints': [joint.data for joint in self.joints],
             'links': [link.data for link in self.links],
             'materials': [material.data for material in self.materials],
-            'attr': {k: v.data for k, v in self.attr.items()},
+            'attr': _attr_to_data(self.attr),
             '_scale_factor': self._scale_factor,
         }
 
@@ -89,7 +90,7 @@ class RobotModel(Base):
         self.joints = [Joint.from_data(d) for d in data['joints']]
         self.links = [Link.from_data(d) for d in data['links']]
         self.materials = [Material.from_data(d) for d in data['materials']]
-        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+        self.attr = _attr_from_data(data['attr'])
         self._scale_factor = data['_scale_factor']
 
         self._rebuild_tree()
