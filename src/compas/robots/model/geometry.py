@@ -6,6 +6,7 @@ import json
 
 import compas.geometry
 from compas.base import Base
+from compas.datastructures import Mesh
 from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 from compas.utilities import hex_to_rgb
@@ -407,12 +408,14 @@ class MeshDescriptor(BaseShape):
             'type': 'mesh',
             'filename': self.filename,
             'scale': self.scale,
+            'geometry': self.geometry.data if self.geometry else None,
         }
 
     @data.setter
     def data(self, data):
         self.filename = data['filename']
         self.scale = data['scale']
+        self.geometry = Mesh.from_data(data['geometry']) if data['geometry'] else None
 
     @classmethod
     def from_data(cls, data):
@@ -666,14 +669,14 @@ class Geometry(Base):
     def data(self):
         return {
             'shape': self.shape.data,
-            'attr': {k: v.data for k, v in self.attr.items()},
+            'attr': _attr_to_data(self.attr),
         }
 
     @data.setter
     def data(self, data):
         class_ = TYPE_CLASS_ENUM[data['shape']['type']]
         self.shape = class_.from_data(data['shape'])
-        self.attr = {k: URDFGenericElement.from_data(d) for k, d in data['attr'].items()}
+        self.attr = _attr_from_data(data['attr'])
 
     @classmethod
     def from_data(cls, data):
