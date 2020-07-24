@@ -239,19 +239,18 @@ Now let's write a plugin that implements this interface:
 .. code-block:: python
 
     import trimesh
-    from compas.datastructures import Mesh
 
     @plugin(category='booleans', requires=['trimesh'])
     def boolean_union_mesh_mesh(a, b):
-        v, f = a.to_vertices_and_faces()
-        at = trimesh.Trimesh(vertices=v, faces=f)
+        va, fa = a
+        at = trimesh.Trimesh(vertices=va, faces=fa)
 
-        v, f = b.to_vertices_and_faces()
-        bt = trimesh.Trimesh(vertices=v, faces=f)
+        vb, fb = b
+        bt = trimesh.Trimesh(vertices=vb, faces=fb)
 
         r = at.union(bt, engine='scad')
 
-        return Mesh.from_vertices_and_faces(r.vertices, r.faces)
+        return r.vertices, r.faces
 
 **Voilà!** We have a trimesh-based boolean union plugin!
 
