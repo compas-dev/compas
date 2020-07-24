@@ -399,12 +399,13 @@ def select_plugin(extension_point_url, manager):
     plugins = manager.registry.get(extension_point_url)
     if plugins:
         for plugin in plugins:
-            importable_requirements = (manager.importer.check_importable(name) for name in plugin.opts['requires'])
+            if plugin.opts['requires']:
+                importable_requirements = (manager.importer.check_importable(name) for name in plugin.opts['requires'])
 
-            if not all(importable_requirements):
-                if manager.DEBUG:
-                    print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
-                continue
+                if not all(importable_requirements):
+                    if manager.DEBUG:
+                        print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
+                    continue
 
             return plugin
 
