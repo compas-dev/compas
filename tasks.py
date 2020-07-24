@@ -115,12 +115,13 @@ def docs(ctx, doctest=False, rebuild=True, check_links=False):
         # ctx.run('sphinx-autogen docs/**.rst')
 
         if doctest:
-            ctx.run('sphinx-build -E -b doctest docs dist/docs')
+            testdocs(ctx, rebuild=rebuild)
 
-        ctx.run('sphinx-build -E -b html docs dist/docs')
+        opts = '-E' if rebuild else ''
+        ctx.run('sphinx-build {} -b html docs dist/docs'.format(opts))
 
         if check_links:
-            ctx.run('sphinx-build -E -b linkcheck docs dist/docs')
+            linkcheck(ctx, rebuild=rebuild)
 
 
 @task()
@@ -131,10 +132,18 @@ def lint(ctx):
 
 
 @task()
-def testdocs(ctx):
-    """Test the examples in the ."""
+def testdocs(ctx, rebuild=True):
+    """Test the examples in the docstrings."""
     log.write('Running doctest...')
-    ctx.run('sphinx-build -E -b doctest docs dist/docs')
+    opts = '-E' if rebuild else ''
+    ctx.run('sphinx-build {} -b doctest docs dist/docs'.format(opts))
+
+@task()
+def linkcheck(ctx, rebuild=True):
+    """Check links in documentation."""
+    log.write('Running link check...')
+    opts = '-E' if rebuild else ''
+    ctx.run('sphinx-build {} -b linkcheck docs dist/docs'.format(opts))
 
 
 @task()
