@@ -29,6 +29,7 @@ def boolean_union_mesh_mesh(A, B):
     """
     pass
 
+
 @pluggable(category='booleans')
 def boolean_difference_mesh_mesh(A, B):
     """Compute the boolean difference of two triangle meshes.
