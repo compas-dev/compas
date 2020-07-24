@@ -120,7 +120,7 @@ class PluginManager(object):
 
     Usually there is only one instance of a plugin manager per host.
     """
-    DEBUG = True
+    DEBUG = False
 
     def __init__(self):
         self.importer = Importer()
