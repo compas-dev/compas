@@ -214,12 +214,12 @@ Extension point
 For the sake of example, we are going to assume that ``compas`` core defines
 the following :meth:`compas.plugins.pluggable` interface:
 
-**compas/geometry/booleans/booleans.py**
+**compas/geometry/booleans/__init__.py**
 
 .. code-block:: python
 
     @pluggable(category='booleans')
-    def boolean_union_mesh_mesh(a, b):
+    def boolean_union_mesh_mesh(A, B):
         pass
 
 Plugin
@@ -241,11 +241,11 @@ Now let's write a plugin that implements this interface:
     import trimesh
 
     @plugin(category='booleans', requires=['trimesh'])
-    def boolean_union_mesh_mesh(a, b):
-        va, fa = a
+    def boolean_union_mesh_mesh(A, B):
+        va, fa = A
         at = trimesh.Trimesh(vertices=va, faces=fa)
 
-        vb, fb = b
+        vb, fb = B
         bt = trimesh.Trimesh(vertices=vb, faces=fb)
 
         r = at.union(bt, engine='scad')
@@ -256,6 +256,23 @@ Now let's write a plugin that implements this interface:
 
 Advanced options
 ----------------
+
+There are a few additional options that plugins can use:
+
+* ``requires``: List of required python modules. COMPAS will filter out plugins if their
+  requirements list is not satisfied at runtime. This allows to have multiple implementations
+  of the same operation and have them selected based on which packages are installed.
+  on the system. Eg. `requires=['scipy']`.
+* ``tryfirst`` and ``trylast``: Plugins cannot control the exact priority they will have
+  but they can indicate whether to try to prioritize them or demote them as fallback using
+  these two boolean parameters.
+* ``pluggable_name``: Usually, the name of the decorated plugin method matches that of the
+  pluggable interface. When that is not the case, the pluggable name can be specified via
+  this parameter.
+* ``domain``: extension points are unambiguously identified by a URL that combines domain,
+  category and pluggable name. All COMPAS core plugins use the same domain, but other
+  packages could potentially decide to use a different domain to ensure collision-free
+  naming of pluggable extension points.
 
 Multiple implementations
 ========================
