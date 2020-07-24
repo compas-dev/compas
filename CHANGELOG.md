@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added base class for all COMPAS objects `compas.base.Base`.
 * Added base class for all Rhino objects representing COMPAS objects `compas_rhino.objects.Object`.
 * Added mesh object representing COMPAS meshes in Rhino `compas_rhino.objects.MeshObject`.
+* Added the methods `to_data` and `from_data` to `compas.robots.RobotModel`.
 
 ### Changed
 

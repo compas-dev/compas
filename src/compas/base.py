@@ -14,7 +14,9 @@ from compas.utilities import abstractclassmethod
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
-__all__ = ['Base']
+__all__ = [
+    'Base',
+]
 
 
 class Base(ABC):
