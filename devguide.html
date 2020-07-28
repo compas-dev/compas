@@ -327,6 +327,13 @@ category and pluggable name. All COMPAS core plugins use the same domain, but ot
 packages could potentially decide to use a different domain to ensure collision-free
 naming of pluggable extension points.</p></li>
 </ul>
+<p>While developing plugins, it is also possible to enable print output to understand what
+how plugin selection works behind the scenes. To enable that, set <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> flag
+accordingly:</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.plugins</span> <span class="kn">import</span> <span class="n">plugin_manager</span>
+<span class="n">plugin_manager</span><span class="o">.</span><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="multiple-implementations">

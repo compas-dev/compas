@@ -481,17 +481,16 @@
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Extension Point URL </span><span class="si">{}</span><span class="s1"> invoked. Will select a matching plugin&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span>
 
     <span class="n">plugins</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">plugins</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;requires&#39;</span><span class="p">]:</span>
-                <span class="n">importable_requirements</span> <span class="o">=</span> <span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">importer</span><span class="o">.</span><span class="n">check_importable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;requires&#39;</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="k">if</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;requires&#39;</span><span class="p">]:</span>
+            <span class="n">importable_requirements</span> <span class="o">=</span> <span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">importer</span><span class="o">.</span><span class="n">check_importable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;requires&#39;</span><span class="p">])</span>
 
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">importable_requirements</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">manager</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Requirements not satisfied. Plugin will not be used: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-                    <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">importable_requirements</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">manager</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Requirements not satisfied. Plugin will not be used: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+                <span class="k">continue</span>
 
-            <span class="k">return</span> <span class="n">plugin</span>
+        <span class="k">return</span> <span class="n">plugin</span>
 
     <span class="c1"># Nothing found, raise</span>
     <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">(</span><span class="s1">&#39;Plugin not found for extension point URL: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span>
