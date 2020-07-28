@@ -397,17 +397,16 @@ def select_plugin(extension_point_url, manager):
         print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
 
     plugins = manager.registry.get(extension_point_url)
-    if plugins:
-        for plugin in plugins:
-            if plugin.opts['requires']:
-                importable_requirements = (manager.importer.check_importable(name) for name in plugin.opts['requires'])
+    for plugin in plugins or []:
+        if plugin.opts['requires']:
+            importable_requirements = (manager.importer.check_importable(name) for name in plugin.opts['requires'])
 
-                if not all(importable_requirements):
-                    if manager.DEBUG:
-                        print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
-                    continue
+            if not all(importable_requirements):
+                if manager.DEBUG:
+                    print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
+                continue
 
-            return plugin
+        return plugin
 
     # Nothing found, raise
     raise PluginNotInstalledError('Plugin not found for extension point URL: {}'.format(extension_point_url))

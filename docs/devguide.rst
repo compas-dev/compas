@@ -274,6 +274,15 @@ There are a few additional options that plugins can use:
   packages could potentially decide to use a different domain to ensure collision-free
   naming of pluggable extension points.
 
+While developing plugins, it is also possible to enable print output to understand what
+how plugin selection works behind the scenes. To enable that, set ``DEBUG`` flag
+accordingly:
+
+.. code-block:: python
+
+    from compas.plugins import plugin_manager
+    plugin_manager.DEBUG = True
+
 Multiple implementations
 ========================
 

@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added plugin system based on decorators: `compas.plugins.pluggable` & `compas.plugins.plugin`.
 * Added `compas_rhino` implementation of the boolean operation pluggable interfaces (union/difference/intersection).
-* Added `compas.datastructures.Mesh.transform_numpy`
+* Added `compas.datastructures.Mesh.transform_numpy`.
 * Added `PluginNotInstalledError`.
 * Added `compas.geometry.booleans`.
 * Added tolerance parameter to angle functions.
