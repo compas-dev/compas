@@ -24,6 +24,17 @@ drawing
     draw_mesh
     draw_network
 
+objects
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    delete_object
+    delete_objects
+
+
 
 sets
 ====
@@ -55,6 +66,7 @@ misc
 """
 from __future__ import absolute_import
 
+from .layer import * # noqa: F401 F403
 from .drawing import *  # noqa: F401 F403
 from .misc import *  # noqa: F401 F403
 from .sets import *  # noqa: F401 F403
