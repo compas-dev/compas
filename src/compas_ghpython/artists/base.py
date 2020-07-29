@@ -3,11 +3,13 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-import compas_ghpython
+
 
 __all__ = ["BaseArtist"]
 
+
 _ITEM_ARTIST = {}
+
 
 class BaseArtist(object):
     """Base class for all artists.

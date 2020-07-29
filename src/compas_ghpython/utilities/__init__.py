@@ -66,7 +66,6 @@ misc
 """
 from __future__ import absolute_import
 
-from .layer import * # noqa: F401 F403
 from .drawing import *  # noqa: F401 F403
 from .misc import *  # noqa: F401 F403
 from .sets import *  # noqa: F401 F403
