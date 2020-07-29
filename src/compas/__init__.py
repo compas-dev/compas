@@ -13,6 +13,7 @@ compas
     compas.files
     compas.geometry
     compas.numerical
+    compas.plugins
     compas.robots
     compas.rpc
     compas.topology

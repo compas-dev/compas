@@ -130,4 +130,5 @@ def _get_python_plugins_path_mac(version):
     return path
 
 
+__all_plugins__ = ['compas_rhino.geometry.booleans']
 __all__ = [name for name in dir() if not name.startswith('_')]
