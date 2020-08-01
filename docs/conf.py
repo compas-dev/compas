@@ -220,7 +220,7 @@ plot_html_show_formats = False
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/', None),
-    'compas': ('https://compas-dev.github.io/main', 'https://compas-dev.github.io/main/objects.inv'),
+    'compas': ('https://compas-dev.github.io/compas', 'https://compas-dev.github.io/compas/objects.inv'),
 }
 
 
