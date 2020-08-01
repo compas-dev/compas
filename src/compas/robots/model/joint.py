@@ -2,6 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import json
+
+from compas.base import Base
 from compas.files import URDFParser
 from compas.geometry import Vector
 from compas.geometry import transform_vectors
@@ -10,6 +13,8 @@ from compas.geometry import Transformation
 from compas.geometry import Translation
 
 from compas.robots.model.geometry import Origin
+from compas.robots.model.geometry import _attr_to_data
+from compas.robots.model.geometry import _attr_from_data
 from compas.robots.model.geometry import _parse_floats
 
 
@@ -26,44 +31,166 @@ __all__ = [
 ]
 
 
-class ParentLink(object):
+class ParentLink(Base):
     """Describes a parent relation between a joint its parent link."""
 
     def __init__(self, link):
+        super(ParentLink, self).__init__()
         self.link = link
 
     def __str__(self):
         return str(self.link)
 
+    @property
+    def data(self):
+        return {
+            'link': self.link,
+        }
 
-class ChildLink(object):
+    @data.setter
+    def data(self, data):
+        self.link = data['link']
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(data['link'])
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class ChildLink(Base):
     """Describes a child relation between a joint and its child link."""
 
     def __init__(self, link):
+        super(ChildLink, self).__init__()
         self.link = link
 
     def __str__(self):
         return str(self.link)
 
+    @property
+    def data(self):
+        return {
+            'link': self.link,
+        }
 
-class Calibration(object):
+    @data.setter
+    def data(self, data):
+        self.link = data['link']
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(data['link'])
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Calibration(Base):
     """Reference positions of the joint, used to calibrate the absolute position."""
 
     def __init__(self, rising=0.0, falling=0.0, reference_position=0.0):
+        super(Calibration, self).__init__()
         self.rising = float(rising)
         self.falling = float(falling)
         self.reference_position = float(reference_position)
 
+    @property
+    def data(self):
+        return {
+            'rising': self.rising,
+            'falling': self.falling,
+            'reference_position': self.reference_position,
+        }
 
-class Dynamics(object):
+    @data.setter
+    def data(self, data):
+        self.rising = data['rising']
+        self.falling = data['falling']
+        self.reference_position = data['reference_position']
+
+    @classmethod
+    def from_data(cls, data):
+        calibration = cls()
+        calibration.data = data
+        return calibration
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Dynamics(Base):
     """Physical properties of the joint used for simulation of dynamics."""
 
     def __init__(self, damping=0.0, friction=0.0):
+        super(Dynamics, self).__init__()
         self.damping = float(damping)
         self.friction = float(friction)
 
+    @property
+    def data(self):
+        return {
+            'damping': self.damping,
+            'friction': self.friction,
+        }
 
-class Limit(object):
+    @data.setter
+    def data(self, data):
+        self.damping = data['damping']
+        self.friction = data['friction']
+
+    @classmethod
+    def from_data(cls, data):
+        dynamics = cls()
+        dynamics.data = data
+        return dynamics
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Limit(Base):
     """Joint limit properties.
 
     Attributes
@@ -79,10 +206,46 @@ class Limit(object):
     """
 
     def __init__(self, effort=0.0, velocity=0.0, lower=0.0, upper=0.0):
+        super(Limit, self).__init__()
         self.effort = float(effort)
         self.velocity = float(velocity)
         self.lower = float(lower)
         self.upper = float(upper)
+
+    @property
+    def data(self):
+        return {
+            'effort': self.effort,
+            'velocity': self.velocity,
+            'lower': self.lower,
+            'upper': self.upper,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.effort = data['effort']
+        self.velocity = data['velocity']
+        self.lower = data['lower']
+        self.upper = data['upper']
+
+    @classmethod
+    def from_data(cls, data):
+        limit = cls()
+        limit.data = data
+        return limit
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
     def scale(self, factor):
         """Scale the upper and lower limits by a given factor.
@@ -100,29 +263,99 @@ class Limit(object):
         self.upper *= factor
 
 
-class Mimic(object):
+class Mimic(Base):
     """Description of joint mimic."""
 
     def __init__(self, joint, multiplier=1.0, offset=0.):
+        super(Mimic, self).__init__()
         self.joint = joint  # == joint name
         self.multiplier = float(multiplier)
         self.offset = float(offset)
+
+    @property
+    def data(self):
+        return {
+            'joint': self.joint,
+            'multiplier': self.multiplier,
+            'offset': self.offset,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.joint = data['joint']
+        self.multiplier = data['multiplier']
+        self.offset = data['offset']
+
+    @classmethod
+    def from_data(cls, data):
+        mimic = cls(data['joint'])
+        mimic.data = data
+        return mimic
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
     def calculate_position(self, mimicked_joint_position):
         return self.multiplier * mimicked_joint_position + self.offset
 
 
-class SafetyController(object):
+class SafetyController(Base):
     """Safety controller properties."""
 
     def __init__(self, k_velocity, k_position=0.0, soft_lower_limit=0.0, soft_upper_limit=0.0):
+        super(SafetyController, self).__init__()
         self.k_velocity = float(k_velocity)
         self.k_position = float(k_position)
         self.soft_lower_limit = float(soft_lower_limit)
         self.soft_upper_limit = float(soft_upper_limit)
 
+    @property
+    def data(self):
+        return {
+            'k_velocity': self.k_velocity,
+            'k_position': self.k_position,
+            'soft_lower_limit': self.soft_lower_limit,
+            'soft_upper_limit': self.soft_upper_limit,
+        }
 
-class Axis(object):
+    @data.setter
+    def data(self, data):
+        self.k_velocity = data['k_velocity']
+        self.k_position = data['k_position']
+        self.soft_lower_limit = data['soft_lower_limit']
+        self.soft_upper_limit = data['soft_upper_limit']
+
+    @classmethod
+    def from_data(cls, data):
+        sc = cls(data['k_velocity'])
+        sc.data = data
+        return sc
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Axis(Base):
     """Representation of an axis or vector.
 
     Attributes
@@ -140,11 +373,47 @@ class Axis(object):
     def __init__(self, xyz='0 0 0', **kwargs):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
+        super(Axis, self).__init__()
         xyz = _parse_floats(xyz)
         self.x = xyz[0]
         self.y = xyz[1]
         self.z = xyz[2]
         self.attr = kwargs
+
+    @property
+    def data(self):
+        return {
+            'x': self.x,
+            'y': self.y,
+            'z': self.z,
+            'attr': _attr_to_data(self.attr),
+        }
+
+    @data.setter
+    def data(self, data):
+        self.x = data['x']
+        self.y = data['y']
+        self.z = data['z']
+        self.attr = _attr_from_data(data['attr'])
+
+    @classmethod
+    def from_data(cls, data):
+        axis = cls()
+        axis.data = data
+        return axis
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
     def copy(self):
         """Create a copy of the axis instance."""
@@ -191,7 +460,7 @@ class Axis(object):
         return "[%.3f, %.3f, %.3f]" % (self.x, self.y, self.z)
 
 
-class Joint(object):
+class Joint(Base):
     """Representation of the kinematics and dynamics of a joint and its safety limits.
 
     Attributes
@@ -237,7 +506,7 @@ class Joint(object):
     REVOLUTE : :obj:`int`
         Revolute joint type.
     CONTINUOUS : :obj:`int`
-        Continous joint type.
+        Continuous joint type.
     PRISMATIC : :obj:`int`
         Prismatic joint type.
     FIXED : :obj:`int`
@@ -264,6 +533,7 @@ class Joint(object):
         if type not in (Joint.SUPPORTED_TYPES):
             raise ValueError('Unsupported joint type: %s' % type)
 
+        super(Joint, self).__init__()
         self.name = name
         self.type = Joint.SUPPORTED_TYPES.index(type)
         self.parent = parent if isinstance(parent, ParentLink) else ParentLink(parent)
@@ -278,6 +548,64 @@ class Joint(object):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
+
+    @property
+    def data(self):
+        return {
+            'name': self.name,
+            'type': self.SUPPORTED_TYPES[self.type],
+            'parent': self.parent.data,
+            'child': self.child.data,
+            'origin': self.origin.data if self.origin else None,
+            'axis': self.axis.data if self.axis else None,
+            'calibration': self.calibration.data if self.calibration else None,
+            'dynamics': self.dynamics.data if self.dynamics else None,
+            'limit': self.limit.data if self.limit else None,
+            'safety_controller': self.safety_controller.data if self.safety_controller else None,
+            'mimic': self.mimic.data if self.mimic else None,
+            'attr': _attr_to_data(self.attr),
+            'position': self.position,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.name = data['name']
+        self.type = Joint.SUPPORTED_TYPES.index(data['type'])
+        self.parent = ParentLink.from_data(data['parent'])
+        self.child = ChildLink.from_data(data['child'])
+        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.axis = Axis.from_data(data['axis']) if data['axis'] else None
+        self.calibration = Calibration.from_data(data['calibration']) if data['calibration'] else None
+        self.dynamics = Dynamics.from_data(data['dynamics']) if data['dynamics'] else None
+        self.limit = Limit.from_data(data['limit']) if data['limit'] else None
+        self.safety_controller = SafetyController.from_data(data['safety_controller']) if data['safety_controller'] else None
+        self.mimic = Mimic.from_data(data['mimic']) if data['mimic'] else None
+        self.attr = _attr_from_data(data['attr'])
+        self.position = data['position']
+
+    @classmethod
+    def from_data(cls, data):
+        joint = cls(
+            data['name'],
+            data['type'],
+            ParentLink.from_data(data['parent']),
+            ChildLink.from_data(data['child'])
+        )
+        joint.data = data
+        return joint
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
     @property
     def current_transformation(self):

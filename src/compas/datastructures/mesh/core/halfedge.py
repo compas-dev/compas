@@ -256,7 +256,7 @@ class HalfEdge(Datastructure):
 
         Notes
         -----
-        This constructor method is meant to be used in conjuction with the
+        This constructor method is meant to be used in conjunction with the
         corresponding *to_data* method.
 
         """
@@ -274,7 +274,7 @@ class HalfEdge(Datastructure):
 
         Notes
         ----
-        This method produces the data that can be used in conjuction with the
+        This method produces the data that can be used in conjunction with the
         corresponding *from_data* class method.
         """
         return self.data
@@ -295,7 +295,7 @@ class HalfEdge(Datastructure):
 
         Notes
         -----
-        This constructor method is meant to be used in conjuction with the
+        This constructor method is meant to be used in conjunction with the
         corresponding *to_json* method.
         """
         with open(filepath, 'r') as fp:
@@ -334,7 +334,7 @@ class HalfEdge(Datastructure):
 
         Notes
         -----
-        This constructor method is meant to be used in conjuction with the
+        This constructor method is meant to be used in conjunction with the
         corresponding *to_pickle* method.
         """
         with open(filepath, 'rb') as fo:
@@ -1060,7 +1060,7 @@ class HalfEdge(Datastructure):
 
         Notes
         -----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
         if they exist.
         """
         if not attr_dict:
@@ -1254,7 +1254,7 @@ class HalfEdge(Datastructure):
 
         Notes
         ----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
         if they exist.
         """
         if not attr_dict:
@@ -1448,7 +1448,7 @@ class HalfEdge(Datastructure):
 
         Notes
         ----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
         if they exist.
         """
         if not attr_dict:
@@ -1837,12 +1837,12 @@ class HalfEdge(Datastructure):
         return False
 
     def euler(self):
-        """Calculate the Euler characterisic.
+        """Calculate the Euler characteristic.
 
         Returns
         -------
         int
-            The Euler chracteristic.
+            The Euler characteristic.
         """
         V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
         E = self.number_of_edges()
@@ -2041,11 +2041,6 @@ class HalfEdge(Datastructure):
     def vertex_min_degree(self):
         """Compute the minimum degree of all vertices.
 
-        Parameters
-        ----------
-        key : int
-            The identifier of the vertex.
-
         Returns
         -------
         int
@@ -2057,11 +2052,6 @@ class HalfEdge(Datastructure):
 
     def vertex_max_degree(self):
         """Compute the maximum degree of all vertices.
-
-        Parameters
-        ----------
-        key : int
-            The identifier of the vertex.
 
         Returns
         -------
@@ -2159,7 +2149,7 @@ class HalfEdge(Datastructure):
         -------
         tuple
             The identifiers of the adjacent faces.
-            If the edge is on the bboundary, one of the identifiers is ``None``.
+            If the edge is on the boundary, one of the identifiers is ``None``.
         """
         return self.halfedge[u][v], self.halfedge[v][u]
 
@@ -2358,11 +2348,6 @@ class HalfEdge(Datastructure):
     def face_min_degree(self):
         """Compute the minimum degree of all faces.
 
-        Parameters
-        ----------
-        fkey : int
-            Identifier of the face.
-
         Returns
         -------
         int
@@ -2374,11 +2359,6 @@ class HalfEdge(Datastructure):
 
     def face_max_degree(self):
         """Compute the maximum degree of all faces.
-
-        Parameters
-        ----------
-        fkey : int
-            Identifier of the face.
 
         Returns
         -------

@@ -384,6 +384,18 @@ Bestfit
     bestfit_plane
     bestfit_plane_numpy
 
+Boolean operations
+==================
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    boolean_union_mesh_mesh
+    boolean_difference_mesh_mesh
+    boolean_intersection_mesh_mesh
+
 """
 from __future__ import absolute_import
 from __future__ import division
