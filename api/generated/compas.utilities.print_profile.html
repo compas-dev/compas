@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas_rhino" href="../compas_rhino.html" />
+    <link rel="next" title="flatten" href="compas.utilities.flatten.html" />
   
   
   
-    <link rel="prev" title="normalize_values" href="compas.utilities.normalize_values.html" />
+    <link rel="prev" title="memoize" href="compas.utilities.memoize.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,17 +89,18 @@
 <h1 class="display-4 p-0 mb-5">print_profile</h1>
 <dl class="function">
 <dt id="compas.utilities.print_profile">
-<code class="sig-prename descclassname">compas.utilities.</code><code class="sig-name descname">print_profile</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/utilities/profiling.html#print_profile"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">compas.utilities.</code><code class="sig-name descname">print_profile</code><span class="sig-paren">(</span><em class="sig-param">func</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/utilities/decorators.html#print_profile"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Decorate a function with automatic profile printing.</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><p>func (function) : The function to decorate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>func</strong> (<em>callable</em>) – The function to decorate.</p>
 </dd>
-<dt>Returns:</dt><dd><p>function : The decorated function.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>callable</em> – The decorated function.</p>
 </dd>
 </dl>
-<p>Examples:</p>
-<blockquote>
-<div><div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@print_profile</span>
+<p class="rubric">Examples</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@print_profile</span>
 <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
 
@@ -108,7 +109,6 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 </code></pre></div>
 </div>
-</div></blockquote>
 </dd></dl>
 
 </div>
