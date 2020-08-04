@@ -6,8 +6,8 @@ geometry
 .. currentmodule:: compas.geometry
 
 
-Bases
-=====
+Base Classes
+============
 
 .. autosummary::
     :toctree: generated/
@@ -15,7 +15,6 @@ Bases
 
     Primitive
     Shape
-    Collection
 
 
 Primitives
@@ -51,16 +50,6 @@ Shapes
     Polyhedron
     Sphere
     Torus
-
-
-Collections
-===========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    PointCollection
 
 
 Transformations
