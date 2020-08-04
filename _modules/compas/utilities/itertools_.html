@@ -88,22 +88,10 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
-<span class="c1"># import random</span>
-<span class="c1"># import collections</span>
-<span class="c1"># import operator</span>
-
-<span class="c1"># from operator import itemgetter</span>
-
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
-<span class="c1"># from itertools import count</span>
-<span class="c1"># from itertools import groupby</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
-<span class="c1"># from itertools import repeat</span>
-<span class="c1"># from itertools import starmap</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">repeat</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">tee</span>
-<span class="c1"># from itertools import cycle</span>
-<span class="c1"># from itertools import filterfalse</span>
-<span class="c1"># from itertools import combinations</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">zip_longest</span>
@@ -238,91 +226,40 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<span class="c1"># def take(n, iterable):</span>
-<span class="c1">#     &quot;&quot;&quot;Return the first n items of the iterable as a list.</span>
+<span class="k">def</span> <span class="nf">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the first n items of the iterable as a list.</span>
 
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     n : int</span>
-<span class="c1">#         The number of items.</span>
-<span class="c1">#     iterable : iterable</span>
-<span class="c1">#         An iterable object.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        The number of items.</span>
+<span class="sd">    iterable : iterable</span>
+<span class="sd">        An iterable object.</span>
 
-<span class="c1">#     Returns</span>
-<span class="c1">#     -------</span>
-<span class="c1">#     list</span>
-<span class="c1">#         A list with the first `n` items of `iterable`.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list with the first `n` items of `iterable`.</span>
 
-<span class="c1">#     Examples</span>
-<span class="c1">#     --------</span>
-<span class="c1">#     &gt;&gt;&gt; take(5, range(100))</span>
-<span class="c1">#     [0, 1, 2, 3, 4]</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     return list(islice(iterable, n))</span>
-
-
-<span class="c1"># def tabulate(function, start=0):</span>
-<span class="c1">#     &quot;&quot;&quot;Return function(0), function(1), ...&quot;&quot;&quot;</span>
-<span class="c1">#     return map(function, count(start))</span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; take(5, range(100))</span>
+<span class="sd">    [0, 1, 2, 3, 4]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
 
 
-<span class="c1"># def tail(n, iterable):</span>
-<span class="c1">#     &quot;&quot;&quot;Return an iterator over the last n items&quot;&quot;&quot;</span>
-<span class="c1">#     # tail(3, &#39;ABCDEFG&#39;) --&gt; E F G</span>
-<span class="c1">#     return iter(collections.deque(iterable, maxlen=n))</span>
+<span class="k">def</span> <span class="nf">nth</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the nth item or a default value&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">default</span><span class="p">)</span>
 
 
-<span class="c1"># def consume(iterator, n):</span>
-<span class="c1">#     &quot;&quot;&quot;Advance the iterator n-steps ahead. If n is none, consume entirely.&quot;&quot;&quot;</span>
-<span class="c1">#     # Use functions that consume iterators at C speed.</span>
-<span class="c1">#     if n is None:</span>
-<span class="c1">#         # feed the entire iterator into a zero-length deque</span>
-<span class="c1">#         collections.deque(iterator, maxlen=0)</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         # advance to the empty slice starting at position n</span>
-<span class="c1">#         next(islice(iterator, n, n), None)</span>
+<span class="k">def</span> <span class="nf">padnone</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the sequence elements and then returns None indefinitely.</span>
 
-
-<span class="c1"># def nth(iterable, n, default=None):</span>
-<span class="c1">#     &quot;&quot;&quot;Returns the nth item or a default value&quot;&quot;&quot;</span>
-<span class="c1">#     return next(islice(iterable, n, None), default)</span>
-
-
-<span class="c1"># def all_equal(iterable):</span>
-<span class="c1">#     &quot;&quot;&quot;Returns True if all the elements are equal to each other&quot;&quot;&quot;</span>
-<span class="c1">#     g = groupby(iterable)</span>
-<span class="c1">#     return next(g, True) and not next(g, False)</span>
-
-
-<span class="c1"># def quantify(iterable, pred=bool):</span>
-<span class="c1">#     &quot;&quot;&quot;Count how many times the predicate is true&quot;&quot;&quot;</span>
-<span class="c1">#     return sum(map(pred, iterable))</span>
-
-
-<span class="c1"># def padnone(iterable):</span>
-<span class="c1">#     &quot;&quot;&quot;Returns the sequence elements and then returns None indefinitely.</span>
-
-<span class="c1">#     Useful for emulating the behavior of the built-in map() function.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     return chain(iterable, repeat(None))</span>
-
-
-<span class="c1"># def ncycles(iterable, n):</span>
-<span class="c1">#     &quot;&quot;&quot;Returns the sequence elements n times&quot;&quot;&quot;</span>
-<span class="c1">#     return chain.from_iterable(repeat(tuple(iterable), n))</span>
-
-
-<span class="c1"># def dotproduct(vec1, vec2):</span>
-<span class="c1">#     &quot;&quot;&quot;Compute the dot product of two vectors of arbitrary but equal length.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     return sum(map(operator.mul, vec1, vec2))</span>
-
-
-<span class="c1"># def repeatfunc(func, times=None, *args):</span>
-<span class="c1">#     &quot;&quot;&quot;Repeat calls to func with specified arguments.&quot;&quot;&quot;</span>
-<span class="c1">#     if times is None:</span>
-<span class="c1">#         return starmap(func, repeat(args))</span>
-<span class="c1">#     return starmap(func, repeat(args, times))</span>
+<span class="sd">    Useful for emulating the behavior of the built-in map() function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">chain</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
 
 
 <span class="c1"># def grouper(iterable, n, fillvalue=None):</span>
@@ -330,96 +267,6 @@
 <span class="c1">#     # grouper(&#39;ABCDEFG&#39;, 3, &#39;x&#39;) --&gt; ABC DEF Gxx&quot;&quot;&quot;</span>
 <span class="c1">#     args = [iter(iterable)] * n</span>
 <span class="c1">#     return zip_longest(*args, fillvalue=fillvalue)</span>
-
-
-<span class="c1"># def roundrobin(*iterables):</span>
-<span class="c1">#     &quot;&quot;&quot;roundrobin(&#39;ABC&#39;, &#39;D&#39;, &#39;EF&#39;) --&gt; A D E B F C&quot;&quot;&quot;</span>
-<span class="c1">#     # Recipe credited to George Sakkis</span>
-<span class="c1">#     pending = len(iterables)</span>
-<span class="c1">#     nexts = cycle(iter(it).__next__ for it in iterables)</span>
-<span class="c1">#     while pending:</span>
-<span class="c1">#         try:</span>
-<span class="c1">#             for next in nexts:</span>
-<span class="c1">#                 yield next()</span>
-<span class="c1">#         except StopIteration:</span>
-<span class="c1">#             pending -= 1</span>
-<span class="c1">#             nexts = cycle(islice(nexts, pending))</span>
-
-
-<span class="c1"># def partition(pred, iterable):</span>
-<span class="c1">#     &#39;Use a predicate to partition entries into false entries and true entries&#39;</span>
-<span class="c1">#     # partition(is_odd, range(10)) --&gt; 0 2 4 6 8   and  1 3 5 7 9</span>
-<span class="c1">#     t1, t2 = tee(iterable)</span>
-<span class="c1">#     return filterfalse(pred, t1), filter(pred, t2)</span>
-
-
-<span class="c1"># def powerset(iterable):</span>
-<span class="c1">#     &quot;&quot;&quot;powerset([1,2,3]) --&gt; () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)&quot;&quot;&quot;</span>
-<span class="c1">#     s = list(iterable)</span>
-<span class="c1">#     return chain.from_iterable(combinations(s, r) for r in range(len(s) + 1))</span>
-
-
-<span class="c1"># def unique_everseen(iterable, key=None):</span>
-<span class="c1">#     &quot;&quot;&quot;List unique elements, preserving order. Remember all elements ever seen.&quot;&quot;&quot;</span>
-<span class="c1">#     # unique_everseen(&#39;AAAABBBCCDAABBB&#39;) --&gt; A B C D</span>
-<span class="c1">#     # unique_everseen(&#39;ABBCcAD&#39;, str.lower) --&gt; A B C D</span>
-<span class="c1">#     seen = set()</span>
-<span class="c1">#     seen_add = seen.add</span>
-<span class="c1">#     if key is None:</span>
-<span class="c1">#         for element in filterfalse(seen.__contains__, iterable):</span>
-<span class="c1">#             seen_add(element)</span>
-<span class="c1">#             yield element</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         for element in iterable:</span>
-<span class="c1">#             k = key(element)</span>
-<span class="c1">#             if k not in seen:</span>
-<span class="c1">#                 seen_add(k)</span>
-<span class="c1">#                 yield element</span>
-
-
-<span class="c1"># def unique_justseen(iterable, key=None):</span>
-<span class="c1">#     &quot;&quot;&quot;List unique elements, preserving order. Remember only the element just seen.&quot;&quot;&quot;</span>
-<span class="c1">#     # unique_justseen(&#39;AAAABBBCCDAABBB&#39;) --&gt; A B C D A B</span>
-<span class="c1">#     # unique_justseen(&#39;ABBCcAD&#39;, str.lower) --&gt; A B C A D</span>
-<span class="c1">#     return map(next, map(itemgetter(1), groupby(iterable, key)))</span>
-
-
-<span class="c1"># def iter_except(func, exception, first=None):</span>
-<span class="c1">#     &quot;&quot;&quot;Call a function repeatedly until an exception is raised.</span>
-
-<span class="c1">#     Converts a call-until-exception interface to an iterator interface.</span>
-<span class="c1">#     Like builtins.iter(func, sentinel) but uses an exception instead</span>
-<span class="c1">#     of a sentinel to end the loop.</span>
-
-<span class="c1">#     Examples:</span>
-<span class="c1">#         iter_except(functools.partial(heappop, h), IndexError)   # priority queue iterator</span>
-<span class="c1">#         iter_except(d.popitem, KeyError)                         # non-blocking dict iterator</span>
-<span class="c1">#         iter_except(d.popleft, IndexError)                       # non-blocking deque iterator</span>
-<span class="c1">#         iter_except(q.get_nowait, Queue.Empty)                   # loop over a producer Queue</span>
-<span class="c1">#         iter_except(s.pop, KeyError)                             # non-blocking set iterator</span>
-
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     try:</span>
-<span class="c1">#         if first is not None:</span>
-<span class="c1">#             yield first()            # For database APIs needing an initial cast to db.first()</span>
-<span class="c1">#         while True:</span>
-<span class="c1">#             yield func()</span>
-<span class="c1">#     except exception:</span>
-<span class="c1">#         pass</span>
-
-
-<span class="c1"># def first_true(iterable, default=False, pred=None):</span>
-<span class="c1">#     &quot;&quot;&quot;Returns the first true value in the iterable.</span>
-
-<span class="c1">#     If no true value is found, returns *default*</span>
-
-<span class="c1">#     If *pred* is not None, returns the first item</span>
-<span class="c1">#     for which pred(item) is true.</span>
-
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     # first_true([a,b,c], x) --&gt; a or b or c or x</span>
-<span class="c1">#     # first_true([a,b], x, f) --&gt; a if f(a) else b if f(b) else x</span>
-<span class="c1">#     return next(filter(pred, iterable), default)</span>
 
 
 <span class="c1"># def random_product(*args, repeat=1):</span>
