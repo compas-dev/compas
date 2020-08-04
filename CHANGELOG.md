@@ -33,7 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved "modifiers" to `compas_rhino.objects`.
 * Connection attempts can now be set for `compas.Proxy.start_server` using the
   attribute `Proxy.max_conn_attempts`.
-* `Scale.from_factors` can now be created from anchor frame
+* `Scale.from_factors` can now be created from anchor frame.
+* Changed vertex reading of PLY files to include all property information.
 
 ### Removed
 

@@ -64,8 +64,14 @@ class PLYReader(object):
         'short': int,
         'ushort': int,
         'int': int,
+        'int32': int,
+        'int64': int,
         'uint': int,
+        'uint32': int,
+        'uint64': int,
         'float': float,
+        'float32': float,
+        'float64': float,
         'double': float,
     }
 
@@ -282,18 +288,30 @@ class PLYReader(object):
     # ==========================================================================
 
     def read_vertices(self):
-        count = 0
-        for line in self.file:
-            line = line.rstrip()
-            parts = line.split()
+        n = len(self.vertex_properties)
+        for _ in range(self.number_of_vertices):
             vertex = {}
-            for i, prop in enumerate(self.vertex_properties):
-                pname, ptype = prop
-                vertex[pname] = self.property_types[ptype](parts[i])
+            i = 0
+            while i < n:
+                line = next(self.file)
+                parts = line.rstrip().split()
+                for prop_str in parts:
+                    prop_name, prop_type = self.vertex_properties[i]
+                    vertex[prop_name] = self.property_types[prop_type](prop_str)
+                    i += 1
             self.vertices.append(vertex)
-            count += 1
-            if count == self.number_of_vertices:
-                break
+        # count = 0
+        # for line in self.file:
+        #     line = line.rstrip()
+        #     parts = line.split()
+        #     vertex = {}
+        #     for i, prop in enumerate(self.vertex_properties):
+        #         pname, ptype = prop
+        #         vertex[pname] = self.property_types[ptype](parts[i])
+        #     self.vertices.append(vertex)
+        #     count += 1
+        #     if count == self.number_of_vertices:
+        #         break
 
     def read_edges(self):
         pass
