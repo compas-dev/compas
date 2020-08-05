@@ -23,7 +23,6 @@ from compas.geometry._transformations import euler_angles_from_matrix
 from compas.geometry._transformations import matrix_from_axis_and_angle
 from compas.geometry._transformations import axis_and_angle_from_matrix
 from compas.geometry._transformations import matrix_from_quaternion
-from compas.geometry._transformations import quaternion_from_matrix
 from compas.geometry._transformations import matrix_from_frame
 from compas.geometry._transformations import basis_vectors_from_matrix
 from compas.geometry._transformations import Transformation
@@ -272,7 +271,7 @@ class Rotation(Transformation):
         True
         """
         from compas.geometry import Quaternion
-        return Quaternion(*quaternion_from_matrix(self.matrix))
+        return Quaternion.from_matrix(self.matrix)
 
     @property
     def axis_and_angle(self):
