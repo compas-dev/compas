@@ -237,27 +237,6 @@ class Line(Primitive):
         return lines
 
     # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Make a copy of this line.
-
-        Returns
-        -------
-        Line
-            The copy.
-
-        Examples
-        --------
-        >>> line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
-        >>> line.copy()
-        Line(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000))
-        """
-        cls = type(self)
-        return cls(self.start.copy(), self.end.copy())
-
-    # ==========================================================================
     # methods
     # ==========================================================================
 
@@ -307,35 +286,6 @@ class Line(Primitive):
         """
         self.start.transform(T)
         self.end.transform(T)
-
-    def transformed(self, T):
-        """Returns a transformed copy of the current line.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation` or list of list
-            The transformation.
-
-        Returns
-        -------
-        :class: `compas.geometry.Line`
-            The transformed line.
-
-        Examples
-        --------
-        >>> from math import radians
-        >>> from compas.geometry import Rotation
-        >>> l1 = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))
-        >>> l2 = l1.transformed(R)
-        >>> l1.end
-        Point(1.000, 0.000, 0.000)
-        >>> l2.end
-        Point(0.000, 1.000, 0.000)
-        """
-        line = self.copy()
-        line.transform(T)
-        return line
 
 
 # ==============================================================================

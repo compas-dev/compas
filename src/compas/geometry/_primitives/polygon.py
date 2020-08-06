@@ -231,30 +231,6 @@ class Polygon(Primitive):
         return cls(points)
 
     # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Make a copy of this polygon.
-
-        Returns
-        -------
-        :class:`compas.geometry.Polygon`
-            The copy.
-
-        Examples
-        --------
-        >>> p1 = Polygon.from_sides_and_radius_xy(4, 1.0)
-        >>> p2 = p1.copy()
-        >>> p1 == p2
-        True
-        >>> p1 is p2
-        False
-        """
-        cls = type(self)
-        return cls([point.copy() for point in self.points])
-
-    # ==========================================================================
     # methods
     # ==========================================================================
 
@@ -292,10 +268,6 @@ class Polygon(Primitive):
         """
         return is_coplanar(self.points)
 
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
-
     def transform(self, T):
         """Transform this polygon.
 
@@ -318,33 +290,6 @@ class Polygon(Primitive):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
-
-    def transformed(self, T):
-        """Return a transformed copy of this polygon.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation` or list of list
-            The transformation.
-
-        Returns
-        -------
-        :class:`compas.geometry.Polygon`
-            The transformed copy.
-
-        Examples
-        --------
-        >>> from math import radians
-        >>> from compas.geometry import Rotation
-        >>> poly1 = Polygon.from_sides_and_radius_xy(4, 1.0)
-        >>> R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(45))
-        >>> poly2 = poly1.transformed(R)
-        >>> poly2.points[0] == poly1.points[0]
-        False
-        """
-        polygon = self.copy()
-        polygon.transform(T)
-        return polygon
 
 
 # ==============================================================================

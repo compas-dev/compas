@@ -3,7 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 import json
-import pickle
 # import schema
 from collections import OrderedDict
 from copy import deepcopy
@@ -168,20 +167,7 @@ class HalfEdge(Datastructure):
         format, which only allows for dict keys that are strings.
 
         """
-        # vertex = {}
-        # face = {}
-        # facedata = {}
         edgedata = {}
-
-        # for key in self.vertex:
-        #     vertex[repr(key)] = self.vertex[key]
-
-        # for key in self.face:
-        #     face[repr(key)] = [repr(k) for k in self.face[key]]
-
-        # for key in self.facedata:
-        #     facedata[repr(key)] = self.facedata[key]
-
         for key in self.edgedata:
             edgedata[repr(key)] = self.edgedata[key]
 
@@ -318,42 +304,6 @@ class HalfEdge(Datastructure):
             else:
                 json.dump(self.data, f)
 
-    @classmethod
-    def from_pickle(cls, filepath):
-        """Construct a mesh from serialised data contained in a pickle file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the pickle file.
-
-        Returns
-        -------
-        object
-            An object of type ``cls``.
-
-        Notes
-        -----
-        This constructor method is meant to be used in conjunction with the
-        corresponding *to_pickle* method.
-        """
-        with open(filepath, 'rb') as fo:
-            data = pickle.load(fo)
-        o = cls()
-        o.data = data
-        return o
-
-    def to_pickle(self, filepath):
-        """Serialise the structured data representing the mesh to a pickle file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the pickle file.
-        """
-        with open(filepath, 'wb+') as f:
-            pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
-
     # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
@@ -464,6 +414,8 @@ class HalfEdge(Datastructure):
         """
         return {key: index for index, key in enumerate(self.vertices())}
 
+    vertex_index = key_index
+
     def index_key(self):
         """Returns a dictionary that maps the indices of a vertex list to
         keys in a vertex dictionary.
@@ -475,6 +427,8 @@ class HalfEdge(Datastructure):
 
         """
         return dict(enumerate(self.vertices()))
+
+    index_vertex = index_key
 
     # --------------------------------------------------------------------------
     # builders

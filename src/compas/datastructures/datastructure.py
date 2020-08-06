@@ -2,22 +2,22 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.geometry._primitives import Primitive
 
-__all__ = ['Spline']
+from compas.base import Base
 
 
-class Spline(Primitive):
-    """"""
+__all__ = ['Datastructure']
+
+
+class Datastructure(Base):
 
     def __init__(self):
-        self.segments = []
+        super(Datastructure, self).__init__()
 
 
 # ==============================================================================
-# Main
+#
 # ==============================================================================
 
 if __name__ == '__main__':
-
     pass
