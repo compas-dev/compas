@@ -46,6 +46,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `compas_rhino.artists.BoxArtist` stub.
 * Removed references to "edge" dict from `compas.datastructures.VolMesh`.
 
+## [0.16.1] 2020-06-08
+
+### Added
+
+### Changed
+
+* Fixed scaling bug in `compas.geometry.Sphere`
+
+### Removed
+
+
 ## [0.16.0] 2020-06-05
 
 ### Added
