@@ -3,14 +3,13 @@ from __future__ import division
 from __future__ import print_function
 
 import json
-# import schema
 from collections import OrderedDict
 from copy import deepcopy
 from ast import literal_eval
 from random import sample
 from random import choice
 
-# import compas
+import compas
 from compas.datastructures.mesh.core import VertexAttributeView
 from compas.datastructures.mesh.core import EdgeAttributeView
 from compas.datastructures.mesh.core import FaceAttributeView
@@ -28,64 +27,115 @@ class HalfEdge(Datastructure):
 
     Attributes
     ----------
-    attributes
-    default_vertex_attributes
-    default_edge_attributes
-    default_face_attributes
-    name
-    adjacency
-    data
+    attributes : dict
+        Named attributes related to the data structure as a whole.
+    default_vertex_attributes : dict
+        Named attributes and default values of the vertices of the data structure.
+    default_edge_attributes : dict
+        Named attributes and default values of the edges of the data structure.
+    default_face_attributes : dict
+        Named attributes and default values of the faces of the data structure.
+    name : str
+        Name of the data structure.
+        Defaults to the value of `self.__class__.__name__`.
+    data : dict
+        The data representation of the data structure.
+    adjacency : dict
+        Alias for `self.halfedge`.
+
+        .. deprecated:: 0.17.0
 
     Examples
     --------
     >>>
     """
 
-    # DATASCHEMA = schema.Schema({
-    #     "compas": str,
-    #     "datatype": str,
-    #     "data": {
-    #         "attributes": dict,
-    #         "dva": dict,
-    #         "dea": dict,
-    #         "dfa": dict,
-    #         "vertex": dict,
-    #         "face": dict,
-    #         "facedata": dict,
-    #         "edgedata": dict,
-    #         "max_int_key": schema.And(int, lambda x: x >= -1),
-    #         "max_int_fkey": schema.And(int, lambda x: x >= -1)
-    #     }
-    # })
+    @property
+    def DATASCHEMA(self):
+        import schema
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return schema.Schema({
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "vertex": dict,
+                "face": dict,
+                "facedata": dict,
+                "edgedata": dict,
+                "max_int_key": schema.And(int, lambda x: x >= -1),
+                "max_int_fkey": schema.And(int, lambda x: x >= -1)
+            })
+        return schema.Schema({
+            "compas": str,
+            "datatype": str,
+            "data": {
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "vertex": dict,
+                "face": dict,
+                "facedata": dict,
+                "edgedata": dict,
+                "max_int_key": schema.And(int, lambda x: x >= -1),
+                "max_int_fkey": schema.And(int, lambda x: x >= -1)
+            }
+        })
 
-    # JSONSCHEMA = {
-    #     "$schema": "http://json-schema.org/schema",
-    #     "$id": "https://github.com/compas-dev/compas/schemas/mesh.json",
-    #     "$compas": compas.__version__,
+    @property
+    def JSONSCHEMA(self):
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return {
+                "$schema": "http://json-schema.org/schema",
+                "$id": "https://github.com/compas-dev/compas/schemas/mesh.json",
+                "$compas": compas.__version__,
 
-    #     "type": "object",
-    #     "poperties": {
-    #         "compas": {"type": "string"},
-    #         "datatype": {"type": "string"},
-    #         "data": {
-    #             "type": "object",
-    #             "properties": {
-    #                 "attributes":   {"type": "object"},
-    #                 "dva":          {"type": "object"},
-    #                 "dea":          {"type": "object"},
-    #                 "dfa":          {"type": "object"},
-    #                 "vertex":       {"type": "object"},
-    #                 "face":         {"type": "object"},
-    #                 "facedata":     {"type": "object"},
-    #                 "edgedata":     {"type": "object"},
-    #                 "max_int_key":  {"type": "number"},
-    #                 "max_int_fkey": {"type": "number"}
-    #             },
-    #             "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
-    #         }
-    #     },
-    #     "required": ["compas", "datatype", "data"]
-    # }
+                "type": "object",
+                "properties": {
+                    "attributes":   {"type": "object"},
+                    "dva":          {"type": "object"},
+                    "dea":          {"type": "object"},
+                    "dfa":          {"type": "object"},
+                    "vertex":       {"type": "object"},
+                    "face":         {"type": "object"},
+                    "facedata":     {"type": "object"},
+                    "edgedata":     {"type": "object"},
+                    "max_int_key":  {"type": "number"},
+                    "max_int_fkey": {"type": "number"}
+                },
+                "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
+            }
+        return {
+            "$schema": "http://json-schema.org/schema",
+            "$id": "https://github.com/compas-dev/compas/schemas/mesh.json",
+            "$compas": compas.__version__,
+
+            "type": "object",
+            "poperties": {
+                "compas": {"type": "string"},
+                "datatype": {"type": "string"},
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "attributes":   {"type": "object"},
+                        "dva":          {"type": "object"},
+                        "dea":          {"type": "object"},
+                        "dfa":          {"type": "object"},
+                        "vertex":       {"type": "object"},
+                        "face":         {"type": "object"},
+                        "facedata":     {"type": "object"},
+                        "edgedata":     {"type": "object"},
+                        "max_int_key":  {"type": "number"},
+                        "max_int_fkey": {"type": "number"}
+                    },
+                    "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
+                }
+            },
+            "required": ["compas", "datatype", "data"]
+        }
 
     def __init__(self):
         super(HalfEdge, self).__init__()
@@ -170,7 +220,6 @@ class HalfEdge(Datastructure):
         edgedata = {}
         for key in self.edgedata:
             edgedata[repr(key)] = self.edgedata[key]
-
         data = {'attributes': self.attributes,
                 'dva': self.default_vertex_attributes,
                 'dea': self.default_edge_attributes,
@@ -181,7 +230,6 @@ class HalfEdge(Datastructure):
                 'edgedata': edgedata,
                 'max_int_key': self._max_int_key,
                 'max_int_fkey': self._max_int_fkey}
-
         return data
 
     @data.setter
@@ -196,29 +244,22 @@ class HalfEdge(Datastructure):
         edgedata = data.get('edgedata') or {}
         max_int_key = data.get('max_int_key', -1)
         max_int_fkey = data.get('max_int_fkey', -1)
-
         self.attributes.update(attributes)
         self.default_vertex_attributes.update(dva)
         self.default_face_attributes.update(dfa)
         self.default_edge_attributes.update(dea)
-
         self.vertex = {}
         self.face = {}
         self.halfedge = {}
         self.facedata = {}
         self.edgedata = {}
-
         for key, attr in iter(vertex.items()):
             self.add_vertex(int(key), attr_dict=attr)
-
         for fkey, vertices in iter(face.items()):
             attr = facedata.get(fkey) or {}
-            # vertices = [int(k) for k in vertices]
             self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
-
         for uv, attr in iter(edgedata.items()):
             self.edgedata[literal_eval(uv)] = attr or {}
-
         self._max_int_key = max_int_key
         self._max_int_fkey = max_int_fkey
 
