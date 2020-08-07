@@ -140,8 +140,8 @@ processes.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.connected_edges.html#compas.datastructures.Graph.connected_edges" title="compas.datastructures.Graph.connected_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connected_edges</span></code></a>(key)</p></td>
 <td><p>Return the edges connected to a node.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.copy.html#compas.datastructures.Graph.copy" title="compas.datastructures.Graph.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Make an independent copy of the network object.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.copy.html#compas.datastructures.Graph.copy" title="compas.datastructures.Graph.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
+<td><p>Make an independent copy of the datastructure object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.degree.html#compas.datastructures.Graph.degree" title="compas.datastructures.Graph.degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree</span></code></a>(key)</p></td>
 <td><p>Return the number of neighbors of a node.</p></td>
@@ -180,7 +180,7 @@ processes.</p></li>
 <td><p>Get edges for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_data.html#compas.datastructures.Graph.from_data" title="compas.datastructures.Graph.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p>Construct a graph from structured data.</p></td>
+<td><p>Construct a datastructure from structured data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.from_edges.html#compas.datastructures.Graph.from_edges" title="compas.datastructures.Graph.from_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_edges</span></code></a>(edges)</p></td>
 <td><p></p></td>
@@ -203,29 +203,23 @@ processes.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.get_any_nodes.html#compas.datastructures.Graph.get_any_nodes" title="compas.datastructures.Graph.get_any_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_nodes</span></code></a>(n[, exclude_leaves])</p></td>
 <td><p>Get a list of identifiers of a random set of n nodes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.gkey_key.html#compas.datastructures.Graph.gkey_key" title="compas.datastructures.Graph.gkey_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code></a>([precision])</p></td>
-<td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding nodes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.has_edge.html#compas.datastructures.Graph.has_edge" title="compas.datastructures.Graph.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(u, v[, directed])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.has_edge.html#compas.datastructures.Graph.has_edge" title="compas.datastructures.Graph.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(u, v[, directed])</p></td>
 <td><p>Verify if the network contains a specific edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.has_node.html#compas.datastructures.Graph.has_node" title="compas.datastructures.Graph.has_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_node</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.has_node.html#compas.datastructures.Graph.has_node" title="compas.datastructures.Graph.has_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_node</span></code></a>(key)</p></td>
 <td><p>Verify if a specific node is present in the network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.index_key.html#compas.datastructures.Graph.index_key" title="compas.datastructures.Graph.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.index_key.html#compas.datastructures.Graph.index_key" title="compas.datastructures.Graph.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a node list to keys in a node dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.index_uv.html#compas.datastructures.Graph.index_uv" title="compas.datastructures.Graph.index_uv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_uv</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.index_uv.html#compas.datastructures.Graph.index_uv" title="compas.datastructures.Graph.index_uv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_uv</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps edges in a list to the corresponding vertex key pairs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.is_leaf.html#compas.datastructures.Graph.is_leaf" title="compas.datastructures.Graph.is_leaf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_leaf</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.is_leaf.html#compas.datastructures.Graph.is_leaf" title="compas.datastructures.Graph.is_leaf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_leaf</span></code></a>(key)</p></td>
 <td><p>Verify if a node is a leaf.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.is_node_connected.html#compas.datastructures.Graph.is_node_connected" title="compas.datastructures.Graph.is_node_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_node_connected</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.is_node_connected.html#compas.datastructures.Graph.is_node_connected" title="compas.datastructures.Graph.is_node_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_node_connected</span></code></a>(key)</p></td>
 <td><p>Verify if a specific node is connected.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.key_gkey.html#compas.datastructures.Graph.key_gkey" title="compas.datastructures.Graph.key_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_gkey</span></code></a>([precision])</p></td>
-<td><p>Returns a dictionary that maps node dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.key_index.html#compas.datastructures.Graph.key_index" title="compas.datastructures.Graph.key_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps node dictionary keys to the corresponding index in a node list or array.</p></td>
@@ -276,10 +270,10 @@ processes.</p></li>
 <td><p>Print a summary of the graph.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_data.html#compas.datastructures.Graph.to_data" title="compas.datastructures.Graph.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns a dictionary of structured data representing the graph.</p></td>
+<td><p>Returns a dictionary of structured data representing the data structure.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_json.html#compas.datastructures.Graph.to_json" title="compas.datastructures.Graph.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
-<td><p>Serialise the structured data representing the data structure to json.</p></td>
+<td><p>Serialise the structured data representing the datastructure to json.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.to_networkx.html#compas.datastructures.Graph.to_networkx" title="compas.datastructures.Graph.to_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_networkx</span></code></a>()</p></td>
 <td><p></p></td>

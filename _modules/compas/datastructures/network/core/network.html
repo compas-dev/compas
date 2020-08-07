@@ -129,10 +129,6 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># serialisation</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># constructors</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
@@ -307,6 +303,44 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># helpers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">key_gkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps node dictionary keys to the corresponding</span>
+<span class="sd">        *geometric key* up to a certain precision.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        precision : str (3f)</span>
+<span class="sd">            The float precision specifier used in string formatting.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary of key-geometric key pairs.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span>
+
+    <span class="k">def</span> <span class="nf">gkey_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps *geometric keys* of a certain precision</span>
+<span class="sd">        to the keys of the corresponding nodes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        precision : str (3f)</span>
+<span class="sd">            The float precision specifier used in string formatting.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary of geometric key-key pairs.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># builders</span>
@@ -557,23 +591,6 @@
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-
-    <span class="c1"># network = BaseNetwork()</span>
-    <span class="c1"># network.add_edge(&#39;a&#39;, &#39;b&#39;)</span>
-    <span class="c1"># network.add_edge(&#39;a&#39;, &#39;c&#39;)</span>
-    <span class="c1"># network.add_edge(&#39;a&#39;, &#39;d&#39;)</span>
-    <span class="c1"># network.add_edge(&#39;a&#39;, &#39;e&#39;)</span>
-
-    <span class="c1"># network.add_edge(&#39;b&#39;, &#39;c&#39;)</span>
-    <span class="c1"># network.add_edge(&#39;b&#39;, &#39;d&#39;)</span>
-    <span class="c1"># network.add_edge(&#39;b&#39;, &#39;e&#39;)</span>
-
-    <span class="c1"># network.add_edge(&#39;c&#39;, &#39;d&#39;)</span>
-    <span class="c1"># network.add_edge(&#39;c&#39;, &#39;e&#39;)</span>
-
-    <span class="c1"># network.add_edge(&#39;d&#39;, &#39;e&#39;)</span>
-
-    <span class="c1"># network.summary()</span>
 
     <span class="kn">import</span> <span class="nn">doctest</span>
     <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>

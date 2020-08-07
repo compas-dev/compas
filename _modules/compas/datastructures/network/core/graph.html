@@ -86,78 +86,18 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">MutableMapping</span>  <span class="c1"># python &gt; 3.3</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">MutableMapping</span>      <span class="c1"># python 2.7</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">sample</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span>
 
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">geometric_key</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Datastructure</span>
+<span class="kn">import</span> <span class="nn">compas</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures.datastructure</span> <span class="kn">import</span> <span class="n">Datastructure</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.attributes</span> <span class="kn">import</span> <span class="n">NodeAttributeView</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.attributes</span> <span class="kn">import</span> <span class="n">EdgeAttributeView</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Graph&#39;</span><span class="p">]</span>
-
-
-<span class="k">class</span> <span class="nc">AttributeView</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mixin for attribute dict views.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="s2">&quot;{&quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">NodeAttributeView</span><span class="p">(</span><span class="n">AttributeView</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mutable Mapping that provides a read/write view of the custom attributes of a node</span>
-<span class="sd">    combined with the default attributes of all nodes.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="n">defaults</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
-
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
-
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">name</span>
-
-
-<span class="k">class</span> <span class="nc">EdgeAttributeView</span><span class="p">(</span><span class="n">AttributeView</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Mutable Mapping that provides a read/write view of the custom attributes of an edge</span>
-<span class="sd">    combined with the default attributes of all edges.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">defaults</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span> <span class="o">=</span> <span class="n">defaults</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">attr</span>
-
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
-
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="n">name</span>
 
 
 <div class="viewcode-block" id="Graph"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.html#compas.datastructures.Graph">[docs]</a><span class="k">class</span> <span class="nc">Graph</span><span class="p">(</span><span class="n">Datastructure</span><span class="p">):</span>
@@ -194,6 +134,81 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">DATASCHEMA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">schema</span>
+        <span class="kn">from</span> <span class="nn">packaging</span> <span class="kn">import</span> <span class="n">version</span>
+        <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;0.17&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Schema</span><span class="p">({</span>
+                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;edge&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">})</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Schema</span><span class="p">({</span>
+            <span class="s2">&quot;compas&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">&quot;datatype&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;edge&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">JSONSCHEMA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">packaging</span> <span class="kn">import</span> <span class="n">version</span>
+        <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;0.17&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/compas-dev/compas/schemas/mesh.json&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;$compas&quot;</span><span class="p">:</span> <span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;attributes&quot;</span><span class="p">:</span>      <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                    <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                    <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                    <span class="s2">&quot;node&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                    <span class="s2">&quot;edge&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                    <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span>       <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                    <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span>     <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">}</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;edge_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="s2">&quot;adjacency&quot;</span><span class="p">,</span> <span class="s2">&quot;max_int_key&quot;</span><span class="p">]</span>
+            <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/compas-dev/compas/schemas/graph.json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;$compas&quot;</span><span class="p">:</span> <span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
+
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;poperties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;compas&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;datatype&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;attributes&quot;</span><span class="p">:</span>      <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                        <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                        <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                        <span class="s2">&quot;node&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                        <span class="s2">&quot;edge&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                        <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span>       <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                        <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span>     <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">}</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;edge_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="s2">&quot;adjacency&quot;</span><span class="p">,</span> <span class="s2">&quot;max_int_key&quot;</span><span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;compas&quot;</span><span class="p">,</span> <span class="s2">&quot;datatype&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+
 <div class="viewcode-block" id="Graph.__init__"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.__init__.html#compas.datastructures.Graph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Graph</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -203,25 +218,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span> <span class="o">=</span> <span class="p">{}</span></div>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># customisation</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate a readable representation of the data of the graph.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-<div class="viewcode-block" id="Graph.summary"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.summary.html#compas.datastructures.Graph.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Print a summary of the graph.&quot;&quot;&quot;</span>
-        <span class="n">tpl</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;Graph summary&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;============&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;- nodes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;- edges: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">])</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span>
-                       <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">())</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># properties</span>
@@ -317,84 +313,6 @@
     <span class="c1"># constructors</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="Graph.from_data"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.from_data.html#compas.datastructures.Graph.from_data">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a graph from structured data.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        data : dict</span>
-<span class="sd">            The data dictionary.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        object</span>
-<span class="sd">            An object of the type of ``cls``.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This constructor method is meant to be used in conjuction with the</span>
-<span class="sd">        corresponding *to_data* method.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">graph</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-        <span class="n">graph</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">graph</span></div>
-
-<div class="viewcode-block" id="Graph.to_data"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.to_data.html#compas.datastructures.Graph.to_data">[docs]</a>    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a dictionary of structured data representing the graph.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            The structured data.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This method produces the data that can be used in conjuction with the</span>
-<span class="sd">        corresponding *from_data* class method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
-
-<div class="viewcode-block" id="Graph.from_json"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.from_json.html#compas.datastructures.Graph.from_json">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a datastructure from structured data contained in a json file.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        filepath : str</span>
-<span class="sd">            The path to the json file.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        object</span>
-<span class="sd">            An object of the type of ``cls``.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This constructor method is meant to be used in conjuction with the</span>
-<span class="sd">        corresponding *to_json* method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
-        <span class="n">graph</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-        <span class="n">graph</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">graph</span></div>
-
-<div class="viewcode-block" id="Graph.to_json"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.to_json.html#compas.datastructures.Graph.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Serialise the structured data representing the data structure to json.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        filepath : str</span>
-<span class="sd">            The path to the json file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">pretty</span><span class="p">:</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Graph.from_edges"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.from_edges.html#compas.datastructures.Graph.from_edges">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_edges</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
@@ -415,18 +333,6 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># helpers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="Graph.copy"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.copy.html#compas.datastructures.Graph.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make an independent copy of the network object.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Network</span>
-<span class="sd">            A separate, but identical network object.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Graph.clear"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.clear.html#compas.datastructures.Graph.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear all the network data.&quot;&quot;&quot;</span>
@@ -519,44 +425,6 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()))</span></div>
-
-<div class="viewcode-block" id="Graph.key_gkey"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.key_gkey.html#compas.datastructures.Graph.key_gkey">[docs]</a>    <span class="k">def</span> <span class="nf">key_gkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps node dictionary keys to the corresponding</span>
-<span class="sd">        *geometric key* up to a certain precision.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        precision : str (3f)</span>
-<span class="sd">            The float precision specifier used in string formatting.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            A dictionary of key-geometric key pairs.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
-        <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span></div>
-
-<div class="viewcode-block" id="Graph.gkey_key"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.gkey_key.html#compas.datastructures.Graph.gkey_key">[docs]</a>    <span class="k">def</span> <span class="nf">gkey_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps *geometric keys* of a certain precision</span>
-<span class="sd">        to the keys of the corresponding nodes.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        precision : str (3f)</span>
-<span class="sd">            The float precision specifier used in string formatting.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            A dictionary of geometric key-key pairs.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
-        <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span></div>
 
 <div class="viewcode-block" id="Graph.uv_index"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.uv_index.html#compas.datastructures.Graph.uv_index">[docs]</a>    <span class="k">def</span> <span class="nf">uv_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)</span>
@@ -715,6 +583,16 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># info</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="Graph.summary"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.summary.html#compas.datastructures.Graph.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print a summary of the graph.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;Graph summary&quot;</span><span class="p">,</span> <span class="s2">&quot;============&quot;</span><span class="p">,</span> <span class="s2">&quot;- nodes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;- edges: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="Graph.number_of_nodes"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.number_of_nodes.html#compas.datastructures.Graph.number_of_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the number of nodes of the network.</span>

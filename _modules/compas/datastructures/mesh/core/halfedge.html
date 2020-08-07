@@ -86,21 +86,18 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
-<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">sample</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">DataEncoder</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">DataDecoder</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.core</span> <span class="kn">import</span> <span class="n">VertexAttributeView</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.core</span> <span class="kn">import</span> <span class="n">EdgeAttributeView</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.core</span> <span class="kn">import</span> <span class="n">FaceAttributeView</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Datastructure</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.datastructure</span> <span class="kn">import</span> <span class="n">Datastructure</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.attributes</span> <span class="kn">import</span> <span class="n">VertexAttributeView</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.attributes</span> <span class="kn">import</span> <span class="n">EdgeAttributeView</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.attributes</span> <span class="kn">import</span> <span class="n">FaceAttributeView</span>
+
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">window</span>
 
@@ -176,7 +173,7 @@
         <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;0.17&#39;</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{</span>
                 <span class="s2">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/compas-dev/compas/schemas/mesh.json&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/compas-dev/compas/schemas/halfedge.json&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;$compas&quot;</span><span class="p">:</span> <span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
 
                 <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
@@ -196,7 +193,7 @@
             <span class="p">}</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/compas-dev/compas/schemas/mesh.json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/compas-dev/compas/schemas/halfedge.json&quot;</span><span class="p">,</span>
             <span class="s2">&quot;$compas&quot;</span><span class="p">:</span> <span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
 
             <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
@@ -238,28 +235,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span> <span class="o">=</span> <span class="p">{}</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># customisation</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Generate a readable representation of the data of the mesh.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-<div class="viewcode-block" id="HalfEdge.summary"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.summary.html#compas.datastructures.HalfEdge.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Print a summary of the mesh.&quot;&quot;&quot;</span>
-        <span class="n">tpl</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;Mesh summary&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;============&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;- vertices: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;- edges: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;- faces: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">])</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">(),</span>
-                       <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(),</span>
-                       <span class="bp">self</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">())</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># special properties</span>
+    <span class="c1"># descriptors</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
     <span class="nd">@property</span>
@@ -350,108 +326,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_fkey</span> <span class="o">=</span> <span class="n">max_int_fkey</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># from/to</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="HalfEdge.from_data"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.from_data.html#compas.datastructures.HalfEdge.from_data">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a mesh from structured data.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        data : dict</span>
-<span class="sd">            The data dictionary.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        object</span>
-<span class="sd">            An object of the type of ``cls``.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This constructor method is meant to be used in conjunction with the</span>
-<span class="sd">        corresponding *to_data* method.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-        <span class="n">mesh</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">mesh</span></div>
-
-<div class="viewcode-block" id="HalfEdge.to_data"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.to_data.html#compas.datastructures.HalfEdge.to_data">[docs]</a>    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a dictionary of structured data representing the mesh.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            The structured data.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        ----</span>
-<span class="sd">        This method produces the data that can be used in conjunction with the</span>
-<span class="sd">        corresponding *from_data* class method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
-
-<div class="viewcode-block" id="HalfEdge.from_json"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.from_json.html#compas.datastructures.HalfEdge.from_json">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a datastructure from structured data contained in a json file.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        filepath : str</span>
-<span class="sd">            The path to the json file.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        object</span>
-<span class="sd">            An object of the type of ``cls``.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This constructor method is meant to be used in conjunction with the</span>
-<span class="sd">        corresponding *to_json* method.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DataDecoder</span><span class="p">)</span>
-        <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-        <span class="n">mesh</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">mesh</span></div>
-
-<div class="viewcode-block" id="HalfEdge.to_json"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.to_json.html#compas.datastructures.HalfEdge.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">pretty</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Serialise the structured data representing the data structure to json.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        filepath : str</span>
-<span class="sd">            The path to the json file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">pretty</span><span class="p">:</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DataEncoder</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DataEncoder</span><span class="p">)</span></div>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># helpers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
-
-<div class="viewcode-block" id="HalfEdge.copy"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.copy.html#compas.datastructures.HalfEdge.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make an independent copy of the mesh object.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        cls : compas.datastructures.Mesh, optional</span>
-<span class="sd">            The type of mesh to return.</span>
-<span class="sd">            Defaults to the type of the current mesh.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Mesh</span>
-<span class="sd">            A separate, but identical mesh object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">cls</span><span class="p">:</span>
-            <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="HalfEdge.clear"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.clear.html#compas.datastructures.HalfEdge.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear all the mesh data.&quot;&quot;&quot;</span>
@@ -751,7 +627,7 @@
         <span class="k">if</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="HalfEdge.cull_vertices"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.cull_vertices.html#compas.datastructures.HalfEdge.cull_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">cull_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="HalfEdge.remove_unused_vertices"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.remove_unused_vertices.html#compas.datastructures.HalfEdge.remove_unused_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">remove_unused_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove all unused vertices from the mesh object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()):</span>
@@ -761,6 +637,8 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span></div>
+
+    <span class="n">cull_vertices</span> <span class="o">=</span> <span class="n">remove_unused_vertices</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># accessors</span>
@@ -1725,6 +1603,16 @@
     <span class="c1"># mesh info</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
+<div class="viewcode-block" id="HalfEdge.summary"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.summary.html#compas.datastructures.HalfEdge.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print a summary of the mesh.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;Mesh summary&quot;</span><span class="p">,</span> <span class="s2">&quot;============&quot;</span><span class="p">,</span> <span class="s2">&quot;- vertices: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;- edges: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;- faces: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">tpl</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">())</span></div>
+
 <div class="viewcode-block" id="HalfEdge.number_of_vertices"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.HalfEdge.number_of_vertices.html#compas.datastructures.HalfEdge.number_of_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">number_of_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Count the number of vertices in the mesh.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()))</span></div>
@@ -2564,22 +2452,6 @@
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># mesh geometry</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># vertex geometry</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># edge geometry</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># face geometry</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># boundary</span>
