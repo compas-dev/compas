@@ -137,34 +137,32 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span></div>
 
-<div class="viewcode-block" id="Sphere.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Sphere.from_data.html#compas.geometry.Sphere.from_data">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a sphere from its data representation.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        data : :obj:`dict`</span>
-<span class="sd">            The data dictionary.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the sphere.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        Sphere</span>
-<span class="sd">            The constructed sphere.</span>
+<span class="sd">        dict</span>
+<span class="sd">            The sphere data.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Point</span>
 <span class="sd">        &gt;&gt;&gt; from compas.geometry import Sphere</span>
-<span class="sd">        &gt;&gt;&gt; data = {&#39;point&#39;: [1., 2., 3.], &#39;radius&#39;: 4.}</span>
-<span class="sd">        &gt;&gt;&gt; sphere = Sphere.from_data(data)</span>
+<span class="sd">        &gt;&gt;&gt; sphere = Sphere(Point(1, 1, 1), 5)</span>
+<span class="sd">        &gt;&gt;&gt; sdict = {&#39;point&#39;: [1., 1., 1.], &#39;radius&#39;: 5.}</span>
+<span class="sd">        &gt;&gt;&gt; sdict == sphere.data</span>
+<span class="sd">        True</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sphere</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">sphere</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">sphere</span></div>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;point&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">),</span>
+                <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">}</span>
 
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># descriptors</span>
-    <span class="c1"># ==========================================================================</span>
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -198,52 +196,67 @@
         <span class="sd">&quot;&quot;&quot;float: The volume of the sphere.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mf">4.</span><span class="o">/</span><span class="mf">3.</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">3</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the sphere.</span>
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># customisation</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Sphere(</span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">])</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># constructors</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Sphere.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Sphere.from_data.html#compas.geometry.Sphere.from_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a sphere from its data representation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : :obj:`dict`</span>
+<span class="sd">            The data dictionary.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            The sphere data.</span>
+<span class="sd">        Sphere</span>
+<span class="sd">            The constructed sphere.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Point</span>
 <span class="sd">        &gt;&gt;&gt; from compas.geometry import Sphere</span>
-<span class="sd">        &gt;&gt;&gt; sphere = Sphere(Point(1, 1, 1), 5)</span>
-<span class="sd">        &gt;&gt;&gt; sdict = {&#39;point&#39;: [1., 1., 1.], &#39;radius&#39;: 5.}</span>
-<span class="sd">        &gt;&gt;&gt; sdict == sphere.data</span>
-<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; data = {&#39;point&#39;: [1., 2., 3.], &#39;radius&#39;: 4.}</span>
+<span class="sd">        &gt;&gt;&gt; sphere = Sphere.from_data(data)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;point&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">),</span>
-                <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">}</span>
+        <span class="n">sphere</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">sphere</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">sphere</span></div>
 
-    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">]</span>
-
-<div class="viewcode-block" id="Sphere.to_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Sphere.to_data.html#compas.geometry.Sphere.to_data">[docs]</a>    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the sphere.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            The sphere data.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Point</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Sphere</span>
-<span class="sd">        &gt;&gt;&gt; sphere = Sphere(Point(1, 1, 1), 5)</span>
-<span class="sd">        &gt;&gt;&gt; sdict = {&#39;point&#39;: [1., 1., 1.], &#39;radius&#39;: 5.}</span>
-<span class="sd">        &gt;&gt;&gt; sdict == sphere.to_data()</span>
-<span class="sd">        True</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># methods</span>
+    <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Sphere.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Sphere.to_vertices_and_faces.html#compas.geometry.Sphere.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces&quot;&quot;&quot;</span>
@@ -295,65 +308,6 @@
 
         <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
 
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># representation</span>
-    <span class="c1"># ==========================================================================</span>
-
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;Sphere(</span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="mi">2</span>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># access</span>
-    <span class="c1"># ==========================================================================</span>
-
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span>
-
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span>
-
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">])</span>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># helpers</span>
-    <span class="c1"># ==========================================================================</span>
-
-<div class="viewcode-block" id="Sphere.copy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Sphere.copy.html#compas.geometry.Sphere.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Makes a copy of this ``Sphere``.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Sphere</span>
-<span class="sd">            The copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Sphere</span>
-<span class="sd">        &gt;&gt;&gt; sphere = Sphere(Point(1, 1, 1), 5)</span>
-<span class="sd">        &gt;&gt;&gt; sphere_copy = sphere.copy()</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span></div>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># transformations</span>
-    <span class="c1"># ==========================================================================</span>
-
 <div class="viewcode-block" id="Sphere.transform"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Sphere.transform.html#compas.geometry.Sphere.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform the sphere.</span>
 
@@ -378,36 +332,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span>
         <span class="n">Sc</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">transformation</span><span class="o">.</span><span class="n">decomposed</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">*=</span> <span class="nb">max</span><span class="p">([</span><span class="n">Sc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Sc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">Sc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">*=</span> <span class="nb">max</span><span class="p">([</span><span class="n">Sc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Sc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">Sc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span></div></div>
 
-<div class="viewcode-block" id="Sphere.transformed"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Sphere.transformed.html#compas.geometry.Sphere.transformed">[docs]</a>    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a transformed copy of the current sphere.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        transformation : :class:`Transformation`</span>
-<span class="sd">            The transformation used to transform the Sphere.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`Sphere`</span>
-<span class="sd">            The transformed sphere.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Frame</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Transformation</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Sphere</span>
-<span class="sd">        &gt;&gt;&gt; sphere = Sphere(Point(1, 1, 1), 5)</span>
-<span class="sd">        &gt;&gt;&gt; frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
-<span class="sd">        &gt;&gt;&gt; T = Transformation.from_frame(frame)</span>
-<span class="sd">        &gt;&gt;&gt; sphere_transformed = sphere.transformed(T)</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">sphere</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">sphere</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sphere</span></div></div>
-
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 

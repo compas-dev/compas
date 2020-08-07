@@ -142,7 +142,7 @@
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.copy.html#compas.geometry.Line.copy" title="compas.geometry.Line.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Make a copy of this line.</p></td>
+<td><p>Makes a copy of this primitive.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.from_data.html#compas.geometry.Line.from_data" title="compas.geometry.Line.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a frame from a data dict.</p></td>
@@ -165,11 +165,20 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.transform_collection.html#compas.geometry.Line.transform_collection" title="compas.geometry.Line.transform_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_collection</span></code></a>(collection, X)</p></td>
 <td><p>Transform a collection of <code class="docutils literal notranslate"><span class="pre">Line</span></code> objects.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.transformed.html#compas.geometry.Line.transformed" title="compas.geometry.Line.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(T)</p></td>
-<td><p>Returns a transformed copy of the current line.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.transformed.html#compas.geometry.Line.transformed" title="compas.geometry.Line.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.transformed_collection.html#compas.geometry.Line.transformed_collection" title="compas.geometry.Line.transformed_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_collection</span></code></a>(collection, X)</p></td>
 <td><p>Create a collection of transformed <code class="docutils literal notranslate"><span class="pre">Line</span></code> objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.validate_data.html#compas.geometry.Line.validate_data" title="compas.geometry.Line.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Line.validate_data_to_json.html#compas.geometry.Line.validate_data_to_json" title="compas.geometry.Line.validate_data_to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data_to_json</span></code></a>()</p></td>
+<td><p>Validate the JSON representation of the data of this object against its JSON schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Line.validate_json_to_data.html#compas.geometry.Line.validate_json_to_data" title="compas.geometry.Line.validate_json_to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json_to_data</span></code></a>()</p></td>
+<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
 </table>

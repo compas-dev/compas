@@ -161,6 +161,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">yaxis</span></div>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;dict : The data dictionary that represents the frame.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;point&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">),</span>
+                <span class="s1">&#39;xaxis&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">),</span>
+                <span class="s1">&#39;yaxis&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)}</span>
+
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;xaxis&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;yaxis&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;:class:`compas.geometry.Point` : The base point of the frame.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point</span>
@@ -192,19 +205,6 @@
         <span class="n">zaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span>
         <span class="n">zaxis</span><span class="o">.</span><span class="n">unitize</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_yaxis</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">zaxis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;dict : The data dictionary that represents the frame.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;point&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">),</span>
-                <span class="s1">&#39;xaxis&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">),</span>
-                <span class="s1">&#39;yaxis&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)}</span>
-
-    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;xaxis&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;yaxis&#39;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">normal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -272,6 +272,34 @@
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># constructors</span>
     <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Frame.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Frame.from_data.html#compas.geometry.Frame.from_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a frame from its data representation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : :obj:`dict`</span>
+<span class="sd">            The data dictionary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Frame`</span>
+<span class="sd">            The constructed frame.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; data = {&#39;point&#39;: [0.0, 0.0, 0.0], &#39;xaxis&#39;: [1.0, 0.0, 0.0], &#39;yaxis&#39;: [0.0, 1.0, 0.0]}</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame.from_data(data)</span>
+<span class="sd">        &gt;&gt;&gt; frame.point</span>
+<span class="sd">        Point(0.000, 0.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.xaxis</span>
+<span class="sd">        Vector(1.000, 0.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; frame.yaxis</span>
+<span class="sd">        Vector(0.000, 1.000, 0.000)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;xaxis&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;yaxis&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">frame</span></div>
 
 <div class="viewcode-block" id="Frame.worldXY"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Frame.worldXY.html#compas.geometry.Frame.worldXY">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">worldXY</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
@@ -594,34 +622,6 @@
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">basis_vectors_from_matrix</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Frame.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Frame.from_data.html#compas.geometry.Frame.from_data">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a frame from its data representation.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        data : :obj:`dict`</span>
-<span class="sd">            The data dictionary.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Frame`</span>
-<span class="sd">            The constructed frame.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; data = {&#39;point&#39;: [0.0, 0.0, 0.0], &#39;xaxis&#39;: [1.0, 0.0, 0.0], &#39;yaxis&#39;: [0.0, 1.0, 0.0]}</span>
-<span class="sd">        &gt;&gt;&gt; frame = Frame.from_data(data)</span>
-<span class="sd">        &gt;&gt;&gt; frame.point</span>
-<span class="sd">        Point(0.000, 0.000, 0.000)</span>
-<span class="sd">        &gt;&gt;&gt; frame.xaxis</span>
-<span class="sd">        Vector(1.000, 0.000, 0.000)</span>
-<span class="sd">        &gt;&gt;&gt; frame.yaxis</span>
-<span class="sd">        Vector(0.000, 1.000, 0.000)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">frame</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;xaxis&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;yaxis&#39;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">frame</span></div>
-
 <div class="viewcode-block" id="Frame.from_plane"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Frame.from_plane.html#compas.geometry.Frame.from_plane">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_plane</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">plane</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructs a frame from a plane.</span>
@@ -659,28 +659,6 @@
         <span class="n">xaxis</span> <span class="o">=</span> <span class="n">vectors</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
         <span class="n">yaxis</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span><span class="p">)</span></div>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># helpers</span>
-    <span class="c1"># ==========================================================================</span>
-
-<div class="viewcode-block" id="Frame.copy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Frame.copy.html#compas.geometry.Frame.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a copy of this frame.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Frame`</span>
-<span class="sd">            The copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; f1 = Frame.worldXY()</span>
-<span class="sd">        &gt;&gt;&gt; f2 = f1.copy()</span>
-<span class="sd">        &gt;&gt;&gt; f2.point</span>
-<span class="sd">        Point(0.000, 0.000, 0.000)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span></div>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods</span>
@@ -837,33 +815,7 @@
         <span class="n">xaxis</span><span class="p">,</span> <span class="n">yaxis</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">basis_vectors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">xaxis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">yaxis</span></div>
-
-<div class="viewcode-block" id="Frame.transformed"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Frame.transformed.html#compas.geometry.Frame.transformed">[docs]</a>    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a transformed copy of the current frame.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        T : :class:`compas.geometry.Transformation`</span>
-<span class="sd">            The transformation.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Frame`</span>
-<span class="sd">            The transformed frame.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Transformation</span>
-<span class="sd">        &gt;&gt;&gt; f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
-<span class="sd">        &gt;&gt;&gt; T = Transformation.from_frame(f1)</span>
-<span class="sd">        &gt;&gt;&gt; f2 = Frame.worldXY()</span>
-<span class="sd">        &gt;&gt;&gt; f1 == f2.transformed(T)</span>
-<span class="sd">        True</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">frame</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">yaxis</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

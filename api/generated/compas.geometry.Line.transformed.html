@@ -89,28 +89,16 @@
 <h1 class="display-4 p-0 mb-5">Line.transformed</h1>
 <dl class="method">
 <dt id="compas.geometry.Line.transformed">
-<code class="sig-prename descclassname">Line.</code><code class="sig-name descname">transformed</code><span class="sig-paren">(</span><em class="sig-param">T</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/_primitives/line.html#Line.transformed"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Returns a transformed copy of the current line.</p>
+<code class="sig-prename descclassname">Line.</code><code class="sig-name descname">transformed</code><span class="sig-paren">(</span><em class="sig-param">transformation</em><span class="sig-paren">)</span></dt>
+<dd><p>Returns a transformed copy of this primitive.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>T</strong> (<a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code></a> or list of list) – The transformation.</p>
+<dd class="field-odd"><p><strong>transformation</strong> (<a class="reference internal" href="compas.geometry.Transformation.html#compas.geometry.Transformation" title="compas.geometry.Transformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Transformation</span></code></a>) – The transformation used to transform the primitive.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>class: <cite>compas.geometry.Line</cite> – The transformed line.</p>
+<dd class="field-even"><p><a class="reference internal" href="compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.Primitive"><code class="xref py py-class docutils literal notranslate"><span class="pre">Primitive</span></code></a> – The transformed primitive.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">radians</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Rotation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">l1</span> <span class="o">=</span> <span class="n">Line</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">Rotation</span><span class="o">.</span><span class="n">from_axis_and_angle</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">radians</span><span class="p">(</span><span class="mi">90</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">l2</span> <span class="o">=</span> <span class="n">l1</span><span class="o">.</span><span class="n">transformed</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">l1</span><span class="o">.</span><span class="n">end</span>
-<span class="go">Point(1.000, 0.000, 0.000)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">l2</span><span class="o">.</span><span class="n">end</span>
-<span class="go">Point(0.000, 1.000, 0.000)</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </div>

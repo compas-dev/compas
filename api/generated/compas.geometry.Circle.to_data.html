@@ -89,23 +89,13 @@
 <h1 class="display-4 p-0 mb-5">Circle.to_data</h1>
 <dl class="method">
 <dt id="compas.geometry.Circle.to_data">
-<code class="sig-prename descclassname">Circle.</code><code class="sig-name descname">to_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/_primitives/circle.html#Circle.to_data"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Returns the data dictionary that represents the circle.</p>
+<code class="sig-prename descclassname">Circle.</code><code class="sig-name descname">to_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Returns the data dictionary that represents the primitive.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>dict</em> – The circle data.</p>
+<dd class="field-odd"><p><em>dict</em> – The object’s data.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Circle</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Plane</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">Plane</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)),</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">circle</span><span class="o">.</span><span class="n">to_data</span><span class="p">()</span>
-<span class="go">{&#39;plane&#39;: [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], &#39;radius&#39;: 1.0}</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </div>

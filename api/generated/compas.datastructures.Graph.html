@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="Network.uv_index" href="compas.datastructures.Network.uv_index.html" />
+    <link rel="prev" title="Network.validate_json_to_data" href="compas.datastructures.Network.validate_json_to_data.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -90,7 +90,7 @@
 <dl class="class">
 <dt id="compas.datastructures.Graph">
 <em class="property">class </em><code class="sig-prename descclassname">compas.datastructures.</code><code class="sig-name descname">Graph</code><a class="reference internal" href="../../_modules/compas/datastructures/network/core/graph.html#Graph"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Datastructure</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.datastructure.Datastructure</span></code></p>
 <p>Base graph data structure for describing the topological relationships between nodes connected by edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -298,6 +298,15 @@ processes.</p></li>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.uv_index.html#compas.datastructures.Graph.uv_index" title="compas.datastructures.Graph.uv_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uv_index</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps edge keys (i.e.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.validate_data.html#compas.datastructures.Graph.validate_data" title="compas.datastructures.Graph.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Graph.validate_data_to_json.html#compas.datastructures.Graph.validate_data_to_json" title="compas.datastructures.Graph.validate_data_to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data_to_json</span></code></a>()</p></td>
+<td><p>Validate the JSON representation of the data of this object against its JSON schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Graph.validate_json_to_data.html#compas.datastructures.Graph.validate_json_to_data" title="compas.datastructures.Graph.validate_json_to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json_to_data</span></code></a>()</p></td>
+<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
 </table>

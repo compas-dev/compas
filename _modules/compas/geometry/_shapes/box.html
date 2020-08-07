@@ -166,9 +166,35 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">=</span> <span class="n">ysize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">=</span> <span class="n">zsize</span></div>
 
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># descriptors</span>
-    <span class="c1"># ==========================================================================</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the box.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            The box data.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame.worldXY()</span>
+<span class="sd">        &gt;&gt;&gt; box = Box(frame, 1.0, 2.0, 3.0)</span>
+<span class="sd">        &gt;&gt;&gt; bdict = {&#39;frame&#39;: frame.data, &#39;xsize&#39;: 1.0, &#39;ysize&#39;: 2.0, &#39;zsize&#39;: 3.0}</span>
+<span class="sd">        &gt;&gt;&gt; bdict == box.to_data()</span>
+<span class="sd">        True</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;frame&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="s1">&#39;xsize&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">,</span>
+                <span class="s1">&#39;ysize&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span><span class="p">,</span>
+                <span class="s1">&#39;zsize&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span><span class="p">}</span>
+
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;frame&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;xsize&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ysize&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;zsize&#39;</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -259,7 +285,6 @@
         <span class="n">g</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="n">height</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">b</span> <span class="o">+</span> <span class="n">zaxis</span> <span class="o">*</span> <span class="n">height</span>
 
-        <span class="c1"># return [list(pt) for pt in [a, b, c, d, e, f, g, h]]</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">]</span>
 
     <span class="nd">@property</span>
@@ -297,7 +322,36 @@
         <span class="k">return</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
 
     <span class="c1"># ==========================================================================</span>
-    <span class="c1"># factory</span>
+    <span class="c1"># customisation</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Box(</span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1">, </span><span class="si">{2}</span><span class="s1">, </span><span class="si">{3}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">4</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">])</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># constructors</span>
     <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Box.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.from_data.html#compas.geometry.Box.from_data">[docs]</a>    <span class="nd">@classmethod</span>
@@ -488,115 +542,13 @@
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span></div>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the box.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            The box data.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; frame = Frame.worldXY()</span>
-<span class="sd">        &gt;&gt;&gt; box = Box(frame, 1.0, 2.0, 3.0)</span>
-<span class="sd">        &gt;&gt;&gt; bdict = {&#39;frame&#39;: frame.data, &#39;xsize&#39;: 1.0, &#39;ysize&#39;: 2.0, &#39;zsize&#39;: 3.0}</span>
-<span class="sd">        &gt;&gt;&gt; bdict == box.to_data()</span>
-<span class="sd">        True</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;frame&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
-                <span class="s1">&#39;xsize&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">,</span>
-                <span class="s1">&#39;ysize&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span><span class="p">,</span>
-                <span class="s1">&#39;zsize&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span><span class="p">}</span>
-
-    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;frame&#39;</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;xsize&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ysize&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;zsize&#39;</span><span class="p">]</span>
-
-<div class="viewcode-block" id="Box.to_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.to_data.html#compas.geometry.Box.to_data">[docs]</a>    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the box.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            The box data.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; frame = Frame.worldXY()</span>
-<span class="sd">        &gt;&gt;&gt; box = Box(frame, 1.0, 2.0, 3.0)</span>
-<span class="sd">        &gt;&gt;&gt; bdict = {&#39;frame&#39;: frame.data, &#39;xsize&#39;: 1.0, &#39;ysize&#39;: 2.0, &#39;zsize&#39;: 3.0}</span>
-<span class="sd">        &gt;&gt;&gt; bdict == box.to_data()</span>
-<span class="sd">        True</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># methods</span>
+    <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Box.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.to_vertices_and_faces.html#compas.geometry.Box.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span></div>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># representation</span>
-    <span class="c1"># ==========================================================================</span>
-
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;Box(</span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1">, </span><span class="si">{2}</span><span class="s1">, </span><span class="si">{3}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="mi">4</span>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># access</span>
-    <span class="c1"># ==========================================================================</span>
-
-    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span>
-
-    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">elif</span> <span class="n">key</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span>
-
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">])</span>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># helpers</span>
-    <span class="c1"># ==========================================================================</span>
-
-<div class="viewcode-block" id="Box.copy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.copy.html#compas.geometry.Box.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Makes a copy of this ``Box``.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Box</span>
-<span class="sd">            The copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)</span>
-<span class="sd">        &gt;&gt;&gt; box_copy = box.copy()</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ysize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zsize</span><span class="p">)</span></div>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># transformations</span>
-    <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Box.transform"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.transform.html#compas.geometry.Box.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform the box.</span>
@@ -614,32 +566,7 @@
 <span class="sd">        &gt;&gt;&gt; box.transform(T)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Box.transformed"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.transformed.html#compas.geometry.Box.transformed">[docs]</a>    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a transformed copy of the current box.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        transformation : :class:`Transformation`</span>
-<span class="sd">            The transformation used to transform the box.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`Box`</span>
-<span class="sd">            The transformed box.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)</span>
-<span class="sd">        &gt;&gt;&gt; frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
-<span class="sd">        &gt;&gt;&gt; T = Transformation.from_frame(frame)</span>
-<span class="sd">        &gt;&gt;&gt; box_transformed = box.transformed(T)</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">box</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">box</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">transformation</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

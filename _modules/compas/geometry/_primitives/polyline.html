@@ -229,7 +229,7 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;points&#39;</span><span class="p">])</span></div>
 
     <span class="c1"># ==========================================================================</span>
-    <span class="c1"># queries</span>
+    <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Polyline.point"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyline.point.html#compas.geometry.Polyline.point">[docs]</a>    <span class="k">def</span> <span class="nf">point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">snap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -280,42 +280,6 @@
             <span class="n">x</span> <span class="o">+=</span> <span class="n">dx</span>
             <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># operators</span>
-    <span class="c1"># ==========================================================================</span>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># inplace operators</span>
-    <span class="c1"># ==========================================================================</span>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># helpers</span>
-    <span class="c1"># ==========================================================================</span>
-
-<div class="viewcode-block" id="Polyline.copy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyline.copy.html#compas.geometry.Polyline.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a copy of this polyline.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Polyline`</span>
-<span class="sd">            The copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; p1 = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])</span>
-<span class="sd">        &gt;&gt;&gt; p2 = p1.copy()</span>
-<span class="sd">        &gt;&gt;&gt; p1 == p2</span>
-<span class="sd">        True</span>
-<span class="sd">        &gt;&gt;&gt; p1 is p2</span>
-<span class="sd">        False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="n">point</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">])</span></div>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># methods</span>
-    <span class="c1"># ==========================================================================</span>
-
 <div class="viewcode-block" id="Polyline.is_selfintersecting"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyline.is_selfintersecting.html#compas.geometry.Polyline.is_selfintersecting">[docs]</a>    <span class="k">def</span> <span class="nf">is_selfintersecting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine if the polyline is self-intersecting.</span>
 
@@ -350,10 +314,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># transformations</span>
-    <span class="c1"># ==========================================================================</span>
-
 <div class="viewcode-block" id="Polyline.transform"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyline.transform.html#compas.geometry.Polyline.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform this polyline.</span>
 
@@ -373,35 +333,7 @@
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">transform_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">T</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="Polyline.transformed"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyline.transformed.html#compas.geometry.Polyline.transformed">[docs]</a>    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a transformed copy of this polyline.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        T : :class:`compas.geometry.Transformation` or list of list</span>
-<span class="sd">            The transformation.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Polyline`</span>
-<span class="sd">            The transformed copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Scale</span>
-<span class="sd">        &gt;&gt;&gt; p1 = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]])</span>
-<span class="sd">        &gt;&gt;&gt; S = Scale([1.0, 1.0, 1.0])</span>
-<span class="sd">        &gt;&gt;&gt; p2 = p1.transformed(S)</span>
-<span class="sd">        &gt;&gt;&gt; p1 == p2</span>
-<span class="sd">        True</span>
-<span class="sd">        &gt;&gt;&gt; p1 is p2</span>
-<span class="sd">        False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">polyline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">polyline</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">polyline</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -411,7 +343,6 @@
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">doctest</span>
-
     <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
 </code></pre></div>
         

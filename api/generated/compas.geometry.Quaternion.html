@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="Polyline.transformed" href="compas.geometry.Polyline.transformed.html" />
+    <link rel="prev" title="Polyline.validate_json_to_data" href="compas.geometry.Polyline.validate_json_to_data.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -187,7 +187,7 @@ is also unit-length.</p>
 <td><p>Makes a copy of this primitive.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_data.html#compas.geometry.Quaternion.from_data" title="compas.geometry.Quaternion.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p>Construct a primitive from its data representation.</p></td>
+<td><p>Construct a quaternion from a data dict.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.from_frame.html#compas.geometry.Quaternion.from_frame" title="compas.geometry.Quaternion.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a>(frame)</p></td>
 <td><p>Creates a quaternion object from a frame.</p></td>
@@ -212,6 +212,15 @@ is also unit-length.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.unitized.html#compas.geometry.Quaternion.unitized" title="compas.geometry.Quaternion.unitized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unitized</span></code></a>()</p></td>
 <td><p>Returns a quaternion with a unit-length.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.validate_data.html#compas.geometry.Quaternion.validate_data" title="compas.geometry.Quaternion.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Quaternion.validate_data_to_json.html#compas.geometry.Quaternion.validate_data_to_json" title="compas.geometry.Quaternion.validate_data_to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data_to_json</span></code></a>()</p></td>
+<td><p>Validate the JSON representation of the data of this object against its JSON schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Quaternion.validate_json_to_data.html#compas.geometry.Quaternion.validate_json_to_data" title="compas.geometry.Quaternion.validate_json_to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json_to_data</span></code></a>()</p></td>
+<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
 </table>

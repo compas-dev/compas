@@ -315,30 +315,6 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
 
     <span class="c1"># ==========================================================================</span>
-    <span class="c1"># helpers</span>
-    <span class="c1"># ==========================================================================</span>
-
-<div class="viewcode-block" id="Polygon.copy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polygon.copy.html#compas.geometry.Polygon.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a copy of this polygon.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Polygon`</span>
-<span class="sd">            The copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; p1 = Polygon.from_sides_and_radius_xy(4, 1.0)</span>
-<span class="sd">        &gt;&gt;&gt; p2 = p1.copy()</span>
-<span class="sd">        &gt;&gt;&gt; p1 == p2</span>
-<span class="sd">        True</span>
-<span class="sd">        &gt;&gt;&gt; p1 is p2</span>
-<span class="sd">        False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="n">point</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">])</span></div>
-
-    <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
 
@@ -376,10 +352,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">is_coplanar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">)</span></div>
 
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># transformations</span>
-    <span class="c1"># ==========================================================================</span>
-
 <div class="viewcode-block" id="Polygon.transform"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polygon.transform.html#compas.geometry.Polygon.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform this polygon.</span>
 
@@ -401,34 +373,7 @@
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">transform_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">T</span><span class="p">)):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="Polygon.transformed"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polygon.transformed.html#compas.geometry.Polygon.transformed">[docs]</a>    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return a transformed copy of this polygon.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        T : :class:`compas.geometry.Transformation` or list of list</span>
-<span class="sd">            The transformation.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Polygon`</span>
-<span class="sd">            The transformed copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from math import radians</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Rotation</span>
-<span class="sd">        &gt;&gt;&gt; poly1 = Polygon.from_sides_and_radius_xy(4, 1.0)</span>
-<span class="sd">        &gt;&gt;&gt; R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(45))</span>
-<span class="sd">        &gt;&gt;&gt; poly2 = poly1.transformed(R)</span>
-<span class="sd">        &gt;&gt;&gt; poly2.points[0] == poly1.points[0]</span>
-<span class="sd">        False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">polygon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">polygon</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">polygon</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

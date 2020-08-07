@@ -127,6 +127,38 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span></div>
 
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># descriptors</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the polyhedron.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            The polyhedron data.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;vertices&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="s1">&#39;faces&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">}</span>
+
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;vertices&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;faces&#39;</span><span class="p">]</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># customisation</span>
+    <span class="c1"># ==========================================================================</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">])</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># constructors</span>
+    <span class="c1"># ==========================================================================</span>
+
 <div class="viewcode-block" id="Polyhedron.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.from_data.html#compas.geometry.Polyhedron.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a polyhedron from its data representation.</span>
@@ -149,48 +181,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces&#39;</span><span class="p">)))</span>
         <span class="n">p</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">p</span></div>
-
-<div class="viewcode-block" id="Polyhedron.to_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.to_data.html#compas.geometry.Polyhedron.to_data">[docs]</a>    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the polyhedron.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            The polyhedron data.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
+        <span class="k">return</span> <span class="n">p</span></div></div>
 
     <span class="c1"># ==========================================================================</span>
-    <span class="c1"># customisation</span>
-    <span class="c1"># ==========================================================================</span>
-
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">])</span>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># descriptors</span>
-    <span class="c1"># ==========================================================================</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the polyhedron.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            The polyhedron data.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;vertices&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="s1">&#39;faces&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">}</span>
-
-    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;vertices&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">faces</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;faces&#39;</span><span class="p">]</span></div>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># Methods</span>
+    <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
 
 

@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="Primitive.transformed" href="compas.geometry.Primitive.transformed.html" />
+    <link rel="prev" title="Primitive.validate_json_to_data" href="compas.geometry.Primitive.validate_json_to_data.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -106,7 +106,7 @@
 <td><p>Makes a copy of this primitive.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shape.from_data.html#compas.geometry.Shape.from_data" title="compas.geometry.Shape.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p>Construct a primitive from its data representation.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shape.from_json.html#compas.geometry.Shape.from_json" title="compas.geometry.Shape.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct a primitive from structured data contained in a json file.</p></td>
@@ -125,6 +125,15 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shape.transformed.html#compas.geometry.Shape.transformed" title="compas.geometry.Shape.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shape.validate_data.html#compas.geometry.Shape.validate_data" title="compas.geometry.Shape.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Shape.validate_data_to_json.html#compas.geometry.Shape.validate_data_to_json" title="compas.geometry.Shape.validate_data_to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data_to_json</span></code></a>()</p></td>
+<td><p>Validate the JSON representation of the data of this object against its JSON schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Shape.validate_json_to_data.html#compas.geometry.Shape.validate_json_to_data" title="compas.geometry.Shape.validate_json_to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json_to_data</span></code></a>()</p></td>
+<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
 </table>

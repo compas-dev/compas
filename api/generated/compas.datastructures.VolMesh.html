@@ -90,7 +90,7 @@
 <dl class="class">
 <dt id="compas.datastructures.VolMesh">
 <em class="property">class </em><code class="sig-prename descclassname">compas.datastructures.</code><code class="sig-name descname">VolMesh</code><a class="reference internal" href="../../_modules/compas/datastructures/volmesh/volmesh.html#VolMesh"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Datastructure</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.datastructure.Datastructure</span></code></p>
 <p>Class for working with volumetric meshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
@@ -441,37 +441,46 @@ Available at: <a class="reference external" href="http://www.openvolumemesh.org"
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.update_default_vertex_attributes.html#compas.datastructures.VolMesh.update_default_vertex_attributes" title="compas.datastructures.VolMesh.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a>([attr_dict])</p></td>
 <td><p>Update the default vertex attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_attribute.html#compas.datastructures.VolMesh.vertex_attribute" title="compas.datastructures.VolMesh.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a>(key, name[, value])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.validate_data.html#compas.datastructures.VolMesh.validate_data" title="compas.datastructures.VolMesh.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.validate_data_to_json.html#compas.datastructures.VolMesh.validate_data_to_json" title="compas.datastructures.VolMesh.validate_data_to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data_to_json</span></code></a>()</p></td>
+<td><p>Validate the JSON representation of the data of this object against its JSON schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.validate_json_to_data.html#compas.datastructures.VolMesh.validate_json_to_data" title="compas.datastructures.VolMesh.validate_json_to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json_to_data</span></code></a>()</p></td>
+<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_attribute.html#compas.datastructures.VolMesh.vertex_attribute" title="compas.datastructures.VolMesh.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a>(key, name[, value])</p></td>
 <td><p>Get or set an attribute of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_attributes.html#compas.datastructures.VolMesh.vertex_attributes" title="compas.datastructures.VolMesh.vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attributes</span></code></a>(key[, names, values])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_attributes.html#compas.datastructures.VolMesh.vertex_attributes" title="compas.datastructures.VolMesh.vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attributes</span></code></a>(key[, names, values])</p></td>
 <td><p>Get or set multiple attributes of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_cells.html#compas.datastructures.VolMesh.vertex_cells" title="compas.datastructures.VolMesh.vertex_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_cells</span></code></a>(vkey)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_cells.html#compas.datastructures.VolMesh.vertex_cells" title="compas.datastructures.VolMesh.vertex_cells"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_cells</span></code></a>(vkey)</p></td>
 <td><p>Cells connected to a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_coordinates.html#compas.datastructures.VolMesh.vertex_coordinates" title="compas.datastructures.VolMesh.vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coordinates</span></code></a>(vkey[, axes])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_coordinates.html#compas.datastructures.VolMesh.vertex_coordinates" title="compas.datastructures.VolMesh.vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coordinates</span></code></a>(vkey[, axes])</p></td>
 <td><p>Return the coordinates of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_halffaces.html#compas.datastructures.VolMesh.vertex_halffaces" title="compas.datastructures.VolMesh.vertex_halffaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_halffaces</span></code></a>(vkey)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_halffaces.html#compas.datastructures.VolMesh.vertex_halffaces" title="compas.datastructures.VolMesh.vertex_halffaces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_halffaces</span></code></a>(vkey)</p></td>
 <td><p>Halffaces connected to a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_neighbors.html#compas.datastructures.VolMesh.vertex_neighbors" title="compas.datastructures.VolMesh.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a>(vkey)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_neighbors.html#compas.datastructures.VolMesh.vertex_neighbors" title="compas.datastructures.VolMesh.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a>(vkey)</p></td>
 <td><p>Return the vertex neighbors of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_normal.html#compas.datastructures.VolMesh.vertex_normal" title="compas.datastructures.VolMesh.vertex_normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_normal</span></code></a>(vkey)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertex_normal.html#compas.datastructures.VolMesh.vertex_normal" title="compas.datastructures.VolMesh.vertex_normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_normal</span></code></a>(vkey)</p></td>
 <td><p>Return the normal vector at the vertex as the weighted average of the normals of the neighboring halffaces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertices.html#compas.datastructures.VolMesh.vertices" title="compas.datastructures.VolMesh.vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></a>([data])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertices.html#compas.datastructures.VolMesh.vertices" title="compas.datastructures.VolMesh.vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></a>([data])</p></td>
 <td><p>Iterate over the vertices of the volmesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertices_attribute.html#compas.datastructures.VolMesh.vertices_attribute" title="compas.datastructures.VolMesh.vertices_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attribute</span></code></a>(name[, value, keys])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertices_attribute.html#compas.datastructures.VolMesh.vertices_attribute" title="compas.datastructures.VolMesh.vertices_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attribute</span></code></a>(name[, value, keys])</p></td>
 <td><p>Get or set an attribute of multiple vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertices_attributes.html#compas.datastructures.VolMesh.vertices_attributes" title="compas.datastructures.VolMesh.vertices_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attributes</span></code></a>([names, values, keys])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertices_attributes.html#compas.datastructures.VolMesh.vertices_attributes" title="compas.datastructures.VolMesh.vertices_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attributes</span></code></a>([names, values, keys])</p></td>
 <td><p>Get or set multiple attributes of multiple vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertices_where.html#compas.datastructures.VolMesh.vertices_where" title="compas.datastructures.VolMesh.vertices_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.VolMesh.vertices_where.html#compas.datastructures.VolMesh.vertices_where" title="compas.datastructures.VolMesh.vertices_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>

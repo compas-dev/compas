@@ -225,7 +225,7 @@
         <span class="k">return</span> <span class="nb">iter</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">plane</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">])</span>
 
     <span class="c1"># ==========================================================================</span>
-    <span class="c1"># from/to</span>
+    <span class="c1"># constructors</span>
     <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Circle.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Circle.from_data.html#compas.geometry.Circle.from_data">[docs]</a>    <span class="nd">@classmethod</span>
@@ -250,50 +250,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;plane&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;radius&#39;</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Circle.to_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Circle.to_data.html#compas.geometry.Circle.to_data">[docs]</a>    <span class="k">def</span> <span class="nf">to_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns the data dictionary that represents the circle.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        dict</span>
-<span class="sd">            The circle data.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Circle</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Plane</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Point</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Vector</span>
-<span class="sd">        &gt;&gt;&gt; circle = Circle(Plane(Point(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0)), 1.0)</span>
-<span class="sd">        &gt;&gt;&gt; circle.to_data()</span>
-<span class="sd">        {&#39;plane&#39;: [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], &#39;radius&#39;: 1.0}</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span></div>
-
     <span class="c1"># ==========================================================================</span>
-    <span class="c1"># helpers</span>
-    <span class="c1"># ==========================================================================</span>
-
-<div class="viewcode-block" id="Circle.copy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Circle.copy.html#compas.geometry.Circle.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Makes a copy of this circle.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Circle`</span>
-<span class="sd">            The copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; c1 = Circle([[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 1.0)</span>
-<span class="sd">        &gt;&gt;&gt; c2 = c1.copy()</span>
-<span class="sd">        &gt;&gt;&gt; c1 == c2</span>
-<span class="sd">        False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span></div>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># transformations</span>
+    <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Circle.transform"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Circle.transform.html#compas.geometry.Circle.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
@@ -315,35 +273,7 @@
 <span class="sd">        &gt;&gt;&gt; T = Transformation.from_frame(frame)</span>
 <span class="sd">        &gt;&gt;&gt; circle.transform(T)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Circle.transformed"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Circle.transformed.html#compas.geometry.Circle.transformed">[docs]</a>    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a transformed copy of the current circle.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        T : :class:`compas.geometry.Transformation`</span>
-<span class="sd">            The transformation.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Circle`</span>
-<span class="sd">            The transformed circle.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Frame</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Transformation</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Plane</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Circle</span>
-<span class="sd">        &gt;&gt;&gt; circle = Circle(Plane.worldXY(), 5)</span>
-<span class="sd">        &gt;&gt;&gt; frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
-<span class="sd">        &gt;&gt;&gt; T = Transformation.from_frame(frame)</span>
-<span class="sd">        &gt;&gt;&gt; circle_transformed = circle.transformed(T)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">circle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">circle</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">circle</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

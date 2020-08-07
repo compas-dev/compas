@@ -205,6 +205,30 @@
     <span class="c1"># constructors</span>
     <span class="c1"># ==========================================================================</span>
 
+<div class="viewcode-block" id="Plane.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Plane.from_data.html#compas.geometry.Plane.from_data">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a plane from its data representation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : dict</span>
+<span class="sd">            The data dictionary.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Plane`</span>
+<span class="sd">            The constructed plane.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; plane = Plane.from_data({&#39;point&#39;: [0.0, 0.0, 0.0], &#39;normal&#39;: [0.0, 0.0, 1.0]})</span>
+<span class="sd">        &gt;&gt;&gt; plane.point</span>
+<span class="sd">        Point(0.000, 0.000, 0.000)</span>
+<span class="sd">        &gt;&gt;&gt; plane.normal</span>
+<span class="sd">        Vector(0.000, 0.000, 1.000)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;normal&#39;</span><span class="p">])</span></div>
+
 <div class="viewcode-block" id="Plane.from_three_points"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Plane.from_three_points.html#compas.geometry.Plane.from_three_points">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_three_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a plane from three points in three-dimensional space.</span>
@@ -280,53 +304,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Plane.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Plane.from_data.html#compas.geometry.Plane.from_data">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a plane from its data representation.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        data : dict</span>
-<span class="sd">            The data dictionary.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometry.Plane`</span>
-<span class="sd">            The constructed plane.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; plane = Plane.from_data({&#39;point&#39;: [0.0, 0.0, 0.0], &#39;normal&#39;: [0.0, 0.0, 1.0]})</span>
-<span class="sd">        &gt;&gt;&gt; plane.point</span>
-<span class="sd">        Point(0.000, 0.000, 0.000)</span>
-<span class="sd">        &gt;&gt;&gt; plane.normal</span>
-<span class="sd">        Vector(0.000, 0.000, 1.000)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;normal&#39;</span><span class="p">])</span></div>
-
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># helpers</span>
-    <span class="c1"># ==========================================================================</span>
-
-<div class="viewcode-block" id="Plane.copy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Plane.copy.html#compas.geometry.Plane.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a copy of this plane.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas.geometr.Plane`</span>
-<span class="sd">            The copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; p1 = Plane.worldXY()</span>
-<span class="sd">        &gt;&gt;&gt; p2 = p1.copy()</span>
-<span class="sd">        &gt;&gt;&gt; p2.point.x += 1.0</span>
-<span class="sd">        &gt;&gt;&gt; p2 == p1</span>
-<span class="sd">        False</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span></div>
-
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
@@ -350,34 +327,7 @@
 <span class="sd">        &gt;&gt;&gt; plane.transform(T)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Plane.transformed"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Plane.transformed.html#compas.geometry.Plane.transformed">[docs]</a>    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a transformed copy of the current plane.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        transformation : :class:`compas.geometry.Transformation` or list of list</span>
-<span class="sd">            The transformation.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`Plane`</span>
-<span class="sd">            The transformed plane.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Frame</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Transformation</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Plane</span>
-<span class="sd">        &gt;&gt;&gt; f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
-<span class="sd">        &gt;&gt;&gt; T = Transformation.from_frame(f)</span>
-<span class="sd">        &gt;&gt;&gt; p1 = Plane.worldXY()</span>
-<span class="sd">        &gt;&gt;&gt; p2 = p1.transformed(T)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">plane</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">plane</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">plane</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

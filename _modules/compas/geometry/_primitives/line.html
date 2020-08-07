@@ -321,27 +321,6 @@
         <span class="k">return</span> <span class="n">lines</span></div>
 
     <span class="c1"># ==========================================================================</span>
-    <span class="c1"># helpers</span>
-    <span class="c1"># ==========================================================================</span>
-
-<div class="viewcode-block" id="Line.copy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Line.copy.html#compas.geometry.Line.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Make a copy of this line.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Line</span>
-<span class="sd">            The copy.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; line = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])</span>
-<span class="sd">        &gt;&gt;&gt; line.copy()</span>
-<span class="sd">        Line(Point(0.000, 0.000, 0.000), Point(1.000, 0.000, 0.000))</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span></div>
-
-    <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
 
@@ -390,36 +369,7 @@
 <span class="sd">        Point(0.000, 1.000, 0.000)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Line.transformed"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Line.transformed.html#compas.geometry.Line.transformed">[docs]</a>    <span class="k">def</span> <span class="nf">transformed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a transformed copy of the current line.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        T : :class:`compas.geometry.Transformation` or list of list</span>
-<span class="sd">            The transformation.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class: `compas.geometry.Line`</span>
-<span class="sd">            The transformed line.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from math import radians</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Rotation</span>
-<span class="sd">        &gt;&gt;&gt; l1 = Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0])</span>
-<span class="sd">        &gt;&gt;&gt; R = Rotation.from_axis_and_angle([0.0, 0.0, 1.0], radians(90))</span>
-<span class="sd">        &gt;&gt;&gt; l2 = l1.transformed(R)</span>
-<span class="sd">        &gt;&gt;&gt; l1.end</span>
-<span class="sd">        Point(1.000, 0.000, 0.000)</span>
-<span class="sd">        &gt;&gt;&gt; l2.end</span>
-<span class="sd">        Point(0.000, 1.000, 0.000)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">line</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">line</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">T</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

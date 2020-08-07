@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="Line.transformed_collection" href="compas.geometry.Line.transformed_collection.html" />
+    <link rel="prev" title="Line.validate_json_to_data" href="compas.geometry.Line.validate_json_to_data.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -127,7 +127,7 @@
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.copy.html#compas.geometry.Plane.copy" title="compas.geometry.Plane.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>Make a copy of this plane.</p></td>
+<td><p>Makes a copy of this primitive.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.from_data.html#compas.geometry.Plane.from_data" title="compas.geometry.Plane.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a plane from its data representation.</p></td>
@@ -150,10 +150,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.transform.html#compas.geometry.Plane.transform" title="compas.geometry.Plane.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(T)</p></td>
 <td><p>Transform this plane.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.transformed.html#compas.geometry.Plane.transformed" title="compas.geometry.Plane.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(T)</p></td>
-<td><p>Returns a transformed copy of the current plane.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.transformed.html#compas.geometry.Plane.transformed" title="compas.geometry.Plane.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.worldXY.html#compas.geometry.Plane.worldXY" title="compas.geometry.Plane.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.validate_data.html#compas.geometry.Plane.validate_data" title="compas.geometry.Plane.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.validate_data_to_json.html#compas.geometry.Plane.validate_data_to_json" title="compas.geometry.Plane.validate_data_to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data_to_json</span></code></a>()</p></td>
+<td><p>Validate the JSON representation of the data of this object against its JSON schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Plane.validate_json_to_data.html#compas.geometry.Plane.validate_json_to_data" title="compas.geometry.Plane.validate_json_to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json_to_data</span></code></a>()</p></td>
+<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Plane.worldXY.html#compas.geometry.Plane.worldXY" title="compas.geometry.Plane.worldXY"><code class="xref py py-obj docutils literal notranslate"><span class="pre">worldXY</span></code></a>()</p></td>
 <td><p>Construct the world XY plane.</p></td>
 </tr>
 </tbody>
