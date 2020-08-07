@@ -55,8 +55,7 @@ class DataEncoder(json.JSONEncoder):
         except AttributeError:
             pass
         else:
-            return {'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__),
-                    'value': value}
+            return {'dtype': '{}/{}'.format(o.__class__.__module__, o.__class__.__name__), 'value': value}
 
         try:
             import numpy as np
