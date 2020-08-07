@@ -15,16 +15,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `validate_json` to `compas.base.Base`.
 * Added implementation of `DATASCHEMA` to `compas.datastructures.Halfedge`.
 * Added implementation of `JSONSCHEMA` to `compas.datastructures.Halfedge`.
+* Added `NodeAttributeView`.
+* Added implementation of `DATASCHEMA` to `compas.datastructures.Graph`.
+* Added implementation of `JSONSCHEMA` to `compas.datastructures.Graph`.
 
 ### Changed
 
 * Moved `compas.datastructures.Datastructure` to `compas.datastructures.datastructure`.
 * Changed base class of `compas.datastructures.Datastructure` to `compas.base.Base`.
 * Changed `from_json` to `to_json` of meshes to use encoders and decoders.
+* Moved `MutableMapping` to `compas.datastructures._mutablemapping`.
+* Moved attribute views to `compas.datastructure.attributes`.
 
 ### Removed
 
 * Removed `from_json`, `to_json`, `to_data`, `copy`, `transformed` from primitives, defaulting to the base implementation in `compas.geometry.Primitive`.
+* Removed `from_json`, `to_json`, `to_data`, `copy`, `__str__`, from datastructures, defaulting to the base implementation in `compas.datastructure.Datastructure`.
 
 ## [0.16.2] 2020-08-06
 

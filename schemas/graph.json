@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "$id": "https://github.com/compas-dev/compas/schemas/graph.json",
+    "$compas": compas.__version__,
+
+    "type": "object",
+    "poperties": {
+        "compas": {"type": "string"},
+        "datatype": {"type": "string"},
+        "data": {
+            "type": "object",
+            "properties": {
+                "attributes":      {"type": "object"},
+                "node_attributes": {"type": "object"},
+                "edge_attributes": {"type": "object"},
+                "node":            {"type": "object"},
+                "edge":            {"type": "object"},
+                "adjacency":       {"type": "object"},
+                "max_int_key":     {"type": "number"}
+            },
+            "required": ["attributes", "node_attributes", "edge_attributes", "node", "edge", "adjacency", "max_int_key"]
+        }
+    },
+    "required": ["compas", "datatype", "data"]
+}

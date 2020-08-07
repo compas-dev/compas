@@ -2,21 +2,18 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
 from collections import OrderedDict
-from copy import deepcopy
 from ast import literal_eval
 from random import sample
 from random import choice
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
 
 import compas
-from compas.datastructures.mesh.core import VertexAttributeView
-from compas.datastructures.mesh.core import EdgeAttributeView
-from compas.datastructures.mesh.core import FaceAttributeView
 
-from compas.datastructures import Datastructure
+from compas.datastructures.datastructure import Datastructure
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import FaceAttributeView
+
 from compas.utilities import pairwise
 from compas.utilities import window
 
@@ -92,7 +89,7 @@ class HalfEdge(Datastructure):
         if version.parse(compas.__version__) < version.parse('0.17'):
             return {
                 "$schema": "http://json-schema.org/schema",
-                "$id": "https://github.com/compas-dev/compas/schemas/mesh.json",
+                "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
                 "$compas": compas.__version__,
 
                 "type": "object",
@@ -112,7 +109,7 @@ class HalfEdge(Datastructure):
             }
         return {
             "$schema": "http://json-schema.org/schema",
-            "$id": "https://github.com/compas-dev/compas/schemas/mesh.json",
+            "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
             "$compas": compas.__version__,
 
             "type": "object",
@@ -154,28 +151,7 @@ class HalfEdge(Datastructure):
         self.default_face_attributes = {}
 
     # --------------------------------------------------------------------------
-    # customisation
-    # --------------------------------------------------------------------------
-
-    def __str__(self):
-        """Generate a readable representation of the data of the mesh."""
-        return json.dumps(self.data, sort_keys=True, indent=4)
-
-    def summary(self):
-        """Print a summary of the mesh."""
-        tpl = "\n".join(
-            ["Mesh summary",
-             "============",
-             "- vertices: {}",
-             "- edges: {}",
-             "- faces: {}"])
-        s = tpl.format(self.number_of_vertices(),
-                       self.number_of_edges(),
-                       self.number_of_faces())
-        print(s)
-
-    # --------------------------------------------------------------------------
-    # special properties
+    # descriptors
     # --------------------------------------------------------------------------
 
     @property
@@ -266,108 +242,8 @@ class HalfEdge(Datastructure):
         self._max_int_fkey = max_int_fkey
 
     # --------------------------------------------------------------------------
-    # from/to
-    # --------------------------------------------------------------------------
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a mesh from structured data.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Notes
-        -----
-        This constructor method is meant to be used in conjunction with the
-        corresponding *to_data* method.
-
-        """
-        mesh = cls()
-        mesh.data = data
-        return mesh
-
-    def to_data(self):
-        """Returns a dictionary of structured data representing the mesh.
-
-        Returns
-        -------
-        dict
-            The structured data.
-
-        Notes
-        ----
-        This method produces the data that can be used in conjunction with the
-        corresponding *from_data* class method.
-        """
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        """Construct a datastructure from structured data contained in a json file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Notes
-        -----
-        This constructor method is meant to be used in conjunction with the
-        corresponding *to_json* method.
-        """
-        with open(filepath, 'r') as fp:
-            data = json.load(fp, cls=DataDecoder)
-        mesh = cls()
-        mesh.data = data
-        return mesh
-
-    def to_json(self, filepath, pretty=False):
-        """Serialise the structured data representing the data structure to json.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-        """
-        with open(filepath, 'w+') as f:
-            if pretty:
-                json.dump(self.data, f, sort_keys=True, indent=4, cls=DataEncoder)
-            else:
-                json.dump(self.data, f, cls=DataEncoder)
-
-    # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
-
-    def copy(self, cls=None):
-        """Make an independent copy of the mesh object.
-
-        Parameters
-        ----------
-        cls : compas.datastructures.Mesh, optional
-            The type of mesh to return.
-            Defaults to the type of the current mesh.
-
-        Returns
-        -------
-        Mesh
-            A separate, but identical mesh object.
-        """
-        if not cls:
-            cls = type(self)
-        return cls.from_data(deepcopy(self.data))
 
     def clear(self):
         """Clear all the mesh data."""
@@ -667,7 +543,7 @@ class HalfEdge(Datastructure):
         if fkey in self.facedata:
             del self.facedata[fkey]
 
-    def cull_vertices(self):
+    def remove_unused_vertices(self):
         """Remove all unused vertices from the mesh object.
         """
         for u in list(self.vertices()):
@@ -677,6 +553,8 @@ class HalfEdge(Datastructure):
                 if not self.halfedge[u]:
                     del self.vertex[u]
                     del self.halfedge[u]
+
+    cull_vertices = remove_unused_vertices
 
     # --------------------------------------------------------------------------
     # accessors
@@ -1641,6 +1519,16 @@ class HalfEdge(Datastructure):
     # mesh info
     # --------------------------------------------------------------------------
 
+    def summary(self):
+        """Print a summary of the mesh.
+
+        Returns
+        -------
+        str
+        """
+        tpl = "\n".join(["Mesh summary", "============", "- vertices: {}", "- edges: {}", "- faces: {}"])
+        return tpl.format(self.number_of_vertices(), self.number_of_edges(), self.number_of_faces())
+
     def number_of_vertices(self):
         """Count the number of vertices in the mesh."""
         return len(list(self.vertices()))
@@ -2480,22 +2368,6 @@ class HalfEdge(Datastructure):
             return True
         else:
             return False
-
-    # --------------------------------------------------------------------------
-    # mesh geometry
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # vertex geometry
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # edge geometry
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # face geometry
-    # --------------------------------------------------------------------------
 
     # --------------------------------------------------------------------------
     # boundary

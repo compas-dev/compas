@@ -2,9 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ._mutablemapping import MutableMapping
+from compas.datastructures._mutablemapping import MutableMapping
 
-__all__ = ['VertexAttributeView', 'FaceAttributeView', 'EdgeAttributeView']
+__all__ = ['NodeAttributeView', 'VertexAttributeView', 'FaceAttributeView', 'EdgeAttributeView']
 
 
 class AttributeView(object):
@@ -44,6 +44,14 @@ class AttributeView(object):
         else:
             for name in self.defaults:
                 yield name
+
+
+class NodeAttributeView(AttributeView, MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of a node
+    combined with the default attributes of all nodes."""
+
+    def __init__(self, defaults, attr, custom_only=False):
+        super(NodeAttributeView, self).__init__(defaults, attr, custom_only)
 
 
 class VertexAttributeView(AttributeView, MutableMapping):
