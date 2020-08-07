@@ -6,6 +6,8 @@ from __future__ import print_function
 import json
 from copy import deepcopy
 from compas.base import Base
+from compas.utilities import DataEncoder
+from compas.utilities import DataDecoder
 
 
 __all__ = ['Primitive']
@@ -37,7 +39,7 @@ class Primitive(Base):
         corresponding *to_json* method.
         """
         with open(filepath, 'r') as fp:
-            data = json.load(fp)
+            data = json.load(fp, cls=DataDecoder)
         return cls.from_data(data)
 
     def to_data(self):
@@ -59,7 +61,7 @@ class Primitive(Base):
             The path to the json file.
         """
         with open(filepath, 'w+') as f:
-            json.dump(self.data, f)
+            json.dump(self.data, f, cls=DataEncoder)
 
     def copy(self):
         """Makes a copy of this primitive.

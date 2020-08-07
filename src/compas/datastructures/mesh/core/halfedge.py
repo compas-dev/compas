@@ -8,6 +8,8 @@ from copy import deepcopy
 from ast import literal_eval
 from random import sample
 from random import choice
+from compas.utilities import DataEncoder
+from compas.utilities import DataDecoder
 
 import compas
 from compas.datastructures.mesh.core import VertexAttributeView
@@ -326,7 +328,7 @@ class HalfEdge(Datastructure):
         corresponding *to_json* method.
         """
         with open(filepath, 'r') as fp:
-            data = json.load(fp)
+            data = json.load(fp, cls=DataDecoder)
         mesh = cls()
         mesh.data = data
         return mesh
@@ -341,9 +343,9 @@ class HalfEdge(Datastructure):
         """
         with open(filepath, 'w+') as f:
             if pretty:
-                json.dump(self.data, f, sort_keys=True, indent=4)
+                json.dump(self.data, f, sort_keys=True, indent=4, cls=DataEncoder)
             else:
-                json.dump(self.data, f)
+                json.dump(self.data, f, cls=DataEncoder)
 
     # --------------------------------------------------------------------------
     # helpers

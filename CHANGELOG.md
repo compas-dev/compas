@@ -12,8 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added abstract `DATASCHEMA` to `compas.base.Base`.
 * Added abstract `JSONSCHEMA` to `compas.base.Base`.
 * Added `validate_data` to `compas.base.Base`.
-* Added `validate_data_to_json` to `compas.base.Base`.
-* Added `validate_json_to_data` to `compas.base.Base`.
+* Added `validate_json` to `compas.base.Base`.
 * Added implementation of `DATASCHEMA` to `compas.datastructures.Halfedge`.
 * Added implementation of `JSONSCHEMA` to `compas.datastructures.Halfedge`.
 

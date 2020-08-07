@@ -4,7 +4,6 @@ from __future__ import division
 
 import abc
 import json
-import ast
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
@@ -80,22 +79,7 @@ class Base(ABC):
         """
         return self.DATASCHEMA.validate(self.data)
 
-    def validate_data_to_json(self):
-        """Validate the JSON representation of the data of this object against its JSON schema (`self.JSONSCHEMA`).
-
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        ValidationError
-        """
-        import jsonschema
-        jsondata = ast.literal_eval(json.dumps(self.data, cls=DataEncoder))
-        jsonschema.validate(jsondata, schema=self.JSONSCHEMA)
-
-    def validate_json_to_data(self):
+    def validate_json(self):
         """Validate the data loaded from a JSON representation of the data of this object against its data schema (`self.DATASCHEMA`).
 
         Returns
@@ -106,8 +90,10 @@ class Base(ABC):
         ------
         SchemaError
         """
+        import jsonschema
         jsondata = json.dumps(self.data, cls=DataEncoder)
         data = json.loads(jsondata, cls=DataDecoder)
+        jsonschema.validate(data, schema=self.JSONSCHEMA)
         return self.DATASCHEMA.validate(data)
 
 
