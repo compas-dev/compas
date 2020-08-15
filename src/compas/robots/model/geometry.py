@@ -2,7 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import json
+
 import compas.geometry
+from compas.base import Base
+from compas.datastructures import Mesh
+from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 from compas.utilities import hex_to_rgb
 
@@ -42,6 +47,21 @@ HTML4_NAMES_TO_HEX = {
 
 def _parse_floats(values):
     return [float(i) for i in values.split()]
+
+
+def _attr_to_data(attr):
+    return {k: v.data if hasattr(v, 'data') else v for k, v in attr.items()}
+
+
+def _generic_from_data_or_data(data):
+    try:
+        data = URDFGenericElement.from_data(data)
+    finally:
+        return data
+
+
+def _attr_from_data(data):
+    return {k: _generic_from_data_or_data(d) for k, d in data.items()}
 
 
 class Origin(Frame):
@@ -117,7 +137,7 @@ class Origin(Frame):
         self.point = self.point * factor
 
 
-class BaseShape(object):
+class BaseShape(Base):
     """Base class for all 3D shapes.
 
     Attributes
@@ -127,7 +147,33 @@ class BaseShape(object):
     """
 
     def __init__(self):
+        super(BaseShape, self).__init__()
         self.geometry = None
+
+    @property
+    def data(self):
+        raise NotImplementedError
+
+    @data.setter
+    def data(self, data):
+        raise NotImplementedError
+
+    @classmethod
+    def from_data(cls, data):
+        raise NotImplementedError
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
 
 class Box(BaseShape):
@@ -156,6 +202,25 @@ class Box(BaseShape):
         super(Box, self).__init__()
         self.size = _parse_floats(size)
         self.geometry = compas.geometry.Box(Frame.worldXY(), *self.size)
+
+    @property
+    def data(self):
+        return {
+            'type': 'box',
+            'size': self.size,
+            'geometry': self.geometry.data,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.size = data['size']
+        self.geometry = compas.geometry.Box.from_data(data['geometry'])
+
+    @classmethod
+    def from_data(cls, data):
+        box = cls('1 1 1')
+        box.data = data
+        return box
 
 
 class Cylinder(BaseShape):
@@ -192,6 +257,27 @@ class Cylinder(BaseShape):
         circle = compas.geometry.Circle(plane, self.radius)
         self.geometry = compas.geometry.Cylinder(circle, self.length)
 
+    @property
+    def data(self):
+        return {
+            'type': 'cylinder',
+            'radius': self.radius,
+            'length': self.length,
+            'geometry': self.geometry.data,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.radius = data['radius']
+        self.length = data['length']
+        self.geometry = compas.geometry.Cylinder.from_data(data['geometry'])
+
+    @classmethod
+    def from_data(cls, data):
+        cyl = cls(data['radius'], data['length'])
+        cyl.data = data
+        return cyl
+
 
 class Sphere(BaseShape):
     """3D shape primitive representing a sphere.
@@ -220,6 +306,25 @@ class Sphere(BaseShape):
         self.radius = float(radius)
         self.geometry = compas.geometry.Sphere((0, 0, 0), radius)
 
+    @property
+    def data(self):
+        return {
+            'type': 'sphere',
+            'radius': self.radius,
+            'geometry': self.geometry.data,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.radius = data['radius']
+        self.geometry = compas.geometry.Sphere.from_data(data['geometry'])
+
+    @classmethod
+    def from_data(cls, data):
+        sph = cls(data['radius'])
+        sph.data = data
+        return sph
+
 
 class Capsule(BaseShape):
     """3D shape primitive representing a capsule.
@@ -247,6 +352,25 @@ class Capsule(BaseShape):
         super(Capsule, self).__init__()
         self.radius = float(radius)
         self.length = float(length)
+
+    @property
+    def data(self):
+        return {
+            'type': 'capsule',
+            'radius': self.radius,
+            'length': self.length,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.radius = data['radius']
+        self.length = data['length']
+
+    @classmethod
+    def from_data(cls, data):
+        cap = cls(data['radius'], data['length'])
+        cap.data = data
+        return cap
 
 
 class MeshDescriptor(BaseShape):
@@ -278,8 +402,29 @@ class MeshDescriptor(BaseShape):
         self.filename = filename
         self.scale = _parse_floats(scale)
 
+    @property
+    def data(self):
+        return {
+            'type': 'mesh',
+            'filename': self.filename,
+            'scale': self.scale,
+            'geometry': self.geometry.data if self.geometry else None,
+        }
 
-class Color(object):
+    @data.setter
+    def data(self, data):
+        self.filename = data['filename']
+        self.scale = data['scale']
+        self.geometry = Mesh.from_data(data['geometry']) if data['geometry'] else None
+
+    @classmethod
+    def from_data(cls, data):
+        md = cls('')
+        md.data = data
+        return md
+
+
+class Color(Base):
     """Color represented in RGBA.
 
     Parameters
@@ -300,10 +445,40 @@ class Color(object):
     """
 
     def __init__(self, rgba):
+        super(Color, self).__init__()
         self.rgba = _parse_floats(rgba)
 
+    @property
+    def data(self):
+        return {
+            'rgba': self.rgba,
+        }
 
-class Texture(object):
+    @data.setter
+    def data(self, data):
+        self.rgba = data['rgba']
+
+    @classmethod
+    def from_data(cls, data):
+        color = cls('1 1 1')
+        color.data = data
+        return color
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Texture(Base):
     """Texture description.
 
     Parameters
@@ -322,10 +497,38 @@ class Texture(object):
     """
 
     def __init__(self, filename):
+        super(Texture, self).__init__()
         self.filename = filename
 
+    @property
+    def data(self):
+        return {
+            'filename': self.filename,
+        }
 
-class Material(object):
+    @data.setter
+    def data(self, data):
+        self.filename = data['filename']
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(**data)
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Material(Base):
     """Material description.
 
     Parameters
@@ -348,9 +551,43 @@ class Material(object):
     """
 
     def __init__(self, name=None, color=None, texture=None):
+        super(Material, self).__init__()
         self.name = name
         self.color = color
         self.texture = texture
+
+    @property
+    def data(self):
+        return {
+            'name': self.name,
+            'color': self.color.data,
+            'texture': self.texture.data if self.texture else None,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.name = data['name']
+        self.color = Color.from_data(data['color'])
+        self.texture = Texture.from_data(data['texture']) if data['texture'] else None
+
+    @classmethod
+    def from_data(cls, data):
+        material = cls()
+        material.data = data
+        return material
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
     def get_color(self):
         """Get the RGBA color array of the material.
@@ -375,7 +612,16 @@ class Material(object):
         return None
 
 
-class Geometry(object):
+TYPE_CLASS_ENUM = {
+    'box': Box,
+    'cylinder': Cylinder,
+    'sphere': Sphere,
+    'capsule': Capsule,
+    'mesh': MeshDescriptor,
+}
+
+
+class Geometry(Base):
     """Geometrical description of the shape of a link.
 
     Parameters
@@ -409,6 +655,7 @@ class Geometry(object):
     """
 
     def __init__(self, box=None, cylinder=None, sphere=None, capsule=None, mesh=None, **kwargs):
+        super(Geometry, self).__init__()
         self.shape = box or cylinder or sphere or capsule or mesh
         self.attr = kwargs
         if not self.shape:
@@ -417,6 +664,39 @@ class Geometry(object):
 
         if 'geometry' not in dir(self.shape):
             raise TypeError('Shape implementation does not define a geometry accessor')
+
+    @property
+    def data(self):
+        return {
+            'shape': self.shape.data,
+            'attr': _attr_to_data(self.attr),
+        }
+
+    @data.setter
+    def data(self, data):
+        class_ = TYPE_CLASS_ENUM[data['shape']['type']]
+        self.shape = class_.from_data(data['shape'])
+        self.attr = _attr_from_data(data['attr'])
+
+    @classmethod
+    def from_data(cls, data):
+        class_ = TYPE_CLASS_ENUM[data['shape']['type']]
+        geo = cls(box=class_.from_data(data['shape']))
+        geo.data = data
+        return geo
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
     @property
     def geo(self):

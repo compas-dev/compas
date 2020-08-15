@@ -112,13 +112,16 @@ def docs(ctx, doctest=False, rebuild=True, check_links=False):
         clean(ctx)
 
     with chdir(BASE_FOLDER):
-        if doctest:
-            ctx.run('sphinx-build -E -b doctest docs dist/docs')
+        # ctx.run('sphinx-autogen docs/**.rst')
 
-        ctx.run('sphinx-build -E -b html docs dist/docs')
+        if doctest:
+            testdocs(ctx, rebuild=rebuild)
+
+        opts = '-E' if rebuild else ''
+        ctx.run('sphinx-build {} -b html docs dist/docs'.format(opts))
 
         if check_links:
-            ctx.run('sphinx-build -E -b linkcheck docs dist/docs')
+            linkcheck(ctx, rebuild=rebuild)
 
 
 @task()
@@ -126,6 +129,21 @@ def lint(ctx):
     """Check the consistency of coding style."""
     log.write('Running flake8 python linter...')
     ctx.run('flake8 src')
+
+
+@task()
+def testdocs(ctx, rebuild=True):
+    """Test the examples in the docstrings."""
+    log.write('Running doctest...')
+    opts = '-E' if rebuild else ''
+    ctx.run('sphinx-build {} -b doctest docs dist/docs'.format(opts))
+
+@task()
+def linkcheck(ctx, rebuild=True):
+    """Check links in documentation."""
+    log.write('Running link check...')
+    opts = '-E' if rebuild else ''
+    ctx.run('sphinx-build {} -b linkcheck docs dist/docs'.format(opts))
 
 
 @task()
@@ -140,9 +158,6 @@ def check(ctx):
 
         log.write('Checking metadata...')
         ctx.run('python setup.py check --strict --metadata')
-
-        # log.write('Checking python imports...')
-        # ctx.run('isort --check-only --diff --recursive src tests setup.py')
 
 
 @task(help={

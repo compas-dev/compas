@@ -103,13 +103,64 @@ class Quaternion(Primitive):
     True
     """
 
-    __slots__ = ['w', 'x', 'y', 'z']
+    __slots__ = ['_w', '_x', '_y', '_z']
 
     def __init__(self, w, x, y, z):
-        self.w = float(w)
-        self.x = float(x)
-        self.y = float(y)
-        self.z = float(z)
+        self._w = None
+        self._x = None
+        self._y = None
+        self._z = None
+        self.w = w
+        self.x = x
+        self.y = y
+        self.z = z
+
+    @property
+    def w(self):
+        """float : The W component of the quaternion."""
+        return self._w
+
+    @w.setter
+    def w(self, w):
+        self._w = float(w)
+
+    @property
+    def x(self):
+        """float : The X component of the quaternion."""
+        return self._x
+
+    @x.setter
+    def x(self, x):
+        self._x = float(x)
+
+    @property
+    def y(self):
+        """float : The Y component of the quaternion."""
+        return self._y
+
+    @y.setter
+    def y(self, y):
+        self._y = float(y)
+
+    @property
+    def z(self):
+        """float : The Z component of the quaternion."""
+        return self._z
+
+    @z.setter
+    def z(self, z):
+        self._z = float(z)
+
+    @property
+    def data(self):
+        return {'w': self.w, 'x': self.x, 'y': self.y, 'z': self.z}
+
+    @data.setter
+    def data(self, data):
+        self.w = data['w']
+        self.x = data['x']
+        self.y = data['y']
+        self.z = data['z']
 
     @property
     def wxyz(self):
@@ -211,6 +262,26 @@ class Quaternion(Primitive):
     # ==========================================================================
 
     @classmethod
+    def from_data(cls, data):
+        """Construct a quaternion from a data dict.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Quaternion`
+            The constructed quaternion.
+
+        Examples
+        --------
+        >>>
+        """
+        return cls(data['w'], data['x'], data['y'], data['z'])
+
+    @classmethod
     def from_frame(cls, frame):
         """Creates a quaternion object from a frame.
 
@@ -223,8 +294,8 @@ class Quaternion(Primitive):
         :class:`compas.geometry.Quaternion`
             The new quaternion.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from compas.geometry import Frame
         >>> q = [1., -2., 3., -4.]
         >>> F = Frame.from_quaternion(q)

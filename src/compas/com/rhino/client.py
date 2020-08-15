@@ -22,8 +22,8 @@ class RhinoClientError(Exception):
 class RhinoClient(object):
     """Communicate with Rhino through Window's COM interface.
 
-    Warning
-    -------
+    Warnings
+    --------
     This functionality is only available on Windows.
 
     Examples

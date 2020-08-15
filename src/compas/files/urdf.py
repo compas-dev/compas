@@ -3,8 +3,10 @@ from __future__ import division
 from __future__ import print_function
 
 import inspect
+import json
 import sys
 
+from compas.base import Base
 from compas.files.xml_ import XML
 from compas.utilities import memoize
 
@@ -27,9 +29,8 @@ class URDF(object):
     robot : object
         Root element of the URDF model, i.e. a robot instance.
 
-    See Also
-    --------
-
+    References
+    ----------
     A detailed description of the model is available on the `URDF Model wiki`_.
     This package parses URDF v1.0 according to the `URDF XSD Schema`_.
 
@@ -58,7 +59,6 @@ class URDF(object):
 
         Examples
         --------
-
         >>> from compas.files import URDF
         >>> urdf = URDF.from_file('/urdf/ur5.urdf')
         """
@@ -75,7 +75,6 @@ class URDF(object):
 
         Examples
         --------
-
         >>> from compas.files import URDF
         >>> urdf = URDF.from_string('<robot name="panda"/>')
         """
@@ -199,9 +198,9 @@ class URDFParser(object):
         return result
 
 
-class URDFGenericElement(object):
+class URDFGenericElement(Base):
     """Generic representation for all URDF elements that
-    are not explicitely supported."""
+    are not explicitly supported."""
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
@@ -210,6 +209,41 @@ class URDFGenericElement(object):
         el.elements = elements
         el.text = text
         return el
+
+    @property
+    def data(self):
+        return {
+            'attr': self.attr,
+            'elements': [d.data for d in self.elements],
+            'text': self.text,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.attr = data['attr']
+        self.elements = [URDFGenericElement.from_data(d) for d in data['elements']]
+        self.text = data['text']
+
+    @classmethod
+    def from_data(cls, data):
+        generic = cls()
+        generic.attr = data['attr']
+        generic.elements = [cls.from_data(d) for d in data['elements']]
+        generic.text = data['text']
+        return generic
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
 
 @memoize

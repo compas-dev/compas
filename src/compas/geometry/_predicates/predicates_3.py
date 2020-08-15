@@ -358,7 +358,7 @@ def is_point_in_triangle(point, triangle):
 
     See Also
     --------
-    ``is_point_in_triangle_xy``
+    compas.geometry.is_point_in_triangle_xy
 
     """
     def is_on_same_side(p1, p2, segment):
@@ -441,7 +441,24 @@ def is_intersection_line_line(l1, l2, tol=1e-6):
     return False
 
 
-def is_intersection_segment_segment():
+def is_intersection_segment_segment(s1, s2, tol=1e-6):
+    """Verifies if two segments intersect.
+
+    Parameters
+    ----------
+    s1 : tuple
+        Two 3D points representing the segment.
+    s2 : tuple
+        Two 3D points representing the segment.
+    tol : float, optional
+        A tolerance for intersection verification. Default is ``1e-6``.
+
+    Returns
+    --------
+    bool
+        ``True``if the segments intersect in one point.
+        ``False`` if the segments are skew, parallel or lie on top of each other.
+    """
     raise NotImplementedError
 
 

@@ -109,6 +109,29 @@ class Transformation(object):
             self.matrix[3][:]]
         return cls(matrix)
 
+    @property
+    def data(self):
+        """Return a ``Transformation`` object's to a data dict.
+
+        Returns
+        -------
+        dict
+            A dictionary with a transformation matrix stored under the key "matrix".
+
+        Examples
+        --------
+        >>> matrix = [[1, 0, 0, 3], [0, 1, 0, 4], [0, 0, 1, 5], [0, 0, 0, 1]]
+        >>> data = {'matrix': matrix}
+        >>> T = Transformation.from_data(data)
+        >>> T.data == data
+        True
+        """
+        return {'matrix': self.matrix}
+
+    @data.setter
+    def data(self, data):
+        self.matrix = data['matrix']
+
     @classmethod
     def from_data(cls, data):
         """Creates a ``Transformation`` from a data dict.
@@ -147,7 +170,7 @@ class Transformation(object):
         >>> T.to_data() == data
         True
         """
-        return {'matrix': self.matrix}
+        return self.data
 
     @classmethod
     def from_matrix(cls, matrix):
@@ -447,7 +470,7 @@ class Transformation(object):
         Returns
         -------
         5-tuple of Transformation
-            The scale, shear, rotation, tranlation, and projection components
+            The scale, shear, rotation, translation, and projection components
             of the current transformation.
 
         Examples

@@ -13,5 +13,7 @@ numba
 numpy >= 1.15.4
 pillow
 planarity
+schema
+jsonschema
 scipy >= 1.1
 sympy

@@ -47,8 +47,8 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     .. [1] Sloan, S. W., 1987 *A fast algorithm for constructing Delaunay triangulations in the plane*
            Advances in Engineering Software 9(1): 34-55, 1978.
 
-    Example
-    -------
+    Examples
+    --------
     >>>
 
     """
@@ -155,13 +155,13 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 #     Mesh
 #         The corresponding voronoi mesh.
 
-#     Warning
-#     -------
+#     Warnings
+#     --------
 #     This function does not work properly if all vertices of the delaunay
 #     are on the boundary.
 
-#     Example
-#     -------
+#     Examples
+#     --------
 #     .. plot::
 #         :include-source:
 

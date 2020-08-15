@@ -7,27 +7,17 @@ import ast
 import compas
 from compas.geometry import add_vectors
 
-try:
+if compas.RHINO:
     import Rhino
+    import clr
+    clr.AddReference('Rhino.UI')
+    import Rhino.UI
     from Rhino.Geometry import Point3d
-except ImportError:
-    compas.raise_if_ironpython()
 
-try:
-    from compas_rhino.etoforms import PropertyListForm
-except ImportError:
     try:
+        from compas_rhino.etoforms import PropertyListForm
+    except ImportError:
         from Rhino.UI.Dialogs import ShowPropertyListBox
-    except ImportError:
-        compas.raise_if_ironpython()
-else:
-    try:
-        import clr
-        clr.AddReference('Rhino.UI')
-        import Rhino.UI
-
-    except ImportError:
-        compas.raise_if_ironpython()
 
 
 __all__ = [

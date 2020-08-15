@@ -2,78 +2,18 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import json
-try:
-    from collections.abc import MutableMapping  # python > 3.3
-except ImportError:
-    from collections import MutableMapping      # python 2.7
 from random import sample
 from random import choice
-from copy import deepcopy
 from ast import literal_eval
 
-from compas.utilities import geometric_key
-from compas.datastructures import Datastructure
+import compas
+
+from compas.datastructures.datastructure import Datastructure
+from compas.datastructures.attributes import NodeAttributeView
+from compas.datastructures.attributes import EdgeAttributeView
 
 
 __all__ = ['Graph']
-
-
-class AttributeView(object):
-    """Mixin for attribute dict views."""
-
-    def __str__(self):
-        s = []
-        for k, v in self.items():
-            s.append("{}: {}".format(repr(k), repr(v)))
-        return "{" + ", ".join(s) + "}"
-
-    def __len__(self):
-        return len(self.defaults)
-
-
-class NodeAttributeView(AttributeView, MutableMapping):
-    """Mutable Mapping that provides a read/write view of the custom attributes of a node
-    combined with the default attributes of all nodes."""
-
-    def __init__(self, defaults, attr):
-        self.defaults = defaults
-        self.attr = attr
-
-    def __getitem__(self, name):
-        return self.attr.get(name, self.defaults[name])
-
-    def __setitem__(self, name, value):
-        self.attr[name] = value
-
-    def __delitem__(self, name):
-        del self.attr[name]
-
-    def __iter__(self):
-        for name in self.defaults:
-            yield name
-
-
-class EdgeAttributeView(AttributeView, MutableMapping):
-    """Mutable Mapping that provides a read/write view of the custom attributes of an edge
-    combined with the default attributes of all edges."""
-
-    def __init__(self, defaults, attr):
-        self.defaults = defaults
-        self.attr = attr
-
-    def __getitem__(self, name):
-        return self.attr.get(name, self.defaults[name])
-
-    def __setitem__(self, name, value):
-        self.attr[name] = value
-
-    def __delitem__(self, name):
-        del self.attr[name]
-
-    def __iter__(self):
-        for name in self.defaults:
-            yield name
 
 
 class Graph(Datastructure):
@@ -110,6 +50,81 @@ class Graph(Datastructure):
     >>>
     """
 
+    @property
+    def DATASCHEMA(self):
+        import schema
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return schema.Schema({
+                "attributes": dict,
+                "node_attributes": dict,
+                "edge_attributes": dict,
+                "node": dict,
+                "edge": dict,
+                "adjacency": dict,
+                "max_int_key": schema.And(int, lambda x: x >= -1)
+            })
+        return schema.Schema({
+            "compas": str,
+            "datatype": str,
+            "data": {
+                "attributes": dict,
+                "node_attributes": dict,
+                "edge_attributes": dict,
+                "node": dict,
+                "edge": dict,
+                "adjacency": dict,
+                "max_int_key": schema.And(int, lambda x: x >= -1)
+            }
+        })
+
+    @property
+    def JSONSCHEMA(self):
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return {
+                "$schema": "http://json-schema.org/schema",
+                "$id": "https://github.com/compas-dev/compas/schemas/mesh.json",
+                "$compas": compas.__version__,
+
+                "type": "object",
+                "properties": {
+                    "attributes":      {"type": "object"},
+                    "node_attributes": {"type": "object"},
+                    "edge_attributes": {"type": "object"},
+                    "node":            {"type": "object"},
+                    "edge":            {"type": "object"},
+                    "adjacency":       {"type": "object"},
+                    "max_int_key":     {"type": "number"}
+                },
+                "required": ["attributes", "node_attributes", "edge_attributes", "node", "edge", "adjacency", "max_int_key"]
+            }
+        return {
+            "$schema": "http://json-schema.org/schema",
+            "$id": "https://github.com/compas-dev/compas/schemas/graph.json",
+            "$compas": compas.__version__,
+
+            "type": "object",
+            "poperties": {
+                "compas": {"type": "string"},
+                "datatype": {"type": "string"},
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "attributes":      {"type": "object"},
+                        "node_attributes": {"type": "object"},
+                        "edge_attributes": {"type": "object"},
+                        "node":            {"type": "object"},
+                        "edge":            {"type": "object"},
+                        "adjacency":       {"type": "object"},
+                        "max_int_key":     {"type": "number"}
+                    },
+                    "required": ["attributes", "node_attributes", "edge_attributes", "node", "edge", "adjacency", "max_int_key"]
+                }
+            },
+            "required": ["compas", "datatype", "data"]
+        }
+
     def __init__(self):
         super(Graph, self).__init__()
         self._max_int_key = -1
@@ -119,25 +134,6 @@ class Graph(Datastructure):
         self.adjacency = {}
         self.default_node_attributes = {}
         self.default_edge_attributes = {}
-
-    # --------------------------------------------------------------------------
-    # customisation
-    # --------------------------------------------------------------------------
-
-    def __str__(self):
-        """Generate a readable representation of the data of the graph."""
-        return json.dumps(self.data, sort_keys=True, indent=4)
-
-    def summary(self):
-        """Print a summary of the graph."""
-        tpl = "\n".join(
-            ["Graph summary",
-             "============",
-             "- nodes: {}",
-             "- edges: {}"])
-        s = tpl.format(self.number_of_nodes(),
-                       self.number_of_edges())
-        print(s)
 
     # --------------------------------------------------------------------------
     # properties
@@ -234,84 +230,6 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_data(cls, data):
-        """Construct a graph from structured data.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Note
-        ----
-        This constructor method is meant to be used in conjuction with the
-        corresponding *to_data* method.
-
-        """
-        graph = cls()
-        graph.data = data
-        return graph
-
-    def to_data(self):
-        """Returns a dictionary of structured data representing the graph.
-
-        Returns
-        -------
-        dict
-            The structured data.
-
-        Note
-        ----
-        This method produces the data that can be used in conjuction with the
-        corresponding *from_data* class method.
-        """
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        """Construct a datastructure from structured data contained in a json file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Note
-        ----
-        This constructor method is meant to be used in conjuction with the
-        corresponding *to_json* method.
-        """
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        graph = cls()
-        graph.data = data
-        return graph
-
-    def to_json(self, filepath, pretty=False):
-        """Serialise the structured data representing the data structure to json.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-        """
-        with open(filepath, 'w+') as f:
-            if pretty:
-                json.dump(self.data, f, sort_keys=True, indent=4)
-            else:
-                json.dump(self.data, f)
-
-    @classmethod
     def from_edges(cls, edges):
         graph = cls()
         for u, v in edges:
@@ -331,18 +249,6 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
-
-    def copy(self):
-        """Make an independent copy of the network object.
-
-        Returns
-        -------
-        Network
-            A separate, but identical network object.
-
-        """
-        cls = type(self)
-        return cls.from_data(deepcopy(self.data))
 
     def clear(self):
         """Clear all the network data."""
@@ -435,44 +341,6 @@ class Graph(Datastructure):
 
         """
         return dict(enumerate(self.nodes()))
-
-    def key_gkey(self, precision=None):
-        """Returns a dictionary that maps node dictionary keys to the corresponding
-        *geometric key* up to a certain precision.
-
-        Parameters
-        ----------
-        precision : str (3f)
-            The float precision specifier used in string formatting.
-
-        Returns
-        -------
-        dict
-            A dictionary of key-geometric key pairs.
-
-        """
-        gkey = geometric_key
-        xyz = self.node_coordinates
-        return {key: gkey(xyz(key), precision) for key in self.nodes()}
-
-    def gkey_key(self, precision=None):
-        """Returns a dictionary that maps *geometric keys* of a certain precision
-        to the keys of the corresponding nodes.
-
-        Parameters
-        ----------
-        precision : str (3f)
-            The float precision specifier used in string formatting.
-
-        Returns
-        -------
-        dict
-            A dictionary of geometric key-key pairs.
-
-        """
-        gkey = geometric_key
-        xyz = self.node_coordinates
-        return {gkey(xyz(key), precision): key for key in self.nodes()}
 
     def uv_index(self):
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
@@ -631,6 +499,16 @@ class Graph(Datastructure):
     # --------------------------------------------------------------------------
     # info
     # --------------------------------------------------------------------------
+
+    def summary(self):
+        """Print a summary of the graph.
+
+        Returns
+        -------
+        str
+        """
+        tpl = "\n".join(["Graph summary", "============", "- nodes: {}", "- edges: {}"])
+        return tpl.format(self.number_of_nodes(), self.number_of_edges())
 
     def number_of_nodes(self):
         """Compute the number of nodes of the network.

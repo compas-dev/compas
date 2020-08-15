@@ -6,8 +6,8 @@ geometry
 .. currentmodule:: compas.geometry
 
 
-Bases
-=====
+Base Classes
+============
 
 .. autosummary::
     :toctree: generated/
@@ -15,8 +15,6 @@ Bases
 
     Primitive
     Shape
-    Collection
-    CollectionNumpy
 
 
 Primitives
@@ -52,17 +50,6 @@ Shapes
     Polyhedron
     Sphere
     Torus
-
-
-Collections
-===========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    PointCollection
-    PointCollectionNumpy
 
 
 Transformations
@@ -346,6 +333,7 @@ Intersections
     intersection_line_triangle
     intersection_plane_plane
     intersection_plane_plane_plane
+    intersection_segment_segment
     intersection_segment_segment_xy
     intersection_segment_plane
 
@@ -384,6 +372,18 @@ Bestfit
     bestfit_circle_numpy
     bestfit_plane
     bestfit_plane_numpy
+
+Boolean operations
+==================
+
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    boolean_union_mesh_mesh
+    boolean_difference_mesh_mesh
+    boolean_intersection_mesh_mesh
 
 """
 from __future__ import absolute_import

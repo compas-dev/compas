@@ -2,19 +2,18 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
-import pickle
 from collections import OrderedDict
-from copy import deepcopy
 from ast import literal_eval
 from random import sample
 from random import choice
 
-from compas.datastructures.mesh.core import VertexAttributeView
-from compas.datastructures.mesh.core import EdgeAttributeView
-from compas.datastructures.mesh.core import FaceAttributeView
+import compas
 
-from compas.datastructures import Datastructure
+from compas.datastructures.datastructure import Datastructure
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import FaceAttributeView
+
 from compas.utilities import pairwise
 from compas.utilities import window
 
@@ -28,36 +27,114 @@ class HalfEdge(Datastructure):
     Attributes
     ----------
     attributes : dict
-        A dictionary of general attributes.
+        Named attributes related to the data structure as a whole.
     default_vertex_attributes : dict
-        The names of pre-assigned vertex attributes and their default values.
+        Named attributes and default values of the vertices of the data structure.
     default_edge_attributes : dict
-        The default data attributes assigned to every new edge.
+        Named attributes and default values of the edges of the data structure.
     default_face_attributes : dict
-        The default data attributes assigned to every new face.
+        Named attributes and default values of the faces of the data structure.
     name : str
-        Shorthand for ``HalfEdge.attributes['name']``
-    adjacency : dict, read-only
-        The vertex adjacency dictionary.
+        Name of the data structure.
+        Defaults to the value of `self.__class__.__name__`.
     data : dict
-        The data representing the mesh.
-        The dict has the following structure:
+        The data representation of the data structure.
+    adjacency : dict
+        Alias for `self.halfedge`.
 
-        * 'attributes'   => dict
-        * 'dva'          => dict
-        * 'dea'          => dict
-        * 'dfa'          => dict
-        * 'vertex'       => dict
-        * 'face'         => dict
-        * 'facedata'     => dict
-        * 'edgedata'     => dict
-        * 'max_int_key'  => int
-        * 'max_int_fkey' => int
+        .. deprecated:: 0.17.0
 
     Examples
     --------
     >>>
     """
+
+    @property
+    def DATASCHEMA(self):
+        import schema
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return schema.Schema({
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "vertex": dict,
+                "face": dict,
+                "facedata": dict,
+                "edgedata": dict,
+                "max_int_key": schema.And(int, lambda x: x >= -1),
+                "max_int_fkey": schema.And(int, lambda x: x >= -1)
+            })
+        return schema.Schema({
+            "compas": str,
+            "datatype": str,
+            "data": {
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "vertex": dict,
+                "face": dict,
+                "facedata": dict,
+                "edgedata": dict,
+                "max_int_key": schema.And(int, lambda x: x >= -1),
+                "max_int_fkey": schema.And(int, lambda x: x >= -1)
+            }
+        })
+
+    @property
+    def JSONSCHEMA(self):
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return {
+                "$schema": "http://json-schema.org/schema",
+                "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
+                "$compas": compas.__version__,
+
+                "type": "object",
+                "properties": {
+                    "attributes":   {"type": "object"},
+                    "dva":          {"type": "object"},
+                    "dea":          {"type": "object"},
+                    "dfa":          {"type": "object"},
+                    "vertex":       {"type": "object"},
+                    "face":         {"type": "object"},
+                    "facedata":     {"type": "object"},
+                    "edgedata":     {"type": "object"},
+                    "max_int_key":  {"type": "number"},
+                    "max_int_fkey": {"type": "number"}
+                },
+                "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
+            }
+        return {
+            "$schema": "http://json-schema.org/schema",
+            "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
+            "$compas": compas.__version__,
+
+            "type": "object",
+            "poperties": {
+                "compas": {"type": "string"},
+                "datatype": {"type": "string"},
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "attributes":   {"type": "object"},
+                        "dva":          {"type": "object"},
+                        "dea":          {"type": "object"},
+                        "dfa":          {"type": "object"},
+                        "vertex":       {"type": "object"},
+                        "face":         {"type": "object"},
+                        "facedata":     {"type": "object"},
+                        "edgedata":     {"type": "object"},
+                        "max_int_key":  {"type": "number"},
+                        "max_int_fkey": {"type": "number"}
+                    },
+                    "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
+                }
+            },
+            "required": ["compas", "datatype", "data"]
+        }
 
     def __init__(self):
         super(HalfEdge, self).__init__()
@@ -74,33 +151,7 @@ class HalfEdge(Datastructure):
         self.default_face_attributes = {}
 
     # --------------------------------------------------------------------------
-    # customisation
-    # --------------------------------------------------------------------------
-
-    def __str__(self):
-        """Generate a readable representation of the data of the mesh."""
-        return json.dumps(self.data, sort_keys=True, indent=4)
-
-    # def __iter__(self):
-    #     v, f = self.to_vertices_and_faces()
-    #     yield v
-    #     yield f
-
-    def summary(self):
-        """Print a summary of the mesh."""
-        tpl = "\n".join(
-            ["Mesh summary",
-             "============",
-             "- vertices: {}",
-             "- edges: {}",
-             "- faces: {}"])
-        s = tpl.format(self.number_of_vertices(),
-                       self.number_of_edges(),
-                       self.number_of_faces())
-        print(s)
-
-    # --------------------------------------------------------------------------
-    # special properties
+    # descriptors
     # --------------------------------------------------------------------------
 
     @property
@@ -137,30 +188,16 @@ class HalfEdge(Datastructure):
         * 'max_int_key'  => int
         * 'max_int_fkey' => int
 
-        Note
-        ----
+        Notes
+        -----
         All dictionary keys are converted to their representation value (``repr(key)``)
         to ensure compatibility of all allowed key types with the JSON serialisation
         format, which only allows for dict keys that are strings.
 
         """
-        # vertex = {}
-        # face = {}
-        # facedata = {}
         edgedata = {}
-
-        # for key in self.vertex:
-        #     vertex[repr(key)] = self.vertex[key]
-
-        # for key in self.face:
-        #     face[repr(key)] = [repr(k) for k in self.face[key]]
-
-        # for key in self.facedata:
-        #     facedata[repr(key)] = self.facedata[key]
-
         for key in self.edgedata:
             edgedata[repr(key)] = self.edgedata[key]
-
         data = {'attributes': self.attributes,
                 'dva': self.default_vertex_attributes,
                 'dea': self.default_edge_attributes,
@@ -171,7 +208,6 @@ class HalfEdge(Datastructure):
                 'edgedata': edgedata,
                 'max_int_key': self._max_int_key,
                 'max_int_fkey': self._max_int_fkey}
-
         return data
 
     @data.setter
@@ -186,171 +222,28 @@ class HalfEdge(Datastructure):
         edgedata = data.get('edgedata') or {}
         max_int_key = data.get('max_int_key', -1)
         max_int_fkey = data.get('max_int_fkey', -1)
-
         self.attributes.update(attributes)
         self.default_vertex_attributes.update(dva)
         self.default_face_attributes.update(dfa)
         self.default_edge_attributes.update(dea)
-
         self.vertex = {}
         self.face = {}
         self.halfedge = {}
         self.facedata = {}
         self.edgedata = {}
-
         for key, attr in iter(vertex.items()):
             self.add_vertex(int(key), attr_dict=attr)
-
         for fkey, vertices in iter(face.items()):
             attr = facedata.get(fkey) or {}
-            # vertices = [int(k) for k in vertices]
             self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
-
         for uv, attr in iter(edgedata.items()):
             self.edgedata[literal_eval(uv)] = attr or {}
-
         self._max_int_key = max_int_key
         self._max_int_fkey = max_int_fkey
 
     # --------------------------------------------------------------------------
-    # from/to
-    # --------------------------------------------------------------------------
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a mesh from structured data.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Note
-        ----
-        This constructor method is meant to be used in conjuction with the
-        corresponding *to_data* method.
-
-        """
-        mesh = cls()
-        mesh.data = data
-        return mesh
-
-    def to_data(self):
-        """Returns a dictionary of structured data representing the mesh.
-
-        Returns
-        -------
-        dict
-            The structured data.
-
-        Note
-        ----
-        This method produces the data that can be used in conjuction with the
-        corresponding *from_data* class method.
-        """
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        """Construct a datastructure from structured data contained in a json file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Note
-        ----
-        This constructor method is meant to be used in conjuction with the
-        corresponding *to_json* method.
-        """
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        mesh = cls()
-        mesh.data = data
-        return mesh
-
-    def to_json(self, filepath, pretty=False):
-        """Serialise the structured data representing the data structure to json.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-        """
-        with open(filepath, 'w+') as f:
-            if pretty:
-                json.dump(self.data, f, sort_keys=True, indent=4)
-            else:
-                json.dump(self.data, f)
-
-    @classmethod
-    def from_pickle(cls, filepath):
-        """Construct a mesh from serialised data contained in a pickle file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the pickle file.
-
-        Returns
-        -------
-        object
-            An object of type ``cls``.
-
-        Note
-        ----
-        This constructor method is meant to be used in conjuction with the
-        corresponding *to_pickle* method.
-        """
-        with open(filepath, 'rb') as fo:
-            data = pickle.load(fo)
-        o = cls()
-        o.data = data
-        return o
-
-    def to_pickle(self, filepath):
-        """Serialise the structured data representing the mesh to a pickle file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the pickle file.
-        """
-        with open(filepath, 'wb+') as f:
-            pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-    # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
-
-    def copy(self, cls=None):
-        """Make an independent copy of the mesh object.
-
-        Parameters
-        ----------
-        cls : compas.datastructures.Mesh, optional
-            The type of mesh to return.
-            Defaults to the type of the current mesh.
-
-        Returns
-        -------
-        Mesh
-            A separate, but identical mesh object.
-        """
-        if not cls:
-            cls = type(self)
-        return cls.from_data(deepcopy(self.data))
 
     def clear(self):
         """Clear all the mesh data."""
@@ -440,6 +333,8 @@ class HalfEdge(Datastructure):
         """
         return {key: index for index, key in enumerate(self.vertices())}
 
+    vertex_index = key_index
+
     def index_key(self):
         """Returns a dictionary that maps the indices of a vertex list to
         keys in a vertex dictionary.
@@ -451,6 +346,8 @@ class HalfEdge(Datastructure):
 
         """
         return dict(enumerate(self.vertices()))
+
+    index_vertex = index_key
 
     # --------------------------------------------------------------------------
     # builders
@@ -547,9 +444,10 @@ class HalfEdge(Datastructure):
         """
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
+        vertices = [int(key) for key in vertices]
+        vertices[:] = [u for u, v in pairwise(vertices + vertices[:1]) if u != v]
         if len(vertices) < 3:
             return
-        vertices = [int(key) for key in vertices]
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
         if fkey > self._max_int_fkey:
@@ -559,8 +457,6 @@ class HalfEdge(Datastructure):
         self.face[fkey] = vertices
         self.facedata.setdefault(fkey, attr)
         for u, v in pairwise(vertices + vertices[:1]):
-            if u == v:
-                continue
             self.halfedge[u][v] = fkey
             if u not in self.halfedge[v]:
                 self.halfedge[v][u] = None
@@ -647,7 +543,7 @@ class HalfEdge(Datastructure):
         if fkey in self.facedata:
             del self.facedata[fkey]
 
-    def cull_vertices(self):
+    def remove_unused_vertices(self):
         """Remove all unused vertices from the mesh object.
         """
         for u in list(self.vertices()):
@@ -657,6 +553,8 @@ class HalfEdge(Datastructure):
                 if not self.halfedge[u]:
                     del self.vertex[u]
                     del self.halfedge[u]
+
+    cull_vertices = remove_unused_vertices
 
     # --------------------------------------------------------------------------
     # accessors
@@ -716,7 +614,7 @@ class HalfEdge(Datastructure):
             The next edge as a (u, v) tuple, if ``data`` is false.
             The next edge as a ((u, v), data) tuple, if ``data`` is true.
 
-        Note
+        Notes
         ----
         Mesh edges have no topological meaning. They are only used to store data.
         Edges are not automatically created when vertices and faces are added to
@@ -728,8 +626,8 @@ class HalfEdge(Datastructure):
         edges is *as they come out*. However, as long as the toplogy remains
         unchanged, the order is consistent.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
         """
         seen = set()
@@ -1035,9 +933,9 @@ class HalfEdge(Datastructure):
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
-        ----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        Notes
+        -----
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
         if they exist.
         """
         if not attr_dict:
@@ -1229,9 +1127,9 @@ class HalfEdge(Datastructure):
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
+        Notes
         ----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
         if they exist.
         """
         if not attr_dict:
@@ -1423,9 +1321,9 @@ class HalfEdge(Datastructure):
             A dictionary compiled of remaining named arguments.
             Defaults to an empty dict.
 
-        Note
+        Notes
         ----
-        Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
         if they exist.
         """
         if not attr_dict:
@@ -1621,6 +1519,16 @@ class HalfEdge(Datastructure):
     # mesh info
     # --------------------------------------------------------------------------
 
+    def summary(self):
+        """Print a summary of the mesh.
+
+        Returns
+        -------
+        str
+        """
+        tpl = "\n".join(["Mesh summary", "============", "- vertices: {}", "- edges: {}", "- faces: {}"])
+        return tpl.format(self.number_of_vertices(), self.number_of_edges(), self.number_of_faces())
+
     def number_of_vertices(self):
         """Count the number of vertices in the mesh."""
         return len(list(self.vertices()))
@@ -1814,12 +1722,12 @@ class HalfEdge(Datastructure):
         return False
 
     def euler(self):
-        """Calculate the Euler characterisic.
+        """Calculate the Euler characteristic.
 
         Returns
         -------
         int
-            The Euler chracteristic.
+            The Euler characteristic.
         """
         V = len([vkey for vkey in self.vertices() if len(self.vertex_neighbors(vkey)) != 0])
         E = self.number_of_edges()
@@ -1921,16 +1829,16 @@ class HalfEdge(Datastructure):
             If the vertex lies on the boundary of the mesh,
             an ordered list always starts and ends with with boundary vertices.
 
-        Note
-        ----
+        Notes
+        -----
         Due to the nature of the ordering algorithm, the neighbors cycle around
         the node in the opposite direction as the cycling direction of the faces.
         For some algorithms this produces the expected results. For others it doesn't.
         For example, a dual mesh constructed relying on these conventions will have
         oposite face cycle directions compared to the original.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
         """
         temp = list(self.halfedge[key])
@@ -1979,12 +1887,12 @@ class HalfEdge(Datastructure):
         list
             The vertices in the neighborhood.
 
-        Note
-        ----
+        Notes
+        -----
         The vertices in the neighborhood are unordered.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
 
         """
@@ -2018,11 +1926,6 @@ class HalfEdge(Datastructure):
     def vertex_min_degree(self):
         """Compute the minimum degree of all vertices.
 
-        Parameters
-        ----------
-        key : int
-            The identifier of the vertex.
-
         Returns
         -------
         int
@@ -2034,11 +1937,6 @@ class HalfEdge(Datastructure):
 
     def vertex_max_degree(self):
         """Compute the maximum degree of all vertices.
-
-        Parameters
-        ----------
-        key : int
-            The identifier of the vertex.
 
         Returns
         -------
@@ -2068,8 +1966,8 @@ class HalfEdge(Datastructure):
         list
             The faces connected to a vertex.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
         """
         if not ordered:
@@ -2088,8 +1986,8 @@ class HalfEdge(Datastructure):
     def has_edge(self, key):
         """Verify that the mesh contains a specific edge.
 
-        Warning
-        -------
+        Warnings
+        --------
         This method may produce unexpected results.
 
         Parameters
@@ -2136,7 +2034,7 @@ class HalfEdge(Datastructure):
         -------
         tuple
             The identifiers of the adjacent faces.
-            If the edge is on the bboundary, one of the identifiers is ``None``.
+            If the edge is on the boundary, one of the identifiers is ``None``.
         """
         return self.halfedge[u][v], self.halfedge[v][u]
 
@@ -2277,8 +2175,8 @@ class HalfEdge(Datastructure):
         list
             The identifiers of the neighboring faces.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
 
         """
@@ -2335,11 +2233,6 @@ class HalfEdge(Datastructure):
     def face_min_degree(self):
         """Compute the minimum degree of all faces.
 
-        Parameters
-        ----------
-        fkey : int
-            Identifier of the face.
-
         Returns
         -------
         int
@@ -2351,11 +2244,6 @@ class HalfEdge(Datastructure):
 
     def face_max_degree(self):
         """Compute the maximum degree of all faces.
-
-        Parameters
-        ----------
-        fkey : int
-            Identifier of the face.
 
         Returns
         -------
@@ -2433,8 +2321,8 @@ class HalfEdge(Datastructure):
         None
             If the faces are not adjacent.
 
-        Note
-        ----
+        Notes
+        -----
         For use in form-finding algorithms, that rely on form-force duality information,
         further checks relating to the orientation of the corresponding are required.
         """
@@ -2480,22 +2368,6 @@ class HalfEdge(Datastructure):
             return True
         else:
             return False
-
-    # --------------------------------------------------------------------------
-    # mesh geometry
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # vertex geometry
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # edge geometry
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # face geometry
-    # --------------------------------------------------------------------------
 
     # --------------------------------------------------------------------------
     # boundary

@@ -1,8 +1,8 @@
 .. _working-with-meshes:
 
-*******************
-Working with meshes
-*******************
+******
+Meshes
+******
 
 .. highlight:: python
 

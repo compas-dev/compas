@@ -13,6 +13,7 @@ compas
     compas.files
     compas.geometry
     compas.numerical
+    compas.plugins
     compas.robots
     compas.rpc
     compas.topology
@@ -34,7 +35,7 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '0.16.0'
+__version__ = '0.16.2'
 
 
 PY3 = sys.version_info[0] == 3
@@ -139,6 +140,30 @@ def is_ironpython():
 IPY = is_ironpython()
 
 
+def is_rhino():
+    try:
+        import Rhino  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
+
+
+RHINO = is_rhino()
+
+
+def is_grasshopper():
+    try:
+        import Grasshopper  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
+
+
+GH = is_grasshopper()
+
+
 def raise_if_not_windows():
     if not WINDOWS:
         raise
@@ -191,7 +216,6 @@ def set_precision(precision):
 # ==============================================================================
 # data
 # ==============================================================================
-
 
 def get(filename):
     """Get the full path to one of the sample data files.

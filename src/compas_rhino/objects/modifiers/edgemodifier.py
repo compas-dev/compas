@@ -6,25 +6,16 @@ import ast
 
 import compas
 
-try:
+if compas.RHINO:
     import Rhino
-except ImportError:
-    compas.raise_if_ironpython()
+    import clr
+    clr.AddReference('Rhino.UI')
+    import Rhino.UI
 
-try:
-    from compas_rhino.etoforms import PropertyListForm
-except ImportError:
     try:
+        from compas_rhino.etoforms import PropertyListForm
+    except ImportError:
         from Rhino.UI.Dialogs import ShowPropertyListBox
-    except ImportError:
-        compas.raise_if_ironpython()
-else:
-    try:
-        import clr
-        clr.AddReference('Rhino.UI')
-        import Rhino.UI
-    except ImportError:
-        compas.raise_if_ironpython()
 
 
 __all__ = [
@@ -146,23 +137,4 @@ def network_update_edge_attributes(network, keys, names=None):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    import compas
-
-    from compas.datastructures import Network
-    from compas_rhino.artists.networkartist import NetworkArtist
-
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    artist = NetworkArtist(network)
-
-    artist.clear()
-    artist.draw_vertices()
-    artist.draw_edges()
-    artist.redraw()
-
-    if EdgeModifier.move_edge(network, 0):
-        artist.clear()
-        artist.draw_vertices()
-        artist.draw_edges()
-        artist.redraw()
+    pass

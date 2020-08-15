@@ -5,39 +5,93 @@ geometry
 
 .. currentmodule:: compas_rhino.geometry
 
-Object-oriented convenience wrappers for Rhino geometry objects.
+.. rst-class:: lead
 
-Bases
-=====
+Wrappers for Rhino objects that can be used to convert Rhino geometry and data to COMPAS objects.
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+.. code-block:: python
 
-    RhinoGeometry
+    import compas_rhino
+    from compas_rhino.geometry import RhinoMesh
 
+    guid = compas_rhino.select_mesh()
+    mesh = RhinoMesh.from_guid(guid).to_compas()
 
-Specific wrappers
+----
+
+BaseRhinoGeometry
 =================
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+.. autoclass:: BaseRhinoGeometry
+    :members: from_geometry, from_selection, to_compas, from_guid, from_object, transform
 
-    RhinoPoint
-    RhinoCurve
-    RhinoLine
-    RhinoPlane
-    RhinoMesh
-    RhinoSurface
-    RhinoVector
+----
+
+RhinoPoint
+==========
+
+.. autoclass:: RhinoPoint
+    :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
+
+----
+
+RhinoVector
+===========
+
+.. autoclass:: RhinoVector
+    :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
+
+----
+
+RhinoLine
+=========
+
+.. autoclass:: RhinoLine
+    :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
+
+----
+
+RhinoPlane
+==========
+
+.. autoclass:: RhinoPlane
+    :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
+
+----
+
+RhinoMesh
+=========
+
+.. autoclass:: RhinoMesh
+    :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
+
+----
+
+RhinoCurve
+==========
+
+.. autoclass:: RhinoCurve
+    :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
+
+----
+
+RhinoSurface
+============
+
+.. autoclass:: RhinoSurface
+    :members: from_geometry, from_selection, to_compas
+    :no-show-inheritance:
 
 """
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from .geometry import *  # noqa: F401 F403
+from .base import *  # noqa: F401 F403
 
 from .curve import *  # noqa: F401 F403
 from .line import *  # noqa: F401 F403

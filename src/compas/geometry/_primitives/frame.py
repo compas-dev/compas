@@ -77,6 +77,19 @@ class Frame(Primitive):
         self.yaxis = yaxis
 
     @property
+    def data(self):
+        """dict : The data dictionary that represents the frame."""
+        return {'point': list(self.point),
+                'xaxis': list(self.xaxis),
+                'yaxis': list(self.yaxis)}
+
+    @data.setter
+    def data(self, data):
+        self.point = data['point']
+        self.xaxis = data['xaxis']
+        self.yaxis = data['yaxis']
+
+    @property
     def point(self):
         """:class:`compas.geometry.Point` : The base point of the frame."""
         return self._point
@@ -108,19 +121,6 @@ class Frame(Primitive):
         zaxis = Vector.cross(self.xaxis, yaxis)
         zaxis.unitize()
         self._yaxis = Vector.cross(zaxis, self.xaxis)
-
-    @property
-    def data(self):
-        """dict : The data dictionary that represents the frame."""
-        return {'point': list(self.point),
-                'xaxis': list(self.xaxis),
-                'yaxis': list(self.yaxis)}
-
-    @data.setter
-    def data(self, data):
-        self.point = data['point']
-        self.xaxis = data['xaxis']
-        self.yaxis = data['yaxis']
 
     @property
     def normal(self):
@@ -188,6 +188,34 @@ class Frame(Primitive):
     # ==========================================================================
     # constructors
     # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a frame from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            The constructed frame.
+
+        Examples
+        --------
+        >>> data = {'point': [0.0, 0.0, 0.0], 'xaxis': [1.0, 0.0, 0.0], 'yaxis': [0.0, 1.0, 0.0]}
+        >>> frame = Frame.from_data(data)
+        >>> frame.point
+        Point(0.000, 0.000, 0.000)
+        >>> frame.xaxis
+        Vector(1.000, 0.000, 0.000)
+        >>> frame.yaxis
+        Vector(0.000, 1.000, 0.000)
+        """
+        frame = cls(data['point'], data['xaxis'], data['yaxis'])
+        return frame
 
     @classmethod
     def worldXY(cls):
@@ -511,34 +539,6 @@ class Frame(Primitive):
         return cls(point, xaxis, yaxis)
 
     @classmethod
-    def from_data(cls, data):
-        """Construct a frame from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Frame`
-            The constructed frame.
-
-        Examples
-        --------
-        >>> data = {'point': [0.0, 0.0, 0.0], 'xaxis': [1.0, 0.0, 0.0], 'yaxis': [0.0, 1.0, 0.0]}
-        >>> frame = Frame.from_data(data)
-        >>> frame.point
-        Point(0.000, 0.000, 0.000)
-        >>> frame.xaxis
-        Vector(1.000, 0.000, 0.000)
-        >>> frame.yaxis
-        Vector(0.000, 1.000, 0.000)
-        """
-        frame = cls(data['point'], data['xaxis'], data['yaxis'])
-        return frame
-
-    @classmethod
     def from_plane(cls, plane):
         """Constructs a frame from a plane.
 
@@ -575,28 +575,6 @@ class Frame(Primitive):
         xaxis = vectors[idx]
         yaxis = cross_vectors(normal, xaxis)
         return cls(point, xaxis, yaxis)
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Make a copy of this frame.
-
-        Returns
-        -------
-        :class:`compas.geometry.Frame`
-            The copy.
-
-        Examples
-        --------
-        >>> f1 = Frame.worldXY()
-        >>> f2 = f1.copy()
-        >>> f2.point
-        Point(0.000, 0.000, 0.000)
-        """
-        cls = type(self)
-        return cls(self.point.copy(), self.xaxis.copy(), self.yaxis.copy())
 
     # ==========================================================================
     # methods
@@ -754,32 +732,6 @@ class Frame(Primitive):
         self.point = point
         self.xaxis = xaxis
         self.yaxis = yaxis
-
-    def transformed(self, T):
-        """Returns a transformed copy of the current frame.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation`
-            The transformation.
-
-        Returns
-        -------
-        :class:`compas.geometry.Frame`
-            The transformed frame.
-
-        Examples
-        --------
-        >>> from compas.geometry import Transformation
-        >>> f1 = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f1)
-        >>> f2 = Frame.worldXY()
-        >>> f1 == f2.transformed(T)
-        True
-        """
-        frame = self.copy()
-        frame.transform(T)
-        return frame
 
 
 # ==============================================================================

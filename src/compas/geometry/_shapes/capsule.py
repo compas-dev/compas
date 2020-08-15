@@ -63,6 +63,23 @@ class Capsule(Shape):
         self.radius = radius
 
     @property
+    def data(self):
+        """Returns the data dictionary that represents the capsule.
+
+        Returns
+        -------
+        dict
+            The capsule data.
+
+        """
+        return {'line': self.line.data, 'radius': self.radius}
+
+    @data.setter
+    def data(self, data):
+        self.line = Line.from_data(data['line'])
+        self.radius = data['radius']
+
+    @property
     def line(self):
         return self._line
 
@@ -105,34 +122,38 @@ class Capsule(Shape):
         caps = 4 * pi * self.radius**2
         return cylinder + caps
 
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the capsule.
+    # ==========================================================================
+    # customisation
+    # ==========================================================================
 
-        Returns
-        -------
-        dict
-            The capsule data.
+    def __repr__(self):
+        return 'Capsule({0}, {1})'.format(self.line, self.radius)
 
-        """
-        return {'line': self.line.data,
-                'radius': self.radius}
+    def __len__(self):
+        return 2
 
-    @data.setter
-    def data(self, data):
-        self.line = Line.from_data(data['line'])
-        self.radius = data['radius']
+    def __getitem__(self, key):
+        if key == 0:
+            return self.line
+        elif key == 1:
+            return self.radius
+        else:
+            raise KeyError
 
-    def to_data(self):
-        """Returns the data dictionary that represents the capsule.
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.line = value
+        elif key == 1:
+            self.radius = value
+        else:
+            raise KeyError
 
-        Returns
-        -------
-        dict
-            The capsule data.
+    def __iter__(self):
+        return iter([self.line, self.radius])
 
-        """
-        return self.data
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
 
     @classmethod
     def from_data(cls, data):
@@ -151,6 +172,10 @@ class Capsule(Shape):
         line = Line.from_data(data['line'])
         capsule = Capsule(line, data['radius'])
         return capsule
+
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
@@ -218,59 +243,6 @@ class Capsule(Shape):
 
         return vertices, faces
 
-    # ==========================================================================
-    # representation
-    # ==========================================================================
-
-    def __repr__(self):
-        return 'Capsule({0}, {1})'.format(self.line, self.radius)
-
-    def __len__(self):
-        return 2
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.line
-        elif key == 1:
-            return self.radius
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.line = value
-        elif key == 1:
-            self.radius = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.line, self.radius])
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """
-        Make a copy of this ``Capsule``.
-
-        Returns
-        -------
-        Capsule
-            The copy.
-        """
-        cls = type(self)
-        return cls(self.line.copy(), self.height)
-
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
-
     def transform(self, transformation):
         """Transform this ``Capsule`` using a given transformation.
 
@@ -281,23 +253,6 @@ class Capsule(Shape):
         """
         self.line.transform(transformation)
 
-    def transformed(self, transformation):
-        """Return a transformed copy of the current ``Capsule``.
-
-        Parameters
-        ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the capsule.
-
-        Returns
-        -------
-        :class: `Capsule`
-            The transformed copy of the current capsule.
-        """
-        capsule = self.copy()
-        capsule.line.transform(transformation)
-        return capsule
-
 
 # ==============================================================================
 # Main
@@ -305,19 +260,5 @@ class Capsule(Shape):
 
 if __name__ == "__main__":
 
-    # from compas.geometry import Transformation
-
-    # capsule = Capsule(Line((1, 2, 3), (4, 5, 6)), 1.3)
-    # frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    # print(frame.normal)
-    # T = Transformation.from_frame(frame)
-    # capsule.transform(T)
-    # print(capsule)
-
-    # print(Plane.worldXY().data)
-    # data = {'line': Line((1, 2, 3), (5, 4, 2)).data, 'radius': 1.2}
-    # capsule = Capsule.from_data(data)
-    # print(capsule)
-
     import doctest
-    doctest.testmod()
+    doctest.testmod(globs=globals())

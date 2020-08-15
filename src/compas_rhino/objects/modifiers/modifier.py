@@ -7,12 +7,9 @@ import ast
 import compas
 import compas_rhino
 
-try:
+if compas.RHINO:
     import Rhino
     from Rhino.Geometry import Point3d
-
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = [

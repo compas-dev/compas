@@ -11,13 +11,11 @@ from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 from compas.geometry import subtract_vectors
 
-try:
-    from Rhino.Geometry import Point3d
-
+if compas.IPY:
     from System.Drawing.Color import FromArgb
 
-except ImportError:
-    compas.raise_if_ironpython()
+    if compas.RHINO:
+        from Rhino.Geometry import Point3d
 
 
 __all__ = ['MeshVertexInspector']

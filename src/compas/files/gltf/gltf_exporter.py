@@ -83,6 +83,7 @@ class GLTFExporter(object):
 
         Returns
         -------
+        None
 
         """
         self._content.remove_orphans()
@@ -121,6 +122,7 @@ class GLTFExporter(object):
 
         Returns
         -------
+        None
 
         """
         gltf_json = json.dumps(self._gltf_dict, indent=4)

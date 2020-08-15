@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas_rhino.artists import Artist
+from compas_rhino.artists.base import BaseArtist
 
 from compas.utilities import color_to_colordict
 
@@ -11,7 +11,7 @@ from compas.utilities import color_to_colordict
 __all__ = ['NetworkArtist']
 
 
-class NetworkArtist(Artist):
+class NetworkArtist(BaseArtist):
     """A network artist defines functionality for visualising COMPAS networks in Rhino.
 
     Parameters
@@ -34,8 +34,12 @@ class NetworkArtist(Artist):
         self.name = name
         self.network = network
         self.settings = {
-            'color.node': (255, 255, 255),
-            'color.edge': (0, 0, 0)}
+            'color.nodes': (255, 255, 255),
+            'color.edges': (0, 0, 0),
+            'show.nodes': True,
+            'show.edges': True,
+            'show.node_labels': False,
+            'show.edge_labels': False}
 
     # ==========================================================================
     # clear
@@ -53,7 +57,37 @@ class NetworkArtist(Artist):
     # ==========================================================================
 
     def draw(self, settings=None):
-        raise NotImplementedError
+        """Draw the network using the chosen visualisation settings.
+
+        Parameters
+        ----------
+        settings : dict, optional
+            Dictionary of visualisation settings that will be merged with the settings of the artist.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+
+        Notes
+        -----
+        This method will attempt to clear all previously drawn elements by this artist.
+        However, clearing the artist layer has to be done explicitly with a call to ``NetworkArtist.clear_layer``.
+
+        """
+        self.clear()
+        if not settings:
+            settings = {}
+        self.settings.update(settings)
+        if self.settings['show.nodes']:
+            self.draw_nodes()
+            if self.settings['show.node_labels']:
+                self.draw_nodelabels()
+        if self.settings['show.edges']:
+            self.draw_edges()
+            if self.settings['show.edge_labels']:
+                self.draw_edgelabels()
+        return self.guids
 
     def draw_nodes(self, keys=None, color=None):
         """Draw a selection of nodes.
@@ -68,7 +102,7 @@ class NetworkArtist(Artist):
             Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
             To apply the same color to all nodes, provide a single color specification.
             Individual colors can be assigned using a dictionary of key-color pairs.
-            Missing keys will be assigned the default node color (``self.settings['color.node']``).
+            Missing keys will be assigned the default node color (``self.settings['color.nodes']``).
             The default is ``None``, in which case all nodes are assigned the default node color.
 
         Returns
@@ -85,7 +119,7 @@ class NetworkArtist(Artist):
         keys = keys or list(self.network.nodes())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.settings.get('color.node'),
+                                       default=self.settings.get('color.nodes'),
                                        colorformat='rgb',
                                        normalize=False)
         points = []
@@ -130,7 +164,7 @@ class NetworkArtist(Artist):
         keys = keys or list(self.network.edges())
         colordict = color_to_colordict(color,
                                        keys,
-                                       default=self.settings.get('color.edge'),
+                                       default=self.settings.get('color.edges'),
                                        colorformat='rgb',
                                        normalize=False)
         lines = []
@@ -164,7 +198,7 @@ class NetworkArtist(Artist):
             Tuples are interpreted as RGB component specifications.
             If a dictionary of specififcations is provided,
             the keys of the should refer to node keys and the values should be color specifications in the form of strings or tuples.
-            The default value is ``None``, in which case the labels are assigned the default node color (``self.settings['color.node']``).
+            The default value is ``None``, in which case the labels are assigned the default node color (``self.settings['color.nodes']``).
 
         Returns
         -------
@@ -173,7 +207,7 @@ class NetworkArtist(Artist):
 
         Notes
         -----
-        All labels are assigned a name using the folling template: ``"{network.name}.node.label.{id}"``.
+        All labels are assigned a name using the folling template: ``"{network.name}.node_label.{id}"``.
 
         """
         if text is None:
@@ -189,14 +223,14 @@ class NetworkArtist(Artist):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.settings.get('color.node'),
+                                       default=self.settings.get('color.nodes'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []
         for key, text in iter(textdict.items()):
             labels.append({
                 'pos': self.network.node_coordinates(key),
-                'name': "{}.node.label.{}".format(self.network.name, key),
+                'name': "{}.node_label.{}".format(self.network.name, key),
                 'color': colordict[key],
                 'text': textdict[key],
                 'layer': self.network.node_attribute(key, 'layer', None)})
@@ -228,7 +262,7 @@ class NetworkArtist(Artist):
 
         Notes
         -----
-        All labels are assigned a name using the folling template: ``"{network.name}.edge.label.{u}-{v}"``.
+        All labels are assigned a name using the folling template: ``"{network.name}.edge_label.{u}-{v}"``.
 
         """
         if text is None:
@@ -240,14 +274,14 @@ class NetworkArtist(Artist):
 
         colordict = color_to_colordict(color,
                                        textdict.keys(),
-                                       default=self.settings.get('color.edge'),
+                                       default=self.settings.get('color.edges'),
                                        colorformat='rgb',
                                        normalize=False)
         labels = []
         for (u, v), text in iter(textdict.items()):
             labels.append({
                 'pos': self.network.edge_midpoint(u, v),
-                'name': "{}.edge.label.{}-{}".format(self.network.name, u, v),
+                'name': "{}.edge_label.{}-{}".format(self.network.name, u, v),
                 'color': colordict[(u, v)],
                 'text': textdict[(u, v)],
                 'layer': self.network.edge_attribute((u, v), 'layer', None)})

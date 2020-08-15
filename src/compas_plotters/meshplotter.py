@@ -222,8 +222,8 @@ class MeshPlotter(Plotter):
             or as a dictionary mapping vertex keys to specific radii.
             Default is the value set in ``self.defaults``.
 
-        Note
-        ----
+        Notes
+        -----
         This function will only work as expected if all vertices were already present in the collection.
 
         Examples

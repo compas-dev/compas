@@ -122,8 +122,8 @@ def midpoint_line_xy(line):
 def centroid_points(points):
     """Compute the centroid of a set of points.
 
-    Warning
-    -------
+    Warnings
+    --------
     Duplicate points are **NOT** removed. If there are duplicates in the
     sequence, they should be there intentionally.
 
@@ -169,8 +169,8 @@ def weighted_centroid_points(points, weights):
 def centroid_points_xy(points):
     """Compute the centroid of a set of points lying in the XY-plane.
 
-    Warning
-    -------
+    Warnings
+    --------
     Duplicate points are **NOT** removed. If there are duplicates in the
     sequence, they should be there intentionally.
 
@@ -222,8 +222,8 @@ def centroid_polygon(polygon):
         c_y = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{y,i}
         c_z = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{z,i}
 
-    Warning
-    -------
+    Warnings
+    --------
     The polygon need not be convex.
 
     The polygon need not be flat. However, it is unclear what the meaning of the
@@ -319,8 +319,8 @@ def centroid_polygon_xy(polygon):
         c_y = \frac{1}{A} \sum_{i=1}^{N} A_i \cdot c_{y,i}
         c_z = 0
 
-    Warning
-    -------
+    Warnings
+    --------
     The polygon need not be convex.
 
     The polygon may be self-intersecting. However, it is unclear what the meaning
@@ -462,8 +462,8 @@ def centroid_polyhedron(polyhedron):
     list
         XYZ coordinates of the center of mass.
 
-    Warning
-    -------
+    Warnings
+    --------
     This function assumes that the vertex cycles of the faces are such that the
     face normals are consistently pointing outwards, resulting in a *positive*
     polyhedron.

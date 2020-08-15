@@ -6,17 +6,30 @@ import compas
 import compas_rhino
 
 from compas.geometry import Point
-from compas_rhino.geometry import RhinoGeometry
+from compas_rhino.geometry.base import BaseRhinoGeometry
 
-if compas.IPY:
+if compas.RHINO:
     import Rhino
 
 
 __all__ = ['RhinoPoint']
 
 
-class RhinoPoint(RhinoGeometry):
-    """Convenience wrapper for a Rhino point object."""
+class RhinoPoint(BaseRhinoGeometry):
+    """Wrapper for Rhino point objects.
+
+    Attributes
+    ----------
+    x (read-only) : float
+        The X coordinate.
+    y (read-only) : float
+        The Y coordinate.
+    z (read-only) : float
+        The Z coordinate.
+    xyz (read-only) : list
+        The XYZ coordinates.
+
+    """
 
     def __init__(self):
         super(RhinoPoint, self).__init__()
@@ -39,35 +52,69 @@ class RhinoPoint(RhinoGeometry):
 
     @classmethod
     def from_guid(cls, guid):
-        obj = compas_rhino.find_object(guid)
-        point = cls()
-        point.guid = guid
-        point.object = obj
-        point.geometry = obj.Geometry.Location
-        return point
+        """Construct a Rhino object wrapper from the GUID of an existing Rhino object.
 
-    @classmethod
-    def from_object(cls, obj):
-        point = cls()
-        point.guid = obj.Id
-        point.object = obj
-        point.geometry = obj.Geometry.Location
-        return point
+        Parameters
+        ----------
+        guid : str
+            The GUID of the Rhino object.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.BaseRhinoGeometry`
+            The Rhino object wrapper.
+        """
+        obj = compas_rhino.find_object(guid)
+        wrapper = cls()
+        wrapper.guid = obj.Id
+        wrapper.object = obj
+        wrapper.geometry = obj.Geometry.Location
+        return wrapper
 
     @classmethod
     def from_geometry(cls, geometry):
+        """Construct a point wrapper from an existing geometry object.
+
+        Parameters
+        ----------
+        geometry : point or :class:`Rhino.Geometry.Point3d`
+            The input geometry.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoPoint`
+            The wrapped point.
+        """
         if not isinstance(geometry, Rhino.Geometry.Point3d):
-            geometry = Rhino.Geometry.Point3d(geometry[0], geometry[1], geometry[2])
+            geometry = Rhino.Geometry.Point3d(* geometry)
         point = cls()
         point.geometry = geometry
         return point
 
     @classmethod
     def from_selection(cls):
+        """Construct as point wrapper from a selected point object.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoPoint`
+            The wrapped point.
+        """
         guid = compas_rhino.select_point()
         return cls.from_guid(guid)
 
     def to_compas(self):
+        """Convert the wrapper to a COMPAS point.
+
+        Returns
+        -------
+        :class:`compas.geometry.Point`
+            A COMPAS point.
+        """
         return Point(self.x, self.y, self.z)
 
 

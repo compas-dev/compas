@@ -37,24 +37,24 @@ def mesh_dual(mesh, cls=None):
 
     dual = cls()
 
-    fkey_centroid = {fkey: mesh.face_centroid(fkey) for fkey in mesh.faces()}
-    outer = mesh.vertices_on_boundary()
-    inner = list(set(mesh.vertices()) - set(outer))
-    vertices = {}
-    faces = {}
+    face_centroid = {face: mesh.face_centroid(face) for face in mesh.faces()}
+    inner = list(set(mesh.vertices()) - set(mesh.vertices_on_boundary()))
+    vertex_xyz = {}
+    face_vertices = {}
 
-    for key in inner:
-        fkeys = mesh.vertex_faces(key, ordered=True)
-        for fkey in fkeys:
-            if fkey not in vertices:
-                vertices[fkey] = fkey_centroid[fkey]
-        faces[key] = fkeys
+    for vertex in inner:
+        faces = mesh.vertex_faces(vertex, ordered=True)
+        for face in faces:
+            if face not in vertex_xyz:
+                vertex_xyz[face] = face_centroid[face]
+        face_vertices[vertex] = faces
 
-    for key, (x, y, z) in vertices.items():
-        dual.add_vertex(key, x=x, y=y, z=z)
+    for vertex in vertex_xyz:
+        x, y, z = vertex_xyz[vertex]
+        dual.add_vertex(vertex, x=x, y=y, z=z)
 
-    for fkey, vertices in faces.items():
-        dual.add_face(vertices, fkey=fkey)
+    for face in face_vertices:
+        dual.add_face(face_vertices[face], fkey=face)
 
     return dual
 

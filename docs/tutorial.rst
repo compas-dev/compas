@@ -8,8 +8,8 @@ Tutorial
     tutorial/basics
     tutorial/geometry
     tutorial/datastructures
-    tutorial/networks
     tutorial/meshes
+    tutorial/networks
     tutorial/robots
     tutorial/rhino
     tutorial/blender

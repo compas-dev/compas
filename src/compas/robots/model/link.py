@@ -2,7 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import json
+
+from compas.base import Base
 from compas.files import URDFParser
+from compas.geometry import Transformation
 
 from compas.robots.model.geometry import Box
 from compas.robots.model.geometry import Capsule
@@ -14,21 +18,49 @@ from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Sphere
 from compas.robots.model.geometry import Texture
+from compas.robots.model.geometry import _attr_to_data
+from compas.robots.model.geometry import _attr_from_data
 
 __all__ = ['Link', 'Inertial', 'Visual', 'Collision', 'Mass', 'Inertia']
 
 
-class Mass(object):
+class Mass(Base):
     """Represents a value of mass usually related to a link."""
 
     def __init__(self, value):
+        super(Mass, self).__init__()
         self.value = float(value)
 
     def __str__(self):
         return str(self.value)
 
+    @property
+    def data(self):
+        return {'value': self.value}
 
-class Inertia(object):
+    @data.setter
+    def data(self, data):
+        self.value = data['value']
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(**data)
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Inertia(Base):
     """Rotational inertia matrix (3x3) represented in the inertia frame.
 
     Since the rotational inertia matrix is symmetric, only 6 above-diagonal
@@ -37,6 +69,7 @@ class Inertia(object):
     """
 
     def __init__(self, ixx=0., ixy=0., ixz=0., iyy=0., iyz=0., izz=0.):
+        super(Inertia, self).__init__()
         self.ixx = float(ixx)
         self.ixy = float(ixy)
         self.ixz = float(ixz)
@@ -44,8 +77,45 @@ class Inertia(object):
         self.iyz = float(iyz)
         self.izz = float(izz)
 
+    @property
+    def data(self):
+        return {
+            'ixx': self.ixx,
+            'ixy': self.ixy,
+            'ixz': self.ixz,
+            'iyy': self.iyy,
+            'iyz': self.iyz,
+            'izz': self.izz,
+        }
 
-class Inertial(object):
+    @data.setter
+    def data(self, data):
+        self.ixx = data.get('ixx', 0.)
+        self.ixy = data.get('ixy', 0.)
+        self.ixz = data.get('ixz', 0.)
+        self.iyy = data.get('iyy', 0.)
+        self.iyz = data.get('iyz', 0.)
+        self.izz = data.get('izz', 0.)
+
+    @classmethod
+    def from_data(cls, data):
+        return cls(**data)
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Inertial(Base):
     """Inertial properties of a link.
 
     Attributes
@@ -61,12 +131,46 @@ class Inertial(object):
     """
 
     def __init__(self, origin=None, mass=None, inertia=None):
+        super(Inertial, self).__init__()
         self.origin = origin
         self.mass = mass
         self.inertia = inertia
 
+    @property
+    def data(self):
+        return {
+            'origin': self.origin.data if self.origin else None,
+            'mass': self.mass.data if self.mass else None,
+            'inertia': self.inertia.data if self.inertia else None,
+        }
 
-class Visual(object):
+    @data.setter
+    def data(self, data):
+        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.mass = Mass.from_data(data['mass']) if data['mass'] else None
+        self.inertia = Inertia.from_data(data['inertia']) if data['inertia'] else None
+
+    @classmethod
+    def from_data(cls, data):
+        inertial = cls()
+        inertial.data = data
+        return inertial
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Visual(Base):
     """Visual description of a link.
 
     Attributes
@@ -86,6 +190,7 @@ class Visual(object):
     """
 
     def __init__(self, geometry, origin=None, name=None, material=None, **kwargs):
+        super(Visual, self).__init__()
         self.geometry = geometry
         self.origin = origin
         self.name = name
@@ -95,6 +200,47 @@ class Visual(object):
         self.init_transformation = None  # to store the init transformation
         self.current_transformation = None  # to store the current transformation
         self.native_geometry = None  # to store the link's CAD native geometry
+
+    @property
+    def data(self):
+        return {
+            'geometry': self.geometry.data,
+            'origin': self.origin.data if self.origin else None,
+            'name': self.name,
+            'material': self.material.data if self.material else None,
+            'attr': _attr_to_data(self.attr),
+            'init_transformation': self.init_transformation.data if self.init_transformation else None,
+            'current_transformation': self.current_transformation.data if self.current_transformation else None,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.geometry = Geometry.from_data(data['geometry'])
+        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.name = data['name']
+        self.material = Material.from_data(data['material']) if data['material'] else None
+        self.attr = _attr_from_data(data['attr'])
+        self.init_transformation = Transformation.from_data(data['init_transformation']) if data['init_transformation'] else None
+        self.current_transformation = Transformation.from_data(data['current_transformation']) if data['current_transformation'] else None
+
+    @classmethod
+    def from_data(cls, data):
+        visual = cls(Geometry.from_data(data['geometry']))
+        visual.data = data
+        return visual
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
     def get_color(self):
         """Get the RGBA color array assigned to the link.
@@ -112,7 +258,7 @@ class Visual(object):
             return None
 
 
-class Collision(object):
+class Collision(Base):
     """Collidable description of a link.
 
     Attributes
@@ -130,6 +276,7 @@ class Collision(object):
     """
 
     def __init__(self, geometry, origin=None, name=None, **kwargs):
+        super(Collision, self).__init__()
         self.geometry = geometry
         self.origin = origin
         self.name = name
@@ -139,8 +286,47 @@ class Collision(object):
         self.current_transformation = None  # to store the current transformation
         self.native_geometry = None  # to store the link's CAD native geometry
 
+    @property
+    def data(self):
+        return {
+            'geometry': self.geometry.data,
+            'origin': self.origin.data if self.origin else None,
+            'name': self.name,
+            'attr': _attr_to_data(self.attr),
+            'init_transformation': self.init_transformation.data if self.init_transformation else None,
+            'current_transformation': self.current_transformation.data if self.current_transformation else None,
+        }
 
-class Link(object):
+    @data.setter
+    def data(self, data):
+        self.geometry = Geometry.from_data(data['geometry'])
+        self.origin = Origin.from_data(data['origin']) if data['origin'] else None
+        self.name = data['name']
+        self.attr = _attr_from_data(data['attr'])
+        self.init_transformation = Transformation.from_data(data['init_transformation']) if data['init_transformation'] else None
+        self.current_transformation = Transformation.from_data(data['current_transformation']) if data['current_transformation'] else None
+
+    @classmethod
+    def from_data(cls, data):
+        visual = cls(Geometry.from_data(data['geometry']))
+        visual.data = data
+        return visual
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+
+class Link(Base):
     """Link represented as a rigid body with an inertia, visual, and collision features.
 
     Attributes
@@ -166,6 +352,7 @@ class Link(object):
     """
 
     def __init__(self, name, type=None, visual=[], collision=[], inertial=None, **kwargs):
+        super(Link, self).__init__()
         self.name = name
         self.type = type
         self.visual = visual
@@ -174,6 +361,48 @@ class Link(object):
         self.attr = kwargs
         self.joints = []
         self.parent_joint = None
+
+    @property
+    def data(self):
+        return {
+            'name': self.name,
+            'type': self.type,
+            'visual': [visual.data for visual in self.visual],
+            'collision': [collision.data for collision in self.collision],
+            'inertial': self.inertial.data if self.inertial else None,
+            'attr': _attr_to_data(self.attr),
+            'joints': [joint.data for joint in self.joints],
+        }
+
+    @data.setter
+    def data(self, data):
+        from compas.robots.model.joint import Joint
+        self.name = data['name']
+        self.type = data['type']
+        self.visual = [Visual.from_data(d) for d in data['visual']]
+        self.collision = [Collision.from_data(d) for d in data['collision']]
+        self.inertial = Inertial.from_data(data['inertial']) if data['inertial'] else None
+        self.attr = _attr_from_data(data['attr'])
+        self.joints = [Joint.from_data(d) for d in data['joints']]
+
+    @classmethod
+    def from_data(cls, data):
+        link = cls(data['name'])
+        link.data = data
+        return link
+
+    def to_data(self):
+        return self.data
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
 
 
 URDFParser.install_parser(Link, 'robot/link')

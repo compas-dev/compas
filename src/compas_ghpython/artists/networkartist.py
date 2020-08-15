@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
 from compas_ghpython.artists.mixins import VertexArtist
 from compas_ghpython.artists.mixins import EdgeArtist
 
@@ -42,18 +40,10 @@ class NetworkArtist(EdgeArtist, VertexArtist):
     def network(self, network):
         self.datastructure = network
 
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
-
 if __name__ == "__main__":
-
-    from compas.datastructures import Network
-
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    artist = NetworkArtist(network)
-
-    vertices = artist.draw_vertices()
-    edges = artist.draw_edges()
+    pass

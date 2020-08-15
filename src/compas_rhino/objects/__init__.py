@@ -5,39 +5,54 @@ objects
 
 .. currentmodule:: compas_rhino.objects
 
+.. rst-class:: lead
 
-Base Classes
-============
+Objects provide a high-level way to interact with both COMPAS and Rhino objects in Rhino.
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+.. code-block:: python
 
-    Object
+    import compas
+    from compas.datastructures import Mesh
+    from compas_rhino.objects import MeshObject
 
+    mesh = Mesh.from_off(compas.get('tubemesh.off'))
+    meshobject = MeshObject(None, mesh, 'MeshObject', 'COMPAS::MeshObject', True)
+    meshobject.draw()
+    meshobject.redraw()
 
-Classes
-=======
+    vertices = meshobject.select_vertices()
 
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
+    if meshobject.modify_vertices(vertices):
+        meshobject.draw()
+        meshobject.redraw()
 
-    MeshObject
+----
 
+BaseObject
+==========
+
+.. autoclass:: BaseObject
+    :members: clear, draw, select, modify, move
+
+----
+
+MeshObject
+==========
+
+.. autoclass:: MeshObject
+    :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
+    :no-show-inheritance:
 
 """
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
-from .object import Object
+from .base import BaseObject
 from .meshobject import MeshObject
 
 from compas.datastructures import Mesh
 
 
-Object.register(Mesh, MeshObject)
+BaseObject.register(Mesh, MeshObject)
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

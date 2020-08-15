@@ -3,21 +3,32 @@ from __future__ import division
 from __future__ import print_function
 
 import compas_rhino
-from compas_rhino.objects import Object
+from compas_rhino.objects.base import BaseObject
+from compas_rhino.objects.modifiers import VertexModifier
+from compas_rhino.objects.modifiers import FaceModifier
+from compas_rhino.objects.modifiers import EdgeModifier
 
 
 __all__ = ['MeshObject']
 
 
-class MeshObject(Object):
-    """Base class for COMPAS Rhino objects.
+class MeshObject(BaseObject):
+    """Class for representing COMPAS meshes in Rhino.
 
     Parameters
     ----------
-    scene : :class:`compas.scenes.Scene`
-        A scene object.
     mesh : :class:`compas.datastructures.Mesh`
-        A mesh object.
+        A mesh data structure.
+    scene : :class:`compas.scenes.Scene`, optional
+        A scene object.
+    name : str, optional
+        The name of the object.
+    layer : str, optional
+        The layer for drawing.
+    visible : bool, optional
+        Toggle for the visibility of the object.
+    settings : dict, optional
+        A dictionary of settings.
 
     Attributes
     ----------
@@ -37,21 +48,25 @@ class MeshObject(Object):
         from compas_rhino.objects import MeshObject
 
         mesh = Mesh.from_off(compas.get('tubemesh.off'))
-        meshobject = MeshObject(None, mesh, 'MeshObject', 'COMPAS::MeshObject', True)
+        meshobject = MeshObject(mesh, name='MeshObject', layer='COMPAS::MeshObject', visible=True)
+        meshobject.clear()
+        meshobject.clear_layer()
         meshobject.draw()
         meshobject.redraw()
-        vertices = meshobject.select_vertices()
 
-        print vertices
+        vertices = meshobject.select_vertices()
+        if meshobject.modify_vertices(vertices):
+            meshobject.clear()
+            meshobject.draw()
+            meshobject.redraw()
 
     """
 
-    def __init__(self, scene, mesh, name=None, layer=None, visible=True, settings=None):
-        super(MeshObject, self).__init__(scene, mesh, name, layer, visible)
+    def __init__(self, mesh, scene=None, name=None, layer=None, visible=True, settings=None):
+        super(MeshObject, self).__init__(mesh, scene, name, layer, visible, settings)
         self._guid_vertex = {}
         self._guid_face = {}
         self._guid_edge = {}
-        self.settings = settings
 
     @property
     def mesh(self):
@@ -101,21 +116,17 @@ class MeshObject(Object):
         self._guid_face = {}
         self._guid_edge = {}
 
-    def draw(self, clear_layer=True, redraw=False):
+    def draw(self):
         """Draw the object representing the mesh.
 
         Parameters
         ----------
-        clear_layer : bool, optional
-            Clear the layer of the object.
-            Default is ``True``.
-        redraw : bool, optional
-            Redraw the Rhino view.
-            Default is ``False``.
+        None
+
+        Returns
+        -------
+        None
         """
-        self.clear()
-        if clear_layer:
-            self.clear_layer()
         if not self.visible:
             return
         # vertices
@@ -133,12 +144,15 @@ class MeshObject(Object):
             edges = list(self.mesh.edges())
             guids = self.artist.draw_edges(edges)
             self.guid_edge = zip(guids, edges)
-        # redraw the scene
-        if redraw:
-            self.redraw()
 
     def select(self):
-        pass
+        raise NotImplementedError
+
+    def modify(self):
+        raise NotImplementedError
+
+    def move(self):
+        raise NotImplementedError
 
     def select_vertices(self):
         """Select vertices of the mesh.
@@ -181,23 +195,68 @@ class MeshObject(Object):
         edges = [self.guid_edge[guid] for guid in guids if guid in self.guid_edge]
         return edges
 
-    def modify(self):
-        pass
-
     def modify_vertices(self, vertices):
-        pass
+        """Modify the attributes of the vertices of the mesh item.
+
+        Parameters
+        ----------
+        vertices : list
+            The identifiers of the vertices of which the attributes will be updated.
+
+        Returns
+        -------
+        bool
+            ``True`` if the attributes were successfully updated.
+            ``False`` otherwise.
+
+        Notes
+        -----
+        This method will produce a dialog for editing the attributes of the vertices.
+
+        """
+        return VertexModifier.update_vertex_attributes(self, vertices)
 
     def modify_faces(self, faces):
-        pass
+        """Modify the attributes of the faces of the mesh item.
+
+        Parameters
+        ----------
+        faces : list
+            The identifiers of the faces of which the attributes will be updated.
+
+        Returns
+        -------
+        bool
+            ``True`` if the attributes were successfully updated.
+            ``False`` otherwise.
+
+        Notes
+        -----
+        This method will produce a dialog for editing the attributes of the faces.
+
+        """
+        return FaceModifier.update_face_attributes(self, faces)
 
     def modify_edges(self, edges):
-        pass
+        """Modify the attributes of the edges of the mesh item.
 
-    def move(self):
-        pass
+        Parameters
+        ----------
+        edges : list
+            The identifiers of the edges of which the attributes will be updated.
 
-    def move_vertices(self, vertices):
-        pass
+        Returns
+        -------
+        bool
+            ``True`` if the attributes were successfully updated.
+            ``False`` otherwise.
+
+        Notes
+        -----
+        This method will produce a dialog for editing the attributes of the edges.
+
+        """
+        return EdgeModifier.update_edge_attributes(self, edges)
 
 
 # ============================================================================

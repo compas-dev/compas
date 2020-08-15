@@ -3,10 +3,9 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-from compas_rhino.forms import Form
+from compas_rhino.forms.base import BaseForm
 
-try:
-    import scriptcontext as sc
+if compas.IPY:
     import System
     from System.Drawing import Size
     from System.Drawing import Point
@@ -14,16 +13,15 @@ try:
     from System.Windows.Forms import TextBox
     from System.Windows.Forms import TrackBar
 
-except ImportError:
-    if compas.is_ironpython() and compas.is_windows():
-        raise
+    if compas.RHINO:
+        import scriptcontext as sc
 
 
 __all__ = ['SliderForm']
 
 
-class SliderForm(Form):
-    """"""
+class SliderForm(BaseForm):
+    """A form for sliders."""
 
     def __init__(self, minval, maxval, step, value):
         self.minval = minval

@@ -3,12 +3,18 @@ from __future__ import absolute_import
 from __future__ import division
 
 import abc
+import json
+
+from compas.utilities import DataEncoder
+from compas.utilities import DataDecoder
+from compas.utilities import abstractclassmethod
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
-# https://stackoverflow.com/questions/35673474/using-abc-abcmeta-in-a-way-it-is-compatible-both-with-python-2-7-and-python-3-5
 
 
-__all__ = ['Base']
+__all__ = [
+    'Base',
+]
 
 
 class Base(ABC):
@@ -16,11 +22,24 @@ class Base(ABC):
 
     Attributes
     ----------
+    DATASCHEMA : :class:`schema.Schema`
+        The schema of the data dict.
+    JSONSCHEMA : dict
+        The schema of the serialised data dict.
     data : dict
         The fundamental data describing the object.
         The structure of the data dict is defined by the implementing classes.
-
     """
+
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` : The schema of the data of this object."""
+        raise NotImplementedError
+
+    @property
+    def JSONSCHEMA(self):
+        """dict : The schema of the JSON representation of the data of this object."""
+        raise NotImplementedError
 
     @abc.abstractproperty
     def data(self):
@@ -30,7 +49,7 @@ class Base(ABC):
     def data(self, data):
         pass
 
-    @abc.abstractclassmethod
+    @abstractclassmethod
     def from_data(cls, data):
         pass
 
@@ -38,13 +57,44 @@ class Base(ABC):
     def to_data(self):
         pass
 
-    @abc.abstractclassmethod
+    @abstractclassmethod
     def from_json(cls, filepath):
         pass
 
     @abc.abstractmethod
     def to_json(self, filepath):
         pass
+
+    def validate_data(self):
+        """Validate the data of this object against its data schema (`self.DATASCHEMA`).
+
+        Returns
+        -------
+        dict
+            The validated data.
+
+        Raises
+        ------
+        SchemaError
+        """
+        return self.DATASCHEMA.validate(self.data)
+
+    def validate_json(self):
+        """Validate the data loaded from a JSON representation of the data of this object against its data schema (`self.DATASCHEMA`).
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        SchemaError
+        """
+        import jsonschema
+        jsondata = json.dumps(self.data, cls=DataEncoder)
+        data = json.loads(jsondata, cls=DataDecoder)
+        jsonschema.validate(data, schema=self.JSONSCHEMA)
+        return self.DATASCHEMA.validate(data)
 
 
 # ==============================================================================

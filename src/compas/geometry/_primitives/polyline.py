@@ -145,7 +145,7 @@ class Polyline(Primitive):
         return cls(data['points'])
 
     # ==========================================================================
-    # queries
+    # methods
     # ==========================================================================
 
     def point(self, t, snap=False):
@@ -196,42 +196,6 @@ class Polyline(Primitive):
             x += dx
             i += 1
 
-    # ==========================================================================
-    # operators
-    # ==========================================================================
-
-    # ==========================================================================
-    # inplace operators
-    # ==========================================================================
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Make a copy of this polyline.
-
-        Returns
-        -------
-        :class:`compas.geometry.Polyline`
-            The copy.
-
-        Examples
-        --------
-        >>> p1 = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0]])
-        >>> p2 = p1.copy()
-        >>> p1 == p2
-        True
-        >>> p1 is p2
-        False
-        """
-        cls = type(self)
-        return cls([point.copy() for point in self.points])
-
-    # ==========================================================================
-    # methods
-    # ==========================================================================
-
     def is_selfintersecting(self):
         """Determine if the polyline is self-intersecting.
 
@@ -266,10 +230,6 @@ class Polyline(Primitive):
         """
         return self.points[0] == self.points[-1]
 
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
-
     def transform(self, T):
         """Transform this polyline.
 
@@ -291,34 +251,6 @@ class Polyline(Primitive):
             self.points[index].y = point[1]
             self.points[index].z = point[2]
 
-    def transformed(self, T):
-        """Return a transformed copy of this polyline.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation` or list of list
-            The transformation.
-
-        Returns
-        -------
-        :class:`compas.geometry.Polyline`
-            The transformed copy.
-
-        Examples
-        --------
-        >>> from compas.geometry import Scale
-        >>> p1 = Polyline([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [1.0, 1.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 0.0]])
-        >>> S = Scale([1.0, 1.0, 1.0])
-        >>> p2 = p1.transformed(S)
-        >>> p1 == p2
-        True
-        >>> p1 is p2
-        False
-        """
-        polyline = self.copy()
-        polyline.transform(T)
-        return polyline
-
 
 # ==============================================================================
 # Main
@@ -327,5 +259,4 @@ class Polyline(Primitive):
 if __name__ == '__main__':
 
     import doctest
-
     doctest.testmod(globs=globals())

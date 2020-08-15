@@ -44,13 +44,14 @@ timers
     update_component
 
 
-utilities
-=========
+misc
+====
 
 .. autosummary::
     :toctree: generated/
 
     unload_modules
+
 """
 from __future__ import absolute_import
 

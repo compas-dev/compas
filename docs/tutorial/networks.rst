@@ -1,8 +1,8 @@
 .. _working-with-networks:
 
-*********************
-Working with networks
-*********************
+********
+Networks
+********
 
 COMPAS networks are simple edge graphs: they consist of vertices
 connected by edges. Not all vertices have to be connected by edges. A

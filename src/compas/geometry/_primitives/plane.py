@@ -122,6 +122,30 @@ class Plane(Primitive):
     # ==========================================================================
 
     @classmethod
+    def from_data(cls, data):
+        """Construct a plane from its data representation.
+
+        Parameters
+        ----------
+        data : dict
+            The data dictionary.
+
+        Returns
+        -------
+        :class:`compas.geometry.Plane`
+            The constructed plane.
+
+        Examples
+        --------
+        >>> plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
+        >>> plane.point
+        Point(0.000, 0.000, 0.000)
+        >>> plane.normal
+        Vector(0.000, 0.000, 1.000)
+        """
+        return cls(data['point'], data['normal'])
+
+    @classmethod
     def from_three_points(cls, a, b, c):
         """Construct a plane from three points in three-dimensional space.
 
@@ -196,53 +220,6 @@ class Plane(Primitive):
         """
         return cls([0, 0, 0], [0, 0, 1])
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a plane from its data representation.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        :class:`compas.geometry.Plane`
-            The constructed plane.
-
-        Examples
-        --------
-        >>> plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
-        >>> plane.point
-        Point(0.000, 0.000, 0.000)
-        >>> plane.normal
-        Vector(0.000, 0.000, 1.000)
-        """
-        return cls(data['point'], data['normal'])
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Make a copy of this plane.
-
-        Returns
-        -------
-        :class:`compas.geometr.Plane`
-            The copy.
-
-        Examples
-        --------
-        >>> p1 = Plane.worldXY()
-        >>> p2 = p1.copy()
-        >>> p2.point.x += 1.0
-        >>> p2 == p1
-        False
-        """
-        cls = type(self)
-        return cls(self.point.copy(), self.normal.copy())
-
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -267,33 +244,6 @@ class Plane(Primitive):
         """
         self.point.transform(T)
         self.normal.transform(T)
-
-    def transformed(self, T):
-        """Returns a transformed copy of the current plane.
-
-        Parameters
-        ----------
-        transformation : :class:`compas.geometry.Transformation` or list of list
-            The transformation.
-
-        Returns
-        -------
-        :class:`Plane`
-            The transformed plane.
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f)
-        >>> p1 = Plane.worldXY()
-        >>> p2 = p1.transformed(T)
-        """
-        plane = self.copy()
-        plane.transform(T)
-        return plane
 
 
 # ==============================================================================

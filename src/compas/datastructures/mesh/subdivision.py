@@ -240,11 +240,6 @@ def mesh_subdivide_corner(mesh, k=1):
     Mesh
         A new subdivided mesh.
 
-    Returns
-    -------
-    Mesh
-        The subdivided mesh.
-
     Notes
     -----
     This is essentially the same as Loop subdivision, but applied to general
