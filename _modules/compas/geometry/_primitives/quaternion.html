@@ -94,6 +94,7 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">quaternion_canonize</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">quaternion_norm</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">quaternion_is_unit</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">quaternion_from_matrix</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry._primitives</span> <span class="kn">import</span> <span class="n">Primitive</span>
 
@@ -389,6 +390,52 @@
         <span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">quaternion</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Quaternion.from_matrix"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Quaternion.from_matrix.html#compas.geometry.Quaternion.from_matrix">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_matrix</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a :class:`Quaternion` from a transformation matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        M : :obj:`list` of :obj:`list` of :obj:`float`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Quaternion`</span>
+<span class="sd">            The new quaternion.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import matrix_from_euler_angles</span>
+<span class="sd">        &gt;&gt;&gt; ea = [0.2, 0.6, 0.2]</span>
+<span class="sd">        &gt;&gt;&gt; M = matrix_from_euler_angles(ea)</span>
+<span class="sd">        &gt;&gt;&gt; Quaternion.from_matrix(M)</span>
+<span class="sd">        Quaternion(0.949, 0.066, 0.302, 0.066)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Quaternion.from_rotation"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Quaternion.from_rotation.html#compas.geometry.Quaternion.from_rotation">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_rotation</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a :class:`Quaternion` from a :class:`compas.geometry.Rotatation`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        R : :class:`compas.geometry.Rotation`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Quaternion`</span>
+<span class="sd">            The new quaternion.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Frame, Rotation</span>
+<span class="sd">        &gt;&gt;&gt; R = Rotation.from_frame(Frame.worldYZ())</span>
+<span class="sd">        &gt;&gt;&gt; Quaternion.from_rotation(R)</span>
+<span class="sd">        Quaternion(0.500, 0.500, 0.500, 0.500)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span></div>
+
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
@@ -502,7 +549,7 @@
 
     <span class="kn">import</span> <span class="nn">doctest</span>
 
-    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">allclose</span>  <span class="c1"># noqa F401</span>
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">allclose</span>  <span class="c1"># noqa: F401</span>
 
     <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
 </code></pre></div>
