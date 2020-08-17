@@ -4,6 +4,7 @@ from __future__ import division
 
 import abc
 import json
+# from uuid import uuid4
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
@@ -40,6 +41,22 @@ class Base(ABC):
     def JSONSCHEMA(self):
         """dict : The schema of the JSON representation of the data of this object."""
         raise NotImplementedError
+
+    # @property
+    # def guid(self):
+    #     if not self._guid:
+    #         self._guid = uuid4()
+    #     return self._guid
+
+    # @property
+    # def name(self):
+    #     if not self._name:
+    #         self._name = self.__class__.__name__
+    #     return self._name
+
+    # @name.setter
+    # def name(self, name):
+    #     self._name = name
 
     @abc.abstractproperty
     def data(self):
