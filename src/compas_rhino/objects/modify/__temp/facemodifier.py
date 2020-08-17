@@ -72,12 +72,13 @@ class FaceModifier(object):
 
         if values:
             for name, value in zip(names, values):
-                if value != '-':
-                    for key in keys:
-                        try:
-                            self.face_attribute(key, name, ast.literal_eval(value))
-                        except (ValueError, TypeError):
-                            self.face_attribute(key, name, value)
+                if value == '-':
+                    continue
+                for key in keys:
+                    try:
+                        self.face_attribute(key, name, ast.literal_eval(value))
+                    except (ValueError, TypeError):
+                        self.face_attribute(key, name, value)
             return True
 
         return False
