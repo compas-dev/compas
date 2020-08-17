@@ -10,6 +10,7 @@ from compas.geometry import quaternion_unitize
 from compas.geometry import quaternion_canonize
 from compas.geometry import quaternion_norm
 from compas.geometry import quaternion_is_unit
+from compas.geometry import quaternion_from_matrix
 
 from compas.geometry._primitives import Primitive
 
@@ -305,6 +306,52 @@ class Quaternion(Primitive):
         w, x, y, z = frame.quaternion
         return cls(w, x, y, z)
 
+    @classmethod
+    def from_matrix(cls, M):
+        """Create a :class:`Quaternion` from a transformation matrix.
+
+        Parameters
+        ----------
+        M : :obj:`list` of :obj:`list` of :obj:`float`
+
+        Returns
+        -------
+        :class:`compas.geometry.Quaternion`
+            The new quaternion.
+
+        Example
+        -------
+        >>> from compas.geometry import matrix_from_euler_angles
+        >>> ea = [0.2, 0.6, 0.2]
+        >>> M = matrix_from_euler_angles(ea)
+        >>> Quaternion.from_matrix(M)
+        Quaternion(0.949, 0.066, 0.302, 0.066)
+        """
+        return cls(*quaternion_from_matrix(M))
+
+    @classmethod
+    def from_rotation(cls, R):
+        """Create a :class:`Quaternion` from a :class:`compas.geometry.Rotatation`.
+
+        Parameters
+        ----------
+        R : :class:`compas.geometry.Rotation`
+
+        Returns
+        -------
+        :class:`compas.geometry.Quaternion`
+            The new quaternion.
+
+        Example
+        -------
+        >>> from compas.geometry import Frame, Rotation
+        >>> R = Rotation.from_frame(Frame.worldYZ())
+        >>> Quaternion.from_rotation(R)
+        Quaternion(0.500, 0.500, 0.500, 0.500)
+
+        """
+        return cls.from_matrix(R.matrix)
+
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -418,6 +465,6 @@ if __name__ == "__main__":
 
     import doctest
 
-    from compas.geometry import allclose  # noqa F401
+    from compas.geometry import allclose  # noqa: F401
 
     doctest.testmod(globs=globals())

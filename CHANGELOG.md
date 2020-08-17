@@ -18,8 +18,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `NodeAttributeView`.
 * Added implementation of `DATASCHEMA` to `compas.datastructures.Graph`.
 * Added implementation of `JSONSCHEMA` to `compas.datastructures.Graph`.
+<<<<<<< HEAD
 * Added `compas.rpc.Proxy.restart_server`.
 * Added `compas_rhino.objects.NetworkObject`.
+=======
+* Added constructors `from_matrix` and `from_rotation` to `compas.geometry.Quaternion`.
+>>>>>>> origin/master
 
 ### Changed
 
