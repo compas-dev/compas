@@ -42,17 +42,6 @@ class PrimitiveArtist(BaseArtist):
         self.color = color
         self.layer = layer
 
-    # @classmethod
-    # def from_data(cls, data):
-    #     module, attr = data['dtype'].split('/')
-    #     Primitive = getattr(__import__(module, fromlist=[attr]), attr)
-    #     primitive = Primitive.from_data(data['value'])
-    #     artist = cls(primitive)
-    #     return artist
-
-    # def to_data(self):
-    #     return self.primitive.to_data()
-
     def clear_layer(self):
         """Clear the main layer of the artist."""
         if self.layer:

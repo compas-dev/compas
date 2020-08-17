@@ -17,18 +17,18 @@ class FrameArtist(PrimitiveArtist):
     ----------
     frame : compas.geometry.Frame
         A COMPAS frame.
-    layer : str, optional
-        The name of the layer that will contain the frame.
-        Default value is ``None``, in which case the current layer will be used.
-    name : str, optional
-        The name of the frame.
-    scale : float, optional
-        The scale of the vectors representing the axes of the frame.
-        Default is ``1.0``.
+
+    Other Parameters
+    ----------------
+    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     Attributes
     ----------
-
+    scale : float
+    color_origin : tuple of 3 int between 0 abd 255
+    color_xaxis : tuple of 3 int between 0 abd 255
+    color_yaxis : tuple of 3 int between 0 abd 255
+    color_zaxis : tuple of 3 int between 0 abd 255
 
     Examples
     --------

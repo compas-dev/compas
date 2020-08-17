@@ -27,17 +27,30 @@ Artists convert COMPAS objects to Rhino geometry and data.
 
 ----
 
-Classes
-========
+Geometry Artists
+================
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    PointArtist
-    LineArtist
-    PolylineArtist
+    CircleArtist
     FrameArtist
+    LineArtist
+    PlaneArtist
+    PointArtist
+    PolygonArtist
+    PolylineArtist
+    VectorArtist
+
+
+Datastructure Artists
+=====================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
     MeshArtist
     NetworkArtist
     VolMeshArtist
@@ -54,38 +67,52 @@ Base Classes
     PrimitiveArtist
     ShapeArtist
 
-
 """
 from __future__ import absolute_import
 
 from .base import BaseArtist
-
 from .primitiveartist import PrimitiveArtist  # noqa: F401
 from .shapeartist import ShapeArtist  # noqa: F401
 
-from .pointartist import PointArtist
-from .lineartist import LineArtist
-from .polylineartist import PolylineArtist
+from .circleartist import CircleArtist
 from .frameartist import FrameArtist
+from .lineartist import LineArtist
+from .planeartist import PlaneArtist
+from .pointartist import PointArtist
+from .polygonartist import PolygonArtist
+from .polylineartist import PolylineArtist
+from .vectorartist import VectorArtist
 
-from .networkartist import NetworkArtist
 from .meshartist import MeshArtist
+from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist  # noqa: F401
 
-from compas.geometry import Point
-from compas.geometry import Line
-from compas.geometry import Polyline
+from compas.geometry import Circle
 from compas.geometry import Frame
+from compas.geometry import Line
+from compas.geometry import Plane
+from compas.geometry import Point
+from compas.geometry import Polygon
+from compas.geometry import Polyline
+from compas.geometry import Vector
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network
+from compas.datastructures import VolMesh
 
-BaseArtist.register(Point, PointArtist)
+# this could potentially be accomplished more elegantly with a decorator
+BaseArtist.register(Circle, CircleArtist)
 BaseArtist.register(Frame, FrameArtist)
 BaseArtist.register(Line, LineArtist)
+BaseArtist.register(Plane, PlaneArtist)
+BaseArtist.register(Point, PointArtist)
+BaseArtist.register(Polygon, PolygonArtist)
 BaseArtist.register(Polyline, PolylineArtist)
+BaseArtist.register(Vector, VectorArtist)
+
 BaseArtist.register(Mesh, MeshArtist)
 BaseArtist.register(Network, NetworkArtist)
+BaseArtist.register(VolMesh, VolMeshArtist)
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

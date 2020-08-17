@@ -18,6 +18,15 @@ __all__ = ['PointArtist']
 class PointArtist(PrimitiveArtist):
     """Artist for drawing points.
 
+    Parameters
+    ----------
+    primitive : :class:`compas.geometry.Point`
+        A COMPAS point.
+
+    Other Parameters
+    ----------------
+    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
+
     Examples
     --------
     >>>

@@ -14,11 +14,12 @@ class LineArtist(PrimitiveArtist):
 
     Parameters
     ----------
-    line : :class:`compas.geometry.Line`
+    primitive : :class:`compas.geometry.Line`
         A COMPAS line.
-    layer : str (optional)
-        The name of the layer that will contain the line.
-        Default value is ``None``, in which case the current layer will be used.
+
+    Other Parameters
+    ----------------
+    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     Examples
     --------
