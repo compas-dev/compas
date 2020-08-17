@@ -26,6 +26,13 @@ from __future__ import print_function
 __version__ = '0.16.2'
 
 
+# core -> utilities
+
+# geometry plotter
+# network plotter
+# mesh plotter
+# object plotter
+
 from .core import *  # noqa: F401 F403
 from .artists import *  # noqa: F401 F403
 
