@@ -100,7 +100,7 @@ The default is <code class="docutils literal notranslate"><span class="pre">None
 Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
 To apply the same color to all faces, provide a single color specification.
 Individual colors can be assigned using a dictionary of key-color pairs.
-Missing keys will be assigned the default face color (<code class="docutils literal notranslate"><span class="pre">self.settings['face.color']</span></code>).
+Missing keys will be assigned the default face color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.faces']</span></code>).
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are assigned the default face color.</p></li>
 <li><p><strong>join_faces</strong> (<em>bool, optional</em>) – Join the faces into 1 mesh.
 Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>, in which case the faces are drawn as individual meshes.</p></li>
@@ -110,9 +110,6 @@ Default is <code class="docutils literal notranslate"><span class="pre">False</s
 <dd class="field-even"><p><em>list</em> – The GUIDs of the created Rhino objects.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>The faces are named using the following template: <code class="docutils literal notranslate"><span class="pre">&quot;{mesh.name}.face.{id}&quot;</span></code>.
-This name can be used afterwards to identify faces in the Rhino model.</p>
 </dd></dl>
 
 </div>

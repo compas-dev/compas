@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshArtist.draw_mesh" href="compas_ghpython.artists.MeshArtist.draw_mesh.html" />
+    <link rel="next" title="MeshArtist.draw_vertexlabels" href="compas_ghpython.artists.MeshArtist.draw_vertexlabels.html" />
   
   
   
@@ -89,7 +89,7 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist.draw_faces</h1>
 <dl class="method">
 <dt id="compas_ghpython.artists.MeshArtist.draw_faces">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_faces</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">color=None</em>, <em class="sig-param">join_faces=False</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_faces</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">color=None</em>, <em class="sig-param">join_faces=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw_faces"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a selection of faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -97,20 +97,17 @@
 <li><p><strong>fkeys</strong> (<em>list</em>) – A list of face keys identifying which faces to draw.
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are drawn.</p></li>
 <li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color specififcation for the faces.
-Colors should be specified in the form of a string (hex colors) or
-as a tuple of RGB components.
-To apply the same color to all faces, provide a single color
-specification. Individual colors can be assigned using a dictionary
-of key-color pairs. Missing keys will be assigned the default face
-color (<code class="docutils literal notranslate"><span class="pre">self.defaults['face.color']</span></code>).
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are assigned the
-default face color.</p></li>
+Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+To apply the same color to all faces, provide a single color specification.
+Individual colors can be assigned using a dictionary of key-color pairs.
+Missing keys will be assigned the default face color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.faces']</span></code>).
+The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are assigned the default face color.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Mesh</span></code></p>
+</dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>The faces are named using the following template:
-<code class="docutils literal notranslate"><span class="pre">&quot;{}.face.{}&quot;.format(self.datastructure.name,</span> <span class="pre">key)</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -142,8 +139,6 @@ default face color.</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.helpers.html">helpers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>

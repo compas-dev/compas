@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="NetworkArtist.draw_vertices" href="compas_ghpython.artists.NetworkArtist.draw_vertices.html" />
+    <link rel="prev" title="NetworkArtist.draw_nodes" href="compas_ghpython.artists.NetworkArtist.draw_nodes.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -90,16 +90,26 @@
 <dl class="class">
 <dt id="compas_ghpython.artists.VolMeshArtist">
 <em class="property">class </em><code class="sig-prename descclassname">compas_ghpython.artists.</code><code class="sig-name descname">VolMeshArtist</code><span class="sig-paren">(</span><em class="sig-param">volmesh</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/volmeshartist.html#VolMeshArtist"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists.mixins.faceartist.FaceArtist</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists.mixins.edgeartist.EdgeArtist</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists.mixins.vertexartist.VertexArtist</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists.base.BaseArtist</span></code></p>
 <p>A volmesh artist defines functionality for visualising COMPAS volmeshes in GhPython.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>volmesh</strong> (<em>compas.datastructures.VolMesh</em>) – A COMPAS volmesh.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>volmesh</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a>) – A COMPAS volmesh.</p></li>
+<li><p><strong>settings</strong> (<em>dict, optional</em>) – A dict with custom visualisation settings.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Attributes</dt>
-<dd class="field-even"><p><strong>defaults</strong> (<em>dict</em>) – Default settings for color, scale, tolerance, …</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>volmesh</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a>) – The COMPAS volmesh associated with the artist.</p></li>
+<li><p><strong>settings</strong> (<em>dict</em>) – Default settings for color, scale, tolerance, …</p></li>
+</ul>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="k">pass</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -110,6 +120,12 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.VolMeshArtist.__init__.html#compas_ghpython.artists.VolMeshArtist.__init__" title="compas_ghpython.artists.VolMeshArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(volmesh)</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.VolMeshArtist.draw.html#compas_ghpython.artists.VolMeshArtist.draw" title="compas_ghpython.artists.VolMeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<td><p>Draws the mesh using the current settings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.VolMeshArtist.draw_collection.html#compas_ghpython.artists.VolMeshArtist.draw_collection" title="compas_ghpython.artists.VolMeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<td><p></p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.VolMeshArtist.draw_edgelabels.html#compas_ghpython.artists.VolMeshArtist.draw_edgelabels" title="compas_ghpython.artists.VolMeshArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a>([text, color])</p></td>
 <td><p>Draw labels for a selection of edges.</p></td>
 </tr>
@@ -119,7 +135,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.VolMeshArtist.draw_facelabels.html#compas_ghpython.artists.VolMeshArtist.draw_facelabels" title="compas_ghpython.artists.VolMeshArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a>([text, color])</p></td>
 <td><p>Draw labels for a selection of faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.VolMeshArtist.draw_faces.html#compas_ghpython.artists.VolMeshArtist.draw_faces" title="compas_ghpython.artists.VolMeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([keys, color, join_faces])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.VolMeshArtist.draw_faces.html#compas_ghpython.artists.VolMeshArtist.draw_faces" title="compas_ghpython.artists.VolMeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([keys, color])</p></td>
 <td><p>Draw a selection of faces.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.VolMeshArtist.draw_vertexlabels.html#compas_ghpython.artists.VolMeshArtist.draw_vertexlabels" title="compas_ghpython.artists.VolMeshArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a>([text, color])</p></td>
@@ -161,8 +177,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.helpers.html">helpers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>

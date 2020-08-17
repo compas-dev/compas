@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="MeshArtist.draw_mesh" href="compas_ghpython.artists.MeshArtist.draw_mesh.html" />
+    <link rel="prev" title="MeshArtist.draw_faces" href="compas_ghpython.artists.MeshArtist.draw_faces.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,7 +89,7 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist.draw_vertexlabels</h1>
 <dl class="method">
 <dt id="compas_ghpython.artists.MeshArtist.draw_vertexlabels">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_vertexlabels</code><span class="sig-paren">(</span><em class="sig-param">text=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_vertexlabels</code><span class="sig-paren">(</span><em class="sig-param">text=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw_vertexlabels"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw labels for a selection vertices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -99,17 +99,16 @@ The default value is <code class="docutils literal notranslate"><span class="pre
 <li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color sepcification of the labels.
 String values are interpreted as hex colors (e.g. <code class="docutils literal notranslate"><span class="pre">'#ff0000'</span></code> for red).
 Tuples are interpreted as RGB component specifications (e.g. <code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span> <span class="pre">for</span> <span class="pre">red</span></code>.
-If a dictionary of specififcations is provided, the keys of the
-should refer to vertex keys and the values should be color
-specifications in the form of strings or tuples.
-The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the labels are assigned
-the default vertex color (<code class="docutils literal notranslate"><span class="pre">self.defaults['color.vertex']</span></code>).</p></li>
+If a dictionary of specififcations is provided,
+the keys of the should refer to vertex keys and the values should be color specifications in the form of strings or tuples.
+The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+in which case the labels are assigned the default vertex color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.vertices']</span></code>).</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.TextDot</span></code></p>
+</dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>All labels are assigned a name using the folling template:
-<code class="docutils literal notranslate"><span class="pre">&quot;{}.vertex.label.{}&quot;.format(self.datastructure.name,</span> <span class="pre">key)</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -141,8 +140,6 @@ the default vertex color (<code class="docutils literal notranslate"><span class
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.helpers.html">helpers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>

@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="PolylineArtist.register" href="compas_rhino.artists.PolylineArtist.register.html" />
+    <link rel="prev" title="CircleArtist.register" href="compas_rhino.artists.CircleArtist.register.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -94,13 +94,18 @@
 <p>Artist for drawing frames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>frame</strong> (<em>compas.geometry.Frame</em>) – A COMPAS frame.</p>
+</dd>
+<dt class="field-even">Other Parameters</dt>
+<dd class="field-even"><p><strong>See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.</strong></p>
+</dd>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>frame</strong> (<em>compas.geometry.Frame</em>) – A COMPAS frame.</p></li>
-<li><p><strong>layer</strong> (<em>str, optional</em>) – The name of the layer that will contain the frame.
-Default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the current layer will be used.</p></li>
-<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the frame.</p></li>
-<li><p><strong>scale</strong> (<em>float, optional</em>) – The scale of the vectors representing the axes of the frame.
-Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>scale</strong> (<em>float</em>)</p></li>
+<li><p><strong>color_origin</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
+<li><p><strong>color_xaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
+<li><p><strong>color_yaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
+<li><p><strong>color_zaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -130,11 +135,14 @@ Default is <code class="docutils literal notranslate"><span class="pre">1.0</spa
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.draw.html#compas_rhino.artists.FrameArtist.draw" title="compas_rhino.artists.FrameArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p>Draw the frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.redraw.html#compas_rhino.artists.FrameArtist.redraw" title="compas_rhino.artists.FrameArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.draw_collection.html#compas_rhino.artists.FrameArtist.draw_collection" title="compas_rhino.artists.FrameArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.register.html#compas_rhino.artists.FrameArtist.register" title="compas_rhino.artists.FrameArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.redraw.html#compas_rhino.artists.FrameArtist.redraw" title="compas_rhino.artists.FrameArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.register.html#compas_rhino.artists.FrameArtist.register" title="compas_rhino.artists.FrameArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<td><p>Register a virtual subclass of an ABC.</p></td>
 </tr>
 </tbody>
 </table>

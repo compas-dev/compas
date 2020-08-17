@@ -101,25 +101,22 @@
 <span class="sd">        A COMPAS volmesh.</span>
 <span class="sd">    layer : str, optional</span>
 <span class="sd">        The name of the layer that will contain the volmesh.</span>
+<span class="sd">    settings : dict, optional</span>
+<span class="sd">        A dict with custom visualisation settings.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    defaults : dict</span>
+<span class="sd">    mesh : :class:`compas.datastructures.VolMesh`</span>
+<span class="sd">        The COMPAS volmesh associated with the artist.</span>
+<span class="sd">    layer : str</span>
+<span class="sd">        The layer in which the volmesh should be contained.</span>
+<span class="sd">    settings : dict</span>
 <span class="sd">        Default settings for color, scale, tolerance, ...</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="VolMeshArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.VolMeshArtist.__init__.html#compas_rhino.artists.VolMeshArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volmesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">VolMeshArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">volmesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;compas.datastructures.VolMesh: The volmesh that should be painted.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datastructure</span>
-
-    <span class="nd">@volmesh</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">volmesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volmesh</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">datastructure</span> <span class="o">=</span> <span class="n">volmesh</span></div>
+<div class="viewcode-block" id="VolMeshArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.VolMeshArtist.__init__.html#compas_rhino.artists.VolMeshArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">volmesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VolMeshArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">volmesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -127,18 +124,7 @@
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-
-    <span class="kn">import</span> <span class="nn">compas</span>
-
-    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">VolMesh</span>
-
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">VolMesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;boxes.obj&#39;</span><span class="p">))</span>
-
-    <span class="n">artist</span> <span class="o">=</span> <span class="n">VolMeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+    <span class="k">pass</span>
 </code></pre></div>
         
       </main>

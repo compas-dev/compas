@@ -138,16 +138,6 @@ This dict starts from the settings of the <code class="docutils literal notransl
 </ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>This is an Abstract Base Class (ABC).
-The following methods declared as abstract have to be overwritten:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">clear</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">draw</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">select</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">modify</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">move</span></code></p></li>
-</ul>
 <dl class="method">
 <dt id="compas_rhino.objects.BaseObject.clear">
 <em class="property">abstract </em><code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/base.html#BaseObject.clear"><span class="viewcode-link">[source]</span></a></dt>
@@ -236,65 +226,74 @@ The following methods declared as abstract have to be overwritten:</p>
 <dt id="compas_rhino.objects.MeshObject.draw">
 <code class="sig-name descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/meshobject.html#MeshObject.draw"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw the object representing the mesh.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>None</strong></p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>None</em></p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="compas_rhino.objects.MeshObject.modify_edges">
-<code class="sig-name descname">modify_edges</code><span class="sig-paren">(</span><em class="sig-param">edges</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/meshobject.html#MeshObject.modify_edges"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Modify the attributes of the edges of the mesh item.</p>
+<code class="sig-name descname">modify_edges</code><span class="sig-paren">(</span><em class="sig-param">edges</em>, <em class="sig-param">names=None</em><span class="sig-paren">)</span></dt>
+<dd><p>Update the attributes of the edges of a mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>edges</strong> (<em>list</em>) – The identifiers of the edges of which the attributes will be updated.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh</strong> (<a class="reference internal" href="generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A mesh object.</p></li>
+<li><p><strong>edges</strong> (<em>list</em>) – The edges to update.</p></li>
+<li><p><strong>names</strong> (<em>list, optional</em>) – The names of the atrtibutes to update.
+Default is to update all attributes.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the attributes were successfully updated.
+<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the update was successful.
 <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>This method will produce a dialog for editing the attributes of the edges.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<ul class="simple">
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">mesh_update_attributes()</span></code></p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">mesh_update_vertex_attributes()</span></code></p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">mesh_update_face_attributes()</span></code></p></li>
+</ul>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="compas_rhino.objects.MeshObject.modify_faces">
-<code class="sig-name descname">modify_faces</code><span class="sig-paren">(</span><em class="sig-param">faces</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/meshobject.html#MeshObject.modify_faces"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Modify the attributes of the faces of the mesh item.</p>
+<code class="sig-name descname">modify_faces</code><span class="sig-paren">(</span><em class="sig-param">faces</em>, <em class="sig-param">names=None</em><span class="sig-paren">)</span></dt>
+<dd><p>Update the attributes of the faces of a mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>faces</strong> (<em>list</em>) – The identifiers of the faces of which the attributes will be updated.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh</strong> (<a class="reference internal" href="generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>)</p></li>
+<li><p><strong>faces</strong> (<em>list of int</em>)</p></li>
+<li><p><strong>names</strong> (<em>list, optional</em>) – The names of the atrtibutes to update.
+Default is to update all attributes.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the attributes were successfully updated.
+<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the update was successful.
 <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>This method will produce a dialog for editing the attributes of the faces.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="compas_rhino.objects.MeshObject.modify_vertices">
-<code class="sig-name descname">modify_vertices</code><span class="sig-paren">(</span><em class="sig-param">vertices</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/meshobject.html#MeshObject.modify_vertices"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Modify the attributes of the vertices of the mesh item.</p>
+<code class="sig-name descname">modify_vertices</code><span class="sig-paren">(</span><em class="sig-param">vertices</em>, <em class="sig-param">names=None</em><span class="sig-paren">)</span></dt>
+<dd><p>Update the attributes of selected vertices of a given datastructure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>vertices</strong> (<em>list</em>) – The identifiers of the vertices of which the attributes will be updated.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh</strong> (<em>compas.datastructures.Datastructure</em>) – The data structure.</p></li>
+<li><p><strong>vertices</strong> (<em>list</em>) – The vertices of the vertices of which the attributes should be updated.</p></li>
+<li><p><strong>names</strong> (<em>list, optional</em>) – The names of the attributes that should be updated.
+Default is to update all available attributes.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the attributes were successfully updated.
-<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<dd class="field-even"><p><em>bool</em> – True if the attributes were successfully updated.
+False otherwise.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>This method will produce a dialog for editing the attributes of the vertices.</p>
 </dd></dl>
 
 <dl class="method">
@@ -317,8 +316,6 @@ The following methods declared as abstract have to be overwritten:</p>
 <dd class="field-odd"><p><em>list</em> – A list of face identifiers.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>This is only possible if the mesh was drawn with individual, unjoined faces.</p>
 </dd></dl>
 
 <dl class="method">
@@ -334,6 +331,184 @@ The following methods declared as abstract have to be overwritten:</p>
 
 </dd></dl>
 
+</div>
+<hr class="docutils" />
+<div class="section" id="networkobject">
+<h2>NetworkObject</h2>
+<dl class="class">
+<dt id="compas_rhino.objects.NetworkObject">
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.objects.</code><code class="sig-name descname">NetworkObject</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">scene=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">visible=True</em>, <em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/networkobject.html#NetworkObject"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Class for representing COMPAS networkes in Rhino.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> (<a class="reference internal" href="generated/compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – A network data structure.</p></li>
+<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.scenes.Scene</span></code>, optional) – A scene object.</p></li>
+<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the object.</p></li>
+<li><p><strong>layer</strong> (<em>str, optional</em>) – The layer for drawing.</p></li>
+<li><p><strong>visible</strong> (<em>bool, optional</em>) – Toggle for the visibility of the object.</p></li>
+<li><p><strong>settings</strong> (<em>dict, optional</em>) – A dictionary of settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>guid_node</strong> (<em>dict</em>) – Dictionary mapping Rhino object GUIDs to COMPAS network node identifiers.</p></li>
+<li><p><strong>guid_edge</strong> (<em>dict</em>) – Dictionary mapping Rhino object GUIDs to COMPAS network edge identifiers.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.objects</span> <span class="kn">import</span> <span class="n">NetworkObject</span>
+
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubenetwork.off&#39;</span><span class="p">))</span>
+<span class="n">networkobject</span> <span class="o">=</span> <span class="n">NetworkObject</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;NetworkObject&#39;</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::NetworkObject&#39;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">networkobject</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="n">networkobject</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
+<span class="n">networkobject</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<span class="n">networkobject</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+
+<span class="n">nodes</span> <span class="o">=</span> <span class="n">networkobject</span><span class="o">.</span><span class="n">select_nodes</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">networkobject</span><span class="o">.</span><span class="n">modify_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="p">):</span>
+    <span class="n">networkobject</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">networkobject</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">networkobject</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<dl class="method">
+<dt id="compas_rhino.objects.NetworkObject.clear">
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/networkobject.html#NetworkObject.clear"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Clear all previously created Rhino objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="compas_rhino.objects.NetworkObject.draw">
+<code class="sig-name descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/networkobject.html#NetworkObject.draw"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Draw the object representing the network.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="compas_rhino.objects.NetworkObject.modify_edges">
+<code class="sig-name descname">modify_edges</code><span class="sig-paren">(</span><em class="sig-param">edges</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/networkobject.html#NetworkObject.modify_edges"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Modify the attributes of the edges of the network item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>edges</strong> (<em>list</em>) – The identifiers of the edges of which the attributes will be updated.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the attributes were successfully updated.
+<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="compas_rhino.objects.NetworkObject.modify_nodes">
+<code class="sig-name descname">modify_nodes</code><span class="sig-paren">(</span><em class="sig-param">nodes</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/networkobject.html#NetworkObject.modify_nodes"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Modify the attributes of the nodes of the network item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nodes</strong> (<em>list</em>) – The identifiers of the nodes of which the attributes will be updated.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>bool</em> – <code class="docutils literal notranslate"><span class="pre">True</span></code> if the attributes were successfully updated.
+<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="compas_rhino.objects.NetworkObject.select_edges">
+<code class="sig-name descname">select_edges</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/networkobject.html#NetworkObject.select_edges"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Select edges of the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>list</em> – A list of edge identifiers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="compas_rhino.objects.NetworkObject.select_nodes">
+<code class="sig-name descname">select_nodes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/networkobject.html#NetworkObject.select_nodes"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Select nodes of the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>list</em> – A list of node identifiers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<hr class="docutils" />
+<div class="section" id="selecting">
+<h2>Selecting</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+</div>
+<div class="section" id="modifying">
+<h2>Modifying</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_update_attributes</span></code></p></td>
+<td><p>Update the attributes of a network.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_update_node_attributes</span></code></p></td>
+<td><p>Update the attributes of the nodes of a network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_update_edge_attributes</span></code></p></td>
+<td><p>Update the attributes of the edges of a network.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">network_move_node</span></code></p></td>
+<td><p>Move on node of the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_update_attributes</span></code></p></td>
+<td><p>Update the attributes of a mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_update_vertex_attributes</span></code></p></td>
+<td><p>Update the attributes of selected vertices of a given datastructure.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_update_face_attributes</span></code></p></td>
+<td><p>Update the attributes of the faces of a mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_update_edge_attributes</span></code></p></td>
+<td><p>Update the attributes of the edges of a mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_move_vertex</span></code></p></td>
+<td><p>Move on vertex of the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_move_vertices</span></code></p></td>
+<td><p>Move on vertices of the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_move_face</span></code></p></td>
+<td><p>Move a face of the mesh to a different location and update the data structure.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="inspecting">
+<h2>Inspecting</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
 </div>
 </div>
 
@@ -391,6 +566,10 @@ The following methods declared as abstract have to be overwritten:</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#">objects</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#baseobject">BaseObject</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#meshobject">MeshObject</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#networkobject">NetworkObject</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#selecting">Selecting</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#modifying">Modifying</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#inspecting">Inspecting</a></li>
 </ul>
 </li>
 </ul>

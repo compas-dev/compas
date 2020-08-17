@@ -103,31 +103,69 @@
 <span class="sd">    network : :class:`compas.datastructures.Network`</span>
 <span class="sd">        A COMPAS network.</span>
 <span class="sd">    layer : str, optional</span>
-<span class="sd">        The name of the layer that will contain the network.</span>
+<span class="sd">        The parent layer of the network.</span>
+<span class="sd">    settings : dict, optional</span>
+<span class="sd">        A dict with custom visualisation settings.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
+<span class="sd">    network : :class:`compas.datastructures.Network`</span>
+<span class="sd">        The COMPAS network associated with the artist.</span>
+<span class="sd">    layer : str</span>
+<span class="sd">        The layer in which the network should be contained.</span>
 <span class="sd">    settings : dict</span>
 <span class="sd">        Default settings for color, scale, tolerance, ...</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="NetworkArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.NetworkArtist.__init__.html#compas_rhino.artists.NetworkArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.NetworkArtist.__init__.html#compas_rhino.artists.NetworkArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">NetworkArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guid_node</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edge</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;color.nodes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
             <span class="s1">&#39;color.edges&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
             <span class="s1">&#39;show.nodes&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
             <span class="s1">&#39;show.edges&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;show.node_labels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.edge_labels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span></div>
+            <span class="s1">&#39;show.nodelabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;show.edgelabels&#39;</span><span class="p">:</span> <span class="kc">False</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">guid_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_node</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_guid_node</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_node</span>
+
+    <span class="nd">@guid_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">guid_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guid_node</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">guid_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edge</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edge</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edge</span>
+
+    <span class="nd">@guid_edge</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">guid_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edge</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># clear</span>
     <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="NetworkArtist.clear"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.NetworkArtist.clear.html#compas_rhino.artists.NetworkArtist.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">guids_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_node</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">guids_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_edge</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">guids_nodes</span> <span class="o">+</span> <span class="n">guids_edges</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guid_node</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edge</span> <span class="o">=</span> <span class="p">{}</span></div>
 
 <div class="viewcode-block" id="NetworkArtist.clear_layer"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.NetworkArtist.clear_layer.html#compas_rhino.artists.NetworkArtist.clear_layer">[docs]</a>    <span class="k">def</span> <span class="nf">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear the main layer of the artist.&quot;&quot;&quot;</span>
@@ -165,11 +203,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.nodes&#39;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_nodes</span><span class="p">()</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.node_labels&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.nodelabels&#39;</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">draw_nodelabels</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.edges&#39;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.edge_labels&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.edgelabels&#39;</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">draw_edgelabels</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">guids</span></div>
 
@@ -194,28 +232,22 @@
 <span class="sd">        list</span>
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        The nodes are named using the following template: ``&quot;{network.name}.node.{id}&quot;``.</span>
-<span class="sd">        This name can be used afterwards to identify nodes in the Rhino model.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
-        <span class="n">colordict</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
-                                       <span class="n">keys</span><span class="p">,</span>
-                                       <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color.nodes&#39;</span><span class="p">),</span>
-                                       <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
-                                       <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
+        <span class="n">node_color</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
+                                        <span class="n">nodes</span><span class="p">,</span>
+                                        <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.nodes&#39;</span><span class="p">],</span>
+                                        <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
+                                        <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
             <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.node.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span>
-                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
-                <span class="s1">&#39;layer&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;layer&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)})</span>
+                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">node</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.node.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">node</span><span class="p">),</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">node_color</span><span class="p">[</span><span class="n">node</span><span class="p">]})</span>
 
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guid_node</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">guids</span></div>
 
 <div class="viewcode-block" id="NetworkArtist.draw_edges"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.NetworkArtist.draw_edges.html#compas_rhino.artists.NetworkArtist.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -231,7 +263,7 @@
 <span class="sd">            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.</span>
 <span class="sd">            To apply the same color to all edges, provide a single color specification.</span>
 <span class="sd">            Individual colors can be assigned using a dictionary of key-color pairs.</span>
-<span class="sd">            Missing keys will be assigned the default edge color (``self.settings[&#39;edge.color&#39;]``).</span>
+<span class="sd">            Missing keys will be assigned the default edge color (``self.settings[&#39;color.edges&#39;]``).</span>
 <span class="sd">            The default is ``None``, in which case all edges are assigned the default edge color.</span>
 
 <span class="sd">        Returns</span>
@@ -239,16 +271,11 @@
 <span class="sd">        list</span>
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        All edges are named using the following template: ``&quot;{network.name}.edge.{u}-{v}&quot;``.</span>
-<span class="sd">        This name can be used afterwards to identify edges in the Rhino model.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
         <span class="n">colordict</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
                                        <span class="n">keys</span><span class="p">,</span>
-                                       <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color.edges&#39;</span><span class="p">),</span>
+                                       <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.edges&#39;</span><span class="p">],</span>
                                        <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
                                        <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
@@ -257,8 +284,7 @@
                 <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">),</span>
                 <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)],</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edge.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
-                <span class="s1">&#39;layer&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="s1">&#39;layer&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)})</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edge.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
 
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>
@@ -289,10 +315,6 @@
 <span class="sd">        list</span>
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        All labels are assigned a name using the folling template: ``&quot;{network.name}.node_label.{id}&quot;``.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">textdict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span>
@@ -307,17 +329,16 @@
 
         <span class="n">colordict</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
                                        <span class="n">textdict</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
-                                       <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color.nodes&#39;</span><span class="p">),</span>
+                                       <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.nodes&#39;</span><span class="p">],</span>
                                        <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
                                        <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">),</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.node_label.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.nodelabel.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
-                <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">textdict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
-                <span class="s1">&#39;layer&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;layer&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)})</span>
+                <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">textdict</span><span class="p">[</span><span class="n">key</span><span class="p">]})</span>
 
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>
@@ -336,17 +357,13 @@
 <span class="sd">            String values are interpreted as hex colors.</span>
 <span class="sd">            Tuples are interpreted as RGB component specifications.</span>
 <span class="sd">            Individual colors can be assigned using a dictionary of key-color pairs.</span>
-<span class="sd">            Missing keys will be assigned the default face color (``self.settings[&#39;edge.color&#39;]``).</span>
+<span class="sd">            Missing keys will be assigned the default face color (``self.settings[&#39;color.edges&#39;]``).</span>
 <span class="sd">            The default is ``None``, in which case all edges are assigned the default edge color.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        All labels are assigned a name using the folling template: ``&quot;{network.name}.edge_label.{u}-{v}&quot;``.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -358,17 +375,16 @@
 
         <span class="n">colordict</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
                                        <span class="n">textdict</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
-                                       <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;color.edges&#39;</span><span class="p">),</span>
+                                       <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.edges&#39;</span><span class="p">],</span>
                                        <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
                                        <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">textdict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edge_midpoint</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edge_label.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edgelabel.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colordict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)],</span>
-                <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">textdict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)],</span>
-                <span class="s1">&#39;layer&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="s1">&#39;layer&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)})</span>
+                <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">textdict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]})</span>
 
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>

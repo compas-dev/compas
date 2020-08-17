@@ -89,7 +89,7 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist.draw_edges</h1>
 <dl class="method">
 <dt id="compas_ghpython.artists.MeshArtist.draw_edges">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_edges</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_edges</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw_edges"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a selection of edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -97,21 +97,17 @@
 <li><p><strong>keys</strong> (<em>list</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are drawn.</p></li>
 <li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color specififcation for the edges.
-Colors should be specified in the form of a string (hex colors) or
-as a tuple of RGB components.
-To apply the same color to all edges, provide a single color
-specification. Individual colors can be assigned using a dictionary
-of key-color pairs. Missing keys will be assigned the default face
-color (<code class="docutils literal notranslate"><span class="pre">self.defaults['edge.color']</span></code>).
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are assigned the
-default edge color.</p></li>
+Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+To apply the same color to all edges, provide a single color specification.
+Individual colors can be assigned using a dictionary of key-color pairs.
+Missing keys will be assigned the default face color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.edges']</span></code>).
+The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are assigned the default edge color.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Line</span></code></p>
+</dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>All edges are named using the following template:
-<code class="docutils literal notranslate"><span class="pre">&quot;{}.edge.{}-{}&quot;.fromat(self.datastructure.name,</span> <span class="pre">u,</span> <span class="pre">v)</span></code>.
-This name is used afterwards to identify edges in the Rhino model.</p>
 </dd></dl>
 
 </div>
@@ -143,8 +139,6 @@ This name is used afterwards to identify edges in the Rhino model.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.helpers.html">helpers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>

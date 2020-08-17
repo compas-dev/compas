@@ -344,6 +344,11 @@
             <span class="k">pass</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_terminate_process</span><span class="p">()</span></div>
 
+<div class="viewcode-block" id="Proxy.restart_server"><a class="viewcode-back" href="../../../api/generated/compas.rpc.Proxy.restart_server.html#compas.rpc.Proxy.restart_server">[docs]</a>    <span class="k">def</span> <span class="nf">restart_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Restart the server.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_server</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_server</span><span class="p">()</span></div>
+
     <span class="k">def</span> <span class="nf">_terminate_process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Attempts to terminate the python process hosting the proxy server.</span>
 

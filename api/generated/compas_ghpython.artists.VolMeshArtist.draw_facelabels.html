@@ -89,7 +89,7 @@
 <h1 class="display-4 p-0 mb-5">VolMeshArtist.draw_facelabels</h1>
 <dl class="method">
 <dt id="compas_ghpython.artists.VolMeshArtist.draw_facelabels">
-<code class="sig-prename descclassname">VolMeshArtist.</code><code class="sig-name descname">draw_facelabels</code><span class="sig-paren">(</span><em class="sig-param">text=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">VolMeshArtist.</code><code class="sig-name descname">draw_facelabels</code><span class="sig-paren">(</span><em class="sig-param">text=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/volmeshartist.html#VolMeshArtist.draw_facelabels"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw labels for a selection of faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -103,14 +103,13 @@ If a dictionary of specififcations is provided, the keys of the
 should refer to face keys and the values should be color
 specifications in the form of strings or tuples.
 The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the labels are assigned
-the default face color (<code class="docutils literal notranslate"><span class="pre">self.defaults['color.face']</span></code>).</p></li>
+the default face color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.faces']</span></code>).</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.TextDot</span></code></p>
+</dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>The face labels are named using the following template:
-<code class="docutils literal notranslate"><span class="pre">&quot;{}.face.label.{}&quot;.format(self.datastructure.name,</span> <span class="pre">key)</span></code>.
-This name is used afterwards to identify faces and face labels in the Rhino model.</p>
 </dd></dl>
 
 </div>
@@ -142,8 +141,6 @@ This name is used afterwards to identify faces and face labels in the Rhino mode
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.helpers.html">helpers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>

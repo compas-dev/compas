@@ -90,8 +90,8 @@
 <dl class="class">
 <dt id="compas_rhino.artists.BaseArtist">
 <em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">BaseArtist</code><a class="reference internal" href="../../_modules/compas_rhino/artists/base.html#BaseArtist"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Base class for all artists.</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<p>Base class for all Rhino artists.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><p><strong>guids</strong> (<em>list</em>) – A list of the GUID of the Rhino objects created by the artist.</p>
@@ -116,11 +116,14 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.BaseArtist.draw.html#compas_rhino.artists.BaseArtist.draw" title="compas_rhino.artists.BaseArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.BaseArtist.redraw.html#compas_rhino.artists.BaseArtist.redraw" title="compas_rhino.artists.BaseArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.BaseArtist.draw_collection.html#compas_rhino.artists.BaseArtist.draw_collection" title="compas_rhino.artists.BaseArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.BaseArtist.register.html#compas_rhino.artists.BaseArtist.register" title="compas_rhino.artists.BaseArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.BaseArtist.redraw.html#compas_rhino.artists.BaseArtist.redraw" title="compas_rhino.artists.BaseArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.BaseArtist.register.html#compas_rhino.artists.BaseArtist.register" title="compas_rhino.artists.BaseArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<td><p>Register a virtual subclass of an ABC.</p></td>
 </tr>
 </tbody>
 </table>

@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshArtist.draw_edgelabels" href="compas_ghpython.artists.MeshArtist.draw_edgelabels.html" />
+    <link rel="next" title="MeshArtist.draw_collection" href="compas_ghpython.artists.MeshArtist.draw_collection.html" />
   
   
   
@@ -89,8 +89,22 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist.draw</h1>
 <dl class="method">
 <dt id="compas_ghpython.artists.MeshArtist.draw">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw</code><span class="sig-paren">(</span><em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Deprecated. Use <code class="docutils literal notranslate"><span class="pre">draw_mesh()</span></code></p>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Draws the mesh using the current settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><p><strong>geometry</strong> (<em>list</em>) –</p>
+<ul class="simple">
+<li><p>geometry[0]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Point3d</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.nodes’]</cite> is False.</p></li>
+<li><p>geometry[1]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.TextDot</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.nodelabels’]</cite> is False.</p></li>
+<li><p>geometry[2]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Mesh</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.faces’]</cite> is False.</p></li>
+<li><p>geometry[3]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.TextDot</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.facelabels’]</cite> is False.</p></li>
+<li><p>geometry[4]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Line</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.edges’]</cite> is False.</p></li>
+<li><p>geometry[5]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.TextDot</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.edgelabels’]</cite> is False.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -122,8 +136,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.helpers.html">helpers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>

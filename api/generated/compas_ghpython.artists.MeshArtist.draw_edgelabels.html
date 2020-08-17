@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="MeshArtist.draw" href="compas_ghpython.artists.MeshArtist.draw.html" />
+    <link rel="prev" title="MeshArtist.draw_collection" href="compas_ghpython.artists.MeshArtist.draw_collection.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,7 +89,7 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist.draw_edgelabels</h1>
 <dl class="method">
 <dt id="compas_ghpython.artists.MeshArtist.draw_edgelabels">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_edgelabels</code><span class="sig-paren">(</span><em class="sig-param">text=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_edgelabels</code><span class="sig-paren">(</span><em class="sig-param">text=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw_edgelabels"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw labels for a selection of edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -101,15 +101,15 @@ String values are interpreted as hex colors (e.g. <code class="docutils literal 
 Tuples are interpreted as RGB component specifications (e.g. <code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span> <span class="pre">for</span> <span class="pre">red</span></code>.
 Individual colors can be assigned using a dictionary
 of key-color pairs. Missing keys will be assigned the default face
-color (<code class="docutils literal notranslate"><span class="pre">self.defaults['edge.color']</span></code>).
+color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.edges']</span></code>).
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are assigned the
 default edge color.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.TextDot</span></code></p>
+</dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>All labels are assigned a name using the folling template:
-<code class="docutils literal notranslate"><span class="pre">&quot;{}.edge.{}&quot;.format(self.datastructure.name,</span> <span class="pre">key)</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -141,8 +141,6 @@ default edge color.</p></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.helpers.html">helpers</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>

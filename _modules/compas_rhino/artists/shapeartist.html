@@ -119,17 +119,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span> <span class="o">=</span> <span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
 
-    <span class="c1"># @classmethod</span>
-    <span class="c1"># def from_data(cls, data):</span>
-    <span class="c1">#     module, attr = data[&#39;dtype&#39;].split(&#39;/&#39;)</span>
-    <span class="c1">#     Shape = getattr(__import__(module, fromlist=[attr]), attr)</span>
-    <span class="c1">#     shape = Shape.from_data(data[&#39;value&#39;])</span>
-    <span class="c1">#     artist = cls(shape)</span>
-    <span class="c1">#     return artist</span>
-
-    <span class="c1"># def to_data(self):</span>
-    <span class="c1">#     return self.shape.to_data()</span>
-
 <div class="viewcode-block" id="ShapeArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.ShapeArtist.draw.html#compas_rhino.artists.ShapeArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 

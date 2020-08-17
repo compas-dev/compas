@@ -126,17 +126,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span></div>
 
-    <span class="c1"># @classmethod</span>
-    <span class="c1"># def from_data(cls, data):</span>
-    <span class="c1">#     module, attr = data[&#39;dtype&#39;].split(&#39;/&#39;)</span>
-    <span class="c1">#     Primitive = getattr(__import__(module, fromlist=[attr]), attr)</span>
-    <span class="c1">#     primitive = Primitive.from_data(data[&#39;value&#39;])</span>
-    <span class="c1">#     artist = cls(primitive)</span>
-    <span class="c1">#     return artist</span>
-
-    <span class="c1"># def to_data(self):</span>
-    <span class="c1">#     return self.primitive.to_data()</span>
-
 <div class="viewcode-block" id="PrimitiveArtist.clear_layer"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.PrimitiveArtist.clear_layer.html#compas_rhino.artists.PrimitiveArtist.clear_layer">[docs]</a>    <span class="k">def</span> <span class="nf">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear the main layer of the artist.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">:</span>
