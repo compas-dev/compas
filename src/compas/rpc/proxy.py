@@ -260,6 +260,11 @@ class Proxy(object):
             pass
         self._terminate_process()
 
+    def restart_server(self):
+        """Restart the server."""
+        self.stop_server()
+        self.start_server()
+
     def _terminate_process(self):
         """Attempts to terminate the python process hosting the proxy server.
 
