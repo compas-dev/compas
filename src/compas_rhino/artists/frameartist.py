@@ -2,8 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas_rhino
+try:
+    basestring
+except NameError:
+    basestring = str
 
+import compas_rhino
+# from compas.utilities import iterable_like
 from compas_rhino.artists.primitiveartist import PrimitiveArtist
 
 
@@ -51,7 +56,6 @@ class FrameArtist(PrimitiveArtist):
         -------
         guids: list
             The GUIDs of the created Rhino objects.
-
         """
         points = []
         lines = []
@@ -68,6 +72,34 @@ class FrameArtist(PrimitiveArtist):
         guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         self.guids = guids
         return guids
+
+    @staticmethod
+    def draw_collection(collection, names=None, colors=None, layer=None, clear=False, add_to_group=False, group_name=None):
+        """Draw a collection of circles.
+
+        Parameters
+        ----------
+        collection : list of :class:`compas.geometry.Frame`
+            A collection of frames.
+        names : list of str, optional
+            Individual names for the frames.
+        colors : color or list of color, optional
+            A color specification for the frames as a single color or a list of individual colors.
+        layer : str, optional
+            A layer path.
+        clear : bool, optional
+            Clear the layer before drawing.
+        add_to_group : bool, optional
+            Add the frames to a group.
+        group_name : str, optional
+            Name of the group.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+        """
+        raise NotImplementedError
 
 
 # ==============================================================================

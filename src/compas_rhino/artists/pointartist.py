@@ -48,35 +48,25 @@ class PointArtist(PrimitiveArtist):
         return guids
 
     @staticmethod
-    def draw_collection(collection, color=None, name=None, layer=None, clear=False, group_collection=False, group_name=None):
+    def draw_collection(collection, names=None, colors=None, layer=None, clear=False, add_to_group=False, group_name=None):
         """Draw a collection of points.
 
         Parameters
         ----------
-        collection : list of compas.geometry.Point
-            A collection of ``Point`` objects.
-        color : tuple or list of tuple (optional)
-            Color specification of the points.
-            If one RGB color is provided, it will be applied to all points.
-            If a list of RGB colors is provided, these colors are applied to the corresponding points.
-            A list of colors should have the same length as the collection, with one color per item.
-            Default value is ``None`` in which case the default point color of the artist is used.
-        name : str or list of str (optional)
-            Name of each point.
-            If only one name is provided, this name will be used for all points.
-            If a list of names is provided, the list should contain a name for each point in the collection.
-        layer : str (optional)
-            The layer in which the objects of the collection should be created.
-            Default is ``None``, in which case the default layer setting of the artist is used.
-        clear : bool (optional)
+        collection : list of :class:`compas.geometry.Point`
+            A collection of points.
+        names : list of str, optional
+            Individual names for the points.
+        colors : color or list of color, optional
+            A color specification for the points as a single color or a list of individual colors.
+        layer : str, optional
+            A layer path.
+        clear : bool, optional
             Clear the layer before drawing.
-            Default is ``False``.
-        group_collection : bool (optional)
-            Flag for grouping the objects of the collection.
-            Default is ``False``.
-        group_name : str (optional).
-            The name of the group.
-            Default is ``None``.
+        add_to_group : bool, optional
+            Add the points to a group.
+        group_name : str, optional
+            Name of the group.
 
         Returns
         -------
@@ -86,29 +76,27 @@ class PointArtist(PrimitiveArtist):
             The name of the group if the collection objects are grouped.
 
         """
-        compas_rhino.rs.EnableRedraw(False)
         points = [{'pos': list(point)} for point in collection]
-        if color:
-            if isinstance(color[0], (int, float)):
-                colors = iterable_like(collection, [color], color)
+        if colors:
+            if isinstance(colors[0], (int, float)):
+                colors = iterable_like(collection, [colors], colors)
             else:
-                colors = iterable_like(collection, color, color[0])
+                colors = iterable_like(collection, colors, colors[0])
             for point, rgb in zip(points, colors):
                 point['color'] = rgb
-        if name:
-            if isinstance(name, basestring):
-                names = iterable_like(collection, [name], name)
+        if names:
+            if isinstance(names, basestring):
+                names = iterable_like(collection, [names], names)
             else:
-                names = iterable_like(collection, name, name[0])
+                names = iterable_like(collection, names, names[0])
             for point, name in zip(points, names):
                 point['name'] = name
-        guids = compas_rhino.draw_points(points, layer=layer, clear=clear, redraw=False)
-        if not group_collection:
+        guids = compas_rhino.draw_points(points, layer=layer, clear=clear)
+        if not add_to_group:
             return guids
         group = compas_rhino.rs.AddGroup(group_name)
         if group:
             compas_rhino.rs.AddObjectsToGroup(guids, group)
-        compas_rhino.rs.EnableRedraw(True)
         return group
 
 
