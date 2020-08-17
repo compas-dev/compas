@@ -23,7 +23,11 @@ release = '0.16.2'
 version = '.'.join(release.split('.')[0:2])
 
 master_doc = 'index'
-source_suffix = ['.rst', ]
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'restructuredtext',
+    '.md': 'markdown',
+}
 templates_path = ['_templates', ]
 exclude_patterns = ['_build', '**.ipynb_checkpoints', '_notebooks']
 

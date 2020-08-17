@@ -69,13 +69,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-#       - name: Deploy docs
-#         run: |
-#           cd dist/docs
-#           git init
-#           git config --global user.name "brgcode"
-#           git config --global user.email "van.mele@arch.eth.ch"
-#           git add .
-#           git commit -m "Updating docs"
-#           git remote add origin https://compas-dev:${{ secrets.GITHUB_TOKEN }}@github.com/compas-dev/compas.git
-#           git push --force origin master:gh-pages
