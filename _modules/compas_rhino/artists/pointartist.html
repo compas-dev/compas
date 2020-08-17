@@ -132,35 +132,25 @@
         <span class="k">return</span> <span class="n">guids</span></div>
 
 <div class="viewcode-block" id="PointArtist.draw_collection"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.PointArtist.draw_collection.html#compas_rhino.artists.PointArtist.draw_collection">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">group_collection</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">group_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_to_group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">group_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw a collection of points.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        collection : list of compas.geometry.Point</span>
-<span class="sd">            A collection of ``Point`` objects.</span>
-<span class="sd">        color : tuple or list of tuple (optional)</span>
-<span class="sd">            Color specification of the points.</span>
-<span class="sd">            If one RGB color is provided, it will be applied to all points.</span>
-<span class="sd">            If a list of RGB colors is provided, these colors are applied to the corresponding points.</span>
-<span class="sd">            A list of colors should have the same length as the collection, with one color per item.</span>
-<span class="sd">            Default value is ``None`` in which case the default point color of the artist is used.</span>
-<span class="sd">        name : str or list of str (optional)</span>
-<span class="sd">            Name of each point.</span>
-<span class="sd">            If only one name is provided, this name will be used for all points.</span>
-<span class="sd">            If a list of names is provided, the list should contain a name for each point in the collection.</span>
-<span class="sd">        layer : str (optional)</span>
-<span class="sd">            The layer in which the objects of the collection should be created.</span>
-<span class="sd">            Default is ``None``, in which case the default layer setting of the artist is used.</span>
-<span class="sd">        clear : bool (optional)</span>
+<span class="sd">        collection : list of :class:`compas.geometry.Point`</span>
+<span class="sd">            A collection of points.</span>
+<span class="sd">        names : list of str, optional</span>
+<span class="sd">            Individual names for the points.</span>
+<span class="sd">        colors : color or list of color, optional</span>
+<span class="sd">            A color specification for the points as a single color or a list of individual colors.</span>
+<span class="sd">        layer : str, optional</span>
+<span class="sd">            A layer path.</span>
+<span class="sd">        clear : bool, optional</span>
 <span class="sd">            Clear the layer before drawing.</span>
-<span class="sd">            Default is ``False``.</span>
-<span class="sd">        group_collection : bool (optional)</span>
-<span class="sd">            Flag for grouping the objects of the collection.</span>
-<span class="sd">            Default is ``False``.</span>
-<span class="sd">        group_name : str (optional).</span>
-<span class="sd">            The name of the group.</span>
-<span class="sd">            Default is ``None``.</span>
+<span class="sd">        add_to_group : bool, optional</span>
+<span class="sd">            Add the points to a group.</span>
+<span class="sd">        group_name : str, optional</span>
+<span class="sd">            Name of the group.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -170,29 +160,27 @@
 <span class="sd">            The name of the group if the collection objects are grouped.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">point</span><span class="p">)}</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">collection</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-                <span class="n">colors</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="p">[</span><span class="n">color</span><span class="p">],</span> <span class="n">color</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">colors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+                <span class="n">colors</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="p">[</span><span class="n">colors</span><span class="p">],</span> <span class="n">colors</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">colors</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">color</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">colors</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">point</span><span class="p">,</span> <span class="n">rgb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
                 <span class="n">point</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb</span>
-        <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
-                <span class="n">names</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+                <span class="n">names</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="p">[</span><span class="n">names</span><span class="p">],</span> <span class="n">names</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">names</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">names</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">for</span> <span class="n">point</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
                 <span class="n">point</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">group_collection</span><span class="p">:</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">add_to_group</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">guids</span>
         <span class="n">group</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">AddGroup</span><span class="p">(</span><span class="n">group_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
             <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">AddObjectsToGroup</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">group</span></div></div>
 
 

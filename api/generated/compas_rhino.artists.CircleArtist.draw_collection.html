@@ -89,8 +89,25 @@
 <h1 class="display-4 p-0 mb-5">CircleArtist.draw_collection</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.CircleArtist.draw_collection">
-<em class="property">static </em><code class="sig-prename descclassname">CircleArtist.</code><code class="sig-name descname">draw_collection</code><span class="sig-paren">(</span><em class="sig-param">collection</em><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
+<em class="property">static </em><code class="sig-prename descclassname">CircleArtist.</code><code class="sig-name descname">draw_collection</code><span class="sig-paren">(</span><em class="sig-param">collection</em>, <em class="sig-param">names=None</em>, <em class="sig-param">colors=None</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">clear=False</em>, <em class="sig-param">add_to_group=False</em>, <em class="sig-param">group_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/circleartist.html#CircleArtist.draw_collection"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Draw a collection of circles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collection</strong> (list of <a class="reference internal" href="compas.geometry.Circle.html#compas.geometry.Circle" title="compas.geometry.Circle"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Circle</span></code></a>) – A collection of circles.</p></li>
+<li><p><strong>names</strong> (<em>list of str, optional</em>) – Individual names for the circles.</p></li>
+<li><p><strong>colors</strong> (<em>color or list of color, optional</em>) – A color specification for the circles as a single color or a list of individual colors.</p></li>
+<li><p><strong>layer</strong> (<em>str, optional</em>) – A layer path.</p></li>
+<li><p><strong>clear</strong> (<em>bool, optional</em>) – Clear the layer before drawing.</p></li>
+<li><p><strong>add_to_group</strong> (<em>bool, optional</em>) – Add the circles to a group.</p></li>
+<li><p><strong>group_name</strong> (<em>str, optional</em>) – Name of the group.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list</em> – The GUIDs of the created Rhino objects.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 

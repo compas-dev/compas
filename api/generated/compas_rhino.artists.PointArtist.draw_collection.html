@@ -89,28 +89,18 @@
 <h1 class="display-4 p-0 mb-5">PointArtist.draw_collection</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.PointArtist.draw_collection">
-<em class="property">static </em><code class="sig-prename descclassname">PointArtist.</code><code class="sig-name descname">draw_collection</code><span class="sig-paren">(</span><em class="sig-param">collection</em>, <em class="sig-param">color=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">clear=False</em>, <em class="sig-param">group_collection=False</em>, <em class="sig-param">group_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/pointartist.html#PointArtist.draw_collection"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">static </em><code class="sig-prename descclassname">PointArtist.</code><code class="sig-name descname">draw_collection</code><span class="sig-paren">(</span><em class="sig-param">collection</em>, <em class="sig-param">names=None</em>, <em class="sig-param">colors=None</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">clear=False</em>, <em class="sig-param">add_to_group=False</em>, <em class="sig-param">group_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/pointartist.html#PointArtist.draw_collection"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a collection of points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>collection</strong> (<em>list of compas.geometry.Point</em>) – A collection of <code class="docutils literal notranslate"><span class="pre">Point</span></code> objects.</p></li>
-<li><p><strong>color</strong> (<em>tuple or list of tuple (optional)</em>) – Color specification of the points.
-If one RGB color is provided, it will be applied to all points.
-If a list of RGB colors is provided, these colors are applied to the corresponding points.
-A list of colors should have the same length as the collection, with one color per item.
-Default value is <code class="docutils literal notranslate"><span class="pre">None</span></code> in which case the default point color of the artist is used.</p></li>
-<li><p><strong>name</strong> (<em>str or list of str (optional)</em>) – Name of each point.
-If only one name is provided, this name will be used for all points.
-If a list of names is provided, the list should contain a name for each point in the collection.</p></li>
-<li><p><strong>layer</strong> (<em>str (optional)</em>) – The layer in which the objects of the collection should be created.
-Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the default layer setting of the artist is used.</p></li>
-<li><p><strong>clear</strong> (<em>bool (optional)</em>) – Clear the layer before drawing.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>group_collection</strong> (<em>bool (optional)</em>) – Flag for grouping the objects of the collection.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>group_name</strong> (<em>str (optional).</em>) – The name of the group.
-Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>collection</strong> (list of <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>) – A collection of points.</p></li>
+<li><p><strong>names</strong> (<em>list of str, optional</em>) – Individual names for the points.</p></li>
+<li><p><strong>colors</strong> (<em>color or list of color, optional</em>) – A color specification for the points as a single color or a list of individual colors.</p></li>
+<li><p><strong>layer</strong> (<em>str, optional</em>) – A layer path.</p></li>
+<li><p><strong>clear</strong> (<em>bool, optional</em>) – Clear the layer before drawing.</p></li>
+<li><p><strong>add_to_group</strong> (<em>bool, optional</em>) – Add the points to a group.</p></li>
+<li><p><strong>group_name</strong> (<em>str, optional</em>) – Name of the group.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
