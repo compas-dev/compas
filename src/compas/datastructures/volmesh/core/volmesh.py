@@ -11,9 +11,10 @@ from compas.geometry import add_vectors
 from compas.geometry import bestfit_plane
 from compas.geometry import centroid_points
 from compas.geometry import centroid_polygon
+from compas.geometry import centroid_polyhedron
 from compas.geometry import distance_point_point
 from compas.geometry import length_vector
-from compas.geometry import normalize_polygon
+from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
 from compas.geometry import project_point_plane
 from compas.geometry import scale_vector
@@ -621,9 +622,9 @@ class BaseVolMesh(HalfFace):
         face_edge_lengths = [self.edge_length(u, v) for u, v in self.face_halfedges(hfkey)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
-    # face_coordinates = halfface_coordinates
-    # face_centroid    = halfface_centroid
-    # face_center      = halfface_center
+    face_coordinates = halfface_coordinates
+    face_centroid    = halfface_centroid
+    face_center      = halfface_center
 
     # --------------------------------------------------------------------------
     # cell geometry

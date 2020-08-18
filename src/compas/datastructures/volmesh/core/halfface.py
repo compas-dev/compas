@@ -3,14 +3,19 @@ from __future__ import division
 from __future__ import print_function
 
 import json
+import pickle
 
 from ast import literal_eval
+from random import sample
+from random import choice
 
-from compas.utilities import geometric_key
-from compas.utilities import pairwise
+from compas.datastructures.volmesh.core import VertexAttributeView
+from compas.datastructures.volmesh.core import FaceAttributeView
+from compas.datastructures.volmesh.core import CellAttributeView
 
 from compas.datastructures import Datastructure
-from compas.datastructures import Mesh
+from compas.utilities import geometric_key
+from compas.utilities import pairwise
 
 
 __all__ = ['HalfFace']
@@ -2422,8 +2427,6 @@ class HalfFace(Datastructure):
             ckeys.update(self.vertex_cells(vkey))
         return list(ckeys)
 
-
-
     def cell_neighbors_across_halffaces(self, ckey):
         """Return the cell neighbors of a cell across its halffaces.
 
@@ -2446,11 +2449,6 @@ class HalfFace(Datastructure):
                 ckeys.append(nbr)
         return ckeys
 
-
-
-
-
-
     def cell_neighborhood(self, ceky):
         """Return the cells in the neighborhood of a cell across its halffaces.
 
@@ -2467,7 +2465,7 @@ class HalfFace(Datastructure):
         """
 
 
-
+        pass
 
 
 

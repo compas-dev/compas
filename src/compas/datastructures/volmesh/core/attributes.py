@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ._mutablemapping import MutableMapping
+from compas.datastructures.mesh.core._mutablemapping import MutableMapping
 
 __all__ = ['VertexAttributeView', 'EdgeAttributeView', 'FaceAttributeView', 'CellAttributeView']
 
