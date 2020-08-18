@@ -1,210 +1,59 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import pickle
 import json
-try:
-    from collections.abc import MutableMapping  # python > 3.3
-except ImportError:
-    from collections import MutableMapping      # python 2.7
-from copy import deepcopy
-from ast import literal_eval
-from random import sample
-from random import choice
 
-from compas.files import OBJ
+from ast import literal_eval
 
 from compas.utilities import geometric_key
 from compas.utilities import pairwise
-
-from compas.geometry import normalize_vector
-from compas.geometry import centroid_points
-from compas.geometry import centroid_polygon
-from compas.geometry import centroid_polyhedron
-from compas.geometry import area_polygon
-from compas.geometry import normal_polygon
-from compas.geometry import subtract_vectors
-from compas.geometry import add_vectors
-from compas.geometry import scale_vector
-from compas.geometry import distance_point_point
-from compas.geometry import midpoint_line
 
 from compas.datastructures import Datastructure
 from compas.datastructures import Mesh
 
 
-__all__ = ['VolMesh']
+__all__ = ['HalfFace']
 
 
-class AttributeView(object):
-    """Mixin for attribute dict views."""
-
-    def __str__(self):
-        s = []
-        for k, v in self.items():
-            s.append("{}: {}".format(repr(k), repr(v)))
-        return "{" + ", ".join(s) + "}"
-
-    def __len__(self):
-        return len(self.defaults)
-
-
-class VertexAttributeView(AttributeView, MutableMapping):
-    """Mutable Mapping that provides a read/write view of the custom attributes of a vertex
-    combined with the default attributes of all vertices."""
-
-    def __init__(self, defaults, attr):
-        self.defaults = defaults
-        self.attr = attr
-
-    def __getitem__(self, key):
-        try:
-            return self.attr[key]
-        except KeyError:
-            return self.defaults[key]
-
-    def __setitem__(self, key, value):
-        self.attr[key] = value
-
-    def __delitem__(self, key):
-        if key in self.attr:
-            del self.attr[key]
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        for key in self.defaults:
-            yield key
-
-
-class FaceAttributeView(AttributeView, MutableMapping):
-    """Mutable Mapping that provides a read/write view of the custom attributes of a face
-    combined with the default attributes of all faces."""
-
-    def __init__(self, defaults, attr, key, custom_only=False):
-        self.defaults = defaults
-        self.attr = attr
-        self.key = key
-        self.custom_only = custom_only
-        self.attr.setdefault(self.key, {})
-
-    def __getitem__(self, name):
-        return self.attr[self.key].get(name, self.defaults[name])
-
-    def __setitem__(self, name, value):
-        self.attr[self.key][name] = value
-
-    def __delitem__(self, name):
-        del self.attr[self.key][name]
-
-    def __iter__(self):
-        if self.custom_only:
-            for name in self.attr[self.key]:
-                yield name
-        else:
-            for name in self.defaults:
-                yield name
-
-
-class EdgeAttributeView(AttributeView, MutableMapping):
-    """Mutable Mapping that provides a read/write view of the custom attributes of an edge
-    combined with the default attributes of all edges."""
-
-    def __init__(self, defaults, attr, key, custom_only=False):
-        self.defaults = defaults
-        self.attr = attr
-        self.key = key
-        self.custom_only = custom_only
-        self.attr.setdefault(self.key, {})
-
-    def __getitem__(self, name):
-        return self.attr[self.key].get(name, self.defaults[name])
-
-    def __setitem__(self, name, value):
-        self.attr[self.key][name] = value
-
-    def __delitem__(self, name):
-        del self.attr[self.key][name]
-
-    def __iter__(self):
-        if self.custom_only:
-            for name in self.attr[self.key]:
-                yield name
-        else:
-            for name in self.defaults:
-                yield name
-
-
-class VolMesh(Datastructure):
-    """Class for working with volumetric meshes.
+class HalfFace(Datastructure):
+    """Base half-face data structure fore representing volumetric meshes.
 
     Attributes
     ----------
-    vertex : dict
-        The vertices of the volmesh. Each vertex is represented by a key-value pair
-        in the vertex dictionary. The key is the unique identifier of the vertex,
-        and the value is itself a dictionary of named vertex attributes.
-        ``self.vertex[key] -> attribute dict``
-    cell : dict
-        The cells of the volmesh. Each cell is represted by a key-value pair in
-        the cell dictionary. The key is the unique identifier of the cell, and
-        the value id itself a dictionary. The keys of this dictionary correspond
-        to the vertices that make up the cell. The values are again dictionaries.
-        Each key in the latter dictionary is a neighbor of the previous vertex.
-        Together they form a halfedge of the cell, pointing at one of the cell's
-        halffaces.
-        ``self.cell[ckey][u][v] -> fkey``
-    halfface : dict
-        The halffaces of the volmesh. Each halfface is represented by
-        ``self.halfface[fkey] -> vertex cycle``
-    plane : dict
-        The planes of the volmesh. Every plane is uniquely defined by three
-        neighboring vertices of the volmesh in a specific order. At the first level,
-        each vertex in the plane dict points at a new dictionary. This keys of this
-        dictionary are the (undirected) neighbors of the previous vertex. The values
-        are again dictionaries. In combination with the first two keys, the keys
-        of the latter identify oriented faces (planes) of the volmesh, finally
-        pointing at the cells of the volmesh.
-        ``self.plane[u][v][w] -> ckey``.
-
-    Notes
-    -----
-    Volumetric meshes are 3-mainfold, cellular structures.
-
-    The implementation of *VolMesh* is based on the notion of *x-maps*
-    and the concepts behind the *OpenVolumeMesh* library [vci2016]_.
-    In short, we add an additional entity compared to polygonal meshes,
-    the *cell*, and relate cells not through *half-edges*, but through a combination
-    of *half-faces* and *planes*. Each cell consists of a series of vertex pairs,
-    forming half-edges. Every half-edge points at a half-face of the cell. The half-
-    faces are stored as vertex cycles. Every three adjacent vertices in the cycle,
-    through the planes, point at the cell of which they form the boundary.
-
-    References
-    ----------
-    .. [vci2016] Visual Computing Institute *Open Volum Mesh*.
-                 Available at: http://www.openvolumemesh.org
+    attributes
+    default_vertex_attributes
+    default_edge_attributes
+    default_face_attributes
+    default_cell_attributes
+    name
+    adjacency
+    data
 
     """
 
     def __init__(self):
-        super(VolMesh, self).__init__()
+        super(HalfFace, self).__init__()
+
         self._max_int_vkey = -1
         self._max_int_fkey = -1
         self._max_int_ckey = -1
-        self.vertex = {}
+
+        self.vertex   = {}
         self.halfface = {}
-        self.cell = {}
-        self.plane = {}
+        self.cell     = {}
+        self.plane    = {}
+
         self.edgedata = {}
         self.facedata = {}
         self.celldata = {}
+
         self.attributes = {'name': 'VolMesh'}
+
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
-        self.default_edge_attributes = {}
-        self.default_face_attributes = {}
-        self.default_cell_attributes = {}
+        self.default_edge_attributes   = {}
+        self.default_face_attributes   = {}
+        self.default_cell_attributes   = {}
 
     # --------------------------------------------------------------------------
     # customisation
@@ -220,9 +69,9 @@ class VolMesh(Datastructure):
             ["VolMesh summary",
              "===============",
              "- vertices: {}",
-             "- edges: {}",
-             "- faces: {}",
-             "- cells: {}"])
+             "- edges   : {}",
+             "- faces   : {}",
+             "- cells   : {}"])
         s = tpl.format(self.number_of_vertices(),
                        self.number_of_edges(),
                        self.number_of_faces(),
@@ -247,6 +96,10 @@ class VolMesh(Datastructure):
         self.attributes['name'] = value
 
     @property
+    def adjacency(self):
+        return self.halfface
+
+    @property
     def data(self):
         """dict: A data dict representing the volmesh data structure for serialisation.
 
@@ -256,6 +109,7 @@ class VolMesh(Datastructure):
         * 'dva'          => dict
         * 'dea'          => dict
         * 'dfa'          => dict
+        * 'dca'          => dict
         * 'vertex'       => dict
         * 'halfface'     => dict
         * 'cell'         => dict
@@ -272,89 +126,54 @@ class VolMesh(Datastructure):
         All dictionary keys are converted to their representation value (``repr(key)``)
         to ensure compatibility of all allowed key types with the JSON serialisation
         format, which only allows for dict keys that are strings.
-
         """
-        data = {
-            'attributes': self.attributes,
-            'dva': self.default_vertex_attributes,
-            'dea': self.default_edge_attributes,
-            'dfa': self.default_face_attributes,
-            'dca': self.default_cell_attributes,
-            'vertex': {},
-            'halfface': {},
-            'cell': {},
-            'plane': {},
-            'edgedata': {},
-            'facedata': {},
-            'celldata': {},
-            'max_int_vkey': self._max_int_vkey,
-            'max_int_fkey': self._max_int_fkey,
-            'max_int_ckey': self._max_int_ckey, }
 
-        key_rkey = {}
-
-        for vkey in self.vertex:
-            rkey = repr(vkey)
-            key_rkey[vkey] = rkey
-            data['vertex'][rkey] = self.vertex[vkey]
-            data['plane'][rkey] = {}
-
-        for f in self.halfface:
-            _f = repr(f)
-            data['halfface'][_f] = {}
-            for u, v in self.halfface[f].iteritems():
-                _u = repr(u)  # use the map?
-                _v = repr(v)  # use the map?
-                data['halfface'][_f][_u] = _v
-
-        for c in self.cell:
-            _c = repr(c)
-            data['cell'][_c] = {}
-            for u in self.cell[c]:
-                _u = repr(u)
-                if _u not in data['cell'][_c]:
-                    data['cell'][_c][_u] = {}
-                for v, f in self.cell[c][u].iteritems():
-                    _v = repr(v)
-                    _f = repr(f)
-                    data['cell'][_c][_u][_v] = _f
-
-        for u in self.plane:
-            _u = repr(u)
-            for v in self.plane[u]:
-                _v = repr(v)
-                if _v not in data['plane'][_u]:
-                    data['plane'][_u][_v] = {}
-                for w, c in self.plane[u][v].iteritems():
-                    _w = repr(w)
-                    _c = repr(c)
-                    data['plane'][_u][_v][_w] = _c
+        edgedata = {}
+        facedata = {}
+        celldata = {}
 
         for uv in self.edgedata:
-            data['edgedata'][repr(uv)] = self.edgedata[uv]
+            edgedata[repr(uv)] = self.edgedata[uv]
 
         for fkey in self.facedata:
-            data['facedata'][repr(fkey)] = self.facedata[fkey]
+            facedata[repr(fkey)] = self.facedata[fkey]
 
         for ckey in self.celldata:
-            data['celldata'][repr(ckey)] = self.celldata[ckey]
+            celldata[repr(ckey)] = self.celldata[ckey]
+
+        data = {
+            'attributes'  : self.attributes,
+            'dva'         : self.default_vertex_attributes,
+            'dea'         : self.default_edge_attributes,
+            'dfa'         : self.default_face_attributes,
+            'dca'         : self.default_cell_attributes,
+            'vertex'      : self.vertex,
+            'halfface'    : self.halfface,
+            'cell'        : self.cell,
+            'plane'       : self.plane,
+            'edgedata'    : {},
+            'facedata'    : {},
+            'celldata'    : {},
+            'max_int_vkey': self._max_int_vkey,
+            'max_int_fkey': self._max_int_fkey,
+            'max_int_ckey': self._max_int_ckey}
 
         return data
 
     @data.setter
     def data(self, data):
-        attributes = data.get('attributes') or {}
-        dva = data.get('dva') or {}
-        dea = data.get('dea') or {}
-        dfa = data.get('dfa') or {}
-        dca = data.get('dca') or {}
-        vertex = data.get('vertex') or {}
-        halfface = data.get('halfface') or {}
-        cell = data.get('cell') or {}
-        plane = data.get('plane') or {}
-        edgedata = data.get('edgedata') or {}
-        facedata = data.get('facedata') or {}
-        celldata = data.get('celldata') or {}
+        attributes   = data.get('attributes') or {}
+        dva          = data.get('dva') or {}
+        dea          = data.get('dea') or {}
+        dfa          = data.get('dfa') or {}
+        dca          = data.get('dca') or {}
+        vertex       = data.get('vertex') or {}
+        halfface     = data.get('halfface') or {}
+        cell         = data.get('cell') or {}
+        plane        = data.get('plane') or {}
+        edgedata     = data.get('edgedata') or {}
+        facedata     = data.get('facedata') or {}
+        celldata     = data.get('celldata') or {}
         max_int_vkey = data.get('max_int_vkey', - 1)
         max_int_fkey = data.get('max_int_fkey', - 1)
         max_int_ckey = data.get('max_int_ckey', - 1)
@@ -362,76 +181,47 @@ class VolMesh(Datastructure):
         if not vertex or not plane or not halfface or not cell:
             return
 
-        self.clear()
-
-        self.attributes.update(attributes)
+        self.attribute.update(attributes)
         self.default_vertex_attributes.update(dva)
         self.default_edge_attributes.update(dea)
         self.default_face_attributes.update(dfa)
         self.default_cell_attributes.update(dca)
 
-        for _k, attr in vertex.iteritems():
-            k = literal_eval(_k)
-            self.vertex[k] = self.default_vertex_attributes.copy()
-            if attr:
-                self.vertex[k].update(attr)
-            self.plane[k] = {}
+        self.vertex   = {}
+        self.halfedge = {}
+        self.cell     = {}
+        self.plane    = {}
+        self.edgedata = {}
+        self.facedata = {}
+        self.celldata = {}
 
-        for _f in halfface:
-            f = literal_eval(_f)
-            self.halfface[f] = {}
-            for _u, _v in halfface[_f].iteritems():
-                u = literal_eval(_u)
-                v = literal_eval(_v)
-                self.halfface[f][u] = v
+        for vkey, attr in iter(vertex.items()):
+            self.add_vertex(int(vkey), attr_dict=attr)
 
-        for _c in cell:
-            c = literal_eval(_c)
-            self.cell[c] = {}
-            for _u in cell[_c]:
-                u = literal_eval(_u)
-                if u not in self.cell[c]:
-                    self.cell[c][u] = {}
-                for _v, _f in cell[_c][_u].iteritems():
-                    v = literal_eval(_v)
-                    f = literal_eval(_f)
-                    self.cell[c][u][v] = f
+        for hfkey, vertices in iter(halfface.items()):
+            attr = facedata.get(hfkey) or {}
+            self.add_halfface(vertices, fkey=int(hfkey), attr_dict=attr)
 
-        for _u in plane:
-            u = literal_eval(_u)
-            for _v in plane[_u]:
-                v = literal_eval(_v)
-                if v not in self.plane[u]:
-                    self.plane[u][v] = {}
-                for _w, _c in plane[_u][_v].iteritems():
-                    w = literal_eval(_w)
-                    c = literal_eval(_c)
-                    self.plane[u][v][w] = c
+        for ckey in cell:
+            attr      = celldata.get(ckey) or {}
+            hfkeys    = list(set(cell[ckey][u].values() for u in cell[ckey]))
+            halffaces = [self.halfface[hfkey] for hfkey in hfkeys]
+            self.add_cell(halffaces, ckey=int(ckey), attr_dict=attr)
 
         for uv, attr in iter(edgedata.items()):
             self.edgedata[literal_eval(uv)] = attr or {}
-
-        for fkey, attr in iter(facedata.items()):
-            self.facedata[literal_eval(fkey)] = attr or {}
-
-        for ckey, attr in iter(celldata.items()):
-            self.celldata[literal_eval(ckey)] = attr or {}
 
         self._max_int_vkey = max_int_vkey
         self._max_int_fkey = max_int_fkey
         self._max_int_ckey = max_int_ckey
 
     # --------------------------------------------------------------------------
-    # serialisation
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # constructors
+    # from/to
     # --------------------------------------------------------------------------
 
     @classmethod
     def from_data(cls, data):
-        """Construct a mesh from structured data.
+        """Construct a volmesh from structured data.
 
         Parameters
         ----------
@@ -449,12 +239,12 @@ class VolMesh(Datastructure):
         corresponding *to_data* method.
 
         """
-        mesh = cls()
-        mesh.data = data
-        return mesh
+        volmesh      = cls()
+        volmesh.data = data
+        return volmesh
 
     def to_data(self):
-        """Returns a dictionary of structured data representing the mesh.
+        """Returns a dictionary of structured data representing the volmesh.
 
         Returns
         -------
@@ -489,9 +279,9 @@ class VolMesh(Datastructure):
         """
         with open(filepath, 'r') as fp:
             data = json.load(fp)
-        mesh = cls()
-        mesh.data = data
-        return mesh
+        volmesh      = cls()
+        volmesh.data = data
+        return volmesh
 
     def to_json(self, filepath, pretty=False):
         """Serialise the structured data representing the data structure to json.
@@ -509,7 +299,7 @@ class VolMesh(Datastructure):
 
     @classmethod
     def from_pickle(cls, filepath):
-        """Construct a mesh from serialised data contained in a pickle file.
+        """Construct a volmesh from serialised data contained in a pickle file.
 
         Parameters
         ----------
@@ -533,7 +323,7 @@ class VolMesh(Datastructure):
         return o
 
     def to_pickle(self, filepath):
-        """Serialise the structured data representing the mesh to a pickle file.
+        """Serialise the structured data representing the volmesh to a pickle file.
 
         Parameters
         ----------
@@ -543,98 +333,18 @@ class VolMesh(Datastructure):
         with open(filepath, 'wb+') as f:
             pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
 
-    @classmethod
-    def from_obj(cls, filepath, precision=None):
-        """Construct a volmesh object from the data described in an OBJ file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the file.
-        precision: str, optional
-            The precision of the geometric map that is used to connect the lines.
-
-        Returns
-        -------
-        Volesh
-            A volmesh object.
-
-        """
-        obj = OBJ(filepath, precision)
-        vertices = obj.parser.vertices
-        faces = obj.parser.faces
-        groups = obj.parser.groups
-        cells = []
-        for name in groups:
-            group = groups[name]
-            cell = []
-            for item in group:
-                if item[0] != 'f':
-                    continue
-                face = faces[item[1]]
-                cell.append(face)
-            cells.append(cell)
-        return cls.from_vertices_and_cells(vertices, cells)
-
-    def to_obj(self, filepath):
-        raise NotImplementedError
-
-    @classmethod
-    def from_vertices_and_cells(cls, vertices, cells):
-        """Construct a volmesh object from vertices and cells.
-
-        Parameters
-        ----------
-        vertices : list
-            Ordered list of vertices, represented by their XYZ coordinates.
-        cells : lists of lists
-            List of cells (list of halffaces).
-
-        Returns
-        -------
-        Volmesh
-            A volmesh object.
-
-        """
-        volmesh = cls()
-        for x, y, z in vertices:
-            volmesh.add_vertex(x=x, y=y, z=z)
-        for cell in cells:
-            volmesh.add_cell(cell)
-        return volmesh
-
-    def to_vertices_and_cells(self):
-        """Return the vertices and cells of a volmesh.
-
-        Returns
-        -------
-        tuple
-            A 2-tuple containing
-
-            * a list of vertices, represented by their XYZ coordinates, and
-            * a list of cells.
-
-            Each cell is a list of halffaces, which are lists of indices referencing the list of vertex coordinates.
-
-        """
-        key_index = self.key_index()
-        vertices = [self.vertex_coordinates(key) for key in self.vertices()]
-        cells = []
-        for ckey in self.cell:
-            halffaces = [[key_index[key] for key in self.halfface[fkey]] for fkey in self.halffaces()]
-            cells.append(halffaces)
-        return vertices, cells
-
-    # --------------------------------------------------------------------------
-    # converters
-    # --------------------------------------------------------------------------
-
     # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
 
-    def copy(self):
+    def copy(self, cls=None):
         """Make an independent copy of the volmesh object.
+
+        Parameters
+        ----------
+        cls : compas.datastructures.VolMesh, optional
+            The type of volmesh to return.
+            Defaults to the type of the current volmesh.
 
         Returns
         -------
@@ -642,7 +352,8 @@ class VolMesh(Datastructure):
             A separate, but identical volmesh object.
 
         """
-        cls = type(self)
+        if not cls:
+            cls = type(self)
         return cls.from_data(deepcopy(self.data))
 
     def clear(self):
@@ -654,10 +365,10 @@ class VolMesh(Datastructure):
         del self.edgedata
         del self.facedata
         del self.celldata
-        self.vertex = {}
+        self.vertex   = {}
         self.halfface = {}
-        self.cell = {}
-        self.plane = {}
+        self.cell     = {}
+        self.plane    = {}
         self.edgedata = {}
         self.facedata = {}
         self.celldata = {}
@@ -797,10 +508,8 @@ class VolMesh(Datastructure):
 
         Parameters
         ----------
-        key : int
-            An identifier for the vertex.
-            Defaults to None.
-            The key is converted to a string before it is used.
+        key : int, optional
+            The vertex identifier.
         attr_dict : dict, optional
             Vertex attributes.
         kwattr : dict, optional
@@ -811,12 +520,16 @@ class VolMesh(Datastructure):
         Returns
         -------
         int
-            The key of the vertex.
-            If no key was provided, this is always an integer.
-        hashable
-            The key of the vertex.
-            Any hashable object may be provided as identifier for the vertex.
-            Provided keys are returned unchanged.
+            The identifier of the vertex.
+
+        Notes
+        -----
+        If no key is provided for the vertex, one is generated
+        automatically. An automatically generated key is an integer that increments
+        the highest integer value of any key used so far by 1.
+
+        If a key with an integer value is provided that is higher than the current
+        highest integer key value, then the highest integer value is updated accordingly.
 
         """
         if key is None:
@@ -824,15 +537,12 @@ class VolMesh(Datastructure):
         if key > self._max_int_vkey:
             self._max_int_vkey = key
         key = int(key)
-
         if key not in self.vertex:
             self.vertex[key] = {}
             self.plane[key] = {}
-
         attr = attr_dict or {}
         attr.update(kwattr)
         self.vertex[key].update(attr)
-
         return key
 
     def add_halfface(self, vertices, fkey=None, attr_dict=None, **kwattr):
@@ -854,16 +564,11 @@ class VolMesh(Datastructure):
         -------
         int
             The key of the halfface.
-            The key is an integer, if no key was provided.
-        hashable
-            The key of the halfface.
-            Any hashable object may be provided as identifier for the halfface.
-            Provided keys are returned unchanged.
 
         Raises
         ------
         TypeError
-            If the provided halfface key is of an unhashable type.
+            If the provided face key is of an unhashable type.
 
         Notes
         -----
@@ -874,6 +579,7 @@ class VolMesh(Datastructure):
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
+
         """
         if len(vertices) < 3:
             return
@@ -881,37 +587,30 @@ class VolMesh(Datastructure):
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
         vertices = [int(key) for key in vertices]
-
         if fkey is None:
             fkey = self._max_int_fkey = self._max_int_fkey + 1
         if fkey > self._max_int_fkey:
             self._max_int_fkey = fkey
-
         attr = attr_dict or {}
         attr.update(kwattr)
         self.halfface[fkey] = vertices
         self.facedata.setdefault(fkey, attr)
-
         for i in range(-2, len(vertices) - 2):
             u = vertices[i]
             v = vertices[i + 1]
             w = vertices[i + 2]
             if u == v or v == w:
                 continue
-
             self.add_vertex(key=u)
             self.add_vertex(key=v)
             self.add_vertex(key=w)
-
             if v not in self.plane[u]:
                 self.plane[u][v] = {}
             self.plane[u][v][w] = None
-
             if v not in self.plane[w]:
                 self.plane[w][v] = {}
             if u not in self.plane[w][v]:
                 self.plane[w][v][u] = None
-
         return fkey
 
     def add_cell(self, halffaces, ckey=None, attr_dict=None, **kwattr):
@@ -932,16 +631,20 @@ class VolMesh(Datastructure):
         -------
         int
             The key of the cell.
-            The key is an integer, if no key was provided.
-        hashable
-            The key of the cell.
-            Any hashable object may be provided as identifier for the cell.
-            Provided keys are returned unchanged.
 
         Raises
         ------
         TypeError
-            If the provided halfface key is of an unhashable type.
+            If the provided cell key is of an unhashable type.
+
+        Notes
+        -----
+        If no key is provided for the cell, one is generated
+        automatically. An automatically generated key is an integer that increments
+        the highest integer value of any key used so far by 1.
+
+        If a key with an integer value is provided that is higher than the current
+        highest integer key value, then the highest integer value is updated accordingly.
 
         """
         if ckey is None:
@@ -949,12 +652,10 @@ class VolMesh(Datastructure):
         if ckey > self._max_int_ckey:
             self._max_int_ckey = ckey
         ckey = int(ckey)
-
         attr = attr_dict or {}
         attr.update(kwattr)
         self.cell[ckey] = {}
         self.celldata.setdefault(ckey, attr)
-
         for vertices in halffaces:
             fkey = self.add_halfface(vertices)
             vertices = self.halfface[fkey]
@@ -966,7 +667,6 @@ class VolMesh(Datastructure):
                     self.cell[ckey][u] = {}
                 self.cell[ckey][u][v] = fkey
                 self.plane[u][v][w] = ckey
-
         return ckey
 
     # --------------------------------------------------------------------------
@@ -974,42 +674,86 @@ class VolMesh(Datastructure):
     # --------------------------------------------------------------------------
 
     def delete_vertex(self, vkey):
-        raise NotImplementedError
+        """Delete a vertex from the volmesh and everything that is attached to it.
 
-    def insert_vertex(self, hfkey, vkey=None, xyz=None):
-        raise NotImplementedError
+        Parameters
+        ----------
+        key : int
+            The identifier of the vertex.
+        """
+        for ckey in self.vertex_cells(vkey):
+            self.delete_cell(ckey)
 
-    def delete_halfface(self, fkey):
-        raise NotImplementedError
+    # def delete_halfface(self, hfkey):
+    #     """Delete a halfface.
+    #     """
+    #     vertices = self.halfface_vertices(hfkey)
+    #     for i in range(-2, len(vertices) - 2):
+    #         u = vertices[i]
+    #         v = vertices[i + 1]
+    #         w = vertices[i + 2]
+    #         del self.plane[u][v][w]
+    #         if self.plane[w][v][u] is None:
+    #             del self.plane[w][v][u]
+    #     del self.halfface[hfkey]
+    #     if hfkey in self.facedata:
+    #         del self.facedata[hfkey]
 
     def delete_cell(self, ckey):
-        raise NotImplementedError
+        """Delete a cell from the volmesh.
+
+        Parameters
+        ----------
+        fkey : int
+            The identifier of the cel.
+
+        """
+
+        for hfkey in self.cell_halffaces(ckey):
+
+            # edges
+            for u, v in self.halfface_halfedges(hfkey):
+                if (u, v) in self.edgedata:
+                    del self.edgedata[u, v]
+                if (v, u) in self.edgedata:
+                    del self.edgedata[v, u]
+
+            # planes
+            vertices = self.halfface_vertices(hfkey)
+            for i in range(-2, len(vertices - 2)):
+                u = vertices[i]
+                v = vertices[i + 1]
+                w = vertices[i + 2]
+                self.plane[u][v][w] = None
+                if self.plane[w][v][u] is None:
+                    del self.plane[u][v][w]
+                    del self.plane[w][v][u]
+
+            # halfface
+            del self.halfface[hfkey]
+            if hfkey in self.facedata:
+                del self.facedata[hfkey]
+
+        # vertices
+        for vkey in self.cell_vertices(ckey):
+            if len(self.vertex_cells(vkey)) == 1:
+                del self.vertex[vkey]
+
+        # cell
+        del self.cell[ckey]
+        if ckey in self.celldata:
+            del self.celldata[ckey]
 
     def cull_vertices(self):
-        raise NotImplementedError
-
-    def cull_halffaces(self):
-        raise NotImplementedError
-
-    # --------------------------------------------------------------------------
-    # info
-    # --------------------------------------------------------------------------
-
-    def number_of_vertices(self):
-        """Count the number of vertices in the volmesh."""
-        return len(list(self.vertices()))
-
-    def number_of_edges(self):
-        """Count the number of edges in the volmesh."""
-        return len(list(self.edges()))
-
-    def number_of_faces(self):
-        """Count the number of faces in the volmesh."""
-        return len(list(self.faces()))
-
-    def number_of_cells(self):
-        """Count the number of faces in the volmesh."""
-        return len(list(self.cells()))
+        """Remove all unused vertices from the volmesh object.
+        """
+        for u in list(self.vertices()):
+            if u not in self.plane:
+                del self.vertex[u]
+            else:
+                if not self.plane[u]:
+                    del self.vertex[u]
+                    del self.plane[u]
 
     # --------------------------------------------------------------------------
     # accessors
@@ -1162,7 +906,7 @@ class VolMesh(Datastructure):
         raise NotImplementedError
 
     # --------------------------------------------------------------------------
-    # vertex attributes
+    # attributes - vertices
     # --------------------------------------------------------------------------
 
     def update_default_vertex_attributes(self, attr_dict=None, **kwattr):
@@ -1181,6 +925,7 @@ class VolMesh(Datastructure):
         -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -1210,6 +955,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If the vertex does not exist.
+
         """
         if key not in self.vertex:
             raise KeyError(key)
@@ -1241,6 +987,7 @@ class VolMesh(Datastructure):
         -----
         Unsetting the value of a vertex attribute implicitly sets it back to the value
         stored in the default vertex attribute dict.
+
         """
         if name in self.vertex[key]:
             del self.vertex[key][name]
@@ -1270,6 +1017,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If the vertex does not exist.
+
         """
         if key not in self.vertex:
             raise KeyError(key)
@@ -1315,6 +1063,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If any of the vertices does not exist.
+
         """
         if not keys:
             keys = self.vertices()
@@ -1351,6 +1100,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If any of the vertices does not exist.
+
         """
         if not keys:
             keys = self.vertices()
@@ -1361,7 +1111,7 @@ class VolMesh(Datastructure):
         return [self.vertex_attributes(key, names) for key in keys]
 
     # --------------------------------------------------------------------------
-    # edge attributes
+    # attributes - edges
     # --------------------------------------------------------------------------
 
     def update_default_edge_attributes(self, attr_dict=None, **kwattr):
@@ -1380,6 +1130,7 @@ class VolMesh(Datastructure):
         -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -1408,9 +1159,10 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If the edge does not exist.
+
         """
         u, v = key
-        if u not in self.halfedge or v not in self.halfedge[u]:
+        if u not in self.plane or v not in self.plane[u]:
             raise KeyError(key)
         if value is not None:
             if (u, v) not in self.edgedata:
@@ -1445,9 +1197,10 @@ class VolMesh(Datastructure):
         -----
         Unsetting the value of an edge attribute implicitly sets it back to the value
         stored in the default edge attribute dict.
+
         """
         u, v = key
-        if u not in self.halfedge or v not in self.halfedge[u]:
+        if u not in self.plane or v not in self.plane[u]:
             raise KeyError(key)
         if key in self.edgedata:
             if name in self.edgedata[key]:
@@ -1456,51 +1209,6 @@ class VolMesh(Datastructure):
         if key in self.edgedata:
             if name in self.edgedata[key]:
                 del self.edgedata[key][name]
-
-    def edge_attributes(self, key, names=None, values=None):
-        """Get or set multiple attributes of an edge.
-
-        Parameters
-        ----------
-        key : 2-tuple of int
-            The identifier of the edge.
-        names : list, optional
-            A list of attribute names.
-        values : list, optional
-            A list of attribute values.
-
-        Returns
-        -------
-        dict, list or None
-            If the parameter ``names`` is empty,
-            a dictionary of all attribute name-value pairs of the edge.
-            If the parameter ``names`` is not empty,
-            a list of the values corresponding to the provided names.
-            ``None`` if the function is used as a "setter".
-
-        Raises
-        ------
-        KeyError
-            If the edge does not exist.
-        """
-        u, v = key
-        if u not in self.halfedge or v not in self.halfedge[u]:
-            raise KeyError(key)
-        if values:
-            # use it as a setter
-            for name, value in zip(names, values):
-                self.edge_attribute(key, name, value)
-            return
-        # use it as a getter
-        if not names:
-            # get the entire attribute dict
-            return EdgeAttributeView(self.default_edge_attributes, self.edgedata, key)
-        # get only the values of the named attributes
-        values = []
-        for name in names:
-            value = self.edge_attribute(key, name)
-            values.append(value)
-        return values
 
     def edges_attribute(self, name, value=None, keys=None):
         """Get or set an attribute of multiple edges.
@@ -1525,6 +1233,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         if not keys:
             keys = self.edges()
@@ -1561,6 +1270,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If any of the edges does not exist.
+
         """
         if not keys:
             keys = self.edges()
@@ -1589,6 +1299,7 @@ class VolMesh(Datastructure):
         -----
         Named arguments overwrite correpsonding key-value pairs in the attribute dictionary,
         if they exist.
+
         """
         if not attr_dict:
             attr_dict = {}
@@ -1616,6 +1327,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If the face does not exist.
+
         """
         if key not in self.halfface:
             raise KeyError(key)
@@ -1648,6 +1360,7 @@ class VolMesh(Datastructure):
         -----
         Unsetting the value of a face attribute implicitly sets it back to the value
         stored in the default face attribute dict.
+
         """
         if key not in self.halfface:
             raise KeyError(key)
@@ -1680,6 +1393,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If the face does not exist.
+
         """
         if key not in self.halfface:
             raise KeyError(key)
@@ -1722,6 +1436,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If any of the faces does not exist.
+
         """
         if not keys:
             keys = self.faces()
@@ -1758,6 +1473,7 @@ class VolMesh(Datastructure):
         ------
         KeyError
             If any of the faces does not exist.
+
         """
         if not keys:
             keys = self.faces()
@@ -1768,12 +1484,251 @@ class VolMesh(Datastructure):
         return [self.face_attributes(key, names) for key in keys]
 
     # --------------------------------------------------------------------------
-    # cell attributes
+    # attributes - cell
     # --------------------------------------------------------------------------
+
+    def update_default_cell_attributes(self, attr_dict=None, **kwattr):
+        """Update the default cell attributes.
+
+        Parameters
+        ----------
+        attr_dict : dict (None)
+            A dictionary of attributes with their default values.
+        kwattr : dict
+            A dictionary compiled of remaining named arguments.
+            Defaults to an empty dict.
+
+        Notes
+        ----
+        Named arguments overwrite corresponding key-value pairs in the attribute dictionary,
+        if they exist.
+
+        """
+        if not attr_dict:
+            attr_dict = {}
+        attr_dict.update(kwattr)
+        self.default_cell_attributes.update(attr_dict)
+
+    def cell_attribute(self, key, name, value=None):
+        """Get or set an attribute of a cell.
+
+        Parameters
+        ----------
+        key : int
+            The cell identifier.
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+
+        Returns
+        -------
+        object or None
+            The value of the attribute, or ``None`` when the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the cell does not exist.
+
+        """
+        if key not in self.cell:
+            raise KeyError(key)
+        if value is not None:
+            if key not in self.celldata:
+                self.celldata[key] = {}
+            self.celldata[key][name] = value
+            return
+        if key in self.celldata and name in self.celldata[key]:
+            return self.celldata[key][name]
+        if name in self.default_cell_attributes:
+            return self.default_cell_attributes[name]
+
+    def unset_cell_attribute(self, key, name):
+        """Unset the attribute of a cell.
+
+        Parameters
+        ----------
+        key : int
+            The cell identifier.
+        name : str
+            The name of the attribute.
+
+        Raises
+        ------
+        KeyError
+            If the cell does not exist.
+
+        Notes
+        -----
+        Unsetting the value of a cell attribute implicitly sets it back to the value
+        stored in the default cell attribute dict.
+
+        """
+        if key not in self.cell:
+            raise KeyError(key)
+        if key in self.celldata:
+            if name in self.celldata[key]:
+                del self.celldata[key][name]
+
+    def cell_attributes(self, key, names=None, values=None):
+        """Get or set multiple attributes of a cell.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the cell.
+        names : list, optional
+            A list of attribute names.
+        values : list, optional
+            A list of attribute values.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is empty,
+            a dictionary of all attribute name-value pairs of the cell.
+            If the parameter ``names`` is not empty,
+            a list of the values corresponding to the provided names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the cell does not exist.
+
+        """
+        if key not in self.cell:
+            raise KeyError(key)
+        if values is not None:
+            # use it as a setter
+            for name, value in zip(names, values):
+                if key not in self.celldata:
+                    self.celldata[key] = {}
+                self.celldata[key][name] = value
+            return
+        # use it as a getter
+        if not names:
+            return CellAttributeView(self.default_cell_attributes, self.celldata.setdefault(key, {}))
+        values = []
+        for name in names:
+            value = self.cell_attribute(key, name)
+            values.append(value)
+        return values
+
+    def cells_attribute(self, name, value=None, keys=None):
+        """Get or set an attribute of multiple cells.
+
+        Parameters
+        ----------
+        name : str
+            The name of the attribute.
+        value : obj, optional
+            The value of the attribute.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of face identifiers.
+
+        Returns
+        -------
+        list or None
+            A list containing the value per face of the requested attribute,
+            or ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the cells does not exist.
+
+        """
+        if not keys:
+            keys = self.cells()
+        if value is not None:
+            for key in keys:
+                self.cell_attribute(key, name, value)
+            return
+        return [self.cell_attribute(key, name) for key in keys]
+
+    def cells_attributes(self, names=None, values=None, keys=None):
+        """Get or set multiple attributes of multiple cells.
+
+        Parameters
+        ----------
+        names : list of str, optional
+            The names of the attribute.
+            Default is ``None``.
+        values : list of obj, optional
+            The values of the attributes.
+            Default is ``None``.
+        keys : list of int, optional
+            A list of cell identifiers.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is ``None``,
+            a list containing per cell an attribute dict with all attributes (default + custom) of the cell.
+            If the parameter ``names`` is ``None``,
+            a list containing per cell a list of attribute values corresponding to the requested names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If any of the faces does not exist.
+
+        """
+        if not keys:
+            keys = self.cells()
+        if values is not None:
+            for key in keys:
+                self.cell_attributes(key, names, values)
+            return
+        return [self.cell_attributes(key, names) for key in keys]
+
+    # --------------------------------------------------------------------------
+    # volmesh info
+    # --------------------------------------------------------------------------
+
+    def number_of_vertices(self):
+        """Count the number of vertices in the volmesh."""
+        return len(list(self.vertices()))
+
+    def number_of_edges(self):
+        """Count the number of edges in the volmesh."""
+        return len(list(self.edges()))
+
+    def number_of_faces(self):
+        """Count the number of faces in the volmesh."""
+        return len(list(self.faces()))
+
+    def number_of_cells(self):
+        """Count the number of faces in the volmesh."""
+        return len(list(self.cells()))
+
+    def is_valid(self):
+        NotImplementedError
 
     # --------------------------------------------------------------------------
     # vertex topology
     # --------------------------------------------------------------------------
+
+    def has_vertex(self, key):
+        """Verify that a vertex is in the volmesh.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        bool
+            True if the vertex is in the volmesh.
+            False otherwise.
+
+        """
+        return key in self.vertex
 
     def vertex_neighbors(self, vkey):
         """Return the vertex neighbors of a vertex.
@@ -1791,8 +1746,83 @@ class VolMesh(Datastructure):
         """
         return self.plane[vkey].keys()
 
+    def vertex_neighborhood(self, key, ring=1):
+        """Return the vertices in the neighborhood of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the vertex.
+        ring : int, optional
+            The number of neighborhood rings to include. Default is ``1``.
+
+        Returns
+        -------
+        list
+            The vertices in the neighborhood.
+
+        Notes
+        -----
+        The vertices in the neighborhood are unordered.
+
+        Examples
+        --------
+        >>>
+
+        """
+        nbrs = set(self.vertex_neighbors(key))
+        i = 1
+        while True:
+            if i == ring:
+                break
+            temp = []
+            for key in nbrs:
+                temp += self.vertex_neighbors(key)
+            nbrs.update(temp)
+            i += 1
+        return nbrs
+
+    def vertex_degree(self, key):
+        """Count the neighbors of a vertex.
+
+        Parameters
+        ----------
+        key : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        int
+            The degree of the vertex.
+        """
+        return len(self.vertex_neighbors(key))
+
+    def vertex_min_degree(self):
+        """Compute the minimum degree of all vertices.
+
+        Returns
+        -------
+        int
+            The lowest degree of all vertices.
+        """
+        if not self.vertex:
+            return 0
+        return min(self.vertex_degree(key) for key in self.vertices())
+
+    def vertex_max_degree(self):
+        """Compute the maximum degree of all vertices.
+
+        Returns
+        -------
+        int
+            The highest degree of all vertices.
+        """
+        if not self.vertex:
+            return 0
+        return max(self.vertex_degree(key) for key in self.vertices())
+
     def vertex_halffaces(self, vkey):
-        """Halffaces connected to a vertex.
+        """Return all halffaces connected to a vertex.
 
         Parameters
         ----------
@@ -1803,24 +1833,19 @@ class VolMesh(Datastructure):
         -------
         list
             The list of halffaces connected to a vertex.
-
         """
-        cells = self.vertex_cells(vkey)
-
-        nbr_vkeys = self.plane[vkey].keys()
-
-        hfkeys = []
-
+        cells     = self.vertex_cells(vkey)
+        nbr_vkeys = self.vertex_neighbors(vkey)
+        hfkeys    = set()
         for ckey in cells:
             for v in nbr_vkeys:
                 if v in self.cell[ckey][vkey]:
-                    hfkeys.append(self.cell[ckey][vkey][v])
-                    hfkeys.append(self.cell[ckey][v][vkey])
-
-        return hfkeys
+                    hfkeys.add(self.cell[ckey][vkey][v])
+                    hfkeys.add(self.cell[ckey][v][vkey])
+        return list(hfkeys)
 
     def vertex_cells(self, vkey):
-        """Cells connected to a vertex.
+        """Return all cells connected to a vertex.
 
         Parameters
         ----------
@@ -1831,15 +1856,12 @@ class VolMesh(Datastructure):
         -------
         list
             The list of cells connected to a vertex.
-
         """
         ckeys = set()
-
         for v in self.plane[vkey].keys():
-            for w in self.plane[vkey][v].keys():
-                if self.plane[vkey][v][w] is not None:
-                    ckeys.add(self.plane[vkey][v][w])
-
+            for ckey in self.plane[vkey][v].values():
+                if ckey:
+                    ckeys.add(ckey)
         return list(ckeys)
 
     def is_vertex_on_boundary(self, vkey):
@@ -1858,19 +1880,37 @@ class VolMesh(Datastructure):
 
         """
         hfkeys = self.vertex_halffaces(vkey)
-
         for hfkey in hfkeys:
             if self.is_halfface_on_boundary(hfkey):
                 return True
-
         return False
 
     # --------------------------------------------------------------------------
     # edge topology
     # --------------------------------------------------------------------------
 
+    def has_edge(self, key):
+        """Verify that the volmesh contains a specific edge.
+
+        Warnings
+        --------
+        This method may produce unexpected results.
+
+        Parameters
+        ----------
+        key : tuple of int
+            The identifier of the edge.
+
+        Returns
+        -------
+        bool
+            True if the edge exists.
+            False otherwise.
+        """
+        return key in set(self.edges())
+
     def edge_halffaces(self, u, v):
-        """Ordered halffaces adjacent to edge u-v.
+        """Ordered halffaces adjacent to halfedge u-v.
 
         Parameters
         ----------
@@ -1885,16 +1925,14 @@ class VolMesh(Datastructure):
             List of of keys identifying the adjacent halffaces.
 
         """
-        edge_ckeys = self.plane[u][v].values()
-        ckey = edge_ckeys[0]
+        edge_ckeys     = self.plane[u][v].values()
+        ckey           = edge_ckeys[0]
         ordered_hfkeys = []
-
         for i in range(len(edge_ckeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            w = self.halfface_vertex_descendent(hfkey, v)
-            ckey = self.plane[w][v][u]
+            w     = self.halfface_vertex_descendent(hfkey, v)
+            ckey  = self.plane[w][v][u]
             ordered_hfkeys.append(hfkey)
-
         return ordered_hfkeys
 
     def edge_cells(self, u, v):
@@ -1913,21 +1951,55 @@ class VolMesh(Datastructure):
             Ordered List of keys identifying the adjacent cells.
 
         """
-        edge_ckeys = self.plane[u][v].values()
-        ckey = edge_ckeys[0]
+        edge_ckeys    = self.plane[u][v].values()
+        ckey          = edge_ckeys[0]
         ordered_ckeys = [ckey]
-
         for i in range(len(edge_ckeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            w = self.halfface_vertex_descendent(hfkey, v)
-            ckey = self.plane[w][v][u]
+            w     = self.halfface_vertex_descendent(hfkey, v)
+            ckey  = self.plane[w][v][u]
             ordered_ckeys.append(ckey)
-
         return ordered_ckeys
+
+    def is_edge_on_boundary(self, u, v):
+        """Verify that an edge is on the boundary.
+
+        Parameters
+        ----------
+        u : int
+            The identifier of the first vertex.
+        v : int
+            The identifier of the second vertex.
+
+        Returns
+        -------
+        bool
+            True if the edge is on the boundary.
+            False otherwise.
+
+        """
+        return None in self.plane[u][v].values()
 
     # --------------------------------------------------------------------------
     # halfface topology
     # --------------------------------------------------------------------------
+
+    def has_face(self, fkey):
+        """Verify that a halfface is part of the volmesh.
+
+        Parameters
+        ----------
+        fkey : int
+            The identifier of the face.
+
+        Returns
+        -------
+        bool
+            True if the face exists.
+            False otherwise.
+
+        """
+        return fkey in self.halfface
 
     def halfface_vertices(self, hfkey):
         """The vertices of a halfface.
@@ -1960,8 +2032,24 @@ class VolMesh(Datastructure):
 
         """
         vertices = self.halfface_vertices(hfkey)
-
         return list(pairwise(vertices + vertices[0:1]))
+
+    def halfface_cell(self, hfkey):
+        """The cell to which the halfface belongs to.
+
+        Parameters
+        ----------
+        fkey : hashable
+            Identifier of the halfface.
+
+        Returns
+        -------
+        ckey
+            Identifier of th cell.
+
+        """
+        u, v, w = self.halfface[hfkey][0:3]
+        return self.plane[u][v][w]
 
     def halfface_opposite_halfface(self, hfkey):
         """The opposite halfface of a halfface.
@@ -1978,16 +2066,45 @@ class VolMesh(Datastructure):
 
         Notes
         -----
-        For a boundary halfface, the opposite hlafface is None.
+        For a boundary halfface, the opposite halfface is None.
 
         """
-        u, v, w = self.halfface[hfkey][0:3]
-
+        u, v, w  = self.halfface[hfkey][0:3]
         nbr_ckey = self.plane[w][v][u]
-
         if not nbr_ckey:
             return None
+        return self.cell[nbr_ckey][v][u]
 
+    def halfface_adjacent_halfface(self, hfkey, uv):
+        """Return the halfface adjacent to a halfface across the halfedge uv.
+
+        Parameters
+        ----------
+        hfkey : hashable
+            The identifier of the halfface.
+        uv : tuple of int
+            The identifier of the halfedge.
+
+        Returns
+        -------
+        int or None
+            The identifier of the halfface.
+            None, if both halffaces belong to the same cell.
+
+        Notes
+        -----
+        * Neighboring halfface from the same cell are not included.
+
+        """
+        if uv not in self.halfface_halfedges(hfkey):
+            raise KeyError(uv)
+        u, v      = uv
+        ckey      = self.halfface_cell(hfkey)
+        adj_hfkey = self.cell[ckey][v][u]
+        w         = self.halfface_vertex_ancestor(adj_hfkey, v)
+        nbr_ckey  = self.plane[u][v][w]
+        if not nbr_ckey:
+            return None
         return self.cell[nbr_ckey][v][u]
 
     def halfface_vertex_ancestor(self, hfkey, vkey):
@@ -2012,7 +2129,6 @@ class VolMesh(Datastructure):
 
         """
         i = self.halfface[hfkey].index(vkey)
-
         return self.halfface[hfkey][i - 1]
 
     def halfface_vertex_descendent(self, hfkey, vkey):
@@ -2038,28 +2154,130 @@ class VolMesh(Datastructure):
         """
         if self.halfface[hfkey][-1] == vkey:
             return self.halfface[hfkey][0]
-
         i = self.halfface[hfkey].index(vkey)
-
         return self.halfface[hfkey][i + 1]
 
-    def halfface_cell(self, hfkey):
-        """The cell to which the halfface belongs to.
+    def halfface_neighbors_across_vertices(self, hfkey):
+        """Return all halffaces that share vertices with a halfface.
 
         Parameters
         ----------
-        fkey : hashable
-            Identifier of the halfface.
+        hfkey : hashable
+            The identifier of the halfface.
 
         Returns
         -------
-        ckey
-            Identifier of th cell.
+        list
+            The list of halffaces.
+
+        Notes
+        -----
+        * Neighboring halffaces on the same cell are not included.
 
         """
-        u, v, w = self.halfface[hfkey][0:3]
+        nbrs     = set()
+        vertices = self.halfface_vertices()
+        ckey     = self.halfface_cell(hfkey)
+        for u, v in self.halfface_halfedges(hfkey):
+            adj_hfkey = self.cell[ckey][v][u]
+            w         = self.halfface_vertex_ancestor(adj_hfkey, v)
+            nbr_ckey  = self.plane[u][v][w]
+            if nbr_ckey:
+                nbr_hfkey = self.cell[nbr_ckey][v][u]
+                nbrs.append(nbr_hfkey)
+                while True:
+                    w1        = self.halfface_vertex_ancestor(nbr_hfkey, v)
+                    if w1 in vertices:
+                        break
+                    nbr_hfkey = self.halfface_adjacent_halfface(nbr_hfkey, (w1, v))
+                    if nbr_hfkey:
+                        nbrs.add(nbr_hfkey)
+        return list(nbrs)
 
-        return self.plane[u][v][w]
+    def halfface_neighborhood_across_vertices(self, hfkey, ring=1):
+        """Return the halfface neighborhood of a halfface across their vertices.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the halfface.
+
+        Returns
+        -------
+        list
+            The list of neighboring halffaces.
+
+        Notes
+        -----
+        * Neighboring halffaces on the same cell are not included.
+
+        """
+        nbrs = set(self.halfface_vertex_neighbors(hfkey))
+        i = 1
+        while True:
+            if i == ring:
+                break
+            temp = []
+            for nbr_hfkey in nbrs:
+                temp += self.halfface_vertex_neighbors(nbr_hfkey)
+            nbrs.update(temp)
+            i += 1
+        return nbrs
+
+    def halfface_neighbors_across_edges(self, hfkey):
+        """Return the halfface neighbors of a halfface across its edges.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the halfface.
+
+        Returns
+        -------
+        list
+            The list of neighboring halffaces.
+
+        Notes
+        -----
+        * Neighboring halffaces on the same cell are not included.
+
+        """
+        nbrs = []
+        for u, v in self.halfface_halfedges(hfkey):
+            nbr_hfkey = self.halfface_adjacent_halfface(hfkey, (u, v))
+            if nbr_hfkey:
+                nbrs.append(nbr_hfkey)
+        return nbrs
+
+    def halfface_neighborhood_across_edges(self, hfkey, ring=1):
+        """Return the halfface neighborhood of a halfface across their edges.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the halfface.
+
+        Returns
+        -------
+        list
+            The list of neighboring halffaces.
+
+        Notes
+        -----
+        * Neighboring halffaces on the same cell are not included.
+
+        """
+        nbrs = set(self.halfface_edge_neighbors(hfkey))
+        i = 1
+        while True:
+            if i == ring:
+                break
+            temp = []
+            for nbr_hfkey in nbrs:
+                temp += self.halfface_edge_neighbors(nbr_hfkey)
+            nbrs.update(temp)
+            i += 1
+        return nbrs
 
     def is_halfface_on_boundary(self, hfkey):
         """Verify that a halfface is on a boundary.
@@ -2077,11 +2295,7 @@ class VolMesh(Datastructure):
 
         """
         u, v, w = self.halfface[hfkey][0:3]
-
-        if self.plane[w][v][u] is None:
-            return True
-
-        return False
+        return self.plane[w][v][u] is None
 
     # --------------------------------------------------------------------------
     # cell topology
@@ -2103,50 +2317,24 @@ class VolMesh(Datastructure):
         """
         return list(set([key for fkey in self.cell_halffaces(ckey) for key in self.halfface_vertices(fkey)]))
 
-    # def cell_halfedges(self, ckey):
-    #     """The halfedges of a cell.
+    def cell_halfedges(self, ckey):
+        """The halfedges of a cell.
 
-    #     Parameters
-    #     ----------
-    #     ckey : hashable
-    #         Identifier of the cell.
+        Parameters
+        ----------
+        ckey : hashable
+            Identifier of the cell.
 
-    #     Returns
-    #     -------
-    #     list
-    #         The halfedges of a cell.
+        Returns
+        -------
+        list
+            The halfedges of a cell.
 
-    #     """
-    #     halfedges = []
-
-    #     for fkey in self.cell_halffaces(ckey):
-    #         halfedges += self.halfface_halfedges(fkey)
-
-    #     return halfedges
-
-    # def cell_edges(self, ckey):
-    #     """The edges of a cell.
-
-    #     Parameters
-    #     ----------
-    #     ckey : hashable
-    #         Identifier of the cell.
-
-    #     Returns
-    #     -------
-    #     list
-    #         The edges of a cell.
-
-    #     """
-    #     edges = []
-
-    #     halfedges = self.cell_halfedges(ckey)
-
-    #     for (u, v) in halfedges:
-    #         if v in self.edge[u]:
-    #             edges.append((u, v))
-
-    #     return edges
+        """
+        halfedges = []
+        for fkey in self.cell_halffaces(ckey):
+            halfedges += self.halfface_halfedges(fkey)
+        return halfedges
 
     def cell_halffaces(self, ckey):
         """The halffaces of a cell.
@@ -2162,13 +2350,9 @@ class VolMesh(Datastructure):
             The halffaces of a cell.
 
         """
-
         hfkeys = []
-
         for u in self.cell[ckey]:
-            for v in self.cell[ckey][u]:
-                hfkeys.append(self.cell[ckey][u][v])
-
+            hfkeys += self.cell[ckey][u].values()
         return hfkeys
 
     def cell_vertex_neighbors(self, ckey, vkey):
@@ -2186,17 +2370,13 @@ class VolMesh(Datastructure):
 
         """
         nbr_vkeys = self.cell[ckey][vkey].keys()
-
-        u = vkey
-        v = nbr_vkeys[0]
-
+        u         = vkey
+        v         = nbr_vkeys[0]
         ordered_vkeys = [v]
-
         for i in range(len(nbr_vkeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            v = self.halfface_vertex_ancestor(hfkey, u)
+            v     = self.halfface_vertex_ancestor(hfkey, u)
             ordered_vkeys.append(v)
-
         return ordered_vkeys
 
     def cell_vertex_halffaces(self, ckey, vkey):
@@ -2214,20 +2394,37 @@ class VolMesh(Datastructure):
 
         """
         nbr_vkeys = self.cell[ckey][vkey].keys()
-
-        u = vkey
-        v = nbr_vkeys[0]
-
+        u         = vkey
+        v         = nbr_vkeys[0]
         ordered_hfkeys = []
-
         for i in range(len(nbr_vkeys)):
             hfkey = self.cell[ckey][u][v]
-            v = self.halfface_vertex_ancestor(hfkey, u)
+            v     = self.halfface_vertex_ancestor(hfkey, u)
             ordered_hfkeys.append(hfkey)
-
         return ordered_hfkeys
 
-    def cell_neighbors(self, ckey):
+    def cell_neighbors_across_vertices(self, ckey):
+        """Return the cell neighbors of a cell across its vertices.
+
+        Parameters
+        ----------
+        ckey : hashable
+            Identifier of the cell.
+
+        Returns
+        -------
+        list
+            The identifiers of the neighboring cells.
+
+        """
+        ckeys = set()
+        for vkey in self.cell_vertices(ckey):
+            ckeys.update(self.vertex_cells(vkey))
+        return list(ckeys)
+
+
+
+    def cell_neighbors_across_halffaces(self, ckey):
         """Return the cell neighbors of a cell across its halffaces.
 
         Parameters
@@ -2242,17 +2439,45 @@ class VolMesh(Datastructure):
 
         """
         ckeys = []
-
-        for fkey in self.cell_halffaces(ckey):
-            u, v, w = self.halfface[fkey][0:3]
-            nbr = self.plane[w][v][u]
-
+        for hfkey in self.cell_halffaces(ckey):
+            u, v, w = self.halfface[hfkey][0:3]
+            nbr     = self.plane[w][v][u]
             if nbr is not None:
                 ckeys.append(nbr)
-
         return ckeys
 
-    def cell_pair_halffaces(self, ckey_1, ckey_2):
+
+
+
+
+
+    def cell_neighborhood(self, ceky):
+        """Return the cells in the neighborhood of a cell across its halffaces.
+
+        Parameters
+        ----------
+        ckey : hashable
+            Identifier of the cell.
+
+        Returns
+        -------
+        list
+            The identifiers of the neighboring cells.
+
+        """
+
+
+
+
+
+
+
+
+
+
+
+
+    def cell_adjacency_halffaces(self, ckey_1, ckey_2):
         """Given 2 ckeys, returns the interfacing halffaces, respectively.
 
         Parameters
@@ -2265,492 +2490,65 @@ class VolMesh(Datastructure):
         Returns
         -------
         hfkey_1
-            The identifier of the halfface belonging to cell 1 .
+            The identifier of the halfface belonging to cell 1.
         hfkey_2
             The identifier of the halfface belonging to cell 2.
 
         """
         for hfkey in self.cell_halffaces(ckey_1):
             u, v, w = self.halfface[hfkey][0:3]
-            nbr = self.plane[w][v][u]
-
+            nbr     = self.plane[w][v][u]
             if nbr == ckey_2:
                 return hfkey, self.halfface_opposite_halfface(hfkey)
-
         return
 
-    def cell_to_mesh(self, ckey):
-        """Construct a mesh from a cell.
-
-        Parameters
-        ----------
-        hfkey : hashable
-            Identifier of the cell.
-
-        Returns
-        -------
-        Mesh
-            A mesh object.
-
-        """
-        vertices, halffaces = self.cell_to_vertices_and_halffaces(ckey)
-        return Mesh.from_vertices_and_faces(vertices, halffaces)
-
-    def cell_to_vertices_and_halffaces(self, ckey):
-        """Return the vertices and halffaces of a cell.
-
-        Returns
-        -------
-        tuple
-            A 2-tuple containing
-
-            * a list of vertices, represented by their XYZ coordinates, and
-            * a list of halffaces.
-
-            Each halfface is a list of indices referencing the list of vertex coordinates.
-
-        """
-        vkeys = self.cell_vertices(ckey)
-        hfkeys = self.cell_halffaces(ckey)
-
-        vkey_vindex = dict((vkey, index) for index, vkey in enumerate(vkeys))
-
-        vertices = [self.vertex_coordinates(vkey) for vkey in vkeys]
-        halffaces = [[vkey_vindex[vkey] for vkey in self.halfface[fkey]] for fkey in hfkeys]
-
-        return vertices, halffaces
-
-    def cell_tree(self, root):
-        raise NotImplementedError
-
     # --------------------------------------------------------------------------
-    # volmesh geometry
+    # boundary
     # --------------------------------------------------------------------------
 
-    def centroid(self):
-        """Compute the centroid of the volmesh.
-
-        Parameters
-        ----------
+    def vertices_on_boundaries(self):
+        """Find the vertices on the boundary.
 
         Returns
         -------
         list
-            The coordinates of the centroid.
+            The vertices of the boundary.
 
         """
-        xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
-
-        return centroid_points(xyz)
-
-    def bounding_box(self):
-        """Compute the x, y, z dimensinos of the bounding box of the volmesh.
-
-        Parameters
-        ----------
-
-        Returns
-        -------
-        float
-            The x dimension of the bounding box.
-        float
-            The y dimension of the bounding box.
-        float
-            The z dimensino of the bounding box.
-
-        """
-        xyz = [self.vertex_coordinates(vkey) for vkey in self.vertex]
-
-        x_sorted = sorted(xyz, key=lambda k: k[0])
-        y_sorted = sorted(xyz, key=lambda k: k[1])
-        z_sorted = sorted(xyz, key=lambda k: k[2])
-
-        x = abs(x_sorted[0][0] - x_sorted[-1][0])
-        y = abs(y_sorted[0][1] - y_sorted[-1][1])
-        z = abs(z_sorted[0][2] - z_sorted[-1][2])
-
-        return x, y, z
-
-    # --------------------------------------------------------------------------
-    # vertex geometry
-    # --------------------------------------------------------------------------
-
-    def vertex_coordinates(self, vkey, axes='xyz'):
-        """Return the coordinates of a vertex.
-
-        Parameters
-        ----------
-        vkey : hashable
-            The identifier of the vertex.
-        axes : str, optional
-            The axes alon which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
-            Default is ``'xyz'``.
-
-        Returns
-        -------
-        list
-            Coordinates of the vertex.
-
-        """
-        return [self.vertex[vkey][axis] for axis in axes]
-
-    def vertex_normal(self, vkey):
-        """Return the normal vector at the vertex as the weighted average of the
-        normals of the neighboring halffaces.
-
-        Parameters
-        ----------
-        vkey : hashable
-            The identifier of the vertex.
-
-        Returns
-        -------
-        list
-            The components of the normal vector.
-
-        """
-        vectors = []
-
-        for hfkey in self.vertex_halffaces(vkey):
+        vertices = set()
+        for hfkey in self.halfface:
             if self.is_halfface_on_boundary(hfkey):
-                vectors.append(self.halfface_normal(hfkey))
+                vertices.update(self.halfface_vertices(hfkey))
+        return list(vertices)
 
-        return normalize_vector(centroid_points(vectors))
-
-    # --------------------------------------------------------------------------
-    # edge geometry
-    # --------------------------------------------------------------------------
-
-    def edge_coordinates(self, u, v, axes='xyz'):
-        """Return the coordinates of the start and end point of an edge.
-
-        Parameters
-        ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
-        axes : str (xyz)
-            The axes along which the coordinates should be included.
-
-        Returns
-        -------
-        tuple
-            The coordinates of the start point and the coordinates of the end point.
-
-        """
-        return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
-
-    def edge_length(self, u, v):
-        """Return the length of an edge.
-
-        Parameters
-        ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
-
-        Returns
-        -------
-        float
-            The length of the edge.
-
-        """
-        a, b = self.edge_coordinates(u, v)
-        return distance_point_point(a, b)
-
-    def edge_vector(self, u, v):
-        """Return the vector of an edge.
-
-        Parameters
-        ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
-
-        Returns
-        -------
-        list
-            The vector from u to v.
-
-        """
-        a, b = self.edge_coordinates(u, v)
-        ab = subtract_vectors(b, a)
-        return ab
-
-    def edge_point(self, u, v, t=0.5):
-        """Return the location of a point along an edge.
-
-        Parameters
-        ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
-        t : float (0.5)
-            The location of the point on the edge.
-            If the value of ``t`` is outside the range ``0-1``, the point will
-            lie in the direction of the edge, but not on the edge vector.
-
-        Returns
-        -------
-        list
-            The XYZ coordinates of the point.
-
-        """
-        a, b = self.edge_coordinates(u, v)
-        ab = subtract_vectors(b, a)
-        return add_vectors(a, scale_vector(ab, t))
-
-    def edge_midpoint(self, u, v):
-        """Return the location of the midpoint of an edge.
-
-        Parameters
-        ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
-
-        Returns
-        -------
-        list
-            The XYZ coordinates of the midpoint.
-
-        """
-        a, b = self.edge_coordinates(u, v)
-        return midpoint_line((a, b))
-
-    def edge_direction(self, u, v):
-        """Return the direction vector of an edge.
-
-        Parameters
-        ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
-
-        Returns
-        -------
-        list
-            The direction vector of the edge.
-
-        """
-        return normalize_vector(self.edge_vector(u, v))
-
-    # --------------------------------------------------------------------------
-    # face geometry
-    # --------------------------------------------------------------------------
-
-    def halfface_coordinates(self, hfkey):
-        """Compute the coordinates of the vertices of a halfface.
-
-        Parameters
-        ----------
-        hfkey : hashable
-            The identifier of the halfface.
-        axes : str, optional
-            The axes alon which to take the coordinates.
-            Should be a combination of ``'x'``, ``'y'``, ``'z'``.
-            Default is ``'xyz'``.
-
-        Returns
-        -------
-        list of list
-            The coordinates of the vertices of the halfface.
-
-        """
-        return [self.vertex_coordinates(key) for key in self.halfface_vertices(hfkey)]
-
-    def halfface_normal(self, hfkey, unitized=True):
-        """Compute the non-oriented normal of a halfface.
-
-        Parameters
-        ----------
-        fkey : hashable
-            The identifier of the halfface.
-        unitized : bool, optional
-            Unitize the normal vector.
-            Default is ``True``.
-
-        Returns
-        -------
-        list
-            The components of the normal vector.
-
-        """
-        return normal_polygon(self.halfface_coordinates(hfkey), unitized=unitized)
-
-    def halfface_centroid(self, hfkey):
-        """Compute the location of the centroid of a halfface.
-
-        Parameters
-        ----------
-        hfkey : hashable
-            The identifier of the halfface.
-
-        Returns
-        -------
-        list
-            The coordinates of the centroid.
-
-        """
-        return centroid_polygon(self.halfface_coordinates(hfkey))
-
-    def halfface_center(self, hfkey):
-        """Compute the location of the center of mass of a halfface.
-
-        Parameters
-        ----------
-        hfkey : hashable
-            The identifier of the halfface.
-
-        Returns
-        -------
-        list
-            The coordinates of the center of mass.
-
-        """
-        return centroid_polygon(self.halfface_coordinates(hfkey))
-
-    def halfface_area(self, hfkey):
-        """Compute the non-oriented area of a halfface.
-
-        Parameters
-        ----------
-        fkey : hashable
-            The identifier of the face.
-
-        Returns
-        -------
-        float
-            The non-oriented area of the face.
-
-        """
-        return area_polygon(self.halfface_coordinates(hfkey))
-
-    def face_coordinates(self, fkey):
-        return self.halfface_coordinates(fkey)
-
-    def face_center(self, fkey):
-        return centroid_polygon(self.halfface_coordinates(fkey))
-
-    # --------------------------------------------------------------------------
-    # cell geometry
-    # --------------------------------------------------------------------------
-
-    def cell_centroid(self, ckey):
-        """Compute the location of the centroid of a cell.
-
-        Parameters
-        ----------
-        ckey : hashable
-            The identifier of the cell.
-
-        Returns
-        -------
-        list
-            The coordinates of the centroid.
-
-        """
-        vkeys = self.cell_vertices(ckey)
-
-        return centroid_points([self.vertex_coordinates(vkey) for vkey in vkeys])
-
-    def cell_center(self, ckey):
-        """Compute the location of the center of mass of a cell.
-
-        Parameters
-        ----------
-        ckey : hashable
-            The identifier of the cell.
-
-        Returns
-        -------
-        list
-            The coordinates of the center of mass.
-
-        """
-        vertices, halffaces = self.cell_to_vertices_and_halffaces(ckey)
-
-        return centroid_polyhedron((vertices, halffaces))
-
-    # --------------------------------------------------------------------------
-    # boundary / interior
-    # --------------------------------------------------------------------------
-
-    def halffaces_interior(self):
-        """Find all interior halffaces.
-
-        Returns
-        -------
-        list
-            All interior halffaces.
-
-        """
-        halffaces = set(self.halfface.keys())
-        halffaces_on_boundary = set(self.halffaces_on_boundary())
-
-        return halffaces - halffaces_on_boundary
-
-    def faces_interior(self):
-        """Find the interior faces (unique halffaces).
-
-        Returns
-        -------
-        list
-            The unique interior faces (unique halffaces).
-
-        """
-        faces = set(self.halfface.keys())
-        faces_on_boundary = set(self.halffaces_on_boundary())
-
-        return faces - faces_on_boundary
-
-    def halffaces_on_boundary(self):
+    def halffaces_on_boundaries(self):
         """Find the halffaces on the boundary.
 
         Returns
         -------
         list
-            The halffaces on the boundary.
+            The halffaces of the boundary.
 
         """
-        hfkeys = set()
-
-        for hfkey in self.faces():
+        halffaces = set()
+        for hfkey in self.halfface:
             if self.is_halfface_on_boundary(hfkey):
-                hfkeys.add(hfkey)
+                halffaces.add(hfkey)
+        return list(halffaces)
 
-        return list(hfkeys)
-
-    # --------------------------------------------------------------------------
-    # geometric operations
-    # --------------------------------------------------------------------------
-
-    def scale(self, factor=1.0):
-        """Scale the entire volmesh object.
-
-        Parameters
-        ----------
-        factor : float
-            Scaling factor.
+    def cells_on_boundaries(self):
+        """Find the cells on the boundary.
 
         Returns
         -------
-        Volmesh
-            The volmesh with updated XYZ coordinates.
+        list
+            The cells of the boundary.
 
         """
-        for key in self.vertex:
-            attr = self.vertex[key]
-            attr['x'] *= factor
-            attr['y'] *= factor
-            attr['z'] *= factor
+        cells = set()
+        for hfkey in self. halffaces_on_boundaries():
+            cells.add(self.halfface_cell(hfkey))
+        return list(cells)
 
 
 # ==============================================================================
@@ -2758,15 +2556,6 @@ class VolMesh(Datastructure):
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    # import compas
-
-    # volmesh = VolMesh.from_obj(compas.get('boxes.obj'))
-
-    # volmesh.summary()
-
-    # for key, attr in volmesh.vertices(True):
-    #     print(key, attr)
 
     import doctest
     doctest.testmod(globs=globals())
