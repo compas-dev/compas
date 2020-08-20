@@ -2,7 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 import compas_rhino
+from compas.utilities import iterable_like
 from compas_rhino.artists.primitiveartist import PrimitiveArtist
 
 
@@ -14,11 +20,12 @@ class LineArtist(PrimitiveArtist):
 
     Parameters
     ----------
-    line : :class:`compas.geometry.Line`
+    primitive : :class:`compas.geometry.Line`
         A COMPAS line.
-    layer : str (optional)
-        The name of the layer that will contain the line.
-        Default value is ``None``, in which case the current layer will be used.
+
+    Other Parameters
+    ----------------
+    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     Examples
     --------
@@ -42,55 +49,57 @@ class LineArtist(PrimitiveArtist):
         self.guids = guids
         return guids
 
-    # @staticmethod
-    # def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):
-    #     """Draw a collection of lines.
+    @staticmethod
+    def draw_collection(collection, names=None, colors=None, layer=None, clear=False, add_to_group=False, group_name=None):
+        """Draw a collection of lines.
 
-    #     Parameters
-    #     ----------
-    #     collection: list of compas.geometry.Line
-    #         A collection of ``Line`` objects.
-    #     color: tuple or list of tuple (optional)
-    #         Color specification of the lines.
-    #         If one RGB color is provided, it will be applied to all lines.
-    #         If a list of RGB colors is provided, these colors are applied to the corresponding lines.
-    #         A list of colors should have the same length as the collection, with one color per item.
-    #         Default value is ``None`` in which case the default line color of the artist is used.
-    #     layer: str (optional)
-    #         The layer in which the objects of the collection should be created.
-    #         Default is ``None``, in which case the default layer setting of the artist is used.
-    #     clear: bool (optional)
-    #         Clear the layer before drawing.
-    #         Default is ``False``.
-    #     group_collection: bool (optional)
-    #         Flag for grouping the objects of the collection.
-    #         Default is ``False``.
-    #     group_name: str (optional).
-    #         The name of the group.
-    #         Default is ``None``.
+        Parameters
+        ----------
+        collection: list of compas.geometry.Line
+            A collection of ``Line`` objects.
+        names : list of str, optional
+            Individual names for the lines.
+        colors : color or list of color, optional
+            A color specification for the lines as a single color or a list of individual colors.
+        layer : str, optional
+            A layer path.
+        clear : bool, optional
+            Clear the layer before drawing.
+        add_to_group : bool, optional
+            Add the frames to a group.
+        group_name : str, optional
+            Name of the group.
 
-    #     Returns
-    #     -------
-    #     guids: list
-    #         A list of GUIDs if the collection is not grouped.
-    #     groupname: str
-    #         The name of the group if the collection objects are grouped.
+        Returns
+        -------
+        guids: list
+            A list of GUIDs if the collection is not grouped.
+        groupname: str
+            The name of the group if the collection objects are grouped.
 
-    #     """
-    #     colors = iterable_like(collection, color)
-    #     lines = []
-    #     for line, rgb in zip(collection, colors):
-    #         lines.append({
-    #             'start': list(line.start),
-    #             'end': list(line.end),
-    #             'color': rgb})
-    #     guids = compas_rhino.draw_lines(lines, layer=layer, clear=clear)
-    #     if not group_collection:
-    #         return guids
-    #     group = compas_rhino.rs.AddGroup(group_name)
-    #     if group:
-    #         compas_rhino.rs.AddObjectsToGroup(guids, group)
-    #     return group
+        """
+        lines = [{'start': list(line[0]), 'end': list(line[1])} for line in collection]
+        if colors:
+            if isinstance(colors[0], (int, float)):
+                colors = iterable_like(collection, [colors], colors)
+            else:
+                colors = iterable_like(collection, colors, colors[0])
+            for line, rgb in zip(lines, colors):
+                line['color'] = rgb
+        if names:
+            if isinstance(names, basestring):
+                names = iterable_like(collection, [names], names)
+            else:
+                names = iterable_like(collection, names, names[0])
+            for line, name in zip(lines, names):
+                line['name'] = name
+        guids = compas_rhino.draw_lines(lines, layer=layer, clear=clear)
+        if not add_to_group:
+            return guids
+        group = compas_rhino.rs.AddGroup(group_name)
+        if group:
+            compas_rhino.rs.AddObjectsToGroup(guids, group)
+        return group
 
 
 # ==============================================================================

@@ -193,12 +193,7 @@ be used for the representation of subdivided/partitioned polyhedra.
 from __future__ import absolute_import
 
 
-from compas.base import Base
-
-
-class Datastructure(Base):
-    pass
-
+from .datastructure import *  # noqa: F401 E402 F403
 
 from .network import *  # noqa: F401 E402 F403
 from .mesh import *  # noqa: F401 E402 F403

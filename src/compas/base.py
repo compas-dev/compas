@@ -3,12 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 
 import abc
-# import json
-# import jsonschema
-# import schema
+import json
+# from uuid import uuid4
 
-# from compas.utilities import DataEncoder
-# from compas.utilities import DataDecoder
+from compas.utilities import DataEncoder
+from compas.utilities import DataDecoder
 from compas.utilities import abstractclassmethod
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
@@ -24,33 +23,40 @@ class Base(ABC):
 
     Attributes
     ----------
-    data : dict
-        The fundamental data describing the object.
-        The structure of the data dict is defined by the implementing classes.
-
-    Class Attributes
-    ----------------
     DATASCHEMA : :class:`schema.Schema`
         The schema of the data dict.
     JSONSCHEMA : dict
         The schema of the serialised data dict.
-
+    data : dict
+        The fundamental data describing the object.
+        The structure of the data dict is defined by the implementing classes.
     """
 
-    # DATASCHEMA = schema.Schema({})
-    # JSONSCHEMA = {}
+    @property
+    def DATASCHEMA(self):
+        """:class:`schema.Schema` : The schema of the data of this object."""
+        raise NotImplementedError
 
-    # def validate_data(self):
-    #     self.DATASCHEMA.validate(self.data)
+    @property
+    def JSONSCHEMA(self):
+        """dict : The schema of the JSON representation of the data of this object."""
+        raise NotImplementedError
 
-    # def validate_data_to_json(self):
-    #     jsondata = json.dump(self.data, cls=DataEncoder)
-    #     # jsonschema.validate(jsondata, schema=self.JSONSCHEMA)
+    # @property
+    # def guid(self):
+    #     if not self._guid:
+    #         self._guid = uuid4()
+    #     return self._guid
 
-    # def validate_json_to_data(self):
-    #     jsondata = json.dump(self.data, cls=DataEncoder)
-    #     data = json.load(jsondata, cls=DataDecoder)
-    #     return self.DATASCHEMA.validate(data)
+    # @property
+    # def name(self):
+    #     if not self._name:
+    #         self._name = self.__class__.__name__
+    #     return self._name
+
+    # @name.setter
+    # def name(self, name):
+    #     self._name = name
 
     @abc.abstractproperty
     def data(self):
@@ -75,6 +81,37 @@ class Base(ABC):
     @abc.abstractmethod
     def to_json(self, filepath):
         pass
+
+    def validate_data(self):
+        """Validate the data of this object against its data schema (`self.DATASCHEMA`).
+
+        Returns
+        -------
+        dict
+            The validated data.
+
+        Raises
+        ------
+        SchemaError
+        """
+        return self.DATASCHEMA.validate(self.data)
+
+    def validate_json(self):
+        """Validate the data loaded from a JSON representation of the data of this object against its data schema (`self.DATASCHEMA`).
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        SchemaError
+        """
+        import jsonschema
+        jsondata = json.dumps(self.data, cls=DataEncoder)
+        data = json.loads(jsondata, cls=DataDecoder)
+        jsonschema.validate(data, schema=self.JSONSCHEMA)
+        return self.DATASCHEMA.validate(data)
 
 
 # ==============================================================================

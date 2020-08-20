@@ -141,7 +141,7 @@ class Circle(Primitive):
         return iter([self.plane, self.radius])
 
     # ==========================================================================
-    # from/to
+    # constructors
     # ==========================================================================
 
     @classmethod
@@ -166,50 +166,8 @@ class Circle(Primitive):
         """
         return cls(data['plane'], data['radius'])
 
-    def to_data(self):
-        """Returns the data dictionary that represents the circle.
-
-        Returns
-        -------
-        dict
-            The circle data.
-
-        Examples
-        --------
-        >>> from compas.geometry import Circle
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Point
-        >>> from compas.geometry import Vector
-        >>> circle = Circle(Plane(Point(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0)), 1.0)
-        >>> circle.to_data()
-        {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 1.0}
-        """
-        return self.data
-
     # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Makes a copy of this circle.
-
-        Returns
-        -------
-        :class:`compas.geometry.Circle`
-            The copy.
-
-        Examples
-        --------
-        >>> c1 = Circle([[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 1.0)
-        >>> c2 = c1.copy()
-        >>> c1 == c2
-        False
-        """
-        cls = type(self)
-        return cls(self.plane.copy(), self.radius)
-
-    # ==========================================================================
-    # transformations
+    # methods
     # ==========================================================================
 
     def transform(self, T):
@@ -232,34 +190,6 @@ class Circle(Primitive):
         >>> circle.transform(T)
         """
         self.plane.transform(T)
-
-    def transformed(self, T):
-        """Returns a transformed copy of the current circle.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation`
-            The transformation.
-
-        Returns
-        -------
-        :class:`compas.geometry.Circle`
-            The transformed circle.
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Circle
-        >>> circle = Circle(Plane.worldXY(), 5)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> circle_transformed = circle.transformed(T)
-        """
-        circle = self.copy()
-        circle.transform(T)
-        return circle
 
 
 # ==============================================================================

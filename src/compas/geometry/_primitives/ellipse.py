@@ -152,7 +152,7 @@ class Ellipse(Primitive):
         return iter([self.plane, self.major, self.minor])
 
     # ==========================================================================
-    # from/to
+    # constructors
     # ==========================================================================
 
     @classmethod
@@ -176,48 +176,6 @@ class Ellipse(Primitive):
         >>> ellipse = Ellipse.from_data(data)
         """
         return cls(data['plane'], data['minor'], data['minor'])
-
-    def to_data(self):
-        """Returns the data dictionary that represents the ellipse.
-
-        Returns
-        -------
-        dict
-            The ellipse data.
-
-        Examples
-        --------
-        >>> from compas.geometry import Ellipse
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Point
-        >>> from compas.geometry import Vector
-        >>> ellipse = Ellipse(Plane(Point(0.0, 0.0, 0.0), Vector(0.0, 0.0, 1.0)), 2.0, 1.0)
-        >>> ellipse.to_data()
-        {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'major': 2.0, 'minor': 1.0}
-        """
-        return self.data
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Makes a copy of this ellipse.
-
-        Returns
-        -------
-        :class:`compas.geometry.Ellipse`
-            The copy.
-
-        Examples
-        --------
-        >>> c1 = Ellipse([[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 2.0, 1.0)
-        >>> c2 = c1.copy()
-        >>> c1 == c2
-        False
-        """
-        cls = type(self)
-        return cls(self.plane.copy(), self.major, self.minor)
 
     # ==========================================================================
     # transformations
@@ -243,34 +201,6 @@ class Ellipse(Primitive):
         >>> ellipse.transform(T)
         """
         self.plane.transform(T)
-
-    def transformed(self, T):
-        """Returns a transformed copy of the current ellipse.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation`
-            The transformation.
-
-        Returns
-        -------
-        :class:`compas.geometry.Ellipse`
-            The transformed ellipse.
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Ellipse
-        >>> ellipse = Ellipse(Plane.worldXY(), 8, 5)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> ellipse_transformed = ellipse.transformed(T)
-        """
-        ellipse = self.copy()
-        ellipse.transform(T)
-        return ellipse
 
 
 # ==============================================================================

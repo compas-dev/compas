@@ -43,6 +43,38 @@ class Polyhedron(Shape):
         self.vertices = vertices
         self.faces = faces
 
+    # ==========================================================================
+    # descriptors
+    # ==========================================================================
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the polyhedron.
+
+        Returns
+        -------
+        dict
+            The polyhedron data.
+
+        """
+        return {'vertices': self.vertices, 'faces': self.faces}
+
+    @data.setter
+    def data(self, data):
+        self.vertices = data['vertices']
+        self.faces = data['faces']
+
+    # ==========================================================================
+    # customisation
+    # ==========================================================================
+
+    def __iter__(self):
+        return iter([self.vertices, self.faces])
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
     @classmethod
     def from_data(cls, data):
         """Construct a polyhedron from its data representation.
@@ -67,46 +99,8 @@ class Polyhedron(Shape):
         p.data = data
         return p
 
-    def to_data(self):
-        """Returns the data dictionary that represents the polyhedron.
-
-        Returns
-        -------
-        dict
-            The polyhedron data.
-        """
-        return self.data
-
     # ==========================================================================
-    # customisation
-    # ==========================================================================
-
-    def __iter__(self):
-        return iter([self.vertices, self.faces])
-
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
-
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the polyhedron.
-
-        Returns
-        -------
-        dict
-            The polyhedron data.
-
-        """
-        return {'vertices': self.vertices, 'faces': self.faces}
-
-    @data.setter
-    def data(self, data):
-        self.vertices = data['vertices']
-        self.faces = data['faces']
-
-    # ==========================================================================
-    # Methods
+    # methods
     # ==========================================================================
 
 

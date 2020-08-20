@@ -53,34 +53,32 @@ class Sphere(Shape):
         self.point = point
         self.radius = radius
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a sphere from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the sphere.
 
         Returns
         -------
-        Sphere
-            The constructed sphere.
+        dict
+            The sphere data.
 
         Examples
         --------
+        >>> from compas.geometry import Point
         >>> from compas.geometry import Sphere
-        >>> data = {'point': [1., 2., 3.], 'radius': 4.}
-        >>> sphere = Sphere.from_data(data)
+        >>> sphere = Sphere(Point(1, 1, 1), 5)
+        >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
+        >>> sdict == sphere.data
+        True
 
         """
-        sphere = cls([0, 0, 0], 1)
-        sphere.data = data
-        return sphere
+        return {'point': list(self.point),
+                'radius': self.radius}
 
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
+    @data.setter
+    def data(self, data):
+        self.point = data['point']
+        self.radius = data['radius']
 
     @property
     def point(self):
@@ -114,52 +112,67 @@ class Sphere(Shape):
         """float: The volume of the sphere."""
         return 4./3. * pi * self.radius**3
 
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the sphere.
+    # ==========================================================================
+    # customisation
+    # ==========================================================================
+
+    def __repr__(self):
+        return 'Sphere({0}, {1})'.format(self.point, self.radius)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.point
+        elif key == 1:
+            return self.radius
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.point = value
+        elif key == 1:
+            self.radius = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.point, self.radius])
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a sphere from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
 
         Returns
         -------
-        dict
-            The sphere data.
+        Sphere
+            The constructed sphere.
 
         Examples
         --------
-        >>> from compas.geometry import Point
         >>> from compas.geometry import Sphere
-        >>> sphere = Sphere(Point(1, 1, 1), 5)
-        >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
-        >>> sdict == sphere.data
-        True
+        >>> data = {'point': [1., 2., 3.], 'radius': 4.}
+        >>> sphere = Sphere.from_data(data)
 
         """
-        return {'point': list(self.point),
-                'radius': self.radius}
+        sphere = cls([0, 0, 0], 1)
+        sphere.data = data
+        return sphere
 
-    @data.setter
-    def data(self, data):
-        self.point = data['point']
-        self.radius = data['radius']
-
-    def to_data(self):
-        """Returns the data dictionary that represents the sphere.
-
-        Returns
-        -------
-        dict
-            The sphere data.
-
-        Examples
-        --------
-        >>> from compas.geometry import Point
-        >>> from compas.geometry import Sphere
-        >>> sphere = Sphere(Point(1, 1, 1), 5)
-        >>> sdict = {'point': [1., 1., 1.], 'radius': 5.}
-        >>> sdict == sphere.to_data()
-        True
-
-        """
-        return self.data
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
@@ -211,65 +224,6 @@ class Sphere(Shape):
 
         return vertices, faces
 
-    # ==========================================================================
-    # representation
-    # ==========================================================================
-
-    def __repr__(self):
-        return 'Sphere({0}, {1})'.format(self.point, self.radius)
-
-    def __len__(self):
-        return 2
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.point
-        elif key == 1:
-            return self.radius
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.point = value
-        elif key == 1:
-            self.radius = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.point, self.radius])
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Makes a copy of this ``Sphere``.
-
-        Returns
-        -------
-        Sphere
-            The copy.
-
-        Examples
-        --------
-        >>> from compas.geometry import Sphere
-        >>> sphere = Sphere(Point(1, 1, 1), 5)
-        >>> sphere_copy = sphere.copy()
-
-        """
-        cls = type(self)
-        return cls(self.point.copy(), self.radius)
-
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
-
     def transform(self, transformation):
         """Transform the sphere.
 
@@ -296,34 +250,10 @@ class Sphere(Shape):
         Sc, _, _, _, _ = transformation.decomposed()
         self.radius *= max([Sc[0, 0], Sc[1, 1], Sc[2, 2]])
 
-    def transformed(self, transformation):
-        """Returns a transformed copy of the current sphere.
 
-        Parameters
-        ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the Sphere.
-
-        Returns
-        -------
-        :class:`Sphere`
-            The transformed sphere.
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Sphere
-        >>> sphere = Sphere(Point(1, 1, 1), 5)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> sphere_transformed = sphere.transformed(T)
-
-        """
-        sphere = self.copy()
-        sphere.transform(transformation)
-        return sphere
-
+# ==============================================================================
+# Main
+# ==============================================================================
 
 if __name__ == '__main__':
 

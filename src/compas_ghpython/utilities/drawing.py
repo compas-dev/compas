@@ -49,7 +49,7 @@ __all__ = [
 
 
 def draw_frame(frame):
-    """Draw frame.
+    """Draw a frame.
     """
     pt = Point3d(*iter(frame.point))
     xaxis = Vector3d(*iter(frame.xaxis))

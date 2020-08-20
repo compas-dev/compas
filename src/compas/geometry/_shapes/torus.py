@@ -61,34 +61,34 @@ class Torus(Shape):
         self.radius_axis = radius_axis
         self.radius_pipe = radius_pipe
 
-    @classmethod
-    def from_data(cls, data):
-        """Construct a torus from its data representation.
-
-        Parameters
-        ----------
-        data : :obj:`dict`
-            The data dictionary.
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the torus.
 
         Returns
         -------
-        Torus
-            The constructed torus.
+        dict
+            The torus data.
 
         Examples
         --------
+        >>> from compas.geometry import Plane
         >>> from compas.geometry import Torus
-        >>> data = {'plane': Plane.worldXY().data, 'radius_axis': 4., 'radius_pipe': 1.}
-        >>> torus = Torus.from_data(data)
+        >>> torus = Torus(Plane.worldXY(), 5, 2)
+        >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
+        >>> sdict == torus.data
+        True
 
         """
-        torus = cls(Plane.worldXY(), 1, 1)
-        torus.data = data
-        return torus
+        return {'plane': Plane.worldXY().to_data(),
+                'radius_axis': self.radius_axis,
+                'radius_pipe': self.radius_pipe}
 
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
+    @data.setter
+    def data(self, data):
+        self.plane = Plane.from_data(data['plane'])
+        self.radius_axis = data['radius_axis']
+        self.radius_pipe = data['radius_pipe']
 
     @property
     def plane(self):
@@ -131,54 +131,71 @@ class Torus(Shape):
         """Float: The volume of the torus."""
         return (pi * self.radius_pipe**2) * (2 * pi * self.radius_axis)
 
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the torus.
+    # ==========================================================================
+    # customisation
+    # ==========================================================================
+
+    def __repr__(self):
+        return 'Torus({0}, {1}, {2})'.format(self.plane, self.radius_axis, self.radius_pipe)
+
+    def __len__(self):
+        return 3
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.plane
+        elif key == 1:
+            return self.radius_axis
+        elif key == 2:
+            return self.radius_pipe
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.plane = value
+        elif key == 1:
+            self.radius_axis = value
+        elif key == 2:
+            self.radius_pipe = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.plane, self.radius_axis, self.radius_pipe])
+
+    # ==========================================================================
+    # constructors
+    # ==========================================================================
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct a torus from its data representation.
+
+        Parameters
+        ----------
+        data : :obj:`dict`
+            The data dictionary.
 
         Returns
         -------
-        dict
-            The torus data.
+        Torus
+            The constructed torus.
 
         Examples
         --------
-        >>> from compas.geometry import Plane
         >>> from compas.geometry import Torus
-        >>> torus = Torus(Plane.worldXY(), 5, 2)
-        >>> sdict = {'plane': Plane.worldXY().data, 'radius_axis': 5., 'radius_pipe': 2.}
-        >>> sdict == torus.data
-        True
+        >>> data = {'plane': Plane.worldXY().data, 'radius_axis': 4., 'radius_pipe': 1.}
+        >>> torus = Torus.from_data(data)
 
         """
-        return {'plane': Plane.worldXY().to_data(),
-                'radius_axis': self.radius_axis,
-                'radius_pipe': self.radius_pipe}
+        torus = cls(Plane.worldXY(), 1, 1)
+        torus.data = data
+        return torus
 
-    @data.setter
-    def data(self, data):
-        self.plane = Plane.from_data(data['plane'])
-        self.radius_axis = data['radius_axis']
-        self.radius_pipe = data['radius_pipe']
-
-    def to_data(self):
-        """Returns the data dictionary that represents the torus.
-
-        Returns
-        -------
-        dict
-            The torus data.
-
-        Examples
-        --------
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Torus
-        >>> torus = Torus(Plane.worldXY(), 5, 2)
-        >>> sdict = {'plane': Plane.worldXY().to_data(), 'radius_axis': 5.0, 'radius_pipe': 2.0}
-        >>> sdict == torus.to_data()
-        True
-
-        """
-        return self.data
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
@@ -217,69 +234,6 @@ class Torus(Shape):
                 faces.append([a, b, c, d])
         return vertices, faces
 
-    # ==========================================================================
-    # representation
-    # ==========================================================================
-
-    def __repr__(self):
-        return 'Torus({0}, {1}, {2})'.format(self.plane, self.radius_axis, self.radius_pipe)
-
-    def __len__(self):
-        return 3
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.plane
-        elif key == 1:
-            return self.radius_axis
-        elif key == 2:
-            return self.radius_pipe
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.plane = value
-        elif key == 1:
-            self.radius_axis = value
-        elif key == 2:
-            self.radius_pipe = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.plane, self.radius_axis, self.radius_pipe])
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Makes a copy of this ``Torus``.
-
-        Returns
-        -------
-        Torus
-            The copy.
-
-        Examples
-        --------
-        >>> from compas.geometry import Torus
-        >>> torus = Torus(Plane.worldXY(), 5, 2)
-        >>> torus_copy = torus.copy()
-
-        """
-        cls = type(self)
-        return cls(self.plane.copy(), self.radius_axis, self.radius_pipe)
-
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
-
     def transform(self, transformation):
         """Transform the torus.
 
@@ -302,35 +256,10 @@ class Torus(Shape):
         """
         self.plane.transform(transformation)
 
-    def transformed(self, transformation):
-        """Returns a transformed copy of the current torus.
 
-        Parameters
-        ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the Torus.
-
-        Returns
-        -------
-        :class:`Torus`
-            The transformed torus.
-
-        Examples
-        --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Plane
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Torus
-        >>> torus = Torus(Plane.worldXY(), 5, 2)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> torus_transformed = torus.transformed(T)
-
-        """
-        torus = self.copy()
-        torus.transform(transformation)
-        return torus
-
+# ==============================================================================
+# Main
+# ==============================================================================
 
 if __name__ == '__main__':
 

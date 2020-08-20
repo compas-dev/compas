@@ -82,9 +82,35 @@ class Box(Shape):
         self.ysize = ysize
         self.zsize = zsize
 
-    # ==========================================================================
-    # descriptors
-    # ==========================================================================
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the box.
+
+        Returns
+        -------
+        dict
+            The box data.
+
+        Examples
+        --------
+        >>> frame = Frame.worldXY()
+        >>> box = Box(frame, 1.0, 2.0, 3.0)
+        >>> bdict = {'frame': frame.data, 'xsize': 1.0, 'ysize': 2.0, 'zsize': 3.0}
+        >>> bdict == box.to_data()
+        True
+
+        """
+        return {'frame': self.frame.data,
+                'xsize': self.xsize,
+                'ysize': self.ysize,
+                'zsize': self.zsize}
+
+    @data.setter
+    def data(self, data):
+        self.frame = Frame.from_data(data['frame'])
+        self.xsize = data['xsize']
+        self.ysize = data['ysize']
+        self.zsize = data['zsize']
 
     @property
     def frame(self):
@@ -175,7 +201,6 @@ class Box(Shape):
         g = c + zaxis * height
         h = b + zaxis * height
 
-        # return [list(pt) for pt in [a, b, c, d, e, f, g, h]]
         return [a, b, c, d, e, f, g, h]
 
     @property
@@ -213,7 +238,36 @@ class Box(Shape):
         return [4, 5, 6, 7]
 
     # ==========================================================================
-    # factory
+    # customisation
+    # ==========================================================================
+
+    def __repr__(self):
+        return 'Box({0}, {1}, {2}, {3})'.format(self.frame, self.xsize, self.ysize, self.zsize)
+
+    def __len__(self):
+        return 4
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.point
+        elif key == 1:
+            return self.radius
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.point = value
+        elif key == 1:
+            self.radius = value
+        else:
+            raise KeyError
+
+    def __iter__(self):
+        return iter([self.point, self.radius])
+
+    # ==========================================================================
+    # constructors
     # ==========================================================================
 
     @classmethod
@@ -404,115 +458,13 @@ class Box(Shape):
 
         return cls(frame, width, depth, height)
 
-    @property
-    def data(self):
-        """Returns the data dictionary that represents the box.
-
-        Returns
-        -------
-        dict
-            The box data.
-
-        Examples
-        --------
-        >>> frame = Frame.worldXY()
-        >>> box = Box(frame, 1.0, 2.0, 3.0)
-        >>> bdict = {'frame': frame.data, 'xsize': 1.0, 'ysize': 2.0, 'zsize': 3.0}
-        >>> bdict == box.to_data()
-        True
-
-        """
-        return {'frame': self.frame.data,
-                'xsize': self.xsize,
-                'ysize': self.ysize,
-                'zsize': self.zsize}
-
-    @data.setter
-    def data(self, data):
-        self.frame = Frame.from_data(data['frame'])
-        self.xsize = data['xsize']
-        self.ysize = data['ysize']
-        self.zsize = data['zsize']
-
-    def to_data(self):
-        """Returns the data dictionary that represents the box.
-
-        Returns
-        -------
-        dict
-            The box data.
-
-        Examples
-        --------
-        >>> frame = Frame.worldXY()
-        >>> box = Box(frame, 1.0, 2.0, 3.0)
-        >>> bdict = {'frame': frame.data, 'xsize': 1.0, 'ysize': 2.0, 'zsize': 3.0}
-        >>> bdict == box.to_data()
-        True
-        """
-        return self.data
+    # ==========================================================================
+    # methods
+    # ==========================================================================
 
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
         return self.vertices, self.faces
-
-    # ==========================================================================
-    # representation
-    # ==========================================================================
-
-    def __repr__(self):
-        return 'Box({0}, {1}, {2}, {3})'.format(self.frame, self.xsize, self.ysize, self.zsize)
-
-    def __len__(self):
-        return 4
-
-    # ==========================================================================
-    # access
-    # ==========================================================================
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.point
-        elif key == 1:
-            return self.radius
-        else:
-            raise KeyError
-
-    def __setitem__(self, key, value):
-        if key == 0:
-            self.point = value
-        elif key == 1:
-            self.radius = value
-        else:
-            raise KeyError
-
-    def __iter__(self):
-        return iter([self.point, self.radius])
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def copy(self):
-        """Makes a copy of this ``Box``.
-
-        Returns
-        -------
-        Box
-            The copy.
-
-        Examples
-        --------
-        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-        >>> box_copy = box.copy()
-
-        """
-        cls = type(self)
-        return cls(self.frame.copy(), self.xsize, self.ysize, self.zsize)
-
-    # ==========================================================================
-    # transformations
-    # ==========================================================================
 
     def transform(self, transformation):
         """Transform the box.
@@ -531,31 +483,6 @@ class Box(Shape):
 
         """
         self.frame.transform(transformation)
-
-    def transformed(self, transformation):
-        """Returns a transformed copy of the current box.
-
-        Parameters
-        ----------
-        transformation : :class:`Transformation`
-            The transformation used to transform the box.
-
-        Returns
-        -------
-        :class:`Box`
-            The transformed box.
-
-        Examples
-        --------
-        >>> box = Box(Frame.worldXY(), 1.0, 2.0, 3.0)
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(frame)
-        >>> box_transformed = box.transformed(T)
-
-        """
-        box = self.copy()
-        box.transform(transformation)
-        return box
 
 
 # ==============================================================================

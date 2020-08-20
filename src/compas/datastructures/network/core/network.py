@@ -45,10 +45,6 @@ class BaseNetwork(Graph):
     # --------------------------------------------------------------------------
 
     # --------------------------------------------------------------------------
-    # serialisation
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
     # constructors
     # --------------------------------------------------------------------------
 
@@ -223,6 +219,44 @@ class BaseNetwork(Graph):
     # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
+
+    def key_gkey(self, precision=None):
+        """Returns a dictionary that maps node dictionary keys to the corresponding
+        *geometric key* up to a certain precision.
+
+        Parameters
+        ----------
+        precision : str (3f)
+            The float precision specifier used in string formatting.
+
+        Returns
+        -------
+        dict
+            A dictionary of key-geometric key pairs.
+
+        """
+        gkey = geometric_key
+        xyz = self.node_coordinates
+        return {key: gkey(xyz(key), precision) for key in self.nodes()}
+
+    def gkey_key(self, precision=None):
+        """Returns a dictionary that maps *geometric keys* of a certain precision
+        to the keys of the corresponding nodes.
+
+        Parameters
+        ----------
+        precision : str (3f)
+            The float precision specifier used in string formatting.
+
+        Returns
+        -------
+        dict
+            A dictionary of geometric key-key pairs.
+
+        """
+        gkey = geometric_key
+        xyz = self.node_coordinates
+        return {gkey(xyz(key), precision): key for key in self.nodes()}
 
     # --------------------------------------------------------------------------
     # builders
@@ -473,23 +507,6 @@ class BaseNetwork(Graph):
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    # network = BaseNetwork()
-    # network.add_edge('a', 'b')
-    # network.add_edge('a', 'c')
-    # network.add_edge('a', 'd')
-    # network.add_edge('a', 'e')
-
-    # network.add_edge('b', 'c')
-    # network.add_edge('b', 'd')
-    # network.add_edge('b', 'e')
-
-    # network.add_edge('c', 'd')
-    # network.add_edge('c', 'e')
-
-    # network.add_edge('d', 'e')
-
-    # network.summary()
 
     import doctest
     doctest.testmod(globs=globals())

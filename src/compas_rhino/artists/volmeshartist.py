@@ -17,25 +17,22 @@ class VolMeshArtist(MeshArtist):
         A COMPAS volmesh.
     layer : str, optional
         The name of the layer that will contain the volmesh.
+    settings : dict, optional
+        A dict with custom visualisation settings.
 
     Attributes
     ----------
-    defaults : dict
+    mesh : :class:`compas.datastructures.VolMesh`
+        The COMPAS volmesh associated with the artist.
+    layer : str
+        The layer in which the volmesh should be contained.
+    settings : dict
         Default settings for color, scale, tolerance, ...
 
     """
 
-    def __init__(self, volmesh, layer=None):
-        super(VolMeshArtist, self).__init__(volmesh, layer=layer)
-
-    @property
-    def volmesh(self):
-        """compas.datastructures.VolMesh: The volmesh that should be painted."""
-        return self.datastructure
-
-    @volmesh.setter
-    def volmesh(self, volmesh):
-        self.datastructure = volmesh
+    def __init__(self, volmesh, layer=None, settings=None):
+        super(VolMeshArtist, self).__init__(volmesh, layer=layer, settings=settings)
 
 
 # ==============================================================================
@@ -43,15 +40,4 @@ class VolMeshArtist(MeshArtist):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    import compas
-
-    from compas.datastructures import VolMesh
-
-    mesh = VolMesh.from_obj(compas.get('boxes.obj'))
-
-    artist = VolMeshArtist(mesh)
-    artist.clear()
-    artist.draw_faces()
-    artist.draw_vertices()
-    artist.draw_edges()
+    pass

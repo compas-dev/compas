@@ -64,7 +64,7 @@ Lines Conduit
 ----
 
 Points Conduit
-=============
+==============
 
 .. autoclass:: PointsConduit
     :no-show-inheritance:

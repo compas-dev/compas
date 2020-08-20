@@ -15,6 +15,7 @@ __all__ = ['BaseObject']
 _ITEM_OBJECT = {}
 
 
+# this class should implement compas.base.Base
 class BaseObject(ABC):
     """Abstract base class for COMPAS Rhino objects.
 
@@ -52,17 +53,6 @@ class BaseObject(ABC):
     settings : dict
         A dictionary of settings related to visualisation and interaction.
         This dict starts from the settings of the ``artist``.
-
-    Notes
-    -----
-    This is an Abstract Base Class (ABC).
-    The following methods declared as abstract have to be overwritten:
-
-    * ``clear``
-    * ``draw``
-    * ``select``
-    * ``modify``
-    * ``move``
 
     """
 

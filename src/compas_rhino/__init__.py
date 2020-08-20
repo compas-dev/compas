@@ -29,7 +29,7 @@ if compas.RHINO:
     find_object = sc.doc.Objects.Find
 
 
-__version__ = '0.16.0'
+__version__ = '0.16.2'
 
 
 PURGE_ON_DELETE = True

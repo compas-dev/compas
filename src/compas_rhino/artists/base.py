@@ -2,7 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import abc
 import compas_rhino
+
+ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
 __all__ = ["BaseArtist"]
@@ -11,8 +14,8 @@ __all__ = ["BaseArtist"]
 _ITEM_ARTIST = {}
 
 
-class BaseArtist(object):
-    """Base class for all artists.
+class BaseArtist(ABC):
+    """Base class for all Rhino artists.
 
     Attributes
     ----------
@@ -48,7 +51,12 @@ class BaseArtist(object):
         artist = artist_type(item, **kwargs)
         return artist
 
+    @abc.abstractmethod
     def draw(self):
+        pass
+
+    @staticmethod
+    def draw_collection(collection):
         raise NotImplementedError
 
     def redraw(self):

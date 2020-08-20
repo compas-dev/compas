@@ -357,7 +357,7 @@ class Point(Primitive):
         return self
 
     # ==========================================================================
-    # static
+    # constructors
     # ==========================================================================
 
     @classmethod
@@ -381,6 +381,10 @@ class Point(Primitive):
         Point(0.000, 0.000, 0.000)
         """
         return cls(*data)
+
+    # ==========================================================================
+    # static
+    # ==========================================================================
 
     @staticmethod
     def transform_collection(collection, X):
@@ -443,48 +447,6 @@ class Point(Primitive):
         points = [point.copy() for point in collection]
         Point.transform_collection(points, X)
         return points
-
-    # ==========================================================================
-    # helpers
-    # ==========================================================================
-
-    def update(self, data):
-        """Update the coordinates of this point.
-
-        Parameters
-        ----------
-        data : list
-            New XYZ coordinates.
-
-        Examples
-        --------
-        >>> point = Point(0.0, 0.0, 0.0)
-        >>> point.update([1.0, 1.0, 1.0])
-        >>> point
-        Point(1.000, 1.000, 1.000)
-        """
-        self.x = data[0]
-        self.y = data[1]
-        self.z = data[2]
-
-    def copy(self):
-        """Make a copy of this point.
-
-        Returns
-        -------
-        :class:`compas.geometry.Point`
-            The copy.
-
-        Examples
-        --------
-        >>> a = Point(0.0, 0.0, 0.0)
-        >>> b = a.copy()
-        >>> b[0] += 1
-        >>> a == b
-        False
-        """
-        cls = type(self)
-        return cls(self.x, self.y, self.z)
 
     # ==========================================================================
     # methods
@@ -761,32 +723,6 @@ class Point(Primitive):
         self.y = point[1]
         self.z = point[2]
 
-    def transformed(self, T):
-        """Return a transformed copy of this point.
-
-        Parameters
-        ----------
-        T : :class:`compas.geometry.Transformation` or list of list
-            The transformation matrix.
-
-        Returns
-        -------
-        :class:`compas.geometry.Point`
-            The transformed copy.
-
-        Examples
-        --------
-        >>> from compas.geometry import Translation
-        >>> a = Point(0.0, 0.0, 0.0)
-        >>> T = Translation([1.0, 1.0, 1.0])
-        >>> b = a.transformed(T)
-        >>> a == b
-        False
-        """
-        point = self.copy()
-        point.transform(T)
-        return point
-
 
 # ==============================================================================
 # Main
@@ -795,7 +731,6 @@ class Point(Primitive):
 if __name__ == '__main__':
 
     import doctest
-
     from compas.geometry import Translation  # noqa F401
 
     doctest.testmod(globs=globals())
