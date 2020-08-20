@@ -8,6 +8,7 @@ from compas.geometry._core import cross_vectors
 from compas.geometry._core import cross_vectors_xy
 from compas.geometry._core import length_vector
 from compas.geometry._core import length_vector_xy
+from compas.geometry._core import normalize_vector
 
 from compas.geometry._core import centroid_points
 
@@ -68,9 +69,7 @@ def normal_polygon(polygon, unitized=True):
     if not unitized:
         return nx, ny, nz
 
-    length = length_vector([nx, ny, nz])
-
-    return nx / length, ny / length, nz / length
+    return normalize_vector([nx, ny, nz])
 
 
 def normal_triangle(triangle, unitized=True):
