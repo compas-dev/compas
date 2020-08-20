@@ -21,7 +21,6 @@ from compas.geometry import scale_vector
 from compas.geometry import subtract_vectors
 
 from compas.utilities import geometric_key
-from compas.utilities import pairwise
 
 
 __all__ = ['BaseVolMesh']
@@ -355,27 +354,6 @@ class BaseVolMesh(HalfFace):
         """
         return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)])
 
-    # def vertex_normal(self, vkey):
-    #     """Return the normal vector at the vertex as the weighted average of the
-    #     normals of the neighboring halffaces.
-
-    #     Parameters
-    #     ----------
-    #     vkey : hashable
-    #         The identifier of the vertex.
-
-    #     Returns
-    #     -------
-    #     list
-    #         The components of the normal vector.
-
-    #     """
-    #     vectors = []
-    #     for hfkey in self.vertex_halffaces(vkey):
-    #         if self.is_halfface_on_boundary(hfkey):
-    #             vectors.append(self.halfface_normal(hfkey))
-    #     return normalize_vector(centroid_points(vectors))
-
     # --------------------------------------------------------------------------
     # edge geometry
     # --------------------------------------------------------------------------
@@ -622,9 +600,13 @@ class BaseVolMesh(HalfFace):
         face_edge_lengths = [self.edge_length(u, v) for u, v in self.face_halfedges(hfkey)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
-    face_coordinates = halfface_coordinates
-    face_centroid    = halfface_centroid
-    face_center      = halfface_center
+    face_area         = halfface_area
+    face_centroid     = halfface_centroid
+    face_center       = halfface_center
+    face_coordinates  = halfface_coordinates
+    face_flatness     = halfface_flatness
+    face_normal       = halfface_normal
+    face_aspect_ratio = halfface_aspect_ratio
 
     # --------------------------------------------------------------------------
     # cell geometry
@@ -664,11 +646,30 @@ class BaseVolMesh(HalfFace):
         vertices, halffaces = self.cell_to_vertices_and_halffaces(ckey)
         return centroid_polyhedron((vertices, halffaces))
 
+    def cell_vertex_normal(self, ckey, vkey):
+        """Return the normal vector at the vertex of a cell as the weighted average of the
+        normals of the neighboring halffaces.
+
+        Parameters
+        ----------
+        ckey : int
+            The identifier of the vertex of the cell.
+        vkey : int
+            The identifier of the vertex of the cell.
+
+        Returns
+        -------
+        list
+            The components of the normal vector.
+        """
+        vectors = [self.face_normal(hfkey) for hfkey in self.vertex_halffaces(vkey) if hfkey is not None]
+        return normalize_vector(centroid_points(vectors))
+
     # --------------------------------------------------------------------------
     # geometric operations
     # --------------------------------------------------------------------------
 
-    def scale(self, factor=1.0):
+    def scale(self, factor=1.0, origin=(0, 0, 0)):
         """Scale the entire volmesh object.
 
         Parameters
@@ -683,10 +684,11 @@ class BaseVolMesh(HalfFace):
 
         """
         for key in self.vertex:
+            x, y, z = subtract_vectors(self.vertex_coordinates(key), origin)
             attr = self.vertex[key]
-            attr['x'] *= factor
-            attr['y'] *= factor
-            attr['z'] *= factor
+            attr['x'] = origin[0] + x * factor
+            attr['y'] = origin[1] + y * factor
+            attr['z'] = origin[2] + z * factor
 
 
 # ==============================================================================

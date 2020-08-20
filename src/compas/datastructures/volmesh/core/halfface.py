@@ -69,7 +69,7 @@ class HalfFace(Datastructure):
         return json.dumps(self.data, sort_keys=True, indent=4)
 
     def summary(self):
-        """Print a summary of the mesh."""
+        """Print a summary of the volmesh."""
         tpl = "\n".join(
             ["VolMesh summary",
              "===============",
@@ -536,6 +536,9 @@ class HalfFace(Datastructure):
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
+        Examples
+        --------
+        >>>
         """
         if key is None:
             key = self._max_int_vkey = self._max_int_vkey + 1
@@ -584,7 +587,9 @@ class HalfFace(Datastructure):
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
-
+        Examples
+        --------
+        >>>
         """
         if len(vertices) < 3:
             return
@@ -651,6 +656,9 @@ class HalfFace(Datastructure):
         If a key with an integer value is provided that is higher than the current
         highest integer key value, then the highest integer value is updated accordingly.
 
+        Examples
+        --------
+        >>>
         """
         if ckey is None:
             ckey = self._max_int_ckey = self._max_int_ckey + 1
@@ -685,6 +693,10 @@ class HalfFace(Datastructure):
         ----------
         key : int
             The identifier of the vertex.
+
+        Examples
+        --------
+        >>>
         """
         for ckey in self.vertex_cells(vkey):
             self.delete_cell(ckey)
@@ -710,10 +722,18 @@ class HalfFace(Datastructure):
         Parameters
         ----------
         fkey : int
-            The identifier of the cel.
+            The identifier of the cell.
 
+        Notes
+        -----
+        In some cases (although very unlikely), disconnected vertices can remain after application of this
+        method. To remove these vertices as well, combine this method with vertex
+        culling (:meth:`cull_vertices`).
+
+        Examples
+        --------
+        >>>
         """
-
         for hfkey in self.cell_halffaces(ckey):
 
             # edges
@@ -780,10 +800,10 @@ class HalfFace(Datastructure):
 
         """
         for vkey in self.vertex:
-            if data:
-                yield vkey, self.vertex_attributes(vkey)
-            else:
+            if not data:
                 yield vkey
+            else:
+                yield vkey, self.vertex_attributes(vkey)
 
     def edges(self, data=False):
         """Iterate over the edges of the volmesh.
@@ -868,10 +888,10 @@ class HalfFace(Datastructure):
                 fkeys.append(fkey)
 
         for fkey in fkeys:
-            if data:
-                yield fkey, self.face_attributes(fkey)
-            else:
+            if not data:
                 yield fkey
+            else:
+                yield fkey, self.face_attributes(fkey)
 
     def cells(self, data=False):
         """Iterate over the cells of the volmesh.
@@ -890,10 +910,10 @@ class HalfFace(Datastructure):
 
         """
         for ckey in self.cell:
-            if data:
-                yield ckey, self.cell_attributes(ckey)
-            else:
+            if not data:
                 yield ckey
+            else:
+                yield ckey, self.cell_attributes(ckey)
 
     def planes(self):
         raise NotImplementedError
@@ -1781,11 +1801,11 @@ class HalfFace(Datastructure):
             if i == ring:
                 break
             temp = []
-            for key in nbrs:
-                temp += self.vertex_neighbors(key)
+            for nbr_key in nbrs:
+                temp += self.vertex_neighbors(nbr_key)
             nbrs.update(temp)
             i += 1
-        return nbrs
+        return list(nbrs - set([key]))
 
     def vertex_degree(self, key):
         """Count the neighbors of a vertex.
@@ -1915,7 +1935,7 @@ class HalfFace(Datastructure):
         return key in set(self.edges())
 
     def edge_halffaces(self, u, v):
-        """Ordered halffaces adjacent to halfedge u-v.
+        """Ordered halffaces around edge u-v.
 
         Parameters
         ----------
@@ -1929,11 +1949,17 @@ class HalfFace(Datastructure):
         list
             List of of keys identifying the adjacent halffaces.
 
+        Notes
+        -----
+        The halffaces are ordered around the halfedge u-v.
+
+        All halffaces returned should have halfedge u-v; this also means that if edge u-v is shared by four cells, four halffaces are returned, not eight.
+
         """
         edge_ckeys     = self.plane[u][v].values()
         ckey           = edge_ckeys[0]
         ordered_hfkeys = []
-        for i in range(len(edge_ckeys) - 1):
+        for i in range(len(edge_ckeys)):
             hfkey = self.cell[ckey][u][v]
             w     = self.halfface_vertex_descendent(hfkey, v)
             ckey  = self.plane[w][v][u]
@@ -1941,7 +1967,7 @@ class HalfFace(Datastructure):
         return ordered_hfkeys
 
     def edge_cells(self, u, v):
-        """Ordered cells adjacent to edge u-v.
+        """Ordered cells around edge u-v.
 
         Parameters
         ----------
@@ -1953,13 +1979,13 @@ class HalfFace(Datastructure):
         Returns
         -------
         list
-            Ordered List of keys identifying the adjacent cells.
+            Ordered list of keys identifying the adjacent cells.
 
         """
         edge_ckeys    = self.plane[u][v].values()
         ckey          = edge_ckeys[0]
-        ordered_ckeys = [ckey]
-        for i in range(len(edge_ckeys) - 1):
+        ordered_ckeys = []
+        for i in range(len(edge_ckeys)):
             hfkey = self.cell[ckey][u][v]
             w     = self.halfface_vertex_descendent(hfkey, v)
             ckey  = self.plane[w][v][u]
@@ -1989,12 +2015,12 @@ class HalfFace(Datastructure):
     # halfface topology
     # --------------------------------------------------------------------------
 
-    def has_face(self, fkey):
+    def has_face(self, hfkey):
         """Verify that a halfface is part of the volmesh.
 
         Parameters
         ----------
-        fkey : int
+        hfkey : int
             The identifier of the face.
 
         Returns
@@ -2004,14 +2030,14 @@ class HalfFace(Datastructure):
             False otherwise.
 
         """
-        return fkey in self.halfface
+        return hfkey in self.halfface
 
     def halfface_vertices(self, hfkey):
         """The vertices of a halfface.
 
         Parameters
         ----------
-        fkey : hashable
+        hfkey : hashable
             Identifier of the halfface.
 
         Returns
@@ -2027,7 +2053,7 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        fkey : hashable
+        hfkey : hashable
             Identifier of the halfface.
 
         Returns
@@ -2044,13 +2070,13 @@ class HalfFace(Datastructure):
 
         Parameters
         ----------
-        fkey : hashable
+        hfkey : hashable
             Identifier of the halfface.
 
         Returns
         -------
         ckey
-            Identifier of th cell.
+            Identifier of the cell.
 
         """
         u, v, w = self.halfface[hfkey][0:3]
@@ -2071,12 +2097,14 @@ class HalfFace(Datastructure):
 
         Notes
         -----
+        A halfface and its opposite halfface share the same vertices, but in reverse order.
+
         For a boundary halfface, the opposite halfface is None.
 
         """
         u, v, w  = self.halfface[hfkey][0:3]
         nbr_ckey = self.plane[w][v][u]
-        if not nbr_ckey:
+        if nbr_ckey is None:
             return None
         return self.cell[nbr_ckey][v][u]
 
@@ -2098,7 +2126,9 @@ class HalfFace(Datastructure):
 
         Notes
         -----
-        * Neighboring halfface from the same cell are not included.
+        The adjacent halfface belongs a to one of the cell neighbors over halffaces of the initial cell.
+
+        A halfface and its adjacent halfface share two common vertices.
 
         """
         if uv not in self.halfface_halfedges(hfkey):
@@ -2108,7 +2138,7 @@ class HalfFace(Datastructure):
         adj_hfkey = self.cell[ckey][v][u]
         w         = self.halfface_vertex_ancestor(adj_hfkey, v)
         nbr_ckey  = self.plane[u][v][w]
-        if not nbr_ckey:
+        if nbr_ckey is None:
             return None
         return self.cell[nbr_ckey][v][u]
 
@@ -2162,8 +2192,8 @@ class HalfFace(Datastructure):
         i = self.halfface[hfkey].index(vkey)
         return self.halfface[hfkey][i + 1]
 
-    def halfface_neighbors_across_vertices(self, hfkey):
-        """Return all halffaces that share vertices with a halfface.
+    def halfface_neighbors_over_vertices(self, hfkey):
+        """Return all halffaces that share at least one vertex with a halfface.
 
         Parameters
         ----------
@@ -2177,29 +2207,25 @@ class HalfFace(Datastructure):
 
         Notes
         -----
-        * Neighboring halffaces on the same cell are not included.
+        Neighboring halffaces on the same cell are not included.
+
+        Neighboring halffaces belong to one of the neighboring cells over halffaces of the initial cell.
 
         """
-        nbrs     = set()
-        vertices = self.halfface_vertices()
-        ckey     = self.halfface_cell(hfkey)
+        nbrs = set()
         for u, v in self.halfface_halfedges(hfkey):
-            adj_hfkey = self.cell[ckey][v][u]
-            w         = self.halfface_vertex_ancestor(adj_hfkey, v)
-            nbr_ckey  = self.plane[u][v][w]
-            if nbr_ckey:
-                nbr_hfkey = self.cell[nbr_ckey][v][u]
-                nbrs.append(nbr_hfkey)
+            nbr_hfkey = self.halfface_adjacent_halfface(hfkey, (u, v))
+            if nbr_hfkey is not None:
+                nbrs.add(nbr_hfkey)
                 while True:
-                    w1        = self.halfface_vertex_ancestor(nbr_hfkey, v)
-                    if w1 in vertices:
+                    w = self.halfface_vertex_ancestor(nbr_hfkey, v)
+                    nbr_hfkey = self.halfface_adjacent_halfface(nbr_hfkey, (w, v))
+                    if nbr_hfkey is None or nbr_hfkey == hfkey:
                         break
-                    nbr_hfkey = self.halfface_adjacent_halfface(nbr_hfkey, (w1, v))
-                    if nbr_hfkey:
-                        nbrs.add(nbr_hfkey)
+                    nbrs.add(nbr_hfkey)
         return list(nbrs)
 
-    def halfface_neighborhood_across_vertices(self, hfkey, ring=1):
+    def halfface_neighborhood_over_vertices(self, hfkey, ring=1):
         """Return the halfface neighborhood of a halfface across their vertices.
 
         Parameters
@@ -2214,23 +2240,23 @@ class HalfFace(Datastructure):
 
         Notes
         -----
-        * Neighboring halffaces on the same cell are not included.
+        Neighboring halffaces on the same cell are not included.
 
         """
-        nbrs = set(self.halfface_vertex_neighbors(hfkey))
+        nbrs = set(self.halfface_neighbors_over_vertices(hfkey))
         i = 1
         while True:
             if i == ring:
                 break
             temp = []
             for nbr_hfkey in nbrs:
-                temp += self.halfface_vertex_neighbors(nbr_hfkey)
+                temp += self.halfface_neighbors_over_vertices(nbr_hfkey)
             nbrs.update(temp)
             i += 1
-        return nbrs
+        return list(nbrs - set([hfkey]))
 
-    def halfface_neighbors_across_edges(self, hfkey):
-        """Return the halfface neighbors of a halfface across its edges.
+    def halfface_neighbors_over_edges(self, hfkey):
+        """Return the halfface neighbors of a halfface across its edges (halffaces that share two vertices).
 
         Parameters
         ----------
@@ -2254,7 +2280,7 @@ class HalfFace(Datastructure):
                 nbrs.append(nbr_hfkey)
         return nbrs
 
-    def halfface_neighborhood_across_edges(self, hfkey, ring=1):
+    def halfface_neighborhood_over_edges(self, hfkey, ring=1):
         """Return the halfface neighborhood of a halfface across their edges.
 
         Parameters
@@ -2269,23 +2295,23 @@ class HalfFace(Datastructure):
 
         Notes
         -----
-        * Neighboring halffaces on the same cell are not included.
+        Neighboring halffaces on the same cell are not included.
 
         """
-        nbrs = set(self.halfface_edge_neighbors(hfkey))
+        nbrs = set(self.halfface_neighbors_over_edges(hfkey))
         i = 1
         while True:
             if i == ring:
                 break
             temp = []
             for nbr_hfkey in nbrs:
-                temp += self.halfface_edge_neighbors(nbr_hfkey)
+                temp += self.halfface_neighbors_over_edges(nbr_hfkey)
             nbrs.update(temp)
             i += 1
-        return nbrs
+        return list(nbrs - set([hfkey]))
 
     def is_halfface_on_boundary(self, hfkey):
-        """Verify that a halfface is on a boundary.
+        """Verify that a halfface is on the boundary.
 
         Parameters
         ----------
@@ -2355,10 +2381,10 @@ class HalfFace(Datastructure):
             The halffaces of a cell.
 
         """
-        hfkeys = []
+        hfkeys = set()
         for u in self.cell[ckey]:
-            hfkeys += self.cell[ckey][u].values()
-        return hfkeys
+            hfkeys.update(self.cell[ckey][u].values())
+        return list(hfkeys)
 
     def cell_vertex_neighbors(self, ckey, vkey):
         """Ordered vertex neighbors of a vertex of a cell.
@@ -2372,6 +2398,10 @@ class HalfFace(Datastructure):
         -------
         list
             The list of neighboring vertices.
+
+        Notes
+        -----
+        All of the returned vertices should be part of the cell.
 
         """
         nbr_vkeys = self.cell[ckey][vkey].keys()
@@ -2397,6 +2427,10 @@ class HalfFace(Datastructure):
         list
             The ordered list of halffaces connected to a vertex of a cell.
 
+        Notes
+        -----
+        All of the returned halffaces should be part of the cell.
+
         """
         nbr_vkeys = self.cell[ckey][vkey].keys()
         u         = vkey
@@ -2408,7 +2442,7 @@ class HalfFace(Datastructure):
             ordered_hfkeys.append(hfkey)
         return ordered_hfkeys
 
-    def cell_neighbors_across_vertices(self, ckey):
+    def cell_neighbors_over_vertices(self, ckey):
         """Return the cell neighbors of a cell across its vertices.
 
         Parameters
@@ -2427,7 +2461,35 @@ class HalfFace(Datastructure):
             ckeys.update(self.vertex_cells(vkey))
         return list(ckeys)
 
-    def cell_neighbors_across_halffaces(self, ckey):
+    def cell_neighborhood_over_vertices(self, ckey, ring=1):
+        """Return the cell neighborhood of a cell across its vertices.
+
+        Parameters
+        ----------
+        ckey : hashable
+            Identifier of the cell.
+        ring : int, optional
+            The number of neighborhood rings to include. Default is ``1``.
+
+        Returns
+        -------
+        list
+            The cells in the neighborhood.
+
+        """
+        nbrs = set(self.cell_neighbors_over_vertices(ckey))
+        i = 1
+        while True:
+            if i == ring:
+                break
+            temp = []
+            for key in nbrs:
+                temp += self.cell_neighbors_over_vertices(key)
+            nbrs.update(temp)
+            i += 1
+        return list(nbrs - set([ckey]))
+
+    def cell_neighbors_over_halffaces(self, ckey):
         """Return the cell neighbors of a cell across its halffaces.
 
         Parameters
@@ -2449,13 +2511,15 @@ class HalfFace(Datastructure):
                 ckeys.append(nbr)
         return ckeys
 
-    def cell_neighborhood(self, ceky):
+    def cell_neighborhood_over_halffaces(self, ckey, ring=1):
         """Return the cells in the neighborhood of a cell across its halffaces.
 
         Parameters
         ----------
         ckey : hashable
             Identifier of the cell.
+        ring : int, optional
+            The number of neighborhood rings to include. Default is ``1``.
 
         Returns
         -------
@@ -2463,17 +2527,17 @@ class HalfFace(Datastructure):
             The identifiers of the neighboring cells.
 
         """
-
-
-        pass
-
-
-
-
-
-
-
-
+        nbrs = set(self.cell_neighbors_over_halffaces(ckey))
+        i = 1
+        while True:
+            if i == ring:
+                break
+            temp = []
+            for key in nbrs:
+                temp += self.cell_neighbors_over_halffaces(key)
+            nbrs.update(temp)
+            i += 1
+        return list(nbrs - set([ckey]))
 
     def cell_adjacency_halffaces(self, ckey_1, ckey_2):
         """Given 2 ckeys, returns the interfacing halffaces, respectively.
