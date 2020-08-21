@@ -28,7 +28,7 @@ if compas.IPY:
         from Rhino.UI.Dialogs import ShowMessageBox
 
         try:
-            from compas_rhino.etoforms import PropertyListForm
+            from compas_rhino.forms import PropertyListForm
         except ImportError:
             from Rhino.UI.Dialogs import ShowPropertyListBox
 
