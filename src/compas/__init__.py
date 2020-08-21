@@ -72,12 +72,7 @@ except Exception:
     pass
 
 
-__all__ = [
-    'raise_if_windows',
-    'raise_if_not_windows',
-    'raise_if_ironpython',
-    'raise_if_not_ironpython',
-]
+__all__ = []
 
 
 def is_windows():
@@ -164,24 +159,36 @@ def is_grasshopper():
 GH = is_grasshopper()
 
 
-def raise_if_not_windows():
-    if not WINDOWS:
-        raise
+def is_blender():
+    try:
+        import bpy  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
 
 
-def raise_if_windows():
-    if WINDOWS:
-        raise
+BLENDER = is_blender()
 
 
-def raise_if_not_ironpython():
-    if not IPY:
-        raise
+# def raise_if_not_windows():
+#     if not WINDOWS:
+#         raise
 
 
-def raise_if_ironpython():
-    if IPY:
-        raise
+# def raise_if_windows():
+#     if WINDOWS:
+#         raise
+
+
+# def raise_if_not_ironpython():
+#     if not IPY:
+#         raise
+
+
+# def raise_if_ironpython():
+#     if IPY:
+#         raise
 
 
 def set_precision(precision):
