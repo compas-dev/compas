@@ -212,17 +212,5 @@ def _break_cycles(cycles, breakpoints):
 
 if __name__ == '__main__':
 
-    # import compas
-    # from compas.datastructures import Network
-
-    # network = Network.from_obj(compas.get('lines.obj'))
-    # network = Network.from_lines(network.to_lines())
-
-    # network.summary()
-
-    # cycles = network_find_cycles(network, network.leaves())
-    # for cycle in cycles:
-    #     print(cycle)
-
     import doctest
     doctest.testmod(globs=globals())
