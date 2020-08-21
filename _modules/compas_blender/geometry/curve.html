@@ -82,13 +82,10 @@
         
           
           <h1 class="display-4 p-0 mb-5">Source code for compas_blender.geometry.curve</h1><div class="highlight"><pre><code>
-<span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
-<span class="kn">from</span> <span class="nn">compas_blender.geometry</span> <span class="kn">import</span> <span class="n">BlenderGeometry</span>
+<span></span><span class="kn">from</span> <span class="nn">mathutils.geometry</span> <span class="kn">import</span> <span class="n">interpolate_bezier</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">mathutils.geometry</span> <span class="kn">import</span> <span class="n">interpolate_bezier</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="k">pass</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">compas_blender.geometry._geometry</span> <span class="kn">import</span> <span class="n">BaseBlenderGeometry</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -96,7 +93,7 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="BlenderCurve"><a class="viewcode-back" href="../../../api/generated/compas_blender.geometry.BlenderCurve.html#compas_blender.geometry.BlenderCurve">[docs]</a><span class="k">class</span> <span class="nc">BlenderCurve</span><span class="p">(</span><span class="n">BlenderGeometry</span><span class="p">):</span>
+<div class="viewcode-block" id="BlenderCurve"><a class="viewcode-back" href="../../../api/generated/compas_blender.geometry.BlenderCurve.html#compas_blender.geometry.BlenderCurve">[docs]</a><span class="k">class</span> <span class="nc">BlenderCurve</span><span class="p">(</span><span class="n">BaseBlenderGeometry</span><span class="p">):</span>
 
 <div class="viewcode-block" id="BlenderCurve.__init__"><a class="viewcode-back" href="../../../api/generated/compas_blender.geometry.BlenderCurve.__init__.html#compas_blender.geometry.BlenderCurve.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>

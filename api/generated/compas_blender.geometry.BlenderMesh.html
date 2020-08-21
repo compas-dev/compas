@@ -90,7 +90,7 @@
 <dl class="class">
 <dt id="compas_blender.geometry.BlenderMesh">
 <em class="property">class </em><code class="sig-prename descclassname">compas_blender.geometry.</code><code class="sig-name descname">BlenderMesh</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_blender/geometry/mesh.html#BlenderMesh"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.geometry.BlenderGeometry</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.geometry._geometry.BaseBlenderGeometry</span></code></p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -131,79 +131,73 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.faces_normals.html#compas_blender.geometry.BlenderMesh.faces_normals" title="compas_blender.geometry.BlenderMesh.faces_normals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_normals</span></code></a>([faces])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.find.html#compas_blender.geometry.BlenderMesh.find" title="compas_blender.geometry.BlenderMesh.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(guid)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.from_name.html#compas_blender.geometry.BlenderMesh.from_name" title="compas_blender.geometry.BlenderMesh.from_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_name</span></code></a>(name)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.from_name.html#compas_blender.geometry.BlenderMesh.from_name" title="compas_blender.geometry.BlenderMesh.from_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_name</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.from_selection.html#compas_blender.geometry.BlenderMesh.from_selection" title="compas_blender.geometry.BlenderMesh.from_selection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_selection</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.from_selection.html#compas_blender.geometry.BlenderMesh.from_selection" title="compas_blender.geometry.BlenderMesh.from_selection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_selection</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_border.html#compas_blender.geometry.BlenderMesh.get_border" title="compas_blender.geometry.BlenderMesh.get_border"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_border</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_border.html#compas_blender.geometry.BlenderMesh.get_border" title="compas_blender.geometry.BlenderMesh.get_border"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_border</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_edge_index.html#compas_blender.geometry.BlenderMesh.get_edge_index" title="compas_blender.geometry.BlenderMesh.get_edge_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_index</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_edge_index.html#compas_blender.geometry.BlenderMesh.get_edge_index" title="compas_blender.geometry.BlenderMesh.get_edge_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_index</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_edge_vertex_indices.html#compas_blender.geometry.BlenderMesh.get_edge_vertex_indices" title="compas_blender.geometry.BlenderMesh.get_edge_vertex_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_vertex_indices</span></code></a>(edge)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_edge_vertex_indices.html#compas_blender.geometry.BlenderMesh.get_edge_vertex_indices" title="compas_blender.geometry.BlenderMesh.get_edge_vertex_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_vertex_indices</span></code></a>(edge)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_edges_indices.html#compas_blender.geometry.BlenderMesh.get_edges_indices" title="compas_blender.geometry.BlenderMesh.get_edges_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_indices</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_edges_indices.html#compas_blender.geometry.BlenderMesh.get_edges_indices" title="compas_blender.geometry.BlenderMesh.get_edges_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_indices</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_edges_vertex_indices.html#compas_blender.geometry.BlenderMesh.get_edges_vertex_indices" title="compas_blender.geometry.BlenderMesh.get_edges_vertex_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_vertex_indices</span></code></a>([edges])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_edges_vertex_indices.html#compas_blender.geometry.BlenderMesh.get_edges_vertex_indices" title="compas_blender.geometry.BlenderMesh.get_edges_vertex_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_vertex_indices</span></code></a>([edges])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_face_index.html#compas_blender.geometry.BlenderMesh.get_face_index" title="compas_blender.geometry.BlenderMesh.get_face_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_index</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_face_index.html#compas_blender.geometry.BlenderMesh.get_face_index" title="compas_blender.geometry.BlenderMesh.get_face_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_index</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_face_vertex_coordinates.html#compas_blender.geometry.BlenderMesh.get_face_vertex_coordinates" title="compas_blender.geometry.BlenderMesh.get_face_vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_vertex_coordinates</span></code></a>(face)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_face_vertex_coordinates.html#compas_blender.geometry.BlenderMesh.get_face_vertex_coordinates" title="compas_blender.geometry.BlenderMesh.get_face_vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_vertex_coordinates</span></code></a>(face)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_face_vertex_indices.html#compas_blender.geometry.BlenderMesh.get_face_vertex_indices" title="compas_blender.geometry.BlenderMesh.get_face_vertex_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_vertex_indices</span></code></a>(face)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_face_vertex_indices.html#compas_blender.geometry.BlenderMesh.get_face_vertex_indices" title="compas_blender.geometry.BlenderMesh.get_face_vertex_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_vertex_indices</span></code></a>(face)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_faces_indices.html#compas_blender.geometry.BlenderMesh.get_faces_indices" title="compas_blender.geometry.BlenderMesh.get_faces_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_indices</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_faces_indices.html#compas_blender.geometry.BlenderMesh.get_faces_indices" title="compas_blender.geometry.BlenderMesh.get_faces_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_indices</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_faces_vertex_coordinates.html#compas_blender.geometry.BlenderMesh.get_faces_vertex_coordinates" title="compas_blender.geometry.BlenderMesh.get_faces_vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_vertex_coordinates</span></code></a>([faces])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_faces_vertex_coordinates.html#compas_blender.geometry.BlenderMesh.get_faces_vertex_coordinates" title="compas_blender.geometry.BlenderMesh.get_faces_vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_vertex_coordinates</span></code></a>([faces])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_faces_vertex_indices.html#compas_blender.geometry.BlenderMesh.get_faces_vertex_indices" title="compas_blender.geometry.BlenderMesh.get_faces_vertex_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_vertex_indices</span></code></a>([faces])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_faces_vertex_indices.html#compas_blender.geometry.BlenderMesh.get_faces_vertex_indices" title="compas_blender.geometry.BlenderMesh.get_faces_vertex_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_faces_vertex_indices</span></code></a>([faces])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertex_coordinates.html#compas_blender.geometry.BlenderMesh.get_vertex_coordinates" title="compas_blender.geometry.BlenderMesh.get_vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_coordinates</span></code></a>(vertex)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertex_coordinates.html#compas_blender.geometry.BlenderMesh.get_vertex_coordinates" title="compas_blender.geometry.BlenderMesh.get_vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_coordinates</span></code></a>(vertex)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertex_face_indices.html#compas_blender.geometry.BlenderMesh.get_vertex_face_indices" title="compas_blender.geometry.BlenderMesh.get_vertex_face_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_face_indices</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertex_face_indices.html#compas_blender.geometry.BlenderMesh.get_vertex_face_indices" title="compas_blender.geometry.BlenderMesh.get_vertex_face_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_face_indices</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertex_index.html#compas_blender.geometry.BlenderMesh.get_vertex_index" title="compas_blender.geometry.BlenderMesh.get_vertex_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_index</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertex_index.html#compas_blender.geometry.BlenderMesh.get_vertex_index" title="compas_blender.geometry.BlenderMesh.get_vertex_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertex_index</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_and_faces.html#compas_blender.geometry.BlenderMesh.get_vertices_and_faces" title="compas_blender.geometry.BlenderMesh.get_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_and_faces</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_and_faces.html#compas_blender.geometry.BlenderMesh.get_vertices_and_faces" title="compas_blender.geometry.BlenderMesh.get_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_and_faces</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_colors.html#compas_blender.geometry.BlenderMesh.get_vertices_colors" title="compas_blender.geometry.BlenderMesh.get_vertices_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_colors</span></code></a>([vertices])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_colors.html#compas_blender.geometry.BlenderMesh.get_vertices_colors" title="compas_blender.geometry.BlenderMesh.get_vertices_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_colors</span></code></a>([vertices])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_coordinates.html#compas_blender.geometry.BlenderMesh.get_vertices_coordinates" title="compas_blender.geometry.BlenderMesh.get_vertices_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_coordinates</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_coordinates.html#compas_blender.geometry.BlenderMesh.get_vertices_coordinates" title="compas_blender.geometry.BlenderMesh.get_vertices_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_coordinates</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_face_indices.html#compas_blender.geometry.BlenderMesh.get_vertices_face_indices" title="compas_blender.geometry.BlenderMesh.get_vertices_face_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_face_indices</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_face_indices.html#compas_blender.geometry.BlenderMesh.get_vertices_face_indices" title="compas_blender.geometry.BlenderMesh.get_vertices_face_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_face_indices</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_indices.html#compas_blender.geometry.BlenderMesh.get_vertices_indices" title="compas_blender.geometry.BlenderMesh.get_vertices_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_indices</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.get_vertices_indices.html#compas_blender.geometry.BlenderMesh.get_vertices_indices" title="compas_blender.geometry.BlenderMesh.get_vertices_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_vertices_indices</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.hide.html#compas_blender.geometry.BlenderMesh.hide" title="compas_blender.geometry.BlenderMesh.hide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.hide.html#compas_blender.geometry.BlenderMesh.hide" title="compas_blender.geometry.BlenderMesh.hide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.purge.html#compas_blender.geometry.BlenderMesh.purge" title="compas_blender.geometry.BlenderMesh.purge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">purge</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.refresh.html#compas_blender.geometry.BlenderMesh.refresh" title="compas_blender.geometry.BlenderMesh.refresh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.purge.html#compas_blender.geometry.BlenderMesh.purge" title="compas_blender.geometry.BlenderMesh.purge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">purge</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.geometry.BlenderMesh.select.html#compas_blender.geometry.BlenderMesh.select" title="compas_blender.geometry.BlenderMesh.select"><code class="xref py py-obj docutils literal notranslate"><span class="pre">select</span></code></a>()</p></td>
