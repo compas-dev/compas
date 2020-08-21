@@ -82,12 +82,10 @@
         
           
           <h1 class="display-4 p-0 mb-5">Source code for compas_blender.utilities.objects</h1><div class="highlight"><pre><code>
-<span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span></span><span class="kn">import</span> <span class="nn">bpy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Text</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">bpy</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="k">pass</span>
+<span class="c1"># from compas.datastructures import Mesh</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -98,40 +96,38 @@
     <span class="s2">&quot;delete_objects_by_names&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_object_by_name&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_objects_by_names&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_objects&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_object_name&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_objects_names&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_objects_layers&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_objects_types&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_objects_coordinates&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_object_property&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_objects_property&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_points&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_curves&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_meshes&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_points_coordinates&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_curves_coordinates&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_object&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_objects&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_point&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_points&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_curve&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_curves&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_surface&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_surfaces&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_mesh&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;select_meshes&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_select&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_deselect&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_objects_layer&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_objects_coordinates&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_objects_rotations&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_objects_scales&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_objects_show_names&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_objects_visible&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_object_property&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;set_objects_property&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mesh_from_bmesh&quot;</span><span class="p">,</span>
+    <span class="c1"># &quot;get_objects&quot;,</span>
+    <span class="c1"># &quot;get_object_name&quot;,</span>
+    <span class="c1"># &quot;get_objects_names&quot;,</span>
+    <span class="c1"># &quot;get_objects_layers&quot;,</span>
+    <span class="c1"># &quot;get_objects_types&quot;,</span>
+    <span class="c1"># &quot;get_objects_coordinates&quot;,</span>
+    <span class="c1"># &quot;get_object_property&quot;,</span>
+    <span class="c1"># &quot;get_objects_property&quot;,</span>
+    <span class="c1"># &quot;get_points&quot;,</span>
+    <span class="c1"># &quot;get_curves&quot;,</span>
+    <span class="c1"># &quot;get_meshes&quot;,</span>
+    <span class="c1"># &quot;get_points_coordinates&quot;,</span>
+    <span class="c1"># &quot;get_curves_coordinates&quot;,</span>
+    <span class="c1"># &quot;select_object&quot;,</span>
+    <span class="c1"># &quot;select_objects&quot;,</span>
+    <span class="c1"># &quot;select_point&quot;,</span>
+    <span class="c1"># &quot;select_points&quot;,</span>
+    <span class="c1"># &quot;select_curve&quot;,</span>
+    <span class="c1"># &quot;select_curves&quot;,</span>
+    <span class="c1"># &quot;select_mesh&quot;,</span>
+    <span class="c1"># &quot;select_meshes&quot;,</span>
+    <span class="c1"># &quot;set_select&quot;,</span>
+    <span class="c1"># &quot;set_deselect&quot;,</span>
+    <span class="c1"># &quot;set_objects_layer&quot;,</span>
+    <span class="c1"># &quot;set_objects_coordinates&quot;,</span>
+    <span class="c1"># &quot;set_objects_rotations&quot;,</span>
+    <span class="c1"># &quot;set_objects_scales&quot;,</span>
+    <span class="c1"># &quot;set_objects_show_names&quot;,</span>
+    <span class="c1"># &quot;set_objects_visible&quot;,</span>
+    <span class="c1"># &quot;set_object_property&quot;,</span>
+    <span class="c1"># &quot;set_objects_property&quot;,</span>
+    <span class="c1"># &quot;mesh_from_bmesh&quot;,</span>
 <span class="p">]</span>
 
 
@@ -139,36 +135,55 @@
 <span class="c1"># Delete</span>
 <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="delete_object"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_object.html#compas_blender.utilities.delete_object">[docs]</a><span class="k">def</span> <span class="nf">delete_object</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;DESELECT&quot;</span><span class="p">)</span>
-    <span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">use_global</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-    <span class="c1"># if obj.type == &#39;MESH&#39;:</span>
-    <span class="c1">#     bpy.data.meshes.remove(obj.data)</span>
-
-
-<div class="viewcode-block" id="delete_objects"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_objects.html#compas_blender.utilities.delete_objects">[docs]</a><span class="k">def</span> <span class="nf">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;DESELECT&quot;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">use_global</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-    <span class="c1"># for obj in objects:</span>
-    <span class="c1">#     if obj.type == &#39;MESH&#39;:</span>
-    <span class="c1">#         bpy.data.meshes.remove(obj.data)</span>
-
 
 <span class="k">def</span> <span class="nf">delete_all_objects</span><span class="p">():</span>
-    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;DESELECT&quot;</span><span class="p">)</span>
-    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;SELECT&quot;</span><span class="p">)</span>
-    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">use_global</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Delete all mesh and curve scene objects, and the attached mesh and curve data blocks.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+        <span class="c1"># if obj.type == &#39;MESH&#39;:</span>
+        <span class="c1">#     bpy.data.objects.remove(obj)</span>
+        <span class="c1"># elif obj.type == &#39;CURVE&#39;:</span>
+        <span class="c1">#     bpy.data.objects.remove(obj)</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meshes</span><span class="p">:</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meshes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">curves</span><span class="p">:</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">curves</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="delete_object_by_name"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_object_by_name.html#compas_blender.utilities.delete_object_by_name">[docs]</a><span class="k">def</span> <span class="nf">delete_object_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="delete_object"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_object.html#compas_blender.utilities.delete_object">[docs]</a><span class="k">def</span> <span class="nf">delete_object</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Delete a scene object.</span>
+
+<span class="sd">    If the scene object is of type &quot;MESH&quot; or &quot;CURVE&quot;,</span>
+<span class="sd">    the attached data blocks are also removed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;MESH&#39;</span><span class="p">:</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mesh</span><span class="p">:</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meshes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;CURVE&#39;</span><span class="p">:</span>
+        <span class="n">curve</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">curve</span><span class="p">:</span>
+            <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">curves</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="delete_objects"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_objects.html#compas_blender.utilities.delete_objects">[docs]</a><span class="k">def</span> <span class="nf">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Delete multiple scene objects.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+        <span class="n">delete_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="delete_object_by_name"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_object_by_name.html#compas_blender.utilities.delete_object_by_name">[docs]</a><span class="k">def</span> <span class="nf">delete_object_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Delete the scene object corresponding to the given name.&quot;&quot;&quot;</span>
     <span class="n">obj</span> <span class="o">=</span> <span class="n">get_object_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="n">delete_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="delete_objects_by_names"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_objects_by_names.html#compas_blender.utilities.delete_objects_by_names">[docs]</a><span class="k">def</span> <span class="nf">delete_objects_by_names</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+<div class="viewcode-block" id="delete_objects_by_names"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_objects_by_names.html#compas_blender.utilities.delete_objects_by_names">[docs]</a><span class="k">def</span> <span class="nf">delete_objects_by_names</span><span class="p">(</span><span class="n">names</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Text</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Delete the scene objects corresponding to the list of names.&quot;&quot;&quot;</span>
     <span class="n">objects</span> <span class="o">=</span> <span class="n">get_objects_by_names</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
     <span class="n">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span></div>
 
@@ -177,85 +192,88 @@
 <span class="c1"># Get</span>
 <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="get_object_by_name"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_object_by_name.html#compas_blender.utilities.get_object_by_name">[docs]</a><span class="k">def</span> <span class="nf">get_object_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+
+<div class="viewcode-block" id="get_object_by_name"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_object_by_name.html#compas_blender.utilities.get_object_by_name">[docs]</a><span class="k">def</span> <span class="nf">get_object_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Get the object with the given name.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="get_objects_by_names"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_objects_by_names.html#compas_blender.utilities.get_objects_by_names">[docs]</a><span class="k">def</span> <span class="nf">get_objects_by_names</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+<div class="viewcode-block" id="get_objects_by_names"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_objects_by_names.html#compas_blender.utilities.get_objects_by_names">[docs]</a><span class="k">def</span> <span class="nf">get_objects_by_names</span><span class="p">(</span><span class="n">names</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Get the objects corresponding to the given names.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span></div>
 
 
-<span class="c1"># not a fan of these built in overrides</span>
-<div class="viewcode-block" id="get_objects"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_objects.html#compas_blender.utilities.get_objects">[docs]</a><span class="k">def</span> <span class="nf">get_objects</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
-        <span class="n">objects</span> <span class="o">=</span> <span class="n">get_objects_by_names</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">color</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-    <span class="k">elif</span> <span class="n">layer</span><span class="p">:</span>
-        <span class="n">objects</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">collections</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">type</span><span class="p">:</span>
-        <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="nb">type</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">objects</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">objects</span></div>
+<span class="c1"># def get_objects(names=None, color=None, layer=None, type=None):</span>
+<span class="c1">#     if names:</span>
+<span class="c1">#         objects = get_objects_by_names(names)</span>
+<span class="c1">#     elif color:</span>
+<span class="c1">#         raise NotImplementedError</span>
+<span class="c1">#     elif layer:</span>
+<span class="c1">#         objects = list(bpy.data.collections[layer].objects)</span>
+<span class="c1">#     elif type:</span>
+<span class="c1">#         objects = [obj for obj in bpy.data.objects if obj.type == type.upper()]</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         objects = list(bpy.data.objects)</span>
+<span class="c1">#     return objects</span>
 
 
-<div class="viewcode-block" id="get_object_name"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_object_name.html#compas_blender.utilities.get_object_name">[docs]</a><span class="k">def</span> <span class="nf">get_object_name</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span></div>
+<span class="c1"># def get_object_name(obj):</span>
+<span class="c1">#     return obj.name</span>
 
 
-<div class="viewcode-block" id="get_objects_names"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_objects_names.html#compas_blender.utilities.get_objects_names">[docs]</a><span class="k">def</span> <span class="nf">get_objects_names</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">get_object_name</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">]</span></div>
+<span class="c1"># def get_objects_names(objects):</span>
+<span class="c1">#     return [get_object_name(obj) for obj in objects]</span>
 
 
-<div class="viewcode-block" id="get_objects_layers"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_objects_layers.html#compas_blender.utilities.get_objects_layers">[docs]</a><span class="k">def</span> <span class="nf">get_objects_layers</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">users_collection</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">]</span></div>
+<span class="c1"># def get_objects_layers(objects):</span>
+<span class="c1">#     return [obj.users_collection for obj in objects]</span>
 
 
-<div class="viewcode-block" id="get_objects_types"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_objects_types.html#compas_blender.utilities.get_objects_types">[docs]</a><span class="k">def</span> <span class="nf">get_objects_types</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">]</span></div>
+<span class="c1"># def get_objects_types(objects):</span>
+<span class="c1">#     return [obj.type for obj in objects]</span>
 
 
-<div class="viewcode-block" id="get_objects_coordinates"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_objects_coordinates.html#compas_blender.utilities.get_objects_coordinates">[docs]</a><span class="k">def</span> <span class="nf">get_objects_coordinates</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">location</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">]</span></div>
+<span class="c1"># def get_objects_coordinates(objects):</span>
+<span class="c1">#     return [list(obj.location) for obj in objects]</span>
 
 
-<div class="viewcode-block" id="get_object_property"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_object_property.html#compas_blender.utilities.get_object_property">[docs]</a><span class="k">def</span> <span class="nf">get_object_property</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">property_name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">property_name</span><span class="p">)</span></div>
+<span class="c1"># def get_object_property(obj, property_name):</span>
+<span class="c1">#     return obj.get(property_name)</span>
 
 
-<div class="viewcode-block" id="get_objects_property"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_objects_property.html#compas_blender.utilities.get_objects_property">[docs]</a><span class="k">def</span> <span class="nf">get_objects_property</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">property_name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">get_object_property</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">]</span></div>
+<span class="c1"># def get_objects_property(objects, property_name):</span>
+<span class="c1">#     return [get_object_property(obj, property_name) for obj in objects]</span>
 
 
-<div class="viewcode-block" id="select_object"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_object.html#compas_blender.utilities.select_object">[docs]</a><span class="k">def</span> <span class="nf">select_object</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select an object.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="c1"># def select_object(message=&quot;Select an object.&quot;):</span>
+<span class="c1">#     raise NotImplementedError</span>
 
 
-<div class="viewcode-block" id="select_objects"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_objects.html#compas_blender.utilities.select_objects">[docs]</a><span class="k">def</span> <span class="nf">select_objects</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select objects.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="c1"># def select_objects(message=&quot;Select objects.&quot;):</span>
+<span class="c1">#     raise NotImplementedError</span>
 
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Points</span>
 <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="get_points"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_points.html#compas_blender.utilities.get_points">[docs]</a><span class="k">def</span> <span class="nf">get_points</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">get_objects</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;EMPTY&quot;</span><span class="p">]</span></div>
+
+<span class="c1"># def get_points(layer=None):</span>
+<span class="c1">#     return [obj for obj in get_objects(layer=layer) if obj.type == &quot;EMPTY&quot;]</span>
 
 
-<div class="viewcode-block" id="get_points_coordinates"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_points_coordinates.html#compas_blender.utilities.get_points_coordinates">[docs]</a><span class="k">def</span> <span class="nf">get_points_coordinates</span><span class="p">(</span><span class="n">objects</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">objects</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">objects</span> <span class="o">=</span> <span class="n">get_points</span><span class="p">()</span>
-    <span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">location</span><span class="p">)</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;EMPTY&quot;</span><span class="p">]</span></div>
+<span class="c1"># def get_points_coordinates(objects=None):</span>
+<span class="c1">#     if objects is None:</span>
+<span class="c1">#         objects = get_points()</span>
+<span class="c1">#     return [list(obj.location) for obj in objects if obj.type == &quot;EMPTY&quot;]</span>
 
 
-<div class="viewcode-block" id="select_point"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_point.html#compas_blender.utilities.select_point">[docs]</a><span class="k">def</span> <span class="nf">select_point</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select a point.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="c1"># def select_point(message=&quot;Select a point.&quot;):</span>
+<span class="c1">#     raise NotImplementedError</span>
 
 
-<div class="viewcode-block" id="select_points"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_points.html#compas_blender.utilities.select_points">[docs]</a><span class="k">def</span> <span class="nf">select_points</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select points.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="c1"># def select_points(message=&quot;Select points.&quot;):</span>
+<span class="c1">#     raise NotImplementedError</span>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -263,116 +281,110 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<div class="viewcode-block" id="select_curve"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_curve.html#compas_blender.utilities.select_curve">[docs]</a><span class="k">def</span> <span class="nf">select_curve</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select curve.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="c1"># def select_curve(message=&quot;Select curve.&quot;):</span>
+<span class="c1">#     raise NotImplementedError</span>
 
 
-<div class="viewcode-block" id="select_curves"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_curves.html#compas_blender.utilities.select_curves">[docs]</a><span class="k">def</span> <span class="nf">select_curves</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select curves.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="c1"># def select_curves(message=&quot;Select curves.&quot;):</span>
+<span class="c1">#     raise NotImplementedError</span>
 
 
-<div class="viewcode-block" id="get_curves"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_curves.html#compas_blender.utilities.get_curves">[docs]</a><span class="k">def</span> <span class="nf">get_curves</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">get_objects</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;CURVE&quot;</span><span class="p">]</span></div>
+<span class="c1"># def get_curves(layer=None):</span>
+<span class="c1">#     return [obj for obj in get_objects(layer=layer) if obj.type == &quot;CURVE&quot;]</span>
 
 
-<div class="viewcode-block" id="get_curves_coordinates"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_curves_coordinates.html#compas_blender.utilities.get_curves_coordinates">[docs]</a><span class="k">def</span> <span class="nf">get_curves_coordinates</span><span class="p">(</span><span class="n">objects</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="c1"># def get_curves_coordinates(objects):</span>
+<span class="c1">#     raise NotImplementedError</span>
 
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Meshes</span>
 <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="select_mesh"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_mesh.html#compas_blender.utilities.select_mesh">[docs]</a><span class="k">def</span> <span class="nf">select_mesh</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select a mesh.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<span class="c1"># def select_mesh(message=&quot;Select a mesh.&quot;):</span>
+<span class="c1">#     raise NotImplementedError</span>
 
 
-<div class="viewcode-block" id="select_meshes"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_meshes.html#compas_blender.utilities.select_meshes">[docs]</a><span class="k">def</span> <span class="nf">select_meshes</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select meshes.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+<span class="c1"># def select_meshes(message=&quot;Select meshes.&quot;):</span>
+<span class="c1">#     raise NotImplementedError</span>
 
 
-<div class="viewcode-block" id="get_meshes"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.get_meshes.html#compas_blender.utilities.get_meshes">[docs]</a><span class="k">def</span> <span class="nf">get_meshes</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">get_objects</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;MESH&quot;</span><span class="p">]</span></div>
+<span class="c1"># def get_meshes(layer=None):</span>
+<span class="c1">#     return [obj for obj in get_objects(layer=layer) if obj.type == &quot;MESH&quot;]</span>
 
 
-<span class="k">def</span> <span class="nf">mesh_from_bmesh</span><span class="p">(</span><span class="n">bmesh</span><span class="p">):</span>
-    <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">vertex</span><span class="o">.</span><span class="n">co</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">bmesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
-    <span class="n">faces</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">face</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">bmesh</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">polygons</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="n">faces</span><span class="p">)</span>
+<span class="c1"># def mesh_from_bmesh(bmesh):</span>
+<span class="c1">#     vertices = [list(vertex.co) for vertex in bmesh.data.vertices]</span>
+<span class="c1">#     faces = [list(face.vertices) for face in bmesh.data.polygons]</span>
+<span class="c1">#     return Mesh.from_vertices_and_faces(vertices=vertices, faces=faces)</span>
 
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Surfaces</span>
 <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="select_surface"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_surface.html#compas_blender.utilities.select_surface">[docs]</a><span class="k">def</span> <span class="nf">select_surface</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select a surface.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
-
-
-<div class="viewcode-block" id="select_surfaces"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.select_surfaces.html#compas_blender.utilities.select_surfaces">[docs]</a><span class="k">def</span> <span class="nf">select_surfaces</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select surfaces.&quot;</span><span class="p">):</span>
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
-
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Set</span>
 <span class="c1"># ==============================================================================</span>
 
-<div class="viewcode-block" id="set_select"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_select.html#compas_blender.utilities.set_select">[docs]</a><span class="k">def</span> <span class="nf">set_select</span><span class="p">(</span><span class="n">objects</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">objects</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-            <span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;SELECT&quot;</span><span class="p">)</span></div>
+<span class="c1"># def set_select(objects=None):</span>
+<span class="c1">#     if objects:</span>
+<span class="c1">#         for obj in objects:</span>
+<span class="c1">#             obj.select_set(state=True)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         bpy.ops.object.select_all(action=&quot;SELECT&quot;)</span>
 
 
-<div class="viewcode-block" id="set_deselect"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_deselect.html#compas_blender.utilities.set_deselect">[docs]</a><span class="k">def</span> <span class="nf">set_deselect</span><span class="p">(</span><span class="n">objects</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">objects</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-            <span class="n">obj</span><span class="o">.</span><span class="n">select_set</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s2">&quot;DESELECT&quot;</span><span class="p">)</span></div>
+<span class="c1"># def set_deselect(objects=None):</span>
+<span class="c1">#     if objects:</span>
+<span class="c1">#         for obj in objects:</span>
+<span class="c1">#             obj.select_set(state=False)</span>
+<span class="c1">#     else:</span>
+<span class="c1">#         bpy.ops.object.select_all(action=&quot;DESELECT&quot;)</span>
 
 
-<div class="viewcode-block" id="set_objects_layer"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_objects_layer.html#compas_blender.utilities.set_objects_layer">[docs]</a><span class="k">def</span> <span class="nf">set_objects_layer</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
-    <span class="n">collection_new</span> <span class="o">=</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span> <span class="ow">or</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">collection_old</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">users_collection</span><span class="p">:</span>
-            <span class="n">collection_old</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="n">collection_new</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+<span class="c1"># def set_objects_layer(objects, layer):</span>
+<span class="c1">#     collection_new = bpy.data.collections.get(layer) or bpy.data.collections.new(layer)</span>
+<span class="c1">#     for obj in objects:</span>
+<span class="c1">#         for collection_old in obj.users_collection:</span>
+<span class="c1">#             collection_old.objects.unlink(obj)</span>
+<span class="c1">#         collection_new.objects.link(obj)</span>
 
 
-<div class="viewcode-block" id="set_objects_coordinates"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_objects_coordinates.html#compas_blender.utilities.set_objects_coordinates">[docs]</a><span class="k">def</span> <span class="nf">set_objects_coordinates</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">obj</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">xyz</span></div>
+<span class="c1"># def set_objects_coordinates(objects, coords):</span>
+<span class="c1">#     for obj, xyz in zip(objects, coords):</span>
+<span class="c1">#         obj.location = xyz</span>
 
 
-<div class="viewcode-block" id="set_objects_rotations"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_objects_rotations.html#compas_blender.utilities.set_objects_rotations">[docs]</a><span class="k">def</span> <span class="nf">set_objects_rotations</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">rotations</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">obj</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">rotations</span><span class="p">):</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">rotation_euler</span> <span class="o">=</span> <span class="n">r</span></div>
+<span class="c1"># def set_objects_rotations(objects, rotations):</span>
+<span class="c1">#     for obj, r in zip(objects, rotations):</span>
+<span class="c1">#         obj.rotation_euler = r</span>
 
 
-<div class="viewcode-block" id="set_objects_scales"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_objects_scales.html#compas_blender.utilities.set_objects_scales">[docs]</a><span class="k">def</span> <span class="nf">set_objects_scales</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">scales</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">obj</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">scales</span><span class="p">):</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">s</span></div>
+<span class="c1"># def set_objects_scales(objects, scales):</span>
+<span class="c1">#     for obj, s in zip(objects, scales):</span>
+<span class="c1">#         obj.scale = s</span>
 
 
-<div class="viewcode-block" id="set_objects_show_names"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_objects_show_names.html#compas_blender.utilities.set_objects_show_names">[docs]</a><span class="k">def</span> <span class="nf">set_objects_show_names</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">show_name</span> <span class="o">=</span> <span class="n">show</span></div>
+<span class="c1"># def set_objects_show_names(objects, show=True):</span>
+<span class="c1">#     for obj in objects:</span>
+<span class="c1">#         obj.show_name = show</span>
 
 
-<div class="viewcode-block" id="set_objects_visible"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_objects_visible.html#compas_blender.utilities.set_objects_visible">[docs]</a><span class="k">def</span> <span class="nf">set_objects_visible</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">hide_viewport</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">visible</span></div>
+<span class="c1"># def set_objects_visible(objects, visible=True):</span>
+<span class="c1">#     for obj in objects:</span>
+<span class="c1">#         obj.hide_viewport = not visible</span>
 
 
-<div class="viewcode-block" id="set_object_property"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_object_property.html#compas_blender.utilities.set_object_property">[docs]</a><span class="k">def</span> <span class="nf">set_object_property</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">property_name</span><span class="p">,</span> <span class="n">property_value</span><span class="p">):</span>
-    <span class="n">obj</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">property_value</span></div>
+<span class="c1"># def set_object_property(obj, property_name, property_value):</span>
+<span class="c1">#     obj[property_name] = property_value</span>
 
 
-<div class="viewcode-block" id="set_objects_property"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.set_objects_property.html#compas_blender.utilities.set_objects_property">[docs]</a><span class="k">def</span> <span class="nf">set_objects_property</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">property_name</span><span class="p">,</span> <span class="n">property_value</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-        <span class="n">obj</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">property_value</span></div>
+<span class="c1"># def set_objects_property(objects, property_name, property_value):</span>
+<span class="c1">#     for obj in objects:</span>
+<span class="c1">#         obj[property_name] = property_value</span>
 
 
 <span class="c1"># ==============================================================================</span>

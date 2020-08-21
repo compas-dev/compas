@@ -90,7 +90,7 @@
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.geometry.base</span> <span class="kn">import</span> <span class="n">BaseRhinoGeometry</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.geometry._geometry</span> <span class="kn">import</span> <span class="n">BaseRhinoGeometry</span>
 
 <span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">RHINO</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">Rhino</span>
@@ -233,125 +233,6 @@
 <span class="sd">            The XYZ coordinates of the closest points.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">closest_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">]</span></div>
-
-    <span class="c1"># def get_vertex_index(self):</span>
-    <span class="c1">#     guid = self.guid</span>
-
-    <span class="c1">#     class CustomGetObject(Rhino.Input.Custom.GetObject):</span>
-    <span class="c1">#         def CustomGeometryFilter(self, rhino_object, geometry, component_index):</span>
-    <span class="c1">#             # return True if selection is on current mesh object (guid)</span>
-    <span class="c1">#             return guid == rhino_object.Id</span>
-
-    <span class="c1">#     go = CustomGetObject()</span>
-    <span class="c1">#     go.SetCommandPrompt(&#39;Select a vertex of the mesh.&#39;)</span>
-    <span class="c1">#     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshVertex</span>
-    <span class="c1">#     go.AcceptNothing(True)</span>
-    <span class="c1">#     if go.Get() != Rhino.Input.GetResult.Object:</span>
-    <span class="c1">#         return None</span>
-    <span class="c1">#     objref = go.Object(0)</span>
-    <span class="c1">#     if not objref:</span>
-    <span class="c1">#         return None</span>
-    <span class="c1">#     tvindex = objref.GeometryComponentIndex.Index</span>
-    <span class="c1">#     mesh = sc.doc.Objects.Find(guid)</span>
-    <span class="c1">#     temp = mesh.Geometry.TopologyVertices.MeshVertexIndices(tvindex)</span>
-    <span class="c1">#     vindex = temp[0]</span>
-    <span class="c1">#     go.Dispose()</span>
-    <span class="c1">#     return vindex</span>
-
-    <span class="c1"># def get_face_index(self):</span>
-    <span class="c1">#     guid = self.guid</span>
-
-    <span class="c1">#     class CustomGetObject(Rhino.Input.Custom.GetObject):</span>
-    <span class="c1">#         def CustomGeometryFilter(self, rhino_object, geometry, component_index):</span>
-    <span class="c1">#             # return True if selecion is on current mesh object (guid)</span>
-    <span class="c1">#             return guid == rhino_object.Id</span>
-
-    <span class="c1">#     go = CustomGetObject()</span>
-    <span class="c1">#     go.SetCommandPrompt(&#39;Select a face of the mesh.&#39;)</span>
-    <span class="c1">#     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshFace</span>
-    <span class="c1">#     go.AcceptNothing(True)</span>
-    <span class="c1">#     if go.Get() != Rhino.Input.GetResult.Object:</span>
-    <span class="c1">#         return None</span>
-    <span class="c1">#     objref = go.Object(0)</span>
-    <span class="c1">#     if not objref:</span>
-    <span class="c1">#         return None</span>
-    <span class="c1">#     findex = objref.GeometryComponentIndex.Index</span>
-    <span class="c1">#     go.Dispose()</span>
-    <span class="c1">#     return findex</span>
-
-    <span class="c1"># def get_edge_index(guid):</span>
-    <span class="c1">#     class CustomGetObject(Rhino.Input.Custom.GetObject):</span>
-    <span class="c1">#         def CustomGeometryFilter(self, rhino_object, geometry, component_index):</span>
-    <span class="c1">#             return guid == rhino_object.Id</span>
-    <span class="c1">#     go = CustomGetObject()</span>
-    <span class="c1">#     go.SetCommandPrompt(&#39;Select an edge of the mesh.&#39;)</span>
-    <span class="c1">#     go.GeometryFilter = Rhino.DocObjects.ObjectType.MeshEdge</span>
-    <span class="c1">#     go.AcceptNothing(True)</span>
-    <span class="c1">#     if go.Get() != Rhino.Input.GetResult.Object:</span>
-    <span class="c1">#         return None</span>
-    <span class="c1">#     objref = go.Object(0)</span>
-    <span class="c1">#     if not objref:</span>
-    <span class="c1">#         return None</span>
-    <span class="c1">#     eindex = objref.GeometryComponentIndex.Index</span>
-    <span class="c1">#     go.Dispose()</span>
-    <span class="c1">#     return eindex</span>
-    <span class="c1">#</span>
-    <span class="c1"># def get_vertex_indices(guid):</span>
-    <span class="c1">#     tvindices = rs.GetMeshVertices(guid, &#39;Select mesh vertices.&#39;)</span>
-    <span class="c1">#     if not tvindices:</span>
-    <span class="c1">#         return</span>
-    <span class="c1">#     mobj = sc.doc.Objects.Find(guid)</span>
-    <span class="c1">#     mgeo = mobj.Geometry</span>
-    <span class="c1">#     vindices = []</span>
-    <span class="c1">#     for tvindex in tvindices:</span>
-    <span class="c1">#         temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)</span>
-    <span class="c1">#         vindices.append(temp[0])</span>
-    <span class="c1">#     return vindices</span>
-    <span class="c1">#</span>
-    <span class="c1"># def get_face_indices(guid):</span>
-    <span class="c1">#     return rs.GetMeshFaces(guid, &#39;Select mesh faces.&#39;)</span>
-    <span class="c1">#</span>
-    <span class="c1"># def get_vertex_face_indices(guid):</span>
-    <span class="c1">#     vindex = get_mesh_vertex_index(guid)</span>
-    <span class="c1">#     if vindex is None:</span>
-    <span class="c1">#         return</span>
-    <span class="c1">#     mobj = sc.doc.Objects.Find(guid)</span>
-    <span class="c1">#     mgeo = mobj.Geometry</span>
-    <span class="c1">#     findices = mgeo.TopologyVertices.ConnectedFaces(vindex)</span>
-    <span class="c1">#     return findices</span>
-
-    <span class="c1"># def get_face_vertex_indices(guid):</span>
-    <span class="c1">#     findex = compas_rhino.get_mesh_face_index(guid)</span>
-    <span class="c1">#     if findex is None:</span>
-    <span class="c1">#         return</span>
-    <span class="c1">#     mobj = sc.doc.Objects.Find(guid)</span>
-    <span class="c1">#     mgeo = mobj.Geometry</span>
-    <span class="c1">#     tvertices = mgeo.Faces.GetTopologicalVertices(findex)</span>
-    <span class="c1">#     vindices = []</span>
-    <span class="c1">#     for tvertex in tvertices:</span>
-    <span class="c1">#         temp = mgeo.TopologyVertices.MeshVertexIndices(tvertex)</span>
-    <span class="c1">#         vindices.append(temp[0])</span>
-    <span class="c1">#     return vindices</span>
-
-    <span class="c1"># def get_edge_vertex_indices(guid):</span>
-    <span class="c1">#     eindex = get_mesh_edge_index(guid)</span>
-    <span class="c1">#     if eindex is None:</span>
-    <span class="c1">#         return</span>
-    <span class="c1">#     mobj = sc.doc.Objects.Find(guid)</span>
-    <span class="c1">#     mgeo = mobj.Geometry</span>
-    <span class="c1">#     temp = mgeo.TopologyEdges.GetTopologyVertices(eindex)</span>
-    <span class="c1">#     tvindices = temp.I, temp.J</span>
-    <span class="c1">#     vindices = []</span>
-    <span class="c1">#     for tvindex in tvindices:</span>
-    <span class="c1">#         temp = mgeo.TopologyVertices.MeshVertexIndices(tvindex)</span>
-    <span class="c1">#         vindices.append(temp[0])</span>
-    <span class="c1">#     return vindices</span>
-
-    <span class="c1"># def normal(self, point):</span>
-    <span class="c1">#     pass</span>
-
-    <span class="c1"># def normals(self, points):</span>
-    <span class="c1">#     pass</span>
 
 
 <span class="c1"># ==============================================================================</span>

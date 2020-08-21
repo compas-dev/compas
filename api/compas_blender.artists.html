@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshArtist" href="generated/compas_blender.artists.MeshArtist.html" />
+    <link rel="next" title="BaseArtist" href="generated/compas_blender.artists.BaseArtist.html" />
   
   
   
@@ -88,23 +88,37 @@
           <span class="target" id="module-compas_blender.artists"></span><div class="section" id="artists">
 <h1 class="display-4 p-0 mb-5">artists</h1>
 <p>Artists for visualising (painting) COMPAS data structures in Blender.</p>
+<div class="section" id="base-classes">
+<h2>Base Classes</h2>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.MeshArtist.html#compas_blender.artists.MeshArtist" title="compas_blender.artists.MeshArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeshArtist</span></code></a>(mesh[, layer])</p></td>
-<td><p>Artist for COMPAS meshes.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.NetworkArtist.html#compas_blender.artists.NetworkArtist" title="compas_blender.artists.NetworkArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkArtist</span></code></a>(network[, layer])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.VolMeshArtist.html#compas_blender.artists.VolMeshArtist" title="compas_blender.artists.VolMeshArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VolMeshArtist</span></code></a>(volmesh[, layer])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.BaseArtist.html#compas_blender.artists.BaseArtist" title="compas_blender.artists.BaseArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseArtist</span></code></a>()</p></td>
+<td><p>Base class for all Blender artists.</p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="classes">
+<h2>Classes</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.NetworkArtist.html#compas_blender.artists.NetworkArtist" title="compas_blender.artists.NetworkArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkArtist</span></code></a>(network[, settings])</p></td>
+<td><p>Artist for COMPAS network objects.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.MeshArtist.html#compas_blender.artists.MeshArtist" title="compas_blender.artists.MeshArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeshArtist</span></code></a>(mesh[, settings])</p></td>
+<td><p>A mesh artist defines functionality for visualising COMPAS meshes in Blender.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
         
@@ -133,7 +147,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.geometry.html">geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_blender.ui.html">ui</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_blender.utilities.html">utilities</a></li>
 </ul>
@@ -156,7 +169,11 @@
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">artists</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">artists</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#base-classes">Base Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
 </ul>
 
       </div>

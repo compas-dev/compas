@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="MeshArtist.save" href="compas_blender.artists.MeshArtist.save.html" />
+    <link rel="prev" title="BaseArtist.register" href="compas_blender.artists.BaseArtist.register.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,8 +89,23 @@
 <h1 class="display-4 p-0 mb-5">NetworkArtist</h1>
 <dl class="class">
 <dt id="compas_blender.artists.NetworkArtist">
-<em class="property">class </em><code class="sig-prename descclassname">compas_blender.artists.</code><code class="sig-name descname">NetworkArtist</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_blender/artists/networkartist.html#NetworkArtist"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.mixins.edgeartist.EdgeArtist</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.mixins.vertexartist.VertexArtist</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.artist.Artist</span></code></p>
+<em class="property">class </em><code class="sig-prename descclassname">compas_blender.artists.</code><code class="sig-name descname">NetworkArtist</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_blender/artists/networkartist.html#NetworkArtist"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists._artist.BaseArtist</span></code></p>
+<p>Artist for COMPAS network objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – A COMPAS network.</p></li>
+<li><p><strong>settings</strong> (<em>dict, optional</em>) – A dict with custom visualisation settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – The COMPAS network associated with the artist.</p></li>
+<li><p><strong>settings</strong> (<em>dict</em>) – Default settings for color, scale, tolerance, …</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -98,56 +113,32 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.__init__.html#compas_blender.artists.NetworkArtist.__init__" title="compas_blender.artists.NetworkArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(network[, layer])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.__init__.html#compas_blender.artists.NetworkArtist.__init__" title="compas_blender.artists.NetworkArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(network[, settings])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear.html#compas_blender.artists.NetworkArtist.clear" title="compas_blender.artists.NetworkArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.build.html#compas_blender.artists.NetworkArtist.build" title="compas_blender.artists.NetworkArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
+<td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear_edgelabels.html#compas_blender.artists.NetworkArtist.clear_edgelabels" title="compas_blender.artists.NetworkArtist.clear_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edgelabels</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear.html#compas_blender.artists.NetworkArtist.clear" title="compas_blender.artists.NetworkArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p>Delete all objects created by the artist.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear_edges.html#compas_blender.artists.NetworkArtist.clear_edges" title="compas_blender.artists.NetworkArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a>([keys])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw.html#compas_blender.artists.NetworkArtist.draw" title="compas_blender.artists.NetworkArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([settings])</p></td>
+<td><p>Draw the network.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear_layer.html#compas_blender.artists.NetworkArtist.clear_layer" title="compas_blender.artists.NetworkArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_collection.html#compas_blender.artists.NetworkArtist.draw_collection" title="compas_blender.artists.NetworkArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<td><p>Draw a collection of items.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear_vertexlabels.html#compas_blender.artists.NetworkArtist.clear_vertexlabels" title="compas_blender.artists.NetworkArtist.clear_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexlabels</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_edges.html#compas_blender.artists.NetworkArtist.draw_edges" title="compas_blender.artists.NetworkArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
+<td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.clear_vertices.html#compas_blender.artists.NetworkArtist.clear_vertices" title="compas_blender.artists.NetworkArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a>([keys])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_nodes.html#compas_blender.artists.NetworkArtist.draw_nodes" title="compas_blender.artists.NetworkArtist.draw_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_nodes</span></code></a>([nodes, color])</p></td>
+<td><p>Draw a selection of nodes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw.html#compas_blender.artists.NetworkArtist.draw" title="compas_blender.artists.NetworkArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.redraw.html#compas_blender.artists.NetworkArtist.redraw" title="compas_blender.artists.NetworkArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<td><p>Trigger a redraw.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_edgelabels.html#compas_blender.artists.NetworkArtist.draw_edgelabels" title="compas_blender.artists.NetworkArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_edges.html#compas_blender.artists.NetworkArtist.draw_edges" title="compas_blender.artists.NetworkArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([width, keys, colors])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_lines.html#compas_blender.artists.NetworkArtist.draw_lines" title="compas_blender.artists.NetworkArtist.draw_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_lines</span></code></a>(lines[, layer, clear_layer, redraw])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_points.html#compas_blender.artists.NetworkArtist.draw_points" title="compas_blender.artists.NetworkArtist.draw_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_points</span></code></a>(points[, layer, clear_layer, redraw])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_polygons.html#compas_blender.artists.NetworkArtist.draw_polygons" title="compas_blender.artists.NetworkArtist.draw_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polygons</span></code></a>(polygons[, layer, …])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_vertexlabels.html#compas_blender.artists.NetworkArtist.draw_vertexlabels" title="compas_blender.artists.NetworkArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.draw_vertices.html#compas_blender.artists.NetworkArtist.draw_vertices" title="compas_blender.artists.NetworkArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([keys, radius])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.redraw.html#compas_blender.artists.NetworkArtist.redraw" title="compas_blender.artists.NetworkArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([timeout])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.save.html#compas_blender.artists.NetworkArtist.save" title="compas_blender.artists.NetworkArtist.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path[, width, height, scale, …])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.NetworkArtist.register.html#compas_blender.artists.NetworkArtist.register" title="compas_blender.artists.NetworkArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<td><p>Register a type of COMPAS object with a Blender artist.</p></td>
 </tr>
 </tbody>
 </table>
@@ -181,7 +172,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_blender.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.geometry.html">geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.ui.html">ui</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.utilities.html">utilities</a></li>
 </ul>

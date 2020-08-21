@@ -82,68 +82,253 @@
         
           
           <h1 class="display-4 p-0 mb-5">Source code for compas_blender.artists.meshartist</h1><div class="highlight"><pre><code>
-<span></span><span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">Artist</span>
-<span class="kn">from</span> <span class="nn">compas_blender.artists.mixins</span> <span class="kn">import</span> <span class="n">VertexArtist</span>
-<span class="kn">from</span> <span class="nn">compas_blender.artists.mixins</span> <span class="kn">import</span> <span class="n">EdgeArtist</span>
-<span class="kn">from</span> <span class="nn">compas_blender.artists.mixins</span> <span class="kn">import</span> <span class="n">FaceArtist</span>
-<span class="kn">from</span> <span class="nn">compas_blender.utilities</span> <span class="kn">import</span> <span class="n">draw_mesh</span>
+<span></span><span class="c1"># from __future__ import annotations</span>
+
+<span class="kn">import</span> <span class="nn">compas_blender</span>
+
+<span class="kn">from</span> <span class="nn">compas_blender.artists._artist</span> <span class="kn">import</span> <span class="n">BaseArtist</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">color_to_colordict</span> <span class="k">as</span> <span class="n">colordict</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;MeshArtist&#39;</span><span class="p">,</span>
-<span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MeshArtist&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="MeshArtist"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.html#compas_blender.artists.MeshArtist">[docs]</a><span class="k">class</span> <span class="nc">MeshArtist</span><span class="p">(</span><span class="n">FaceArtist</span><span class="p">,</span> <span class="n">EdgeArtist</span><span class="p">,</span> <span class="n">VertexArtist</span><span class="p">,</span> <span class="n">Artist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Artist for COMPAS meshes.</span>
+<div class="viewcode-block" id="MeshArtist"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.html#compas_blender.artists.MeshArtist">[docs]</a><span class="k">class</span> <span class="nc">MeshArtist</span><span class="p">(</span><span class="n">BaseArtist</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A mesh artist defines functionality for visualising COMPAS meshes in Blender.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    mesh: compas.datastructures.Mesh</span>
-<span class="sd">        A COMPAS mesh data structure.</span>
-<span class="sd">    layer (optional): str</span>
-<span class="sd">        The layer in which the components of the mesh should be drawn.</span>
-<span class="sd">        Default is None.</span>
+<span class="sd">    mesh : :class:`compas.datastructures.Mesh`</span>
+<span class="sd">        A COMPAS mesh.</span>
+<span class="sd">    settings : dict, optional</span>
+<span class="sd">        A dict with custom visualisation settings.</span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    There is no such thing as a &quot;layer&quot; in Blender.</span>
-<span class="sd">    Instead, objects are added to collections.</span>
-<span class="sd">    Vertices will automatically be added to a vertex collection,</span>
-<span class="sd">    edges to an edge collection, and faces to a face collection.</span>
-<span class="sd">    These collections are added to a mesh collection for the current mesh.</span>
-<span class="sd">    What is specified as &quot;layer&quot; will be the collection this overal mesh</span>
-<span class="sd">    collection is added to.</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : :class:`compas.datastructures.Mesh`</span>
+<span class="sd">        The COMPAS mesh associated with the artist.</span>
+<span class="sd">    settings : dict</span>
+<span class="sd">        Default settings for color, scale, tolerance, ...</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import compas</span>
+<span class="sd">        from compas.datastructures import Mesh</span>
+<span class="sd">        from compas_blender.artists import MeshArtist</span>
+
+<span class="sd">        mesh = Mesh.from_obj(compas.get(&#39;faces.obj&#39;))</span>
+
+<span class="sd">        MeshArtist(mesh).draw()</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MeshArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.__init__.html#compas_blender.artists.MeshArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
+<div class="viewcode-block" id="MeshArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.__init__.html#compas_blender.artists.MeshArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MeshArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertexcollection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_edgecollection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_facecollection</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object_vertex</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object_edge</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object_face</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-            <span class="s1">&#39;color.vertex&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">],</span>
-            <span class="s1">&#39;color.edge&#39;</span><span class="p">:</span>   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-            <span class="s1">&#39;color.face&#39;</span><span class="p">:</span>   <span class="p">[</span><span class="mi">110</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">110</span><span class="p">],</span>
-        <span class="p">})</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;color.vertices&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;color.edges&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;color.faces&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">),</span>
+            <span class="s1">&#39;show.vertices&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;show.edges&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;show.faces&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datastructure</span>
+    <span class="k">def</span> <span class="nf">collection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collection</span><span class="p">(</span><span class="s1">&#39;Mesh&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span>
 
-    <span class="nd">@mesh</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">datastructure</span> <span class="o">=</span> <span class="n">mesh</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertexcollection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertexcollection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vertexcollection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collections_from_path</span><span class="p">(</span><span class="s1">&#39;Mesh::Vertices&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertexcollection</span>
 
-<div class="viewcode-block" id="MeshArtist.draw_mesh"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.draw_mesh.html#compas_blender.artists.MeshArtist.draw_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">draw_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
-        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span>
-        <span class="n">draw_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">edgecollection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edgecollection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_edgecollection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collections_from_path</span><span class="p">(</span><span class="s1">&#39;Mesh::Edges&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edgecollection</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">facecollection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_facecollection</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_facecollection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collections_from_path</span><span class="p">(</span><span class="s1">&#39;Mesh::Faces&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_facecollection</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">object_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Map between Blender object objects and mesh vertex identifiers.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_vertex</span>
+
+    <span class="nd">@object_vertex</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">object_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object_vertex</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">object_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Map between Blender object objects and mesh edge identifiers.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_edge</span>
+
+    <span class="nd">@object_edge</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">object_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object_edge</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">object_face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Map between Blender object objects and mesh face identifiers.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_face</span>
+
+    <span class="nd">@object_face</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">object_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object_face</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># clear</span>
+    <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="MeshArtist.clear"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.clear.html#compas_blender.artists.MeshArtist.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_vertices</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_faces</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_edges</span><span class="p">()</span></div></div>
+        <span class="sd">&quot;&quot;&quot;Clear all objects previously drawn by this artist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">objects</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_vertex</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">objects</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_edge</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">objects</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_face</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object_vertex</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object_edge</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_object_face</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># components</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="MeshArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.draw.html#compas_blender.artists.MeshArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the mesh using the chosen visualisation settings.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        settings : dict, optional</span>
+<span class="sd">            Dictionary of visualisation settings that will be merged with the settings of the artist.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">settings</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.vertices&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.faces&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.edges&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MeshArtist.draw_mesh"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.draw_mesh.html#compas_blender.artists.MeshArtist.draw_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">draw_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the mesh.&quot;&quot;&quot;</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">()</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">draw_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">collection</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">obj</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="MeshArtist.draw_vertices"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.draw_vertices.html#compas_blender.artists.MeshArtist.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw a selection of vertices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertices : list</span>
+<span class="sd">            A list of vertex keys identifying which vertices to draw.</span>
+<span class="sd">            Default is ``None``, in which case all vertices are drawn.</span>
+<span class="sd">        color : rgb-tuple or dict of rgb-tuple</span>
+<span class="sd">            The color specififcation for the vertices.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of :class:`bpy.types.Object`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
+        <span class="n">vertex_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.vertices&#39;</span><span class="p">],</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.vertex.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">vertex</span><span class="p">),</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">vertex_color</span><span class="p">[</span><span class="n">vertex</span><span class="p">],</span>
+                <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">})</span>
+
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_vertex</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
+
+<div class="viewcode-block" id="MeshArtist.draw_faces"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.draw_faces.html#compas_blender.artists.MeshArtist.draw_faces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw a selection of faces.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        faces : list</span>
+<span class="sd">            A list of face keys identifying which faces to draw.</span>
+<span class="sd">            The default is ``None``, in which case all faces are drawn.</span>
+<span class="sd">        color : rgb-tuple or dict of rgb-tuple</span>
+<span class="sd">            The color specififcation for the faces.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of :class:`bpy.types.Object`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
+        <span class="n">face_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.faces&#39;</span><span class="p">],</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">facets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+            <span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.face.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">face</span><span class="p">),</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">face_color</span><span class="p">[</span><span class="n">face</span><span class="p">]})</span>
+
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">facets</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">facecollection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_face</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">objects</span></div>
+
+<div class="viewcode-block" id="MeshArtist.draw_edges"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.MeshArtist.draw_edges.html#compas_blender.artists.MeshArtist.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw a selection of edges.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edges : list</span>
+<span class="sd">            A list of edge keys (as uv pairs) identifying which edges to draw.</span>
+<span class="sd">            The default is ``None``, in which case all edges are drawn.</span>
+<span class="sd">        color : rgb-tuple or dict of rgb-tuple</span>
+<span class="sd">            The color specififcation for the edges.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of :class:`bpy.types.Object`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.edges&#39;</span><span class="p">],</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">edge_color</span><span class="p">[</span><span class="n">edge</span><span class="p">],</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edge.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">edge</span><span class="p">)})</span>
+
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_edge</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">objects</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -151,7 +336,6 @@
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-
     <span class="k">pass</span>
 </code></pre></div>
         

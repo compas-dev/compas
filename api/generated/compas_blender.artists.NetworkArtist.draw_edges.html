@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="NetworkArtist.draw_lines" href="compas_blender.artists.NetworkArtist.draw_lines.html" />
+    <link rel="next" title="NetworkArtist.draw_nodes" href="compas_blender.artists.NetworkArtist.draw_nodes.html" />
   
   
   
-    <link rel="prev" title="NetworkArtist.draw_edgelabels" href="compas_blender.artists.NetworkArtist.draw_edgelabels.html" />
+    <link rel="prev" title="NetworkArtist.draw_collection" href="compas_blender.artists.NetworkArtist.draw_collection.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,8 +89,21 @@
 <h1 class="display-4 p-0 mb-5">NetworkArtist.draw_edges</h1>
 <dl class="method">
 <dt id="compas_blender.artists.NetworkArtist.draw_edges">
-<code class="sig-prename descclassname">NetworkArtist.</code><code class="sig-name descname">draw_edges</code><span class="sig-paren">(</span><em class="sig-param">width=0.05</em>, <em class="sig-param">keys=None</em>, <em class="sig-param">colors=None</em><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">NetworkArtist.</code><code class="sig-name descname">draw_edges</code><span class="sig-paren">(</span><em class="sig-param">edges=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_blender/artists/networkartist.html#NetworkArtist.draw_edges"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Draw a selection of edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edges</strong> (<em>list</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
+The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are drawn.</p></li>
+<li><p><strong>color</strong> (<em>rgb-tuple or dict of rgb-tuples</em>) – The color specififcation for the edges.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of <code class="xref py py-class docutils literal notranslate"><span class="pre">bpy.types.Object</span></code></p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 
@@ -120,7 +133,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_blender.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.geometry.html">geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.ui.html">ui</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.utilities.html">utilities</a></li>
 </ul>

@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="artists" href="../compas_blender.artists.html" />
+    <link rel="prev" title="NetworkArtist.register" href="compas_blender.artists.NetworkArtist.register.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,26 +89,33 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist</h1>
 <dl class="class">
 <dt id="compas_blender.artists.MeshArtist">
-<em class="property">class </em><code class="sig-prename descclassname">compas_blender.artists.</code><code class="sig-name descname">MeshArtist</code><span class="sig-paren">(</span><em class="sig-param">mesh</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_blender/artists/meshartist.html#MeshArtist"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.mixins.faceartist.FaceArtist</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.mixins.edgeartist.EdgeArtist</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.mixins.vertexartist.VertexArtist</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.artist.Artist</span></code></p>
-<p>Artist for COMPAS meshes.</p>
+<em class="property">class </em><code class="sig-prename descclassname">compas_blender.artists.</code><code class="sig-name descname">MeshArtist</code><span class="sig-paren">(</span><em class="sig-param">mesh</em>, <em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_blender/artists/meshartist.html#MeshArtist"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists._artist.BaseArtist</span></code></p>
+<p>A mesh artist defines functionality for visualising COMPAS meshes in Blender.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>compas.datastructures.Mesh</em>) – A COMPAS mesh data structure.</p></li>
-<li><p><strong>layer (optional)</strong> (<em>str</em>) – The layer in which the components of the mesh should be drawn.
-Default is None.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A COMPAS mesh.</p></li>
+<li><p><strong>settings</strong> (<em>dict, optional</em>) – A dict with custom visualisation settings.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The COMPAS mesh associated with the artist.</p></li>
+<li><p><strong>settings</strong> (<em>dict</em>) – Default settings for color, scale, tolerance, …</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>There is no such thing as a “layer” in Blender.
-Instead, objects are added to collections.
-Vertices will automatically be added to a vertex collection,
-edges to an edge collection, and faces to a face collection.
-These collections are added to a mesh collection for the current mesh.
-What is specified as “layer” will be the collection this overal mesh
-collection is added to.</p>
+<p class="rubric">Examples</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
+
+<span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -116,68 +123,38 @@ collection is added to.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.__init__.html#compas_blender.artists.MeshArtist.__init__" title="compas_blender.artists.MeshArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(mesh[, layer])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.__init__.html#compas_blender.artists.MeshArtist.__init__" title="compas_blender.artists.MeshArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(mesh[, settings])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear.html#compas_blender.artists.MeshArtist.clear" title="compas_blender.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.build.html#compas_blender.artists.MeshArtist.build" title="compas_blender.artists.MeshArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
+<td><p>Build an artist corresponding to the item type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_edgelabels.html#compas_blender.artists.MeshArtist.clear_edgelabels" title="compas_blender.artists.MeshArtist.clear_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edgelabels</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear.html#compas_blender.artists.MeshArtist.clear" title="compas_blender.artists.MeshArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p>Clear all objects previously drawn by this artist.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_edges.html#compas_blender.artists.MeshArtist.clear_edges" title="compas_blender.artists.MeshArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a>([keys])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw.html#compas_blender.artists.MeshArtist.draw" title="compas_blender.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([settings])</p></td>
+<td><p>Draw the mesh using the chosen visualisation settings.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_facelabels.html#compas_blender.artists.MeshArtist.clear_facelabels" title="compas_blender.artists.MeshArtist.clear_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facelabels</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_collection.html#compas_blender.artists.MeshArtist.draw_collection" title="compas_blender.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<td><p>Draw a collection of items.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_faces.html#compas_blender.artists.MeshArtist.clear_faces" title="compas_blender.artists.MeshArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a>([keys])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_edges.html#compas_blender.artists.MeshArtist.draw_edges" title="compas_blender.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
+<td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_layer.html#compas_blender.artists.MeshArtist.clear_layer" title="compas_blender.artists.MeshArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_faces.html#compas_blender.artists.MeshArtist.draw_faces" title="compas_blender.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([faces, color])</p></td>
+<td><p>Draw a selection of faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_vertexlabels.html#compas_blender.artists.MeshArtist.clear_vertexlabels" title="compas_blender.artists.MeshArtist.clear_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexlabels</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_mesh.html#compas_blender.artists.MeshArtist.draw_mesh" title="compas_blender.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a>()</p></td>
+<td><p>Draw the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.clear_vertices.html#compas_blender.artists.MeshArtist.clear_vertices" title="compas_blender.artists.MeshArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a>([keys])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_vertices.html#compas_blender.artists.MeshArtist.draw_vertices" title="compas_blender.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
+<td><p>Draw a selection of vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_edgelabels.html#compas_blender.artists.MeshArtist.draw_edgelabels" title="compas_blender.artists.MeshArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.redraw.html#compas_blender.artists.MeshArtist.redraw" title="compas_blender.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<td><p>Trigger a redraw.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_edges.html#compas_blender.artists.MeshArtist.draw_edges" title="compas_blender.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([width, keys, colors])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_facelabels.html#compas_blender.artists.MeshArtist.draw_facelabels" title="compas_blender.artists.MeshArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a>([text, color])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_faces.html#compas_blender.artists.MeshArtist.draw_faces" title="compas_blender.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([keys, colors])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_lines.html#compas_blender.artists.MeshArtist.draw_lines" title="compas_blender.artists.MeshArtist.draw_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_lines</span></code></a>(lines[, layer, clear_layer, redraw])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_mesh.html#compas_blender.artists.MeshArtist.draw_mesh" title="compas_blender.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_points.html#compas_blender.artists.MeshArtist.draw_points" title="compas_blender.artists.MeshArtist.draw_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_points</span></code></a>(points[, layer, clear_layer, redraw])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_polygons.html#compas_blender.artists.MeshArtist.draw_polygons" title="compas_blender.artists.MeshArtist.draw_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polygons</span></code></a>(polygons[, layer, …])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_vertexlabels.html#compas_blender.artists.MeshArtist.draw_vertexlabels" title="compas_blender.artists.MeshArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.draw_vertices.html#compas_blender.artists.MeshArtist.draw_vertices" title="compas_blender.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([keys, radius])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.redraw.html#compas_blender.artists.MeshArtist.redraw" title="compas_blender.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([timeout])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.save.html#compas_blender.artists.MeshArtist.save" title="compas_blender.artists.MeshArtist.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path[, width, height, scale, …])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_blender.artists.MeshArtist.register.html#compas_blender.artists.MeshArtist.register" title="compas_blender.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<td><p>Register a type of COMPAS object with a Blender artist.</p></td>
 </tr>
 </tbody>
 </table>
@@ -211,7 +188,6 @@ collection is added to.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_blender.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.geometry.html">geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.ui.html">ui</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.utilities.html">utilities</a></li>
 </ul>

@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="update_named_values" href="compas_blender.utilities.update_named_values.html" />
+    <link rel="prev" title="draw_texts" href="compas_blender.utilities.draw_texts.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,8 +89,11 @@
 <h1 class="display-4 p-0 mb-5">delete_object</h1>
 <dl class="function">
 <dt id="compas_blender.utilities.delete_object">
-<code class="sig-prename descclassname">compas_blender.utilities.</code><code class="sig-name descname">delete_object</code><span class="sig-paren">(</span><em class="sig-param">obj</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_blender/utilities/objects.html#delete_object"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">compas_blender.utilities.</code><code class="sig-name descname">delete_object</code><span class="sig-paren">(</span><em class="sig-param">obj: bpy.types.Object</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_blender/utilities/objects.html#delete_object"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Delete a scene object.</p>
+<p>If the scene object is of type “MESH” or “CURVE”,
+the attached data blocks are also removed.</p>
+</dd></dl>
 
 </div>
 
@@ -120,7 +123,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.geometry.html">geometry</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.ui.html">ui</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_blender.utilities.html">utilities</a></li>
 </ul>
