@@ -24,7 +24,7 @@ __all__ = ['PropertyListForm']
 
 class PropertyListForm(Dialog):
 
-    def __init__(self, names, values, title='Properties'):
+    def __init__(self, names, values, title='Properties', width=400, height=600):
         self.names = names
         self.values = values
 
@@ -56,7 +56,7 @@ class PropertyListForm(Dialog):
         self.Padding = drawing.Padding(12)
         self.Resizable = True
         self.Content = layout
-        self.ClientSize = drawing.Size(400, 600)
+        self.ClientSize = drawing.Size(width, height)
 
     @property
     def ok(self):
