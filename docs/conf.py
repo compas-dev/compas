@@ -70,7 +70,7 @@ autoclass_content = "class"
 # autosummary options
 
 autosummary_generate = True
-autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy"]
+autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy", "mathutils"]
 
 # napoleon options
 
@@ -225,6 +225,7 @@ plot_html_show_formats = False
 intersphinx_mapping = {
     'python': ('https://docs.python.org/', None),
     'compas': ('https://compas-dev.github.io/compas', 'https://compas-dev.github.io/compas/objects.inv'),
+    'bpy': ('https://docs.blender.org/', None),
 }
 
 
