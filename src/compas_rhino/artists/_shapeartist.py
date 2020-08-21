@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_rhino
 from compas.datastructures import Mesh
-from compas_rhino.artists.base import BaseArtist
+from compas_rhino.artists._artist import BaseArtist
 
 __all__ = ['ShapeArtist']
 

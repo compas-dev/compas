@@ -9,7 +9,7 @@ except NameError:
 
 import compas_rhino
 # from compas.utilities import iterable_like
-from compas_rhino.artists.primitiveartist import PrimitiveArtist
+from compas_rhino.artists._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['FrameArtist']
