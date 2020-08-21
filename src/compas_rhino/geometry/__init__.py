@@ -91,7 +91,7 @@ RhinoSurface
 """
 from __future__ import absolute_import
 
-from .base import *  # noqa: F401 F403
+from ._geometry import *  # noqa: F401 F403
 
 from .curve import *  # noqa: F401 F403
 from .line import *  # noqa: F401 F403
