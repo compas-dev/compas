@@ -1,10 +1,7 @@
 from compas.geometry import add_vectors
 from compas_blender.geometry import BlenderGeometry
 
-try:
-    from mathutils.geometry import interpolate_bezier
-except ImportError:
-    pass
+from mathutils.geometry import interpolate_bezier
 
 
 __all__ = [
