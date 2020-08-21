@@ -1,7 +1,7 @@
-from compas.geometry import add_vectors
-from compas_blender.geometry import BlenderGeometry
-
 from mathutils.geometry import interpolate_bezier
+
+from compas.geometry import add_vectors
+from compas_blender.geometry._geometry import BaseBlenderGeometry
 
 
 __all__ = [
@@ -9,7 +9,7 @@ __all__ = [
 ]
 
 
-class BlenderCurve(BlenderGeometry):
+class BlenderCurve(BaseBlenderGeometry):
 
     def __init__(self, obj):
         super().__init__(obj)
