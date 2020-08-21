@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.datastructures import Mesh
-from compas_rhino.artists.base import BaseArtist
+from compas_ghpython.artists._artist import BaseArtist
 
 
 __all__ = ['ShapeArtist']

@@ -5,7 +5,7 @@ from __future__ import print_function
 import compas
 import compas_ghpython
 
-from compas_ghpython.artists.base import BaseArtist
+from compas_ghpython.artists._artist import BaseArtist
 
 # from compas.geometry import centroid_polygon
 from compas.utilities import color_to_colordict

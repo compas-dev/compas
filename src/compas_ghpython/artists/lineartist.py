@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_ghpython
-from compas_ghpython.artists.primitiveartist import PrimitiveArtist
+from compas_ghpython.artists._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['LineArtist']
