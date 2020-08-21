@@ -89,13 +89,24 @@
 <span class="kn">from</span> <span class="nn">compas.datastructures.network.core</span> <span class="kn">import</span> <span class="n">BaseNetwork</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.network.core</span> <span class="kn">import</span> <span class="n">network_split_edge</span>
 
+<span class="kn">from</span> <span class="nn">compas.datastructures.network.combinatorics</span> <span class="kn">import</span> <span class="n">network_is_connected</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.network.complementarity</span> <span class="kn">import</span> <span class="n">network_complement</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.network.transformations</span> <span class="kn">import</span> <span class="n">network_transform</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.network.transformations</span> <span class="kn">import</span> <span class="n">network_transformed</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.network.traversal</span> <span class="kn">import</span> <span class="n">network_shortest_path</span>
+
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Network&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Network"><a class="viewcode-back" href="../../../../api/generated/compas.datastructures.Network.html#compas.datastructures.Network">[docs]</a><span class="k">class</span> <span class="nc">Network</span><span class="p">(</span><span class="n">BaseNetwork</span><span class="p">):</span>
 
-    <span class="n">split_edge</span> <span class="o">=</span> <span class="n">network_split_edge</span></div>
+    <span class="n">complement</span> <span class="o">=</span> <span class="n">network_complement</span>
+    <span class="n">is_connected</span> <span class="o">=</span> <span class="n">network_is_connected</span>
+    <span class="n">shortest_path</span> <span class="o">=</span> <span class="n">network_shortest_path</span>
+    <span class="n">split_edge</span> <span class="o">=</span> <span class="n">network_split_edge</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">network_transform</span>
+    <span class="n">transformed</span> <span class="o">=</span> <span class="n">network_transformed</span></div>
 
 
 <span class="c1"># =============================================================================</span>
