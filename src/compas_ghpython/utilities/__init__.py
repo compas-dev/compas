@@ -55,9 +55,10 @@ misc
 """
 from __future__ import absolute_import
 
-from .drawing import *  # noqa: F401 F403
-from .misc import *  # noqa: F401 F403
-from .sets import *  # noqa: F401 F403
-from .timer import *  # noqa: F401 F403
+from compas_rhino.utilities import unload_modules  # noqa : F401
+
+from .drawing import *  # noqa : F401 F403
+from .sets import *  # noqa : F401 F403
+from .timer import *  # noqa : F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

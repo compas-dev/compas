@@ -27,7 +27,8 @@ if compas.IPY:
         from Rhino.Geometry import Curve
         from Rhino.Geometry import Sphere
         from Rhino.Geometry import Mesh
-        from Rhino.Geometry import Vector3f, Point2f
+        from Rhino.Geometry import Vector3f
+        from Rhino.Geometry import Point2f
 
         TOL = sc.doc.ModelAbsoluteTolerance
 
