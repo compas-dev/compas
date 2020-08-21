@@ -1,4 +1,4 @@
-from __future__ import annotations
+# from __future__ import annotations
 
 import bpy
 import abc
@@ -28,7 +28,7 @@ class BaseArtist(abc.ABC):
         self.objects = []
 
     @staticmethod
-    def register(item_type: Type[compas.base.Base], artist_type: Type[BaseArtist]):
+    def register(item_type: Type[compas.base.Base], artist_type: Type['BaseArtist']):
         """Register a type of COMPAS object with a Blender artist.
 
         Parameters
@@ -40,7 +40,7 @@ class BaseArtist(abc.ABC):
         _ITEM_ARTIST[item_type] = artist_type
 
     @staticmethod
-    def build(item: compas.base.Base, **kwargs: Any) -> BaseArtist:
+    def build(item: compas.base.Base, **kwargs: Any) -> 'BaseArtist':
         """Build an artist corresponding to the item type.
 
         Parameters

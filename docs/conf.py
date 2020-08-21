@@ -70,7 +70,7 @@ autoclass_content = "class"
 # autosummary options
 
 autosummary_generate = True
-autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy", "mathutils"]
+autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy", "bmesh", "mathutils"]
 
 # napoleon options
 
