@@ -92,6 +92,7 @@
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<span class="c1"># from compas.geometry import subtract_vectors</span>
 
 <span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">RHINO</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">Rhino</span>
@@ -476,6 +477,47 @@
                 <span class="n">mesh</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="c1"># def mesh_move(mesh):</span>
+<span class="c1">#     &quot;&quot;&quot;&quot;&quot;&quot;</span>
+<span class="c1">#     color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor</span>
+
+<span class="c1">#     vertex_xyz0 = {key: mesh.vertex_coordinates(key) for key in mesh.mesh.vertices()}</span>
+<span class="c1">#     vertex_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.mesh.vertices()}</span>
+
+<span class="c1">#     edges = list(mesh.edges())</span>
+
+<span class="c1">#     start = compas_rhino.pick_point(&#39;Point to move from?&#39;)</span>
+<span class="c1">#     if not start:</span>
+<span class="c1">#         return False</span>
+
+<span class="c1">#     def OnDynamicDraw(sender, e):</span>
+<span class="c1">#         current = list(e.CurrentPoint)</span>
+<span class="c1">#         vector = subtract_vectors(current, start)</span>
+<span class="c1">#         for vertex in vertex_xyz:</span>
+<span class="c1">#             vertex_xyz[vertex] = add_vectors(vertex_xyz0[vertex], vector)</span>
+<span class="c1">#         for u, v in iter(edges):</span>
+<span class="c1">#             sp = vertex[u]</span>
+<span class="c1">#             ep = vertex[v]</span>
+<span class="c1">#             sp = Point3d(*sp)</span>
+<span class="c1">#             ep = Point3d(*ep)</span>
+<span class="c1">#             e.Display.DrawDottedLine(sp, ep, color)</span>
+
+<span class="c1">#     gp = Rhino.Input.Custom.GetPoint()</span>
+<span class="c1">#     gp.SetCommandPrompt(&#39;Point to move to?&#39;)</span>
+<span class="c1">#     gp.DynamicDraw += OnDynamicDraw</span>
+<span class="c1">#     gp.Get()</span>
+
+<span class="c1">#     if gp.CommandResult() == Rhino.Commands.Result.Success:</span>
+<span class="c1">#         end = list(gp.Point())</span>
+<span class="c1">#         vector = subtract_vectors(end, start)</span>
+<span class="c1">#         for vertex, attr in mesh.vertices(True):</span>
+<span class="c1">#             attr[&#39;x&#39;] += vector[0]</span>
+<span class="c1">#             attr[&#39;y&#39;] += vector[1]</span>
+<span class="c1">#             attr[&#39;z&#39;] += vector[2]</span>
+<span class="c1">#         return True</span>
+<span class="c1">#     return False</span>
 
 
 <span class="k">def</span> <span class="nf">mesh_move_vertex</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">constraint</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_off</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
