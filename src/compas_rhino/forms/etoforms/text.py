@@ -24,7 +24,7 @@ __all__ = ['TextForm']
 
 class TextForm(Dialog):
 
-    def __init__(self, text, title=None):
+    def __init__(self, text, title='Message'):
         self.text = text
         self.textbox = textbox = forms.TextArea()
 

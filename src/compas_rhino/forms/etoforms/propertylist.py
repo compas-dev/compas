@@ -24,7 +24,7 @@ __all__ = ['PropertyListForm']
 
 class PropertyListForm(Dialog):
 
-    def __init__(self, names, values):
+    def __init__(self, names, values, title='Properties'):
         self.names = names
         self.values = values
 
@@ -52,7 +52,7 @@ class PropertyListForm(Dialog):
         sub_layout.AddRow(None, self.ok, self.cancel)
         layout.Items.Add(forms.StackLayoutItem(sub_layout))
 
-        self.Title = 'RBE: update a list of properties'
+        self.Title = title
         self.Padding = drawing.Padding(12)
         self.Resizable = True
         self.Content = layout

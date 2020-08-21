@@ -26,7 +26,7 @@ __all__ = ['SettingsForm']
 
 class SettingsForm(Dialog):
 
-    def __init__(self, settings):
+    def __init__(self, settings, title='Settings'):
         # super(SettingsForm, self).__init__()
         self._settings = None
         self._names = None
@@ -59,7 +59,7 @@ class SettingsForm(Dialog):
         layout.EndHorizontal()
         layout.EndVertical()
 
-        self.Title = 'RBE: update settings'
+        self.Title = title
         self.Padding = drawing.Padding(12)
         self.Resizable = False
         self.Content = layout

@@ -20,7 +20,7 @@ __all__ = ['TextForm']
 class TextForm(BaseForm):
     """A form for text."""
 
-    def __init__(self, text, title='TextForm', width=800, height=600):
+    def __init__(self, text, title='Message', width=800, height=600):
         self.text = text
         super(TextForm, self).__init__(title, width, height)
 

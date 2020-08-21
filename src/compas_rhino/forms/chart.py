@@ -102,7 +102,7 @@ class ChartForm(BaseForm):
                  ylimits=None, ystep=None,
                  chartsize=(800, 600), padding=(20, 20, 20, 20),
                  bgcolor=None,
-                 title='ChartForm', **kwargs):
+                 title='Chart', **kwargs):
 
         self._bgcolor = None
 

@@ -102,7 +102,7 @@ class ImageForm(BaseForm):
 
     """
 
-    def __init__(self, image, title='ImageForm', width=None, height=None):
+    def __init__(self, image, title='Image', width=None, height=None):
         self._image = None
         self.image = image
         super(ImageForm, self).__init__(title, width, height)
