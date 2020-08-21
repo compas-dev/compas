@@ -1,9 +1,7 @@
-from compas_blender.utilities import delete_objects
+import bpy
+from typing import List, Text
 
-try:
-    import bpy
-except ImportError:
-    pass
+from compas_blender.utilities import delete_objects
 
 
 __all__ = [
@@ -15,12 +13,19 @@ __all__ = [
 ]
 
 
-# ==============================================================================
-# create
-# ==============================================================================
+def create_collection(name: Text, parent: bpy.types.Collection = None) -> bpy.types.Collection:
+    """Create a collection with the given name.
 
+    Parameters
+    ----------
+    name : str
+    parent : :class:`bpy.types.Collection`, optional
 
-def create_collection(name, parent=None):
+    Returns
+    -------
+    :class:`bpy.types.Collection`
+
+    """
     if not name:
         return
     collection = bpy.data.collections.get(name) or bpy.data.collections.new(name)
@@ -33,12 +38,34 @@ def create_collection(name, parent=None):
     return collection
 
 
-def create_collections(names):
+def create_collections(names: List[Text]) -> List[bpy.types.Collection]:
+    """Create multiple collections at once.
+
+    Parameters
+    ----------
+    names : list of str
+
+    Returns
+    -------
+    list of :class:`bpy.types.Collection`
+    """
     collections = [create_collection(name) for name in names]
     return collections
 
 
-def create_collections_from_path(path, separator='::'):
+def create_collections_from_path(path: Text, separator: Text = '::') -> List[bpy.types.Collection]:
+    """Create nested collections from a collection path string.
+
+    Parameters
+    ----------
+    path : str
+        The collection path with collection names separated by the specified separator.
+    separator : str, optional
+
+    Returns
+    -------
+    list of :class:`bpy.types.Collection`
+    """
     names = path.split(separator)
     collections = []
     parent = None
@@ -49,34 +76,17 @@ def create_collections_from_path(path, separator='::'):
     return collections
 
 
-# ==============================================================================
-# clear
-# ==============================================================================
-
-def clear_collection(name):
+def clear_collection(name: Text):
+    """Clear the objects from a collection."""
     objects = list(bpy.data.collections[name].objects)
     if objects:
         delete_objects(objects)
 
 
-def clear_collections(collections):
+def clear_collections(collections: List[bpy.types.Collection]):
+    """Clear the objects from multiple collections."""
     for name in collections:
         clear_collection(name)
-
-
-# ==============================================================================
-# delete
-# ==============================================================================
-
-# def delete_collection(name):
-#     collection = bpy.data.collections[name]
-#     bpy.context.scene.collection.children.unlink(collection)
-#     bpy.data.collections.remove(collection)
-
-
-# def delete_collections(collections):
-#     for collection in collections:
-#         delete_collection(collection=collection)
 
 
 # ==============================================================================
