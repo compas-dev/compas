@@ -14,7 +14,16 @@ class CircleArtist(PrimitiveArtist):
 
     Examples
     --------
-    >>>
+    .. code-block:: python
+
+        from compas.geometry import Circle
+        from compas.geometry import Plane
+        from compas_ghpython.artists import CircleArtist
+
+        circle = Circle(Plane([0,0,0], [1,0,0]), 10)
+
+        artist = CircleArtist(circle)
+        a = artist.draw()
 
     """
 
