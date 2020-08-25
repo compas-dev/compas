@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import abc
+# from uuid import uuid4
 from compas_rhino.artists import BaseArtist
 
 
@@ -15,7 +16,6 @@ __all__ = ['BaseObject']
 _ITEM_OBJECT = {}
 
 
-# this class should implement compas.base.Base
 class BaseObject(ABC):
     """Abstract base class for COMPAS Rhino objects.
 
@@ -59,6 +59,7 @@ class BaseObject(ABC):
     def __init__(self, item, scene=None, name=None, layer=None, visible=True, settings=None):
         super(BaseObject, self).__init__()
         self._item = None
+        # self._guid = None
         self._scene = None
         self._artist = None
         self._settings = {}
@@ -99,6 +100,12 @@ class BaseObject(ABC):
     @property
     def artist(self):
         return self._artist
+
+    # @property
+    # def guid(self):
+    #     if not self._guid:
+    #         self._guid = uuid4()
+    #     return self._guid
 
     @property
     def name(self):

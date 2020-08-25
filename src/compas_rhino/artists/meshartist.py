@@ -193,8 +193,8 @@ class MeshArtist(BaseArtist):
         """Clear the main layer of the artist."""
         if self.layer:
             compas_rhino.clear_layer(self.layer)
-        else:
-            compas_rhino.clear_current_layer()
+        # else:
+        #     compas_rhino.clear_current_layer()
 
     # ==========================================================================
     # components
