@@ -56,7 +56,17 @@ extensions = [
 
 # autodoc options
 
-autodoc_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy"]
+autodoc_mock_imports = [
+    "System",
+    "clr",
+    "Eto",
+    "Rhino",
+    "scriptcontext",
+    "rhinoscriptsyntax",
+    "bpy",
+    "bmesh",
+    "mathutils"
+]
 
 autodoc_default_options = {
     'undoc-members': True,
@@ -70,7 +80,17 @@ autoclass_content = "class"
 # autosummary options
 
 autosummary_generate = True
-autosummary_mock_imports = ["Rhino", "System", "scriptcontext", "rhinoscriptsyntax", "clr", "bpy", "bmesh", "mathutils"]
+autosummary_mock_imports = [
+    "System",
+    "clr",
+    "Eto",
+    "Rhino",
+    "scriptcontext",
+    "rhinoscriptsyntax",
+    "bpy",
+    "bmesh",
+    "mathutils"
+]
 
 # napoleon options
 
@@ -225,7 +245,6 @@ plot_html_show_formats = False
 intersphinx_mapping = {
     'python': ('https://docs.python.org/', None),
     'compas': ('https://compas-dev.github.io/compas', 'https://compas-dev.github.io/compas/objects.inv'),
-    'bpy': ('https://docs.blender.org/', None),
 }
 
 
