@@ -1,7 +1,4 @@
-try:
-    import bpy
-except ImportError:
-    pass
+import bpy
 
 
 __all__ = [
@@ -32,5 +29,4 @@ class Mouse(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    print(Mouse().cursor_xyz())
+    pass
