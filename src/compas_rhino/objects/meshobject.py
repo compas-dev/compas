@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import compas_rhino
 
-from compas_rhino.objects.base import BaseObject
+from compas_rhino.objects._object import BaseObject
 
 from compas_rhino.objects.modify import mesh_update_attributes
 from compas_rhino.objects.modify import mesh_update_vertex_attributes

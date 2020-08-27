@@ -61,6 +61,17 @@ Selecting
     :toctree: generated/
     :nosignatures:
 
+    network_select_node
+    network_select_nodes
+    network_select_edge
+    network_select_edges
+    mesh_select_vertex
+    mesh_select_vertices
+    mesh_select_face
+    mesh_select_faces
+    mesh_select_edge
+    mesh_select_edges
+
 
 Modifying
 =========
@@ -97,7 +108,7 @@ from .select import *  # noqa : F401 F403
 from .modify import *  # noqa : F401 F403
 from .inspect import *  # noqa : F401 F403
 
-from .base import BaseObject
+from ._object import BaseObject
 from .meshobject import MeshObject
 from .networkobject import NetworkObject
 
