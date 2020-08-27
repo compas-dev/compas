@@ -2,28 +2,23 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
-if compas.RHINO:
-    import clr
-    clr.AddReference("Eto")
-    clr.AddReference("Rhino.UI")
-    import Rhino
-    import Rhino.UI
-    import Eto.Drawing as drawing
-    import Eto.Forms as forms
-    from System.Net import WebClient
-    from System.IO import MemoryStream
-    Dialog = forms.Dialog[bool]
-
-else:
-    class Dialog:
-        pass
-
 try:
     basestring
 except NameError:
     basestring = str
+
+from System.Net import WebClient
+from System.IO import MemoryStream
+
+import clr
+clr.AddReference("Eto")
+clr.AddReference("Rhino.UI")
+
+import Rhino  # noqa: E402
+import Rhino.UI  # noqa: E402
+
+import Eto.Drawing  # noqa: E402
+import Eto.Forms  # noqa: E402
 
 
 __all__ = ['ImageForm']
@@ -52,7 +47,7 @@ def image_from_remote(source):
     w = WebClient()
     d = w.DownloadData(source)
     m = MemoryStream(d)
-    return drawing.Bitmap(m)
+    return Eto.Drawing.Bitmap(m)
 
 
 def image_from_local(source):
@@ -75,10 +70,10 @@ def image_from_local(source):
         image = image_from_local('theblock.jpg')
 
     """
-    return drawing.Bitmap(source)
+    return Eto.Drawing.Bitmap(source)
 
 
-class ImageForm(Dialog):
+class ImageForm(Eto.Forms.Dialog[bool]):
     """Windows form for displaying images.
 
     Parameters
@@ -111,7 +106,7 @@ class ImageForm(Dialog):
         self._image = None
         self.image = image
 
-        view = forms.ImageView()
+        view = Eto.Forms.ImageView()
         view.Image = self.image
         self.Content = view
 
@@ -131,7 +126,7 @@ class ImageForm(Dialog):
                 self._image = image_from_remote(image)
             else:
                 self._image = image_from_local(image)
-        elif isinstance(image, drawing.Image):
+        elif isinstance(image, Eto.Drawing.Image):
             self._image = image
         else:
             raise NotImplementedError

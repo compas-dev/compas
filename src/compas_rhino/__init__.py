@@ -21,12 +21,10 @@ from __future__ import absolute_import
 import os
 import compas
 import compas._os
-from .utilities import *  # noqa: F401 F403
 
 if compas.RHINO:
     import rhinoscriptsyntax as rs  # noqa: F401
-    import scriptcontext as sc  # noqa: F401
-    find_object = sc.doc.Objects.Find
+    from .utilities import *  # noqa: F401 F403
 
 
 __version__ = '0.16.2'

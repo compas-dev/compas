@@ -2,21 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-from compas_rhino.forms.base import BaseForm
-
-if compas.IPY:
-    from System import Uri
-    from System.Windows.Forms import WebBrowser
-    from System.Windows.Forms import StatusStrip
-    from System.Windows.Forms import ToolStripStatusLabel
-    from System.Windows.Forms import FormBorderStyle
-    from System.Windows.Forms import DockStyle
-
 try:
     basestring
 except NameError:
     basestring = str
+
+from compas_rhino.forms.base import BaseForm
+
+from System import Uri
+from System.Windows.Forms import WebBrowser
+from System.Windows.Forms import StatusStrip
+from System.Windows.Forms import ToolStripStatusLabel
+from System.Windows.Forms import FormBorderStyle
+from System.Windows.Forms import DockStyle
 
 
 __all__ = ['BrowserForm']

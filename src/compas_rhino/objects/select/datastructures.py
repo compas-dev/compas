@@ -3,13 +3,21 @@ from __future__ import absolute_import
 from __future__ import division
 
 import ast
-import compas
-
-if compas.RHINO:
-    import rhinoscriptsyntax as rs
+import rhinoscriptsyntax as rs
 
 
 def mesh_select_vertex(mesh, message="Select a vertex."):
+    """Select a single vertex of a mesh.
+
+    Parameters
+    ----------
+    mesh: :class:`compas.datastructures.Mesh`
+    message: str, optional
+
+    Returns
+    -------
+    int or None
+    """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
     if guid:
         prefix = mesh.attributes['name']
@@ -22,6 +30,17 @@ def mesh_select_vertex(mesh, message="Select a vertex."):
 
 
 def mesh_select_vertices(mesh, message="Select vertices."):
+    """Select multiple vertices of a mesh.
+
+    Parameters
+    ----------
+    mesh: :class:`compas.datastructures.Mesh`
+    message: str, optional
+
+    Returns
+    -------
+    list of int
+    """
     keys = []
     guids = rs.GetObjects(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
     if guids:
@@ -39,6 +58,17 @@ def mesh_select_vertices(mesh, message="Select vertices."):
 
 
 def mesh_select_face(mesh, message="Select a face."):
+    """Select a single face of a mesh.
+
+    Parameters
+    ----------
+    mesh: :class:`compas.datastructures.Mesh`
+    message: str, optional
+
+    Returns
+    -------
+    int or None
+    """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.mesh | rs.filter.textdot)
     if guid:
         prefix = mesh.attributes['name']
@@ -52,6 +82,17 @@ def mesh_select_face(mesh, message="Select a face."):
 
 
 def mesh_select_faces(mesh, message="Select faces."):
+    """Select multiple faces of a mesh.
+
+    Parameters
+    ----------
+    mesh: :class:`compas.datastructures.Mesh`
+    message: str, optional
+
+    Returns
+    -------
+    list of int
+    """
     keys = []
     guids = rs.GetObjects(message, preselect=True, filter=rs.filter.mesh | rs.filter.textdot)
     if guids:
@@ -69,6 +110,17 @@ def mesh_select_faces(mesh, message="Select faces."):
 
 
 def mesh_select_edge(mesh, message="Select an edge."):
+    """Select a single edge of a mesh.
+
+    Parameters
+    ----------
+    mesh: :class:`compas.datastructures.Mesh`
+    message: str, optional
+
+    Returns
+    -------
+    tuple of int, or None
+    """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.curve | rs.filter.textdot)
     if guid:
         prefix = mesh.attributes['name']
@@ -84,6 +136,17 @@ def mesh_select_edge(mesh, message="Select an edge."):
 
 
 def mesh_select_edges(mesh, message="Select edges."):
+    """Select multiple edges of a mesh.
+
+    Parameters
+    ----------
+    mesh: :class:`compas.datastructures.Mesh`
+    message: str, optional
+
+    Returns
+    -------
+    list of tuple of int
+    """
     keys = []
     guids = rs.GetObjects(message, preselect=True, filter=rs.filter.curve | rs.filter.textdot)
     if guids:
@@ -103,6 +166,17 @@ def mesh_select_edges(mesh, message="Select edges."):
 
 
 def network_select_node(network, message="Select a node."):
+    """Select a single node of a network.
+
+    Parameters
+    ----------
+    network: :class:`compas.datastructures.Network`
+    message: str, optional
+
+    Returns
+    -------
+    hashable or None
+    """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
     if guid:
         prefix = network.attributes['name']
@@ -115,6 +189,17 @@ def network_select_node(network, message="Select a node."):
 
 
 def network_select_nodes(network, message="Select nodes."):
+    """Select multiple nodes of a network.
+
+    Parameters
+    ----------
+    network: :class:`compas.datastructures.Network`
+    message: str, optional
+
+    Returns
+    -------
+    list of hashable
+    """
     keys = []
     guids = rs.GetObjects(message, preselect=True, filter=rs.filter.point | rs.filter.textdot)
     if guids:
@@ -132,6 +217,17 @@ def network_select_nodes(network, message="Select nodes."):
 
 
 def network_select_edge(network, message="Select an edge."):
+    """Select a single edge of a network.
+
+    Parameters
+    ----------
+    network: :class:`compas.datastructures.Network`
+    message: str, optional
+
+    Returns
+    -------
+    tuple of hashable, or None
+    """
     guid = rs.GetObject(message, preselect=True, filter=rs.filter.curve | rs.filter.textdot)
     if guid:
         prefix = network.attributes['name']
@@ -147,6 +243,17 @@ def network_select_edge(network, message="Select an edge."):
 
 
 def network_select_edges(network, message="Select edges."):
+    """Select multiple edges of a network.
+
+    Parameters
+    ----------
+    network: :class:`compas.datastructures.Network`
+    message: str, optional
+
+    Returns
+    -------
+    list of tuple of hashable
+    """
     keys = []
     guids = rs.GetObjects(message, preselect=True, filter=rs.filter.curve | rs.filter.textdot)
     if guids:

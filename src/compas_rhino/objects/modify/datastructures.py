@@ -4,23 +4,21 @@ from __future__ import division
 
 import ast
 
-import compas
 import compas_rhino
 
 from compas.geometry import add_vectors
-# from compas.geometry import subtract_vectors
 
-if compas.RHINO:
-    import Rhino
-    import clr
-    clr.AddReference('Rhino.UI')
-    import Rhino.UI
-    from Rhino.Geometry import Point3d
+import Rhino
+import clr
 
-    try:
-        from compas_rhino.etoforms import PropertyListForm
-    except ImportError:
-        from Rhino.UI.Dialogs import ShowPropertyListBox
+clr.AddReference('Rhino.UI')
+import Rhino.UI  # noqa: E402
+from Rhino.Geometry import Point3d  # noqa: E402
+
+try:
+    from compas_rhino.etoforms import PropertyListForm
+except ImportError:
+    from Rhino.UI.Dialogs import ShowPropertyListBox
 
 
 __all__ = [

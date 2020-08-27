@@ -2,16 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
 from compas_rhino.forms.base import BaseForm
 
-if compas.IPY:
-    from System.Windows.Forms import TextBox
-    from System.Windows.Forms import DockStyle
-    from System.Windows.Forms import ScrollBars
-    from System.Drawing import Font
-    from System.Drawing import FontFamily
-    from System.Environment import NewLine
+from System.Windows.Forms import TextBox
+from System.Windows.Forms import DockStyle
+from System.Windows.Forms import ScrollBars
+from System.Drawing import Font
+from System.Drawing import FontFamily
+from System.Environment import NewLine
 
 
 __all__ = ['TextForm']

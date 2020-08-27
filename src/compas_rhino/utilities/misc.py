@@ -2,35 +2,32 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import os
-import sys
-import ast
-
-import compas
-
-from compas_rhino.forms import TextForm
-from compas_rhino.forms import ImageForm
-
 try:
     basestring
 except NameError:
     basestring = str
 
-if compas.IPY:
-    import System
+import os
+import sys
+import ast
 
-    if compas.RHINO:
-        import rhinoscriptsyntax as rs
-        import Rhino
-        import clr
-        clr.AddReference('Rhino.UI')
-        import Rhino.UI
-        from Rhino.UI.Dialogs import ShowMessageBox
+from compas_rhino.forms import TextForm
+from compas_rhino.forms import ImageForm
 
-        try:
-            from compas_rhino.forms import PropertyListForm
-        except ImportError:
-            from Rhino.UI.Dialogs import ShowPropertyListBox
+import System
+
+import rhinoscriptsyntax as rs
+import Rhino
+import clr
+
+clr.AddReference('Rhino.UI')
+import Rhino.UI  # noqa: E402
+from Rhino.UI.Dialogs import ShowMessageBox  # noqa: E402
+
+try:
+    from compas_rhino.forms import PropertyListForm
+except ImportError:
+    from Rhino.UI.Dialogs import ShowPropertyListBox
 
 
 __all__ = [

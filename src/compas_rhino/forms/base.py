@@ -3,21 +3,12 @@ from __future__ import absolute_import
 from __future__ import division
 
 import abc
-import compas
 
-if compas.IPY:
-    import System
-    from System.Windows.Forms import DialogResult
-    from System.Windows.Forms import FormBorderStyle
+import System
+from System.Windows.Forms import DialogResult
+from System.Windows.Forms import FormBorderStyle
 
-    WinForm = System.Windows.Forms.Form
-
-    if compas.RHINO:
-        import Rhino
-
-else:
-    class WinForm(object):
-        pass
+import Rhino
 
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
@@ -26,7 +17,7 @@ ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 __all__ = ['BaseForm']
 
 
-class BaseForm(WinForm, ABC):
+class BaseForm(System.Windows.Forms.Form, ABC):
     """Base class for Windows forms."""
 
     def __init__(self, title='Form', width=None, height=None):

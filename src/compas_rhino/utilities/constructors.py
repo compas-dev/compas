@@ -2,12 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
 from compas.utilities import geometric_key
 
-if compas.RHINO:
-    import Rhino
-    import scriptcontext as sc
+import Rhino
+import scriptcontext as sc
 
 
 __all__ = ['volmesh_from_polysurfaces']
