@@ -2,7 +2,7 @@ from __future__ import print_function
 
 import compas
 
-if compas.IPY:
+if compas.RHINO:
     from Rhino.UI import MouseCallback
 else:
     class MouseCallback(object):
