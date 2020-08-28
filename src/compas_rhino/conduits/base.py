@@ -5,11 +5,8 @@ from __future__ import division
 import time
 from contextlib import contextmanager
 
-import compas
-
-if compas.RHINO:
-    import Rhino
-    import scriptcontext as sc
+import Rhino
+import scriptcontext as sc
 
 
 __all__ = ['BaseConduit']
