@@ -18,27 +18,48 @@ __all__ = ['MeshVertexInspector']
 
 
 class MeshVertexInspector(BaseConduit):
-    """"""
+    """Inspect mesh topology at the vertices.
+
+    Parameters
+    ----------
+    mesh: :class:`compas.datastructures.Mesh`
+    tol: float, optional
+    dotcolor: rgb-tuple, optional
+    textcolor: rgb-tuple, optional
+    linecolor: rgb-tuple, optional
+    """
 
     def __init__(self, mesh, tol=0.1, dotcolor=None, textcolor=None, linecolor=None, **kwargs):
         super(MeshVertexInspector, self).__init__(**kwargs)
-        self.mesh = mesh
-        self.tol = tol
+        self._vertex_xyz = None
         dotcolor = dotcolor or (255, 255, 0)
         textcolor = textcolor or (0, 0, 0)
         linecolor = linecolor or (255, 255, 0)
+        self.mesh = mesh
+        self.tol = tol
         self.dotcolor = FromArgb(*dotcolor)
         self.textcolor = FromArgb(*textcolor)
         self.linecolor = FromArgb(*linecolor)
         self.mouse = Mouse(self)
-        self.vertex_xyz = {vertex: mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()}
         self.vertex_nbr = {vertex: mesh.vertex_neighbors(vertex) for vertex in mesh.vertices()}
 
+    @property
+    def vertex_xyz(self):
+        if not self._vertex_xyz:
+            self._vertex_xyz = {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
+        return self._vertex_xyz
+
+    @vertex_xyz.setter
+    def vertex_xyz(self, vertex_xyz):
+        self._vertex_xyz = vertex_xyz
+
     def enable(self):
+        """Enable the conduit."""
         self.mouse.Enabled = True
         self.Enabled = True
 
     def disable(self):
+        """Disable the conduit."""
         self.mouse.Enabled = False
         self.Enabled = False
 
@@ -58,7 +79,7 @@ class MeshVertexInspector(BaseConduit):
                 point = Point3d(*c)
                 draw_dot(point, str(index), self.dotcolor, self.textcolor)
                 for nbr in self.vertex_nbr[vertex]:
-                    draw_arrow(Line(point, Point3d(* self.vertex_xyz[nbr])), self.dotcolor)
+                    draw_arrow(Line(point, Point3d(* self.vertex_xyz[nbr])), self.linecolor)
                 break
 
 
