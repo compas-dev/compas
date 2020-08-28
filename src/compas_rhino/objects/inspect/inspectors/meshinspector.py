@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from System.Collections.Generic import List
 from System.Drawing.Color import FromArgb
 from Rhino.Geometry import Point3d
 from Rhino.Geometry import Line
@@ -41,7 +42,10 @@ class MeshVertexInspector(BaseConduit):
         self.textcolor = FromArgb(*textcolor)
         self.linecolor = FromArgb(*linecolor)
         self.mouse = Mouse(self)
-        self.vertex_nbr = {vertex: mesh.vertex_neighbors(vertex) for vertex in mesh.vertices()}
+        self.vertex_nbr = {
+            vertex: [(vertex, nbr) if mesh.has_edge((vertex, nbr)) else (nbr, vertex) for nbr in mesh.vertex_neighbors(vertex)]
+            for vertex in mesh.vertices()
+        }
 
     @property
     def vertex_xyz(self):
@@ -65,7 +69,7 @@ class MeshVertexInspector(BaseConduit):
 
     def DrawForeground(self, e):
         draw_dot = e.Display.DrawDot
-        draw_arrow = e.Display.DrawArrow
+        draw_arrows = e.Display.DrawArrows
         a = self.mouse.p1
         b = self.mouse.p2
         ab = subtract_vectors(b, a)
@@ -78,8 +82,10 @@ class MeshVertexInspector(BaseConduit):
             if D / Lab < self.tol:
                 point = Point3d(*c)
                 draw_dot(point, str(index), self.dotcolor, self.textcolor)
-                for nbr in self.vertex_nbr[vertex]:
-                    draw_arrow(Line(point, Point3d(* self.vertex_xyz[nbr])), self.linecolor)
+                lines = List[Line](len(self.vertex_nbr[vertex]))
+                for u, v in self.vertex_nbr[vertex]:
+                    lines.Add(Line(Point3d(* self.vertex_xyz[u]), Point3d(* self.vertex_xyz[v])))
+                draw_arrows(lines, self.linecolor)
                 break
 
 
