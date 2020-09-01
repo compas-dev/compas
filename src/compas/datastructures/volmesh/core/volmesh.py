@@ -665,31 +665,6 @@ class BaseVolMesh(HalfFace):
         vectors = [self.face_normal(hfkey) for hfkey in self.vertex_halffaces(vkey) if hfkey is not None]
         return normalize_vector(centroid_points(vectors))
 
-    # --------------------------------------------------------------------------
-    # geometric operations
-    # --------------------------------------------------------------------------
-
-    def scale(self, factor=1.0, origin=(0, 0, 0)):
-        """Scale the entire volmesh object.
-
-        Parameters
-        ----------
-        factor : float
-            Scaling factor.
-
-        Returns
-        -------
-        Volmesh
-            The volmesh with updated XYZ coordinates.
-
-        """
-        for key in self.vertex:
-            x, y, z = subtract_vectors(self.vertex_coordinates(key), origin)
-            attr = self.vertex[key]
-            attr['x'] = origin[0] + x * factor
-            attr['y'] = origin[1] + y * factor
-            attr['z'] = origin[2] + z * factor
-
 
 # ==============================================================================
 # Main
