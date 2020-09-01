@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import json
 import pickle
+import deepcopy
 
 from ast import literal_eval
 from random import sample
@@ -44,10 +45,10 @@ class HalfFace(Datastructure):
         self._max_int_fkey = -1
         self._max_int_ckey = -1
 
-        self.vertex   = {}
+        self.vertex = {}
         self.halfface = {}
-        self.cell     = {}
-        self.plane    = {}
+        self.cell = {}
+        self.plane = {}
 
         self.edgedata = {}
         self.facedata = {}
@@ -56,9 +57,9 @@ class HalfFace(Datastructure):
         self.attributes = {'name': 'VolMesh'}
 
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
-        self.default_edge_attributes   = {}
-        self.default_face_attributes   = {}
-        self.default_cell_attributes   = {}
+        self.default_edge_attributes = {}
+        self.default_face_attributes = {}
+        self.default_cell_attributes = {}
 
     # --------------------------------------------------------------------------
     # customisation
@@ -147,18 +148,18 @@ class HalfFace(Datastructure):
             celldata[repr(ckey)] = self.celldata[ckey]
 
         data = {
-            'attributes'  : self.attributes,
-            'dva'         : self.default_vertex_attributes,
-            'dea'         : self.default_edge_attributes,
-            'dfa'         : self.default_face_attributes,
-            'dca'         : self.default_cell_attributes,
-            'vertex'      : self.vertex,
-            'halfface'    : self.halfface,
-            'cell'        : self.cell,
-            'plane'       : self.plane,
-            'edgedata'    : {},
-            'facedata'    : {},
-            'celldata'    : {},
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'dfa': self.default_face_attributes,
+            'dca': self.default_cell_attributes,
+            'vertex': self.vertex,
+            'halfface': self.halfface,
+            'cell': self.cell,
+            'plane': self.plane,
+            'edgedata': edgedata,
+            'facedata': facedata,
+            'celldata': celldata,
             'max_int_vkey': self._max_int_vkey,
             'max_int_fkey': self._max_int_fkey,
             'max_int_ckey': self._max_int_ckey}
@@ -167,18 +168,18 @@ class HalfFace(Datastructure):
 
     @data.setter
     def data(self, data):
-        attributes   = data.get('attributes') or {}
-        dva          = data.get('dva') or {}
-        dea          = data.get('dea') or {}
-        dfa          = data.get('dfa') or {}
-        dca          = data.get('dca') or {}
-        vertex       = data.get('vertex') or {}
-        halfface     = data.get('halfface') or {}
-        cell         = data.get('cell') or {}
-        plane        = data.get('plane') or {}
-        edgedata     = data.get('edgedata') or {}
-        facedata     = data.get('facedata') or {}
-        celldata     = data.get('celldata') or {}
+        attributes = data.get('attributes') or {}
+        dva = data.get('dva') or {}
+        dea = data.get('dea') or {}
+        dfa = data.get('dfa') or {}
+        dca = data.get('dca') or {}
+        vertex = data.get('vertex') or {}
+        halfface = data.get('halfface') or {}
+        cell = data.get('cell') or {}
+        plane = data.get('plane') or {}
+        edgedata = data.get('edgedata') or {}
+        facedata = data.get('facedata') or {}
+        celldata = data.get('celldata') or {}
         max_int_vkey = data.get('max_int_vkey', - 1)
         max_int_fkey = data.get('max_int_fkey', - 1)
         max_int_ckey = data.get('max_int_ckey', - 1)
@@ -192,10 +193,10 @@ class HalfFace(Datastructure):
         self.default_face_attributes.update(dfa)
         self.default_cell_attributes.update(dca)
 
-        self.vertex   = {}
+        self.vertex = {}
         self.halfedge = {}
-        self.cell     = {}
-        self.plane    = {}
+        self.cell = {}
+        self.plane = {}
         self.edgedata = {}
         self.facedata = {}
         self.celldata = {}
@@ -208,8 +209,8 @@ class HalfFace(Datastructure):
             self.add_halfface(vertices, fkey=int(hfkey), attr_dict=attr)
 
         for ckey in cell:
-            attr      = celldata.get(ckey) or {}
-            hfkeys    = list(set(cell[ckey][u].values() for u in cell[ckey]))
+            attr = celldata.get(ckey) or {}
+            hfkeys = list(set(cell[ckey][u].values() for u in cell[ckey]))
             halffaces = [self.halfface[hfkey] for hfkey in hfkeys]
             self.add_cell(halffaces, ckey=int(ckey), attr_dict=attr)
 
@@ -244,7 +245,7 @@ class HalfFace(Datastructure):
         corresponding *to_data* method.
 
         """
-        volmesh      = cls()
+        volmesh = cls()
         volmesh.data = data
         return volmesh
 
@@ -284,7 +285,7 @@ class HalfFace(Datastructure):
         """
         with open(filepath, 'r') as fp:
             data = json.load(fp)
-        volmesh      = cls()
+        volmesh = cls()
         volmesh.data = data
         return volmesh
 
@@ -370,10 +371,10 @@ class HalfFace(Datastructure):
         del self.edgedata
         del self.facedata
         del self.celldata
-        self.vertex   = {}
+        self.vertex = {}
         self.halfface = {}
-        self.cell     = {}
-        self.plane    = {}
+        self.cell = {}
+        self.planem = {}
         self.edgedata = {}
         self.facedata = {}
         self.celldata = {}
@@ -1859,9 +1860,9 @@ class HalfFace(Datastructure):
         list
             The list of halffaces connected to a vertex.
         """
-        cells     = self.vertex_cells(vkey)
+        cells = self.vertex_cells(vkey)
         nbr_vkeys = self.vertex_neighbors(vkey)
-        hfkeys    = set()
+        hfkeys = set()
         for ckey in cells:
             for v in nbr_vkeys:
                 if v in self.cell[ckey][vkey]:
@@ -1956,13 +1957,13 @@ class HalfFace(Datastructure):
         All halffaces returned should have halfedge u-v; this also means that if edge u-v is shared by four cells, four halffaces are returned, not eight.
 
         """
-        edge_ckeys     = self.plane[u][v].values()
-        ckey           = edge_ckeys[0]
+        edge_ckeys = self.plane[u][v].values()
+        ckey = edge_ckeys[0]
         ordered_hfkeys = []
         for i in range(len(edge_ckeys)):
             hfkey = self.cell[ckey][u][v]
-            w     = self.halfface_vertex_descendent(hfkey, v)
-            ckey  = self.plane[w][v][u]
+            w = self.halfface_vertex_descendent(hfkey, v)
+            ckey = self.plane[w][v][u]
             ordered_hfkeys.append(hfkey)
         return ordered_hfkeys
 
@@ -1982,13 +1983,13 @@ class HalfFace(Datastructure):
             Ordered list of keys identifying the adjacent cells.
 
         """
-        edge_ckeys    = self.plane[u][v].values()
-        ckey          = edge_ckeys[0]
+        edge_ckeys = self.plane[u][v].values()
+        ckey = edge_ckeys[0]
         ordered_ckeys = []
         for i in range(len(edge_ckeys)):
             hfkey = self.cell[ckey][u][v]
-            w     = self.halfface_vertex_descendent(hfkey, v)
-            ckey  = self.plane[w][v][u]
+            w = self.halfface_vertex_descendent(hfkey, v)
+            ckey = self.plane[w][v][u]
             ordered_ckeys.append(ckey)
         return ordered_ckeys
 
@@ -2102,7 +2103,7 @@ class HalfFace(Datastructure):
         For a boundary halfface, the opposite halfface is None.
 
         """
-        u, v, w  = self.halfface[hfkey][0:3]
+        u, v, w = self.halfface[hfkey][0:3]
         nbr_ckey = self.plane[w][v][u]
         if nbr_ckey is None:
             return None
@@ -2133,11 +2134,11 @@ class HalfFace(Datastructure):
         """
         if uv not in self.halfface_halfedges(hfkey):
             raise KeyError(uv)
-        u, v      = uv
-        ckey      = self.halfface_cell(hfkey)
+        u, v = uv
+        ckey = self.halfface_cell(hfkey)
         adj_hfkey = self.cell[ckey][v][u]
-        w         = self.halfface_vertex_ancestor(adj_hfkey, v)
-        nbr_ckey  = self.plane[u][v][w]
+        w = self.halfface_vertex_ancestor(adj_hfkey, v)
+        nbr_ckey = self.plane[u][v][w]
         if nbr_ckey is None:
             return None
         return self.cell[nbr_ckey][v][u]
@@ -2405,12 +2406,12 @@ class HalfFace(Datastructure):
 
         """
         nbr_vkeys = self.cell[ckey][vkey].keys()
-        u         = vkey
-        v         = nbr_vkeys[0]
+        u = vkey
+        v = nbr_vkeys[0]
         ordered_vkeys = [v]
         for i in range(len(nbr_vkeys) - 1):
             hfkey = self.cell[ckey][u][v]
-            v     = self.halfface_vertex_ancestor(hfkey, u)
+            v = self.halfface_vertex_ancestor(hfkey, u)
             ordered_vkeys.append(v)
         return ordered_vkeys
 
@@ -2433,12 +2434,12 @@ class HalfFace(Datastructure):
 
         """
         nbr_vkeys = self.cell[ckey][vkey].keys()
-        u         = vkey
-        v         = nbr_vkeys[0]
+        u = vkey
+        v = nbr_vkeys[0]
         ordered_hfkeys = []
         for i in range(len(nbr_vkeys)):
             hfkey = self.cell[ckey][u][v]
-            v     = self.halfface_vertex_ancestor(hfkey, u)
+            v = self.halfface_vertex_ancestor(hfkey, u)
             ordered_hfkeys.append(hfkey)
         return ordered_hfkeys
 
@@ -2506,7 +2507,7 @@ class HalfFace(Datastructure):
         ckeys = []
         for hfkey in self.cell_halffaces(ckey):
             u, v, w = self.halfface[hfkey][0:3]
-            nbr     = self.plane[w][v][u]
+            nbr = self.plane[w][v][u]
             if nbr is not None:
                 ckeys.append(nbr)
         return ckeys
@@ -2559,7 +2560,7 @@ class HalfFace(Datastructure):
         """
         for hfkey in self.cell_halffaces(ckey_1):
             u, v, w = self.halfface[hfkey][0:3]
-            nbr     = self.plane[w][v][u]
+            nbr = self.plane[w][v][u]
             if nbr == ckey_2:
                 return hfkey, self.halfface_opposite_halfface(hfkey)
         return

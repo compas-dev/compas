@@ -108,14 +108,14 @@ class BaseVolMesh(HalfFace):
             A volmesh object.
 
         """
-        obj      = OBJ(filepath, precision)
+        obj = OBJ(filepath, precision)
         vertices = obj.parser.vertices
-        faces    = obj.parser.faces
-        groups   = obj.parser.groups
-        cells    = []
+        faces = obj.parser.faces
+        groups = obj.parser.groups
+        cells = []
         for name in groups:
             group = groups[name]
-            cell  = []
+            cell = []
             for item in group:
                 if item[0] != 'f':
                     continue
@@ -223,11 +223,11 @@ class BaseVolMesh(HalfFace):
             Each halfface is a list of indices referencing the list of vertex coordinates.
 
         """
-        vkeys       = self.cell_vertices(ckey)
-        hfkeys      = self.cell_halffaces(ckey)
+        vkeys = self.cell_vertices(ckey)
+        hfkeys = self.cell_halffaces(ckey)
         vkey_vindex = dict((vkey, index) for index, vkey in enumerate(vkeys))
-        vertices    = [self.vertex_coordinates(vkey) for vkey in vkeys]
-        halffaces   = [[vkey_vindex[vkey] for vkey in self.halfface[fkey]] for fkey in hfkeys]
+        vertices = [self.vertex_coordinates(vkey) for vkey in vkeys]
+        halffaces = [[vkey_vindex[vkey] for vkey in self.halfface[fkey]] for fkey in hfkeys]
         return vertices, halffaces
 
     # --------------------------------------------------------------------------
@@ -570,11 +570,11 @@ class BaseVolMesh(HalfFace):
 
         """
         deviation = 0
-        polygon   = self.halfface_coordinates()
-        plane     = bestfit_plane(polygon)
+        polygon = self.halfface_coordinates()
+        plane = bestfit_plane(polygon)
         for pt in polygon:
             pt_proj = project_point_plane(pt, plane)
-            dev     = distance_point_point(pt, pt_proj)
+            dev = distance_point_point(pt, pt_proj)
             if dev > deviation:
                 deviation = dev
         return deviation
@@ -600,12 +600,12 @@ class BaseVolMesh(HalfFace):
         face_edge_lengths = [self.edge_length(u, v) for u, v in self.face_halfedges(hfkey)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
-    face_area         = halfface_area
-    face_centroid     = halfface_centroid
-    face_center       = halfface_center
-    face_coordinates  = halfface_coordinates
-    face_flatness     = halfface_flatness
-    face_normal       = halfface_normal
+    face_area = halfface_area
+    face_centroid = halfface_centroid
+    face_center = halfface_center
+    face_coordinates = halfface_coordinates
+    face_flatness = halfface_flatness
+    face_normal = halfface_normal
     face_aspect_ratio = halfface_aspect_ratio
 
     # --------------------------------------------------------------------------
