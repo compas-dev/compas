@@ -234,7 +234,7 @@ class BaseVolMesh(HalfFace):
     # helpers
     # --------------------------------------------------------------------------
 
-    def key_gkey(self, precision=None):
+    def vertex_gkey(self, precision=None):
         """Returns a dictionary that maps vertex dictionary keys to the corresponding
         *geometric key* up to a certain precision.
 
@@ -253,7 +253,7 @@ class BaseVolMesh(HalfFace):
         xyz = self.vertex_coordinates
         return {key: gkey(xyz(key), precision) for key in self.vertices()}
 
-    def gkey_key(self, precision=None):
+    def gkey_vertex(self, precision=None):
         """Returns a dictionary that maps *geometric keys* of a certain precision
         to the keys of the corresponding vertices.
 

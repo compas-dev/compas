@@ -437,11 +437,6 @@ class HalfFace(Datastructure):
         int
             The key of the halfface.
 
-        Raises
-        ------
-        TypeError
-            If the provided face key is of an unhashable type.
-
         Notes
         -----
         If no key is provided for the halfface, one is generated
@@ -633,7 +628,7 @@ class HalfFace(Datastructure):
         if ckey in self.celldata:
             del self.celldata[ckey]
 
-    def cull_vertices(self):
+    def remove_unused_vertices(self):
         """Remove all unused vertices from the volmesh object.
         """
         for u in list(self.vertices()):
