@@ -26,3 +26,4 @@
 - Robin Jodon <<robin.jodon@epfl.ch>> [@rojodon](https://github.com/rjodon)
 - Nik Eftekhar Olivo <<eftekhar@arch.ethz.ch>> [@nikeftekhar](https://github.com/nikeftekhar)
 - Beverly Lytle <<lytle@arch.ethz.ch>> [@beverlylytle](https://github.com/beverlylytle>)
+- Juney Lee <<juney.lee@arch.ethz.ch>> [@juney-lee](https://github.com/juney-lee)
