@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas_rhino.artists.base import BaseArtist
+from compas_rhino.artists._artist import BaseArtist
 
 from compas.utilities import color_to_colordict
 

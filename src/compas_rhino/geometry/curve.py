@@ -9,7 +9,7 @@ from compas.geometry import Line
 from compas.geometry import Polyline
 from compas.geometry import Circle
 
-from compas_rhino.geometry.base import BaseRhinoGeometry
+from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
 if compas.RHINO:
     import scriptcontext as sc

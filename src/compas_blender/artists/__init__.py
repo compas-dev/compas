@@ -8,18 +8,31 @@ artists
 Artists for visualising (painting) COMPAS data structures in Blender.
 
 
+Base Classes
+============
+
 .. autosummary::
     :toctree: generated/
 
-    MeshArtist
+    BaseArtist
+
+
+Classes
+=======
+
+.. autosummary::
+    :toctree: generated/
+
     NetworkArtist
-    VolMeshArtist
+    MeshArtist
 
 """
 
-from .artist import *  # noqa: F401 F403
-from .meshartist import *  # noqa: F401 F403
+from ._artist import *  # noqa: F401 F403
+
 from .networkartist import *  # noqa: F401 F403
-from .volmeshartist import *  # noqa: F401 F403
+from .meshartist import *  # noqa: F401 F403
+# from .volmeshartist import *  # noqa: F401 F403
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

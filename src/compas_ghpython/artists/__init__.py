@@ -56,9 +56,9 @@ Base Classes
 """
 from __future__ import absolute_import
 
-from .base import *  # noqa: F401 F403
-from .primitiveartist import *  # noqa: F401 F403
-from .shapeartist import *  # noqa: F401 F403
+from ._artist import *  # noqa: F401 F403
+from ._primitiveartist import *  # noqa: F401 F403
+from ._shapeartist import *  # noqa: F401 F403
 
 from .circleartist import *  # noqa: F401 F403
 from .frameartist import *  # noqa: F401 F403

@@ -2,21 +2,20 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-from compas_rhino.forms.base import BaseForm
-
-if compas.IPY:
-    import clr
-    from System.Drawing import Size
-    from System.Drawing import Point
-    from System.Drawing import Color
-    clr.AddReference("System.Windows.Forms.DataVisualization")
-    from System.Windows.Forms.DataVisualization import Charting
-
 try:
     basestring
 except NameError:
     basestring = str
+
+from compas_rhino.forms.base import BaseForm
+
+import clr
+from System.Drawing import Size
+from System.Drawing import Point
+from System.Drawing import Color
+
+clr.AddReference("System.Windows.Forms.DataVisualization")
+from System.Windows.Forms.DataVisualization import Charting  # noqa: E402
 
 
 __all__ = ['ChartForm']
@@ -102,7 +101,7 @@ class ChartForm(BaseForm):
                  ylimits=None, ystep=None,
                  chartsize=(800, 600), padding=(20, 20, 20, 20),
                  bgcolor=None,
-                 title='ChartForm', **kwargs):
+                 title='Chart', **kwargs):
 
         self._bgcolor = None
 

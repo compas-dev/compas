@@ -2,18 +2,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+import Rhino
+
 import compas_ghpython
-
-from compas_ghpython.artists.base import BaseArtist
-
-# from compas.geometry import centroid_polygon
+from compas_ghpython.artists._artist import BaseArtist
 from compas.utilities import color_to_colordict
-# from compas.utilities import pairwise
-
-if compas.IPY:
-    if compas.RHINO:
-        import Rhino
 
 
 __all__ = ['MeshArtist']

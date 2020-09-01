@@ -2,19 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
 from compas_rhino.forms.base import BaseForm
 
-if compas.IPY:
-    import System
-    from System.Drawing import Size
-    from System.Drawing import Point
-    from System.Drawing import Color
-    from System.Windows.Forms import TextBox
-    from System.Windows.Forms import TrackBar
+import System
+from System.Drawing import Size
+from System.Drawing import Point
+from System.Drawing import Color
+from System.Windows.Forms import TextBox
+from System.Windows.Forms import TrackBar
 
-    if compas.RHINO:
-        import scriptcontext as sc
+import scriptcontext as sc
 
 
 __all__ = ['SliderForm']

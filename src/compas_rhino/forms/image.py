@@ -2,21 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-from compas_rhino.forms.base import BaseForm
-
-if compas.IPY:
-    from System.Windows.Forms import PictureBox
-    from System.Windows.Forms import PictureBoxSizeMode
-    from System.Windows.Forms import DockStyle
-    from System.Drawing import Image
-    from System.Net import WebClient
-    from System.IO import MemoryStream
-
 try:
     basestring
 except NameError:
     basestring = str
+
+from compas_rhino.forms.base import BaseForm
+
+from System.Windows.Forms import PictureBox
+from System.Windows.Forms import PictureBoxSizeMode
+from System.Windows.Forms import DockStyle
+from System.Drawing import Image
+from System.Net import WebClient
+from System.IO import MemoryStream
 
 
 __all__ = ['ImageForm', 'image_from_remote', 'image_from_local']
@@ -102,7 +100,7 @@ class ImageForm(BaseForm):
 
     """
 
-    def __init__(self, image, title='ImageForm', width=None, height=None):
+    def __init__(self, image, title='Image', width=None, height=None):
         self._image = None
         self.image = image
         super(ImageForm, self).__init__(title, width, height)

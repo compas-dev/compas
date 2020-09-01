@@ -5,7 +5,7 @@ from __future__ import division
 import compas
 import compas_rhino
 from compas.geometry import Line
-from compas_rhino.geometry.base import BaseRhinoGeometry
+from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
 if compas.RHINO:
     import Rhino

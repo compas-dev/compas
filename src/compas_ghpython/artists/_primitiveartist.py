@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas_ghpython.artists.base import BaseArtist
+from compas_ghpython.artists._artist import BaseArtist
 
 
 __all__ = ["PrimitiveArtist"]

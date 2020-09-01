@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_rhino
 
-from compas_rhino.artists.base import BaseArtist
+from compas_rhino.artists._artist import BaseArtist
 
 from compas.utilities import color_to_colordict
 from compas.utilities import pairwise
@@ -193,8 +193,8 @@ class MeshArtist(BaseArtist):
         """Clear the main layer of the artist."""
         if self.layer:
             compas_rhino.clear_layer(self.layer)
-        else:
-            compas_rhino.clear_current_layer()
+        # else:
+        #     compas_rhino.clear_current_layer()
 
     # ==========================================================================
     # components

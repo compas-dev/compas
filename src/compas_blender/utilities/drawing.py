@@ -1,62 +1,69 @@
-from compas_blender.utilities import delete_object
-from compas_blender.utilities import set_objects_layer
+import bpy
+
+from typing import Dict, List, Union, Tuple, Text
+
+from compas_blender.utilities import create_collection
 
 from compas.geometry import centroid_points
 from compas.geometry import distance_point_point
 from compas.geometry import subtract_vectors
 
-try:
-    import bpy
-except ImportError:
-    pass
-
-from math import acos
-from math import atan2
-
 
 __all__ = [
-    'create_material',
-
     'draw_points',
+    'draw_pointcloud',
     'draw_lines',
-    'draw_geodesics',
-    'draw_breps',
+    'draw_polylines',
     'draw_cylinders',
-    'draw_pipes',
-    'draw_forces',
     'draw_spheres',
     'draw_cubes',
+    'draw_pipes',
     'draw_faces',
     'draw_texts',
-
-    'draw_pointcloud',
     'draw_mesh',
-    'draw_plane',
 ]
 
 
-# ==============================================================================
-# Helpers
-# ==============================================================================
+def _link_object(obj, collection=None, layer=None):
+    if not collection:
+        collection = bpy.context.collection
+    if not isinstance(collection, bpy.types.Collection):
+        collection = create_collection(collection)
+    # if not layer:
+    #     layer = bpy.context.view_layer
+    # layer_collection = layer.active_layer_collection.collection
+    for c in obj.users_collection:
+        c.objects.unlink(obj)
+    collection.objects.link(obj)
+    # layer_collection.objects.link(obj)
 
-def link_objects(objects, layer=None):
-    for obj in objects:
-        bpy.context.collection.objects.link(obj)
-    if layer:
-        set_objects_layer(objects, layer)
+
+def _link_objects(objects, collection=None, layer=None):
+    if not collection:
+        collection = bpy.context.collection
+    if not isinstance(collection, bpy.types.Collection):
+        collection = create_collection(collection)
+    # if not layer:
+    #     layer = bpy.context.view_layer
+    # layer_collection = layer.active_layer_collection.collection
+    for o in objects:
+        for c in o.users_collection:
+            c.objects.unlink(o)
+        collection.objects.link(o)
+        # layer_collection.objects.link(o)
 
 
-def create_material(rgb, alpha=1):
-    rgba = rgb + [alpha]
+def _create_material(rgb, alpha=1.0):
+    rgba = list(rgb) + [alpha]
     name = '-'.join(['{0:.2f}'.format(i) for i in rgba])
     material = bpy.data.materials.get(name) or bpy.data.materials.new(name)
     material.diffuse_color = rgba
     return material
 
 
-def set_object_color(obj, rgb, alpha=1.0):
-    rgba = rgb + [alpha]
-    material = create_material(rgb, alpha)
+def _set_object_color(obj, rgb, alpha=1.0):
+    rgba = list(rgb) + [alpha]
+    material = _create_material(rgb, alpha)
     obj.color = rgba
     if obj.data.materials:
         obj.data.materials[0] = material
@@ -69,21 +76,24 @@ def set_object_color(obj, rgb, alpha=1.0):
 # Annotations
 # ==============================================================================
 
-def draw_texts(texts, layer=None):
-    bpy.ops.obj.text_add()
-    empty = bpy.context.active_object
+
+def draw_texts(texts: List[Dict],
+               collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw text objects."""
+    bpy.ops.object.text_add()
+    empty = bpy.context.object
+    _link_object(empty, collection)
+    _set_object_color(empty, [1.0, 1.0, 1.0])
     objects = [0] * len(texts)
     for index, data in enumerate(texts):
         obj = empty.copy()
         obj.location = data['pos']
-        obj.scale *= data.get('radius', 1)
+        obj.data.body = data['text']
+        obj.scale *= data.get('size', 1)
         obj.name = data.get('name', 'text')
-        obj.data.body = data.get('text', 'text')
-        rgb = data.get('color') or [1, 1, 1]
-        obj.color = rgb + [1]
         objects[index] = obj
-    delete_object(empty)
-    link_objects(objects, layer=layer)
+    _link_objects(objects, collection)
+    empty.hide_set(True)
     return objects
 
 
@@ -91,101 +101,171 @@ def draw_texts(texts, layer=None):
 # Primitives
 # ==============================================================================
 
-def draw_points(points, layer=None):
-    bpy.ops.object.empty_add(type='SPHERE')
-    empty = bpy.context.active_object
-    objects = [0] * len(points)
-    for index, data in enumerate(points):
-        obj = empty.copy()
-        obj.location = data['pos']
-        obj.scale *= data.get('radius', 1)
-        obj.name = data.get('name', 'point')
-        rgb = data.get('color') or [1.0, 1.0, 1.0]
-        obj.color = rgb + [1.0]
-        set_object_color(obj, rgb)
+
+# replace this by a custom point shader
+# https://docs.blender.org/api/current/gpu.html#custom-shader-for-dotted-3d-line
+# https://docs.blender.org/api/current/gpu.html#triangle-with-custom-shader
+def draw_points(points: List[Dict],
+                collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw point objects."""
+    P = len(points)
+    N = len(str(P))
+    add_point = bpy.ops.mesh.primitive_uv_sphere_add
+    objects = [0] * P
+    for index, point in enumerate(points):
+        xyz = point['pos']
+        radius = point.get('radius', 1.0)
+        name = point.get('name', f'P.{index:0{N}d}')
+        color = list(point.get('color', [1.0, 1.0, 1.0]))
+        add_point(location=xyz, radius=radius, segments=10, ring_count=10)
+        obj = bpy.context.object
+        obj.name = name
+        # values = [True] * len(obj.data.polygons)
+        # obj.data.polygons.foreach_set("use_smooth", values)
+        _set_object_color(obj, color)
         objects[index] = obj
-    link_objects(objects, layer=layer)
-    delete_object(empty)
+    _link_objects(objects, collection)
     return objects
 
 
-def draw_lines(lines, layer=None, centroid=True):
-    objects = [0] * len(lines)
+# replace this by a custom pointcloud shader
+# https://docs.blender.org/api/current/gpu.html#custom-shader-for-dotted-3d-line
+# https://docs.blender.org/api/current/gpu.html#triangle-with-custom-shader
+def draw_pointcloud(points: List[Dict],
+                    collection: Union[Text, bpy.types.Collection] = None) -> bpy.types.Object:
+    """Draw point objects as a single cloud."""
+    P = len(points)
+    N = len(str(P))
+    bpy.ops.mesh.primitive_uv_sphere_add(location=[0, 0, 0], radius=1.0, segments=10, ring_count=10)
+    empty = bpy.context.object
+    _link_object(empty, collection)
+    _set_object_color(empty, [1.0, 1.0, 1.0])
+    objects = [0] * P
+    for index, data in enumerate(points):
+        obj = empty.copy()
+        obj.location = data['pos']
+        obj.scale *= data.get('radius', 1.0)
+        obj.name = data.get('name', f'P.{index:0{N}d}')
+        # obj.data.polygons.foreach_set("use_smooth", [True] * len(obj.data.polygons))
+        objects[index] = obj
+    _link_objects(objects, collection)
+    empty.hide_set(True)
+    return objects
+
+
+# replace this by a custom line shader
+# https://docs.blender.org/api/current/gpu.html#custom-shader-for-dotted-3d-line
+# https://docs.blender.org/api/current/gpu.html#triangle-with-custom-shader
+def draw_lines(lines: List[Dict],
+               collection: Union[Text, bpy.types.Collection] = None,
+               centroid: bool = True) -> List[bpy.types.Object]:
+    """Draw line objects."""
+    L = len(lines)
+    N = len(str(L))
+    objects = [0] * L
     for index, data in enumerate(lines):
         sp = data['start']
         ep = data['end']
-        mp = centroid_points([sp, ep]) if centroid else [0, 0, 0]
-        name = data.get('name', 'line')
+        origin = centroid_points([sp, ep]) if centroid else [0, 0, 0]
+        name = data.get('name', f'L.{index:0{N}d}')
         curve = bpy.data.curves.new(name, type='CURVE')
         curve.dimensions = '3D'
-        spline = curve.splines.new('NURBS')
-        spline.points.add(2)
-        spline.points[0].co = list(subtract_vectors(sp, mp)) + [1]
-        spline.points[1].co = list(subtract_vectors(ep, mp)) + [1]
+        spline = curve.splines.new('POLY')
+        spline.points.add(1)
+        spline.points[0].co = subtract_vectors(sp, origin) + [1.0]
+        spline.points[1].co = subtract_vectors(ep, origin) + [1.0]
         spline.order_u = 1
         obj = bpy.data.objects.new(name, curve)
-        obj.location = mp
+        obj.location = origin
         obj.data.fill_mode = 'FULL'
         obj.data.bevel_depth = data.get('width', 0.05)
         obj.data.bevel_resolution = 0
         obj.data.resolution_u = 20
-        rgb = data.get('color') or [1.0, 1.0, 1.0]
-        set_object_color(obj, rgb)
+        rgb = data.get('color', [1.0, 1.0, 1.0])
+        _set_object_color(obj, rgb)
         objects[index] = obj
-    link_objects(objects, layer=layer)
+    _link_objects(objects, collection)
     return objects
 
 
-def draw_faces(faces, **kwargs):
-    objects = []
-    for face in faces:
+# replace this by a custom polyline shader
+# https://docs.blender.org/api/current/gpu.html#custom-shader-for-dotted-3d-line
+# https://docs.blender.org/api/current/gpu.html#triangle-with-custom-shader
+def draw_polylines(polylines: List[Dict],
+                   collection: Union[Text, bpy.types.Collection] = None,
+                   centroid: bool = True) -> List[bpy.types.Object]:
+    """Draw polyline objects."""
+    P = len(polylines)
+    N = len(str(P))
+    objects = [0] * P
+    for index, data in enumerate(polylines):
+        points = data['points']
+        origin = centroid_points(points) if centroid else [0, 0, 0]
+        name = data.get('name', f'POLY.{index:0{N}d}')
+        curve = bpy.data.curves.new(name, type='CURVE')
+        curve.dimensions = '3D'
+        spline = curve.splines.new('POLY')
+        spline.points.add(len(points) - 1)
+        for i, point in enumerate(points):
+            spline.points[i].co = subtract_vectors(point, origin) + [1.0]
+        spline.order_u = 1
+        obj = bpy.data.objects.new(name, curve)
+        obj.location = origin
+        obj.data.fill_mode = 'FULL'
+        obj.data.bevel_depth = data.get('width', 0.05)
+        obj.data.bevel_resolution = 0
+        obj.data.resolution_u = 20
+        rgb = data.get('color', [1.0, 1.0, 1.0])
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    return objects
+
+
+def draw_polygons(polygons: List[Dict],
+                  collection: Union[Text, bpy.types.Collection] = None,
+                  centroid: bool = True) -> List[bpy.types.Object]:
+    """Draw polyline objects."""
+    raise NotImplementedError
+
+
+def draw_curves(curves: List[Dict],
+                collection: Union[Text, bpy.types.Collection] = None,
+                centroid: bool = True) -> List[bpy.types.Object]:
+    """Draw curve objects."""
+    raise NotImplementedError
+
+
+def draw_faces(faces: List[Dict],
+               collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw polygonal faces."""
+    F = len(faces)
+    N = len(str(F))
+    objects = [0] * F
+    for index, face in enumerate(faces):
         points = face['points']
         indices = [list(range(len(points)))]
-        name = face.get('name', 'face')
-        layer = face.get('layer', None)
-        color = face.get('color') or [1, 1, 1]
-        obj = draw_mesh(name=name, vertices=points, faces=indices, color=color, layer=layer)
-        # a lot of basic stuff is done by draw_mesh
-        objects.append(obj)
-    return objects
-
-
-# make collection
-# name after pointcloud
-# draw point objects
-# add points to collection
-# assign collection to layer
-def draw_pointcloud(points, layer=None):
-    objects = [0] * len(points)
-    for index, data in enumerate(points):
-        obj = draw_mesh(name=data.get('name', 'pt'), vertices=[[0, 0, 0]])
-        obj.location = data['pos']
+        name = face.get('name', f'FACE.{index:0{N}d}')
+        color = face.get('color', [1.0, 1.0, 1.0])
+        obj = draw_mesh(name=name, vertices=points, faces=indices, color=color, collection=collection)
         objects[index] = obj
-    link_objects(objects, layer=layer)
     return objects
-
-
-def draw_plane(Lx=1, Ly=1, dx=0.5, dy=0.5, name='plane', layer=None, color=[1, 1, 1]):
-    nx = int(Lx / dx)
-    ny = int(Ly / dy)
-    x = [i * dx for i in range(nx + 1)]
-    y = [i * dy for i in range(ny + 1)]
-    vertices = [[xi, yi, 0] for yi in y for xi in x]
-    faces = [[(j + 0) * (nx + 1) + i + 0, (j + 0) * (nx + 1) + i + 1,
-              (j + 1) * (nx + 1) + i + 1, (j + 1) * (nx + 1) + i + 0]
-             for i in range(nx) for j in range(ny)]
-    return draw_mesh(name=name, vertices=vertices, faces=faces, layer=layer, color=color, centroid=False)
 
 
 # ==============================================================================
 # Shapes
 # ==============================================================================
 
-# replace div by uv
-def draw_cylinders(cylinders, div=10, layer=None):
-    # don't set the obvious defaults?
-    bpy.ops.mesh.primitive_cylinder_add(location=[0, 0, 0], radius=1, depth=1, vertices=div)
-    empty = bpy.context.active_object
+
+def draw_cylinders(cylinders: List[Dict],
+                   collection: Union[Text, bpy.types.Collection] = None,
+                   uv: int = 10) -> List[bpy.types.Object]:
+    """Draw cylinder objects as mesh primitives."""
+    from math import acos
+    from math import atan2
+    bpy.ops.mesh.primitive_cylinder_add(location=[0, 0, 0], radius=1, depth=1, vertices=uv)
+    empty = bpy.context.object
+    _link_object(empty, collection)
     objects = [0] * len(cylinders)
     for index, data in enumerate(cylinders):
         sp = data['start']
@@ -195,103 +275,147 @@ def draw_cylinders(cylinders, div=10, layer=None):
         length = distance_point_point(sp, ep)
         obj = empty.copy()
         obj.name = data.get('name', 'cylinder')
-        # get this from geometry package
         obj.rotation_euler[1] = acos((ep[2] - sp[2]) / length)
         obj.rotation_euler[2] = atan2(ep[1] - sp[1], ep[0] - sp[0])
         obj.location = mp
         obj.scale = ((radius, radius, length))
-        rgb = data.get('color') or [1.0, 1.0, 1.0]
-        set_object_color(obj, rgb)
+        rgb = data.get('color', [1.0, 1.0, 1.0])
+        _set_object_color(obj, rgb)
         objects[index] = obj
-    delete_object(empty)
-    link_objects(objects, layer=layer)
+    _link_objects(objects, collection)
+    empty.hide_set(True)
     return objects
 
 
-# rename div to u, v
-def draw_spheres(spheres, div=10, layer=None):
-    bpy.ops.mesh.primitive_uv_sphere_add(location=[0, 0, 0], radius=1.0, segments=div, ring_count=div)
-    empty = bpy.context.active_object
+# these objects are all linked.
+# therefore they cannot have different colors
+# also, if the linked mesh data block is chaged, it will affect all objects
+def draw_spheres(spheres: List[Dict],
+                 collection: Union[Text, bpy.types.Collection] = None,
+                 uv: int = 10) -> List[bpy.types.Object]:
+    """Draw sphere objects as mesh primitives."""
+    bpy.ops.mesh.primitive_uv_sphere_add(location=[0, 0, 0], radius=1.0, segments=uv, ring_count=uv)
+    empty = bpy.context.object
+    _link_object(empty, collection)
     objects = [0] * len(spheres)
     for index, data in enumerate(spheres):
         obj = empty.copy()
         obj.location = data['pos']
         obj.scale *= data.get('radius', 1.0)
         obj.name = data.get('name', 'sphere')
-        values = [True] * len(obj.data.polygons)
-        obj.data.polygons.foreach_set("use_smooth", values)
-        rgb = data.get('color') or [1.0, 1.0, 1.0]
-        set_object_color(obj, rgb)
+        # values = [True] * len(obj.data.polygons)
+        # obj.data.polygons.foreach_set("use_smooth", values)
+        rgb = data.get('color', [1.0, 1.0, 1.0])
+        _set_object_color(obj, rgb)
         objects[index] = obj
-    delete_object(empty)
-    link_objects(objects, layer=layer)
+    _link_objects(objects, collection)
+    empty.hide_set(True)
     return objects
 
 
-def draw_cubes(cubes, layer):
+# def draw_spheres(spheres, collection):
+#     add_sphere = compas_blender.bpy.ops.mesh.primitive_uv_sphere_add
+#     objects = []
+#     for sphere in spheres:
+#         add_sphere(location=[0, 0, 0], radius=1.0, segments=10, ring_count=10)
+#         pos = sphere['pos']
+#         radius = sphere['radius']
+#         name = sphere['name']
+#         color = sphere['color']
+#         obj = compas_blender.bpy.context.active_object
+#         obj.location = pos
+#         obj.scale = radius
+#         obj.name = name
+#         compas_blender.drawing.set_object_color(obj, color)
+#         objects.apend(obj)
+#     for o in objects_vertices:
+#         for c in o.user_collection:
+#             c.objects.unlink(o)
+#         collection.objects.link(o)
+
+
+def draw_cubes(cubes: List[Dict],
+               collection: Union[Text, bpy.types.Collection] = None) -> List[bpy.types.Object]:
+    """Draw cube objects as mesh primitives."""
     bpy.ops.mesh.primitive_cube_add(size=1, location=[0, 0, 0])
-    empty = bpy.context.active_object
+    empty = bpy.context.object
+    _link_object(empty, collection)
     objects = [0] * len(cubes)
     for index, data in enumerate(cubes):
         obj = empty.copy()
         obj.location = data['pos']
         obj.scale *= data.get('size', 1)
         obj.name = data.get('name', 'cube')
-        rgb = data.get('color') or [1.0, 1.0, 1.0]
-        set_object_color(obj, rgb)
+        rgb = data.get('color', [1.0, 1.0, 1.0])
+        _set_object_color(obj, rgb)
         objects[index] = obj
-    delete_object(empty)
-    link_objects(objects, layer=layer)
+    _link_objects(objects, collection)
+    empty.hide_set(True)
     return objects
 
 
-def draw_pipes(pipes, **kwargs):
-    raise NotImplementedError
-
-
-# ==============================================================================
-# NURBS
-# ==============================================================================
-
-def draw_breps(faces, **kwargs):
-    raise NotImplementedError
-
-
-# ==============================================================================
-# Other
-# ==============================================================================
-
-def draw_geodesics(geodesics, **kwargs):
-    raise NotImplementedError
+# replace this by a custom polyline shader
+# https://docs.blender.org/api/current/gpu.html#custom-shader-for-dotted-3d-line
+# https://docs.blender.org/api/current/gpu.html#triangle-with-custom-shader
+def draw_pipes(pipes: List[Dict],
+               collection: Union[Text, bpy.types.Collection] = None,
+               centroid: bool = True,
+               smooth: bool = True) -> List[bpy.types.Object]:
+    """Draw polyline objects."""
+    P = len(pipes)
+    N = len(str(P))
+    objects = [0] * P
+    for index, data in enumerate(pipes):
+        points = data['points']
+        origin = centroid_points(points) if centroid else [0, 0, 0]
+        name = data.get('name', f'POLY.{index:0{N}d}')
+        curve = bpy.data.curves.new(name, type='CURVE')
+        curve.dimensions = '3D'
+        curve.fill_mode = 'FULL'
+        curve.bevel_depth = data.get('width', 0.05)
+        curve.bevel_resolution = 0
+        curve.resolution_u = 20
+        curve.use_fill_caps = True
+        if smooth:
+            spline = curve.splines.new('NURBS')
+        else:
+            spline = curve.splines.new('POLY')
+        spline.points.add(len(points) - 1)
+        for i, point in enumerate(points):
+            spline.points[i].co = subtract_vectors(point, origin) + [1.0]
+        spline.order_u = 1
+        obj = bpy.data.objects.new(name, curve)
+        obj.location = origin
+        rgb = data.get('color', [1.0, 1.0, 1.0])
+        _set_object_color(obj, rgb)
+        objects[index] = obj
+    _link_objects(objects, collection)
+    return objects
 
 
 # ==============================================================================
 # Data Structures
 # ==============================================================================
 
-def draw_mesh(vertices, edges=None, faces=None, name='mesh', color=[1, 1, 1],
-              centroid=True, layer=None, **kwargs):
-    edges = [] if not edges else edges
-    faces = [] if not faces else faces
+
+def draw_mesh(vertices: List[List[float]],
+              faces: List[List[int]],
+              name: str = 'mesh',
+              color: Tuple[float, float, float] = (1.0, 1.0, 1.0),
+              centroid: bool = True,
+              collection: Union[Text, bpy.types.Collection] = None, **kwargs) -> bpy.types.Object:
+    """Draw a mesh object."""
     mp = centroid_points(vertices) if centroid else [0, 0, 0]
     vertices = [subtract_vectors(vertex, mp) for vertex in vertices]
     mesh = bpy.data.meshes.new(name)
-    mesh.from_pydata(vertices, edges, faces)
+    mesh.from_pydata(vertices, [], faces)
     mesh.update(calc_edges=True)
     obj = bpy.data.objects.new(name, mesh)
     obj.show_wire = True
     obj.location = mp
-    set_object_color(obj, color)
-    link_objects([obj], layer=layer)
+    _set_object_color(obj, color)
+    _link_objects([obj], collection=collection)
     return obj
-
-
-# ==============================================================================
-# Structures
-# ==============================================================================
-
-def draw_forces(forces, **kwargs):
-    raise NotImplementedError
 
 
 # ==============================================================================
@@ -299,5 +423,4 @@ def draw_forces(forces, **kwargs):
 # ==============================================================================
 
 if __name__ == '__main__':
-
     pass

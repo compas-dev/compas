@@ -1,7 +1,4 @@
-try:
-    import bpy
-except ImportError:
-    pass
+import bpy
 
 
 __all__ = [
@@ -10,6 +7,14 @@ __all__ = [
 
 
 def delete_all_data():
+    """Delete all collections, mesh and curve objects, meshes, curves, materials."""
+    for collection in bpy.data.collections:
+        bpy.data.collections.remove(collection)
+    for obj in bpy.data.objects:
+        if obj.type == 'MESH':
+            bpy.data.objects.remove(obj)
+        elif obj.type == 'CURVE':
+            bpy.data.objects.remove(obj)
     for mesh in bpy.data.meshes:
         bpy.data.meshes.remove(mesh)
     for curve in bpy.data.curves:

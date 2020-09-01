@@ -4,7 +4,7 @@ from __future__ import division
 
 import compas_ghpython
 
-from compas_ghpython.artists.base import BaseArtist
+from compas_ghpython.artists._artist import BaseArtist
 from compas.utilities import color_to_colordict
 
 

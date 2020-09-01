@@ -5,13 +5,24 @@ from __future__ import division
 from compas.datastructures.network.core import BaseNetwork
 from compas.datastructures.network.core import network_split_edge
 
+from compas.datastructures.network.combinatorics import network_is_connected
+from compas.datastructures.network.complementarity import network_complement
+from compas.datastructures.network.transformations import network_transform
+from compas.datastructures.network.transformations import network_transformed
+from compas.datastructures.network.traversal import network_shortest_path
+
 
 __all__ = ['Network']
 
 
 class Network(BaseNetwork):
 
+    complement = network_complement
+    is_connected = network_is_connected
+    shortest_path = network_shortest_path
     split_edge = network_split_edge
+    transform = network_transform
+    transformed = network_transformed
 
 
 # =============================================================================

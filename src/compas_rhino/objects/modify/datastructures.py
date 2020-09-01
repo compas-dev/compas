@@ -4,22 +4,21 @@ from __future__ import division
 
 import ast
 
-import compas
 import compas_rhino
 
 from compas.geometry import add_vectors
 
-if compas.RHINO:
-    import Rhino
-    import clr
-    clr.AddReference('Rhino.UI')
-    import Rhino.UI
-    from Rhino.Geometry import Point3d
+import Rhino
+import clr
 
-    try:
-        from compas_rhino.etoforms import PropertyListForm
-    except ImportError:
-        from Rhino.UI.Dialogs import ShowPropertyListBox
+clr.AddReference('Rhino.UI')
+import Rhino.UI  # noqa: E402
+from Rhino.Geometry import Point3d  # noqa: E402
+
+try:
+    from compas_rhino.etoforms import PropertyListForm
+except ImportError:
+    from Rhino.UI.Dialogs import ShowPropertyListBox
 
 
 __all__ = [
@@ -392,6 +391,47 @@ def mesh_update_edge_attributes(mesh, edges, names=None):
                 mesh.edge_attribute(edge, name, value)
         return True
     return False
+
+
+# def mesh_move(mesh):
+#     """"""
+#     color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
+
+#     vertex_xyz0 = {key: mesh.vertex_coordinates(key) for key in mesh.mesh.vertices()}
+#     vertex_xyz = {key: mesh.vertex_coordinates(key) for key in mesh.mesh.vertices()}
+
+#     edges = list(mesh.edges())
+
+#     start = compas_rhino.pick_point('Point to move from?')
+#     if not start:
+#         return False
+
+#     def OnDynamicDraw(sender, e):
+#         current = list(e.CurrentPoint)
+#         vector = subtract_vectors(current, start)
+#         for vertex in vertex_xyz:
+#             vertex_xyz[vertex] = add_vectors(vertex_xyz0[vertex], vector)
+#         for u, v in iter(edges):
+#             sp = vertex[u]
+#             ep = vertex[v]
+#             sp = Point3d(*sp)
+#             ep = Point3d(*ep)
+#             e.Display.DrawDottedLine(sp, ep, color)
+
+#     gp = Rhino.Input.Custom.GetPoint()
+#     gp.SetCommandPrompt('Point to move to?')
+#     gp.DynamicDraw += OnDynamicDraw
+#     gp.Get()
+
+#     if gp.CommandResult() == Rhino.Commands.Result.Success:
+#         end = list(gp.Point())
+#         vector = subtract_vectors(end, start)
+#         for vertex, attr in mesh.vertices(True):
+#             attr['x'] += vector[0]
+#             attr['y'] += vector[1]
+#             attr['z'] += vector[2]
+#         return True
+#     return False
 
 
 def mesh_move_vertex(mesh, vertex, constraint=None, allow_off=True):
