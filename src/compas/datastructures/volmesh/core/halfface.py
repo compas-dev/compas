@@ -142,10 +142,10 @@ class HalfFace(Datastructure):
             edgedata[repr(uv)] = self.edgedata[uv]
 
         for fkey in self.facedata:
-            facedata[repr(fkey)] = self.facedata[fkey]
+            facedata[str(fkey)] = self.facedata[fkey]
 
         for ckey in self.celldata:
-            celldata[repr(ckey)] = self.celldata[ckey]
+            celldata[str(ckey)] = self.celldata[ckey]
 
         data = {
             'attributes': self.attributes,
@@ -222,145 +222,8 @@ class HalfFace(Datastructure):
         self._max_int_ckey = max_int_ckey
 
     # --------------------------------------------------------------------------
-    # from/to
-    # --------------------------------------------------------------------------
-
-    @classmethod
-    def from_data(cls, data):
-        """Construct a volmesh from structured data.
-
-        Parameters
-        ----------
-        data : dict
-            The data dictionary.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Notes
-        -----
-        This constructor method is meant to be used in conjuction with the
-        corresponding *to_data* method.
-
-        """
-        volmesh = cls()
-        volmesh.data = data
-        return volmesh
-
-    def to_data(self):
-        """Returns a dictionary of structured data representing the volmesh.
-
-        Returns
-        -------
-        dict
-            The structured data.
-
-        Notes
-        -----
-        This method produces the data that can be used in conjuction with the
-        corresponding *from_data* class method.
-        """
-        return self.data
-
-    @classmethod
-    def from_json(cls, filepath):
-        """Construct a datastructure from structured data contained in a json file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-
-        Returns
-        -------
-        object
-            An object of the type of ``cls``.
-
-        Notes
-        -----
-        This constructor method is meant to be used in conjuction with the
-        corresponding *to_json* method.
-        """
-        with open(filepath, 'r') as fp:
-            data = json.load(fp)
-        volmesh = cls()
-        volmesh.data = data
-        return volmesh
-
-    def to_json(self, filepath, pretty=False):
-        """Serialise the structured data representing the data structure to json.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the json file.
-        """
-        with open(filepath, 'w+') as f:
-            if pretty:
-                json.dump(self.data, f, sort_keys=True, indent=4)
-            else:
-                json.dump(self.data, f)
-
-    @classmethod
-    def from_pickle(cls, filepath):
-        """Construct a volmesh from serialised data contained in a pickle file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the pickle file.
-
-        Returns
-        -------
-        object
-            An object of type ``cls``.
-
-        Notes
-        -----
-        This constructor method is meant to be used in conjuction with the
-        corresponding *to_pickle* method.
-        """
-        with open(filepath, 'rb') as fo:
-            data = pickle.load(fo)
-        o = cls()
-        o.data = data
-        return o
-
-    def to_pickle(self, filepath):
-        """Serialise the structured data representing the volmesh to a pickle file.
-
-        Parameters
-        ----------
-        filepath : str
-            The path to the pickle file.
-        """
-        with open(filepath, 'wb+') as f:
-            pickle.dump(self.data, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-    # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
-
-    def copy(self, cls=None):
-        """Make an independent copy of the volmesh object.
-
-        Parameters
-        ----------
-        cls : compas.datastructures.VolMesh, optional
-            The type of volmesh to return.
-            Defaults to the type of the current volmesh.
-
-        Returns
-        -------
-        VolMesh
-            A separate, but identical volmesh object.
-
-        """
-        if not cls:
-            cls = type(self)
-        return cls.from_data(deepcopy(self.data))
 
     def clear(self):
         """Clear all the volmesh data."""
