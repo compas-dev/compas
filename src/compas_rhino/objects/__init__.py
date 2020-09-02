@@ -111,6 +111,7 @@ from .inspect import *  # noqa : F401 F403
 from ._object import BaseObject
 from .meshobject import MeshObject
 from .networkobject import NetworkObject
+from .volmeshobject import VolmeshObject
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network
