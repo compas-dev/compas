@@ -29,7 +29,6 @@ __all__ = ['BaseVolMesh']
 class BaseVolMesh(HalfFace):
     """Geometric implementation of a halfface data structure for volumetric meshes.
 
-
     Attributes
     ----------
     attributes : dict
@@ -69,7 +68,7 @@ class BaseVolMesh(HalfFace):
         * 'facedata'     => dict
         * 'celldata'     => dict
         * 'max_int_key'  => int
-        * 'max_int_fkey' => int
+        * 'max_int_hfkey' => int
         * 'max_int_ckey' => int
 
     """
@@ -106,7 +105,6 @@ class BaseVolMesh(HalfFace):
         -------
         Volesh
             A volmesh object.
-
         """
         obj = OBJ(filepath, precision)
         vertices = obj.parser.vertices
@@ -161,7 +159,6 @@ class BaseVolMesh(HalfFace):
         -------
         Volmesh
             A volmesh object.
-
         """
         volmesh = cls()
         for x, y, z in vertices:
@@ -182,35 +179,38 @@ class BaseVolMesh(HalfFace):
             * a list of cells.
 
             Each cell is a list of halffaces, which are lists of indices referencing the list of vertex coordinates.
-
         """
-        key_index = self.key_index()
-        vertices = [self.vertex_coordinates(key) for key in self.vertices()]
+        vertex_index = self.key_index()
+        vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
         cells = []
-        for ckey in self.cell:
-            halffaces = [[key_index[key] for key in self.halfface[fkey]] for fkey in self.halffaces()]
+        for cell in self.cell:
+            halffaces = [[vertex_index[vertex] for vertex in self.halfface[halfface]] for halfface in self.cell_halffaces(cell)]
             cells.append(halffaces)
         return vertices, cells
 
-    def cell_to_mesh(self, ckey):
+    def cell_to_mesh(self, cell):
         """Construct a mesh object from from a cell of a volmesh.
 
         Parameters
         ----------
-        hfkey : hashable
+        cell : hashable
             Identifier of the cell.
 
         Returns
         -------
         Mesh
             A mesh object.
-
         """
-        vertices, halffaces = self.cell_to_vertices_and_halffaces(ckey)
+        vertices, halffaces = self.cell_to_vertices_and_halffaces(cell)
         return Mesh.from_vertices_and_faces(vertices, halffaces)
 
-    def cell_to_vertices_and_halffaces(self, ckey):
+    def cell_to_vertices_and_halffaces(self, cell):
         """Return the vertices and halffaces of a cell.
+
+        Parameters
+        ----------
+        cell : hashable
+            Identifier of the cell.
 
         Returns
         -------
@@ -221,13 +221,12 @@ class BaseVolMesh(HalfFace):
             * a list of halffaces.
 
             Each halfface is a list of indices referencing the list of vertex coordinates.
-
         """
-        vkeys = self.cell_vertices(ckey)
-        hfkeys = self.cell_halffaces(ckey)
-        vkey_vindex = dict((vkey, index) for index, vkey in enumerate(vkeys))
-        vertices = [self.vertex_coordinates(vkey) for vkey in vkeys]
-        halffaces = [[vkey_vindex[vkey] for vkey in self.halfface[fkey]] for fkey in hfkeys]
+        vertices = self.cell_vertices(cell)
+        halffaces = self.cell_halffaces(cell)
+        vkey_vindex = dict((vertex, index) for index, vertex in enumerate(vertices))
+        vertices = [self.vertex_coordinates(vertex) for vertex in vertices]
+        halffaces = [[vkey_vindex[vertex] for vertex in self.halfface[halfface]] for halfface in halffaces]
         return vertices, halffaces
 
     # --------------------------------------------------------------------------
@@ -246,12 +245,12 @@ class BaseVolMesh(HalfFace):
         Returns
         -------
         dict
-            A dictionary of key-geometric key pairs.
+            A dictionary of vertex-geometric key pairs.
 
         """
         gkey = geometric_key
         xyz = self.vertex_coordinates
-        return {key: gkey(xyz(key), precision) for key in self.vertices()}
+        return {vertex: gkey(xyz(vertex), precision) for vertex in self.vertices()}
 
     def gkey_vertex(self, precision=None):
         """Returns a dictionary that maps *geometric keys* of a certain precision
@@ -265,12 +264,12 @@ class BaseVolMesh(HalfFace):
         Returns
         -------
         dict
-            A dictionary of geometric key-key pairs.
+            A dictionary of geometric key-vertex pairs.
 
         """
         gkey = geometric_key
         xyz = self.vertex_coordinates
-        return {gkey(xyz(key), precision): key for key in self.vertices()}
+        return {gkey(xyz(vertex), precision): vertex for vertex in self.vertices()}
 
     # --------------------------------------------------------------------------
     # builders
@@ -287,27 +286,24 @@ class BaseVolMesh(HalfFace):
     def centroid(self):
         """Compute the centroid of the volmesh.
 
-        Parameters
-        ----------
-
         Returns
         -------
         list
             The coordinates of the centroid.
 
         """
-        return centroid_points([self.vertex_coordinates(vkey) for vkey in self.vertex])
+        return centroid_points([self.vertex_coordinates(vertex) for vertex in self.vertex])
 
     # --------------------------------------------------------------------------
     # vertex geometry
     # --------------------------------------------------------------------------
 
-    def vertex_coordinates(self, vkey, axes='xyz'):
+    def vertex_coordinates(self, vertex, axes='xyz'):
         """Return the coordinates of a vertex.
 
         Parameters
         ----------
-        vkey : hashable
+        vertex : int
             The identifier of the vertex.
         axes : str, optional
             The axes alon which to take the coordinates.
@@ -320,14 +316,14 @@ class BaseVolMesh(HalfFace):
             Coordinates of the vertex.
 
         """
-        return [self.vertex[vkey][axis] for axis in axes]
+        return [self.vertex[vertex][axis] for axis in axes]
 
-    def vertex_laplacian(self, key):
+    def vertex_laplacian(self, vertex):
         """Compute the vector from a vertex to the centroid of its neighbors.
 
         Parameters
         ----------
-        key : int
+        vertex : int
             The identifier of the vertex.
 
         Returns
@@ -335,16 +331,16 @@ class BaseVolMesh(HalfFace):
         list
             The components of the vector.
         """
-        c = self.vertex_neighborhood_centroid(key)
-        p = self.vertex_coordinates(key)
+        c = self.vertex_neighborhood_centroid(vertex)
+        p = self.vertex_coordinates(vertex)
         return subtract_vectors(c, p)
 
-    def vertex_neighborhood_centroid(self, key):
+    def vertex_neighborhood_centroid(self, vertex):
         """Compute the centroid of the neighbors of a vertex.
 
         Parameters
         ----------
-        key : int
+        vertex : int
             The identifier of the vertex.
 
         Returns
@@ -352,21 +348,19 @@ class BaseVolMesh(HalfFace):
         list
             The coordinates of the centroid.
         """
-        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(key)])
+        return centroid_points([self.vertex_coordinates(nbr) for nbr in self.vertex_neighbors(vertex)])
 
     # --------------------------------------------------------------------------
     # edge geometry
     # --------------------------------------------------------------------------
 
-    def edge_coordinates(self, u, v, axes='xyz'):
+    def edge_coordinates(self, edge, axes='xyz'):
         """Return the coordinates of the start and end point of an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple of int
+            The edge identifier.
         axes : str (xyz)
             The axes along which the coordinates should be included.
 
@@ -376,17 +370,16 @@ class BaseVolMesh(HalfFace):
             The coordinates of the start point and the coordinates of the end point.
 
         """
+        u, v = edge
         return self.vertex_coordinates(u, axes=axes), self.vertex_coordinates(v, axes=axes)
 
-    def edge_length(self, u, v):
+    def edge_length(self, edge):
         """Return the length of an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple of int
+            The edge identifier.
 
         Returns
         -------
@@ -394,18 +387,16 @@ class BaseVolMesh(HalfFace):
             The length of the edge.
 
         """
-        a, b = self.edge_coordinates(u, v)
+        a, b = self.edge_coordinates(edge)
         return distance_point_point(a, b)
 
-    def edge_vector(self, u, v):
+    def edge_vector(self, edge):
         """Return the vector of an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple of int
+            The edge identifier.
 
         Returns
         -------
@@ -413,19 +404,17 @@ class BaseVolMesh(HalfFace):
             The vector from u to v.
 
         """
-        a, b = self.edge_coordinates(u, v)
+        a, b = self.edge_coordinates(edge)
         ab = subtract_vectors(b, a)
         return ab
 
-    def edge_point(self, u, v, t=0.5):
+    def edge_point(self, edge, t=0.5):
         """Return the location of a point along an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple of int
+            The edge identifier.
         t : float (0.5)
             The location of the point on the edge.
             If the value of ``t`` is outside the range ``0-1``, the point will
@@ -437,19 +426,17 @@ class BaseVolMesh(HalfFace):
             The XYZ coordinates of the point.
 
         """
-        a, b = self.edge_coordinates(u, v)
+        a, b = self.edge_coordinates(edge)
         ab = subtract_vectors(b, a)
         return add_vectors(a, scale_vector(ab, t))
 
-    def edge_direction(self, u, v):
+    def edge_direction(self, edge):
         """Return the direction vector of an edge.
 
         Parameters
         ----------
-        u : int
-            The key of the start vertex.
-        v : int
-            The key of the end vertex.
+        edge : tuple of int
+            The edge identifier.
 
         Returns
         -------
@@ -457,18 +444,18 @@ class BaseVolMesh(HalfFace):
             The direction vector of the edge.
 
         """
-        return normalize_vector(self.edge_vector(u, v))
+        return normalize_vector(self.edge_vector(edge))
 
     # --------------------------------------------------------------------------
     # halfface geometry
     # --------------------------------------------------------------------------
 
-    def halfface_coordinates(self, hfkey):
+    def halfface_coordinates(self, halfface):
         """Compute the coordinates of the vertices of a halfface.
 
         Parameters
         ----------
-        hfkey : hashable
+        halfface : int
             The identifier of the halfface.
         axes : str, optional
             The axes alon which to take the coordinates.
@@ -481,14 +468,14 @@ class BaseVolMesh(HalfFace):
             The coordinates of the vertices of the halfface.
 
         """
-        return [self.vertex_coordinates(key) for key in self.halfface_vertices(hfkey)]
+        return [self.vertex_coordinates(vertex) for vertex in self.halfface_vertices(halfface)]
 
-    def halfface_normal(self, hfkey, unitized=True):
+    def halfface_normal(self, halfface, unitized=True):
         """Compute the oriented normal of a halfface.
 
         Parameters
         ----------
-        fkey : hashable
+        halfface : int
             The identifier of the halfface.
         unitized : bool, optional
             Unitize the normal vector.
@@ -500,14 +487,14 @@ class BaseVolMesh(HalfFace):
             The components of the normal vector.
 
         """
-        return normal_polygon(self.halfface_coordinates(hfkey), unitized=unitized)
+        return normal_polygon(self.halfface_coordinates(halfface), unitized=unitized)
 
-    def halfface_centroid(self, hfkey):
+    def halfface_centroid(self, halfface):
         """Compute the location of the centroid of a halfface.
 
         Parameters
         ----------
-        hfkey : hashable
+        halfface : int
             The identifier of the halfface.
 
         Returns
@@ -516,14 +503,14 @@ class BaseVolMesh(HalfFace):
             The coordinates of the centroid.
 
         """
-        return centroid_points(self.halfface_coordinates(hfkey))
+        return centroid_points(self.halfface_coordinates(halfface))
 
-    def halfface_center(self, hfkey):
+    def halfface_center(self, halfface):
         """Compute the location of the center of mass of a halfface.
 
         Parameters
         ----------
-        hfkey : hashable
+        halfface : int
             The identifier of the halfface.
 
         Returns
@@ -532,15 +519,15 @@ class BaseVolMesh(HalfFace):
             The coordinates of the center of mass.
 
         """
-        return centroid_polygon(self.halfface_coordinates(hfkey))
+        return centroid_polygon(self.halfface_coordinates(halfface))
 
-    def halfface_area(self, hfkey):
+    def halfface_area(self, halfface):
         """Compute the oriented area of a halfface.
 
         Parameters
         ----------
-        fkey : hashable
-            The identifier of the face.
+        halfface : int
+            The identifier of the halfface.
 
         Returns
         -------
@@ -548,14 +535,14 @@ class BaseVolMesh(HalfFace):
             The non-oriented area of the face.
 
         """
-        return length_vector(self.halfface_normal(hfkey, unitized=False))
+        return length_vector(self.halfface_normal(halfface, unitized=False))
 
-    def halfface_flatness(self, hfkey, maxdev=0.02):
+    def halfface_flatness(self, halfface, maxdev=0.02):
         """Compute the flatness of a halfface.
 
         Parameters
         ----------
-        hfkey : int
+        halfface : int
             The identifier of the halfface.
 
         Returns
@@ -570,7 +557,7 @@ class BaseVolMesh(HalfFace):
 
         """
         deviation = 0
-        polygon = self.halfface_coordinates()
+        polygon = self.halfface_coordinates(halfface)
         plane = bestfit_plane(polygon)
         for pt in polygon:
             pt_proj = project_point_plane(pt, plane)
@@ -579,13 +566,13 @@ class BaseVolMesh(HalfFace):
                 deviation = dev
         return deviation
 
-    def halfface_aspect_ratio(self, hfkey):
+    def halfface_aspect_ratio(self, halfface):
         """Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.
 
         Parameters
         ----------
-        hfkey : Key
-            The halfface key.
+        halfface : int
+            The identifier of the halfface.
 
         Returns
         -------
@@ -597,7 +584,7 @@ class BaseVolMesh(HalfFace):
         .. [1] Wikipedia. *Types of mesh*.
                Available at: https://en.wikipedia.org/wiki/Types_of_mesh.
         """
-        face_edge_lengths = [self.edge_length(u, v) for u, v in self.face_halfedges(hfkey)]
+        face_edge_lengths = [self.edge_length(edge) for edge in self.face_halfedges(halfface)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
     face_area = halfface_area
@@ -612,49 +599,47 @@ class BaseVolMesh(HalfFace):
     # cell geometry
     # --------------------------------------------------------------------------
 
-    def cell_centroid(self, ckey):
+    def cell_centroid(self, cell):
         """Compute the location of the centroid of a cell.
 
         Parameters
         ----------
-        ckey : hashable
+        cell : hashable
             The identifier of the cell.
 
         Returns
         -------
         list
             The coordinates of the centroid.
-
         """
-        vkeys = self.cell_vertices(ckey)
-        return centroid_points([self.vertex_coordinates(vkey) for vkey in vkeys])
+        vertices = self.cell_vertices(cell)
+        return centroid_points([self.vertex_coordinates(vertex) for vertex in vertices])
 
-    def cell_center(self, ckey):
+    def cell_center(self, cell):
         """Compute the location of the center of mass of a cell.
 
         Parameters
         ----------
-        ckey : hashable
+        cell : hashable
             The identifier of the cell.
 
         Returns
         -------
         list
             The coordinates of the center of mass.
-
         """
-        vertices, halffaces = self.cell_to_vertices_and_halffaces(ckey)
+        vertices, halffaces = self.cell_to_vertices_and_halffaces(cell)
         return centroid_polyhedron((vertices, halffaces))
 
-    def cell_vertex_normal(self, ckey, vkey):
-        """Return the normal vector at the vertex of a cell as the weighted average of the
+    def cell_vertex_normal(self, cell, vertex):
+        """Return the normal vector at the vertex of a boundary cell as the weighted average of the
         normals of the neighboring halffaces.
 
         Parameters
         ----------
-        ckey : int
+        cell : int
             The identifier of the vertex of the cell.
-        vkey : int
+        vertex : int
             The identifier of the vertex of the cell.
 
         Returns
@@ -662,7 +647,8 @@ class BaseVolMesh(HalfFace):
         list
             The components of the normal vector.
         """
-        vectors = [self.face_normal(hfkey) for hfkey in self.vertex_halffaces(vkey) if hfkey is not None]
+        cell_halffaces = self.cell_halffaces(cell)
+        vectors = [self.face_normal(halfface) for halfface in self.vertex_halffaces(vertex) if halfface in cell_halffaces]
         return normalize_vector(centroid_points(vectors))
 
 
