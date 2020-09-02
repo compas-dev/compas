@@ -16,6 +16,7 @@ from compas.geometry import Transformation
 from compas.geometry import Frame
 from compas.geometry import transform_points_numpy
 
+
 __all__ = ['icp_numpy']
 
 

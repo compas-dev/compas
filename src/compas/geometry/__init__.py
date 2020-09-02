@@ -391,12 +391,13 @@ from __future__ import division
 from __future__ import print_function
 
 from ._core import *  # noqa: F401 F403
-from ._predicates import *  # noqa: F401 F403
-from ._intersections import *  # noqa: F401 F403
-from ._transformations import *  # noqa: F401 F403
-from ._primitives import *  # noqa: F401 F403
-from ._shapes import *  # noqa: F401 F403
-from ._collections import *  # noqa: F401 F403
+
+from .predicates import *  # noqa: F401 F403
+from .intersections import *  # noqa: F401 F403
+from .transformations import *  # noqa: F401 F403
+from .primitives import *  # noqa: F401 F403
+from .shapes import *  # noqa: F401 F403
+from .collections import *  # noqa: F401 F403
 
 from .bbox import *  # noqa: F401 F403
 from .bestfit import *  # noqa: F401 F403
