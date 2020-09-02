@@ -3,8 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 import json
-import pickle
-import deepcopy
 
 from ast import literal_eval
 from random import sample
