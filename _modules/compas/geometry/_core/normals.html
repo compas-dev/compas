@@ -92,6 +92,7 @@
 <span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">cross_vectors_xy</span>
 <span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">length_vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">length_vector_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">normalize_vector</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">centroid_points</span>
 
@@ -152,9 +153,7 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">unitized</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span>
 
-    <span class="n">length</span> <span class="o">=</span> <span class="n">length_vector</span><span class="p">([</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">])</span>
-
-    <span class="k">return</span> <span class="n">nx</span> <span class="o">/</span> <span class="n">length</span><span class="p">,</span> <span class="n">ny</span> <span class="o">/</span> <span class="n">length</span><span class="p">,</span> <span class="n">nz</span> <span class="o">/</span> <span class="n">length</span></div>
+    <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">([</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="normal_triangle"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.normal_triangle.html#compas.geometry.normal_triangle">[docs]</a><span class="k">def</span> <span class="nf">normal_triangle</span><span class="p">(</span><span class="n">triangle</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>

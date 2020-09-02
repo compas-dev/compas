@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshArtist.draw_vertexlabels" href="compas_ghpython.artists.MeshArtist.draw_vertexlabels.html" />
+    <link rel="next" title="MeshArtist.draw_vertices" href="compas_ghpython.artists.MeshArtist.draw_vertices.html" />
   
   
   
@@ -90,7 +90,18 @@
 <dl class="method">
 <dt id="compas_ghpython.artists.MeshArtist.draw_mesh">
 <code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_mesh</code><span class="sig-paren">(</span><em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw_mesh"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
+<dd><p>Draw the mesh as a RhinoMesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>color</strong> (<em>3-tuple, optional</em>) – RGB color components in integer format (0-255).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Mesh</span></code></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Faces with more than 4 vertices will be triangulated on-the-fly.</p>
+</dd></dl>
 
 </div>
 
@@ -117,13 +128,9 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.html">compas</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.geometry.html">geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.helpers.html">helpers</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>

@@ -89,8 +89,8 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.edge_halffaces</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.edge_halffaces">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">edge_halffaces</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/volmesh/volmesh.html#VolMesh.edge_halffaces"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Ordered halffaces adjacent to edge u-v.</p>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">edge_halffaces</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em><span class="sig-paren">)</span></dt>
+<dd><p>Ordered halffaces around edge u-v.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -102,6 +102,9 @@
 <dd class="field-even"><p><em>list</em> – List of of keys identifying the adjacent halffaces.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The halffaces are ordered around the halfedge u-v.</p>
+<p>All halffaces returned should have halfedge u-v; this also means that if edge u-v is shared by four cells, four halffaces are returned, not eight.</p>
 </dd></dl>
 
 </div>

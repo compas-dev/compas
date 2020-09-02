@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="MeshArtist.draw_facelabels" href="compas_ghpython.artists.MeshArtist.draw_facelabels.html" />
+    <link rel="next" title="MeshArtist.draw_faces" href="compas_ghpython.artists.MeshArtist.draw_faces.html" />
   
   
   
-    <link rel="prev" title="MeshArtist.draw_edgelabels" href="compas_ghpython.artists.MeshArtist.draw_edgelabels.html" />
+    <link rel="prev" title="MeshArtist.draw_collection" href="compas_ghpython.artists.MeshArtist.draw_collection.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,19 +89,15 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist.draw_edges</h1>
 <dl class="method">
 <dt id="compas_ghpython.artists.MeshArtist.draw_edges">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_edges</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw_edges"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_edges</code><span class="sig-paren">(</span><em class="sig-param">edges=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw_edges"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a selection of edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>keys</strong> (<em>list</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
+<li><p><strong>edges</strong> (<em>list, optional</em>) – A selection of edges to draw.
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are drawn.</p></li>
-<li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color specififcation for the edges.
-Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-To apply the same color to all edges, provide a single color specification.
-Individual colors can be assigned using a dictionary of key-color pairs.
-Missing keys will be assigned the default face color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.edges']</span></code>).
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are assigned the default edge color.</p></li>
+<li><p><strong>color</strong> (<em>rgb-tuple or dict of rgb-tuple, optional</em>) – The color specififcation for the edges.
+The default color is in the class settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

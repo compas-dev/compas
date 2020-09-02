@@ -90,19 +90,12 @@
 <dl class="method">
 <dt id="compas_ghpython.artists.NetworkArtist.draw">
 <code class="sig-prename descclassname">NetworkArtist.</code><code class="sig-name descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/networkartist.html#NetworkArtist.draw"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Draws the network using the current settings.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><p><strong>geometry</strong> (<em>list</em>) –</p>
+<dd><p>For networks (and data structures in general), a main draw function does not exist.
+Instead, you should use the drawing functions for the various components of the mesh:</p>
 <ul class="simple">
-<li><p>geometry[0]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Point3d</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.nodes’]</cite> is False.</p></li>
-<li><p>geometry[1]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.TextDot</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.nodelabels’]</cite> is False.</p></li>
-<li><p>geometry[2]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Line</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.edges’]</cite> is False.</p></li>
-<li><p>geometry[3]: list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.TextDot</span></code> or <cite>None</cite>, if <cite>self.settings[‘show.edgelabels’]</cite> is False.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">draw_nodes</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">draw_edges</span></code></p></li>
 </ul>
-</p>
-</dd>
-</dl>
 </dd></dl>
 
 </div>

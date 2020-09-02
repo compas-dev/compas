@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMesh.delete_halfface" href="compas.datastructures.VolMesh.delete_halfface.html" />
+    <link rel="next" title="VolMesh.delete_vertex" href="compas.datastructures.VolMesh.delete_vertex.html" />
   
   
   
-    <link rel="prev" title="VolMesh.cull_vertices" href="compas.datastructures.VolMesh.cull_vertices.html" />
+    <link rel="prev" title="VolMesh.copy" href="compas.datastructures.VolMesh.copy.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,8 +89,22 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.delete_cell</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.delete_cell">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">delete_cell</code><span class="sig-paren">(</span><em class="sig-param">ckey</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/volmesh/volmesh.html#VolMesh.delete_cell"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">delete_cell</code><span class="sig-paren">(</span><em class="sig-param">ckey</em><span class="sig-paren">)</span></dt>
+<dd><p>Delete a cell from the volmesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fkey</strong> (<em>int</em>) – The identifier of the cell.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>In some cases (although very unlikely), disconnected vertices can remain after application of this
+method. To remove these vertices as well, combine this method with vertex
+culling (<a class="reference external" href="https://compas.dev/compas/api/generated/compas.datastructures.VolMesh.cull_vertices.html#compas.datastructures.VolMesh.cull_vertices" title="(in COMPAS v0.16)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cull_vertices()</span></code></a>).</p>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
+</code></pre></div>
+</div>
+</dd></dl>
 
 </div>
 

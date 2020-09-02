@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMesh.cell_center" href="compas.datastructures.VolMesh.cell_center.html" />
+    <link rel="next" title="VolMesh.cell_adjacency_halffaces" href="compas.datastructures.VolMesh.cell_adjacency_halffaces.html" />
   
   
   
@@ -89,11 +89,14 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.bounding_box</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.bounding_box">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">bounding_box</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/volmesh/volmesh.html#VolMesh.bounding_box"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Compute the x, y, z dimensinos of the bounding box of the volmesh.</p>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">bounding_box</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Compute the (axis aligned) bounding box of a volmesh.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><ul class="simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>volmesh</strong> (<em>compas.datastructures.VolMesh</em>) – The mesh data structure.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
 <li><p><em>float</em> – The x dimension of the bounding box.</p></li>
 <li><p><em>float</em> – The y dimension of the bounding box.</p></li>
 <li><p><em>float</em> – The z dimensino of the bounding box.</p></li>

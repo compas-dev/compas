@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMesh.faces" href="compas.datastructures.VolMesh.faces.html" />
+    <link rel="next" title="VolMesh.face_flatness" href="compas.datastructures.VolMesh.face_flatness.html" />
   
   
   
-    <link rel="prev" title="VolMesh.face_center" href="compas.datastructures.VolMesh.face_center.html" />
+    <link rel="prev" title="VolMesh.face_centroid" href="compas.datastructures.VolMesh.face_centroid.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,8 +89,22 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.face_coordinates</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.face_coordinates">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">face_coordinates</code><span class="sig-paren">(</span><em class="sig-param">fkey</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/volmesh/volmesh.html#VolMesh.face_coordinates"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">face_coordinates</code><span class="sig-paren">(</span><em class="sig-param">hfkey</em><span class="sig-paren">)</span></dt>
+<dd><p>Compute the coordinates of the vertices of a halfface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hfkey</strong> (<em>hashable</em>) – The identifier of the halfface.</p></li>
+<li><p><strong>axes</strong> (<em>str, optional</em>) – The axes alon which to take the coordinates.
+Should be a combination of <code class="docutils literal notranslate"><span class="pre">'x'</span></code>, <code class="docutils literal notranslate"><span class="pre">'y'</span></code>, <code class="docutils literal notranslate"><span class="pre">'z'</span></code>.
+Default is <code class="docutils literal notranslate"><span class="pre">'xyz'</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list of list</em> – The coordinates of the vertices of the halfface.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 

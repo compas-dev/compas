@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMesh.cell_vertices" href="compas.datastructures.VolMesh.cell_vertices.html" />
+    <link rel="next" title="VolMesh.cell_vertex_normal" href="compas.datastructures.VolMesh.cell_vertex_normal.html" />
   
   
   
@@ -89,7 +89,7 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.cell_vertex_neighbors</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.cell_vertex_neighbors">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">cell_vertex_neighbors</code><span class="sig-paren">(</span><em class="sig-param">ckey</em>, <em class="sig-param">vkey</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/volmesh/volmesh.html#VolMesh.cell_vertex_neighbors"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">cell_vertex_neighbors</code><span class="sig-paren">(</span><em class="sig-param">ckey</em>, <em class="sig-param">vkey</em><span class="sig-paren">)</span></dt>
 <dd><p>Ordered vertex neighbors of a vertex of a cell.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -99,6 +99,8 @@
 <dd class="field-even"><p><em>list</em> – The list of neighboring vertices.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>All of the returned vertices should be part of the cell.</p>
 </dd></dl>
 
 </div>

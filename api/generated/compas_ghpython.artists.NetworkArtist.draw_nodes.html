@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="NetworkArtist.draw_nodelabels" href="compas_ghpython.artists.NetworkArtist.draw_nodelabels.html" />
+    <link rel="prev" title="NetworkArtist.draw_edges" href="compas_ghpython.artists.NetworkArtist.draw_edges.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,22 +89,15 @@
 <h1 class="display-4 p-0 mb-5">NetworkArtist.draw_nodes</h1>
 <dl class="method">
 <dt id="compas_ghpython.artists.NetworkArtist.draw_nodes">
-<code class="sig-prename descclassname">NetworkArtist.</code><code class="sig-name descname">draw_nodes</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/networkartist.html#NetworkArtist.draw_nodes"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">NetworkArtist.</code><code class="sig-name descname">draw_nodes</code><span class="sig-paren">(</span><em class="sig-param">nodes=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/networkartist.html#NetworkArtist.draw_nodes"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a selection of nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>keys</strong> (<em>list</em>) – A list of node keys identifying which nodes to draw.
+<li><p><strong>nodes</strong> (<em>list, optional</em>) – The selection of nodes that should be drawn.
 Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all nodes are drawn.</p></li>
-<li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color specififcation for the nodes.
-Colors should be specified in the form of a string (hex colors) or
-as a tuple of RGB components.
-To apply the same color to all nodes, provide a single color
-specification. Individual colors can be assigned using a dictionary
-of key-color pairs. Missing keys will be assigned the default node
-color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.nodes']</span></code>).
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all nodes are assigned the
-default node color.</p></li>
+<li><p><strong>color</strong> (<em>rgb-tuple or dict of rgb-tuple, optional</em>) – The color specififcation for the nodes.
+The default is defined in the class settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

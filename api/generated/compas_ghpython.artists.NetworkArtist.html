@@ -89,20 +89,17 @@
 <h1 class="display-4 p-0 mb-5">NetworkArtist</h1>
 <dl class="class">
 <dt id="compas_ghpython.artists.NetworkArtist">
-<em class="property">class </em><code class="sig-prename descclassname">compas_ghpython.artists.</code><code class="sig-name descname">NetworkArtist</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/networkartist.html#NetworkArtist"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_ghpython.artists.</code><code class="sig-name descname">NetworkArtist</code><span class="sig-paren">(</span><em class="sig-param">network</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/networkartist.html#NetworkArtist"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_ghpython.artists._artist.BaseArtist</span></code></p>
 <p>A network artist defines functionality for visualising COMPAS networks in GhPython.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>network</strong> (<em>compas.datastructures.Network</em>) – A COMPAS network.</p></li>
-<li><p><strong>settings</strong> (<em>dict, optional</em>) – A dict with custom visualisation settings.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>network</strong> (<em>compas.datastructures.Network</em>) – A COMPAS network.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – The COMPAS network associated with the artist.</p></li>
-<li><p><strong>settings</strong> (<em>dict</em>) – Default settings for color, scale, tolerance, …</p></li>
+<li><p><strong>settings</strong> (<em>dict</em>) – Default settings for color of network components.</p></li>
 </ul>
 </dd>
 </dl>
@@ -113,25 +110,19 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.__init__.html#compas_ghpython.artists.NetworkArtist.__init__" title="compas_ghpython.artists.NetworkArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(network[, settings])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.__init__.html#compas_ghpython.artists.NetworkArtist.__init__" title="compas_ghpython.artists.NetworkArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(network)</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw.html#compas_ghpython.artists.NetworkArtist.draw" title="compas_ghpython.artists.NetworkArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
-<td><p>Draws the network using the current settings.</p></td>
+<td><p>For networks (and data structures in general), a main draw function does not exist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_collection.html#compas_ghpython.artists.NetworkArtist.draw_collection" title="compas_ghpython.artists.NetworkArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_edgelabels.html#compas_ghpython.artists.NetworkArtist.draw_edgelabels" title="compas_ghpython.artists.NetworkArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a>([text, color])</p></td>
-<td><p>Draw labels for a selection of edges.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_edges.html#compas_ghpython.artists.NetworkArtist.draw_edges" title="compas_ghpython.artists.NetworkArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([keys, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_edges.html#compas_ghpython.artists.NetworkArtist.draw_edges" title="compas_ghpython.artists.NetworkArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_nodelabels.html#compas_ghpython.artists.NetworkArtist.draw_nodelabels" title="compas_ghpython.artists.NetworkArtist.draw_nodelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_nodelabels</span></code></a>([text, color])</p></td>
-<td><p>Draw labels for a selection nodes.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_nodes.html#compas_ghpython.artists.NetworkArtist.draw_nodes" title="compas_ghpython.artists.NetworkArtist.draw_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_nodes</span></code></a>([keys, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_nodes.html#compas_ghpython.artists.NetworkArtist.draw_nodes" title="compas_ghpython.artists.NetworkArtist.draw_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_nodes</span></code></a>([nodes, color])</p></td>
 <td><p>Draw a selection of nodes.</p></td>
 </tr>
 </tbody>

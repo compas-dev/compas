@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMesh.to_pickle" href="compas.datastructures.VolMesh.to_pickle.html" />
+    <link rel="next" title="VolMesh.to_vertices_and_cells" href="compas.datastructures.VolMesh.to_vertices_and_cells.html" />
   
   
   
@@ -89,8 +89,25 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.to_obj</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.to_obj">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">to_obj</code><span class="sig-paren">(</span><em class="sig-param">filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/datastructures/volmesh/volmesh.html#VolMesh.to_obj"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">to_obj</code><span class="sig-paren">(</span><em class="sig-param">filepath</em>, <em class="sig-param">precision=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span></dt>
+<dd><p>Write the volmesh to an OBJ file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<em>str</em>) – Full path of the file.</p></li>
+<li><p><strong>precision</strong> (<em>str, optional</em>) – The precision of the geometric map that is used to connect the lines.</p></li>
+<li><p><strong>unweld</strong> (<em>bool, optional</em>) – If true, all faces have their own unique vertices.
+If false, vertices are shared between faces if this is also the case in the mesh.
+Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function only writes geometric data about the vertices and
+the faces to the file.</p>
+</div>
+</dd></dl>
 
 </div>
 
