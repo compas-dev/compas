@@ -2,14 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+from System import Array
 
-if compas.IPY:
-    from System import Array
-
-    if compas.GH:
-        from Grasshopper import DataTree as Tree
-        from Grasshopper.Kernel.Data import GH_Path as Path
+from Grasshopper import DataTree as Tree
+from Grasshopper.Kernel.Data import GH_Path as Path
 
 
 __all__ = [

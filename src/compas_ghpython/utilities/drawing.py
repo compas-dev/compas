@@ -2,35 +2,31 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
-
 from compas_rhino.utilities.drawing import _face_to_max_quad
 
-if compas.IPY:
-    from System.Enum import ToObject
-    from System.Array import CreateInstance
-    from System.Drawing import Color
+from System.Enum import ToObject
+from System.Array import CreateInstance
+from System.Drawing import Color
 
-    if compas.RHINO:
-        import rhinoscriptsyntax as rs
-        import scriptcontext as sc
+import rhinoscriptsyntax as rs
+import scriptcontext as sc
 
-        from Rhino.Geometry import Point3d
-        from Rhino.Geometry import Vector3d
-        from Rhino.Geometry import Line
-        from Rhino.Geometry import Polyline
-        from Rhino.Geometry import Brep
-        from Rhino.Geometry import Cylinder
-        from Rhino.Geometry import Circle
-        from Rhino.Geometry import Plane
-        from Rhino.Geometry import PipeCapMode
-        from Rhino.Geometry import Curve
-        from Rhino.Geometry import Sphere
-        from Rhino.Geometry import Mesh
-        from Rhino.Geometry import Vector3f
-        from Rhino.Geometry import Point2f
+from Rhino.Geometry import Point3d
+from Rhino.Geometry import Vector3d
+from Rhino.Geometry import Line
+from Rhino.Geometry import Polyline
+from Rhino.Geometry import Brep
+from Rhino.Geometry import Cylinder
+from Rhino.Geometry import Circle
+from Rhino.Geometry import Plane
+from Rhino.Geometry import PipeCapMode
+from Rhino.Geometry import Curve
+from Rhino.Geometry import Sphere
+from Rhino.Geometry import Mesh
+from Rhino.Geometry import Vector3f
+from Rhino.Geometry import Point2f
 
-        TOL = sc.doc.ModelAbsoluteTolerance
+TOL = sc.doc.ModelAbsoluteTolerance
 
 
 __all__ = [

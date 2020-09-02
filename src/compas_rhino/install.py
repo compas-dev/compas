@@ -64,7 +64,7 @@ def install(version=None, packages=None):
     if version not in ('5.0', '6.0', '7.0'):
         version = '6.0'
 
-    print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
+    print('Installing COMPAS packages to Rhino {0} scripts folder:'.format(version))
 
     ghpython_incompatible = False
 
@@ -79,8 +79,8 @@ def install(version=None, packages=None):
     if ghpython_incompatible:
         packages.remove('compas_ghpython')
 
-    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
-    print('IronPython location: {}'.format(ipylib_path))
+    scripts_path = compas_rhino._get_scripts_path(version)
+    print('Location scripts folder: {}'.format(scripts_path))
     print()
 
     results = []
@@ -89,7 +89,7 @@ def install(version=None, packages=None):
 
     for package in packages:
         package_path = _get_package_path(importlib.import_module(package))
-        symlink_path = os.path.join(ipylib_path, package)
+        symlink_path = os.path.join(scripts_path, package)
         symlinks.append((package_path, symlink_path))
 
     removal_results = remove_symlinks([link[1] for link in symlinks])
@@ -115,7 +115,7 @@ def install(version=None, packages=None):
         environment_name = os.environ.get('CONDA_DEFAULT_ENV', '')
         conda_exe = os.environ.get('CONDA_EXE', '')
 
-        compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+        compas_bootstrapper = os.path.join(scripts_path, 'compas_bootstrapper.py')
 
         try:
             bootstrapper_data = _get_bootstrapper_data(compas_bootstrapper)

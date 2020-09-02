@@ -14,6 +14,39 @@ from compas._os import remove_symlinks
 __all__ = ['uninstall']
 
 
+def _clean(version=None):
+    if version not in ('5.0', '6.0', '7.0'):
+        version = '6.0'
+
+    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+
+    compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+    bootstrapper_data = compas_rhino.install._get_bootstrapper_data(compas_bootstrapper)
+
+    try:
+        packages = bootstrapper_data.get('INSTALLED_PACKAGES', None)
+    except:  # noqa: E722
+        pass
+
+    if packages is None:
+        packages = compas_rhino.install.INSTALLABLE_PACKAGES
+
+    symlinks = []
+
+    for package in packages:
+        symlinks.append(os.path.join(ipylib_path, package))
+
+    removal_results = remove_symlinks(symlinks)
+
+    if all(removal_results):
+        compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+        try:
+            if os.path.exists(compas_bootstrapper):
+                os.remove(compas_bootstrapper)
+        except:  # noqa: E722
+            pass
+
+
 def uninstall(version=None, packages=None):
     """Uninstall COMPAS from Rhino.
 
@@ -41,11 +74,13 @@ def uninstall(version=None, packages=None):
     if version not in ('5.0', '6.0', '7.0'):
         version = '6.0'
 
-    print('Uninstalling COMPAS packages from Rhino {0} IronPython lib:'.format(version))
+    _clean(version=version)
 
-    ipylib_path = compas_rhino._get_ironpython_lib_path(version)
+    print('Uninstalling COMPAS packages from Rhino {0} scripts folder:'.format(version))
 
-    compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+    scripts_path = compas_rhino._get_scripts_path(version)
+
+    compas_bootstrapper = os.path.join(scripts_path, 'compas_bootstrapper.py')
     bootstrapper_data = compas_rhino.install._get_bootstrapper_data(compas_bootstrapper)
 
     if not packages:
@@ -67,7 +102,7 @@ def uninstall(version=None, packages=None):
     exit_code = 0
 
     for package in packages:
-        symlinks.append(os.path.join(ipylib_path, package))
+        symlinks.append(os.path.join(scripts_path, package))
 
     removal_results = remove_symlinks(symlinks)
 
@@ -81,7 +116,7 @@ def uninstall(version=None, packages=None):
     if exit_code == -1:
         results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not uninstall bootstrapper.'))
     else:
-        compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
+        compas_bootstrapper = os.path.join(scripts_path, 'compas_bootstrapper.py')
         try:
             if os.path.exists(compas_bootstrapper):
                 os.remove(compas_bootstrapper)

@@ -96,18 +96,18 @@ def _get_python_plugins_path(version):
 
 
 def _get_python_plugins_path_win32(version):
-    appdata = os.getenv('APPDATA')
-    return os.path.join(appdata,
-                        'McNeel',
-                        'Rhinoceros',
-                        '{}'.format(version),
-                        'Plug-ins',
-                        'PythonPlugins')
+    return os.path.join(
+        os.getenv('APPDATA'),
+        'McNeel',
+        'Rhinoceros',
+        '{}'.format(version),
+        'Plug-ins',
+        'PythonPlugins')
 
 
 def _get_python_plugins_path_mac(version):
     if version == '5.0':
-        path = os.path.join(
+        return os.path.join(
             os.environ['HOME'],
             'Library',
             'Application Support',
@@ -115,17 +115,42 @@ def _get_python_plugins_path_mac(version):
             'Rhinoceros',
             'MacPlugIns',
             'PythonPlugIns')
+
+    return os.path.join(
+        os.environ['HOME'],
+        'Library',
+        'Application Support',
+        'McNeel',
+        'Rhinoceros',
+        '{}'.format(version),
+        'Plug-ins',
+        'PythonPlugIns')
+
+
+def _get_scripts_path(version):
+    version = _check_rhino_version(version)
+
+    if compas._os.system == 'win32':
+        scripts_path = _get_scripts_path_win32(version)
+    elif compas._os.system == 'darwin':
+        scripts_path = _get_scripts_path_mac(version)
     else:
-        path = os.path.join(
-            os.environ['HOME'],
-            'Library',
-            'Application Support',
-            'McNeel',
-            'Rhinoceros',
-            '{}'.format(version),
-            'Plug-ins',
-            'PythonPlugIns')
-    return path
+        raise Exception('Unsupported platform')
+
+    if not os.path.exists(scripts_path):
+        raise Exception("The folder for RhinoPython scripts does not exist in this location: {}".format(scripts_path))
+
+    return scripts_path
+
+
+def _get_scripts_path_win32(version):
+    return os.path.join(
+        os.getenv('APPDATA'), 'McNeel', 'Rhinoceros', '{}'.format(version), 'scripts')
+
+
+def _get_scripts_path_mac(version):
+    return os.path.join(
+        os.getenv('HOME'), 'Library', 'Application Support', 'McNeel', 'Rhinoceros', '{}'.format(version), 'scripts')
 
 
 __all_plugins__ = ['compas_rhino.geometry.booleans']

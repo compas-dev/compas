@@ -3,9 +3,8 @@ from __future__ import division
 from __future__ import print_function
 
 import abc
-# from uuid import uuid4
+from uuid import uuid4
 from compas_rhino.artists import BaseArtist
-
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
@@ -59,7 +58,7 @@ class BaseObject(ABC):
     def __init__(self, item, scene=None, name=None, layer=None, visible=True, settings=None):
         super(BaseObject, self).__init__()
         self._item = None
-        # self._guid = None
+        self._guid = None
         self._scene = None
         self._artist = None
         self._settings = {}
@@ -70,14 +69,9 @@ class BaseObject(ABC):
         self.visible = visible
         self.settings = settings
 
-    @staticmethod
-    def register(item_type, object_type):
-        _ITEM_OBJECT[item_type] = object_type
-
-    @staticmethod
-    def build(item, **kwargs):
-        object_type = _ITEM_OBJECT[type(item)]
-        return object_type(item, **kwargs)
+    # ==========================================================================
+    # Properties
+    # ==========================================================================
 
     @property
     def scene(self):
@@ -101,11 +95,11 @@ class BaseObject(ABC):
     def artist(self):
         return self._artist
 
-    # @property
-    # def guid(self):
-    #     if not self._guid:
-    #         self._guid = uuid4()
-    #     return self._guid
+    @property
+    def guid(self):
+        if not self._guid:
+            self._guid = uuid4()
+        return self._guid
 
     @property
     def name(self):
@@ -131,6 +125,19 @@ class BaseObject(ABC):
     def settings(self, settings):
         if settings:
             self._settings.update(settings)
+
+    # ==========================================================================
+    # Methods
+    # ==========================================================================
+
+    @staticmethod
+    def register(item_type, object_type):
+        _ITEM_OBJECT[item_type] = object_type
+
+    @staticmethod
+    def build(item, **kwargs):
+        object_type = _ITEM_OBJECT[type(item)]
+        return object_type(item, **kwargs)
 
     @abc.abstractmethod
     def clear(self):

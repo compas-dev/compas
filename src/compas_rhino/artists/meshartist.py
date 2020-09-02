@@ -6,11 +6,12 @@ import compas_rhino
 
 from compas_rhino.artists._artist import BaseArtist
 
-from compas.utilities import color_to_colordict
+from compas.utilities import color_to_colordict as colordict
 from compas.utilities import pairwise
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 from compas.geometry import centroid_polygon
+from compas.geometry import centroid_points
 
 
 __all__ = ['MeshArtist']
@@ -66,6 +67,7 @@ class MeshArtist(BaseArtist):
         self._guid_vertexlabel = {}
         self._guid_edgelabel = {}
         self._guid_facelabel = {}
+        self._vertex_xyz = None
         self.mesh = mesh
         self.layer = layer
         self.settings = {
@@ -87,6 +89,16 @@ class MeshArtist(BaseArtist):
             'join_faces': True}
         if settings:
             self.settings.update(settings)
+
+    @property
+    def vertex_xyz(self):
+        if not self._vertex_xyz:
+            self._vertex_xyz = {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
+        return self._vertex_xyz
+
+    @vertex_xyz.setter
+    def vertex_xyz(self, vertex_xyz):
+        self._vertex_xyz = vertex_xyz
 
     @property
     def guid_vertex(self):
@@ -258,7 +270,7 @@ class MeshArtist(BaseArtist):
         Faces with more than 4 vertices will be triangulated on-the-fly.
         """
         key_index = self.mesh.key_index()
-        vertices = self.mesh.vertices_attributes('xyz')
+        vertices = self.vertex_xyz.values()
         faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
         new_faces = []
         for face in faces:
@@ -303,15 +315,12 @@ class MeshArtist(BaseArtist):
 
         """
         vertices = keys or list(self.mesh.vertices())
-        vertex_color = color_to_colordict(color,
-                                          vertices,
-                                          default=self.settings['color.vertices'],
-                                          colorformat='rgb',
-                                          normalize=False)
+        vertex_xyz = self.vertex_xyz
+        vertex_color = colordict(color, vertices, default=self.settings['color.vertices'], colorformat='rgb', normalize=False)
         points = []
         for vertex in vertices:
             points.append({
-                'pos': self.mesh.vertex_coordinates(vertex),
+                'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.mesh.name, vertex),
                 'color': vertex_color[vertex]})
 
@@ -345,29 +354,23 @@ class MeshArtist(BaseArtist):
 
         """
         faces = keys or list(self.mesh.faces())
-        face_color = color_to_colordict(color,
-                                        faces,
-                                        default=self.settings['color.faces'],
-                                        colorformat='rgb',
-                                        normalize=False)
+        vertex_xyz = self.vertex_xyz
+        face_color = colordict(color, faces, default=self.settings['color.faces'], colorformat='rgb', normalize=False)
         facets = []
         for face in faces:
             facets.append({
-                'points': self.mesh.face_coordinates(face),
+                'points': [vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)],
                 'name': "{}.face.{}".format(self.mesh.name, face),
                 'color': face_color[face]})
-
         guids = compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
         if not join_faces:
             self.guid_face = zip(guids, faces)
             return guids
-
         guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
         compas_rhino.rs.ObjectLayer(guid, self.layer)
         compas_rhino.rs.ObjectName(guid, '{}.mesh'.format(self.mesh.name))
         if color:
             compas_rhino.rs.ObjectColor(guid, color)
-
         self.guids += [guid]
         return [guid]
 
@@ -394,19 +397,15 @@ class MeshArtist(BaseArtist):
 
         """
         edges = keys or list(self.mesh.edges())
-        edge_color = color_to_colordict(color,
-                                        edges,
-                                        default=self.settings['color.edges'],
-                                        colorformat='rgb',
-                                        normalize=False)
+        vertex_xyz = self.vertex_xyz
+        edge_color = colordict(color, edges, default=self.settings['color.edges'], colorformat='rgb', normalize=False)
         lines = []
         for edge in edges:
             lines.append({
-                'start': self.mesh.vertex_coordinates(edge[0]),
-                'end': self.mesh.vertex_coordinates(edge[1]),
+                'start': vertex_xyz[edge[0]],
+                'end': vertex_xyz[edge[1]],
                 'color': edge_color[edge],
                 'name': "{}.edge.{}-{}".format(self.mesh.name, *edge)})
-
         guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         self.guid_edge = zip(guids, edges)
         return guids
@@ -438,13 +437,13 @@ class MeshArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        vertex_xyz = self.vertex_xyz
         vertices = keys or list(self.mesh.vertices())
         scale = scale or self.settings['scale.vertexnormals']
         color = color or self.settings['color.vertexnormals']
-
         lines = []
         for vertex in vertices:
-            a = self.mesh.vertex_coordinates(vertex)
+            a = vertex_xyz[vertex]
             n = self.mesh.vertex_normal(vertex)
             b = add_vectors(a, scale_vector(n, scale))
             lines.append({
@@ -453,7 +452,6 @@ class MeshArtist(BaseArtist):
                 'color': color,
                 'name': "{}.vertexnormal.{}".format(self.mesh.name, vertex),
                 'arrow': 'end'})
-
         guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         self.guid_vertexnormal = zip(guids, vertices)
         return guids
@@ -481,13 +479,13 @@ class MeshArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
+        vertex_xyz = self.vertex_xyz
         faces = keys or list(self.mesh.faces())
         scale = scale or self.settings['scale.facenormals']
         color = color or self.settings['color.facenormals']
-
         lines = []
         for face in faces:
-            a = self.mesh.face_centroid(face)
+            a = centroid_points([vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)])
             n = self.mesh.face_normal(face)
             b = add_vectors(a, scale_vector(n, scale))
             lines.append({
@@ -496,7 +494,6 @@ class MeshArtist(BaseArtist):
                 'name': "{}.facenormal.{}".format(self.mesh.name, face),
                 'color': color,
                 'arrow': 'end'})
-
         guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         self.guid_facenormal = zip(guids, faces)
         return guids
@@ -537,20 +534,15 @@ class MeshArtist(BaseArtist):
             vertex_text = {key: str(index) for index, key in enumerate(self.mesh.vertices())}
         else:
             raise NotImplementedError
-
-        vertex_color = color_to_colordict(color,
-                                          vertex_text.keys(),
-                                          default=self.settings['color.vertices'],
-                                          colorformat='rgb',
-                                          normalize=False)
+        vertex_xyz = self.vertex_xyz
+        vertex_color = colordict(color, vertex_text.keys(), default=self.settings['color.vertices'], colorformat='rgb', normalize=False)
         labels = []
         for vertex in vertex_text:
             labels.append({
-                'pos': self.mesh.vertex_coordinates(vertex),
+                'pos': vertex_xyz[vertex],
                 'name': "{}.vertexlabel.{}".format(self.mesh.name, vertex),
                 'color': vertex_color[vertex],
                 'text': vertex_text[vertex]})
-
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
         self.guid_vertexlabel = zip(guids, vertex_text.keys())
         return guids
@@ -587,21 +579,15 @@ class MeshArtist(BaseArtist):
             face_text = {key: str(index) for index, key in enumerate(self.mesh.faces())}
         else:
             raise NotImplementedError
-
-        face_color = color_to_colordict(color,
-                                        face_text.keys(),
-                                        default=self.settings['color.faces'],
-                                        colorformat='rgb',
-                                        normalize=False)
-
+        vertex_xyz = self.vertex_xyz
+        face_color = colordict(color, face_text.keys(), default=self.settings['color.faces'], colorformat='rgb', normalize=False)
         labels = []
         for face in face_text:
             labels.append({
-                'pos': self.mesh.face_center(face),
+                'pos': centroid_points([vertex_xyz[vertex] for vertex in self.mesh.face_vertices(face)]),
                 'name': "{}.facelabel.{}".format(self.mesh.name, face),
                 'color': face_color[face],
                 'text': face_text[face]})
-
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
         self.guid_facelabel = zip(guids, face_text.keys())
         return guids
@@ -634,20 +620,15 @@ class MeshArtist(BaseArtist):
             edge_text = text
         else:
             raise NotImplementedError
-
-        edge_color = color_to_colordict(color,
-                                        edge_text.keys(),
-                                        default=self.settings['color.edges'],
-                                        colorformat='rgb',
-                                        normalize=False)
+        vertex_xyz = self.vertex_xyz
+        edge_color = colordict(color, edge_text.keys(), default=self.settings['color.edges'], colorformat='rgb', normalize=False)
         labels = []
         for edge in edge_text:
             labels.append({
-                'pos': self.mesh.edge_midpoint(*edge),
+                'pos': centroid_points([vertex_xyz[edge[0]], vertex_xyz[edge[1]]]),
                 'name': "{}.edgelabel.{}-{}".format(self.mesh.name, *edge),
                 'color': edge_color[edge],
                 'text': edge_text[edge]})
-
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
         self.guid_edgelabel = zip(guids, edge_text.keys())
         return guids
@@ -658,13 +639,4 @@ class MeshArtist(BaseArtist):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    from compas.datastructures import Mesh
-
-    mesh = Mesh.from_polyhedron(20)
-
-    artist = MeshArtist(mesh)
-    artist.clear()
-    artist.draw_faces()
-    artist.draw_vertices()
-    artist.draw_edges()
+    pass

@@ -7,8 +7,6 @@ from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import cross_vectors_xy
 
-# from compas.geometry import distance_point_point
-
 
 __all__ = [
     'convex_hull',
