@@ -3,14 +3,15 @@ from __future__ import division
 from __future__ import print_function
 
 import compas_rhino
-
+from compas.geometry import Point
+from compas.geometry import Scale
+from compas.geometry import Translation
+from compas.geometry import Rotation
 from compas_rhino.objects._object import BaseObject
-
 from compas_rhino.objects.modify import mesh_update_attributes
 from compas_rhino.objects.modify import mesh_update_vertex_attributes
 from compas_rhino.objects.modify import mesh_update_face_attributes
 from compas_rhino.objects.modify import mesh_update_edge_attributes
-
 from compas_rhino.objects.modify import mesh_move_vertex
 from compas_rhino.objects.modify import mesh_move_vertices
 from compas_rhino.objects.modify import mesh_move_face
@@ -76,6 +77,9 @@ class MeshObject(BaseObject):
 
     def __init__(self, mesh, scene=None, name=None, layer=None, visible=True, settings=None):
         super(MeshObject, self).__init__(mesh, scene, name, layer, visible, settings)
+        self._location = None
+        self._scale = None
+        self._rotation = None
         self._guid_vertex = {}
         self._guid_face = {}
         self._guid_edge = {}
@@ -88,6 +92,61 @@ class MeshObject(BaseObject):
     def mesh(self, mesh):
         self.item = mesh
 
+    @property
+    def location(self):
+        """:class:`compas.geometry.Point`:
+        The location of the object.
+        Default is the origin of the world coordinate system.
+        The object transformation is applied relative to this location.
+
+        Setting this location will make a copy of the provided point object.
+        Moving the original point will thus not affect the object's location.
+        """
+        if not self._location:
+            self._location = Point(0, 0, 0)
+        return self._location
+
+    @location.setter
+    def location(self, location):
+        self._location = Point(*location)
+
+    @property
+    def scale(self):
+        """float:
+        A uniform scaling factor for the object in the scene.
+        The scale is applied relative to the location of the object in the scene.
+        """
+        if not self._scale:
+            self._scale = 1.0
+        return self._scale
+
+    @scale.setter
+    def scale(self, scale):
+        self._scale = scale
+
+    @property
+    def rotation(self):
+        """list of float:
+        The rotation angles around the 3 axis of the coordinate system
+        with the origin placed at the location of the object in the scene.
+        """
+        if not self._rotation:
+            self._rotation = [0, 0, 0]
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, rotation):
+        self._rotation = rotation
+
+    @property
+    def vertex_xyz(self):
+        S = Scale.from_factors([self.scale] * 3)
+        R = Rotation.from_euler_angles(self.rotation)
+        T = Translation.from_vector(self.location)
+        mesh = self.mesh.transformed(T * R * S)
+        vertex_xyz = {vertex: mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()}
+        return vertex_xyz
+
     def clear(self):
         self.artist.clear()
 
@@ -96,6 +155,7 @@ class MeshObject(BaseObject):
         """
         if not self.visible:
             return
+        self.artist.vertex_xyz = self.vertex_xyz
         self.artist.draw()
 
     def select(self):
