@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Restructure and reorganize volmesh datastructure
 * Fixed scaling bug in `compas.geometry.Sphere`
 * Fixed bug in `compas.datastructures.Mesh.add_vertex`.
 * Fixed performance issue affecting IronPython when iterating over vertices and their attributes.
