@@ -128,6 +128,6 @@ from .off import *  # noqa: F401 F403
 from .ply import *  # noqa: F401 F403
 from .stl import *  # noqa: F401 F403
 from .urdf import *  # noqa: F401 F403
-from .xml_ import *  # noqa: F401 F403
+from .xml import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]
