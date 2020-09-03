@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas_rhino
 from compas_rhino.objects._object import BaseObject
 
 
