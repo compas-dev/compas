@@ -220,6 +220,23 @@ class Plane(Primitive):
         """
         return cls([0, 0, 0], [0, 0, 1])
 
+    @classmethod
+    def from_frame(cls, frame):
+        """Construct a plane from a frame.
+
+        Returns
+        -------
+        :class:`compas.geometry.Plane`
+            A plane with the frame's ``point`` and the frame's ``normal``.
+
+        Examples
+        --------
+        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+        >>> Plane.from_frame(frame)
+        Plane(Point(1.000, 1.000, 1.000), Vector(-0.299, -0.079, 0.951))
+        """
+        return cls(frame.point, frame.normal)
+
     # ==========================================================================
     # methods
     # ==========================================================================
@@ -253,4 +270,5 @@ class Plane(Primitive):
 if __name__ == '__main__':
 
     import doctest
+    from compas.geometry import Frame  # noqa F401
     doctest.testmod(globs=globals())
