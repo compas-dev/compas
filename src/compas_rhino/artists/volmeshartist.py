@@ -295,7 +295,7 @@ class VolMeshArtist(BaseArtist):
 
         Parameters
         ----------
-        fkeys : list
+        keys : list
             A list of face keys identifying which faces to draw.
             The default is ``None``, in which case all faces are drawn.
         color : str, tuple, dict
@@ -305,9 +305,6 @@ class VolMeshArtist(BaseArtist):
             Individual colors can be assigned using a dictionary of key-color pairs.
             Missing keys will be assigned the default face color (``self.settings['color.faces']``).
             The default is ``None``, in which case all faces are assigned the default face color.
-        join_faces : bool, optional
-            Join the faces into 1 mesh.
-            Default is ``False``, in which case the faces are drawn as individual meshes.
 
         Returns
         -------
@@ -329,6 +326,27 @@ class VolMeshArtist(BaseArtist):
         return guids
 
     def draw_cells(self, keys=None, color=None):
+        """Draw a selection of cells.
+
+        Parameters
+        ----------
+        keys : list
+            A list of cell keys identifying which cells to draw.
+            The default is ``None``, in which case all cells are drawn.
+        color : str, tuple, dict
+            The color specififcation for the cells.
+            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
+            To apply the same color to all faces, provide a single color specification.
+            Individual colors can be assigned using a dictionary of key-color pairs.
+            Missing keys will be assigned the default face color (``self.settings['color.cells']``).
+            The default is ``None``, in which case all cells are assigned the default cell color.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects. Every cell is drawn as an individual mesh.
+
+        """
         cells = keys or list(self.volmesh.cells())
         vertex_xyz = self.vertex_xyz
         cell_color = colordict(color, cells, default=self.settings['color.cells'], colorformat='rgb', normalize=False)
