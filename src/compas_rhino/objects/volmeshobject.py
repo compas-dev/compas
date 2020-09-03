@@ -6,19 +6,13 @@ import compas_rhino
 from compas_rhino.objects._object import BaseObject
 
 
-__all__ = ['VolmeshObject']
+__all__ = ['VolMeshObject']
 
 
-class VolmeshObject(BaseObject):
+class VolMeshObject(BaseObject):
 
     def __init__(self, volmesh, scene=None, name=None, layer=None, visible=True, settings=None):
-        super(VolmeshObject, self).__init__(volmesh, scene, name, layer, visible, settings)
-        self._location = None
-        self._scale = None
-        self._rotation = None
-        self._guid_vertex = {}
-        self._guid_face = {}
-        self._guid_edge = {}
+        super(VolMeshObject, self).__init__(volmesh, scene, name, layer, visible, settings)
 
     @property
     def volmesh(self):
@@ -38,7 +32,15 @@ class VolmeshObject(BaseObject):
             return
         self.artist.draw()
 
-    
+    def select(self):
+        raise NotImplementedError
+
+    def modify(self):
+        raise NotImplementedError
+
+    def move(self):
+        raise NotImplementedError
+
 
 # ============================================================================
 # Main
