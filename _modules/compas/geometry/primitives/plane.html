@@ -304,6 +304,23 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span></div>
 
+<div class="viewcode-block" id="Plane.from_frame"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Plane.from_frame.html#compas.geometry.Plane.from_frame">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_frame</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a plane from a frame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Plane`</span>
+<span class="sd">            A plane with the frame&#39;s ``point`` and the frame&#39;s ``normal``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])</span>
+<span class="sd">        &gt;&gt;&gt; Plane.from_frame(frame)</span>
+<span class="sd">        Plane(Point(1.000, 1.000, 1.000), Vector(-0.299, -0.079, 0.951))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span></div>
+
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
@@ -337,6 +354,7 @@
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>  <span class="c1"># noqa F401</span>
     <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
 </code></pre></div>
         
