@@ -21,7 +21,7 @@ class VolMeshObject(BaseObject):
     @volmesh.setter
     def volmesh(self, volmesh):
         self.item = volmesh
-    
+
     def clear(self):
         self.artist.clear()
 
