@@ -111,12 +111,14 @@ from .inspect import *  # noqa : F401 F403
 from ._object import BaseObject
 from .meshobject import MeshObject
 from .networkobject import NetworkObject
+from .volmeshobject import VolMeshObject
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network
+from compas.datastructures import VolMesh
 
 BaseObject.register(Mesh, MeshObject)
 BaseObject.register(Network, NetworkObject)
-
+BaseObject.register(VolMesh, VolMeshObject)
 
 __all__ = [name for name in dir() if not name.startswith('_')]

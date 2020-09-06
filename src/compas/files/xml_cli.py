@@ -41,7 +41,7 @@ import xml.etree.ElementTree as ET
 
 import compas
 
-try:
+if compas.IPY:
     import clr
     clr.AddReference('System.Xml')
 
@@ -56,8 +56,6 @@ try:
 
     CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
                          RegexOptions.Compiled)
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['CLRXMLTreeParser']

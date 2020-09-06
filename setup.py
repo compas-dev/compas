@@ -21,12 +21,7 @@ def read(*names, **kwargs):
 
 long_description = read('README.md')
 requirements = [r for r in read('requirements.txt').split('\n') if r]
-optional_requirements = {
-    # "viewers": ['PyOpenGL', 'PySide2'],
-    # "hpc": ['pyopencl', 'pycuda'],
-    # "robotics": ['roslibpy'],
-    # "libigl": ['igl'],
-}
+optional_requirements = {}
 
 setup(
     name='COMPAS',
@@ -47,7 +42,6 @@ setup(
         'Operating System :: POSIX',
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
@@ -55,7 +49,6 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: IronPython',
     ],
     keywords=['architecture', 'engineering', 'fabrication', 'construction'],
     project_urls={
