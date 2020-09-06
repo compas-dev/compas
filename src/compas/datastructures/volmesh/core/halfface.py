@@ -192,7 +192,7 @@ class HalfFace(Datastructure):
         self.default_cell_attributes.update(dca)
 
         self.vertex = {}
-        self.halfedge = {}
+        self.halfface = {}
         self.cell = {}
         self.plane = {}
         self.edgedata = {}
@@ -530,15 +530,21 @@ class HalfFace(Datastructure):
         --------
         >>>
         """
-        for halfface in self.cell_halffaces(cell):
+        cell_vertices = self.cell_vertices(cell)
+        cell_halffaces = self.cell_halffaces(cell)
+        for halfface in cell_halffaces:
             for edge in self.halfface_halfedges(halfface):
                 u, v = edge
                 if (u, v) in self.edgedata:
                     del self.edgedata[u, v]
                 if (v, u) in self.edgedata:
                     del self.edgedata[v, u]
+        for vertex in cell_vertices:
+            if len(self.vertex_cells(vertex)) == 1:
+                del self.vertex[vertex]
+        for halfface in cell_halffaces:
             vertices = self.halfface_vertices(halfface)
-            for i in range(-2, len(vertices - 2)):
+            for i in range(-2, len(vertices) - 2):
                 u = vertices[i]
                 v = vertices[i + 1]
                 w = vertices[i + 2]
@@ -549,9 +555,6 @@ class HalfFace(Datastructure):
             del self.halfface[halfface]
             if halfface in self.facedata:
                 del self.facedata[halfface]
-        for vertex in self.cell_vertices(cell):
-            if len(self.vertex_cells(vertex)) == 1:
-                del self.vertex[vertex]
         del self.cell[cell]
         if cell in self.celldata:
             del self.celldata[cell]
@@ -1654,7 +1657,7 @@ class HalfFace(Datastructure):
         cells = set()
         for v in self.plane[vertex].keys():
             for cell in self.plane[vertex][v].values():
-                if cell:
+                if cell is not None:
                     cells.add(cell)
         return list(cells)
 
@@ -1683,11 +1686,7 @@ class HalfFace(Datastructure):
     # --------------------------------------------------------------------------
 
     def has_edge(self, edge):
-        """Verify that the volmesh contains a specific edge.
-
-        Warnings
-        --------
-        This method may produce unexpected results.
+        """Verify that the volmesh contains a directed edge (u, v).
 
         Parameters
         ----------
@@ -1703,7 +1702,7 @@ class HalfFace(Datastructure):
         return edge in set(self.edges())
 
     def edge_halffaces(self, edge):
-        """Ordered halffaces around edge u-v.
+        """Ordered halffaces around edge (u, v).
 
         Parameters
         ----------
@@ -1713,19 +1712,24 @@ class HalfFace(Datastructure):
         Returns
         -------
         list
-            List of of keys identifying the adjacent halffaces.
+            Ordered list of of keys identifying the halffaces.
 
         Notes
         -----
         The halffaces are ordered around the edge (u, v).
-        All halffaces returned should have halfedge (u, v); this also means that if edge u-v is shared by four cells, eight halffaces are returned.
+        All halffaces returned should have halfedge (u, v) or (v, u).
+        This also means that if edge u-v is shared by four cells, eight halffaces are returned.
         """
-        faces = self.edge_faces(edge)
-        opp_halffaces = [self.halfface_opposite_halfface(face) for face in faces]
-        return [halfface for opp in zip(faces, opp_halffaces) for halfface in opp]
+        u, v = edge
+        cells = self.edge_cells(edge)
+        ordered_halffaces = []
+        for cell in cells:
+            ordered_halffaces.append(self.cell[cell][v][u])
+            ordered_halffaces.append(self.cell[cell][u][v])
+        return ordered_halffaces
 
     def edge_faces(self, edge):
-        """Ordered faces around edge u-v.
+        """Ordered faces around edge (u, v).
 
         Parameters
         ----------
@@ -1735,26 +1739,33 @@ class HalfFace(Datastructure):
         Returns
         -------
         list
-            List of of keys identifying the adjacent faces.
+            Ordered list of of keys identifying faces.
 
         Notes
         -----
         The faces are ordered around the edge (u, v).
-        All faces returned should have halfedge (u, v); this also means that if edge u-v is shared by four cells, four faces are returned.
+        All faces returned should have halfedge (u, v).
+        This also means that if edge u-v is shared by four cells, four faces are returned.
         """
         u, v = edge
-        edge_cells = self.plane[u][v].values()
+        edge_cells = [cell for cell in self.plane[u][v].values() if cell is not None]
         cell = edge_cells[0]
         ordered_faces = []
+        if self.is_edge_on_boundary(edge):
+            for bndry_cell in edge_cells:
+                halfface = self.cell[bndry_cell][v][u]
+                if self.is_halfface_on_boundary(halfface):
+                    cell = bndry_cell
+                    break
         for i in range(len(edge_cells)):
-            halfface = self.cell[cell][u][v]
-            w = self.halfface_vertex_descendent(halfface, v)
+            face = self.cell[cell][u][v]
+            w = self.halfface_vertex_descendent(face, v)
             cell = self.plane[w][v][u]
-            ordered_faces.append(halfface)
+            ordered_faces.append(face)
         return ordered_faces
 
     def edge_cells(self, edge):
-        """Ordered cells around edge u-v.
+        """Ordered cells around edge (u, v).
 
         Parameters
         ----------
@@ -1764,18 +1775,10 @@ class HalfFace(Datastructure):
         Returns
         -------
         list
-            Ordered list of keys identifying the adjacent cells.
+            Ordered list of keys identifying the ordered cells.
         """
-        u, v = edge
-        edge_cells = self.plane[u][v].values()
-        cell = edge_cells[0]
-        ordered_cells = []
-        for i in range(len(edge_cells)):
-            halfface = self.cell[cell][u][v]
-            w = self.halfface_vertex_descendent(halfface, v)
-            cell = self.plane[w][v][u]
-            ordered_cells.append(cell)
-        return ordered_cells
+        faces = self.edge_faces(edge)
+        return [self.face_cell(face) for face in faces]
 
     def is_edge_on_boundary(self, edge):
         """Verify that an edge is on the boundary.
@@ -1790,8 +1793,15 @@ class HalfFace(Datastructure):
         bool
             True if the edge is on the boundary.
             False otherwise.
+
+        Note
+        ----
+        This method simply checks if u-v or v-u is on the edge of the volmesh.
+        The direction u-v does not matter.
         """
         u, v = edge
+        if not self.has_edge(edge):
+            v, u = edge
         return None in self.plane[u][v].values()
 
     # --------------------------------------------------------------------------
@@ -2097,6 +2107,14 @@ class HalfFace(Datastructure):
         """
         u, v, w = self.halfface[halfface][0:3]
         return self.plane[w][v][u] is None
+
+    has_face = has_halfface
+    face_vertices = halfface_vertices
+    face_halfedges = halfface_halfedges
+    face_cell = halfface_cell
+    face_vertex_ancestor = halfface_vertex_ancestor
+    face_vertex_descendent = halfface_vertex_descendent
+    is_face_on_boundary = is_halfface_on_boundary
 
     # --------------------------------------------------------------------------
     # cell topology
