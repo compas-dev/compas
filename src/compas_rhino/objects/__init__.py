@@ -36,6 +36,15 @@ BaseObject
 
 ----
 
+NetworkObject
+=============
+
+.. autoclass:: NetworkObject
+    :members: clear, draw, select_nodes, select_edges, modify_nodes, modify_edges
+    :no-show-inheritance:
+
+----
+
 MeshObject
 ==========
 
@@ -45,11 +54,11 @@ MeshObject
 
 ----
 
-NetworkObject
+VolMeshObject
 =============
 
-.. autoclass:: NetworkObject
-    :members: clear, draw, select_nodes, select_edges, modify_nodes, modify_edges
+.. autoclass:: VolMeshObject
+    :members: clear, draw, select_vertices, select_faces, select_edges, modify_vertices, modify_faces, modify_edges
     :no-show-inheritance:
 
 ----

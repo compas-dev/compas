@@ -6,6 +6,20 @@ import ast
 import rhinoscriptsyntax as rs
 
 
+__all__ = [
+    'mesh_select_vertex',
+    'mesh_select_vertices',
+    'mesh_select_face',
+    'mesh_select_faces',
+    'mesh_select_edge',
+    'mesh_select_edges',
+    'network_select_node',
+    'network_select_nodes',
+    'network_select_edge',
+    'network_select_edges',
+]
+
+
 def mesh_select_vertex(mesh, message="Select a vertex."):
     """Select a single vertex of a mesh.
 

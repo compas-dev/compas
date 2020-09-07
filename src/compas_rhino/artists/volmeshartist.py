@@ -2,12 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from functools import partial
 import compas_rhino
 
 from compas_rhino.artists._artist import BaseArtist
 
-from compas.utilities import color_to_colordict as colordict
+from compas.utilities import color_to_colordict
 from compas.geometry import centroid_points
+
+
+colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
 __all__ = ['VolMeshArtist']
@@ -36,14 +40,11 @@ class VolMeshArtist(BaseArtist):
     color_faces : 3-tuple
         Default color of the faces.
 
-    Examples
-    --------
-    .. code-block:: python
-
     """
 
-    def __init__(self, volmesh, layer=None, settings=None):
+    def __init__(self, volmesh, layer=None):
         super(VolMeshArtist, self).__init__()
+        self._guids = []
         self._guid_vertex = {}
         self._guid_edge = {}
         self._guid_face = {}
@@ -55,22 +56,10 @@ class VolMeshArtist(BaseArtist):
         self._vertex_xyz = None
         self.volmesh = volmesh
         self.layer = layer
-        self.settings = {
-            'color.vertices': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'color.faces': (210, 210, 210),
-            'color.cells': (255, 0, 0),
-            'show.vertices': True,
-            'show.edges': True,
-            'show.faces': False,
-            'show.cells': False,
-            'show.vertexlabels': False,
-            'show.edgelabels': False,
-            'show.facelabels': False,
-            'show.celllabels': True,
-        }
-        if settings:
-            self.settings.update(settings)
+        self.color_vertices = (255, 255, 255)
+        self.color_edges = (0, 0, 0)
+        self.color_faces = (210, 210, 210)
+        self.color_cells = (255, 0, 0)
 
     @property
     def vertex_xyz(self):
@@ -81,6 +70,20 @@ class VolMeshArtist(BaseArtist):
     @vertex_xyz.setter
     def vertex_xyz(self, vertex_xyz):
         self._vertex_xyz = vertex_xyz
+
+    @property
+    def guids(self):
+        """list: The GUIDs of all Rhino objects created by this artist."""
+        guids = self._guids
+        guids += list(self.guid_vertex.keys())
+        guids += list(self.guid_edge.keys())
+        guids += list(self.guid_face.keys())
+        guids += list(self.guid_cell.keys())
+        guids += list(self.guid_vertexlabel.keys())
+        guids += list(self.guid_edgelabel.keys())
+        guids += list(self.guid_facelabel.keys())
+        guids += list(self.guid_celllabel.keys())
+        return guids
 
     @property
     def guid_vertex(self):
@@ -120,7 +123,7 @@ class VolMeshArtist(BaseArtist):
 
     @property
     def guid_vertexlabel(self):
-        """Map between Rhino object GUIDs and volmshvertex label identifiers."""
+        """Map between Rhino object GUIDs and volmesh vertexlabel identifiers."""
         return self._guid_vertexlabel
 
     @guid_vertexlabel.setter
@@ -129,7 +132,7 @@ class VolMeshArtist(BaseArtist):
 
     @property
     def guid_edgelabel(self):
-        """Map between Rhino object GUIDs and mesh edge label identifiers."""
+        """Map between Rhino object GUIDs and volmesh edgelabel identifiers."""
         return self._guid_edgelabel
 
     @guid_edgelabel.setter
@@ -138,7 +141,7 @@ class VolMeshArtist(BaseArtist):
 
     @property
     def guid_facelabel(self):
-        """Map between Rhino object GUIDs and volmsh face label identifiers."""
+        """Map between Rhino object GUIDs and volmesh facelabel identifiers."""
         return self._guid_facelabel
 
     @guid_facelabel.setter
@@ -147,31 +150,17 @@ class VolMeshArtist(BaseArtist):
 
     @property
     def guid_celllabel(self):
-        """Map between Rhino object GUIDs and volmsh cell label identifiers."""
+        """Map between Rhino object GUIDs and volmesh celllabel identifiers."""
         return self._guid_celllabel
 
     @guid_celllabel.setter
     def guid_celllabel(self, values):
         self._guid_celllabel = dict(values)
 
-    # ==========================================================================
-    # clear
-    # ==========================================================================
     def clear(self):
         """Clear all objects previously drawn by this artist.
         """
-        guids = []
-        guids_vertices = list(self.guid_vertex.keys())
-        guids_edges = list(self.guid_edge.keys())
-        guid_faces = list(self.guid_face.keys())
-        guid_cells = list(self.guid_cell.keys())
-        guids_vertexlabels = list(self.guid_vertexlabel.keys())
-        guids_edgelabels = list(self.guid_edgelabel.keys())
-        guids_facelabels = list(self.guid_facelabel.keys())
-        guids_celllabels = list(self.guid_celllabel.keys())
-        guids += guids_vertices + guids_edges + guid_faces + guid_cells
-        guids += guids_vertexlabels + guids_edgelabels + guids_facelabels + guids_celllabels
-        compas_rhino.delete_objects(self.guids + guids, purge=True)
+        compas_rhino.delete_objects(self.guids, purge=True)
         self._guid_vertex = {}
         self._guid_edge = {}
         self._guid_face = {}
@@ -186,55 +175,47 @@ class VolMeshArtist(BaseArtist):
         if self.layer:
             compas_rhino.clear_layer(self.layer)
 
-    # ==========================================================================
-    # components
-    # ==========================================================================
+    # def draw(self, settings=None):
+    #     """Draw the volmesh using the chosen visualisation settings.
 
-    def draw(self, settings=None):
-        """Draw the volmesh using the chosen visualisation settings.
+    #     Parameters
+    #     ----------
+    #     settings : dict, optional
+    #         Dictionary of visualisation settings that will be merged with the settings of the artist.
 
-        Parameters
-        ----------
-        settings : dict, optional
-            Dictionary of visualisation settings that will be merged with the settings of the artist.
+    #     """
+    #     self.clear()
+    #     if not settings:
+    #         settings = {}
+    #     self.settings.update(settings)
+    #     if self.settings['show.vertices']:
+    #         self.draw_vertices()
+    #         if self.settings['show.vertexlabels']:
+    #             self.draw_vertexlabels()
+    #     if self.settings['show.edges']:
+    #         self.draw_edges()
+    #         if self.settings['show.edgelabels']:
+    #             self.draw_edgelabels()
+    #     if self.settings['show.faces']:
+    #         self.draw_faces()
+    #         if self.settings['show.facelabels']:
+    #             self.draw_facelabels()
+    #     if self.settings['show.cells']:
+    #         self.draw_cells()
+    #         if self.settings['show.celllabels']:
+    #             self.draw_celllabels()
 
-        """
-        self.clear()
-        if not settings:
-            settings = {}
-        self.settings.update(settings)
-        if self.settings['show.vertices']:
-            self.draw_vertices()
-            if self.settings['show.vertexlabels']:
-                self.draw_vertexlabels()
-        if self.settings['show.edges']:
-            self.draw_edges()
-            if self.settings['show.edgelabels']:
-                self.draw_edgelabels()
-        if self.settings['show.faces']:
-            self.draw_faces()
-            if self.settings['show.facelabels']:
-                self.draw_facelabels()
-        if self.settings['show.cells']:
-            self.draw_cells()
-            if self.settings['show.celllabels']:
-                self.draw_celllabels()
-
-    def draw_vertices(self, keys=None, color=None):
+    def draw_vertices(self, vertices=None, color=None):
         """Draw a selection of vertices.
 
         Parameters
         ----------
-        keys : list
-            A list of vertex keys identifying which vertices to draw.
+        vertices : list
+            A list of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
         color : str, tuple, dict
             The color specififcation for the vertices.
-            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-            To apply the same color to all vertices, provide a single color specification.
-            Individual colors can be assigned using a dictionary of key-color pairs.
-            Missing keys will be assigned the default vertex color (``self.settings['color.vertices']``).
-            The default is ``None``, in which case all vertices are assigned the default vertex color.
+            The default color of the vertices is ``(255, 255, 255)``.
 
         Returns
         -------
@@ -242,35 +223,30 @@ class VolMeshArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        vertices = keys or list(self.volmesh.vertices())
+        vertices = vertices or list(self.volmesh.vertices())
         vertex_xyz = self.vertex_xyz
-        vertex_color = colordict(color, vertices, default=self.settings['color.vertices'], colorformat='rgb', normalize=False)
+        vertex_color = colordict(color, vertices, default=self.color_vertices)
         points = []
         for vertex in vertices:
             points.append({
                 'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.volmesh.name, vertex),
                 'color': vertex_color[vertex]})
-
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         self.guid_vertex = zip(guids, vertices)
         return guids
 
-    def draw_edges(self, keys=None, color=None):
+    def draw_edges(self, edges=None, color=None):
         """Draw a selection of edges.
 
         Parameters
         ----------
-        keys : list
-            A list of edge keys (as uv pairs) identifying which edges to draw.
+        edges : list
+            A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
         color : str, tuple, dict
             The color specififcation for the edges.
-            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-            To apply the same color to all edges, provide a single color specification.
-            Individual colors can be assigned using a dictionary of key-color pairs.
-            Missing keys will be assigned the default edge color (``self.settings['color.edges']``).
-            The default is ``None``, in which case all edges are assigned the default edge color.
+            The default color is ``(0, 0, 0)``.
 
         Returns
         -------
@@ -278,9 +254,9 @@ class VolMeshArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        edges = keys or list(self.volmesh.edges())
+        edges = edges or list(self.volmesh.edges())
         vertex_xyz = self.vertex_xyz
-        edge_color = colordict(color, edges, default=self.settings['color.edges'], colorformat='rgb', normalize=False)
+        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
             lines.append({
@@ -292,21 +268,17 @@ class VolMeshArtist(BaseArtist):
         self.guid_edge = zip(guids, edges)
         return guids
 
-    def draw_faces(self, keys=None, color=None):
+    def draw_faces(self, faces=None, color=None):
         """Draw a selection of faces.
 
         Parameters
         ----------
-        keys : list
-            A list of face keys identifying which faces to draw.
+        faces : list
+            A list of faces to draw.
             The default is ``None``, in which case all faces are drawn.
         color : str, tuple, dict
             The color specififcation for the faces.
-            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-            To apply the same color to all faces, provide a single color specification.
-            Individual colors can be assigned using a dictionary of key-color pairs.
-            Missing keys will be assigned the default face color (``self.settings['color.faces']``).
-            The default is ``None``, in which case all faces are assigned the default face color.
+            The default color is ``(210, 210, 210)``.
 
         Returns
         -------
@@ -314,9 +286,9 @@ class VolMeshArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        faces = keys or list(self.volmesh.faces())
+        faces = faces or list(self.volmesh.faces())
         vertex_xyz = self.vertex_xyz
-        face_color = colordict(color, faces, default=self.settings['color.faces'], colorformat='rgb', normalize=False)
+        face_color = colordict(color, faces, default=self.color_faces)
         facets = []
         for face in faces:
             facets.append({
@@ -327,31 +299,28 @@ class VolMeshArtist(BaseArtist):
         self.guid_face = zip(guids, faces)
         return guids
 
-    def draw_cells(self, keys=None, color=None):
+    def draw_cells(self, cells=None, color=None):
         """Draw a selection of cells.
 
         Parameters
         ----------
-        keys : list
-            A list of cell keys identifying which cells to draw.
+        cells : list
+            A list of cells to draw.
             The default is ``None``, in which case all cells are drawn.
         color : str, tuple, dict
             The color specififcation for the cells.
-            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-            To apply the same color to all faces, provide a single color specification.
-            Individual colors can be assigned using a dictionary of key-color pairs.
-            Missing keys will be assigned the default face color (``self.settings['color.cells']``).
-            The default is ``None``, in which case all cells are assigned the default cell color.
+            The default color is ``(255, 0, 0)``.
 
         Returns
         -------
         list
-            The GUIDs of the created Rhino objects. Every cell is drawn as an individual mesh.
+            The GUIDs of the created Rhino objects.
+            Every cell is drawn as an individual mesh.
 
         """
-        cells = keys or list(self.volmesh.cells())
+        cells = cells or list(self.volmesh.cells())
         vertex_xyz = self.vertex_xyz
-        cell_color = colordict(color, cells, default=self.settings['color.cells'], colorformat='rgb', normalize=False)
+        cell_color = colordict(color, cells, default=self.color_cells)
         meshes = []
         for cell in cells:
             cell_faces = []
@@ -379,15 +348,11 @@ class VolMeshArtist(BaseArtist):
         Parameters
         ----------
         text : dict
-            A dictionary of vertex labels as key-text pairs.
+            A dictionary of vertex labels as vertex-text pairs.
             The default value is ``None``, in which case every vertex will be labelled with its key.
         color : str, tuple, dict
             The color sepcification of the labels.
-            String values are interpreted as hex colors.
-            Tuples are interpreted as RGB component specifications.
-            If a dictionary of specififcations is provided,
-            the keys should refer to vertex keys and the values should be color specifications in the form of strings or tuples.
-            The default value is ``None``, in which case the labels are assigned the default vertex color (``self.settings['color.vertices']``).
+            The default color is the same as the color of the vertices.
 
         Returns
         -------
@@ -395,18 +360,16 @@ class VolMeshArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        if text is None:
-            vertex_text = {key: str(key) for key in self.volmesh.vertices()}
+        if not text or text == 'key':
+            vertex_text = {vertex: str(vertex) for vertex in self.volmesh.vertices()}
+        elif text == 'index':
+            vertex_text = {vertex: str(index) for index, vertex in enumerate(self.volmesh.vertices())}
         elif isinstance(text, dict):
             vertex_text = text
-        elif text == 'key':
-            vertex_text = {key: str(key) for key in self.volmesh.vertices()}
-        elif text == 'index':
-            vertex_text = {key: str(index) for index, key in enumerate(self.volmesh.vertices())}
         else:
             raise NotImplementedError
         vertex_xyz = self.vertex_xyz
-        vertex_color = colordict(color, vertex_text.keys(), default=self.settings['color.vertices'], colorformat='rgb', normalize=False)
+        vertex_color = colordict(color, vertex_text.keys(), default=self.color_vertices)
         labels = []
         for vertex in vertex_text:
             labels.append({
@@ -415,7 +378,7 @@ class VolMeshArtist(BaseArtist):
                 'color': vertex_color[vertex],
                 'text': vertex_text[vertex]})
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_vertexlabel = zip(guids, vertex_text.keys())
+        self.guid_vertexlabel = zip(guids, vertex_text)
         return guids
 
     def draw_edgelabels(self, text=None, color=None):
@@ -424,15 +387,11 @@ class VolMeshArtist(BaseArtist):
         Parameters
         ----------
         text : dict
-            A dictionary of edge labels as key-text pairs.
+            A dictionary of edge labels as edge-text pairs.
             The default value is ``None``, in which case every edge will be labelled with its key.
         color : str, tuple, dict
             The color sepcification of the labels.
-            String values are interpreted as hex colors.
-            Tuples are interpreted as RGB component specifications.
-            Individual colors can be assigned using a dictionary of edge-color pairs.
-            Missing keys will be assigned the default edge color (``self.settings['color.edges']``).
-            The default is ``None``, in which case all edges are assigned the default edge color.
+            The default color is tha same as the color of the edges.
 
         Returns
         -------
@@ -441,13 +400,13 @@ class VolMeshArtist(BaseArtist):
 
         """
         if text is None:
-            edge_text = {(u, v): "{}-{}".format(u, v) for u, v in self.volmesh.edges()}
+            edge_text = {edge: "{}-{}".format(*edge) for edge in self.volmesh.edges()}
         elif isinstance(text, dict):
             edge_text = text
         else:
             raise NotImplementedError
         vertex_xyz = self.vertex_xyz
-        edge_color = colordict(color, edge_text.keys(), default=self.settings['color.edges'], colorformat='rgb', normalize=False)
+        edge_color = colordict(color, edge_text.keys(), default=self.color_edges)
         labels = []
         for edge in edge_text:
             labels.append({
@@ -456,7 +415,7 @@ class VolMeshArtist(BaseArtist):
                 'color': edge_color[edge],
                 'text': edge_text[edge]})
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_edgelabel = zip(guids, edge_text.keys())
+        self.guid_edgelabel = zip(guids, edge_text)
         return guids
 
     def draw_facelabels(self, text=None, color=None):
@@ -465,15 +424,11 @@ class VolMeshArtist(BaseArtist):
         Parameters
         ----------
         text : dict
-            A dictionary of face labels as key-text pairs.
+            A dictionary of face labels as face-text pairs.
             The default value is ``None``, in which case every face will be labelled with its key.
         color : str, tuple, dict
             The color sepcification of the labels.
-            String values are interpreted as hex colors.
-            Tuples are interpreted as RGB component specifications.
-            If a dictionary of specififcations is provided,
-            the keys should refer to face keys and the values should be color specifications in the form of strings or tuples.
-            The default value is ``None``, in which case the labels are assigned the default face color (``self.settings['color.faces']``).
+            The default color is the same as the color of the faces.
 
         Returns
         -------
@@ -481,18 +436,16 @@ class VolMeshArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        if text is None:
-            face_text = {key: str(key) for key in self.volmesh.faces()}
+        if not text or text == 'key':
+            face_text = {face: str(face) for face in self.volmesh.faces()}
+        elif text == 'index':
+            face_text = {face: str(index) for index, face in enumerate(self.volmesh.faces())}
         elif isinstance(text, dict):
             face_text = text
-        elif text == 'key':
-            face_text = {key: str(key) for key in self.volmesh.faces()}
-        elif text == 'index':
-            face_text = {key: str(index) for index, key in enumerate(self.volmesh.faces())}
         else:
             raise NotImplementedError
         vertex_xyz = self.vertex_xyz
-        face_color = colordict(color, face_text.keys(), default=self.settings['color.faces'], colorformat='rgb', normalize=False)
+        face_color = colordict(color, face_text.keys(), default=self.color_faces)
         labels = []
         for face in face_text:
             labels.append({
@@ -501,7 +454,7 @@ class VolMeshArtist(BaseArtist):
                 'color': face_color[face],
                 'text': face_text[face]})
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_facelabel = zip(guids, face_text.keys())
+        self.guid_facelabel = zip(guids, face_text)
         return guids
 
     def draw_celllabels(self, text=None, color=None):
@@ -510,15 +463,11 @@ class VolMeshArtist(BaseArtist):
         Parameters
         ----------
         text : dict
-            A dictionary of cell labels as key-text pairs.
+            A dictionary of cell labels as cell-text pairs.
             The default value is ``None``, in which case every cell will be labelled with its key.
         color : str, tuple, dict
             The color sepcification of the labels.
-            String values are interpreted as hex colors.
-            Tuples are interpreted as RGB component specifications.
-            If a dictionary of specififcations is provided,
-            the keys should refer to face keys and the values should be color specifications in the form of strings or tuples.
-            The default value is ``None``, in which case the labels are assigned the default face color (``self.settings['color.cells']``).
+            The default color is the same as the color of the cells.
 
         Returns
         -------
@@ -526,18 +475,16 @@ class VolMeshArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        if text is None:
-            cell_text = {cell: str(cell) for cell in self.volmesh.cells()}
-        elif isinstance(text, dict):
-            cell_text = text
-        elif text == 'key':
+        if not text or text == 'key':
             cell_text = {cell: str(cell) for cell in self.volmesh.cells()}
         elif text == 'index':
             cell_text = {cell: str(index) for index, cell in enumerate(self.volmesh.cells())}
+        elif isinstance(text, dict):
+            cell_text = text
         else:
             raise NotImplementedError
         vertex_xyz = self.vertex_xyz
-        cell_color = colordict(color, cell_text.keys(), default=self.settings['color.cells'], colorformat='rgb', normalize=False)
+        cell_color = colordict(color, cell_text.keys(), default=self.color_cells)
         labels = []
         for cell in cell_text:
             labels.append({
@@ -546,7 +493,7 @@ class VolMeshArtist(BaseArtist):
                 'color': cell_color[cell],
                 'text': cell_text[cell]})
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_celllabel = zip(guids, cell_text.keys())
+        self.guid_celllabel = zip(guids, cell_text)
         return guids
 
 
