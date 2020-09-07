@@ -70,8 +70,8 @@ Base Classes
 """
 from __future__ import absolute_import
 
-from ._artist import BaseArtist
-from ._primitiveartist import PrimitiveArtist  # noqa: F401
+from ._artist import BaseArtist  # noqa: F401 F403
+from ._primitiveartist import PrimitiveArtist  # noqa: F401 F403
 from ._shapeartist import ShapeArtist  # noqa: F401
 
 from .circleartist import CircleArtist

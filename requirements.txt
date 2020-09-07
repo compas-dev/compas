@@ -1,5 +1,4 @@
 # flake8: noqa
-binaryornot
 cython
 ezdxf
 imageio <= 2.6; python_version < '3.5'
