@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMeshArtist.draw_mesh" href="compas_rhino.artists.VolMeshArtist.draw_mesh.html" />
+    <link rel="next" title="VolMeshArtist.draw_vertexlabels" href="compas_rhino.artists.VolMeshArtist.draw_vertexlabels.html" />
   
   
   
-    <link rel="prev" title="VolMeshArtist.draw_facenormals" href="compas_rhino.artists.VolMeshArtist.draw_facenormals.html" />
+    <link rel="prev" title="VolMeshArtist.draw_facelabels" href="compas_rhino.artists.VolMeshArtist.draw_facelabels.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,21 +89,15 @@
 <h1 class="display-4 p-0 mb-5">VolMeshArtist.draw_faces</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.VolMeshArtist.draw_faces">
-<code class="sig-prename descclassname">VolMeshArtist.</code><code class="sig-name descname">draw_faces</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">color=None</em>, <em class="sig-param">join_faces=False</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">VolMeshArtist.</code><code class="sig-name descname">draw_faces</code><span class="sig-paren">(</span><em class="sig-param">faces=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/volmeshartist.html#VolMeshArtist.draw_faces"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a selection of faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fkeys</strong> (<em>list</em>) – A list of face keys identifying which faces to draw.
+<li><p><strong>faces</strong> (<em>list</em>) – A list of faces to draw.
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are drawn.</p></li>
 <li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color specififcation for the faces.
-Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-To apply the same color to all faces, provide a single color specification.
-Individual colors can be assigned using a dictionary of key-color pairs.
-Missing keys will be assigned the default face color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.faces']</span></code>).
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are assigned the default face color.</p></li>
-<li><p><strong>join_faces</strong> (<em>bool, optional</em>) – Join the faces into 1 mesh.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>, in which case the faces are drawn as individual meshes.</p></li>
+The default color is <code class="docutils literal notranslate"><span class="pre">(210,</span> <span class="pre">210,</span> <span class="pre">210)</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

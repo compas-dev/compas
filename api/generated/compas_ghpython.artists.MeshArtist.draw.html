@@ -89,15 +89,16 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist.draw</h1>
 <dl class="method">
 <dt id="compas_ghpython.artists.MeshArtist.draw">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>For meshes (and data structures in general), a main draw function does not exist.
-Instead, you should use the drawing functions for the various components of the mesh:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">draw_vertices</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">draw_faces</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">draw_edges</span></code></p></li>
-</ul>
-<p>To simply draw a mesh, use <code class="docutils literal notranslate"><span class="pre">draw_mesh</span></code>.</p>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw</code><span class="sig-paren">(</span><em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_ghpython/artists/meshartist.html#MeshArtist.draw"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Draw the mesh as a RhinoMesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>color</strong> (<em>3-tuple, optional</em>) – RGB color components in integer format (0-255).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Rhino.Geometry.Mesh</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -125,9 +126,11 @@ Instead, you should use the drawing functions for the various components of the 
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>

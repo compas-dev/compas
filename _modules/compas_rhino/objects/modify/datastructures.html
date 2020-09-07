@@ -88,23 +88,21 @@
 
 <span class="kn">import</span> <span class="nn">ast</span>
 
-<span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
-<span class="c1"># from compas.geometry import subtract_vectors</span>
 
-<span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">RHINO</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">Rhino</span>
-    <span class="kn">import</span> <span class="nn">clr</span>
-    <span class="n">clr</span><span class="o">.</span><span class="n">AddReference</span><span class="p">(</span><span class="s1">&#39;Rhino.UI&#39;</span><span class="p">)</span>
-    <span class="kn">import</span> <span class="nn">Rhino.UI</span>
-    <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Point3d</span>
+<span class="kn">import</span> <span class="nn">Rhino</span>
+<span class="kn">import</span> <span class="nn">clr</span>
 
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">compas_rhino.etoforms</span> <span class="kn">import</span> <span class="n">PropertyListForm</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">Rhino.UI.Dialogs</span> <span class="kn">import</span> <span class="n">ShowPropertyListBox</span>
+<span class="n">clr</span><span class="o">.</span><span class="n">AddReference</span><span class="p">(</span><span class="s1">&#39;Rhino.UI&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">Rhino.UI</span>  <span class="c1"># noqa: E402</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Point3d</span>  <span class="c1"># noqa: E402</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">compas_rhino.etoforms</span> <span class="kn">import</span> <span class="n">PropertyListForm</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">Rhino.UI.Dialogs</span> <span class="kn">import</span> <span class="n">ShowPropertyListBox</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>

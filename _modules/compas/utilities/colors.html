@@ -664,7 +664,7 @@
     <span class="k">return</span> <span class="n">r</span> <span class="o">/</span> <span class="mf">255.</span><span class="p">,</span> <span class="n">g</span> <span class="o">/</span> <span class="mf">255.</span><span class="p">,</span> <span class="n">b</span> <span class="o">/</span> <span class="mf">255.</span></div>
 
 
-<div class="viewcode-block" id="color_to_colordict"><a class="viewcode-back" href="../../../api/generated/compas.utilities.color_to_colordict.html#compas.utilities.color_to_colordict">[docs]</a><span class="k">def</span> <span class="nf">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;hex&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="color_to_colordict"><a class="viewcode-back" href="../../../api/generated/compas.utilities.color_to_colordict.html#compas.utilities.color_to_colordict">[docs]</a><span class="k">def</span> <span class="nf">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert a color specification to a dict of colors.</span>
 
 <span class="sd">    Parameters</span>
@@ -678,7 +678,7 @@
 <span class="sd">        A valid color specification (HEX or RGB).</span>
 <span class="sd">    colorformat : {&#39;hex&#39;, &#39;rgb&#39;}, optional</span>
 <span class="sd">        The format of the colors in the color dict.</span>
-<span class="sd">        Default is `&#39;hex&#39;`.</span>
+<span class="sd">        Default is `&#39;rgb&#39;`.</span>
 <span class="sd">    normalize : bool, optional</span>
 <span class="sd">        Normalize the color components, if true and `colorformat` is `&#39;rgb&#39;`.</span>
 

@@ -94,14 +94,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>dict</em>) – A dictionary of node labels as key-text pairs.
+<li><p><strong>text</strong> (<em>dict, optional</em>) – A dictionary of node labels as node-text pairs.
 The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case every node will be labelled with its key.</p></li>
-<li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color sepcification of the labels.
-String values are interpreted as hex colors.
-Tuples are interpreted as RGB component specifications.
-If a dictionary of specififcations is provided,
-the keys of the should refer to node keys and the values should be color specifications in the form of strings or tuples.
-The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the labels are assigned the default node color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.nodes']</span></code>).</p></li>
+<li><p><strong>color</strong> (<em>3-tuple or dict of 3-tuple, optional</em>) – The color sepcification of the labels.
+The default color is the same as the default color of the nodes.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

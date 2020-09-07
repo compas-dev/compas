@@ -99,7 +99,8 @@
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – The COMPAS network associated with the artist.</p></li>
-<li><p><strong>settings</strong> (<em>dict</em>) – Default settings for color of network components.</p></li>
+<li><p><strong>color_nodes</strong> (<em>3-tuple</em>) – Default color of the nodes.</p></li>
+<li><p><strong>color_edges</strong> (<em>3-tuple</em>) – Default color of the edges.</p></li>
 </ul>
 </dd>
 </dl>
@@ -114,7 +115,7 @@
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw.html#compas_ghpython.artists.NetworkArtist.draw" title="compas_ghpython.artists.NetworkArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
-<td><p>For networks (and data structures in general), a main draw function does not exist.</p></td>
+<td><p>Draw the entire network with default color settings.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_ghpython.artists.NetworkArtist.draw_collection.html#compas_ghpython.artists.NetworkArtist.draw_collection" title="compas_ghpython.artists.NetworkArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
 <td><p></p></td>
@@ -154,9 +155,11 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_ghpython.artists.html">artists</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.utilities.html">utilities</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>

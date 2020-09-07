@@ -89,13 +89,26 @@
 <h1 class="display-4 p-0 mb-5">ShapeArtist</h1>
 <dl class="class">
 <dt id="compas_rhino.artists.ShapeArtist">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">ShapeArtist</code><span class="sig-paren">(</span><em class="sig-param">shape</em>, <em class="sig-param">name=None</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/_shapeartist.html#ShapeArtist"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">ShapeArtist</code><span class="sig-paren">(</span><em class="sig-param">shape</em>, <em class="sig-param">color=None</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/_shapeartist.html#ShapeArtist"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists._artist.BaseArtist</span></code></p>
 <p>Base class for artists for geometric shapes.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> (<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>) – The geometry of the shape.</p></li>
+<li><p><strong>color</strong> (<em>3-tuple, optional</em>) – The RGB components of the base color of the shape.</p></li>
+<li><p><strong>layer</strong> (<em>str, optional</em>) – The layer in which the shape should be contained.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>shape</strong> (<a class="reference internal" href="compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Shape</span></code></a>) – The geometry of the shape.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the shape.</p></li>
+<li><p><strong>color</strong> (<em>tuple</em>) – The RGB components of the base color of the shape.</p></li>
+<li><p><strong>layer</strong> (<em>str</em>) – The layer in which the shape should be contained.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -103,7 +116,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.ShapeArtist.__init__.html#compas_rhino.artists.ShapeArtist.__init__" title="compas_rhino.artists.ShapeArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(shape[, name, layer])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.ShapeArtist.__init__.html#compas_rhino.artists.ShapeArtist.__init__" title="compas_rhino.artists.ShapeArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(shape[, color, layer])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.ShapeArtist.build.html#compas_rhino.artists.ShapeArtist.build" title="compas_rhino.artists.ShapeArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>

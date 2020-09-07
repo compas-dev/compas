@@ -89,30 +89,30 @@
 <h1 class="display-4 p-0 mb-5">FrameArtist</h1>
 <dl class="class">
 <dt id="compas_rhino.artists.FrameArtist">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">FrameArtist</code><span class="sig-paren">(</span><em class="sig-param">frame</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">scale=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/frameartist.html#FrameArtist"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">FrameArtist</code><span class="sig-paren">(</span><em class="sig-param">frame</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">scale=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/frameartist.html#FrameArtist"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists._primitiveartist.PrimitiveArtist</span></code></p>
 <p>Artist for drawing frames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>frame</strong> (<em>compas.geometry.Frame</em>) – A COMPAS frame.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>frame</strong> (<a class="reference internal" href="compas.geometry.Frame.html#compas.geometry.Frame" title="compas.geometry.Frame"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Frame</span></code></a>) – A COMPAS frame.</p></li>
+<li><p><strong>scale</strong> (<em>float, optional</em>) – Scale factor that controls the length of the axes.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Other Parameters</dt>
 <dd class="field-even"><p><strong>See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.</strong></p>
 </dd>
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>scale</strong> (<em>float</em>)</p></li>
-<li><p><strong>color_origin</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
-<li><p><strong>color_xaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
-<li><p><strong>color_yaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
-<li><p><strong>color_zaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>)</p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – Scale factor that controls the length of the axes.
+Default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>color_origin</strong> (<em>tuple of 3 int between 0 abd 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
+<li><p><strong>color_xaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
+<li><p><strong>color_yaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">255,</span> <span class="pre">0)</span></code>.</p></li>
+<li><p><strong>color_zaxis</strong> (<em>tuple of 3 int between 0 abd 255</em>) – Default is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">255)</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -120,7 +120,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.__init__.html#compas_rhino.artists.FrameArtist.__init__" title="compas_rhino.artists.FrameArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(frame[, layer, name, scale])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.__init__.html#compas_rhino.artists.FrameArtist.__init__" title="compas_rhino.artists.FrameArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(frame[, layer, scale])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.build.html#compas_rhino.artists.FrameArtist.build" title="compas_rhino.artists.FrameArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
@@ -130,7 +130,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.clear_layer.html#compas_rhino.artists.FrameArtist.clear_layer" title="compas_rhino.artists.FrameArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p>Clear the main layer of the artist.</p></td>
+<td><p>Clear the layer containing the artist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.FrameArtist.draw.html#compas_rhino.artists.FrameArtist.draw" title="compas_rhino.artists.FrameArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p>Draw the frame.</p></td>

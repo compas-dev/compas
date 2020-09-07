@@ -87,21 +87,12 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">abc</span>
-<span class="kn">import</span> <span class="nn">compas</span>
 
-<span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">IPY</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">System</span>
-    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">DialogResult</span>
-    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">FormBorderStyle</span>
+<span class="kn">import</span> <span class="nn">System</span>
+<span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">DialogResult</span>
+<span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">FormBorderStyle</span>
 
-    <span class="n">WinForm</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="n">Windows</span><span class="o">.</span><span class="n">Forms</span><span class="o">.</span><span class="n">Form</span>
-
-    <span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">RHINO</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">Rhino</span>
-
-<span class="k">else</span><span class="p">:</span>
-    <span class="k">class</span> <span class="nc">WinForm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-        <span class="k">pass</span>
+<span class="kn">import</span> <span class="nn">Rhino</span>
 
 
 <span class="n">ABC</span> <span class="o">=</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">(</span><span class="s1">&#39;ABC&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="p">{</span><span class="s1">&#39;__slots__&#39;</span><span class="p">:</span> <span class="p">()})</span>
@@ -110,7 +101,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseForm&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="BaseForm"><a class="viewcode-back" href="../../../api/generated/compas_rhino.forms.BaseForm.html#compas_rhino.forms.BaseForm">[docs]</a><span class="k">class</span> <span class="nc">BaseForm</span><span class="p">(</span><span class="n">WinForm</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseForm"><a class="viewcode-back" href="../../../api/generated/compas_rhino.forms.BaseForm.html#compas_rhino.forms.BaseForm">[docs]</a><span class="k">class</span> <span class="nc">BaseForm</span><span class="p">(</span><span class="n">System</span><span class="o">.</span><span class="n">Windows</span><span class="o">.</span><span class="n">Forms</span><span class="o">.</span><span class="n">Form</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for Windows forms.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BaseForm.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.forms.BaseForm.__init__.html#compas_rhino.forms.BaseForm.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Form&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

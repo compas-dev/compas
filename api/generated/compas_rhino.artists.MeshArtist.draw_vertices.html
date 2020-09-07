@@ -89,19 +89,15 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist.draw_vertices</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.MeshArtist.draw_vertices">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_vertices</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/meshartist.html#MeshArtist.draw_vertices"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_vertices</code><span class="sig-paren">(</span><em class="sig-param">vertices=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/meshartist.html#MeshArtist.draw_vertices"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a selection of vertices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>keys</strong> (<em>list</em>) – A list of vertex keys identifying which vertices to draw.
+<li><p><strong>vertices</strong> (<em>list</em>) – A selection of vertices to draw.
 Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all vertices are drawn.</p></li>
-<li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color specififcation for the vertices.
-Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-To apply the same color to all vertices, provide a single color specification.
-Individual colors can be assigned using a dictionary of key-color pairs.
-Missing keys will be assigned the default vertex color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.vertices']</span></code>).
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all vertices are assigned the default vertex color.</p></li>
+<li><p><strong>color</strong> (<em>tuple or dict of tuple, optional</em>) – The color specififcation for the vertices.
+The default is white, <code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">255,</span> <span class="pre">255)</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

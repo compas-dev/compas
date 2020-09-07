@@ -89,19 +89,15 @@
 <h1 class="display-4 p-0 mb-5">VolMeshArtist.draw_edges</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.VolMeshArtist.draw_edges">
-<code class="sig-prename descclassname">VolMeshArtist.</code><code class="sig-name descname">draw_edges</code><span class="sig-paren">(</span><em class="sig-param">keys=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">VolMeshArtist.</code><code class="sig-name descname">draw_edges</code><span class="sig-paren">(</span><em class="sig-param">edges=None</em>, <em class="sig-param">color=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/volmeshartist.html#VolMeshArtist.draw_edges"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a selection of edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>keys</strong> (<em>list</em>) – A list of edge keys (as uv pairs) identifying which edges to draw.
+<li><p><strong>edges</strong> (<em>list</em>) – A list of edges to draw.
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are drawn.</p></li>
 <li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color specififcation for the edges.
-Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-To apply the same color to all edges, provide a single color specification.
-Individual colors can be assigned using a dictionary of key-color pairs.
-Missing keys will be assigned the default edge color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.edges']</span></code>).
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are assigned the default edge color.</p></li>
+The default color is <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

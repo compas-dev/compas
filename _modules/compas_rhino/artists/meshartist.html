@@ -86,6 +86,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
 <span class="kn">from</span> <span class="nn">compas_rhino.artists._artist</span> <span class="kn">import</span> <span class="n">BaseArtist</span>
@@ -95,6 +96,10 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">scale_vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_polygon</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+
+
+<span class="n">colordict</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">color_to_colordict</span><span class="p">,</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MeshArtist&#39;</span><span class="p">]</span>
@@ -109,8 +114,6 @@
 <span class="sd">        A COMPAS mesh.</span>
 <span class="sd">    layer : str, optional</span>
 <span class="sd">        The name of the layer that will contain the mesh.</span>
-<span class="sd">    settings : dict, optional</span>
-<span class="sd">        A dict with custom visualisation settings.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -118,8 +121,12 @@
 <span class="sd">        The COMPAS mesh associated with the artist.</span>
 <span class="sd">    layer : str</span>
 <span class="sd">        The layer in which the mesh should be contained.</span>
-<span class="sd">    settings : dict</span>
-<span class="sd">        Default settings for color, scale, tolerance, ...</span>
+<span class="sd">    color_vertices : 3-tuple</span>
+<span class="sd">        Default color of the vertices.</span>
+<span class="sd">    color_edges : 3-tuple</span>
+<span class="sd">        Default color of the edges.</span>
+<span class="sd">    color_faces : 3-tuple</span>
+<span class="sd">        Default color of the faces.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -140,8 +147,9 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MeshArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.__init__.html#compas_rhino.artists.MeshArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.__init__.html#compas_rhino.artists.MeshArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MeshArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid_vertex</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edge</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid_face</span> <span class="o">=</span> <span class="p">{}</span>
@@ -150,31 +158,44 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid_vertexlabel</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edgelabel</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid_facelabel</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertex_xyz</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;color.vertices&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">&#39;color.edges&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.faces&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">),</span>
-            <span class="s1">&#39;color.vertexnormals&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.facenormals&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;scale.vertexnormals&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-            <span class="s1">&#39;scale.facenormals&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-            <span class="s1">&#39;show.vertices&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;show.edges&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;show.faces&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;show.vertexnormals&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.facenormals&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.vertexlabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.facelabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.edgelabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;join_faces&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_vertices</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_edges</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_faces</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vertex_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;dict:</span>
+<span class="sd">        The view coordinates of the mesh vertices.</span>
+<span class="sd">        The view coordinates default to the actual mesh coordinates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex_xyz</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_vertex_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex_xyz</span>
+
+    <span class="nd">@vertex_xyz</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">vertex_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex_xyz</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vertex_xyz</span> <span class="o">=</span> <span class="n">vertex_xyz</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">guids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list: The GUIDs of all Rhino objects created by this artist.&quot;&quot;&quot;</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span>
+        <span class="n">guids</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_vertex</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">guids</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_edge</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">guids</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_face</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">guids</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_vertexnormal</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">guids</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_facenormal</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">guids</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_vertexlabel</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">guids</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_edgelabel</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">guids</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_facelabel</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">guids</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">guid_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Map between Rhino object GUIDs and mesh vertex identifiers.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;dict: Map between Rhino object GUIDs and mesh vertex identifiers.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_vertex</span>
 
     <span class="nd">@guid_vertex</span><span class="o">.</span><span class="n">setter</span>
@@ -183,7 +204,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">guid_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Map between Rhino object GUIDs and mesh edge identifiers.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;dict: Map between Rhino object GUIDs and mesh edge identifiers.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edge</span>
 
     <span class="nd">@guid_edge</span><span class="o">.</span><span class="n">setter</span>
@@ -192,7 +213,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">guid_face</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Map between Rhino object GUIDs and mesh face identifiers.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;dict: Map between Rhino object GUIDs and mesh face identifiers.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_face</span>
 
     <span class="nd">@guid_face</span><span class="o">.</span><span class="n">setter</span>
@@ -201,7 +222,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">guid_vertexnormal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Map between Rhino object GUIDs and force diagram vertex normal identifiers.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;dict: Map between Rhino object GUIDs and mesh vertexnormal identifiers.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_vertexnormal</span>
 
     <span class="nd">@guid_vertexnormal</span><span class="o">.</span><span class="n">setter</span>
@@ -210,7 +231,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">guid_facenormal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Map between Rhino object GUIDs and force diagram face normal identifiers.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;dict: Map between Rhino object GUIDs and mesh facenormal identifiers.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_facenormal</span>
 
     <span class="nd">@guid_facenormal</span><span class="o">.</span><span class="n">setter</span>
@@ -219,7 +240,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">guid_vertexlabel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Map between Rhino object GUIDs and force diagram vertex label identifiers.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;dict: Map between Rhino object GUIDs and mesh vertexlabel identifiers.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_vertexlabel</span>
 
     <span class="nd">@guid_vertexlabel</span><span class="o">.</span><span class="n">setter</span>
@@ -228,7 +249,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">guid_facelabel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Map between Rhino object GUIDs and mesh face label identifiers.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;dict: Map between Rhino object GUIDs and mesh facelabel identifiers.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_facelabel</span>
 
     <span class="nd">@guid_facelabel</span><span class="o">.</span><span class="n">setter</span>
@@ -237,7 +258,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">guid_edgelabel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Map between Rhino object GUIDs and mesh edge label identifiers.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;dict: Map between Rhino object GUIDs and mesh edgelabel identifiers.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edgelabel</span>
 
     <span class="nd">@guid_edgelabel</span><span class="o">.</span><span class="n">setter</span>
@@ -251,19 +272,8 @@
 <div class="viewcode-block" id="MeshArtist.clear"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.clear.html#compas_rhino.artists.MeshArtist.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear all objects previously drawn by this artist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">guids_vertices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_vertex</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">guids_edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_edge</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">guids_faces</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_face</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">guids_vertexnormals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_vertexnormal</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">guids_facenormals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_facenormal</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">guids_vertexlabels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_vertexlabel</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">guids_edgelabels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_edgelabel</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">guids_facelabels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guid_facelabel</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">guids</span> <span class="o">+=</span> <span class="n">guids_vertices</span> <span class="o">+</span> <span class="n">guids_edges</span> <span class="o">+</span> <span class="n">guids_faces</span>
-        <span class="n">guids</span> <span class="o">+=</span> <span class="n">guids_vertexnormals</span> <span class="o">+</span> <span class="n">guids_facenormals</span>
-        <span class="n">guids</span> <span class="o">+=</span> <span class="n">guids_vertexlabels</span> <span class="o">+</span> <span class="n">guids_edgelabels</span> <span class="o">+</span> <span class="n">guids_facelabels</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+</span> <span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guids</span><span class="p">,</span> <span class="n">purge</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid_vertex</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid_edge</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guid_face</span> <span class="o">=</span> <span class="p">{}</span>
@@ -277,55 +287,19 @@
         <span class="sd">&quot;&quot;&quot;Clear the main layer of the artist.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">:</span>
             <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span></div>
-        <span class="c1"># else:</span>
-        <span class="c1">#     compas_rhino.clear_current_layer()</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># components</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="MeshArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw.html#compas_rhino.artists.MeshArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Draw the mesh using the chosen visualisation settings.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        settings : dict, optional</span>
-<span class="sd">            Dictionary of visualisation settings that will be merged with the settings of the artist.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This method will attempt to clear all previously drawn elements by this artist.</span>
-<span class="sd">        However, clearing the artist layer has to be done explicitly with a call to ``MeshArtist.clear_layer``.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">settings</span><span class="p">:</span>
-            <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.vertices&#39;</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.vertexlabels&#39;</span><span class="p">]:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">draw_vertexlabels</span><span class="p">()</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.vertexnormals&#39;</span><span class="p">]:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">draw_vertexnormals</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.faces&#39;</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">join_faces</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;join_faces&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.facelabels&#39;</span><span class="p">]:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">draw_facelabels</span><span class="p">()</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.facenormals&#39;</span><span class="p">]:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">draw_facenormals</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.edges&#39;</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.edgelabels&#39;</span><span class="p">]:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">draw_edgelabels</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="MeshArtist.draw_mesh"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_mesh.html#compas_rhino.artists.MeshArtist.draw_mesh">[docs]</a>    <span class="k">def</span> <span class="nf">draw_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">disjoint</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw.html#compas_rhino.artists.MeshArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">disjoint</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the mesh as a consolidated RhinoMesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        color : 3-tuple, optional</span>
-<span class="sd">            RGB color components in integer format (0-255).</span>
+<span class="sd">        color : tuple, optional</span>
+<span class="sd">            The color of the mesh.</span>
+<span class="sd">            Default is black, ``(0, 0, 0)``.</span>
 <span class="sd">        disjoint : bool, optional</span>
 <span class="sd">            Draw the faces of the mesh with disjoint vertices.</span>
 <span class="sd">            Default is ``False``.</span>
@@ -337,12 +311,12 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        The mesh should be a valid Rhino Mesh object, which means it should have</span>
-<span class="sd">        only triangular or quadrilateral faces.</span>
+<span class="sd">        The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.</span>
 <span class="sd">        Faces with more than 4 vertices will be triangulated on-the-fly.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="n">key_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_xyz</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()]</span>
         <span class="n">new_faces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
@@ -361,24 +335,20 @@
         <span class="n">layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span>
         <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.mesh&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">new_faces</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">disjoint</span><span class="o">=</span><span class="n">disjoint</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="p">[</span><span class="n">guid</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span> <span class="o">+=</span> <span class="p">[</span><span class="n">guid</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">guid</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="MeshArtist.draw_vertices"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_vertices.html#compas_rhino.artists.MeshArtist.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshArtist.draw_vertices"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_vertices.html#compas_rhino.artists.MeshArtist.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw a selection of vertices.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        keys : list</span>
-<span class="sd">            A list of vertex keys identifying which vertices to draw.</span>
+<span class="sd">        vertices : list</span>
+<span class="sd">            A selection of vertices to draw.</span>
 <span class="sd">            Default is ``None``, in which case all vertices are drawn.</span>
-<span class="sd">        color : str, tuple, dict</span>
+<span class="sd">        color : tuple or dict of tuple, optional</span>
 <span class="sd">            The color specififcation for the vertices.</span>
-<span class="sd">            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.</span>
-<span class="sd">            To apply the same color to all vertices, provide a single color specification.</span>
-<span class="sd">            Individual colors can be assigned using a dictionary of key-color pairs.</span>
-<span class="sd">            Missing keys will be assigned the default vertex color (``self.settings[&#39;color.vertices&#39;]``).</span>
-<span class="sd">            The default is ``None``, in which case all vertices are assigned the default vertex color.</span>
+<span class="sd">            The default is white, ``(255, 255, 255)``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -386,38 +356,30 @@
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
-        <span class="n">vertex_color</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
-                                          <span class="n">vertices</span><span class="p">,</span>
-                                          <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.vertices&#39;</span><span class="p">],</span>
-                                          <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
-                                          <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
+        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_xyz</span>
+        <span class="n">vertex_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_vertices</span><span class="p">)</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
             <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">),</span>
+                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">],</span>
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.vertex.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">vertex</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">vertex_color</span><span class="p">[</span><span class="n">vertex</span><span class="p">]})</span>
-
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid_vertex</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">guids</span></div>
 
-<div class="viewcode-block" id="MeshArtist.draw_faces"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_faces.html#compas_rhino.artists.MeshArtist.draw_faces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">join_faces</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshArtist.draw_faces"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_faces.html#compas_rhino.artists.MeshArtist.draw_faces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">join_faces</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw a selection of faces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        fkeys : list</span>
-<span class="sd">            A list of face keys identifying which faces to draw.</span>
+<span class="sd">        faces : list, optional</span>
+<span class="sd">            A selection of faces to draw.</span>
 <span class="sd">            The default is ``None``, in which case all faces are drawn.</span>
-<span class="sd">        color : str, tuple, dict</span>
+<span class="sd">        color : tuple or dict of tuple, optional</span>
 <span class="sd">            The color specififcation for the faces.</span>
-<span class="sd">            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.</span>
-<span class="sd">            To apply the same color to all faces, provide a single color specification.</span>
-<span class="sd">            Individual colors can be assigned using a dictionary of key-color pairs.</span>
-<span class="sd">            Missing keys will be assigned the default face color (``self.settings[&#39;color.faces&#39;]``).</span>
-<span class="sd">            The default is ``None``, in which case all faces are assigned the default face color.</span>
+<span class="sd">            The default color is black ``(0, 0, 0)``.</span>
 <span class="sd">        join_faces : bool, optional</span>
 <span class="sd">            Join the faces into 1 mesh.</span>
 <span class="sd">            Default is ``False``, in which case the faces are drawn as individual meshes.</span>
@@ -428,48 +390,38 @@
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
-        <span class="n">face_color</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
-                                        <span class="n">faces</span><span class="p">,</span>
-                                        <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.faces&#39;</span><span class="p">],</span>
-                                        <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
-                                        <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
+        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_xyz</span>
+        <span class="n">face_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_faces</span><span class="p">)</span>
         <span class="n">facets</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
             <span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">),</span>
+                <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)],</span>
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.face.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">face</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">face_color</span><span class="p">[</span><span class="n">face</span><span class="p">]})</span>
-
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">facets</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">join_faces</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">guid_face</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">guids</span>
-
         <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">JoinMeshes</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">delete_input</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">ObjectLayer</span><span class="p">(</span><span class="n">guid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
         <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">ObjectName</span><span class="p">(</span><span class="n">guid</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.mesh&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">color</span><span class="p">:</span>
             <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">ObjectColor</span><span class="p">(</span><span class="n">guid</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="p">[</span><span class="n">guid</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">guid</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="MeshArtist.draw_edges"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_edges.html#compas_rhino.artists.MeshArtist.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshArtist.draw_edges"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_edges.html#compas_rhino.artists.MeshArtist.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edges</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw a selection of edges.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        keys : list</span>
-<span class="sd">            A list of edge keys (as uv pairs) identifying which edges to draw.</span>
+<span class="sd">        edges : list, optional</span>
+<span class="sd">            A selection of edges to draw.</span>
 <span class="sd">            The default is ``None``, in which case all edges are drawn.</span>
-<span class="sd">        color : str, tuple, dict</span>
+<span class="sd">        color : tuple or dict of tuple, optional</span>
 <span class="sd">            The color specififcation for the edges.</span>
-<span class="sd">            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.</span>
-<span class="sd">            To apply the same color to all edges, provide a single color specification.</span>
-<span class="sd">            Individual colors can be assigned using a dictionary of key-color pairs.</span>
-<span class="sd">            Missing keys will be assigned the default edge color (``self.settings[&#39;color.edges&#39;]``).</span>
-<span class="sd">            The default is ``None``, in which case all edges are assigned the default edge color.</span>
+<span class="sd">            The default color is black, ``(0, 0, 0)``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -477,20 +429,16 @@
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">edges</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
-        <span class="n">edge_color</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
-                                        <span class="n">edges</span><span class="p">,</span>
-                                        <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.edges&#39;</span><span class="p">],</span>
-                                        <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
-                                        <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
+        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_xyz</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_edges</span><span class="p">)</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">edge_color</span><span class="p">[</span><span class="n">edge</span><span class="p">],</span>
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edge.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">edge</span><span class="p">)})</span>
-
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid_edge</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">guids</span></div>
@@ -499,19 +447,17 @@
     <span class="c1"># normals</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="MeshArtist.draw_vertexnormals"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_vertexnormals.html#compas_rhino.artists.MeshArtist.draw_vertexnormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertexnormals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshArtist.draw_vertexnormals"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_vertexnormals.html#compas_rhino.artists.MeshArtist.draw_vertexnormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertexnormals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the normals at the vertices of the mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        keys : list, optional</span>
-<span class="sd">            A (sub)set of vertices for which the normals should be drawn.</span>
+<span class="sd">        vertices : list, optional</span>
+<span class="sd">            A selection of vertex normals to draw.</span>
 <span class="sd">            Default is to draw all vertex normals.</span>
-<span class="sd">        color : str (HEX) or tuple (RGB), optional</span>
+<span class="sd">        color : tuple, optional</span>
 <span class="sd">            The color specification of the normal vectors.</span>
-<span class="sd">            String values are interpreted as hex colors.</span>
-<span class="sd">            Tuples are interpreted as RGB components.</span>
-<span class="sd">            The default vector color is in the settings: ``self.settings[&#39;color.vertexnormals&#39;]``.</span>
+<span class="sd">            The default color is green, ``(0, 255, 0)``.</span>
 <span class="sd">        scale : float, optional</span>
 <span class="sd">            Scale factor for the vertex normals.</span>
 <span class="sd">            Default is ``1.0``.</span>
@@ -522,13 +468,11 @@
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;scale.vertexnormals&#39;</span><span class="p">]</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.vertexnormals&#39;</span><span class="p">]</span>
-
+        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_xyz</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_normal</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">scale</span><span class="p">))</span>
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
@@ -537,24 +481,21 @@
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.vertexnormal.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">vertex</span><span class="p">),</span>
                 <span class="s1">&#39;arrow&#39;</span><span class="p">:</span> <span class="s1">&#39;end&#39;</span><span class="p">})</span>
-
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid_vertexnormal</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">guids</span></div>
 
-<div class="viewcode-block" id="MeshArtist.draw_facenormals"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_facenormals.html#compas_rhino.artists.MeshArtist.draw_facenormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_facenormals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshArtist.draw_facenormals"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_facenormals.html#compas_rhino.artists.MeshArtist.draw_facenormals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_facenormals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the normals of the faces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        keys : list, optional</span>
-<span class="sd">            A (sub)set of faces for which the normals should be drawn.</span>
+<span class="sd">        faces : list, optional</span>
+<span class="sd">            A selection of face normals to draw.</span>
 <span class="sd">            Default is to draw all face normals.</span>
-<span class="sd">        color : str (HEX) or tuple (RGB), optional</span>
+<span class="sd">        color : tuple, optional</span>
 <span class="sd">            The color specification of the normal vectors.</span>
-<span class="sd">            String values are interpreted as hex colors.</span>
-<span class="sd">            Tuples are interpreted as RGB components.</span>
-<span class="sd">            The default vector color is in the settings: ``self.settings[&#39;color.facenormals&#39;]``.</span>
+<span class="sd">            The default color is cyan, ``(0, 255, 255)``.</span>
 <span class="sd">        scale : float, optional</span>
 <span class="sd">            Scale factor for the face normals.</span>
 <span class="sd">            Default is ``1.0``.</span>
@@ -565,13 +506,11 @@
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="n">keys</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;scale.facenormals&#39;</span><span class="p">]</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.facenormals&#39;</span><span class="p">]</span>
-
+        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_xyz</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)])</span>
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
             <span class="n">b</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">scale</span><span class="p">))</span>
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
@@ -580,7 +519,6 @@
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.facenormal.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">face</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
                 <span class="s1">&#39;arrow&#39;</span><span class="p">:</span> <span class="s1">&#39;end&#39;</span><span class="p">})</span>
-
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">guid_facenormal</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">guids</span></div>
@@ -594,16 +532,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        text : dict</span>
-<span class="sd">            A dictionary of vertex labels as key-text pairs.</span>
+<span class="sd">        text : dict, optional</span>
+<span class="sd">            A dictionary of vertex labels as vertex-text pairs.</span>
 <span class="sd">            The default value is ``None``, in which case every vertex will be labelled with its key.</span>
-<span class="sd">        color : str, tuple, dict</span>
+<span class="sd">        color : tuple or dict of tuple, optional</span>
 <span class="sd">            The color sepcification of the labels.</span>
-<span class="sd">            String values are interpreted as hex colors.</span>
-<span class="sd">            Tuples are interpreted as RGB component specifications.</span>
-<span class="sd">            If a dictionary of specififcations is provided,</span>
-<span class="sd">            the keys should refer to vertex keys and the values should be color specifications in the form of strings or tuples.</span>
-<span class="sd">            The default value is ``None``, in which case the labels are assigned the default vertex color (``self.settings[&#39;color.vertices&#39;]``).</span>
+<span class="sd">            The default color is the same as the default vertex color.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -611,32 +545,25 @@
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">vertex_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span> <span class="ow">or</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;key&#39;</span><span class="p">:</span>
+            <span class="n">vertex_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;index&#39;</span><span class="p">:</span>
+            <span class="n">vertex_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())}</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">vertex_text</span> <span class="o">=</span> <span class="n">text</span>
-        <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;key&#39;</span><span class="p">:</span>
-            <span class="n">vertex_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
-        <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;index&#39;</span><span class="p">:</span>
-            <span class="n">vertex_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-        <span class="n">vertex_color</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
-                                          <span class="n">vertex_text</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
-                                          <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.vertices&#39;</span><span class="p">],</span>
-                                          <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
-                                          <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_xyz</span>
+        <span class="n">vertex_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">vertex_text</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_vertices</span><span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertex_text</span><span class="p">:</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">),</span>
+                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">],</span>
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.vertexlabel.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">vertex</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">vertex_color</span><span class="p">[</span><span class="n">vertex</span><span class="p">],</span>
                 <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">vertex_text</span><span class="p">[</span><span class="n">vertex</span><span class="p">]})</span>
-
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">guid_vertexlabel</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">vertex_text</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guid_vertexlabel</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">vertex_text</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">guids</span></div>
 
 <div class="viewcode-block" id="MeshArtist.draw_facelabels"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_facelabels.html#compas_rhino.artists.MeshArtist.draw_facelabels">[docs]</a>    <span class="k">def</span> <span class="nf">draw_facelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -644,16 +571,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        text : dict</span>
-<span class="sd">            A dictionary of face labels as key-text pairs.</span>
+<span class="sd">        text : dict, optional</span>
+<span class="sd">            A dictionary of face labels as face-text pairs.</span>
 <span class="sd">            The default value is ``None``, in which case every face will be labelled with its key.</span>
-<span class="sd">        color : str, tuple, dict</span>
+<span class="sd">        color : tuple or dict of tuple, optional</span>
 <span class="sd">            The color sepcification of the labels.</span>
-<span class="sd">            String values are interpreted as hex colors.</span>
-<span class="sd">            Tuples are interpreted as RGB component specifications.</span>
-<span class="sd">            If a dictionary of specififcations is provided,</span>
-<span class="sd">            the keys should refer to face keys and the values should be color specifications in the form of strings or tuples.</span>
-<span class="sd">            The default value is ``None``, in which case the labels are assigned the default face color (``self.settings[&#39;color.faces&#39;]``).</span>
+<span class="sd">            The default color is the same as the default face color.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -661,33 +584,25 @@
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">face_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span> <span class="ow">or</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;key&#39;</span><span class="p">:</span>
+            <span class="n">face_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">face</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
+        <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;index&#39;</span><span class="p">:</span>
+            <span class="n">face_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">face</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">face</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())}</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">face_text</span> <span class="o">=</span> <span class="n">text</span>
-        <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;key&#39;</span><span class="p">:</span>
-            <span class="n">face_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
-        <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;index&#39;</span><span class="p">:</span>
-            <span class="n">face_text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">())}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-        <span class="n">face_color</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
-                                        <span class="n">face_text</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
-                                        <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.faces&#39;</span><span class="p">],</span>
-                                        <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
-                                        <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
+        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_xyz</span>
+        <span class="n">face_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">face_text</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_faces</span><span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">face_text</span><span class="p">:</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_center</span><span class="p">(</span><span class="n">face</span><span class="p">),</span>
+                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]),</span>
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.facelabel.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">face</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">face_color</span><span class="p">[</span><span class="n">face</span><span class="p">],</span>
                 <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">face_text</span><span class="p">[</span><span class="n">face</span><span class="p">]})</span>
-
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">guid_facelabel</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">face_text</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guid_facelabel</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">face_text</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">guids</span></div>
 
 <div class="viewcode-block" id="MeshArtist.draw_edgelabels"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.MeshArtist.draw_edgelabels.html#compas_rhino.artists.MeshArtist.draw_edgelabels">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edgelabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -695,16 +610,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        text : dict</span>
-<span class="sd">            A dictionary of edge labels as key-text pairs.</span>
+<span class="sd">        text : dict, optional</span>
+<span class="sd">            A dictionary of edge labels as edge-text pairs.</span>
 <span class="sd">            The default value is ``None``, in which case every edge will be labelled with its key.</span>
-<span class="sd">        color : str, tuple, dict</span>
+<span class="sd">        color : tuple or dict of tuple, optional</span>
 <span class="sd">            The color sepcification of the labels.</span>
-<span class="sd">            String values are interpreted as hex colors.</span>
-<span class="sd">            Tuples are interpreted as RGB component specifications.</span>
-<span class="sd">            Individual colors can be assigned using a dictionary of edge-color pairs.</span>
-<span class="sd">            Missing keys will be assigned the default edge color (``self.settings[&#39;color.edges&#39;]``).</span>
-<span class="sd">            The default is ``None``, in which case all edges are assigned the default edge color.</span>
+<span class="sd">            The default color is the same as the default color for edges.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -718,22 +629,17 @@
             <span class="n">edge_text</span> <span class="o">=</span> <span class="n">text</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
-        <span class="n">edge_color</span> <span class="o">=</span> <span class="n">color_to_colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span>
-                                        <span class="n">edge_text</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
-                                        <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.edges&#39;</span><span class="p">],</span>
-                                        <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span>
-                                        <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_xyz</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">edge_text</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_edges</span><span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edge_text</span><span class="p">:</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edge_midpoint</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">),</span>
+                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]),</span>
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edgelabel.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">edge</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">edge_color</span><span class="p">[</span><span class="n">edge</span><span class="p">],</span>
                 <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">edge_text</span><span class="p">[</span><span class="n">edge</span><span class="p">]})</span>
-
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">guid_edgelabel</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">edge_text</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guid_edgelabel</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">edge_text</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">guids</span></div></div>
 
 
@@ -742,16 +648,7 @@
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-
-    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_polyhedron</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-
-    <span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+    <span class="k">pass</span>
 </code></pre></div>
         
       </main>

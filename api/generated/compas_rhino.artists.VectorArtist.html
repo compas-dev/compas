@@ -89,21 +89,17 @@
 <h1 class="display-4 p-0 mb-5">VectorArtist</h1>
 <dl class="class">
 <dt id="compas_rhino.artists.VectorArtist">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">VectorArtist</code><span class="sig-paren">(</span><em class="sig-param">primitive</em>, <em class="sig-param">name=None</em>, <em class="sig-param">color=None</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/vectorartist.html#VectorArtist"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">VectorArtist</code><span class="sig-paren">(</span><em class="sig-param">primitive</em>, <em class="sig-param">color=None</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/vectorartist.html#VectorArtist"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists._primitiveartist.PrimitiveArtist</span></code></p>
 <p>Artist for drawing vectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>vector</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – A COMPAS vector.</p>
+<dd class="field-odd"><p><strong>primitive</strong> (<a class="reference internal" href="compas.geometry.Vector.html#compas.geometry.Vector" title="compas.geometry.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Vector</span></code></a>) – A COMPAS vector.</p>
 </dd>
 <dt class="field-even">Other Parameters</dt>
 <dd class="field-even"><p><strong>See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.</strong></p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -111,7 +107,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.__init__.html#compas_rhino.artists.VectorArtist.__init__" title="compas_rhino.artists.VectorArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(primitive[, name, color, layer])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.__init__.html#compas_rhino.artists.VectorArtist.__init__" title="compas_rhino.artists.VectorArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(primitive[, color, layer])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.build.html#compas_rhino.artists.VectorArtist.build" title="compas_rhino.artists.VectorArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
@@ -121,7 +117,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.clear_layer.html#compas_rhino.artists.VectorArtist.clear_layer" title="compas_rhino.artists.VectorArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p>Clear the main layer of the artist.</p></td>
+<td><p>Clear the layer containing the artist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.draw.html#compas_rhino.artists.VectorArtist.draw" title="compas_rhino.artists.VectorArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p>Draw the vector.</p></td>

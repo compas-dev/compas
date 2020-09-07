@@ -99,18 +99,16 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    primitive: :class:`compas.geometry.Primitive`</span>
-<span class="sd">        The instance of the primitive.</span>
-<span class="sd">    name : str, optional</span>
-<span class="sd">        The name of the primitive object.</span>
+<span class="sd">        The geometry of the primitive.</span>
 <span class="sd">    color : 3-tuple, optional</span>
-<span class="sd">        The RGB color specification of the object.</span>
+<span class="sd">        The RGB components of the base color of the primitive.</span>
 <span class="sd">    layer : str, optional</span>
-<span class="sd">        The parent layer of the object.</span>
+<span class="sd">        The layer in which the primitive should be contained.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    primitive: :class:`compas.geometry.Primitive`</span>
-<span class="sd">        A reference to the geometry of the primitive.</span>
+<span class="sd">        The geometry of the primitive.</span>
 <span class="sd">    name : str</span>
 <span class="sd">        The name of the primitive.</span>
 <span class="sd">    color : tuple</span>
@@ -120,19 +118,25 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PrimitiveArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.PrimitiveArtist.__init__.html#compas_rhino.artists.PrimitiveArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="PrimitiveArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.PrimitiveArtist.__init__.html#compas_rhino.artists.PrimitiveArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">PrimitiveArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">primitive</span> <span class="o">=</span> <span class="n">primitive</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span></div>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;str : Reference to the name of the primitive.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
 <div class="viewcode-block" id="PrimitiveArtist.clear_layer"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.PrimitiveArtist.clear_layer.html#compas_rhino.artists.PrimitiveArtist.clear_layer">[docs]</a>    <span class="k">def</span> <span class="nf">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Clear the main layer of the artist.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Clear the layer containing the artist.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">:</span>
-            <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_current_layer</span><span class="p">()</span></div></div>
+            <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

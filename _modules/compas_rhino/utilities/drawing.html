@@ -83,10 +83,11 @@
           
           <h1 class="display-4 p-0 mb-5">Source code for compas_rhino.utilities.drawing</h1><div class="highlight"><pre><code>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
-<span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_polygon</span>
@@ -95,52 +96,50 @@
 <span class="kn">from</span> <span class="nn">compas_rhino.utilities</span> <span class="kn">import</span> <span class="n">clear_layer</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.utilities</span> <span class="kn">import</span> <span class="n">clear_current_layer</span>
 
-<span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">IPY</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">System.Collections.Generic</span> <span class="kn">import</span> <span class="n">List</span>
-    <span class="kn">from</span> <span class="nn">System.Drawing.Color</span> <span class="kn">import</span> <span class="n">FromArgb</span>
-    <span class="kn">from</span> <span class="nn">System.Enum</span> <span class="kn">import</span> <span class="n">ToObject</span>
+<span class="kn">from</span> <span class="nn">System.Collections.Generic</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">System.Drawing.Color</span> <span class="kn">import</span> <span class="n">FromArgb</span>
+<span class="kn">from</span> <span class="nn">System.Enum</span> <span class="kn">import</span> <span class="n">ToObject</span>
 
-    <span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">RHINO</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
-        <span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
+<span class="kn">import</span> <span class="nn">scriptcontext</span> <span class="k">as</span> <span class="nn">sc</span>
 
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Point3d</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Vector3d</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Polyline</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">PolylineCurve</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">GeometryBase</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Cylinder</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Circle</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Plane</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">PipeCapMode</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Curve</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Sphere</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">TextDot</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Mesh</span> <span class="k">as</span> <span class="n">RhinoMesh</span>
-        <span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectColorSource</span> <span class="kn">import</span> <span class="n">ColorFromObject</span>
-        <span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectColorSource</span> <span class="kn">import</span> <span class="n">ColorFromLayer</span>
-        <span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectDecoration</span> <span class="kn">import</span> <span class="n">EndArrowhead</span>
-        <span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectDecoration</span> <span class="kn">import</span> <span class="n">StartArrowhead</span>
-        <span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectPlotWeightSource</span> <span class="kn">import</span> <span class="n">PlotWeightFromObject</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Point3d</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Vector3d</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Polyline</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">PolylineCurve</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">GeometryBase</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Brep</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Cylinder</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Circle</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Plane</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">PipeCapMode</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Curve</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">TextDot</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Mesh</span> <span class="k">as</span> <span class="n">RhinoMesh</span>
+<span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectColorSource</span> <span class="kn">import</span> <span class="n">ColorFromObject</span>
+<span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectColorSource</span> <span class="kn">import</span> <span class="n">ColorFromLayer</span>
+<span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectDecoration</span> <span class="kn">import</span> <span class="n">EndArrowhead</span>
+<span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectDecoration</span> <span class="kn">import</span> <span class="n">StartArrowhead</span>
+<span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectPlotWeightSource</span> <span class="kn">import</span> <span class="n">PlotWeightFromObject</span>
 
-        <span class="n">find_object</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">Find</span>
-        <span class="n">add_point</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddPoint</span>
-        <span class="n">add_line</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddLine</span>
-        <span class="n">add_dot</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddTextDot</span>
-        <span class="n">add_curve</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddCurve</span>
-        <span class="n">add_polyline</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddPolyline</span>
-        <span class="n">add_brep</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddBrep</span>
-        <span class="n">add_sphere</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddSphere</span>
-        <span class="n">add_mesh</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddMesh</span>
-        <span class="n">add_circle</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddCircle</span>
+<span class="n">find_object</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">Find</span>
+<span class="n">add_point</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddPoint</span>
+<span class="n">add_line</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddLine</span>
+<span class="n">add_dot</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddTextDot</span>
+<span class="n">add_curve</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddCurve</span>
+<span class="n">add_polyline</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddPolyline</span>
+<span class="n">add_brep</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddBrep</span>
+<span class="n">add_sphere</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddSphere</span>
+<span class="n">add_mesh</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddMesh</span>
+<span class="n">add_circle</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Objects</span><span class="o">.</span><span class="n">AddCircle</span>
 
-        <span class="n">TOL</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">ModelAbsoluteTolerance</span>
+<span class="n">TOL</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">ModelAbsoluteTolerance</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">find_layer_by_fullpath</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Layers</span><span class="o">.</span><span class="n">FindByFullPath</span>
-        <span class="k">except</span> <span class="ne">SystemError</span><span class="p">:</span>
-            <span class="n">find_layer_by_fullpath</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">find_layer_by_fullpath</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Layers</span><span class="o">.</span><span class="n">FindByFullPath</span>
+<span class="k">except</span> <span class="ne">SystemError</span><span class="p">:</span>
+    <span class="n">find_layer_by_fullpath</span> <span class="o">=</span> <span class="kc">None</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>

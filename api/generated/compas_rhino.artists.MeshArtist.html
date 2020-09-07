@@ -89,7 +89,7 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist</h1>
 <dl class="class">
 <dt id="compas_rhino.artists.MeshArtist">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">MeshArtist</code><span class="sig-paren">(</span><em class="sig-param">mesh</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/meshartist.html#MeshArtist"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">MeshArtist</code><span class="sig-paren">(</span><em class="sig-param">mesh</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/meshartist.html#MeshArtist"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists._artist.BaseArtist</span></code></p>
 <p>A mesh artist defines functionality for visualising COMPAS meshes in Rhino.</p>
 <dl class="field-list simple">
@@ -97,14 +97,15 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – A COMPAS mesh.</p></li>
 <li><p><strong>layer</strong> (<em>str, optional</em>) – The name of the layer that will contain the mesh.</p></li>
-<li><p><strong>settings</strong> (<em>dict, optional</em>) – A dict with custom visualisation settings.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The COMPAS mesh associated with the artist.</p></li>
 <li><p><strong>layer</strong> (<em>str</em>) – The layer in which the mesh should be contained.</p></li>
-<li><p><strong>settings</strong> (<em>dict</em>) – Default settings for color, scale, tolerance, …</p></li>
+<li><p><strong>color_vertices</strong> (<em>3-tuple</em>) – Default color of the vertices.</p></li>
+<li><p><strong>color_edges</strong> (<em>3-tuple</em>) – Default color of the edges.</p></li>
+<li><p><strong>color_faces</strong> (<em>3-tuple</em>) – Default color of the faces.</p></li>
 </ul>
 </dd>
 </dl>
@@ -130,7 +131,7 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.__init__.html#compas_rhino.artists.MeshArtist.__init__" title="compas_rhino.artists.MeshArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(mesh[, layer, settings])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.__init__.html#compas_rhino.artists.MeshArtist.__init__" title="compas_rhino.artists.MeshArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(mesh[, layer])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.build.html#compas_rhino.artists.MeshArtist.build" title="compas_rhino.artists.MeshArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
@@ -142,8 +143,8 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.clear_layer.html#compas_rhino.artists.MeshArtist.clear_layer" title="compas_rhino.artists.MeshArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
 <td><p>Clear the main layer of the artist.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw.html#compas_rhino.artists.MeshArtist.draw" title="compas_rhino.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([settings])</p></td>
-<td><p>Draw the mesh using the chosen visualisation settings.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw.html#compas_rhino.artists.MeshArtist.draw" title="compas_rhino.artists.MeshArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([color, disjoint])</p></td>
+<td><p>Draw the mesh as a consolidated RhinoMesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_collection.html#compas_rhino.artists.MeshArtist.draw_collection" title="compas_rhino.artists.MeshArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
 <td><p></p></td>
@@ -151,34 +152,31 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_edgelabels.html#compas_rhino.artists.MeshArtist.draw_edgelabels" title="compas_rhino.artists.MeshArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a>([text, color])</p></td>
 <td><p>Draw labels for a selection of edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_edges.html#compas_rhino.artists.MeshArtist.draw_edges" title="compas_rhino.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([keys, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_edges.html#compas_rhino.artists.MeshArtist.draw_edges" title="compas_rhino.artists.MeshArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([edges, color])</p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_facelabels.html#compas_rhino.artists.MeshArtist.draw_facelabels" title="compas_rhino.artists.MeshArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a>([text, color])</p></td>
 <td><p>Draw labels for a selection of faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_facenormals.html#compas_rhino.artists.MeshArtist.draw_facenormals" title="compas_rhino.artists.MeshArtist.draw_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facenormals</span></code></a>([keys, color, scale])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_facenormals.html#compas_rhino.artists.MeshArtist.draw_facenormals" title="compas_rhino.artists.MeshArtist.draw_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facenormals</span></code></a>([faces, color, scale])</p></td>
 <td><p>Draw the normals of the faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_faces.html#compas_rhino.artists.MeshArtist.draw_faces" title="compas_rhino.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([keys, color, join_faces])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_faces.html#compas_rhino.artists.MeshArtist.draw_faces" title="compas_rhino.artists.MeshArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([faces, color, join_faces])</p></td>
 <td><p>Draw a selection of faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_mesh.html#compas_rhino.artists.MeshArtist.draw_mesh" title="compas_rhino.artists.MeshArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a>([color, disjoint])</p></td>
-<td><p>Draw the mesh as a consolidated RhinoMesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_vertexlabels.html#compas_rhino.artists.MeshArtist.draw_vertexlabels" title="compas_rhino.artists.MeshArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a>([text, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_vertexlabels.html#compas_rhino.artists.MeshArtist.draw_vertexlabels" title="compas_rhino.artists.MeshArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a>([text, color])</p></td>
 <td><p>Draw labels for a selection vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_vertexnormals.html#compas_rhino.artists.MeshArtist.draw_vertexnormals" title="compas_rhino.artists.MeshArtist.draw_vertexnormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexnormals</span></code></a>([keys, color, scale])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_vertexnormals.html#compas_rhino.artists.MeshArtist.draw_vertexnormals" title="compas_rhino.artists.MeshArtist.draw_vertexnormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexnormals</span></code></a>([vertices, color, scale])</p></td>
 <td><p>Draw the normals at the vertices of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_vertices.html#compas_rhino.artists.MeshArtist.draw_vertices" title="compas_rhino.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([keys, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.draw_vertices.html#compas_rhino.artists.MeshArtist.draw_vertices" title="compas_rhino.artists.MeshArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([vertices, color])</p></td>
 <td><p>Draw a selection of vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.redraw.html#compas_rhino.artists.MeshArtist.redraw" title="compas_rhino.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.redraw.html#compas_rhino.artists.MeshArtist.redraw" title="compas_rhino.artists.MeshArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.register.html#compas_rhino.artists.MeshArtist.register" title="compas_rhino.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.MeshArtist.register.html#compas_rhino.artists.MeshArtist.register" title="compas_rhino.artists.MeshArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
 <td><p>Register a virtual subclass of an ABC.</p></td>
 </tr>
 </tbody>

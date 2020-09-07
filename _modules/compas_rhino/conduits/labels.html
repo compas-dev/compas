@@ -86,15 +86,11 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
-<span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">System.Drawing.Color</span> <span class="kn">import</span> <span class="n">FromArgb</span>
+<span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Point3d</span>
+
 <span class="kn">from</span> <span class="nn">compas_rhino.conduits.base</span> <span class="kn">import</span> <span class="n">BaseConduit</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">color_to_rgb</span>
-
-<span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">IPY</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">System.Drawing.Color</span> <span class="kn">import</span> <span class="n">FromArgb</span>
-
-    <span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">RHINO</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Point3d</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LabelsConduit&#39;</span><span class="p">]</span>

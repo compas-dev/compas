@@ -86,21 +86,19 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
-<span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.forms.base</span> <span class="kn">import</span> <span class="n">BaseForm</span>
-
-<span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">IPY</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">PictureBox</span>
-    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">PictureBoxSizeMode</span>
-    <span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">DockStyle</span>
-    <span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="kn">import</span> <span class="n">Image</span>
-    <span class="kn">from</span> <span class="nn">System.Net</span> <span class="kn">import</span> <span class="n">WebClient</span>
-    <span class="kn">from</span> <span class="nn">System.IO</span> <span class="kn">import</span> <span class="n">MemoryStream</span>
-
 <span class="k">try</span><span class="p">:</span>
     <span class="n">basestring</span>
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
     <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
+
+<span class="kn">from</span> <span class="nn">compas_rhino.forms.base</span> <span class="kn">import</span> <span class="n">BaseForm</span>
+
+<span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">PictureBox</span>
+<span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">PictureBoxSizeMode</span>
+<span class="kn">from</span> <span class="nn">System.Windows.Forms</span> <span class="kn">import</span> <span class="n">DockStyle</span>
+<span class="kn">from</span> <span class="nn">System.Drawing</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">System.Net</span> <span class="kn">import</span> <span class="n">WebClient</span>
+<span class="kn">from</span> <span class="nn">System.IO</span> <span class="kn">import</span> <span class="n">MemoryStream</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ImageForm&#39;</span><span class="p">,</span> <span class="s1">&#39;image_from_remote&#39;</span><span class="p">,</span> <span class="s1">&#39;image_from_local&#39;</span><span class="p">]</span>

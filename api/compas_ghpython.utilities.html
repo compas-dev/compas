@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - &lt;no title&gt;</title>
+  <title>COMPAS - utilities</title>
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="compas_plotters" href="compas_plotters.html" />
+    <link rel="next" title="draw_frame" href="generated/compas_ghpython.utilities.draw_frame.html" />
   
   
   
@@ -85,7 +85,97 @@
       <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
           
-          
+          <span class="target" id="module-compas_ghpython.utilities"></span><div class="section" id="utilities">
+<h1 class="display-4 p-0 mb-5">utilities</h1>
+<p>This package contains utilities for working with COMPAS in Grasshopper.</p>
+<div class="section" id="drawing">
+<h2>drawing</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_frame.html#compas_ghpython.utilities.draw_frame" title="compas_ghpython.utilities.draw_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_frame</span></code></a>(frame)</p></td>
+<td><p>Draw a frame.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_points.html#compas_ghpython.utilities.draw_points" title="compas_ghpython.utilities.draw_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_points</span></code></a>(points)</p></td>
+<td><p>Draw points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_lines.html#compas_ghpython.utilities.draw_lines" title="compas_ghpython.utilities.draw_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_lines</span></code></a>(lines)</p></td>
+<td><p>Draw lines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_polylines.html#compas_ghpython.utilities.draw_polylines" title="compas_ghpython.utilities.draw_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polylines</span></code></a>(polylines)</p></td>
+<td><p>Draw polylines.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_faces.html#compas_ghpython.utilities.draw_faces" title="compas_ghpython.utilities.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>(faces)</p></td>
+<td><p>Draw polygonal faces as Meshes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_cylinders.html#compas_ghpython.utilities.draw_cylinders" title="compas_ghpython.utilities.draw_cylinders"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_cylinders</span></code></a>(cylinders[, cap])</p></td>
+<td><p>Draw cylinders.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_pipes.html#compas_ghpython.utilities.draw_pipes" title="compas_ghpython.utilities.draw_pipes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_pipes</span></code></a>(pipes[, cap, fit])</p></td>
+<td><p>Draw pipes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_spheres.html#compas_ghpython.utilities.draw_spheres" title="compas_ghpython.utilities.draw_spheres"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_spheres</span></code></a>(spheres)</p></td>
+<td><p>Draw spheres.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_mesh.html#compas_ghpython.utilities.draw_mesh" title="compas_ghpython.utilities.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a>(vertices, faces[, color, …])</p></td>
+<td><p>Draw mesh in Grasshopper.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.draw_network.html#compas_ghpython.utilities.draw_network" title="compas_ghpython.utilities.draw_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_network</span></code></a>(network)</p></td>
+<td><p>Draw a network in Grasshopper.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="sets">
+<h2>sets</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.list_to_ghtree.html#compas_ghpython.utilities.list_to_ghtree" title="compas_ghpython.utilities.list_to_ghtree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_to_ghtree</span></code></a>(items[, none_and_holes, …])</p></td>
+<td><p>Transforms nestings of lists or tuples to a Grasshopper DataTree.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.ghtree_to_list.html#compas_ghpython.utilities.ghtree_to_list" title="compas_ghpython.utilities.ghtree_to_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ghtree_to_list</span></code></a>(tree)</p></td>
+<td><p>Returns a list representation of a Grasshopper DataTree</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="timers">
+<h2>timers</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.update_component.html#compas_ghpython.utilities.update_component" title="compas_ghpython.utilities.update_component"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_component</span></code></a>(ghenv, delay)</p></td>
+<td><p>Schedule an update of the Grasshopper component.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="misc">
+<h2>misc</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_ghpython.utilities.unload_modules.html#compas_ghpython.utilities.unload_modules" title="compas_ghpython.utilities.unload_modules"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unload_modules</span></code></a>(top_level_module_name)</p></td>
+<td><p>Unloads all modules named starting with the specified string.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
         
       </main>
       <!-- main -->
@@ -102,12 +192,23 @@
         
         
         <div id="compas-navigation" class="collapse compas-navigation">
-          <ul class="nav flex-column">
+          <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../index.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../installation.html">Installation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../api.html">API Reference</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../api.html">API Reference</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas.html">compas</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="compas_ghpython.html">compas_ghpython</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas_ghpython.artists.html">artists</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">utilities</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.html">compas_plotters</a></li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../changelog.html">Changelog</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../license.html">License</a></li>
@@ -121,7 +222,14 @@
       <!-- toc -->
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
-        <ul class="simple">
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">utilities</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#drawing">drawing</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#sets">sets</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#timers">timers</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#misc">misc</a></li>
+</ul>
+</li>
 </ul>
 
       </div>

@@ -94,14 +94,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>text</strong> (<em>dict</em>) – A dictionary of edge labels as key-text pairs.
+<li><p><strong>text</strong> (<em>dict, optional</em>) – A dictionary of edge labels as edge-text pairs.
 The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case every edge will be labelled with its key.</p></li>
-<li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color sepcification of the labels.
-String values are interpreted as hex colors.
-Tuples are interpreted as RGB component specifications.
-Individual colors can be assigned using a dictionary of edge-color pairs.
-Missing keys will be assigned the default edge color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.edges']</span></code>).
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are assigned the default edge color.</p></li>
+<li><p><strong>color</strong> (<em>tuple or dict of tuple, optional</em>) – The color sepcification of the labels.
+The default color is the same as the default color for edges.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

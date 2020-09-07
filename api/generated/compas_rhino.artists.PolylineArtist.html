@@ -89,22 +89,17 @@
 <h1 class="display-4 p-0 mb-5">PolylineArtist</h1>
 <dl class="class">
 <dt id="compas_rhino.artists.PolylineArtist">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">PolylineArtist</code><span class="sig-paren">(</span><em class="sig-param">primitive</em>, <em class="sig-param">name=None</em>, <em class="sig-param">color=None</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/polylineartist.html#PolylineArtist"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.artists.</code><code class="sig-name descname">PolylineArtist</code><span class="sig-paren">(</span><em class="sig-param">primitive</em>, <em class="sig-param">color=None</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/polylineartist.html#PolylineArtist"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists._primitiveartist.PrimitiveArtist</span></code></p>
 <p>Artist for drawing polylines.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>polyline</strong> (<a class="reference internal" href="compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code></a>) – A COMPAS polyline.</p></li>
-<li><p><strong>layer</strong> (<em>str (optional)</em>) – The name of the layer that will contain the polyline.
-Default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the current layer will be used.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>primitive</strong> (<a class="reference internal" href="compas.geometry.Polyline.html#compas.geometry.Polyline" title="compas.geometry.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polyline</span></code></a>) – A COMPAS polyline.</p>
+</dd>
+<dt class="field-even">Other Parameters</dt>
+<dd class="field-even"><p><strong>See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.</strong></p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -112,7 +107,7 @@ Default value is <code class="docutils literal notranslate"><span class="pre">No
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.PolylineArtist.__init__.html#compas_rhino.artists.PolylineArtist.__init__" title="compas_rhino.artists.PolylineArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(primitive[, name, color, layer])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.PolylineArtist.__init__.html#compas_rhino.artists.PolylineArtist.__init__" title="compas_rhino.artists.PolylineArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(primitive[, color, layer])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.PolylineArtist.build.html#compas_rhino.artists.PolylineArtist.build" title="compas_rhino.artists.PolylineArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
@@ -122,7 +117,7 @@ Default value is <code class="docutils literal notranslate"><span class="pre">No
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.PolylineArtist.clear_layer.html#compas_rhino.artists.PolylineArtist.clear_layer" title="compas_rhino.artists.PolylineArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p>Clear the main layer of the artist.</p></td>
+<td><p>Clear the layer containing the artist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.PolylineArtist.draw.html#compas_rhino.artists.PolylineArtist.draw" title="compas_rhino.artists.PolylineArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p>Draw the polyline.</p></td>

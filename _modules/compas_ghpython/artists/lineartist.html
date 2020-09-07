@@ -105,10 +105,6 @@
 <span class="sd">    ----------------</span>
 <span class="sd">    See :class:`compas_ghpython.artists.PrimitiveArtist` for all other parameters.</span>
 
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="LineArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_ghpython.artists.LineArtist.draw.html#compas_ghpython.artists.LineArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -116,13 +112,13 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        list of :class:`Rhino.Geometry.Line`</span>
+<span class="sd">        :class:`Rhino.Geometry.Line`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">start</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
         <span class="n">end</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">start</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">end</span><span class="p">}]</span>
-        <span class="k">return</span> <span class="n">compas_ghpython</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">compas_ghpython</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

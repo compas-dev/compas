@@ -89,16 +89,24 @@
 <h1 class="display-4 p-0 mb-5">MeshArtist.draw</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.MeshArtist.draw">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw</code><span class="sig-paren">(</span><em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/meshartist.html#MeshArtist.draw"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Draw the mesh using the chosen visualisation settings.</p>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw</code><span class="sig-paren">(</span><em class="sig-param">color=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">disjoint=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/meshartist.html#MeshArtist.draw"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Draw the mesh as a consolidated RhinoMesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>settings</strong> (<em>dict, optional</em>) – Dictionary of visualisation settings that will be merged with the settings of the artist.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>color</strong> (<em>tuple, optional</em>) – The color of the mesh.
+Default is black, <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
+<li><p><strong>disjoint</strong> (<em>bool, optional</em>) – Draw the faces of the mesh with disjoint vertices.
+Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list</em> – The GUIDs of the created Rhino objects.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This method will attempt to clear all previously drawn elements by this artist.
-However, clearing the artist layer has to be done explicitly with a call to <code class="docutils literal notranslate"><span class="pre">MeshArtist.clear_layer</span></code>.</p>
+<p>The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
+Faces with more than 4 vertices will be triangulated on-the-fly.</p>
 </dd></dl>
 
 </div>

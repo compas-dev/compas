@@ -87,30 +87,32 @@
           
           <span class="target" id="module-compas.files"></span><div class="section" id="files">
 <h1 class="display-4 p-0 mb-5">files</h1>
-<div class="section" id="mf">
-<h2>3MF</h2>
-<p>3D Manufacturing Format or 3MF is an open source file format standard developed
-and published by the 3MF Consortium. 3MF is an XML-based data format designed for
-using additive manufacturing, including information about materials, colors,
-and other information that cannot be represented in the STL format. <span id="id1">[Wikipedia_3MF]</span></p>
+<div class="section" id="dxf">
+<h2>DXF</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p>The DXF readers and writers are not available yet.</p>
 </div>
-<div class="section" id="amf">
-<h2>AMF</h2>
-<p>Additive manufacturing file format (AMF) is an open standard for describing objects
-for additive manufacturing processes such as 3D printing. The official ISO/ASTM 52915:2016
-standard is an XML-based format designed to allow any computer-aided design software
-to describe the shape and composition of any 3D object to be fabricated on any 3D printer.
-Unlike its predecessor STL format, AMF has native support for color, materials,
-lattices, and constellations. <span id="id2">[Wikipedia_AMF]</span></p>
+<div class="section" id="las">
+<h2>LAS</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p>The LAS readers and writers are not available yet.</p>
 </div>
 <div class="section" id="obj">
 <h2>OBJ</h2>
-<p>The OBJ file format is a simple data-format that represents 3D geometry alone -
-namely, the position of each vertex, the UV position of each texture coordinate vertex,
-vertex normals, and the faces that make each polygon defined as a list of vertices,
-and texture vertices. Vertices are stored in a counter-clockwise order by default,
-making explicit declaration of face normals unnecessary. OBJ coordinates have no units,
-but OBJ files can contain scale information in a human readable comment line. <span id="id3">[Wikipedia_OBJ]</span></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -126,18 +128,34 @@ but OBJ files can contain scale information in a human readable comment line. <s
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.files.OBJParser.html#compas.files.OBJParser" title="compas.files.OBJParser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OBJParser</span></code></a></p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.files.OBJWriter.html#compas.files.OBJWriter" title="compas.files.OBJWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OBJWriter</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="off">
+<h2>OFF</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.files.OFF.html#compas.files.OFF" title="compas.files.OFF"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OFF</span></code></a></p></td>
+<td><p>Read and write files in OFF format.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.files.OFFReader.html#compas.files.OFFReader" title="compas.files.OFFReader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OFFReader</span></code></a></p></td>
+<td><p>Read the contents of an <em>obj</em> file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.files.OFFWriter.html#compas.files.OFFWriter" title="compas.files.OFFWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OFFWriter</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="ply">
 <h2>PLY</h2>
-<p>PLY is a computer file format known as the Polygon File Format or the Stanford Triangle Format.
-It was principally designed to store three-dimensional data from 3D scanners.
-The data storage format supports a relatively simple description of a single object as a list
-of nominally flat polygons. A variety of properties can be stored, including: color and transparency,
-surface normals, texture coordinates and data confidence values. The format permits one
-to have different properties for the front and back of a polygon. There are two versions of
-the file format, one in ASCII, the other in binary. <span id="id4">[Wikipedia_PLY]</span></p>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -151,6 +169,9 @@ the file format, one in ASCII, the other in binary. <span id="id4">[Wikipedia_PL
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.files.PLYParser.html#compas.files.PLYParser" title="compas.files.PLYParser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PLYParser</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.files.PLYWriter.html#compas.files.PLYWriter" title="compas.files.PLYWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PLYWriter</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -171,6 +192,9 @@ the file format, one in ASCII, the other in binary. <span id="id4">[Wikipedia_PL
 <td><p>Standard triangle library format.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.files.STLParser.html#compas.files.STLParser" title="compas.files.STLParser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STLParser</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.files.STLWriter.html#compas.files.STLWriter" title="compas.files.STLWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STLWriter</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -275,6 +299,7 @@ the file format, one in ASCII, the other in binary. <span id="id4">[Wikipedia_PL
 <li class="nav-item"><a class="nav-link reference internal" href="compas.utilities.html">utilities</a></li>
 </ul>
 </li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_ghpython.html">compas_ghpython</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.html">compas_plotters</a></li>
@@ -295,9 +320,10 @@ the file format, one in ASCII, the other in binary. <span id="id4">[Wikipedia_PL
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">files</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#mf">3MF</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#amf">AMF</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#dxf">DXF</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#las">LAS</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#obj">OBJ</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#off">OFF</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#ply">PLY</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#stl">STL</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#urdf">URDF</a></li>

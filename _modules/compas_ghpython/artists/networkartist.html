@@ -86,10 +86,13 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">import</span> <span class="nn">compas_ghpython</span>
-
 <span class="kn">from</span> <span class="nn">compas_ghpython.artists._artist</span> <span class="kn">import</span> <span class="n">BaseArtist</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">color_to_colordict</span> <span class="k">as</span> <span class="n">colordict</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">color_to_colordict</span>
+
+
+<span class="n">colordict</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">color_to_colordict</span><span class="p">,</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NetworkArtist&#39;</span><span class="p">]</span>
@@ -107,18 +110,18 @@
 <span class="sd">    ----------</span>
 <span class="sd">    network : :class:`compas.datastructures.Network`</span>
 <span class="sd">        The COMPAS network associated with the artist.</span>
-<span class="sd">    settings : dict</span>
-<span class="sd">        Default settings for color of network components.</span>
+<span class="sd">    color_nodes : 3-tuple</span>
+<span class="sd">        Default color of the nodes.</span>
+<span class="sd">    color_edges : 3-tuple</span>
+<span class="sd">        Default color of the edges.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="NetworkArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_ghpython.artists.NetworkArtist.__init__.html#compas_ghpython.artists.NetworkArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_network</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;color.nodes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">&#39;color.edges&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-        <span class="p">}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_nodes</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_edges</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">network</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -130,13 +133,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_network</span> <span class="o">=</span> <span class="n">network</span>
 
 <div class="viewcode-block" id="NetworkArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_ghpython.artists.NetworkArtist.draw.html#compas_ghpython.artists.NetworkArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;For networks (and data structures in general), a main draw function does not exist.</span>
-<span class="sd">        Instead, you should use the drawing functions for the various components of the mesh:</span>
+        <span class="sd">&quot;&quot;&quot;Draw the entire network with default color settings.</span>
 
-<span class="sd">        * ``draw_nodes``</span>
-<span class="sd">        * ``draw_edges``</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            list of :class:`Rhino.Geometry.Point3d` and list of :class:`Rhino.Geometry.Line`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">draw_nodes</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">())</span></div>
 
     <span class="c1"># ==============================================================================</span>
     <span class="c1"># components</span>
@@ -150,9 +154,9 @@
 <span class="sd">        nodes: list, optional</span>
 <span class="sd">            The selection of nodes that should be drawn.</span>
 <span class="sd">            Default is ``None``, in which case all nodes are drawn.</span>
-<span class="sd">        color: rgb-tuple or dict of rgb-tuple, optional</span>
+<span class="sd">        color: 3-tuple or dict of 3-tuple, optional</span>
 <span class="sd">            The color specififcation for the nodes.</span>
-<span class="sd">            The default is defined in the class settings.</span>
+<span class="sd">            The default color is ``(255, 255, 255)``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -160,7 +164,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
-        <span class="n">node_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.nodes&#39;</span><span class="p">],</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">node_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_nodes</span><span class="p">)</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
             <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
@@ -177,9 +181,9 @@
 <span class="sd">        edges : list, optional</span>
 <span class="sd">            A list of edges to draw.</span>
 <span class="sd">            The default is ``None``, in which case all edges are drawn.</span>
-<span class="sd">        color : rgb-tuple or dict of rgb-tuple, optional</span>
+<span class="sd">        color : 3-tuple or dict of 3-tuple, optional</span>
 <span class="sd">            The color specififcation for the edges.</span>
-<span class="sd">            The default color is defined in the class settings.</span>
+<span class="sd">            The default color is ``(0, 0, 0)``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -187,7 +191,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
-        <span class="n">edge_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.edges&#39;</span><span class="p">],</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_edges</span><span class="p">)</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
             <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">)</span>
