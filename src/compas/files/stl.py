@@ -12,6 +12,7 @@ __all__ = [
     'STL',
     'STLReader',
     'STLParser',
+    'STLWriter',
 ]
 
 
