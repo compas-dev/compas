@@ -14,15 +14,12 @@ class PolylineArtist(PrimitiveArtist):
 
     Parameters
     ----------
-    polyline : :class:`compas.geometry.Polyline`
+    primitive : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
-    layer : str (optional)
-        The name of the layer that will contain the polyline.
-        Default value is ``None``, in which case the current layer will be used.
 
-    Examples
-    --------
-    >>>
+    Other Parameters
+    ----------------
+    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """
 

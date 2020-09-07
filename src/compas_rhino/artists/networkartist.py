@@ -2,10 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from functools import partial
 import compas_rhino
 from compas_rhino.artists._artist import BaseArtist
-
+from compas.geometry import centroid_points
 from compas.utilities import color_to_colordict
+
+
+colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
 __all__ = ['NetworkArtist']
@@ -20,8 +24,6 @@ class NetworkArtist(BaseArtist):
         A COMPAS network.
     layer : str, optional
         The parent layer of the network.
-    settings : dict, optional
-        A dict with custom visualisation settings.
 
     Attributes
     ----------
@@ -29,30 +31,49 @@ class NetworkArtist(BaseArtist):
         The COMPAS network associated with the artist.
     layer : str
         The layer in which the network should be contained.
-    settings : dict
-        Default settings for color, scale, tolerance, ...
+    color_nodes : 3-tuple
+        Default color of the nodes.
+    color_edges : 3-tuple
+        Default color of the edges.
 
     """
 
-    def __init__(self, network, layer=None, settings=None):
+    def __init__(self, network, layer=None):
         super(NetworkArtist, self).__init__()
         self._guid_node = {}
         self._guid_edge = {}
+        self._guid_nodelabel = {}
+        self._guid_edgelabel = {}
+        self._node_xyz = None
         self.network = network
         self.layer = layer
-        self.settings = {
-            'color.nodes': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'show.nodes': True,
-            'show.edges': True,
-            'show.nodelabels': False,
-            'show.edgelabels': False
-        }
-        if settings:
-            self.settings.update(settings)
+        self.color_nodes = (255, 255, 255)
+        self.color_edges = (0, 0, 0)
+
+    @property
+    def node_xyz(self):
+        """dict:
+        The view coordinates of the network nodes.
+        The view coordinates default to the actual node coordinates.
+        """
+        if not self._node_xyz:
+            self._node_xyz = {node: self.network.node_attributes(node, 'xyz') for node in self.network.nodes()}
+        return self._node_xyz
+
+    @node_xyz.setter
+    def node_xyz(self, node_xyz):
+        self._node_xyz = node_xyz
+
+    @property
+    def guids(self):
+        guids = []
+        guids += list(self.guid_node.keys())
+        guids += list(self.guid_edge.keys())
+        return guids
 
     @property
     def guid_node(self):
+        """dict: Map between Rhino object GUIDs and network node identifiers."""
         if not self._guid_node:
             self._guid_node = {}
         return self._guid_node
@@ -63,6 +84,7 @@ class NetworkArtist(BaseArtist):
 
     @property
     def guid_edge(self):
+        """dict: Map between Rhino object GUIDs and network edge identifiers."""
         if not self._guid_edge:
             self._guid_edge = {}
         return self._guid_edge
@@ -71,15 +93,30 @@ class NetworkArtist(BaseArtist):
     def guid_edge(self, values):
         self._guid_edge = dict(values)
 
+    @property
+    def guid_nodelabel(self):
+        """dict: Map between Rhino object GUIDs and network nodelabel identifiers."""
+        return self._guid_vertexlabel
+
+    @guid_nodelabel.setter
+    def guid_nodelabel(self, values):
+        self._guid_vertexlabel = dict(values)
+
+    @property
+    def guid_edgelabel(self):
+        """dict: Map between Rhino object GUIDs and network edgelabel identifiers."""
+        return self._guid_edgelabel
+
+    @guid_edgelabel.setter
+    def guid_edgelabel(self, values):
+        self._guid_edgelabel = dict(values)
+
     # ==========================================================================
     # clear
     # ==========================================================================
 
     def clear(self):
-        guids_nodes = list(self.guid_node.keys())
-        guids_edges = list(self.guid_edge.keys())
-        guids = guids_nodes + guids_edges
-        compas_rhino.delete_objects(guids, purge=True)
+        compas_rhino.delete_objects(self.guids, purge=True)
         self._guid_node = {}
         self._guid_edge = {}
 
@@ -87,61 +124,36 @@ class NetworkArtist(BaseArtist):
         """Clear the main layer of the artist."""
         if self.layer:
             compas_rhino.clear_layer(self.layer)
-        else:
-            compas_rhino.clear_current_layer()
 
     # ==========================================================================
     # components
     # ==========================================================================
 
-    def draw(self, settings=None):
+    def draw(self):
         """Draw the network using the chosen visualisation settings.
-
-        Parameters
-        ----------
-        settings : dict, optional
-            Dictionary of visualisation settings that will be merged with the settings of the artist.
 
         Returns
         -------
         list
             The GUIDs of the created Rhino objects.
 
-        Notes
-        -----
-        This method will attempt to clear all previously drawn elements by this artist.
-        However, clearing the artist layer has to be done explicitly with a call to ``NetworkArtist.clear_layer``.
-
         """
         self.clear()
-        if not settings:
-            settings = {}
-        self.settings.update(settings)
-        if self.settings['show.nodes']:
-            self.draw_nodes()
-            if self.settings['show.nodelabels']:
-                self.draw_nodelabels()
-        if self.settings['show.edges']:
-            self.draw_edges()
-            if self.settings['show.edgelabels']:
-                self.draw_edgelabels()
-        return self.guids
+        guids = self.draw_nodes()
+        guids += self.draw_edges()
+        return guids
 
-    def draw_nodes(self, keys=None, color=None):
+    def draw_nodes(self, nodes=None, color=None):
         """Draw a selection of nodes.
 
         Parameters
         ----------
-        keys : list
-            A list of node keys identifying which nodes to draw.
+        nodes : list, optional
+            A list of nodes to draw.
             Default is ``None``, in which case all nodes are drawn.
-        color : str, tuple, dict
+        color : 3-tuple or dict of 3-tuples, optional
             The color specififcation for the nodes.
-            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-            To apply the same color to all nodes, provide a single color specification.
-            Individual colors can be assigned using a dictionary of key-color pairs.
-            Missing keys will be assigned the default node color (``self.settings['color.nodes']``).
-            The default is ``None``, in which case all nodes are assigned the default node color.
+            The default color is ``(255, 255, 255)``.
 
         Returns
         -------
@@ -149,38 +161,30 @@ class NetworkArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        nodes = keys or list(self.network.nodes())
-        node_color = color_to_colordict(color,
-                                        nodes,
-                                        default=self.settings['color.nodes'],
-                                        colorformat='rgb',
-                                        normalize=False)
+        node_xyz = self.node_xyz
+        nodes = nodes or list(self.network.nodes())
+        node_color = colordict(color, nodes, default=self.color_nodes)
         points = []
         for node in nodes:
             points.append({
-                'pos': self.network.node_coordinates(node),
+                'pos': node_xyz[node],
                 'name': "{}.node.{}".format(self.network.name, node),
                 'color': node_color[node]})
-
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         self.guid_node = zip(guids, nodes)
         return guids
 
-    def draw_edges(self, keys=None, color=None):
+    def draw_edges(self, edges=None, color=None):
         """Draw a selection of edges.
 
         Parameters
         ----------
-        keys : list
-            A list of edge keys (as uv pairs) identifying which edges to draw.
+        edges : list, optional
+            A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
-        color : str, tuple, dict
+        color : 3-tuple or dict of 3-tuple, optional
             The color specififcation for the edges.
-            Colors should be specified in the form of a string (hex colors) or as a tuple of RGB components.
-            To apply the same color to all edges, provide a single color specification.
-            Individual colors can be assigned using a dictionary of key-color pairs.
-            Missing keys will be assigned the default edge color (``self.settings['color.edges']``).
-            The default is ``None``, in which case all edges are assigned the default edge color.
+            The default color is ``(0, 0, 0)``.
 
         Returns
         -------
@@ -188,22 +192,18 @@ class NetworkArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        keys = keys or list(self.network.edges())
-        colordict = color_to_colordict(color,
-                                       keys,
-                                       default=self.settings['color.edges'],
-                                       colorformat='rgb',
-                                       normalize=False)
+        node_xyz = self.node_xyz
+        edges = edges or list(self.network.edges())
+        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
-        for u, v in keys:
+        for edge in edges:
             lines.append({
-                'start': self.network.node_coordinates(u),
-                'end': self.network.node_coordinates(v),
-                'color': colordict[(u, v)],
-                'name': "{}.edge.{}-{}".format(self.network.name, u, v)})
-
+                'start': node_xyz[edge[0]],
+                'end': node_xyz[edge[1]],
+                'color': edge_color[edge],
+                'name': "{}.edge.{}-{}".format(self.network.name, *edge)})
         guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self.guids += guids
+        self.guid_edge = zip(guids, edges)
         return guids
 
     # ==========================================================================
@@ -215,16 +215,12 @@ class NetworkArtist(BaseArtist):
 
         Parameters
         ----------
-        text : dict
-            A dictionary of node labels as key-text pairs.
+        text : dict, optional
+            A dictionary of node labels as node-text pairs.
             The default value is ``None``, in which case every node will be labelled with its key.
-        color : str, tuple, dict
+        color : 3-tuple or dict of 3-tuple, optional
             The color sepcification of the labels.
-            String values are interpreted as hex colors.
-            Tuples are interpreted as RGB component specifications.
-            If a dictionary of specififcations is provided,
-            the keys of the should refer to node keys and the values should be color specifications in the form of strings or tuples.
-            The default value is ``None``, in which case the labels are assigned the default node color (``self.settings['color.nodes']``).
+            The default color is the same as the default color of the nodes.
 
         Returns
         -------
@@ -232,32 +228,25 @@ class NetworkArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        if text is None:
-            textdict = {key: str(key) for key in self.network.nodes()}
-        elif isinstance(text, dict):
-            textdict = text
-        elif text == 'key':
-            textdict = {key: str(key) for key in self.network.nodes()}
+        if not text or text == 'key':
+            node_text = {node: str(node) for node in self.network.nodes()}
         elif text == 'index':
-            textdict = {key: str(index) for index, key in enumerate(self.network.nodes())}
+            node_text = {node: str(index) for index, node in enumerate(self.network.nodes())}
+        elif isinstance(text, dict):
+            node_text = text
         else:
             raise NotImplementedError
-
-        colordict = color_to_colordict(color,
-                                       textdict.keys(),
-                                       default=self.settings['color.nodes'],
-                                       colorformat='rgb',
-                                       normalize=False)
+        node_xyz = self.node_xyz
+        node_color = colordict(color, node_text.keys(), default=self.color_nodes)
         labels = []
-        for key, text in iter(textdict.items()):
+        for node in node_text:
             labels.append({
-                'pos': self.network.node_coordinates(key),
-                'name': "{}.nodelabel.{}".format(self.network.name, key),
-                'color': colordict[key],
-                'text': textdict[key]})
-
+                'pos': node_xyz[node],
+                'name': "{}.nodelabel.{}".format(self.network.name, node),
+                'color': node_color[node],
+                'text': node_text[node]})
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guids += guids
+        self.guid_node = zip(guids, node_text)
         return guids
 
     def draw_edgelabels(self, text=None, color=None):
@@ -265,16 +254,12 @@ class NetworkArtist(BaseArtist):
 
         Parameters
         ----------
-        text : dict
-            A dictionary of edge labels as key-text pairs.
+        text : dict, optional
+            A dictionary of edgelabels as edge-text pairs.
             The default value is ``None``, in which case every edge will be labelled with its key.
-        color : str, tuple, dict
+        color : 3-tuple or dict of 3-tuple, optional
             The color sepcification of the labels.
-            String values are interpreted as hex colors.
-            Tuples are interpreted as RGB component specifications.
-            Individual colors can be assigned using a dictionary of key-color pairs.
-            Missing keys will be assigned the default face color (``self.settings['color.edges']``).
-            The default is ``None``, in which case all edges are assigned the default edge color.
+            The default color is the same as the default color of the edges.
 
         Returns
         -------
@@ -283,27 +268,22 @@ class NetworkArtist(BaseArtist):
 
         """
         if text is None:
-            textdict = {(u, v): "{}-{}".format(u, v) for u, v in self.network.edges()}
+            edge_text = {edge: "{}-{}".format(*edge) for edge in self.network.edges()}
         elif isinstance(text, dict):
-            textdict = text
+            edge_text = text
         else:
             raise NotImplementedError
-
-        colordict = color_to_colordict(color,
-                                       textdict.keys(),
-                                       default=self.settings['color.edges'],
-                                       colorformat='rgb',
-                                       normalize=False)
+        node_xyz = self.node_xyz
+        edge_color = colordict(color, edge_text.keys(), default=self.color_edges)
         labels = []
-        for (u, v), text in iter(textdict.items()):
+        for edge in edge_text:
             labels.append({
-                'pos': self.network.edge_midpoint(u, v),
-                'name': "{}.edgelabel.{}-{}".format(self.network.name, u, v),
-                'color': colordict[(u, v)],
-                'text': textdict[(u, v)]})
-
+                'pos': centroid_points([node_xyz[edge[0]], node_xyz[edge[1]]]),
+                'name': "{}.edgelabel.{}-{}".format(self.network.name, *edge),
+                'color': edge_color[edge],
+                'text': edge_text[edge]})
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guids += guids
+        self.guid_edge = zip(guids, edge_text)
         return guids
 
 

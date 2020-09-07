@@ -27,10 +27,6 @@ class CircleArtist(PrimitiveArtist):
     ----------------
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
-    Examples
-    --------
-    >>>
-
     """
 
     def draw(self):
