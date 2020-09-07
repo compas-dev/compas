@@ -4,7 +4,7 @@ from __future__ import division
 
 import abc
 import json
-# from uuid import uuid4
+from uuid import uuid4
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
@@ -42,24 +42,32 @@ class Base(ABC):
         """dict : The schema of the JSON representation of the data of this object."""
         raise NotImplementedError
 
-    # @property
-    # def guid(self):
-    #     if not self._guid:
-    #         self._guid = uuid4()
-    #     return self._guid
+    @property
+    def guid(self):
+        """str : The globally unique identifier of the object."""
+        if not self._guid:
+            self._guid = uuid4()
+        return self._guid
 
-    # @property
-    # def name(self):
-    #     if not self._name:
-    #         self._name = self.__class__.__name__
-    #     return self._name
+    @property
+    def name(self):
+        """str :
+        The name of the object.
+        This name is not necessarily unique and can be set by the user."""
+        if not self._name:
+            self._name = self.__class__.__name__
+        return self._name
 
-    # @name.setter
-    # def name(self, name):
-    #     self._name = name
+    @name.setter
+    def name(self, name):
+        self._name = name
 
     @abc.abstractproperty
     def data(self):
+        """dict :
+        The representation of the object as native Python data.
+        The structure uf the data is described by the data schema.
+        """
         pass
 
     @data.setter
@@ -68,18 +76,40 @@ class Base(ABC):
 
     @abstractclassmethod
     def from_data(cls, data):
+        """Construct an object of this type from the provided data."""
         pass
 
     @abc.abstractmethod
     def to_data(self):
+        """Convert an object to its native data representation.
+
+        Returns
+        -------
+        dict
+            The data representation of the object as described by the schema.
+        """
         pass
 
     @abstractclassmethod
     def from_json(cls, filepath):
+        """Construct an object from serialised data contained in a JSON file.
+
+        Parameters
+        ----------
+        filepath: str
+            The path to the file for serialisation.
+        """
         pass
 
     @abc.abstractmethod
     def to_json(self, filepath):
+        """Serialize the data representation of an object to a JSON file.
+
+        Parameters
+        ----------
+        filepath: str
+            The path to the file containing the data.
+        """
         pass
 
     def validate_data(self):
