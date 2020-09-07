@@ -3,13 +3,14 @@ from __future__ import division
 from __future__ import print_function
 
 import compas_rhino
-
+from compas.geometry import Point
+from compas.geometry import Scale
+from compas.geometry import Translation
+from compas.geometry import Rotation
 from compas_rhino.objects._object import BaseObject
-
 from compas_rhino.objects.modify import network_update_attributes
 from compas_rhino.objects.modify import network_update_node_attributes
 from compas_rhino.objects.modify import network_update_edge_attributes
-
 from compas_rhino.objects.modify import network_move_node
 
 
@@ -34,38 +35,27 @@ class NetworkObject(BaseObject):
     settings : dict, optional
         A dictionary of settings.
 
-    Attributes
-    ----------
-    guid_node : dict
-        Dictionary mapping Rhino object GUIDs to COMPAS network node identifiers.
-    guid_edge : dict
-        Dictionary mapping Rhino object GUIDs to COMPAS network edge identifiers.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import compas
-        from compas.datastructures import Network
-        from compas_rhino.objects import NetworkObject
-
-        network = Network.from_obj(compas.get('tubenetwork.off'))
-        networkobject = NetworkObject(network, name='NetworkObject', layer='COMPAS::NetworkObject', visible=True)
-        networkobject.clear()
-        networkobject.clear_layer()
-        networkobject.draw()
-        networkobject.redraw()
-
-        nodes = networkobject.select_nodes()
-        if networkobject.modify_nodes(nodes):
-            networkobject.clear()
-            networkobject.draw()
-            networkobject.redraw()
-
     """
 
+    modify = network_update_attributes
+    modify_nodes = network_update_node_attributes
+    modify_edges = network_update_edge_attributes
+
     def __init__(self, network, scene=None, name=None, layer=None, visible=True, settings=None):
-        super(NetworkObject, self).__init__(network, scene, name, layer, visible, settings)
+        super(NetworkObject, self).__init__(network, scene, name, layer, visible)
+        self._location = None
+        self._scale = None
+        self._rotation = None
+        self.settings.update({
+            'color.nodes': (255, 255, 255),
+            'color.edges': (0, 0, 0),
+            'show.nodes': True,
+            'show.edges': True,
+            'show.nodelabels': False,
+            'show.edgelabels': False,
+        })
+        if settings:
+            self.settings.update(settings)
 
     @property
     def network(self):
@@ -75,15 +65,79 @@ class NetworkObject(BaseObject):
     def network(self, network):
         self.item = network
 
+    @property
+    def location(self):
+        """:class:`compas.geometry.Point`:
+        The location of the object.
+        Default is the origin of the world coordinate system.
+        The object transformation is applied relative to this location.
+
+        Setting this location will make a copy of the provided point object.
+        Moving the original point will thus not affect the object's location.
+        """
+        if not self._location:
+            self._location = Point(0, 0, 0)
+        return self._location
+
+    @location.setter
+    def location(self, location):
+        self._location = Point(*location)
+
+    @property
+    def scale(self):
+        """float:
+        A uniform scaling factor for the object in the scene.
+        The scale is applied relative to the location of the object in the scene.
+        """
+        if not self._scale:
+            self._scale = 1.0
+        return self._scale
+
+    @scale.setter
+    def scale(self, scale):
+        self._scale = scale
+
+    @property
+    def rotation(self):
+        """list of float:
+        The rotation angles around the 3 axis of the coordinate system
+        with the origin placed at the location of the object in the scene.
+        """
+        if not self._rotation:
+            self._rotation = [0, 0, 0]
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, rotation):
+        self._rotation = rotation
+
+    @property
+    def vertex_xyz(self):
+        S = Scale.from_factors([self.scale] * 3)
+        R = Rotation.from_euler_angles(self.rotation)
+        T = Translation.from_vector(self.location)
+        network = self.network.transformed(T * R * S)
+        node_xyz = {node: network.node_attributes(node, 'xyz') for node in network.nodes()}
+        return node_xyz
+
     def clear(self):
         self.artist.clear()
 
     def draw(self):
         """Draw the object representing the network.
         """
+        self.clear()
         if not self.visible:
             return
-        self.artist.draw()
+        self.artist.node_xyz = self.node_xyz
+        if self.settings['show.nodes']:
+            self.artist.draw_nodes(color=self.settings['color.nodes'])
+            if self.settings['show.nodelabels']:
+                self.artist.draw_nodelabels(color=self.settings['color.nodes'])
+        if self.settings['show.edges']:
+            self.artist.draw_edges(color=self.settings['color.edges'])
+            if self.settings['show.edgelabels']:
+                self.artist.draw_edgelabels(color=self.settings['color.edges'])
 
     def select(self):
         raise NotImplementedError
@@ -111,41 +165,6 @@ class NetworkObject(BaseObject):
         guids = compas_rhino.select_lines()
         edges = [self.artist.guid_edge[guid] for guid in guids if guid in self.artist.guid_edge]
         return edges
-
-    def modify(self):
-        return network_update_attributes(self.network)
-
-    def modify_nodes(self, nodes):
-        """Modify the attributes of the nodes of the network item.
-
-        Parameters
-        ----------
-        nodes : list
-            The identifiers of the nodes of which the attributes will be updated.
-
-        Returns
-        -------
-        bool
-            ``True`` if the attributes were successfully updated.
-            ``False`` otherwise.
-        """
-        return network_update_node_attributes(self.network, nodes)
-
-    def modify_edges(self, edges):
-        """Modify the attributes of the edges of the network item.
-
-        Parameters
-        ----------
-        edges : list
-            The identifiers of the edges of which the attributes will be updated.
-
-        Returns
-        -------
-        bool
-            ``True`` if the attributes were successfully updated.
-            ``False`` otherwise.
-        """
-        return network_update_edge_attributes(self.network, edges)
 
     def move(self):
         raise NotImplementedError

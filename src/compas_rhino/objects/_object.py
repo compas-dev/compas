@@ -61,13 +61,12 @@ class BaseObject(ABC):
         self._guid = None
         self._scene = None
         self._artist = None
-        self._settings = {}
         self.scene = scene
         self.item = item
         self.name = name
         self.layer = layer
         self.visible = visible
-        self.settings = settings
+        self.settings = settings or {}
 
     # ==========================================================================
     # Properties
@@ -89,7 +88,6 @@ class BaseObject(ABC):
     def item(self, item):
         self._item = item
         self._artist = BaseArtist.build(item)
-        self.settings = self._artist.settings
 
     @property
     def artist(self):
@@ -116,15 +114,6 @@ class BaseObject(ABC):
     @layer.setter
     def layer(self, layer):
         self.artist.layer = layer
-
-    @property
-    def settings(self):
-        return self._settings
-
-    @settings.setter
-    def settings(self, settings):
-        if settings:
-            self._settings.update(settings)
 
     # ==========================================================================
     # Methods

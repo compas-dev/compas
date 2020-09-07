@@ -38,36 +38,6 @@ class MeshObject(BaseObject):
     settings : dict, optional
         A dictionary of settings.
 
-    Attributes
-    ----------
-    guid_vertex : dict
-        Dictionary mapping Rhino object GUIDs to COMPAS mesh vertex identifiers.
-    guid_face : dict
-        Dictionary mapping Rhino object GUIDs to COMPAS mesh face identifiers.
-    guid_edge : dict
-        Dictionary mapping Rhino object GUIDs to COMPAS mesh edge identifiers.
-
-    Examples
-    --------
-    .. code-block:: python
-
-        import compas
-        from compas.datastructures import Mesh
-        from compas_rhino.objects import MeshObject
-
-        mesh = Mesh.from_off(compas.get('tubemesh.off'))
-        meshobject = MeshObject(mesh, name='MeshObject', layer='COMPAS::MeshObject', visible=True)
-        meshobject.clear()
-        meshobject.clear_layer()
-        meshobject.draw()
-        meshobject.redraw()
-
-        vertices = meshobject.select_vertices()
-        if meshobject.modify_vertices(vertices):
-            meshobject.clear()
-            meshobject.draw()
-            meshobject.redraw()
-
     """
 
     modify = mesh_update_attributes
@@ -76,13 +46,27 @@ class MeshObject(BaseObject):
     modify_edges = mesh_update_edge_attributes
 
     def __init__(self, mesh, scene=None, name=None, layer=None, visible=True, settings=None):
-        super(MeshObject, self).__init__(mesh, scene, name, layer, visible, settings)
+        super(MeshObject, self).__init__(mesh, scene, name, layer, visible)
         self._location = None
         self._scale = None
         self._rotation = None
-        self._guid_vertex = {}
-        self._guid_face = {}
-        self._guid_edge = {}
+        self.settings.update({
+            'color.vertices': (255, 255, 255),
+            'color.edges': (0, 0, 0),
+            'color.faces': (0, 0, 0),
+            'color.mesh': (0, 0, 0),
+            'show.mesh': True,
+            'show.vertices': True,
+            'show.edges': True,
+            'show.faces': False,
+            'show.vertexlabels': False,
+            'show.facelabels': False,
+            'show.edgelabels': False,
+            'show.vertexnormals': False,
+            'show.facenormals': False,
+        })
+        if settings:
+            self.settings.update(settings)
 
     @property
     def mesh(self):
@@ -153,10 +137,29 @@ class MeshObject(BaseObject):
     def draw(self):
         """Draw the object representing the mesh.
         """
+        self.clear()
         if not self.visible:
             return
         self.artist.vertex_xyz = self.vertex_xyz
-        self.artist.draw()
+        if self.settings['show.vertices']:
+            self.artist.draw_vertices(color=self.settings['color.vertices'])
+            if self.settings['show.vertexlabels']:
+                self.artist.draw_vertexlabels(color=self.settings['color.vertices'])
+            if self.settings['show.vertexnormals']:
+                self.artist.draw_vertexnormals(color=self.settings['color.vertices'])
+        if self.settings['show.mesh']:
+            self.artist.draw_mesh(color=self.settings['color.mesh'], disjoint=True)
+        else:
+            if self.settings['show.faces']:
+                self.artist.draw_faces(color=self.settings['color.faces'])
+                if self.settings['show.facelabels']:
+                    self.artist.draw_facelabels(color=self.settings['color.faces'])
+                if self.settings['show.facenormals']:
+                    self.artist.draw_facenormals(color=self.settings['color.faces'])
+        if self.settings['show.edges']:
+            self.artist.draw_edges(color=self.settings['color.edges'])
+            if self.settings['show.edgelabels']:
+                self.artist.draw_edgelabels(color=self.settings['color.edges'])
 
     def select(self):
         raise NotImplementedError
