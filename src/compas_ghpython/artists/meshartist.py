@@ -2,14 +2,19 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from functools import partial
+
 import Rhino
 
 import compas_ghpython
 from compas_ghpython.artists._artist import BaseArtist
 
 from compas.geometry import centroid_polygon
-from compas.utilities import color_to_colordict as colordict
+from compas.utilities import color_to_colordict
 from compas.utilities import pairwise
+
+
+colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
 __all__ = ['MeshArtist']
@@ -22,13 +27,17 @@ class MeshArtist(BaseArtist):
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         A COMPAS mesh.
-    settings : dict, optional
-        A dict with custom visualisation settings.
 
     Attributes
     ----------
     mesh : :class:`compas.datastructures.Mesh`
         The COMPAS mesh associated with the artist.
+    color_vertices : 3-tuple
+        Default color of the vertices.
+    color_edges : 3-tuple
+        Default color of the edges.
+    color_faces : 3-tuple
+        Default color of the faces.
 
     Examples
     --------
@@ -50,11 +59,9 @@ class MeshArtist(BaseArtist):
     def __init__(self, mesh):
         self._mesh = None
         self.mesh = mesh
-        self.settings = {
-            'color.vertices': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'color.faces': (210, 210, 210),
-        }
+        self.color_vertices = (255, 255, 255)
+        self.color_edges = (0, 0, 0)
+        self.color_faces = (210, 210, 210)
 
     @property
     def mesh(self):
@@ -65,23 +72,7 @@ class MeshArtist(BaseArtist):
     def mesh(self, mesh):
         self._mesh = mesh
 
-    def draw(self):
-        """For meshes (and data structures in general), a main draw function does not exist.
-        Instead, you should use the drawing functions for the various components of the mesh:
-
-        * ``draw_vertices``
-        * ``draw_faces``
-        * ``draw_edges``
-
-        To simply draw a mesh, use ``draw_mesh``.
-        """
-        raise NotImplementedError
-
-    # ==============================================================================
-    # components
-    # ==============================================================================
-
-    def draw_mesh(self, color=None):
+    def draw(self, color=None):
         """Draw the mesh as a RhinoMesh.
 
         Parameters
@@ -93,14 +84,10 @@ class MeshArtist(BaseArtist):
         -------
         :class:`Rhino.Geometry.Mesh`
 
-        Notes
-        -----
-        Faces with more than 4 vertices will be triangulated on-the-fly.
-
         """
-        key_index = self.mesh.key_index()
+        vertex_index = self.mesh.key_index()
         vertices = self.mesh.vertices_attributes('xyz')
-        faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
+        faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
         new_faces = []
         for face in faces:
             f = len(face)
@@ -126,9 +113,9 @@ class MeshArtist(BaseArtist):
         vertices : list, optional
             A selection of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
-        color : rgb-tuple or dict of rgb-tuple, optional
+        color : 3-tuple or dict of 3-tuple, optional
             The color specififcation for the vertices.
-            The default color is defined in the class settings.
+            The default color is ``(255, 255, 255)``.
 
         Returns
         -------
@@ -136,7 +123,7 @@ class MeshArtist(BaseArtist):
 
         """
         vertices = vertices or list(self.mesh.vertices())
-        vertex_color = colordict(color, vertices, default=self.settings['color.vertices'], colorformat='rgb', normalize=False)
+        vertex_color = colordict(color, vertices, default=self.color_vertices)
         points = []
         for vertex in vertices:
             points.append({
@@ -153,9 +140,9 @@ class MeshArtist(BaseArtist):
         faces : list
             A selection of faces to draw.
             The default is ``None``, in which case all faces are drawn.
-        color : rgb-tuple or dict of rgb-tuple, optional
+        color : 3-tuple or dict of 3-tuple, optional
             The color specififcation for the faces.
-            The default color is in the class settings.
+            The default color is ``(0, 0, 0)``.
 
         Returns
         -------
@@ -163,7 +150,7 @@ class MeshArtist(BaseArtist):
 
         """
         faces = faces or list(self.mesh.faces())
-        face_color = colordict(color, faces, default=self.settings['color.faces'], colorformat='rgb', normalize=False)
+        face_color = colordict(color, faces, default=self.color_faces)
         faces_ = []
         for face in faces:
             faces_.append({
@@ -186,9 +173,9 @@ class MeshArtist(BaseArtist):
         edges : list, optional
             A selection of edges to draw.
             The default is ``None``, in which case all edges are drawn.
-        color : rgb-tuple or dict of rgb-tuple, optional
+        color : 3-tuple or dict of 3-tuple, optional
             The color specififcation for the edges.
-            The default color is in the class settings.
+            The default color is ``(210, 210, 210)``.
 
         Returns
         -------
@@ -196,7 +183,7 @@ class MeshArtist(BaseArtist):
 
         """
         edges = edges or list(self.mesh.edges())
-        edge_color = colordict(color, edges, default=self.settings['color.edges'], colorformat='rgb', normalize=False)
+        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
             start, end = self.mesh.edge_coordinates(*edge)

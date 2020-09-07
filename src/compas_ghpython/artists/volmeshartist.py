@@ -2,11 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import Rhino
-import compas_ghpython
+from functools import partial
 
+import Rhino
+
+import compas_ghpython
 from compas_ghpython.artists._artist import BaseArtist
-from compas.utilities import color_to_colordict as colordict
+
+# from compas.geometry import centroid_polygon
+from compas.utilities import color_to_colordict
+# from compas.utilities import pairwise
+
+
+colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
 __all__ = ['VolMeshArtist']
@@ -19,38 +27,26 @@ class VolMeshArtist(BaseArtist):
     ----------
     volmesh : :class:`compas.datastructures.VolMesh`
         A COMPAS volmesh.
-    settings : dict, optional
-        A dict with custom visualisation settings.
 
     Attributes
     ----------
     volmesh : :class:`compas.datastructures.VolMesh`
         The COMPAS volmesh associated with the artist.
-    settings : dict
-        Default settings for color, scale, tolerance, ...
-
-    Examples
-    --------
-    .. code-block:: python
-
-        pass
+    color_vertices : 3-tuple
+        Default color of the vertices.
+    color_edges : 3-tuple
+        Default color of the edges.
+    color_faces : 3-tuple
+        Default color of the faces.
 
     """
 
     def __init__(self, volmesh):
         self._volmesh = None
         self.volmesh = volmesh
-        self.settings = {
-            'color.vertices': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'color.faces': (210, 210, 210),
-            'show.vertices': True,
-            'show.edges': True,
-            'show.faces': True,
-            'show.vertexlabels': False,
-            'show.facelabels': False,
-            'show.edgelabels': False,
-        }
+        self.color_vertices = (255, 255, 255)
+        self.color_edges = (0, 0, 0)
+        self.color_faces = (210, 210, 210)
 
     @property
     def volmesh(self):
@@ -62,18 +58,8 @@ class VolMeshArtist(BaseArtist):
         self._volmesh = volmesh
 
     def draw(self):
-        """For meshes (and data structures in general), a main draw function does not exist.
-        Instead, you should use the drawing functions for the various components of the mesh:
-
-        * ``draw_vertices``
-        * ``draw_faces``
-        * ``draw_edges``
-        """
+        """"""
         raise NotImplementedError
-
-    # ==============================================================================
-    # components
-    # ==============================================================================
 
     def draw_vertices(self, vertices=None, color=None):
         """Draw a selection of vertices.
@@ -83,9 +69,9 @@ class VolMeshArtist(BaseArtist):
         vertices : list, optional
             A selection of vertices to draw.
             Default is ``None``, in which case all vertices are drawn.
-        color : rgb-tuple or dict of rgb-tuple, optional
+        color : 3-tuple or dict of 3-tuple, optional
             The color specififcation for the vertices.
-            The default color is defined in the class settings.
+            The default color is ``(255, 255, 255)``.
 
         Returns
         -------
@@ -93,7 +79,7 @@ class VolMeshArtist(BaseArtist):
 
         """
         vertices = vertices or list(self.volmesh.vertices())
-        vertex_color = colordict(color, vertices, default=self.settings['color.vertices'], colorformat='rgb', normalize=False)
+        vertex_color = colordict(color, vertices, default=self.color_vertices)
         points = []
         for vertex in vertices:
             points.append({
@@ -110,9 +96,9 @@ class VolMeshArtist(BaseArtist):
         faces : list
             A selection of faces to draw.
             The default is ``None``, in which case all faces are drawn.
-        color : rgb-tuple or dict of rgb-tuple, optional
+        color : 3-tuple or dict of 3-tuple, optional
             The color specififcation for the faces.
-            The default color is in the class settings.
+            The default color is ``(210, 210, 210)``.
 
         Returns
         -------
@@ -120,7 +106,7 @@ class VolMeshArtist(BaseArtist):
 
         """
         faces = faces or list(self.volmesh.faces())
-        face_color = colordict(color, faces, default=self.settings['color.faces'], colorformat='rgb', normalize=False)
+        face_color = colordict(color, faces, default=self.color_faces)
         faces_ = []
         for face in faces:
             faces_.append({
@@ -143,9 +129,9 @@ class VolMeshArtist(BaseArtist):
         edges : list, optional
             A selection of edges to draw.
             The default is ``None``, in which case all edges are drawn.
-        color : rgb-tuple or dict of rgb-tuple, optional
+        color : 3-tuple or dict of 3-tuple, optional
             The color specififcation for the edges.
-            The default color is in the class settings.
+            The default color is ``(0, 0, 0)``.
 
         Returns
         -------
@@ -153,7 +139,7 @@ class VolMeshArtist(BaseArtist):
 
         """
         edges = edges or list(self.volmesh.edges())
-        edge_color = colordict(color, edges, default=self.settings['color.edges'], colorformat='rgb', normalize=False)
+        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
             start, end = self.volmesh.edge_coordinates(*edge)

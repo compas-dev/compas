@@ -15,8 +15,6 @@ class PrimitiveArtist(BaseArtist):
     ----------
     primitive: :class:`compas.geometry.Primitive`
         The instance of the primitive.
-    name : str, optional
-        The name of the primitive object.
     color : 3-tuple, optional
         The RGB color specification of the object.
 
@@ -31,11 +29,19 @@ class PrimitiveArtist(BaseArtist):
 
     """
 
-    def __init__(self, primitive, name=None, color=None):
+    def __init__(self, primitive, color=None):
         super(PrimitiveArtist, self).__init__()
         self.primitive = primitive
-        self.name = name
         self.color = color
+
+    @property
+    def name(self):
+        """str : Reference to the name of the primitive."""
+        return self.primitive.name
+
+    @name.setter
+    def name(self, name):
+        self.primitive.name = name
 
 
 # ==============================================================================

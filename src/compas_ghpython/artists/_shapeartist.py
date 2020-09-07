@@ -16,8 +16,8 @@ class ShapeArtist(BaseArtist):
     ----------
     shape: :class:`compas.geometry.Shape`
         The instance of the shape.
-    name : str, optional
-        The name of the shape.
+    color : 3-tuple, optional
+        The RGB components of the base color of the shape.
 
     Attributes
     ----------
@@ -25,19 +25,17 @@ class ShapeArtist(BaseArtist):
         A reference to the geometry of the shape.
     name : str
         The name of the shape.
-
-    Examples
-    --------
-    >>>
+    color : tuple
+        The RGB components of the base color of the shape.
 
     """
 
-    def __init__(self, shape, name=None):
+    def __init__(self, shape, color=None):
         super(ShapeArtist, self).__init__()
         self._shape = None
         self._mesh = None
         self.shape = shape
-        self.name = name
+        self.color = color
 
     @property
     def shape(self):
@@ -48,11 +46,19 @@ class ShapeArtist(BaseArtist):
         self._shape = shape
         self._mesh = Mesh.from_shape(shape)
 
+    @property
+    def name(self):
+        """str : Reference to the name of the shape."""
+        return self.shape.name
+
+    @name.setter
+    def name(self, name):
+        self.shape.name = name
+
 
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
-
     pass

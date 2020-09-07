@@ -2,10 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from functools import partial
 import compas_ghpython
-
 from compas_ghpython.artists._artist import BaseArtist
-from compas.utilities import color_to_colordict as colordict
+from compas.utilities import color_to_colordict
+
+
+colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
 
 __all__ = ['NetworkArtist']
@@ -23,18 +26,18 @@ class NetworkArtist(BaseArtist):
     ----------
     network : :class:`compas.datastructures.Network`
         The COMPAS network associated with the artist.
-    settings : dict
-        Default settings for color of network components.
+    color_nodes : 3-tuple
+        Default color of the nodes.
+    color_edges : 3-tuple
+        Default color of the edges.
 
     """
 
     def __init__(self, network):
         self._network = None
         self.network = network
-        self.settings = {
-            'color.nodes': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-        }
+        self.color_nodes = (255, 255, 255)
+        self.color_edges = (0, 0, 0)
 
     @property
     def network(self):
@@ -46,13 +49,14 @@ class NetworkArtist(BaseArtist):
         self._network = network
 
     def draw(self):
-        """For networks (and data structures in general), a main draw function does not exist.
-        Instead, you should use the drawing functions for the various components of the mesh:
+        """Draw the entire network with default color settings.
 
-        * ``draw_nodes``
-        * ``draw_edges``
+        Returns
+        -------
+        tuple
+            list of :class:`Rhino.Geometry.Point3d` and list of :class:`Rhino.Geometry.Line`
         """
-        raise NotImplementedError
+        return (self.draw_nodes(), self.draw_edges())
 
     # ==============================================================================
     # components
@@ -66,9 +70,9 @@ class NetworkArtist(BaseArtist):
         nodes: list, optional
             The selection of nodes that should be drawn.
             Default is ``None``, in which case all nodes are drawn.
-        color: rgb-tuple or dict of rgb-tuple, optional
+        color: 3-tuple or dict of 3-tuple, optional
             The color specififcation for the nodes.
-            The default is defined in the class settings.
+            The default color is ``(255, 255, 255)``.
 
         Returns
         -------
@@ -76,7 +80,7 @@ class NetworkArtist(BaseArtist):
 
         """
         nodes = nodes or list(self.network.nodes())
-        node_color = colordict(color, nodes, default=self.settings['color.nodes'], colorformat='rgb', normalize=False)
+        node_color = colordict(color, nodes, default=self.color_nodes)
         points = []
         for node in nodes:
             points.append({
@@ -93,9 +97,9 @@ class NetworkArtist(BaseArtist):
         edges : list, optional
             A list of edges to draw.
             The default is ``None``, in which case all edges are drawn.
-        color : rgb-tuple or dict of rgb-tuple, optional
+        color : 3-tuple or dict of 3-tuple, optional
             The color specififcation for the edges.
-            The default color is defined in the class settings.
+            The default color is ``(0, 0, 0)``.
 
         Returns
         -------
@@ -103,7 +107,7 @@ class NetworkArtist(BaseArtist):
 
         """
         edges = edges or list(self.network.edges())
-        edge_color = colordict(color, edges, default=self.settings['color.edges'], colorformat='rgb', normalize=False)
+        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
             start, end = self.network.edge_coordinates(*edge)
