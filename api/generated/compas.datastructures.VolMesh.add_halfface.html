@@ -89,13 +89,14 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.add_halfface</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.add_halfface">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">add_halfface</code><span class="sig-paren">(</span><em class="sig-param">vertices</em>, <em class="sig-param">fkey=None</em>, <em class="sig-param">attr_dict=None</em>, <em class="sig-param">**kwattr</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">add_halfface</code><span class="sig-paren">(</span><em class="sig-param">vertices</em>, <em class="sig-param">hfkey=None</em>, <em class="sig-param">attr_dict=None</em>, <em class="sig-param">**kwattr</em><span class="sig-paren">)</span></dt>
 <dd><p>Add a halfface to the volmesh object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vertices</strong> (<em>list</em>) – A list of ordered vertex keys representing the halfface.
 For every vertex that does not yet exist, a new vertex is created.</p></li>
+<li><p><strong>hfkey</strong> (<em>int, optional</em>) – The halfface identifier.</p></li>
 <li><p><strong>attr_dict</strong> (<em>dict, optional</em>) – Halfface attributes.</p></li>
 <li><p><strong>kwattr</strong> (<em>dict, optional</em>) – Additional named halfface attributes.
 Named halfface attributes overwrite corresponding attributes in the

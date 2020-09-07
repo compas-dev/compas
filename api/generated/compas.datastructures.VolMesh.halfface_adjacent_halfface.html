@@ -89,13 +89,13 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.halfface_adjacent_halfface</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.halfface_adjacent_halfface">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">halfface_adjacent_halfface</code><span class="sig-paren">(</span><em class="sig-param">hfkey</em>, <em class="sig-param">uv</em><span class="sig-paren">)</span></dt>
-<dd><p>Return the halfface adjacent to a halfface across the halfedge uv.</p>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">halfface_adjacent_halfface</code><span class="sig-paren">(</span><em class="sig-param">halfface</em>, <em class="sig-param">edge</em><span class="sig-paren">)</span></dt>
+<dd><p>Return the halfface adjacent to a halfface across the halfedge edge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>hfkey</strong> (<em>hashable</em>) – The identifier of the halfface.</p></li>
-<li><p><strong>uv</strong> (<em>tuple of int</em>) – The identifier of the halfedge.</p></li>
+<li><p><strong>halfface</strong> (<em>int</em>) – The identifier of the halfface.</p></li>
+<li><p><strong>edge</strong> (<em>tuple of int</em>) – The identifier of the common edge.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -104,8 +104,8 @@ None, if both halffaces belong to the same cell.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The adjacent halfface belongs a to one of the cell neighbors over halffaces of the initial cell.</p>
-<p>A halfface and its adjacent halfface share two common vertices.</p>
+<p>The adjacent halfface belongs a to one of the cell neighbors over halffaces of the initial cell.
+A halfface and its adjacent halfface share two common vertices.</p>
 </dd></dl>
 
 </div>

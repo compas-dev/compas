@@ -89,11 +89,14 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.cell_to_vertices_and_halffaces</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.cell_to_vertices_and_halffaces">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">cell_to_vertices_and_halffaces</code><span class="sig-paren">(</span><em class="sig-param">ckey</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">cell_to_vertices_and_halffaces</code><span class="sig-paren">(</span><em class="sig-param">cell</em><span class="sig-paren">)</span></dt>
 <dd><p>Return the vertices and halffaces of a cell.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><p><em>tuple</em> – A 2-tuple containing</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cell</strong> (<em>hashable</em>) – Identifier of the cell.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><em>tuple</em> – A 2-tuple containing</p>
 <ul class="simple">
 <li><p>a list of vertices, represented by their XYZ coordinates, and</p></li>
 <li><p>a list of halffaces.</p></li>

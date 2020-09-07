@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMesh.is_halfface_on_boundary" href="compas.datastructures.VolMesh.is_halfface_on_boundary.html" />
+    <link rel="next" title="VolMesh.is_face_on_boundary" href="compas.datastructures.VolMesh.is_face_on_boundary.html" />
   
   
   
-    <link rel="prev" title="VolMesh.index_key" href="compas.datastructures.VolMesh.index_key.html" />
+    <link rel="prev" title="VolMesh.is_cell_on_boundary" href="compas.datastructures.VolMesh.is_cell_on_boundary.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -89,20 +89,22 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.is_edge_on_boundary</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.is_edge_on_boundary">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">is_edge_on_boundary</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">is_edge_on_boundary</code><span class="sig-paren">(</span><em class="sig-param">edge</em><span class="sig-paren">)</span></dt>
 <dd><p>Verify that an edge is on the boundary.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>int</em>) – The identifier of the first vertex.</p></li>
-<li><p><strong>v</strong> (<em>int</em>) – The identifier of the second vertex.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>edge</strong> (<em>tuple of int</em>) – The identifier of the edge.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>bool</em> – True if the edge is on the boundary.
 False otherwise.</p>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method simply checks if u-v or v-u is on the edge of the volmesh.
+The direction u-v does not matter.</p>
+</div>
 </dd></dl>
 
 </div>

@@ -89,17 +89,14 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.edge_cells</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.edge_cells">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">edge_cells</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em><span class="sig-paren">)</span></dt>
-<dd><p>Ordered cells around edge u-v.</p>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">edge_cells</code><span class="sig-paren">(</span><em class="sig-param">edge</em><span class="sig-paren">)</span></dt>
+<dd><p>Ordered cells around edge (u, v).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>hashable</em>) – The identifier of the first vertex.</p></li>
-<li><p><strong>v</strong> (<em>hashable</em>) – The identifier of the second vertex.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>edge</strong> (<em>tuple of int</em>) – The identifier of the edge.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – Ordered list of keys identifying the adjacent cells.</p>
+<dd class="field-even"><p><em>list</em> – Ordered list of keys identifying the ordered cells.</p>
 </dd>
 </dl>
 </dd></dl>

@@ -89,17 +89,17 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.halfface_vertex_descendent</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.halfface_vertex_descendent">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">halfface_vertex_descendent</code><span class="sig-paren">(</span><em class="sig-param">hfkey</em>, <em class="sig-param">vkey</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">halfface_vertex_descendent</code><span class="sig-paren">(</span><em class="sig-param">halfface</em>, <em class="sig-param">vertex</em><span class="sig-paren">)</span></dt>
 <dd><p>Return the vertex after the specified vertex in a specific halfface.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>hfkey</strong> (<em>hashable</em>) – Identifier of the halfface.</p></li>
-<li><p><strong>vkey</strong> (<em>hashable</em>) – The identifier of the vertex.</p></li>
+<li><p><strong>halfface</strong> (<em>int</em>) – Identifier of the halfface.</p></li>
+<li><p><strong>vertex</strong> (<em>int</em>) – The identifier of the vertex.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>hashable</em> – The identifier of the vertex after the given vertex in the halfface cycle.</p>
+<dd class="field-even"><p><em>int</em> – The identifier of the vertex after the given vertex in the halfface cycle.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.8)"><strong>ValueError</strong></a> – If the vertex is not part of the halfface.</p>

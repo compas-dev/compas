@@ -89,14 +89,14 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.cell_vertex_normal</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.cell_vertex_normal">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">cell_vertex_normal</code><span class="sig-paren">(</span><em class="sig-param">ckey</em>, <em class="sig-param">vkey</em><span class="sig-paren">)</span></dt>
-<dd><p>Return the normal vector at the vertex of a cell as the weighted average of the
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">cell_vertex_normal</code><span class="sig-paren">(</span><em class="sig-param">cell</em>, <em class="sig-param">vertex</em><span class="sig-paren">)</span></dt>
+<dd><p>Return the normal vector at the vertex of a boundary cell as the weighted average of the
 normals of the neighboring halffaces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ckey</strong> (<em>int</em>) – The identifier of the vertex of the cell.</p></li>
-<li><p><strong>vkey</strong> (<em>int</em>) – The identifier of the vertex of the cell.</p></li>
+<li><p><strong>cell</strong> (<em>int</em>) – The identifier of the vertex of the cell.</p></li>
+<li><p><strong>vertex</strong> (<em>int</em>) – The identifier of the vertex of the cell.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

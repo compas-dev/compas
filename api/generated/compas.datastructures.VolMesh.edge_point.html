@@ -89,13 +89,12 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.edge_point</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.edge_point">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">edge_point</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">t=0.5</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">edge_point</code><span class="sig-paren">(</span><em class="sig-param">edge</em>, <em class="sig-param">t=0.5</em><span class="sig-paren">)</span></dt>
 <dd><p>Return the location of a point along an edge.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u</strong> (<em>int</em>) – The key of the start vertex.</p></li>
-<li><p><strong>v</strong> (<em>int</em>) – The key of the end vertex.</p></li>
+<li><p><strong>edge</strong> (<em>tuple of int</em>) – The edge identifier.</p></li>
 <li><p><strong>t</strong> (<em>float (0.5)</em>) – The location of the point on the edge.
 If the value of <code class="docutils literal notranslate"><span class="pre">t</span></code> is outside the range <code class="docutils literal notranslate"><span class="pre">0-1</span></code>, the point will
 lie in the direction of the edge, but not on the edge vector.</p></li>

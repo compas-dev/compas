@@ -113,7 +113,6 @@
 <span class="k">class</span> <span class="nc">BaseVolMesh</span><span class="p">(</span><span class="n">HalfFace</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Geometric implementation of a halfface data structure for volumetric meshes.</span>
 
-
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    attributes : dict</span>
@@ -153,7 +152,7 @@
 <span class="sd">        * &#39;facedata&#39;     =&gt; dict</span>
 <span class="sd">        * &#39;celldata&#39;     =&gt; dict</span>
 <span class="sd">        * &#39;max_int_key&#39;  =&gt; int</span>
-<span class="sd">        * &#39;max_int_fkey&#39; =&gt; int</span>
+<span class="sd">        * &#39;max_int_hfkey&#39; =&gt; int</span>
 <span class="sd">        * &#39;max_int_ckey&#39; =&gt; int</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -190,7 +189,6 @@
 <span class="sd">        -------</span>
 <span class="sd">        Volesh</span>
 <span class="sd">            A volmesh object.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">OBJ</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">vertices</span>
@@ -245,7 +243,6 @@
 <span class="sd">        -------</span>
 <span class="sd">        Volmesh</span>
 <span class="sd">            A volmesh object.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">volmesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
@@ -266,35 +263,38 @@
 <span class="sd">            * a list of cells.</span>
 
 <span class="sd">            Each cell is a list of halffaces, which are lists of indices referencing the list of vertex coordinates.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">key_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
+        <span class="n">vertex_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
         <span class="n">cells</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">ckey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">:</span>
-            <span class="n">halffaces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">key_index</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface</span><span class="p">[</span><span class="n">fkey</span><span class="p">]]</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halffaces</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">:</span>
+            <span class="n">halffaces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]]</span> <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)]</span>
             <span class="n">cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">halffaces</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">cells</span>
 
-    <span class="k">def</span> <span class="nf">cell_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ckey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a mesh object from from a cell of a volmesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        hfkey : hashable</span>
+<span class="sd">        cell : hashable</span>
 <span class="sd">            Identifier of the cell.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        Mesh</span>
 <span class="sd">            A mesh object.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_halffaces</span><span class="p">(</span><span class="n">ckey</span><span class="p">)</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">cell_to_vertices_and_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ckey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_to_vertices_and_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vertices and halffaces of a cell.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cell : hashable</span>
+<span class="sd">            Identifier of the cell.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -305,13 +305,12 @@
 <span class="sd">            * a list of halffaces.</span>
 
 <span class="sd">            Each halfface is a list of indices referencing the list of vertex coordinates.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">ckey</span><span class="p">)</span>
-        <span class="n">hfkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_halffaces</span><span class="p">(</span><span class="n">ckey</span><span class="p">)</span>
-        <span class="n">vkey_vindex</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">vkey</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vkeys</span><span class="p">))</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">vkeys</span><span class="p">]</span>
-        <span class="n">halffaces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vkey_vindex</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface</span><span class="p">[</span><span class="n">fkey</span><span class="p">]]</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">hfkeys</span><span class="p">]</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">vkey_vindex</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">vertex</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">))</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
+        <span class="n">halffaces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vkey_vindex</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]]</span> <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="n">halffaces</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -330,12 +329,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict</span>
-<span class="sd">            A dictionary of key-geometric key pairs.</span>
+<span class="sd">            A dictionary of vertex-geometric key pairs.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">vertex</span><span class="p">),</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
 
     <span class="k">def</span> <span class="nf">gkey_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps *geometric keys* of a certain precision</span>
@@ -349,12 +348,12 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict</span>
-<span class="sd">            A dictionary of geometric key-key pairs.</span>
+<span class="sd">            A dictionary of geometric key-vertex pairs.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">vertex</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">vertex</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># builders</span>
@@ -371,27 +370,24 @@
     <span class="k">def</span> <span class="nf">centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the centroid of the volmesh.</span>
 
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the centroid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">])</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># vertex geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vkey</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinates of a vertex.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        vkey : hashable</span>
+<span class="sd">        vertex : int</span>
 <span class="sd">            The identifier of the vertex.</span>
 <span class="sd">        axes : str, optional</span>
 <span class="sd">            The axes alon which to take the coordinates.</span>
@@ -404,14 +400,14 @@
 <span class="sd">            Coordinates of the vertex.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">vkey</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">vertex_laplacian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_laplacian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the vector from a vertex to the centroid of its neighbors.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        key : int</span>
+<span class="sd">        vertex : int</span>
 <span class="sd">            The identifier of the vertex.</span>
 
 <span class="sd">        Returns</span>
@@ -419,16 +415,16 @@
 <span class="sd">        list</span>
 <span class="sd">            The components of the vector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighborhood_centroid</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighborhood_centroid</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">vertex_neighborhood_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">vertex_neighborhood_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the centroid of the neighbors of a vertex.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        key : int</span>
+<span class="sd">        vertex : int</span>
 <span class="sd">            The identifier of the vertex.</span>
 
 <span class="sd">        Returns</span>
@@ -436,21 +432,19 @@
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the centroid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vertex</span><span class="p">)])</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># edge geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinates of the start and end point of an edge.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        u : int</span>
-<span class="sd">            The key of the start vertex.</span>
-<span class="sd">        v : int</span>
-<span class="sd">            The key of the end vertex.</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
 <span class="sd">        axes : str (xyz)</span>
 <span class="sd">            The axes along which the coordinates should be included.</span>
 
@@ -460,17 +454,16 @@
 <span class="sd">            The coordinates of the start point and the coordinates of the end point.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the length of an edge.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        u : int</span>
-<span class="sd">            The key of the start vertex.</span>
-<span class="sd">        v : int</span>
-<span class="sd">            The key of the end vertex.</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -478,18 +471,16 @@
 <span class="sd">            The length of the edge.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vector of an edge.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        u : int</span>
-<span class="sd">            The key of the start vertex.</span>
-<span class="sd">        v : int</span>
-<span class="sd">            The key of the end vertex.</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -497,19 +488,17 @@
 <span class="sd">            The vector from u to v.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
         <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ab</span>
 
-    <span class="k">def</span> <span class="nf">edge_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the location of a point along an edge.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        u : int</span>
-<span class="sd">            The key of the start vertex.</span>
-<span class="sd">        v : int</span>
-<span class="sd">            The key of the end vertex.</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
 <span class="sd">        t : float (0.5)</span>
 <span class="sd">            The location of the point on the edge.</span>
 <span class="sd">            If the value of ``t`` is outside the range ``0-1``, the point will</span>
@@ -521,19 +510,17 @@
 <span class="sd">            The XYZ coordinates of the point.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
         <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the direction vector of an edge.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        u : int</span>
-<span class="sd">            The key of the start vertex.</span>
-<span class="sd">        v : int</span>
-<span class="sd">            The key of the end vertex.</span>
+<span class="sd">        edge : tuple of int</span>
+<span class="sd">            The edge identifier.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -541,18 +528,18 @@
 <span class="sd">            The direction vector of the edge.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># halfface geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">halfface_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the coordinates of the vertices of a halfface.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        hfkey : hashable</span>
+<span class="sd">        halfface : int</span>
 <span class="sd">            The identifier of the halfface.</span>
 <span class="sd">        axes : str, optional</span>
 <span class="sd">            The axes alon which to take the coordinates.</span>
@@ -565,14 +552,14 @@
 <span class="sd">            The coordinates of the vertices of the halfface.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">halfface</span><span class="p">)]</span>
 
-    <span class="k">def</span> <span class="nf">halfface_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the oriented normal of a halfface.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        fkey : hashable</span>
+<span class="sd">        halfface : int</span>
 <span class="sd">            The identifier of the halfface.</span>
 <span class="sd">        unitized : bool, optional</span>
 <span class="sd">            Unitize the normal vector.</span>
@@ -584,14 +571,14 @@
 <span class="sd">            The components of the normal vector.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">hfkey</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">halfface</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">halfface_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the location of the centroid of a halfface.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        hfkey : hashable</span>
+<span class="sd">        halfface : int</span>
 <span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
@@ -600,14 +587,14 @@
 <span class="sd">            The coordinates of the centroid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">hfkey</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">halfface</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">halfface_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the location of the center of mass of a halfface.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        hfkey : hashable</span>
+<span class="sd">        halfface : int</span>
 <span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
@@ -616,15 +603,15 @@
 <span class="sd">            The coordinates of the center of mass.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">hfkey</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">halfface</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">halfface_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the oriented area of a halfface.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        fkey : hashable</span>
-<span class="sd">            The identifier of the face.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -632,14 +619,14 @@
 <span class="sd">            The non-oriented area of the face.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_normal</span><span class="p">(</span><span class="n">hfkey</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_normal</span><span class="p">(</span><span class="n">halfface</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">halfface_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the flatness of a halfface.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        hfkey : int</span>
+<span class="sd">        halfface : int</span>
 <span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
@@ -654,7 +641,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">deviation</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">polygon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">()</span>
+        <span class="n">polygon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
         <span class="n">plane</span> <span class="o">=</span> <span class="n">bestfit_plane</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">polygon</span><span class="p">:</span>
             <span class="n">pt_proj</span> <span class="o">=</span> <span class="n">project_point_plane</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span>
@@ -663,13 +650,13 @@
                 <span class="n">deviation</span> <span class="o">=</span> <span class="n">dev</span>
         <span class="k">return</span> <span class="n">deviation</span>
 
-    <span class="k">def</span> <span class="nf">halfface_aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        hfkey : Key</span>
-<span class="sd">            The halfface key.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -681,7 +668,7 @@
 <span class="sd">        .. [1] Wikipedia. *Types of mesh*.</span>
 <span class="sd">               Available at: https://en.wikipedia.org/wiki/Types_of_mesh.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">face_edge_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)]</span>
+        <span class="n">face_edge_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">halfface</span><span class="p">)]</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span> <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span>
 
     <span class="n">face_area</span> <span class="o">=</span> <span class="n">halfface_area</span>
@@ -696,49 +683,47 @@
     <span class="c1"># cell geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">cell_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ckey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the location of the centroid of a cell.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        ckey : hashable</span>
+<span class="sd">        cell : hashable</span>
 <span class="sd">            The identifier of the cell.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the centroid.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">ckey</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">vkeys</span><span class="p">])</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">])</span>
 
-    <span class="k">def</span> <span class="nf">cell_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ckey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">cell_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the location of the center of mass of a cell.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        ckey : hashable</span>
+<span class="sd">        cell : hashable</span>
 <span class="sd">            The identifier of the cell.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the center of mass.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_halffaces</span><span class="p">(</span><span class="n">ckey</span><span class="p">)</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">centroid_polyhedron</span><span class="p">((</span><span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">cell_vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ckey</span><span class="p">,</span> <span class="n">vkey</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the normal vector at the vertex of a cell as the weighted average of the</span>
+    <span class="k">def</span> <span class="nf">cell_vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the normal vector at the vertex of a boundary cell as the weighted average of the</span>
 <span class="sd">        normals of the neighboring halffaces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        ckey : int</span>
+<span class="sd">        cell : int</span>
 <span class="sd">            The identifier of the vertex of the cell.</span>
-<span class="sd">        vkey : int</span>
+<span class="sd">        vertex : int</span>
 <span class="sd">            The identifier of the vertex of the cell.</span>
 
 <span class="sd">        Returns</span>
@@ -746,7 +731,8 @@
 <span class="sd">        list</span>
 <span class="sd">            The components of the normal vector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">hfkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">hfkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_halffaces</span><span class="p">(</span><span class="n">vkey</span><span class="p">)</span> <span class="k">if</span> <span class="n">hfkey</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="n">cell_halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span> <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_halffaces</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">if</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="n">cell_halffaces</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">vectors</span><span class="p">))</span>
 
 

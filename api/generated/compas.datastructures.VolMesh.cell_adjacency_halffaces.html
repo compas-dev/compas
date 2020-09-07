@@ -89,19 +89,19 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.cell_adjacency_halffaces</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.cell_adjacency_halffaces">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">cell_adjacency_halffaces</code><span class="sig-paren">(</span><em class="sig-param">ckey_1</em>, <em class="sig-param">ckey_2</em><span class="sig-paren">)</span></dt>
-<dd><p>Given 2 ckeys, returns the interfacing halffaces, respectively.</p>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">cell_adjacency_halffaces</code><span class="sig-paren">(</span><em class="sig-param">cell_1</em>, <em class="sig-param">cell_2</em><span class="sig-paren">)</span></dt>
+<dd><p>Given 2 cells, returns the interfacing halffaces, respectively.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ckey_1</strong> (<em>hashable</em>) – Identifier of the cell 1.</p></li>
-<li><p><strong>ckey_2</strong> (<em>hashable</em>) – Identifier of the cell 2.</p></li>
+<li><p><strong>cell_1</strong> (<em>int</em>) – Identifier of the cell 1.</p></li>
+<li><p><strong>cell_2</strong> (<em>int</em>) – Identifier of the cell 2.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><em>hfkey_1</em> – The identifier of the halfface belonging to cell 1.</p></li>
-<li><p><em>hfkey_2</em> – The identifier of the halfface belonging to cell 2.</p></li>
+<li><p><em>halfface_1</em> – The identifier of the halfface belonging to cell 1.</p></li>
+<li><p><em>halfface_2</em> – The identifier of the halfface belonging to cell 2.</p></li>
 </ul>
 </p>
 </dd>
