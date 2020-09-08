@@ -23,8 +23,8 @@ class LineArtist(PrimitiveArtist):
     primitive : :class:`compas.geometry.Line`
         A COMPAS line.
 
-    Other Parameters
-    ----------------
+    Notes
+    -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """

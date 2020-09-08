@@ -65,12 +65,6 @@ def network_update_attributes(network):
     bool
         ``True`` if the update was successful.
         ``False`` otherwise.
-
-    See Also
-    --------
-    * :func:`network_update_vertex_attributes`
-    * :func:`network_update_edge_attributes`
-
     """
     names = sorted(network.attributes.keys())
     values = [str(network.attributes[name]) for name in names]
@@ -147,11 +141,6 @@ def network_update_edge_attributes(network, edges, names=None):
     bool
         ``True`` if the update was successful.
         ``False`` otherwise.
-
-    See Also
-    --------
-    * :func:`network_update_attributes`
-    * :func:`network_update_vertex_attributes`
 
     """
     names = names or network.default_edge_attributes.edges()
@@ -233,12 +222,6 @@ def mesh_update_attributes(mesh):
     bool
         ``True`` if the update was successful.
         ``False`` otherwise.
-
-    See Also
-    --------
-    * :func:`mesh_update_vertex_attributes`
-    * :func:`mesh_update_edge_attributes`
-    * :func:`mesh_update_face_attributes`
 
     """
     names = sorted(mesh.attributes.keys())
@@ -359,12 +342,6 @@ def mesh_update_edge_attributes(mesh, edges, names=None):
     bool
         ``True`` if the update was successful.
         ``False`` otherwise.
-
-    See Also
-    --------
-    * :func:`mesh_update_attributes`
-    * :func:`mesh_update_vertex_attributes`
-    * :func:`mesh_update_face_attributes`
 
     """
     names = names or mesh.default_edge_attributes.edges()

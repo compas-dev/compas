@@ -25,8 +25,8 @@ class FrameArtist(PrimitiveArtist):
     scale: float, optional
         Scale factor that controls the length of the axes.
 
-    Other Parameters
-    ----------------
+    Notes
+    -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     Attributes

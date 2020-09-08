@@ -5,9 +5,7 @@ objects
 
 .. currentmodule:: compas_rhino.objects
 
-.. rst-class:: lead
-
-Objects provide a high-level way to interact with both COMPAS and Rhino objects in Rhino.
+.. .. rst-class:: lead
 
 .. code-block:: python
 
@@ -16,23 +14,14 @@ Objects provide a high-level way to interact with both COMPAS and Rhino objects 
     from compas_rhino.objects import MeshObject
 
     mesh = Mesh.from_off(compas.get('tubemesh.off'))
-    meshobject = MeshObject(None, mesh, 'MeshObject', 'COMPAS::MeshObject', True)
+
+    meshobject = MeshObject(mesh, name='MeshObject', layer='COMPAS::MeshObject')
     meshobject.draw()
-    meshobject.redraw()
 
     vertices = meshobject.select_vertices()
 
-    if meshobject.modify_vertices(vertices):
+    if vertices and meshobject.modify_vertices(vertices):
         meshobject.draw()
-        meshobject.redraw()
-
-----
-
-BaseObject
-==========
-
-.. autoclass:: BaseObject
-    :members: clear, draw, select, modify, move
 
 ----
 

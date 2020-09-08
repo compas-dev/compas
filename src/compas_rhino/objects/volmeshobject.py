@@ -156,6 +156,7 @@ class VolMeshObject(BaseObject):
             self.artist.draw_cells(color=self.settings['color.cells'])
             if self.settings['show.celllabels']:
                 self.artist.draw_celllabels(color=self.settings['color.cells'])
+        self.redraw()
 
     def select(self):
         raise NotImplementedError

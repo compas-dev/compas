@@ -138,6 +138,7 @@ class NetworkObject(BaseObject):
             self.artist.draw_edges(color=self.settings['color.edges'])
             if self.settings['show.edgelabels']:
                 self.artist.draw_edgelabels(color=self.settings['color.edges'])
+        self.redraw()
 
     def select(self):
         raise NotImplementedError

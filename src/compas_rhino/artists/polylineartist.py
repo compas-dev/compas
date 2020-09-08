@@ -17,8 +17,8 @@ class PolylineArtist(PrimitiveArtist):
     primitive : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
 
-    Other Parameters
-    ----------------
+    Notes
+    -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """

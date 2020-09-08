@@ -17,8 +17,8 @@ class VectorArtist(PrimitiveArtist):
     primitive : :class:`compas.geometry.Vector`
         A COMPAS vector.
 
-    Other Parameters
-    ----------------
+    Notes
+    -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """

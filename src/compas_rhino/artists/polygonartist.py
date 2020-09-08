@@ -17,8 +17,8 @@ class PolygonArtist(PrimitiveArtist):
     primitive : :class:`compas.geometry.Polygon`
         A COMPAS polygon.
 
-    Other Parameters
-    ----------------
+    Notes
+    -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """

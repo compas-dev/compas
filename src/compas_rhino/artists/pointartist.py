@@ -23,8 +23,8 @@ class PointArtist(PrimitiveArtist):
     primitive : :class:`compas.geometry.Point`
         A COMPAS point.
 
-    Other Parameters
-    ----------------
+    Notes
+    -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """
