@@ -90,22 +90,16 @@
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.faces">
 <code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">faces</code><span class="sig-paren">(</span><em class="sig-param">data=False</em><span class="sig-paren">)</span></dt>
-<dd><p>“Iterate over the halffaces of the volmesh, and yield “faces” (unique halffaces).</p>
+<dd><p>Iterate over the faces of the volmesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>bool, optional</em>) – Return the face data as well as the halfface keys.</p>
+<dd class="field-odd"><p><strong>data</strong> (<em>bool, optional</em>) – Return half-face data as well as identifiers if true.</p>
 </dd>
 <dt class="field-even">Yields</dt>
 <dd class="field-even"><p><em>int or tuple</em> – The next face identifier, if <code class="docutils literal notranslate"><span class="pre">data</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>.
 The next face as a (face, attr) tuple, if <code class="docutils literal notranslate"><span class="pre">data</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>Volmesh faces have no topological meaning (analogous to an edge of a mesh).
-They are typically used for geometric operations (i.e. planarisation).
-Between the interface of two cells, there are two interior halffaces (one from each cell).
-Only one of these two interior halffaces are returned as a “face”.
-The unique faces are found by comparing string versions of sorted vertex lists.</p>
 </dd></dl>
 
 </div>

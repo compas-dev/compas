@@ -259,15 +259,16 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">:</span>
             <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span></div>
 
-    <span class="c1"># def draw(self, settings=None):</span>
-    <span class="c1">#     &quot;&quot;&quot;Draw the volmesh using the chosen visualisation settings.</span>
+<div class="viewcode-block" id="VolMeshArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.VolMeshArtist.draw.html#compas_rhino.artists.VolMeshArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the volmesh using the chosen visualisation settings.</span>
 
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     settings : dict, optional</span>
-    <span class="c1">#         Dictionary of visualisation settings that will be merged with the settings of the artist.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        settings : dict, optional</span>
+<span class="sd">            Dictionary of visualisation settings that will be merged with the settings of the artist.</span>
 
-    <span class="c1">#     &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
     <span class="c1">#     self.clear()</span>
     <span class="c1">#     if not settings:</span>
     <span class="c1">#         settings = {}</span>
@@ -376,7 +377,7 @@
         <span class="n">facets</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
             <span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)],</span>
+                <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)],</span>
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.face.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">face</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">face_color</span><span class="p">[</span><span class="n">face</span><span class="p">]})</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">facets</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -408,9 +409,9 @@
         <span class="n">meshes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
             <span class="n">cell_faces</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">cell_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
                 <span class="n">cell_faces</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                    <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)],</span>
+                    <span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)],</span>
                     <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.cell.</span><span class="si">{}</span><span class="s2">.face.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">fkey</span><span class="p">),</span>
                     <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">cell_color</span><span class="p">[</span><span class="n">cell</span><span class="p">]})</span>
             <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">cell_faces</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -533,7 +534,7 @@
         <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">face_text</span><span class="p">:</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]),</span>
+                <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]),</span>
                 <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.facelabel.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">volmesh</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">face</span><span class="p">),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">face_color</span><span class="p">[</span><span class="n">face</span><span class="p">],</span>
                 <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">face_text</span><span class="p">[</span><span class="n">face</span><span class="p">]})</span>

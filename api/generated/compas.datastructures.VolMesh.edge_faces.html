@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMesh.edge_halffaces" href="compas.datastructures.VolMesh.edge_halffaces.html" />
+    <link rel="next" title="VolMesh.edge_length" href="compas.datastructures.VolMesh.edge_length.html" />
   
   
   
@@ -96,13 +96,13 @@
 <dd class="field-odd"><p><strong>edge</strong> (<em>tuple of int</em>) – The identifier of the edge.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – Ordered list of of keys identifying faces.</p>
+<dd class="field-even"><p><em>list</em> – Ordered list of of keys identifying the faces.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>The faces are ordered around the edge (u, v).
-All faces returned should have halfedge (u, v).
-This also means that if edge u-v is shared by four cells, four faces are returned.</p>
+All faces returned should have halfedge (u, v) or (v, u).
+This also means that if edge u-v is shared by four cells, eight faces are returned.</p>
 </dd></dl>
 
 </div>

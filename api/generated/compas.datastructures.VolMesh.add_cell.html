@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VolMesh.add_halfface" href="compas.datastructures.VolMesh.add_halfface.html" />
+    <link rel="next" title="VolMesh.add_face" href="compas.datastructures.VolMesh.add_face.html" />
   
   
   
@@ -89,12 +89,12 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.add_cell</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.add_cell">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">add_cell</code><span class="sig-paren">(</span><em class="sig-param">halffaces</em>, <em class="sig-param">ckey=None</em>, <em class="sig-param">attr_dict=None</em>, <em class="sig-param">**kwattr</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">add_cell</code><span class="sig-paren">(</span><em class="sig-param">faces</em>, <em class="sig-param">ckey=None</em>, <em class="sig-param">attr_dict=None</em>, <em class="sig-param">**kwattr</em><span class="sig-paren">)</span></dt>
 <dd><p>Add a cell to the volmesh object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>halffaces</strong> (<em>list of lists</em>) – list of lists of vertex keys defining the halffaces of the cell.</p></li>
+<li><p><strong>faces</strong> (<em>list of list of int</em>) – The faces of the cell defined as lists of vertices.</p></li>
 <li><p><strong>ckey</strong> (<em>int, optional</em>) – The cell identifier.</p></li>
 <li><p><strong>attr_dict</strong> (<em>dict, optional</em>) – cell attributes.</p></li>
 <li><p><strong>kwattr</strong> (<em>dict, optional</em>) – Additional named cell attributes.

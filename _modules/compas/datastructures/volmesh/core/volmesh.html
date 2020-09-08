@@ -111,7 +111,7 @@
 
 
 <span class="k">class</span> <span class="nc">BaseVolMesh</span><span class="p">(</span><span class="n">HalfFace</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Geometric implementation of a halfface data structure for volumetric meshes.</span>
+    <span class="sd">&quot;&quot;&quot;Geometric implementation of a face data structure for volumetric meshes.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -237,7 +237,7 @@
 <span class="sd">        vertices : list</span>
 <span class="sd">            Ordered list of vertices, represented by their XYZ coordinates.</span>
 <span class="sd">        cells : lists of lists</span>
-<span class="sd">            List of cells (list of halffaces).</span>
+<span class="sd">            List of cells (list of faces).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -262,14 +262,14 @@
 <span class="sd">            * a list of vertices, represented by their XYZ coordinates, and</span>
 <span class="sd">            * a list of cells.</span>
 
-<span class="sd">            Each cell is a list of halffaces, which are lists of indices referencing the list of vertex coordinates.</span>
+<span class="sd">            Each cell is a list of faces, which are lists of indices referencing the list of vertex coordinates.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertex_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+        <span class="n">vertex_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_index</span><span class="p">()</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()]</span>
         <span class="n">cells</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">:</span>
-            <span class="n">halffaces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]]</span> <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)]</span>
-            <span class="n">cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">halffaces</span><span class="p">)</span>
+            <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="p">[</span><span class="n">face</span><span class="p">]]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)]</span>
+            <span class="n">cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">cells</span>
 
     <span class="k">def</span> <span class="nf">cell_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
@@ -285,11 +285,11 @@
 <span class="sd">        Mesh</span>
 <span class="sd">            A mesh object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span><span class="p">)</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">cell_to_vertices_and_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the vertices and halffaces of a cell.</span>
+    <span class="k">def</span> <span class="nf">cell_to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the vertices and faces of a cell.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -302,16 +302,16 @@
 <span class="sd">            A 2-tuple containing</span>
 
 <span class="sd">            * a list of vertices, represented by their XYZ coordinates, and</span>
-<span class="sd">            * a list of halffaces.</span>
+<span class="sd">            * a list of faces.</span>
 
-<span class="sd">            Each halfface is a list of indices referencing the list of vertex coordinates.</span>
+<span class="sd">            Each face is a list of indices referencing the list of vertex coordinates.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="n">vkey_vindex</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">vertex</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">))</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">vertex_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">vertex</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">))</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
-        <span class="n">halffaces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vkey_vindex</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]]</span> <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="n">halffaces</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertex_index</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face</span><span class="p">[</span><span class="n">face</span><span class="p">]]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># helpers</span>
@@ -376,7 +376,7 @@
 <span class="sd">            The coordinates of the centroid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()])</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># vertex geometry</span>
@@ -400,7 +400,7 @@
 <span class="sd">            Coordinates of the vertex.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">vertex_laplacian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the vector from a vertex to the centroid of its neighbors.</span>
@@ -531,16 +531,16 @@
         <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">edge</span><span class="p">))</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># halfface geometry</span>
+    <span class="c1"># face geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">halfface_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the coordinates of the vertices of a halfface.</span>
+    <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the coordinates of the vertices of a face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        halfface : int</span>
-<span class="sd">            The identifier of the halfface.</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
 <span class="sd">        axes : str, optional</span>
 <span class="sd">            The axes alon which to take the coordinates.</span>
 <span class="sd">            Should be a combination of ``&#39;x&#39;``, ``&#39;y&#39;``, ``&#39;z&#39;``.</span>
@@ -549,18 +549,18 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list of list</span>
-<span class="sd">            The coordinates of the vertices of the halfface.</span>
+<span class="sd">            The coordinates of the vertices of the face.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">halfface</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span>
 
-    <span class="k">def</span> <span class="nf">halfface_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the oriented normal of a halfface.</span>
+    <span class="k">def</span> <span class="nf">face_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the oriented normal of a face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        halfface : int</span>
-<span class="sd">            The identifier of the halfface.</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
 <span class="sd">        unitized : bool, optional</span>
 <span class="sd">            Unitize the normal vector.</span>
 <span class="sd">            Default is ``True``.</span>
@@ -571,15 +571,15 @@
 <span class="sd">            The components of the normal vector.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">halfface</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">),</span> <span class="n">unitized</span><span class="o">=</span><span class="n">unitized</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">halfface_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the location of the centroid of a halfface.</span>
+    <span class="k">def</span> <span class="nf">face_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the location of the centroid of a face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        halfface : int</span>
-<span class="sd">            The identifier of the halfface.</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -587,15 +587,15 @@
 <span class="sd">            The coordinates of the centroid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">halfface</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">halfface_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the location of the center of mass of a halfface.</span>
+    <span class="k">def</span> <span class="nf">face_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the location of the center of mass of a face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        halfface : int</span>
-<span class="sd">            The identifier of the halfface.</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -603,15 +603,15 @@
 <span class="sd">            The coordinates of the center of mass.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">halfface</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">centroid_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">halfface_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the oriented area of a halfface.</span>
+    <span class="k">def</span> <span class="nf">face_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the oriented area of a face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        halfface : int</span>
-<span class="sd">            The identifier of the halfface.</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -619,15 +619,15 @@
 <span class="sd">            The non-oriented area of the face.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_normal</span><span class="p">(</span><span class="n">halfface</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">length_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">unitized</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">halfface_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compute the flatness of a halfface.</span>
+    <span class="k">def</span> <span class="nf">face_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the flatness of a face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        halfface : int</span>
-<span class="sd">            The identifier of the halfface.</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -641,7 +641,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">deviation</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">polygon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_coordinates</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
+        <span class="n">polygon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="n">plane</span> <span class="o">=</span> <span class="n">bestfit_plane</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">polygon</span><span class="p">:</span>
             <span class="n">pt_proj</span> <span class="o">=</span> <span class="n">project_point_plane</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span>
@@ -650,13 +650,13 @@
                 <span class="n">deviation</span> <span class="o">=</span> <span class="n">dev</span>
         <span class="k">return</span> <span class="n">deviation</span>
 
-    <span class="k">def</span> <span class="nf">halfface_aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        halfface : int</span>
-<span class="sd">            The identifier of the halfface.</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -668,16 +668,16 @@
 <span class="sd">        .. [1] Wikipedia. *Types of mesh*.</span>
 <span class="sd">               Available at: https://en.wikipedia.org/wiki/Types_of_mesh.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">face_edge_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">halfface</span><span class="p">)]</span>
+        <span class="n">face_edge_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span> <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span>
 
-    <span class="n">face_area</span> <span class="o">=</span> <span class="n">halfface_area</span>
-    <span class="n">face_centroid</span> <span class="o">=</span> <span class="n">halfface_centroid</span>
-    <span class="n">face_center</span> <span class="o">=</span> <span class="n">halfface_center</span>
-    <span class="n">face_coordinates</span> <span class="o">=</span> <span class="n">halfface_coordinates</span>
-    <span class="n">face_flatness</span> <span class="o">=</span> <span class="n">halfface_flatness</span>
-    <span class="n">face_normal</span> <span class="o">=</span> <span class="n">halfface_normal</span>
-    <span class="n">face_aspect_ratio</span> <span class="o">=</span> <span class="n">halfface_aspect_ratio</span>
+    <span class="c1"># face_area = face_area</span>
+    <span class="c1"># face_centroid = face_centroid</span>
+    <span class="c1"># face_center = face_center</span>
+    <span class="c1"># face_coordinates = face_coordinates</span>
+    <span class="c1"># face_flatness = face_flatness</span>
+    <span class="c1"># face_normal = face_normal</span>
+    <span class="c1"># face_aspect_ratio = face_aspect_ratio</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># cell geometry</span>
@@ -712,12 +712,12 @@
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the center of mass.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">centroid_polyhedron</span><span class="p">((</span><span class="n">vertices</span><span class="p">,</span> <span class="n">halffaces</span><span class="p">))</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_to_vertices_and_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">centroid_polyhedron</span><span class="p">((</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">cell_vertex_normal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the normal vector at the vertex of a boundary cell as the weighted average of the</span>
-<span class="sd">        normals of the neighboring halffaces.</span>
+<span class="sd">        normals of the neighboring faces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -731,8 +731,8 @@
 <span class="sd">        list</span>
 <span class="sd">            The components of the normal vector.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cell_halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_halffaces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span> <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_halffaces</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">if</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="n">cell_halffaces</span><span class="p">]</span>
+        <span class="n">cell_faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">if</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">cell_faces</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">vectors</span><span class="p">))</span>
 
 

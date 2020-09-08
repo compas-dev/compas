@@ -109,7 +109,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BaseArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.BaseArtist.__init__.html#compas_rhino.artists.BaseArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="BaseArtist.register"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.BaseArtist.register.html#compas_rhino.artists.BaseArtist.register">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">item_type</span><span class="p">,</span> <span class="n">artist_type</span><span class="p">):</span>
@@ -147,10 +147,10 @@
         <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BaseArtist.clear"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.BaseArtist.clear.html#compas_rhino.artists.BaseArtist.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">guids</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span><span class="p">:</span>
             <span class="k">return</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">guids</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span></div></div>
+        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_guids</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span> <span class="o">=</span> <span class="p">[]</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>
