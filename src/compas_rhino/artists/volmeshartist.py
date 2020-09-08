@@ -175,15 +175,16 @@ class VolMeshArtist(BaseArtist):
         if self.layer:
             compas_rhino.clear_layer(self.layer)
 
-    # def draw(self, settings=None):
-    #     """Draw the volmesh using the chosen visualisation settings.
+    def draw(self, settings=None):
+        """Draw the volmesh using the chosen visualisation settings.
 
-    #     Parameters
-    #     ----------
-    #     settings : dict, optional
-    #         Dictionary of visualisation settings that will be merged with the settings of the artist.
+        Parameters
+        ----------
+        settings : dict, optional
+            Dictionary of visualisation settings that will be merged with the settings of the artist.
 
-    #     """
+        """
+        pass
     #     self.clear()
     #     if not settings:
     #         settings = {}

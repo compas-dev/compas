@@ -74,7 +74,7 @@ class FrameArtist(PrimitiveArtist):
             {'start': origin, 'end': Z, 'color': self.color_zaxis, 'arrow': 'end'}]
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self.guids = guids
+        self._guids = guids
         return guids
 
     @staticmethod

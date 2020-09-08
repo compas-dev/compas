@@ -42,7 +42,7 @@ class CircleArtist(PrimitiveArtist):
         radius = self.primitive.radius
         circles = [{'plane': [point, normal], 'radius': radius, 'color': self.color, 'name': self.name}]
         guids = compas_rhino.draw_circles(circles, layer=self.layer, clear=False, redraw=False)
-        self.guids = guids
+        self._guids = guids
         return guids
 
     @staticmethod

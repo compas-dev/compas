@@ -25,7 +25,7 @@ class BaseArtist(ABC):
     """
 
     def __init__(self):
-        self.guids = []
+        self._guids = []
 
     @staticmethod
     def register(item_type, artist_type):
@@ -63,10 +63,10 @@ class BaseArtist(ABC):
         compas_rhino.rs.EnableRedraw(True)
 
     def clear(self):
-        if not self.guids:
+        if not self._guids:
             return
-        compas_rhino.delete_objects(self.guids)
-        self.guids = []
+        compas_rhino.delete_objects(self._guids)
+        self._guids = []
 
 
 # ==============================================================================
