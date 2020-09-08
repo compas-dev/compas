@@ -293,7 +293,7 @@ class VolMeshArtist(BaseArtist):
         facets = []
         for face in faces:
             facets.append({
-                'points': [vertex_xyz[vertex] for vertex in self.volmesh.halfface_vertices(face)],
+                'points': [vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)],
                 'name': "{}.face.{}".format(self.volmesh.name, face),
                 'color': face_color[face]})
         guids = compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
@@ -325,9 +325,9 @@ class VolMeshArtist(BaseArtist):
         meshes = []
         for cell in cells:
             cell_faces = []
-            for fkey in self.volmesh.cell_halffaces(cell):
+            for fkey in self.volmesh.cell_faces(cell):
                 cell_faces.append({
-                    'points': [vertex_xyz[vertex] for vertex in self.volmesh.halfface_vertices(fkey)],
+                    'points': [vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(fkey)],
                     'name': "{}.cell.{}.face.{}".format(self.volmesh.name, cell, fkey),
                     'color': cell_color[cell]})
             guids = compas_rhino.draw_faces(cell_faces, layer=self.layer, clear=False, redraw=False)
@@ -450,7 +450,7 @@ class VolMeshArtist(BaseArtist):
         labels = []
         for face in face_text:
             labels.append({
-                'pos': centroid_points([vertex_xyz[vertex] for vertex in self.volmesh.halfface_vertices(face)]),
+                'pos': centroid_points([vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)]),
                 'name': "{}.facelabel.{}".format(self.volmesh.name, face),
                 'color': face_color[face],
                 'text': face_text[face]})

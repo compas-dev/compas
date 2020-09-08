@@ -2,15 +2,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import Rhino
-import scriptcontext as sc
+# import Rhino
+# import scriptcontext as sc
 
 import compas_rhino
 from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
-from compas.utilities import geometric_key
 
 from compas_rhino.objects._object import BaseObject
 from compas_rhino.objects.modify import mesh_update_attributes
@@ -62,7 +61,7 @@ class VolMeshObject(BaseObject):
             'color.cells': (255, 0, 0),
             'show.vertices': True,
             'show.edges': True,
-            'show.faces': False,
+            'show.faces': True,
             'show.cells': False,
             'show.vertexlabels': False,
             'show.facelabels': False,
