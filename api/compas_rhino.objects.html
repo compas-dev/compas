@@ -87,89 +87,20 @@
           
           <span class="target" id="module-compas_rhino.objects"></span><div class="section" id="objects">
 <h1 class="display-4 p-0 mb-5">objects</h1>
-<p class="lead">Objects provide a high-level way to interact with both COMPAS and Rhino objects in Rhino.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.objects</span> <span class="kn">import</span> <span class="n">MeshObject</span>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_off</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.off&#39;</span><span class="p">))</span>
-<span class="n">meshobject</span> <span class="o">=</span> <span class="n">MeshObject</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="s1">&#39;MeshObject&#39;</span><span class="p">,</span> <span class="s1">&#39;COMPAS::MeshObject&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">meshobject</span> <span class="o">=</span> <span class="n">MeshObject</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;MeshObject&#39;</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::MeshObject&#39;</span><span class="p">)</span>
 <span class="n">meshobject</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-<span class="n">meshobject</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
 
 <span class="n">vertices</span> <span class="o">=</span> <span class="n">meshobject</span><span class="o">.</span><span class="n">select_vertices</span><span class="p">()</span>
 
-<span class="k">if</span> <span class="n">meshobject</span><span class="o">.</span><span class="n">modify_vertices</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
+<span class="k">if</span> <span class="n">vertices</span> <span class="ow">and</span> <span class="n">meshobject</span><span class="o">.</span><span class="n">modify_vertices</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
     <span class="n">meshobject</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-    <span class="n">meshobject</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span>
 </code></pre></div>
-</div>
-<hr class="docutils" />
-<div class="section" id="baseobject">
-<h2>BaseObject</h2>
-<dl class="class">
-<dt id="compas_rhino.objects.BaseObject">
-<em class="property">class </em><code class="sig-prename descclassname">compas_rhino.objects.</code><code class="sig-name descname">BaseObject</code><span class="sig-paren">(</span><em class="sig-param">item</em>, <em class="sig-param">scene=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">visible=True</em>, <em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/_object.html#BaseObject"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
-<p>Abstract base class for COMPAS Rhino objects.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>item</strong> ({<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Geometry</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Datastructure</span></code>}) – A COMPAS geometry object or data structure.</p></li>
-<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.scenes.Scene</span></code>, optional) – A scene object.</p></li>
-<li><p><strong>name</strong> (<em>str, optional</em>) – The name of the object.</p></li>
-<li><p><strong>layer</strong> (<em>str, optional</em>) – The layer for drawing.</p></li>
-<li><p><strong>visible</strong> (<em>bool, optional</em>) – Toggle for the visibility of the object.</p></li>
-<li><p><strong>settings</strong> (<em>dict, optional</em>) – A dictionary of settings.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Attributes</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>item</strong> ({<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Geometry</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Datastructure</span></code>}) – A COMPAS geometry object or data structure.</p></li>
-<li><p><strong>scene</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.scenes.Scene</span></code>) – A scene object.</p></li>
-<li><p><strong>artist</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.Artist</span></code>) – The artist matching the type of <code class="docutils literal notranslate"><span class="pre">item</span></code>.</p></li>
-<li><p><strong>name</strong> (<em>str</em>) – The name of the object.
-This is an alias for the name of <code class="docutils literal notranslate"><span class="pre">item</span></code>.</p></li>
-<li><p><strong>layer</strong> (<em>str</em>) – The layer for drawing.
-This is an alias for the layer of <code class="docutils literal notranslate"><span class="pre">artist</span></code>.</p></li>
-<li><p><strong>visible</strong> (<em>bool</em>) – Toggle for the visibility of the object in the scene.</p></li>
-<li><p><strong>settings</strong> (<em>dict</em>) – A dictionary of settings related to visualisation and interaction.
-This dict starts from the settings of the <code class="docutils literal notranslate"><span class="pre">artist</span></code>.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="method">
-<dt id="compas_rhino.objects.BaseObject.clear">
-<em class="property">abstract </em><code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/_object.html#BaseObject.clear"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Clear all previously created Rhino objects.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="compas_rhino.objects.BaseObject.draw">
-<em class="property">abstract </em><code class="sig-name descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/_object.html#BaseObject.draw"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Draw the object representing the item.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="compas_rhino.objects.BaseObject.modify">
-<em class="property">abstract </em><code class="sig-name descname">modify</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/_object.html#BaseObject.modify"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Modify the item represented by the object.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="compas_rhino.objects.BaseObject.move">
-<em class="property">abstract </em><code class="sig-name descname">move</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/_object.html#BaseObject.move"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Move the item represented by the object.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="compas_rhino.objects.BaseObject.select">
-<em class="property">abstract </em><code class="sig-name descname">select</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/objects/_object.html#BaseObject.select"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Select the object representing the item.</p>
-</dd></dl>
-
-</dd></dl>
-
 </div>
 <hr class="docutils" />
 <div class="section" id="networkobject">
@@ -220,13 +151,6 @@ Default is to update all attributes.</p></li>
 <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">network_update_attributes()</span></code></p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">network_update_vertex_attributes()</span></code></p></li>
-</ul>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -323,14 +247,6 @@ Default is to update all attributes.</p></li>
 <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">mesh_update_attributes()</span></code></p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">mesh_update_vertex_attributes()</span></code></p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">mesh_update_face_attributes()</span></code></p></li>
-</ul>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -458,14 +374,6 @@ Default is to update all attributes.</p></li>
 <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<ul class="simple">
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">mesh_update_attributes()</span></code></p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">mesh_update_vertex_attributes()</span></code></p></li>
-<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">mesh_update_face_attributes()</span></code></p></li>
-</ul>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -695,7 +603,6 @@ False otherwise.</p>
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">objects</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#baseobject">BaseObject</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#networkobject">NetworkObject</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#meshobject">MeshObject</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#volmeshobject">VolMeshObject</a></li>

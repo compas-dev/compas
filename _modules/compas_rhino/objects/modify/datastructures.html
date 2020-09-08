@@ -149,12 +149,6 @@
 <span class="sd">    bool</span>
 <span class="sd">        ``True`` if the update was successful.</span>
 <span class="sd">        ``False`` otherwise.</span>
-
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    * :func:`network_update_vertex_attributes`</span>
-<span class="sd">    * :func:`network_update_edge_attributes`</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">name</span><span class="p">])</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">]</span>
@@ -231,11 +225,6 @@
 <span class="sd">    bool</span>
 <span class="sd">        ``True`` if the update was successful.</span>
 <span class="sd">        ``False`` otherwise.</span>
-
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    * :func:`network_update_attributes`</span>
-<span class="sd">    * :func:`network_update_vertex_attributes`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">names</span> <span class="o">=</span> <span class="n">names</span> <span class="ow">or</span> <span class="n">network</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
@@ -317,12 +306,6 @@
 <span class="sd">    bool</span>
 <span class="sd">        ``True`` if the update was successful.</span>
 <span class="sd">        ``False`` otherwise.</span>
-
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    * :func:`mesh_update_vertex_attributes`</span>
-<span class="sd">    * :func:`mesh_update_edge_attributes`</span>
-<span class="sd">    * :func:`mesh_update_face_attributes`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
@@ -443,12 +426,6 @@
 <span class="sd">    bool</span>
 <span class="sd">        ``True`` if the update was successful.</span>
 <span class="sd">        ``False`` otherwise.</span>
-
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    * :func:`mesh_update_attributes`</span>
-<span class="sd">    * :func:`mesh_update_vertex_attributes`</span>
-<span class="sd">    * :func:`mesh_update_face_attributes`</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">names</span> <span class="o">=</span> <span class="n">names</span> <span class="ow">or</span> <span class="n">mesh</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
