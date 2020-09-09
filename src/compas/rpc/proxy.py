@@ -15,12 +15,8 @@ except ImportError:
 try:
     from subprocess import Popen
     from subprocess import PIPE
-
 except ImportError:
-    try:
-        from System.Diagnostics import Process
-    except ImportError:
-        compas.raise_if_ironpython()
+    from System.Diagnostics import Process
 
 import compas._os
 
