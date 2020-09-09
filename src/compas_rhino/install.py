@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import io
 import importlib
 import os
 import sys
@@ -15,25 +14,6 @@ from compas._os import create_symlinks
 
 
 __all__ = ['install']
-
-
-INSTALLABLE_PACKAGES = ['compas', 'compas_rhino', 'compas_ghpython']
-
-
-def _get_package_path(package):
-    return os.path.abspath(os.path.dirname(package.__file__))
-
-
-def _get_bootstrapper_data(compas_bootstrapper):
-    data = {}
-
-    if not os.path.exists(compas_bootstrapper):
-        return data
-
-    content = io.open(compas_bootstrapper, encoding='utf8').read()
-    exec(content, data)
-
-    return data
 
 
 def install(version=None, packages=None):
@@ -72,7 +52,7 @@ def install(version=None, packages=None):
         ghpython_incompatible = True
 
     if not packages:
-        packages = INSTALLABLE_PACKAGES
+        packages = compas_rhino.INSTALLABLE_PACKAGES
     elif 'compas_ghpython' in packages and ghpython_incompatible:
         print('Skipping installation of compas_ghpython since it\'s not supported for Rhino 5 for Mac')
 
@@ -88,7 +68,7 @@ def install(version=None, packages=None):
     exit_code = 0
 
     for package in packages:
-        package_path = _get_package_path(importlib.import_module(package))
+        package_path = compas_rhino._get_package_path(importlib.import_module(package))
         symlink_path = os.path.join(scripts_path, package)
         symlinks.append((package_path, symlink_path))
 
@@ -118,7 +98,7 @@ def install(version=None, packages=None):
         compas_bootstrapper = os.path.join(scripts_path, 'compas_bootstrapper.py')
 
         try:
-            bootstrapper_data = _get_bootstrapper_data(compas_bootstrapper)
+            bootstrapper_data = compas_rhino._get_bootstrapper_data(compas_bootstrapper)
             installed_packages = bootstrapper_data.get('INSTALLED_PACKAGES', [])
             installed_packages = list(set(installed_packages + list(packages)))
 

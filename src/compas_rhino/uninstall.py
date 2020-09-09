@@ -6,7 +6,6 @@ import os
 import sys
 
 import compas_rhino
-import compas_rhino.install
 
 from compas._os import remove_symlinks
 
@@ -21,7 +20,7 @@ def _clean(version=None):
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
 
     compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
-    bootstrapper_data = compas_rhino.install._get_bootstrapper_data(compas_bootstrapper)
+    bootstrapper_data = compas_rhino._get_bootstrapper_data(compas_bootstrapper)
 
     try:
         packages = bootstrapper_data.get('INSTALLED_PACKAGES', None)
@@ -29,7 +28,7 @@ def _clean(version=None):
         pass
 
     if packages is None:
-        packages = compas_rhino.install.INSTALLABLE_PACKAGES
+        packages = compas_rhino.INSTALLABLE_PACKAGES
 
     symlinks = []
 
@@ -81,7 +80,7 @@ def uninstall(version=None, packages=None):
     scripts_path = compas_rhino._get_scripts_path(version)
 
     compas_bootstrapper = os.path.join(scripts_path, 'compas_bootstrapper.py')
-    bootstrapper_data = compas_rhino.install._get_bootstrapper_data(compas_bootstrapper)
+    bootstrapper_data = compas_rhino._get_bootstrapper_data(compas_bootstrapper)
 
     if not packages:
         try:
@@ -91,7 +90,7 @@ def uninstall(version=None, packages=None):
 
         # No info, fall back to installable packages list
         if packages is None:
-            packages = compas_rhino.install.INSTALLABLE_PACKAGES
+            packages = compas_rhino.INSTALLABLE_PACKAGES
 
     environment_name = bootstrapper_data.get('ENVIRONMENT_NAME', '')
     if environment_name:

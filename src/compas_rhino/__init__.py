@@ -19,6 +19,7 @@ compas_rhino
 from __future__ import absolute_import
 
 import os
+import io
 import compas
 import compas._os
 
@@ -31,6 +32,8 @@ __version__ = '0.16.2'
 
 
 PURGE_ON_DELETE = True
+
+INSTALLABLE_PACKAGES = ['compas', 'compas_rhino', 'compas_ghpython']
 
 
 def _check_rhino_version(version):
@@ -151,6 +154,22 @@ def _get_scripts_path_win32(version):
 def _get_scripts_path_mac(version):
     return os.path.join(
         os.getenv('HOME'), 'Library', 'Application Support', 'McNeel', 'Rhinoceros', '{}'.format(version), 'scripts')
+
+
+def _get_package_path(package):
+    return os.path.abspath(os.path.dirname(package.__file__))
+
+
+def _get_bootstrapper_data(compas_bootstrapper):
+    data = {}
+
+    if not os.path.exists(compas_bootstrapper):
+        return data
+
+    content = io.open(compas_bootstrapper, encoding='utf8').read()
+    exec(content, data)
+
+    return data
 
 
 __all_plugins__ = ['compas_rhino.geometry.booleans']
