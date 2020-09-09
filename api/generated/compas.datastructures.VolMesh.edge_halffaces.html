@@ -90,19 +90,19 @@
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.edge_halffaces">
 <code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">edge_halffaces</code><span class="sig-paren">(</span><em class="sig-param">edge</em><span class="sig-paren">)</span></dt>
-<dd><p>Ordered halffaces around edge (u, v).</p>
+<dd><p>Ordered half-faces around edge (u, v).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>edge</strong> (<em>tuple of int</em>) – The identifier of the edge.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – Ordered list of of keys identifying the halffaces.</p>
+<dd class="field-even"><p><em>list</em> – Ordered list of of keys identifying the faces.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The halffaces are ordered around the edge (u, v).
-All halffaces returned should have halfedge (u, v) or (v, u).
-This also means that if edge u-v is shared by four cells, eight halffaces are returned.</p>
+<p>The faces are ordered around the edge (u, v).
+All faces returned should have halfedge (u, v) or (v, u).
+This also means that if edge u-v is shared by four cells, eight faces are returned.</p>
 </dd></dl>
 
 </div>

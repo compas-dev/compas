@@ -99,12 +99,8 @@
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span>
     <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">PIPE</span>
-
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">System.Diagnostics</span> <span class="kn">import</span> <span class="n">Process</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
+    <span class="kn">from</span> <span class="nn">System.Diagnostics</span> <span class="kn">import</span> <span class="n">Process</span>
 
 <span class="kn">import</span> <span class="nn">compas._os</span>
 
