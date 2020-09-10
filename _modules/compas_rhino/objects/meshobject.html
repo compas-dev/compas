@@ -370,14 +370,14 @@
             <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
                 <span class="n">DrawLine</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">u</span><span class="p">]),</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">v</span><span class="p">]),</span> <span class="n">color</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="n">color</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">ApplicationSettings</span><span class="o">.</span><span class="n">AppearanceSettings</span><span class="o">.</span><span class="n">FeedbackColor</span>
         <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">vertex_xyz</span>
         <span class="n">edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diagram</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
         <span class="n">anchor_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagram</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anchor</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
         <span class="n">p0</span> <span class="o">=</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span> <span class="n">origin</span><span class="p">)</span>
 
         <span class="n">gp</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">Custom</span><span class="o">.</span><span class="n">GetPoint</span><span class="p">()</span>
