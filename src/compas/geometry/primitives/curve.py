@@ -103,6 +103,7 @@ class Bezier(Primitive):
     __slots__ = ["_points"]
 
     def __init__(self, points):
+        super(Bezier, self).__init__()
         self._points = []
         self.points = points
 
