@@ -160,6 +160,10 @@ def _get_package_path(package):
     return os.path.abspath(os.path.dirname(package.__file__))
 
 
+def _get_bootstrapper_path(install_path):
+    return os.path.join(install_path, 'compas_bootstrapper.py')
+
+
 def _get_bootstrapper_data(compas_bootstrapper):
     data = {}
 
@@ -170,6 +174,25 @@ def _get_bootstrapper_data(compas_bootstrapper):
     exec(content, data)
 
     return data
+
+
+def _try_remove_bootstrapper(path):
+    """Try to remove bootstrapper.
+
+    Returns
+    -------
+    bool: ``True`` if the operation did not cause errors, ``False`` otherwise.
+    """
+
+    bootstrapper = _get_bootstrapper_path(path)
+
+    if os.path.exists(bootstrapper):
+        try:
+            os.remove(bootstrapper)
+            return True
+        except:  # noqa: E722
+            return False
+    return True
 
 
 __all_plugins__ = ['compas_rhino.geometry.booleans']
