@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema",
     "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
-    "$compas": compas.__version__,
+    "$compas": "0.16.2",
 
     "type": "object",
     "poperties": {

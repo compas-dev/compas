@@ -23,13 +23,9 @@ class LineArtist(PrimitiveArtist):
     primitive : :class:`compas.geometry.Line`
         A COMPAS line.
 
-    Other Parameters
-    ----------------
+    Notes
+    -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
-
-    Examples
-    --------
-    >>>
 
     """
 
@@ -46,7 +42,7 @@ class LineArtist(PrimitiveArtist):
         end = list(self.primitive.end)
         lines = [{'start': start, 'end': end, 'color': self.color, 'name': self.name}]
         guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self.guids = guids
+        self._guids = guids
         return guids
 
     @staticmethod

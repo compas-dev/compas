@@ -580,7 +580,7 @@ def color_to_rgb(color, normalize=False):
     return r / 255., g / 255., b / 255.
 
 
-def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=False):
+def color_to_colordict(color, keys, default=None, colorformat='rgb', normalize=False):
     """Convert a color specification to a dict of colors.
 
     Parameters
@@ -594,7 +594,7 @@ def color_to_colordict(color, keys, default=None, colorformat='hex', normalize=F
         A valid color specification (HEX or RGB).
     colorformat : {'hex', 'rgb'}, optional
         The format of the colors in the color dict.
-        Default is `'hex'`.
+        Default is `'rgb'`.
     normalize : bool, optional
         Normalize the color components, if true and `colorformat` is `'rgb'`.
 

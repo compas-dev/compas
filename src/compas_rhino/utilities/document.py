@@ -3,10 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import os
-import compas
-
-if compas.RHINO:
-    import rhinoscriptsyntax as rs
+import rhinoscriptsyntax as rs
 
 
 __all__ = [

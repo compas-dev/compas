@@ -4,18 +4,15 @@ from __future__ import division
 
 from collections import deque
 
-import compas
+import rhinoscriptsyntax as rs
+import scriptcontext as sc
 
-if compas.RHINO:
-    import rhinoscriptsyntax as rs
-    import scriptcontext as sc
+find_object = sc.doc.Objects.Find
 
-    find_object = sc.doc.Objects.Find
-
-    try:
-        purge_object = sc.doc.Objects.Purge
-    except AttributeError:
-        purge_object = None
+try:
+    purge_object = sc.doc.Objects.Purge
+except AttributeError:
+    purge_object = None
 
 
 __all__ = [

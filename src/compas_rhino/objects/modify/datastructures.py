@@ -4,23 +4,21 @@ from __future__ import division
 
 import ast
 
-import compas
 import compas_rhino
 
 from compas.geometry import add_vectors
-# from compas.geometry import subtract_vectors
 
-if compas.RHINO:
-    import Rhino
-    import clr
-    clr.AddReference('Rhino.UI')
-    import Rhino.UI
-    from Rhino.Geometry import Point3d
+import Rhino
+import clr
 
-    try:
-        from compas_rhino.etoforms import PropertyListForm
-    except ImportError:
-        from Rhino.UI.Dialogs import ShowPropertyListBox
+clr.AddReference('Rhino.UI')
+import Rhino.UI  # noqa: E402
+from Rhino.Geometry import Point3d  # noqa: E402
+
+try:
+    from compas_rhino.etoforms import PropertyListForm
+except ImportError:
+    from Rhino.UI.Dialogs import ShowPropertyListBox
 
 
 __all__ = [
@@ -67,12 +65,6 @@ def network_update_attributes(network):
     bool
         ``True`` if the update was successful.
         ``False`` otherwise.
-
-    See Also
-    --------
-    * :func:`network_update_vertex_attributes`
-    * :func:`network_update_edge_attributes`
-
     """
     names = sorted(network.attributes.keys())
     values = [str(network.attributes[name]) for name in names]
@@ -149,11 +141,6 @@ def network_update_edge_attributes(network, edges, names=None):
     bool
         ``True`` if the update was successful.
         ``False`` otherwise.
-
-    See Also
-    --------
-    * :func:`network_update_attributes`
-    * :func:`network_update_vertex_attributes`
 
     """
     names = names or network.default_edge_attributes.edges()
@@ -235,12 +222,6 @@ def mesh_update_attributes(mesh):
     bool
         ``True`` if the update was successful.
         ``False`` otherwise.
-
-    See Also
-    --------
-    * :func:`mesh_update_vertex_attributes`
-    * :func:`mesh_update_edge_attributes`
-    * :func:`mesh_update_face_attributes`
 
     """
     names = sorted(mesh.attributes.keys())
@@ -361,12 +342,6 @@ def mesh_update_edge_attributes(mesh, edges, names=None):
     bool
         ``True`` if the update was successful.
         ``False`` otherwise.
-
-    See Also
-    --------
-    * :func:`mesh_update_attributes`
-    * :func:`mesh_update_vertex_attributes`
-    * :func:`mesh_update_face_attributes`
 
     """
     names = names or mesh.default_edge_attributes.edges()

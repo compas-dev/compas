@@ -1,39 +1,16 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import io
 import importlib
 import os
 import sys
 
 import compas_rhino
 
-from compas._os import system
-from compas._os import remove_symlinks
-from compas._os import create_symlinks
-
+import compas._os
 
 __all__ = ['install']
-
-
-INSTALLABLE_PACKAGES = ['compas', 'compas_rhino', 'compas_ghpython']
-
-
-def _get_package_path(package):
-    return os.path.abspath(os.path.dirname(package.__file__))
-
-
-def _get_bootstrapper_data(compas_bootstrapper):
-    data = {}
-
-    if not os.path.exists(compas_bootstrapper):
-        return data
-
-    content = io.open(compas_bootstrapper, encoding='utf8').read()
-    exec(content, data)
-
-    return data
 
 
 def install(version=None, packages=None):
@@ -64,70 +41,60 @@ def install(version=None, packages=None):
     if version not in ('5.0', '6.0', '7.0'):
         version = '6.0'
 
-    print('Installing COMPAS packages to Rhino {0} IronPython lib:'.format(version))
-
-    ghpython_incompatible = False
-
-    if system == 'darwin' and version == 5.0:
-        ghpython_incompatible = True
-
-    if not packages:
-        packages = INSTALLABLE_PACKAGES
-    elif 'compas_ghpython' in packages and ghpython_incompatible:
-        print('Skipping installation of compas_ghpython since it\'s not supported for Rhino 5 for Mac')
-
-    if ghpython_incompatible:
-        packages.remove('compas_ghpython')
+    packages = _filter_installable_packages(version, packages)
 
     ipylib_path = compas_rhino._get_ironpython_lib_path(version)
-    print('IronPython location: {}'.format(ipylib_path))
+    scripts_path = compas_rhino._get_scripts_path(version)
+
+    print('Installing COMPAS packages to Rhino {0} scripts folder:'.format(version))
+    print('Location scripts folder: {}'.format(scripts_path))
     print()
 
     results = []
-    symlinks = []
+    symlinks_to_install = []
+    symlinks_to_uninstall = []
     exit_code = 0
 
     for package in packages:
-        package_path = _get_package_path(importlib.import_module(package))
-        symlink_path = os.path.join(ipylib_path, package)
-        symlinks.append((package_path, symlink_path))
+        package_path = compas_rhino._get_package_path(importlib.import_module(package))
+        symlink_path = os.path.join(scripts_path, package)
+        symlinks_to_install.append(dict(name=package, source_path=package_path, link=symlink_path))
+        symlinks_to_uninstall.append(dict(name=package, link=symlink_path))
 
-    removal_results = remove_symlinks([link[1] for link in symlinks])
+        # Handle legacy install location
+        legacy_path = os.path.join(ipylib_path, package)
+        if os.path.exists(legacy_path):
+            symlinks_to_uninstall.append(dict(name=package, link=legacy_path))
 
-    for package, success in zip(packages, removal_results):
+    # First uninstall existing copies of packages requested for installation
+    symlinks = [link['link'] for link in symlinks_to_uninstall]
+    uninstall_results = compas._os.remove_symlinks(symlinks)
+
+    for uninstall_data, success in zip(symlinks_to_uninstall, uninstall_results):
         if not success:
-            results.append((package, 'ERROR: Cannot remove symlink, try to run as administrator.'))
+            results.append((uninstall_data['name'], 'ERROR: Cannot remove symlink, try to run as administrator.'))
 
-    create_results = create_symlinks(symlinks)
+    # Handle legacy bootstrapper
+    if not compas_rhino._try_remove_bootstrapper(ipylib_path):
+        results.append(('compas_bootstrapper', 'ERROR: Cannot remove legacy compas_bootstrapper, try to run as administrator.'))
 
-    for package, success in zip(packages, create_results):
+    # Ready to start installing
+    symlinks = [(link['source_path'], link['link']) for link in symlinks_to_install]
+    install_results = compas._os.create_symlinks(symlinks)
+
+    for install_data, success in zip(symlinks_to_install, install_results):
         result = 'OK' if success else 'ERROR: Cannot create symlink, try to run as administrator.'
-        results.append((package, result))
+        results.append((install_data['name'], result))
 
-    if not all(create_results):
+    if not all(install_results):
         exit_code = -1
 
     if exit_code == -1:
         results.append(('compas_bootstrapper', 'WARNING: One or more packages failed, will not install bootstrapper, try uninstalling first'))
     else:
-        # Take either the CONDA environment directory or the current Python executable's directory
-        python_directory = os.environ.get('CONDA_PREFIX', None) or os.path.dirname(sys.executable)
-        environment_name = os.environ.get('CONDA_DEFAULT_ENV', '')
-        conda_exe = os.environ.get('CONDA_EXE', '')
-
-        compas_bootstrapper = os.path.join(ipylib_path, 'compas_bootstrapper.py')
-
         try:
-            bootstrapper_data = _get_bootstrapper_data(compas_bootstrapper)
-            installed_packages = bootstrapper_data.get('INSTALLED_PACKAGES', [])
-            installed_packages = list(set(installed_packages + list(packages)))
-
-            with open(compas_bootstrapper, 'w') as f:
-                f.write('ENVIRONMENT_NAME = r"{}"\n'.format(environment_name))
-                f.write('PYTHON_DIRECTORY = r"{}"\n'.format(python_directory))
-                f.write('CONDA_EXE = r"{}"\n'.format(conda_exe))
-                f.write('INSTALLED_PACKAGES = {}'.format(repr(installed_packages)))
-                results.append(('compas_bootstrapper', 'OK'))
+            _update_bootstrapper(scripts_path, packages)
+            results.append(('compas_bootstrapper', 'OK'))
         except:  # noqa: E722
             results.append(('compas_bootstrapper', 'ERROR: Could not create compas_bootstrapper to auto-determine Python environment'))
 
@@ -140,6 +107,42 @@ def install(version=None, packages=None):
     print('\nCompleted.')
     if exit_code != 0:
         sys.exit(exit_code)
+
+
+def _update_bootstrapper(install_path, packages):
+    # Take either the CONDA environment directory or the current Python executable's directory
+    python_directory = os.environ.get('CONDA_PREFIX', None) or os.path.dirname(sys.executable)
+    environment_name = os.environ.get('CONDA_DEFAULT_ENV', '')
+    conda_exe = os.environ.get('CONDA_EXE', '')
+
+    compas_bootstrapper = compas_rhino._get_bootstrapper_path(install_path)
+
+    bootstrapper_data = compas_rhino._get_bootstrapper_data(compas_bootstrapper)
+    installed_packages = bootstrapper_data.get('INSTALLED_PACKAGES', [])
+    installed_packages = list(set(installed_packages + list(packages)))
+
+    with open(compas_bootstrapper, 'w') as f:
+        f.write('ENVIRONMENT_NAME = r"{}"\n'.format(environment_name))
+        f.write('PYTHON_DIRECTORY = r"{}"\n'.format(python_directory))
+        f.write('CONDA_EXE = r"{}"\n'.format(conda_exe))
+        f.write('INSTALLED_PACKAGES = {}'.format(repr(installed_packages)))
+
+
+def _filter_installable_packages(version, packages):
+    ghpython_incompatible = False
+
+    if compas._os.system == 'darwin' and version == 5.0:
+        ghpython_incompatible = True
+
+    if not packages:
+        packages = compas_rhino.INSTALLABLE_PACKAGES
+    elif 'compas_ghpython' in packages and ghpython_incompatible:
+        print('Skipping installation of compas_ghpython since it\'s not supported for Rhino 5 for Mac')
+
+    if ghpython_incompatible:
+        packages.remove('compas_ghpython')
+
+    return packages
 
 
 # ==============================================================================

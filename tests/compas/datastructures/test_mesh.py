@@ -509,7 +509,7 @@ def test_face_coordinates():
 
 def test_face_normal():
     mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-    assert mesh.face_normal(0) == (0.5435358481001584, -0.16248515023849733, 0.8235091728584537)
+    assert mesh.face_normal(0) == [0.5435358481001584, -0.16248515023849733, 0.8235091728584537]
 
 
 def test_face_centroid():

@@ -7,7 +7,7 @@ import json
 import sys
 
 from compas.base import Base
-from compas.files.xml_ import XML
+from compas.files.xml import XML
 from compas.utilities import memoize
 
 __all__ = [

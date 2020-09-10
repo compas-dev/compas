@@ -72,7 +72,7 @@ except Exception:
     pass
 
 
-__all__ = []
+__all__ = ['WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'GH', 'BLENDER', 'set_precision', 'get']
 
 
 def is_windows():
@@ -169,26 +169,6 @@ def is_blender():
 
 
 BLENDER = is_blender()
-
-
-# def raise_if_not_windows():
-#     if not WINDOWS:
-#         raise
-
-
-# def raise_if_windows():
-#     if WINDOWS:
-#         raise
-
-
-# def raise_if_not_ironpython():
-#     if not IPY:
-#         raise
-
-
-# def raise_if_ironpython():
-#     if IPY:
-#         raise
 
 
 def set_precision(precision):

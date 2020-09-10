@@ -19,11 +19,9 @@ Artists convert COMPAS objects to Rhino geometry and data.
     mesh = Mesh.from_off(compas.get('tubemesh.off'))
 
     artist = MeshArtist(mesh, layer='COMPAS::tubemesh.off')
-    artist.clear_layer()
-    artist.draw_faces()
-    artist.redraw()
 
-    print artist.guids
+    artist.clear_layer()
+    artist.draw()
 
 ----
 
@@ -70,8 +68,8 @@ Base Classes
 """
 from __future__ import absolute_import
 
-from ._artist import BaseArtist
-from ._primitiveartist import PrimitiveArtist  # noqa: F401
+from ._artist import BaseArtist  # noqa: F401 F403
+from ._primitiveartist import PrimitiveArtist  # noqa: F401 F403
 from ._shapeartist import ShapeArtist  # noqa: F401
 
 from .circleartist import CircleArtist

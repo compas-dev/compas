@@ -15,18 +15,16 @@ class PrimitiveArtist(BaseArtist):
     Parameters
     ----------
     primitive: :class:`compas.geometry.Primitive`
-        The instance of the primitive.
-    name : str, optional
-        The name of the primitive object.
+        The geometry of the primitive.
     color : 3-tuple, optional
-        The RGB color specification of the object.
+        The RGB components of the base color of the primitive.
     layer : str, optional
-        The parent layer of the object.
+        The layer in which the primitive should be contained.
 
     Attributes
     ----------
     primitive: :class:`compas.geometry.Primitive`
-        A reference to the geometry of the primitive.
+        The geometry of the primitive.
     name : str
         The name of the primitive.
     color : tuple
@@ -36,19 +34,25 @@ class PrimitiveArtist(BaseArtist):
 
     """
 
-    def __init__(self, primitive, name=None, color=None, layer=None):
+    def __init__(self, primitive, color=None, layer=None):
         super(PrimitiveArtist, self).__init__()
         self.primitive = primitive
-        self.name = name
         self.color = color
         self.layer = layer
 
+    @property
+    def name(self):
+        """str : Reference to the name of the primitive."""
+        return self.primitive.name
+
+    @name.setter
+    def name(self, name):
+        self.primitive.name = name
+
     def clear_layer(self):
-        """Clear the main layer of the artist."""
+        """Clear the layer containing the artist."""
         if self.layer:
             compas_rhino.clear_layer(self.layer)
-        else:
-            compas_rhino.clear_current_layer()
 
 
 # ==============================================================================

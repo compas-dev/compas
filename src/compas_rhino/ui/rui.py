@@ -4,10 +4,9 @@ from __future__ import division
 
 import os
 import inspect
+import uuid
 
 import compas
-
-import uuid
 
 if not compas.IPY:
     from xml.etree import ElementTree as ET

@@ -14,15 +14,12 @@ class PolylineArtist(PrimitiveArtist):
 
     Parameters
     ----------
-    polyline : :class:`compas.geometry.Polyline`
+    primitive : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
-    layer : str (optional)
-        The name of the layer that will contain the polyline.
-        Default value is ``None``, in which case the current layer will be used.
 
-    Examples
-    --------
-    >>>
+    Notes
+    -----
+    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """
 
@@ -36,7 +33,7 @@ class PolylineArtist(PrimitiveArtist):
         """
         polylines = [{'points': map(list, self.primitive.points), 'color': self.color, 'name': self.name}]
         guids = compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
-        self.guids = guids
+        self._guids = guids
         return guids
 
 

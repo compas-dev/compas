@@ -2,21 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-from compas.utilities import color_to_rgb
-
-from compas_rhino.conduits.base import BaseConduit
-
 try:
     basestring
 except NameError:
     basestring = str
 
-if compas.IPY:
-    from System.Drawing.Color import FromArgb
+from System.Drawing.Color import FromArgb
+from Rhino.Geometry import Point3d
 
-    if compas.RHINO:
-        from Rhino.Geometry import Point3d
+from compas.utilities import color_to_rgb
+from compas_rhino.conduits.base import BaseConduit
 
 
 __all__ = ['FacesConduit']

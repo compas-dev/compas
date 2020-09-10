@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Updated naming conventions in `compas.datastructures.HalfFace` and `compas.datastructures.VolMesh`
 * Moved `compas.datastructures.Datastructure` to `compas.datastructures.datastructure`.
 * Changed base class of `compas.datastructures.Datastructure` to `compas.base.Base`.
 * Changed `from_json` to `to_json` of meshes to use encoders and decoders.
@@ -54,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Restructure and reorganize volmesh datastructure
 * Fixed scaling bug in `compas.geometry.Sphere`
 * Fixed bug in `compas.datastructures.Mesh.add_vertex`.
 * Fixed performance issue affecting IronPython when iterating over vertices and their attributes.

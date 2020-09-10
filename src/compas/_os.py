@@ -475,6 +475,10 @@ def user_data_dir(appname=None, appauthor=None, version=None, roaming=False):
         path = os.path.expanduser('~/Library/Application Support/')
         if appname:
             path = os.path.join(path, appname)
+    elif 'mono' in sys.version.lower():
+        path = os.path.expanduser('~/Library/Application Support/')
+        if appname:
+            path = os.path.join(path, appname)
     else:
         path = os.getenv('XDG_DATA_HOME', os.path.expanduser("~/.local/share"))
         if appname:

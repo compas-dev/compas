@@ -2,36 +2,29 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+import clr
+clr.AddReference("Eto")
+clr.AddReference("Rhino.UI")
 
-if compas.RHINO:
-    import clr
-    clr.AddReference("Eto")
-    clr.AddReference("Rhino.UI")
-    import Rhino
-    import Rhino.UI
-    import Eto.Drawing as drawing
-    import Eto.Forms as forms
-    Dialog = forms.Dialog[bool]
-
-else:
-    class Dialog:
-        pass
+import Rhino  # noqa: E402
+import Rhino.UI  # noqa: E402
+import Eto.Drawing  # noqa: E402
+import Eto.Forms  # noqa: E402
 
 
 __all__ = ['TextForm']
 
 
-class TextForm(Dialog):
+class TextForm(Eto.Forms.Dialog[bool]):
 
     def __init__(self, text, title='Message'):
         self.text = text
-        self.textbox = textbox = forms.TextArea()
+        self.textbox = textbox = Eto.Forms.TextArea()
 
         textbox.ReadOnly = True
         textbox.Append(text)
 
-        layout = forms.DynamicLayout()
+        layout = Eto.Forms.DynamicLayout()
         layout.AddRow(textbox)
         layout.Add(None)
         layout.BeginVertical()
@@ -41,20 +34,20 @@ class TextForm(Dialog):
         layout.EndVertical()
 
         self.Title = title
-        self.Padding = drawing.Padding(12)
+        self.Padding = Eto.Drawing.Padding(12)
         self.Resizable = False
         self.Content = layout
-        self.ClientSize = drawing.Size(400, 600)
+        self.ClientSize = Eto.Drawing.Size(400, 600)
 
     @property
     def ok(self):
-        self.DefaultButton = forms.Button(Text='OK')
+        self.DefaultButton = Eto.Forms.Button(Text='OK')
         self.DefaultButton.Click += self.on_ok
         return self.DefaultButton
 
     @property
     def cancel(self):
-        self.AbortButton = forms.Button(Text='Cancel')
+        self.AbortButton = Eto.Forms.Button(Text='Cancel')
         self.AbortButton.Click += self.on_cancel
         return self.AbortButton
 

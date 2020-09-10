@@ -17,13 +17,9 @@ class PlaneArtist(PrimitiveArtist):
     primitive : :class:`compas.geometry.Plane`
         A COMPAS plane.
 
-    Other Parameters
-    ----------------
+    Notes
+    -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
-
-    Examples
-    --------
-    >>>
 
     """
 

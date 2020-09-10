@@ -21,10 +21,6 @@ class LineArtist(PrimitiveArtist):
     ----------------
     See :class:`compas_ghpython.artists.PrimitiveArtist` for all other parameters.
 
-    Examples
-    --------
-    >>>
-
     """
 
     def draw(self):
@@ -32,13 +28,13 @@ class LineArtist(PrimitiveArtist):
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Line`
+        :class:`Rhino.Geometry.Line`
 
         """
         start = list(self.primitive.start)
         end = list(self.primitive.end)
         lines = [{'start': start, 'end': end}]
-        return compas_ghpython.draw_lines(lines)
+        return compas_ghpython.draw_lines(lines)[0]
 
 
 # ==============================================================================

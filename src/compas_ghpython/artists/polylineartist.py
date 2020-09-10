@@ -17,9 +17,9 @@ class PolylineArtist(PrimitiveArtist):
     primitive : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
 
-    Examples
-    --------
-    >>>
+    Other Parameters
+    ----------------
+    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """
 
@@ -28,10 +28,10 @@ class PolylineArtist(PrimitiveArtist):
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Polyline`.
+        :class:`Rhino.Geometry.Polyline`.
         """
         polylines = [{'points': map(list, self.primitive.points)}]
-        return compas_ghpython.draw_polylines(polylines)
+        return compas_ghpython.draw_polylines(polylines)[0]
 
 
 # ==============================================================================

@@ -3,6 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 import struct
+import compas
+from compas.geometry import Translation
 from compas.utilities import geometric_key
 
 
@@ -10,6 +12,7 @@ __all__ = [
     'STL',
     'STLReader',
     'STLParser',
+    'STLWriter',
 ]
 
 
@@ -21,11 +24,16 @@ class STL(object):
         self._is_parsed = False
         self._reader = None
         self._parser = None
+        self._writer = None
 
     def read(self):
         self._reader = STLReader(self.filepath)
         self._parser = STLParser(self._reader, precision=self.precision)
         self._is_parsed = True
+
+    def write(self, mesh, **kwargs):
+        self._writer = STLWriter(self.filepath, mesh, **kwargs)
+        self._writer.write()
 
     @property
     def reader(self):
@@ -240,6 +248,54 @@ class STLParser(object):
             faces.append(face)
         self.vertices = vertices
         self.faces = faces
+
+
+class STLWriter(object):
+    """"""
+
+    def __init__(self, filepath, mesh, binary=False, solid_name=None, precision=None):
+        self.filepath = filepath
+        self.mesh = mesh
+        self.solid_name = solid_name or mesh.name
+        self.precision = precision or compas.PRECISION
+        self.file = None
+        self.binary = binary
+
+    @property
+    def vertex_xyz(self):
+        bbox = self.mesh.bounding_box()
+        xmin, ymin, zmin = bbox[0]
+        if xmin < 0 or ymin < 0 or zmin < 0:
+            T = Translation.from_vector([-xmin, -ymin, -zmin])
+            mesh = self.mesh.transformed(T)
+        else:
+            mesh = self.mesh
+        return {vertex: mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()}
+
+    def write(self):
+        if not self.binary:
+            with open(self.filepath, 'w') as self.file:
+                self.write_header()
+                self.write_faces()
+                self.write_footer()
+        else:
+            raise NotImplementedError
+
+    def write_header(self):
+        self.file.write("solid {}\n".format(self.solid_name))
+
+    def write_footer(self):
+        self.file.write("endsolid {}\n".format(self.solid_name))
+
+    def write_faces(self):
+        vertex_xyz = self.vertex_xyz
+        for face in self.mesh.faces():
+            self.file.write("facet normal {0} {1} {2}\n".format(* self.mesh.face_normal(face)))
+            self.file.write("    outer loop\n")
+            for vertex in self.mesh.face_vertices(face):
+                self.file.write("        vertex {0} {1} {2}\n".format(* vertex_xyz[vertex]))
+            self.file.write("    endloop\n")
+            self.file.write("endfacet\n")
 
 
 # ==============================================================================

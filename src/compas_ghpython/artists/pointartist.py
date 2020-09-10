@@ -21,10 +21,6 @@ class PointArtist(PrimitiveArtist):
     ----------------
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
-    Examples
-    --------
-    >>>
-
     """
 
     def draw(self):
@@ -32,11 +28,11 @@ class PointArtist(PrimitiveArtist):
 
         Returns
         -------
-        list of :class:`Rhino.Geometry.Point3d`
+        :class:`Rhino.Geometry.Point3d`
 
         """
         points = [{'pos': list(self.primitive)}]
-        return compas_ghpython.draw_points(points)
+        return compas_ghpython.draw_points(points)[0]
 
     @staticmethod
     def draw_collection(collection):
