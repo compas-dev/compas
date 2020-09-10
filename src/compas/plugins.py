@@ -306,7 +306,7 @@ def plugin(method=None, category=None, requires=None, tryfirst=False, trylast=Fa
         Plugins can declare a preferred priority by setting this to ``True``.
         By default ``False``.
     trylast : bool, optional
-        Alternatively, a plugin can demote itself to be least preferrable
+        Alternatively, a plugin can demote itself to be least preferable
         setting ``trylast`` to ``True``. By default ``False``.
     pluggable_name : str, optional
         Usually, the name of the decorated plugin method matches that of the
