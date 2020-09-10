@@ -200,13 +200,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return the object data for state state serialisation with older pickle protocols.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span>
+    <span class="c1"># def __getstate__(self):</span>
+    <span class="c1">#     &quot;&quot;&quot;Return the object data for state state serialisation with older pickle protocols.&quot;&quot;&quot;</span>
+    <span class="c1">#     return self.data</span>
 
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Assign an unserialised state to the object data to support older pickle protocols.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="c1"># def __setstate__(self, state):</span>
+    <span class="c1">#     &quot;&quot;&quot;Assign an unserialised state to the object data to support older pickle protocols.&quot;&quot;&quot;</span>
+    <span class="c1">#     self.data = state</span>
 
     <span class="k">def</span> <span class="nf">validate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Validate the data of this object against its data schema (`self.DATASCHEMA`).</span>
