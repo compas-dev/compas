@@ -32,6 +32,10 @@ class Base(ABC):
         The structure of the data dict is defined by the implementing classes.
     """
 
+    def __init__(self):
+        self._guid = None
+        self._name = None
+
     @property
     def DATASCHEMA(self):
         """:class:`schema.Schema` : The schema of the data of this object."""
