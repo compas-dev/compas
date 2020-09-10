@@ -230,7 +230,6 @@ class MeshArtist(BaseArtist):
         The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
         Faces with more than 4 vertices will be triangulated on-the-fly.
         """
-        self.clear()
         key_index = self.mesh.key_index()
         vertices = self.vertex_xyz.values()
         faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
