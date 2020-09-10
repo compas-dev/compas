@@ -286,7 +286,7 @@ class MeshObject(BaseObject):
             for u, v in iter(edges):
                 DrawLine(Point3d(* vertex_xyz[u]), Point3d(* vertex_xyz[v]), color)
 
-        if not self.anchor:
+        if self.anchor is None:
             return False
 
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
