@@ -190,7 +190,7 @@ def _try_remove_bootstrapper(path):
         try:
             os.remove(bootstrapper)
             return True
-        except:
+        except:  # noqa: E722
             return False
     return True
 
