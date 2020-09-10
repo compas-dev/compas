@@ -21,6 +21,20 @@ class CircleArtist(PrimitiveArtist):
     ----------------
     See :class:`compas_ghpython.artists.PrimitiveArtist` for all other parameters.
 
+    Examples
+    --------
+    .. code-block:: python
+
+        from compas_ghpython.artists import CircleArtist
+
+        #circle is an input to the ghcomponent
+        artist = CircleArtist(circle)
+        a = artist.draw()
+
+    .. figure:: /_images/ghartist-circle-example.jpg
+        :figclass: figure
+        :class: figure-img img-fluid
+
     """
 
     def draw(self):
