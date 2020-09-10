@@ -293,7 +293,7 @@ class MeshObject(BaseObject):
         vertex_xyz = self.artist.vertex_xyz
         edges = list(self.diagram.edges())
         anchor_xyz = self.diagram.vertex_attributes(self.anchor, 'xyz')
-        origin = self.location
+        origin = list(self.location)
         p0 = Point3d(* origin)
 
         gp = Rhino.Input.Custom.GetPoint()
