@@ -36,6 +36,10 @@ class LineArtist(PrimitiveArtist):
         lines = [{'start': start, 'end': end}]
         return compas_ghpython.draw_lines(lines)[0]
 
+    @staticmethod
+    def draw_collection(collection):
+        raise NotImplementedError
+
 
 # ==============================================================================
 # Main

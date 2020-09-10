@@ -37,6 +37,7 @@ class PrimitiveArtist(BaseArtist):
     @property
     def name(self):
         """str : Reference to the name of the primitive."""
+        # if hasattr(self.primitive, 'name'):
         return self.primitive.name
 
     @name.setter

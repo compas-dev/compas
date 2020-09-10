@@ -36,8 +36,8 @@ class FrameArtist(PrimitiveArtist):
 
     """
 
-    def __init__(self, frame, layer=None, name=None, scale=1.0):
-        super(FrameArtist, self).__init__(frame, layer=layer, name=name)
+    def __init__(self, frame, scale=1.0):
+        super(FrameArtist, self).__init__(frame)
         self.scale = scale
         self.color_origin = (0, 0, 0)
         self.color_xaxis = (255, 0, 0)
@@ -55,8 +55,6 @@ class FrameArtist(PrimitiveArtist):
             * geometry[1] : list of :class:`Rhino.Geometry.Line`
 
         """
-        points = []
-        lines = []
         origin = list(self.primitive.point)
         x = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
         y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
@@ -70,6 +68,10 @@ class FrameArtist(PrimitiveArtist):
         geometry[0] = compas_ghpython.draw_points(points)
         geometry[1] = compas_ghpython.draw_lines(lines)
         return geometry
+
+    @staticmethod
+    def draw_collection(collection):
+        raise NotImplementedError
 
 
 # ==============================================================================

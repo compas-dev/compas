@@ -37,6 +37,10 @@ class CircleArtist(PrimitiveArtist):
         circles = [{'plane': [point, normal], 'radius': radius, 'color': self.color, 'name': self.name}]
         return compas_ghpython.draw_circles(circles)[0]
 
+    @staticmethod
+    def draw_collection(collection):
+        raise NotImplementedError
+
 
 # ==============================================================================
 # Main

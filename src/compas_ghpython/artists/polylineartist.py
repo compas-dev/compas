@@ -33,6 +33,10 @@ class PolylineArtist(PrimitiveArtist):
         polylines = [{'points': map(list, self.primitive.points)}]
         return compas_ghpython.draw_polylines(polylines)[0]
 
+    @staticmethod
+    def draw_collection(collection):
+        raise NotImplementedError
+
 
 # ==============================================================================
 # Main
