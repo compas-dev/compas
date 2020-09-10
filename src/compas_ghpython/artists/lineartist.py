@@ -21,6 +21,19 @@ class LineArtist(PrimitiveArtist):
     ----------------
     See :class:`compas_ghpython.artists.PrimitiveArtist` for all other parameters.
 
+    Examples
+    --------
+    .. code-block:: python
+
+        from compas_ghpython.artists import LineArtist
+
+        artist = LineArtist(line)
+        a = artist.draw()
+
+    .. figure:: /_images/ghartist-line-example.jpg
+        :figclass: figure
+        :class: figure-img img-fluid
+
     """
 
     def draw(self):
