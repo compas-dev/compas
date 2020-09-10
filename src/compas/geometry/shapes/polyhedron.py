@@ -26,6 +26,7 @@ class Polyhedron(Shape):
     """
 
     def __init__(self, fcount):
+        super(Polyhedron, self).__init__()
         self.vertices = None
         self.faces = None
         if fcount == 4:

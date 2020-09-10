@@ -57,6 +57,7 @@ class Capsule(Shape):
     __slots__ = ['_line', '_radius']
 
     def __init__(self, line, radius):
+        super(Capsule, self).__init__()
         self._line = None
         self._radius = None
         self.line = line

@@ -73,6 +73,7 @@ class Box(Shape):
     """
 
     def __init__(self, frame, xsize, ysize, zsize):
+        super(Box, self).__init__()
         self._frame = None
         self._xsize = None
         self._ysize = None

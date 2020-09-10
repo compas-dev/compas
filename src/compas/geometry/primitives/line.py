@@ -59,6 +59,7 @@ class Line(Primitive):
     __slots__ = ['_start', '_end']
 
     def __init__(self, p1, p2):
+        super(Line, self).__init__()
         self._start = None
         self._end = None
         self.start = p1

@@ -57,6 +57,7 @@ class Cone(Shape):
     __slots__ = ['_circle', '_height']
 
     def __init__(self, circle, height):
+        super(Cone, self).__init__()
         self._circle = None
         self._height = None
         self.circle = circle

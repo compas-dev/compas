@@ -69,6 +69,7 @@ class Frame(Primitive):
     """
 
     def __init__(self, point, xaxis, yaxis):
+        super(Frame, self).__init__()
         self._point = None
         self._xaxis = None
         self._yaxis = None
