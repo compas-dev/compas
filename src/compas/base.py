@@ -116,6 +116,14 @@ class Base(ABC):
         """
         pass
 
+    def __getstate__(self):
+        """Return the object data for state state serialisation with older pickle protocols."""
+        return self.data
+
+    def __setstate__(self, state):
+        """Assign an unserialised state to the object data to support older pickle protocols."""
+        self.data = state
+
     def validate_data(self):
         """Validate the data of this object against its data schema (`self.DATASCHEMA`).
 
