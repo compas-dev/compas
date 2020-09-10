@@ -203,7 +203,7 @@ class MeshObject(BaseObject):
     def select(self):
         raise NotImplementedError
 
-    def select_vertices(self):
+    def select_vertices(self, message="Select vertices."):
         """Select vertices of the mesh.
 
         Returns
@@ -211,11 +211,11 @@ class MeshObject(BaseObject):
         list
             A list of vertex identifiers.
         """
-        guids = compas_rhino.select_points()
+        guids = compas_rhino.select_points(message=message)
         vertices = [self.artist.guid_vertex[guid] for guid in guids if guid in self.artist.guid_vertex]
         return vertices
 
-    def select_faces(self):
+    def select_faces(self, message="Select faces."):
         """Select faces of the mesh.
 
         Returns
@@ -223,11 +223,11 @@ class MeshObject(BaseObject):
         list
             A list of face identifiers.
         """
-        guids = compas_rhino.select_meshes()
+        guids = compas_rhino.select_meshes(message=message)
         faces = [self.artist.guid_face[guid] for guid in guids if guid in self.artist.guid_face]
         return faces
 
-    def select_edges(self):
+    def select_edges(self, message="Select edges."):
         """Select edges of the mesh.
 
         Returns
@@ -235,7 +235,7 @@ class MeshObject(BaseObject):
         list
             A list of edge identifiers.
         """
-        guids = compas_rhino.select_lines()
+        guids = compas_rhino.select_lines(message=message)
         edges = [self.artist.guid_edge[guid] for guid in guids if guid in self.artist.guid_edge]
         return edges
 
