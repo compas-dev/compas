@@ -142,6 +142,7 @@ def installable_rhino_packages():
     """
     pass
 
+
 def _update_bootstrapper(install_path, packages):
     # Take either the CONDA environment directory or the current Python executable's directory
     python_directory = os.environ.get('CONDA_PREFIX', None) or os.path.dirname(sys.executable)
