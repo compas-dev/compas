@@ -904,8 +904,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the vertices does not exist.
         """
-        if not vertices:
-            vertices = self.vertices()
+        vertices = vertices or self.vertices()
         if value is not None:
             for vertex in vertices:
                 self.vertex_attribute(vertex, name, value)
@@ -940,8 +939,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the vertices does not exist.
         """
-        if not vertices:
-            vertices = self.vertices()
+        vertices = vertices or self.vertices()
         if values:
             for vertex in vertices:
                 self.vertex_attributes(vertex, names, values)
@@ -1106,8 +1104,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the edges does not exist.
         """
-        if not edges:
-            edges = self.edges()
+        edges = edges or self.edges()
         if value is not None:
             for edge in edges:
                 self.edge_attribute(edge, name, value)
@@ -1142,8 +1139,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the edges does not exist.
         """
-        if not edges:
-            edges = self.edges()
+        edges = edges or self.edges()
         if values:
             for edge in edges:
                 self.edge_attributes(edge, names, values)
@@ -1303,8 +1299,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the faces does not exist.
         """
-        if not faces:
-            faces = self.faces()
+        faces = faces or self.faces()
         if value is not None:
             for face in faces:
                 self.face_attribute(face, name, value)
@@ -1339,8 +1334,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the faces does not exist.
         """
-        if not faces:
-            faces = self.faces()
+        faces = faces or self.faces()
         if values:
             for face in faces:
                 self.face_attributes(face, names, values)
@@ -1887,6 +1881,7 @@ class HalfFace(Datastructure):
     # face topology
     # --------------------------------------------------------------------------
 
+    # has_halfface ?
     def has_face(self, face):
         """Verify that a face is part of the volmesh.
 
@@ -1903,6 +1898,7 @@ class HalfFace(Datastructure):
         """
         return face in self._halfface
 
+    # halfface_vertices ?
     def face_vertices(self, face):
         """The vertices of a face.
 
@@ -1918,6 +1914,7 @@ class HalfFace(Datastructure):
         """
         return self._halfface[face]
 
+    # halfface_halfedges ?
     def face_halfedges(self, face):
         """The halfedges of a face.
 
@@ -1934,6 +1931,7 @@ class HalfFace(Datastructure):
         vertices = self.face_vertices(face)
         return list(pairwise(vertices + vertices[0:1]))
 
+    # halfface_cell ?
     def face_cell(self, face):
         """The cell to which the face belongs to.
 
@@ -1950,6 +1948,7 @@ class HalfFace(Datastructure):
         u, v, w = self._halfface[face][0:3]
         return self._plane[u][v][w]
 
+    # halfface_opposite_halfface ?
     def face_opposite_face(self, face):
         """The opposite face of a face.
 
@@ -2008,6 +2007,7 @@ class HalfFace(Datastructure):
     #         return None
     #     return self._cell[nbr_cell][v][u]
 
+    # halfface_vertex_ancestor ?
     def face_vertex_ancestor(self, face, vertex):
         """Return the vertex before the specified vertex in a specific face.
 
@@ -2031,6 +2031,7 @@ class HalfFace(Datastructure):
         i = self._halfface[face].index(vertex)
         return self._halfface[face][i - 1]
 
+    # halfface_vertex_descendant ?
     def face_vertex_descendent(self, face, vertex):
         """Return the vertex after the specified vertex in a specific face.
 
@@ -2224,6 +2225,7 @@ class HalfFace(Datastructure):
             halfedges += self.face_halfedges(face)
         return halfedges
 
+    # cell_halffaces ?
     def cell_faces(self, cell):
         """The faces of a cell.
 
@@ -2272,6 +2274,7 @@ class HalfFace(Datastructure):
             ordered_vkeys.append(v)
         return ordered_vkeys
 
+    # cell_vertex_halffaces ?
     def cell_vertex_faces(self, cell, vertex):
         """Ordered faces connected to a vertex of a cell.
 
@@ -2456,6 +2459,7 @@ class HalfFace(Datastructure):
                 vertices.update(self.face_vertices(face))
         return list(vertices)
 
+    # halffaces_on_boundaries
     def faces_on_boundaries(self):
         """Find the faces on the boundary.
 
