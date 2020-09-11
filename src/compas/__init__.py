@@ -72,7 +72,26 @@ except Exception:
     pass
 
 
-__all__ = ['WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'GH', 'BLENDER', 'set_precision', 'get']
+__all__ = ['WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'GH', 'BLENDER', 'set_precision', 'get', 'raise_if_ironpython']
+
+
+def is_ironpython():
+    """Check if the Python implementation is IronPython.
+
+    Returns
+    -------
+    bool
+        True if the implementation is IronPython. False otherwise
+
+    """
+    return 'ironpython' in sys.version.lower()
+
+
+IPY = is_ironpython()
+
+def raise_if_ironpython():
+    if IPY:
+        raise
 
 
 def is_windows():
