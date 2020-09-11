@@ -409,6 +409,7 @@ class HalfFace(Datastructure):
         self._vertex[key].update(attr)
         return key
 
+    # add halfface?
     def add_face(self, vertices, fkey=None, attr_dict=None, **kwattr):
         """Add a face to the volmesh object.
 
@@ -744,6 +745,7 @@ class HalfFace(Datastructure):
     def edges_where(self):
         raise NotImplementedError
 
+    # faces or halffaces?
     def faces_where(self):
         raise NotImplementedError
 
@@ -998,17 +1000,14 @@ class HalfFace(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
+        key = "-".join(map(str, sorted(edge)))
         if value is not None:
-            if (u, v) not in self._edge_data:
-                self._edge_data[u, v] = {}
-            if (v, u) not in self._edge_data:
-                self._edge_data[v, u] = {}
-            self._edge_data[u, v][name] = self._edge_data[v, u][name] = value
+            if key not in self._edge_data:
+                self._edge_data[key] = {}
+            self._edge_data[key][name] = value
             return
-        if (u, v) in self._edge_data and name in self._edge_data[u, v]:
-            return self._edge_data[u, v][name]
-        if (v, u) in self._edge_data and name in self._edge_data[v, u]:
-            return self._edge_data[v, u][name]
+        if key in self._edge_data and name in self._edge_data[key]:
+            return self._edge_data[key][name]
         if name in self.default_edge_attributes:
             return self.default_edge_attributes[name]
 
@@ -1035,13 +1034,9 @@ class HalfFace(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        if edge in self._edge_data:
-            if name in self._edge_data[edge]:
-                del self._edge_data[edge][name]
-        edge = v, u
-        if edge in self._edge_data:
-            if name in self._edge_data[edge]:
-                del self._edge_data[edge][name]
+        key = "-".join(map(str, sorted(edge)))
+        if key in self._edge_data and name in self._edge_data[key]:
+            del self._edge_data[key][name]
 
     def edge_attributes(self, edge, names=None, values=None):
         """Get or set multiple attributes of an edge.
@@ -1072,16 +1067,15 @@ class HalfFace(Datastructure):
         u, v = edge
         if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        if values is not None:
-            # use it as a setter
+        key = "-".join(map(str, sorted(edge)))
+        if values:
             for name, value in zip(names, values):
-                self.edge_attribute(edge, name, value)
+                if key not in self._edge_data:
+                    self._edge_data[key] = {}
+                self._edge_data[key][name] = value
             return
-        # use it as a getter
         if not names:
-            # get the entire attribute dict
-            return EdgeAttributeView(self.default_edge_attributes, self._edge_data.setdefault(edge, {}))
-        # get only the values of the named attributes
+            return EdgeAttributeView(self.default_edge_attributes, self._edge_data, key)
         values = []
         for name in names:
             value = self.edge_attribute(edge, name)
@@ -1239,9 +1233,8 @@ class HalfFace(Datastructure):
         if face not in self._halfface:
             raise KeyError(face)
         key = "-".join(map(str, sorted(self.face_vertices(face))))
-        if key in self._face_data:
-            if name in self._face_data[key]:
-                del self._face_data[key][name]
+        if key in self._face_data and name in self._face_data[key]:
+            del self._face_data[key][name]
 
     def face_attributes(self, face, names=None, values=None):
         """Get or set multiple attributes of a face.
