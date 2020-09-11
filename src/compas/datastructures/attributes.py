@@ -4,7 +4,13 @@ from __future__ import print_function
 
 from compas.datastructures._mutablemapping import MutableMapping
 
-__all__ = ['NodeAttributeView', 'VertexAttributeView', 'FaceAttributeView', 'EdgeAttributeView']
+__all__ = [
+    'NodeAttributeView',
+    'VertexAttributeView',
+    'FaceAttributeView',
+    'EdgeAttributeView',
+    'CellAttributeView',
+]
 
 
 class AttributeView(object):
@@ -76,6 +82,14 @@ class FaceAttributeView(AttributeView, MutableMapping):
 
     def __init__(self, defaults, attr, custom_only=False):
         super(FaceAttributeView, self).__init__(defaults, attr, custom_only)
+
+
+class CellAttributeView(AttributeView, MutableMapping):
+    """Mutable Mapping that provides a read/write view of the custom attributes of a cell
+    combined with the default attributes of all faces."""
+
+    def __init__(self, defaults, attr, custom_only=False):
+        super(CellAttributeView, self).__init__(defaults, attr, custom_only)
 
 
 # ==============================================================================

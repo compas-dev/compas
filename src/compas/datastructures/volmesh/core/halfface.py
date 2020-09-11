@@ -5,11 +5,14 @@ from __future__ import print_function
 from ast import literal_eval
 from random import choice
 
-from compas.datastructures.volmesh.core import VertexAttributeView
-from compas.datastructures.volmesh.core import FaceAttributeView
-from compas.datastructures.volmesh.core import CellAttributeView
+import compas
 
-from compas.datastructures import Datastructure
+from compas.datastructures.datastructure import Datastructure
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import FaceAttributeView
+from compas.datastructures.attributes import CellAttributeView
+
 from compas.utilities import pairwise
 
 
@@ -55,31 +58,127 @@ class HalfFace(Datastructure):
         self.default_face_attributes = {}
         self.default_cell_attributes = {}
 
-    # --------------------------------------------------------------------------
-    # customisation
-    # --------------------------------------------------------------------------
+    @property
+    def DATASCHEMA(self):
+        import schema
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return schema.Schema({
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "dca": dict,
+                "vertex": dict,
+                "halfface": dict,
+                "cell": dict,
+                "plane": dict,
+                "edge_data": dict,
+                "face_data": dict,
+                "cell_data": dict,
+                "max_vertex": schema.And(int, lambda x: x >= -1),
+                "max_face": schema.And(int, lambda x: x >= -1),
+                "max_cell": schema.And(int, lambda x: x >= -1),
+            })
+        return schema.Schema({
+            "compas": str,
+            "datatype": str,
+            "data": {
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "dca": dict,
+                "vertex": dict,
+                "halfface": dict,
+                "cell": dict,
+                "plane": dict,
+                "edge_data": dict,
+                "face_data": dict,
+                "cell_data": dict,
+                "max_vertex": schema.And(int, lambda x: x >= -1),
+                "max_face": schema.And(int, lambda x: x >= -1),
+                "max_cell": schema.And(int, lambda x: x >= -1),
+            }
+        })
 
-    # def __str__(self):
-    #     """Generate a readable representation of the data of the volmesh."""
-    #     return json.dumps(self.data, sort_keys=True, indent=4)
+    @property
+    def JSONSCHEMA(self):
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return {
+                "$schema": "http://json-schema.org/schema",
+                "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
+                "$compas": compas.__version__,
 
-    # def summary(self):
-    #     """Print a summary of the volmesh."""
-    #     tpl = "\n".join(
-    #         ["VolMesh summary",
-    #          "===============",
-    #          "- vertices: {}",
-    #          "- edges   : {}",
-    #          "- faces   : {}",
-    #          "- cells   : {}"])
-    #     s = tpl.format(self.number_of_vertices(),
-    #                    self.number_of_edges(),
-    #                    self.number_of_faces(),
-    #                    self.number_of_cells())
-    #     print(s)
+                "type": "object",
+                "properties": {
+                    "attributes":   {"type": "object"},
+                    "dva":          {"type": "object"},
+                    "dea":          {"type": "object"},
+                    "dfa":          {"type": "object"},
+                    "dca":          {"type": "object"},
+                    "vertex":       {"type": "object"},
+                    "halfface":     {"type": "object"},
+                    "cell":         {"type": "object"},
+                    "plane":        {"type": "object"},
+                    "face_data":    {"type": "object"},
+                    "edge_data":    {"type": "object"},
+                    "cell_data":    {"type": "object"},
+                    "max_vertex":   {"type": "number"},
+                    "max_face":     {"type": "number"},
+                    "max_cell":     {"type": "number"}
+                },
+                "required": [
+                    "attributes",
+                    "dva", "dea", "dfa", "dca",
+                    "vertex", "halfface", "cell", "plane",
+                    "face_data", "edge_data", "cell_data",
+                    "max_vertex", "max_face", "max_cell"
+                ]
+            }
+        return {
+            "$schema": "http://json-schema.org/schema",
+            "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
+            "$compas": compas.__version__,
+
+            "type": "object",
+            "poperties": {
+                "compas": {"type": "string"},
+                "datatype": {"type": "string"},
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "attributes":   {"type": "object"},
+                        "dva":          {"type": "object"},
+                        "dea":          {"type": "object"},
+                        "dfa":          {"type": "object"},
+                        "dca":          {"type": "object"},
+                        "vertex":       {"type": "object"},
+                        "halfface":     {"type": "object"},
+                        "cell":         {"type": "object"},
+                        "plane":        {"type": "object"},
+                        "face_data":    {"type": "object"},
+                        "edge_data":    {"type": "object"},
+                        "cell_data":    {"type": "object"},
+                        "max_vertex":   {"type": "number"},
+                        "max_face":     {"type": "number"},
+                        "max_cell":     {"type": "number"}
+                    },
+                    "required": [
+                        "attributes",
+                        "dva", "dea", "dfa", "dca",
+                        "vertex", "halfface", "cell", "plane",
+                        "face_data", "edge_data", "cell_data",
+                        "max_vertex", "max_face", "max_cell"
+                    ]
+                }
+            },
+            "required": ["compas", "datatype", "data"]
+        }
 
     # --------------------------------------------------------------------------
-    # special properties
+    # descriptors
     # --------------------------------------------------------------------------
 
     @property
@@ -100,18 +199,18 @@ class HalfFace(Datastructure):
         """dict: A data dict representing the volmesh data structure for serialisation.
         """
         edge_data = {}
-        for edge in self._edge_data:
-            edge_data[repr(edge)] = self._edge_data[edge]
+        for e in self._edge_data:
+            edge_data[repr(e)] = self._edge_data[e]
         data = {
             'attributes': self.attributes,
             'dva': self.default_vertex_attributes,
             'dea': self.default_edge_attributes,
             'dfa': self.default_face_attributes,
             'dca': self.default_cell_attributes,
-            'vertices': self._vertex,
-            'halffaces': self._halfface,
-            'cells': self._cell,
-            'planes': self._plane,
+            'vertex': self._vertex,
+            'halfface': self._halfface,
+            'cell': self._cell,
+            'plane': self._plane,
             'edge_data': edge_data,
             'face_data': self._face_data,
             'cell_data': self._cell_data,
@@ -127,10 +226,10 @@ class HalfFace(Datastructure):
         dea = data.get('dea') or {}
         dfa = data.get('dfa') or {}
         dca = data.get('dca') or {}
-        vertices = data.get('vertices') or {}
-        halffaces = data.get('halffaces') or {}
-        cells = data.get('cells') or {}
-        planes = data.get('planes') or {}
+        vertex = data.get('vertex') or {}
+        halfface = data.get('halfface') or {}
+        cell = data.get('cell') or {}
+        plane = data.get('plane') or {}
         edge_data = data.get('edge_data') or {}
         face_data = data.get('face_data') or {}
         cell_data = data.get('cell_data') or {}
@@ -138,7 +237,7 @@ class HalfFace(Datastructure):
         max_face = data.get('max_face', -1)
         max_cell = data.get('max_cell', -1)
 
-        if not vertices or not planes or not halffaces or not cells:
+        if not vertex or not plane or not halfface or not cell:
             return
 
         self.attributes.update(attributes)
@@ -155,25 +254,25 @@ class HalfFace(Datastructure):
         self._face_data = {}
         self._cell_data = {}
 
-        for vertex in vertices:
-            attr = vertices[vertex] or {}
-            self.add_vertex(int(vertex), attr_dict=attr)
+        for v in vertex:
+            attr = vertex[v] or {}
+            self.add_vertex(int(v), attr_dict=attr)
 
-        for face in halffaces:
-            attr = face_data.get(face) or {}
-            self.add_face(halffaces[face], fkey=int(face), attr_dict=attr)
+        for f in halfface:
+            attr = face_data.get(f) or {}
+            self.add_face(halfface[f], fkey=int(f), attr_dict=attr)
 
-        for cell in cells:
-            attr = cell_data.get(cell) or {}
+        for c in cell:
+            attr = cell_data.get(c) or {}
             faces = []
-            for u in cells[cell]:
-                for v in cells[cell][u]:
-                    face = cells[cell][u][v]
-                    faces.append(halffaces[face])
-            self.add_cell(faces, ckey=int(cell), attr_dict=attr)
+            for u in cell[c]:
+                for v in cell[c][u]:
+                    f = cell[c][u][v]
+                    faces.append(halfface[f])
+            self.add_cell(faces, ckey=int(c), attr_dict=attr)
 
-        for edge in edge_data:
-            self._edge_data[literal_eval(edge)] = edge_data[edge] or {}
+        for e in edge_data:
+            self._edge_data[literal_eval(e)] = edge_data[e] or {}
 
         self._max_vertex = max_vertex
         self._max_face = max_face
@@ -943,6 +1042,51 @@ class HalfFace(Datastructure):
         if edge in self._edge_data:
             if name in self._edge_data[edge]:
                 del self._edge_data[edge][name]
+
+    def edge_attributes(self, edge, names=None, values=None):
+        """Get or set multiple attributes of an edge.
+
+        Parameters
+        ----------
+        edge : 2-tuple of int
+            The identifier of the edge.
+        names : list, optional
+            A list of attribute names.
+        values : list, optional
+            A list of attribute values.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is empty,
+            a dictionary of all attribute name-value pairs of the edge.
+            If the parameter ``names`` is not empty,
+            a list of the values corresponding to the provided names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
+        """
+        u, v = edge
+        if u not in self._plane or v not in self._plane[u]:
+            raise KeyError(edge)
+        if values is not None:
+            # use it as a setter
+            for name, value in zip(names, values):
+                self.edge_attribute(edge, name, value)
+            return
+        # use it as a getter
+        if not names:
+            # get the entire attribute dict
+            return EdgeAttributeView(self.default_edge_attributes, self._edge_data.setdefault(edge, {}))
+        # get only the values of the named attributes
+        values = []
+        for name in names:
+            value = self.edge_attribute(edge, name)
+            values.append(value)
+        return values
 
     def edges_attribute(self, name, value=None, edges=None):
         """Get or set an attribute of multiple edges.
