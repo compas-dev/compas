@@ -3,7 +3,10 @@ from __future__ import absolute_import
 from __future__ import division
 
 import ast
-import rhinoscriptsyntax as rs
+try:
+    import rhinoscriptsyntax as rs
+except:
+    pass
 
 
 __all__ = [
