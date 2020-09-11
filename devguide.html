@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="installable_rhino_packages" href="generated/compas_rhino.install.installable_rhino_packages.html" />
+    <link rel="prev" title="MeshPlotter.update_vertices" href="api/generated/compas_plotters.MeshPlotter.update_vertices.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -268,19 +268,6 @@ available through the <code class="docutils literal notranslate"><span class="pr
 listed are analyzed to look for functions decorated with the <a class="reference internal" href="api/generated/compas.plugins.plugin.html#compas.plugins.plugin" title="compas.plugins.plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.plugin()</span></code></a>
 decorator.</p>
 </div>
-<div class="section" id="two-kinds-of-extension-points">
-<h3>Two kinds of extension points</h3>
-<p>An extension point, or <code class="docutils literal notranslate"><span class="pre">pluggable</span></code> interface can be declared as being one of two types
-based on how they select which implementation to pick if there are multiple available.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">selector='first_match'</span></code>: this type of extension point will pick the first plugin
-implementation that satisfies the requirements.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">selector='collect_all'</span></code>: extension points defined with this selector will instead
-collect all plugin implementations and execute them all, collecting the return
-values into a list. An example of this is the Rhino install extension
-point: <a class="reference internal" href="generated/compas_rhino.install.installable_rhino_packages.html#compas_rhino.install.installable_rhino_packages" title="compas_rhino.install.installable_rhino_packages"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_rhino.install.installable_rhino_packages()</span></code></a>.</p></li>
-</ul>
-</div>
 <div class="section" id="a-complete-example">
 <h3>A complete example</h3>
 <p>Let’s explore a complete example to gain a better understanding.</p>
@@ -379,7 +366,6 @@ accordingly:</p>
 <li class="nav-item"><a class="nav-link reference internal" href="gettingstarted.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="api.html">API Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="plugins.html">Extension points</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="changelog.html">Changelog</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="license.html">License</a></li>
@@ -403,7 +389,6 @@ accordingly:</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#plugins">Plugins</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#why-are-plugins-important">Why are plugins important?</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#how-to-make-plugins-discoverable">How to make plugins discoverable?</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#two-kinds-of-extension-points">Two kinds of extension points</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#a-complete-example">A complete example</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#extension-point">Extension point</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#plugin">Plugin</a></li>
