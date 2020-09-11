@@ -21,4 +21,5 @@ if compas.GH:
 __version__ = '0.16.2'
 
 
+__all_plugins__ = ['compas_ghpython.install']
 __all__ = [name for name in dir() if not name.startswith('_')]

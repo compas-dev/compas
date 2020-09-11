@@ -203,6 +203,19 @@ Once a package is found, the metadata in ``__all_plugins__`` is read and all mod
 listed are analyzed to look for functions decorated with the :meth:`compas.plugins.plugin`
 decorator.
 
+Two kinds of extension points
+-----------------------------
+
+An extension point, or ``pluggable`` interface can be declared as being one of two types
+based on how they select which implementation to pick if there are multiple available.
+
+* ``selector='first_match'``: this type of extension point will pick the first plugin
+  implementation that satisfies the requirements.
+* ``selector='collect_all'``: extension points defined with this selector will instead
+  collect all plugin implementations and execute them all, collecting the return
+  values into a list. An example of this is the Rhino install extension
+  point: :meth:`compas_rhino.install.installable_rhino_packages`.
+
 A complete example
 ------------------
 

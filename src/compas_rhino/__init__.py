@@ -18,8 +18,9 @@ compas_rhino
 """
 from __future__ import absolute_import
 
-import os
 import io
+import os
+
 import compas
 import compas._os
 
@@ -195,5 +196,8 @@ def _try_remove_bootstrapper(path):
     return True
 
 
-__all_plugins__ = ['compas_rhino.geometry.booleans']
 __all__ = [name for name in dir() if not name.startswith('_')]
+__all_plugins__ = [
+    'compas_rhino.geometry.booleans',
+    'compas_rhino.install',
+]

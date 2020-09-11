@@ -3,12 +3,14 @@ from __future__ import division
 from __future__ import print_function
 
 import importlib
+import itertools
 import os
 import sys
 
 import compas_rhino
 
 import compas._os
+import compas.plugins
 
 __all__ = ['install']
 
@@ -109,6 +111,37 @@ def install(version=None, packages=None):
         sys.exit(exit_code)
 
 
+@compas.plugins.plugin(category='install', pluggable_name='installable_rhino_packages', tryfirst=True)
+def default_installable_rhino_packages():
+    # While this list could obviously be hard-coded, I think
+    # eating our own dogfood and using plugins to define this, just like
+    # any other extension/plugin would be is a better way to ensure consistent behavior.
+    return ['compas', 'compas_rhino']
+
+
+@compas.plugins.pluggable(category='install', selector='collect_all')
+def installable_rhino_packages():
+    """Provide a list of packages to make available inside Rhino.
+
+    Extensions providing Rhino or Grasshopper features
+    can implement this pluggable interface to automatically
+    have their packages made available inside Rhino when
+    COMPAS is installed into it.
+
+    Examples
+    --------
+    >>> import compas.plugins
+    >>> @compas.plugins.plugin(category='install')
+    ... def installable_rhino_packages():
+    ...    return ['compas_fab']
+
+    Returns
+    -------
+    :obj:`list` of :obj:`str`
+        List of package names to make available inside Rhino.
+    """
+    pass
+
 def _update_bootstrapper(install_path, packages):
     # Take either the CONDA environment directory or the current Python executable's directory
     python_directory = os.environ.get('CONDA_PREFIX', None) or os.path.dirname(sys.executable)
@@ -135,7 +168,8 @@ def _filter_installable_packages(version, packages):
         ghpython_incompatible = True
 
     if not packages:
-        packages = compas_rhino.INSTALLABLE_PACKAGES
+        # Flatten list of results (resulting from collect_all pluggable)
+        packages = list(itertools.chain.from_iterable(installable_rhino_packages()))
     elif 'compas_ghpython' in packages and ghpython_incompatible:
         print('Skipping installation of compas_ghpython since it\'s not supported for Rhino 5 for Mac')
 
