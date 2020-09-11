@@ -21,7 +21,6 @@ from compas_rhino.objects.modify import mesh_update_edge_attributes
 from compas_rhino.objects.modify import mesh_move_vertex
 from compas_rhino.objects.modify import mesh_move_vertices
 from compas_rhino.objects.modify import mesh_move_face
-# from compas_rhino.objects.inspect import MeshVertexInspector
 
 
 __all__ = ['MeshObject']
@@ -47,6 +46,22 @@ class MeshObject(BaseObject):
 
     """
 
+    SETTINGS = {
+        'color.vertices': (255, 255, 255),
+        'color.edges': (0, 0, 0),
+        'color.faces': (0, 0, 0),
+        'color.mesh': (0, 0, 0),
+        'show.mesh': True,
+        'show.vertices': True,
+        'show.edges': True,
+        'show.faces': False,
+        'show.vertexlabels': False,
+        'show.facelabels': False,
+        'show.edgelabels': False,
+        'show.vertexnormals': False,
+        'show.facenormals': False,
+    }
+
     modify = mesh_update_attributes
     modify_vertices = mesh_update_vertex_attributes
     modify_faces = mesh_update_face_attributes
@@ -58,22 +73,7 @@ class MeshObject(BaseObject):
         self._location = None
         self._scale = None
         self._rotation = None
-        self._inspector = None
-        self.settings.update({
-            'color.vertices': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'color.faces': (0, 0, 0),
-            'color.mesh': (0, 0, 0),
-            'show.mesh': True,
-            'show.vertices': True,
-            'show.edges': True,
-            'show.faces': False,
-            'show.vertexlabels': False,
-            'show.facelabels': False,
-            'show.edgelabels': False,
-            'show.vertexnormals': False,
-            'show.facenormals': False,
-        })
+        self.settings.update(MeshObject.SETTINGS)
         if settings:
             self.settings.update(settings)
 
@@ -85,16 +85,9 @@ class MeshObject(BaseObject):
     def mesh(self, mesh):
         self.item = mesh
 
-    # @property
-    # def inspector(self):
-    #     """:class:`compas_rhino.objects.MeshVertexInspector`: An inspector conduit."""
-    #     if not self._inspector:
-    #         self._inspector = MeshVertexInspector(self.diagram)
-    #     return self._inspector
-
     @property
     def anchor(self):
-        """"""
+        """The vertex of the mesh that is anchored to the location of the object."""
         return self._anchor
 
     @anchor.setter
@@ -201,7 +194,21 @@ class MeshObject(BaseObject):
         self.redraw()
 
     def select(self):
+        # there is currently no "general" selection method
+        # for the entire mesh object
         raise NotImplementedError
+
+    def select_vertex(self, message="Select one vertex."):
+        """Select one vertex of the mesh.
+
+        Returns
+        -------
+        int
+            A vertex identifier.
+        """
+        guid = compas_rhino.select_point(message=message)
+        if guid and guid in self.guid_vertex:
+            return self.guid_vertex[guid]
 
     def select_vertices(self, message="Select vertices."):
         """Select vertices of the mesh.
@@ -240,33 +247,65 @@ class MeshObject(BaseObject):
         return edges
 
     def move(self):
+        """Move the entire mesh object to a different location."""
         raise NotImplementedError
 
     def move_vertex(self, vertex):
+        """Move a single vertex of the mesh object and update the data structure accordingly.
+
+        Parameters
+        ----------
+        vertex : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        bool
+            True if the operation was successful.
+            False otherwise.
+        """
         return mesh_move_vertex(self.mesh, vertex)
 
     def move_vertices(self, vertices):
+        """Move a multiple vertices of the mesh object and update the data structure accordingly.
+
+        Parameters
+        ----------
+        vertices : list of int
+            The identifiers of the vertices.
+
+        Returns
+        -------
+        bool
+            True if the operation was successful.
+            False otherwise.
+        """
         return mesh_move_vertices(self.mesh, vertices)
 
     def move_face(self, face):
+        """Move a single face of the mesh object and update the data structure accordingly.
+
+        Parameters
+        ----------
+        face : int
+            The identifier of the face.
+
+        Returns
+        -------
+        bool
+            True if the operation was successful.
+            False otherwise.
+        """
         return mesh_move_face(self.mesh, face)
 
-    # def inspector_on(self):
-    #     """Turn on the diagram inspector conduit."""
-    #     self.inspector.vertex_xyz = self.artist.vertex_xyz
-    #     self.inspector.enable()
-
-    # def inspector_off(self):
-    #     """Turn off the diagram inspector conduit."""
-    #     self.inspector.disable()
-
-    def scale_from_2_points(self):
-        """Scale the mesh object from 2 reference points.
+    def scale_from_3_points(self, message="Select the base vertex for the scaling operation."):
+        """Scale the mesh object from 3 reference points.
 
         Note that this does not scale the underlying data structure,
         but only the scale of the representation in Rhino.
 
-        The origin of the scaling operation is the anchor of the object.
+        The first reference point of the scaling operation must be a vertex of the mesh.
+        This vertex will become the new anchor of the object.
 
         Returns
         -------
@@ -280,20 +319,24 @@ class MeshObject(BaseObject):
             ratio = d2 / d1
             DrawLine = e.Display.DrawDottedLine
             for vertex in self.diagram.vertices():
-                xyz = self.diagram.vertex_attributes(vertex, 'xyz')
-                vector = subtract_vectors(xyz, anchor_xyz)
-                vertex_xyz[vertex] = add_vectors(origin, scale_vector(vector, self.artist.scale * ratio))
+                if vertex == anchor:
+                    continue
+                vector = vertex_vector[vertex]
+                vertex_xyz[vertex] = add_vectors(origin, scale_vector(vector, ratio))
             for u, v in iter(edges):
                 DrawLine(Point3d(* vertex_xyz[u]), Point3d(* vertex_xyz[v]), color)
 
-        if self.anchor is None:
-            return False
+        anchor = self.select_vertex(message=message)
+        if anchor is None:
+            return
 
         color = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor
-        vertex_xyz = self.artist.vertex_xyz
         edges = list(self.diagram.edges())
-        anchor_xyz = self.diagram.vertex_attributes(self.anchor, 'xyz')
-        origin = list(self.location)
+        vertex_xyz = self.artist.vertex_xyz
+        vertex_xyz0 = {vertex: vertex_xyz[vertex][:] for vertex in vertex_xyz}
+
+        origin = vertex_xyz0[anchor]
+        vertex_vector = {vertex: subtract_vectors(vertex_xyz0[vertex], origin) for vertex in vertex_xyz}
         p0 = Point3d(* origin)
 
         gp = Rhino.Input.Custom.GetPoint()
@@ -314,6 +357,8 @@ class MeshObject(BaseObject):
         d2 = p0.DistanceTo(p2)
         ratio = d2 / d1
         self.scale *= ratio
+        self.anchor = anchor
+        self.location = vertex_xyz[anchor]
         return True
 
 

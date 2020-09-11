@@ -37,23 +37,26 @@ class NetworkObject(BaseObject):
 
     """
 
+    SETTINGS = {
+        'color.nodes': (255, 255, 255),
+        'color.edges': (0, 0, 0),
+        'show.nodes': True,
+        'show.edges': True,
+        'show.nodelabels': False,
+        'show.edgelabels': False,
+    }
+
     modify = network_update_attributes
     modify_nodes = network_update_node_attributes
     modify_edges = network_update_edge_attributes
 
     def __init__(self, network, scene=None, name=None, layer=None, visible=True, settings=None):
         super(NetworkObject, self).__init__(network, scene, name, layer, visible)
+        self._anchor = None
         self._location = None
         self._scale = None
         self._rotation = None
-        self.settings.update({
-            'color.nodes': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'show.nodes': True,
-            'show.edges': True,
-            'show.nodelabels': False,
-            'show.edgelabels': False,
-        })
+        self.settings.update(NetworkObject.SETTINGS)
         if settings:
             self.settings.update(settings)
 
@@ -64,6 +67,16 @@ class NetworkObject(BaseObject):
     @network.setter
     def network(self, network):
         self.item = network
+
+    @property
+    def anchor(self):
+        """The node of the network that is anchored to the location of the object."""
+        return self._anchor
+
+    @anchor.setter
+    def anchor(self, node):
+        if self.network.has_node(node):
+            self._anchor = node
 
     @property
     def location(self):
@@ -112,12 +125,24 @@ class NetworkObject(BaseObject):
         self._rotation = rotation
 
     @property
-    def vertex_xyz(self):
-        S = Scale.from_factors([self.scale] * 3)
-        R = Rotation.from_euler_angles(self.rotation)
-        T = Translation.from_vector(self.location)
-        network = self.network.transformed(T * R * S)
-        node_xyz = {node: network.node_attributes(node, 'xyz') for node in network.nodes()}
+    def node_xyz(self):
+        """dict : The view coordinates of the mesh object."""
+        origin = Point(0, 0, 0)
+        if self.anchor is not None:
+            xyz = self.network.node_attributes(self.anchor, 'xyz')
+            point = Point(* xyz)
+            T1 = Translation.from_vector(origin - point)
+            S = Scale.from_factors([self.scale] * 3)
+            R = Rotation.from_euler_angles(self.rotation)
+            T2 = Translation.from_vector(self.location)
+            X = T2 * R * S * T1
+        else:
+            S = Scale.from_factors([self.scale] * 3)
+            R = Rotation.from_euler_angles(self.rotation)
+            T = Translation.from_vector(self.location)
+            X = T * R * S
+        network = self.network.transformed(X)
+        node_xyz = {network: network.node_attributes(node, 'xyz') for node in network.nodes()}
         return node_xyz
 
     def clear(self):
@@ -141,6 +166,8 @@ class NetworkObject(BaseObject):
         self.redraw()
 
     def select(self):
+        # there is currently no "general" selection method
+        # for the entire mesh object
         raise NotImplementedError
 
     def select_nodes(self):
@@ -168,9 +195,23 @@ class NetworkObject(BaseObject):
         return edges
 
     def move(self):
+        """Move the entire mesh object to a different location."""
         raise NotImplementedError
 
     def move_node(self, node):
+        """Move a single node of the network object and update the data structure accordingly.
+
+        Parameters
+        ----------
+        node : int
+            The identifier of the node.
+
+        Returns
+        -------
+        bool
+            True if the operation was successful.
+            False otherwise.
+        """
         return network_move_node(self.network, node)
 
 
