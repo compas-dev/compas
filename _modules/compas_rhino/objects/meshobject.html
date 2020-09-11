@@ -105,7 +105,6 @@
 <span class="kn">from</span> <span class="nn">compas_rhino.objects.modify</span> <span class="kn">import</span> <span class="n">mesh_move_vertex</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.objects.modify</span> <span class="kn">import</span> <span class="n">mesh_move_vertices</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.objects.modify</span> <span class="kn">import</span> <span class="n">mesh_move_face</span>
-<span class="c1"># from compas_rhino.objects.inspect import MeshVertexInspector</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MeshObject&#39;</span><span class="p">]</span>
@@ -131,6 +130,22 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">SETTINGS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;color.vertices&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+        <span class="s1">&#39;color.edges&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="s1">&#39;color.faces&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="s1">&#39;color.mesh&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="s1">&#39;show.mesh&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;show.vertices&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;show.edges&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;show.faces&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;show.vertexlabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;show.facelabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;show.edgelabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;show.vertexnormals&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;show.facenormals&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">}</span>
+
     <span class="n">modify</span> <span class="o">=</span> <span class="n">mesh_update_attributes</span>
     <span class="n">modify_vertices</span> <span class="o">=</span> <span class="n">mesh_update_vertex_attributes</span>
     <span class="n">modify_faces</span> <span class="o">=</span> <span class="n">mesh_update_face_attributes</span>
@@ -142,22 +157,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rotation</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_inspector</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-            <span class="s1">&#39;color.vertices&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">&#39;color.edges&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.faces&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.mesh&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;show.mesh&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;show.vertices&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;show.edges&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;show.faces&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.vertexlabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.facelabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.edgelabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.vertexnormals&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.facenormals&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">MeshObject</span><span class="o">.</span><span class="n">SETTINGS</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
 
@@ -169,16 +169,9 @@
     <span class="k">def</span> <span class="nf">mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">item</span> <span class="o">=</span> <span class="n">mesh</span>
 
-    <span class="c1"># @property</span>
-    <span class="c1"># def inspector(self):</span>
-    <span class="c1">#     &quot;&quot;&quot;:class:`compas_rhino.objects.MeshVertexInspector`: An inspector conduit.&quot;&quot;&quot;</span>
-    <span class="c1">#     if not self._inspector:</span>
-    <span class="c1">#         self._inspector = MeshVertexInspector(self.diagram)</span>
-    <span class="c1">#     return self._inspector</span>
-
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">anchor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;The vertex of the mesh that is anchored to the location of the object.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_anchor</span>
 
     <span class="nd">@anchor</span><span class="o">.</span><span class="n">setter</span>
@@ -285,7 +278,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># there is currently no &quot;general&quot; selection method</span>
+        <span class="c1"># for the entire mesh object</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">select_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select one vertex.&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Select one vertex of the mesh.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+<span class="sd">            A vertex identifier.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_point</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">guid</span> <span class="ow">and</span> <span class="n">guid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">guid_vertex</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">guid_vertex</span><span class="p">[</span><span class="n">guid</span><span class="p">]</span>
 
 <div class="viewcode-block" id="MeshObject.select_vertices"><a class="viewcode-back" href="../../../api/compas_rhino.objects.html#compas_rhino.objects.MeshObject.select_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">select_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select vertices.&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Select vertices of the mesh.</span>
@@ -324,33 +331,65 @@
         <span class="k">return</span> <span class="n">edges</span></div>
 
     <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Move the entire mesh object to a different location.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">move_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Move a single vertex of the mesh object and update the data structure accordingly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertex : int</span>
+<span class="sd">            The identifier of the vertex.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the operation was successful.</span>
+<span class="sd">            False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">mesh_move_vertex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">move_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Move a multiple vertices of the mesh object and update the data structure accordingly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        vertices : list of int</span>
+<span class="sd">            The identifiers of the vertices.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the operation was successful.</span>
+<span class="sd">            False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">mesh_move_vertices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span> <span class="n">vertices</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">move_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Move a single face of the mesh object and update the data structure accordingly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the operation was successful.</span>
+<span class="sd">            False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">mesh_move_face</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span> <span class="n">face</span><span class="p">)</span>
 
-    <span class="c1"># def inspector_on(self):</span>
-    <span class="c1">#     &quot;&quot;&quot;Turn on the diagram inspector conduit.&quot;&quot;&quot;</span>
-    <span class="c1">#     self.inspector.vertex_xyz = self.artist.vertex_xyz</span>
-    <span class="c1">#     self.inspector.enable()</span>
-
-    <span class="c1"># def inspector_off(self):</span>
-    <span class="c1">#     &quot;&quot;&quot;Turn off the diagram inspector conduit.&quot;&quot;&quot;</span>
-    <span class="c1">#     self.inspector.disable()</span>
-
-    <span class="k">def</span> <span class="nf">scale_from_2_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Scale the mesh object from 2 reference points.</span>
+    <span class="k">def</span> <span class="nf">scale_from_3_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;Select the base vertex for the scaling operation.&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Scale the mesh object from 3 reference points.</span>
 
 <span class="sd">        Note that this does not scale the underlying data structure,</span>
 <span class="sd">        but only the scale of the representation in Rhino.</span>
 
-<span class="sd">        The origin of the scaling operation is the anchor of the object.</span>
+<span class="sd">        The first reference point of the scaling operation must be a vertex of the mesh.</span>
+<span class="sd">        This vertex will become the new anchor of the object.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -364,20 +403,24 @@
             <span class="n">ratio</span> <span class="o">=</span> <span class="n">d2</span> <span class="o">/</span> <span class="n">d1</span>
             <span class="n">DrawLine</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">Display</span><span class="o">.</span><span class="n">DrawDottedLine</span>
             <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagram</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
-                <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagram</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
-                <span class="n">vector</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">anchor_xyz</span><span class="p">)</span>
-                <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">scale</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">vertex</span> <span class="o">==</span> <span class="n">anchor</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">vector</span> <span class="o">=</span> <span class="n">vertex_vector</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
+                <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">ratio</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
                 <span class="n">DrawLine</span><span class="p">(</span><span class="n">Point3d</span><span class="p">(</span><span class="o">*</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">u</span><span class="p">]),</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">v</span><span class="p">]),</span> <span class="n">color</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">anchor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_vertex</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">anchor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
 
         <span class="n">color</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">ApplicationSettings</span><span class="o">.</span><span class="n">AppearanceSettings</span><span class="o">.</span><span class="n">FeedbackColor</span>
-        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">vertex_xyz</span>
         <span class="n">edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diagram</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
-        <span class="n">anchor_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagram</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anchor</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
-        <span class="n">origin</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+        <span class="n">vertex_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">artist</span><span class="o">.</span><span class="n">vertex_xyz</span>
+        <span class="n">vertex_xyz0</span> <span class="o">=</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">vertex</span><span class="p">][:]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertex_xyz</span><span class="p">}</span>
+
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">vertex_xyz0</span><span class="p">[</span><span class="n">anchor</span><span class="p">]</span>
+        <span class="n">vertex_vector</span> <span class="o">=</span> <span class="p">{</span><span class="n">vertex</span><span class="p">:</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">vertex_xyz0</span><span class="p">[</span><span class="n">vertex</span><span class="p">],</span> <span class="n">origin</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertex_xyz</span><span class="p">}</span>
         <span class="n">p0</span> <span class="o">=</span> <span class="n">Point3d</span><span class="p">(</span><span class="o">*</span> <span class="n">origin</span><span class="p">)</span>
 
         <span class="n">gp</span> <span class="o">=</span> <span class="n">Rhino</span><span class="o">.</span><span class="n">Input</span><span class="o">.</span><span class="n">Custom</span><span class="o">.</span><span class="n">GetPoint</span><span class="p">()</span>
@@ -398,6 +441,8 @@
         <span class="n">d2</span> <span class="o">=</span> <span class="n">p0</span><span class="o">.</span><span class="n">DistanceTo</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
         <span class="n">ratio</span> <span class="o">=</span> <span class="n">d2</span> <span class="o">/</span> <span class="n">d1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">*=</span> <span class="n">ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anchor</span> <span class="o">=</span> <span class="n">anchor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">vertex_xyz</span><span class="p">[</span><span class="n">anchor</span><span class="p">]</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 

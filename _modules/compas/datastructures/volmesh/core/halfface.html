@@ -988,8 +988,7 @@
 <span class="sd">        KeyError</span>
 <span class="sd">            If any of the vertices does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">vertices</span><span class="p">:</span>
-            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
@@ -1024,8 +1023,7 @@
 <span class="sd">        KeyError</span>
 <span class="sd">            If any of the vertices does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">vertices</span><span class="p">:</span>
-            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="n">vertices</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">values</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
@@ -1190,8 +1188,7 @@
 <span class="sd">        KeyError</span>
 <span class="sd">            If any of the edges does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">edges</span><span class="p">:</span>
-            <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
@@ -1226,8 +1223,7 @@
 <span class="sd">        KeyError</span>
 <span class="sd">            If any of the edges does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">edges</span><span class="p">:</span>
-            <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">values</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">edge_attributes</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
@@ -1387,8 +1383,7 @@
 <span class="sd">        KeyError</span>
 <span class="sd">            If any of the faces does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">faces</span><span class="p">:</span>
-            <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">face_attribute</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
@@ -1423,8 +1418,7 @@
 <span class="sd">        KeyError</span>
 <span class="sd">            If any of the faces does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">faces</span><span class="p">:</span>
-            <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="n">faces</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">values</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
@@ -1971,6 +1965,7 @@
     <span class="c1"># face topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
+    <span class="c1"># has_halfface ?</span>
     <span class="k">def</span> <span class="nf">has_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verify that a face is part of the volmesh.</span>
 
@@ -1987,6 +1982,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span>
 
+    <span class="c1"># halfface_vertices ?</span>
     <span class="k">def</span> <span class="nf">face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The vertices of a face.</span>
 
@@ -2002,6 +1998,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">]</span>
 
+    <span class="c1"># halfface_halfedges ?</span>
     <span class="k">def</span> <span class="nf">face_halfedges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The halfedges of a face.</span>
 
@@ -2018,6 +2015,7 @@
         <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">vertices</span> <span class="o">+</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]))</span>
 
+    <span class="c1"># halfface_cell ?</span>
     <span class="k">def</span> <span class="nf">face_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The cell to which the face belongs to.</span>
 
@@ -2034,6 +2032,7 @@
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">w</span><span class="p">]</span>
 
+    <span class="c1"># halfface_opposite_halfface ?</span>
     <span class="k">def</span> <span class="nf">face_opposite_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The opposite face of a face.</span>
 
@@ -2092,6 +2091,7 @@
     <span class="c1">#         return None</span>
     <span class="c1">#     return self._cell[nbr_cell][v][u]</span>
 
+    <span class="c1"># halfface_vertex_ancestor ?</span>
     <span class="k">def</span> <span class="nf">face_vertex_ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vertex before the specified vertex in a specific face.</span>
 
@@ -2115,6 +2115,7 @@
         <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 
+    <span class="c1"># halfface_vertex_descendant ?</span>
     <span class="k">def</span> <span class="nf">face_vertex_descendent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vertex after the specified vertex in a specific face.</span>
 
@@ -2308,6 +2309,7 @@
             <span class="n">halfedges</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">halfedges</span>
 
+    <span class="c1"># cell_halffaces ?</span>
     <span class="k">def</span> <span class="nf">cell_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The faces of a cell.</span>
 
@@ -2356,6 +2358,7 @@
             <span class="n">ordered_vkeys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ordered_vkeys</span>
 
+    <span class="c1"># cell_vertex_halffaces ?</span>
     <span class="k">def</span> <span class="nf">cell_vertex_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ordered faces connected to a vertex of a cell.</span>
 
@@ -2540,6 +2543,7 @@
                 <span class="n">vertices</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
 
+    <span class="c1"># halffaces_on_boundaries</span>
     <span class="k">def</span> <span class="nf">faces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find the faces on the boundary.</span>
 
