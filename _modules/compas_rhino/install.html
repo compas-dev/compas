@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - compas_rhino.install</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/plugins.html">Plugins</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <!-- social -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+      </ul>
+      <!-- social -->
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <h1 class="display-4 p-0 mb-5">Source code for compas_rhino.install</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">importlib</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">compas_rhino</span>
+
+<span class="kn">import</span> <span class="nn">compas._os</span>
+<span class="kn">import</span> <span class="nn">compas.plugins</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;install&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">install</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">packages</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Install COMPAS for Rhino.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    version : {&#39;5.0&#39;, &#39;6.0&#39;, &#39;7.0&#39;}, optional</span>
+<span class="sd">        The version number of Rhino.</span>
+<span class="sd">        Default is ``&#39;6.0&#39;``.</span>
+<span class="sd">    packages : list of str, optional</span>
+<span class="sd">        List of packages to install or None to use default package list.</span>
+<span class="sd">        Default is ``[&#39;compas&#39;, &#39;compas_rhino&#39;, &#39;compas_ghpython&#39;]``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import compas_rhino</span>
+<span class="sd">        compas_rhino.install(&#39;6.0&#39;)</span>
+
+<span class="sd">    .. code-block:: bash</span>
+
+<span class="sd">        python -m compas_rhino.install -v 6.0</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">version</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;6.0&#39;</span><span class="p">,</span> <span class="s1">&#39;7.0&#39;</span><span class="p">):</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;6.0&#39;</span>
+
+    <span class="n">packages</span> <span class="o">=</span> <span class="n">_filter_installable_packages</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">packages</span><span class="p">)</span>
+
+    <span class="n">ipylib_path</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">_get_ironpython_lib_path</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
+    <span class="n">scripts_path</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">_get_scripts_path</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Installing COMPAS packages to Rhino </span><span class="si">{0}</span><span class="s1"> scripts folder:&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Location scripts folder: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scripts_path</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">symlinks_to_install</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">symlinks_to_uninstall</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">exit_code</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">packages</span><span class="p">:</span>
+        <span class="n">package_path</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">_get_package_path</span><span class="p">(</span><span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">package</span><span class="p">))</span>
+        <span class="n">symlink_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scripts_path</span><span class="p">,</span> <span class="n">package</span><span class="p">)</span>
+        <span class="n">symlinks_to_install</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">package</span><span class="p">,</span> <span class="n">source_path</span><span class="o">=</span><span class="n">package_path</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="n">symlink_path</span><span class="p">))</span>
+        <span class="n">symlinks_to_uninstall</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">package</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="n">symlink_path</span><span class="p">))</span>
+
+        <span class="c1"># Handle legacy install location</span>
+        <span class="n">legacy_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ipylib_path</span><span class="p">,</span> <span class="n">package</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">legacy_path</span><span class="p">):</span>
+            <span class="n">symlinks_to_uninstall</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">package</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="n">legacy_path</span><span class="p">))</span>
+
+    <span class="c1"># First uninstall existing copies of packages requested for installation</span>
+    <span class="n">symlinks</span> <span class="o">=</span> <span class="p">[</span><span class="n">link</span><span class="p">[</span><span class="s1">&#39;link&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">symlinks_to_uninstall</span><span class="p">]</span>
+    <span class="n">uninstall_results</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">_os</span><span class="o">.</span><span class="n">remove_symlinks</span><span class="p">(</span><span class="n">symlinks</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">uninstall_data</span><span class="p">,</span> <span class="n">success</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">symlinks_to_uninstall</span><span class="p">,</span> <span class="n">uninstall_results</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">uninstall_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="s1">&#39;ERROR: Cannot remove symlink, try to run as administrator.&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Handle legacy bootstrapper</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">_try_remove_bootstrapper</span><span class="p">(</span><span class="n">ipylib_path</span><span class="p">):</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;compas_bootstrapper&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR: Cannot remove legacy compas_bootstrapper, try to run as administrator.&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Ready to start installing</span>
+    <span class="n">symlinks</span> <span class="o">=</span> <span class="p">[(</span><span class="n">link</span><span class="p">[</span><span class="s1">&#39;source_path&#39;</span><span class="p">],</span> <span class="n">link</span><span class="p">[</span><span class="s1">&#39;link&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">symlinks_to_install</span><span class="p">]</span>
+    <span class="n">install_results</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">_os</span><span class="o">.</span><span class="n">create_symlinks</span><span class="p">(</span><span class="n">symlinks</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">install_data</span><span class="p">,</span> <span class="n">success</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">symlinks_to_install</span><span class="p">,</span> <span class="n">install_results</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="s1">&#39;OK&#39;</span> <span class="k">if</span> <span class="n">success</span> <span class="k">else</span> <span class="s1">&#39;ERROR: Cannot create symlink, try to run as administrator.&#39;</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">install_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">result</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">install_results</span><span class="p">):</span>
+        <span class="n">exit_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">exit_code</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;compas_bootstrapper&#39;</span><span class="p">,</span> <span class="s1">&#39;WARNING: One or more packages failed, will not install bootstrapper, try uninstalling first&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_update_bootstrapper</span><span class="p">(</span><span class="n">scripts_path</span><span class="p">,</span> <span class="n">packages</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;compas_bootstrapper&#39;</span><span class="p">,</span> <span class="s1">&#39;OK&#39;</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa: E722</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;compas_bootstrapper&#39;</span><span class="p">,</span> <span class="s1">&#39;ERROR: Could not create compas_bootstrapper to auto-determine Python environment&#39;</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">package</span><span class="p">,</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;   </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">package</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">status</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="s1">&#39;OK&#39;</span><span class="p">:</span>
+            <span class="n">exit_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Completed.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">exit_code</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">exit_code</span><span class="p">)</span>
+
+
+<span class="nd">@compas</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">plugin</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;install&#39;</span><span class="p">,</span> <span class="n">pluggable_name</span><span class="o">=</span><span class="s1">&#39;installable_rhino_packages&#39;</span><span class="p">,</span> <span class="n">tryfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">default_installable_rhino_packages</span><span class="p">():</span>
+    <span class="c1"># While this list could obviously be hard-coded, I think</span>
+    <span class="c1"># eating our own dogfood and using plugins to define this, just like</span>
+    <span class="c1"># any other extension/plugin would be is a better way to ensure consistent behavior.</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;compas&#39;</span><span class="p">,</span> <span class="s1">&#39;compas_rhino&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="installable_rhino_packages"><a class="viewcode-back" href="../../generated/compas_rhino.install.installable_rhino_packages.html#compas_rhino.install.installable_rhino_packages">[docs]</a><span class="nd">@compas</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;install&#39;</span><span class="p">,</span> <span class="n">selector</span><span class="o">=</span><span class="s1">&#39;collect_all&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">installable_rhino_packages</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Provide a list of packages to make available inside Rhino.</span>
+
+<span class="sd">    Extensions providing Rhino or Grasshopper features</span>
+<span class="sd">    can implement this pluggable interface to automatically</span>
+<span class="sd">    have their packages made available inside Rhino when</span>
+<span class="sd">    COMPAS is installed into it.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import compas.plugins</span>
+<span class="sd">    &gt;&gt;&gt; @compas.plugins.plugin(category=&#39;install&#39;)</span>
+<span class="sd">    ... def installable_rhino_packages():</span>
+<span class="sd">    ...    return [&#39;compas_fab&#39;]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :obj:`list` of :obj:`str`</span>
+<span class="sd">        List of package names to make available inside Rhino.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<span class="k">def</span> <span class="nf">_update_bootstrapper</span><span class="p">(</span><span class="n">install_path</span><span class="p">,</span> <span class="n">packages</span><span class="p">):</span>
+    <span class="c1"># Take either the CONDA environment directory or the current Python executable&#39;s directory</span>
+    <span class="n">python_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;CONDA_PREFIX&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">)</span>
+    <span class="n">environment_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;CONDA_DEFAULT_ENV&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">conda_exe</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;CONDA_EXE&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="n">compas_bootstrapper</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">_get_bootstrapper_path</span><span class="p">(</span><span class="n">install_path</span><span class="p">)</span>
+
+    <span class="n">bootstrapper_data</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">_get_bootstrapper_data</span><span class="p">(</span><span class="n">compas_bootstrapper</span><span class="p">)</span>
+    <span class="n">installed_packages</span> <span class="o">=</span> <span class="n">bootstrapper_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;INSTALLED_PACKAGES&#39;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">installed_packages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">installed_packages</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">packages</span><span class="p">)))</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">compas_bootstrapper</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;ENVIRONMENT_NAME = r&quot;</span><span class="si">{}</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">environment_name</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;PYTHON_DIRECTORY = r&quot;</span><span class="si">{}</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">python_directory</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;CONDA_EXE = r&quot;</span><span class="si">{}</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">conda_exe</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;INSTALLED_PACKAGES = </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">installed_packages</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">_filter_installable_packages</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">packages</span><span class="p">):</span>
+    <span class="n">ghpython_incompatible</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">_os</span><span class="o">.</span><span class="n">system</span> <span class="o">==</span> <span class="s1">&#39;darwin&#39;</span> <span class="ow">and</span> <span class="n">version</span> <span class="o">==</span> <span class="mf">5.0</span><span class="p">:</span>
+        <span class="n">ghpython_incompatible</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">packages</span><span class="p">:</span>
+        <span class="c1"># Flatten list of results (resulting from collect_all pluggable)</span>
+        <span class="n">packages</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">installable_rhino_packages</span><span class="p">()))</span>
+    <span class="k">elif</span> <span class="s1">&#39;compas_ghpython&#39;</span> <span class="ow">in</span> <span class="n">packages</span> <span class="ow">and</span> <span class="n">ghpython_incompatible</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Skipping installation of compas_ghpython since it</span><span class="se">\&#39;</span><span class="s1">s not supported for Rhino 5 for Mac&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ghpython_incompatible</span><span class="p">:</span>
+        <span class="n">packages</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;compas_ghpython&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">packages</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">argparse</span>
+
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="s1">&#39;--version&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;5.0&#39;</span><span class="p">,</span> <span class="s1">&#39;6.0&#39;</span><span class="p">,</span> <span class="s1">&#39;7.0&#39;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;6.0&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The version of Rhino to install the packages in.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--packages&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The packages to install.&quot;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">install</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">version</span><span class="p">,</span> <span class="n">packages</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">packages</span><span class="p">)</span>
+</code></pre></div>
+        
+      </main>
+      <!-- main -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+
+  <!-- <footer class="bg-dark py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3 d-flex flex-even my-4 ml-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Core</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_blender</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_ghpython</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_plotters</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_rhino</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Plugins</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_cgal</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_gmsh</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_libigl</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_shapeop</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Extensions</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fab</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fea(2)</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_tia</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_vol</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4 mr-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-3 mb-3 mt-0 footer-title">Resources</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">About</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Collaboration in research</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Transfer to industry</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Open source</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Quality assurance</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.16.2',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../_static/underscore.js"></script>
+  <script src="../../_static/doctools.js"></script>
+  <script src="../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+  });
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>
