@@ -72,6 +72,12 @@ class BaseObject(ABC):
     # Properties
     # ==========================================================================
 
+    # def __getstate__(self):
+    #     pass
+
+    # def __setstate__(self, state):
+    #     pass
+
     @property
     def scene(self):
         return self._scene
