@@ -323,7 +323,7 @@ class MeshArtist(BaseArtist):
         compas_rhino.rs.ObjectName(guid, '{}.mesh'.format(self.mesh.name))
         if color:
             compas_rhino.rs.ObjectColor(guid, color)
-        self.guids += [guid]
+        self._guids += [guid]
         return [guid]
 
     def draw_edges(self, edges=None, color=None):
