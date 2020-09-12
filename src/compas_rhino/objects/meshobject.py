@@ -246,6 +246,7 @@ class MeshObject(BaseObject):
         edges = [self.artist.guid_edge[guid] for guid in guids if guid in self.artist.guid_edge]
         return edges
 
+    # not clear if this is now about the location or the data
     def move(self):
         """Move the entire mesh object to a different location."""
         raise NotImplementedError

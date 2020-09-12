@@ -184,27 +184,7 @@ class VolMeshArtist(BaseArtist):
             Dictionary of visualisation settings that will be merged with the settings of the artist.
 
         """
-        pass
-    #     self.clear()
-    #     if not settings:
-    #         settings = {}
-    #     self.settings.update(settings)
-    #     if self.settings['show.vertices']:
-    #         self.draw_vertices()
-    #         if self.settings['show.vertexlabels']:
-    #             self.draw_vertexlabels()
-    #     if self.settings['show.edges']:
-    #         self.draw_edges()
-    #         if self.settings['show.edgelabels']:
-    #             self.draw_edgelabels()
-    #     if self.settings['show.faces']:
-    #         self.draw_faces()
-    #         if self.settings['show.facelabels']:
-    #             self.draw_facelabels()
-    #     if self.settings['show.cells']:
-    #         self.draw_cells()
-    #         if self.settings['show.celllabels']:
-    #             self.draw_celllabels()
+        raise NotImplementedError
 
     def draw_vertices(self, vertices=None, color=None):
         """Draw a selection of vertices.
