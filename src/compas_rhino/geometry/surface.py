@@ -2,16 +2,13 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+import Rhino
 import compas_rhino
 
 from compas.datastructures import Mesh
 from compas.utilities import geometric_key
 
 from compas_rhino.geometry._geometry import BaseRhinoGeometry
-
-if compas.RHINO:
-    import Rhino
 
 
 __all__ = ['RhinoSurface']
