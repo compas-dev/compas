@@ -72,8 +72,15 @@ class RhinoSurface(BaseRhinoGeometry):
         gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}
         vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
         faces = [[gkey_index[gkey] for gkey in f] for f in faces]
+        polygons = []
+        for temp in faces:
+            face = []
+            for vertex in temp:
+                if vertex not in face:
+                    face.append(vertex)
+            polygons.append(face)
         cls = cls or Mesh
-        return cls.from_vertices_and_faces(vertices, faces)
+        return cls.from_vertices_and_faces(vertices, polygons)
 
     def uv_to_compas(self, cls=None, density=(10, 10)):
         """Convert the surface UV space to a COMPAS mesh.
