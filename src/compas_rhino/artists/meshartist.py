@@ -340,7 +340,7 @@ class MeshArtist(BaseArtist):
             return guids
         guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
         compas_rhino.rs.ObjectLayer(guid, self.layer)
-        compas_rhino.rs.ObjectName(guid, '{}.mesh'.format(self.mesh.name))
+        compas_rhino.rs.ObjectName(guid, '{}'.format(self.mesh.name))
         if color:
             compas_rhino.rs.ObjectColor(guid, color)
         self._guids += [guid]
