@@ -74,12 +74,31 @@ class MeshArtist(BaseArtist):
         self._guid_vertexlabel = {}
         self._guid_edgelabel = {}
         self._guid_facelabel = {}
+        self._mesh = None
         self._vertex_xyz = None
         self.mesh = mesh
         self.layer = layer
         self.color_vertices = (255, 255, 255)
         self.color_edges = (0, 0, 0)
         self.color_faces = (0, 0, 0)
+
+    @property
+    def mesh(self):
+        return self._mesh
+
+    @mesh.setter
+    def mesh(self, mesh):
+        self._mesh = mesh
+        self._vertex_xyz = None
+        self._guids = []
+        self._guid_vertex = {}
+        self._guid_edge = {}
+        self._guid_face = {}
+        self._guid_vertexnormal = {}
+        self._guid_facenormal = {}
+        self._guid_vertexlabel = {}
+        self._guid_edgelabel = {}
+        self._guid_facelabel = {}
 
     @property
     def vertex_xyz(self):
@@ -230,9 +249,10 @@ class MeshArtist(BaseArtist):
         The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
         Faces with more than 4 vertices will be triangulated on-the-fly.
         """
-        key_index = self.mesh.key_index()
-        vertices = self.vertex_xyz.values()
-        faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
+        vertex_index = self.mesh.key_index()
+        vertex_xyz = self.vertex_xyz
+        vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
+        faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
         new_faces = []
         for face in faces:
             f = len(face)
@@ -248,7 +268,7 @@ class MeshArtist(BaseArtist):
             else:
                 continue
         layer = self.layer
-        name = "{}.mesh".format(self.mesh.name)
+        name = "{}".format(self.mesh.name)
         guid = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
         self._guids += [guid]
         return [guid]
