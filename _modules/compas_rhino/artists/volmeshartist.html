@@ -268,27 +268,7 @@
 <span class="sd">            Dictionary of visualisation settings that will be merged with the settings of the artist.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-    <span class="c1">#     self.clear()</span>
-    <span class="c1">#     if not settings:</span>
-    <span class="c1">#         settings = {}</span>
-    <span class="c1">#     self.settings.update(settings)</span>
-    <span class="c1">#     if self.settings[&#39;show.vertices&#39;]:</span>
-    <span class="c1">#         self.draw_vertices()</span>
-    <span class="c1">#         if self.settings[&#39;show.vertexlabels&#39;]:</span>
-    <span class="c1">#             self.draw_vertexlabels()</span>
-    <span class="c1">#     if self.settings[&#39;show.edges&#39;]:</span>
-    <span class="c1">#         self.draw_edges()</span>
-    <span class="c1">#         if self.settings[&#39;show.edgelabels&#39;]:</span>
-    <span class="c1">#             self.draw_edgelabels()</span>
-    <span class="c1">#     if self.settings[&#39;show.faces&#39;]:</span>
-    <span class="c1">#         self.draw_faces()</span>
-    <span class="c1">#         if self.settings[&#39;show.facelabels&#39;]:</span>
-    <span class="c1">#             self.draw_facelabels()</span>
-    <span class="c1">#     if self.settings[&#39;show.cells&#39;]:</span>
-    <span class="c1">#         self.draw_cells()</span>
-    <span class="c1">#         if self.settings[&#39;show.celllabels&#39;]:</span>
-    <span class="c1">#             self.draw_celllabels()</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="VolMeshArtist.draw_vertices"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.VolMeshArtist.draw_vertices.html#compas_rhino.artists.VolMeshArtist.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw a selection of vertices.</span>
