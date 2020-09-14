@@ -1,4 +1,5 @@
 graft src
+graft schemas
 
 prune .github
 prune data
