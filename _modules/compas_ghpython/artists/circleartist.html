@@ -115,11 +115,32 @@
 <span class="sd">        :class:`Rhino.Geometry.Circle`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">point</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
-        <span class="n">normal</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
-        <span class="n">radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">radius</span>
-        <span class="n">circles</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;plane&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">],</span> <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}]</span>
-        <span class="k">return</span> <span class="n">compas_ghpython</span><span class="o">.</span><span class="n">draw_circles</span><span class="p">(</span><span class="n">circles</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div></div>
+        <span class="n">circles</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_args</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">compas_ghpython</span><span class="o">.</span><span class="n">draw_circles</span><span class="p">(</span><span class="n">circles</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="CircleArtist.draw_collection"><a class="viewcode-back" href="../../../api/generated/compas_ghpython.artists.CircleArtist.draw_collection.html#compas_ghpython.artists.CircleArtist.draw_collection">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the collection of circles.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collection : list of compas.geometry.Circle</span>
+<span class="sd">            A collection of ``Circle`` objects.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of :class:`Rhino.Geometry.Circle`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">circles</span> <span class="o">=</span> <span class="p">[</span><span class="n">CircleArtist</span><span class="o">.</span><span class="n">_get_args</span><span class="p">(</span><span class="n">primitive</span><span class="p">)</span> <span class="k">for</span> <span class="n">primitive</span> <span class="ow">in</span> <span class="n">collection</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">compas_ghpython</span><span class="o">.</span><span class="n">draw_circles</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_args</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">primitive</span><span class="p">):</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">primitive</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">primitive</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="n">primitive</span><span class="o">.</span><span class="n">radius</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;plane&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">],</span> <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">primitive</span><span class="o">.</span><span class="n">name</span><span class="p">}</span></div>
 
 
 <span class="c1"># ==============================================================================</span>
