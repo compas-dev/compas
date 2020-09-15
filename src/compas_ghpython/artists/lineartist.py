@@ -36,6 +36,18 @@ class LineArtist(PrimitiveArtist):
 
     @staticmethod
     def draw_collection(collection):
+        """Draw the collection of lines.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Line
+            A collection of ``Line`` objects.
+
+        Returns
+        -------
+        list of :class:`Rhino.Geometry.Line`
+
+        """
         lines = [LineArtist._get_args(primitive) for primitive in collection]
         return compas_ghpython.draw_lines(lines)
 

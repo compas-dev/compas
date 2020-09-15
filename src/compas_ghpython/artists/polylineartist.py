@@ -35,6 +35,18 @@ class PolylineArtist(PrimitiveArtist):
 
     @staticmethod
     def draw_collection(collection):
+        """Draw a collection of polylines.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Polyline
+            A collection of ``Polyline`` objects.
+
+        Returns
+        -------
+        list of :class:`Rhino.Geometry.Polyline`
+
+        """
         polylines = [PolylineArtist._get_args(primitive) for primitive in collection]
         return compas_ghpython.draw_polylines(polylines)
 

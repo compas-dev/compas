@@ -65,6 +65,21 @@ class FrameArtist(PrimitiveArtist):
 
     @staticmethod
     def draw_collection(collection):
+        """Draw the collections of frames.
+
+        Parameters
+        ----------
+        collection : list of compas.geometry.Frame
+            A collection of ``Frame`` objects.
+
+        Returns
+        -------
+        geometry : list
+
+            * geometry[0] : list of :class:`Rhino.Geometry.Point`
+            * geometry[1] : list of :class:`Rhino.Geometry.Line`
+
+        """
         args = [FrameArtist._get_args(primitive) for primitive in collection]
         points, lines = zip(*args)
         lines = itertools.chain(*lines)
