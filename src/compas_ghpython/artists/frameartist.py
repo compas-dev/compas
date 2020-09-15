@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import itertools
+
 import compas_ghpython
 from compas_ghpython.artists._primitiveartist import PrimitiveArtist
 
@@ -55,23 +57,34 @@ class FrameArtist(PrimitiveArtist):
             * geometry[1] : list of :class:`Rhino.Geometry.Line`
 
         """
-        origin = list(self.primitive.point)
-        x = list(self.primitive.point + self.primitive.xaxis.scaled(self.scale))
-        y = list(self.primitive.point + self.primitive.yaxis.scaled(self.scale))
-        z = list(self.primitive.point + self.primitive.zaxis.scaled(self.scale))
-        points = [{'pos': origin, 'color': self.color_origin}]
-        lines = [
-            {'start': origin, 'end': x, 'color': self.color_xaxis, 'arrow': 'end'},
-            {'start': origin, 'end': y, 'color': self.color_yaxis, 'arrow': 'end'},
-            {'start': origin, 'end': z, 'color': self.color_zaxis, 'arrow': 'end'}]
+        point, lines = self._get_args(self.primitive, self.scale, self.color_origin, self.color_xaxis, self.color_yaxis, self.color_zaxis)
         geometry = [None, None]
-        geometry[0] = compas_ghpython.draw_points(points)
+        geometry[0] = compas_ghpython.draw_points([point])
         geometry[1] = compas_ghpython.draw_lines(lines)
         return geometry
 
     @staticmethod
     def draw_collection(collection):
-        raise NotImplementedError
+        args = [FrameArtist._get_args(primitive) for primitive in collection]
+        points, lines = zip(*args)
+        lines = itertools.chain(*lines)
+        geometry = [None, None]
+        geometry[0] = compas_ghpython.draw_points(points)
+        geometry[1] = compas_ghpython.draw_lines(lines)
+        return geometry
+
+    @classmethod
+    def _get_args(cls, primitive, scale=1.0, color_origin=(0, 0, 0), color_xaxis=(255, 0, 0), color_yaxis=(0, 255, 0), color_zaxis=(0, 0, 255)):
+        origin = list(primitive.point)
+        x = list(primitive.point + primitive.xaxis.scaled(scale))
+        y = list(primitive.point + primitive.yaxis.scaled(scale))
+        z = list(primitive.point + primitive.zaxis.scaled(scale))
+        point = {'pos': origin, 'color': color_origin}
+        lines = [
+            {'start': origin, 'end': x, 'color': color_xaxis, 'arrow': 'end'},
+            {'start': origin, 'end': y, 'color': color_yaxis, 'arrow': 'end'},
+            {'start': origin, 'end': z, 'color': color_zaxis, 'arrow': 'end'}]
+        return point, lines
 
 
 # ==============================================================================

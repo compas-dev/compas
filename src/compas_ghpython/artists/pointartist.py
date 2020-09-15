@@ -31,7 +31,7 @@ class PointArtist(PrimitiveArtist):
         :class:`Rhino.Geometry.Point3d`
 
         """
-        points = [{'pos': list(self.primitive)}]
+        points = [self._get_args(self.primitive)]
         return compas_ghpython.draw_points(points)[0]
 
     @staticmethod
@@ -48,8 +48,12 @@ class PointArtist(PrimitiveArtist):
         list of :class:`Rhino.Geometry.Point3d`
 
         """
-        points = [{'pos': list(point)} for point in collection]
+        points = [PointArtist._get_args(primitive) for primitive in collection]
         return compas_ghpython.draw_points(points)
+
+    @classmethod
+    def _get_args(cls, primitive):
+        return {'pos': list(primitive)}
 
 
 # ==============================================================================

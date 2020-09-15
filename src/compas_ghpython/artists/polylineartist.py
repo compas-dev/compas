@@ -30,12 +30,17 @@ class PolylineArtist(PrimitiveArtist):
         -------
         :class:`Rhino.Geometry.Polyline`.
         """
-        polylines = [{'points': map(list, self.primitive.points)}]
-        return compas_ghpython.draw_polylines(polylines)[0]
+        polylines = [self._get_args(self.primitive)]
+        return compas_ghpython.draw_polylines(polylines)
 
     @staticmethod
     def draw_collection(collection):
-        raise NotImplementedError
+        polylines = [PolylineArtist._get_args(primitive) for primitive in collection]
+        return compas_ghpython.draw_polylines(polylines)
+
+    @classmethod
+    def _get_args(cls, primitive):
+        return {'points': map(list, primitive.points)}
 
 
 # ==============================================================================

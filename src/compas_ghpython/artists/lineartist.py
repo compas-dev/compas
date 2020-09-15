@@ -31,14 +31,20 @@ class LineArtist(PrimitiveArtist):
         :class:`Rhino.Geometry.Line`
 
         """
-        start = list(self.primitive.start)
-        end = list(self.primitive.end)
-        lines = [{'start': start, 'end': end}]
+        lines = [self._get_args(self.primitive)]
         return compas_ghpython.draw_lines(lines)[0]
 
     @staticmethod
     def draw_collection(collection):
-        raise NotImplementedError
+        lines = [LineArtist._get_args(primitive) for primitive in collection]
+        return compas_ghpython.draw_lines(lines)
+
+    @classmethod
+    def _get_args(cls, primitive):
+        start = list(primitive.start)
+        end = list(primitive.end)
+        return {'start': start, 'end': end}
+
 
 
 # ==============================================================================
