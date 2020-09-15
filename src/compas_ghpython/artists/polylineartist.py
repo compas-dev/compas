@@ -50,8 +50,8 @@ class PolylineArtist(PrimitiveArtist):
         polylines = [PolylineArtist._get_args(primitive) for primitive in collection]
         return compas_ghpython.draw_polylines(polylines)
 
-    @classmethod
-    def _get_args(cls, primitive):
+    @staticmethod
+    def _get_args(primitive):
         return {'points': map(list, primitive.points)}
 
 

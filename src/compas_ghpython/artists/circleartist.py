@@ -51,8 +51,8 @@ class CircleArtist(PrimitiveArtist):
         circles = [CircleArtist._get_args(primitive) for primitive in collection]
         return compas_ghpython.draw_circles(circles)
 
-    @classmethod
-    def _get_args(cls, primitive):
+    @staticmethod
+    def _get_args(primitive):
         point = list(primitive.plane.point)
         normal = list(primitive.plane.normal)
         radius = primitive.radius

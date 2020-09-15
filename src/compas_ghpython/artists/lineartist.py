@@ -51,8 +51,8 @@ class LineArtist(PrimitiveArtist):
         lines = [LineArtist._get_args(primitive) for primitive in collection]
         return compas_ghpython.draw_lines(lines)
 
-    @classmethod
-    def _get_args(cls, primitive):
+    @staticmethod
+    def _get_args(primitive):
         start = list(primitive.start)
         end = list(primitive.end)
         return {'start': start, 'end': end}

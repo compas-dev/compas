@@ -88,8 +88,8 @@ class FrameArtist(PrimitiveArtist):
         geometry[1] = compas_ghpython.draw_lines(lines)
         return geometry
 
-    @classmethod
-    def _get_args(cls, primitive, scale=1.0, color_origin=(0, 0, 0), color_xaxis=(255, 0, 0), color_yaxis=(0, 255, 0), color_zaxis=(0, 0, 255)):
+    @staticmethod
+    def _get_args(primitive, scale=1.0, color_origin=(0, 0, 0), color_xaxis=(255, 0, 0), color_yaxis=(0, 255, 0), color_zaxis=(0, 0, 255)):
         origin = list(primitive.point)
         x = list(primitive.point + primitive.xaxis.scaled(scale))
         y = list(primitive.point + primitive.yaxis.scaled(scale))

@@ -51,8 +51,8 @@ class PointArtist(PrimitiveArtist):
         points = [PointArtist._get_args(primitive) for primitive in collection]
         return compas_ghpython.draw_points(points)
 
-    @classmethod
-    def _get_args(cls, primitive):
+    @staticmethod
+    def _get_args(primitive):
         return {'pos': list(primitive)}
 
 
