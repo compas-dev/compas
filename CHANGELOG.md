@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.rpc.Proxy.restart_server`.
 * Added `compas_rhino.objects.NetworkObject`.
 * Added constructors `from_matrix` and `from_rotation` to `compas.geometry.Quaternion`.
+* Added `draw_collection` methods to Grasshopper artists.
 
 ### Changed
 
