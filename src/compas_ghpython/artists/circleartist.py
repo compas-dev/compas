@@ -31,15 +31,21 @@ class CircleArtist(PrimitiveArtist):
         :class:`Rhino.Geometry.Circle`
 
         """
-        point = list(self.primitive.plane.point)
-        normal = list(self.primitive.plane.normal)
-        radius = self.primitive.radius
-        circles = [{'plane': [point, normal], 'radius': radius, 'color': self.color, 'name': self.name}]
+        circles = [self._get_args(self.primitive)]
         return compas_ghpython.draw_circles(circles)[0]
 
     @staticmethod
     def draw_collection(collection):
-        raise NotImplementedError
+        circles = [CircleArtist._get_args(primitive) for primitive in collection]
+        return compas_ghpython.draw_circles(circles)
+
+    @classmethod
+    def _get_args(cls, primitive):
+        point = list(primitive.plane.point)
+        normal = list(primitive.plane.normal)
+        radius = primitive.radius
+        return {'plane': [point, normal], 'radius': radius, 'color': None, 'name': primitive.name}
+
 
 
 # ==============================================================================
