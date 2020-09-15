@@ -59,7 +59,6 @@ class CircleArtist(PrimitiveArtist):
         return {'plane': [point, normal], 'radius': radius, 'color': None, 'name': primitive.name}
 
 
-
 # ==============================================================================
 # Main
 # ==============================================================================
