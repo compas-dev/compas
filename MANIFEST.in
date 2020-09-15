@@ -1,15 +1,12 @@
 graft src
-graft bin
+graft schemas
 
 prune .github
-
 prune data
 prune docs
 prune libs
 prune tests
 prune temp
-prune ext
-prune modules
 
 include LICENSE
 include README.md
@@ -20,7 +17,7 @@ include requirements.txt
 exclude requirements-dev.txt
 exclude pytest.ini .bumpversion.cfg .editorconfig
 exclude tasks.py
-exclude CODE_OF_CONDUCT.md CONTRIBUTING.md
+exclude CONTRIBUTING.md
 exclude .gitpod.yml
 
 global-exclude *.py[cod] __pycache__ *.dylib *.nb[ic] .DS_Store

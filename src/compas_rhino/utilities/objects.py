@@ -20,6 +20,7 @@ except AttributeError:
 
 
 __all__ = [
+    'find_object',
     'get_objects',
     'get_object_layers',
     'get_object_types',

@@ -2,11 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
-from compas.plugins import plugin
+import Rhino
 
-if compas.RHINO:
-    import Rhino
+from compas.plugins import plugin
 
 
 __all__ = [

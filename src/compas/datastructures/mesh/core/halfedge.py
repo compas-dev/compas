@@ -44,9 +44,6 @@ class HalfEdge(Datastructure):
 
         .. deprecated:: 0.17.0
 
-    Examples
-    --------
-    >>>
     """
 
     @property

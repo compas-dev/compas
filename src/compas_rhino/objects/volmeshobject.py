@@ -2,9 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-# import Rhino
-# import scriptcontext as sc
-
 import compas_rhino
 from compas.geometry import Point
 from compas.geometry import Scale
@@ -44,6 +41,21 @@ class VolMeshObject(BaseObject):
 
     """
 
+    SETTINGS = {
+        'color.vertices': (255, 255, 255),
+        'color.edges': (0, 0, 0),
+        'color.faces': (210, 210, 210),
+        'color.cells': (255, 0, 0),
+        'show.vertices': True,
+        'show.edges': True,
+        'show.faces': True,
+        'show.cells': False,
+        'show.vertexlabels': False,
+        'show.facelabels': False,
+        'show.edgelabels': False,
+        'show.celllabels': False,
+    }
+
     modify = mesh_update_attributes
     modify_vertices = mesh_update_vertex_attributes
     modify_faces = mesh_update_face_attributes
@@ -51,23 +63,11 @@ class VolMeshObject(BaseObject):
 
     def __init__(self, volmesh, scene=None, name=None, layer=None, visible=True, settings=None):
         super(VolMeshObject, self).__init__(volmesh, scene, name, layer, visible)
+        self._anchor = None
         self._location = None
         self._scale = None
         self._rotation = None
-        self.settings.update({
-            'color.vertices': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'color.faces': (210, 210, 210),
-            'color.cells': (255, 0, 0),
-            'show.vertices': True,
-            'show.edges': True,
-            'show.faces': True,
-            'show.cells': False,
-            'show.vertexlabels': False,
-            'show.facelabels': False,
-            'show.edgelabels': False,
-            'show.celllabels': False,
-        })
+        self.settings.update(VolMeshObject.SETTINGS)
         if settings:
             self.settings.update(settings)
 
@@ -78,6 +78,16 @@ class VolMeshObject(BaseObject):
     @volmesh.setter
     def volmesh(self, volmesh):
         self.item = volmesh
+
+    @property
+    def anchor(self):
+        """The vertex of the volmesh that is anchored to the location of the object."""
+        return self._anchor
+
+    @anchor.setter
+    def anchor(self, vertex):
+        if self.volmesh.has_vertex(vertex):
+            self._anchor = vertex
 
     @property
     def location(self):
@@ -127,10 +137,22 @@ class VolMeshObject(BaseObject):
 
     @property
     def vertex_xyz(self):
-        S = Scale.from_factors([self.scale] * 3)
-        R = Rotation.from_euler_angles(self.rotation)
-        T = Translation.from_vector(self.location)
-        volmesh = self.volmesh.transformed(T * R * S)
+        """dict : The view coordinates of the volmesh object."""
+        origin = Point(0, 0, 0)
+        if self.anchor is not None:
+            xyz = self.volmesh.vertex_attributes(self.anchor, 'xyz')
+            point = Point(* xyz)
+            T1 = Translation.from_vector(origin - point)
+            S = Scale.from_factors([self.scale] * 3)
+            R = Rotation.from_euler_angles(self.rotation)
+            T2 = Translation.from_vector(self.location)
+            X = T2 * R * S * T1
+        else:
+            S = Scale.from_factors([self.scale] * 3)
+            R = Rotation.from_euler_angles(self.rotation)
+            T = Translation.from_vector(self.location)
+            X = T * R * S
+        volmesh = self.volmesh.transformed(X)
         vertex_xyz = {vertex: volmesh.vertex_attributes(vertex, 'xyz') for vertex in volmesh.vertices()}
         return vertex_xyz
 
@@ -163,54 +185,109 @@ class VolMeshObject(BaseObject):
         self.redraw()
 
     def select(self):
+        # there is currently no "general" selection method
+        # for the entire mesh object
         raise NotImplementedError
 
-    def select_vertices(self):
-        """Select vertices of the mesh.
+    def select_vertex(self, message="Select one vertex."):
+        """Select one vertex of the mesh.
+
+        Returns
+        -------
+        int
+            A vertex identifier.
+        """
+        guid = compas_rhino.select_point(message=message)
+        if guid and guid in self.guid_vertex:
+            return self.guid_vertex[guid]
+
+    def select_vertices(self, message="Select vertices."):
+        """Select vertices of the volmesh.
 
         Returns
         -------
         list
             A list of vertex identifiers.
         """
-        guids = compas_rhino.select_points()
+        guids = compas_rhino.select_points(message=message)
         vertices = [self.artist.guid_vertex[guid] for guid in guids if guid in self.artist.guid_vertex]
         return vertices
 
-    def select_faces(self):
-        """Select faces of the mesh.
+    def select_faces(self, message="Select faces."):
+        """Select faces of the volmesh.
 
         Returns
         -------
         list
             A list of face identifiers.
         """
-        guids = compas_rhino.select_meshes()
+        guids = compas_rhino.select_meshes(message=message)
         faces = [self.artist.guid_face[guid] for guid in guids if guid in self.artist.guid_face]
         return faces
 
-    def select_edges(self):
-        """Select edges of the mesh.
+    def select_edges(self, message="Select edges."):
+        """Select edges of the volmesh.
 
         Returns
         -------
         list
             A list of edge identifiers.
         """
-        guids = compas_rhino.select_lines()
+        guids = compas_rhino.select_lines(message=message)
         edges = [self.artist.guid_edge[guid] for guid in guids if guid in self.artist.guid_edge]
         return edges
 
     def move(self):
+        """Move the entire volmesh object to a different location."""
         raise NotImplementedError
 
     def move_vertex(self, vertex):
+        """Move a single vertex of the volmesh object and update the data structure accordingly.
+
+        Parameters
+        ----------
+        vertex : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        bool
+            True if the operation was successful.
+            False otherwise.
+        """
         return mesh_move_vertex(self.volmesh, vertex)
 
     def move_vertices(self, vertices):
+        """Move a multiple vertices of the volmesh object and update the data structure accordingly.
+
+        Parameters
+        ----------
+        vertices : list of int
+            The identifiers of the vertices.
+
+        Returns
+        -------
+        bool
+            True if the operation was successful.
+            False otherwise.
+        """
         return mesh_move_vertices(self.volmesh, vertices)
 
+    # it is not entirely clear what is meant with this in terms of face/halfface
     def move_face(self, face):
+        """Move a single face of the volmesh object and update the data structure accordingly.
+
+        Parameters
+        ----------
+        face : int
+            The identifier of the face.
+
+        Returns
+        -------
+        bool
+            True if the operation was successful.
+            False otherwise.
+        """
         return mesh_move_face(self.volmesh, face)
 
 

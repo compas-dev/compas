@@ -3,13 +3,10 @@ from __future__ import absolute_import
 from __future__ import division
 
 import abc
-import compas
+import Rhino
 import compas_rhino
 
 from compas.utilities import abstractclassmethod
-
-if compas.RHINO:
-    import Rhino
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
