@@ -12,6 +12,7 @@ from compas.geometry import bounding_box
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_triangle_xy
 from compas.geometry import is_point_in_circle_xy
+
 from compas.geometry import circle_from_points_xy
 
 
