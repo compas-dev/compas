@@ -16,7 +16,7 @@ a separately launched subprocess.
 
 A drawback of the ``Xfunc`` mechanism is that every call launches a new Python
 (sub)process with all the overhead that that entails. For infrequent calls to
-long-running processes this is not an issue. However, for frequent calls to function
+long-running processes this is not an issue. However, for frequent calls to functions
 that are expected to run quickly, this is not ideal.
 
 The second mechanism is the ``rpc`` module. The principle of RPC is to start a server
