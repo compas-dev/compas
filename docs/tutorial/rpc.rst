@@ -21,7 +21,7 @@ that are expected to run quickly, this is not ideal.
 
 The second mechanism is the ``rpc`` module. The principle of RPC is to start a server
 that handles all requests. The advantage is that once the server is started,
-no additional processes have to launched and the server can handle the requests
+no additional processes have to be launched and the server can handle the requests
 without any overhead. Therefore, the response time is much faster than with ``XFunc``.
 
 
