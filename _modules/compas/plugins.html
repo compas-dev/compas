@@ -323,7 +323,7 @@
         <span class="k">return</span> <span class="n">res</span></div>
 
 
-<div class="viewcode-block" id="pluggable"><a class="viewcode-back" href="../../api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable">[docs]</a><span class="k">def</span> <span class="nf">pluggable</span><span class="p">(</span><span class="n">pluggable_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;https://plugins.compas.dev/&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="pluggable"><a class="viewcode-back" href="../../api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable">[docs]</a><span class="k">def</span> <span class="nf">pluggable</span><span class="p">(</span><span class="n">pluggable_method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">selector</span><span class="o">=</span><span class="s1">&#39;first_match&#39;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;https://plugins.compas.dev/&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Decorator to mark a method as a pluggable extension point.</span>
 
 <span class="sd">    A pluggable interface is uniquely identifiable/locatable via a URL</span>
@@ -336,9 +336,15 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pluggable_method : callable</span>
 <span class="sd">        The method to decorate as ``pluggable``.</span>
-<span class="sd">    category : str, optional</span>
+<span class="sd">    category : :obj:`str`, optional</span>
 <span class="sd">        An optional string to group or categorize extension points.</span>
-<span class="sd">    domain : str, optional</span>
+<span class="sd">    selector : :obj:`str`, optional</span>
+<span class="sd">        String that determines the selection mode of extension points.</span>
+
+<span class="sd">        - ``&quot;first_match&quot;``: (:obj:`str`) Execute the first matching implementation.</span>
+<span class="sd">        - ``&quot;collect_all&quot;``: (:obj:`str`) Executes all matching implementations and return list of its return values.</span>
+
+<span class="sd">    domain : :obj:`str`, optional</span>
 <span class="sd">        Domain name that &quot;owns&quot; the pluggable extension point.</span>
 <span class="sd">        This is useful to avoid name collisions between extension points</span>
 <span class="sd">        of different packages.</span>
@@ -354,11 +360,23 @@
         <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="n">extension_point_url</span> <span class="o">=</span> <span class="n">_get_extension_point_url_from_method</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
 
-            <span class="c1"># Select matching plugin</span>
-            <span class="n">plugin_impl</span> <span class="o">=</span> <span class="n">_select_plugin</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">)</span>
+            <span class="c1"># Select first matching plugin</span>
+            <span class="k">if</span> <span class="n">selector</span> <span class="o">==</span> <span class="s1">&#39;first_match&#39;</span><span class="p">:</span>
+                <span class="n">plugin_impl</span> <span class="o">=</span> <span class="n">_select_plugin</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">)</span>
 
-            <span class="c1"># Invoke plugin</span>
-            <span class="k">return</span> <span class="n">plugin_impl</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="c1"># Invoke plugin</span>
+                <span class="k">return</span> <span class="n">plugin_impl</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="c1"># Collect all matching plugins</span>
+            <span class="k">elif</span> <span class="n">selector</span> <span class="o">==</span> <span class="s1">&#39;collect_all&#39;</span><span class="p">:</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">for</span> <span class="n">plugin_impl</span> <span class="ow">in</span> <span class="n">_collect_plugins</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">):</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">plugin_impl</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+
+                <span class="k">return</span> <span class="n">results</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected selector type. Must be either: first_match or collect_all&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">wrapper</span>
 
@@ -476,28 +494,42 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span>
 
 
+<span class="k">def</span> <span class="nf">is_plugin_selectable</span><span class="p">(</span><span class="n">plugin</span><span class="p">,</span> <span class="n">manager</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;requires&#39;</span><span class="p">]:</span>
+        <span class="n">importable_requirements</span> <span class="o">=</span> <span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">importer</span><span class="o">.</span><span class="n">check_importable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;requires&#39;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">importable_requirements</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">manager</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Requirements not satisfied. Plugin will not be used: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
+
+
 <span class="k">def</span> <span class="nf">select_plugin</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">,</span> <span class="n">manager</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">manager</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Extension Point URL </span><span class="si">{}</span><span class="s1"> invoked. Will select a matching plugin&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span>
 
-    <span class="n">plugins</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span> <span class="ow">or</span> <span class="p">[]:</span>
-        <span class="k">if</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;requires&#39;</span><span class="p">]:</span>
-            <span class="n">importable_requirements</span> <span class="o">=</span> <span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">importer</span><span class="o">.</span><span class="n">check_importable</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">plugin</span><span class="o">.</span><span class="n">opts</span><span class="p">[</span><span class="s1">&#39;requires&#39;</span><span class="p">])</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">importable_requirements</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">manager</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Requirements not satisfied. Plugin will not be used: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plugin</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-                <span class="k">continue</span>
-
-        <span class="k">return</span> <span class="n">plugin</span>
+    <span class="n">plugins</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_plugin_selectable</span><span class="p">(</span><span class="n">plugin</span><span class="p">,</span> <span class="n">manager</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">plugin</span>
 
     <span class="c1"># Nothing found, raise</span>
     <span class="k">raise</span> <span class="n">PluginNotInstalledError</span><span class="p">(</span><span class="s1">&#39;Plugin not found for extension point URL: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span>
 
 
+<span class="k">def</span> <span class="nf">collect_plugins</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">,</span> <span class="n">manager</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">manager</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Extension Point URL </span><span class="si">{}</span><span class="s1"> invoked. Will select a matching plugin&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">))</span>
+
+    <span class="n">plugins</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">extension_point_url</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">plugin</span> <span class="k">for</span> <span class="n">plugin</span> <span class="ow">in</span> <span class="n">plugins</span> <span class="k">if</span> <span class="n">is_plugin_selectable</span><span class="p">(</span><span class="n">plugin</span><span class="p">,</span> <span class="n">manager</span><span class="p">)]</span>
+
+
 <span class="n">plugin_manager</span> <span class="o">=</span> <span class="n">PluginManager</span><span class="p">()</span>
 <span class="n">_select_plugin</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">select_plugin</span><span class="p">,</span> <span class="n">manager</span><span class="o">=</span><span class="n">plugin_manager</span><span class="p">)</span>
+<span class="n">_collect_plugins</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">collect_plugins</span><span class="p">,</span> <span class="n">manager</span><span class="o">=</span><span class="n">plugin_manager</span><span class="p">)</span>
 </code></pre></div>
         
       </main>
@@ -521,6 +553,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
