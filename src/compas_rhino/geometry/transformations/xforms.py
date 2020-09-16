@@ -2,8 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from Rhino.Geometry import Transform
+import compas
 
+if compas.RHINO:
+    from Rhino.Geometry import Transform
 
 __all__ = [
     'xform_from_transformation',
