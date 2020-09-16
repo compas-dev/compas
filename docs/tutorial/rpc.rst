@@ -14,7 +14,7 @@ COMPAS provides **two ways to achieve** this: ``rcp`` and `XFunc``.
 Through ``Xfunc``, COMPAS provides a mechanism for calling Python functions through
 a separately launched subprocess.
 
-A drawback of the ``Xfunc`` mechanism is that evey call launches a new Python
+A drawback of the ``Xfunc`` mechanism is that every call launches a new Python
 (sub)process with all the overhead that that entails. For infrequent calls to
 long-running processes this is not an issue. However, for frequent calls to function
 that are expected to run quickly, this is not ideal.
