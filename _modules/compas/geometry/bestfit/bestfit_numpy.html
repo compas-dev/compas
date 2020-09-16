@@ -124,14 +124,6 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># xyz = asarray(points).reshape((-1, 3))</span>
-    <span class="c1"># n = xyz.shape[0]</span>
-    <span class="c1"># c = (sum(xyz, axis=0) / n).reshape((-1, 3))</span>
-    <span class="c1"># Yt = xyz - c</span>
-    <span class="c1"># C = Yt.T.dot(Yt) / (n - 1)</span>
-    <span class="c1"># U, S, Vt = svd(C)</span>
-    <span class="c1"># w = Vt[2, :]</span>
-    <span class="c1"># return c, w</span>
     <span class="n">o</span><span class="p">,</span> <span class="n">uvw</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pca_numpy</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">o</span><span class="p">,</span> <span class="n">uvw</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span></div>
 
