@@ -52,7 +52,7 @@ Switching packages
 
 The RPC proxy is usually initialized with one package name, but it can be switched at any point.
 The following example shows how to calculate the inverse of a ``numpy`` matrix using ``scipy``
-lineal algebra functions.
+linear algebra functions.
 
 .. code-block:: python
 
