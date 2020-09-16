@@ -48,6 +48,7 @@ Table of Contents
    gettingstarted
    tutorial
    api
+   plugins
    devguide
    changelog
    license
