@@ -63,6 +63,15 @@ class VolMeshObject(BaseObject):
 
     def __init__(self, volmesh, scene=None, name=None, layer=None, visible=True, settings=None):
         super(VolMeshObject, self).__init__(volmesh, scene, name, layer, visible)
+        self._guids = []
+        self._guid_vertex = {}
+        self._guid_edge = {}
+        self._guid_face = {}
+        self._guid_cell = {}
+        self._guid_vertexlabel = {}
+        self._guid_edgelabel = {}
+        self._guid_facelabel = {}
+        self._guid_celllabel = {}
         self._anchor = None
         self._location = None
         self._scale = None
@@ -78,6 +87,12 @@ class VolMeshObject(BaseObject):
     @volmesh.setter
     def volmesh(self, volmesh):
         self.item = volmesh
+
+    # def __getstate__(self):
+    #     pass
+
+    # def __setstate__(self, state):
+    #     pass
 
     @property
     def anchor(self):
@@ -156,8 +171,104 @@ class VolMeshObject(BaseObject):
         vertex_xyz = {vertex: volmesh.vertex_attributes(vertex, 'xyz') for vertex in volmesh.vertices()}
         return vertex_xyz
 
+    @property
+    def guid_vertex(self):
+        """Map between Rhino object GUIDs and volmesh vertex identifiers."""
+        return self._guid_vertex
+
+    @guid_vertex.setter
+    def guid_vertex(self, values):
+        self._guid_vertex = dict(values)
+
+    @property
+    def guid_edge(self):
+        """Map between Rhino object GUIDs and volmsh edge identifiers."""
+        return self._guid_edge
+
+    @guid_edge.setter
+    def guid_edge(self, values):
+        self._guid_edge = dict(values)
+
+    @property
+    def guid_face(self):
+        """Map between Rhino object GUIDs and volmesh face identifiers."""
+        return self._guid_face
+
+    @guid_face.setter
+    def guid_face(self, values):
+        self._guid_face = dict(values)
+
+    @property
+    def guid_cell(self):
+        """Map between Rhino object GUIDs and volmesh face identifiers."""
+        return self._guid_cell
+
+    @guid_cell.setter
+    def guid_cell(self, values):
+        self._guid_cell = dict(values)
+
+    @property
+    def guid_vertexlabel(self):
+        """Map between Rhino object GUIDs and volmesh vertexlabel identifiers."""
+        return self._guid_vertexlabel
+
+    @guid_vertexlabel.setter
+    def guid_vertexlabel(self, values):
+        self._guid_vertexlabel = dict(values)
+
+    @property
+    def guid_edgelabel(self):
+        """Map between Rhino object GUIDs and volmesh edgelabel identifiers."""
+        return self._guid_edgelabel
+
+    @guid_edgelabel.setter
+    def guid_edgelabel(self, values):
+        self._guid_edgelabel = dict(values)
+
+    @property
+    def guid_facelabel(self):
+        """Map between Rhino object GUIDs and volmesh facelabel identifiers."""
+        return self._guid_facelabel
+
+    @guid_facelabel.setter
+    def guid_facelabel(self, values):
+        self._guid_facelabel = dict(values)
+
+    @property
+    def guid_celllabel(self):
+        """Map between Rhino object GUIDs and volmesh celllabel identifiers."""
+        return self._guid_celllabel
+
+    @guid_celllabel.setter
+    def guid_celllabel(self, values):
+        self._guid_celllabel = dict(values)
+
+    @property
+    def guids(self):
+        """list: The GUIDs of all Rhino objects created by this artist."""
+        guids = self._guids
+        guids += list(self.guid_vertex)
+        guids += list(self.guid_edge)
+        guids += list(self.guid_face)
+        guids += list(self.guid_cell)
+        guids += list(self.guid_vertexlabel)
+        guids += list(self.guid_edgelabel)
+        guids += list(self.guid_facelabel)
+        guids += list(self.guid_celllabel)
+        return guids
+
     def clear(self):
-        self.artist.clear()
+        """Clear all objects previously drawn by this artist.
+        """
+        compas_rhino.delete_objects(self.guids, purge=True)
+        self._guid_vertex = {}
+        self._guid_edge = {}
+        self._guid_face = {}
+        self._guid_cell = {}
+        self._guid_vertexlabel = {}
+        self._guid_edgelabel = {}
+        self._guid_facelabel = {}
+        self._guid_celllabel = {}
 
     def draw(self):
         """Draw the volmesh using the visualisation settings.
@@ -165,23 +276,49 @@ class VolMeshObject(BaseObject):
         self.clear()
         if not self.visible:
             return
+
         self.artist.vertex_xyz = self.vertex_xyz
+
         if self.settings['show.vertices']:
-            self.artist.draw_vertices(color=self.settings['color.vertices'])
+            vertices = list(self.volmesh.vertices())
+            guids = self.artist.draw_vertices(vertices=vertices, color=self.settings['color.vertices'])
+            self.guid_vertex = zip(guids, vertices)
+
             if self.settings['show.vertexlabels']:
-                self.artist.draw_vertexlabels(color=self.settings['color.vertices'])
+                text = {vertex: str(vertex) for vertex in vertices}
+                guids = self.artist.draw_vertexlabels(text=text, color=self.settings['color.vertices'])
+                self.guid_vertexlabel = zip(guids, vertices)
+
         if self.settings['show.faces']:
-            self.artist.draw_faces(color=self.settings['color.faces'])
+            faces = list(self.volmesh.faces())
+            guids = self.artist.draw_faces(faces=faces, color=self.settings['color.faces'])
+            self.guid_face = zip(guids, faces)
+
             if self.settings['show.facelabels']:
-                self.artist.draw_facelabels(color=self.settings['color.faces'])
+                text = {face: str(face) for face in faces}
+                guids = self.artist.draw_facelabels(text=text, color=self.settings['color.faces'])
+                self.guid_facelabel = zip(guids, faces)
+
         if self.settings['show.edges']:
-            self.artist.draw_edges(color=self.settings['color.edges'])
+            edges = list(self.volmesh.edges())
+            guids = self.artist.draw_edges(edges=edges, color=self.settings['color.edges'])
+            self.guid_edge = zip(guids, edges)
+
             if self.settings['show.edgelabels']:
-                self.artist.draw_edgelabels(color=self.settings['color.edges'])
+                text = {edge: "{}-{}".format(*edge) for edge in edges}
+                guids = self.artist.draw_edgelabels(text=text, color=self.settings['color.edges'])
+                self.guid_edgelabel = zip(guids, edges)
+
         if self.settings['show.cells']:
-            self.artist.draw_cells(color=self.settings['color.cells'])
+            cells = list(self.volmesh.cells())
+            guids = self.artist.draw_cells(cells=cells, color=self.settings['color.cells'])
+            self.guid_cell = zip(guids, cells)
+
             if self.settings['show.celllabels']:
-                self.artist.draw_celllabels(color=self.settings['color.cells'])
+                text = {cell: str(cell) for cell in cells}
+                guids = self.artist.draw_celllabels(text=text, color=self.settings['color.cells'])
+                self.guid_edgelabel = zip(guids, edges)
+
         self.redraw()
 
     def select(self):
@@ -210,7 +347,7 @@ class VolMeshObject(BaseObject):
             A list of vertex identifiers.
         """
         guids = compas_rhino.select_points(message=message)
-        vertices = [self.artist.guid_vertex[guid] for guid in guids if guid in self.artist.guid_vertex]
+        vertices = [self.guid_vertex[guid] for guid in guids if guid in self.guid_vertex]
         return vertices
 
     def select_faces(self, message="Select faces."):
@@ -222,7 +359,7 @@ class VolMeshObject(BaseObject):
             A list of face identifiers.
         """
         guids = compas_rhino.select_meshes(message=message)
-        faces = [self.artist.guid_face[guid] for guid in guids if guid in self.artist.guid_face]
+        faces = [self.guid_face[guid] for guid in guids if guid in self.guid_face]
         return faces
 
     def select_edges(self, message="Select edges."):
@@ -234,7 +371,7 @@ class VolMeshObject(BaseObject):
             A list of edge identifiers.
         """
         guids = compas_rhino.select_lines(message=message)
-        edges = [self.artist.guid_edge[guid] for guid in guids if guid in self.artist.guid_edge]
+        edges = [self.guid_edge[guid] for guid in guids if guid in self.guid_edge]
         return edges
 
     def move(self):

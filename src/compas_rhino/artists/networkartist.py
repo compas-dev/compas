@@ -40,15 +40,21 @@ class NetworkArtist(BaseArtist):
 
     def __init__(self, network, layer=None):
         super(NetworkArtist, self).__init__()
-        self._guid_node = {}
-        self._guid_edge = {}
-        self._guid_nodelabel = {}
-        self._guid_edgelabel = {}
+        self._network = None
         self._node_xyz = None
         self.network = network
         self.layer = layer
         self.color_nodes = (255, 255, 255)
         self.color_edges = (0, 0, 0)
+
+    @property
+    def network(self):
+        return self._network
+
+    @network.setter
+    def network(self, network):
+        self._network = network
+        self._node_xyz = None
 
     @property
     def node_xyz(self):
@@ -64,61 +70,14 @@ class NetworkArtist(BaseArtist):
     def node_xyz(self, node_xyz):
         self._node_xyz = node_xyz
 
-    @property
-    def guids(self):
-        guids = []
-        guids += list(self.guid_node.keys())
-        guids += list(self.guid_edge.keys())
-        return guids
-
-    @property
-    def guid_node(self):
-        """dict: Map between Rhino object GUIDs and network node identifiers."""
-        if not self._guid_node:
-            self._guid_node = {}
-        return self._guid_node
-
-    @guid_node.setter
-    def guid_node(self, values):
-        self._guid_node = dict(values)
-
-    @property
-    def guid_edge(self):
-        """dict: Map between Rhino object GUIDs and network edge identifiers."""
-        if not self._guid_edge:
-            self._guid_edge = {}
-        return self._guid_edge
-
-    @guid_edge.setter
-    def guid_edge(self, values):
-        self._guid_edge = dict(values)
-
-    @property
-    def guid_nodelabel(self):
-        """dict: Map between Rhino object GUIDs and network nodelabel identifiers."""
-        return self._guid_vertexlabel
-
-    @guid_nodelabel.setter
-    def guid_nodelabel(self, values):
-        self._guid_vertexlabel = dict(values)
-
-    @property
-    def guid_edgelabel(self):
-        """dict: Map between Rhino object GUIDs and network edgelabel identifiers."""
-        return self._guid_edgelabel
-
-    @guid_edgelabel.setter
-    def guid_edgelabel(self, values):
-        self._guid_edgelabel = dict(values)
-
     # ==========================================================================
     # clear
     # ==========================================================================
 
-    def clear(self):
-        compas_rhino.delete_objects(self.guids, purge=True)
-        self._guid_node = {}
-        self._guid_edge = {}
+    def clear_by_name(self):
+        """Clear all objects in the "namespace" of the associated network."""
+        guids = compas_rhino.get_objects(name="{}.*".format(self.network.name))
+        compas_rhino.delete_objects(guids, purge=True)
 
     def clear_layer(self):
         """Clear the main layer of the artist."""
@@ -126,7 +85,7 @@ class NetworkArtist(BaseArtist):
             compas_rhino.clear_layer(self.layer)
 
     # ==========================================================================
-    # components
+    # draw
     # ==========================================================================
 
     def draw(self):
@@ -138,7 +97,6 @@ class NetworkArtist(BaseArtist):
             The GUIDs of the created Rhino objects.
 
         """
-        self.clear()
         guids = self.draw_nodes()
         guids += self.draw_edges()
         return guids
@@ -170,9 +128,7 @@ class NetworkArtist(BaseArtist):
                 'pos': node_xyz[node],
                 'name': "{}.node.{}".format(self.network.name, node),
                 'color': node_color[node]})
-        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        self.guid_node = zip(guids, nodes)
-        return guids
+        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, edges=None, color=None):
         """Draw a selection of edges.
@@ -202,12 +158,10 @@ class NetworkArtist(BaseArtist):
                 'end': node_xyz[edge[1]],
                 'color': edge_color[edge],
                 'name': "{}.edge.{}-{}".format(self.network.name, *edge)})
-        guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self.guid_edge = zip(guids, edges)
-        return guids
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================
-    # labels
+    # draw labels
     # ==========================================================================
 
     def draw_nodelabels(self, text=None, color=None):
@@ -245,9 +199,7 @@ class NetworkArtist(BaseArtist):
                 'name': "{}.nodelabel.{}".format(self.network.name, node),
                 'color': node_color[node],
                 'text': node_text[node]})
-        guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_node = zip(guids, node_text)
-        return guids
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
         """Draw labels for a selection of edges.
@@ -282,9 +234,7 @@ class NetworkArtist(BaseArtist):
                 'name': "{}.edgelabel.{}-{}".format(self.network.name, *edge),
                 'color': edge_color[edge],
                 'text': edge_text[edge]})
-        guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_edge = zip(guids, edge_text)
-        return guids
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
 
 # ==============================================================================
