@@ -55,7 +55,7 @@ class Proxy(object):
         Default is ``1753``.
     service : :obj:`str`:, package name to start server.
         Default is ``'compas.rpc.services.default'``.
-    autoreload : bool, ``True`` to automatically reload the proxied package if changes are detected.
+    autoreload : :obj:`bool`, ``True`` to automatically reload the proxied package if changes are detected.
         This is particularly useful during development. The server will monitor changes to the files
         that were loaded as a result of accessing the specified `package` and if any change is detected,
         it will unload the module, so that the next invocation uses a fresh version.
