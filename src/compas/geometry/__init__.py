@@ -409,5 +409,7 @@ from .triangulation import *  # noqa: F401 F403
 
 from .booleans import *  # noqa: F401 F403
 from .meshing import *  # noqa: F401 F403
+from .slicing import *  # noqa: F401 F403
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]
