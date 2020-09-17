@@ -44,15 +44,7 @@ class VolMeshArtist(BaseArtist):
 
     def __init__(self, volmesh, layer=None):
         super(VolMeshArtist, self).__init__()
-        self._guids = []
-        self._guid_vertex = {}
-        self._guid_edge = {}
-        self._guid_face = {}
-        self._guid_cell = {}
-        self._guid_vertexlabel = {}
-        self._guid_edgelabel = {}
-        self._guid_facelabel = {}
-        self._guid_celllabel = {}
+        self._volmesh = None
         self._vertex_xyz = None
         self.volmesh = volmesh
         self.layer = layer
@@ -60,6 +52,15 @@ class VolMeshArtist(BaseArtist):
         self.color_edges = (0, 0, 0)
         self.color_faces = (210, 210, 210)
         self.color_cells = (255, 0, 0)
+
+    @property
+    def volmesh(self):
+        return self._volmesh
+
+    @volmesh.setter
+    def volmesh(self, volmesh):
+        self._volmesh = volmesh
+        self._vertex_xyz = None
 
     @property
     def vertex_xyz(self):
@@ -71,109 +72,23 @@ class VolMeshArtist(BaseArtist):
     def vertex_xyz(self, vertex_xyz):
         self._vertex_xyz = vertex_xyz
 
-    @property
-    def guids(self):
-        """list: The GUIDs of all Rhino objects created by this artist."""
-        guids = self._guids
-        guids += list(self.guid_vertex.keys())
-        guids += list(self.guid_edge.keys())
-        guids += list(self.guid_face.keys())
-        guids += list(self.guid_cell.keys())
-        guids += list(self.guid_vertexlabel.keys())
-        guids += list(self.guid_edgelabel.keys())
-        guids += list(self.guid_facelabel.keys())
-        guids += list(self.guid_celllabel.keys())
-        return guids
+    # ==========================================================================
+    # clear
+    # ==========================================================================
 
-    @property
-    def guid_vertex(self):
-        """Map between Rhino object GUIDs and volmesh vertex identifiers."""
-        return self._guid_vertex
-
-    @guid_vertex.setter
-    def guid_vertex(self, values):
-        self._guid_vertex = dict(values)
-
-    @property
-    def guid_edge(self):
-        """Map between Rhino object GUIDs and volmsh edge identifiers."""
-        return self._guid_edge
-
-    @guid_edge.setter
-    def guid_edge(self, values):
-        self._guid_edge = dict(values)
-
-    @property
-    def guid_face(self):
-        """Map between Rhino object GUIDs and volmesh face identifiers."""
-        return self._guid_face
-
-    @guid_face.setter
-    def guid_face(self, values):
-        self._guid_face = dict(values)
-
-    @property
-    def guid_cell(self):
-        """Map between Rhino object GUIDs and volmesh face identifiers."""
-        return self._guid_cell
-
-    @guid_cell.setter
-    def guid_cell(self, values):
-        self._guid_cell = dict(values)
-
-    @property
-    def guid_vertexlabel(self):
-        """Map between Rhino object GUIDs and volmesh vertexlabel identifiers."""
-        return self._guid_vertexlabel
-
-    @guid_vertexlabel.setter
-    def guid_vertexlabel(self, values):
-        self._guid_vertexlabel = dict(values)
-
-    @property
-    def guid_edgelabel(self):
-        """Map between Rhino object GUIDs and volmesh edgelabel identifiers."""
-        return self._guid_edgelabel
-
-    @guid_edgelabel.setter
-    def guid_edgelabel(self, values):
-        self._guid_edgelabel = dict(values)
-
-    @property
-    def guid_facelabel(self):
-        """Map between Rhino object GUIDs and volmesh facelabel identifiers."""
-        return self._guid_facelabel
-
-    @guid_facelabel.setter
-    def guid_facelabel(self, values):
-        self._guid_facelabel = dict(values)
-
-    @property
-    def guid_celllabel(self):
-        """Map between Rhino object GUIDs and volmesh celllabel identifiers."""
-        return self._guid_celllabel
-
-    @guid_celllabel.setter
-    def guid_celllabel(self, values):
-        self._guid_celllabel = dict(values)
-
-    def clear(self):
-        """Clear all objects previously drawn by this artist.
-        """
-        compas_rhino.delete_objects(self.guids, purge=True)
-        self._guid_vertex = {}
-        self._guid_edge = {}
-        self._guid_face = {}
-        self._guid_cell = {}
-        self._guid_vertexlabel = {}
-        self._guid_edgelabel = {}
-        self._guid_facelabel = {}
-        self._guid_celllabel = {}
+    def clear_by_name(self):
+        """Clear all objects in the "namespace" of the associated volmesh."""
+        guids = compas_rhino.get_objects(name="{}.*".format(self.volmesh.name))
+        compas_rhino.delete_objects(guids, purge=True)
 
     def clear_layer(self):
         """Clear the main layer of the artist."""
         if self.layer:
             compas_rhino.clear_layer(self.layer)
+
+    # ==========================================================================
+    # draw
+    # ==========================================================================
 
     def draw(self, settings=None):
         """Draw the volmesh using the chosen visualisation settings.
@@ -213,9 +128,7 @@ class VolMeshArtist(BaseArtist):
                 'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.volmesh.name, vertex),
                 'color': vertex_color[vertex]})
-        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        self.guid_vertex = zip(guids, vertices)
-        return guids
+        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_edges(self, edges=None, color=None):
         """Draw a selection of edges.
@@ -245,9 +158,7 @@ class VolMeshArtist(BaseArtist):
                 'end': vertex_xyz[edge[1]],
                 'color': edge_color[edge],
                 'name': "{}.edge.{}-{}".format(self.volmesh.name, *edge)})
-        guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self.guid_edge = zip(guids, edges)
-        return guids
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_faces(self, faces=None, color=None):
         """Draw a selection of faces.
@@ -276,9 +187,7 @@ class VolMeshArtist(BaseArtist):
                 'points': [vertex_xyz[vertex] for vertex in self.volmesh.face_vertices(face)],
                 'name': "{}.face.{}".format(self.volmesh.name, face),
                 'color': face_color[face]})
-        guids = compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
-        self.guid_face = zip(guids, faces)
-        return guids
+        return compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
 
     def draw_cells(self, cells=None, color=None):
         """Draw a selection of cells.
@@ -316,11 +225,10 @@ class VolMeshArtist(BaseArtist):
             compas_rhino.rs.ObjectName(guid, '{}.cell.{}'.format(self.volmesh.name, cell))
             compas_rhino.rs.ObjectColor(guid, cell_color[cell])
             meshes.append(guid)
-        self.guid_cell = zip(meshes, cells)
         return meshes
 
     # ==========================================================================
-    # labels
+    # draw labels
     # ==========================================================================
 
     def draw_vertexlabels(self, text=None, color=None):
@@ -358,9 +266,7 @@ class VolMeshArtist(BaseArtist):
                 'name': "{}.vertexlabel.{}".format(self.volmesh.name, vertex),
                 'color': vertex_color[vertex],
                 'text': vertex_text[vertex]})
-        guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_vertexlabel = zip(guids, vertex_text)
-        return guids
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
         """Draw labels for a selection of edges.
@@ -395,9 +301,7 @@ class VolMeshArtist(BaseArtist):
                 'name': "{}.edgelabel.{}-{}".format(self.volmesh.name, *edge),
                 'color': edge_color[edge],
                 'text': edge_text[edge]})
-        guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_edgelabel = zip(guids, edge_text)
-        return guids
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_facelabels(self, text=None, color=None):
         """Draw labels for a selection of faces.
@@ -434,9 +338,7 @@ class VolMeshArtist(BaseArtist):
                 'name': "{}.facelabel.{}".format(self.volmesh.name, face),
                 'color': face_color[face],
                 'text': face_text[face]})
-        guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_facelabel = zip(guids, face_text)
-        return guids
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_celllabels(self, text=None, color=None):
         """Draw labels for cells.
@@ -473,9 +375,7 @@ class VolMeshArtist(BaseArtist):
                 'name': "{}.facelabel.{}".format(self.volmesh.name, cell),
                 'color': cell_color[cell],
                 'text': cell_text[cell]})
-        guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_celllabel = zip(guids, cell_text)
-        return guids
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
 
 # ==============================================================================

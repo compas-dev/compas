@@ -12,6 +12,7 @@ from compas.geometry import bounding_box
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_triangle_xy
 from compas.geometry import is_point_in_circle_xy
+
 from compas.geometry import circle_from_points_xy
 
 
@@ -222,24 +223,6 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    # from compas.datastructures import Mesh
-    # from compas.geometry import pointcloud_xy
-    # from compas_plotters import MeshPlotter
-
-    # points = pointcloud_xy(200, (0, 50))
-    # faces = delaunay_from_points(points)
-
-    # delaunay = Mesh.from_vertices_and_faces(points, faces)
-
-    # plotter = MeshPlotter(delaunay, figsize=(8, 5))
-
-    # facecolor = {fkey: (255, 0, 0) if delaunay.face_normal(fkey)[2] > 0 else (0, 0, 255) for fkey in delaunay.faces()}
-
-    # plotter.draw_vertices(keys=list(delaunay.vertices_on_boundary()), radius=0.5)
-    # plotter.draw_faces(facecolor=facecolor)
-    # plotter.draw_edges(keys=list(delaunay.edges_on_boundary()))
-    # plotter.show()
 
     import doctest
     doctest.testmod(globs=globals())

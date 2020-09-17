@@ -184,6 +184,10 @@ class Box(Shape):
         return self.xsize * self.ysize * self.zsize
 
     @property
+    def points(self):
+        return self.vertices
+
+    @property
     def vertices(self):
         """list of point: The XYZ coordinates of the vertices of the box."""
         point = self.frame.point

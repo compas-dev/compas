@@ -58,7 +58,7 @@ class BaseObject(ABC):
     def __init__(self, item, scene=None, name=None, layer=None, visible=True, settings=None):
         super(BaseObject, self).__init__()
         self._item = None
-        self._guid = None
+        self._id = None
         self._scene = None
         self._artist = None
         self.scene = scene
@@ -71,12 +71,6 @@ class BaseObject(ABC):
     # ==========================================================================
     # Properties
     # ==========================================================================
-
-    # def __getstate__(self):
-    #     pass
-
-    # def __setstate__(self, state):
-    #     pass
 
     @property
     def scene(self):
@@ -100,10 +94,10 @@ class BaseObject(ABC):
         return self._artist
 
     @property
-    def guid(self):
-        if not self._guid:
-            self._guid = uuid4()
-        return self._guid
+    def id(self):
+        if not self._id:
+            self._id = uuid4()
+        return self._id
 
     @property
     def name(self):

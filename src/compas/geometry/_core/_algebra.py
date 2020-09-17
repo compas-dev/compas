@@ -4,7 +4,6 @@ from __future__ import division
 
 from math import sqrt
 from math import fabs
-from random import uniform
 
 __all__ = [
     'close',
@@ -51,13 +50,8 @@ __all__ = [
     'vector_component',
     'vector_component_xy',
 
-    'vector_from_points',
-    'vector_from_points_xy',
-    'plane_from_points',
     'circle_from_points',
     'circle_from_points_xy',
-    'pointcloud',
-    'pointcloud_xy'
 ]
 
 
@@ -1276,81 +1270,6 @@ def orthonormalize_vectors(vectors):
 # ==============================================================================
 
 
-def vector_from_points(a, b):
-    """Construct a vector from two points.
-
-    Parameters
-    ----------
-    a : sequence of float
-        XYZ coordinates of first point.
-    b : sequence of float
-        XYZ coordinates of second point.
-
-    Returns
-    -------
-    ab : sequence of float
-        The vector from ``a`` to ``b``.
-
-    Examples
-    --------
-    >>>
-
-    """
-    return b[0] - a[0], b[1] - a[1], b[2] - a[2]
-
-
-def vector_from_points_xy(a, b):
-    """
-    Create a vector based on a start point a and end point b in the XY-plane.
-
-    Parameters
-    ----------
-    a : sequence of float
-        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    b : sequence of float
-        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-
-    Returns
-    -------
-    ab : tuple
-        Resulting 3D vector in the XY-plane (Z = 0.0).
-
-    Notes
-    -----
-    The result of this function is equal to ``subtract_vectors(b, a)``
-
-    """
-    return b[0] - a[0], b[1] - a[1], 0.0
-
-
-def plane_from_points(a, b, c):
-    """Construct a plane from three points.
-
-    Parameters
-    ----------
-    a : sequence of float
-        XYZ coordinates.
-    b : sequence of float
-        XYZ coordinates.
-    c : sequence of float
-        XYZ coordinates.
-
-    Returns
-    -------
-    plane : tuple
-        Base point and normal vector (normalized).
-
-    Examples
-    --------
-    >>>
-
-    """
-    ab = subtract_vectors(b, a)
-    ac = subtract_vectors(c, a)
-    n = normalize_vector(cross_vectors(ab, ac))
-    return a, n
-
-
 def circle_from_points(a, b, c):
     """Construct a circle from three points.
 
@@ -1448,90 +1367,6 @@ def circle_from_points_xy(a, b, c):
     centery = (a * f - c * e) / g
     radius = sqrt((ax - centerx) ** 2 + (ay - centery) ** 2)
     return [centerx, centery, 0.0], radius, [0, 0, 1]
-
-
-def pointcloud(n, xbounds, ybounds=None, zbounds=None):
-    """Construct a point cloud.
-
-    Parameters
-    ----------
-    n : int
-        The number of points in the cloud.
-    xbounds : 2-tuple of float
-        The min/max values for the x-coordinates of the points in the cloud.
-    ybounds : 2-tuple of float, optional
-        The min/max values for the y-coordinates of the points in the cloud.
-        If ``None``, defaults to the value of the ``xbounds``.
-    zbounds : 2-tuple of float, optional
-        The min/max values for the z-coordinates of the points in the cloud.
-        If ``None``, defaults to the value of the ``xbounds``.
-
-    Returns
-    -------
-    list of list:
-        A list of points forming the cloud.
-
-    Examples
-    --------
-    >>> cloud = pointcloud(10, (0.0, 1.0))
-    >>> all((0.0 < x < 1.0) and (0.0 < y < 1.0) and (0.0 < z < 1.0) for x, y, z in cloud)
-    True
-
-    >>> cloud = pointcloud(10, (5.0, 10.0), (0.0, 1.0), (-2.0, 3.0))
-    >>> all((5.0 < x < 10.0) and (0.0 < y < 1.0) and (-2.0 < z < 3.0) for x, y, z in cloud)
-    True
-
-    """
-    if ybounds is None:
-        ybounds = xbounds
-    if zbounds is None:
-        zbounds = xbounds
-    xmin, xmax = map(float, xbounds)
-    ymin, ymax = map(float, ybounds)
-    zmin, zmax = map(float, zbounds)
-    x = [uniform(xmin, xmax) for i in range(n)]
-    y = [uniform(ymin, ymax) for i in range(n)]
-    z = [uniform(zmin, zmax) for i in range(n)]
-    return list(map(list, zip(x, y, z)))
-
-
-def pointcloud_xy(n, xbounds, ybounds=None):
-    """Construct a point cloud in the XY plane.
-
-    Parameters
-    ----------
-    n : int
-        The number of points in the cloud.
-    xbounds : 2-tuple of float
-        The min/max values for the x-coordinates of the points in the cloud.
-    ybounds : 2-tuple of float, optional
-        The min/max values for the y-coordinates of the points in the cloud.
-        If ``None``, defaults to the value of the ``xbounds``.
-
-    Returns
-    -------
-    list:
-        A list of points in the XY plane (Z = 0).
-
-    Examples
-    --------
-    >>> cloud = pointcloud_xy(10, (0.0, 1.0))
-    >>> all((0.0 < x < 1.0) and (0.0 < y < 1.0) and z == 0.0 for x, y, z in cloud)
-    True
-
-    >>> cloud = pointcloud_xy(10, (5.0, 10.0), (0.0, 1.0))
-    >>> all((5.0 < x < 10.0) and (0.0 < y < 1.0) and z == 0.0 for x, y, z in cloud)
-    True
-
-    """
-    if ybounds is None:
-        ybounds = xbounds
-    xmin, xmax = map(float, xbounds)
-    ymin, ymax = map(float, ybounds)
-    x = [uniform(xmin, xmax) for i in range(n)]
-    y = [uniform(ymin, ymax) for i in range(n)]
-    z = [0.0 for i in range(n)]
-    return list(map(list, zip(x, y, z)))
 
 
 # ==============================================================================
