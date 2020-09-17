@@ -57,7 +57,7 @@ class Proxy(object):
         This is particularly useful during development. The server will monitor changes to the files
         that were loaded as a result of accessing the specified `package` and if any change is detected,
         it will unload the module, so that the next invocation uses a fresh version.
-    capture_output : :obj:`bool`, ``True`` to capture the stdout/stderr output of the remote process, otherwise ``False.
+    capture_output : :obj:`bool`, ``True`` to capture the stdout/stderr output of the remote process, otherwise ``False``.
         In general, ``capture_output`` should be ``True`` when using a ``pythonw`` as executable (default).
 
     Notes

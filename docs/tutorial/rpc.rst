@@ -81,6 +81,7 @@ side of the RPC communication network.
 Therefore the data types supported by :mod:`compas.rpc` include all native Python
 data types and COMPAS objects. Numpy arrays are automatically converted to lists.
 
+linear algebra functions.
 
 Starting and Stopping
 =====================
