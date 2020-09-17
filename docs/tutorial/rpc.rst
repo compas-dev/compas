@@ -42,8 +42,9 @@ we call it through a proxy object. ::
     >>> numerical = Proxy('compas.numerical')
     >>> result = numerical.fd_numpy(...)
 
-To use functions from more than one package in the same script, simply change the package attribute
-of the proxy object, which determines where the proxy will look for the requested function. ::
+To use functions from more than one package in the same script, simply change the
+package attribute of the proxy object, which determines where the proxy will look
+for the requested function. ::
 
     >>> from compas.rpc import Proxy
     >>> proxy = Proxy()
@@ -65,18 +66,20 @@ Note that Numpy arrays are automatically converted to lists.
 Supported data types
 ====================
 
-:mod:`compas.rpc` uses JSON serialization to transfer data between the "client" (your script)
-and the server running the selected CPython environment.
+:mod:`compas.rpc` uses JSON serialization to transfer data between the "client"
+(your script) and the server running the selected CPython environment.
 
-All COMPAS objects (primitives, shapes, data structures, ...) support JSON serialization through
-their ``to_json`` ``from_json`` methods. On a lower level, these methods convert (complex)
-internal data to simple dictionaries, and vice versa, with ``to_data`` and ``from_data``.
+All COMPAS objects (primitives, shapes, data structures, etc.) support JSON
+serialization through their ``to_json`` ``from_json`` methods. On a lower level,
+these methods convert (complex) internal data to simple dictionaries, and
+vice versa, with ``to_data`` and ``from_data``.
 
-In combination with custom JSON encoders and decoders this allows for COMPAS objects to be
-serialized and de-serialized without loss of information on either side of the RPC communication network.
+In combination with custom JSON encoders and decoders this allows for COMPAS
+objects to be serialized and de-serialized without loss of information on either
+side of the RPC communication network.
 
-Therefore the data types supported by :mod:`compas.rpc` include all native Python data types and COMPAS objects.
-Numpy arrays are automatically converted to lists.
+Therefore the data types supported by :mod:`compas.rpc` include all native Python
+data types and COMPAS objects. Numpy arrays are automatically converted to lists.
 
 
 Starting and Stopping
