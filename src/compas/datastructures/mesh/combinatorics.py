@@ -56,6 +56,7 @@ def mesh_connected_components(mesh):
 if __name__ == "__main__":
 
     import doctest
+
     import compas
     from compas.datastructures import Mesh
     from compas.datastructures import meshes_join

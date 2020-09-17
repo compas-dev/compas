@@ -1,23 +1,18 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from collections import deque
 
-import compas
+import rhinoscriptsyntax as rs
+import scriptcontext as sc
+
+find_object = sc.doc.Objects.Find
 
 try:
-    import rhinoscriptsyntax as rs
-    import scriptcontext as sc
-
-    find_object = sc.doc.Objects.Find
-
-except ImportError:
-    compas.raise_if_ironpython()
-
-else:
-    try:
-        purge_object = sc.doc.Objects.Purge
-    except AttributeError:
-        purge_object = None
+    purge_object = sc.doc.Objects.Purge
+except AttributeError:
+    purge_object = None
 
 
 __all__ = [
@@ -75,8 +70,29 @@ def delete_objects_on_layer(name, include_hidden=True, include_children=False, p
 # create
 # ==============================================================================
 
-
 def create_layers_from_path(path, separator='::'):
+    """Create a nested layer structure from a hierarchical path string.
+
+    Parameters
+    ----------
+    path : str
+        The path string.
+    separator : str, optional
+
+    Examples
+    --------
+    The following snippet will created 3 nested layers,
+    with "COMPAS" at the root level, "Datastructures" at the first nested level, and "Mesh" at the deepest level.
+
+    * COMPAS
+      * Datastructures
+        * Mesh
+
+    .. code-block:: python
+
+        create_layers_from_path("COMPAS::Datastructures::Mesh")
+
+    """
     names = path.split(separator)
     parent = None
     for name in names:
@@ -88,11 +104,68 @@ def create_layers_from_path(path, separator='::'):
 
 
 def create_layers_from_paths(names, separator='::'):
+    """Create nested layers from a lst of hierarchical path strings.
+
+    Parameters
+    ----------
+    names : list of str
+        The path strings of the nested layer structures.
+    separator : str, optional
+
+    Examples
+    --------
+    The following snippet will created 2 nested layer structures:
+
+    * COMPAS
+      * Datastructures
+        * Mesh
+        * Network
+      * Geometry
+        * Point
+        * Vector
+
+    .. code-block:: python
+
+        create_layers_from_paths([
+            "COMPAS::Datastructures::Mesh",
+            "COMPAS::Datastructures::Network",
+            "COMPAS::Geometry::Point",
+            "COMPAS::Geometry::Vector",
+        ])
+
+    """
     for name in names:
         create_layers_from_path(name, separator=separator)
 
 
 def create_layers_from_dict(layers):
+    """Create Rhino layers from a dictionary.
+
+    Parameters
+    ----------
+    layers : dict
+        A dictionary of nested layer definitions.
+        The keys of the dict are the layer names.
+        The corresponding values define optional layer properties and nested layers.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        layers = {'COMPAS', {'layers': {
+            'Datastructures': {'color': (255, 0, 0), 'layers': {
+                'Mesh': {},
+                'Network': {}
+            }},
+            'Geometry': {'color': (0, 0, 255),'layers': {
+                'Point': {},
+                'Vector': {}
+            }},
+        }}}
+
+        create_layers_from_dict(layers)
+
+    """
     def recurse(layers, parent=None):
         for name in layers:
             if not name:
@@ -124,8 +197,23 @@ create_layers = create_layers_from_dict
 # clear
 # ==============================================================================
 
-
 def clear_layer(name, include_hidden=True, include_children=True, purge=True):
+    """Delete all objects of a layer.
+
+    Parameters
+    ----------
+    name : str
+        The full, hierarchical name of the layer.
+    include_hidden : bool, optional
+        Include all hidden objects.
+        Default is ``True``.
+    include_children : bool, optional
+        Include the objects of any child layers.
+        Default is ``True``.
+    purge : bool, optional
+        Purge history after deleting.
+        Default is ``True``.
+    """
     if not rs.IsLayer(name):
         return
     guids = find_objects_on_layer(name, include_hidden, include_children)
@@ -142,22 +230,41 @@ def clear_layer(name, include_hidden=True, include_children=True, purge=True):
 
 
 def clear_current_layer():
+    """Delete all objects from the current layer."""
     layer = rs.CurrentLayer()
     clear_layer(layer)
 
 
-def clear_layers(layers, include_children=True, include_hidden=True):
+def clear_layers(layers, include_children=True, include_hidden=True, purge=True):
+    """Delete the objects of the specified layers.
+
+    Parameters
+    ----------
+    layers : list of str
+        A list of layer names as fully qualified hierarchical paths.
+    include_children : bool, optional
+        Include the objects of any child layers.
+        Default is ``True``.
+    include_hidden : bool, optional
+        Include all hidden objects.
+        Default is ``True``.
+    purge : bool, optional
+        Purge history after deleting.
+        Default is ``True``.
+    """
     rs.EnableRedraw(False)
     to_delete = []
     for name in layers:
         if rs.IsLayer(name):
             to_delete += find_objects_on_layer(name, include_hidden, include_children)
-    for guid in to_delete:
-        obj = find_object(guid)
-        if not obj:
-            continue
-        if purge_object:
+    if purge and purge_object:
+        for guid in to_delete:
+            obj = find_object(guid)
+            if not obj:
+                continue
             purge_object(obj.RuntimeSerialNumber)
+    else:
+        rs.DeleteObjects(to_delete)
     rs.EnableRedraw(True)
 
 
@@ -165,8 +272,27 @@ def clear_layers(layers, include_children=True, include_hidden=True):
 # delete
 # ==============================================================================
 
-
 def delete_layers(layers):
+    """Delete layers and all contained objects.
+
+    Parameters
+    ----------
+    layers : dict
+        A dictionary of layers with the keys representing layer names,
+        and the values also dictionaries defining optional nested layers.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        layers = {'COMPAS': {'layers': {'Datastructures': {'layers': {'Mesh': {}, 'Network': {}}}}}}
+
+        create_layers(layers)
+
+        delete_layers(['COMPAS::Datastructures::Network'])
+        delete_layers({'COMPAS': {'layers': {'Datastructures': {'layers': {'Mesh': {}}}}}})
+
+    """
     to_delete = []
 
     def recurse(layers, parent=None):
@@ -197,20 +323,4 @@ def delete_layers(layers):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    layers = {
-        '1': {'layers': {
-            '1.1': {},
-            '1.2': {},
-            '1.3': {'layers': {
-                '1.3.1': {},
-            }},
-        }},
-        '2': {'layers': {
-            '2.1': {},
-        }},
-    }
-
-    layers = ['1::1.1', '1::1.2', '1::1.3::1.3.1', '2::2.1']
-
-    create_layers_from_paths(layers)
+    pass

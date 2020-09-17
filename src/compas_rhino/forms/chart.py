@@ -2,26 +2,20 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-from compas_rhino.forms import Form
-
-try:
-    import clr
-    from System.Drawing import Size
-    from System.Drawing import Point
-    from System.Drawing import Color
-
-    clr.AddReference("System.Windows.Forms.DataVisualization")
-    from System.Windows.Forms.DataVisualization import Charting
-
-except ImportError:
-    if compas.is_ironpython() and compas.is_windows():
-        raise
-
 try:
     basestring
 except NameError:
     basestring = str
+
+from compas_rhino.forms.base import BaseForm
+
+import clr
+from System.Drawing import Size
+from System.Drawing import Point
+from System.Drawing import Color
+
+clr.AddReference("System.Windows.Forms.DataVisualization")
+from System.Windows.Forms.DataVisualization import Charting  # noqa: E402
 
 
 __all__ = ['ChartForm']
@@ -31,8 +25,8 @@ class Series(object):
     pass
 
 
-class ChartForm(Form):
-    """A windows form for displaying charts.
+class ChartForm(BaseForm):
+    """A form for displaying charts.
 
     Parameters
     ----------
@@ -107,7 +101,7 @@ class ChartForm(Form):
                  ylimits=None, ystep=None,
                  chartsize=(800, 600), padding=(20, 20, 20, 20),
                  bgcolor=None,
-                 title='ChartForm', **kwargs):
+                 title='Chart', **kwargs):
 
         self._bgcolor = None
 

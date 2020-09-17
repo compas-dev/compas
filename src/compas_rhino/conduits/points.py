@@ -2,31 +2,25 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
-
-from compas.utilities import color_to_rgb
-from compas_rhino.conduits import Conduit
-
-try:
-    from Rhino.Geometry import Point3d
-    from Rhino.Display.PointStyle import Simple
-
-    from System.Collections.Generic import List
-    from System.Drawing.Color import FromArgb
-
-except ImportError:
-    compas.raise_if_ironpython()
-
 try:
     basestring
 except NameError:
     basestring = str
 
+from System.Collections.Generic import List
+from System.Drawing.Color import FromArgb
+
+from Rhino.Geometry import Point3d
+from Rhino.Display.PointStyle import Simple
+
+from compas.utilities import color_to_rgb
+from compas_rhino.conduits.base import BaseConduit
+
 
 __all__ = ['PointsConduit']
 
 
-class PointsConduit(Conduit):
+class PointsConduit(BaseConduit):
     """A Rhino display conduit for points.
 
     Parameters
@@ -42,38 +36,27 @@ class PointsConduit(Conduit):
 
     Attributes
     ----------
-    size
-    color
-    points : list of list of float
-
+    size : list of float
+        The size specification per point.
+    color : list of RGB colors
+        The color specification per point.
+    points : list of point
+        The location of every point.
 
     Examples
     --------
-
     .. code-block:: python
 
         from random import randint
-        import time
-
         from compas_rhino.conduits import PointsConduit
 
         points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
+        conduit = PointsConduit(points)
 
-        try:
-            conduit = PointsConduit(points)
-            conduit.Enabled = True
-
+        with conduit.enabled():
             for i in range(100):
                 conduit.points = [(1.0 * randint(0, 30), 1.0 * randint(0, 30), 0.0) for _ in range(100)]
-                conduit.redraw()
-                time.sleep(0.1)
-
-        except Exception as e:
-            print(e)
-
-        finally:
-            conduit.Enabled = False
-            del conduit
+                conduit.redraw(pause=0.1)
 
     """
 
@@ -89,14 +72,6 @@ class PointsConduit(Conduit):
 
     @property
     def size(self):
-        """list : Individual point sizes.
-
-        Parameters
-        ----------
-        size : list of int
-            The size of each point.
-
-        """
         return self._size
 
     @size.setter
@@ -116,14 +91,6 @@ class PointsConduit(Conduit):
 
     @property
     def color(self):
-        """list : Individual point colors.
-
-        Parameters
-        ----------
-        color : list of str or 3-tuple
-            The color specification of each point in hex or RGB(255) format.
-
-        """
         return self._color
 
     @color.setter
@@ -131,17 +98,13 @@ class PointsConduit(Conduit):
         if color:
             p = len(self.points)
             if isinstance(color, (basestring, tuple)):
-                # if a single color was provided
                 color = [color for _ in range(p)]
-            # convert to windows system colors
             color = [FromArgb(* color_to_rgb(c)) for c in color]
-            # pad the color specification
             c = len(color)
             if c < p:
                 color += [self._default_color for _ in range(p - c)]
             elif c > p:
                 color[:] = color[:p]
-            # assign to the protected value
             self._color = color
 
     def DrawForeground(self, e):

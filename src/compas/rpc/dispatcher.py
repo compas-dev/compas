@@ -56,7 +56,7 @@ class Dispatcher(object):
 
         This method is automatically called by the XMLRPC server if an instance
         of the dispatcher is registered with the server and the API call dies not
-        correspond to a method of the server itself, or of an explicilty registered\
+        correspond to a method of the server itself, or of an explicilty registered
         function.
 
         Parameters
@@ -126,7 +126,7 @@ class Dispatcher(object):
         return json.dumps(odict, cls=DataEncoder)
 
     def _call(self, function, idict, odict):
-        """Method that handles tha actual call to the function corresponding to the API call.
+        """Method that handles the actual call to the function corresponding to the API call.
 
         Parameters
         ----------
@@ -153,6 +153,8 @@ class Dispatcher(object):
             odict['data'] = data
 
     def _call_wrapped(self, function, idict, odict):
+        """Does the same as _call, but with profiling enabled.
+        """
         args = idict['args']
         kwargs = idict['kwargs']
 

@@ -6,8 +6,8 @@ geometry
 .. currentmodule:: compas.geometry
 
 
-Bases
-=====
+Base Classes
+============
 
 .. autosummary::
     :toctree: generated/
@@ -15,8 +15,6 @@ Bases
 
     Primitive
     Shape
-    Collection
-    CollectionNumpy
 
 
 Primitives
@@ -52,17 +50,6 @@ Shapes
     Polyhedron
     Sphere
     Torus
-
-
-Collections
-===========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    PointCollection
-    PointCollectionNumpy
 
 
 Transformations
@@ -147,6 +134,7 @@ Transformations
     quaternion_canonize
     quaternion_conjugate
 
+
 Linear algebra
 ==============
 
@@ -192,6 +180,7 @@ Linear algebra
     vector_component
     vector_component_xy
 
+
 Points, Vectors, Lines, Planes
 ==============================
 
@@ -203,10 +192,12 @@ Points, Vectors, Lines, Planes
     angle_points_xy
     angle_vectors
     angle_vectors_xy
+    angle_vectors_signed
     angles_points
     angles_points_xy
     angles_vectors
     angles_vectors_xy
+    angle_planes
     centroid_points
     centroid_points_xy
     distance_line_line
@@ -224,6 +215,7 @@ Points, Vectors, Lines, Planes
     midpoint_line
     midpoint_line_xy
     weighted_centroid_points
+
 
 Polygons & Polyhedrons
 ======================
@@ -251,6 +243,7 @@ Polygons & Polyhedrons
     normal_triangle_xy
     volume_polyhedron
 
+
 Pointclouds
 ===========
 
@@ -270,6 +263,7 @@ Pointclouds
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
     voronoi_from_points_numpy
+
 
 Queries
 =======
@@ -306,6 +300,7 @@ Queries
     is_point_in_triangle
     is_point_in_triangle_xy
 
+
 Proximity
 =========
 
@@ -323,6 +318,7 @@ Proximity
     closest_point_on_segment
     closest_point_on_segment_xy
 
+
 Intersections
 =============
 
@@ -337,8 +333,10 @@ Intersections
     intersection_line_triangle
     intersection_plane_plane
     intersection_plane_plane_plane
+    intersection_segment_segment
     intersection_segment_segment_xy
     intersection_segment_plane
+
 
 Offsets
 =======
@@ -351,29 +349,9 @@ Offsets
     offset_polyline
     offset_polygon
 
-Other functions
-===============
 
-**Smoothing**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    smooth_centroid
-    smooth_centerofmass
-    smooth_area
-
-**Planarisation**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    flatness
-    planarize_faces
-
-**Interpolation**
+Interpolation
+=============
 
 .. autosummary::
     :toctree: generated/
@@ -383,7 +361,9 @@ Other functions
     tween_points
     tween_points_distance
 
-**Bestfit**
+
+Bestfit
+=======
 
 .. autosummary::
     :toctree: generated/
@@ -393,13 +373,17 @@ Other functions
     bestfit_plane
     bestfit_plane_numpy
 
-**Isolines**
+Boolean operations
+==================
+
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    scalarfield_contours_numpy
+    boolean_union_mesh_mesh
+    boolean_difference_mesh_mesh
+    boolean_intersection_mesh_mesh
 
 """
 from __future__ import absolute_import
@@ -407,21 +391,22 @@ from __future__ import division
 from __future__ import print_function
 
 from ._core import *  # noqa: F401 F403
-from ._transformations import *  # noqa: F401 F403
-from ._primitives import *  # noqa: F401 F403
-from ._shapes import *  # noqa: F401 F403
-from ._collections import *  # noqa: F401 F403
+
+from .predicates import *  # noqa: F401 F403
+from .intersections import *  # noqa: F401 F403
+from .transformations import *  # noqa: F401 F403
+from .primitives import *  # noqa: F401 F403
+from .shapes import *  # noqa: F401 F403
+from .collections import *  # noqa: F401 F403
 
 from .bbox import *  # noqa: F401 F403
 from .bestfit import *  # noqa: F401 F403
 from .hull import *  # noqa: F401 F403
 from .icp import *  # noqa: F401 F403
 from .interpolation import *  # noqa: F401 F403
-from .isolines import *  # noqa: F401 F403
 from .offset import *  # noqa: F401 F403
-from .planarisation import *  # noqa: F401 F403
-from .smoothing import *  # noqa: F401 F403
-from .spatial import *  # noqa: F401 F403
 from .triangulation import *  # noqa: F401 F403
+
+from .booleans import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

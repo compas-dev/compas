@@ -61,6 +61,20 @@ def meshes_join(meshes, cls=None):
     mesh
         The joined mesh.
 
+    Examples
+    --------
+    >>> from compas.datastructures import Mesh
+    >>> from compas.datastructures import meshes_join
+    >>> vertices_1 = [[0, 0, 0], [0, 500, 0], [500, 500, 0], [500, 0, 0]]
+    >>> vertices_2 = [[500, 0, 0], [500, 500, 0], [1000, 500, 0], [1000, 0, 0]]
+    >>> faces = [[0, 1, 2, 3]]
+    >>> mesh_1 = Mesh.from_vertices_and_faces(vertices_1, faces)
+    >>> mesh_2 = Mesh.from_vertices_and_faces(vertices_2, faces)
+    >>> mesh = meshes_join([mesh_1, mesh_2])
+    >>> mesh.number_of_vertices()
+    8
+    >>> mesh.number_of_faces()
+    2
     """
     if cls is None:
         cls = type(meshes[0])
@@ -101,16 +115,19 @@ def meshes_join_and_weld(meshes, precision=None, cls=None):
 
 if __name__ == "__main__":
 
-    from compas.datastructures import Mesh
-    from compas_plotters import MeshPlotter
+    # from compas.datastructures import Mesh
+    # from compas_plotters import MeshPlotter
 
-    vertices = [[0, 0, 0], [0.04, 0, 0], [1.0, 0, 0], [1.0, 1.0, 0], [0, 1.0, 0]]
-    faces = [[0, 1, 2, 3, 4]]
+    # vertices = [[0, 0, 0], [0.04, 0, 0], [1.0, 0, 0], [1.0, 1.0, 0], [0, 1.0, 0]]
+    # faces = [[0, 1, 2, 3, 4]]
 
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
-    mesh = mesh_weld(mesh, precision='1f')
+    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    # mesh = mesh_weld(mesh, precision='1f')
 
-    plotter = MeshPlotter(mesh, figsize=(10, 7))
-    plotter.draw_vertices(text={key: "{:.3f}".format(mesh.vertex[key]['x']) for key in mesh.vertices()}, radius=0.03)
-    plotter.draw_edges()
-    plotter.show()
+    # plotter = MeshPlotter(mesh, figsize=(10, 7))
+    # plotter.draw_vertices(text={key: "{:.3f}".format(mesh.vertex[key]['x']) for key in mesh.vertices()}, radius=0.03)
+    # plotter.draw_edges()
+    # plotter.show()
+
+    import doctest
+    doctest.testmod(globs=globals())

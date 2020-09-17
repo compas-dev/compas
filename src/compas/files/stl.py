@@ -3,6 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 import struct
+import compas
+from compas.geometry import Translation
 from compas.utilities import geometric_key
 
 
@@ -10,6 +12,7 @@ __all__ = [
     'STL',
     'STLReader',
     'STLParser',
+    'STLWriter',
 ]
 
 
@@ -21,11 +24,16 @@ class STL(object):
         self._is_parsed = False
         self._reader = None
         self._parser = None
+        self._writer = None
 
     def read(self):
         self._reader = STLReader(self.filepath)
         self._parser = STLParser(self._reader, precision=self.precision)
         self._is_parsed = True
+
+    def write(self, mesh, **kwargs):
+        self._writer = STLWriter(self.filepath, mesh, **kwargs)
+        self._writer.write()
 
     @property
     def reader(self):
@@ -43,9 +51,9 @@ class STL(object):
 class STLReader(object):
     """Standard triangle library format.
 
-    See Also
-    --------
-    * http://paulbourke.net/dataformats/stl/
+    References
+    ----------
+    .. [1] http://paulbourke.net/dataformats/stl/
 
     """
 
@@ -242,51 +250,101 @@ class STLParser(object):
         self.faces = faces
 
 
+class STLWriter(object):
+    """"""
+
+    def __init__(self, filepath, mesh, binary=False, solid_name=None, precision=None):
+        self.filepath = filepath
+        self.mesh = mesh
+        self.solid_name = solid_name or mesh.name
+        self.precision = precision or compas.PRECISION
+        self.file = None
+        self.binary = binary
+
+    @property
+    def vertex_xyz(self):
+        bbox = self.mesh.bounding_box()
+        xmin, ymin, zmin = bbox[0]
+        if xmin < 0 or ymin < 0 or zmin < 0:
+            T = Translation.from_vector([-xmin, -ymin, -zmin])
+            mesh = self.mesh.transformed(T)
+        else:
+            mesh = self.mesh
+        return {vertex: mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()}
+
+    def write(self):
+        if not self.binary:
+            with open(self.filepath, 'w') as self.file:
+                self.write_header()
+                self.write_faces()
+                self.write_footer()
+        else:
+            raise NotImplementedError
+
+    def write_header(self):
+        self.file.write("solid {}\n".format(self.solid_name))
+
+    def write_footer(self):
+        self.file.write("endsolid {}\n".format(self.solid_name))
+
+    def write_faces(self):
+        vertex_xyz = self.vertex_xyz
+        for face in self.mesh.faces():
+            self.file.write("facet normal {0} {1} {2}\n".format(* self.mesh.face_normal(face)))
+            self.file.write("    outer loop\n")
+            for vertex in self.mesh.face_vertices(face):
+                self.file.write("        vertex {0} {1} {2}\n".format(* vertex_xyz[vertex]))
+            self.file.write("    endloop\n")
+            self.file.write("endfacet\n")
+
+
 # ==============================================================================
 # Main
 # ==============================================================================
 
 if __name__ == "__main__":
 
-    import os
-    import compas
+    import doctest
+    doctest.testmod(globs=globals())
 
-    from compas.datastructures import Mesh
-    from compas_viewers.meshviewer import MeshViewer
-    from compas.utilities import download_file_from_remote
-    from compas.topology import connected_components
+    # import os
 
-    source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
-    filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
+    # from compas.datastructures import Mesh
+    # from compas_viewers.meshviewer import MeshViewer
+    # from compas.utilities import download_file_from_remote
+    # from compas.topology import connected_components
 
-    download_file_from_remote(source, filepath, overwrite=False)
+    # source = 'https://raw.githubusercontent.com/ros-industrial/abb/kinetic-devel/abb_irb6600_support/meshes/irb6640/visual/link_1.stl'
+    # filepath = os.path.join(compas.APPDATA, 'data', 'meshes', 'ros', 'link_1.stl')
 
-    stl = STL(filepath, precision='6f')
+    # download_file_from_remote(source, filepath, overwrite=False)
 
-    mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
+    # stl = STL(filepath, precision='6f')
 
-    vertexgroups = connected_components(mesh.halfedge)
-    facegroups = [[] for _ in range(len(vertexgroups))]
+    # mesh = Mesh.from_vertices_and_faces(stl.parser.vertices, stl.parser.faces)
 
-    vertexsets = list(map(set, vertexgroups))
+    # vertexgroups = connected_components(mesh.halfedge)
+    # facegroups = [[] for _ in range(len(vertexgroups))]
 
-    for fkey in mesh.faces():
-        vertices = set(mesh.face_vertices(fkey))
+    # vertexsets = list(map(set, vertexgroups))
 
-        for i, vertexset in enumerate(vertexsets):
-            if vertices.issubset(vertexset):
-                facegroups[i].append(fkey)
-                break
+    # for fkey in mesh.faces():
+    #     vertices = set(mesh.face_vertices(fkey))
 
-    meshes = []
+    #     for i, vertexset in enumerate(vertexsets):
+    #         if vertices.issubset(vertexset):
+    #             facegroups[i].append(fkey)
+    #             break
 
-    for vertexgroup, facegroup in zip(vertexgroups, facegroups):
-        key_index = {key: index for index, key in enumerate(vertexgroup)}
-        vertices = mesh.vertices_attributes('xyz', keys=vertexgroup)
-        faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in facegroup]
+    # meshes = []
 
-        meshes.append(Mesh.from_vertices_and_faces(vertices, faces))
+    # for vertexgroup, facegroup in zip(vertexgroups, facegroups):
+    #     key_index = {key: index for index, key in enumerate(vertexgroup)}
+    #     vertices = mesh.vertices_attributes('xyz', keys=vertexgroup)
+    #     faces = [[key_index[key] for key in mesh.face_vertices(fkey)] for fkey in facegroup]
 
-    viewer = MeshViewer()
-    viewer.mesh = meshes[0]
-    viewer.show()
+    #     meshes.append(Mesh.from_vertices_and_faces(vertices, faces))
+
+    # viewer = MeshViewer()
+    # viewer.mesh = meshes[0]
+    # viewer.show()

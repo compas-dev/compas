@@ -1,6 +1,6 @@
 # The COMPAS framework
 
-[![Travis - Build Status](https://travis-ci.com/compas-dev/compas.svg?branch=master)](https://travis-ci.com/compas-dev/compas)
+![build](https://github.com/compas-dev/compas/workflows/build/badge.svg)
 [![GitHub - License](https://img.shields.io/github/license/compas-dev/compas.svg)](https://github.com/compas-dev/compas)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/COMPAS.svg)](https://pypi.python.org/project/COMPAS)
 [![PyPI - Latest Release](https://img.shields.io/pypi/v/COMPAS.svg)](https://pypi.python.org/project/COMPAS)
@@ -53,7 +53,7 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 
 ## Contributing
 
-If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/contributing.html).
+If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/devguide.html).
 
 ## Changelog
 

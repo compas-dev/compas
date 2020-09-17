@@ -1,7 +1,4 @@
-from compas_blender.artists import Artist
-from compas_blender.artists.mixins import VertexArtist
-from compas_blender.artists.mixins import EdgeArtist
-from compas_blender.artists.mixins import FaceArtist
+from compas_blender.artists.meshartist import MeshArtist
 
 
 __all__ = [
@@ -9,9 +6,7 @@ __all__ = [
 ]
 
 
-class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
-
-    __module__ = "compas_blender.artists"
+class VolMeshArtist(MeshArtist):
 
     def __init__(self, volmesh, layer=None):
         super().__init__(layer=layer)
@@ -29,14 +24,6 @@ class VolMeshArtist(FaceArtist, EdgeArtist, VertexArtist, Artist):
     @volmesh.setter
     def volmesh(self, volmesh):
         self.datastructure = volmesh
-
-    def draw(self):
-        raise NotImplementedError
-
-    def clear(self):
-        self.clear_vertices()
-        self.clear_faces()
-        self.clear_edges()
 
 
 # ==============================================================================

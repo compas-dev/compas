@@ -1,34 +1,28 @@
-********************************************************************************
+.. _installation:
+
+************
 Installation
-********************************************************************************
+************
 
-.. describe cross-platfrom ness like on homepage
-
-
-Install in a conda environment (recommended)
-============================================
-
-The recommended way to install COMPAS is with `conda <https://conda.io/docs/>`_.
+.. describe cross-platform ness like on homepage
 
 
-In a nutshell
--------------
+Install with conda
+==================
 
-Create an environment named "project", install Python 3.7 and COMPAS (use the ``conda-forge`` channel), say "yes" to all questions asked.
+The **recommended** way to install COMPAS is with `conda <https://conda.io/docs/>`_
+using an environment.
+
+
+All-in-one
+----------
+
+Create an environment and give it a name, e.g. ``"project"``, install Python 3.7
+and COMPAS (use the ``conda-forge`` channel), say "yes" to all questions asked.
 
 .. code-block:: bash
 
     conda create -n project python=3.7 COMPAS -c conda-forge --yes
-
-
-Verify
-------
-
-.. code-block:: bash
-
-    conda activate project
-    python -m compas
-    '0.15.6'
 
 
 Step-by-Step
@@ -43,6 +37,18 @@ Step-by-Step
     conda create -n project python=3.7
     conda activate project
     conda install COMPAS -c conda-forge
+
+
+Verify
+------
+
+.. code-block:: bash
+
+    conda activate project
+    python
+    >>> import compas
+    >>> compas.__version__
+    '0.15.6'
 
 
 Install with pip
@@ -73,7 +79,8 @@ Note that the same is possible in combination with ``conda`` environments.
 Known Issues
 ============
 
-If you encounter a problem that is not described here, please file an issue using the `Issue Tracker <https:// >`_.
+If you encounter a problem that is not described here,
+please file an issue using the `Issue Tracker <https://github.com/compas-dev/compas/issues>`_.
 
 
 Installing Planarity

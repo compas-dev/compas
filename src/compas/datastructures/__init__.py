@@ -29,6 +29,7 @@ Data structure
     :nosignatures:
 
     HalfEdge
+    BaseMesh
 
 
 Algorithms
@@ -42,8 +43,11 @@ Algorithms
     mesh_bounding_box_xy
     mesh_connected_components
     mesh_contours_numpy
+    mesh_cut_by_plane
     mesh_delete_duplicate_vertices
     mesh_dual
+    mesh_explode
+    mesh_face_adjacency
     mesh_flip_cycles
     mesh_geodesic_distances_numpy
     mesh_is_connected
@@ -67,6 +71,13 @@ Algorithms
     mesh_transformed_numpy
     mesh_unify_cycles
     mesh_weld
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    meshes_join
+
 
 Matrices
 --------
@@ -101,6 +112,21 @@ Conway Operators
     mesh_conway_snub
     mesh_conway_meta
     mesh_conway_bevel
+
+
+Triangle Meshes
+===============
+
+Algorithms
+----------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    trimesh_descent
+    trimesh_face_circle
+    trimesh_gaussian_curvature
 
 
 Networks
@@ -145,7 +171,6 @@ Algorithms
     network_is_planar
     network_is_planar_embedding
     network_is_xy
-    network_smooth_centroid
     network_transform
     network_transformed
 
@@ -166,17 +191,13 @@ be used for the representation of subdivided/partitioned polyhedra.
 """
 
 from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
 
 
-class Datastructure(object):
-    pass
+from .datastructure import *  # noqa: F401 E402 F403
 
-
-from .network import *  # noqa: F401 F402 F403
-from .mesh import *  # noqa: F401 F402 F403
-from .volmesh import *  # noqa: F401 F402 F403
+from .network import *  # noqa: F401 E402 F403
+from .mesh import *  # noqa: F401 E402 F403
+from .volmesh import *  # noqa: F401 E402 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

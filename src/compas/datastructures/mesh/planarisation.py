@@ -39,8 +39,8 @@ def mesh_flatness(mesh, maxdev=1.0):
     the diagonals to the average edge length. For the fabrication of glass panels,
     for example, ``0.02`` could be a reasonable maximum value.
 
-    Warning
-    -------
+    Warnings
+    --------
     This function only works as expected for quadrilateral faces.
 
     """
@@ -121,4 +121,5 @@ def mesh_planarize_faces(mesh, fixed=None, kmax=100, callback=None, callback_arg
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

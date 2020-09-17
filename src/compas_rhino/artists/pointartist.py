@@ -2,63 +2,67 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+try:
+    basestring
+except NameError:
+    basestring = str
+
 import compas_rhino
 from compas.utilities import iterable_like
-from compas_rhino.artists import PrimitiveArtist
+from compas_rhino.artists._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['PointArtist']
 
 
 class PointArtist(PrimitiveArtist):
-    """Artist for drawing ``Point`` objects.
+    """Artist for drawing points.
 
-    Examples
-    --------
-    >>>
+    Parameters
+    ----------
+    primitive : :class:`compas.geometry.Point`
+        A COMPAS point.
+
+    Notes
+    -----
+    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """
-
-    __module__ = "compas_rhino.artists"
 
     def draw(self):
         """Draw the point.
 
         Returns
         -------
-        guid: str
-            The GUID of the created Rhino object.
+        list
+            The GUIDs of the created Rhino objects.
 
         """
         points = [{'pos': list(self.primitive), 'color': self.color, 'name': self.name}]
-        self.guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+        self._guids = guids
+        return guids
 
     @staticmethod
-    def draw_collection(collection, color=None, layer=None, clear=False, group_collection=False, group_name=None):
+    def draw_collection(collection, names=None, colors=None, layer=None, clear=False, add_to_group=False, group_name=None):
         """Draw a collection of points.
 
         Parameters
         ----------
-        collection: list of compas.geometry.Point
-            A collection of ``Point`` objects.
-        color: tuple or list of tuple (optional)
-            Color specification of the points.
-            If one RGB color is provided, it will be applied to all points.
-            If a list of RGB colors is provided, these colors are applied to the corresponding points.
-            A list of colors should have the same length as the collection, with one color per item.
-            Default value is ``None`` in which case the default point color of the artist is used.
-        layer: str (optional)
-            The layer in which the objects of the collection should be created.
-            Default is ``None``, in which case the default layer setting of the artist is used.
-        clear: bool (optional)
+        collection : list of :class:`compas.geometry.Point`
+            A collection of points.
+        names : list of str, optional
+            Individual names for the points.
+        colors : color or list of color, optional
+            A color specification for the points as a single color or a list of individual colors.
+        layer : str, optional
+            A layer path.
+        clear : bool, optional
             Clear the layer before drawing.
-            Default is ``False``.
-        group_collection: bool (optional)
-            Flag for grouping the objects of the collection.
-            Default is ``False``.
-        group_name: str (optional).
-            The name of the group.
-            Default is ``None``.
+        add_to_group : bool, optional
+            Add the points to a group.
+        group_name : str, optional
+            Name of the group.
 
         Returns
         -------
@@ -68,12 +72,23 @@ class PointArtist(PrimitiveArtist):
             The name of the group if the collection objects are grouped.
 
         """
-        points = []
-        colors = iterable_like(collection, color)
-        for point, rgb in zip(collection, colors):
-            points.append({'pos': list(point), 'color': rgb})
+        points = [{'pos': list(point)} for point in collection]
+        if colors:
+            if isinstance(colors[0], (int, float)):
+                colors = iterable_like(collection, [colors], colors)
+            else:
+                colors = iterable_like(collection, colors, colors[0])
+            for point, rgb in zip(points, colors):
+                point['color'] = rgb
+        if names:
+            if isinstance(names, basestring):
+                names = iterable_like(collection, [names], names)
+            else:
+                names = iterable_like(collection, names, names[0])
+            for point, name in zip(points, names):
+                point['name'] = name
         guids = compas_rhino.draw_points(points, layer=layer, clear=clear)
-        if not group_collection:
+        if not add_to_group:
             return guids
         group = compas_rhino.rs.AddGroup(group_name)
         if group:

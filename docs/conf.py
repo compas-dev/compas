@@ -19,11 +19,15 @@ project = 'COMPAS'
 copyright = 'Block Research Group - ETH Zurich'
 author = 'Tom Van Mele'
 
-release = '0.15.6'
+release = '0.16.2'
 version = '.'.join(release.split('.')[0:2])
 
 master_doc = 'index'
-source_suffix = ['.rst', ]
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.txt': 'restructuredtext',
+    '.md': 'markdown',
+}
 templates_path = ['_templates', ]
 exclude_patterns = ['_build', '**.ipynb_checkpoints', '_notebooks']
 
@@ -42,30 +46,57 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.githubpages',
+    'sphinx.ext.coverage',
     'matplotlib.sphinxext.plot_directive',
     'm2r',
     'nbsphinx',
-    'sphinx.ext.viewcode'
 ]
 
 # autodoc options
 
-autodoc_default_flags = [
-    'undoc-members',
-    'show-inheritance',
+autodoc_mock_imports = [
+    "System",
+    "clr",
+    "Eto",
+    "Rhino",
+    "Grasshopper",
+    "scriptcontext",
+    "rhinoscriptsyntax",
+    "bpy",
+    "bmesh",
+    "mathutils"
 ]
 
-autodoc_member_order = 'alphabetical'
+autodoc_default_options = {
+    'undoc-members': True,
+    'show-inheritance': True,
+}
+
+autodoc_member_order = 'groupwise'
 
 autoclass_content = "class"
 
 # autosummary options
 
 autosummary_generate = True
+autosummary_mock_imports = [
+    "System",
+    "clr",
+    "Eto",
+    "Rhino",
+    "Grasshopper",
+    "scriptcontext",
+    "rhinoscriptsyntax",
+    "bpy",
+    "bmesh",
+    "mathutils"
+]
 
 # napoleon options
 
-napoleon_google_docstring = True
+napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 napoleon_include_init_with_doc = False
 napoleon_include_private_with_doc = False
@@ -215,7 +246,7 @@ plot_html_show_formats = False
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/', None),
-    'compas': ('https://compas-dev.github.io/main', 'https://compas-dev.github.io/main/objects.inv'),
+    'compas': ('https://compas-dev.github.io/compas', 'https://compas-dev.github.io/compas/objects.inv'),
 }
 
 
@@ -224,7 +255,7 @@ intersphinx_mapping = {
 html_theme = 'compas'
 html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
-    'navbar_active': 'main',
+    'navbar_active': 'compas',
 }
 html_context = {}
 html_static_path = []

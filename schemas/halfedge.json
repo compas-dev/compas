@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
+    "$compas": "0.16.2",
+
+    "type": "object",
+    "poperties": {
+        "compas": {"type": "string"},
+        "datatype": {"type": "string"},
+        "data": {
+            "type": "object",
+            "properties": {
+                "attributes":   {"type": "object"},
+                "dva":          {"type": "object"},
+                "dea":          {"type": "object"},
+                "dfa":          {"type": "object"},
+                "vertex":       {"type": "object"},
+                "face":         {"type": "object"},
+                "facedata":     {"type": "object"},
+                "edgedata":     {"type": "object"},
+                "max_int_key":  {"type": "number"},
+                "max_int_fkey": {"type": "number"}
+            },
+            "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
+        }
+    },
+    "required": ["compas", "datatype", "data"]
+}

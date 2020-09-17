@@ -464,14 +464,14 @@ class GA(object):
             elite_pop['fit_value'].append(pop['fit_value'][sorted_ind[i]])
         return elite_pop
 
-    def get_sorting_indices(self, l, reverse=False):
+    def get_sorting_indices(self, floats, reverse=False):
         """Reurns the indices that would sort a list of floats. If floats are
         repeated in the list, only one instance is considered. The index of
         repeaded floats are included in the end of the index list.
 
         Parameters
         ----------
-        l: list
+        floats: list
             The list of floats to be sorted.
         reverse: bool
             If true the sorting will be done from top to bottom.
@@ -486,7 +486,7 @@ class GA(object):
             x = float('-inf')
         else:
             x = float('inf')
-        for i in l:
+        for i in floats:
             if i in l_:
                 l_.append(x)
             else:

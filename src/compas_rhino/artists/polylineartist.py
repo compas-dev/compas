@@ -3,38 +3,38 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-# from compas.utilities import iterable_like
-from compas_rhino.artists import PrimitiveArtist
+from compas_rhino.artists._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['PolylineArtist']
 
 
 class PolylineArtist(PrimitiveArtist):
-    """Artist for drawing ``Polyline`` objects.
+    """Artist for drawing polylines.
 
     Parameters
     ----------
-    polyline : :class:`compas.geometry.Polyline`
+    primitive : :class:`compas.geometry.Polyline`
         A COMPAS polyline.
-    layer : str (optional)
-        The name of the layer that will contain the polyline.
-        Default value is ``None``, in which case the current layer will be used.
 
-    Examples
-    --------
-    >>>
+    Notes
+    -----
+    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
     """
-
-    __module__ = "compas_rhino.artists"
 
     def draw(self):
         """Draw the polyline.
 
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
         """
         polylines = [{'points': map(list, self.primitive.points), 'color': self.color, 'name': self.name}]
-        self.guids = compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
+        guids = compas_rhino.draw_polylines(polylines, layer=self.layer, clear=False, redraw=False)
+        self._guids = guids
+        return guids
 
 
 # ==============================================================================

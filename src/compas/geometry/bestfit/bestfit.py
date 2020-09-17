@@ -4,7 +4,6 @@ from __future__ import division
 
 from compas.geometry import subtract_vectors
 from compas.geometry import normalize_vector
-
 from compas.geometry import centroid_points
 
 
@@ -84,4 +83,5 @@ def bestfit_plane(points):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

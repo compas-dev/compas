@@ -37,4 +37,6 @@ def trimesh_smooth_laplacian_cotangent(trimesh, fixed, kmax=10):
 # =============================================================================
 
 if __name__ == "__main__":
-    pass
+
+    import doctest
+    doctest.testmod(globs=globals())

@@ -35,8 +35,8 @@ def geometric_key(xyz, precision=None, sanitize=True):
     str
         The string representation of the given coordinates.
 
-    Example
-    -------
+    Examples
+    --------
     >>> geometric_key([pi, pi, pi])
     '3.142,3.142,3.142'
 
@@ -106,8 +106,8 @@ def geometric_key_xy(xy, precision=None, sanitize=True):
     str
         The string representation of the given coordinates.
 
-    Example
-    -------
+    Examples
+    --------
     >>> geometric_key_xy([pi, pi, pi])
     '3.142,3.142'
 

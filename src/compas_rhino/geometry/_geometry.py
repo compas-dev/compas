@@ -2,19 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+import abc
+import Rhino
+import compas_rhino
 
-if compas.IPY:
-    import Rhino
+from compas.utilities import abstractclassmethod
 
-
-__all__ = ['RhinoGeometry']
-
-
-TYPES = []
+ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
-class RhinoGeometry(object):
+__all__ = ['BaseRhinoGeometry']
+
+
+class BaseRhinoGeometry(ABC):
     """Base class for Rhino geometry objects.
 
     Attributes
@@ -22,21 +22,10 @@ class RhinoGeometry(object):
     name : str
         The name of the object.
 
-    Methods
-    -------
-    The following methods provide alternative ways for construction
-    :class:`compas_rhino.geometry.RhinoGeometry` objects.
-
-    from_guid
-    from_object
-    from_geometry
-    from_selection
-
     """
 
-    __module__ = 'compas_rhino.geometry'
-
     def __init__(self):
+        super(BaseRhinoGeometry, self).__init__()
         self.guid = None
         self.object = None
         self.geometry = None
@@ -71,24 +60,70 @@ class RhinoGeometry(object):
 
     @classmethod
     def from_guid(cls, guid):
-        raise NotImplementedError
+        """Construct a Rhino object wrapper from the GUID of an existing Rhino object.
+
+        Parameters
+        ----------
+        guid : str
+            The GUID of the Rhino object.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.BaseRhinoGeometry`
+            The Rhino object wrapper.
+        """
+        obj = compas_rhino.find_object(guid)
+        wrapper = cls()
+        wrapper.guid = obj.Id
+        wrapper.object = obj
+        wrapper.geometry = obj.Geometry
+        return wrapper
 
     @classmethod
     def from_object(cls, obj):
-        raise NotImplementedError
+        """Construct a Rhino object wrapper from an existing Rhino object.
 
-    @classmethod
+        Parameters
+        ----------
+        obj : Rhino.DocObjects.RhinoObject
+            The Rhino object.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.BaseRhinoGeometry`
+            The Rhino object wrapper.
+        """
+        wrapper = cls()
+        wrapper.guid = obj.Id
+        wrapper.object = obj
+        wrapper.geometry = obj.Geometry
+        return wrapper
+
+    @abstractclassmethod
     def from_geometry(cls, geometry):
-        raise NotImplementedError
+        pass
 
-    @classmethod
+    @abstractclassmethod
     def from_selection(cls):
-        raise NotImplementedError
+        pass
 
+    @abc.abstractmethod
     def to_compas(self, cls=None):
-        raise NotImplementedError
+        pass
 
     def transform(self, T):
+        """Transform the Rhino object.
+
+        Parameters
+        ----------
+        T : :class:`compas.geometry.Transformation` or Rhino.Geomtry.Transform
+            The transformation matrix.
+
+        Returns
+        -------
+        None
+            The Rhino object is transformed in place.
+        """
         if not isinstance(T, Rhino.Geometry.Transform):
             M = Rhino.Geometry.Transform(0.0)
             for i in range(4):

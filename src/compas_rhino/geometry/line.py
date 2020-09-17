@@ -2,30 +2,26 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+import Rhino
 
+import compas_rhino
 from compas.geometry import Line
-from compas_rhino.geometry._geometry import RhinoGeometry
-
-if compas.IPY:
-    import Rhino
+from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoLine']
 
 
-class RhinoLine(RhinoGeometry):
-    """Convenience wrapper for a Rhino point object.
+class RhinoLine(BaseRhinoGeometry):
+    """Wrapper for a Rhino line objects.
 
     Attributes
     ----------
-    start : Rhino.Geometry.Point3d, read-only
+    start (read-only) : Rhino.Geometry.Point3d
         The starting point of the line.
-    end : Rhino.Geometry.Point3d
+    end (read-only) : Rhino.Geometry.Point3d
         The end point of the line.
     """
-
-    __module__ = 'compas_rhino.geometry'
 
     def __init__(self):
         super(RhinoLine, self).__init__()
@@ -40,15 +36,49 @@ class RhinoLine(RhinoGeometry):
 
     @classmethod
     def from_geometry(cls, geometry):
+        """Construct a line from an existing Rhino line geometry object.
+
+        Parameters
+        ----------
+        geometry : two points or :class:`Rhino.Geometry.Line`
+            The input geometry.
+
+        Returns
+        -------
+
+        """
         if not isinstance(geometry, Rhino.Geometry.Line):
-            start = Rhino.Geometry.Point3d(geometry[0][0], geometry[0][1], geometry[0][2])
-            end = Rhino.Geometry.Point3d(geometry[1][0], geometry[1][1], geometry[1][2])
+            start = Rhino.Geometry.Point3d(* geometry[0])
+            end = Rhino.Geometry.Point3d(* geometry[1])
             geometry = Rhino.Geometry.Line(start, end)
         line = cls()
         line.geometry = geometry
         return line
 
+    @classmethod
+    def from_selection(cls):
+        """Construct a line wrapper by selecting an existing Rhino line object.
+
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoLine`
+            The wrapped line.
+        """
+        guid = compas_rhino.select_line()
+        return cls.from_guid(guid)
+
     def to_compas(self):
+        """Convert the line to a COMPAS geometry object.
+
+        Returns
+        -------
+        :class:`compas.geometry.Line`
+            The equivalent COMPAS geometry line.
+        """
         return Line(self.start, self.end)
 
 
@@ -57,16 +87,4 @@ class RhinoLine(RhinoGeometry):
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    line = RhinoLine.from_geometry(Line([0.0, 0.0, 0.0], [1.0, 0.0, 0.0]))
-
-    print(line.guid)
-    print(line.object)
-    print(line.geometry)
-    print(line.type)
-    print(line.name)
-
-    print(line.start)
-    print(line.end)
-
-    print(line.to_compas())
+    pass

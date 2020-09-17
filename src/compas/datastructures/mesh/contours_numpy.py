@@ -12,7 +12,7 @@ from scipy.interpolate import griddata
 
 import matplotlib.pyplot as plt
 
-from compas.geometry import scalarfield_contours_numpy
+from compas.numerical import scalarfield_contours_numpy
 
 
 __all__ = [
@@ -116,4 +116,5 @@ def mesh_contours_numpy(mesh, levels=None, density=100):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

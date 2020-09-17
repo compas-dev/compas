@@ -8,7 +8,9 @@ from compas._os import remove
 from compas._os import remove_symlink
 from compas._os import rename
 
+
 __all__ = ['install']
+
 
 BOOTSTRAPPER_TEMPLATE = """
 import os
@@ -46,14 +48,14 @@ def install(blender_path):
     ----------
     blender_path : str
         The path to the folder with the version number of Blender.
-        For example, on Mac: ``'/Applications/blender.app/Contents/Resources/2.80'``.
-        On Windows: ``'%PROGRAMFILES%\\Blender Foundation\\Blender\\2.80'``.
+        For example, on Mac: ``'/Applications/Blender.app/Contents/Resources/2.83'``.
+        On Windows: ``'%PROGRAMFILES%\\Blender Foundation\\Blender\\2.83'``.
 
     Examples
     --------
     .. code-block:: bash
 
-        $ python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.80
+        $ python -m compas_blender.install /Applications/Blender.app/Contents/Resources/2.83
 
     """
     if not os.environ.get('CONDA_PREFIX'):

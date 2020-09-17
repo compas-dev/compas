@@ -45,8 +45,8 @@ def valuedict(keys, value, default):
      dict
          A dictionary
 
-     Note
-     ----
+     Notes
+     -----
      This standalone and generic function is only required by plotters.
 
      """
@@ -357,8 +357,8 @@ class Plotter(object):
     def top(self):
         """Bring the plotting window to the top.
 
-        Warning
-        -------
+        Warnings
+        --------
         This seems to work only for some back-ends.
 
         Notes
@@ -465,8 +465,8 @@ class Plotter(object):
         -------
         None
 
-        Warning
-        -------
+        Warnings
+        --------
         This function assumes ImageMagick is installed on your system, and on
         *convert* being on your system path.
 

@@ -2,53 +2,32 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import os
-import sys
-import ast
-
-import compas
-
-from compas_rhino.forms import TextForm
-from compas_rhino.forms import ImageForm
-
 try:
     basestring
 except NameError:
     basestring = str
 
-try:
-    import rhinoscriptsyntax as rs
-    import System
-    import Rhino
+import os
+import sys
+import ast
 
+from compas_rhino.forms import TextForm
+from compas_rhino.forms import ImageForm
+
+import System
+
+import rhinoscriptsyntax as rs
+import Rhino
+import clr
+
+clr.AddReference('Rhino.UI')
+import Rhino.UI  # noqa: E402
+from Rhino.UI.Dialogs import ShowMessageBox  # noqa: E402
+
+try:
+    from compas_rhino.forms import PropertyListForm
 except ImportError:
-    compas.raise_if_ironpython()
-
-# check if MessageBox is already available for Mac
-try:
-    from Rhino.UI.Dialogs import ShowMessageBox
-
-except ImportError:
-    compas.raise_if_ironpython()
-
-# replace PropertyListBox by Eto form on Mac and Rhino 6
-try:
-    from compas_rhino.etoforms import PropertyListForm
-
-except Exception:
-    try:
-        from Rhino.UI.Dialogs import ShowPropertyListBox
-
-    except ImportError:
-        compas.raise_if_ironpython()
-else:
-    try:
-        import clr
-        clr.AddReference('Rhino.UI')
-        import Rhino.UI
-
-    except ImportError:
-        compas.raise_if_ironpython()
+    from Rhino.UI.Dialogs import ShowPropertyListBox
 
 
 __all__ = [
@@ -85,6 +64,29 @@ def screenshot_current_view(path,
                             draw_world_axes=False,
                             draw_cplane_axes=False,
                             background=False):
+    """Take a screenshot of the current view.
+
+    Parameters
+    ----------
+    path : str
+        The filepath for saving the screenshot.
+
+    Other Parameters
+    ----------------
+    width : int, optional
+    height : int, optional
+    scale : float, optional
+    draw_grid : bool, optional
+    draw_world_axes : bool, optional
+    draw_cplane_axes : bool, optional
+    background : bool, optional
+
+    Returns
+    -------
+    bool
+        True if the command was successful.
+        False otherwise.
+    """
     properties = [draw_grid, draw_world_axes, draw_cplane_axes, background]
     properties = ["Yes" if item else "No" for item in properties]
     scale = max(1, scale)  # the rhino command requires a scale > 1
@@ -108,6 +110,13 @@ def wait():
 
 
 def get_tolerance():
+    """Get the absolute tolerance.
+
+    Returns
+    -------
+    float
+        The tolerance.
+    """
     return rs.UnitAbsoluteTolerance()
 
 
@@ -127,8 +136,6 @@ def toggle_toolbargroup(rui, group):
                 rs.ShowToolbar(collection, group)
 
 
-# pick a location
-# get_location
 def pick_point(message='Pick a point.'):
     point = rs.GetPoint(message)
     if point:
@@ -244,11 +251,15 @@ def unload_modules(top_level_module_name):
     This function eases the development workflow when editing a library that is
     used from Rhino/Grasshopper.
 
-    Args:
-        top_level_module_name (:obj:`str`): Name of the top-level module to unload.
+    Parameters
+    ----------
+    top_level_module_name : :obj:`str`
+        Name of the top-level module to unload.
 
-    Returns:
-        list: List of unloaded module names.
+    Returns
+    -------
+    list
+        List of unloaded module names.
     """
     modules = filter(lambda m: m.startswith(top_level_module_name), sys.modules)
 

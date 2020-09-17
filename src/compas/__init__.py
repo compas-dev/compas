@@ -13,6 +13,7 @@ compas
     compas.files
     compas.geometry
     compas.numerical
+    compas.plugins
     compas.robots
     compas.rpc
     compas.topology
@@ -34,7 +35,7 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '0.15.6'
+__version__ = '0.16.2'
 
 
 PY3 = sys.version_info[0] == 3
@@ -71,12 +72,7 @@ except Exception:
     pass
 
 
-__all__ = [
-    'raise_if_windows',
-    'raise_if_not_windows',
-    'raise_if_ironpython',
-    'raise_if_not_ironpython',
-]
+__all__ = ['WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'GH', 'BLENDER', 'set_precision', 'get']
 
 
 def is_windows():
@@ -139,24 +135,40 @@ def is_ironpython():
 IPY = is_ironpython()
 
 
-def raise_if_not_windows():
-    if not WINDOWS:
-        raise
+def is_rhino():
+    try:
+        import Rhino  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
 
 
-def raise_if_windows():
-    if WINDOWS:
-        raise
+RHINO = is_rhino()
 
 
-def raise_if_not_ironpython():
-    if not IPY:
-        raise
+def is_grasshopper():
+    try:
+        import Grasshopper  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
 
 
-def raise_if_ironpython():
-    if IPY:
-        raise
+GH = is_grasshopper()
+
+
+def is_blender():
+    try:
+        import bpy  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
+
+
+BLENDER = is_blender()
 
 
 def set_precision(precision):
@@ -191,7 +203,6 @@ def set_precision(precision):
 # ==============================================================================
 # data
 # ==============================================================================
-
 
 def get(filename):
     """Get the full path to one of the sample data files.

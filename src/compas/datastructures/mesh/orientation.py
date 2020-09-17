@@ -227,13 +227,5 @@ def mesh_flip_cycles(mesh):
 
 if __name__ == "__main__":
 
-    import compas
-
-    from compas.utilities import print_profile
-    from compas.datastructures import Mesh
-
-    unify = print_profile(mesh_unify_cycles)
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    unify(mesh)
+    import doctest
+    doctest.testmod(globs=globals())

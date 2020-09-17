@@ -16,6 +16,7 @@ from compas.geometry import Transformation
 from compas.geometry import Frame
 from compas.geometry import transform_points_numpy
 
+
 __all__ = ['icp_numpy']
 
 
@@ -111,4 +112,5 @@ def icp_numpy(source, target, tol=1e-3):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

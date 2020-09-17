@@ -23,9 +23,9 @@ class GLTF(object):
     parser : :class:`compas.files.GLTFParser`
     exporter : :class:`compas.files.GLTFExporter`
 
-    See Also
-    --------
-    * https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
+    References
+    ----------
+    .. [1] https://github.com/KhronosGroup/glTF/blob/master/specification/2.0/figures/gltfOverview-2.0.0b.png
 
     """
     def __init__(self, filepath=None):

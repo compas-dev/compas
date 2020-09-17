@@ -17,7 +17,7 @@ def install_plugin(plugin, version=None):
     ----------
     plugin : str
         The path to the plugin folder.
-    version : str, optional
+    version : {'5.0', '6.0', '7.0'}, optional
         The version of Rhino for which the plugin should be installed.
         Default is ``'6.0'``.
 
@@ -41,24 +41,24 @@ def install_plugin(plugin, version=None):
     and contains at least a "dev" folder with a ``__plugin__.py`` file with
 
     * the GUID of the tool: ``id={...}``, and
-    * the name of the tool: ``title="RV2"``,
+    * the name of the tool: ``title="..."``,
 
     it can be installed with the following command,
 
     .. code-block:: bash
 
-        $ cd ~/Code/compas_xxx
-        $ python -m compas_rhino.install_plugin ui/Rhino/XXX
+        cd ~/Code/compas_xxx
+        python -m compas_rhino.install_plugin ui/Rhino/XXX
 
-    or the following, if the plugin should be installed for Rhino5.
+    or the following, if the plugin should be installed for Rhino 7.
 
     .. code-block:: bash
 
-        $ cd ~/Code/compas_xxx
-        $ python -m compas_rhino.install_plugin -v 5.0 ui/Rhino/XXX
+        cd ~/Code/compas_xxx
+        python -m compas_rhino.install_plugin -v 7.0 ui/Rhino/XXX
 
     """
-    if version not in ('5.0', '6.0'):
+    if version not in ('5.0', '6.0', '7.0'):
         version = '6.0'
 
     if not os.path.isdir(plugin):
@@ -109,23 +109,20 @@ def install_plugin(plugin, version=None):
     print('Restart Rhino and open the Python editor at least once to make it available.')
 
 
-def main():
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+
     import argparse
 
     parser = argparse.ArgumentParser(
         description='COMPAS Rhino PLugin Installation command-line utility.')
 
     parser.add_argument('plugin', help="The path to the plugin directory.")
-    parser.add_argument('-v', '--version', help="The version of Rhino.")
+    parser.add_argument('-v', '--version', choices=['5.0', '6.0', '7.0'], default='6.0', help="The version of Rhino.")
 
     args = parser.parse_args()
 
     install_plugin(args.plugin, version=args.version)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    main()

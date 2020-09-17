@@ -2,23 +2,36 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+import Rhino
 
 from compas.geometry import Plane
 from compas.geometry import Frame
-from compas_rhino.geometry._geometry import RhinoGeometry
-
-if compas.IPY:
-    import Rhino
+from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoPlane']
 
 
-class RhinoPlane(RhinoGeometry):
-    """Convenience wrapper for a Rhino point object."""
+class RhinoPlane(BaseRhinoGeometry):
+    """Wrapper for a Rhino plane objects.
 
-    __module__ = 'compas_rhino.geometry'
+    Attributes
+    ----------
+    point (read-only) : :class:`Rhino.Geometry.Point3d`
+        Base point of the plane.
+    normal (read-only) : :class:`Rhino.Geometry.Vector3d`
+        The normal vector of the plane.
+    xaxis (read-only) : :class:`Rhino.Geometry.Vector3d`
+        The X axis of the plane.
+    yaxis (read-only) : :class:`Rhino.Geometry.Vector3d`
+        The Y axis of the plane.
+
+    Notes
+    -----
+    In Rhino, a plane and a frame are equivalent.
+    Therefore, the COMPAS conversion function of this class returns a frame object instead of a plane.
+
+    """
 
     def __init__(self):
         super(RhinoPlane, self).__init__()
@@ -41,6 +54,18 @@ class RhinoPlane(RhinoGeometry):
 
     @classmethod
     def from_geometry(cls, geometry):
+        """Construct a plane wrapper from an existing geometry object.
+
+        Parameters
+        ----------
+        geometry : tuple of point and normal or :class:`Rhino.Geometry.Plane` or :class:`compas.geometry.Plane` or :class:`compas.geometry.Frame`
+            The geometry object defining a plane.
+
+        Returns
+        -------
+        :class:`compas_rhino.geometry.RhinoPlane`
+            The wrapped plane.
+        """
         if not isinstance(geometry, Rhino.Geometry.Plane):
             if isinstance(geometry, Plane):
                 point = Rhino.Geometry.Point3d(geometry[0][0], geometry[0][1], geometry[0][2])
@@ -59,7 +84,18 @@ class RhinoPlane(RhinoGeometry):
         line.geometry = geometry
         return line
 
+    @classmethod
+    def from_selection(cls):
+        raise NotImplementedError
+
     def to_compas(self):
+        """Convert to a COMPAS geometry object.
+
+        Returns
+        -------
+        :class:`compas.geometry.Frame`
+            A COMPAS frame object.
+        """
         return Frame(self.point, self.xaxis, self.yaxis)
 
 
@@ -68,19 +104,4 @@ class RhinoPlane(RhinoGeometry):
 # ==============================================================================
 
 if __name__ == '__main__':
-
-    plane = RhinoPlane.from_geometry(Plane([0, 0, 0], [0, 0, 1]))
-
-    print(plane.guid)
-    print(plane.object)
-    print(plane.geometry)
-    print(plane.type)
-    print(plane.name)
-
-    print(plane.point)
-    print(plane.normal)
-
-    print(plane.xaxis)
-    print(plane.yaxis)
-
-    print(plane.to_compas())
+    pass

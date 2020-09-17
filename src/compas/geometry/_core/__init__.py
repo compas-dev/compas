@@ -9,11 +9,8 @@ from .angles import *  # noqa: F401 F403
 from .average import *  # noqa: F401 F403
 from .normals import *  # noqa: F401 F403
 from .size import *  # noqa: F401 F403
-
 from .quaternions import *  # noqa: F401 F403
-
-from .queries import *  # noqa: F401 F403
-from .intersections import *  # noqa: F401 F403
 from .tangent import *  # noqa: F401 F403
+from .kdtree import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

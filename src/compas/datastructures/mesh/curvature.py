@@ -30,8 +30,8 @@ def trimesh_gaussian_curvature(mesh):
     list of float
         Per vertex curvature values.
 
-    Warning
-    -------
+    Warnings
+    --------
     This function will not check if the provided mesh is actually a triangle mesh.
     It will just treat it as such...
 
@@ -72,4 +72,5 @@ def trimesh_gaussian_curvature(mesh):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

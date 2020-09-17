@@ -47,25 +47,9 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
     .. [1] Sloan, S. W., 1987 *A fast algorithm for constructing Delaunay triangulations in the plane*
            Advances in Engineering Software 9(1): 34-55, 1978.
 
-    Example
-    -------
-    .. plot::
-        :include-source:
-
-        from compas.datastructures import Mesh
-        from compas.geometry import pointcloud_xy
-        from compas.geometry import delaunay_from_points
-        from compas_plotters import MeshPlotter
-
-        points = pointcloud_xy(20, (0, 50))
-        faces = delaunay_from_points(points)
-
-        delaunay = Mesh.from_vertices_and_faces(points, faces)
-
-        plotter = MeshPlotter(delaunay)
-        plotter.draw_vertices(radius=0.1)
-        plotter.draw_faces()
-        plotter.show()
+    Examples
+    --------
+    >>>
 
     """
     from compas.datastructures import Mesh
@@ -171,13 +155,13 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 #     Mesh
 #         The corresponding voronoi mesh.
 
-#     Warning
-#     -------
+#     Warnings
+#     --------
 #     This function does not work properly if all vertices of the delaunay
 #     are on the boundary.
 
-#     Example
-#     -------
+#     Examples
+#     --------
 #     .. plot::
 #         :include-source:
 
@@ -239,20 +223,23 @@ def delaunay_from_points(points, boundary=None, holes=None, tiny=1e-12):
 
 if __name__ == "__main__":
 
-    from compas.datastructures import Mesh
-    from compas.geometry import pointcloud_xy
-    from compas_plotters import MeshPlotter
+    # from compas.datastructures import Mesh
+    # from compas.geometry import pointcloud_xy
+    # from compas_plotters import MeshPlotter
 
-    points = pointcloud_xy(200, (0, 50))
-    faces = delaunay_from_points(points)
+    # points = pointcloud_xy(200, (0, 50))
+    # faces = delaunay_from_points(points)
 
-    delaunay = Mesh.from_vertices_and_faces(points, faces)
+    # delaunay = Mesh.from_vertices_and_faces(points, faces)
 
-    plotter = MeshPlotter(delaunay, figsize=(8, 5))
+    # plotter = MeshPlotter(delaunay, figsize=(8, 5))
 
-    facecolor = {fkey: (255, 0, 0) if delaunay.face_normal(fkey)[2] > 0 else (0, 0, 255) for fkey in delaunay.faces()}
+    # facecolor = {fkey: (255, 0, 0) if delaunay.face_normal(fkey)[2] > 0 else (0, 0, 255) for fkey in delaunay.faces()}
 
-    plotter.draw_vertices(keys=list(delaunay.vertices_on_boundary()), radius=0.5)
-    plotter.draw_faces(facecolor=facecolor)
-    plotter.draw_edges(keys=list(delaunay.edges_on_boundary()))
-    plotter.show()
+    # plotter.draw_vertices(keys=list(delaunay.vertices_on_boundary()), radius=0.5)
+    # plotter.draw_faces(facecolor=facecolor)
+    # plotter.draw_edges(keys=list(delaunay.edges_on_boundary()))
+    # plotter.show()
+
+    import doctest
+    doctest.testmod(globs=globals())

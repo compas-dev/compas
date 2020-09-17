@@ -1,12 +1,8 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
-import compas
-
-try:
-    import rhinoscriptsyntax as rs
-
-except ImportError:
-    compas.raise_if_ironpython()
+import rhinoscriptsyntax as rs
 
 
 __all__ = [

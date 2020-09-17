@@ -28,20 +28,7 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
 
     Examples
     --------
-    >>> from compas.datastructures import Mesh
-    >>> from compas.plotters import MeshPlotter
-    >>> vertices = [[1.0, 0.0, 0.0], [1.0, 2.0, 0.0], [0.0, 1.0, 0.0], [2.0, 1.0, 0.0], [0.0, 0.0, 0.0]]
-    >>> faces = [[0, 1, 2], [0, 3, 1]]
-    >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
-    >>> mesh_substitute_vertex_in_faces(mesh, 0, 4)
-    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
-    >>> mesh_substitute_vertex_in_faces(mesh, 4, 0, [1])
-    >>> print(mesh.face_vertices(0), mesh.face_vertices(1))
-    >>> plotter = MeshPlotter(mesh)
-    >>> plotter.draw_vertices(text='key')
-    >>> plotter.draw_edges()
-    >>> plotter.draw_faces(text='key')
-    >>> plotter.show()
+    >>>
 
     """
 
@@ -64,4 +51,5 @@ def mesh_substitute_vertex_in_faces(mesh, old_vkey, new_vkey, fkeys=None):
 
 if __name__ == "__main__":
 
-    pass
+    import doctest
+    doctest.testmod(globs=globals())

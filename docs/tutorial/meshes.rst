@@ -1,11 +1,13 @@
-********************************************************************************
+.. _working-with-meshes:
+
+******
 Meshes
-********************************************************************************
+******
 
 .. highlight:: python
 
 COMPAS meshes are polygon meshes with support for n-sided polygonal
-faces. the meshes are presented using a half-edge data structure. In a
+faces. The meshes are presented using a half-edge data structure. In a
 half-edge data structure, each edge is composed of two half-edges with
 opposite orientation. Each half-edge is part of exactly one face, unless
 it is on the boundary. An edge is thus incident to at least one face and
@@ -18,372 +20,216 @@ Check out the docs for detailed information about the mesh and the available
 functionality: :class:`compas.datastructures.Mesh`.
 
 
-Making a mesh
-=============
+Building a Mesh
+===============
 
->>> from compas.datastructures import Mesh
->>> mesh = Mesh()
+Meshes can be built from scratch by adding vertices and faces.::
 
+    >>> from compas.datastrctures import Mesh
 
-Adding vertices and faces
-=========================
+    >>> mesh = Mesh()
 
->>> a = mesh.add_vertex()
->>> b = mesh.add_vertex(x=1.0)
->>> c = mesh.add_vertex(x=1.0, y=1.0)
->>> d = mesh.add_vertex(y=1.0)
+    >>> a = mesh.add_vertex()  # x,y,z coordinates are optional and default to 0,0,0
+    >>> b = mesh.add_vertex(x=1)
+    >>> c = mesh.add_vertex(x=1, y=1)
+    >>> d = mesh.add_vertex(y=1)
 
->>> f = mesh.add_face([a, b, c, d])
-
-
-.. note::
-
-    Edges cannot be added explicitly. They are added automatically when
-    faces are added.
-
-
-Identifiers
-===========
-
-All vertices of a mesh have a unique ID, the "key" of the vertex.
-Keys are integers, and every vertex is assigned a number
-corresponding to the order in which it is added. The number is always
-the highest number used so far, plus one.
-
->>> print(a, type(a))
-0 <class 'int'>
-
->>> b == a + 1
-True
-
-IDs can also be assigned explicitly.
-
-Faces are also assigned a unique integer id, and keys be assigned explicitly.
-
-.. code-block:: python
-
-    >>> print(f, type(f))
-    0 <class 'int'>
+    >>> mesh.add_face([a, b, c, d])
 
 
 Constructors
 ============
 
-Meshes can be constructed from data contained in files. Currently, the
-following formats are supported: ``obj``, ``ply``, ``stl``.
+Building a mesh vertex per vertex and face per face is fine for very simple meshes,
+but quickly becomes tedious for meshes of relevant size.
+Alternative constructors can be used to simplify this process based on specific inputs. ::
 
-.. code-block:: python
+    >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    >>> mesh = Mesh.from_polygons(polygons)
+    >>> mesh = Mesh.from_shape(box)
 
-    >>> mesh = Mesh.from_obj('faces.obj')
-    >>> mesh = Mesh.from_ply('bunny.ply')
-    >>> mesh = Mesh.from_stl('cube.stl')
+For strictly two-dimensional inputs in the XY plane, the following can also be used. ::
 
+    >>> mesh = Mesh.from_lines(lines)
+    >>> mesh = Mesh.from_points(points)
 
-COMPAS provides a set of sample files that can be used during development,
-or simply to make examples like the ones in this tutorial.
+``from_lines`` uses a wall-follower to find the faces of the connected lines.
+This process is only successful if the input lines form a planar graph.
+``from_points`` generates a delaunay triangulation of the provided points in the XY plane.
 
-.. code-block:: python
+For every ``from_`` function there is a corresponding ``to_`` function that basically accomplishes the exact opposite. ::
 
-    >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
-    >>> mesh = Mesh.from_ply(compas.get('bunny.ply'))
-    >>> mesh = Mesh.from_stl(compas.get('cube.stl'))
-
-
-Data
-====
-
-All data accessors return objects that are meant to be iterated over
-(dictionary key iterators or generator objects). Storing the data in
-lists that can be reused multiple times must be done explicitly.
+    >>>
 
 
-Iteration
----------
+Geometry Formats
+================
 
-.. code-block:: python
+The mesh also supports constructors based on common geometry formats for 3D polygon mesh geometry. ::
+
+    >>> mesh = Mesh.from_obj(filepath)
+    >>> mesh = Mesh.from_off(filepath)
+    >>> mesh = Mesh.from_ply(filepath)
+    >>> mesh = Mesh.from_stl(filepath)
+
+As mentioned above, for every ``from_`` there is a ``to_``.::
+
+    >>> mesh = Mesh.from_obj(filepath)
+    >>> mesh = Mesh.from_off(filepath)
+    >>> mesh = Mesh.from_ply(filepath)
+    >>> mesh = Mesh.from_stl(filepath)
+
+
+Vertices, Faces, Edges
+======================
+
+To access the vertices, faces, and edges of the mesh data structure, use the corresponding methods.
+Note that these methods return generator objects that have to be consumed by iteration.
+
+::
 
     >>> mesh.vertices()
-    <dict_keyiterator at 0x60d74f278>
-
-.. code-block:: python
-
-    >>> for key in mesh.vertices():
-    ...     print(key)
-    ...
-    0
-    1
-    2
-    3
-    ...
-    32
-    33
-    34
-    35
-
-.. code-block:: python
+    <generator object HalfEdge.vertices at 0x7fe3cb20f4a0>
 
     >>> mesh.faces()
-    <generator object Mesh.faces at 0x60d723e08>
-
-.. code-block:: python
-
-    >>> for key in mesh.faces():
-    ...     print(key)
-    ...
-    0
-    1
-    2
-    3
-    ...
-    21
-    22
-    23
-    24
-
-.. code-block:: python
+    <generator object HalfEdge.faces at 0x7fe3cb20f4a0>
 
     >>> mesh.edges()
-    <generator object Mesh.edges at 0x60d723a98>
+    <generator object HalfEdge.edges at 0x7fe3cb20f510>
 
-.. code-block:: python
+::
 
-    >>> for key in mesh.edges():
-    ...     print(key)
+    >>> for vertex in mesh.vertices():
+    ...     print(vertex)
     ...
-    (0, 1)
-    (0, 6)
-    (1, 7)
-    (1, 2)
+
+    >>> for face in mesh.faces():
+    ...     print(face)
     ...
-    (31, 32)
-    (32, 33)
-    (33, 34)
-    (34, 35)
 
-Lists
------
-
-.. code-block:: python
-
-    >>> list(mesh.vertices())
-    [0, 1, 2, 3, ... 32, 33, 34, 35]
-
-.. code-block:: python
-
-    >>> list(mesh.faces())
-    [0, 1, 2, 3, ... 21, 22, 23, 24]
-
-.. code-block:: python
-
-    >>> list(mesh.edges())
-    [(0, 1), (0, 6), (1, 7), (1, 2), ... (31, 32), (32, 33), (33, 34), (34, 35)]
-
-
-Attributes
-==========
-
-All vertices, faces, and edges automatically have the default attributes
-specified by the mesh class. The default vertex attributes are xyz
-coordinates, with ``x=0``, ``y=0``, and ``z=0``. Edges and faces have no
-default attributes.
-
-To change the default attributes, do:
-
-.. code-block:: python
-
-    >>> mesh.update_default_vertex_attributes(z=10, is_fixed=False)
-    >>> mesh.update_default_face_attributes(is_loaded=True)
-    >>> mesh.update_default_edge_attributes(q=1.0)
-
-
-Getting attributes
-------------------
-
-.. code-block:: python
-
-    >>> mesh.vertex_attribute(mesh.get_any_vertex(), 'x')
-    2.0
-
-.. code-block:: python
-
-    >>> mesh.vertices_attribute('x')
-    [0.0, 2.0, 4.0, 6.0, ... 4.0, 6.0, 8.0, 10.0]
-
-.. code-block:: python
-
-    >>> mesh.vertices_attributes('xyz')
-    [[0.0, 0.0, 0.0], [2.0, 0.0, 0.0], [4.0, 0.0, 0.0], [6.0, 0.0, 0.0],
+    >>> for edge in mesh.edges():
+    ...     print(edge)
     ...
-    [4.0, 10.0, 0.0], [6.0, 10.0, 0.0], [8.0, 10.0, 0.0], [10.0, 10.0, 0.0]]
+
+To obtain actual lists of components, the results from the accessor functions have to be converted explicitly. ::
+
+    >>> vertices = list(mesh.vertices())
+    >>> edges = list(mesh.edges())
+    >>> faces = list(mesh.faces())
+
+The items returned by the accessor methods are identifiers that are unique in the context of the particular component.
+Identifiers of vertices and faces are positive integers, including zero.
+Identifiers of edges are pairs of vertex ids in the form of a tuple.
+
+Note that adding and removing elements will not cause identifiers to be renumbered.
+Therefore, after certain topological operations (e.g. subdivision), vertex and face identifiers no longer necessarily form contiguous sequences.
+This needs to be taken into account when converting sequences of vertices, faces, and edges to lists, for example for numerical calculation.
+To transparently convert non-contiguous sequences of identifiers to contiguous list indices, use "key/index maps". ::
+
+    >>> key_index = mesh.key_index()
+    >>> vertices = list(mesh.vertices())
+    >>> edges = [(key_index[u], key_index[v]) for u, v in mesh.edges()]
+    >>> faces = [[key_index[key] for key in mesh.face_vertices(face)] for face in mesh.faces()]
+
+The key/index map simply maps vertex identifiers to the corresponding index in the contiguous sequence that is created
+when converting a sequence of identifiers to a list. The ordering of these identifiers can be completely random, but is always consistent. ::
+
+    >>> key_index = {key: index for index, key in enumerate(mesh.vertices())}
 
 
-Setting attributes
-------------------
+Topology
+========
 
-.. code-block:: python
+Through its half-edge data structure, a mesh can answer several topological questions
+about itself and its components.
 
-    >>> mesh.vertex_attribute(0, 'is_fixed', True)
-    >>> mesh.vertex_attributes(0, ('is_fixed', 'z'), (False, 10))
-    >>> mesh.vertices_attribute('z', 10)
-    >>> mesh.vertices_attributes(('z', 'is_fixed'), (0, False))
+::
 
+    >>> mesh.vertex_neighbors(vertex, ordered=False)
+    >>> mesh.vertex_degree(vertex)
+    >>> mesh.vertex_faces(vertex, ordered=False)
+    >>> mesh.vertex_neigborhood(vertex, ring=1)
+    >>> mesh.vertex_edges(vertex, directed=False)
 
-Connectivity
-============
+::
 
-.. code-block:: python
+    >>> mesh.face_vertices(face)
+    >>> mesh.face_halfedges(face)
+    >>> mesh.face_neighbors(face)
+    >>> mesh.face_degree(face)
 
-    >>> for key in mesh.vertices():
-    ...     print(key, "(neighbors)", mesh.vertex_neighbors(key, ordered=True))
-    ...     print(key, "(faces)", mesh.vertex_faces(key, ordered=True))
-    ...
-    0 (neighbors) [6, 1]
-    0 (faces) [0]
-    1 (neighbors) [0, 7, 2]
-    1 (faces) [0, 1]
-    2 (neighbors) [1, 8, 3]
-    2 (faces) [1, 2]
-    3 (neighbors) [2, 9, 4]
-    3 (faces) [2, 3]
-    ...
-    32 (neighbors) [33, 26, 31]
-    32 (faces) [22, 21]
-    33 (neighbors) [34, 27, 32]
-    33 (faces) [23, 22]
-    34 (neighbors) [35, 28, 33]
-    34 (faces) [24, 23]
-    35 (neighbors) [29, 34]
-    35 (faces) [24]
+::
 
-
-.. code-block:: python
-
-    >>> for fkey in mesh.faces():
-    ...     print(fkey, "(vertices)", mesh.face_vertices(fkey))
-    ...     print(fkey, "(half-edges)", mesh.face_halfedges(fkey))
-    ...     print(fkey, "(neighbors)", mesh.face_neighbors(fkey))
-    ...
-    0 (vertices) [0, 1, 7, 6]
-    0 (half-edges) [(0, 1), (1, 7), (7, 6), (6, 0)]
-    0 (neighbors) [1, 5]
-    1 (vertices) [1, 2, 8, 7]
-    1 (half-edges) [(1, 2), (2, 8), (8, 7), (7, 1)]
-    1 (neighbors) [2, 6, 0]
-    2 (vertices) [2, 3, 9, 8]
-    2 (half-edges) [(2, 3), (3, 9), (9, 8), (8, 2)]
-    2 (neighbors) [3, 7, 1]
-    3 (vertices) [3, 4, 10, 9]
-    3 (half-edges) [(3, 4), (4, 10), (10, 9), (9, 3)]
-    3 (neighbors) [4, 8, 2]
-    ...
-    21 (vertices) [25, 26, 32, 31]
-    21 (half-edges) [(25, 26), (26, 32), (32, 31), (31, 25)]
-    21 (neighbors) [16, 22, 20]
-    22 (vertices) [26, 27, 33, 32]
-    22 (half-edges) [(26, 27), (27, 33), (33, 32), (32, 26)]
-    22 (neighbors) [17, 23, 21]
-    23 (vertices) [27, 28, 34, 33]
-    23 (half-edges) [(27, 28), (28, 34), (34, 33), (33, 27)]
-    23 (neighbors) [18, 24, 22]
-    24 (vertices) [28, 29, 35, 34]
-    24 (half-edges) [(28, 29), (29, 35), (35, 34), (34, 28)]
-    24 (neighbors) [19, 23]
+    >>> mesh.halfedge_adjacent_face(edge)
+    >>> mesh.halfedge_opposite_face(edge)
+    >>> mesh.halfedge_next(edge)
+    >>> mesh.halfedge_prev(edge)
 
 
 Geometry
 ========
 
-There are many functions for inspecting the geometry of the mesh.
+::
 
-* ``Mesh.vertex_coordinates``
-* ``Mesh.vertex_normal``
-* ``Mesh.vertex_laplacian``
-* ``Mesh.edge_length``
-* ``Mesh.edge_point``
-* ``Mesh.edge_vector``
-* ``Mesh.edge_direction``
-* ``Mesh.face_centroid``
-* ``Mesh.face_normal``
-* ``Mesh.face_plane``
-* ``Mesh.face_frame``
-* ``Mesh.face_area``
+    >>> mesh.vertex_coordinates(vertex)
+    >>> mesh.vertex_normal(vertex)
+    >>> mesh.vertex_laplacian(vertex)
+
+::
+
+    >>> mesh.face_centroid(face)
+    >>> mesh.face_normal(face)
+    >>> mesh.face_plane(face)
+    >>> mesh.face_frame(face)
+    >>> mesh.face_area(face)
+
+::
+
+    >>> mesh.edge_length(edge)
+    >>> mesh.edge_vector(edge)
+    >>> mesh.edge_direction(edge)
+    >>> mesh.edge_midpoint(edge)
+    >>> mesh.edge_point(edge, t=0.0)
 
 
-Serialisation
+Attributes
+==========
+
+::
+
+    >>> mesh.vertex_attribute(vertex, 'x')
+    >>> mesh.vertex_attributes(vertex, 'xyz')
+    >>> mesh.vertices_attribute('z', keys=None)
+    >>> mesh.vertices_attributes('xyz', keys=None)
+
+::
+
+    >>> mesh.edge_attribute(edge, 'force')
+    >>> mesh.edges_attribute(edge, 'force')
+
+
+Selections
+==========
+
+::
+
+    >>> mesh.vertices_where({'x': 1.0, 'y': (0.0, 10.0)})
+
+::
+
+    >>> a = mesh.vertices_where({'x': 1})
+    >>> b = mesh.vertices_where({'x': (5, 10)})
+    >>> list(set(a + b))
+
+
+Serialization
 =============
-
-A COMPAS mesh can be converted to a data dict that contains
-all the information required to recreate an instance of the
-type class:`compas.datastructures.Mesh` without loss of information.
-
-
-.. code-block:: python
-
-    >>> data = mesh.to_data()
-    >>> mesh = Mesh.from_data(data)
-
-
-This data can be serialised to various formats such that
-it can be stored in a file and saved for later use.
-
-
-Json
-----
-
-The ``JSON`` format is used by :mod:`compas.rpc` and :mod:`compas.remote`,
-which is still under construction, to send data back and forth
-between a client and a remote service.
-
-In case of :class:`compas.utilities.XFunc`, ``JSON`` is used to comunicate
-with a CPython subprocess.
-
-.. code-block:: python
-
-    >>> mesh.to_json('mesh.json')
-    >>> mesh = Mesh.from_json('mesh.json')
-
-
-Pickle
-------
-
-.. code-block:: python
-
-    >>> mesh.dump('mesh.pickle')
-    >>> mesh.load('mesh.pickle')
-    >>> s = mesh.dumps()
-    >>> mesh.loads(s)
-
-
-Visualisation
-=============
-
-.. plot::
-    :include-source:
-
-    import compas
-    from compas.datastructures import Mesh
-    from compas_plotters import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    plotter = MeshPlotter(mesh)
-
-    plotter.draw_vertices(
-        facecolor={key: '#ff0000' for key in mesh.vertices_on_boundary()},
-        radius={key: 0.2 for key in mesh.vertices_on_boundary()},
-        text={key: str(key) for key in mesh.vertices_on_boundary()})
-
-    plotter.draw_edges(
-        color={key: '#ff0000' for key in mesh.edges_on_boundary()},
-        width={key: 3 for key in mesh.edges_on_boundary()})
-
-    plotter.draw_faces(
-        text={key: str(key) for key in mesh.faces_on_boundary()})
-
-    plotter.show()
 
 
 Algorithms
 ==========
 
-...
+
+
+Plugins
+=======

@@ -3,7 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import itertools
+import json
 
+from compas.base import Base
 from compas.files import URDF
 from compas.files import URDFParser
 from compas.geometry import Frame
@@ -14,6 +16,8 @@ from compas.robots.model.geometry import Material
 from compas.robots.model.geometry import MeshDescriptor
 from compas.robots.model.geometry import Origin
 from compas.robots.model.geometry import Texture
+from compas.robots.model.geometry import _attr_to_data
+from compas.robots.model.geometry import _attr_from_data
 from compas.robots.model.joint import Axis
 from compas.robots.model.joint import Joint
 from compas.robots.model.joint import Limit
@@ -26,7 +30,7 @@ from compas.topology import shortest_path
 __all__ = ['RobotModel']
 
 
-class RobotModel(object):
+class RobotModel(Base):
     """RobotModel is the root element of the model.
 
     Instances of this class represent an entire robot as defined in an URDF
@@ -61,6 +65,65 @@ class RobotModel(object):
         self._rebuild_tree()
         self._create(self.root, Transformation())
         self._scale_factor = 1.
+
+    @property
+    def data(self):
+        """Returns the data dictionary that represents the :class:`RobotModel`.
+
+        Returns
+        -------
+        dict
+            The RobotModel's data.
+        """
+        return {
+            'name': self.name,
+            'joints': [joint.data for joint in self.joints],
+            'links': [link.data for link in self.links],
+            'materials': [material.data for material in self.materials],
+            'attr': _attr_to_data(self.attr),
+            '_scale_factor': self._scale_factor,
+        }
+
+    @data.setter
+    def data(self, data):
+        self.name = data['name']
+        self.joints = [Joint.from_data(d) for d in data['joints']]
+        self.links = [Link.from_data(d) for d in data['links']]
+        self.materials = [Material.from_data(d) for d in data['materials']]
+        self.attr = _attr_from_data(data['attr'])
+        self._scale_factor = data['_scale_factor']
+
+        self._rebuild_tree()
+
+    def to_data(self):
+        """Returns the data dictionary that represents the :class:`RobotModel`.
+        To be used in conjunction with :meth:`compas.robot.RobotModel.from_data()`.
+
+        Returns
+        -------
+        dict
+            The RobotModel's data.
+        """
+        return self.data
+
+    @classmethod
+    def from_data(cls, data):
+        """Construct the :class:`compas.robots.RobotModel` from its data representation.
+        To be used in conjunction with :meth:`compas.robot.RobotModel.to_data()`.
+        """
+        robot_model = cls(data['name'])
+        robot_model.data = data
+        return robot_model
+
+    def to_json(self, filepath):
+        with open(filepath, 'w+') as f:
+            json.dump(self.data, f)
+
+    @classmethod
+    def from_json(cls, filepath):
+        with open(filepath, 'r') as fp:
+            data = json.load(fp)
+        return cls.from_data(data)
 
     def _rebuild_tree(self):
         """Store tree structure from link and joint lists."""
@@ -399,7 +462,7 @@ class RobotModel(object):
 
         Returns
         -------
-        :class: `compas.robots.Link`
+        :class:`compas.robots.Link`
 
         Examples
         --------
@@ -537,7 +600,7 @@ class RobotModel(object):
 
         for item in itertools.chain(link.visual, link.collision):
             if item.origin:
-                # transform visual or collison geometry with the transformation specified in origin
+                # transform visual or collision geometry with the transformation specified in origin
                 transformation = Transformation.from_frame(item.origin)
                 item.init_transformation = parent_transformation * transformation
             else:
@@ -595,8 +658,8 @@ class RobotModel(object):
         dict of str: :class:`Transformation`
             A dictionary with the joint names as keys and values are the joint's respective transformation.
 
-        Example
-        -------
+        Examples
+        --------
         >>> names = robot.get_configurable_joint_names()
         >>> values = [-2.238, -1.153, -2.174, 0.185, 0.667, 0.000]
         >>> joint_state = dict(zip(names, values))
@@ -743,7 +806,7 @@ class RobotModel(object):
         >>> link = robot.add_link('link0', visual_mesh=mesh)
         """
 
-        all_link_names = [l.name for l in self.links]
+        all_link_names = [l.name for l in self.links]  # noqa: E741
         if name in all_link_names:
             raise ValueError("Link name '%s' already used in chain." % name)
 

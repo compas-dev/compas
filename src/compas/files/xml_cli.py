@@ -41,7 +41,7 @@ import xml.etree.ElementTree as ET
 
 import compas
 
-try:
+if compas.IPY:
     import clr
     clr.AddReference('System.Xml')
 
@@ -56,8 +56,6 @@ try:
 
     CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
                          RegexOptions.Compiled)
-except ImportError:
-    compas.raise_if_ironpython()
 
 
 __all__ = ['CLRXMLTreeParser']
@@ -106,8 +104,8 @@ class CLRXMLTreeParser(ET.XMLParser):
         data : str
             raw XML read from a stream
 
-        Note
-        ----
+        Notes
+        -----
         All *data* across calls to this method are buffered
         internally; the parser itself is not actually created
         until the :meth:`close` method is called.

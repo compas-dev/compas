@@ -157,16 +157,4 @@ def await_callback(async_func, callback_name='callback', errback_name=None, *arg
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    def do_async_stuff(callback):
-        from threading import Thread
-
-        def runner(cb):
-            print('doing async stuff')
-            # ..
-            cb('done')
-
-        Thread(target=runner, args=(callback, )).start()
-
-    result = await_callback(do_async_stuff)
-    print(result)
+    pass

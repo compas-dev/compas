@@ -228,8 +228,8 @@ def create_symlink(source, link_name):
     link_name: str
         Link name.
 
-    Note
-    ----
+    Notes
+    -----
     This function is a polyfill of the native ``os.symlink``
     for Python 2.x on Windows platforms.
     """
@@ -472,6 +472,10 @@ def user_data_dir(appname=None, appauthor=None, version=None, roaming=False):
             else:
                 path = os.path.join(path, appname)
     elif system == 'darwin':
+        path = os.path.expanduser('~/Library/Application Support/')
+        if appname:
+            path = os.path.join(path, appname)
+    elif 'mono' in sys.version.lower():
         path = os.path.expanduser('~/Library/Application Support/')
         if appname:
             path = os.path.join(path, appname)

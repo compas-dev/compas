@@ -35,8 +35,8 @@ def network_find_cycles(network, breakpoints=None):
     diagrams, any vertices where external forces are applied (loads or reactions)
     should be input as breakpoints.
 
-    Warning
-    -------
+    Warnings
+    --------
     This algorithms is essentially a wall follower (a type of maze-solving algorithm).
     It relies on the geometry of the network to be repesented as a planar,
     straight-line embedding. It determines an ordering of the neighboring vertices
@@ -212,14 +212,5 @@ def _break_cycles(cycles, breakpoints):
 
 if __name__ == '__main__':
 
-    import compas
-    from compas.datastructures import Network
-
-    network = Network.from_obj(compas.get('lines.obj'))
-    network = Network.from_lines(network.to_lines())
-
-    network.summary()
-
-    cycles = network_find_cycles(network, network.leaves())
-    for cycle in cycles:
-        print(cycle)
+    import doctest
+    doctest.testmod(globs=globals())

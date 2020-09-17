@@ -1,8 +1,9 @@
 from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from functools import wraps
 
-import compas
 import compas_rhino
 
 from compas.geometry import centroid_polygon
@@ -11,55 +12,50 @@ from compas_rhino.utilities import create_layers_from_path
 from compas_rhino.utilities import clear_layer
 from compas_rhino.utilities import clear_current_layer
 
+from System.Collections.Generic import List
+from System.Drawing.Color import FromArgb
+from System.Enum import ToObject
+
+import rhinoscriptsyntax as rs
+import scriptcontext as sc
+
+from Rhino.Geometry import Point3d
+from Rhino.Geometry import Vector3d
+from Rhino.Geometry import Polyline
+from Rhino.Geometry import PolylineCurve
+from Rhino.Geometry import GeometryBase
+from Rhino.Geometry import Brep
+from Rhino.Geometry import Cylinder
+from Rhino.Geometry import Circle
+from Rhino.Geometry import Plane
+from Rhino.Geometry import PipeCapMode
+from Rhino.Geometry import Curve
+from Rhino.Geometry import Sphere
+from Rhino.Geometry import TextDot
+from Rhino.Geometry import Mesh as RhinoMesh
+from Rhino.DocObjects.ObjectColorSource import ColorFromObject
+from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
+from Rhino.DocObjects.ObjectDecoration import EndArrowhead
+from Rhino.DocObjects.ObjectDecoration import StartArrowhead
+from Rhino.DocObjects.ObjectPlotWeightSource import PlotWeightFromObject
+
+find_object = sc.doc.Objects.Find
+add_point = sc.doc.Objects.AddPoint
+add_line = sc.doc.Objects.AddLine
+add_dot = sc.doc.Objects.AddTextDot
+add_curve = sc.doc.Objects.AddCurve
+add_polyline = sc.doc.Objects.AddPolyline
+add_brep = sc.doc.Objects.AddBrep
+add_sphere = sc.doc.Objects.AddSphere
+add_mesh = sc.doc.Objects.AddMesh
+add_circle = sc.doc.Objects.AddCircle
+
+TOL = sc.doc.ModelAbsoluteTolerance
+
 try:
-    import rhinoscriptsyntax as rs
-    import scriptcontext as sc
-
-    from System.Collections.Generic import List
-    from System.Drawing.Color import FromArgb
-    from System.Enum import ToObject
-
-    from Rhino.Geometry import Point3d
-    from Rhino.Geometry import Vector3d
-    from Rhino.Geometry import Polyline
-    from Rhino.Geometry import PolylineCurve
-    from Rhino.Geometry import GeometryBase
-    from Rhino.Geometry import Brep
-    from Rhino.Geometry import Cylinder
-    from Rhino.Geometry import Circle
-    from Rhino.Geometry import Plane
-    from Rhino.Geometry import PipeCapMode
-    from Rhino.Geometry import Curve
-    from Rhino.Geometry import Sphere
-    from Rhino.Geometry import TextDot
-    from Rhino.Geometry import Mesh as RhinoMesh
-    from Rhino.DocObjects.ObjectColorSource import ColorFromObject
-    from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
-    from Rhino.DocObjects.ObjectDecoration import EndArrowhead
-    from Rhino.DocObjects.ObjectDecoration import StartArrowhead
-    from Rhino.DocObjects.ObjectPlotWeightSource import PlotWeightFromObject
-
-    find_object = sc.doc.Objects.Find
-    add_point = sc.doc.Objects.AddPoint
-    add_line = sc.doc.Objects.AddLine
-    add_dot = sc.doc.Objects.AddTextDot
-    add_curve = sc.doc.Objects.AddCurve
-    add_polyline = sc.doc.Objects.AddPolyline
-    add_brep = sc.doc.Objects.AddBrep
-    add_sphere = sc.doc.Objects.AddSphere
-    add_mesh = sc.doc.Objects.AddMesh
-    add_circle = sc.doc.Objects.AddCircle
-
-    TOL = sc.doc.ModelAbsoluteTolerance
-
-except ImportError:
-    compas.raise_if_ironpython()
-
-else:
-    try:
-        find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
-    except SystemError:
-        find_layer_by_fullpath = None
+    find_layer_by_fullpath = sc.doc.Layers.FindByFullPath
+except SystemError:
+    find_layer_by_fullpath = None
 
 
 __all__ = [
@@ -84,27 +80,21 @@ def wrap_drawfunc(f):
         layer = kwargs.get('layer', None)
         clear = kwargs.get('clear', False)
         redraw = kwargs.get('redraw', True)
-
         if layer:
             if not rs.IsLayer(layer):
                 create_layers_from_path(layer)
             previous = rs.CurrentLayer(layer)
-
         if clear:
             if not layer:
                 clear_current_layer()
             else:
                 clear_layer(layer)
-
         rs.EnableRedraw(False)
         res = f(*args, **kwargs)
-
         if redraw:
             rs.EnableRedraw(True)
-
         if layer:
             rs.CurrentLayer(previous)
-
         return res
     return wrapper
 
@@ -117,25 +107,35 @@ def draw_labels(labels, **kwargs):
     ----------
     labels : list of dict
         A list of labels dictionaries.
-        A label dictionary has the following structure:
 
-        .. code-block:: python
+    Returns
+    -------
+    list of GUID
 
-            {
-                'pos'  : [x, y, z],
-                'text' : '',
-                'name' : ''
-            }
+    Notes
+    -----
+    A label dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'pos': And(list, lambda x: len(x) == 3),
+            'text': And(str, len),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional('fontsize', default=10): Or(int, float),
+            Optional('font', default="Arial Regular"): str
+        })
 
     """
     guids = []
-    for l in iter(labels):
-        pos = l['pos']
-        text = l['text']
-        name = l.get('name', '')
-        color = l.get('color', None)
-        size = l.get('fontsize', 10)
-        font = l.get('font', 'Arial Regular')
+    for label in iter(labels):
+        pos = label['pos']
+        text = label['text']
+        name = label.get('name', '')
+        color = label.get('color', None)
+        size = label.get('fontsize', 10)
+        font = label.get('font', 'Arial Regular')
         dot = TextDot(str(text), Point3d(*pos))
         dot.FontHeight = size
         dot.FontFace = font
@@ -160,6 +160,29 @@ def draw_labels(labels, **kwargs):
 @wrap_drawfunc
 def draw_points(points, **kwargs):
     """Draw points and optionally set individual name, layer, and color properties.
+
+    Parameters
+    ----------
+    labels : list of dict
+        A list of point dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A point dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'pos': And(list, lambda x: len(x) == 3),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str
+        })
+
     """
     guids = []
     for p in iter(points):
@@ -193,16 +216,42 @@ def draw_points(points, **kwargs):
 def draw_lines(lines, **kwargs):
     """Draw lines and optionally set individual name, color, arrow, layer, and
     width properties.
+
+    Parameters
+    ----------
+    labels : list of dict
+        A list of line dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A line dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'start': And(list, lambda x: len(x) == 3),
+            'end': And(list, lambda x: len(x) == 3),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
+            Optional('arrow', default=None): str,
+            Optional('width', default=None): Or(int, float),
+        })
+
     """
     guids = []
-    for l in iter(lines):
-        sp = l['start']
-        ep = l['end']
-        name = l.get('name', '')
-        color = l.get('color')
-        arrow = l.get('arrow')
-        layer = l.get('layer')
-        width = l.get('width')
+    for line in iter(lines):
+        sp = line['start']
+        ep = line['end']
+        name = line.get('name', '')
+        color = line.get('color')
+        arrow = line.get('arrow')
+        layer = line.get('layer')
+        width = line.get('width')
         guid = add_line(Point3d(*sp), Point3d(*ep))
         if not guid:
             continue
@@ -236,6 +285,32 @@ def draw_lines(lines, **kwargs):
 def draw_geodesics(geodesics, **kwargs):
     """Draw geodesic lines on specified surfaces, and optionally set individual
     name, color, arrow, and layer properties.
+
+    Parameters
+    ----------
+    labels : list of dict
+        A list of geodesic dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A geodesic dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'start': And(list, lambda x: len(x) == 3),
+            'end': And(list, lambda x: len(x) == 3),
+            'srf': Or(str, System.Guid),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
+            Optional('arrow', default=None): str,
+        })
+
     """
     guids = []
     for g in iter(geodesics):
@@ -277,6 +352,30 @@ def draw_geodesics(geodesics, **kwargs):
 def draw_polylines(polylines, **kwargs):
     """Draw polylines, and optionally set individual name, color, arrow, and
     layer properties.
+
+    Parameters
+    ----------
+    labels : list of dict
+        A list of polyline dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A polyline dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'points': And(list, lambda x: all(len(point) == 3 for point in x),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
+            Optional('arrow', default=None): str
+        })
+
     """
     guids = []
     for p in iter(polylines):
@@ -317,6 +416,43 @@ def draw_polylines(polylines, **kwargs):
 def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.1, flex=1.0, pull=1.0, **kwargs):
     """Draw polygonal faces as Breps, and optionally set individual name, color,
     and layer properties.
+
+    Parameters
+    ----------
+    faces : list of dict
+        A list of brep dictionaries.
+    srf : GUID, optional
+        A target surface.
+    u : int, optional
+        Default is 10.
+    v : int, optional
+        Default is 10.
+
+    Other Parameters
+    ----------------
+    trim : bool, optional
+    tangency : bool, optional
+    spacing : float, optional
+    flex : float, optional
+    pull : float, optional
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A brep dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'points': And(list, lambda x: len(x) > 3 and all(len(point) == 3 for point in x),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
+        })
+
     """
     guids = []
     for f in iter(faces):
@@ -369,6 +505,34 @@ def draw_breps(faces, srf=None, u=10, v=10, trim=True, tangency=True, spacing=0.
 
 @wrap_drawfunc
 def draw_cylinders(cylinders, cap=False, **kwargs):
+    """Draw cylinders and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    cylinders : list of dict
+        A list of cylinder dictionaries.
+    cap : bool, optional
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A cylinder dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'start': And(list, lambda x: len(x) == 3),
+            'end': And(list, lambda x: len(x) == 3),
+            'radius': And(Or(int, float), lambda x: x > 0.0),
+            Optional('name', default=''): str,
+            Optional('color', default=None): (lambda x: len(x) == 3 and all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
+        })
+
+    """
     guids = []
     for c in iter(cylinders):
         start = c['start']
@@ -415,6 +579,37 @@ def draw_cylinders(cylinders, cap=False, **kwargs):
 
 @wrap_drawfunc
 def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
+    """Draw pipes and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    pipes : list of dict
+        A list of pipe dictionaries.
+
+    Other Parameters
+    ----------------
+    cap : {0, 1, 2}, optional
+    fit : float, optional
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A pipe dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'points': And(list, lambda x: all(len(y) == 3 for y in x)),
+            'radius': And(Or(int, float), lambda x: x > 0.0),
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
+        })
+
+    """
     guids = []
     abs_tol = TOL
     ang_tol = sc.doc.ModelAngleToleranceRadians
@@ -457,6 +652,32 @@ def draw_pipes(pipes, cap=2, fit=1.0, **kwargs):
 
 @wrap_drawfunc
 def draw_spheres(spheres, **kwargs):
+    """Draw spheres and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    spheres : list of dict
+        A list of sphere dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A sphere dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'pos': And(list, lambda x: len(x) == 3),
+            'radius': And(Or(int, float), lambda x: x > 0.0),
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str,
+        })
+
+    """
     guids = []
     for s in iter(spheres):
         pos = s['pos']
@@ -490,18 +711,45 @@ def draw_spheres(spheres, **kwargs):
 
 @wrap_drawfunc
 def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
-    points = []
+    """Draw a mesh and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    vertices : :obj:`list` of point
+        A list of point locations.
+    faces : :obj:`list` of :obj:`list` of :obj:`int`
+        A list of faces as lists of indices into ``vertices``.
+    name : :obj:`str`, optional
+    color : RGB :obj:`tuple`, optional
+    disjoint : :obj:`bool`, optional
+        Draw the mesh with disjoint faces.
+        Default is ``False``.
+
+    Returns
+    -------
+    str or GUID
+
+    """
     mesh = RhinoMesh()
     if disjoint:
-        for keys in faces:
-            i = len(points)
-            facet = [j + i for j in range(len(keys))]
-            for key in keys:
-                point = vertices[key]
-                points.append(point)
-                x, y, z = point
-                mesh.Vertices.Add(x, y, z)
-            mesh.Faces.AddFace(*facet)
+        P = 0
+        for face in faces:
+            f = len(face)
+            if f == 3:
+                mesh.Vertices.Add(* vertices[face[0]])
+                mesh.Vertices.Add(* vertices[face[1]])
+                mesh.Vertices.Add(* vertices[face[2]])
+                mesh.Faces.AddFace(P + 0, P + 1, P + 2)
+                P += 3
+            elif f == 4:
+                mesh.Vertices.Add(* vertices[face[0]])
+                mesh.Vertices.Add(* vertices[face[1]])
+                mesh.Vertices.Add(* vertices[face[2]])
+                mesh.Vertices.Add(* vertices[face[3]])
+                mesh.Faces.AddFace(P + 0, P + 1, P + 2, P + 3)
+                P += 4
+            else:
+                continue
     else:
         for x, y, z in vertices:
             mesh.Vertices.Add(x, y, z)
@@ -526,6 +774,31 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
 
 @wrap_drawfunc
 def draw_faces(faces, **kwargs):
+    """Draw faces as individual meshes and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    faces : list of dict
+        A list of face dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A face dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'points': And(len, lambda x: all(len(y) == 3 for y in x)),
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('vertexcolors', default=None): And(len, lambda x: all(0 <= y <= 255 for y in x)),
+        })
+
+    """
     guids = []
     for face in iter(faces):
         points = face['points'][:]
@@ -576,6 +849,32 @@ def _face_to_max_quad(points, face):
 
 @wrap_drawfunc
 def draw_circles(circles, **kwargs):
+    """Draw circles and optionally set individual name, color, and layer properties.
+
+    Parameters
+    ----------
+    circles : list of dict
+        A list of circle dictionaries.
+
+    Returns
+    -------
+    list of GUID
+
+    Notes
+    -----
+    A circle dict has the following schema:
+
+    .. code-block:: python
+
+        Schema({
+            'plane': lambda x: len(x[0]) == 3 and len(x[1]) == 3,
+            'radius': And(Or(int, float), lambda x: x > 0),
+            Optional('name', default=''): str,
+            Optional('color', default=None): And(lambda x: len(x) == 3, all(0 <= y <= 255 for y in x)),
+            Optional('layer', default=None): str
+        })
+
+    """
     guids = []
     for data in iter(circles):
         point, normal = data['plane']

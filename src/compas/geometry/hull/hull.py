@@ -7,8 +7,6 @@ from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 from compas.geometry import cross_vectors_xy
 
-from compas.geometry import distance_point_point
-
 
 __all__ = [
     'convex_hull',
@@ -45,42 +43,7 @@ def convex_hull(points):
 
     Examples
     --------
-    .. warning::
-
-        This examples only works in Rhino.
-
-    .. code-block:: python
-
-        import math
-        import random
-
-        from compas.geometry import distance_point_point
-        from compas.geometry import convex_hull
-        from compas.datastructures import Mesh
-        from compas_rhino import MeshArtist
-
-        radius = 5
-        origin = (0., 0., 0.)
-        count = 0
-        points = []
-        while count < 1000:
-            x = (random.random() - 0.5) * radius * 2
-            y = (random.random() - 0.5) * radius * 2
-            z = (random.random() - 0.5) * radius * 2
-            pt = x, y, z
-            if distance_point_point(origin, pt) <= radius:
-                points.append(pt)
-                count += 1
-
-        faces =  convex_hull(points)
-
-        mesh = Mesh.from_vertices_and_faces(points, faces)
-
-        artist = MeshArtist(mesh)
-
-        artist.clear()
-        artist.draw_faces()
-        artist.redraw()
+    >>>
 
     """
     def _normal_face(face):
@@ -143,7 +106,7 @@ def convex_hull_xy(points, strict=False):
 
     Examples
     --------
-
+    >>>
 
     """
     def cross(o, a, b):
@@ -193,38 +156,41 @@ def convex_hull_xy(points, strict=False):
 
 if __name__ == "__main__":
 
-    import random
-    from compas.utilities import flatten
-    from compas.datastructures import Mesh
-    from compas_viewers import MeshViewer
-    from compas.topology import unify_cycles
+    # import random
+    # from compas.utilities import flatten
+    # from compas.datastructures import Mesh
+    # from compas_viewers import MeshViewer
+    # from compas.topology import unify_cycles
 
-    radius = 5
-    origin = (0., 0., 0.)
-    count = 0
-    points = []
+    # radius = 5
+    # origin = (0., 0., 0.)
+    # count = 0
+    # points = []
 
-    while count < 1000:
-        x = (random.random() - 0.5) * radius * 2
-        y = (random.random() - 0.5) * radius * 2
-        z = (random.random() - 0.5) * radius * 2
-        pt = x, y, z
+    # while count < 1000:
+    #     x = (random.random() - 0.5) * radius * 2
+    #     y = (random.random() - 0.5) * radius * 2
+    #     z = (random.random() - 0.5) * radius * 2
+    #     pt = x, y, z
 
-        if distance_point_point(origin, pt) <= radius:
-            points.append(pt)
-            count += 1
+    #     if distance_point_point(origin, pt) <= radius:
+    #         points.append(pt)
+    #         count += 1
 
-    faces = convex_hull(points)
-    vertices = list(set(flatten(faces)))
+    # faces = convex_hull(points)
+    # vertices = list(set(flatten(faces)))
 
-    i_index = {i: index for index, i in enumerate(vertices)}
+    # i_index = {i: index for index, i in enumerate(vertices)}
 
-    vertices = [points[index] for index in vertices]
-    faces = [[i_index[i] for i in face] for face in faces]
-    faces = unify_cycles(vertices, faces)
+    # vertices = [points[index] for index in vertices]
+    # faces = [[i_index[i] for i in face] for face in faces]
+    # faces = unify_cycles(vertices, faces)
 
-    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    # mesh = Mesh.from_vertices_and_faces(vertices, faces)
 
-    viewer = MeshViewer()
-    viewer.mesh = mesh
-    viewer.show()
+    # viewer = MeshViewer()
+    # viewer.mesh = mesh
+    # viewer.show()
+
+    import doctest
+    doctest.testmod(globs=globals())

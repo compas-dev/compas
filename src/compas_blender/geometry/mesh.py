@@ -4,7 +4,7 @@ from compas.geometry import add_vectors
 from compas.geometry import distance_point_point
 from compas.geometry import subtract_vectors
 
-from compas_blender.geometry import BlenderGeometry
+from compas_blender.geometry._geometry import BaseBlenderGeometry
 
 
 __all__ = [
@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 
-class BlenderMesh(BlenderGeometry):
+class BlenderMesh(BaseBlenderGeometry):
 
     def __init__(self, obj):
         super().__init__(obj)

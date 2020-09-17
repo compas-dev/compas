@@ -22,7 +22,7 @@ from compas.geometry import centroid_polygon
 from compas.geometry import cross_vectors
 from compas.geometry import distance_point_plane
 from compas.geometry import distance_point_point
-from compas.geometry import flatness
+from compas.geometry import distance_line_line
 from compas.geometry import length_vector
 from compas.geometry import normal_polygon
 from compas.geometry import normalize_vector
@@ -84,6 +84,7 @@ class BaseMesh(HalfEdge):
 
     Examples
     --------
+    >>> from compas.datastructures import Mesh
     >>> mesh = Mesh.from_polyhedron(6)
     >>> V = mesh.number_of_vertices()
     >>> E = mesh.number_of_edges()
@@ -92,8 +93,6 @@ class BaseMesh(HalfEdge):
     True
 
     """
-
-    __module__ = 'compas.datastructures'
 
     def __init__(self):
         super(BaseMesh, self).__init__()
@@ -128,8 +127,8 @@ class BaseMesh(HalfEdge):
         Mesh
             A mesh object.
 
-        Note
-        ----
+        Notes
+        -----
         There are a few sample files available for testing and debugging:
 
         * faces.obj
@@ -154,7 +153,7 @@ class BaseMesh(HalfEdge):
             lines = [(vertices[u], vertices[v], 0) for u, v in edges]
             return cls.from_lines(lines)
 
-    def to_obj(self, filepath, precision=None, **kwargs):
+    def to_obj(self, filepath, precision=None, unweld=False, **kwargs):
         """Write the mesh to an OBJ file.
 
         Parameters
@@ -163,18 +162,18 @@ class BaseMesh(HalfEdge):
             Full path of the file.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
+        unweld : bool, optional
+            If true, all faces have their own unique vertices.
+            If false, vertices are shared between faces if this is also the case in the mesh.
+            Default is ``False``.
 
-        Warning
-        -------
-        Currently this function only writes geometric data about the vertices and
-        the faces to the file.
-
-        Examples
+        Warnings
         --------
-        >>>
+        This function only writes geometric data about the vertices and
+        the faces to the file.
         """
         obj = OBJ(filepath, precision=precision)
-        obj.write(self, **kwargs)
+        obj.write(self, unweld=unweld, **kwargs)
 
     @classmethod
     def from_ply(cls, filepath, precision=None):
@@ -190,20 +189,9 @@ class BaseMesh(HalfEdge):
         Mesh :
             A mesh object.
 
-        Note
-        ----
-        There are a few sample files available for testing and debugging:
-
-        * bunny.ply
-
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-
-            mesh = Mesh.from_obj(compas.get('bunny.ply'))
+        >>>
 
         """
         ply = PLY(filepath)
@@ -243,13 +231,6 @@ class BaseMesh(HalfEdge):
         Mesh :
             A mesh object.
 
-        Note
-        ----
-        There are a few sample files available for testing and debugging:
-
-        * cube_ascii.stl
-        * cube_binary.stl
-
         Examples
         --------
         >>>
@@ -260,8 +241,31 @@ class BaseMesh(HalfEdge):
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
-    def to_stl(self, filepath):
-        raise NotImplementedError
+    def to_stl(self, filepath, precision=None, **kwargs):
+        """Write a mesh to an STL file.
+
+        Parameters
+        ----------
+        filepath : str
+            The path to the file.
+        precision : str, optional
+            Rounding precision for the vertex coordinates.
+            Default is ``"3f"``.
+
+        Returns
+        -------
+        None
+
+        Notes
+        -----
+        STL files only support triangle faces.
+        However, the writer does not perform any checks
+        and will just treat every face as a triangle.
+        It is your responsibility to convert all faces of your mesh to triangles.
+        For example, with :func:`compas.datastructures.mesh_quads_to_triangles`.
+        """
+        stl = STL(filepath, precision)
+        stl.write(self, **kwargs)
 
     @classmethod
     def from_off(cls, filepath):
@@ -438,8 +442,8 @@ class BaseMesh(HalfEdge):
 
             Each face is a list of indices referencing the list of vertex coordinates.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
         """
         key_index = self.key_index()
@@ -645,6 +649,55 @@ class BaseMesh(HalfEdge):
             return w, fkeys
         return w
 
+    def join(self, other):
+        """Add the vertices and faces of another mesh to the current mesh.
+
+        Parameters
+        ----------
+        other : compas.datastructures.Mesh
+            The other mesh.
+
+        Returns
+        -------
+        None
+            The mesh is modified in place.
+
+        Examples
+        --------
+        >>> from compas.geometry import Box
+        >>> from compas.geometry import Translation
+        >>> from compas.datastructures import Mesh
+        >>> a = Box.from_width_height_depth(1, 1, 1)
+        >>> b = Box.from_width_height_depth(1, 1, 1)
+        >>> T = Translation([2, 0, 0])
+        >>> b.transform(T)
+        >>> a = Mesh.from_shape(a)
+        >>> b = Mesh.from_shape(b)
+        >>> a.number_of_vertices()
+        8
+        >>> a.number_of_faces()
+        6
+        >>> b.number_of_vertices()
+        8
+        >>> b.number_of_faces()
+        6
+        >>> a.join(b)
+        >>> a.number_of_vertices()
+        16
+        >>> a.number_of_faces()
+        12
+        """
+        self.default_vertex_attributes.update(other.default_vertex_attributes)
+        self.default_edge_attributes.update(other.default_edge_attributes)
+        self.default_face_attributes.update(other.default_face_attributes)
+        vertex_old_new = {}
+        for vertex, attr in other.vertices(True):
+            key = self.add_vertex(attr_dict=attr)
+            vertex_old_new[vertex] = key
+        for face, attr in other.faces(True):
+            vertices = [vertex_old_new[key] for key in other.face_vertices(face)]
+            self.add_face(vertices, attr_dict=attr)
+
     # --------------------------------------------------------------------------
     # accessors
     # --------------------------------------------------------------------------
@@ -768,8 +821,8 @@ class BaseMesh(HalfEdge):
         float
             The tributary are.
 
-        Example
-        -------
+        Examples
+        --------
         >>>
 
         """
@@ -1078,32 +1131,39 @@ class BaseMesh(HalfEdge):
         """
         return area_polygon(self.face_coordinates(fkey))
 
-    def face_flatness(self, fkey):
+    def face_flatness(self, fkey, maxdev=0.02):
         """Compute the flatness of the mesh face.
 
         Parameters
         ----------
         fkey : int
             The identifier of the face.
+        maxdev : float, optional
+            A maximum value for the allowed deviation from flatness.
+            Default is ``0.02``.
 
         Returns
         -------
         float
             The flatness.
 
-        Note
-        ----
+        Notes
+        -----
         Flatness is computed as the ratio of the distance between the diagonals
         of the face to the average edge length. A practical limit on this value
         realted to manufacturing is 0.02 (2%).
 
-        Warning
-        -------
+        Warnings
+        --------
         This method only makes sense for quadrilateral faces.
         """
-        vertices = self.face_coordinates(fkey)
-        face = range(len(self.face_vertices(fkey)))
-        return flatness(vertices, [face])[0]
+        vertices = self.face_vertices(fkey)
+        f = len(vertices)
+        points = self.vertices_attributes('xyz', keys=vertices)
+        lengths = [distance_point_point(a, b) for a, b in pairwise(points + points[:1])]
+        length = sum(lengths) / f
+        d = distance_line_line((points[0], points[2]), (points[1], points[3]))
+        return (d / length) / maxdev
 
     def face_aspect_ratio(self, fkey):
         """Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.
@@ -1196,8 +1256,8 @@ class BaseMesh(HalfEdge):
         list
             The vertices of the boundary.
 
-        Warning
-        -------
+        Warnings
+        --------
         If the vertices are requested in order, and the mesh has multiple borders,
         currently only the vertices of one of the borders will be returned.
 
@@ -1326,21 +1386,5 @@ class BaseMesh(HalfEdge):
 
 if __name__ == '__main__':
 
-    import compas
-    from compas.datastructures import Mesh
-    from compas_plotters import MeshPlotter
-
-    mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-
-    edges = mesh.edges_on_boundary()
-    print(len(edges))
-    faces = mesh.faces_on_boundary()
-    print(len(faces))
-
-    plotter = MeshPlotter(mesh, figsize=(8, 5))
-
-    plotter.draw_vertices()
-    plotter.draw_faces(text='key')
-    plotter.draw_edges()
-
-    plotter.show()
+    import doctest
+    doctest.testmod(globs=globals())

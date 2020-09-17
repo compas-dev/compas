@@ -1,4 +1,11 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import math
+
+
+__all__ = ['tangent_points_to_circle_xy']
 
 
 def tangent_points_to_circle_xy(circle, point):
@@ -40,7 +47,12 @@ def tangent_points_to_circle_xy(circle, point):
     return p1, p2
 
 
+# ==============================================================================
+# Main
+# ==============================================================================
+
 if __name__ == "__main__":
+
     import doctest
     from compas.geometry import Point    # noqa: F401
     doctest.testmod(globs=globals())

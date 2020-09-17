@@ -9,7 +9,7 @@ and several additional packages for integration of the core into CAD software
 (:mod:`compas_rhino`, :mod:`compas_ghpython`, :mod:`compas_blender`).
 The core package defines all *real* functionality.
 The CAD packages simply provide a unified framework for processing,
-visualising and interacting with datastructures and geometrical objects, and for
+visualizing and interacting with datastructures and geometrical objects, and for
 building user interfaces in different CAD software.
 
 
@@ -29,7 +29,7 @@ CAD-based ecosystem.
 CAD integration
 ===============
 
-In the context of this framework CAD tools are obviously indispensible
+In the context of this framework CAD tools are obviously indispensable
 tools to construct and manipulate geometry, apply constraints interactively, make
 user interfaces, or even just to use as viewer for running scripts. The CAD helper
 packages (:mod:`compas_rhino`, :mod:`compas_ghpython`, :mod:`compas_blender`) provide
@@ -48,7 +48,7 @@ Table of Contents
    gettingstarted
    tutorial
    api
-   changelog
    devguide
+   changelog
    license
    citing
