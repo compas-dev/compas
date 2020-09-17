@@ -89,7 +89,7 @@
 <h1 class="display-4 p-0 mb-5">Proxy</h1>
 <dl class="class">
 <dt id="compas.rpc.Proxy">
-<em class="property">class </em><code class="sig-prename descclassname">compas.rpc.</code><code class="sig-name descname">Proxy</code><span class="sig-paren">(</span><em class="sig-param">package=None</em>, <em class="sig-param">python=None</em>, <em class="sig-param">url='http://127.0.0.1'</em>, <em class="sig-param">port=1753</em>, <em class="sig-param">service=None</em>, <em class="sig-param">max_conn_attempts=100</em>, <em class="sig-param">autoreload=True</em>, <em class="sig-param">capture_output=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/rpc/proxy.html#Proxy"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas.rpc.</code><code class="sig-name descname">Proxy</code><span class="sig-paren">(</span><em class="sig-param">package=None</em>, <em class="sig-param">python=None</em>, <em class="sig-param">url='http://127.0.0.1'</em>, <em class="sig-param">port=1753</em>, <em class="sig-param">service=None</em>, <em class="sig-param">max_conn_attempts=100</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/rpc/proxy.html#Proxy"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Create a proxy object as intermediary between client code and remote functionality.</p>
 <p>This class is a context manager, so when used in a <code class="docutils literal notranslate"><span class="pre">with</span></code> statement,
@@ -99,20 +99,15 @@ saving start up time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>package</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>:, optional) – The base package for the requested functionality.
+<li><p><strong>package</strong> (<em>string, optional</em>) – The base package for the requested functionality.
 Default is <cite>None</cite>, in which case a full path to function calls should be provided.</p></li>
-<li><p><strong>python</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>:, optional) – The python executable that should be used to execute the code.
+<li><p><strong>python</strong> (<em>string, optional</em>) – The python executable that should be used to execute the code.
 Default is <code class="docutils literal notranslate"><span class="pre">'pythonw'</span></code>.</p></li>
-<li><p><strong>url</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>:, optional) – The server address.
+<li><p><strong>url</strong> (<em>string, optional</em>) – The server address.
 Default is <code class="docutils literal notranslate"><span class="pre">'http://127.0.0.1'</span></code>.</p></li>
-<li><p><strong>port</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>:, optional) – The port number on the remote server.
+<li><p><strong>port</strong> (<em>int, optional</em>) – The port number on the remote server.
 Default is <code class="docutils literal notranslate"><span class="pre">1753</span></code>.</p></li>
-<li><p><strong>service</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>:, package name to start server.) – Default is <code class="docutils literal notranslate"><span class="pre">'compas.rpc.services.default'</span></code>.</p></li>
 <li><p><strong>max_conn_attempts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, optional) – Amount of attempts to connect to RPC server before time out.</p></li>
-<li><p><strong>autoreload</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <code class="docutils literal notranslate"><span class="pre">True</span></code> to automatically reload the proxied package if changes are detected.) – This is particularly useful during development. The server will monitor changes to the files
-that were loaded as a result of accessing the specified <cite>package</cite> and if any change is detected,
-it will unload the module, so that the next invocation uses a fresh version.</p></li>
-<li><p><strong>capture_output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, <code class="docutils literal notranslate"><span class="pre">True</span></code> to capture the stdout/stderr output of the remote process, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>.) – In general, <code class="docutils literal notranslate"><span class="pre">capture_output</span></code> should be <code class="docutils literal notranslate"><span class="pre">True</span></code> when using a <code class="docutils literal notranslate"><span class="pre">pythonw</span></code> as executable (default).</p></li>
 </ul>
 </dd>
 </dl>
