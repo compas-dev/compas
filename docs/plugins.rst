@@ -29,4 +29,48 @@ Category: ``install``
 
     installable_rhino_packages
 
+Category: ``intersections``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. currentmodule:: compas.geometry
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    intersection_mesh_mesh
+
+Category: ``meshing``
+^^^^^^^^^^^^^^^^^^^^^
+
+.. currentmodule:: compas.geometry
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    remesh
+    remesh_constrained
+
+Category: ``slicing``
+^^^^^^^^^^^^^^^^^^^^^
+
+.. currentmodule:: compas.geometry
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    slice_mesh
+
+Category: ``triangulation``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. currentmodule:: compas.geometry
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    delaunay_triangulation
+    constrained_delaunay_triangulation
+    conforming_delaunay_triangulation
+
+
 Check out the developer guide to :ref:`plugins` for additional details.
