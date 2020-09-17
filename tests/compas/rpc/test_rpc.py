@@ -5,14 +5,12 @@ from compas.rpc import Proxy
 
 
 def test_basic_rpc_call():
-    python_exec = os.environ.get('TRAVIS_RPC_PYTHON_EXE')
-    with Proxy('numpy', python=python_exec) as p:
-        assert p.arange(20) == list(range(20))
+    with Proxy('numpy', python='python') as proxy:
+        assert proxy.arange(20) == list(range(20))
 
 
 def test_switch_package():
-    python_exec = os.environ.get('TRAVIS_RPC_PYTHON_EXE')
-    with Proxy('numpy', python=python_exec) as proxy:
+    with Proxy('numpy', python='python') as proxy:
 
         A = proxy.array([[1, 2], [3, 4]])
 
