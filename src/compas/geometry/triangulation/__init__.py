@@ -23,8 +23,7 @@ def delaunay_triangulation(points):
     Returns
     -------
     (list, list)
-        * The vertices of the triangulation.
-        * The faces of the triangulation.
+        The vertices of the triangulation, and the faces of the triangulation.
 
     Examples
     --------
@@ -49,9 +48,8 @@ def constrained_delaunay_triangulation(boundary, polylines=None, polygons=None):
 
     Returns
     -------
-    tuple
-        * The vertices of the triangulation.
-        * The faces of the triangulation.
+    (list, list)
+        The vertices of the triangulation, and the faces of the triangulation.
 
     Notes
     -----
@@ -89,9 +87,8 @@ def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, a
 
     Returns
     -------
-    tuple
-        * The vertices of the triangulation.
-        * The faces of the triangulation.
+    (list, list)
+        The vertices of the triangulation, and the faces of the triangulation.
 
     Examples
     --------
