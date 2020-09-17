@@ -27,7 +27,7 @@ def boolean_union_mesh_mesh(A, B):
     tuple
         The vertices and the faces of the boolean union.
     """
-    pass
+    raise NotImplementedError
 
 
 @pluggable(category='booleans')
@@ -46,7 +46,7 @@ def boolean_difference_mesh_mesh(A, B):
     tuple
         The vertices and the faces of the boolean difference.
     """
-    pass
+    raise NotImplementedError
 
 
 @pluggable(category='booleans')
@@ -65,4 +65,4 @@ def boolean_intersection_mesh_mesh(A, B):
     tuple
         The vertices and the faces of the boolean intersection.
     """
-    pass
+    raise NotImplementedError

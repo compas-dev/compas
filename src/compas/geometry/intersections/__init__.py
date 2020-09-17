@@ -23,7 +23,7 @@ def intersection_mesh_mesh(A, B):
         The intersection polylines as arrays of points.
 
     """
-    pass
+    raise NotImplementedError
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

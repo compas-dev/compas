@@ -30,7 +30,7 @@ def delaunay_triangulation(points):
     >>>
 
     """
-    pass
+    raise NotImplementedError
 
 
 @pluggable(category="triangulation")
@@ -95,7 +95,7 @@ def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, a
     >>>
 
     """
-    pass
+    raise NotImplementedError
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
