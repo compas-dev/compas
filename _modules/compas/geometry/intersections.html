@@ -110,6 +110,35 @@
     <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 
+<div class="viewcode-block" id="intersection_ray_mesh"><a class="viewcode-back" href="../../../generated/compas.geometry.intersection_ray_mesh.html#compas.geometry.intersection_ray_mesh">[docs]</a><span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;intersections&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">intersection_ray_mesh</span><span class="p">(</span><span class="n">ray</span><span class="p">,</span> <span class="n">mesh</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the intersection(s) between a ray and a mesh.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ray : tuple of point and vector</span>
+<span class="sd">        A ray represented by a point and a direction vector.</span>
+<span class="sd">    mesh : tuple of vertices and faces</span>
+<span class="sd">        A mesh represented by a list of vertices and a list of faces.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of tuple</span>
+<span class="sd">        Per intersection of the ray with the mesh:</span>
+
+<span class="sd">        0. the index of the intersected face</span>
+<span class="sd">        1. the u coordinate of the intersection in the barycentric coordinates of the face</span>
+<span class="sd">        2. the u coordinate of the intersection in the barycentric coordinates of the face</span>
+<span class="sd">        3. the distance between the ray origin and the hit</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
 </code></pre></div>
         
