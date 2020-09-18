@@ -14,9 +14,8 @@ def quadmesh_planarize(M, kmax=500, maxdev=0.005):
 
     Parameters
     ----------
-    M : tuple or :class:`compas.datastructures.Mesh`
-        A quad mesh represented by a list of vertices and a list of faces
-        or by a COMPAS mesh object.
+    M : (list, list)
+        A quad mesh represented by a list of vertices and a list of faces.
     kmax : int, optional
         The maximum number of iterations.
         Default is ``500``.

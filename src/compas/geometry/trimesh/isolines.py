@@ -26,9 +26,8 @@ def trimesh_isolines(M, S, N=50):
 
     Returns
     -------
-    tuple
-        0. The coordinates of the polyline segments representing the isolines.
-        1. The segments of the polylines.
+    (list, list)
+        The coordinates of the polyline points and the segments of the polylines defined as pairs of points.
 
     Examples
     --------

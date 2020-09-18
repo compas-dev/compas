@@ -17,9 +17,9 @@ def boolean_union_mesh_mesh(A, B):
 
     Parameters
     ----------
-    A : tuple
+    A : (list, list)
         The vertices and faces of mesh A.
-    B : tuple
+    B : (list, list)
         The vertices and faces of mesh B.
 
     Returns
@@ -36,9 +36,9 @@ def boolean_difference_mesh_mesh(A, B):
 
     Parameters
     ----------
-    A : tuple
+    A : (list, list)
         The vertices and faces of mesh A.
-    B : tuple
+    B : (list, list)
         The vertices and faces of mesh B.
 
     Returns
@@ -55,9 +55,9 @@ def boolean_intersection_mesh_mesh(A, B):
 
     Parameters
     ----------
-    A : tuple
+    A : (list, list)
         The vertices and faces of mesh A.
-    B : tuple
+    B : (list, list)
         The vertices and faces of mesh B.
 
     Returns
