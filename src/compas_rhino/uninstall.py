@@ -112,7 +112,7 @@ def _filter_installed_packages(version, packages):
 
         # No info, fall back to installable packages list
         if packages is None:
-            packages = itertools.chain.from_iterable(installable_rhino_packages())
+            packages = list(itertools.chain.from_iterable(installable_rhino_packages()))
 
     # Handle legacy install
     legacy_bootstrapper = compas_rhino._get_bootstrapper_path(ipylib_path)
