@@ -5,13 +5,11 @@ from __future__ import division
 from compas.plugins import pluggable
 
 
-__all__ = [
-    'slice_mesh'
-]
+__all__ = ['trimesh_slice']
 
 
-@pluggable(category='slicing')
-def slice_mesh(mesh, planes):
+@pluggable(category='trimesh')
+def trimesh_slice(mesh, planes):
     """Slice a mesh by a list of planes.
 
     Parameters

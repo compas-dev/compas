@@ -7,6 +7,7 @@ customize and extend the functionality of the core framework.
 
 The following **extension points** are currently defined:
 
+
 Category: ``booleans``
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -19,6 +20,7 @@ Category: ``booleans``
     boolean_difference_mesh_mesh
     boolean_intersection_mesh_mesh
 
+
 Category: ``install``
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -29,6 +31,7 @@ Category: ``install``
 
     installable_rhino_packages
 
+
 Category: ``intersections``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -38,27 +41,19 @@ Category: ``intersections``
     :nosignatures:
 
     intersection_mesh_mesh
+    intersection_ray_mesh
 
-Category: ``meshing``
-^^^^^^^^^^^^^^^^^^^^^
 
-.. currentmodule:: compas.geometry
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    remesh
-    remesh_constrained
-
-Category: ``slicing``
-^^^^^^^^^^^^^^^^^^^^^
+Category: ``quadmesh``
+^^^^^^^^^^^^^^^^^^^^^^
 
 .. currentmodule:: compas.geometry
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    slice_mesh
+    quadmesh_planarize
+
 
 Category: ``triangulation``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -71,6 +66,26 @@ Category: ``triangulation``
     delaunay_triangulation
     constrained_delaunay_triangulation
     conforming_delaunay_triangulation
+
+
+Category: ``trimesh``
+^^^^^^^^^^^^^^^^^^^^^
+
+.. currentmodule:: compas.geometry
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    trimesh_gaussian_curvature
+    trimesh_principal_curvature
+    trimesh_geodistance
+    trimesh_isolines
+    trimesh_massmatrix
+    trimesh_harmonic
+    trimesh_lscm
+    trimesh_remesh
+    trimesh_remesh_constrained
+    trimesh_slice
 
 
 Check out the developer guide to :ref:`plugins` for additional details.

@@ -6,13 +6,14 @@ from compas.plugins import pluggable
 
 
 __all__ = [
-    'remesh',
-    'remesh_constrained'
+    'trimesh_remesh',
+    'trimesh_remesh_constrained',
+    'trimesh_remesh_along_isoline',
 ]
 
 
-@pluggable(category='meshing')
-def remesh(mesh, target_edge_length, number_of_iterations=10, do_project=True):
+@pluggable(category='trimesh')
+def trimesh_remesh(mesh, target_edge_length, number_of_iterations=10, do_project=True):
     """Remeshing of a triangle mesh.
 
     Parameters
@@ -42,8 +43,8 @@ def remesh(mesh, target_edge_length, number_of_iterations=10, do_project=True):
     raise NotImplementedError
 
 
-@pluggable(category='meshing')
-def remesh_constrained(mesh, target_edge_length, protected_edges, number_of_iterations=10, do_project=True):
+@pluggable(category='trimesh')
+def trimesh_remesh_constrained(mesh, target_edge_length, protected_edges, number_of_iterations=10, do_project=True):
     """Constrained remeshing of a triangle mesh.
 
     Parameters
@@ -65,6 +66,33 @@ def remesh_constrained(mesh, target_edge_length, protected_edges, number_of_iter
     -------
     list
         The vertices and faces of the new mesh.
+
+    """
+    raise NotImplementedError
+
+
+@pluggable(category='trimesh')
+def trimesh_remesh_along_isoline(mesh, scalarfield, scalar):
+    """Remesh a mesh along an isoline of a scalarfield over the vertices.
+
+    Parameters
+    ----------
+    mesh : tuple or :class:`compas.datastructures.Mesh`
+        A mesh represented by a list of vertices and a list of faces
+        or a COMPAS mesh object.
+    scalarfield : list or array of float
+        A scalar value per vertex of the mesh.
+    scalar : float
+        A value within the range of the scalarfield.
+
+    Returns
+    -------
+    tuple
+        Vertices and faces of the remeshed mesh.
+
+    Examples
+    --------
+    >>>
 
     """
     raise NotImplementedError

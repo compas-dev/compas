@@ -401,15 +401,14 @@ from .collections import *  # noqa: F401 F403
 
 from .bbox import *  # noqa: F401 F403
 from .bestfit import *  # noqa: F401 F403
+from .booleans import *  # noqa: F401 F403
 from .hull import *  # noqa: F401 F403
 from .icp import *  # noqa: F401 F403
 from .interpolation import *  # noqa: F401 F403
 from .offset import *  # noqa: F401 F403
+from .quadmesh import *  # noqa: F401 F403
 from .triangulation import *  # noqa: F401 F403
-
-from .booleans import *  # noqa: F401 F403
-from .meshing import *  # noqa: F401 F403
-from .slicing import *  # noqa: F401 F403
+from .trimesh import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
