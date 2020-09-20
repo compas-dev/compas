@@ -344,7 +344,7 @@
 
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">halfface</span><span class="p">:</span>
             <span class="n">attr</span> <span class="o">=</span> <span class="n">face_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">halfface</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">fkey</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_halfface</span><span class="p">(</span><span class="n">halfface</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">fkey</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">:</span>
             <span class="n">attr</span> <span class="o">=</span> <span class="n">cell_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -420,7 +420,7 @@
 <span class="sd">        int</span>
 <span class="sd">            The identifier of the vertex of the face.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">vertex_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps vertex dictionary keys to the</span>
@@ -493,8 +493,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">key</span>
 
-    <span class="c1"># add halfface?</span>
-    <span class="k">def</span> <span class="nf">add_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">add_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">fkey</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add a face to the volmesh object.</span>
 
 <span class="sd">        Parameters</span>
@@ -611,8 +610,8 @@
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">attr</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cell_attribute</span><span class="p">(</span><span class="n">ckey</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
-            <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
-            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+            <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_halfface</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
                 <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
@@ -657,7 +656,7 @@
         <span class="n">cell_vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_vertices</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
         <span class="n">cell_faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">cell_faces</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
                 <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">:</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">[</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">]</span>
@@ -667,7 +666,7 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_cells</span><span class="p">(</span><span class="n">vertex</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">cell_faces</span><span class="p">:</span>
-            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">):</span>
                 <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="n">v</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
@@ -769,7 +768,7 @@
                 <span class="k">yield</span> <span class="n">face</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_attributes</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;Iterate over the half-faces of the volmesh and yield faces.</span>
+        <span class="sd">&quot;&quot;&quot;&quot;Iterate over the halffaces of the volmesh and yield faces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -793,7 +792,7 @@
         <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">:</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))))</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))))</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
                 <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
                 <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
@@ -829,7 +828,6 @@
     <span class="k">def</span> <span class="nf">edges_where</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="c1"># faces or halffaces?</span>
     <span class="k">def</span> <span class="nf">faces_where</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
@@ -1279,7 +1277,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))))</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))))</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1312,7 +1310,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))))</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))))</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
 
@@ -1344,7 +1342,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))))</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))))</span>
         <span class="k">if</span> <span class="n">values</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">:</span>
@@ -1753,7 +1751,7 @@
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">vertex_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return all half-faces connected to a vertex.</span>
+        <span class="sd">&quot;&quot;&quot;Return all halffaces connected to a vertex.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1763,41 +1761,17 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
-<span class="sd">            The list of faces connected to a vertex.</span>
+<span class="sd">            The list of halffaces connected to a vertex.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_cells</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
         <span class="n">nbrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">halffaces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">vertex</span><span class="p">]:</span>
-                    <span class="n">faces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">vertex</span><span class="p">][</span><span class="n">nbr</span><span class="p">])</span>
-                    <span class="n">faces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">nbr</span><span class="p">][</span><span class="n">vertex</span><span class="p">])</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">vertex_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Return all faces connected to a vertex.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        vertex : int</span>
-<span class="sd">            The identifier of the vertex.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list</span>
-<span class="sd">            The list of faces connected to a vertex.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_halffaces</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
-        <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">halffaces</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
-                <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-                <span class="n">opposite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_opposite_face</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-                <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-                <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">opposite</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">faces</span>
+                    <span class="n">halffaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">vertex</span><span class="p">][</span><span class="n">nbr</span><span class="p">])</span>
+                    <span class="n">halffaces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">nbr</span><span class="p">][</span><span class="n">vertex</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">halffaces</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">vertex_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return all cells connected to a vertex.</span>
@@ -1833,9 +1807,9 @@
 <span class="sd">            True if the vertex is on the boundary.</span>
 <span class="sd">            False otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_face_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+        <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_halffaces</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="n">halffaces</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_halfface_on_boundary</span><span class="p">(</span><span class="n">halfface</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -1860,7 +1834,7 @@
         <span class="k">return</span> <span class="n">edge</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">edge_halffaces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Ordered half-faces around edge (u, v).</span>
+        <span class="sd">&quot;&quot;&quot;Ordered halffaces around edge (u, v).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1870,56 +1844,23 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
-<span class="sd">            Ordered list of of keys identifying the faces.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        The faces are ordered around the edge (u, v).</span>
-<span class="sd">        All faces returned should have halfedge (u, v) or (v, u).</span>
-<span class="sd">        This also means that if edge u-v is shared by four cells, eight faces are returned.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
-        <span class="n">cells</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_cells</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
-            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">])</span>
-            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">faces</span>
-
-    <span class="k">def</span> <span class="nf">edge_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Ordered faces around edge (u, v).</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        edge : tuple of int</span>
-<span class="sd">            The identifier of the edge.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list</span>
-<span class="sd">            Ordered list of of keys identifying faces.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        The faces are ordered around the edge (u, v).</span>
-<span class="sd">        All faces returned should have halfedge (u, v).</span>
-<span class="sd">        This also means that if edge u-v is shared by four cells, four faces are returned.</span>
+<span class="sd">            Ordered list of halfface identifiers.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
         <span class="n">cells</span> <span class="o">=</span> <span class="p">[</span><span class="n">cell</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="n">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">halffaces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_edge_on_boundary</span><span class="p">(</span><span class="n">edge</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">cells</span><span class="p">:</span>
-                <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_face_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+                <span class="n">halfface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_halfface_on_boundary</span><span class="p">(</span><span class="n">halfface</span><span class="p">):</span>
                     <span class="k">break</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">)):</span>
-            <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertex_descendent</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="n">halfface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertex_descendent</span><span class="p">(</span><span class="n">halfface</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
             <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
-            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">faces</span>
+            <span class="n">halffaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">halffaces</span>
 
     <span class="k">def</span> <span class="nf">edge_cells</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ordered cells around edge (u, v).</span>
@@ -1934,8 +1875,8 @@
 <span class="sd">        list</span>
 <span class="sd">            Ordered list of keys identifying the ordered cells.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_faces</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">face_cell</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+        <span class="n">halffaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_halffaces</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span> <span class="k">for</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="n">halffaces</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">is_edge_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verify that an edge is on the boundary.</span>
@@ -1957,22 +1898,19 @@
 <span class="sd">        The direction u-v does not matter.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">edge</span>
-        <span class="c1"># if not self.has_edge(edge):</span>
-        <span class="c1">#     v, u = edge</span>
         <span class="k">return</span> <span class="kc">None</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># face topology</span>
+    <span class="c1"># halfface topology</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="c1"># has_halfface ?</span>
-    <span class="k">def</span> <span class="nf">has_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">has_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verify that a face is part of the volmesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        face : int</span>
-<span class="sd">            The identifier of the face.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1980,66 +1918,78 @@
 <span class="sd">            True if the face exists.</span>
 <span class="sd">            False otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span>
+        <span class="k">return</span> <span class="n">halfface</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span>
 
-    <span class="c1"># halfface_vertices ?</span>
-    <span class="k">def</span> <span class="nf">face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The vertices of a face.</span>
+    <span class="k">def</span> <span class="nf">halfface_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The vertices of a halfface.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        face : int</span>
-<span class="sd">            The identifier of the face.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            Ordered vertex identifiers.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]</span>
 
-    <span class="c1"># halfface_halfedges ?</span>
-    <span class="k">def</span> <span class="nf">face_halfedges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The halfedges of a face.</span>
+    <span class="k">def</span> <span class="nf">halfface_halfedges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The halfedges of a halfface.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        face : int</span>
-<span class="sd">            The identifier of the face.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
-<span class="sd">            The halfedges of a face.</span>
+<span class="sd">            The halfedges of a halfface.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">vertices</span> <span class="o">+</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]))</span>
 
-    <span class="c1"># halfface_cell ?</span>
-    <span class="k">def</span> <span class="nf">face_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The cell to which the face belongs to.</span>
+    <span class="k">def</span> <span class="nf">halfface_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The cell to which the halfface belongs to.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        face : int</span>
-<span class="sd">            The identifier of the face.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ckey</span>
 <span class="sd">            Identifier of the cell.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">w</span><span class="p">]</span>
 
-    <span class="c1"># halfface_opposite_halfface ?</span>
-    <span class="k">def</span> <span class="nf">face_opposite_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_opposite_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The cell to which the opposite halfface belongs to.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ckey</span>
+<span class="sd">            Identifier of the cell.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">halfface_opposite_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The opposite face of a face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        face : int</span>
-<span class="sd">            The identifier of the face.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2051,54 +2001,48 @@
 <span class="sd">        A face and its opposite face share the same vertices, but in reverse order.</span>
 <span class="sd">        For a boundary face, the opposite face is None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
         <span class="n">nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">nbr</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">nbr</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
 
-    <span class="c1"># def face_adjacent_face(self, face, edge):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return the face adjacent to a face across the halfedge edge.</span>
+    <span class="c1"># def halfface_adjacent_halfface(self, halfface, halfedge):</span>
+    <span class="c1">#     &quot;&quot;&quot;Return the halfface adjacent to the halfface across the halfedge.</span>
 
     <span class="c1">#     Parameters</span>
     <span class="c1">#     ----------</span>
-    <span class="c1">#     face : int</span>
-    <span class="c1">#         The identifier of the face.</span>
-    <span class="c1">#     edge : tuple of int</span>
-    <span class="c1">#         The identifier of the common edge.</span>
+    <span class="c1">#     halfface : int</span>
+    <span class="c1">#         The identifier of the halfface.</span>
+    <span class="c1">#     halfedge : tuple of int</span>
+    <span class="c1">#         The identifier of the halfedge.</span>
 
     <span class="c1">#     Returns</span>
     <span class="c1">#     -------</span>
     <span class="c1">#     int or None</span>
-    <span class="c1">#         The identifier of the face.</span>
-    <span class="c1">#         None, if both faces belong to the same cell.</span>
+    <span class="c1">#         The identifier of the halfface.</span>
 
     <span class="c1">#     Notes</span>
     <span class="c1">#     -----</span>
     <span class="c1">#     The adjacent face belongs a to one of the cell neighbors over faces of the initial cell.</span>
     <span class="c1">#     A face and its adjacent face share two common vertices.</span>
     <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     u, v = edge</span>
-    <span class="c1">#     if (u, v) not in self.face_halfedges(face):</span>
-    <span class="c1">#         if (v, u) not in self.face_halfedges(face):</span>
-    <span class="c1">#             raise KeyError(edge)</span>
-    <span class="c1">#         u, v = v, u</span>
-    <span class="c1">#     cell = self.face_cell(face)</span>
-    <span class="c1">#     adj_face = self._cell[cell][v][u]</span>
-    <span class="c1">#     w = self.face_vertex_ancestor(adj_face, v)</span>
+    <span class="c1">#     u, v = halfedge</span>
+    <span class="c1">#     cell = self.halfface_cell(halfface)</span>
+    <span class="c1">#     nbr_halfface = self._cell[cell][v][u]</span>
+    <span class="c1">#     w = self.face_vertex_ancestor(nbr_halfface, v)</span>
     <span class="c1">#     nbr_cell = self._plane[u][v][w]</span>
     <span class="c1">#     if nbr_cell is None:</span>
     <span class="c1">#         return None</span>
     <span class="c1">#     return self._cell[nbr_cell][v][u]</span>
 
-    <span class="c1"># halfface_vertex_ancestor ?</span>
-    <span class="k">def</span> <span class="nf">face_vertex_ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_vertex_ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vertex before the specified vertex in a specific face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        face : int</span>
-<span class="sd">            The identifier of the face.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 <span class="sd">        vertex : int</span>
 <span class="sd">            The identifier of the vertex.</span>
 
@@ -2112,17 +2056,16 @@
 <span class="sd">        ValueError</span>
 <span class="sd">            If the vertex is not part of the face.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
 
-    <span class="c1"># halfface_vertex_descendant ?</span>
-    <span class="k">def</span> <span class="nf">face_vertex_descendent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_vertex_descendent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vertex after the specified vertex in a specific face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        face : int</span>
-<span class="sd">            Identifier of the face.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 <span class="sd">        vertex : int</span>
 <span class="sd">            The identifier of the vertex.</span>
 
@@ -2136,132 +2079,33 @@
 <span class="sd">        ValueError</span>
 <span class="sd">            If the vertex is not part of the face.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">vertex</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">vertex</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
-    <span class="c1"># def face_neighbors_over_vertices(self, face):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return all faces that share at least one vertex with a face.</span>
+    <span class="k">def</span> <span class="nf">halfface_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+        <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">halfface</span><span class="p">):</span>
+            <span class="n">nbr_halfface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertex_ancestor</span><span class="p">(</span><span class="n">nbr_halfface</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="n">nbr_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">w</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">nbr_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">nbr_cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
+                <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nbrs</span>
 
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     face : int</span>
-    <span class="c1">#         The identifier of the face.</span>
+    <span class="c1"># def halfface_manifold_neighbors(self, halfface):</span>
+    <span class="c1">#     halfface_cell = self.halfface_cell(halfface)</span>
 
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     list</span>
-    <span class="c1">#         The list of faces.</span>
-
-    <span class="c1">#     Notes</span>
-    <span class="c1">#     -----</span>
-    <span class="c1">#     Neighboring faces on the same cell are not included.</span>
-    <span class="c1">#     Neighboring faces belong to one of the neighboring cells over faces of the initial cell.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     nbrs = set()</span>
-    <span class="c1">#     for u, v in self.face_halfedges(face):</span>
-    <span class="c1">#         nbr_face = self.face_adjacent_face(face, (u, v))</span>
-    <span class="c1">#         if nbr_face is not None:</span>
-    <span class="c1">#             nbrs.add(nbr_face)</span>
-    <span class="c1">#             while True:</span>
-    <span class="c1">#                 w = self.face_vertex_ancestor(nbr_face, v)</span>
-    <span class="c1">#                 nbr_face = self.face_adjacent_face(nbr_face, (w, v))</span>
-    <span class="c1">#                 if nbr_face is None or nbr_face == face:</span>
-    <span class="c1">#                     break</span>
-    <span class="c1">#                 nbrs.add(nbr_face)</span>
-    <span class="c1">#     return list(nbrs)</span>
-
-    <span class="c1"># def face_neighborhood_over_vertices(self, face, ring=1):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return the face neighborhood of a face across their vertices.</span>
-
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     face : int</span>
-    <span class="c1">#         The identifier of the face.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     list</span>
-    <span class="c1">#         The list of neighboring faces.</span>
-
-    <span class="c1">#     Notes</span>
-    <span class="c1">#     -----</span>
-    <span class="c1">#     Neighboring faces on the same cell are not included.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     nbrs = set(self.face_neighbors_over_vertices(face))</span>
-    <span class="c1">#     i = 1</span>
-    <span class="c1">#     while True:</span>
-    <span class="c1">#         if i == ring:</span>
-    <span class="c1">#             break</span>
-    <span class="c1">#         temp = []</span>
-    <span class="c1">#         for nbr_face in nbrs:</span>
-    <span class="c1">#             temp += self.face_neighbors_over_vertices(nbr_face)</span>
-    <span class="c1">#         nbrs.update(temp)</span>
-    <span class="c1">#         i += 1</span>
-    <span class="c1">#     return list(nbrs - set([face]))</span>
-
-    <span class="c1"># def face_neighbors_over_edges(self, face):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return the face neighbors of a face across its edges (faces that share two vertices).</span>
-
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     face : int</span>
-    <span class="c1">#         The identifier of the face.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     list</span>
-    <span class="c1">#         The list of neighboring faces.</span>
-
-    <span class="c1">#     Notes</span>
-    <span class="c1">#     -----</span>
-    <span class="c1">#     * Neighboring faces on the same cell are not included.</span>
-
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     nbrs = []</span>
-    <span class="c1">#     for halfedge in self.face_halfedges(face):</span>
-    <span class="c1">#         nbr_face = self.face_adjacent_face(face, halfedge)</span>
-    <span class="c1">#         if nbr_face:</span>
-    <span class="c1">#             nbrs.append(nbr_face)</span>
-    <span class="c1">#     return nbrs</span>
-
-    <span class="c1"># def face_neighborhood_over_edges(self, face, ring=1):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return the face neighborhood of a face across their edges.</span>
-
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     face : int</span>
-    <span class="c1">#         The identifier of the face.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     list</span>
-    <span class="c1">#         The list of neighboring faces.</span>
-
-    <span class="c1">#     Notes</span>
-    <span class="c1">#     -----</span>
-    <span class="c1">#     Neighboring faces on the same cell are not included.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     nbrs = set(self.face_neighbors_over_edges(face))</span>
-    <span class="c1">#     i = 1</span>
-    <span class="c1">#     while True:</span>
-    <span class="c1">#         if i == ring:</span>
-    <span class="c1">#             break</span>
-    <span class="c1">#         temp = []</span>
-    <span class="c1">#         for nbr_face in nbrs:</span>
-    <span class="c1">#             temp += self.face_neighbors_over_edges(nbr_face)</span>
-    <span class="c1">#         nbrs.update(temp)</span>
-    <span class="c1">#         i += 1</span>
-    <span class="c1">#     return list(nbrs - set([face]))</span>
-
-    <span class="k">def</span> <span class="nf">is_face_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">is_halfface_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verify that a face is on the boundary.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        face : int</span>
-<span class="sd">            The identifier of the face.</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -2269,7 +2113,7 @@
 <span class="sd">            True if the face is on the boundary.</span>
 <span class="sd">            False otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -2289,7 +2133,7 @@
 <span class="sd">        list</span>
 <span class="sd">            The vertex identifiers of a cell.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">vertex</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]))</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">vertex</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]))</span>
 
     <span class="k">def</span> <span class="nf">cell_halfedges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The halfedges of a cell.</span>
@@ -2306,10 +2150,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">halfedges</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
-            <span class="n">halfedges</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="n">halfedges</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">halfedges</span>
 
-    <span class="c1"># cell_halffaces ?</span>
+    <span class="k">def</span> <span class="nf">cell_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="k">pass</span>
+
     <span class="k">def</span> <span class="nf">cell_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The faces of a cell.</span>
 
@@ -2354,11 +2200,10 @@
         <span class="n">ordered_vkeys</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nbr_vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">vertex</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
-            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertex_ancestor</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertex_ancestor</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">vertex</span><span class="p">)</span>
             <span class="n">ordered_vkeys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ordered_vkeys</span>
 
-    <span class="c1"># cell_vertex_halffaces ?</span>
     <span class="k">def</span> <span class="nf">cell_vertex_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ordered faces connected to a vertex of a cell.</span>
 
@@ -2384,126 +2229,33 @@
         <span class="n">ordered_faces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nbr_vertices</span><span class="p">)):</span>
             <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
-            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertex_ancestor</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertex_ancestor</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
             <span class="n">ordered_faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ordered_faces</span>
 
-    <span class="c1"># def cell_neighbors_over_vertices(self, cell):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return the cell neighbors of a cell across its vertices.</span>
+    <span class="k">def</span> <span class="nf">cell_halfedge_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">):</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">halfedge</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
 
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     cell : int</span>
-    <span class="c1">#         Identifier of the cell.</span>
+    <span class="k">def</span> <span class="nf">cell_halfedge_opposite_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">):</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">halfedge</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
 
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     list</span>
-    <span class="c1">#         The identifiers of the neighboring cells.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     cells = set()</span>
-    <span class="c1">#     for vkey in self.cell_vertices(cell):</span>
-    <span class="c1">#         cells.update(self.vertex_cells(cell))</span>
-    <span class="c1">#     return list(cells)</span>
+    <span class="k">def</span> <span class="nf">cell_face_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">halfedge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+            <span class="n">nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_halfedge_opposite_face</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">nbr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nbrs</span>
 
-    <span class="c1"># def cell_neighborhood_over_vertices(self, cell, ring=1):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return the cell neighborhood of a cell across its vertices.</span>
-
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     cell : int</span>
-    <span class="c1">#         Identifier of the cell.</span>
-    <span class="c1">#     ring : int, optional</span>
-    <span class="c1">#         The number of neighborhood rings to include. Default is ``1``.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     list</span>
-    <span class="c1">#         The cells in the neighborhood.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     nbr_cells = set(self.cell_neighbors_over_vertices(cell))</span>
-    <span class="c1">#     i = 1</span>
-    <span class="c1">#     while True:</span>
-    <span class="c1">#         if i == ring:</span>
-    <span class="c1">#             break</span>
-    <span class="c1">#         temp = []</span>
-    <span class="c1">#         for nbr_cell in nbr_cells:</span>
-    <span class="c1">#             temp += self.cell_neighbors_over_vertices(nbr_cell)</span>
-    <span class="c1">#         nbr_cells.update(temp)</span>
-    <span class="c1">#         i += 1</span>
-    <span class="c1">#     return list(nbr_cells - set([cell]))</span>
-
-    <span class="c1"># def cell_neighbors_over_faces(self, cell):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return the cell neighbors of a cell across its faces.</span>
-
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     cell : int</span>
-    <span class="c1">#         Identifier of the cell.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     list</span>
-    <span class="c1">#         The identifiers of the neighboring cells.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     cells = []</span>
-    <span class="c1">#     for face in self.cell_faces(cell):</span>
-    <span class="c1">#         u, v, w = self._halfface[face][0:3]</span>
-    <span class="c1">#         nbr_cell = self._plane[w][v][u]</span>
-    <span class="c1">#         if nbr_cell is not None:</span>
-    <span class="c1">#             cells.append(nbr_cell)</span>
-    <span class="c1">#     return cells</span>
-
-    <span class="c1"># def cell_neighborhood_over_faces(self, cell, ring=1):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return the cells in the neighborhood of a cell across its faces.</span>
-
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     cell : int</span>
-    <span class="c1">#         Identifier of the cell.</span>
-    <span class="c1">#     ring : int, optional</span>
-    <span class="c1">#         The number of neighborhood rings to include. Default is ``1``.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     list</span>
-    <span class="c1">#         The identifiers of the neighboring cells.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     nbr_cells = set(self.cell_neighbors_over_faces(cell))</span>
-    <span class="c1">#     i = 1</span>
-    <span class="c1">#     while True:</span>
-    <span class="c1">#         if i == ring:</span>
-    <span class="c1">#             break</span>
-    <span class="c1">#         temp = []</span>
-    <span class="c1">#         for nbr_cell in nbr_cells:</span>
-    <span class="c1">#             temp += self.cell_neighbors_over_faces(nbr_cell)</span>
-    <span class="c1">#         nbr_cells.update(temp)</span>
-    <span class="c1">#         i += 1</span>
-    <span class="c1">#     return list(nbr_cells - set([cell]))</span>
-
-    <span class="c1"># def cell_adjacency_faces(self, cell_1, cell_2):</span>
-    <span class="c1">#     &quot;&quot;&quot;Given 2 cells, returns the interfacing faces, respectively.</span>
-
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     cell_1 : int</span>
-    <span class="c1">#         Identifier of the cell 1.</span>
-    <span class="c1">#     cell_2 : int</span>
-    <span class="c1">#         Identifier of the cell 2.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     face_1</span>
-    <span class="c1">#         The identifier of the face belonging to cell 1.</span>
-    <span class="c1">#     face_2</span>
-    <span class="c1">#         The identifier of the face belonging to cell 2.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     for face in self.cell_faces(cell_1):</span>
-    <span class="c1">#         u, v, w = self._halfface[face][0:3]</span>
-    <span class="c1">#         nbr = self._plane[w][v][u]</span>
-    <span class="c1">#         if nbr == cell_2:</span>
-    <span class="c1">#             return face, self.face_opposite_face(face)</span>
-    <span class="c1">#     return</span>
+    <span class="k">def</span> <span class="nf">cell_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
+        <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">):</span>
+            <span class="n">nbr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_opposite_cell</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">nbr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nbrs</span>
 
     <span class="k">def</span> <span class="nf">is_cell_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verify that a cell is on the boundary.</span>
@@ -2521,7 +2273,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell_faces</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_face_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_halfface_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -2539,12 +2291,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_face_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
-                <span class="n">vertices</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_halfface_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+                <span class="n">vertices</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
 
-    <span class="c1"># halffaces_on_boundaries</span>
-    <span class="k">def</span> <span class="nf">faces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halffaces_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find the faces on the boundary.</span>
 
 <span class="sd">        Returns</span>
@@ -2554,7 +2305,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_face_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_halfface_on_boundary</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
                 <span class="n">faces</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
 
@@ -2567,8 +2318,8 @@
 <span class="sd">            The cells of the boundary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cells</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces_on_boundaries</span><span class="p">():</span>
-            <span class="n">cells</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_cell</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halffaces_on_boundaries</span><span class="p">():</span>
+            <span class="n">cells</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">face</span><span class="p">))</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cells</span><span class="p">)</span>
 
 

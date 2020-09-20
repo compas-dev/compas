@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="VolMesh.halfface_normal" href="compas.datastructures.VolMesh.halfface_normal.html" />
+    <link rel="prev" title="VolMesh.halfface_opposite_cell" href="compas.datastructures.VolMesh.halfface_opposite_cell.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -90,18 +90,18 @@
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.halfface_opposite_halfface">
 <code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">halfface_opposite_halfface</code><span class="sig-paren">(</span><em class="sig-param">halfface</em><span class="sig-paren">)</span></dt>
-<dd><p>The opposite halfface of a halfface.</p>
+<dd><p>The opposite face of a face.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>halfface</strong> (<em>int</em>) – The identifier of the halfface.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>halfface</em> – Identifier of the opposite halfface.</p>
+<dd class="field-even"><p><em>face</em> – Identifier of the opposite face.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>A halfface and its opposite halfface share the same vertices, but in reverse order.
-For a boundary halfface, the opposite halfface is None.</p>
+<p>A face and its opposite face share the same vertices, but in reverse order.
+For a boundary face, the opposite face is None.</p>
 </dd></dl>
 
 </div>
@@ -146,6 +146,7 @@ For a boundary halfface, the opposite halfface is None.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>

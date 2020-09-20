@@ -100,6 +100,7 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;meshgrid&#39;</span><span class="p">,</span>
     <span class="s1">&#39;linspace&#39;</span><span class="p">,</span>
     <span class="s1">&#39;flatten&#39;</span><span class="p">,</span>
     <span class="s1">&#39;pairwise&#39;</span><span class="p">,</span>
@@ -108,26 +109,86 @@
 <span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">linspace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate N linearly spaced numbers from a starting value to an end value.</span>
+<div class="viewcode-block" id="meshgrid"><a class="viewcode-back" href="../../../api/generated/compas.utilities.meshgrid.html#compas.utilities.meshgrid">[docs]</a><span class="k">def</span> <span class="nf">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;xy&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Construct coordinate matrices from two coordinate vectors.</span>
+
+<span class="sd">    This function mimicks the functionality of ``numpy.meshgrid`` [1], but in a simpler form.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    a : float</span>
-<span class="sd">        The start value.</span>
-<span class="sd">    b : float</span>
-<span class="sd">        The end value.</span>
-<span class="sd">    N : int</span>
-<span class="sd">        The number of elements in the series.</span>
+<span class="sd">    x : list of float</span>
+<span class="sd">    y : list of float</span>
+<span class="sd">    indexing : {&#39;xy&#39;, &#39;ij&#39;}, optional</span>
+<span class="sd">        Default is ``&#39;xy&#39;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (list of list, list of list)</span>
+<span class="sd">        The X and Y values of the coordinate grid.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.utilities import linspace, meshgrid</span>
+<span class="sd">    &gt;&gt;&gt; x = list(linspace(0, 1, 3))</span>
+<span class="sd">    &gt;&gt;&gt; y = list(linspace(0, 1, 2))</span>
+
+<span class="sd">    &gt;&gt;&gt; X, Y = meshgrid(x, y)</span>
+<span class="sd">    &gt;&gt;&gt; X</span>
+<span class="sd">    [[0.0, 0.5, 1.0], [0.0, 0.5, 1.0]]</span>
+<span class="sd">    &gt;&gt;&gt; Y</span>
+<span class="sd">    [[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]]</span>
+
+<span class="sd">    &gt;&gt;&gt; X, Y = meshgrid(x, y, &#39;ij&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; X</span>
+<span class="sd">    [[0.0, 0.0], [0.5, 0.5], [1.0, 1.0]]</span>
+<span class="sd">    &gt;&gt;&gt; Y</span>
+<span class="sd">    [[0.0, 1.0], [0.0, 1.0], [0.0, 1.0]]</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] ``numpy.meshgrid`` Available at https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">indexing</span> <span class="o">==</span> <span class="s1">&#39;xy&#39;</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="p">[[</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))]</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="p">[[</span><span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span></div>
+
+
+<div class="viewcode-block" id="linspace"><a class="viewcode-back" href="../../../api/generated/compas.utilities.linspace.html#compas.utilities.linspace">[docs]</a><span class="k">def</span> <span class="nf">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate a sequence of evenly spaced numbers over a specified interval.</span>
+
+<span class="sd">    This function mimicks the functionality of ``numpy.linspace`` [1], but in a simpler form.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    start : float</span>
+<span class="sd">        The start value of the sequence.</span>
+<span class="sd">    stop : float</span>
+<span class="sd">        The end value of the sequence.</span>
+<span class="sd">    num : int</span>
+<span class="sd">        The number of elements in the sequence.</span>
 
 <span class="sd">    Yields</span>
 <span class="sd">    ------</span>
 <span class="sd">    float</span>
+<span class="sd">        The next value in the sequence.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.utilities import linspace</span>
+<span class="sd">    &gt;&gt;&gt; list(linspace(0, 1, 3))</span>
+<span class="sd">    [0.0, 0.5, 1.0]</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] ``numpy.linspace`` Available at https://numpy.org/doc/stable/reference/generated/numpy.linspace.html</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">span</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span>
-    <span class="n">step</span> <span class="o">=</span> <span class="n">span</span> <span class="o">/</span> <span class="n">N</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">yield</span> <span class="n">a</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="p">(</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">start</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step</span></div>
 
 
 <div class="viewcode-block" id="flatten"><a class="viewcode-back" href="../../../api/generated/compas.utilities.flatten.html#compas.utilities.flatten">[docs]</a><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">listOfLists</span><span class="p">):</span>

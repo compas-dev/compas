@@ -133,7 +133,59 @@
     <span class="s1">&#39;transpose_matrix&#39;</span><span class="p">,</span>
     <span class="s1">&#39;vector_component&#39;</span><span class="p">,</span>
     <span class="s1">&#39;vector_component_xy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;vector_average&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;vector_variance&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;vector_standard_deviation&#39;</span><span class="p">,</span>
 <span class="p">]</span>
+
+
+<div class="viewcode-block" id="vector_average"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.vector_average.html#compas.geometry.vector_average">[docs]</a><span class="k">def</span> <span class="nf">vector_average</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Average of a vector.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        List of values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The mean value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="vector_variance"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.vector_variance.html#compas.geometry.vector_variance">[docs]</a><span class="k">def</span> <span class="nf">vector_variance</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Variance of a vector.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        List of values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The variance value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">vector_average</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">sum</span><span class="p">([(</span><span class="n">i</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vector</span><span class="p">])</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vector</span><span class="p">)))</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span></div>
+
+
+<div class="viewcode-block" id="vector_standard_deviation"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.vector_standard_deviation.html#compas.geometry.vector_standard_deviation">[docs]</a><span class="k">def</span> <span class="nf">vector_standard_deviation</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Standard deviation of a vector.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vector : list</span>
+<span class="sd">        List of values.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The standard deviation value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">vector_variance</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span> <span class="o">**</span> <span class="o">.</span><span class="mi">5</span></div>
 
 
 <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="n">value1</span><span class="p">,</span> <span class="n">value2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-05</span><span class="p">):</span>

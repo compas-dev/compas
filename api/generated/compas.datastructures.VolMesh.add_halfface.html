@@ -89,26 +89,26 @@
 <h1 class="display-4 p-0 mb-5">VolMesh.add_halfface</h1>
 <dl class="method">
 <dt id="compas.datastructures.VolMesh.add_halfface">
-<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">add_halfface</code><span class="sig-paren">(</span><em class="sig-param">vertices</em>, <em class="sig-param">hfkey=None</em>, <em class="sig-param">attr_dict=None</em>, <em class="sig-param">**kwattr</em><span class="sig-paren">)</span></dt>
-<dd><p>Add a halfface to the volmesh object.</p>
+<code class="sig-prename descclassname">VolMesh.</code><code class="sig-name descname">add_halfface</code><span class="sig-paren">(</span><em class="sig-param">vertices</em>, <em class="sig-param">fkey=None</em>, <em class="sig-param">attr_dict=None</em>, <em class="sig-param">**kwattr</em><span class="sig-paren">)</span></dt>
+<dd><p>Add a face to the volmesh object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices</strong> (<em>list</em>) – A list of ordered vertex keys representing the halfface.
+<li><p><strong>vertices</strong> (<em>list</em>) – A list of ordered vertex keys representing the face.
 For every vertex that does not yet exist, a new vertex is created.</p></li>
-<li><p><strong>hfkey</strong> (<em>int, optional</em>) – The halfface identifier.</p></li>
+<li><p><strong>fkey</strong> (<em>int, optional</em>) – The face identifier.</p></li>
 <li><p><strong>attr_dict</strong> (<em>dict, optional</em>) – Halfface attributes.</p></li>
-<li><p><strong>kwattr</strong> (<em>dict, optional</em>) – Additional named halfface attributes.
-Named halfface attributes overwrite corresponding attributes in the
+<li><p><strong>kwattr</strong> (<em>dict, optional</em>) – Additional named face attributes.
+Named face attributes overwrite corresponding attributes in the
 attribute dict (<code class="docutils literal notranslate"><span class="pre">attr_dict</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>int</em> – The key of the halfface.</p>
+<dd class="field-even"><p><em>int</em> – The key of the face.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>If no key is provided for the halfface, one is generated
+<p>If no key is provided for the face, one is generated
 automatically. An automatically generated key is an integer that increments
 the highest integer value of any key used so far by 1.</p>
 <p>If a key with an integer value is provided that is higher than the current
@@ -161,6 +161,7 @@ highest integer key value, then the highest integer value is updated accordingly
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>

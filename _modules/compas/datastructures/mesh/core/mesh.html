@@ -115,8 +115,8 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">sum_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">midpoint_line</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">vector_average</span>
 
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">average</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">geometric_key</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">window</span>
@@ -1319,7 +1319,7 @@
         <span class="n">centroid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
         <span class="n">plane</span> <span class="o">=</span> <span class="n">bestfit_plane</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
         <span class="n">max_deviation</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">distance_point_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
-        <span class="n">average_distances</span> <span class="o">=</span> <span class="n">average</span><span class="p">([</span><span class="n">distance_point_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">centroid</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
+        <span class="n">average_distances</span> <span class="o">=</span> <span class="n">vector_average</span><span class="p">([</span><span class="n">distance_point_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">centroid</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">max_deviation</span> <span class="o">/</span> <span class="n">average_distances</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
