@@ -58,6 +58,17 @@ decorators
     print_profile
 
 
+encoders
+========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    DataEncoder
+    DataDecoder
+
+
 itertools
 =========
 
@@ -65,6 +76,8 @@ itertools
     :toctree: generated/
     :nosignatures:
 
+    meshgrid
+    linspace
     flatten
     pairwise
     window
@@ -100,7 +113,7 @@ from .images import *  # noqa: F401 F403
 from .itertools import *  # noqa: F401 F403
 from .maps import *  # noqa: F401 F403
 from .remote import *  # noqa: F401 F403
-from .statistics import *  # noqa: F401 F403
+from .ssh import *  # noqa: F401 F403
 from .xfunc import *  # noqa: F401 F403
 
 
