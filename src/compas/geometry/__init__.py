@@ -218,6 +218,9 @@ Linear algebra
     transpose_matrix
     vector_component
     vector_component_xy
+    vector_average
+    vector_variance
+    vector_standard_deviation
 
 
 Points, Vectors, Lines, Planes

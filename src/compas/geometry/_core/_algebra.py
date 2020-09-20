@@ -49,7 +49,59 @@ __all__ = [
     'transpose_matrix',
     'vector_component',
     'vector_component_xy',
+    'vector_average',
+    'vector_variance',
+    'vector_standard_deviation',
 ]
+
+
+def vector_average(vector):
+    """Average of a vector.
+
+    Parameters
+    ----------
+    vector : list
+        List of values.
+
+    Returns
+    -------
+    float
+        The mean value.
+    """
+    return sum(vector) / float(len(vector))
+
+
+def vector_variance(vector):
+    """Variance of a vector.
+
+    Parameters
+    ----------
+    vector : list
+        List of values.
+
+    Returns
+    -------
+    float
+        The variance value.
+    """
+    m = vector_average(vector)
+    return (sum([(i - m) ** 2 for i in vector]) / float(len(vector))) ** .5
+
+
+def vector_standard_deviation(vector):
+    """Standard deviation of a vector.
+
+    Parameters
+    ----------
+    vector : list
+        List of values.
+
+    Returns
+    -------
+    float
+        The standard deviation value.
+    """
+    return vector_variance(vector) ** .5
 
 
 def close(value1, value2, tol=1e-05):
