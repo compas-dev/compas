@@ -100,11 +100,34 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;linspace&#39;</span><span class="p">,</span>
     <span class="s1">&#39;flatten&#39;</span><span class="p">,</span>
     <span class="s1">&#39;pairwise&#39;</span><span class="p">,</span>
     <span class="s1">&#39;window&#39;</span><span class="p">,</span>
     <span class="s1">&#39;iterable_like&#39;</span>
 <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">linspace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate N linearly spaced numbers from a starting value to an end value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : float</span>
+<span class="sd">        The start value.</span>
+<span class="sd">    b : float</span>
+<span class="sd">        The end value.</span>
+<span class="sd">    N : int</span>
+<span class="sd">        The number of elements in the series.</span>
+
+<span class="sd">    Yields</span>
+<span class="sd">    ------</span>
+<span class="sd">    float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">span</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">a</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="n">span</span> <span class="o">/</span> <span class="n">N</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">a</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step</span>
 
 
 <div class="viewcode-block" id="flatten"><a class="viewcode-back" href="../../../api/generated/compas.utilities.flatten.html#compas.utilities.flatten">[docs]</a><span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="n">listOfLists</span><span class="p">):</span>
@@ -305,7 +328,6 @@
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
     <span class="kn">import</span> <span class="nn">doctest</span>
-
     <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
 </code></pre></div>
         

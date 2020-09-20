@@ -94,14 +94,40 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>A</strong> (<em>tuple</em>) – The vertices and faces of mesh A.</p></li>
-<li><p><strong>B</strong> (<em>tuple</em>) – The vertices and faces of mesh B.</p></li>
+<li><p><strong>A</strong> (<em>(list, list)</em>) – The vertices and faces of mesh A.</p></li>
+<li><p><strong>B</strong> (<em>(list, list)</em>) – The vertices and faces of mesh B.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>tuple</em> – The vertices and the faces of the boolean union.</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Sphere</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">boolean_union_mesh_mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">trimesh_remesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+</code></pre></div>
+</div>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="n">from_width_height_depth</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_shape</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">box</span><span class="o">.</span><span class="n">quads_to_triangles</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_shape</span><span class="p">(</span><span class="n">sphere</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span><span class="o">.</span><span class="n">quads_to_triangles</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">sphere</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">trimesh_remesh</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">V</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">boolean_union_mesh_mesh</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">union</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span>
+</code></pre></div>
+</div>
 </dd></dl>
 
 </div>

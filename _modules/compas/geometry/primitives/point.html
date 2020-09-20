@@ -718,13 +718,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">is_point_in_triangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangle</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Point.in_polygon"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Point.in_polygon.html#compas.geometry.Point.in_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">in_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">):</span>
+<div class="viewcode-block" id="Point.in_polygon"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Point.in_polygon.html#compas.geometry.Point.in_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">in_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">,</span> <span class="n">convex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine if the point lies inside the given polygon.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        polygon : :class:`compas.geometry.Polygon` or list of points.</span>
 <span class="sd">            The polygon.</span>
+<span class="sd">        convex : {None, True, False}, optional</span>
+<span class="sd">            Is the polygon convex.</span>
+<span class="sd">            If ``None``, determine if the polygon is convex.</span>
+<span class="sd">            If ``False``, use the non-convex algorithm.</span>
+<span class="sd">            If ``True``, use the convex algorithm.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -740,7 +745,9 @@
 <span class="sd">        &gt;&gt;&gt; point.in_polygon(poly)</span>
 <span class="sd">        True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">is_polygon_convex_xy</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">convex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">convex</span> <span class="o">=</span> <span class="n">is_polygon_convex_xy</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">convex</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">is_point_in_convex_polygon_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">is_point_in_polygon_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">)</span></div>
 

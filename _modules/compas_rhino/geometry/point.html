@@ -196,7 +196,29 @@
 <span class="sd">        :class:`compas.geometry.Point`</span>
 <span class="sd">            A COMPAS point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">closest_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">return_param</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the closest point on a curve to a point in space.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point : point</span>
+<span class="sd">            A point location.</span>
+<span class="sd">        maxdist : float, optional</span>
+<span class="sd">            The maximum distance between the point on the curve and the curve.</span>
+<span class="sd">            Default is ``0.0``.</span>
+<span class="sd">        return_param : bool, optional</span>
+<span class="sd">            Return not only the point coordinates, but also the parameter of the point on the curve.</span>
+<span class="sd">            Default is ``False``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The XYZ coordinates of the point.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span></div>
 
 
 <span class="c1"># ==============================================================================</span>

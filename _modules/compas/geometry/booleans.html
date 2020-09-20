@@ -101,15 +101,37 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    A : tuple</span>
+<span class="sd">    A : (list, list)</span>
 <span class="sd">        The vertices and faces of mesh A.</span>
-<span class="sd">    B : tuple</span>
+<span class="sd">    B : (list, list)</span>
 <span class="sd">        The vertices and faces of mesh B.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    tuple</span>
 <span class="sd">        The vertices and the faces of the boolean union.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import Box, Sphere</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import boolean_union_mesh_mesh</span>
+<span class="sd">    &gt;&gt;&gt; from compas.geometry import trimesh_remesh</span>
+<span class="sd">    &gt;&gt;&gt; from compas.datastructures import Mesh</span>
+
+<span class="sd">    &gt;&gt;&gt; box = Box.from_width_height_depth(2, 2, 2)</span>
+<span class="sd">    &gt;&gt;&gt; box = Mesh.from_shape(box)</span>
+<span class="sd">    &gt;&gt;&gt; box.quads_to_triangles()</span>
+
+<span class="sd">    &gt;&gt;&gt; sphere = Sphere([1, 1, 1], 1)</span>
+<span class="sd">    &gt;&gt;&gt; sphere = Mesh.from_shape(sphere, u=30, v=30)</span>
+<span class="sd">    &gt;&gt;&gt; sphere.quads_to_triangles()</span>
+
+<span class="sd">    &gt;&gt;&gt; A = box.to_vertices_and_faces()</span>
+<span class="sd">    &gt;&gt;&gt; B = sphere.to_vertices_and_faces()</span>
+<span class="sd">    &gt;&gt;&gt; B = trimesh_remesh(B, 0.3, 10)</span>
+
+<span class="sd">    &gt;&gt;&gt; V, F = boolean_union_mesh_mesh(A, B)</span>
+<span class="sd">    &gt;&gt;&gt; union = Mesh.from_vertices_and_faces(V, F)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
@@ -120,9 +142,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    A : tuple</span>
+<span class="sd">    A : (list, list)</span>
 <span class="sd">        The vertices and faces of mesh A.</span>
-<span class="sd">    B : tuple</span>
+<span class="sd">    B : (list, list)</span>
 <span class="sd">        The vertices and faces of mesh B.</span>
 
 <span class="sd">    Returns</span>
@@ -139,9 +161,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    A : tuple</span>
+<span class="sd">    A : (list, list)</span>
 <span class="sd">        The vertices and faces of mesh A.</span>
-<span class="sd">    B : tuple</span>
+<span class="sd">    B : (list, list)</span>
 <span class="sd">        The vertices and faces of mesh B.</span>
 
 <span class="sd">    Returns</span>

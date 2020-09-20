@@ -283,7 +283,7 @@
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<span class="k">def</span> <span class="nf">is_point_on_polyline_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">polyline</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<div class="viewcode-block" id="is_point_on_polyline_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_on_polyline_xy.html#compas.geometry.is_point_on_polyline_xy">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_polyline_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">polyline</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Determine if a point is on a polyline on the XY-plane.</span>
 
 <span class="sd">    Parameters</span>
@@ -311,7 +311,7 @@
         <span class="k">if</span> <span class="n">distance_point_point_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="is_point_in_triangle_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_in_triangle_xy.html#compas.geometry.is_point_in_triangle_xy">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_triangle_xy</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">triangle</span><span class="p">,</span> <span class="n">colinear</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -446,7 +446,7 @@
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
-<span class="k">def</span> <span class="nf">is_polygon_in_polygon_xy</span><span class="p">(</span><span class="n">polygon1</span><span class="p">,</span> <span class="n">polygon2</span><span class="p">):</span>
+<div class="viewcode-block" id="is_polygon_in_polygon_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_polygon_in_polygon_xy.html#compas.geometry.is_polygon_in_polygon_xy">[docs]</a><span class="k">def</span> <span class="nf">is_polygon_in_polygon_xy</span><span class="p">(</span><span class="n">polygon1</span><span class="p">,</span> <span class="n">polygon2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Determine if a polygon is in the interior of another polygon on the XY-plane.</span>
 
 <span class="sd">    Parameters</span>
@@ -484,7 +484,7 @@
         <span class="k">for</span> <span class="n">pt</span> <span class="ow">in</span> <span class="n">polygon2</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_point_in_polygon_xy</span><span class="p">(</span><span class="n">pt</span><span class="p">,</span> <span class="n">polygon1</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="is_intersection_line_line_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_intersection_line_line_xy.html#compas.geometry.is_intersection_line_line_xy">[docs]</a><span class="k">def</span> <span class="nf">is_intersection_line_line_xy</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>

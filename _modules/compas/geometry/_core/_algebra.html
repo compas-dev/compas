@@ -133,9 +133,6 @@
     <span class="s1">&#39;transpose_matrix&#39;</span><span class="p">,</span>
     <span class="s1">&#39;vector_component&#39;</span><span class="p">,</span>
     <span class="s1">&#39;vector_component_xy&#39;</span><span class="p">,</span>
-
-    <span class="s1">&#39;circle_from_points&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;circle_from_points_xy&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -1347,110 +1344,6 @@
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">axis</span> <span class="o">&gt;</span> <span class="mf">1e-10</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">e</span><span class="p">):</span>
             <span class="n">basis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">normalize_vector</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">basis</span></div>
-
-
-<span class="c1"># ==============================================================================</span>
-<span class="c1"># constructors</span>
-<span class="c1"># ==============================================================================</span>
-
-
-<span class="k">def</span> <span class="nf">circle_from_points</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Construct a circle from three points.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    a : sequence of float</span>
-<span class="sd">        XYZ coordinates.</span>
-<span class="sd">    b : sequence of float</span>
-<span class="sd">        XYZ coordinates.</span>
-<span class="sd">    c : sequence of float</span>
-<span class="sd">        XYZ coordinates.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    circle : tuple</span>
-<span class="sd">        Center, radius, normal  of the circle.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    For more information, see [1]_.</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] Wikipedia. *Circumscribed circle*.</span>
-<span class="sd">           Available at: https://en.wikipedia.org/wiki/Circumscribed_circle.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="n">cb</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
-    <span class="n">ba</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-    <span class="n">ca</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
-    <span class="n">ac</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-    <span class="n">bc</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-    <span class="n">normal</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">ac</span><span class="p">))</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">length_vector_sqrd</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">ba</span><span class="p">,</span> <span class="n">cb</span><span class="p">))</span>
-    <span class="n">A</span> <span class="o">=</span> <span class="n">length_vector_sqrd</span><span class="p">(</span><span class="n">cb</span><span class="p">)</span> <span class="o">*</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">ba</span><span class="p">,</span> <span class="n">ca</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
-    <span class="n">B</span> <span class="o">=</span> <span class="n">length_vector_sqrd</span><span class="p">(</span><span class="n">ca</span><span class="p">)</span> <span class="o">*</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cb</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
-    <span class="n">C</span> <span class="o">=</span> <span class="n">length_vector_sqrd</span><span class="p">(</span><span class="n">ba</span><span class="p">)</span> <span class="o">*</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">ac</span><span class="p">,</span> <span class="n">bc</span><span class="p">)</span> <span class="o">/</span> <span class="n">d</span>
-    <span class="n">Aa</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
-    <span class="n">Bb</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
-    <span class="n">Cc</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="n">sum_vectors</span><span class="p">([</span><span class="n">Aa</span><span class="p">,</span> <span class="n">Bb</span><span class="p">,</span> <span class="n">Cc</span><span class="p">])</span>
-    <span class="n">radius</span> <span class="o">=</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">center</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">normal</span>
-
-
-<span class="k">def</span> <span class="nf">circle_from_points_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create a circle from three points lying in the XY-plane</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    a : sequence of float</span>
-<span class="sd">        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</span>
-<span class="sd">    b : sequence of float</span>
-<span class="sd">        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</span>
-<span class="sd">    c : sequence of float</span>
-<span class="sd">        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    tuple</span>
-<span class="sd">        XYZ coordinates of center in the XY-plane (Z = 0.0) and radius of the circle.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    For more info, see [1]_.</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] Wikipedia. *Circumscribed circle*.</span>
-<span class="sd">           Available at: https://en.wikipedia.org/wiki/Circumscribed_circle.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ax</span><span class="p">,</span> <span class="n">ay</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">bx</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">bx</span> <span class="o">-</span> <span class="n">ax</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">by</span> <span class="o">-</span> <span class="n">ay</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">-</span> <span class="n">ax</span>
-    <span class="n">d</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">ay</span>
-    <span class="n">e</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">ax</span> <span class="o">+</span> <span class="n">bx</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">ay</span> <span class="o">+</span> <span class="n">by</span><span class="p">)</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">ax</span> <span class="o">+</span> <span class="n">cx</span><span class="p">)</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="p">(</span><span class="n">ay</span> <span class="o">+</span> <span class="n">cy</span><span class="p">)</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="p">(</span><span class="n">cy</span> <span class="o">-</span> <span class="n">by</span><span class="p">)</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="p">(</span><span class="n">cx</span> <span class="o">-</span> <span class="n">bx</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">g</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">centerx</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">e</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span>
-    <span class="n">centery</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">f</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span> <span class="o">/</span> <span class="n">g</span>
-    <span class="n">radius</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">ax</span> <span class="o">-</span> <span class="n">centerx</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">ay</span> <span class="o">-</span> <span class="n">centery</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">centerx</span><span class="p">,</span> <span class="n">centery</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">radius</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
 
 
 <span class="c1"># ==============================================================================</span>
