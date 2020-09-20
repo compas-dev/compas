@@ -114,6 +114,28 @@ class RhinoPoint(BaseRhinoGeometry):
         """
         return Point(self.x, self.y, self.z)
 
+    def closest_point(self, point, maxdist=0.0, return_param=False):
+        """Compute the closest point on a curve to a point in space.
+
+        Parameters
+        ----------
+        point : point
+            A point location.
+        maxdist : float, optional
+            The maximum distance between the point on the curve and the curve.
+            Default is ``0.0``.
+        return_param : bool, optional
+            Return not only the point coordinates, but also the parameter of the point on the curve.
+            Default is ``False``.
+
+        Returns
+        -------
+        list
+            The XYZ coordinates of the point.
+
+        """
+        return self.xyz
+
 
 # ==============================================================================
 # Main
