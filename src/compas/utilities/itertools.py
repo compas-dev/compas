@@ -16,11 +16,34 @@ except ImportError:
 
 
 __all__ = [
+    'linspace',
     'flatten',
     'pairwise',
     'window',
     'iterable_like'
 ]
+
+
+def linspace(a, b, N):
+    """Generate N linearly spaced numbers from a starting value to an end value.
+
+    Parameters
+    ----------
+    a : float
+        The start value.
+    b : float
+        The end value.
+    N : int
+        The number of elements in the series.
+
+    Yields
+    ------
+    float
+    """
+    span = b - a
+    step = span / N
+    for i in range(N + 1):
+        yield a + i * step
 
 
 def flatten(listOfLists):
@@ -221,5 +244,4 @@ def padnone(iterable):
 if __name__ == "__main__":
 
     import doctest
-
     doctest.testmod(globs=globals())
