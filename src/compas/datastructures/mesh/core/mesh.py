@@ -31,8 +31,8 @@ from compas.geometry import add_vectors
 from compas.geometry import subtract_vectors
 from compas.geometry import sum_vectors
 from compas.geometry import midpoint_line
+from compas.geometry import vector_average
 
-from compas.utilities import average
 from compas.utilities import geometric_key
 from compas.utilities import pairwise
 from compas.utilities import window
@@ -1235,7 +1235,7 @@ class BaseMesh(HalfEdge):
         centroid = self.face_centroid(fkey)
         plane = bestfit_plane(points)
         max_deviation = max([distance_point_plane(point, plane) for point in points])
-        average_distances = average([distance_point_point(point, centroid) for point in points])
+        average_distances = vector_average([distance_point_point(point, centroid) for point in points])
         return max_deviation / average_distances
 
     # --------------------------------------------------------------------------

@@ -16,11 +16,95 @@ except ImportError:
 
 
 __all__ = [
+    'meshgrid',
+    'linspace',
     'flatten',
     'pairwise',
     'window',
     'iterable_like'
 ]
+
+
+def meshgrid(x, y, indexing='xy'):
+    """Construct coordinate matrices from two coordinate vectors.
+
+    This function mimicks the functionality of ``numpy.meshgrid`` [1], but in a simpler form.
+
+    Parameters
+    ----------
+    x : list of float
+    y : list of float
+    indexing : {'xy', 'ij'}, optional
+        Default is ``'xy'``.
+
+    Returns
+    -------
+    (list of list, list of list)
+        The X and Y values of the coordinate grid.
+
+    Examples
+    --------
+    >>> from compas.utilities import linspace, meshgrid
+    >>> x = list(linspace(0, 1, 3))
+    >>> y = list(linspace(0, 1, 2))
+
+    >>> X, Y = meshgrid(x, y)
+    >>> X
+    [[0.0, 0.5, 1.0], [0.0, 0.5, 1.0]]
+    >>> Y
+    [[0.0, 0.0, 0.0], [1.0, 1.0, 1.0]]
+
+    >>> X, Y = meshgrid(x, y, 'ij')
+    >>> X
+    [[0.0, 0.0], [0.5, 0.5], [1.0, 1.0]]
+    >>> Y
+    [[0.0, 1.0], [0.0, 1.0], [0.0, 1.0]]
+
+    References
+    ----------
+    .. [1] ``numpy.meshgrid`` Available at https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html
+    """
+    if indexing == 'xy':
+        X = [[x[j] for j in range(len(x))] for i in range(len(y))]
+        Y = [[y[i] for j in range(len(x))] for i in range(len(y))]
+        return X, Y
+    X = [[x[i] for j in range(len(y))] for i in range(len(x))]
+    Y = [[y[j] for j in range(len(y))] for i in range(len(x))]
+    return X, Y
+
+
+def linspace(start, stop, num=50):
+    """Generate a sequence of evenly spaced numbers over a specified interval.
+
+    This function mimicks the functionality of ``numpy.linspace`` [1], but in a simpler form.
+
+    Parameters
+    ----------
+    start : float
+        The start value of the sequence.
+    stop : float
+        The end value of the sequence.
+    num : int
+        The number of elements in the sequence.
+
+    Yields
+    ------
+    float
+        The next value in the sequence.
+
+    Examples
+    --------
+    >>> from compas.utilities import linspace
+    >>> list(linspace(0, 1, 3))
+    [0.0, 0.5, 1.0]
+
+    References
+    ----------
+    .. [1] ``numpy.linspace`` Available at https://numpy.org/doc/stable/reference/generated/numpy.linspace.html
+    """
+    step = (stop - start) / (num - 1)
+    for i in range(num):
+        yield start + i * step
 
 
 def flatten(listOfLists):
@@ -221,5 +305,4 @@ def padnone(iterable):
 if __name__ == "__main__":
 
     import doctest
-
     doctest.testmod(globs=globals())

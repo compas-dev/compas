@@ -634,13 +634,18 @@ class Point(Primitive):
         """
         return is_point_in_triangle(self, triangle)
 
-    def in_polygon(self, polygon):
+    def in_polygon(self, polygon, convex=None):
         """Determine if the point lies inside the given polygon.
 
         Parameters
         ----------
         polygon : :class:`compas.geometry.Polygon` or list of points.
             The polygon.
+        convex : {None, True, False}, optional
+            Is the polygon convex.
+            If ``None``, determine if the polygon is convex.
+            If ``False``, use the non-convex algorithm.
+            If ``True``, use the convex algorithm.
 
         Returns
         -------
@@ -656,7 +661,9 @@ class Point(Primitive):
         >>> point.in_polygon(poly)
         True
         """
-        if is_polygon_convex_xy(polygon):
+        if convex is None:
+            convex = is_polygon_convex_xy(polygon)
+        if convex:
             return is_point_in_convex_polygon_xy(self, polygon)
         return is_point_in_polygon_xy(self, polygon)
 

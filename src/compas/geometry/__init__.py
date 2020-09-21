@@ -52,6 +52,45 @@ Shapes
     Torus
 
 
+Predicates 2D
+=============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    is_ccw_xy
+    is_colinear_xy
+    is_polygon_convex_xy
+    is_point_on_line_xy
+    is_point_on_segment_xy
+    is_point_on_polyline_xy
+    is_point_in_triangle_xy
+    is_point_in_polygon_xy
+    is_point_in_convex_polygon_xy
+    is_point_in_circle_xy
+    is_polygon_in_polygon_xy
+
+
+Predicates 3D
+=============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    is_colinear
+    is_coplanar
+    is_point_in_halfspace
+    is_point_in_polyhedron
+    is_point_in_sphere
+    is_point_on_line
+    is_point_on_plane
+    is_point_on_polyline
+    is_point_on_segment
+    is_polygon_convex
+
+
 Transformations
 ===============
 
@@ -179,6 +218,9 @@ Linear algebra
     transpose_matrix
     vector_component
     vector_component_xy
+    vector_average
+    vector_variance
+    vector_standard_deviation
 
 
 Points, Vectors, Lines, Planes
@@ -200,6 +242,7 @@ Points, Vectors, Lines, Planes
     angle_planes
     centroid_points
     centroid_points_xy
+    centroid_points_weighted
     distance_line_line
     distance_point_line
     distance_point_line_xy
@@ -214,14 +257,10 @@ Points, Vectors, Lines, Planes
     midpoint_point_point_xy
     midpoint_line
     midpoint_line_xy
-    weighted_centroid_points
 
 
 Polygons & Polyhedrons
 ======================
-
-.. rename functions?
-   type of object first
 
 .. autosummary::
     :toctree: generated/
@@ -244,8 +283,8 @@ Polygons & Polyhedrons
     volume_polyhedron
 
 
-Pointclouds
-===========
+Point Sets
+==========
 
 .. autosummary::
     :toctree: generated/
@@ -257,52 +296,12 @@ Pointclouds
     convex_hull_numpy
     convex_hull_xy
     convex_hull_xy_numpy
-    delaunay_from_points
-    delaunay_from_points_numpy
-    icp_numpy
     oriented_bounding_box_numpy
     oriented_bounding_box_xy_numpy
-    voronoi_from_points_numpy
 
 
-Queries
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    is_ccw_xy
-    is_colinear
-    is_colinear_xy
-    is_coplanar
-    is_intersection_line_line
-    is_intersection_line_line_xy
-    is_intersection_line_plane
-    is_intersection_line_triangle
-    is_intersection_plane_plane
-    is_intersection_segment_plane
-    is_intersection_segment_segment
-    is_intersection_segment_segment_xy
-    is_polygon_convex
-    is_polygon_convex_xy
-    is_point_in_circle
-    is_point_in_circle_xy
-    is_point_in_convex_polygon_xy
-    is_point_on_line
-    is_point_on_line_xy
-    is_point_on_plane
-    is_point_infront_plane
-    is_point_in_polygon_xy
-    is_point_on_polyline
-    is_point_on_segment
-    is_point_on_segment_xy
-    is_point_in_triangle
-    is_point_in_triangle_xy
-
-
-Proximity
-=========
+Distance
+========
 
 .. autosummary::
     :toctree: generated/
@@ -336,6 +335,14 @@ Intersections
     intersection_segment_segment
     intersection_segment_segment_xy
     intersection_segment_plane
+    is_intersection_line_line
+    is_intersection_line_line_xy
+    is_intersection_line_plane
+    is_intersection_line_triangle
+    is_intersection_plane_plane
+    is_intersection_segment_plane
+    is_intersection_segment_segment
+    is_intersection_segment_segment_xy
 
 
 Offsets
@@ -357,12 +364,13 @@ Interpolation
     :toctree: generated/
     :nosignatures:
 
+    barycentric_coordinates
     discrete_coons_patch
     tween_points
     tween_points_distance
 
 
-Bestfit
+Fitting
 =======
 
 .. autosummary::
@@ -373,9 +381,9 @@ Bestfit
     bestfit_plane
     bestfit_plane_numpy
 
+
 Boolean operations
 ==================
-
 
 .. autosummary::
     :toctree: generated/
@@ -384,6 +392,44 @@ Boolean operations
     boolean_union_mesh_mesh
     boolean_difference_mesh_mesh
     boolean_intersection_mesh_mesh
+
+
+Triangulation
+=============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    delaunay_from_points
+    delaunay_from_points_numpy
+    voronoi_from_points_numpy
+
+
+Triangle meshes
+===============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+
+Quad meshes
+===========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+
+Pointclouds
+===========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    icp_numpy
 
 """
 from __future__ import absolute_import
@@ -395,18 +441,21 @@ from ._core import *  # noqa: F401 F403
 from .predicates import *  # noqa: F401 F403
 from .intersections import *  # noqa: F401 F403
 from .transformations import *  # noqa: F401 F403
+
 from .primitives import *  # noqa: F401 F403
 from .shapes import *  # noqa: F401 F403
 from .collections import *  # noqa: F401 F403
 
 from .bbox import *  # noqa: F401 F403
 from .bestfit import *  # noqa: F401 F403
+from .booleans import *  # noqa: F401 F403
 from .hull import *  # noqa: F401 F403
 from .icp import *  # noqa: F401 F403
 from .interpolation import *  # noqa: F401 F403
 from .offset import *  # noqa: F401 F403
+from .quadmesh import *  # noqa: F401 F403
 from .triangulation import *  # noqa: F401 F403
+from .trimesh import *  # noqa: F401 F403
 
-from .booleans import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]

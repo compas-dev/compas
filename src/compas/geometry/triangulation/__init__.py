@@ -23,15 +23,14 @@ def delaunay_triangulation(points):
     Returns
     -------
     (list, list)
-        * The vertices of the triangulation.
-        * The faces of the triangulation.
+        The vertices of the triangulation, and the faces of the triangulation.
 
     Examples
     --------
     >>>
 
     """
-    pass
+    raise NotImplementedError
 
 
 @pluggable(category="triangulation")
@@ -49,9 +48,8 @@ def constrained_delaunay_triangulation(boundary, polylines=None, polygons=None):
 
     Returns
     -------
-    tuple
-        * The vertices of the triangulation.
-        * The faces of the triangulation.
+    (list, list)
+        The vertices of the triangulation, and the faces of the triangulation.
 
     Notes
     -----
@@ -89,16 +87,15 @@ def conforming_delaunay_triangulation(boundary, polylines=None, polygons=None, a
 
     Returns
     -------
-    tuple
-        * The vertices of the triangulation.
-        * The faces of the triangulation.
+    (list, list)
+        The vertices of the triangulation, and the faces of the triangulation.
 
     Examples
     --------
     >>>
 
     """
-    pass
+    raise NotImplementedError
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

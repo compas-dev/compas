@@ -58,6 +58,17 @@ decorators
     print_profile
 
 
+encoders
+========
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    DataEncoder
+    DataDecoder
+
+
 itertools
 =========
 
@@ -65,6 +76,8 @@ itertools
     :toctree: generated/
     :nosignatures:
 
+    meshgrid
+    linspace
     flatten
     pairwise
     window
@@ -89,10 +102,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from .async_ import *  # noqa: F401 F403
+from .azync import *  # noqa: F401 F403
 from .coercing import *  # noqa: F401 F403
 from .colors import *  # noqa: F401 F403
-from .datetime_ import *  # noqa: F401 F403
+from .datetime import *  # noqa: F401 F403
 from .decorators import *  # noqa: F401 F403
 from .descriptors import *  # noqa: F401 F403
 from .encoders import *  # noqa: F401 F403
@@ -100,7 +113,7 @@ from .images import *  # noqa: F401 F403
 from .itertools import *  # noqa: F401 F403
 from .maps import *  # noqa: F401 F403
 from .remote import *  # noqa: F401 F403
-from .statistics import *  # noqa: F401 F403
+from .ssh import *  # noqa: F401 F403
 from .xfunc import *  # noqa: F401 F403
 
 

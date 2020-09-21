@@ -25,7 +25,7 @@ __all__ = [
     'midpoint_line_xy',
 
     'centroid_points',
-    'weighted_centroid_points',
+    'centroid_points_weighted',
     'centroid_points_xy',
     'centroid_polygon',
     'centroid_polygon_xy',
@@ -146,7 +146,7 @@ def centroid_points(points):
     return [sum(x) / p, sum(y) / p, sum(z) / p]
 
 
-def weighted_centroid_points(points, weights):
+def centroid_points_weighted(points, weights):
     """Compute the weighted centroid of a set of points. The weights can be any between minus and plus infinity.
 
     Parameters
