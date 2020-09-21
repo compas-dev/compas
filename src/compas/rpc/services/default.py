@@ -7,7 +7,7 @@ it listens to requests on port ``1753``.
 import os
 import sys
 
-from watchdog.events import FileSystemEventHandler
+from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers import Observer
 
 from compas.rpc import Dispatcher
@@ -37,19 +37,15 @@ class FileWatcherService(Dispatcher):
         self.current_module = module
         reload_event_handler = ModuleReloader(newly_loaded_modules)
 
-        # Recursive is `False` because using `True` would trigger events
-        # during the re-import due to the __pycache__ directory being updated.
-        # If we need to change to True, the ModuleReloader should be able to
-        # distinguish between changes that are relevant for the code base
-        # from auxiliary changes, like caching and what not.
+        print('Watching on {}'.format(module_dir))
         self.current_observer = Observer()
-        self.current_observer.schedule(reload_event_handler, module_dir, recursive=False)
+        self.current_observer.schedule(reload_event_handler, module_dir, recursive=True)
         self.current_observer.start()
 
 
-class ModuleReloader(FileSystemEventHandler):
+class ModuleReloader(PatternMatchingEventHandler):
     def __init__(self, module_names):
-        super(ModuleReloader, self).__init__()
+        super(ModuleReloader, self).__init__(ignore_patterns=['__pycache__'])
         self.module_names = module_names
 
     def on_any_event(self, event):
