@@ -14,7 +14,7 @@ compas_ghpython
 """
 import compas
 
-if compas.GH:
+if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
