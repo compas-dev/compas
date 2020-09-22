@@ -340,7 +340,7 @@ def select_point(message='Select one point.'):
     GUID
         The identifer of the selected point.
     """
-    return rs.GetObject(message, filter=rs.filter.point)
+    return rs.GetObject(message, preselect=True, select=True, group=False, filter=rs.filter.point)
 
 
 def select_points(message='Select multiple points.'):
@@ -357,7 +357,7 @@ def select_points(message='Select multiple points.'):
         The identifers of the selected points.
     """
     guids = []
-    temp = rs.GetObjects(message, filter=rs.filter.point)
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.point)
     if temp:
         guids = temp
     return guids
@@ -428,7 +428,7 @@ def select_curve(message='Select one curve.'):
     GUID
         The identifer of the selected curve.
     """
-    return rs.GetObject(message, filter=rs.filter.curve)
+    return rs.GetObject(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
 
 
 def select_curves(message='Select multiple curves.'):
@@ -445,7 +445,7 @@ def select_curves(message='Select multiple curves.'):
         The identifers of the selected curves.
     """
     guids = []
-    temp = rs.GetObjects(message, filter=rs.filter.curve)
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if temp:
         guids = temp
     return guids
@@ -464,7 +464,7 @@ def select_line(message='Select line.'):
     GUID
         The identifer of the selected line.
     """
-    guid = rs.GetObject(message, filter=rs.filter.curve)
+    guid = rs.GetObject(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if is_curve_line(guid):
         return guid
     return None
@@ -484,7 +484,7 @@ def select_lines(message='Select multiple lines.'):
         The identifers of the selected lines.
     """
     guids = []
-    temp = rs.GetObjects(message, filter=rs.filter.curve)
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if temp:
         for guid in temp:
             if is_curve_line(guid):
@@ -525,7 +525,7 @@ def select_polylines(message='Select multiple polylines (curves with degree = 1,
         The identifers of the selected polylines.
     """
     guids = []
-    temp = rs.GetObjects(message, filter=rs.filter.curve)
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if temp:
         for guid in temp:
             if is_curve_polyline(guid):
@@ -546,7 +546,7 @@ def select_polygon(message='Select one polygon (closed curve with degree = 1)'):
     GUID
         The identifer of the selected polygon.
     """
-    guid = rs.GetObject(message, filter=rs.filter.curve)
+    guid = rs.GetObject(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if is_curve_polygon(guid):
         return guid
     return None
@@ -566,7 +566,7 @@ def select_polygons(message='Select multiple polygons (closed curves with degree
         The identifers of the selected polygons.
     """
     guids = []
-    temp = rs.GetObjects(message, filter=rs.filter.curve)
+    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
     if temp:
         for guid in temp:
             if is_curve_polygon(guid):
