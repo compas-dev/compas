@@ -82,7 +82,7 @@ class MeshObject(BaseObject):
         self._location = None
         self._scale = None
         self._rotation = None
-        self.settings.update(MeshObject.SETTINGS)
+        self.settings.update(type(self).SETTINGS)
         if settings:
             self.settings.update(settings)
 
