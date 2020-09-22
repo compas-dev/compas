@@ -424,7 +424,7 @@
 <span class="sd">    GUID</span>
 <span class="sd">        The identifer of the selected point.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">point</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">point</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="select_points"><a class="viewcode-back" href="../../../api/generated/compas_rhino.utilities.select_points.html#compas_rhino.utilities.select_points">[docs]</a><span class="k">def</span> <span class="nf">select_points</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select multiple points.&#39;</span><span class="p">):</span>
@@ -441,7 +441,7 @@
 <span class="sd">        The identifers of the selected points.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">temp</span>
     <span class="k">return</span> <span class="n">guids</span></div>
@@ -512,7 +512,7 @@
 <span class="sd">    GUID</span>
 <span class="sd">        The identifer of the selected curve.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="select_curves"><a class="viewcode-back" href="../../../api/generated/compas_rhino.utilities.select_curves.html#compas_rhino.utilities.select_curves">[docs]</a><span class="k">def</span> <span class="nf">select_curves</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Select multiple curves.&#39;</span><span class="p">):</span>
@@ -529,7 +529,7 @@
 <span class="sd">        The identifers of the selected curves.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">temp</span>
     <span class="k">return</span> <span class="n">guids</span></div>
@@ -548,7 +548,7 @@
 <span class="sd">    GUID</span>
 <span class="sd">        The identifer of the selected line.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">guid</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
+    <span class="n">guid</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">is_curve_line</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">guid</span>
     <span class="k">return</span> <span class="kc">None</span></div>
@@ -568,7 +568,7 @@
 <span class="sd">        The identifers of the selected lines.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">guid</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_curve_line</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
@@ -609,7 +609,7 @@
 <span class="sd">        The identifers of the selected polylines.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">guid</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_curve_polyline</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
@@ -630,7 +630,7 @@
 <span class="sd">    GUID</span>
 <span class="sd">        The identifer of the selected polygon.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">guid</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
+    <span class="n">guid</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObject</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">is_curve_polygon</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">guid</span>
     <span class="k">return</span> <span class="kc">None</span></div>
@@ -650,7 +650,7 @@
 <span class="sd">        The identifers of the selected polygons.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">guid</span> <span class="ow">in</span> <span class="n">temp</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">is_curve_polygon</span><span class="p">(</span><span class="n">guid</span><span class="p">):</span>
