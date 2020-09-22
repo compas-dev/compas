@@ -292,7 +292,6 @@ class MeshObject(BaseObject):
         self.clear()
         if not self.visible:
             return
-
         self.artist.vertex_xyz = self.vertex_xyz
 
         if self.settings['show.vertices']:
