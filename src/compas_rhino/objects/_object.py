@@ -124,6 +124,10 @@ class BaseObject(ABC):
         _ITEM_OBJECT[item_type] = object_type
 
     @staticmethod
+    def registered_object_types():
+        return [_ITEM_OBJECT[item_type] for item_type in _ITEM_OBJECT]
+
+    @staticmethod
     def build(item, **kwargs):
         object_type = _ITEM_OBJECT[type(item)]
         return object_type(item, **kwargs)
