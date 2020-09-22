@@ -16,7 +16,7 @@ import Rhino.UI  # noqa: E402
 from Rhino.Geometry import Point3d  # noqa: E402
 
 try:
-    from compas_rhino.etoforms import PropertyListForm
+    from compas_rhino.forms import PropertyListForm
 except ImportError:
     from Rhino.UI.Dialogs import ShowPropertyListBox
 
