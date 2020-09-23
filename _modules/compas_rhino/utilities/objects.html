@@ -529,7 +529,7 @@
 <span class="sd">        The identifers of the selected curves.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">preselect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetObjects</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">rs</span><span class="o">.</span><span class="n">filter</span><span class="o">.</span><span class="n">curve</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">temp</span><span class="p">:</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">temp</span>
     <span class="k">return</span> <span class="n">guids</span></div>
