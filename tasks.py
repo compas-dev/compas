@@ -138,6 +138,7 @@ def testdocs(ctx, rebuild=False):
     opts = '-E' if rebuild else ''
     ctx.run('sphinx-build {} -b doctest docs dist/docs'.format(opts))
 
+
 @task()
 def linkcheck(ctx, rebuild=False):
     """Check links in documentation."""
