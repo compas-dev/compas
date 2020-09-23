@@ -445,7 +445,7 @@ def select_curves(message='Select multiple curves.'):
         The identifers of the selected curves.
     """
     guids = []
-    temp = rs.GetObjects(message, preselect=True, select=True, group=False, filter=rs.filter.curve)
+    temp = rs.GetObjects(message, filter=rs.filter.curve)
     if temp:
         guids = temp
     return guids
