@@ -252,6 +252,8 @@ A frame defines a local coordinate system and quaternions provide an alternative
    ==========
 
 
+
+
 Intersections
 =============
 

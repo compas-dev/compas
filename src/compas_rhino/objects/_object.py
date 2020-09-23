@@ -99,6 +99,7 @@ class BaseObject(ABC):
             self._id = uuid4()
         return self._id
 
+    # this is debatable
     @property
     def name(self):
         return self.item.name
