@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema",
     "$id": "https://github.com/compas-dev/compas/schemas/graph.json",
-    "$compas": "0.16.3",
+    "$compas": "0.16.4",
 
     "type": "object",
     "poperties": {

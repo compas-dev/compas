@@ -22,7 +22,7 @@ else:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '0.16.3'
+__version__ = '0.16.4'
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]
