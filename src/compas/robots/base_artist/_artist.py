@@ -95,11 +95,13 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
         link = self.model.get_link_by_name(tool.attached_collision_mesh.link_name)
         ee_frame = link.parent_joint.origin.copy()
+        parent_joint_name = link.parent_joint.name
 
         T = Transformation.from_frame_to_frame(Frame.worldXY(), ee_frame)
         self.transform(native_geometry, T)
         tool.native_geometry = [native_geometry]
         tool.current_transformation = Transformation()
+        tool.parent_joint_name = parent_joint_name
         self.attached_tool = tool
 
     def detach_tool(self):
@@ -250,7 +252,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                         self._apply_transformation_on_transformed_link(item, transformations[j.name])
 
         if self.attached_tool:
-            self._apply_transformation_on_transformed_link(self.attached_tool, transformations[names[-1]])
+            self._apply_transformation_on_transformed_link(self.attached_tool, transformations[self.attached_tool.parent_joint_name])
 
     def draw_visual(self):
         """Draws all visual geometry of the robot model."""
