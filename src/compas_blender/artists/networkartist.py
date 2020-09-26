@@ -102,9 +102,9 @@ class NetworkArtist(BaseArtist):
         self._object_path = dict(values)
 
     def clear(self):
-        objects = list(self.object_node.keys())
-        objects += list(self.object_edge.keys())
-        objects += list(self.object_path.keys())
+        objects = list(self.object_node)
+        objects += list(self.object_edge)
+        objects += list(self.object_path)
         compas_blender.delete_objects(objects, purge_data=True)
         self._object_node = {}
         self._object_edge = {}

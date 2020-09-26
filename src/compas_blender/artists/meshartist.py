@@ -123,9 +123,9 @@ class MeshArtist(BaseArtist):
         """Clear all objects previously drawn by this artist.
         """
         objects = []
-        objects += list(self.object_vertex.keys())
-        objects += list(self.object_edge.keys())
-        objects += list(self.object_face.keys())
+        objects += list(self.object_vertex)
+        objects += list(self.object_edge)
+        objects += list(self.object_face)
         compas_blender.delete_objects(objects, purge_data=True)
         self._object_vertex = {}
         self._object_edge = {}
