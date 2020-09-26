@@ -1,9 +1,13 @@
 # from __future__ import annotations
 
+from functools import partial
+
 import compas_blender
 
 from compas_blender.artists._artist import BaseArtist
-from compas.utilities import color_to_colordict as colordict
+from compas.utilities import color_to_colordict
+
+colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
 
 
 __all__ = [
@@ -30,7 +34,7 @@ class NetworkArtist(BaseArtist):
 
     """
 
-    def __init__(self, network, settings=None):
+    def __init__(self, network):
         super().__init__()
         self._nodecollection = None
         self._edgecollection = None
@@ -38,34 +42,33 @@ class NetworkArtist(BaseArtist):
         self._object_node = {}
         self._object_edge = {}
         self._object_path = {}
+        self.color_nodes = (1.0, 1.0, 1.0)
+        self.color_edges = (0.0, 0.0, 0.0)
+        self.show_nodes = True,
+        self.show_edges = True,
+        self.show_nodelabels = False,
+        self.show_edgelabels = False
         self.network = network
-        self.settings = {
-            'color.nodes': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'show.nodes': True,
-            'show.edges': True,
-            'show.nodelabels': False,
-            'show.edgelabels': False
-        }
-        if settings:
-            self.settings.update(settings)
 
     @property
     def nodecollection(self):
+        path = f"{self.network.name}::Nodes"
         if not self._nodecollection:
-            self._nodecollection = compas_blender.create_collections_from_path('Network::Nodes')[1]
+            self._nodecollection = compas_blender.create_collections_from_path(path)[1]
         return self._nodecollection
 
     @property
     def edgecollection(self):
+        path = f"{self.network.name}::Edges"
         if not self._edgecollection:
-            self._edgecollection = compas_blender.create_collections_from_path('Network::Edges')[1]
+            self._edgecollection = compas_blender.create_collections_from_path(path)[1]
         return self._edgecollection
 
     @property
     def pathcollection(self):
+        path = f"{self.network.name}::Paths"
         if not self._pathcollection:
-            self._pathcollection = compas_blender.create_collections_from_path('Network::Paths')[1]
+            self._pathcollection = compas_blender.create_collections_from_path(path)[1]
         return self._pathcollection
 
     @property
@@ -102,18 +105,13 @@ class NetworkArtist(BaseArtist):
         objects = list(self.object_node.keys())
         objects += list(self.object_edge.keys())
         objects += list(self.object_path.keys())
-        compas_blender.delete_objects(objects)
+        compas_blender.delete_objects(objects, purge_data=True)
         self._object_node = {}
         self._object_edge = {}
         self._object_path = {}
 
-    def draw(self, settings=None):
+    def draw(self):
         """Draw the network.
-
-        Parameters
-        ----------
-        settings : dict, optional
-            Dictionary of visualisation settings that will be merged with the settings of the artist.
 
         Returns
         -------
@@ -122,12 +120,9 @@ class NetworkArtist(BaseArtist):
 
         """
         self.clear()
-        if not settings:
-            settings = {}
-        self.settings.update(settings)
-        if self.settings['show.nodes']:
+        if self.show_nodes:
             self.draw_nodes()
-        if self.settings['show.edges']:
+        if self.show_edges:
             self.draw_edges()
         return self.objects
 
@@ -148,15 +143,14 @@ class NetworkArtist(BaseArtist):
 
         """
         nodes = nodes or list(self.network.nodes())
-        node_color = colordict(color, nodes, default=self.settings['color.nodes'], colorformat='rgb', normalize=False)
+        node_color = colordict(color, nodes, default=self.color_nodes)
         points = []
         for node in nodes:
             points.append({
                 'pos': self.network.node_coordinates(node),
-                'name': "{}.node.{}".format(self.network.name, node),
+                'name': f"{self.network.name}.node.{node}",
                 'color': node_color[node],
                 'radius': 0.05})
-
         objects = compas_blender.draw_points(points, self.nodecollection)
         self.object_node = zip(objects, nodes)
         return objects
@@ -178,16 +172,15 @@ class NetworkArtist(BaseArtist):
 
         """
         edges = edges or list(self.network.edges())
-        edge_color = colordict(color, edges, default=self.settings['color.edges'], colorformat='rgb', normalize=False)
+        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
             lines.append({
                 'start': self.network.node_coordinates(edge[0]),
                 'end': self.network.node_coordinates(edge[1]),
                 'color': edge_color[edge],
-                'name': "{}.edge.{}-{}".format(self.network.name, *edge),
+                'name': f"{self.network.name}.edge.{edge[0]}-{edge[1]}",
                 'width': 0.02})
-
         objects = compas_blender.draw_lines(lines, self.edgecollection)
         self.object_edge = zip(objects, edges)
         return objects
