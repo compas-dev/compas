@@ -9,26 +9,13 @@ from compas.datastructures import HalfEdge
 
 @pytest.fixture
 def mesh():
-    vertices = [
-        [1.0, 0.0, 0.0],
-        [1.0, 2.0, 0.0],
-        [0.0, 1.0, 0.0],
-        [2.0, 1.0, 0.0]
-    ]
-
-    faces = [
-        [0, 1, 2],
-        [0, 3, 1]
-    ]
-
+    vertices = [None, None, None, None]
+    faces = [[0, 1, 2], [0, 3, 1]]
     he = HalfEdge()
-
     for vertex in vertices:
-        he.add_vertex(x=vertex[0], y=vertex[1], z=vertex[2])
-
+        he.add_vertex()
     for face in faces:
         he.add_face(face)
-
     return he
 
 
@@ -48,8 +35,22 @@ def edge_key():
 
 
 # ==============================================================================
+# Tests - Schema & JSONSchema
+# ==============================================================================
+
+
+def test_data_schema(mesh):
+    mesh.validate_data()
+
+
+def test_json_schema(mesh):
+    mesh.validate_json()
+
+
+# ==============================================================================
 # Tests - Vertex Attributes
 # ==============================================================================
+
 
 def test_vertex_attributes_key_not_found(mesh):
     with pytest.raises(KeyError):

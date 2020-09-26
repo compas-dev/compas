@@ -6,6 +6,7 @@ from collections import OrderedDict
 from ast import literal_eval
 from random import sample
 from random import choice
+from distutils.version import LooseVersion
 
 import compas
 
@@ -49,17 +50,26 @@ class HalfEdge(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
-        from packaging import version
-        __version__ = compas.__version__.split('-')[0]
-        if version.parse(__version__) < version.parse('0.16.5'):
+        if LooseVersion(compas.__version__) < LooseVersion('0.16.5'):
             return schema.Schema({
                 "attributes": dict,
                 "dva": dict,
                 "dea": dict,
                 "dfa": dict,
-                "vertex": dict,
-                "face": dict,
-                "facedata": dict,
+                "vertex": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, int) for key in x)
+                ),
+                "face": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, int) for key in x),
+                    lambda x: all(all(isinstance(item, int) for item in value) for value in x.values())
+                ),
+                "facedata": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, int) for key in x),
+                    lambda x: all(isinstance(value, dict) for value in x.values())
+                ),
                 "edgedata": dict,
                 "max_int_key": schema.And(int, lambda x: x >= -1),
                 "max_int_fkey": schema.And(int, lambda x: x >= -1)
@@ -98,55 +108,42 @@ class HalfEdge(Datastructure):
 
     @property
     def JSONSCHEMA(self):
-        from packaging import version
-        __version__ = compas.__version__.split('-')[0]
-        if version.parse(__version__) < version.parse('0.16.5'):
-            return {
-                "$schema": "http://json-schema.org/schema",
-                "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
-                "$compas": __version__,
+        version = LooseVersion(compas.__version__)
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
+            "$compas": version.vstring.split('-')[0],
+        }
+        data = {
+            "type": "object",
+            "properties": {
+                "attributes":   {"type": "object"},
+                "dva":          {"type": "object"},
+                "dea":          {"type": "object"},
+                "dfa":          {"type": "object"},
+                "vertex":       {"type": "object"},
+                "face":         {"type": "object"},
+                "facedata":     {"type": "object"},
+                "edgedata":     {"type": "object"},
+                "max_vertex":   {"type": "number"},
+                "max_face":     {"type": "number"}
+            },
+            "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_vertex", "max_face"]
+        }
+        if version < LooseVersion('0.16.5'):
+            schema.update(data)
+        else:
+            meta = {
                 "type": "object",
                 "properties": {
-                    "attributes":   {"type": "object"},
-                    "dva":          {"type": "object"},
-                    "dea":          {"type": "object"},
-                    "dfa":          {"type": "object"},
-                    "vertex":       {"type": "object"},
-                    "face":         {"type": "object"},
-                    "facedata":     {"type": "object"},
-                    "edgedata":     {"type": "object"},
-                    "max_int_key":  {"type": "number"},
-                    "max_int_fkey": {"type": "number"}
+                    "compas": {"type": "string"},
+                    "datatype": {"type": "string"},
+                    "data": data
                 },
-                "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
+                "required": ["compas", "datatype", "data"]
             }
-        return {
-            "$schema": "http://json-schema.org/schema",
-            "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
-            "$compas": __version__,
-            "type": "object",
-            "poperties": {
-                "compas": {"type": "string"},
-                "datatype": {"type": "string"},
-                "data": {
-                    "type": "object",
-                    "properties": {
-                        "attributes":   {"type": "object"},
-                        "dva":          {"type": "object"},
-                        "dea":          {"type": "object"},
-                        "dfa":          {"type": "object"},
-                        "vertex":       {"type": "object"},
-                        "face":         {"type": "object"},
-                        "facedata":     {"type": "object"},
-                        "edgedata":     {"type": "object"},
-                        "max_vertex":   {"type": "number"},
-                        "max_face":     {"type": "number"}
-                    },
-                    "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_vertex", "max_face"]
-                }
-            },
-            "required": ["compas", "datatype", "data"]
-        }
+            schema.update(meta)
+        return schema
 
     def __init__(self):
         super(HalfEdge, self).__init__()
@@ -187,45 +184,37 @@ class HalfEdge(Datastructure):
     def data(self):
         """dict : A data dict representing the mesh data structure for serialisation.
         """
-        from packaging import version
-        __version__ = compas.__version__.split('-')[0]
-        if version.parse(__version__) < version.parse('0.16.5'):
-            return {
-                'attributes': self.attributes,
-                'dva': self.default_vertex_attributes,
-                'dea': self.default_edge_attributes,
-                'dfa': self.default_face_attributes,
-                'vertex': self.vertex,
-                'face': self.face,
-                'facedata': self.facedata,
-                'edgedata': {repr(key): self.edgedata[key] for key in self.edgedata},
-                'max_int_key': self._max_vertex,
-                'max_int_fkey': self._max_face
-            }
+        data = {
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'dfa': self.default_face_attributes,
+            'vertex': self.vertex,
+            'face': self.face,
+            'facedata': self.facedata,
+        }
+        version = LooseVersion(compas.__version__)
+        if version < LooseVersion('0.16.5'):
+            data['edgedata'] = {repr(key): self.edgedata[key] for key in self.edgedata}
+            data['max_int_key'] = self._max_vertex
+            data['max_int_fkey'] = self._max_face
+            return data
+        data['edgedata'] = self.edgedata
+        data['max_vertex'] = self._max_vertex
+        data['max_face'] = self._max_face
         return {
-            'compas': __version__,
-            'datatype': 'compas.datastructures/Mesh',
-            'data': {
-                'attributes': self.attributes,
-                'dva': self.default_vertex_attributes,
-                'dea': self.default_edge_attributes,
-                'dfa': self.default_face_attributes,
-                'vertex': self.vertex,
-                'face': self.face,
-                'facedata': self.facedata,
-                'edgedata': self.edgedata,
-                'max_vertex': self._max_vertex,
-                'max_face': self._max_face
-            }
+            'compas': version.vstring.split('-')[0],
+            'datatype': self.dtype,
+            'data': data
         }
 
     @data.setter
     def data(self, data):
-        from packaging import version
         if 'compas' in data:
-            __version__ = compas.__version__.split('-')[0]
-            if version.parse(__version__) < version.parse('0.16.5'):
-                raise Exception('The data was generated with an incompatible newer version of COMPAS: {}'.format(__version__))
+            version = LooseVersion(compas.__version__)
+            if version < LooseVersion('0.16.5'):
+                raise Exception('The data was generated with an incompatible newer version of COMPAS: {}'.format(version.vstring.split('-')[0]))
+            # dtype = data['dtype']
             data = data['data']
             attributes = data['attributes']
             dva = data.get('dva') or {}
