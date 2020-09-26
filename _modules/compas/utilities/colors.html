@@ -705,29 +705,35 @@
     <span class="k">if</span> <span class="n">color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
     <span class="c1"># if input is hex</span>
-    <span class="c1"># and output should be rgb</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+        <span class="c1"># and output should be rgb</span>
         <span class="k">if</span> <span class="n">colorformat</span> <span class="o">==</span> <span class="s1">&#39;rgb&#39;</span><span class="p">:</span>
             <span class="n">color</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">color</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
     <span class="c1"># if input is rgb</span>
-    <span class="c1"># and output should be hex</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">color</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="c1"># and output should be hex</span>
         <span class="k">if</span> <span class="n">colorformat</span> <span class="o">==</span> <span class="s1">&#39;hex&#39;</span><span class="p">:</span>
-            <span class="n">color</span> <span class="o">=</span> <span class="n">rgb_to_hex</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">rgb_to_hex</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">)</span>
+        <span class="c1"># and output should be rgb</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     color = rgb_to_rgb(color, normalize=normalize)</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">color</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">color</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="c1"># if input is hex</span>
-            <span class="c1"># and output should be rgb</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+                <span class="c1"># and output should be rgb</span>
                 <span class="k">if</span> <span class="n">colorformat</span> <span class="o">==</span> <span class="s1">&#39;rgb&#39;</span><span class="p">:</span>
-                    <span class="n">color</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="n">color</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">hex_to_rgb</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">)</span>
             <span class="c1"># if input is rgb</span>
-            <span class="c1"># and output should be hex</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="c1"># and output should be hex</span>
                 <span class="k">if</span> <span class="n">colorformat</span> <span class="o">==</span> <span class="s1">&#39;hex&#39;</span><span class="p">:</span>
-                    <span class="n">color</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb_to_hex</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+                    <span class="n">color</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb_to_hex</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="n">normalize</span><span class="p">)</span>
+                <span class="c1"># and output should be rgb</span>
+                <span class="c1"># else:</span>
+                <span class="c1">#     color[k] = rgb_to_rgb(c, normalize=normalize)</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">(</span><span class="n">default</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">color</span> <span class="k">else</span> <span class="n">color</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;This is not a valid color format: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">color</span><span class="p">)))</span></div>
 

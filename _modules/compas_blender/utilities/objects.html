@@ -85,7 +85,7 @@
 <span></span><span class="kn">import</span> <span class="nn">bpy</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Text</span>
 
-<span class="c1"># from compas.datastructures import Mesh</span>
+<span class="kn">from</span> <span class="nn">.data</span> <span class="kn">import</span> <span class="n">delete_unused_data</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -96,38 +96,6 @@
     <span class="s2">&quot;delete_objects_by_names&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_object_by_name&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_objects_by_names&quot;</span><span class="p">,</span>
-    <span class="c1"># &quot;get_objects&quot;,</span>
-    <span class="c1"># &quot;get_object_name&quot;,</span>
-    <span class="c1"># &quot;get_objects_names&quot;,</span>
-    <span class="c1"># &quot;get_objects_layers&quot;,</span>
-    <span class="c1"># &quot;get_objects_types&quot;,</span>
-    <span class="c1"># &quot;get_objects_coordinates&quot;,</span>
-    <span class="c1"># &quot;get_object_property&quot;,</span>
-    <span class="c1"># &quot;get_objects_property&quot;,</span>
-    <span class="c1"># &quot;get_points&quot;,</span>
-    <span class="c1"># &quot;get_curves&quot;,</span>
-    <span class="c1"># &quot;get_meshes&quot;,</span>
-    <span class="c1"># &quot;get_points_coordinates&quot;,</span>
-    <span class="c1"># &quot;get_curves_coordinates&quot;,</span>
-    <span class="c1"># &quot;select_object&quot;,</span>
-    <span class="c1"># &quot;select_objects&quot;,</span>
-    <span class="c1"># &quot;select_point&quot;,</span>
-    <span class="c1"># &quot;select_points&quot;,</span>
-    <span class="c1"># &quot;select_curve&quot;,</span>
-    <span class="c1"># &quot;select_curves&quot;,</span>
-    <span class="c1"># &quot;select_mesh&quot;,</span>
-    <span class="c1"># &quot;select_meshes&quot;,</span>
-    <span class="c1"># &quot;set_select&quot;,</span>
-    <span class="c1"># &quot;set_deselect&quot;,</span>
-    <span class="c1"># &quot;set_objects_layer&quot;,</span>
-    <span class="c1"># &quot;set_objects_coordinates&quot;,</span>
-    <span class="c1"># &quot;set_objects_rotations&quot;,</span>
-    <span class="c1"># &quot;set_objects_scales&quot;,</span>
-    <span class="c1"># &quot;set_objects_show_names&quot;,</span>
-    <span class="c1"># &quot;set_objects_visible&quot;,</span>
-    <span class="c1"># &quot;set_object_property&quot;,</span>
-    <span class="c1"># &quot;set_objects_property&quot;,</span>
-    <span class="c1"># &quot;mesh_from_bmesh&quot;,</span>
 <span class="p">]</span>
 
 
@@ -136,44 +104,28 @@
 <span class="c1"># ==============================================================================</span>
 
 
-<span class="k">def</span> <span class="nf">delete_all_objects</span><span class="p">():</span>
+<span class="k">def</span> <span class="nf">delete_all_objects</span><span class="p">(</span><span class="n">purge_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Delete all mesh and curve scene objects, and the attached mesh and curve data blocks.&quot;&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
-        <span class="c1"># if obj.type == &#39;MESH&#39;:</span>
-        <span class="c1">#     bpy.data.objects.remove(obj)</span>
-        <span class="c1"># elif obj.type == &#39;CURVE&#39;:</span>
-        <span class="c1">#     bpy.data.objects.remove(obj)</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meshes</span><span class="p">:</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meshes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">curve</span> <span class="ow">in</span> <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">curves</span><span class="p">:</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">curves</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">select_all</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;SELECT&#39;</span><span class="p">)</span>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">use_global</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">confirm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">purge_data</span><span class="p">:</span>
+        <span class="n">delete_unused_data</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="delete_object"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_object.html#compas_blender.utilities.delete_object">[docs]</a><span class="k">def</span> <span class="nf">delete_object</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">):</span>
+<div class="viewcode-block" id="delete_object"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_object.html#compas_blender.utilities.delete_object">[docs]</a><span class="k">def</span> <span class="nf">delete_object</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">,</span> <span class="n">purge_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Delete a scene object.</span>
-
-<span class="sd">    If the scene object is of type &quot;MESH&quot; or &quot;CURVE&quot;,</span>
-<span class="sd">    the attached data blocks are also removed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;MESH&#39;</span><span class="p">:</span>
-        <span class="n">mesh</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">data</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">mesh</span><span class="p">:</span>
-            <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">meshes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;CURVE&#39;</span><span class="p">:</span>
-        <span class="n">curve</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">data</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">curve</span><span class="p">:</span>
-            <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">curves</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">curve</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+    <span class="n">bpy</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">purge_data</span><span class="p">:</span>
+        <span class="n">delete_unused_data</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="delete_objects"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_objects.html#compas_blender.utilities.delete_objects">[docs]</a><span class="k">def</span> <span class="nf">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">]):</span>
+<div class="viewcode-block" id="delete_objects"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_objects.html#compas_blender.utilities.delete_objects">[docs]</a><span class="k">def</span> <span class="nf">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">bpy</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Object</span><span class="p">],</span> <span class="n">purge_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Delete multiple scene objects.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
-        <span class="n">delete_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+        <span class="n">delete_object</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">purge_data</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">purge_data</span><span class="p">:</span>
+        <span class="n">delete_unused_data</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="delete_object_by_name"><a class="viewcode-back" href="../../../api/generated/compas_blender.utilities.delete_object_by_name.html#compas_blender.utilities.delete_object_by_name">[docs]</a><span class="k">def</span> <span class="nf">delete_object_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>

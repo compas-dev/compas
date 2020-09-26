@@ -84,10 +84,14 @@
           <h1 class="display-4 p-0 mb-5">Source code for compas_blender.artists.networkartist</h1><div class="highlight"><pre><code>
 <span></span><span class="c1"># from __future__ import annotations</span>
 
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
 <span class="kn">import</span> <span class="nn">compas_blender</span>
 
 <span class="kn">from</span> <span class="nn">compas_blender.artists._artist</span> <span class="kn">import</span> <span class="n">BaseArtist</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">color_to_colordict</span> <span class="k">as</span> <span class="n">colordict</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">color_to_colordict</span>
+
+<span class="n">colordict</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">color_to_colordict</span><span class="p">,</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -114,7 +118,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="NetworkArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.NetworkArtist.__init__.html#compas_blender.artists.NetworkArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.NetworkArtist.__init__.html#compas_blender.artists.NetworkArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nodecollection</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_edgecollection</span> <span class="o">=</span> <span class="kc">None</span>
@@ -122,34 +126,33 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_object_node</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_object_edge</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_object_path</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;color.nodes&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">&#39;color.edges&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;show.nodes&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;show.edges&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;show.nodelabels&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;show.edgelabels&#39;</span><span class="p">:</span> <span class="kc">False</span>
-        <span class="p">}</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_nodes</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_edges</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_nodes</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_edges</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_nodelabels</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_edgelabels</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">nodecollection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">::Nodes&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodecollection</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_nodecollection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collections_from_path</span><span class="p">(</span><span class="s1">&#39;Network::Nodes&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nodecollection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collections_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodecollection</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">edgecollection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">::Edges&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edgecollection</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_edgecollection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collections_from_path</span><span class="p">(</span><span class="s1">&#39;Network::Edges&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_edgecollection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collections_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edgecollection</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">pathcollection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">::Paths&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pathcollection</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_pathcollection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collections_from_path</span><span class="p">(</span><span class="s1">&#39;Network::Paths&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pathcollection</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">create_collections_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pathcollection</span>
 
     <span class="nd">@property</span>
@@ -186,18 +189,13 @@
         <span class="n">objects</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_node</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">objects</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_edge</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">objects</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object_path</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
+        <span class="n">compas_blender</span><span class="o">.</span><span class="n">delete_objects</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">purge_data</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_object_node</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_object_edge</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_object_path</span> <span class="o">=</span> <span class="p">{}</span></div>
 
-<div class="viewcode-block" id="NetworkArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.NetworkArtist.draw.html#compas_blender.artists.NetworkArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.NetworkArtist.draw.html#compas_blender.artists.NetworkArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the network.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        settings : dict, optional</span>
-<span class="sd">            Dictionary of visualisation settings that will be merged with the settings of the artist.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -206,12 +204,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">settings</span><span class="p">:</span>
-            <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.nodes&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_nodes</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_nodes</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.edges&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_edges</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span></div>
 
@@ -232,15 +227,14 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="n">nodes</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
-        <span class="n">node_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.nodes&#39;</span><span class="p">],</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">node_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_nodes</span><span class="p">)</span>
         <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
             <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">node</span><span class="p">),</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.node.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">node</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.node.</span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">node_color</span><span class="p">[</span><span class="n">node</span><span class="p">],</span>
                 <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">})</span>
-
         <span class="n">objects</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodecollection</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">object_node</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">objects</span></div>
@@ -262,16 +256,15 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">edges</span> <span class="o">=</span> <span class="n">edges</span> <span class="ow">or</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
-        <span class="n">edge_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.edges&#39;</span><span class="p">],</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">edge_color</span> <span class="o">=</span> <span class="n">colordict</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color_edges</span><span class="p">)</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                 <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">edge_color</span><span class="p">[</span><span class="n">edge</span><span class="p">],</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.edge.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">edge</span><span class="p">),</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">.edge.</span><span class="si">{</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">})</span>
-
         <span class="n">objects</span> <span class="o">=</span> <span class="n">compas_blender</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgecollection</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">object_edge</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">objects</span></div></div>
