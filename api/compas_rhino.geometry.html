@@ -545,8 +545,17 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
 
 <dl class="method">
 <dt id="compas_rhino.geometry.RhinoSurface.to_compas">
-<code class="sig-name descname">to_compas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/geometry/surface.html#RhinoSurface.to_compas"><span class="viewcode-link">[source]</span></a></dt>
-<dd></dd></dl>
+<code class="sig-name descname">to_compas</code><span class="sig-paren">(</span><em class="sig-param">cls=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/compas_rhino/geometry/surface.html#RhinoSurface.to_compas"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Convert the surface b-rep loops to a COMPAS mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cls</strong> (<a class="reference internal" href="generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional) – The type of COMPAS mesh.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a> – The resulting mesh.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -720,7 +729,7 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.16.4',
+    VERSION           : '0.16.5',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

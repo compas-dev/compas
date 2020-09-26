@@ -89,6 +89,7 @@
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">sample</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
 <span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span>
+<span class="kn">from</span> <span class="nn">distutils.version</span> <span class="kn">import</span> <span class="n">LooseVersion</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
 
@@ -137,77 +138,61 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">DATASCHEMA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">import</span> <span class="nn">schema</span>
-        <span class="kn">from</span> <span class="nn">packaging</span> <span class="kn">import</span> <span class="n">version</span>
-        <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;0.17&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Schema</span><span class="p">({</span>
-                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;edge&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="p">})</span>
-        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Schema</span><span class="p">({</span>
+        <span class="n">version</span> <span class="o">=</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;compas&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="s2">&quot;datatype&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;edge&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">})</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="s2">&quot;edge&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">And</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">&lt;</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="s1">&#39;0.16.5&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">schema</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span><span class="n">meta</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">JSONSCHEMA</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">packaging</span> <span class="kn">import</span> <span class="n">version</span>
-        <span class="k">if</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">version</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;0.17&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s2">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/compas-dev/compas/schemas/mesh.json&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;$compas&quot;</span><span class="p">:</span> <span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
-
+        <span class="n">version</span> <span class="o">=</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+        <span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/draft-07/schema#&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/compas-dev/compas/schemas/graph.json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;$compas&quot;</span><span class="p">:</span> <span class="n">version</span><span class="o">.</span><span class="n">vstring</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;attributes&quot;</span><span class="p">:</span>      <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;node&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;edge&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span>       <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
+                <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span>     <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;edge_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="s2">&quot;adjacency&quot;</span><span class="p">,</span> <span class="s2">&quot;max_int_key&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">&lt;</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="s1">&#39;0.16.5&#39;</span><span class="p">):</span>
+            <span class="n">schema</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;attributes&quot;</span><span class="p">:</span>      <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;node&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;edge&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span>       <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span>     <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">}</span>
+                    <span class="s2">&quot;compas&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+                    <span class="s2">&quot;datatype&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+                    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;edge_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="s2">&quot;adjacency&quot;</span><span class="p">,</span> <span class="s2">&quot;max_int_key&quot;</span><span class="p">]</span>
+                <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;compas&quot;</span><span class="p">,</span> <span class="s2">&quot;datatype&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">]</span>
             <span class="p">}</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;http://json-schema.org/schema&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;$id&quot;</span><span class="p">:</span> <span class="s2">&quot;https://github.com/compas-dev/compas/schemas/graph.json&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;$compas&quot;</span><span class="p">:</span> <span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">,</span>
-
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;poperties&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;compas&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
-                <span class="s2">&quot;datatype&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
-                <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;attributes&quot;</span><span class="p">:</span>      <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                        <span class="s2">&quot;node_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                        <span class="s2">&quot;edge_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                        <span class="s2">&quot;node&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                        <span class="s2">&quot;edge&quot;</span><span class="p">:</span>            <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                        <span class="s2">&quot;adjacency&quot;</span><span class="p">:</span>       <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;object&quot;</span><span class="p">},</span>
-                        <span class="s2">&quot;max_int_key&quot;</span><span class="p">:</span>     <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;number&quot;</span><span class="p">}</span>
-                    <span class="p">},</span>
-                    <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;edge_attributes&quot;</span><span class="p">,</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="s2">&quot;edge&quot;</span><span class="p">,</span> <span class="s2">&quot;adjacency&quot;</span><span class="p">,</span> <span class="s2">&quot;max_int_key&quot;</span><span class="p">]</span>
-                <span class="p">}</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;compas&quot;</span><span class="p">,</span> <span class="s2">&quot;datatype&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">]</span>
-        <span class="p">}</span>
+            <span class="n">schema</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">meta</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">schema</span>
 
 <div class="viewcode-block" id="Graph.__init__"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.__init__.html#compas.datastructures.Graph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Graph</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -230,7 +215,7 @@
 <span class="sd">        Any value assigned to this property will be stored in the attribute dict</span>
 <span class="sd">        of the data structure instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
     <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
@@ -244,14 +229,21 @@
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a data dict of this data structure for serialisation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
-                <span class="s1">&#39;node_attributes&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="p">,</span>
-                <span class="s1">&#39;edge_attributes&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">,</span>
-                <span class="s1">&#39;node&#39;</span><span class="p">:</span> <span class="p">{},</span>
-                <span class="s1">&#39;edge&#39;</span><span class="p">:</span> <span class="p">{},</span>
-                <span class="s1">&#39;adjacency&#39;</span><span class="p">:</span> <span class="p">{},</span>
-                <span class="s1">&#39;max_int_key&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span><span class="p">}</span>
-
+        <span class="n">version</span> <span class="o">=</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;compas&quot;</span><span class="p">:</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">version</span><span class="o">.</span><span class="n">vstring</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">&quot;datatype&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+            <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
+            <span class="s1">&#39;node_attributes&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="p">,</span>
+            <span class="s1">&#39;edge_attributes&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">,</span>
+            <span class="s1">&#39;node&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;edge&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;adjacency&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s1">&#39;max_int_key&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span>
+        <span class="p">}</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">][</span><span class="nb">repr</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
@@ -269,10 +261,19 @@
                 <span class="n">rv</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
                 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;adjacency&#39;</span><span class="p">][</span><span class="n">ru</span><span class="p">][</span><span class="n">rv</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="k">return</span> <span class="n">data</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">&lt;</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="s1">&#39;0.16.5&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="k">return</span> <span class="n">meta</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;compas&#39;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">version</span> <span class="o">&lt;</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="s1">&#39;0.16.5&#39;</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;The data was generated with an incompatible newer version of COMPAS: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">version</span><span class="o">.</span><span class="n">vstring</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span>
+
         <span class="n">attributes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;attributes&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">default_node_attributes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dna&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">default_edge_attributes</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dea&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -328,7 +329,9 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="Graph.to_networkx"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.to_networkx.html#compas.datastructures.Graph.to_networkx">[docs]</a>    <span class="k">def</span> <span class="nf">to_networkx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+        <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">graph</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># helpers</span>
@@ -1629,7 +1632,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.16.4',
+    VERSION           : '0.16.5',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
