@@ -6,9 +6,11 @@ import Rhino
 import compas_rhino
 
 from compas.datastructures import Mesh
+from compas.geometry import angle_vectors
+from compas.geometry import distance_point_point
 from compas.utilities import geometric_key
 
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
+from ._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoSurface']
@@ -29,10 +31,7 @@ class RhinoSurface(BaseRhinoGeometry):
         guid = compas_rhino.select_surface()
         return cls.from_guid(guid)
 
-    def to_compas(self):
-        raise NotImplementedError
-
-    def brep_to_compas(self, cls=None):
+    def to_compas(self, cls=None):
         """Convert the surface b-rep loops to a COMPAS mesh.
 
         Parameters
@@ -82,58 +81,58 @@ class RhinoSurface(BaseRhinoGeometry):
         cls = cls or Mesh
         return cls.from_vertices_and_faces(vertices, polygons)
 
-    def uv_to_compas(self, cls=None, density=(10, 10)):
-        """Convert the surface UV space to a COMPAS mesh.
+    # def uv_to_compas(self, cls=None, density=(10, 10)):
+    #     """Convert the surface UV space to a COMPAS mesh.
 
-        Parameters
-        ----------
-        cls : :class:`compas.datastructures.Mesh`, optional
-            The type of mesh.
-        density : tuple of int, optional
-            The density in the U and V directions.
-            Default is ``u = 10`` and ``v = 10``.
+    #     Parameters
+    #     ----------
+    #     cls : :class:`compas.datastructures.Mesh`, optional
+    #         The type of mesh.
+    #     density : tuple of int, optional
+    #         The density in the U and V directions.
+    #         Default is ``u = 10`` and ``v = 10``.
 
-        Returns
-        -------
-        :class:`compas.datastructures.Mesh`
-            The COMPAS mesh.
-        """
-        return self.heightfield_to_compas(cls=cls, density=density, over_space=True)
+    #     Returns
+    #     -------
+    #     :class:`compas.datastructures.Mesh`
+    #         The COMPAS mesh.
+    #     """
+    #     return self.heightfield_to_compas(cls=cls, density=density, over_space=True)
 
-    def heightfield_to_compas(self, cls=None, density=(10, 10), over_space=False):
-        """Convert a heightfiled of the surface to a COMPAS mesh.
+    # def heightfield_to_compas(self, cls=None, density=(10, 10), over_space=False):
+    #     """Convert a heightfiled of the surface to a COMPAS mesh.
 
-        Parameters
-        ----------
-        cls : :class:`compas.datastructures.Mesh`, optional
-            The type of mesh.
-        density : tuple of int, optional
-            The density in the two grid directions.
-            Default is ``u = 10`` and ``v = 10``.
-        over_space : bool, optional
-            Construct teh grid over the surface UV space instead of the XY axes.
-            Default is ``False``.
+    #     Parameters
+    #     ----------
+    #     cls : :class:`compas.datastructures.Mesh`, optional
+    #         The type of mesh.
+    #     density : tuple of int, optional
+    #         The density in the two grid directions.
+    #         Default is ``u = 10`` and ``v = 10``.
+    #     over_space : bool, optional
+    #         Construct teh grid over the surface UV space instead of the XY axes.
+    #         Default is ``False``.
 
-        Returns
-        -------
-        :class:`compas.datastructures.Mesh`
-            The COMPAS mesh.
-        """
-        try:
-            u, v = density
-        except Exception:
-            u, v = density, density
-        vertices = self.heightfield(density=(u, v), over_space=over_space)
-        faces = []
-        for i in range(u - 1):
-            for j in range(v - 1):
-                face = [(i + 0) * v + j,
-                        (i + 1) * v + j,
-                        (i + 1) * v + j + 1,
-                        (i + 0) * v + j + 1]
-                faces.append(face)
-        cls = cls or Mesh
-        return cls.from_vertices_and_faces(vertices, faces)
+    #     Returns
+    #     -------
+    #     :class:`compas.datastructures.Mesh`
+    #         The COMPAS mesh.
+    #     """
+    #     try:
+    #         u, v = density
+    #     except Exception:
+    #         u, v = density, density
+    #     vertices = self.heightfield(density=(u, v), over_space=over_space)
+    #     faces = []
+    #     for i in range(u - 1):
+    #         for j in range(v - 1):
+    #             face = [(i + 0) * v + j,
+    #                     (i + 1) * v + j,
+    #                     (i + 1) * v + j + 1,
+    #                     (i + 0) * v + j + 1]
+    #             faces.append(face)
+    #     cls = cls or Mesh
+    #     return cls.from_vertices_and_faces(vertices, faces)
 
     # ==========================================================================
     #
@@ -244,116 +243,121 @@ class RhinoSurface(BaseRhinoGeometry):
         rs.EnableRedraw(True)
         return xyz
 
-    # def descent(self, points=None):
-    #     """"""
-    #     if not points:
-    #         points = self.heightfield()
-    #     tol = rs.UnitAbsoluteTolerance()
-    #     descent = []
-    #     if rs.IsPolysurface(self.guid):
-    #         rs.EnableRedraw(False)
-    #         faces = {}
-    #         for p0 in points:
-    #             p = p0[:]
-    #             p[2] -= 2 * tol
-    #             bcp = rs.BrepClosestPoint(self.guid, p)
-    #             uv = bcp[1]
-    #             index = bcp[2][1]
-    #             try:
-    #                 face = faces[index]
-    #             except (TypeError, IndexError):
-    #                 face = rs.ExtractSurface(self.guid, index, True)
-    #                 faces[index] = face
-    #             p1 = rs.EvaluateSurface(face, uv[0], uv[1])
-    #             vector = [p1[_] - p0[_] for _ in range(3)]
-    #             descent.append((p0, vector))
-    #         rs.DeleteObjects(faces.values())
-    #         rs.EnableRedraw(True)
-    #     elif rs.IsSurface(self.guid):
-    #         for p0 in points:
-    #             p = p0[:]
-    #             p[2] -= 2 * tol
-    #             bcp = rs.BrepClosestPoint(self.guid, p)
-    #             uv = bcp[1]
-    #             p1 = rs.EvaluateSurface(self.guid, uv[0], uv[1])
-    #             vector = [p1[_] - p0[_] for _ in range(3)]
-    #             descent.append((p0, vector))
-    #     else:
-    #         raise Exception('Object is not a surface.')
-    #     return descent
+    def descent(self, points=None):
+        """"""
+        rs = compas_rhino.rs
+        if not points:
+            points = self.heightfield()
+        tol = rs.UnitAbsoluteTolerance()
+        descent = []
+        if rs.IsPolysurface(self.guid):
+            rs.EnableRedraw(False)
+            faces = {}
+            for p0 in points:
+                p = p0[:]
+                p[2] -= 2 * tol
+                bcp = rs.BrepClosestPoint(self.guid, p)
+                uv = bcp[1]
+                index = bcp[2][1]
+                try:
+                    face = faces[index]
+                except (TypeError, IndexError):
+                    face = rs.ExtractSurface(self.guid, index, True)
+                    faces[index] = face
+                p1 = rs.EvaluateSurface(face, uv[0], uv[1])
+                vector = [p1[_] - p0[_] for _ in range(3)]
+                descent.append((p0, vector))
+            rs.DeleteObjects(faces.values())
+            rs.EnableRedraw(True)
+        elif rs.IsSurface(self.guid):
+            for p0 in points:
+                p = p0[:]
+                p[2] -= 2 * tol
+                bcp = rs.BrepClosestPoint(self.guid, p)
+                uv = bcp[1]
+                p1 = rs.EvaluateSurface(self.guid, uv[0], uv[1])
+                vector = [p1[_] - p0[_] for _ in range(3)]
+                descent.append((p0, vector))
+        else:
+            raise Exception('Object is not a surface.')
+        return descent
 
-    # def curvature(self, points=None):
-    #     """"""
-    #     if not points:
-    #         points = self.heightfield()
-    #     curvature = []
-    #     if rs.IsPolysurface(self.guid):
-    #         rs.EnableRedraw(False)
-    #         faces = {}
-    #         for point in points:
-    #             bcp = rs.BrepClosestPoint(self.guid, point)
-    #             uv = bcp[1]
-    #             index = bcp[2][1]
-    #             try:
-    #                 face = faces[index]
-    #             except (TypeError, IndexError):
-    #                 face = rs.ExtractSurface(self.guid, index, True)
-    #                 faces[index] = face
-    #             props = rs.SurfaceCurvature(face, uv)
-    #             curvature.append((point, (props[1], props[3], props[5])))
-    #         rs.DeleteObjects(faces.values())
-    #         rs.EnableRedraw(False)
-    #     elif rs.IsSurface(self.guid):
-    #         for point in points:
-    #             bcp = rs.BrepClosestPoint(self.guid, point)
-    #             uv = bcp[1]
-    #             props = rs.SurfaceCurvature(self.guid, uv)
-    #             curvature.append((point, (props[1], props[3], props[5])))
-    #     else:
-    #         raise Exception('Object is not a surface.')
-    #     return curvature
+    def curvature(self, points=None):
+        """"""
+        rs = compas_rhino.rs
+        if not points:
+            points = self.heightfield()
+        curvature = []
+        if rs.IsPolysurface(self.guid):
+            rs.EnableRedraw(False)
+            faces = {}
+            for point in points:
+                bcp = rs.BrepClosestPoint(self.guid, point)
+                uv = bcp[1]
+                index = bcp[2][1]
+                try:
+                    face = faces[index]
+                except (TypeError, IndexError):
+                    face = rs.ExtractSurface(self.guid, index, True)
+                    faces[index] = face
+                props = rs.SurfaceCurvature(face, uv)
+                curvature.append((point, (props[1], props[3], props[5])))
+            rs.DeleteObjects(faces.values())
+            rs.EnableRedraw(False)
+        elif rs.IsSurface(self.guid):
+            for point in points:
+                bcp = rs.BrepClosestPoint(self.guid, point)
+                uv = bcp[1]
+                props = rs.SurfaceCurvature(self.guid, uv)
+                curvature.append((point, (props[1], props[3], props[5])))
+        else:
+            raise Exception('Object is not a surface.')
+        return curvature
 
-    # def borders(self, type=1):
-    #     """Duplicate the borders of the surface.
+    def borders(self, border_type=1):
+        """Duplicate the borders of the surface.
 
-    #     Parameters
-    #     ----------
-    #     type : {0, 1, 2}
-    #         The type of border.
+        Parameters
+        ----------
+        border_type : {0, 1, 2}
+            The type of border.
 
-    #         * 0: All borders
-    #         * 1: The exterior borders.
-    #         * 2: The interior borders.
+            * 0: All borders
+            * 1: The exterior borders.
+            * 2: The interior borders.
 
-    #     Returns
-    #     -------
-    #     list
-    #         The GUIDs of the extracted border curves.
-    #     """
-    #     border = rs.DuplicateSurfaceBorder(self.guid, type=type)
-    #     curves = rs.ExplodeCurves(border, delete_input=True)
-    #     return curves
+        Returns
+        -------
+        list
+            The GUIDs of the extracted border curves.
+        """
+        rs = compas_rhino.rs
+        border = rs.DuplicateSurfaceBorder(self.guid, type=border_type)
+        curves = rs.ExplodeCurves(border, delete_input=True)
+        return curves
 
-    # def kinks(self, threshold=1e-3):
-    #     """Return the XYZ coordinates of kinks, i.e. tangency discontinuities, along the surface's boundaries.
+    def kinks(self, threshold=1e-3):
+        """Return the XYZ coordinates of kinks, i.e. tangency discontinuities, along the surface's boundaries.
 
-    #     Returns
-    #     -------
-    #     list
-    #         The list of XYZ coordinates of surface boundary kinks.
-    #     """
-    #     kinks = []
-    #     borders = self.borders(type=0)
-    #     for border in borders:
-    #         border = RhinoCurve(border)
-    #         extremities = map(lambda x: rs.EvaluateCurve(border.guid, rs.CurveParameter(border.guid, x)), [0., 1.])
-    #         if border.is_closed():
-    #             start_tgt, end_tgt = border.tangents(extremities)
-    #             if angle_vectors(start_tgt, end_tgt) > threshold:
-    #                 kinks += extremities
-    #         else:
-    #             kinks += extremities
-    #     return list(set(kinks))
+        Returns
+        -------
+        list
+            The list of XYZ coordinates of surface boundary kinks.
+        """
+        from .curve import RhinoCurve
+        rs = compas_rhino.rs
+        kinks = []
+        borders = self.borders(border_type=0)
+        for border in borders:
+            border = RhinoCurve(border)
+            extremities = map(lambda x: rs.EvaluateCurve(border.guid, rs.CurveParameter(border.guid, x)), [0., 1.])
+            if border.is_closed():
+                start_tgt, end_tgt = border.tangents(extremities)
+                if angle_vectors(start_tgt, end_tgt) > threshold:
+                    kinks += extremities
+            else:
+                kinks += extremities
+        return list(set(kinks))
 
     def closest_point(self, xyz):
         """Return the XYZ coordinates of the closest point on the surface from input XYZ-coordinates.
@@ -369,33 +373,34 @@ class RhinoSurface(BaseRhinoGeometry):
             The XYZ coordinates of the closest point on the surface.
 
         """
-
-        return compas_rhino.rs.EvaluateSurface(self.guid, * compas_rhino.rs.SurfaceClosestPoint(self.guid, xyz))
+        rs = compas_rhino.rs
+        return rs.EvaluateSurface(self.guid, * rs.SurfaceClosestPoint(self.guid, xyz))
 
     def closest_points(self, points):
         return [self.closest_point(point) for point in points]
 
-    # def closest_point_on_boundaries(self, xyz):
-    #     """Return the XYZ coordinates of the closest point on the boundaries of the surface from input XYZ-coordinates.
+    def closest_point_on_boundaries(self, xyz):
+        """Return the XYZ coordinates of the closest point on the boundaries of the surface from input XYZ-coordinates.
 
-    #     Parameters
-    #     ----------
-    #     xyz : list
-    #         XYZ coordinates.
+        Parameters
+        ----------
+        xyz : list
+            XYZ coordinates.
 
-    #     Returns
-    #     -------
-    #     list
-    #         The XYZ coordinates of the closest point on the boundaries of the surface.
+        Returns
+        -------
+        list
+            The XYZ coordinates of the closest point on the boundaries of the surface.
 
-    #     """
-    #     borders = self.borders(type=0)
-    #     proj_dist = {tuple(proj_xyz): distance_point_point(xyz, proj_xyz) for proj_xyz in [RhinoCurve(border).closest_point(xyz) for border in borders]}
-    #     delete_objects(borders)
-    #     return min(proj_dist, key=proj_dist.get)
+        """
+        from .curve import RhinoCurve
+        borders = self.borders(type=0)
+        proj_dist = {tuple(proj_xyz): distance_point_point(xyz, proj_xyz) for proj_xyz in [RhinoCurve(border).closest_point(xyz) for border in borders]}
+        compas_rhino.delete_objects(borders)
+        return min(proj_dist, key=proj_dist.get)
 
-    # def closest_points_on_boundaries(self, points):
-    #     return [self.closest_point_on_boundaries(point) for point in points]
+    def closest_points_on_boundaries(self, points):
+        return [self.closest_point_on_boundaries(point) for point in points]
 
 
 # ==============================================================================
