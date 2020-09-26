@@ -28,6 +28,18 @@ def delete_unused_data():
         if block.users == 0:
             bpy.data.images.remove(block)
 
+    for collection in bpy.context.scene.collection.children:
+        bpy.context.scene.collection.children.unlink(collection)
+
+    for block in bpy.data.collections:
+        objects = [o for o in block.objects if o.users]
+        while objects:
+            bpy.data.objects.remove(objects.pop())
+        for collection in block.children:
+            block.children.unlink(collection)
+        if block.users == 0:
+            bpy.data.collections.remove(block)
+
 
 # ==============================================================================
 # Main
