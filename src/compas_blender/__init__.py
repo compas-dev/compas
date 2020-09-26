@@ -22,6 +22,12 @@ else:
     from .utilities import *  # noqa: F401 F403
 
 
+def clear():
+    bpy.ops.object.select_all(action='SELECT')
+    bpy.ops.object.delete(use_global=True, confirm=False)
+    delete_unused_data()  # noqa: F405
+
+
 __version__ = '0.16.4'
 
 
