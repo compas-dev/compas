@@ -6,7 +6,8 @@ import Rhino
 
 from compas.geometry import Plane
 from compas.geometry import Frame
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
+
+from ._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoPlane']

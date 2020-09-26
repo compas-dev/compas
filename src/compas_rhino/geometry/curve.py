@@ -11,7 +11,7 @@ from compas.geometry import Line
 from compas.geometry import Polyline
 from compas.geometry import Circle
 
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
+from ._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoCurve']
