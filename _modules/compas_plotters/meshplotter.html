@@ -82,12 +82,7 @@
         
           
           <h1 class="display-4 p-0 mb-5">Source code for compas_plotters.meshplotter</h1><div class="highlight"><pre><code>
-<span></span><span class="k">try</span><span class="p">:</span>
-    <span class="n">basestring</span>
-<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
-
-<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Circle</span>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Circle</span>
 <span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Polygon</span>
 
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">color_to_rgb</span>
@@ -100,7 +95,7 @@
 
 
 <div class="viewcode-block" id="MeshPlotter"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.html#compas_plotters.MeshPlotter">[docs]</a><span class="k">class</span> <span class="nc">MeshPlotter</span><span class="p">(</span><span class="n">Plotter</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Definition of a plotter object based on matplotlib for compas Networks.</span>
+    <span class="sd">&quot;&quot;&quot;Plotter for the visualisation of COMPAS meshes.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -122,22 +117,6 @@
 <span class="sd">    defaults : dict</span>
 <span class="sd">        Dictionary containing default attributes for vertices and edges.</span>
 
-<span class="sd">        * vertex.radius    : ``0.1``</span>
-<span class="sd">        * vertex.facecolor : ``&#39;#ffffff&#39;``</span>
-<span class="sd">        * vertex.edgecolor : ``&#39;#000000&#39;``</span>
-<span class="sd">        * vertex.edgewidth : ``0.5``</span>
-<span class="sd">        * vertex.textcolor : ``&#39;#000000&#39;``</span>
-<span class="sd">        * vertex.fontsize  : ``10``</span>
-<span class="sd">        * edge.width       : ``1.0``</span>
-<span class="sd">        * edge.color       : ``&#39;#000000&#39;``</span>
-<span class="sd">        * edge.textcolor   : ``&#39;#000000&#39;``</span>
-<span class="sd">        * edge.fontsize    : ``10``</span>
-<span class="sd">        * face.facecolor   : ``&#39;#eeeeee&#39;``</span>
-<span class="sd">        * face.edgecolor   : ``&#39;#000000&#39;``</span>
-<span class="sd">        * face.edgewidth   : ``0.1``</span>
-<span class="sd">        * face.textcolor   : ``&#39;#000000&#39;``</span>
-<span class="sd">        * face.fontsize    : ``10``</span>
-
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    This is a basic example using the default settings for all visualisation options.</span>
@@ -154,11 +133,9 @@
 <span class="sd">        mesh = Mesh.from_obj(compas.get(&#39;faces.obj&#39;))</span>
 
 <span class="sd">        plotter = MeshPlotter(mesh)</span>
-
 <span class="sd">        plotter.draw_vertices(text=&#39;key&#39;, radius=0.15)</span>
 <span class="sd">        plotter.draw_edges()</span>
 <span class="sd">        plotter.draw_faces()</span>
-
 <span class="sd">        plotter.show()</span>
 
 <span class="sd">    Notes</span>
@@ -174,7 +151,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="MeshPlotter.__init__"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.__init__.html#compas_plotters.MeshPlotter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialises a mesh plotter object&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;MeshPlotter&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
@@ -207,16 +183,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_edges</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_faces</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="MeshPlotter.draw_vertices"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.draw_vertices.html#compas_plotters.MeshPlotter.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">facecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">edgecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">edgewidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">textcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                      <span class="n">picker</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshPlotter.draw_vertices"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.draw_vertices.html#compas_plotters.MeshPlotter.draw_vertices">[docs]</a>    <span class="k">def</span> <span class="nf">draw_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">facecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edgewidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">textcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">picker</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draws the mesh vertices.</span>
 
 <span class="sd">        Parameters</span>
@@ -249,15 +218,13 @@
             <span class="n">text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
         <span class="k">elif</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;index&#39;</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">())}</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">text</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">:</span>
                 <span class="n">default</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">[</span><span class="n">text</span><span class="p">]</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
                     <span class="n">text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="n">text</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)}</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">text</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="n">text</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)}</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">pass</span>
 
         <span class="n">radiusdict</span> <span class="o">=</span> <span class="n">valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;vertex.radius&#39;</span><span class="p">])</span>
         <span class="n">textdict</span> <span class="o">=</span> <span class="n">valuedict</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
@@ -301,17 +268,6 @@
 <span class="sd">            The vertex radius as a single value, which will be applied to all vertices,</span>
 <span class="sd">            or as a dictionary mapping vertex keys to specific radii.</span>
 <span class="sd">            Default is the value set in ``self.defaults``.</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This function will only work as expected if all vertices were already present in the collection.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            pass</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">radius</span> <span class="o">=</span> <span class="n">valuedict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(),</span> <span class="n">radius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s1">&#39;vertex.radius&#39;</span><span class="p">])</span>
         <span class="n">circles</span> <span class="o">=</span> <span class="p">[]</span>
@@ -321,64 +277,7 @@
             <span class="n">circles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Circle</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span><span class="o">.</span><span class="n">set_paths</span><span class="p">(</span><span class="n">circles</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MeshPlotter.draw_as_lines"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.draw_as_lines.html#compas_plotters.MeshPlotter.draw_as_lines">[docs]</a>    <span class="k">def</span> <span class="nf">draw_as_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Draw the mesh as a set of lines.</span>
-
-<span class="sd">        This function is useful for creating *before-after* plots.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        color : {rgb-tuple, hex-string}, optional</span>
-<span class="sd">            The color specification of the lines.</span>
-<span class="sd">            Default is to use the default line color as defined in ``self.defaults``.</span>
-<span class="sd">        width : float, optional</span>
-<span class="sd">            The width of the lines.</span>
-<span class="sd">            Default is to use the value specified in self.defaults.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        object</span>
-<span class="sd">            The ``matplotlib`` line collection object.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            import compas</span>
-<span class="sd">            from compas.datastructures import Mesh</span>
-<span class="sd">            from compas_plotters import MeshPlotter</span>
-
-<span class="sd">            mesh = Mesh.from_obj(compas.get(&#39;faces.obj&#39;))</span>
-
-<span class="sd">            plotter = MeshPlotter(mesh)</span>
-
-<span class="sd">            plotter.draw_as_lines()</span>
-
-<span class="sd">            # do stuff to the mesh</span>
-
-<span class="sd">            plotter.draw_vertices()</span>
-<span class="sd">            plotter.draw_edges()</span>
-
-<span class="sd">            plotter.show()</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
-            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">),</span>
-                <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">),</span>
-                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
-                <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="n">width</span><span class="p">,</span>
-            <span class="p">})</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">MeshPlotter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="MeshPlotter.draw_edges"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.draw_edges.html#compas_plotters.MeshPlotter.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                   <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">textcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshPlotter.draw_edges"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.draw_edges.html#compas_plotters.MeshPlotter.draw_edges">[docs]</a>    <span class="k">def</span> <span class="nf">draw_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">textcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draws the mesh edges.</span>
 
 <span class="sd">        Parameters</span>
@@ -458,14 +357,8 @@
             <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MeshPlotter.draw_faces"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.draw_faces.html#compas_plotters.MeshPlotter.draw_faces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                   <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">facecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">edgecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">edgewidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">textcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                   <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="MeshPlotter.draw_faces"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.draw_faces.html#compas_plotters.MeshPlotter.draw_faces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">facecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edgewidth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">textcolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draws the mesh faces.</span>
 
 <span class="sd">        Parameters</span>

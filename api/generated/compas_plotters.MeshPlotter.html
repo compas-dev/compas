@@ -91,7 +91,7 @@
 <dt id="compas_plotters.MeshPlotter">
 <em class="property">class </em><code class="sig-prename descclassname">compas_plotters.</code><code class="sig-name descname">MeshPlotter</code><span class="sig-paren">(</span><em class="sig-param">mesh</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_plotters/meshplotter.html#MeshPlotter"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.plotter.Plotter</span></code></p>
-<p>Definition of a plotter object based on matplotlib for compas Networks.</p>
+<p>Plotter for the visualisation of COMPAS meshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>mesh</strong> (<em>object</em>) – The mesh to plot.</p>
@@ -103,25 +103,7 @@
 <li><p><strong>vertexcollection</strong> (<em>object</em>) – The matplotlib collection for the mesh vertices.</p></li>
 <li><p><strong>edgecollection</strong> (<em>object</em>) – The matplotlib collection for the mesh edges.</p></li>
 <li><p><strong>facecollection</strong> (<em>object</em>) – The matplotlib collection for the mesh faces.</p></li>
-<li><p><strong>defaults</strong> (<em>dict</em>) – Dictionary containing default attributes for vertices and edges.</p>
-<ul>
-<li><p>vertex.radius    : <code class="docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
-<li><p>vertex.facecolor : <code class="docutils literal notranslate"><span class="pre">'#ffffff'</span></code></p></li>
-<li><p>vertex.edgecolor : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>vertex.edgewidth : <code class="docutils literal notranslate"><span class="pre">0.5</span></code></p></li>
-<li><p>vertex.textcolor : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>vertex.fontsize  : <code class="docutils literal notranslate"><span class="pre">10</span></code></p></li>
-<li><p>edge.width       : <code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
-<li><p>edge.color       : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>edge.textcolor   : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>edge.fontsize    : <code class="docutils literal notranslate"><span class="pre">10</span></code></p></li>
-<li><p>face.facecolor   : <code class="docutils literal notranslate"><span class="pre">'#eeeeee'</span></code></p></li>
-<li><p>face.edgecolor   : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>face.edgewidth   : <code class="docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
-<li><p>face.textcolor   : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>face.fontsize    : <code class="docutils literal notranslate"><span class="pre">10</span></code></p></li>
-</ul>
-</li>
+<li><p><strong>defaults</strong> (<em>dict</em>) – Dictionary containing default attributes for vertices and edges.</p></li>
 </ul>
 </dd>
 </dl>
@@ -136,11 +118,9 @@ listed below…</p>
  <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
 
  <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
  <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
  <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
  <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-
  <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 
@@ -189,7 +169,7 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.__init__.html#compas_plotters.MeshPlotter.__init__" title="compas_plotters.MeshPlotter.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(mesh, **kwargs)</p></td>
-<td><p>Initialises a mesh plotter object</p></td>
+<td><p>Initialises a plotter object</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.clear.html#compas_plotters.MeshPlotter.clear" title="compas_plotters.MeshPlotter.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
 <td><p>Clears the mesh plotter vertices, edges and faces.</p></td>
@@ -212,70 +192,67 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
 <tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_arrows2.html#compas_plotters.MeshPlotter.draw_arrows2" title="compas_plotters.MeshPlotter.draw_arrows2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_arrows2</span></code></a>(arrows)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_as_lines.html#compas_plotters.MeshPlotter.draw_as_lines" title="compas_plotters.MeshPlotter.draw_as_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_as_lines</span></code></a>([color, width])</p></td>
-<td><p>Draw the mesh as a set of lines.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_edges.html#compas_plotters.MeshPlotter.draw_edges" title="compas_plotters.MeshPlotter.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([keys, width, color, text, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_edges.html#compas_plotters.MeshPlotter.draw_edges" title="compas_plotters.MeshPlotter.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([keys, width, color, text, …])</p></td>
 <td><p>Draws the mesh edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_faces.html#compas_plotters.MeshPlotter.draw_faces" title="compas_plotters.MeshPlotter.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([keys, text, facecolor, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_faces.html#compas_plotters.MeshPlotter.draw_faces" title="compas_plotters.MeshPlotter.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([keys, text, facecolor, …])</p></td>
 <td><p>Draws the mesh faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_lines.html#compas_plotters.MeshPlotter.draw_lines" title="compas_plotters.MeshPlotter.draw_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_lines</span></code></a>(lines)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_lines.html#compas_plotters.MeshPlotter.draw_lines" title="compas_plotters.MeshPlotter.draw_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_lines</span></code></a>(lines)</p></td>
 <td><p>Draws lines on a 2D plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_points.html#compas_plotters.MeshPlotter.draw_points" title="compas_plotters.MeshPlotter.draw_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_points</span></code></a>(points)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_points.html#compas_plotters.MeshPlotter.draw_points" title="compas_plotters.MeshPlotter.draw_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_points</span></code></a>(points)</p></td>
 <td><p>Draws points on a 2D plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_polygons.html#compas_plotters.MeshPlotter.draw_polygons" title="compas_plotters.MeshPlotter.draw_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polygons</span></code></a>(polygons)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_polygons.html#compas_plotters.MeshPlotter.draw_polygons" title="compas_plotters.MeshPlotter.draw_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polygons</span></code></a>(polygons)</p></td>
 <td><p>Draws polygons on a 2D plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_polylines.html#compas_plotters.MeshPlotter.draw_polylines" title="compas_plotters.MeshPlotter.draw_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polylines</span></code></a>(polylines)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_polylines.html#compas_plotters.MeshPlotter.draw_polylines" title="compas_plotters.MeshPlotter.draw_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polylines</span></code></a>(polylines)</p></td>
 <td><p>Draw polylines on a 2D plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_vertices.html#compas_plotters.MeshPlotter.draw_vertices" title="compas_plotters.MeshPlotter.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([keys, radius, text, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.draw_vertices.html#compas_plotters.MeshPlotter.draw_vertices" title="compas_plotters.MeshPlotter.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([keys, radius, text, …])</p></td>
 <td><p>Draws the mesh vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.gifified.html#compas_plotters.MeshPlotter.gifified" title="compas_plotters.MeshPlotter.gifified"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gifified</span></code></a>(func, tempfolder, outfile[, pattern])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.gifified.html#compas_plotters.MeshPlotter.gifified" title="compas_plotters.MeshPlotter.gifified"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gifified</span></code></a>(func, tempfolder, outfile[, pattern])</p></td>
 <td><p>Create a context for making animated gifs using a callback for updating the plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.highlight_path.html#compas_plotters.MeshPlotter.highlight_path" title="compas_plotters.MeshPlotter.highlight_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_path</span></code></a>(path[, edgecolor, edgetext, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.highlight_path.html#compas_plotters.MeshPlotter.highlight_path" title="compas_plotters.MeshPlotter.highlight_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">highlight_path</span></code></a>(path[, edgecolor, edgetext, …])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.register_listener.html#compas_plotters.MeshPlotter.register_listener" title="compas_plotters.MeshPlotter.register_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_listener</span></code></a>(listener)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.register_listener.html#compas_plotters.MeshPlotter.register_listener" title="compas_plotters.MeshPlotter.register_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_listener</span></code></a>(listener)</p></td>
 <td><p>Register a listener for pick events.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.save.html#compas_plotters.MeshPlotter.save" title="compas_plotters.MeshPlotter.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(filepath, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.save.html#compas_plotters.MeshPlotter.save" title="compas_plotters.MeshPlotter.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(filepath, **kwargs)</p></td>
 <td><p>Saves the plot to a file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.save_gif.html#compas_plotters.MeshPlotter.save_gif" title="compas_plotters.MeshPlotter.save_gif"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_gif</span></code></a>(filepath, images[, delay, loop])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.save_gif.html#compas_plotters.MeshPlotter.save_gif" title="compas_plotters.MeshPlotter.save_gif"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_gif</span></code></a>(filepath, images[, delay, loop])</p></td>
 <td><p>Save a series of images as an animated gif.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.show.html#compas_plotters.MeshPlotter.show" title="compas_plotters.MeshPlotter.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>([autoscale])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.show.html#compas_plotters.MeshPlotter.show" title="compas_plotters.MeshPlotter.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a>([autoscale])</p></td>
 <td><p>Displays the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.top.html#compas_plotters.MeshPlotter.top" title="compas_plotters.MeshPlotter.top"><code class="xref py py-obj docutils literal notranslate"><span class="pre">top</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.top.html#compas_plotters.MeshPlotter.top" title="compas_plotters.MeshPlotter.top"><code class="xref py py-obj docutils literal notranslate"><span class="pre">top</span></code></a>()</p></td>
 <td><p>Bring the plotting window to the top.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update.html#compas_plotters.MeshPlotter.update" title="compas_plotters.MeshPlotter.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([pause])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update.html#compas_plotters.MeshPlotter.update" title="compas_plotters.MeshPlotter.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([pause])</p></td>
 <td><p>Updates and pauses the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_edges.html#compas_plotters.MeshPlotter.update_edges" title="compas_plotters.MeshPlotter.update_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_edges</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_edges.html#compas_plotters.MeshPlotter.update_edges" title="compas_plotters.MeshPlotter.update_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_edges</span></code></a>()</p></td>
 <td><p>Updates the plotter edge collection based on the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_faces.html#compas_plotters.MeshPlotter.update_faces" title="compas_plotters.MeshPlotter.update_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_faces</span></code></a>([facecolor])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_faces.html#compas_plotters.MeshPlotter.update_faces" title="compas_plotters.MeshPlotter.update_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_faces</span></code></a>([facecolor])</p></td>
 <td><p>Updates the plotter face collection based on the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_linecollection.html#compas_plotters.MeshPlotter.update_linecollection" title="compas_plotters.MeshPlotter.update_linecollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_linecollection</span></code></a>(collection, segments)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_linecollection.html#compas_plotters.MeshPlotter.update_linecollection" title="compas_plotters.MeshPlotter.update_linecollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_linecollection</span></code></a>(collection, segments)</p></td>
 <td><p>Updates a line collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_pointcollection.html#compas_plotters.MeshPlotter.update_pointcollection" title="compas_plotters.MeshPlotter.update_pointcollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_pointcollection</span></code></a>(collection, centers)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_pointcollection.html#compas_plotters.MeshPlotter.update_pointcollection" title="compas_plotters.MeshPlotter.update_pointcollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_pointcollection</span></code></a>(collection, centers)</p></td>
 <td><p>Updates the location and radii of a point collection.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_polygoncollection.html#compas_plotters.MeshPlotter.update_polygoncollection" title="compas_plotters.MeshPlotter.update_polygoncollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_polygoncollection</span></code></a>(collection, polygons)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_polygoncollection.html#compas_plotters.MeshPlotter.update_polygoncollection" title="compas_plotters.MeshPlotter.update_polygoncollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_polygoncollection</span></code></a>(collection, polygons)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_vertices.html#compas_plotters.MeshPlotter.update_vertices" title="compas_plotters.MeshPlotter.update_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_vertices</span></code></a>([radius])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.MeshPlotter.update_vertices.html#compas_plotters.MeshPlotter.update_vertices" title="compas_plotters.MeshPlotter.update_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_vertices</span></code></a>([radius])</p></td>
 <td><p>Updates the plotter vertex collection based on the current state of the mesh.</p></td>
 </tr>
 </tbody>
@@ -311,6 +288,7 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.GeometryPlotter.html">GeometryPlotter</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.NetworkPlotter.html">NetworkPlotter</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">MeshPlotter</a></li>
 </ul>

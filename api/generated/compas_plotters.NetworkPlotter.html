@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="compas_plotters" href="../compas_plotters.html" />
+    <link rel="prev" title="GeometryPlotter.zoom_extents" href="compas_plotters.GeometryPlotter.zoom_extents.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -91,10 +91,10 @@
 <dt id="compas_plotters.NetworkPlotter">
 <em class="property">class </em><code class="sig-prename descclassname">compas_plotters.</code><code class="sig-name descname">NetworkPlotter</code><span class="sig-paren">(</span><em class="sig-param">network</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_plotters/networkplotter.html#NetworkPlotter"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_plotters.plotter.Plotter</span></code></p>
-<p>Definition of a plotter object based on matplotlib for compas Networks.</p>
+<p>Plotter for the visualisation of COMPAS Networks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>network</strong> (<em>object</em>) – The network to plot.</p>
+<dd class="field-odd"><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – The network to plot.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
@@ -102,20 +102,7 @@
 <li><p><strong>network</strong> (<em>object</em>) – The network to plot.</p></li>
 <li><p><strong>nodecollection</strong> (<em>object</em>) – The matplotlib collection for the network nodes.</p></li>
 <li><p><strong>edgecollection</strong> (<em>object</em>) – The matplotlib collection for the network edges.</p></li>
-<li><p><strong>defaults</strong> (<em>dict</em>) – Dictionary containing default attributes for nodes and edges.</p>
-<ul>
-<li><p>node.radius    : <code class="docutils literal notranslate"><span class="pre">0.1</span></code></p></li>
-<li><p>node.facecolor : <code class="docutils literal notranslate"><span class="pre">'#ffffff</span></code></p></li>
-<li><p>node.edgecolor : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>node.edgewidth : <code class="docutils literal notranslate"><span class="pre">0.5</span></code></p></li>
-<li><p>node.textcolor : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>node.fontsize  : <code class="docutils literal notranslate"><span class="pre">10</span></code></p></li>
-<li><p>edge.width       : <code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></li>
-<li><p>edge.color       : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>edge.textcolor   : <code class="docutils literal notranslate"><span class="pre">'#000000'</span></code></p></li>
-<li><p>edge.fontsize    : <code class="docutils literal notranslate"><span class="pre">10</span></code></p></li>
-</ul>
-</li>
+<li><p><strong>defaults</strong> (<em>dict</em>) – Dictionary containing default attributes for nodes and edges.</p></li>
 </ul>
 </dd>
 </dl>
@@ -137,14 +124,12 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
  <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
 
  <span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
-
  <span class="n">plotter</span><span class="o">.</span><span class="n">draw_nodes</span><span class="p">(</span>
      <span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span>
      <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()},</span>
      <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span>
  <span class="p">)</span>
  <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-
  <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 
@@ -183,7 +168,7 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_plotters.NetworkPlotter.__init__.html#compas_plotters.NetworkPlotter.__init__" title="compas_plotters.NetworkPlotter.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(network, **kwargs)</p></td>
-<td><p>Initialises a network plotter object</p></td>
+<td><p>Initialises a plotter object</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_plotters.NetworkPlotter.clear.html#compas_plotters.NetworkPlotter.clear" title="compas_plotters.NetworkPlotter.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
 <td><p>Clears the network plotter edges and nodes.</p></td>
@@ -290,6 +275,7 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_blender.html">compas_blender</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_ghpython.html">compas_ghpython</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.GeometryPlotter.html">GeometryPlotter</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">NetworkPlotter</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.MeshPlotter.html">MeshPlotter</a></li>
 </ul>
