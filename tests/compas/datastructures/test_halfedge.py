@@ -1,5 +1,6 @@
 import pytest
 
+import compas
 from compas.datastructures import HalfEdge
 
 
@@ -40,11 +41,13 @@ def edge_key():
 
 
 def test_data_schema(mesh):
-    mesh.validate_data()
+    if not compas.IPY:
+        mesh.validate_data()
 
 
 def test_json_schema(mesh):
-    mesh.validate_json()
+    if not compas.IPY:
+        mesh.validate_json()
 
 
 # ==============================================================================

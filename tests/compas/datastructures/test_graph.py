@@ -1,5 +1,6 @@
 import pytest
 
+import compas
 from compas.datastructures import Graph
 
 
@@ -23,8 +24,10 @@ def graph():
 
 
 def test_data_schema(graph):
-    graph.validate_data()
+    if not compas.IPY:
+        graph.validate_data()
 
 
 def graph_json_schema(graph):
-    graph.validate_json()
+    if not compas.IPY:
+        graph.validate_json()
