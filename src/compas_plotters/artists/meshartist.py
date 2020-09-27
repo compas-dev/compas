@@ -1,10 +1,6 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-from compas_plotters.core.drawing import draw_xpoints_xy
-from compas_plotters.core.drawing import draw_xlines_xy
-from compas_plotters.core.drawing import draw_xpolygons_xy
+from compas_plotters.core import draw_xpoints_xy
+from compas_plotters.core import draw_xlines_xy
+from compas_plotters.core import draw_xpolygons_xy
 from compas_plotters.artists import Artist
 
 __all__ = ['MeshArtist']
@@ -88,6 +84,4 @@ if __name__ == '__main__':
 
     plotter.add(mesh)
     plotter.draw()
-
-    plotter.zoom_extents()
     plotter.show()

@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 try:
     basestring
 except NameError:
@@ -95,7 +91,7 @@ class MeshPlotter(Plotter):
 
     def __init__(self, mesh, **kwargs):
         """Initialises a mesh plotter object"""
-        super(MeshPlotter, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.title = 'MeshPlotter'
         self.mesh = mesh
         self.vertexcollection = None

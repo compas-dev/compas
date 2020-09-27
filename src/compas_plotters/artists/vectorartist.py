@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from matplotlib.patches import FancyArrowPatch
 from matplotlib.patches import ArrowStyle
 
@@ -63,7 +59,7 @@ if __name__ == '__main__':
     loa = Line(point, point + direction)
 
     R = Rotation.from_axis_and_angle(Vector(0.0, 0.0, 1.0), radians(3.6))
-    T = Translation(direction.scaled(0.1))
+    T = Translation.from_vector(direction.scaled(0.1))
 
     plotter = Plotter2()
 

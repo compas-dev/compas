@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 import matplotlib.pyplot as plt
 
 from compas_plotters import Artist
@@ -14,7 +10,7 @@ class Plotter2(object):
 
     def __init__(self, view=None, figsize=(8, 5), **kwargs):
         """Initialises a plotter object"""
-        self._show_axes = kwargs.get('show_axes', False)
+        self._show_axes = kwargs.get('show_axes', True)
         self._bgcolor = None
         self._viewbox = None
         self._axes = None
@@ -88,7 +84,7 @@ class Plotter2(object):
                 axes.set_frame_on(False)
                 axes.set_xticks([])
                 axes.set_yticks([])
-            axes.autoscale()
+            axes.autoscale_view()
             plt.tight_layout()
             self._axes = axes
         return self._axes
