@@ -82,11 +82,7 @@
         
           
           <h1 class="display-4 p-0 mb-5">Source code for compas_plotters.meshplotter</h1><div class="highlight"><pre><code>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-
-<span class="k">try</span><span class="p">:</span>
+<span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">basestring</span>
 <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
     <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
@@ -179,7 +175,7 @@
 
 <div class="viewcode-block" id="MeshPlotter.__init__"><a class="viewcode-back" href="../../api/generated/compas_plotters.MeshPlotter.__init__.html#compas_plotters.MeshPlotter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialises a mesh plotter object&quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MeshPlotter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;MeshPlotter&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vertexcollection</span> <span class="o">=</span> <span class="kc">None</span>
