@@ -1,8 +1,3 @@
-try:
-    basestring
-except NameError:
-    basestring = str
-
 from matplotlib.patches import Circle
 from matplotlib.patches import Polygon
 
@@ -16,7 +11,7 @@ __all__ = ['MeshPlotter']
 
 
 class MeshPlotter(Plotter):
-    """Definition of a plotter object based on matplotlib for compas Networks.
+    """Plotter for the visualisation of COMPAS meshes.
 
     Parameters
     ----------
@@ -38,22 +33,6 @@ class MeshPlotter(Plotter):
     defaults : dict
         Dictionary containing default attributes for vertices and edges.
 
-        * vertex.radius    : ``0.1``
-        * vertex.facecolor : ``'#ffffff'``
-        * vertex.edgecolor : ``'#000000'``
-        * vertex.edgewidth : ``0.5``
-        * vertex.textcolor : ``'#000000'``
-        * vertex.fontsize  : ``10``
-        * edge.width       : ``1.0``
-        * edge.color       : ``'#000000'``
-        * edge.textcolor   : ``'#000000'``
-        * edge.fontsize    : ``10``
-        * face.facecolor   : ``'#eeeeee'``
-        * face.edgecolor   : ``'#000000'``
-        * face.edgewidth   : ``0.1``
-        * face.textcolor   : ``'#000000'``
-        * face.fontsize    : ``10``
-
     Examples
     --------
     This is a basic example using the default settings for all visualisation options.
@@ -70,11 +49,9 @@ class MeshPlotter(Plotter):
         mesh = Mesh.from_obj(compas.get('faces.obj'))
 
         plotter = MeshPlotter(mesh)
-
         plotter.draw_vertices(text='key', radius=0.15)
         plotter.draw_edges()
         plotter.draw_faces()
-
         plotter.show()
 
     Notes
@@ -90,7 +67,6 @@ class MeshPlotter(Plotter):
     """
 
     def __init__(self, mesh, **kwargs):
-        """Initialises a mesh plotter object"""
         super().__init__(**kwargs)
         self.title = 'MeshPlotter'
         self.mesh = mesh
@@ -123,16 +99,9 @@ class MeshPlotter(Plotter):
         self.clear_edges()
         self.clear_faces()
 
-    def draw_vertices(self,
-                      keys=None,
-                      radius=None,
-                      text=None,
-                      facecolor=None,
-                      edgecolor=None,
-                      edgewidth=None,
-                      textcolor=None,
-                      fontsize=None,
-                      picker=None):
+    def draw_vertices(self, keys=None, radius=None, text=None,
+                      facecolor=None, edgecolor=None, edgewidth=None,
+                      textcolor=None, fontsize=None, picker=None):
         """Draws the mesh vertices.
 
         Parameters
@@ -165,15 +134,13 @@ class MeshPlotter(Plotter):
             text = {key: str(key) for key in self.mesh.vertices()}
         elif text == 'index':
             text = {key: str(index) for index, key in enumerate(self.mesh.vertices())}
-        elif isinstance(text, basestring):
+        elif isinstance(text, str):
             if text in self.mesh.default_vertex_attributes:
                 default = self.mesh.default_vertex_attributes[text]
                 if isinstance(default, float):
                     text = {key: '{:.1f}'.format(attr[text]) for key, attr in self.mesh.vertices(True)}
                 else:
                     text = {key: str(attr[text]) for key, attr in self.mesh.vertices(True)}
-        else:
-            pass
 
         radiusdict = valuedict(keys, radius, self.defaults['vertex.radius'])
         textdict = valuedict(keys, text, '')
@@ -217,17 +184,6 @@ class MeshPlotter(Plotter):
             The vertex radius as a single value, which will be applied to all vertices,
             or as a dictionary mapping vertex keys to specific radii.
             Default is the value set in ``self.defaults``.
-
-        Notes
-        -----
-        This function will only work as expected if all vertices were already present in the collection.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            pass
-
         """
         radius = valuedict(self.mesh.vertices(), radius, self.defaults['vertex.radius'])
         circles = []
@@ -237,64 +193,7 @@ class MeshPlotter(Plotter):
             circles.append(Circle(c, r))
         self.vertexcollection.set_paths(circles)
 
-    def draw_as_lines(self, color=None, width=None):
-        """Draw the mesh as a set of lines.
-
-        This function is useful for creating *before-after* plots.
-
-        Parameters
-        ----------
-        color : {rgb-tuple, hex-string}, optional
-            The color specification of the lines.
-            Default is to use the default line color as defined in ``self.defaults``.
-        width : float, optional
-            The width of the lines.
-            Default is to use the value specified in self.defaults.
-
-        Returns
-        -------
-        object
-            The ``matplotlib`` line collection object.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            import compas
-            from compas.datastructures import Mesh
-            from compas_plotters import MeshPlotter
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-            plotter = MeshPlotter(mesh)
-
-            plotter.draw_as_lines()
-
-            # do stuff to the mesh
-
-            plotter.draw_vertices()
-            plotter.draw_edges()
-
-            plotter.show()
-
-        """
-        lines = []
-        for u, v in self.mesh.edges():
-            lines.append({
-                'start': self.mesh.vertex_coordinates(u, 'xy'),
-                'end': self.mesh.vertex_coordinates(v, 'xy'),
-                'color': color,
-                'width': width,
-            })
-        return super(MeshPlotter, self).draw_lines(lines)
-
-    def draw_edges(self,
-                   keys=None,
-                   width=None,
-                   color=None,
-                   text=None,
-                   textcolor=None,
-                   fontsize=None):
+    def draw_edges(self, keys=None, width=None, color=None, text=None, textcolor=None, fontsize=None):
         """Draws the mesh edges.
 
         Parameters
@@ -374,14 +273,8 @@ class MeshPlotter(Plotter):
             })
         self.draw_lines(lines)
 
-    def draw_faces(self,
-                   keys=None,
-                   text=None,
-                   facecolor=None,
-                   edgecolor=None,
-                   edgewidth=None,
-                   textcolor=None,
-                   fontsize=None):
+    def draw_faces(self, keys=None, text=None,
+                   facecolor=None, edgecolor=None, edgewidth=None, textcolor=None, fontsize=None):
         """Draws the mesh faces.
 
         Parameters

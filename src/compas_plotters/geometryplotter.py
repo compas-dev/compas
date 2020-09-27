@@ -2,14 +2,33 @@ import matplotlib.pyplot as plt
 
 from compas_plotters import Artist
 
-__all__ = ['Plotter2']
+__all__ = ['GeometryPlotter']
 
 
-class Plotter2(object):
-    """"""
+class GeometryPlotter:
+    """Plotter for the visualisation of COMPAS geometry.
 
-    def __init__(self, view=None, figsize=(8, 5), **kwargs):
-        """Initialises a plotter object"""
+    Parameters
+    ----------
+    view : tuple, optional
+        The area of the axes that should be zoomed into view.
+        DEfault is ``([-10, 10], [-3, 10])``.
+    figsize : tuple, optional
+        The size of the figure in inches.
+        Default is ``(8, 5)``
+
+    Attributes
+    ----------
+
+    Examples
+    --------
+
+    Notes
+    -----
+
+    """
+
+    def __init__(self, view=([-10, 10], [-3, 10]), figsize=(8, 5), **kwargs):
         self._show_axes = kwargs.get('show_axes', True)
         self._bgcolor = None
         self._viewbox = None
@@ -22,20 +41,15 @@ class Plotter2(object):
 
     @property
     def viewbox(self):
+        """([xmin, xmax], [ymin, ymax]): The area of the axes that is zoomed into view."""
         return self._viewbox
 
     @viewbox.setter
     def viewbox(self, view):
-        if not view:
-            view = ([-10, 10], [-3, 10])
-        if len(view) != 2:
-            return
         xlim, ylim = view
-        if len(xlim) != 2:
-            return
-        if len(ylim) != 2:
-            return
-        self._viewbox = xlim, ylim
+        xmin, xmax = xlim
+        ymin, ymax = ylim
+        self._viewbox = [xmin, xmax], [ymin, ymax]
 
     @property
     def axes(self):
@@ -168,6 +182,7 @@ class Plotter2(object):
 
     @property
     def artists(self):
+        """list of :class:`compas_plotters.artists.Artist`"""
         return self._artists
 
     @artists.setter
@@ -220,12 +235,6 @@ class Plotter2(object):
         ----------
         .. [1] https://matplotlib.org/api/backend_bases_api.html#matplotlib.backend_bases.FigureCanvasBase.mpl_connect
         .. [2] https://matplotlib.org/users/event_handling.html
-
-        Examples
-        --------
-        .. code-block:: python
-
-            #
 
         """
         self.figure.canvas.mpl_connect('pick_event', listener)
@@ -284,5 +293,4 @@ class Plotter2(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-
     pass

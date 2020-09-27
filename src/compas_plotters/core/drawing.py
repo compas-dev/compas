@@ -1,8 +1,3 @@
-try:
-    basestring
-except NameError:
-    basestring = str
-
 from numpy import asarray
 
 import matplotlib.pyplot as plt
@@ -255,9 +250,9 @@ def draw_points_xy(points,
     """
     p = len(points)
     # preprocess patch parameters
-    if isinstance(facecolor, basestring):
+    if isinstance(facecolor, str):
         facecolor = [facecolor] * p
-    if isinstance(edgecolor, basestring):
+    if isinstance(edgecolor, str):
         edgecolor = [edgecolor] * p
     if isinstance(linewidth, (int, float)):
         linewidth = float(linewidth)
@@ -378,9 +373,9 @@ def draw_points_3d(points,
     """
     p = len(points)
     points = asarray(points)
-    if isinstance(facecolor, basestring):
+    if isinstance(facecolor, str):
         facecolor = [facecolor] * p
-    if isinstance(edgecolor, basestring):
+    if isinstance(edgecolor, str):
         edgecolor = [edgecolor] * p
     x = points[:, 0]
     y = points[:, 1]
@@ -431,7 +426,7 @@ def draw_lines_xy(lines,
     if isinstance(linewidth, (int, float)):
         linewidth = float(linewidth)
         linewidth = [linewidth] * n
-    if isinstance(color, basestring):
+    if isinstance(color, str):
         color = [color] * n
     # --------------------------------------------------------------------------
     coll = LineCollection(
@@ -548,7 +543,7 @@ def draw_lines_3d(lines,
     if isinstance(linewidth, (int, float)):
         linewidth = float(linewidth)
         linewidth = [linewidth] * n
-    if isinstance(color, basestring):
+    if isinstance(color, str):
         color = [color] * n
 
     coll = Line3DCollection(

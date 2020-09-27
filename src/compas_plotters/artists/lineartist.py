@@ -74,9 +74,9 @@ if __name__ == '__main__':
     from compas.geometry import Vector
     from compas.geometry import Line
     from compas.geometry import Rotation
-    from compas_plotters import Plotter2
+    from compas_plotters import GeometryPlotter
 
-    plotter = Plotter2()
+    plotter = GeometryPlotter()
 
     a = Point(3.0, 2.0)
     b = Point(3.0, 5.0)

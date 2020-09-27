@@ -62,9 +62,9 @@ if __name__ == '__main__':
 
     from compas.geometry import Point
     from compas.geometry import Translation
-    from compas_plotters import Plotter2
+    from compas_plotters import GeometryPlotter
 
-    plotter = Plotter2()
+    plotter = GeometryPlotter()
 
     a = Point(0.0, 0.0)
     b = Point(5.0, 0.0)
