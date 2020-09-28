@@ -86,55 +86,53 @@
         
           
           <div class="section" id="installation">
-<span id="id1"></span><h1 class="display-4 p-0 mb-5">Installation</h1>
+<h1 class="display-4 p-0 mb-5">Installation</h1>
+<p class="lead">COMPAS is written in Python and can be easily installed using popular package managers on multiple platforms.</p>
 <div class="section" id="install-with-conda">
 <h2>Install with conda</h2>
-<p>The <strong>recommended</strong> way to install COMPAS is with <a class="reference external" href="https://conda.io/docs/">conda</a>
-using an environment.</p>
-<div class="section" id="all-in-one">
-<h3>All-in-one</h3>
-<p>Create an environment and give it a name, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;project&quot;</span></code>, install Python 3.7
-and COMPAS (use the <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> channel), say “yes” to all questions asked.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n project <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS -c conda-forge --yes
+<p>The recommended way to install COMPAS is with <a class="reference external" href="https://conda.io/docs/">conda</a>.
+For example, create an environment named <code class="docutils literal notranslate"><span class="pre">my-project</span></code> and install COMPAS.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
+conda create -n my-project COMPAS
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="step-by-step">
-<h3>Step-by-Step</h3>
-<ol class="arabic simple">
-<li><p>Create a Python 3.7 environment named “project”.</p></li>
-<li><p>Activate the environment.</p></li>
-<li><p>Install COMPAS</p></li>
-</ol>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n project <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7
-conda activate project
-conda install COMPAS -c conda-forge
+<p>Afterwards, simply activate the environment
+and run the following command to check if the installation process was successful.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate my-project
+python -m compas
 </code></pre></div>
 </div>
+<div class="language-none notranslate"><div class="highlight"><pre><code><span></span>Yay! COMPAS is installed correctly!
+
+COMPAS: 0.16.5
+Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clang 9.0.1 ]
+</code></pre></div>
 </div>
-<div class="section" id="verify">
-<h3>Verify</h3>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate project
-python
-&gt;&gt;&gt; import compas
-&gt;&gt;&gt; compas.__version__
-<span class="s1">&#39;0.15.6&#39;</span>
+<div class="section" id="other-installation-options">
+<h3>Other installation options</h3>
+<p>Install COMPAS in an environment with a specific version of Python.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n my-project <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
+</code></pre></div>
+</div>
+<p>Install COMPAS in an existing environment.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda install -n my-project COMPAS
 </code></pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="install-with-pip">
 <h2>Install with pip</h2>
-<p>Install a released version.</p>
+<p>Install COMPAS using <code class="docutils literal notranslate"><span class="pre">pip</span></code> from the Python Package Index.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install COMPAS
 </code></pre></div>
 </div>
 <p>Install an editable version from local source.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install -e .
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span><span class="nb">cd</span> path/to/compas
+pip install -e .
 </code></pre></div>
 </div>
-<p>Note that the same is possible in combination with <code class="docutils literal notranslate"><span class="pre">conda</span></code> environments.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate project
+<p>Note that installation with <code class="docutils literal notranslate"><span class="pre">pip</span></code> is also possible within a <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate my-project
 pip install -e .
 </code></pre></div>
 </div>
@@ -145,23 +143,20 @@ pip install -e .
 please file an issue using the <a class="reference external" href="https://github.com/compas-dev/compas/issues">Issue Tracker</a>.</p>
 <div class="section" id="installing-planarity">
 <h3>Installing Planarity</h3>
-<p><strong>Problem</strong> The installation process with <code class="docutils literal notranslate"><span class="pre">pip</span></code> fails while installing <code class="docutils literal notranslate"><span class="pre">planarity</span></code>, because <code class="docutils literal notranslate"><span class="pre">cython</span></code> is not installed.</p>
-<p>Install <code class="docutils literal notranslate"><span class="pre">cython</span></code> using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (or <code class="docutils literal notranslate"><span class="pre">conda</span></code>), before installing COMPAS.</p>
+<p>The installation process with <code class="docutils literal notranslate"><span class="pre">pip</span></code> can fail while installing <code class="docutils literal notranslate"><span class="pre">planarity</span></code>, because <code class="docutils literal notranslate"><span class="pre">cython</span></code> is not installed.
+If this is the case, install <code class="docutils literal notranslate"><span class="pre">cython</span></code> using <code class="docutils literal notranslate"><span class="pre">pip</span></code> (or <code class="docutils literal notranslate"><span class="pre">conda</span></code>), before installing COMPAS.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install cython --install-option<span class="o">=</span><span class="s2">&quot;--no-cython-compile&quot;</span>
-pip install COMPAS
-</code></pre></div>
-</div>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda install cython
 pip install COMPAS
 </code></pre></div>
 </div>
 </div>
 <div class="section" id="microsoft-visual-c-build-tools">
 <h3>Microsoft Visual C++ Build Tools</h3>
-<p><strong>Problem</strong> The installation of COMPAS, or a COMPAS package, or any other package, fails because “Microsoft Visual C++ Build Tools are missing”.</p>
-<p>To install the Microsoft Visual C++ Build Tools choose one of the options provided
+<p>The installation with <code class="docutils literal notranslate"><span class="pre">pip</span></code> can fail because “Microsoft Visual C++ Build Tools are missing”.
+To install the Microsoft Visual C++ Build Tools choose one of the options provided
 here: <a class="reference external" href="https://www.scivision.dev/python-windows-visual-c-14-required/">https://www.scivision.dev/python-windows-visual-c-14-required/</a>
-and just follow the instructions.</p>
+and just follow the instructions.
+Then run the <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation commands again.</p>
 </div>
 </div>
 </div>
@@ -205,9 +200,7 @@ and just follow the instructions.</p>
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Installation</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#install-with-conda">Install with conda</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#all-in-one">All-in-one</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#step-by-step">Step-by-Step</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#verify">Verify</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#other-installation-options">Other installation options</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#install-with-pip">Install with pip</a></li>

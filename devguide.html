@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="trimesh_slice" href="generated/compas.geometry.trimesh_slice.html" />
+    <link rel="prev" title="Extension points" href="plugins.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -216,9 +216,9 @@ customize and extend the functionality of the core framework.</p>
 <p>For a plugin to work, there needs to exist a counterpart to be connected to.
 This means there are two components involved:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> interface: the <strong>extension point</strong> that COMPAS defines
+<li><p><a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> interface: the <em>extension point</em> that COMPAS defines
 as the counterpart for plugins to connect to.</p></li>
-<li><p><a class="reference internal" href="api/generated/compas.plugins.plugin.html#compas.plugins.plugin" title="compas.plugins.plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.plugin()</span></code></a> implementation: a <strong>concrete implementation</strong> of the
+<li><p><a class="reference internal" href="api/generated/compas.plugins.plugin.html#compas.plugins.plugin" title="compas.plugins.plugin"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.plugin()</span></code></a> implementation: a <em>concrete implementation</em> of the
 <code class="docutils literal notranslate"><span class="pre">pluggable</span></code> interface.</p></li>
 </ul>
 <p>Both of these components are declared using decorators:</p>
@@ -244,7 +244,7 @@ or even entire projects and still work the same way.</p>
 <p>Additionally, COMPAS is able to pick the most suitable plugin implementation
 for its current execution context. For instance, one could have two implementations
 of the same <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> definition, one using <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and
-another one using <code class="docutils literal notranslate"><span class="pre">Rhino</span> <span class="pre">SDK</span></code> and have the correct one automatically selected
+another one using <em>Rhino SDK</em> and have the correct one automatically selected
 based on where your script is executing.</p>
 </div>
 <div class="section" id="how-to-make-plugins-discoverable">
@@ -270,7 +270,7 @@ decorator.</p>
 </div>
 <div class="section" id="two-kinds-of-extension-points">
 <h3>Two kinds of extension points</h3>
-<p>An extension point, or <code class="docutils literal notranslate"><span class="pre">pluggable</span></code> interface can be declared as being one of two types
+<p>An extension point, or <em>pluggable</em> interface can be declared as being one of two types
 based on how they select which implementation to pick if there are multiple available.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">selector='first_match'</span></code>: this type of extension point will pick the first plugin
@@ -278,7 +278,7 @@ implementation that satisfies the requirements.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">selector='collect_all'</span></code>: extension points defined with this selector will instead
 collect all plugin implementations and execute them all, collecting the return
 values into a list. An example of this is the Rhino install extension
-point: <a class="reference internal" href="generated/compas_rhino.install.installable_rhino_packages.html#compas_rhino.install.installable_rhino_packages" title="compas_rhino.install.installable_rhino_packages"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_rhino.install.installable_rhino_packages()</span></code></a>.</p></li>
+point: <code class="xref py py-meth docutils literal notranslate"><span class="pre">compas_rhino.install.installable_rhino_packages()</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="a-complete-example">
@@ -287,7 +287,7 @@ point: <a class="reference internal" href="generated/compas_rhino.install.instal
 <div class="section" id="extension-point">
 <h4>Extension point</h4>
 <p>For the sake of example, we are going to assume that <code class="docutils literal notranslate"><span class="pre">compas</span></code> core defines
-the following <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> interface:</p>
+the following <a class="reference internal" href="api/generated/compas.plugins.pluggable.html#compas.plugins.pluggable" title="compas.plugins.pluggable"><code class="xref py py-meth docutils literal notranslate"><span class="pre">compas.plugins.pluggable()</span></code></a> interface in</p>
 <p><strong>compas/geometry/booleans/__init__.py</strong></p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="nd">@pluggable</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;booleans&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">boolean_union_mesh_mesh</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
@@ -318,7 +318,7 @@ the following <a class="reference internal" href="api/generated/compas.plugins.p
     <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">faces</span>
 </code></pre></div>
 </div>
-<p><strong>Voilà!</strong> We have a trimesh-based boolean union plugin!</p>
+<p>Voilà! We have a trimesh-based boolean union plugin!</p>
 </div>
 </div>
 <div class="section" id="advanced-options">

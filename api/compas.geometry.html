@@ -829,11 +829,17 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.intersection_line_triangle.html#compas.geometry.intersection_line_triangle" title="compas.geometry.intersection_line_triangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection_line_triangle</span></code></a></p></td>
 <td><p>Computes the intersection point of a line (ray) and a triangle based on the Moeller Trumbore intersection algorithm</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.intersection_plane_plane.html#compas.geometry.intersection_plane_plane" title="compas.geometry.intersection_plane_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection_plane_plane</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.intersection_mesh_mesh.html#compas.geometry.intersection_mesh_mesh" title="compas.geometry.intersection_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection_mesh_mesh</span></code></a></p></td>
+<td><p>Compute the intersection of tow meshes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.intersection_plane_plane.html#compas.geometry.intersection_plane_plane" title="compas.geometry.intersection_plane_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection_plane_plane</span></code></a></p></td>
 <td><p>Computes the intersection of two planes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.intersection_plane_plane_plane.html#compas.geometry.intersection_plane_plane_plane" title="compas.geometry.intersection_plane_plane_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection_plane_plane_plane</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.intersection_plane_plane_plane.html#compas.geometry.intersection_plane_plane_plane" title="compas.geometry.intersection_plane_plane_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection_plane_plane_plane</span></code></a></p></td>
 <td><p>Computes the intersection of three planes</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.intersection_ray_mesh.html#compas.geometry.intersection_ray_mesh" title="compas.geometry.intersection_ray_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection_ray_mesh</span></code></a></p></td>
+<td><p>Compute the intersection(s) between a ray and a mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.intersection_segment_segment.html#compas.geometry.intersection_segment_segment" title="compas.geometry.intersection_segment_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intersection_segment_segment</span></code></a></p></td>
 <td><p>Compute the intersection of two lines segments.</p></td>
@@ -942,13 +948,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/compas.geometry.boolean_union_mesh_mesh.html#compas.geometry.boolean_union_mesh_mesh" title="compas.geometry.boolean_union_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean_union_mesh_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.boolean_union_mesh_mesh.html#compas.geometry.boolean_union_mesh_mesh" title="compas.geometry.boolean_union_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean_union_mesh_mesh</span></code></a></p></td>
 <td><p>Compute the boolean union of two triangle meshes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/compas.geometry.boolean_difference_mesh_mesh.html#compas.geometry.boolean_difference_mesh_mesh" title="compas.geometry.boolean_difference_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean_difference_mesh_mesh</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.boolean_difference_mesh_mesh.html#compas.geometry.boolean_difference_mesh_mesh" title="compas.geometry.boolean_difference_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean_difference_mesh_mesh</span></code></a></p></td>
 <td><p>Compute the boolean difference of two triangle meshes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/compas.geometry.boolean_intersection_mesh_mesh.html#compas.geometry.boolean_intersection_mesh_mesh" title="compas.geometry.boolean_intersection_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean_intersection_mesh_mesh</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.boolean_intersection_mesh_mesh.html#compas.geometry.boolean_intersection_mesh_mesh" title="compas.geometry.boolean_intersection_mesh_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">boolean_intersection_mesh_mesh</span></code></a></p></td>
 <td><p>Compute the boolean intersection of two triangle meshes.</p></td>
 </tr>
 </tbody>
@@ -962,13 +968,22 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.conforming_delaunay_triangulation.html#compas.geometry.conforming_delaunay_triangulation" title="compas.geometry.conforming_delaunay_triangulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conforming_delaunay_triangulation</span></code></a></p></td>
+<td><p>Construct a Conforming Delaunay triangulation of set of vertices, constrained to the specified segments.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.constrained_delaunay_triangulation.html#compas.geometry.constrained_delaunay_triangulation" title="compas.geometry.constrained_delaunay_triangulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constrained_delaunay_triangulation</span></code></a></p></td>
+<td><p>Construct a Delaunay triangulation of set of vertices, constrained to the specified segments.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.delaunay_from_points.html#compas.geometry.delaunay_from_points" title="compas.geometry.delaunay_from_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delaunay_from_points</span></code></a></p></td>
 <td><p>Computes the delaunay triangulation for a list of points.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.delaunay_from_points_numpy.html#compas.geometry.delaunay_from_points_numpy" title="compas.geometry.delaunay_from_points_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delaunay_from_points_numpy</span></code></a></p></td>
 <td><p>Computes the delaunay triangulation for a list of points using Numpy.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.voronoi_from_points_numpy.html#compas.geometry.voronoi_from_points_numpy" title="compas.geometry.voronoi_from_points_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">voronoi_from_points_numpy</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.delaunay_triangulation.html#compas.geometry.delaunay_triangulation" title="compas.geometry.delaunay_triangulation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delaunay_triangulation</span></code></a></p></td>
+<td><p>Construct a Delaunay triangulation of set of vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.voronoi_from_points_numpy.html#compas.geometry.voronoi_from_points_numpy" title="compas.geometry.voronoi_from_points_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">voronoi_from_points_numpy</span></code></a></p></td>
 <td><p>Generate a voronoi diagram from a set of points.</p></td>
 </tr>
 </tbody>
@@ -982,6 +997,36 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_gaussian_curvature.html#compas.geometry.trimesh_gaussian_curvature" title="compas.geometry.trimesh_gaussian_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_gaussian_curvature</span></code></a></p></td>
+<td><p>Compute the discrete gaussian curvature of a triangle mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_geodistance.html#compas.geometry.trimesh_geodistance" title="compas.geometry.trimesh_geodistance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_geodistance</span></code></a></p></td>
+<td><p>Compute the geodesic distance from every vertex of the mesh to a source vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_harmonic.html#compas.geometry.trimesh_harmonic" title="compas.geometry.trimesh_harmonic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_harmonic</span></code></a></p></td>
+<td><p>Compute the harmonic parametrisation of a triangle mesh within a fixed circular boundary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_isolines.html#compas.geometry.trimesh_isolines" title="compas.geometry.trimesh_isolines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_isolines</span></code></a></p></td>
+<td><p>Compute isolines on a triangle mesh using a scalarfield of data points assigned to its vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_lscm.html#compas.geometry.trimesh_lscm" title="compas.geometry.trimesh_lscm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_lscm</span></code></a></p></td>
+<td><p>Compute the least squares conformal map of a triangle mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_massmatrix.html#compas.geometry.trimesh_massmatrix" title="compas.geometry.trimesh_massmatrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_massmatrix</span></code></a></p></td>
+<td><p>Compute massmatrix on a triangle mesh using a scalarfield of data points assigned to its vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_principal_curvature.html#compas.geometry.trimesh_principal_curvature" title="compas.geometry.trimesh_principal_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_principal_curvature</span></code></a></p></td>
+<td><p>Compute the principal curvature directions of a triangle mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_remesh.html#compas.geometry.trimesh_remesh" title="compas.geometry.trimesh_remesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_remesh</span></code></a></p></td>
+<td><p>Remeshing of a triangle mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_remesh_constrained.html#compas.geometry.trimesh_remesh_constrained" title="compas.geometry.trimesh_remesh_constrained"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_remesh_constrained</span></code></a></p></td>
+<td><p>Constrained remeshing of a triangle mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.trimesh_slice.html#compas.geometry.trimesh_slice" title="compas.geometry.trimesh_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trimesh_slice</span></code></a></p></td>
+<td><p>Slice a mesh by a list of planes.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -993,6 +1038,9 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.quadmesh_planarize.html#compas.geometry.quadmesh_planarize" title="compas.geometry.quadmesh_planarize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quadmesh_planarize</span></code></a></p></td>
+<td><p>Planarize the faces of a quad mesh.</p></td>
+</tr>
 </tbody>
 </table>
 </div>

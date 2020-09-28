@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="Data structures" href="datastructures.html" />
+    <link rel="prev" title="Geometry" href="geometry.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -86,9 +86,14 @@
         
           
           <div class="section" id="meshes">
-<span id="working-with-meshes"></span><h1 class="display-4 p-0 mb-5">Meshes</h1>
-<p>COMPAS meshes are polygon meshes with support for n-sided polygonal
-faces. The meshes are presented using a half-edge data structure. In a
+<h1 class="display-4 p-0 mb-5">Meshes</h1>
+<p class="lead">Meshes are ubiquitous in geometry processing, computer graphics,
+additive manufacturing processes, Finite Element Analysis etc.
+COMPAS meshes are polygon meshes with support for n-sided polygonal faces.
+They can represent manifold, open or closed, polygonal surfaces.</p>
+<div class="section" id="data-structure">
+<h2>Data structure</h2>
+<p>In COMPAS meshes are presented using a half-edge data structure. In a
 half-edge data structure, each edge is composed of two half-edges with
 opposite orientation. Each half-edge is part of exactly one face, unless
 it is on the boundary. An edge is thus incident to at least one face and
@@ -96,11 +101,10 @@ at most to two. The half-edges of a face form a continuous cycle,
 connecting the vertices of the face in a specific order forming a closed
 n-sided polygon. The ordering of the vertices determines the direction
 of its normal.</p>
-<p>Check out the docs for detailed information about the mesh and the available
-functionality: <a class="reference internal" href="../api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>.</p>
+</div>
 <div class="section" id="building-a-mesh">
 <h2>Building a Mesh</h2>
-<p>Meshes can be built from scratch by adding vertices and faces.:</p>
+<p>Meshes can be built from scratch by adding vertices and faces.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastrctures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">()</span>
@@ -146,7 +150,7 @@ This process is only successful if the input lines form a planar graph.
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_stl</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<p>As mentioned above, for every <code class="docutils literal notranslate"><span class="pre">from_</span></code> there is a <code class="docutils literal notranslate"><span class="pre">to_</span></code>.:</p>
+<p>As mentioned above, for every <code class="docutils literal notranslate"><span class="pre">from_</span></code> there is a <code class="docutils literal notranslate"><span class="pre">to_</span></code>.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_off</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_ply</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
@@ -310,7 +314,6 @@ about itself and its components.</p>
 <li class="nav-item active"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a><ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="basics.html">Basics</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="geometry.html">Geometry</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="datastructures.html">Data structures</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="networks.html">Networks</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="robots.html">Robots</a></li>
@@ -337,6 +340,7 @@ about itself and its components.</p>
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Meshes</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#data-structure">Data structure</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#building-a-mesh">Building a Mesh</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#constructors">Constructors</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#geometry-formats">Geometry Formats</a></li>

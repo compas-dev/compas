@@ -85,9 +85,8 @@
           
           <div class="section" id="compas-docs">
 <h1 class="display-4 p-0 mb-5">COMPAS Docs</h1>
-<p class="lead">The main library of the COMPAS framework consists of a core package (<a class="reference internal" href="api/compas.html#module-compas" title="compas"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas</span></code></a>)
-and several additional packages for integration of the core into CAD software
-(<a class="reference internal" href="api/compas_rhino.html#module-compas_rhino" title="compas_rhino"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_rhino</span></code></a>, <a class="reference internal" href="api/compas_ghpython.html#module-compas_ghpython" title="compas_ghpython"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_ghpython</span></code></a>, <a class="reference internal" href="api/compas_blender.html#module-compas_blender" title="compas_blender"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_blender</span></code></a>).
+<p class="lead">The main library of the COMPAS framework consists of a core package
+and several additional packages for integration of the core into CAD software.
 The core package defines all <em>real</em> functionality.
 The CAD packages simply provide a unified framework for processing,
 visualizing and interacting with datastructures and geometrical objects, and for
@@ -118,19 +117,16 @@ a unified and consistent interface to CAD tools and their ecosystems.</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/editors/sublimetext.html">Sublime Text</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/editors/vscode.html">Visual Studio Code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/cad/rhino.html">Rhino</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/cad/rhinomac.html">Rhinomac</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/cad/rhino5.html">Rhino 5 on Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/cad/grasshopper.html">Grasshopper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gettingstarted/cad/blender.html">Blender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted/vscode.html">Visual Studio Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted/rhino.html">Rhino (Windows and Mac)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted/grasshopper.html">Grasshopper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted/blender.html">Blender</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gettingstarted/rhino5.html">Rhino 5 on Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorial/basics.html">Basics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial/geometry.html">Geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial/datastructures.html">Data structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial/meshes.html">Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial/networks.html">Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorial/robots.html">Robots</a></li>
@@ -182,29 +178,7 @@ a unified and consistent interface to CAD tools and their ecosystems.</p>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">Extension points</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.boolean_union_mesh_mesh.html">boolean_union_mesh_mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.boolean_difference_mesh_mesh.html">boolean_difference_mesh_mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.boolean_intersection_mesh_mesh.html">boolean_intersection_mesh_mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas_rhino.install.installable_rhino_packages.html">installable_rhino_packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.intersection_mesh_mesh.html">intersection_mesh_mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.intersection_ray_mesh.html">intersection_ray_mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.quadmesh_planarize.html">quadmesh_planarize</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.delaunay_triangulation.html">delaunay_triangulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.constrained_delaunay_triangulation.html">constrained_delaunay_triangulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.conforming_delaunay_triangulation.html">conforming_delaunay_triangulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_gaussian_curvature.html">trimesh_gaussian_curvature</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_principal_curvature.html">trimesh_principal_curvature</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_geodistance.html">trimesh_geodistance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_isolines.html">trimesh_isolines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_massmatrix.html">trimesh_massmatrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_harmonic.html">trimesh_harmonic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_lscm.html">trimesh_lscm</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_remesh.html">trimesh_remesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_remesh_constrained.html">trimesh_remesh_constrained</a></li>
-<li class="toctree-l2"><a class="reference internal" href="generated/compas.geometry.trimesh_slice.html">trimesh_slice</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Extension points</a></li>
 <li class="toctree-l1"><a class="reference internal" href="devguide.html">Developer Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
