@@ -221,15 +221,13 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             self.transform(native_geometry, relative_transformation)
         item.current_transformation = transformation
 
-    def update(self, configuration, visual=True, collision=True):
+    def update(self, joint_state, visual=True, collision=True):
         """Triggers the update of the robot geometry.
 
         Parameters
         ----------
-        configuration : :obj:`tuple` of :obj:`list`
-            A tuple of 2 elements containing a list of joint positions and a list of matching joint names.
-            If ``None`` is passed as the second element, the default will be the output of
-            :meth:`compas.robots.RobotModel.get_configurable_joint_names`.
+        joint_state : :obj:`dict`
+            A dictionary with joint names as keys and joint positions as values.
         visual : bool, optional
             ``True`` if the visual geometry should be also updated, otherwise ``False``.
             Defaults to ``True``.
@@ -237,11 +235,6 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             ``True`` if the collision geometry should be also updated, otherwise ``False``.
             Defaults to ``True``.
         """
-        positions = configuration[0]
-        names = configuration[1] or self.model.get_configurable_joint_names()
-        if len(names) != len(configuration.values):
-            raise ValueError("Please pass a configuration with %d joint_names." % len(positions))
-        joint_state = dict(zip(names, positions))
         transformations = self.model.compute_transformations(joint_state)
         for j in self.model.iter_joints():
             link = j.child_link
