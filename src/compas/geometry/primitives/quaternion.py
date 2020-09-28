@@ -78,10 +78,11 @@ class Quaternion(Primitive):
     .. math::
 
         \begin{align}
-        w = cos(\frac{\theta}{2})
-        x = sin(\frac{\theta}{2}) u_{x}
-        y = sin(\frac{\theta}{2}) u_{y}
-        z = sin(\frac{\theta}{2}) u_{z}
+        w &= cos(\frac{\theta}{2}) \\
+        x &= sin(\frac{\theta}{2}) u_{x} \\
+        y &= sin(\frac{\theta}{2}) u_{y} \\
+        z &= sin(\frac{\theta}{2}) u_{z}
+        \end{align}
 
     For a quaternion to represent a rotation or orientation, it must be unit-length.
     A quaternion representing a rotation :math:`p` resulting from applying a rotation

@@ -1,13 +1,19 @@
-.. _working-with-meshes:
-
 ******
 Meshes
 ******
 
-.. highlight:: python
+.. rst-class:: lead
 
-COMPAS meshes are polygon meshes with support for n-sided polygonal
-faces. The meshes are presented using a half-edge data structure. In a
+Meshes are ubiquitous in geometry processing, computer graphics,
+additive manufacturing processes, Finite Element Analysis etc.
+COMPAS meshes are polygon meshes with support for n-sided polygonal faces.
+They can represent manifold, open or closed, polygonal surfaces.
+
+
+Data structure
+==============
+
+In COMPAS meshes are presented using a half-edge data structure. In a
 half-edge data structure, each edge is composed of two half-edges with
 opposite orientation. Each half-edge is part of exactly one face, unless
 it is on the boundary. An edge is thus incident to at least one face and
@@ -16,14 +22,13 @@ connecting the vertices of the face in a specific order forming a closed
 n-sided polygon. The ordering of the vertices determines the direction
 of its normal.
 
-Check out the docs for detailed information about the mesh and the available
-functionality: :class:`compas.datastructures.Mesh`.
-
 
 Building a Mesh
 ===============
 
-Meshes can be built from scratch by adding vertices and faces.::
+Meshes can be built from scratch by adding vertices and faces.
+
+::
 
     >>> from compas.datastrctures import Mesh
 
@@ -42,13 +47,17 @@ Constructors
 
 Building a mesh vertex per vertex and face per face is fine for very simple meshes,
 but quickly becomes tedious for meshes of relevant size.
-Alternative constructors can be used to simplify this process based on specific inputs. ::
+Alternative constructors can be used to simplify this process based on specific inputs.
+
+::
 
     >>> mesh = Mesh.from_vertices_and_faces(vertices, faces)
     >>> mesh = Mesh.from_polygons(polygons)
     >>> mesh = Mesh.from_shape(box)
 
-For strictly two-dimensional inputs in the XY plane, the following can also be used. ::
+For strictly two-dimensional inputs in the XY plane, the following can also be used.
+
+::
 
     >>> mesh = Mesh.from_lines(lines)
     >>> mesh = Mesh.from_points(points)
@@ -57,7 +66,9 @@ For strictly two-dimensional inputs in the XY plane, the following can also be u
 This process is only successful if the input lines form a planar graph.
 ``from_points`` generates a delaunay triangulation of the provided points in the XY plane.
 
-For every ``from_`` function there is a corresponding ``to_`` function that basically accomplishes the exact opposite. ::
+For every ``from_`` function there is a corresponding ``to_`` function that basically accomplishes the exact opposite.
+
+::
 
     >>>
 
@@ -65,14 +76,18 @@ For every ``from_`` function there is a corresponding ``to_`` function that basi
 Geometry Formats
 ================
 
-The mesh also supports constructors based on common geometry formats for 3D polygon mesh geometry. ::
+The mesh also supports constructors based on common geometry formats for 3D polygon mesh geometry.
+
+::
 
     >>> mesh = Mesh.from_obj(filepath)
     >>> mesh = Mesh.from_off(filepath)
     >>> mesh = Mesh.from_ply(filepath)
     >>> mesh = Mesh.from_stl(filepath)
 
-As mentioned above, for every ``from_`` there is a ``to_``.::
+As mentioned above, for every ``from_`` there is a ``to_``.
+
+::
 
     >>> mesh = Mesh.from_obj(filepath)
     >>> mesh = Mesh.from_off(filepath)
@@ -111,7 +126,9 @@ Note that these methods return generator objects that have to be consumed by ite
     ...     print(edge)
     ...
 
-To obtain actual lists of components, the results from the accessor functions have to be converted explicitly. ::
+To obtain actual lists of components, the results from the accessor functions have to be converted explicitly.
+
+::
 
     >>> vertices = list(mesh.vertices())
     >>> edges = list(mesh.edges())
@@ -124,7 +141,9 @@ Identifiers of edges are pairs of vertex ids in the form of a tuple.
 Note that adding and removing elements will not cause identifiers to be renumbered.
 Therefore, after certain topological operations (e.g. subdivision), vertex and face identifiers no longer necessarily form contiguous sequences.
 This needs to be taken into account when converting sequences of vertices, faces, and edges to lists, for example for numerical calculation.
-To transparently convert non-contiguous sequences of identifiers to contiguous list indices, use "key/index maps". ::
+To transparently convert non-contiguous sequences of identifiers to contiguous list indices, use "key/index maps".
+
+::
 
     >>> key_index = mesh.key_index()
     >>> vertices = list(mesh.vertices())

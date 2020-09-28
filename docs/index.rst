@@ -4,9 +4,8 @@ COMPAS Docs
 
 .. rst-class:: lead
 
-The main library of the COMPAS framework consists of a core package (:mod:`compas`)
-and several additional packages for integration of the core into CAD software
-(:mod:`compas_rhino`, :mod:`compas_ghpython`, :mod:`compas_blender`).
+The main library of the COMPAS framework consists of a core package
+and several additional packages for integration of the core into CAD software.
 The core package defines all *real* functionality.
 The CAD packages simply provide a unified framework for processing,
 visualizing and interacting with datastructures and geometrical objects, and for

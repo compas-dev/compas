@@ -6,7 +6,8 @@ import Rhino
 
 import compas_rhino
 from compas.geometry import Line
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
+
+from ._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoLine']

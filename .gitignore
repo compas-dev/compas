@@ -110,6 +110,7 @@ ENV/
 
 dist/docs
 
+docs/generated/
 docs/api/generated/
 
 *.3dmbak

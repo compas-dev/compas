@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from matplotlib.patches import FancyArrowPatch
 from matplotlib.patches import ArrowStyle
 
@@ -54,7 +50,9 @@ if __name__ == '__main__':
     from compas.geometry import Line
     from compas.geometry import Rotation
     from compas.geometry import Translation
-    from compas_plotters import Plotter2
+    from compas_plotters import GeometryPlotter
+
+    plotter = GeometryPlotter()
 
     point = Point(0.0, 3.0, 0.0)
     vector = Vector(2.0, 0.0, 0.0)
@@ -63,9 +61,7 @@ if __name__ == '__main__':
     loa = Line(point, point + direction)
 
     R = Rotation.from_axis_and_angle(Vector(0.0, 0.0, 1.0), radians(3.6))
-    T = Translation(direction.scaled(0.1))
-
-    plotter = Plotter2()
+    T = Translation.from_vector(direction.scaled(0.1))
 
     plotter.add(vector, point=point, draw_point=True)
     plotter.add(loa)

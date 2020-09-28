@@ -82,7 +82,7 @@ class MeshObject(BaseObject):
         self._location = None
         self._scale = None
         self._rotation = None
-        self.settings.update(MeshObject.SETTINGS)
+        self.settings.update(type(self).SETTINGS)
         if settings:
             self.settings.update(settings)
 
@@ -292,7 +292,6 @@ class MeshObject(BaseObject):
         self.clear()
         if not self.visible:
             return
-
         self.artist.vertex_xyz = self.vertex_xyz
 
         if self.settings['show.vertices']:

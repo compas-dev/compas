@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_plotters.artists import Artist
 from matplotlib.patches import Ellipse as EllipsePatch
 
@@ -49,9 +45,9 @@ if __name__ == '__main__':
     from compas.geometry import Point
     from compas.geometry import Plane
     from compas.geometry import Vector
-    from compas_plotters import Plotter2
+    from compas_plotters import GeometryPlotter
 
-    plotter = Plotter2()
+    plotter = GeometryPlotter()
 
     plane = Plane(Point(0, 0, 0), Vector(0, 0, 1))
 

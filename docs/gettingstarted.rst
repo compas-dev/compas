@@ -6,10 +6,8 @@ Getting started
     :maxdepth: 1
     :glob:
 
-    gettingstarted/editors/sublimetext
-    gettingstarted/editors/vscode
-    gettingstarted/cad/rhino
-    gettingstarted/cad/rhinomac
-    gettingstarted/cad/rhino5
-    gettingstarted/cad/grasshopper
-    gettingstarted/cad/blender
+    gettingstarted/vscode
+    gettingstarted/rhino
+    gettingstarted/grasshopper
+    gettingstarted/blender
+    gettingstarted/rhino5

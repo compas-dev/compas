@@ -7,12 +7,12 @@ Tutorial
 
     tutorial/basics
     tutorial/geometry
-    tutorial/datastructures
     tutorial/meshes
     tutorial/networks
     tutorial/robots
     tutorial/rpc
     tutorial/rhino
     tutorial/blender
+    tutorial/grasshopper
     tutorial/geomaps
     tutorial/rpc

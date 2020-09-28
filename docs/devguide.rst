@@ -143,9 +143,9 @@ customize and extend the functionality of the core framework.
 For a plugin to work, there needs to exist a counterpart to be connected to.
 This means there are two components involved:
 
-* :meth:`compas.plugins.pluggable` interface: the **extension point** that COMPAS defines
+* :meth:`compas.plugins.pluggable` interface: the *extension point* that COMPAS defines
   as the counterpart for plugins to connect to.
-* :meth:`compas.plugins.plugin` implementation: a **concrete implementation** of the
+* :meth:`compas.plugins.plugin` implementation: a *concrete implementation* of the
   ``pluggable`` interface.
 
 Both of these components are declared using decorators:
@@ -176,7 +176,7 @@ or even entire projects and still work the same way.
 Additionally, COMPAS is able to pick the most suitable plugin implementation
 for its current execution context. For instance, one could have two implementations
 of the same :meth:`compas.plugins.pluggable` definition, one using ``numpy`` and
-another one using ``Rhino SDK`` and have the correct one automatically selected
+another one using *Rhino SDK* and have the correct one automatically selected
 based on where your script is executing.
 
 How to make plugins discoverable?
@@ -206,7 +206,7 @@ decorator.
 Two kinds of extension points
 -----------------------------
 
-An extension point, or ``pluggable`` interface can be declared as being one of two types
+An extension point, or *pluggable* interface can be declared as being one of two types
 based on how they select which implementation to pick if there are multiple available.
 
 * ``selector='first_match'``: this type of extension point will pick the first plugin
@@ -225,7 +225,7 @@ Extension point
 ^^^^^^^^^^^^^^^
 
 For the sake of example, we are going to assume that ``compas`` core defines
-the following :meth:`compas.plugins.pluggable` interface:
+the following :meth:`compas.plugins.pluggable` interface in
 
 **compas/geometry/booleans/__init__.py**
 
@@ -265,7 +265,7 @@ Now let's write a plugin that implements this interface:
 
         return r.vertices, r.faces
 
-**Voilà!** We have a trimesh-based boolean union plugin!
+Voilà! We have a trimesh-based boolean union plugin!
 
 Advanced options
 ----------------

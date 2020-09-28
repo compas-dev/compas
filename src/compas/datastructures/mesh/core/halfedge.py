@@ -6,6 +6,7 @@ from collections import OrderedDict
 from ast import literal_eval
 from random import sample
 from random import choice
+from distutils.version import LooseVersion
 
 import compas
 
@@ -49,16 +50,26 @@ class HalfEdge(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
-        from packaging import version
-        if version.parse(compas.__version__) < version.parse('0.17'):
+        if LooseVersion(compas.__version__) < LooseVersion('0.16.5'):
             return schema.Schema({
                 "attributes": dict,
                 "dva": dict,
                 "dea": dict,
                 "dfa": dict,
-                "vertex": dict,
-                "face": dict,
-                "facedata": dict,
+                "vertex": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, int) for key in x)
+                ),
+                "face": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, int) for key in x),
+                    lambda x: all(all(isinstance(item, int) for item in value) for value in x.values())
+                ),
+                "facedata": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, int) for key in x),
+                    lambda x: all(isinstance(value, dict) for value in x.values())
+                ),
                 "edgedata": dict,
                 "max_int_key": schema.And(int, lambda x: x >= -1),
                 "max_int_fkey": schema.And(int, lambda x: x >= -1)
@@ -71,72 +82,73 @@ class HalfEdge(Datastructure):
                 "dva": dict,
                 "dea": dict,
                 "dfa": dict,
-                "vertex": dict,
-                "face": dict,
-                "facedata": dict,
-                "edgedata": dict,
-                "max_int_key": schema.And(int, lambda x: x >= -1),
-                "max_int_fkey": schema.And(int, lambda x: x >= -1)
+                "vertex": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, int) for key in x)
+                ),
+                "face": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, int) for key in x),
+                    lambda x: all(all(isinstance(item, int) for item in value) for value in x.values())
+                ),
+                "facedata": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, int) for key in x),
+                    lambda x: all(isinstance(value, dict) for value in x.values())
+                ),
+                "edgedata": schema.And(
+                    dict,
+                    lambda x: all(isinstance(key, str) for key in x),
+                    lambda x: all(isinstance(value, dict) for value in x.values())
+                ),
+                "max_vertex": schema.And(int, lambda x: x >= -1),
+                "max_face": schema.And(int, lambda x: x >= -1)
             }
         })
 
     @property
     def JSONSCHEMA(self):
-        from packaging import version
-        if version.parse(compas.__version__) < version.parse('0.17'):
-            return {
-                "$schema": "http://json-schema.org/schema",
-                "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
-                "$compas": compas.__version__,
-
+        version = LooseVersion(compas.__version__)
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
+            "$compas": version.vstring.split('-')[0],
+        }
+        data = {
+            "type": "object",
+            "properties": {
+                "attributes":   {"type": "object"},
+                "dva":          {"type": "object"},
+                "dea":          {"type": "object"},
+                "dfa":          {"type": "object"},
+                "vertex":       {"type": "object"},
+                "face":         {"type": "object"},
+                "facedata":     {"type": "object"},
+                "edgedata":     {"type": "object"},
+                "max_vertex":   {"type": "number"},
+                "max_face":     {"type": "number"}
+            },
+            "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_vertex", "max_face"]
+        }
+        if version < LooseVersion('0.16.5'):
+            schema.update(data)
+        else:
+            meta = {
                 "type": "object",
                 "properties": {
-                    "attributes":   {"type": "object"},
-                    "dva":          {"type": "object"},
-                    "dea":          {"type": "object"},
-                    "dfa":          {"type": "object"},
-                    "vertex":       {"type": "object"},
-                    "face":         {"type": "object"},
-                    "facedata":     {"type": "object"},
-                    "edgedata":     {"type": "object"},
-                    "max_int_key":  {"type": "number"},
-                    "max_int_fkey": {"type": "number"}
+                    "compas": {"type": "string"},
+                    "datatype": {"type": "string"},
+                    "data": data
                 },
-                "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
+                "required": ["compas", "datatype", "data"]
             }
-        return {
-            "$schema": "http://json-schema.org/schema",
-            "$id": "https://github.com/compas-dev/compas/schemas/halfedge.json",
-            "$compas": compas.__version__,
-
-            "type": "object",
-            "poperties": {
-                "compas": {"type": "string"},
-                "datatype": {"type": "string"},
-                "data": {
-                    "type": "object",
-                    "properties": {
-                        "attributes":   {"type": "object"},
-                        "dva":          {"type": "object"},
-                        "dea":          {"type": "object"},
-                        "dfa":          {"type": "object"},
-                        "vertex":       {"type": "object"},
-                        "face":         {"type": "object"},
-                        "facedata":     {"type": "object"},
-                        "edgedata":     {"type": "object"},
-                        "max_int_key":  {"type": "number"},
-                        "max_int_fkey": {"type": "number"}
-                    },
-                    "required": ["attributes", "dva", "dea", "dfa", "vertex", "face", "facedata", "edgedata", "max_int_key", "max_int_fkey"]
-                }
-            },
-            "required": ["compas", "datatype", "data"]
-        }
+            schema.update(meta)
+        return schema
 
     def __init__(self):
         super(HalfEdge, self).__init__()
-        self._max_int_key = -1
-        self._max_int_fkey = -1
+        self._max_vertex = -1
+        self._max_face = -1
         self.vertex = {}
         self.halfedge = {}
         self.face = {}
@@ -171,72 +183,100 @@ class HalfEdge(Datastructure):
     @property
     def data(self):
         """dict : A data dict representing the mesh data structure for serialisation.
-
-        The dict has the following structure:
-
-        * 'attributes'   => dict
-        * 'dva'          => dict
-        * 'dea'          => dict
-        * 'dfa'          => dict
-        * 'vertex'       => dict
-        * 'face'         => dict
-        * 'facedata'     => dict
-        * 'edgedata'     => dict
-        * 'max_int_key'  => int
-        * 'max_int_fkey' => int
-
-        Notes
-        -----
-        All dictionary keys are converted to their representation value (``repr(key)``)
-        to ensure compatibility of all allowed key types with the JSON serialisation
-        format, which only allows for dict keys that are strings.
-
         """
-        edgedata = {}
-        for key in self.edgedata:
-            edgedata[repr(key)] = self.edgedata[key]
-        data = {'attributes': self.attributes,
-                'dva': self.default_vertex_attributes,
-                'dea': self.default_edge_attributes,
-                'dfa': self.default_face_attributes,
-                'vertex': self.vertex,
-                'face': self.face,
-                'facedata': self.facedata,
-                'edgedata': edgedata,
-                'max_int_key': self._max_int_key,
-                'max_int_fkey': self._max_int_fkey}
-        return data
+        data = {
+            'attributes': self.attributes,
+            'dva': self.default_vertex_attributes,
+            'dea': self.default_edge_attributes,
+            'dfa': self.default_face_attributes,
+            'vertex': self.vertex,
+            'face': self.face,
+            'facedata': self.facedata,
+        }
+        version = LooseVersion(compas.__version__)
+        if version < LooseVersion('0.16.5'):
+            data['edgedata'] = {repr(key): self.edgedata[key] for key in self.edgedata}
+            data['max_int_key'] = self._max_vertex
+            data['max_int_fkey'] = self._max_face
+            return data
+        data['edgedata'] = self.edgedata
+        data['max_vertex'] = self._max_vertex
+        data['max_face'] = self._max_face
+        return {
+            'compas': version.vstring.split('-')[0],
+            'datatype': self.dtype,
+            'data': data
+        }
 
     @data.setter
     def data(self, data):
-        attributes = data['attributes']
-        dva = data.get('dva') or {}
-        dfa = data.get('dfa') or {}
-        dea = data.get('dea') or {}
-        vertex = data.get('vertex') or {}
-        face = data.get('face') or {}
-        facedata = data.get('facedata') or {}
-        edgedata = data.get('edgedata') or {}
-        max_int_key = data.get('max_int_key', -1)
-        max_int_fkey = data.get('max_int_fkey', -1)
-        self.attributes.update(attributes)
-        self.default_vertex_attributes.update(dva)
-        self.default_face_attributes.update(dfa)
-        self.default_edge_attributes.update(dea)
-        self.vertex = {}
-        self.face = {}
-        self.halfedge = {}
-        self.facedata = {}
-        self.edgedata = {}
-        for key, attr in iter(vertex.items()):
-            self.add_vertex(int(key), attr_dict=attr)
-        for fkey, vertices in iter(face.items()):
-            attr = facedata.get(fkey) or {}
-            self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
-        for uv, attr in iter(edgedata.items()):
-            self.edgedata[literal_eval(uv)] = attr or {}
-        self._max_int_key = max_int_key
-        self._max_int_fkey = max_int_fkey
+        if 'compas' in data:
+            version = LooseVersion(compas.__version__)
+            if version < LooseVersion('0.16.5'):
+                raise Exception('The data was generated with an incompatible newer version of COMPAS: {}'.format(version.vstring.split('-')[0]))
+            # dtype = data['dtype']
+            data = data['data']
+            attributes = data['attributes']
+            dva = data.get('dva') or {}
+            dfa = data.get('dfa') or {}
+            dea = data.get('dea') or {}
+            vertex = data.get('vertex') or {}
+            face = data.get('face') or {}
+            facedata = data.get('facedata') or {}
+            edgedata = data.get('edgedata') or {}
+            max_vertex = data.get('max_vertex', -1)
+            max_face = data.get('max_face', -1)
+            self.attributes.update(attributes)
+            self.default_vertex_attributes.update(dva)
+            self.default_face_attributes.update(dfa)
+            self.default_edge_attributes.update(dea)
+            self.vertex = {}
+            self.face = {}
+            self.halfedge = {}
+            self.facedata = {}
+            self.edgedata = {}
+            # this could be handled by the schema
+            # but will not work in IronPython
+            for key, attr in iter(vertex.items()):
+                self.add_vertex(int(key), attr_dict=attr)
+            for fkey, vertices in iter(face.items()):
+                attr = facedata.get(fkey) or {}
+                self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
+            for uv, attr in iter(edgedata.items()):
+                self.edgedata[uv] = attr or {}
+            self._max_vertex = max_vertex
+            self._max_face = max_face
+        else:
+            attributes = data['attributes']
+            dva = data.get('dva') or {}
+            dfa = data.get('dfa') or {}
+            dea = data.get('dea') or {}
+            vertex = data.get('vertex') or {}
+            face = data.get('face') or {}
+            facedata = data.get('facedata') or {}
+            edgedata = data.get('edgedata') or {}
+            max_vertex = data.get('max_int_key', -1)
+            max_face = data.get('max_int_fkey', -1)
+            self.attributes.update(attributes)
+            self.default_vertex_attributes.update(dva)
+            self.default_face_attributes.update(dfa)
+            self.default_edge_attributes.update(dea)
+            self.vertex = {}
+            self.face = {}
+            self.halfedge = {}
+            self.facedata = {}
+            self.edgedata = {}
+            # this could be handled by the schema
+            # but will not work in IronPython
+            for key, attr in iter(vertex.items()):
+                self.add_vertex(int(key), attr_dict=attr)
+            for fkey, vertices in iter(face.items()):
+                attr = facedata.get(fkey) or {}
+                self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
+            for uv, attr in iter(edgedata.items()):
+                self.edgedata[literal_eval(uv)] = attr or {}
+            self._max_vertex = max_vertex
+            self._max_face = max_face
 
     # --------------------------------------------------------------------------
     # helpers
@@ -254,8 +294,8 @@ class HalfEdge(Datastructure):
         self.halfedge = {}
         self.face = {}
         self.facedata = {}
-        self._max_int_key = -1
-        self._max_int_fkey = -1
+        self._max_vertex = -1
+        self._max_face = -1
 
     def get_any_vertex(self):
         """Get the identifier of a random vertex.
@@ -390,9 +430,9 @@ class HalfEdge(Datastructure):
         0
         """
         if key is None:
-            key = self._max_int_key = self._max_int_key + 1
-        if key > self._max_int_key:
-            self._max_int_key = key
+            key = self._max_vertex = self._max_vertex + 1
+        if key > self._max_vertex:
+            self._max_vertex = key
         key = int(key)
         if key not in self.vertex:
             self.vertex[key] = {}
@@ -446,9 +486,9 @@ class HalfEdge(Datastructure):
         if len(vertices) < 3:
             return
         if fkey is None:
-            fkey = self._max_int_fkey = self._max_int_fkey + 1
-        if fkey > self._max_int_fkey:
-            self._max_int_fkey = fkey
+            fkey = self._max_face = self._max_face + 1
+        if fkey > self._max_face:
+            self._max_face = fkey
         attr = attr_dict or {}
         attr.update(kwattr)
         self.face[fkey] = vertices
@@ -1328,12 +1368,12 @@ class HalfEdge(Datastructure):
         attr_dict.update(kwattr)
         self.default_edge_attributes.update(attr_dict)
 
-    def edge_attribute(self, key, name, value=None):
+    def edge_attribute(self, edge, name, value=None):
         """Get or set an attribute of an edge.
 
         Parameters
         ----------
-        key : 2-tuple of int
+        edge : 2-tuple of int
             The identifier of the edge as a pair of vertex identifiers.
         name : str
             The name of the attribute.
@@ -1351,29 +1391,26 @@ class HalfEdge(Datastructure):
         KeyError
             If the edge does not exist.
         """
-        u, v = key
+        u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
-            raise KeyError(key)
+            raise KeyError(edge)
+        key = "-".join(map(str, sorted(edge)))
         if value is not None:
-            if (u, v) not in self.edgedata:
-                self.edgedata[u, v] = {}
-            if (v, u) not in self.edgedata:
-                self.edgedata[v, u] = {}
-            self.edgedata[u, v][name] = self.edgedata[v, u][name] = value
+            if key not in self.edgedata:
+                self.edgedata[key] = {}
+            self.edgedata[key][name] = value
             return
-        if (u, v) in self.edgedata and name in self.edgedata[u, v]:
-            return self.edgedata[u, v][name]
-        if (v, u) in self.edgedata and name in self.edgedata[v, u]:
-            return self.edgedata[v, u][name]
+        if key in self.edgedata and name in self.edgedata[key]:
+            return self.edgedata[key][name]
         if name in self.default_edge_attributes:
             return self.default_edge_attributes[name]
 
-    def unset_edge_attribute(self, key, name):
+    def unset_edge_attribute(self, edge, name):
         """Unset the attribute of an edge.
 
         Parameters
         ----------
-        key : tuple of int
+        edge : tuple of int
             The edge identifier.
         name : str
             The name of the attribute.
@@ -1388,23 +1425,19 @@ class HalfEdge(Datastructure):
         Unsetting the value of an edge attribute implicitly sets it back to the value
         stored in the default edge attribute dict.
         """
-        u, v = key
+        u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
-            raise KeyError(key)
-        if key in self.edgedata:
-            if name in self.edgedata[key]:
-                del self.edgedata[key][name]
-        key = v, u
-        if key in self.edgedata:
-            if name in self.edgedata[key]:
-                del self.edgedata[key][name]
+            raise KeyError(edge)
+        key = "-".join(map(str, sorted(edge)))
+        if key in self.edgedata and name in self.edgedata[key]:
+            del self.edgedata[key][name]
 
-    def edge_attributes(self, key, names=None, values=None):
+    def edge_attributes(self, edge, names=None, values=None):
         """Get or set multiple attributes of an edge.
 
         Parameters
         ----------
-        key : 2-tuple of int
+        edge : 2-tuple of int
             The identifier of the edge.
         names : list, optional
             A list of attribute names.
@@ -1425,9 +1458,10 @@ class HalfEdge(Datastructure):
         KeyError
             If the edge does not exist.
         """
-        u, v = key
+        u, v = edge
         if u not in self.halfedge or v not in self.halfedge[u]:
-            raise KeyError(key)
+            raise KeyError(edge)
+        key = "-".join(map(str, sorted(edge)))
         if values is not None:
             # use it as a setter
             for name, value in zip(names, values):
@@ -1444,7 +1478,7 @@ class HalfEdge(Datastructure):
             values.append(value)
         return values
 
-    def edges_attribute(self, name, value=None, keys=None):
+    def edges_attribute(self, name, value=None, edges=None):
         """Get or set an attribute of multiple edges.
 
         Parameters
@@ -1454,7 +1488,7 @@ class HalfEdge(Datastructure):
         value : obj, optional
             The value of the attribute.
             Default is ``None``.
-        keys : list of 2-tuple of int, optional
+        edges : list of 2-tuple of int, optional
             A list of edge identifiers.
 
         Returns
@@ -1468,15 +1502,14 @@ class HalfEdge(Datastructure):
         KeyError
             If any of the edges does not exist.
         """
-        if not keys:
-            keys = self.edges()
+        edges = edges or self.edges()
         if value is not None:
-            for key in keys:
-                self.edge_attribute(key, name, value)
+            for edge in edges:
+                self.edge_attribute(edge, name, value)
             return
-        return [self.edge_attribute(key, name) for key in keys]
+        return [self.edge_attribute(edge, name) for edge in edges]
 
-    def edges_attributes(self, names=None, values=None, keys=None):
+    def edges_attributes(self, names=None, values=None, edges=None):
         """Get or set multiple attributes of multiple edges.
 
         Parameters
@@ -1487,7 +1520,7 @@ class HalfEdge(Datastructure):
         values : list of obj, optional
             The values of the attributes.
             Default is ``None``.
-        keys : list of 2-tuple of int, optional
+        edges : list of 2-tuple of int, optional
             A list of edge identifiers.
 
         Returns
@@ -1504,13 +1537,12 @@ class HalfEdge(Datastructure):
         KeyError
             If any of the edges does not exist.
         """
-        if not keys:
-            keys = self.edges()
+        edges = edges or self.edges()
         if values is not None:
-            for key in keys:
-                self.edge_attributes(key, names, values)
+            for edge in edges:
+                self.edge_attributes(edge, names, values)
             return
-        return [self.edge_attributes(key, names) for key in keys]
+        return [self.edge_attributes(edge, names) for edge in edges]
 
     # --------------------------------------------------------------------------
     # mesh info
@@ -2084,9 +2116,131 @@ class HalfEdge(Datastructure):
     # polyedge topology
     # --------------------------------------------------------------------------
 
-    # face strips?
-    # edge chains?
-    # ...?
+    def edge_loop(self, edge):
+        """Find all edges on the same loop as a given edge.
+
+        Parameters
+        ----------
+        edge : tuple of int
+            The identifier of the starting edge.
+
+        Returns
+        -------
+        list of tuple of int
+            The edges on the same loop as the given edge.
+        """
+        if self.is_edge_on_boundary(*edge):
+            return self._edge_loop_on_boundary(edge)
+        edges = []
+        current, previous = edge
+        edges.append((previous, current))
+        while True:
+            if current == edge[1]:
+                break
+            nbrs = self.vertex_neighbors(current, ordered=True)
+            if len(nbrs) != 4:
+                break
+            i = nbrs.index(previous)
+            previous = current
+            current = nbrs[i - 2]
+            edges.append((previous, current))
+        edges[:] = [(u, v) for v, u in edges[::-1]]
+        if edges[0][0] == edges[-1][1]:
+            return edges
+        previous, current = edge
+        while True:
+            nbrs = self.vertex_neighbors(current, ordered=True)
+            if len(nbrs) != 4:
+                break
+            i = nbrs.index(previous)
+            previous = current
+            current = nbrs[i - 2]
+            edges.append((previous, current))
+        return edges
+
+    def _edge_loop_on_boundary(self, uv):
+        """Find all edges on the same loop as a given edge on the boundary."""
+        edges = []
+        current, previous = uv
+        edges.append((previous, current))
+        while True:
+            if current == uv[1]:
+                break
+            nbrs = self.vertex_neighbors(current)
+            if len(nbrs) == 2:
+                break
+            nbr = None
+            for temp in nbrs:
+                if temp == previous:
+                    continue
+                if self.is_edge_on_boundary(current, temp):
+                    nbr = temp
+                    break
+            if nbr is None:
+                break
+            previous, current = current, nbr
+            edges.append((previous, current))
+        edges[:] = [(u, v) for v, u in edges[::-1]]
+        if edges[0][0] == edges[-1][1]:
+            return edges
+        previous, current = uv
+        while True:
+            nbrs = self.vertex_neighbors(current)
+            if len(nbrs) == 2:
+                break
+            nbr = None
+            for temp in nbrs:
+                if temp == previous:
+                    continue
+                if self.is_edge_on_boundary(current, temp):
+                    nbr = temp
+                    break
+            if nbr is None:
+                break
+            previous, current = current, nbr
+            edges.append((previous, current))
+        return edges
+
+    def edge_strip(self, edge):
+        """Find all edges on the same strip as a given edge.
+
+        Parameters
+        ----------
+        edge : tuple of int
+            The identifier of the starting edge.
+
+        Returns
+        -------
+        list of tuple of int
+            The edges on the same strip as the given edge.
+        """
+        edges = []
+        v, u = edge
+        while True:
+            edges.append((u, v))
+            face = self.halfedge[u][v]
+            if face is None:
+                break
+            vertices = self.face_vertices(face)
+            if len(vertices) != 4:
+                break
+            i = vertices.index(u)
+            u = vertices[i - 1]
+            v = vertices[i - 2]
+        edges[:] = [(u, v) for v, u in edges[::-1]]
+        u, v = edge
+        while True:
+            face = self.halfedge[u][v]
+            if face is None:
+                break
+            vertices = self.face_vertices(face)
+            if len(vertices) != 4:
+                break
+            i = vertices.index(u)
+            u = vertices[i - 1]
+            v = vertices[i - 2]
+            edges.append((u, v))
+        return edges
 
     # --------------------------------------------------------------------------
     # face topology

@@ -1,9 +1,13 @@
 # from __future__ import annotations
 
+from functools import partial
+
 import compas_blender
 
 from compas_blender.artists._artist import BaseArtist
-from compas.utilities import color_to_colordict as colordict
+from compas.utilities import color_to_colordict
+
+colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
 
 
 __all__ = ['MeshArtist']
@@ -40,8 +44,8 @@ class MeshArtist(BaseArtist):
 
     """
 
-    def __init__(self, mesh, settings=None):
-        super(MeshArtist, self).__init__()
+    def __init__(self, mesh):
+        super().__init__()
         self._collection = None
         self._vertexcollection = None
         self._edgecollection = None
@@ -49,39 +53,39 @@ class MeshArtist(BaseArtist):
         self._object_vertex = {}
         self._object_edge = {}
         self._object_face = {}
+        self.color_vertices = (1.0, 1.0, 1.0)
+        self.color_edges = (0.0, 0.0, 0.0)
+        self.color_faces = (0.7, 0.7, 0.7)
+        self.show_vertices = True
+        self.show_edges = True
+        self.show_faces = True
         self.mesh = mesh
-        self.settings = {
-            'color.vertices': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'color.faces': (210, 210, 210),
-            'show.vertices': True,
-            'show.edges': True,
-            'show.faces': True}
-        if settings:
-            self.settings.update(settings)
 
     @property
     def collection(self):
         if not self._collection:
-            self._collection = compas_blender.create_collection('Mesh')
+            self._collection = compas_blender.create_collection(self.mesh.name)
         return self._collection
 
     @property
     def vertexcollection(self):
+        path = f"{self.mesh.name}::Vertices"
         if not self._vertexcollection:
-            self._vertexcollection = compas_blender.create_collections_from_path('Mesh::Vertices')[1]
+            self._vertexcollection = compas_blender.create_collections_from_path(path)[1]
         return self._vertexcollection
 
     @property
     def edgecollection(self):
+        path = f"{self.mesh.name}::Edges"
         if not self._edgecollection:
-            self._edgecollection = compas_blender.create_collections_from_path('Mesh::Edges')[1]
+            self._edgecollection = compas_blender.create_collections_from_path(path)[1]
         return self._edgecollection
 
     @property
     def facecollection(self):
+        path = f"{self.mesh.name}::Faces"
         if not self._facecollection:
-            self._facecollection = compas_blender.create_collections_from_path('Mesh::Faces')[1]
+            self._facecollection = compas_blender.create_collections_from_path(path)[1]
         return self._facecollection
 
     @property
@@ -119,10 +123,10 @@ class MeshArtist(BaseArtist):
         """Clear all objects previously drawn by this artist.
         """
         objects = []
-        objects += list(self.object_vertex.keys())
-        objects += list(self.object_edge.keys())
-        objects += list(self.object_face.keys())
-        compas_blender.delete_objects(objects)
+        objects += list(self.object_vertex)
+        objects += list(self.object_edge)
+        objects += list(self.object_face)
+        compas_blender.delete_objects(objects, purge_data=True)
         self._object_vertex = {}
         self._object_edge = {}
         self._object_face = {}
@@ -131,7 +135,10 @@ class MeshArtist(BaseArtist):
     # components
     # ==========================================================================
 
-    def draw(self, settings=None):
+    # @staticmethod
+    # def draw_collection(meshes, colors=(1.0, 1.0, 1.0), name=None, clear)
+
+    def draw(self):
         """Draw the mesh using the chosen visualisation settings.
 
         Parameters
@@ -141,14 +148,11 @@ class MeshArtist(BaseArtist):
 
         """
         self.clear()
-        if not settings:
-            settings = {}
-        self.settings.update(settings)
-        if self.settings['show.vertices']:
+        if self.show_vertices:
             self.draw_vertices()
-        if self.settings['show.faces']:
+        if self.show_faces:
             self.draw_faces()
-        if self.settings['show.edges']:
+        if self.show_edges:
             self.draw_edges()
 
     def draw_mesh(self):
@@ -174,15 +178,15 @@ class MeshArtist(BaseArtist):
 
         """
         vertices = vertices or list(self.mesh.vertices())
-        vertex_color = colordict(color, vertices, default=self.settings['color.vertices'], colorformat='rgb', normalize=False)
+        vertex_color = colordict(color, vertices, default=self.color_vertices)
         points = []
         for vertex in vertices:
             points.append({
                 'pos': self.mesh.vertex_coordinates(vertex),
-                'name': "{}.vertex.{}".format(self.mesh.name, vertex),
+                'name': f"{self.mesh.name}.vertex.{vertex}",
                 'color': vertex_color[vertex],
-                'radius': 0.01})
-
+                'radius': 0.01
+            })
         objects = compas_blender.draw_points(points, self.vertexcollection)
         self.object_vertex = zip(objects, vertices)
         return objects
@@ -204,14 +208,14 @@ class MeshArtist(BaseArtist):
 
         """
         faces = faces or list(self.mesh.faces())
-        face_color = colordict(color, faces, default=self.settings['color.faces'], colorformat='rgb', normalize=False)
+        face_color = colordict(color, faces, default=self.color_faces)
         facets = []
         for face in faces:
             facets.append({
                 'points': self.mesh.face_coordinates(face),
-                'name': "{}.face.{}".format(self.mesh.name, face),
-                'color': face_color[face]})
-
+                'name': f"{self.mesh.name}.face.{face}",
+                'color': face_color[face]
+            })
         objects = compas_blender.draw_faces(facets, self.facecollection)
         self.object_face = zip(objects, faces)
         return objects
@@ -233,15 +237,15 @@ class MeshArtist(BaseArtist):
 
         """
         edges = edges or list(self.mesh.edges())
-        edge_color = colordict(color, edges, default=self.settings['color.edges'], colorformat='rgb', normalize=False)
+        edge_color = colordict(color, edges, default=self.color_edges)
         lines = []
         for edge in edges:
             lines.append({
                 'start': self.mesh.vertex_coordinates(edge[0]),
                 'end': self.mesh.vertex_coordinates(edge[1]),
                 'color': edge_color[edge],
-                'name': "{}.edge.{}-{}".format(self.mesh.name, *edge)})
-
+                'name': f"{self.mesh.name}.edge.{edge[0]}-{edge[1]}"
+            })
         objects = compas_blender.draw_lines(lines, self.edgecollection)
         self.object_edge = zip(objects, edges)
         return objects

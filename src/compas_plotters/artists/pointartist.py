@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_plotters.artists import Artist
 from matplotlib.patches import Circle
 from matplotlib.transforms import ScaledTranslation
@@ -39,12 +35,14 @@ class PointArtist(Artist):
         self._size = size
 
     def draw(self):
-        circle = Circle([0, 0],
-                        radius=self.size,
-                        facecolor=self.facecolor,
-                        edgecolor=self.edgecolor,
-                        transform=self._T,
-                        zorder=self.zorder)
+        circle = Circle(
+            [0, 0],
+            radius=self.size,
+            facecolor=self.facecolor,
+            edgecolor=self.edgecolor,
+            transform=self._T,
+            zorder=self.zorder
+        )
         self._mpl_circle = self.plotter.axes.add_artist(circle)
         self.plotter.axes.update_datalim([self.point[:2]])
 
@@ -64,15 +62,15 @@ if __name__ == '__main__':
 
     from compas.geometry import Point
     from compas.geometry import Translation
-    from compas_plotters import Plotter2
+    from compas_plotters import GeometryPlotter
 
-    plotter = Plotter2()
+    plotter = GeometryPlotter()
 
     a = Point(0.0, 0.0)
     b = Point(5.0, 0.0)
     c = Point(5.0, 5.0)
 
-    T = Translation([0.1, 0.0, 0.0])
+    T = Translation.from_vector([0.1, 0.0, 0.0])
 
     plotter.add(a, edgecolor='#ff0000')
     plotter.add(b, edgecolor='#00ff00')
