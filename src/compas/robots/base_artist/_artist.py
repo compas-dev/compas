@@ -226,8 +226,10 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
         Parameters
         ----------
-        configuration : :class:`compas_fab.robots.Configuration`
-            Instance of the configuration (joint state) to move to.
+        configuration : :obj:`tuple` of :obj:`list`
+            A tuple of 2 elements containing a list of joint positions and a list of matching joint names.
+            If ``None`` is passed as the second element, the default will be the output of
+            :meth:`compas.robots.RobotModel.get_configurable_joint_names`.
         visual : bool, optional
             ``True`` if the visual geometry should be also updated, otherwise ``False``.
             Defaults to ``True``.
@@ -235,8 +237,8 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             ``True`` if the collision geometry should be also updated, otherwise ``False``.
             Defaults to ``True``.
         """
-        positions = configuration.values
-        names = configuration.joint_names or self.model.get_configurable_joint_names()
+        positions = configuration[0]
+        names = configuration[1] or self.model.get_configurable_joint_names()
         if len(names) != len(configuration.values):
             raise ValueError("Please pass a configuration with %d joint_names." % len(positions))
         joint_state = dict(zip(names, positions))
