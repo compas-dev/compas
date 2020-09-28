@@ -82,14 +82,18 @@
         
           
           <h1>Source code for compas.rpc.proxy</h1><div class="highlight"><pre><code>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">import</span> <span class="nn">compas._os</span>
+<span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">RPCServerError</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">DataDecoder</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">DataEncoder</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">xmlrpclib</span> <span class="kn">import</span> <span class="n">ServerProxy</span>
@@ -101,12 +105,6 @@
     <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">PIPE</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">System.Diagnostics</span> <span class="kn">import</span> <span class="n">Process</span>
-
-<span class="kn">import</span> <span class="nn">compas._os</span>
-
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">DataEncoder</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">DataDecoder</span>
-<span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">RPCServerError</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Proxy&#39;</span><span class="p">]</span>
@@ -123,20 +121,28 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    package : string, optional</span>
+<span class="sd">    package : :obj:`str`:, optional</span>
 <span class="sd">        The base package for the requested functionality.</span>
 <span class="sd">        Default is `None`, in which case a full path to function calls should be provided.</span>
-<span class="sd">    python : string, optional</span>
+<span class="sd">    python : :obj:`str`:, optional</span>
 <span class="sd">        The python executable that should be used to execute the code.</span>
 <span class="sd">        Default is ``&#39;pythonw&#39;``.</span>
-<span class="sd">    url : string, optional</span>
+<span class="sd">    url : :obj:`str`:, optional</span>
 <span class="sd">        The server address.</span>
 <span class="sd">        Default is ``&#39;http://127.0.0.1&#39;``.</span>
-<span class="sd">    port : int, optional</span>
+<span class="sd">    port : :obj:`int`:, optional</span>
 <span class="sd">        The port number on the remote server.</span>
 <span class="sd">        Default is ``1753``.</span>
+<span class="sd">    service : :obj:`str`:, package name to start server.</span>
+<span class="sd">        Default is ``&#39;compas.rpc.services.default&#39;``.</span>
 <span class="sd">    max_conn_attempts: :obj:`int`, optional</span>
 <span class="sd">        Amount of attempts to connect to RPC server before time out.</span>
+<span class="sd">    autoreload : :obj:`bool`, ``True`` to automatically reload the proxied package if changes are detected.</span>
+<span class="sd">        This is particularly useful during development. The server will monitor changes to the files</span>
+<span class="sd">        that were loaded as a result of accessing the specified `package` and if any change is detected,</span>
+<span class="sd">        it will unload the module, so that the next invocation uses a fresh version.</span>
+<span class="sd">    capture_output : :obj:`bool`, ``True`` to capture the stdout/stderr output of the remote process, otherwise ``False``.</span>
+<span class="sd">        In general, ``capture_output`` should be ``True`` when using a ``pythonw`` as executable (default).</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -165,7 +171,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Proxy.__init__"><a class="viewcode-back" href="../../../api/generated/compas.rpc.Proxy.__init__.html#compas.rpc.Proxy.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">python</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">1753</span><span class="p">,</span> <span class="n">service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_conn_attempts</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<div class="viewcode-block" id="Proxy.__init__"><a class="viewcode-back" href="../../../api/generated/compas.rpc.Proxy.__init__.html#compas.rpc.Proxy.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">python</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">1753</span><span class="p">,</span> <span class="n">service</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_conn_attempts</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">autoreload</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_package</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_python</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">_os</span><span class="o">.</span><span class="n">select_python</span><span class="p">(</span><span class="n">python</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">url</span>
@@ -178,6 +184,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="n">service</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="n">package</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">autoreload</span> <span class="o">=</span> <span class="n">autoreload</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">capture_output</span> <span class="o">=</span> <span class="n">capture_output</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_implicitely_started_server</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_try_reconnect</span><span class="p">()</span>
@@ -286,21 +294,25 @@
             <span class="n">Popen</span>
         <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="n">Process</span><span class="p">()</span>
-
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">env</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">EnvironmentVariables</span><span class="o">.</span><span class="n">ContainsKey</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">EnvironmentVariables</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">EnvironmentVariables</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">env</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">UseShellExecute</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">RedirectStandardOutput</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">RedirectStandardError</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">RedirectStandardOutput</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capture_output</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">RedirectStandardError</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">capture_output</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">FileName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">python</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">Arguments</span> <span class="o">=</span> <span class="s1">&#39;-m </span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_port</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">StartInfo</span><span class="o">.</span><span class="n">Arguments</span> <span class="o">=</span> <span class="s1">&#39;-m </span><span class="si">{0}</span><span class="s1"> --port </span><span class="si">{1}</span><span class="s1"> --</span><span class="si">{2}</span><span class="s1">autoreload&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_port</span><span class="p">,</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoreload</span> <span class="k">else</span> <span class="s1">&#39;no-&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="o">.</span><span class="n">Start</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">python</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_port</span><span class="p">)]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">python</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="p">,</span> <span class="s1">&#39;--port&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_port</span><span class="p">),</span> <span class="s1">&#39;--</span><span class="si">{}</span><span class="s1">autoreload&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">autoreload</span> <span class="k">else</span> <span class="s1">&#39;no-&#39;</span><span class="p">)]</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">capture_output</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;stdout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PIPE</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;stderr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PIPE</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_process</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># this starts the client side</span>
         <span class="c1"># it creates a proxy for the server</span>
         <span class="c1"># and tries to connect the proxy to the actual server</span>

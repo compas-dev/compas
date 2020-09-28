@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="API Reference" href="../api.html" />
+    <link rel="next" title="Working in Rhino" href="rhino.html" />
   
   
   
-    <link rel="prev" title="Geometric Maps" href="geomaps.html" />
+    <link rel="prev" title="Robots" href="robots.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -87,22 +87,28 @@
           
           <div class="section" id="remote-procedure-calls">
 <h1>Remote Procedure Calls</h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a></p></li>
+</ul>
+<p>Remote Procedure Calls (<code class="docutils literal notranslate"><span class="pre">RPC</span></code>) is a mechanism to transparently execute code in
+a remote process or computer. This is especially useful in scenarios where COMPAS
+runs inside an IronPython host (eg. Rhino) and needs to execute code that only
+runs on CPython (eg. code that requires <code class="docutils literal notranslate"><span class="pre">numpy</span></code>).</p>
+<p>COMPAS provides <strong>two ways to achieve</strong> this: <code class="docutils literal notranslate"><span class="pre">rcp</span></code> and <cite>XFunc`</cite>.</p>
 <p>Through <code class="docutils literal notranslate"><span class="pre">Xfunc</span></code>, COMPAS provides a mechanism for calling Python functions through
-a separately launched subprocess. This provides the posibility of, for example,
-using functionality that relies on CPython-specific packages (such as Numpy) directly
-from Rhino.</p>
-<p>A drawback of the <code class="docutils literal notranslate"><span class="pre">Xfunc</span></code> mechanism is that evey call launches a new Python
+a separately launched sub-process.</p>
+<p>A drawback of the <code class="docutils literal notranslate"><span class="pre">Xfunc</span></code> mechanism is that every call launches a new Python
 (sub)process with all the overhead that that entails. For infrequent calls to
-long-running processes this is not an issue. However, for frequent calls to function
+long-running processes this is not an issue. However, for frequent calls to functions
 that are expected to run quickly, this is not ideal.</p>
-<p>The principle of <code class="docutils literal notranslate"><span class="pre">RPC</span></code> is to start a server that handles all requests. The advantage
-is that once the server is started, no additional processes have to launched and
-the server can handle the requests without any overhead. Therefore, the response
-time is much faster than with <code class="docutils literal notranslate"><span class="pre">XFunc</span></code>.</p>
+<p>The second mechanism is the <code class="docutils literal notranslate"><span class="pre">rpc</span></code> module. The principle of RPC is to start a server
+that handles all requests. The advantage is that once the server is started,
+no additional processes have to be launched and the server can handle the requests
+without any overhead. Therefore, the response time is much faster than with <code class="docutils literal notranslate"><span class="pre">XFunc</span></code>.</p>
 <div class="section" id="basic-usage">
 <h2>Basic Usage</h2>
 <p>The basic usage of RPC is simple.
-For example, consider a CPython script using the Force Desnity method.</p>
+For example, consider a CPython script using the Force Density method.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">fd_numpy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">fd_numpy</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div>
@@ -115,8 +121,9 @@ we call it through a proxy object.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">numerical</span><span class="o">.</span><span class="n">fd_numpy</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<p>To use functions from more than one package in the same script, simply change the package attribute
-of the proxy object, which determines where the proxy will look for the requested function.</p>
+<p>To use functions from more than one package in the same script, simply change the
+package attribute of the proxy object, which determines where the proxy will look
+for the requested function.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.rpc</span> <span class="kn">import</span> <span class="n">Proxy</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">()</span>
 
@@ -137,15 +144,17 @@ of the proxy object, which determines where the proxy will look for the requeste
 </div>
 <div class="section" id="supported-data-types">
 <h2>Supported data types</h2>
-<p><a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a> uses JSON serialisation to transfer data between the “client” (your script)
-and the server runnning the selected CPython environment.</p>
-<p>All COMPAS objects (primitives, shapes, data structures, …) support JSON serialisation through
-their <code class="docutils literal notranslate"><span class="pre">to_json</span></code> <code class="docutils literal notranslate"><span class="pre">from_json</span></code> methods. On a lower level, these methods convert (complex)
-internal data to simple dicts, and vice versa, with <code class="docutils literal notranslate"><span class="pre">to_data</span></code> and <code class="docutils literal notranslate"><span class="pre">from_data</span></code>.</p>
-<p>In combination with custom JSON encoders and decoders this allows for COMPAS objects to be
-serialised and unserialised without loss of information on either side of the RPC communication network.</p>
-<p>Therefore the data types supported by <a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a> include all native Python data types and COMPAS objects.
-Numpy arrays are automatically converted to lists.</p>
+<p><a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a> uses JSON serialization to transfer data between the “client”
+(your script) and the server running the selected CPython environment.</p>
+<p>All COMPAS objects (primitives, shapes, data structures, etc.) support JSON
+serialization through their <code class="docutils literal notranslate"><span class="pre">to_json</span></code> <code class="docutils literal notranslate"><span class="pre">from_json</span></code> methods. On a lower level,
+these methods convert (complex) internal data to simple dictionaries, and
+vice versa, with <code class="docutils literal notranslate"><span class="pre">to_data</span></code> and <code class="docutils literal notranslate"><span class="pre">from_data</span></code>.</p>
+<p>In combination with custom JSON encoders and decoders this allows for COMPAS
+objects to be serialized and de-serialized without loss of information on either
+side of the RPC communication network.</p>
+<p>Therefore the data types supported by <a class="reference internal" href="../api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a> include all native Python
+data types and COMPAS objects. Numpy arrays are automatically converted to lists.</p>
 </div>
 <div class="section" id="starting-and-stopping">
 <h2>Starting and Stopping</h2>
@@ -169,10 +178,6 @@ When used in this way, RPC behaves much like its predecessor <code class="docuti
 </code></pre></div>
 </div>
 </div>
-<div class="section" id="loading-environments">
-<h2>Loading environments</h2>
-<p><em>PLACEHOLDER</em></p>
-</div>
 <div class="section" id="starting-an-rpc-server-manually">
 <h2>Starting an RPC server manually</h2>
 <p><code class="docutils literal notranslate"><span class="pre">Proxy</span></code> will try to start an RPC server automatically
@@ -180,11 +185,11 @@ if no server is already running, but very often it is recommended
 to start it manually from the command-line.</p>
 <p>To start a new RPC server use the following command on the terminal
 (default port is <code class="docutils literal notranslate"><span class="pre">1753</span></code>):</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>$ compas_rpc start &lt;port&gt;
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>$ compas_rpc start [--port PORT]
 </code></pre></div>
 </div>
 <p>Conversely, to stop an existing RPC server:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>$ compas_rpc stop &lt;port&gt;
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>$ compas_rpc stop [--port PORT]
 </code></pre></div>
 </div>
 <div class="admonition note">
@@ -227,6 +232,7 @@ network, or on a server reachable over the internet.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="meshes.html">Meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="networks.html">Networks</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="robots.html">Robots</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Remote Procedure Calls</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="rhino.html">Working in Rhino</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="blender.html">Working in Blender</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="geomaps.html">Geometric Maps</a></li>
@@ -253,7 +259,6 @@ network, or on a server reachable over the internet.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="#basic-usage">Basic Usage</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#supported-data-types">Supported data types</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#starting-and-stopping">Starting and Stopping</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#loading-environments">Loading environments</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#starting-an-rpc-server-manually">Starting an RPC server manually</a></li>
 </ul>
 </li>
