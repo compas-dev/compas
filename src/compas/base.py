@@ -66,6 +66,7 @@ class Base(ABC):
     def name(self, name):
         self._name = name
 
+    @property
     def dtype(self):
         """str :
         The type of the object in the form of a "2-level" import and a class name.
@@ -159,7 +160,8 @@ class Base(ABC):
         jsondata = json.dumps(self.data, cls=DataEncoder)
         data = json.loads(jsondata, cls=DataDecoder)
         jsonschema.validate(data, schema=self.JSONSCHEMA)
-        return self.DATASCHEMA.validate(data)
+        self.data = data
+        return self.DATASCHEMA.validate(self.data)
 
 
 # ==============================================================================

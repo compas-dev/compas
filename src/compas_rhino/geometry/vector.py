@@ -4,7 +4,8 @@ from __future__ import print_function
 
 import Rhino
 from compas.geometry import Vector
-from compas_rhino.geometry.point import RhinoPoint
+
+from .point import RhinoPoint
 
 
 __all__ = ['RhinoVector']

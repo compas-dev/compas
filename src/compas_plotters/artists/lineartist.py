@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_plotters.artists import Artist
 from compas_plotters.artists import SegmentArtist
 from matplotlib.lines import Line2D
@@ -30,7 +26,6 @@ class LineArtist(Artist):
         self.color = kwargs.get('color', '#000000')
 
     def clip(self):
-        # box = self.viewbox()
         xlim, ylim = self.plotter.viewbox
         xmin, xmax = xlim
         ymin, ymax = ylim
@@ -39,7 +34,6 @@ class LineArtist(Artist):
 
     def draw(self):
         points = self.clip()
-        print(points)
         if points:
             p0, p1 = points
             x0, y0 = p0[:2]
@@ -80,9 +74,9 @@ if __name__ == '__main__':
     from compas.geometry import Vector
     from compas.geometry import Line
     from compas.geometry import Rotation
-    from compas_plotters import Plotter2
+    from compas_plotters import GeometryPlotter
 
-    plotter = Plotter2()
+    plotter = GeometryPlotter()
 
     a = Point(3.0, 2.0)
     b = Point(3.0, 5.0)
@@ -95,8 +89,8 @@ if __name__ == '__main__':
 
     plotter.draw(pause=1.0)
 
-    # for i in range(9):
-    #     line.transform(R)
-    #     plotter.redraw(pause=0.01)
+    for i in range(9):
+        line.transform(R)
+        plotter.redraw(pause=0.01)
 
     plotter.show()

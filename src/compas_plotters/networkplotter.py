@@ -1,26 +1,16 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from matplotlib.patches import Circle
-
 from compas_plotters.plotter import Plotter, valuedict
-
-try:
-    basestring
-except NameError:
-    basestring = str
 
 
 __all__ = ['NetworkPlotter']
 
 
 class NetworkPlotter(Plotter):
-    """Definition of a plotter object based on matplotlib for compas Networks.
+    """Plotter for the visualisation of COMPAS Networks.
 
     Parameters
     ----------
-    network : object
+    network : :class:`compas.datastructures.Network`
         The network to plot.
 
     Attributes
@@ -35,17 +25,6 @@ class NetworkPlotter(Plotter):
         The matplotlib collection for the network edges.
     defaults : dict
         Dictionary containing default attributes for nodes and edges.
-
-        * node.radius    : ``0.1``
-        * node.facecolor : ``'#ffffff``
-        * node.edgecolor : ``'#000000'``
-        * node.edgewidth : ``0.5``
-        * node.textcolor : ``'#000000'``
-        * node.fontsize  : ``10``
-        * edge.width       : ``1.0``
-        * edge.color       : ``'#000000'``
-        * edge.textcolor   : ``'#000000'``
-        * edge.fontsize    : ``10``
 
     Notes
     -----
@@ -69,21 +48,18 @@ class NetworkPlotter(Plotter):
         network = Network.from_obj(compas.get('lines.obj'))
 
         plotter = NetworkPlotter(network)
-
         plotter.draw_nodes(
             text='key',
             facecolor={key: '#ff0000' for key in network.leaves()},
             radius=0.15
         )
         plotter.draw_edges()
-
         plotter.show()
 
     """
 
     def __init__(self, network, **kwargs):
-        """Initialises a network plotter object"""
-        super(NetworkPlotter, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.title = 'NetworkPlotter'
         self.datastructure = network
         self.nodecollection = None
@@ -173,7 +149,7 @@ class NetworkPlotter(Plotter):
             text = {key: str(key) for key in self.datastructure.nodes()}
         elif text == 'index':
             text = {key: str(index) for index, key in enumerate(self.datastructure.nodes())}
-        elif isinstance(text, basestring):
+        elif isinstance(text, str):
             if text in self.datastructure.default_node_attributes:
                 default = self.datastructure.default_node_attributes[text]
                 if isinstance(default, float):

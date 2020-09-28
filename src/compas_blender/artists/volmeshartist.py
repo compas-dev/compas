@@ -8,14 +8,9 @@ __all__ = [
 
 class VolMeshArtist(MeshArtist):
 
-    def __init__(self, volmesh, layer=None):
-        super().__init__(layer=layer)
+    def __init__(self, volmesh):
+        super().__init__()
         self.volmesh = volmesh
-        self.defaults.update({
-            'color.vertex': [255, 255, 255],
-            'color.edge':   [0, 0, 0],
-            'color.face':   [110, 110, 110],
-        })
 
     @property
     def volmesh(self):
