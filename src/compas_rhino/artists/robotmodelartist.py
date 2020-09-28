@@ -11,7 +11,6 @@ from Rhino.DocObjects.ObjectColorSource import ColorFromObject
 from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
 from Rhino.DocObjects.ObjectMaterialSource import MaterialFromObject
 
-import compas
 from compas.geometry import centroid_polygon
 from compas.utilities import pairwise
 from compas.robots.base_artist import BaseRobotModelArtist

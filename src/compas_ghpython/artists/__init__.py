@@ -42,6 +42,16 @@ Datastructure Artists
     VolMeshArtist
 
 
+Robot Artist
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    RobotModelArtist
+
+
 Base Classes
 ============
 
@@ -69,5 +79,7 @@ from .polylineartist import *  # noqa: F401 F403
 from .meshartist import *  # noqa: F401 F403
 from .networkartist import *  # noqa: F401 F403
 from .volmeshartist import *  # noqa: F401 F403
+
+from .robotmodelartist import *  # noqa: F401 F403
 
 __all__ = [name for name in dir() if not name.startswith('_')]
