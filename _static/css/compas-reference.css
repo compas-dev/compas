@@ -1,7 +1,7 @@
 .rubric {
   font-weight: normal;
   font-size: 1.5rem;
-  margin-top: 3rem;
+  margin-top: 2rem;
   margin-bottom: 1rem;
   border-bottom: 4px solid #eee;
   color: #222;
@@ -38,10 +38,9 @@
 /* ----------------------------------------------------------------- */
 .admonition {
   padding: 0.75rem 1.25rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  border: 1px solid transparent;
-  border-radius: 0.25rem; }
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent; }
 
 .admonition p {
   margin-bottom: 1rem; }
@@ -158,8 +157,8 @@ table {
   float: right; }
 
 .field-list {
-  margin-top: 1rem;
-  margin-bottom: 3rem; }
+  margin-top: 0rem;
+  margin-bottom: 1rem; }
 
 .field-list dt {
   margin-top: 2rem;
