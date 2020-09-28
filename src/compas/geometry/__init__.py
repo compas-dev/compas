@@ -330,8 +330,10 @@ Intersections
     intersection_line_line_xy
     intersection_line_plane
     intersection_line_triangle
+    intersection_mesh_mesh
     intersection_plane_plane
     intersection_plane_plane_plane
+    intersection_ray_mesh
     intersection_segment_segment
     intersection_segment_segment_xy
     intersection_segment_plane
@@ -401,8 +403,11 @@ Triangulation
     :toctree: generated/
     :nosignatures:
 
+    conforming_delaunay_triangulation
+    constrained_delaunay_triangulation
     delaunay_from_points
     delaunay_from_points_numpy
+    delaunay_triangulation
     voronoi_from_points_numpy
 
 
@@ -413,6 +418,17 @@ Triangle meshes
     :toctree: generated/
     :nosignatures:
 
+    trimesh_gaussian_curvature
+    trimesh_geodistance
+    trimesh_harmonic
+    trimesh_isolines
+    trimesh_lscm
+    trimesh_massmatrix
+    trimesh_principal_curvature
+    trimesh_remesh
+    trimesh_remesh_constrained
+    trimesh_slice
+
 
 Quad meshes
 ===========
@@ -420,6 +436,8 @@ Quad meshes
 .. autosummary::
     :toctree: generated/
     :nosignatures:
+
+    quadmesh_planarize
 
 
 Pointclouds

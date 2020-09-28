@@ -1,13 +1,13 @@
-********************************************************************************
+******************
 Rhino 5 on Windows
-********************************************************************************
+******************
 
-If you are using Rhino 5.0, you may also want to *replace* the version of IronPython
+If you are using Rhino 5.0, you may also want to replace the version of IronPython
 that comes with it, such that everything works properly.
 
 To check your IronPython version in Rhino, go to the PythonScript Editor
 
-::
+.. code-block:: none
 
     Tools > PythonScript > Edit
 
@@ -27,7 +27,7 @@ There, run the following snippet.
 
 This will display something like
 
-::
+.. code-block:: none
 
     sys.version_info(major=2, minor=7, micro=5, releaselevel='final', serial=0)
 
