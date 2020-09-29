@@ -2,10 +2,13 @@
 Extension points
 ================
 
+.. rst-class:: lead
+
 COMPAS has an extensible architecture based on plugins that allows to
 customize and extend the functionality of the core framework.
+Check out the developer guide for additional details.
 
-The following **extension points** are currently defined:
+The following *extension points* are currently defined:
 
 
 Category: ``booleans``
@@ -68,6 +71,3 @@ Category: ``trimesh``
 * :func:`trimesh_remesh`
 * :func:`trimesh_remesh_constrained`
 * :func:`trimesh_slice`
-
-
-Check out the developer guide to :ref:`plugins` for additional details.

@@ -5,13 +5,13 @@ Tutorial
     :maxdepth: 1
     :titlesonly:
 
-    tutorial/basics
     tutorial/geometry
     tutorial/meshes
     tutorial/networks
     tutorial/robots
+    tutorial/data
+    tutorial/rpc
+    tutorial/geomaps
     tutorial/rhino
     tutorial/blender
     tutorial/grasshopper
-    tutorial/geomaps
-    tutorial/rpc

@@ -101,12 +101,6 @@ When used in this way, RPC behaves much like its predecessor ``XFunc``. ::
     ...
 
 
-Loading environments
-====================
-
-*PLACEHOLDER*
-
-
 Starting an RPC server manually
 ===============================
 

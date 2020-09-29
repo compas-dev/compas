@@ -1,6 +1,6 @@
-===============
+***************
 Developer Guide
-===============
+***************
 
 This guide is intended for people who want to contribute to the code and documentation
 of the core COMPAS packages:
@@ -21,30 +21,30 @@ To set up a developer environment
 1. Fork `the repository <https://github.com/compas-dev/compas>`_ and clone the fork.
 2. Create a virtual environment using your tool of choice (e.g. `virtualenv`, `conda`, etc).
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    conda create -n compas-dev python=3.7
-    conda activate compas-dev
+       conda create -n compas-dev python=3.7
+       conda activate compas-dev
 
 3. Install development dependencies:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    cd path/to/compas
-    pip install -r requirements-dev.txt
+       cd path/to/compas
+       pip install -r requirements-dev.txt
 
 4. Make sure all tests pass:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    invoke test
+       invoke test
 
 5. Create a branch for your contributions.
 
-.. code-block::
+   .. code-block::
 
-    git branch title-proposed-changes
-    git checkout title-proposed-changes
+       git branch title-proposed-changes
+       git checkout title-proposed-changes
 
 6. Start making changes!
 
@@ -57,9 +57,9 @@ The procedure for submitting a PR is the following.
 
 1. Make sure all tests still pass:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    invoke test
+        invoke test
 
 2. Add yourself to ``AUTHORS.md``.
 3. Commit your changes and push your branch to GitHub.
