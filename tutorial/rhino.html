@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - Working in Rhino</title>
+  <title>COMPAS - Rhino</title>
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="Working in Blender" href="blender.html" />
+    <link rel="next" title="Blender" href="blender.html" />
   
   
   
@@ -85,28 +85,8 @@
       <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
           
-          <div class="section" id="working-in-rhino">
-<span id="id1"></span><h1>Working in Rhino</h1>
-<p>Using COMPAS in Rhino is not “all or nothing”.</p>
-<div class="section" id="compas-objects-to-rhino-objects">
-<h2>COMPAS objects to Rhino objects</h2>
-<p>COMPAS objects are converted to Rhino objects (or “exported” from COMPAS to Rhino)
-by placing them in the Rhino model space.</p>
-<p>This is accomplished by drawing the object with an “artist”.
-All COMPAS objects have (or should have) a corresponding artist.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">PointArtist</span>
-
-<span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">artist</span> <span class="o">=</span> <span class="n">PointArtist</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</code></pre></div>
-</div>
-<p>Every artist keeps track of the GUIDs of the objects it places in the Rhino model space.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>
-</code></pre></div>
-</div>
-</div>
+          <div class="section" id="rhino">
+<h1>Rhino</h1>
 </div>
 
         
@@ -134,11 +114,10 @@ All COMPAS objects have (or should have) a corresponding artist.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="meshes.html">Meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="networks.html">Networks</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="robots.html">Robots</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="data.html">Object data model</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="rpc.html">Remote Procedure Calls</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="geomaps.html">Geometric Maps</a></li>
-<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Working in Rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="blender.html">Working in Blender</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">Rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="blender.html">Blender</a></li>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="../api.html">API Reference</a></li>
@@ -157,10 +136,7 @@ All COMPAS objects have (or should have) a corresponding artist.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">Working in Rhino</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#compas-objects-to-rhino-objects">COMPAS objects to Rhino objects</a></li>
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">Rhino</a></li>
 </ul>
 
       </div>

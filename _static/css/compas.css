@@ -303,25 +303,6 @@ padding-left: 3.5rem;
 
 /* Content */
 
-/*
-.compas-content .metadata {
-margin-left: 4rem;
-}
-
-.compas-content .metadata ul {
-padding-left: 1rem;
-margin-bottom: 1rem;
-}
-
-.compas-content .card {
-margin-bottom: 2rem;
-}
-*/
-
-/* .compas-content ul {
-margin-bottom: 2rem;
-} */
-
 .compas-content ul p, .compas-content ol p {
 margin: 0;
 padding: 0;
@@ -332,7 +313,7 @@ margin-bottom: 3rem;
 }
 
 .compas-content .figure {
-margin-bottom: 2rem;
+margin: 0;
 padding: 0;
 }
 
