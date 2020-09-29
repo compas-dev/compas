@@ -4,12 +4,12 @@ Installation
 
 .. rst-class:: lead
 
-COMPAS is written entirely in Python and can be easily installed
-using popular package managers on multiple platforms.
+COMPAS can be easily installed on multiple platforms,
+using popular package managers such as coda or pip.
 
 .. figure:: /_images/installation.gif
      :figclass: figure
-     :class: figure-img img-fluid
+     :class: figure-img img-fluid mx-auto
 
 
 Install with conda

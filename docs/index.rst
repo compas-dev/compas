@@ -4,17 +4,17 @@ COMPAS Docs
 
 .. rst-class:: lead
 
-This is the documentation of the main library of the COMPAS framework.
-It contains a core package, a package for 2D visualization,
-and three packages for the integration in CAD software.
+This is the documentation of the main library of COMPAS,
+an open source framework for research and collaboration
+in Architecture, Engineering, Fabrication, and Construction.
 
 .. .. figure:: /_images/gh_verify.jpg
 ..      :figclass: figure
 ..      :class: figure-img img-fluid
 
-The core package (:mod:`compas`) defines all functionality for geometry processing,
+The core package of COMPAS (:mod:`compas`) defines all functionality for geometry processing,
 data structures, topology, numerical methods, robotics, the plugin mechanism, remote procedure calls ...
-and can be used independently of CAD systems in any environment that supports Python.
+and can be used independently of CAD systems in any environment that supports Python programming.
 
 The CAD packages (:mod:`compas_rhino`, :mod:`compas_ghpython`, :mod:`compas_blender`)
 provide a unified framework for reading and writing CAD geometry, for visualization

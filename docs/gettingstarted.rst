@@ -4,9 +4,8 @@ Getting started
 
 .. rst-class:: lead
 
-COMPAS is implemented entirely in Python such that it can be used in various programming
-environments on different platforms, in combination with external software and libraries,
-and from within CAD software such as Blender, Rhino and Grasshopper.
+COMPAS can be used in code editors such as VS Code, Eclipse, or Sublime Text,
+as well as in scriptable CAD software such as Blender, Rhino and Grasshopper.
 
 
 .. toctree::

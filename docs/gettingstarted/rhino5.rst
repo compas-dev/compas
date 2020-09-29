@@ -33,12 +33,12 @@ This will display something like
 
 
 If the ``releaselevel`` is not ``'final'``,
-install `IronPython 2.7.5 <https://github.com/IronLanguages/main/releases/tag/ipy-2.7.5>`_
+install `IronPython 2.7.5 <https://github.com/IronLanguages/main/releases/tag/ipy-2.7.5>`__
 and let Rhino know where it is by adding it to the Rhino Python Editor search paths.
 
 .. note::
 
-    Install `IronPython 2.7.5 <https://github.com/IronLanguages/main/releases/tag/ipy-2.7.5>`_,
+    Install `IronPython 2.7.5 <https://github.com/IronLanguages/main/releases/tag/ipy-2.7.5>`__,
     and not the latest version of IronPython.
     Rhino doesn't like it...
 

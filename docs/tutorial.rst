@@ -9,7 +9,6 @@ Tutorial
     tutorial/meshes
     tutorial/networks
     tutorial/robots
-    tutorial/data
     tutorial/rpc
     tutorial/geomaps
     tutorial/rhino
