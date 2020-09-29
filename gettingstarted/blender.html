@@ -112,46 +112,28 @@ this is Python 3.7x.</p>
 conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
 </code></pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>we called the environment <em>blender</em> but you can use any name</p>
-</div>
 <p>Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\Blender Foundation\Blender 2.82\2.82&quot;</span>
+python -m compas_blender.install <span class="s2">&quot;%PROGRAMFILES%\Blender Foundation\Blender 2.83\2.83&quot;</span>
 </code></pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>change <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">blender</span></code> with <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">name_of_your_environment</span></code> if you want to link another environment.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\Blender</span> <span class="pre">Foundation\Blender</span> <span class="pre">2.82\2.82</span></code> might be different if you have another version of Blender intalled. Check your version of Blender and change the path accordingly.</p>
-</div>
+<p>Note that the path <code class="docutils literal notranslate"><span class="pre">%PROGRAMFILES%\Blender</span> <span class="pre">Foundation\Blender</span> <span class="pre">2.83\2.83</span></code> might be different
+if you have another version of Blender intalled.
+Check your version of Blender and change the path accordingly.</p>
 </div>
 <div class="tab-pane" id="replace_python_osx"><p>If you wish to install a new python environment with COMPAS, open the Terminal and type the following:</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda config --add channels conda-forge
 conda create -n blender <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 COMPAS
 </code></pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>we called the environment <em>blender</em> but you can use any name</p>
-</div>
 <p>Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate blender
-python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.82
+python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.83
 </code></pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>change <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">blender</span></code> with <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">name_of_your_environment</span></code> if you want to link another environment.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.82</span></code> might be different if you have another version of Blender intalled. Check your version of Blender and change the path accordingly.</p>
-</div>
+<p>Note that the path <code class="docutils literal notranslate"><span class="pre">/Applications/blender.app/Contents/Resources/2.83</span></code> might be different
+if you have another version of Blender intalled.
+Check your version of Blender and change the path accordingly.</p>
 </div></div>
 </div>
 </div></div>

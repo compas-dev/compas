@@ -168,9 +168,12 @@ command line to ease recurring operations:</p>
 <li><p>sphinx</p></li>
 <li><p>RestructuredText</p></li>
 <li><p>docs structure</p></li>
-<li><p>api docs
-* napoleon
-* Numpy-style</p></li>
+<li><p>api docs</p>
+<ul>
+<li><p>napoleon</p></li>
+<li><p>Numpy-style</p></li>
+</ul>
+</li>
 <li><p>examples</p></li>
 <li><p>references</p></li>
 <li><p>see also</p></li>
@@ -184,22 +187,31 @@ For example, <a class="reference internal" href="api/compas.html#module-compas" 
 <li><p><a class="reference internal" href="api/compas.datastructures.html#module-compas.datastructures" title="compas.datastructures"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.datastructures</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/compas.files.html#module-compas.files" title="compas.files"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.files</span></code></a></p></li>
 <li><p><a class="reference internal" href="api/compas.geometry.html#module-compas.geometry" title="compas.geometry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.geometry</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/compas.numerical.html#module-compas.numerical" title="compas.numerical"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.numerical</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/compas.robots.html#module-compas.robots" title="compas.robots"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.robots</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/compas.rpc.html#module-compas.rpc" title="compas.rpc"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.rpc</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/compas.topology.html#module-compas.topology" title="compas.topology"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.topology</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/compas.utilities.html#module-compas.utilities" title="compas.utilities"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas.utilities</span></code></a></p></li>
 </ul>
 <p>The API of each subpackage is documented in the docstring of its <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file using basic RestructuredText.
 From outside of these packages, functionality should be imported directly from the subpackage level,
 regardless of the code structure underneath.</p>
 <p>For example, in some <code class="docutils literal notranslate"><span class="pre">script.py</span></code>:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">oriented_bounding_box_numpy</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Transformation</span>
 
-<span class="kn">from</span> <span class="nn">compas.numerical</span>
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">pca_numpy</span>
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="kn">import</span> <span class="n">fd_numpy</span>
 </code></pre></div>
 </div>
 <p>To allow the public API of the modules and packages contained in a subpackage to reach the subpackage level,
 each module should declare the classes, functions and variables of its public API in the module’s <code class="docutils literal notranslate"><span class="pre">__all__</span></code> variable.
-Per package, the APIs of the contained module are collected in <code class="docutils literal notranslate"><span class="pre">__all__</span></code> variable of the package (in the <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>).</p>
+Per package, the APIs of the contained module are collected in the <code class="docutils literal notranslate"><span class="pre">__all__</span></code> variable of the package (in the <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>).</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">_</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
 </code></pre></div>
 </div>
