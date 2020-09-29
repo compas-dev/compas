@@ -79,7 +79,9 @@ class RhinoSurface(BaseRhinoGeometry):
                     face.append(vertex)
             polygons.append(face)
         cls = cls or Mesh
-        return cls.from_vertices_and_faces(vertices, polygons)
+        mesh = cls.from_vertices_and_faces(vertices, polygons)
+        mesh.name = self.name
+        return mesh
 
     # def uv_to_compas(self, cls=None, density=(10, 10)):
     #     """Convert the surface UV space to a COMPAS mesh.
