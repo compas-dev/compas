@@ -100,35 +100,31 @@ of the core COMPAS packages:</p>
 <div class="section" id="setup-installation">
 <h2>Setup/Installation</h2>
 <p>To set up a developer environment</p>
-<ol class="arabic simple">
+<ol class="arabic">
 <li><p>Fork <a class="reference external" href="https://github.com/compas-dev/compas">the repository</a> and clone the fork.</p></li>
-<li><p>Create a virtual environment using your tool of choice (e.g. <cite>virtualenv</cite>, <cite>conda</cite>, etc).</p></li>
-</ol>
+<li><p>Create a virtual environment using your tool of choice (e.g. <cite>virtualenv</cite>, <cite>conda</cite>, etc).</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda create -n compas-dev <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7
 conda activate compas-dev
 </code></pre></div>
 </div>
-<ol class="arabic simple" start="3">
-<li><p>Install development dependencies:</p></li>
-</ol>
+</li>
+<li><p>Install development dependencies:</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span><span class="nb">cd</span> path/to/compas
 pip install -r requirements-dev.txt
 </code></pre></div>
 </div>
-<ol class="arabic simple" start="4">
-<li><p>Make sure all tests pass:</p></li>
-</ol>
+</li>
+<li><p>Make sure all tests pass:</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke <span class="nb">test</span>
 </code></pre></div>
 </div>
-<ol class="arabic simple" start="5">
-<li><p>Create a branch for your contributions.</p></li>
-</ol>
+</li>
+<li><p>Create a branch for your contributions.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">git</span> <span class="n">branch</span> <span class="n">title</span><span class="o">-</span><span class="n">proposed</span><span class="o">-</span><span class="n">changes</span>
 <span class="n">git</span> <span class="n">checkout</span> <span class="n">title</span><span class="o">-</span><span class="n">proposed</span><span class="o">-</span><span class="n">changes</span>
 </code></pre></div>
 </div>
-<ol class="arabic simple" start="6">
+</li>
 <li><p>Start making changes!</p></li>
 </ol>
 </div>
@@ -136,13 +132,12 @@ pip install -r requirements-dev.txt
 <h2>Submitting a PR</h2>
 <p>Once you are done making changes, you have to submit your contribution through a pull request (PR).
 The procedure for submitting a PR is the following.</p>
-<ol class="arabic simple">
-<li><p>Make sure all tests still pass:</p></li>
-</ol>
+<ol class="arabic">
+<li><p>Make sure all tests still pass:</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>invoke <span class="nb">test</span>
 </code></pre></div>
 </div>
-<ol class="arabic simple" start="2">
+</li>
 <li><p>Add yourself to <code class="docutils literal notranslate"><span class="pre">AUTHORS.md</span></code>.</p></li>
 <li><p>Commit your changes and push your branch to GitHub.</p></li>
 <li><p>Create a <a class="reference external" href="https://help.github.com/articles/about-pull-requests/">pull request</a> through the GitHub website.</p></li>
