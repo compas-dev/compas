@@ -7,9 +7,9 @@ Installation
 COMPAS is written entirely in Python and can be easily installed
 using popular package managers on multiple platforms.
 
-.. .. figure:: /_images/gh_verify.jpg
-..      :figclass: figure
-..      :class: figure-img img-fluid
+.. figure:: /_images/installation.gif
+     :figclass: figure
+     :class: figure-img img-fluid
 
 
 Install with conda
