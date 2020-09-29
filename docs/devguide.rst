@@ -92,11 +92,14 @@ Documentation
 * RestructuredText
 * docs structure
 * api docs
+
   * napoleon
   * Numpy-style
+
 * examples
 * references
 * see also
+
 
 Code structure
 ==============
@@ -107,6 +110,11 @@ For example, :mod:`compas` is divided into:
 * :mod:`compas.datastructures`
 * :mod:`compas.files`
 * :mod:`compas.geometry`
+* :mod:`compas.numerical`
+* :mod:`compas.robots`
+* :mod:`compas.rpc`
+* :mod:`compas.topology`
+* :mod:`compas.utilities`
 
 The API of each subpackage is documented in the docstring of its ``__init__.py`` file using basic RestructuredText.
 From outside of these packages, functionality should be imported directly from the subpackage level,
@@ -116,16 +124,20 @@ For example, in some ``script.py``:
 
 .. code-block:: python
 
+    from compas.datastructures import Mesh
+    from compas.datastructures import Network
+
     from compas.geometry import add_vectors
     from compas.geometry import oriented_bounding_box_numpy
     from compas.geometry import Polygon
     from compas.geometry import Transformation
 
-    from compas.numerical
+    from compas.numerical import pca_numpy
+    from compas.numerical import fd_numpy
 
 To allow the public API of the modules and packages contained in a subpackage to reach the subpackage level,
 each module should declare the classes, functions and variables of its public API in the module's ``__all__`` variable.
-Per package, the APIs of the contained module are collected in ``__all__`` variable of the package (in the ``__init__.py``).
+Per package, the APIs of the contained module are collected in the ``__all__`` variable of the package (in the ``__init__.py``).
 
 .. code-block:: python
 
@@ -295,6 +307,7 @@ accordingly:
 
     from compas.plugins import plugin_manager
     plugin_manager.DEBUG = True
+
 
 Multiple implementations
 ========================
