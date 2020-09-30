@@ -3,13 +3,10 @@ from __future__ import division
 from __future__ import print_function
 
 import json
-import os
 
-import compas
 from compas.geometry import Frame
 from compas.geometry import Transformation
-from compas.datastructures import Mesh
-from compas.robots import RobotModel
+from compas.robots.model.robot import RobotModel
 
 
 class ToolModel(RobotModel):
@@ -30,6 +27,9 @@ class ToolModel(RobotModel):
 
     Examples
     --------
+    >>> import compas
+    >>> from compas.datastructures import Mesh
+    >>> from compas.geometry import Frame
     >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
     >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
     >>> tool = ToolModel(mesh, frame)
@@ -40,7 +40,7 @@ class ToolModel(RobotModel):
                  name="attached_tool", link_name=None):
         collision = collision or visual
         super(ToolModel, self).__init__(name)
-        self.add_link("attached_tool_base_link", visual_mesh=visual, collision_mesh=collision)
+        self.add_link("attached_tool_link", visual_mesh=visual, collision_mesh=collision)
 
         self._rebuild_tree()
         self._create(self.root, Transformation())
@@ -50,6 +50,16 @@ class ToolModel(RobotModel):
 
     @classmethod
     def from_robot_model(cls, robot, frame_in_tool0_frame, link_name=None):
+        """Creates a ``ToolModel`` from a :class:`compas.robots.RobotModel` instance.
+
+        Parameters
+        ----------
+        robot : :class:`compas.robots.RobotModel`
+        frame_in_tool0_frame : :obj:`str`
+            he frame of the tool in tool0 frame.
+        link_name : :obj:`str`
+            The name of the `Link` to which the tool is attached.  Defaults to ``None``.
+        """
         data = robot.data
         data['frame'] = frame_in_tool0_frame
         data['link_name'] = link_name
@@ -102,6 +112,9 @@ class ToolModel(RobotModel):
 
         Examples
         --------
+        >>> import compas
+        >>> from compas.datastructures import Mesh
+        >>> from compas.geometry import Frame
         >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
         >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
         >>> data = {'visual': mesh.data, 'frame': frame.data}
@@ -127,6 +140,8 @@ class ToolModel(RobotModel):
 
         Examples
         --------
+        >>> import os
+        >>> import compas
         >>> filepath = os.path.join(compas.DATA, "cone_tool.json")
         >>> tool = ToolModel.from_json(filepath)
         """
@@ -148,7 +163,11 @@ class ToolModel(RobotModel):
 
         Examples
         --------
-        >>> mesh = Mesh.from_stl(compas_fab.get('planning_scene/cone.stl'))
+        >>> import os
+        >>> import compas
+        >>> from compas.datastructures import Mesh
+        >>> from compas.geometry import Frame
+        >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
         >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
         >>> tool = ToolModel(mesh, frame)
         >>> filepath = os.path.join(compas.DATA, "cone_tool.json")
@@ -172,6 +191,9 @@ class ToolModel(RobotModel):
 
         Examples
         --------
+        >>> import compas
+        >>> from compas.datastructures import Mesh
+        >>> from compas.geometry import Frame
         >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
         >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
         >>> tool = ToolModel(mesh, frame)
@@ -197,6 +219,9 @@ class ToolModel(RobotModel):
 
         Examples
         --------
+        >>> import compas
+        >>> from compas.datastructures import Mesh
+        >>> from compas.geometry import Frame
         >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
         >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
         >>> tool = ToolModel(mesh, frame)

@@ -5,10 +5,8 @@ from __future__ import print_function
 import abc
 import itertools
 
-from compas.datastructures import Mesh
 from compas.geometry import Frame
 from compas.geometry import Scale
-from compas.geometry import Shape
 from compas.geometry import Transformation
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})

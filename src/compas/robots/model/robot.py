@@ -95,11 +95,11 @@ class RobotModel(Base):
 
     def _set_data(self, data):
         self.name = data['name']
-        self.joints = [Joint.from_data(d) for d in data['joints']]
-        self.links = [Link.from_data(d) for d in data['links']]
-        self.materials = [Material.from_data(d) for d in data['materials']]
-        self.attr = _attr_from_data(data['attr'])
-        self._scale_factor = data['_scale_factor']
+        self.joints = [Joint.from_data(d) for d in data.get('joints', [])]
+        self.links = [Link.from_data(d) for d in data.get('links', [])]
+        self.materials = [Material.from_data(d) for d in data.get('materials', [])]
+        self.attr = _attr_from_data(data.get('attr', {}))
+        self._scale_factor = data.get('_scale_factor', 1.)
 
         self._rebuild_tree()
 
