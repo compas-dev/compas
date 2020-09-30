@@ -80,36 +80,34 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         self.model = model
         self.create()
         self.scale_factor = 1.
-        self.attached_tool = None
+        self.attached_tool_model = None
 
-    def attach_tool(self, tool):
+    def attach_tool_model(self, tool_model):
         """Attach a tool to the robot artist.
 
         Parameters
         ----------
-        tool : :class:`compas_fab.robots.Tool`
+        tool_model : :class:`compas.robots.ToolBaseLink`
             The tool that should be attached to the robot's flange.
         """
-        name = '{}.visual.attached_tool'.format(self.model.name)
-        native_geometry = self.draw_geometry(tool.visual, name=name)  # TODO: only visual, collision would be great
+        self.create(tool_model.root, 'attached_tool')
 
-        link = self.model.get_link_by_name(tool.attached_collision_mesh.link_name)
+        link = self.model.get_link_by_name(tool_model.link_name)
         ee_frame = link.parent_joint.origin.copy()
-        parent_joint_name = link.parent_joint.name
 
         T = Transformation.from_frame_to_frame(Frame.worldXY(), ee_frame)
-        self.transform(native_geometry, T)
-        tool.native_geometry = [native_geometry]
-        tool.current_transformation = Transformation()
-        tool.parent_joint_name = parent_joint_name
-        self.attached_tool = tool
+        self._update_tool(T)
 
-    def detach_tool(self):
+        tool_model.parent_joint_name = link.parent_joint.name
+
+        self.attached_tool_model = tool_model
+
+    def detach_tool_model(self):
         """Detach the tool.
         """
-        self.attached_tool = None
+        self.attached_tool_model = None
 
-    def create(self, link=None):
+    def create(self, link=None, name=None):
         """Recursive function that triggers the drawing of the robot model's geometry.
 
         This method delegates the geometry drawing to the :meth:`draw_geometry`
@@ -120,6 +118,8 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         ----------
         link : :class:`compas.robots.Link`, optional
             Link instance to create. Defaults to the robot model's root.
+        name : :obj:`str`, optional
+            Subdomain identifier. # !!! there's got to be a better explanation.
 
         Returns
         -------
@@ -129,23 +129,9 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             link = self.model.root
 
         for item in itertools.chain(link.visual, link.collision):
-            # NOTE: Currently, shapes assign their meshes to an
-            # attribute called `geometry`, but this will change soon to `meshes`.
-            # This code handles the situation in a forward-compatible
-            # manner. Eventually, this can be simplified to use only `meshes` attr
-            if hasattr(item.geometry.shape, 'meshes'):
-                meshes = item.geometry.shape.meshes
-            else:
-                meshes = item.geometry.shape.geometry
-
-            if isinstance(meshes, Shape):
-                meshes = [Mesh.from_shape(meshes)]
+            meshes = self.model._get_item_meshes(item)
 
             if meshes:
-                # Coerce meshes into an iterable (a tuple if not natively iterable)
-                if not hasattr(meshes, '__iter__'):
-                    meshes = (meshes,)
-
                 is_visual = hasattr(item, 'get_color')
                 color = item.get_color() if is_visual else None
 
@@ -153,7 +139,10 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                 for i, mesh in enumerate(meshes):
                     # create native geometry
                     mesh_type = 'visual' if is_visual else 'collision'
-                    mesh_name = '{}.{}.{}.{}'.format(self.model.name, mesh_type, link.name, i)
+                    mesh_name_components = [self.model.name, mesh_type, link.name, str(i)]
+                    if name:
+                        mesh_name_components.insert(2, name)
+                    mesh_name = '.'.join(mesh_name_components)
                     native_mesh = self.draw_geometry(mesh, name=mesh_name, color=color)
                     # transform native geometry based on saved init transform
                     self.transform(native_mesh, item.init_transformation)
@@ -235,38 +224,46 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             ``True`` if the collision geometry should be also updated, otherwise ``False``.
             Defaults to ``True``.
         """
-        transformations = self.model.compute_transformations(joint_state)
-        for j in self.model.iter_joints():
-            link = j.child_link
-            for item in link.visual:
-                self._apply_transformation_on_transformed_link(item, transformations[j.name])
-            if collision:
-                for item in link.collision:
-                    # some links have only collision geometry, not visual. These meshes have not been loaded.
-                    if item.native_geometry:
-                        self._apply_transformation_on_transformed_link(item, transformations[j.name])
+        transformations = self._update(self.model, joint_state, visual, collision)
+        self._update_tool(transformations[self.attached_tool_model.parent_joint_name])
 
-        if self.attached_tool:
-            self._apply_transformation_on_transformed_link(self.attached_tool, transformations[self.attached_tool.parent_joint_name])
+    def _update(self, model, joint_state, visual=True, collision=True, parent_transformation=None):
+        transformations = model.compute_transformations(joint_state, parent_transformation=parent_transformation)
+        for j in model.iter_joints():
+            self._transform_link_geometry(j.child_link, transformations[j.name], collision)
+        return transformations
+
+    def _transform_link_geometry(self, link, transformation, collision=True):
+        for item in link.visual:
+            self._apply_transformation_on_transformed_link(item, transformation)
+        if collision:
+            for item in link.collision:
+                # some links have only collision geometry, not visual. These meshes have not been loaded.
+                if item.native_geometry:
+                    self._apply_transformation_on_transformed_link(item, transformation)
+
+    def _update_tool(self, transformation, joint_state=None):
+        joint_state = joint_state or {}
+        if self.attached_tool_model:
+            self._transform_link_geometry(self.attached_tool_model.root, transformation)
+            self._update(self.attached_tool_model, joint_state, transformation)
 
     def draw_visual(self):
         """Draws all visual geometry of the robot model."""
-        for link in self.model.iter_links():
-            for item in link.visual:
-                if item.native_geometry:
-                    for native_geometry in item.native_geometry:
-                        yield native_geometry
-        if self.attached_tool:
-            for native_geometry in self.attached_tool.native_geometry:
-                yield native_geometry
+        self._draw_model_geometry(self.model, 'visual')
+        if self.attached_tool_model:
+            self._draw_model_geometry(self.attached_tool_model, 'visual')
 
     def draw_collision(self):
         """Draws all collision geometry of the robot model."""
-        for link in self.model.iter_links():
-            for item in link.collision:
+        self._draw_model_geometry(self.model, 'collision')
+        if self.attached_tool_model:
+            self._draw_model_geometry(self.attached_tool_model, 'collision')
+
+    @staticmethod
+    def _draw_model_geometry(model, geometry_type):
+        for link in model.iter_links():
+            for item in getattr(link, geometry_type):
                 if item.native_geometry:
                     for native_geometry in item.native_geometry:
                         yield native_geometry
-        if self.attached_tool:
-            for native_geometry in self.attached_tool.native_geometry:
-                yield native_geometry

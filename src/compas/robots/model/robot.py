@@ -9,6 +9,7 @@ from compas.base import Base
 from compas.files import URDF
 from compas.files import URDFParser
 from compas.geometry import Frame
+from compas.geometry import Shape
 from compas.geometry import Transformation
 from compas.robots.model.geometry import Color
 from compas.robots.model.geometry import Geometry
@@ -56,6 +57,7 @@ class RobotModel(Base):
     """
 
     def __init__(self, name, joints=[], links=[], materials=[], **kwargs):
+        super(RobotModel, self).__init__()
         self.name = name
         self.joints = list(joints)
         self.links = list(links)
@@ -75,6 +77,9 @@ class RobotModel(Base):
         dict
             The RobotModel's data.
         """
+        return self._get_data()
+
+    def _get_data(self):
         return {
             'name': self.name,
             'joints': [joint.data for joint in self.joints],
@@ -86,6 +91,9 @@ class RobotModel(Base):
 
     @data.setter
     def data(self, data):
+        self._set_data(data)
+
+    def _set_data(self, data):
         self.name = data['name']
         self.joints = [Joint.from_data(d) for d in data['joints']]
         self.links = [Link.from_data(d) for d in data['links']]
@@ -506,6 +514,27 @@ class RobotModel(Base):
         """
         joints = self.get_configurable_joints()
         return joints[0].parent.link
+
+    @staticmethod
+    def _get_item_meshes(item):
+        # NOTE: Currently, shapes assign their meshes to an
+        # attribute called `geometry`, but this will change soon to `meshes`.
+        # This code handles the situation in a forward-compatible
+        # manner. Eventually, this can be simplified to use only `meshes` attr
+        if hasattr(item.geometry.shape, 'meshes'):
+            meshes = item.geometry.shape.meshes
+        else:
+            meshes = item.geometry.shape.geometry
+
+        if isinstance(meshes, Shape):
+            meshes = [Mesh.from_shape(meshes)]
+
+        if meshes:
+            # Coerce meshes into an iterable (a tuple if not natively iterable)
+            if not hasattr(meshes, '__iter__'):
+                meshes = (meshes,)
+
+        return meshes
 
     def load_geometry(self, *resource_loaders, **kwargs):
         """Load external geometry resources, such as meshes.
