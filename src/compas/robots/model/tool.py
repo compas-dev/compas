@@ -3,7 +3,9 @@ from __future__ import division
 from __future__ import print_function
 
 import json
+import os
 
+import compas
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.datastructures import Mesh
@@ -28,7 +30,7 @@ class ToolModel(RobotModel):
 
     Examples
     --------
-    >>> mesh = Mesh.from_stl(compas_fab.get('planning_scene/cone.stl'))  # !!! move cone.stl
+    >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
     >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
     >>> tool = ToolModel(mesh, frame)
 
@@ -100,10 +102,10 @@ class ToolModel(RobotModel):
 
         Examples
         --------
-        >>> mesh = Mesh.from_stl(compas_fab.get('planning_scene/cone.stl'))
+        >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
         >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
         >>> data = {'visual': mesh.data, 'frame': frame.data}
-        >>> tool = Tool.from_data(data)
+        >>> tool = ToolModel.from_data(data)
         """
         tool = cls(None, None)
         tool.data = data
@@ -125,8 +127,8 @@ class ToolModel(RobotModel):
 
         Examples
         --------
-        >>> filepath = os.path.join(compas_fab.DATA, "planning_scene", "cone_tool.json")
-        >>> tool = Tool.from_json(filepath)
+        >>> filepath = os.path.join(compas.DATA, "cone_tool.json")
+        >>> tool = ToolModel.from_json(filepath)
         """
         with open(filepath, 'r') as f:
             data = json.load(f)
@@ -148,8 +150,8 @@ class ToolModel(RobotModel):
         --------
         >>> mesh = Mesh.from_stl(compas_fab.get('planning_scene/cone.stl'))
         >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
-        >>> tool = Tool(mesh, frame)
-        >>> filepath = os.path.join(compas_fab.DATA, "planning_scene", "cone_tool.json")
+        >>> tool = ToolModel(mesh, frame)
+        >>> filepath = os.path.join(compas.DATA, "cone_tool.json")
         >>> tool.to_json(filepath)
         """
         with open(filepath, 'w') as f:
@@ -170,9 +172,9 @@ class ToolModel(RobotModel):
 
         Examples
         --------
-        >>> mesh = Mesh.from_stl(compas_fab.get('planning_scene/cone.stl'))
+        >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
         >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
-        >>> tool = Tool(mesh, frame)
+        >>> tool = ToolModel(mesh, frame)
         >>> frames_tcf = [Frame((-0.309, -0.046, -0.266), (0.276, 0.926, -0.256), (0.879, -0.136, 0.456))]
         >>> tool.from_tcf_to_t0cf(frames_tcf)
         [Frame(Point(-0.363, 0.003, -0.147), Vector(0.388, -0.351, -0.852), Vector(0.276, 0.926, -0.256))]
@@ -195,9 +197,9 @@ class ToolModel(RobotModel):
 
         Examples
         --------
-        >>> mesh = Mesh.from_stl(compas_fab.get('planning_scene/cone.stl'))
+        >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
         >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
-        >>> tool = Tool(mesh, frame)
+        >>> tool = ToolModel(mesh, frame)
         >>> frames_t0cf = [Frame((-0.363, 0.003, -0.147), (0.388, -0.351, -0.852), (0.276, 0.926, -0.256))]
         >>> tool.from_t0cf_to_tcf(frames_t0cf)
         [Frame(Point(-0.309, -0.046, -0.266), Vector(0.276, 0.926, -0.256), Vector(0.879, -0.136, 0.456))]

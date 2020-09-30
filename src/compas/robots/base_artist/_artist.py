@@ -87,7 +87,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
         Parameters
         ----------
-        tool_model : :class:`compas.robots.ToolBaseLink`
+        tool_model : :class:`compas.robots.ToolModel`
             The tool that should be attached to the robot's flange.
         """
         self.create(tool_model.root, 'attached_tool')
