@@ -2,6 +2,23 @@
 Rhino (Windows and Mac)
 ***********************
 
+.. rst-class:: lead
+
+COMPAS is backward compatible with IronPython 2.7
+and can therefore be used in Rhino, both on Windows and on Mac.
+
+.. .. figure:: /_images/install_rhino.gif
+..      :figclass: figure
+..      :class: figure-img img-fluid mx-auto
+
+
+Install COMPAS in Rhino
+=======================
+
+.. figure:: /_images/install_rhino.gif
+     :figclass: figure
+     :class: figure-img img-fluid mx-auto
+
 Installing COMPAS for Rhino is very simple.
 Just type the following on the command line
 
@@ -21,8 +38,8 @@ that the environment in which you installed COMPAS is active when you issue the
 above commands.
 
 
-Install COMPAS packages
-=======================
+Install COMPAS packages in Rhino
+================================
 
 The procedure for installing a COMPAS package in Rhino is similar to installing
 COMPAS itself.
