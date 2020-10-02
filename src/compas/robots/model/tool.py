@@ -108,7 +108,7 @@ class ToolModel(RobotModel):
 
         Returns
         -------
-        :class:`Tool`
+        :class:`ToolModel`
             The constructed `Tool`.
 
         """
