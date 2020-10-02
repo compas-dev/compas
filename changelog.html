@@ -109,9 +109,17 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h2>[0.16.6] 2020-09-30</h2>
 <div class="section" id="id2">
 <h3>Added</h3>
+<ul class="simple">
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_plotters.geometryplotter.GeometryPlotter</span></code> for COMPAS geometry objects.</p></li>
+</ul>
 </div>
 <div class="section" id="id3">
 <h3>Changed</h3>
+<ul class="simple">
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.base.Base.dtype</span></code> to property.</p></li>
+<li><p>Changed JSON schema to draft 7.</p></li>
+<li><p>Changed version processing to <code class="docutils literal notranslate"><span class="pre">distutils.version.LooseVersion</span></code>.</p></li>
+</ul>
 </div>
 <div class="section" id="id4">
 <h3>Removed</h3>
@@ -121,9 +129,19 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h2>[0.16.5] 2020-09-26</h2>
 <div class="section" id="id6">
 <h3>Added</h3>
+<ul class="simple">
+<li><p>Added tests for halfedge data schemas.</p></li>
+</ul>
 </div>
 <div class="section" id="id7">
 <h3>Changed</h3>
+<ul class="simple">
+<li><p>Fixed RGB color processing in <code class="docutils literal notranslate"><span class="pre">compas.utilities.color_to_colordict</span></code>.</p></li>
+<li><p>Fixed Blender object and dat amanagement to avoid <code class="docutils literal notranslate"><span class="pre">malloc</span></code> problems.</p></li>
+<li><p>Updated Blender data structure artists.</p></li>
+<li><p>Changed Blender unused data clearing to also clear collections.</p></li>
+<li><p>Fixed JSON data validation of base COMPAS object.</p></li>
+</ul>
 </div>
 <div class="section" id="id8">
 <h3>Removed</h3>
@@ -136,6 +154,9 @@ and this project adheres to <a class="reference external" href="https://semver.o
 </div>
 <div class="section" id="id11">
 <h3>Changed</h3>
+<ul class="simple">
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.Box.vertices</span></code>.</p></li>
+</ul>
 </div>
 <div class="section" id="id12">
 <h3>Removed</h3>
