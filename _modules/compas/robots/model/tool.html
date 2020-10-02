@@ -156,7 +156,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        :obj:`dict`</span>
-<span class="sd">            The frame data.</span>
+<span class="sd">            The tool data.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">()</span>
@@ -182,7 +182,7 @@
 
 <div class="viewcode-block" id="ToolModel.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.robots.ToolModel.from_data.html#compas.robots.ToolModel.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a `Tool` from its data representation.  To be used</span>
+        <span class="sd">&quot;&quot;&quot;Construct a `ToolModel` from its data representation.  To be used</span>
 <span class="sd">        in conjunction with the :meth:`to_data` method.</span>
 
 <span class="sd">        Parameters</span>
@@ -193,7 +193,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        :class:`ToolModel`</span>
-<span class="sd">            The constructed `Tool`.</span>
+<span class="sd">            The constructed `ToolModel`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tool</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -202,7 +202,7 @@
 
 <div class="viewcode-block" id="ToolModel.from_json"><a class="viewcode-back" href="../../../../api/generated/compas.robots.ToolModel.from_json.html#compas.robots.ToolModel.from_json">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a `Tool` from the data contained in a JSON file.</span>
+        <span class="sd">&quot;&quot;&quot;Construct a `ToolModel` from the data contained in a JSON file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -211,7 +211,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        :class:`Tool`</span>
+<span class="sd">        :class:`ToolModel`</span>
 <span class="sd">            The tool.</span>
 
 <span class="sd">        Examples</span>
