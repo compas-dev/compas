@@ -56,12 +56,12 @@ class ToolModel(RobotModel):
         ----------
         robot : :class:`compas.robots.RobotModel`
         frame_in_tool0_frame : :obj:`str`
-            he frame of the tool in tool0 frame.
+            The frame of the tool in tool0 frame.
         link_name : :obj:`str`
             The name of the `Link` to which the tool is attached.  Defaults to ``None``.
         """
         data = robot.data
-        data['frame'] = frame_in_tool0_frame
+        data['frame'] = frame_in_tool0_frame.data
         data['link_name'] = link_name
         return cls.from_data(data)
 
@@ -75,7 +75,7 @@ class ToolModel(RobotModel):
             The frame data.
 
         """
-        return self._get_data
+        return self._get_data()
 
     def _get_data(self):
         data = super(ToolModel, self)._get_data()
@@ -98,7 +98,8 @@ class ToolModel(RobotModel):
 
     @classmethod
     def from_data(cls, data):
-        """Construct a `Tool` from its data representation.
+        """Construct a `Tool` from its data representation.  To be used
+        in conjunction with the :meth:`to_data` method.
 
         Parameters
         ----------
@@ -110,15 +111,6 @@ class ToolModel(RobotModel):
         :class:`Tool`
             The constructed `Tool`.
 
-        Examples
-        --------
-        >>> import compas
-        >>> from compas.datastructures import Mesh
-        >>> from compas.geometry import Frame
-        >>> mesh = Mesh.from_stl(compas.get('cone.stl'))
-        >>> frame = Frame([0.14, 0, 0], [0, 1, 0], [0, 0, 1])
-        >>> data = {'visual': mesh.data, 'frame': frame.data}
-        >>> tool = ToolModel.from_data(data)
         """
         tool = cls(None, None)
         tool.data = data

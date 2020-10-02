@@ -88,17 +88,33 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         tool_model : :class:`compas.robots.ToolModel`
             The tool that should be attached to the robot's flange.
         """
+        self.attached_tool_model = tool_model
         self.create(tool_model.root, 'attached_tool')
 
-        link = self.model.get_link_by_name(tool_model.link_name)
-        ee_frame = link.parent_joint.origin.copy()
+        if not tool_model.link_name:
+            link = self.model.get_end_effector_link()
+            tool_model.link_name = link.name
+        else:
+            link = self.model.get_link_by_name(tool_model.link_name)
 
-        T = Transformation.from_frame_to_frame(Frame.worldXY(), ee_frame)
-        self._update_tool(T)
+        # originally, there was only this
+        ee_frame = link.parent_joint.origin.copy()
+        initial_transformation = Transformation.from_frame_to_frame(Frame.worldXY(), ee_frame)
+        # but if you attach a tool after applying some update to the robot, then it appears
+        # disconnected, being displayed at the original location of the end effector frame.
+        # I feel it shouldn't matter the order of calling attach_tool(_model) and update
+        # so I suggest the alternative, but maybe it isn't safe.
+
+        if link.collision:
+            relative_transformation = link.collision[0].current_transformation
+        else:
+            relative_transformation = link.visual[0].current_transformation
+
+        transformation = relative_transformation.concatenated(initial_transformation)
+
+        self.update_tool(transformation=transformation)
 
         tool_model.parent_joint_name = link.parent_joint.name
-
-        self.attached_tool_model = tool_model
 
     def detach_tool_model(self):
         """Detach the tool.
@@ -127,7 +143,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             link = self.model.root
 
         for item in itertools.chain(link.visual, link.collision):
-            meshes = self.model._get_item_meshes(item)
+            meshes = self.model._get_item_meshes(item)  # !!! this is weird
 
             if meshes:
                 is_visual = hasattr(item, 'get_color')
@@ -223,7 +239,8 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             Defaults to ``True``.
         """
         transformations = self._update(self.model, joint_state, visual, collision)
-        self._update_tool(transformations[self.attached_tool_model.parent_joint_name])
+        if self.attached_tool_model:
+            self.update_tool(visual=visual, collision=collision, transformation=transformations[self.attached_tool_model.parent_joint_name])
 
     def _update(self, model, joint_state, visual=True, collision=True, parent_transformation=None):
         transformations = model.compute_transformations(joint_state, parent_transformation=parent_transformation)
@@ -240,23 +257,48 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                 if item.native_geometry:
                     self._apply_transformation_on_transformed_link(item, transformation)
 
-    def _update_tool(self, transformation, joint_state=None):
+    def update_tool(self, joint_state=None, visual=True, collision=True, transformation=None):
+        """Triggers the update of the robot geometry of the tool.
+
+        Parameters
+        ----------
+        joint_state : :obj:`dict`, optional
+            A dictionary with joint names as keys and joint positions as values.
+            Defaults to an empty dictionary.
+        transformation : :class:`compas.geometry.Transformation`, optional
+            The (absolute) transformation to apply to the entire tool's geometry.
+            If ``None`` is given, no additional transformation will be applied.
+            Defaults to ``None``.
+        visual : bool, optional
+            ``True`` if the visual geometry should be also updated, otherwise ``False``.
+            Defaults to ``True``.
+        collision : bool, optional
+            ``True`` if the collision geometry should be also updated, otherwise ``False``.
+            Defaults to ``True``.
+        """
         joint_state = joint_state or {}
         if self.attached_tool_model:
-            self._transform_link_geometry(self.attached_tool_model.root, transformation)
-            self._update(self.attached_tool_model, joint_state, transformation)
+            if transformation is None:
+                transformation = self.attached_tool_model.current_transformation
+            self._transform_link_geometry(self.attached_tool_model.root, transformation, collision)
+            self._update(self.attached_tool_model, joint_state, visual, collision, transformation)
+            self.attached_tool_model.current_transformation = transformation
 
     def draw_visual(self):
         """Draws all visual geometry of the robot model."""
-        self._draw_model_geometry(self.model, 'visual')
+        for native_geometry in self._draw_model_geometry(self.model, 'visual'):
+            yield native_geometry
         if self.attached_tool_model:
-            self._draw_model_geometry(self.attached_tool_model, 'visual')
+            for native_geometry in self._draw_model_geometry(self.attached_tool_model, 'visual'):
+                yield native_geometry
 
     def draw_collision(self):
         """Draws all collision geometry of the robot model."""
-        self._draw_model_geometry(self.model, 'collision')
+        for native_geometry in self._draw_model_geometry(self.model, 'collision'):
+            yield native_geometry
         if self.attached_tool_model:
-            self._draw_model_geometry(self.attached_tool_model, 'collision')
+            for native_geometry in self._draw_model_geometry(self.attached_tool_model, 'collision'):
+                yield native_geometry
 
     @staticmethod
     def _draw_model_geometry(model, geometry_type):

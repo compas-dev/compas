@@ -6,6 +6,7 @@ import itertools
 import json
 
 from compas.base import Base
+from compas.datastructures import Mesh
 from compas.files import URDF
 from compas.files import URDFParser
 from compas.geometry import Frame
@@ -94,7 +95,7 @@ class RobotModel(Base):
         self._set_data(data)
 
     def _set_data(self, data):
-        self.name = data['name']
+        self.name = data.get('name', '')
         self.joints = [Joint.from_data(d) for d in data.get('joints', [])]
         self.links = [Link.from_data(d) for d in data.get('links', [])]
         self.materials = [Material.from_data(d) for d in data.get('materials', [])]
@@ -961,7 +962,6 @@ if __name__ == '__main__':
     import doctest
     from compas import HERE
     from compas.geometry import Sphere  # noqa: F401
-    from compas.datastructures import Mesh  # noqa: F401
     from compas.robots import GithubPackageMeshLoader  # noqa: F401
 
     ur5_urdf_file = os.path.join(HERE, '..', '..', 'tests', 'compas', 'robots', 'fixtures', 'ur5.xacro')

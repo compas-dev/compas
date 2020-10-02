@@ -244,6 +244,33 @@ The following snippet shows how to load the robot model currently active in ROS:
     ...    robot = ros.load_robot(load_geometry=True)
     ...    print(robot.model)
 
+Visualizing Robots
+==================
+
+Once a robot has been built or loaded, it can be visualized in Blender, Rhino or
+Grasshopper using one of COMPAS's artists.  The basic procedure is the same in
+any of the CAD software (aside from the import statement), so for simplicity we
+will demonstrate the use of :class:`compas_rhino.artists.RobotModelArtist` in Rhino.  Once
+COMPAS has been installed for Rhino
+(see :ref:`Getting started with Rhino <cad_rhino>`),
+the following can be run in a Python script editor within Rhino.
+
+.. code-block:: python
+
+    import compas
+    from compas.robots import GithubPackageMeshLoader
+    from compas.robots import RobotModel
+    from compas_rhino.artists import RobotModelArtist
+
+    compas.PRECISION = '12f'
+    github = GithubPackageMeshLoader('ros-industrial/abb', 'abb_irb6600_support', 'kinetic-devel')
+    model = RobotModel.from_urdf_file(github.load_urdf('irb6640.urdf'))
+    model.load_geometry(github)
+
+    artist = RobotModelArtist(model, layer='COMPAS FAB::Example')
+    artist.clear_layer()
+    artist.draw_visual()
+
 FK, IK & Path Planning
 ======================
 
