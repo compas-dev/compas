@@ -1,11 +1,15 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-import time
 import json
+import time
 
 import compas
+import compas._os
+from compas.rpc import RPCServerError
+from compas.utilities import DataDecoder
+from compas.utilities import DataEncoder
 
 try:
     from xmlrpclib import ServerProxy
@@ -17,12 +21,6 @@ try:
     from subprocess import PIPE
 except ImportError:
     from System.Diagnostics import Process
-
-import compas._os
-
-from compas.utilities import DataEncoder
-from compas.utilities import DataDecoder
-from compas.rpc import RPCServerError
 
 
 __all__ = ['Proxy']
@@ -39,20 +37,28 @@ class Proxy(object):
 
     Parameters
     ----------
-    package : string, optional
+    package : :obj:`str`:, optional
         The base package for the requested functionality.
         Default is `None`, in which case a full path to function calls should be provided.
-    python : string, optional
+    python : :obj:`str`:, optional
         The python executable that should be used to execute the code.
         Default is ``'pythonw'``.
-    url : string, optional
+    url : :obj:`str`:, optional
         The server address.
         Default is ``'http://127.0.0.1'``.
-    port : int, optional
+    port : :obj:`int`:, optional
         The port number on the remote server.
         Default is ``1753``.
+    service : :obj:`str`:, package name to start server.
+        Default is ``'compas.rpc.services.default'``.
     max_conn_attempts: :obj:`int`, optional
         Amount of attempts to connect to RPC server before time out.
+    autoreload : :obj:`bool`, ``True`` to automatically reload the proxied package if changes are detected.
+        This is particularly useful during development. The server will monitor changes to the files
+        that were loaded as a result of accessing the specified `package` and if any change is detected,
+        it will unload the module, so that the next invocation uses a fresh version.
+    capture_output : :obj:`bool`, ``True`` to capture the stdout/stderr output of the remote process, otherwise ``False``.
+        In general, ``capture_output`` should be ``True`` when using a ``pythonw`` as executable (default).
 
     Notes
     -----
@@ -81,7 +87,7 @@ class Proxy(object):
 
     """
 
-    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None, max_conn_attempts=100):
+    def __init__(self, package=None, python=None, url='http://127.0.0.1', port=1753, service=None, max_conn_attempts=100, autoreload=True, capture_output=True):
         self._package = None
         self._python = compas._os.select_python(python)
         self._url = url
@@ -94,6 +100,8 @@ class Proxy(object):
 
         self.service = service
         self.package = package
+        self.autoreload = autoreload
+        self.capture_output = capture_output
 
         self._implicitely_started_server = False
         self._server = self._try_reconnect()
@@ -202,21 +210,25 @@ class Proxy(object):
             Popen
         except NameError:
             self._process = Process()
-
             for name in env:
                 if self._process.StartInfo.EnvironmentVariables.ContainsKey(name):
                     self._process.StartInfo.EnvironmentVariables[name] = env[name]
                 else:
                     self._process.StartInfo.EnvironmentVariables.Add(name, env[name])
             self._process.StartInfo.UseShellExecute = False
-            self._process.StartInfo.RedirectStandardOutput = True
-            self._process.StartInfo.RedirectStandardError = True
+            self._process.StartInfo.RedirectStandardOutput = self.capture_output
+            self._process.StartInfo.RedirectStandardError = self.capture_output
             self._process.StartInfo.FileName = self.python
-            self._process.StartInfo.Arguments = '-m {0} {1}'.format(self.service, str(self._port))
+            self._process.StartInfo.Arguments = '-m {0} --port {1} --{2}autoreload'.format(self.service, self._port, '' if self.autoreload else 'no-')
             self._process.Start()
         else:
-            args = [self.python, '-m', self.service, str(self._port)]
-            self._process = Popen(args, stdout=PIPE, stderr=PIPE, env=env)
+            args = [self.python, '-m', self.service, '--port', str(self._port), '--{}autoreload'.format('' if self.autoreload else 'no-')]
+            kwargs = dict(env=env)
+            if self.capture_output:
+                kwargs['stdout'] = PIPE
+                kwargs['stderr'] = PIPE
+
+            self._process = Popen(args, **kwargs)
         # this starts the client side
         # it creates a proxy for the server
         # and tries to connect the proxy to the actual server
