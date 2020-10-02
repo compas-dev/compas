@@ -6,24 +6,19 @@ files
 .. currentmodule:: compas.files
 
 
-DXF
-===
+GLTF
+====
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-The DXF readers and writers are not available yet.
-
-
-LAS
-===
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-The LAS readers and writers are not available yet.
+    GLTF
+    GLTFReader
+    GLTFParser
+    GLTFContent
+    GLTFMesh
+    GLTFExporter
 
 
 OBJ
@@ -98,20 +93,6 @@ XML
     XML
     XMLReader
 
-
-GLTF
-====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    GLTF
-    GLTFReader
-    GLTFParser
-    GLTFContent
-    GLTFMesh
-    GLTFExporter
 
 """
 
