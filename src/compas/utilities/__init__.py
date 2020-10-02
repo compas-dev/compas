@@ -34,30 +34,6 @@ colors
     color_to_rgb
 
 
-datetime
-========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    timestamp
-    now
-
-
-decorators
-==========
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    abstractstaticmethod
-    abstractclassmethod
-    memoize
-    print_profile
-
-
 encoders
 ========
 
@@ -76,9 +52,9 @@ itertools
     :toctree: generated/
     :nosignatures:
 
-    meshgrid
-    linspace
     flatten
+    linspace
+    meshgrid
     pairwise
     window
     iterable_like
