@@ -6,6 +6,8 @@ Robots
 
 .. highlight:: python
 
+.. rst-class:: lead
+
 COMPAS provides several fundamental structures and features that simplify working
 with robots models, kinematic chains and coordinate frames. On top of this,
 the `COMPAS FAB <https://gramaziokohler.github.io/compas_fab/latest/>`_ extension

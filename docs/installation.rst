@@ -1,78 +1,81 @@
-.. _installation:
-
 ************
 Installation
 ************
 
-.. describe cross-platform ness like on homepage
+.. rst-class:: lead
+
+COMPAS can be easily installed on multiple platforms,
+using popular package managers such as coda or pip.
+
+.. figure:: /_images/installation.gif
+     :figclass: figure
+     :class: figure-img img-fluid mx-auto
 
 
 Install with conda
 ==================
 
-The **recommended** way to install COMPAS is with `conda <https://conda.io/docs/>`_
-using an environment.
-
-
-All-in-one
-----------
-
-Create an environment and give it a name, e.g. ``"project"``, install Python 3.7
-and COMPAS (use the ``conda-forge`` channel), say "yes" to all questions asked.
+The recommended way to install COMPAS is with `conda <https://conda.io/docs/>`_.
+For example, create an environment named ``my-project`` and install COMPAS.
 
 .. code-block:: bash
 
-    conda create -n project python=3.7 COMPAS -c conda-forge --yes
+    conda config --add channels conda-forge
+    conda create -n my-project COMPAS
 
-
-Step-by-Step
-------------
-
-1. Create a Python 3.7 environment named "project".
-2. Activate the environment.
-3. Install COMPAS
+Afterwards, simply activate the environment
+and run the following command to check if the installation process was successful.
 
 .. code-block:: bash
 
-    conda create -n project python=3.7
-    conda activate project
-    conda install COMPAS -c conda-forge
+    conda activate my-project
+    python -m compas
+
+.. code-block:: none
+
+    Yay! COMPAS is installed correctly!
+
+    COMPAS: 0.16.5
+    Python: 3.8.2 | packaged by conda-forge | (default, Apr 24 2020, 07:56:27) [Clang 9.0.1 ]
 
 
-Verify
-------
+Installation options
+--------------------
+
+Install COMPAS in an environment with a specific version of Python.
 
 .. code-block:: bash
 
-    conda activate project
-    python
-    >>> import compas
-    >>> compas.__version__
-    '0.15.6'
+    conda create -n my-project python=3.7 COMPAS
+
+Install COMPAS in an existing environment.
+
+.. code-block:: bash
+
+    conda install -n my-project COMPAS
 
 
 Install with pip
 ================
 
-Install a released version.
+Install COMPAS using ``pip`` from the Python Package Index.
 
 .. code-block:: bash
 
     pip install COMPAS
 
-
 Install an editable version from local source.
 
 .. code-block:: bash
 
+    cd path/to/compas
     pip install -e .
 
-
-Note that the same is possible in combination with ``conda`` environments.
+Note that installation with ``pip`` is also possible within a ``conda`` environment.
 
 .. code-block:: bash
 
-    conda activate project
+    conda activate my-project
     pip install -e .
 
 
@@ -86,9 +89,8 @@ please file an issue using the `Issue Tracker <https://github.com/compas-dev/com
 Installing Planarity
 --------------------
 
-**Problem** The installation process with ``pip`` fails while installing ``planarity``, because ``cython`` is not installed.
-
-Install ``cython`` using ``pip`` (or ``conda``), before installing COMPAS.
+The installation process with ``pip`` can fail while installing ``planarity``, because ``cython`` is not installed.
+If this is the case, install ``cython`` using ``pip`` (or ``conda``), before installing COMPAS.
 
 .. code-block:: bash
 
@@ -96,18 +98,11 @@ Install ``cython`` using ``pip`` (or ``conda``), before installing COMPAS.
     pip install COMPAS
 
 
-.. code-block:: bash
-
-    conda install cython
-    pip install COMPAS
-
-
 Microsoft Visual C++ Build Tools
 --------------------------------
 
-**Problem** The installation of COMPAS, or a COMPAS package, or any other package, fails because "Microsoft Visual C++ Build Tools are missing".
-
+The installation with ``pip`` can fail because "Microsoft Visual C++ Build Tools are missing".
 To install the Microsoft Visual C++ Build Tools choose one of the options provided
 here: https://www.scivision.dev/python-windows-visual-c-14-required/
 and just follow the instructions.
-
+Then run the ``pip`` installation commands again.
