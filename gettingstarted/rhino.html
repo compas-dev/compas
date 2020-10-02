@@ -91,10 +91,13 @@
 and can therefore be used in Rhino, both on Windows and on Mac.</p>
 <div class="section" id="install-compas-in-rhino">
 <h2>Install COMPAS in Rhino</h2>
-<div class="figure align-default">
-<img alt="../_images/install_rhino.gif" class="figure-img img-fluid mx-auto" src="../_images/install_rhino.gif" />
+<p>If you installed COMPAS using <code class="docutils literal notranslate"><span class="pre">conda</span></code>, which is highly recommended,
+first activate the environment containing the COMPAS installation you want to make available in Rhino.
+For example, if the name of the environment is <code class="docutils literal notranslate"><span class="pre">research</span></code></p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda activate research
+</code></pre></div>
 </div>
-<p>Installing COMPAS for Rhino is very simple.
+<p>After that, installing COMPAS in Rhino is very simple.
 Just type the following on the command line</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_rhino.install
 </code></pre></div>
@@ -104,15 +107,22 @@ The default is 6.0.</p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_rhino.install -v <span class="m">6</span>.0
 </code></pre></div>
 </div>
-<p>If you installed COMPAS using <code class="docutils literal notranslate"><span class="pre">conda</span></code>, which is highly recommended, make sure
-that the environment in which you installed COMPAS is active when you issue the
-above commands.</p>
 </div>
 <div class="section" id="install-compas-packages-in-rhino">
 <h2>Install COMPAS packages in Rhino</h2>
-<p>The procedure for installing a COMPAS package in Rhino is similar to installing
-COMPAS itself.</p>
+<p>The procedure for installing a COMPAS plugin or extension package in Rhino
+is similar to installing COMPAS itself. For example, if you want to install <code class="docutils literal notranslate"><span class="pre">compas_fab</span></code></p>
 <div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_rhino.install -p compas_fab
+</code></pre></div>
+</div>
+<p>Note, however, that this will only install <code class="docutils literal notranslate"><span class="pre">compas_fab</span></code>.
+If you want to install the core packages as well as <code class="docutils literal notranslate"><span class="pre">compas_fab</span></code>,
+you have to do one of the following.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_rhino.install
+python -m compas_rhino.install -p compas_fab
+</code></pre></div>
+</div>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>python -m compas_rhino.install -p compas compas_rhino compas_ghpython compas_fab
 </code></pre></div>
 </div>
 </div>
