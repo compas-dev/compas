@@ -20,7 +20,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_plotters.geometryplotter.GeometryPlotter` for COMPAS geometry objects.
+
 ### Changed
+
+* Changed `compas.base.Base.dtype` to property.
+* Changed JSON schema to draft 7.
+* Changed version processing to `distutils.version.LooseVersion`.
 
 ### Removed
 
@@ -29,7 +35,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added tests for halfedge data schemas.
+
 ### Changed
+
+* Fixed RGB color processing in `compas.utilities.color_to_colordict`.
+* Fixed Blender object and dat amanagement to avoid `malloc` problems.
+* Updated Blender data structure artists.
+* Changed Blender unused data clearing to also clear collections.
+* Fixed JSON data validation of base COMPAS object.
 
 ### Removed
 
@@ -39,6 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+
+* Fixed bug in `compas.geometry.Box.vertices`.
 
 ### Removed
 
