@@ -72,7 +72,7 @@ class ToolModel(RobotModel):
         Returns
         -------
         :obj:`dict`
-            The frame data.
+            The tool data.
 
         """
         return self._get_data()
@@ -98,7 +98,7 @@ class ToolModel(RobotModel):
 
     @classmethod
     def from_data(cls, data):
-        """Construct a `Tool` from its data representation.  To be used
+        """Construct a `ToolModel` from its data representation.  To be used
         in conjunction with the :meth:`to_data` method.
 
         Parameters
@@ -109,7 +109,7 @@ class ToolModel(RobotModel):
         Returns
         -------
         :class:`ToolModel`
-            The constructed `Tool`.
+            The constructed `ToolModel`.
 
         """
         tool = cls(None, None)
@@ -118,7 +118,7 @@ class ToolModel(RobotModel):
 
     @classmethod
     def from_json(cls, filepath):
-        """Construct a `Tool` from the data contained in a JSON file.
+        """Construct a `ToolModel` from the data contained in a JSON file.
 
         Parameters
         ----------
@@ -127,7 +127,7 @@ class ToolModel(RobotModel):
 
         Returns
         -------
-        :class:`Tool`
+        :class:`ToolModel`
             The tool.
 
         Examples
