@@ -18,3 +18,4 @@ schema
 jsonschema
 scipy >= 1.1
 sympy
+watchdog
