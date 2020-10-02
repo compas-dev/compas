@@ -297,31 +297,6 @@ The following snippet shows how to load the robot model currently active in ROS:
 </code></pre></div>
 </div>
 </div>
-<div class="section" id="visualizing-robots">
-<h2>Visualizing Robots</h2>
-<p>Once a robot has been built or loaded, it can be visualized in Blender, Rhino or
-Grasshopper using one of COMPAS’s artists.  The basic procedure is the same in
-any of the CAD software (aside from the import statement), so for simplicity we
-will demonstrate the use of <a class="reference internal" href="../api/generated/compas_rhino.artists.RobotModelArtist.html#compas_rhino.artists.RobotModelArtist" title="compas_rhino.artists.RobotModelArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.RobotModelArtist</span></code></a> in Rhino.  Once
-COMPAS has been installed for Rhino
-(see <span class="xref std std-ref">Getting started with Rhino</span>),
-the following can be run in a Python script editor within Rhino.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">GithubPackageMeshLoader</span>
-<span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">RobotModel</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">RobotModelArtist</span>
-
-<span class="n">compas</span><span class="o">.</span><span class="n">PRECISION</span> <span class="o">=</span> <span class="s1">&#39;12f&#39;</span>
-<span class="n">github</span> <span class="o">=</span> <span class="n">GithubPackageMeshLoader</span><span class="p">(</span><span class="s1">&#39;ros-industrial/abb&#39;</span><span class="p">,</span> <span class="s1">&#39;abb_irb6600_support&#39;</span><span class="p">,</span> <span class="s1">&#39;kinetic-devel&#39;</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">RobotModel</span><span class="o">.</span><span class="n">from_urdf_file</span><span class="p">(</span><span class="n">github</span><span class="o">.</span><span class="n">load_urdf</span><span class="p">(</span><span class="s1">&#39;irb6640.urdf&#39;</span><span class="p">))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">(</span><span class="n">github</span><span class="p">)</span>
-
-<span class="n">artist</span> <span class="o">=</span> <span class="n">RobotModelArtist</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS FAB::Example&#39;</span><span class="p">)</span>
-<span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
-<span class="n">artist</span><span class="o">.</span><span class="n">draw_visual</span><span class="p">()</span>
-</code></pre></div>
-</div>
-</div>
 <div class="section" id="fk-ik-path-planning">
 <h2>FK, IK &amp; Path Planning</h2>
 <p>Robot models are the base for a large number of additional features that are
@@ -389,7 +364,6 @@ COMPAS FAB documentation.</p>
 </ul>
 </li>
 <li class="nav-item"><a class="nav-link reference internal" href="#building-robots-models">Building robots models</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#visualizing-robots">Visualizing Robots</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#fk-ik-path-planning">FK, IK &amp; Path Planning</a></li>
 </ul>
 </li>
