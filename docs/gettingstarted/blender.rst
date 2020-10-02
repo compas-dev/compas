@@ -41,21 +41,16 @@ If you wish to install a new python environment with COMPAS, open the command pr
     conda config --add channels conda-forge
     conda create -n blender python=3.7 COMPAS
 
-.. note::
-    we called the environment *blender* but you can use any name
-
 Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:
 
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender 2.82\2.82"
+    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender 2.83\2.83"
 
-.. note::
-    change ``conda activate blender`` with ``conda activate name_of_your_environment`` if you want to link another environment.
-
-.. warning::
-    the path ``%PROGRAMFILES%\Blender Foundation\Blender 2.82\2.82`` might be different if you have another version of Blender intalled. Check your version of Blender and change the path accordingly.
+Note that the path ``%PROGRAMFILES%\Blender Foundation\Blender 2.83\2.83`` might be different
+if you have another version of Blender intalled.
+Check your version of Blender and change the path accordingly.
 
 .. raw:: html
 
@@ -69,21 +64,16 @@ If you wish to install a new python environment with COMPAS, open the Terminal a
     conda config --add channels conda-forge
     conda create -n blender python=3.7 COMPAS
 
-.. note::
-    we called the environment *blender* but you can use any name
-
 Now configure Blender to use the newly installed environment or any environment in which you have COMPAS:
 
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.82
+    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.83
 
-.. note::
-    change ``conda activate blender`` with ``conda activate name_of_your_environment`` if you want to link another environment.
-
-.. warning::
-    the path ``/Applications/blender.app/Contents/Resources/2.82`` might be different if you have another version of Blender intalled. Check your version of Blender and change the path accordingly.
+Note that the path ``/Applications/blender.app/Contents/Resources/2.83`` might be different
+if you have another version of Blender intalled.
+Check your version of Blender and change the path accordingly.
 
 .. raw:: html
 
@@ -123,7 +113,7 @@ Otherwise, the changes will not have any effect.
     conda activate blender
     conda install ...
 
-.. note:: 
+.. note::
     if you want to use blender with a different environment, you simply have to activate that environment and floow the same procedure described above.
 
 Start Blender

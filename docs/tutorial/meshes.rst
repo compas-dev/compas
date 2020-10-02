@@ -4,7 +4,7 @@ Meshes
 
 .. rst-class:: lead
 
-Meshes are ubiquitous in geometry processing, computer graphics,
+Meshes are everywhere in geometry processing, computer graphics,
 additive manufacturing processes, Finite Element Analysis etc.
 COMPAS meshes are polygon meshes with support for n-sided polygonal faces.
 They can represent manifold, open or closed, polygonal surfaces.
