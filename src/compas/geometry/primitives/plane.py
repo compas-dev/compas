@@ -33,10 +33,10 @@ class Plane(Primitive):
 
     Examples
     --------
-    >>> plane = Plane([0, 0, 0], [0, 0, 1])
-    >>> plane.point
+        plane = Plane([0, 0, 0], [0, 0, 1])
+        plane.point
     Point(0.000, 0.000, 0.000)
-    >>> plane.normal
+        plane.normal
     Vector(0.000, 0.000, 1.000)
     """
 
@@ -137,10 +137,10 @@ class Plane(Primitive):
 
         Examples
         --------
-        >>> plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
-        >>> plane.point
+            plane = Plane.from_data({'point': [0.0, 0.0, 0.0], 'normal': [0.0, 0.0, 1.0]})
+            plane.point
         Point(0.000, 0.000, 0.000)
-        >>> plane.normal
+            plane.normal
         Vector(0.000, 0.000, 1.000)
         """
         return cls(data['point'], data['normal'])
@@ -166,10 +166,10 @@ class Plane(Primitive):
 
         Examples
         --------
-        >>> plane = Plane.from_three_points([0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0])
-        >>> plane.point
+            plane = Plane.from_three_points([0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0])
+            plane.point
         Point(0.000, 0.000, 0.000)
-        >>> plane.normal
+            plane.normal
         Vector(0.000, 0.000, 1.000)
         """
         a = Point(*a)
@@ -199,10 +199,10 @@ class Plane(Primitive):
 
         Examples
         --------
-        >>> plane = Plane.from_three_points([0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0])
-        >>> plane.point
+            plane = Plane.from_three_points([0.0, 0.0, 0.0], [2.0, 1.0, 0.0], [0.0, 3.0, 0.0])
+            plane.point
         Point(0.000, 0.000, 0.000)
-        >>> plane.normal
+            plane.normal
         Vector(0.000, 0.000, 1.000)
         """
         normal = Vector.cross(u, v)
@@ -231,8 +231,8 @@ class Plane(Primitive):
 
         Examples
         --------
-        >>> frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> Plane.from_frame(frame)
+            frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            Plane.from_frame(frame)
         Plane(Point(1.000, 1.000, 1.000), Vector(-0.299, -0.079, 0.951))
         """
         return cls(frame.point, frame.normal)
@@ -251,13 +251,13 @@ class Plane(Primitive):
 
         Examples
         --------
-        >>> from compas.geometry import Frame
-        >>> from compas.geometry import Transformation
-        >>> from compas.geometry import Plane
-        >>> f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-        >>> T = Transformation.from_frame(f)
-        >>> plane = Plane.worldXY()
-        >>> plane.transform(T)
+            from compas.geometry import Frame
+            from compas.geometry import Transformation
+            from compas.geometry import Plane
+            f = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
+            T = Transformation.from_frame(f)
+            plane = Plane.worldXY()
+            plane.transform(T)
         """
         self.point.transform(T)
         self.normal.transform(T)
@@ -268,6 +268,12 @@ class Plane(Primitive):
 # ==============================================================================
 
 if __name__ == '__main__':
+    from compas.geometry import Projection
+
+    point = [0., 0., 0.]
+    normal = [0., 0., 1.]
+    plane = Plane(point, normal)
+    P = Projection.from_plane(plane)
 
     import doctest
     from compas.geometry import Frame  # noqa F401

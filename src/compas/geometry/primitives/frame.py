@@ -739,6 +739,14 @@ class Frame(Primitive):
 # ==============================================================================
 
 if __name__ == '__main__':
+    from compas.geometry import Point
+    frame = Frame([0, 0, 0], [1.0, 0.0, 1.0], [0., 1., 0.])
+    pw = Point(-1, 0, 1) # point in wcf
+    pl = frame.to_local_coordinates(pw) # point in frame
+    print(pl)
+    frame.to_world_coordinates(pl)
+    Point(2.000, 2.000, 2.000)
+
 
     import doctest
     from compas.geometry import allclose  # noqa: F401

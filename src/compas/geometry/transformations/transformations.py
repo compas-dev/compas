@@ -1138,7 +1138,14 @@ if __name__ == "__main__":
     import doctest
 
     from compas.geometry import allclose  # noqa: F401
-    from compas.geometry import Point  # noqa: F401
+    from compas.geometry import Point, Plane  # noqa: F401
     from compas.geometry import Frame  # noqa: F401
+
+    pt = (-1., 0., 1.)
+    pt = (2, 0., 0.)
+    plane = Plane((0.0, 0.0, 0.0), (-1., 0., 1.))
+    proj = project_point_plane(point=pt, plane=plane)
+
+
 
     doctest.testmod(globs=globals())

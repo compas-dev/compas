@@ -190,6 +190,7 @@ def is_blender():
 BLENDER = is_blender()
 
 
+
 def set_precision(precision):
     """Set the precision used by geometric maps.
 

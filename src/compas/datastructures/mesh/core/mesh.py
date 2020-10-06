@@ -454,7 +454,7 @@ class BaseMesh(HalfEdge):
     @classmethod
     def from_polyhedron(cls, f):
         """Construct a mesh from a platonic solid.
-
+x
         Parameters
         ----------
         f : int
@@ -981,6 +981,8 @@ class BaseMesh(HalfEdge):
 
         """
         a, b = self.edge_coordinates(u, v)
+        # print(a, b)
+        # print(type(a), type(b))
         ab = subtract_vectors(b, a)
         return ab
 

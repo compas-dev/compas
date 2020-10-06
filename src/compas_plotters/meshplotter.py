@@ -469,7 +469,7 @@ if __name__ == "__main__":
     import compas
     from compas.datastructures import Mesh
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    mesh = Mesh.from_obj(compas.get('hypar.obj'))
 
     plotter = MeshPlotter(mesh, figsize=(10, 6))
 

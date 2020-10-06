@@ -21,7 +21,7 @@ def trimesh_face_circle(mesh, fkey):
     -------
     list
         The centre coordinates, the radius value and the normal vector of the circle.
-    None
+    Nonec
         If the face is not a triangle.
 
     """

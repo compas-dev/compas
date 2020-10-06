@@ -95,6 +95,7 @@ class Polyline(Primitive):
     def length(self):
         """float : The length of the polyline."""
         return sum([line.length for line in self.lines])
+        
 
     # ==========================================================================
     # customization

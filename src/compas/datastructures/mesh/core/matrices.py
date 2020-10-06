@@ -301,9 +301,12 @@ def trimesh_edge_cotangent(mesh, u, v):
 
     """
     fkey = mesh.halfedge[u][v]
+
     cotangent = 0.0
     if fkey is not None:
+
         w = mesh.face_vertex_ancestor(fkey, u)
+        # print(fkey, u, v, w)
         wu = mesh.edge_vector(w, u)
         wv = mesh.edge_vector(w, v)
         length = length_vector(cross_vectors(wu, wv))
@@ -401,7 +404,7 @@ def trimesh_cotangent_laplacian_matrix(mesh, rtype='csr'):
         rows.append(i)
         cols.append(i)
 
-        W = 0
+        W = 0.
         for nbr in nbrs:
             a, b = trimesh_edge_cotangents(mesh, key, nbr)
             w = a + b
