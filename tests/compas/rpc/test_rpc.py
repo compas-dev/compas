@@ -1,4 +1,4 @@
-import os
+# import os
 
 from compas.geometry import allclose
 from compas.rpc import Proxy
