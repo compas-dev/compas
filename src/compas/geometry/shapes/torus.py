@@ -54,6 +54,7 @@ class Torus(Shape):
     __slots__ = ['_plane', '_radius_axis', '_radius_pipe']
 
     def __init__(self, plane, radius_axis, radius_pipe):
+        super(Torus, self).__init__()
         self._plane = None
         self._radius_axis = None
         self._radius_pipe = None

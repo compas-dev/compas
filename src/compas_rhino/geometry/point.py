@@ -2,14 +2,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+import Rhino
 import compas_rhino
-
 from compas.geometry import Point
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
-if compas.RHINO:
-    import Rhino
+from ._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoPoint']
@@ -116,6 +113,28 @@ class RhinoPoint(BaseRhinoGeometry):
             A COMPAS point.
         """
         return Point(self.x, self.y, self.z)
+
+    def closest_point(self, point, maxdist=0.0, return_param=False):
+        """Compute the closest point on a curve to a point in space.
+
+        Parameters
+        ----------
+        point : point
+            A point location.
+        maxdist : float, optional
+            The maximum distance between the point on the curve and the curve.
+            Default is ``0.0``.
+        return_param : bool, optional
+            Return not only the point coordinates, but also the parameter of the point on the curve.
+            Default is ``False``.
+
+        Returns
+        -------
+        list
+            The XYZ coordinates of the point.
+
+        """
+        return self.xyz
 
 
 # ==============================================================================

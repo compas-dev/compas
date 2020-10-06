@@ -14,7 +14,7 @@ __all__ = ['Server']
 
 
 class Server(SimpleXMLRPCServer):
-    """Version of a `SimpleXMLRPCServer` that can be ceanly terminated from the client side.
+    """Version of a `SimpleXMLRPCServer` that can be cleanly terminated from the client side.
 
     Examples
     --------

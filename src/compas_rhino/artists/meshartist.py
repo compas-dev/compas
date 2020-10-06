@@ -65,21 +65,22 @@ class MeshArtist(BaseArtist):
 
     def __init__(self, mesh, layer=None):
         super(MeshArtist, self).__init__()
-        self._guids = []
-        self._guid_vertex = {}
-        self._guid_edge = {}
-        self._guid_face = {}
-        self._guid_vertexnormal = {}
-        self._guid_facenormal = {}
-        self._guid_vertexlabel = {}
-        self._guid_edgelabel = {}
-        self._guid_facelabel = {}
+        self._mesh = None
         self._vertex_xyz = None
         self.mesh = mesh
         self.layer = layer
         self.color_vertices = (255, 255, 255)
         self.color_edges = (0, 0, 0)
         self.color_faces = (0, 0, 0)
+
+    @property
+    def mesh(self):
+        return self._mesh
+
+    @mesh.setter
+    def mesh(self, mesh):
+        self._mesh = mesh
+        self._vertex_xyz = None
 
     @property
     def vertex_xyz(self):
@@ -95,109 +96,14 @@ class MeshArtist(BaseArtist):
     def vertex_xyz(self, vertex_xyz):
         self._vertex_xyz = vertex_xyz
 
-    @property
-    def guids(self):
-        """list: The GUIDs of all Rhino objects created by this artist."""
-        guids = self._guids
-        guids += list(self.guid_vertex.keys())
-        guids += list(self.guid_edge.keys())
-        guids += list(self.guid_face.keys())
-        guids += list(self.guid_vertexnormal.keys())
-        guids += list(self.guid_facenormal.keys())
-        guids += list(self.guid_vertexlabel.keys())
-        guids += list(self.guid_edgelabel.keys())
-        guids += list(self.guid_facelabel.keys())
-        return guids
-
-    @property
-    def guid_vertex(self):
-        """dict: Map between Rhino object GUIDs and mesh vertex identifiers."""
-        return self._guid_vertex
-
-    @guid_vertex.setter
-    def guid_vertex(self, values):
-        self._guid_vertex = dict(values)
-
-    @property
-    def guid_edge(self):
-        """dict: Map between Rhino object GUIDs and mesh edge identifiers."""
-        return self._guid_edge
-
-    @guid_edge.setter
-    def guid_edge(self, values):
-        self._guid_edge = dict(values)
-
-    @property
-    def guid_face(self):
-        """dict: Map between Rhino object GUIDs and mesh face identifiers."""
-        return self._guid_face
-
-    @guid_face.setter
-    def guid_face(self, values):
-        self._guid_face = dict(values)
-
-    @property
-    def guid_vertexnormal(self):
-        """dict: Map between Rhino object GUIDs and mesh vertexnormal identifiers."""
-        return self._guid_vertexnormal
-
-    @guid_vertexnormal.setter
-    def guid_vertexnormal(self, values):
-        self._guid_vertexnormal = dict(values)
-
-    @property
-    def guid_facenormal(self):
-        """dict: Map between Rhino object GUIDs and mesh facenormal identifiers."""
-        return self._guid_facenormal
-
-    @guid_facenormal.setter
-    def guid_facenormal(self, values):
-        self._guid_facenormal = dict(values)
-
-    @property
-    def guid_vertexlabel(self):
-        """dict: Map between Rhino object GUIDs and mesh vertexlabel identifiers."""
-        return self._guid_vertexlabel
-
-    @guid_vertexlabel.setter
-    def guid_vertexlabel(self, values):
-        self._guid_vertexlabel = dict(values)
-
-    @property
-    def guid_facelabel(self):
-        """dict: Map between Rhino object GUIDs and mesh facelabel identifiers."""
-        return self._guid_facelabel
-
-    @guid_facelabel.setter
-    def guid_facelabel(self, values):
-        self._guid_facelabel = dict(values)
-
-    @property
-    def guid_edgelabel(self):
-        """dict: Map between Rhino object GUIDs and mesh edgelabel identifiers."""
-        return self._guid_edgelabel
-
-    @guid_edgelabel.setter
-    def guid_edgelabel(self, values):
-        self._guid_edgelabel = dict(values)
-
     # ==========================================================================
     # clear
     # ==========================================================================
 
-    def clear(self):
-        """Clear all objects previously drawn by this artist.
-        """
-        compas_rhino.delete_objects(self.guids, purge=True)
-        self._guids = []
-        self._guid_vertex = {}
-        self._guid_edge = {}
-        self._guid_face = {}
-        self._guid_vertexnormal = {}
-        self._guid_facenormal = {}
-        self._guid_vertexlabel = {}
-        self._guid_edgelabel = {}
-        self._guid_facelabel = {}
+    def clear_by_name(self):
+        """Clear all objects in the "namespace" of the associated mesh."""
+        guids = compas_rhino.get_objects(name="{}.*".format(self.mesh.name))
+        compas_rhino.delete_objects(guids, purge=True)
 
     def clear_layer(self):
         """Clear the main layer of the artist."""
@@ -205,7 +111,7 @@ class MeshArtist(BaseArtist):
             compas_rhino.clear_layer(self.layer)
 
     # ==========================================================================
-    # components
+    # draw
     # ==========================================================================
 
     def draw(self, color=(0, 0, 0), disjoint=False):
@@ -230,10 +136,10 @@ class MeshArtist(BaseArtist):
         The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
         Faces with more than 4 vertices will be triangulated on-the-fly.
         """
-        self.clear()
-        key_index = self.mesh.key_index()
-        vertices = self.vertex_xyz.values()
-        faces = [[key_index[key] for key in self.mesh.face_vertices(fkey)] for fkey in self.mesh.faces()]
+        vertex_index = self.mesh.key_index()
+        vertex_xyz = self.vertex_xyz
+        vertices = [vertex_xyz[vertex] for vertex in self.mesh.vertices()]
+        faces = [[vertex_index[vertex] for vertex in self.mesh.face_vertices(face)] for face in self.mesh.faces()]
         new_faces = []
         for face in faces:
             f = len(face)
@@ -249,9 +155,8 @@ class MeshArtist(BaseArtist):
             else:
                 continue
         layer = self.layer
-        name = "{}.mesh".format(self.mesh.name)
+        name = "{}".format(self.mesh.name)
         guid = compas_rhino.draw_mesh(vertices, new_faces, layer=layer, name=name, color=color, disjoint=disjoint)
-        self._guids += [guid]
         return [guid]
 
     def draw_vertices(self, vertices=None, color=None):
@@ -281,9 +186,7 @@ class MeshArtist(BaseArtist):
                 'pos': vertex_xyz[vertex],
                 'name': "{}.vertex.{}".format(self.mesh.name, vertex),
                 'color': vertex_color[vertex]})
-        guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        self.guid_vertex = zip(guids, vertices)
-        return guids
+        return compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
 
     def draw_faces(self, faces=None, color=None, join_faces=False):
         """Draw a selection of faces.
@@ -317,14 +220,12 @@ class MeshArtist(BaseArtist):
                 'color': face_color[face]})
         guids = compas_rhino.draw_faces(facets, layer=self.layer, clear=False, redraw=False)
         if not join_faces:
-            self.guid_face = zip(guids, faces)
             return guids
         guid = compas_rhino.rs.JoinMeshes(guids, delete_input=True)
         compas_rhino.rs.ObjectLayer(guid, self.layer)
-        compas_rhino.rs.ObjectName(guid, '{}.mesh'.format(self.mesh.name))
+        compas_rhino.rs.ObjectName(guid, '{}'.format(self.mesh.name))
         if color:
             compas_rhino.rs.ObjectColor(guid, color)
-        self.guids += [guid]
         return [guid]
 
     def draw_edges(self, edges=None, color=None):
@@ -355,12 +256,10 @@ class MeshArtist(BaseArtist):
                 'end': vertex_xyz[edge[1]],
                 'color': edge_color[edge],
                 'name': "{}.edge.{}-{}".format(self.mesh.name, *edge)})
-        guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self.guid_edge = zip(guids, edges)
-        return guids
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================
-    # normals
+    # draw normals
     # ==========================================================================
 
     def draw_vertexnormals(self, vertices=None, color=(0, 255, 0), scale=1.0):
@@ -397,9 +296,7 @@ class MeshArtist(BaseArtist):
                 'color': color,
                 'name': "{}.vertexnormal.{}".format(self.mesh.name, vertex),
                 'arrow': 'end'})
-        guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self.guid_vertexnormal = zip(guids, vertices)
-        return guids
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_facenormals(self, faces=None, color=(0, 255, 255), scale=1.0):
         """Draw the normals of the faces.
@@ -435,12 +332,10 @@ class MeshArtist(BaseArtist):
                 'name': "{}.facenormal.{}".format(self.mesh.name, face),
                 'color': color,
                 'arrow': 'end'})
-        guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        self.guid_facenormal = zip(guids, faces)
-        return guids
+        return compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     # ==========================================================================
-    # labels
+    # draw labels
     # ==========================================================================
 
     def draw_vertexlabels(self, text=None, color=None):
@@ -478,9 +373,7 @@ class MeshArtist(BaseArtist):
                 'name': "{}.vertexlabel.{}".format(self.mesh.name, vertex),
                 'color': vertex_color[vertex],
                 'text': vertex_text[vertex]})
-        guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_vertexlabel = zip(guids, vertex_text)
-        return guids
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_facelabels(self, text=None, color=None):
         """Draw labels for a selection of faces.
@@ -517,9 +410,7 @@ class MeshArtist(BaseArtist):
                 'name': "{}.facelabel.{}".format(self.mesh.name, face),
                 'color': face_color[face],
                 'text': face_text[face]})
-        guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_facelabel = zip(guids, face_text)
-        return guids
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
     def draw_edgelabels(self, text=None, color=None):
         """Draw labels for a selection of edges.
@@ -554,9 +445,7 @@ class MeshArtist(BaseArtist):
                 'name': "{}.edgelabel.{}-{}".format(self.mesh.name, *edge),
                 'color': edge_color[edge],
                 'text': edge_text[edge]})
-        guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
-        self.guid_edgelabel = zip(guids, edge_text)
-        return guids
+        return compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
 
 # ==============================================================================

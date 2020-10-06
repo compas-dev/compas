@@ -37,23 +37,30 @@ class NetworkObject(BaseObject):
 
     """
 
+    SETTINGS = {
+        'color.nodes': (255, 255, 255),
+        'color.edges': (0, 0, 0),
+        'show.nodes': True,
+        'show.edges': True,
+        'show.nodelabels': False,
+        'show.edgelabels': False,
+    }
+
     modify = network_update_attributes
     modify_nodes = network_update_node_attributes
     modify_edges = network_update_edge_attributes
 
     def __init__(self, network, scene=None, name=None, layer=None, visible=True, settings=None):
         super(NetworkObject, self).__init__(network, scene, name, layer, visible)
+        self._guid_node = {}
+        self._guid_edge = {}
+        self._guid_nodelabel = {}
+        self._guid_edgelabel = {}
+        self._anchor = None
         self._location = None
         self._scale = None
         self._rotation = None
-        self.settings.update({
-            'color.nodes': (255, 255, 255),
-            'color.edges': (0, 0, 0),
-            'show.nodes': True,
-            'show.edges': True,
-            'show.nodelabels': False,
-            'show.edgelabels': False,
-        })
+        self.settings.update(NetworkObject.SETTINGS)
         if settings:
             self.settings.update(settings)
 
@@ -64,6 +71,27 @@ class NetworkObject(BaseObject):
     @network.setter
     def network(self, network):
         self.item = network
+        self._guids = []
+        self._guid_node = {}
+        self._guid_edge = {}
+        self._guid_nodelabel = {}
+        self._guid_edgelabel = {}
+
+    # def __getstate__(self):
+    #     pass
+
+    # def __setstate__(self, state):
+    #     pass
+
+    @property
+    def anchor(self):
+        """The node of the network that is anchored to the location of the object."""
+        return self._anchor
+
+    @anchor.setter
+    def anchor(self, node):
+        if self.network.has_node(node):
+            self._anchor = node
 
     @property
     def location(self):
@@ -112,16 +140,77 @@ class NetworkObject(BaseObject):
         self._rotation = rotation
 
     @property
-    def vertex_xyz(self):
-        S = Scale.from_factors([self.scale] * 3)
-        R = Rotation.from_euler_angles(self.rotation)
-        T = Translation.from_vector(self.location)
-        network = self.network.transformed(T * R * S)
-        node_xyz = {node: network.node_attributes(node, 'xyz') for node in network.nodes()}
+    def node_xyz(self):
+        """dict : The view coordinates of the mesh object."""
+        origin = Point(0, 0, 0)
+        if self.anchor is not None:
+            xyz = self.network.node_attributes(self.anchor, 'xyz')
+            point = Point(* xyz)
+            T1 = Translation.from_vector(origin - point)
+            S = Scale.from_factors([self.scale] * 3)
+            R = Rotation.from_euler_angles(self.rotation)
+            T2 = Translation.from_vector(self.location)
+            X = T2 * R * S * T1
+        else:
+            S = Scale.from_factors([self.scale] * 3)
+            R = Rotation.from_euler_angles(self.rotation)
+            T = Translation.from_vector(self.location)
+            X = T * R * S
+        network = self.network.transformed(X)
+        node_xyz = {network: network.node_attributes(node, 'xyz') for node in network.nodes()}
         return node_xyz
 
+    @property
+    def guid_node(self):
+        """dict: Map between Rhino object GUIDs and network node identifiers."""
+        if not self._guid_node:
+            self._guid_node = {}
+        return self._guid_node
+
+    @guid_node.setter
+    def guid_node(self, values):
+        self._guid_node = dict(values)
+
+    @property
+    def guid_edge(self):
+        """dict: Map between Rhino object GUIDs and network edge identifiers."""
+        if not self._guid_edge:
+            self._guid_edge = {}
+        return self._guid_edge
+
+    @guid_edge.setter
+    def guid_edge(self, values):
+        self._guid_edge = dict(values)
+
+    @property
+    def guid_nodelabel(self):
+        """dict: Map between Rhino object GUIDs and network nodelabel identifiers."""
+        return self._guid_vertexlabel
+
+    @guid_nodelabel.setter
+    def guid_nodelabel(self, values):
+        self._guid_vertexlabel = dict(values)
+
+    @property
+    def guid_edgelabel(self):
+        """dict: Map between Rhino object GUIDs and network edgelabel identifiers."""
+        return self._guid_edgelabel
+
+    @guid_edgelabel.setter
+    def guid_edgelabel(self, values):
+        self._guid_edgelabel = dict(values)
+
+    @property
+    def guids(self):
+        guids = []
+        guids += list(self.guid_node)
+        guids += list(self.guid_edge)
+        return guids
+
     def clear(self):
-        self.artist.clear()
+        compas_rhino.delete_objects(self.guids, purge=True)
+        self._guid_node = {}
+        self._guid_edge = {}
 
     def draw(self):
         """Draw the object representing the network.
@@ -129,18 +218,36 @@ class NetworkObject(BaseObject):
         self.clear()
         if not self.visible:
             return
+
         self.artist.node_xyz = self.node_xyz
+
         if self.settings['show.nodes']:
-            self.artist.draw_nodes(color=self.settings['color.nodes'])
+            nodes = list(self.network.nodes())
+
+            guids = self.artist.draw_nodes(nodes=nodes, color=self.settings['color.nodes'])
+            self.guid_node = zip(guids, nodes)
+
             if self.settings['show.nodelabels']:
-                self.artist.draw_nodelabels(color=self.settings['color.nodes'])
+                text = {node: str(node) for node in nodes}
+                guids = self.artist.draw_nodelabels(text=text, color=self.settings['color.nodes'])
+                self.guid_nodelabel = zip(guids, nodes)
+
         if self.settings['show.edges']:
-            self.artist.draw_edges(color=self.settings['color.edges'])
+            edges = list(self.network.edges())
+
+            guids = self.artist.draw_edges(edges=edges, color=self.settings['color.edges'])
+            self.guid_edge = zip(guids, edges)
+
             if self.settings['show.edgelabels']:
-                self.artist.draw_edgelabels(color=self.settings['color.edges'])
+                text = {edge: "{}-{}".format(*edge) for edge in edges}
+                guids = self.artist.draw_edgelabels(text=text, color=self.settings['color.edges'])
+                self.guid_edgelabel = zip(guids, edges)
+
         self.redraw()
 
     def select(self):
+        # there is currently no "general" selection method
+        # for the entire mesh object
         raise NotImplementedError
 
     def select_nodes(self):
@@ -152,7 +259,7 @@ class NetworkObject(BaseObject):
             A list of node identifiers.
         """
         guids = compas_rhino.select_points()
-        nodes = [self.artist.guid_node[guid] for guid in guids if guid in self.artist.guid_node]
+        nodes = [self.guid_node[guid] for guid in guids if guid in self.guid_node]
         return nodes
 
     def select_edges(self):
@@ -164,13 +271,27 @@ class NetworkObject(BaseObject):
             A list of edge identifiers.
         """
         guids = compas_rhino.select_lines()
-        edges = [self.artist.guid_edge[guid] for guid in guids if guid in self.artist.guid_edge]
+        edges = [self.guid_edge[guid] for guid in guids if guid in self.guid_edge]
         return edges
 
     def move(self):
+        """Move the entire mesh object to a different location."""
         raise NotImplementedError
 
     def move_node(self, node):
+        """Move a single node of the network object and update the data structure accordingly.
+
+        Parameters
+        ----------
+        node : int
+            The identifier of the node.
+
+        Returns
+        -------
+        bool
+            True if the operation was successful.
+            False otherwise.
+        """
         return network_move_node(self.network, node)
 
 

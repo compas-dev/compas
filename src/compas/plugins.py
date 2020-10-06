@@ -239,7 +239,7 @@ class PluginManager(object):
         return res
 
 
-def pluggable(pluggable_method=None, category=None, domain='https://plugins.compas.dev/'):
+def pluggable(pluggable_method=None, category=None, selector='first_match', domain='https://plugins.compas.dev/'):
     """Decorator to mark a method as a pluggable extension point.
 
     A pluggable interface is uniquely identifiable/locatable via a URL
@@ -252,9 +252,15 @@ def pluggable(pluggable_method=None, category=None, domain='https://plugins.comp
     ----------
     pluggable_method : callable
         The method to decorate as ``pluggable``.
-    category : str, optional
+    category : :obj:`str`, optional
         An optional string to group or categorize extension points.
-    domain : str, optional
+    selector : :obj:`str`, optional
+        String that determines the selection mode of extension points.
+
+        - ``"first_match"``: (:obj:`str`) Execute the first matching implementation.
+        - ``"collect_all"``: (:obj:`str`) Executes all matching implementations and return list of its return values.
+
+    domain : :obj:`str`, optional
         Domain name that "owns" the pluggable extension point.
         This is useful to avoid name collisions between extension points
         of different packages.
@@ -270,11 +276,23 @@ def pluggable(pluggable_method=None, category=None, domain='https://plugins.comp
         def wrapper(*args, **kwargs):
             extension_point_url = _get_extension_point_url_from_method(domain, category, func)
 
-            # Select matching plugin
-            plugin_impl = _select_plugin(extension_point_url)
+            # Select first matching plugin
+            if selector == 'first_match':
+                plugin_impl = _select_plugin(extension_point_url)
 
-            # Invoke plugin
-            return plugin_impl.method(*args, **kwargs)
+                # Invoke plugin
+                return plugin_impl.method(*args, **kwargs)
+
+            # Collect all matching plugins
+            elif selector == 'collect_all':
+                results = []
+
+                for plugin_impl in _collect_plugins(extension_point_url):
+                    results.append(plugin_impl.method(*args, **kwargs))
+
+                return results
+            else:
+                raise ValueError('Unexpected selector type. Must be either: first_match or collect_all')
 
         return wrapper
 
@@ -306,7 +324,7 @@ def plugin(method=None, category=None, requires=None, tryfirst=False, trylast=Fa
         Plugins can declare a preferred priority by setting this to ``True``.
         By default ``False``.
     trylast : bool, optional
-        Alternatively, a plugin can demote itself to be least preferrable
+        Alternatively, a plugin can demote itself to be least preferable
         setting ``trylast`` to ``True``. By default ``False``.
     pluggable_name : str, optional
         Usually, the name of the decorated plugin method matches that of the
@@ -392,25 +410,39 @@ class Importer(object):
         return self._cache[module_name]
 
 
+def is_plugin_selectable(plugin, manager):
+    if plugin.opts['requires']:
+        importable_requirements = (manager.importer.check_importable(name) for name in plugin.opts['requires'])
+
+        if not all(importable_requirements):
+            if manager.DEBUG:
+                print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
+            return False
+
+    return True
+
+
 def select_plugin(extension_point_url, manager):
     if manager.DEBUG:
         print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
 
-    plugins = manager.registry.get(extension_point_url)
-    for plugin in plugins or []:
-        if plugin.opts['requires']:
-            importable_requirements = (manager.importer.check_importable(name) for name in plugin.opts['requires'])
-
-            if not all(importable_requirements):
-                if manager.DEBUG:
-                    print('Requirements not satisfied. Plugin will not be used: {}'.format(plugin.id))
-                continue
-
-        return plugin
+    plugins = manager.registry.get(extension_point_url) or []
+    for plugin in plugins:
+        if is_plugin_selectable(plugin, manager):
+            return plugin
 
     # Nothing found, raise
     raise PluginNotInstalledError('Plugin not found for extension point URL: {}'.format(extension_point_url))
 
 
+def collect_plugins(extension_point_url, manager):
+    if manager.DEBUG:
+        print('Extension Point URL {} invoked. Will select a matching plugin'.format(extension_point_url))
+
+    plugins = manager.registry.get(extension_point_url) or []
+    return [plugin for plugin in plugins if is_plugin_selectable(plugin, manager)]
+
+
 plugin_manager = PluginManager()
 _select_plugin = functools.partial(select_plugin, manager=plugin_manager)
+_collect_plugins = functools.partial(collect_plugins, manager=plugin_manager)

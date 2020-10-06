@@ -2,17 +2,17 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import json
-
 from ast import literal_eval
-from random import sample
 from random import choice
 
-from compas.datastructures.volmesh.core import VertexAttributeView
-from compas.datastructures.volmesh.core import FaceAttributeView
-from compas.datastructures.volmesh.core import CellAttributeView
+import compas
 
-from compas.datastructures import Datastructure
+from compas.datastructures.datastructure import Datastructure
+from compas.datastructures.attributes import VertexAttributeView
+from compas.datastructures.attributes import EdgeAttributeView
+from compas.datastructures.attributes import FaceAttributeView
+from compas.datastructures.attributes import CellAttributeView
+
 from compas.utilities import pairwise
 
 
@@ -42,52 +42,143 @@ class HalfFace(Datastructure):
 
     def __init__(self):
         super(HalfFace, self).__init__()
-
-        self._max_int_vkey = -1
-        self._max_int_hfkey = -1
-        self._max_int_ckey = -1
-
-        self.vertex = {}
-        self.halfface = {}
-        self.cell = {}
-        self.plane = {}
-
-        self.edgedata = {}
-        self.facedata = {}
-        self.celldata = {}
-
+        self._max_vertex = -1
+        self._max_face = -1
+        self._max_cell = -1
+        self._vertex = {}
+        self._halfface = {}
+        self._cell = {}
+        self._plane = {}
+        self._edge_data = {}
+        self._face_data = {}
+        self._cell_data = {}
         self.attributes = {'name': 'VolMesh'}
-
         self.default_vertex_attributes = {'x': 0.0, 'y': 0.0, 'z': 0.0}
         self.default_edge_attributes = {}
         self.default_face_attributes = {}
         self.default_cell_attributes = {}
 
-    # --------------------------------------------------------------------------
-    # customisation
-    # --------------------------------------------------------------------------
+    @property
+    def DATASCHEMA(self):
+        import schema
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return schema.Schema({
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "dca": dict,
+                "vertex": dict,
+                "halfface": dict,
+                "cell": dict,
+                "plane": dict,
+                "edge_data": dict,
+                "face_data": dict,
+                "cell_data": dict,
+                "max_vertex": schema.And(int, lambda x: x >= -1),
+                "max_face": schema.And(int, lambda x: x >= -1),
+                "max_cell": schema.And(int, lambda x: x >= -1),
+            })
+        return schema.Schema({
+            "compas": str,
+            "datatype": str,
+            "data": {
+                "attributes": dict,
+                "dva": dict,
+                "dea": dict,
+                "dfa": dict,
+                "dca": dict,
+                "vertex": dict,
+                "halfface": dict,
+                "cell": dict,
+                "plane": dict,
+                "edge_data": dict,
+                "face_data": dict,
+                "cell_data": dict,
+                "max_vertex": schema.And(int, lambda x: x >= -1),
+                "max_face": schema.And(int, lambda x: x >= -1),
+                "max_cell": schema.And(int, lambda x: x >= -1),
+            }
+        })
 
-    def __str__(self):
-        """Generate a readable representation of the data of the volmesh."""
-        return json.dumps(self.data, sort_keys=True, indent=4)
+    @property
+    def JSONSCHEMA(self):
+        from packaging import version
+        if version.parse(compas.__version__) < version.parse('0.17'):
+            return {
+                "$schema": "http://json-schema.org/schema",
+                "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
+                "$compas": compas.__version__,
 
-    def summary(self):
-        """Print a summary of the volmesh."""
-        tpl = "\n".join(
-            ["VolMesh summary",
-             "===============",
-             "- vertices: {}",
-             "- edges   : {}",
-             "- faces   : {}",
-             "- cells   : {}"])
-        s = tpl.format(self.number_of_vertices(),
-                       self.number_of_edges(),
-                       self.number_of_faces(),
-                       self.number_of_cells())
-        print(s)
+                "type": "object",
+                "properties": {
+                    "attributes":   {"type": "object"},
+                    "dva":          {"type": "object"},
+                    "dea":          {"type": "object"},
+                    "dfa":          {"type": "object"},
+                    "dca":          {"type": "object"},
+                    "vertex":       {"type": "object"},
+                    "halfface":     {"type": "object"},
+                    "cell":         {"type": "object"},
+                    "plane":        {"type": "object"},
+                    "face_data":    {"type": "object"},
+                    "edge_data":    {"type": "object"},
+                    "cell_data":    {"type": "object"},
+                    "max_vertex":   {"type": "number"},
+                    "max_face":     {"type": "number"},
+                    "max_cell":     {"type": "number"}
+                },
+                "required": [
+                    "attributes",
+                    "dva", "dea", "dfa", "dca",
+                    "vertex", "halfface", "cell", "plane",
+                    "face_data", "edge_data", "cell_data",
+                    "max_vertex", "max_face", "max_cell"
+                ]
+            }
+        return {
+            "$schema": "http://json-schema.org/schema",
+            "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
+            "$compas": compas.__version__,
+
+            "type": "object",
+            "poperties": {
+                "compas": {"type": "string"},
+                "datatype": {"type": "string"},
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "attributes":   {"type": "object"},
+                        "dva":          {"type": "object"},
+                        "dea":          {"type": "object"},
+                        "dfa":          {"type": "object"},
+                        "dca":          {"type": "object"},
+                        "vertex":       {"type": "object"},
+                        "halfface":     {"type": "object"},
+                        "cell":         {"type": "object"},
+                        "plane":        {"type": "object"},
+                        "face_data":    {"type": "object"},
+                        "edge_data":    {"type": "object"},
+                        "cell_data":    {"type": "object"},
+                        "max_vertex":   {"type": "number"},
+                        "max_face":     {"type": "number"},
+                        "max_cell":     {"type": "number"}
+                    },
+                    "required": [
+                        "attributes",
+                        "dva", "dea", "dfa", "dca",
+                        "vertex", "halfface", "cell", "plane",
+                        "face_data", "edge_data", "cell_data",
+                        "max_vertex", "max_face", "max_cell"
+                    ]
+                }
+            },
+            "required": ["compas", "datatype", "data"]
+        }
 
     # --------------------------------------------------------------------------
-    # special properties
+    # descriptors
     # --------------------------------------------------------------------------
 
     @property
@@ -106,62 +197,26 @@ class HalfFace(Datastructure):
     @property
     def data(self):
         """dict: A data dict representing the volmesh data structure for serialisation.
-
-        The dict has the following structure:
-
-        * 'attributes'   => dict
-        * 'dva'          => dict
-        * 'dea'          => dict
-        * 'dfa'          => dict
-        * 'dca'          => dict
-        * 'vertex'       => dict
-        * 'halfface'     => dict
-        * 'cell'         => dict
-        * 'plane'        => dict
-        * 'edgedata'     => dict
-        * 'facedata'     => dict
-        * 'celldata'     => dict
-        * 'max_int_key'  => int
-        * 'max_int_hfkey' => int
-        * 'max_int_ckey' => int
-
-        Notes
-        -----
-        All dictionary keys are converted to their representation value (``repr(key)``)
-        to ensure compatibility of all allowed key types with the JSON serialisation
-        format, which only allows for dict keys that are strings.
         """
-
-        edgedata = {}
-        facedata = {}
-        celldata = {}
-
-        for edge in self.edgedata:
-            edgedata[repr(edge)] = self.edgedata[edge]
-
-        for face in self.facedata:
-            facedata[str(face)] = self.facedata[face]
-
-        for cell in self.celldata:
-            celldata[str(cell)] = self.celldata[cell]
-
+        edge_data = {}
+        for e in self._edge_data:
+            edge_data[repr(e)] = self._edge_data[e]
         data = {
             'attributes': self.attributes,
             'dva': self.default_vertex_attributes,
             'dea': self.default_edge_attributes,
             'dfa': self.default_face_attributes,
             'dca': self.default_cell_attributes,
-            'vertex': self.vertex,
-            'halfface': self.halfface,
-            'cell': self.cell,
-            'plane': self.plane,
-            'edgedata': edgedata,
-            'facedata': facedata,
-            'celldata': celldata,
-            'max_int_vkey': self._max_int_vkey,
-            'max_int_hfkey': self._max_int_hfkey,
-            'max_int_ckey': self._max_int_ckey}
-
+            'vertex': self._vertex,
+            'halfface': self._halfface,
+            'cell': self._cell,
+            'plane': self._plane,
+            'edge_data': edge_data,
+            'face_data': self._face_data,
+            'cell_data': self._cell_data,
+            'max_vertex': self._max_vertex,
+            'max_face': self._max_face,
+            'max_cell': self._max_cell}
         return data
 
     @data.setter
@@ -175,49 +230,53 @@ class HalfFace(Datastructure):
         halfface = data.get('halfface') or {}
         cell = data.get('cell') or {}
         plane = data.get('plane') or {}
-        edgedata = data.get('edgedata') or {}
-        facedata = data.get('facedata') or {}
-        celldata = data.get('celldata') or {}
-        max_int_vkey = data.get('max_int_vkey', - 1)
-        max_int_hfkey = data.get('max_int_hfkey', - 1)
-        max_int_ckey = data.get('max_int_ckey', - 1)
+        edge_data = data.get('edge_data') or {}
+        face_data = data.get('face_data') or {}
+        cell_data = data.get('cell_data') or {}
+        max_vertex = data.get('max_vertex', -1)
+        max_face = data.get('max_face', -1)
+        max_cell = data.get('max_cell', -1)
 
         if not vertex or not plane or not halfface or not cell:
             return
 
-        self.attribute.update(attributes)
+        self.attributes.update(attributes)
         self.default_vertex_attributes.update(dva)
         self.default_edge_attributes.update(dea)
         self.default_face_attributes.update(dfa)
         self.default_cell_attributes.update(dca)
 
-        self.vertex = {}
-        self.halfface = {}
-        self.cell = {}
-        self.plane = {}
-        self.edgedata = {}
-        self.facedata = {}
-        self.celldata = {}
+        self._vertex = {}
+        self._halfface = {}
+        self._cell = {}
+        self._plane = {}
+        self._edge_data = {}
+        self._face_data = {}
+        self._cell_data = {}
 
-        for vkey, attr in iter(vertex.items()):
-            self.add_vertex(int(vkey), attr_dict=attr)
+        for v in vertex:
+            attr = vertex[v] or {}
+            self.add_vertex(int(v), attr_dict=attr)
 
-        for hfkey, vertices in iter(halfface.items()):
-            attr = facedata.get(hfkey) or {}
-            self.add_halfface(vertices, fkey=int(hfkey), attr_dict=attr)
+        for f in halfface:
+            attr = face_data.get(f) or {}
+            self.add_halfface(halfface[f], fkey=int(f), attr_dict=attr)
 
-        for ckey in cell:
-            attr = celldata.get(ckey) or {}
-            hfkeys = list(set(cell[ckey][u].values() for u in cell[ckey]))
-            halffaces = [self.halfface[hfkey] for hfkey in hfkeys]
-            self.add_cell(halffaces, ckey=int(ckey), attr_dict=attr)
+        for c in cell:
+            attr = cell_data.get(c) or {}
+            faces = []
+            for u in cell[c]:
+                for v in cell[c][u]:
+                    f = cell[c][u][v]
+                    faces.append(halfface[f])
+            self.add_cell(faces, ckey=int(c), attr_dict=attr)
 
-        for edge, attr in iter(edgedata.items()):
-            self.edgedata[literal_eval(edge)] = attr or {}
+        for e in edge_data:
+            self._edge_data[literal_eval(e)] = edge_data[e] or {}
 
-        self._max_int_vkey = max_int_vkey
-        self._max_int_hfkey = max_int_hfkey
-        self._max_int_ckey = max_int_ckey
+        self._max_vertex = max_vertex
+        self._max_face = max_face
+        self._max_cell = max_cell
 
     # --------------------------------------------------------------------------
     # helpers
@@ -225,23 +284,23 @@ class HalfFace(Datastructure):
 
     def clear(self):
         """Clear all the volmesh data."""
-        del self.vertex
-        del self.halfface
-        del self.cell
-        del self.plane
-        del self.edgedata
-        del self.facedata
-        del self.celldata
-        self.vertex = {}
-        self.halfface = {}
-        self.cell = {}
-        self.planem = {}
-        self.edgedata = {}
-        self.facedata = {}
-        self.celldata = {}
-        self._max_int_vkey = -1
-        self._max_int_hfkey = -1
-        self._max_int_ckey = -1
+        del self._vertex
+        del self._halfface
+        del self._cell
+        del self._plane
+        del self._edge_data
+        del self._face_data
+        del self._cell_data
+        self._vertex = {}
+        self._halfface = {}
+        self._cell = {}
+        self._plane = {}
+        self._edge_data = {}
+        self._face_data = {}
+        self._cell_data = {}
+        self._max_vertex = -1
+        self._max_face = -1
+        self._max_cell = -1
 
     def get_any_vertex(self):
         """Get the identifier of a random vertex.
@@ -252,54 +311,32 @@ class HalfFace(Datastructure):
             The identifier of the vertex.
 
         """
-        return self.get_any_vertices(1)[0]
+        return choice(list(self.vertices()))
 
-    def get_any_vertices(self, n, exclude_leaves=False):
-        """Get a list of identifiers of a random set of n vertices.
-
-        Parameters
-        ----------
-        n : int
-            The number of random vertices.
-        exclude_leaves : bool (False)
-            Exclude the leaves (vertices with only one connected edge) from the set.
-            Default is to include the leaves.
-
-        Returns
-        -------
-        list
-            The identifiers of the vertices.
-        """
-        if exclude_leaves:
-            vertices = set(self.vertices()) - set(self.vertices_on_boundaries())
-        else:
-            vertices = self.vertices()
-        return sample(list(vertices), n)
-
-    def get_any_halfface(self):
-        """Get the identifier of a random halfface.
+    def get_any_face(self):
+        """Get the identifier of a random face.
 
         Returns
         -------
         int
-            The identifier of the halfface.
+            The identifier of the face.
         """
-        return choice(list(self.halffaces()))
+        return choice(list(self.faces()))
 
-    def get_any_halfface_vertex(self, halfface):
-        """Get the identifier of a random vertex of a specific halfface.
+    def get_any_face_vertex(self, face):
+        """Get the identifier of a random vertex of a specific face.
 
         Parameters
         ----------
-        halfface : int
-            The identifier of the halfface.
+        face : int
+            The identifier of the face.
 
         Returns
         -------
         int
-            The identifier of the vertex of the halfface.
+            The identifier of the vertex of the face.
         """
-        return self.halfface_vertices(halfface)[0]
+        return choice(self.halfface_vertices(face))
 
     def vertex_index(self):
         """Returns a dictionary that maps vertex dictionary keys to the
@@ -360,43 +397,43 @@ class HalfFace(Datastructure):
         >>>
         """
         if key is None:
-            key = self._max_int_vkey = self._max_int_vkey + 1
-        if key > self._max_int_vkey:
-            self._max_int_vkey = key
+            key = self._max_vertex = self._max_vertex + 1
+        if key > self._max_vertex:
+            self._max_vertex = key
         key = int(key)
-        if key not in self.vertex:
-            self.vertex[key] = {}
-            self.plane[key] = {}
+        if key not in self._vertex:
+            self._vertex[key] = {}
+            self._plane[key] = {}
         attr = attr_dict or {}
         attr.update(kwattr)
-        self.vertex[key].update(attr)
+        self._vertex[key].update(attr)
         return key
 
-    def add_halfface(self, vertices, hfkey=None, attr_dict=None, **kwattr):
-        """Add a halfface to the volmesh object.
+    def add_halfface(self, vertices, fkey=None, attr_dict=None, **kwattr):
+        """Add a face to the volmesh object.
 
         Parameters
         ----------
         vertices : list
-            A list of ordered vertex keys representing the halfface.
+            A list of ordered vertex keys representing the face.
             For every vertex that does not yet exist, a new vertex is created.
-        hfkey : int, optional
-            The halfface identifier.
+        fkey : int, optional
+            The face identifier.
         attr_dict : dict, optional
             Halfface attributes.
         kwattr : dict, optional
-            Additional named halfface attributes.
-            Named halfface attributes overwrite corresponding attributes in the
+            Additional named face attributes.
+            Named face attributes overwrite corresponding attributes in the
             attribute dict (``attr_dict``).
 
         Returns
         -------
         int
-            The key of the halfface.
+            The key of the face.
 
         Notes
         -----
-        If no key is provided for the halfface, one is generated
+        If no key is provided for the face, one is generated
         automatically. An automatically generated key is an integer that increments
         the highest integer value of any key used so far by 1.
 
@@ -412,14 +449,15 @@ class HalfFace(Datastructure):
         if vertices[-1] == vertices[0]:
             vertices = vertices[:-1]
         vertices = [int(key) for key in vertices]
-        if hfkey is None:
-            hfkey = self._max_int_hfkey = self._max_int_hfkey + 1
-        if hfkey > self._max_int_hfkey:
-            self._max_int_hfkey = hfkey
+        if fkey is None:
+            fkey = self._max_face = self._max_face + 1
+        if fkey > self._max_face:
+            self._max_face = fkey
         attr = attr_dict or {}
         attr.update(kwattr)
-        self.halfface[hfkey] = vertices
-        self.facedata.setdefault(hfkey, attr)
+        self._halfface[fkey] = vertices
+        for name, value in attr.items():
+            self.face_attribute(fkey, name, value)
         for i in range(-2, len(vertices) - 2):
             u = vertices[i]
             v = vertices[i + 1]
@@ -429,22 +467,22 @@ class HalfFace(Datastructure):
             self.add_vertex(key=u)
             self.add_vertex(key=v)
             self.add_vertex(key=w)
-            if v not in self.plane[u]:
-                self.plane[u][v] = {}
-            self.plane[u][v][w] = None
-            if v not in self.plane[w]:
-                self.plane[w][v] = {}
-            if u not in self.plane[w][v]:
-                self.plane[w][v][u] = None
-        return hfkey
+            if v not in self._plane[u]:
+                self._plane[u][v] = {}
+            self._plane[u][v][w] = None
+            if v not in self._plane[w]:
+                self._plane[w][v] = {}
+            if u not in self._plane[w][v]:
+                self._plane[w][v][u] = None
+        return fkey
 
-    def add_cell(self, halffaces, ckey=None, attr_dict=None, **kwattr):
+    def add_cell(self, faces, ckey=None, attr_dict=None, **kwattr):
         """Add a cell to the volmesh object.
 
         Parameters
         ----------
-        halffaces : list of lists
-            list of lists of vertex keys defining the halffaces of the cell.
+        faces : list of list of int
+            The faces of the cell defined as lists of vertices.
         ckey : int, optional
             The cell identifier.
         attr_dict : dict, optional
@@ -478,25 +516,26 @@ class HalfFace(Datastructure):
         >>>
         """
         if ckey is None:
-            ckey = self._max_int_ckey = self._max_int_ckey + 1
-        if ckey > self._max_int_ckey:
-            self._max_int_ckey = ckey
+            ckey = self._max_cell = self._max_cell + 1
+        if ckey > self._max_cell:
+            self._max_cell = ckey
         ckey = int(ckey)
         attr = attr_dict or {}
         attr.update(kwattr)
-        self.cell[ckey] = {}
-        self.celldata.setdefault(ckey, attr)
-        for vertices in halffaces:
+        self._cell[ckey] = {}
+        for name, value in attr.items():
+            self.cell_attribute(ckey, name, value)
+        for vertices in faces:
             fkey = self.add_halfface(vertices)
-            vertices = self.halfface[fkey]
+            vertices = self.halfface_vertices(fkey)
             for i in range(-2, len(vertices) - 2):
                 u = vertices[i]
                 v = vertices[i + 1]
                 w = vertices[i + 2]
-                if u not in self.cell[ckey]:
-                    self.cell[ckey][u] = {}
-                self.cell[ckey][u][v] = fkey
-                self.plane[u][v][w] = ckey
+                if u not in self._cell[ckey]:
+                    self._cell[ckey][u] = {}
+                self._plane[u][v][w] = ckey
+                self._cell[ckey][u][v] = fkey
         return ckey
 
     # --------------------------------------------------------------------------
@@ -531,44 +570,45 @@ class HalfFace(Datastructure):
         >>>
         """
         cell_vertices = self.cell_vertices(cell)
-        cell_halffaces = self.cell_halffaces(cell)
-        for halfface in cell_halffaces:
-            for edge in self.halfface_halfedges(halfface):
+        cell_faces = self.cell_faces(cell)
+        for face in cell_faces:
+            for edge in self.halfface_halfedges(face):
                 u, v = edge
-                if (u, v) in self.edgedata:
-                    del self.edgedata[u, v]
-                if (v, u) in self.edgedata:
-                    del self.edgedata[v, u]
+                if (u, v) in self._edge_data:
+                    del self._edge_data[u, v]
+                if (v, u) in self._edge_data:
+                    del self._edge_data[v, u]
         for vertex in cell_vertices:
             if len(self.vertex_cells(vertex)) == 1:
-                del self.vertex[vertex]
-        for halfface in cell_halffaces:
-            vertices = self.halfface_vertices(halfface)
+                del self._vertex[vertex]
+        for face in cell_faces:
+            vertices = self.halfface_vertices(face)
             for i in range(-2, len(vertices) - 2):
                 u = vertices[i]
                 v = vertices[i + 1]
                 w = vertices[i + 2]
-                self.plane[u][v][w] = None
-                if self.plane[w][v][u] is None:
-                    del self.plane[u][v][w]
-                    del self.plane[w][v][u]
-            del self.halfface[halfface]
-            if halfface in self.facedata:
-                del self.facedata[halfface]
-        del self.cell[cell]
-        if cell in self.celldata:
-            del self.celldata[cell]
+                self._plane[u][v][w] = None
+                if self._plane[w][v][u] is None:
+                    del self._plane[u][v][w]
+                    del self._plane[w][v][u]
+            del self._halfface[face]
+            key = "-".join(map(str, sorted(vertices)))
+            if key in self._face_data:
+                del self._face_data[key]
+        del self._cell[cell]
+        if cell in self._cell_data:
+            del self._cell_data[cell]
 
     def remove_unused_vertices(self):
         """Remove all unused vertices from the volmesh object.
         """
         for vertex in list(self.vertices()):
-            if vertex not in self.plane:
-                del self.vertex[vertex]
+            if vertex not in self._plane:
+                del self._vertex[vertex]
             else:
-                if not self.plane[vertex]:
-                    del self.vertex[vertex]
-                    del self.plane[vertex]
+                if not self._plane[vertex]:
+                    del self._vertex[vertex]
+                    del self._plane[vertex]
 
     cull_vertices = remove_unused_vertices
 
@@ -590,7 +630,7 @@ class HalfFace(Datastructure):
             The next vertex identifier, if ``data`` is false.
             The next vertex as a (vertex, attr) a tuple, if ``data`` is true.
         """
-        for vertex in self.vertex:
+        for vertex in self._vertex:
             if not data:
                 yield vertex
             else:
@@ -611,8 +651,8 @@ class HalfFace(Datastructure):
             The next edge as a ((u, v), attr) tuple, if ``data`` is true.
         """
         seen = set()
-        for halfface in self.halfface:
-            vertices = self.halfface[halfface]
+        for face in self._halfface:
+            vertices = self._halfface[face]
             for u, v in pairwise(vertices + vertices[:1]):
                 if (u, v) in seen or (v, u) in seen:
                     continue
@@ -634,22 +674,22 @@ class HalfFace(Datastructure):
         Yields
         ------
         int or tuple
-            The next halfface identifier, if ``data`` is ``False``.
-            The next halfface as a (halfface, attr) tuple, if ``data`` is ``True``.
+            The next face identifier, if ``data`` is ``False``.
+            The next face as a (face, attr) tuple, if ``data`` is ``True``.
         """
-        for halfface in self.halfface:
+        for face in self._halfface:
             if not data:
-                yield halfface
+                yield face
             else:
-                yield halfface, self.face_attributes(halfface)
+                yield face, self.face_attributes(face)
 
     def faces(self, data=False):
-        """"Iterate over the halffaces of the volmesh, and yield "faces" (unique halffaces).
+        """"Iterate over the halffaces of the volmesh and yield faces.
 
         Parameters
         ----------
         data : bool, optional
-            Return the face data as well as the halfface keys.
+            Return the face data as well as the face keys.
 
         Yields
         ------
@@ -661,18 +701,17 @@ class HalfFace(Datastructure):
         -----
         Volmesh faces have no topological meaning (analogous to an edge of a mesh).
         They are typically used for geometric operations (i.e. planarisation).
-        Between the interface of two cells, there are two interior halffaces (one from each cell).
-        Only one of these two interior halffaces are returned as a "face".
+        Between the interface of two cells, there are two interior faces (one from each cell).
+        Only one of these two interior faces are returned as a "face".
         The unique faces are found by comparing string versions of sorted vertex lists.
         """
         seen = set()
         faces = []
-        for halfface in self.halfface:
-            vertices = self.halfface_vertices(halfface)
-            key = "-".join(map(str, sorted(vertices, key=int)))
+        for face in self._halfface:
+            key = "-".join(map(str, sorted(self.halfface_vertices(face))))
             if key not in seen:
                 seen.add(key)
-                faces.append(halfface)
+                faces.append(face)
         for face in faces:
             if not data:
                 yield face
@@ -693,7 +732,7 @@ class HalfFace(Datastructure):
             The next cell identifier, if ``data`` is ``False``.
             The next cell as a (cell, attr) tuple, if ``data`` is ``True``.
         """
-        for cell in self.cell:
+        for cell in self._cell:
             if not data:
                 yield cell
             else:
@@ -761,13 +800,13 @@ class HalfFace(Datastructure):
         KeyError
             If the vertex does not exist.
         """
-        if vertex not in self.vertex:
+        if vertex not in self._vertex:
             raise KeyError(vertex)
         if value is not None:
-            self.vertex[vertex][name] = value
+            self._vertex[vertex][name] = value
             return None
-        if name in self.vertex[vertex]:
-            return self.vertex[vertex][name]
+        if name in self._vertex[vertex]:
+            return self._vertex[vertex][name]
         else:
             if name in self.default_vertex_attributes:
                 return self.default_vertex_attributes[name]
@@ -792,8 +831,8 @@ class HalfFace(Datastructure):
         Unsetting the value of a vertex attribute implicitly sets it back to the value
         stored in the default vertex attribute dict.
         """
-        if name in self.vertex[vertex]:
-            del self.vertex[vertex][name]
+        if name in self._vertex[vertex]:
+            del self._vertex[vertex][name]
 
     def vertex_attributes(self, vertex, names=None, values=None):
         """Get or set multiple attributes of a vertex.
@@ -821,18 +860,18 @@ class HalfFace(Datastructure):
         KeyError
             If the vertex does not exist.
         """
-        if vertex not in self.vertex:
+        if vertex not in self._vertex:
             raise KeyError(vertex)
         if values:
             for name, value in zip(names, values):
-                self.vertex[vertex][name] = value
+                self._vertex[vertex][name] = value
             return
         if not names:
-            return VertexAttributeView(self.default_vertex_attributes, self.vertex[vertex])
+            return VertexAttributeView(self.default_vertex_attributes, self._vertex[vertex])
         values = []
         for name in names:
-            if name in self.vertex[vertex]:
-                values.append(self.vertex[vertex][name])
+            if name in self._vertex[vertex]:
+                values.append(self._vertex[vertex][name])
             elif name in self.default_vertex_attributes:
                 values.append(self.default_vertex_attributes[name])
             else:
@@ -863,8 +902,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the vertices does not exist.
         """
-        if not vertices:
-            vertices = self.vertices()
+        vertices = vertices or self.vertices()
         if value is not None:
             for vertex in vertices:
                 self.vertex_attribute(vertex, name, value)
@@ -899,8 +937,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the vertices does not exist.
         """
-        if not vertices:
-            vertices = self.vertices()
+        vertices = vertices or self.vertices()
         if values:
             for vertex in vertices:
                 self.vertex_attributes(vertex, names, values)
@@ -957,19 +994,16 @@ class HalfFace(Datastructure):
             If the edge does not exist.
         """
         u, v = edge
-        if u not in self.plane or v not in self.plane[u]:
+        if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
+        key = "-".join(map(str, sorted(edge)))
         if value is not None:
-            if (u, v) not in self.edgedata:
-                self.edgedata[u, v] = {}
-            if (v, u) not in self.edgedata:
-                self.edgedata[v, u] = {}
-            self.edgedata[u, v][name] = self.edgedata[v, u][name] = value
+            if key not in self._edge_data:
+                self._edge_data[key] = {}
+            self._edge_data[key][name] = value
             return
-        if (u, v) in self.edgedata and name in self.edgedata[u, v]:
-            return self.edgedata[u, v][name]
-        if (v, u) in self.edgedata and name in self.edgedata[v, u]:
-            return self.edgedata[v, u][name]
+        if key in self._edge_data and name in self._edge_data[key]:
+            return self._edge_data[key][name]
         if name in self.default_edge_attributes:
             return self.default_edge_attributes[name]
 
@@ -994,15 +1028,55 @@ class HalfFace(Datastructure):
         stored in the default edge attribute dict.
         """
         u, v = edge
-        if u not in self.plane or v not in self.plane[u]:
+        if u not in self._plane or v not in self._plane[u]:
             raise KeyError(edge)
-        if edge in self.edgedata:
-            if name in self.edgedata[edge]:
-                del self.edgedata[edge][name]
-        edge = v, u
-        if edge in self.edgedata:
-            if name in self.edgedata[edge]:
-                del self.edgedata[edge][name]
+        key = "-".join(map(str, sorted(edge)))
+        if key in self._edge_data and name in self._edge_data[key]:
+            del self._edge_data[key][name]
+
+    def edge_attributes(self, edge, names=None, values=None):
+        """Get or set multiple attributes of an edge.
+
+        Parameters
+        ----------
+        edge : 2-tuple of int
+            The identifier of the edge.
+        names : list, optional
+            A list of attribute names.
+        values : list, optional
+            A list of attribute values.
+
+        Returns
+        -------
+        dict, list or None
+            If the parameter ``names`` is empty,
+            a dictionary of all attribute name-value pairs of the edge.
+            If the parameter ``names`` is not empty,
+            a list of the values corresponding to the provided names.
+            ``None`` if the function is used as a "setter".
+
+        Raises
+        ------
+        KeyError
+            If the edge does not exist.
+        """
+        u, v = edge
+        if u not in self._plane or v not in self._plane[u]:
+            raise KeyError(edge)
+        key = "-".join(map(str, sorted(edge)))
+        if values:
+            for name, value in zip(names, values):
+                if key not in self._edge_data:
+                    self._edge_data[key] = {}
+                self._edge_data[key][name] = value
+            return
+        if not names:
+            return EdgeAttributeView(self.default_edge_attributes, self._edge_data, key)
+        values = []
+        for name in names:
+            value = self.edge_attribute(edge, name)
+            values.append(value)
+        return values
 
     def edges_attribute(self, name, value=None, edges=None):
         """Get or set an attribute of multiple edges.
@@ -1028,8 +1102,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the edges does not exist.
         """
-        if not edges:
-            edges = self.edges()
+        edges = edges or self.edges()
         if value is not None:
             for edge in edges:
                 self.edge_attribute(edge, name, value)
@@ -1064,8 +1137,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the edges does not exist.
         """
-        if not edges:
-            edges = self.edges()
+        edges = edges or self.edges()
         if values:
             for edge in edges:
                 self.edge_attributes(edge, names, values)
@@ -1119,15 +1191,16 @@ class HalfFace(Datastructure):
         KeyError
             If the face does not exist.
         """
-        if face not in self.halfface:
+        if face not in self._halfface:
             raise KeyError(face)
+        key = "-".join(map(str, sorted(self.halfface_vertices(face))))
         if value is not None:
-            if face not in self.facedata:
-                self.facedata[face] = {}
-            self.facedata[face][name] = value
+            if key not in self._face_data:
+                self._face_data[key] = {}
+            self._face_data[key][name] = value
             return
-        if face in self.facedata and name in self.facedata[face]:
-            return self.facedata[face][name]
+        if key in self._face_data and name in self._face_data[key]:
+            return self._face_data[key][name]
         if name in self.default_face_attributes:
             return self.default_face_attributes[name]
 
@@ -1151,11 +1224,11 @@ class HalfFace(Datastructure):
         Unsetting the value of a face attribute implicitly sets it back to the value
         stored in the default face attribute dict.
         """
-        if face not in self.halfface:
+        if face not in self._halfface:
             raise KeyError(face)
-        if face in self.facedata:
-            if name in self.facedata[face]:
-                del self.facedata[face][name]
+        key = "-".join(map(str, sorted(self.halfface_vertices(face))))
+        if key in self._face_data and name in self._face_data[key]:
+            del self._face_data[key][name]
 
     def face_attributes(self, face, names=None, values=None):
         """Get or set multiple attributes of a face.
@@ -1183,16 +1256,17 @@ class HalfFace(Datastructure):
         KeyError
             If the face does not exist.
         """
-        if face not in self.halfface:
+        if face not in self._halfface:
             raise KeyError(face)
+        key = "-".join(map(str, sorted(self.halfface_vertices(face))))
         if values:
             for name, value in zip(names, values):
-                if face not in self.facedata:
-                    self.facedata[face] = {}
-                self.facedata[face][name] = value
+                if key not in self._face_data:
+                    self._face_data[key] = {}
+                self._face_data[key][name] = value
             return
         if not names:
-            return FaceAttributeView(self.default_face_attributes, self.facedata, face)
+            return FaceAttributeView(self.default_face_attributes, self._face_data, key)
         values = []
         for name in names:
             value = self.face_attribute(face, name)
@@ -1223,8 +1297,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the faces does not exist.
         """
-        if not faces:
-            faces = self.faces()
+        faces = faces or self.faces()
         if value is not None:
             for face in faces:
                 self.face_attribute(face, name, value)
@@ -1259,8 +1332,7 @@ class HalfFace(Datastructure):
         KeyError
             If any of the faces does not exist.
         """
-        if not faces:
-            faces = self.faces()
+        faces = faces or self.faces()
         if values:
             for face in faces:
                 self.face_attributes(face, names, values)
@@ -1314,15 +1386,15 @@ class HalfFace(Datastructure):
         KeyError
             If the cell does not exist.
         """
-        if cell not in self.cell:
+        if cell not in self._cell:
             raise KeyError(cell)
         if value is not None:
-            if cell not in self.celldata:
-                self.celldata[cell] = {}
-            self.celldata[cell][name] = value
+            if cell not in self._cell_data:
+                self._cell_data[cell] = {}
+            self._cell_data[cell][name] = value
             return
-        if cell in self.celldata and name in self.celldata[cell]:
-            return self.celldata[cell][name]
+        if cell in self._cell_data and name in self._cell_data[cell]:
+            return self._cell_data[cell][name]
         if name in self.default_cell_attributes:
             return self.default_cell_attributes[name]
 
@@ -1346,11 +1418,11 @@ class HalfFace(Datastructure):
         Unsetting the value of a cell attribute implicitly sets it back to the value
         stored in the default cell attribute dict.
         """
-        if cell not in self.cell:
+        if cell not in self._cell:
             raise KeyError(cell)
-        if cell in self.celldata:
-            if name in self.celldata[cell]:
-                del self.celldata[cell][name]
+        if cell in self._cell_data:
+            if name in self._cell_data[cell]:
+                del self._cell_data[cell][name]
 
     def cell_attributes(self, cell, names=None, values=None):
         """Get or set multiple attributes of a cell.
@@ -1378,16 +1450,16 @@ class HalfFace(Datastructure):
         KeyError
             If the cell does not exist.
         """
-        if cell not in self.cell:
+        if cell not in self._cell:
             raise KeyError(cell)
         if values is not None:
             for name, value in zip(names, values):
-                if cell not in self.celldata:
-                    self.celldata[cell] = {}
-                self.celldata[cell][name] = value
+                if cell not in self._cell_data:
+                    self._cell_data[cell] = {}
+                self._cell_data[cell][name] = value
             return
         if not names:
-            return CellAttributeView(self.default_cell_attributes, self.celldata.setdefault(cell, {}))
+            return CellAttributeView(self.default_cell_attributes, self._cell_data.setdefault(cell, {}))
         values = []
         for name in names:
             value = self.cell_attribute(cell, name)
@@ -1503,7 +1575,7 @@ class HalfFace(Datastructure):
             True if the vertex is in the volmesh.
             False otherwise.
         """
-        return vertex in self.vertex
+        return vertex in self._vertex
 
     def vertex_neighbors(self, vertex):
         """Return the vertex neighbors of a vertex.
@@ -1518,7 +1590,7 @@ class HalfFace(Datastructure):
         list
             The list of neighboring vertices.
         """
-        return self.plane[vertex].keys()
+        return self._plane[vertex].keys()
 
     def vertex_neighborhood(self, vertex, ring=1):
         """Return the vertices in the neighborhood of a vertex.
@@ -1578,7 +1650,7 @@ class HalfFace(Datastructure):
         int
             The lowest degree of all vertices.
         """
-        if not self.vertex:
+        if not self._vertex:
             return 0
         return min(self.vertex_degree(vertex) for vertex in self.vertices())
 
@@ -1590,7 +1662,7 @@ class HalfFace(Datastructure):
         int
             The highest degree of all vertices.
         """
-        if not self.vertex:
+        if not self._vertex:
             return 0
         return max(self.vertex_degree(vertex) for vertex in self.vertices())
 
@@ -1608,38 +1680,14 @@ class HalfFace(Datastructure):
             The list of halffaces connected to a vertex.
         """
         cells = self.vertex_cells(vertex)
-        nbr_vertices = self.vertex_neighbors(vertex)
+        nbrs = self.vertex_neighbors(vertex)
         halffaces = set()
         for cell in cells:
-            for nbr in nbr_vertices:
-                if nbr in self.cell[cell][vertex]:
-                    halffaces.add(self.cell[cell][vertex][nbr])
-                    halffaces.add(self.cell[cell][nbr][vertex])
+            for nbr in nbrs:
+                if nbr in self._cell[cell][vertex]:
+                    halffaces.add(self._cell[cell][vertex][nbr])
+                    halffaces.add(self._cell[cell][nbr][vertex])
         return list(halffaces)
-
-    def vertex_faces(self, vertex):
-        """Return all faces connected to a vertex.
-
-        Parameters
-        ----------
-        vertex : int
-            The identifier of the vertex.
-
-        Returns
-        -------
-        list
-            The list of faces connected to a vertex.
-        """
-        halffaces = self.vertex_halffaces(vertex)
-
-        seen = set()
-        faces = []
-        for halfface in halffaces:
-            if halfface not in seen:
-                opp_halfface = self.halfface_opposite_halfface(halfface)
-                faces.append(opp_halfface)
-            seen.add([halfface, opp_halfface])
-        return faces
 
     def vertex_cells(self, vertex):
         """Return all cells connected to a vertex.
@@ -1655,8 +1703,8 @@ class HalfFace(Datastructure):
             The list of cells connected to a vertex.
         """
         cells = set()
-        for v in self.plane[vertex].keys():
-            for cell in self.plane[vertex][v].values():
+        for nbr in self._plane[vertex]:
+            for cell in self._plane[vertex][nbr].values():
                 if cell is not None:
                     cells.add(cell)
         return list(cells)
@@ -1712,57 +1760,23 @@ class HalfFace(Datastructure):
         Returns
         -------
         list
-            Ordered list of of keys identifying the halffaces.
-
-        Notes
-        -----
-        The halffaces are ordered around the edge (u, v).
-        All halffaces returned should have halfedge (u, v) or (v, u).
-        This also means that if edge u-v is shared by four cells, eight halffaces are returned.
+            Ordered list of halfface identifiers.
         """
         u, v = edge
-        cells = self.edge_cells(edge)
-        ordered_halffaces = []
-        for cell in cells:
-            ordered_halffaces.append(self.cell[cell][v][u])
-            ordered_halffaces.append(self.cell[cell][u][v])
-        return ordered_halffaces
-
-    def edge_faces(self, edge):
-        """Ordered faces around edge (u, v).
-
-        Parameters
-        ----------
-        edge : tuple of int
-            The identifier of the edge.
-
-        Returns
-        -------
-        list
-            Ordered list of of keys identifying faces.
-
-        Notes
-        -----
-        The faces are ordered around the edge (u, v).
-        All faces returned should have halfedge (u, v).
-        This also means that if edge u-v is shared by four cells, four faces are returned.
-        """
-        u, v = edge
-        edge_cells = [cell for cell in self.plane[u][v].values() if cell is not None]
-        cell = edge_cells[0]
-        ordered_faces = []
+        cells = [cell for cell in self._plane[u][v].values() if cell is not None]
+        cell = cells[0]
+        halffaces = []
         if self.is_edge_on_boundary(edge):
-            for bndry_cell in edge_cells:
-                halfface = self.cell[bndry_cell][v][u]
+            for cell in cells:
+                halfface = self._cell[cell][v][u]
                 if self.is_halfface_on_boundary(halfface):
-                    cell = bndry_cell
                     break
-        for i in range(len(edge_cells)):
-            face = self.cell[cell][u][v]
-            w = self.halfface_vertex_descendent(face, v)
-            cell = self.plane[w][v][u]
-            ordered_faces.append(face)
-        return ordered_faces
+        for i in range(len(cells)):
+            halfface = self._cell[cell][u][v]
+            w = self.halfface_vertex_descendent(halfface, v)
+            cell = self._plane[w][v][u]
+            halffaces.append(halfface)
+        return halffaces
 
     def edge_cells(self, edge):
         """Ordered cells around edge (u, v).
@@ -1777,8 +1791,8 @@ class HalfFace(Datastructure):
         list
             Ordered list of keys identifying the ordered cells.
         """
-        faces = self.edge_faces(edge)
-        return [self.face_cell(face) for face in faces]
+        halffaces = self.edge_halffaces(edge)
+        return [self.halfface_cell(halfface) for halfface in halffaces]
 
     def is_edge_on_boundary(self, edge):
         """Verify that an edge is on the boundary.
@@ -1800,16 +1814,14 @@ class HalfFace(Datastructure):
         The direction u-v does not matter.
         """
         u, v = edge
-        if not self.has_edge(edge):
-            v, u = edge
-        return None in self.plane[u][v].values()
+        return None in self._plane[u][v].values()
 
     # --------------------------------------------------------------------------
     # halfface topology
     # --------------------------------------------------------------------------
 
     def has_halfface(self, halfface):
-        """Verify that a halfface is part of the volmesh.
+        """Verify that a face is part of the volmesh.
 
         Parameters
         ----------
@@ -1819,10 +1831,10 @@ class HalfFace(Datastructure):
         Returns
         -------
         bool
-            True if the halfface exists.
+            True if the face exists.
             False otherwise.
         """
-        return halfface in self.halfface
+        return halfface in self._halfface
 
     def halfface_vertices(self, halfface):
         """The vertices of a halfface.
@@ -1837,7 +1849,7 @@ class HalfFace(Datastructure):
         list
             Ordered vertex identifiers.
         """
-        return self.halfface[halfface]
+        return self._halfface[halfface]
 
     def halfface_halfedges(self, halfface):
         """The halfedges of a halfface.
@@ -1868,11 +1880,27 @@ class HalfFace(Datastructure):
         ckey
             Identifier of the cell.
         """
-        u, v, w = self.halfface[halfface][0:3]
-        return self.plane[u][v][w]
+        u, v, w = self._halfface[halfface][0:3]
+        return self._plane[u][v][w]
+
+    def halfface_opposite_cell(self, halfface):
+        """The cell to which the opposite halfface belongs to.
+
+        Parameters
+        ----------
+        halfface : int
+            The identifier of the halfface.
+
+        Returns
+        -------
+        ckey
+            Identifier of the cell.
+        """
+        u, v, w = self._halfface[halfface][0:3]
+        return self._plane[w][v][u]
 
     def halfface_opposite_halfface(self, halfface):
-        """The opposite halfface of a halfface.
+        """The opposite face of a face.
 
         Parameters
         ----------
@@ -1881,56 +1909,51 @@ class HalfFace(Datastructure):
 
         Returns
         -------
-        halfface
-            Identifier of the opposite halfface.
+        face
+            Identifier of the opposite face.
 
         Notes
         -----
-        A halfface and its opposite halfface share the same vertices, but in reverse order.
-        For a boundary halfface, the opposite halfface is None.
+        A face and its opposite face share the same vertices, but in reverse order.
+        For a boundary face, the opposite face is None.
         """
-        u, v, w = self.halfface[halfface][0:3]
-        nbr_cell = self.plane[w][v][u]
-        if nbr_cell is None:
+        u, v, w = self._halfface[halfface][0:3]
+        nbr = self._plane[w][v][u]
+        if nbr is None:
             return None
-        return self.cell[nbr_cell][v][u]
+        return self._cell[nbr][v][u]
 
-    def halfface_adjacent_halfface(self, halfface, edge):
-        """Return the halfface adjacent to a halfface across the halfedge edge.
+    # def halfface_adjacent_halfface(self, halfface, halfedge):
+    #     """Return the halfface adjacent to the halfface across the halfedge.
 
-        Parameters
-        ----------
-        halfface : int
-            The identifier of the halfface.
-        edge : tuple of int
-            The identifier of the common edge.
+    #     Parameters
+    #     ----------
+    #     halfface : int
+    #         The identifier of the halfface.
+    #     halfedge : tuple of int
+    #         The identifier of the halfedge.
 
-        Returns
-        -------
-        int or None
-            The identifier of the halfface.
-            None, if both halffaces belong to the same cell.
+    #     Returns
+    #     -------
+    #     int or None
+    #         The identifier of the halfface.
 
-        Notes
-        -----
-        The adjacent halfface belongs a to one of the cell neighbors over halffaces of the initial cell.
-        A halfface and its adjacent halfface share two common vertices.
-        """
-        u, v = edge
-        if (u, v) not in self.halfface_halfedges(halfface):
-            if (v, u) not in self.halfface_halfedges(halfface):
-                raise KeyError(edge)
-            u, v = v, u
-        cell = self.halfface_cell(halfface)
-        adj_halfface = self.cell[cell][v][u]
-        w = self.halfface_vertex_ancestor(adj_halfface, v)
-        nbr_cell = self.plane[u][v][w]
-        if nbr_cell is None:
-            return None
-        return self.cell[nbr_cell][v][u]
+    #     Notes
+    #     -----
+    #     The adjacent face belongs a to one of the cell neighbors over faces of the initial cell.
+    #     A face and its adjacent face share two common vertices.
+    #     """
+    #     u, v = halfedge
+    #     cell = self.halfface_cell(halfface)
+    #     nbr_halfface = self._cell[cell][v][u]
+    #     w = self.face_vertex_ancestor(nbr_halfface, v)
+    #     nbr_cell = self._plane[u][v][w]
+    #     if nbr_cell is None:
+    #         return None
+    #     return self._cell[nbr_cell][v][u]
 
     def halfface_vertex_ancestor(self, halfface, vertex):
-        """Return the vertex before the specified vertex in a specific halfface.
+        """Return the vertex before the specified vertex in a specific face.
 
         Parameters
         ----------
@@ -1942,157 +1965,58 @@ class HalfFace(Datastructure):
         Returns
         -------
         int
-            The identifier of the vertex before the given vertex in the halfface cycle.
+            The identifier of the vertex before the given vertex in the face cycle.
 
         Raises
         ------
         ValueError
-            If the vertex is not part of the halfface.
+            If the vertex is not part of the face.
         """
-        i = self.halfface[halfface].index(vertex)
-        return self.halfface[halfface][i - 1]
+        i = self._halfface[halfface].index(vertex)
+        return self._halfface[halfface][i - 1]
 
     def halfface_vertex_descendent(self, halfface, vertex):
-        """Return the vertex after the specified vertex in a specific halfface.
+        """Return the vertex after the specified vertex in a specific face.
 
         Parameters
         ----------
         halfface : int
-            Identifier of the halfface.
+            The identifier of the halfface.
         vertex : int
             The identifier of the vertex.
 
         Returns
         -------
         int
-            The identifier of the vertex after the given vertex in the halfface cycle.
+            The identifier of the vertex after the given vertex in the face cycle.
 
         Raises
         ------
         ValueError
-            If the vertex is not part of the halfface.
+            If the vertex is not part of the face.
         """
-        if self.halfface[halfface][-1] == vertex:
-            return self.halfface[halfface][0]
-        i = self.halfface[halfface].index(vertex)
-        return self.halfface[halfface][i + 1]
+        if self._halfface[halfface][-1] == vertex:
+            return self._halfface[halfface][0]
+        i = self._halfface[halfface].index(vertex)
+        return self._halfface[halfface][i + 1]
 
-    def halfface_neighbors_over_vertices(self, halfface):
-        """Return all halffaces that share at least one vertex with a halfface.
-
-        Parameters
-        ----------
-        halfface : int
-            The identifier of the halfface.
-
-        Returns
-        -------
-        list
-            The list of halffaces.
-
-        Notes
-        -----
-        Neighboring halffaces on the same cell are not included.
-        Neighboring halffaces belong to one of the neighboring cells over halffaces of the initial cell.
-        """
-        nbrs = set()
-        for u, v in self.halfface_halfedges(halfface):
-            nbr_halfface = self.halfface_adjacent_halfface(halfface, (u, v))
-            if nbr_halfface is not None:
-                nbrs.add(nbr_halfface)
-                while True:
-                    w = self.halfface_vertex_ancestor(nbr_halfface, v)
-                    nbr_halfface = self.halfface_adjacent_halfface(nbr_halfface, (w, v))
-                    if nbr_halfface is None or nbr_halfface == halfface:
-                        break
-                    nbrs.add(nbr_halfface)
-        return list(nbrs)
-
-    def halfface_neighborhood_over_vertices(self, halfface, ring=1):
-        """Return the halfface neighborhood of a halfface across their vertices.
-
-        Parameters
-        ----------
-        halfface : int
-            The identifier of the halfface.
-
-        Returns
-        -------
-        list
-            The list of neighboring halffaces.
-
-        Notes
-        -----
-        Neighboring halffaces on the same cell are not included.
-        """
-        nbrs = set(self.halfface_neighbors_over_vertices(halfface))
-        i = 1
-        while True:
-            if i == ring:
-                break
-            temp = []
-            for nbr_halfface in nbrs:
-                temp += self.halfface_neighbors_over_vertices(nbr_halfface)
-            nbrs.update(temp)
-            i += 1
-        return list(nbrs - set([halfface]))
-
-    def halfface_neighbors_over_edges(self, halfface):
-        """Return the halfface neighbors of a halfface across its edges (halffaces that share two vertices).
-
-        Parameters
-        ----------
-        halfface : int
-            The identifier of the halfface.
-
-        Returns
-        -------
-        list
-            The list of neighboring halffaces.
-
-        Notes
-        -----
-        * Neighboring halffaces on the same cell are not included.
-
-        """
+    def halfface_neighbors(self, halfface):
         nbrs = []
-        for halfedge in self.halfface_halfedges(halfface):
-            nbr_halfface = self.halfface_adjacent_halfface(halfface, halfedge)
-            if nbr_halfface:
-                nbrs.append(nbr_halfface)
+        cell = self.halfface_cell(halfface)
+        for u, v in self.halfface_halfedges(halfface):
+            nbr_halfface = self._cell[cell][v][u]
+            w = self.halfface_vertex_ancestor(nbr_halfface, v)
+            nbr_cell = self._plane[u][v][w]
+            if nbr_cell is not None:
+                nbr = self._cell[nbr_cell][v][u]
+                nbrs.append(nbr)
         return nbrs
 
-    def halfface_neighborhood_over_edges(self, halfface, ring=1):
-        """Return the halfface neighborhood of a halfface across their edges.
-
-        Parameters
-        ----------
-        halfface : int
-            The identifier of the halfface.
-
-        Returns
-        -------
-        list
-            The list of neighboring halffaces.
-
-        Notes
-        -----
-        Neighboring halffaces on the same cell are not included.
-        """
-        nbrs = set(self.halfface_neighbors_over_edges(halfface))
-        i = 1
-        while True:
-            if i == ring:
-                break
-            temp = []
-            for nbr_halfface in nbrs:
-                temp += self.halfface_neighbors_over_edges(nbr_halfface)
-            nbrs.update(temp)
-            i += 1
-        return list(nbrs - set([halfface]))
+    # def halfface_manifold_neighbors(self, halfface):
+    #     halfface_cell = self.halfface_cell(halfface)
 
     def is_halfface_on_boundary(self, halfface):
-        """Verify that a halfface is on the boundary.
+        """Verify that a face is on the boundary.
 
         Parameters
         ----------
@@ -2102,19 +2026,11 @@ class HalfFace(Datastructure):
         Returns
         -------
         bool
-            True if the halfface is on the boundary.
+            True if the face is on the boundary.
             False otherwise.
         """
-        u, v, w = self.halfface[halfface][0:3]
-        return self.plane[w][v][u] is None
-
-    has_face = has_halfface
-    face_vertices = halfface_vertices
-    face_halfedges = halfface_halfedges
-    face_cell = halfface_cell
-    face_vertex_ancestor = halfface_vertex_ancestor
-    face_vertex_descendent = halfface_vertex_descendent
-    is_face_on_boundary = is_halfface_on_boundary
+        u, v, w = self._halfface[halfface][0:3]
+        return self._plane[w][v][u] is None
 
     # --------------------------------------------------------------------------
     # cell topology
@@ -2133,7 +2049,7 @@ class HalfFace(Datastructure):
         list
             The vertex identifiers of a cell.
         """
-        return list(set([vertex for halfface in self.cell_halffaces(cell) for vertex in self.halfface_vertices(halfface)]))
+        return list(set([vertex for face in self.cell_faces(cell) for vertex in self.halfface_vertices(face)]))
 
     def cell_halfedges(self, cell):
         """The halfedges of a cell.
@@ -2149,12 +2065,15 @@ class HalfFace(Datastructure):
             The halfedges of a cell.
         """
         halfedges = []
-        for halfface in self.cell_halffaces(cell):
-            halfedges += self.halfface_halfedges(halfface)
+        for face in self.cell_faces(cell):
+            halfedges += self.halfface_halfedges(face)
         return halfedges
 
-    def cell_halffaces(self, cell):
-        """The halffaces of a cell.
+    def cell_edges(self, cell):
+        pass
+
+    def cell_faces(self, cell):
+        """The faces of a cell.
 
         Parameters
         ----------
@@ -2164,12 +2083,12 @@ class HalfFace(Datastructure):
         Returns
         -------
         list
-            The halffaces of a cell.
+            The faces of a cell.
         """
-        halffaces = set()
-        for vertex in self.cell[cell]:
-            halffaces.update(self.cell[cell][vertex].values())
-        return list(halffaces)
+        faces = set()
+        for vertex in self._cell[cell]:
+            faces.update(self._cell[cell][vertex].values())
+        return list(faces)
 
     def cell_vertex_neighbors(self, cell, vertex):
         """Ordered vertex neighbors of a vertex of a cell.
@@ -2192,17 +2111,17 @@ class HalfFace(Datastructure):
         """
         if vertex not in self.cell_vertices(cell):
             raise KeyError(vertex)
-        nbr_vertices = self.cell[cell][vertex].keys()
+        nbr_vertices = self._cell[cell][vertex].keys()
         v = nbr_vertices[0]
         ordered_vkeys = [v]
         for i in range(len(nbr_vertices) - 1):
-            halfface = self.cell[cell][vertex][v]
-            v = self.halfface_vertex_ancestor(halfface, vertex)
+            face = self._cell[cell][vertex][v]
+            v = self.halfface_vertex_ancestor(face, vertex)
             ordered_vkeys.append(v)
         return ordered_vkeys
 
-    def cell_vertex_halffaces(self, cell, vertex):
-        """Ordered halffaces connected to a vertex of a cell.
+    def cell_vertex_faces(self, cell, vertex):
+        """Ordered faces connected to a vertex of a cell.
 
         Parameters
         ----------
@@ -2214,138 +2133,45 @@ class HalfFace(Datastructure):
         Returns
         -------
         list
-            The ordered list of halffaces connected to a vertex of a cell.
+            The ordered list of faces connected to a vertex of a cell.
 
         Notes
         -----
-        All of the returned halffaces should be part of the cell.
+        All of the returned faces should be part of the cell.
         """
-        nbr_vertices = self.cell[cell][vertex].keys()
+        nbr_vertices = self._cell[cell][vertex].keys()
         u = vertex
         v = nbr_vertices[0]
-        ordered_halffaces = []
+        ordered_faces = []
         for i in range(len(nbr_vertices)):
-            halfface = self.cell[cell][u][v]
-            v = self.halfface_vertex_ancestor(halfface, u)
-            ordered_halffaces.append(halfface)
-        return ordered_halffaces
+            face = self._cell[cell][u][v]
+            v = self.halfface_vertex_ancestor(face, u)
+            ordered_faces.append(face)
+        return ordered_faces
 
-    def cell_neighbors_over_vertices(self, cell):
-        """Return the cell neighbors of a cell across its vertices.
+    def cell_halfedge_face(self, cell, halfedge):
+        u, v = halfedge
+        return self._cell[cell][u][v]
 
-        Parameters
-        ----------
-        cell : int
-            Identifier of the cell.
+    def cell_halfedge_opposite_face(self, cell, halfedge):
+        u, v = halfedge
+        return self._cell[cell][v][u]
 
-        Returns
-        -------
-        list
-            The identifiers of the neighboring cells.
-        """
-        cells = set()
-        for vkey in self.cell_vertices(cell):
-            cells.update(self.vertex_cells(cell))
-        return list(cells)
+    def cell_face_neighbors(self, cell, face):
+        nbrs = []
+        for halfedge in self.halfface_halfedges(face):
+            nbr = self.cell_halfedge_opposite_face(cell, halfedge)
+            if nbr is not None:
+                nbrs.append(nbr)
+        return nbrs
 
-    def cell_neighborhood_over_vertices(self, cell, ring=1):
-        """Return the cell neighborhood of a cell across its vertices.
-
-        Parameters
-        ----------
-        cell : int
-            Identifier of the cell.
-        ring : int, optional
-            The number of neighborhood rings to include. Default is ``1``.
-
-        Returns
-        -------
-        list
-            The cells in the neighborhood.
-        """
-        nbr_cells = set(self.cell_neighbors_over_vertices(cell))
-        i = 1
-        while True:
-            if i == ring:
-                break
-            temp = []
-            for nbr_cell in nbr_cells:
-                temp += self.cell_neighbors_over_vertices(nbr_cell)
-            nbr_cells.update(temp)
-            i += 1
-        return list(nbr_cells - set([cell]))
-
-    def cell_neighbors_over_halffaces(self, cell):
-        """Return the cell neighbors of a cell across its halffaces.
-
-        Parameters
-        ----------
-        cell : int
-            Identifier of the cell.
-
-        Returns
-        -------
-        list
-            The identifiers of the neighboring cells.
-        """
-        cells = []
-        for halfface in self.cell_halffaces(cell):
-            u, v, w = self.halfface[halfface][0:3]
-            nbr_cell = self.plane[w][v][u]
-            if nbr_cell is not None:
-                cells.append(nbr_cell)
-        return cells
-
-    def cell_neighborhood_over_halffaces(self, cell, ring=1):
-        """Return the cells in the neighborhood of a cell across its halffaces.
-
-        Parameters
-        ----------
-        cell : int
-            Identifier of the cell.
-        ring : int, optional
-            The number of neighborhood rings to include. Default is ``1``.
-
-        Returns
-        -------
-        list
-            The identifiers of the neighboring cells.
-        """
-        nbr_cells = set(self.cell_neighbors_over_halffaces(cell))
-        i = 1
-        while True:
-            if i == ring:
-                break
-            temp = []
-            for nbr_cell in nbr_cells:
-                temp += self.cell_neighbors_over_halffaces(nbr_cell)
-            nbr_cells.update(temp)
-            i += 1
-        return list(nbr_cells - set([cell]))
-
-    def cell_adjacency_halffaces(self, cell_1, cell_2):
-        """Given 2 cells, returns the interfacing halffaces, respectively.
-
-        Parameters
-        ----------
-        cell_1 : int
-            Identifier of the cell 1.
-        cell_2 : int
-            Identifier of the cell 2.
-
-        Returns
-        -------
-        halfface_1
-            The identifier of the halfface belonging to cell 1.
-        halfface_2
-            The identifier of the halfface belonging to cell 2.
-        """
-        for halfface in self.cell_halffaces(cell_1):
-            u, v, w = self.halfface[halfface][0:3]
-            nbr = self.plane[w][v][u]
-            if nbr == cell_2:
-                return halfface, self.halfface_opposite_halfface(halfface)
-        return
+    def cell_neighbors(self, cell):
+        nbrs = []
+        for face in self.cell_faces(cell):
+            nbr = self.halfface_opposite_cell(face)
+            if nbr is not None:
+                nbrs.append(nbr)
+        return nbrs
 
     def is_cell_on_boundary(self, cell):
         """Verify that a cell is on the boundary.
@@ -2358,12 +2184,12 @@ class HalfFace(Datastructure):
         Returns
         -------
         bool
-            True if the halfface is on the boundary.
+            True if the face is on the boundary.
             False otherwise.
         """
-        halffaces = self.cell_halffaces(cell)
-        for halfface in halffaces:
-            if self.is_halfface_on_boundary(halfface):
+        faces = self.cell_faces(cell)
+        for face in faces:
+            if self.is_halfface_on_boundary(face):
                 return True
         return False
 
@@ -2380,24 +2206,24 @@ class HalfFace(Datastructure):
             The vertices of the boundary.
         """
         vertices = set()
-        for halfface in self.halfface:
-            if self.is_halfface_on_boundary(halfface):
-                vertices.update(self.halfface_vertices(halfface))
+        for face in self._halfface:
+            if self.is_halfface_on_boundary(face):
+                vertices.update(self.halfface_vertices(face))
         return list(vertices)
 
     def halffaces_on_boundaries(self):
-        """Find the halffaces on the boundary.
+        """Find the faces on the boundary.
 
         Returns
         -------
         list
-            The halffaces of the boundary.
+            The faces of the boundary.
         """
-        halffaces = set()
-        for halfface in self.halfface:
-            if self.is_halfface_on_boundary(halfface):
-                halffaces.add(halfface)
-        return list(halffaces)
+        faces = set()
+        for face in self._halfface:
+            if self.is_halfface_on_boundary(face):
+                faces.add(face)
+        return list(faces)
 
     def cells_on_boundaries(self):
         """Find the cells on the boundary.
@@ -2408,8 +2234,8 @@ class HalfFace(Datastructure):
             The cells of the boundary.
         """
         cells = set()
-        for halfface in self. halffaces_on_boundaries():
-            cells.add(self.halfface_cell(halfface))
+        for face in self.halffaces_on_boundaries():
+            cells.add(self.halfface_cell(face))
         return list(cells)
 
 

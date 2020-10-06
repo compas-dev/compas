@@ -1,6 +1,6 @@
-===============
+***************
 Developer Guide
-===============
+***************
 
 This guide is intended for people who want to contribute to the code and documentation
 of the core COMPAS packages:
@@ -21,30 +21,30 @@ To set up a developer environment
 1. Fork `the repository <https://github.com/compas-dev/compas>`_ and clone the fork.
 2. Create a virtual environment using your tool of choice (e.g. `virtualenv`, `conda`, etc).
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    conda create -n compas-dev python=3.7
-    conda activate compas-dev
+       conda create -n compas-dev python=3.7
+       conda activate compas-dev
 
 3. Install development dependencies:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    cd path/to/compas
-    pip install -r requirements-dev.txt
+       cd path/to/compas
+       pip install -r requirements-dev.txt
 
 4. Make sure all tests pass:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    invoke test
+       invoke test
 
 5. Create a branch for your contributions.
 
-.. code-block::
+   .. code-block::
 
-    git branch title-proposed-changes
-    git checkout title-proposed-changes
+       git branch title-proposed-changes
+       git checkout title-proposed-changes
 
 6. Start making changes!
 
@@ -57,9 +57,9 @@ The procedure for submitting a PR is the following.
 
 1. Make sure all tests still pass:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    invoke test
+        invoke test
 
 2. Add yourself to ``AUTHORS.md``.
 3. Commit your changes and push your branch to GitHub.
@@ -92,11 +92,14 @@ Documentation
 * RestructuredText
 * docs structure
 * api docs
+
   * napoleon
   * Numpy-style
+
 * examples
 * references
 * see also
+
 
 Code structure
 ==============
@@ -107,6 +110,11 @@ For example, :mod:`compas` is divided into:
 * :mod:`compas.datastructures`
 * :mod:`compas.files`
 * :mod:`compas.geometry`
+* :mod:`compas.numerical`
+* :mod:`compas.robots`
+* :mod:`compas.rpc`
+* :mod:`compas.topology`
+* :mod:`compas.utilities`
 
 The API of each subpackage is documented in the docstring of its ``__init__.py`` file using basic RestructuredText.
 From outside of these packages, functionality should be imported directly from the subpackage level,
@@ -116,16 +124,20 @@ For example, in some ``script.py``:
 
 .. code-block:: python
 
+    from compas.datastructures import Mesh
+    from compas.datastructures import Network
+
     from compas.geometry import add_vectors
     from compas.geometry import oriented_bounding_box_numpy
     from compas.geometry import Polygon
     from compas.geometry import Transformation
 
-    from compas.numerical
+    from compas.numerical import pca_numpy
+    from compas.numerical import fd_numpy
 
 To allow the public API of the modules and packages contained in a subpackage to reach the subpackage level,
 each module should declare the classes, functions and variables of its public API in the module's ``__all__`` variable.
-Per package, the APIs of the contained module are collected in ``__all__`` variable of the package (in the ``__init__.py``).
+Per package, the APIs of the contained module are collected in the ``__all__`` variable of the package (in the ``__init__.py``).
 
 .. code-block:: python
 
@@ -143,9 +155,9 @@ customize and extend the functionality of the core framework.
 For a plugin to work, there needs to exist a counterpart to be connected to.
 This means there are two components involved:
 
-* :meth:`compas.plugins.pluggable` interface: the **extension point** that COMPAS defines
+* :meth:`compas.plugins.pluggable` interface: the *extension point* that COMPAS defines
   as the counterpart for plugins to connect to.
-* :meth:`compas.plugins.plugin` implementation: a **concrete implementation** of the
+* :meth:`compas.plugins.plugin` implementation: a *concrete implementation* of the
   ``pluggable`` interface.
 
 Both of these components are declared using decorators:
@@ -176,7 +188,7 @@ or even entire projects and still work the same way.
 Additionally, COMPAS is able to pick the most suitable plugin implementation
 for its current execution context. For instance, one could have two implementations
 of the same :meth:`compas.plugins.pluggable` definition, one using ``numpy`` and
-another one using ``Rhino SDK`` and have the correct one automatically selected
+another one using *Rhino SDK* and have the correct one automatically selected
 based on where your script is executing.
 
 How to make plugins discoverable?
@@ -203,6 +215,19 @@ Once a package is found, the metadata in ``__all_plugins__`` is read and all mod
 listed are analyzed to look for functions decorated with the :meth:`compas.plugins.plugin`
 decorator.
 
+Two kinds of extension points
+-----------------------------
+
+An extension point, or *pluggable* interface can be declared as being one of two types
+based on how they select which implementation to pick if there are multiple available.
+
+* ``selector='first_match'``: this type of extension point will pick the first plugin
+  implementation that satisfies the requirements.
+* ``selector='collect_all'``: extension points defined with this selector will instead
+  collect all plugin implementations and execute them all, collecting the return
+  values into a list. An example of this is the Rhino install extension
+  point: :meth:`compas_rhino.install.installable_rhino_packages`.
+
 A complete example
 ------------------
 
@@ -212,7 +237,7 @@ Extension point
 ^^^^^^^^^^^^^^^
 
 For the sake of example, we are going to assume that ``compas`` core defines
-the following :meth:`compas.plugins.pluggable` interface:
+the following :meth:`compas.plugins.pluggable` interface in
 
 **compas/geometry/booleans/__init__.py**
 
@@ -252,7 +277,7 @@ Now let's write a plugin that implements this interface:
 
         return r.vertices, r.faces
 
-**Voilà!** We have a trimesh-based boolean union plugin!
+Voilà! We have a trimesh-based boolean union plugin!
 
 Advanced options
 ----------------
@@ -282,6 +307,7 @@ accordingly:
 
     from compas.plugins import plugin_manager
     plugin_manager.DEBUG = True
+
 
 Multiple implementations
 ========================

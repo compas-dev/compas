@@ -730,18 +730,26 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
     str or GUID
 
     """
-    points = []
     mesh = RhinoMesh()
     if disjoint:
-        for keys in faces:
-            i = len(points)
-            facet = [j + i for j in range(len(keys))]
-            for key in keys:
-                point = vertices[key]
-                points.append(point)
-                x, y, z = point
-                mesh.Vertices.Add(x, y, z)
-            mesh.Faces.AddFace(*facet)
+        P = 0
+        for face in faces:
+            f = len(face)
+            if f == 3:
+                mesh.Vertices.Add(* vertices[face[0]])
+                mesh.Vertices.Add(* vertices[face[1]])
+                mesh.Vertices.Add(* vertices[face[2]])
+                mesh.Faces.AddFace(P + 0, P + 1, P + 2)
+                P += 3
+            elif f == 4:
+                mesh.Vertices.Add(* vertices[face[0]])
+                mesh.Vertices.Add(* vertices[face[1]])
+                mesh.Vertices.Add(* vertices[face[2]])
+                mesh.Vertices.Add(* vertices[face[3]])
+                mesh.Faces.AddFace(P + 0, P + 1, P + 2, P + 3)
+                P += 4
+            else:
+                continue
     else:
         for x, y, z in vertices:
             mesh.Vertices.Add(x, y, z)

@@ -9,6 +9,69 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Removed
+
+
+## [0.16.7] 2020-10-06
+
+### Added
+
+* Added functionality to the RPC service to automatically reload modules if a change is detected.
+
+### Changed
+
+### Removed
+
+
+## [0.16.6] 2020-09-30
+
+### Added
+
+* Added `compas_plotters.geometryplotter.GeometryPlotter` for COMPAS geometry objects.
+
+### Changed
+
+* Changed `compas.base.Base.dtype` to property.
+* Changed JSON schema to draft 7.
+* Changed version processing to `distutils.version.LooseVersion`.
+
+### Removed
+
+
+## [0.16.5] 2020-09-26
+
+### Added
+
+* Added tests for halfedge data schemas.
+
+### Changed
+
+* Fixed RGB color processing in `compas.utilities.color_to_colordict`.
+* Fixed Blender object and dat amanagement to avoid `malloc` problems.
+* Updated Blender data structure artists.
+* Changed Blender unused data clearing to also clear collections.
+* Fixed JSON data validation of base COMPAS object.
+
+### Removed
+
+
+## [0.16.4] 2020-09-24
+
+### Added
+
+### Changed
+
+* Fixed bug in `compas.geometry.Box.vertices`.
+
+### Removed
+
+
+## [0.16.3] 2020-09-23
+
+### Added
+
 * Added abstract `DATASCHEMA` to `compas.base.Base`.
 * Added abstract `JSONSCHEMA` to `compas.base.Base`.
 * Added `validate_data` to `compas.base.Base`.
@@ -21,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.rpc.Proxy.restart_server`.
 * Added `compas_rhino.objects.NetworkObject`.
 * Added constructors `from_matrix` and `from_rotation` to `compas.geometry.Quaternion`.
+* Added `draw_collection` methods to Grasshopper artists.
 
 ### Changed
 
@@ -128,20 +192,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Extended glTF support.
-* Added classmethod ``from_geometry`` to ``RhinoMesh``
-* Added ``intersection_sphere_line``
-* Added ``intersection_plane_circle``
-* Added ``tangent_points_to_circle_xy``
+* Added classmethod `from_geometry` to `RhinoMesh`
+* Added `intersection_sphere_line`
+* Added `intersection_plane_circle`
+* Added `tangent_points_to_circle_xy`
 * Added basic OBJ file writing.
-* Added ``Mesh.to_obj``.
+* Added `Mesh.to_obj`.
 
 ### Changed
 
-* Fixed bug in ``Box.from_bounding_box``.
+* Fixed bug in `Box.from_bounding_box`.
 * Updated Blender installation docs for latest release.
-* Fixed ``robot.forward_kinematics()`` when requested for base link.
-* Fixed bug in ``to_compas`` conversion of Rhino meshes.
-* Fixed bug where ``compas.geometry.Primitive`` derived classes cannot be serialized by jsonpickle.
+* Fixed `robot.forward_kinematics()` when requested for base link.
+* Fixed bug in `to_compas` conversion of Rhino meshes.
+* Fixed bug where `compas.geometry.Primitive` derived classes cannot be serialized by jsonpickle.
 
 ### Removed
 
@@ -154,8 +218,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Re-added length, divide, space methods of `RhinoCurve`.
 * Added basic OFF file writing.
 * Added basic PLY file writing.
-* Added ``Mesh.to_ply``.
-* Added ``Mesh.to_off``.
+* Added `Mesh.to_ply`.
+* Added `Mesh.to_off`.
 
 ### Changed
 
@@ -483,7 +547,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `iterable_like` to `compas.utilities.itertools_`
 * Added `compas.geometry.icp_numpy` for pointcloud alignment using ICP.
-* Added RPC command-line utility: `$ compas_rpc {start|stop} [port]`
+* Added RPC command-line utility: `$ compas_rpc {start|stop} [--port PORT]`
 * Added `__version__` to `compas_plotters`.
 * Added `compas_plotters` to `.bumpversion.cfg`.
 * Added `Colormap` to `compas.utilities`.

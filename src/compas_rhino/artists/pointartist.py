@@ -40,7 +40,7 @@ class PointArtist(PrimitiveArtist):
         """
         points = [{'pos': list(self.primitive), 'color': self.color, 'name': self.name}]
         guids = compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
-        self.guids = guids
+        self._guids = guids
         return guids
 
     @staticmethod

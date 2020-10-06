@@ -1,7 +1,7 @@
 import bpy
 from typing import List, Iterable, Text
 
-# from compas.datastructures import Mesh
+from .data import delete_unused_data
 
 
 __all__ = [
@@ -12,38 +12,6 @@ __all__ = [
     "delete_objects_by_names",
     "get_object_by_name",
     "get_objects_by_names",
-    # "get_objects",
-    # "get_object_name",
-    # "get_objects_names",
-    # "get_objects_layers",
-    # "get_objects_types",
-    # "get_objects_coordinates",
-    # "get_object_property",
-    # "get_objects_property",
-    # "get_points",
-    # "get_curves",
-    # "get_meshes",
-    # "get_points_coordinates",
-    # "get_curves_coordinates",
-    # "select_object",
-    # "select_objects",
-    # "select_point",
-    # "select_points",
-    # "select_curve",
-    # "select_curves",
-    # "select_mesh",
-    # "select_meshes",
-    # "set_select",
-    # "set_deselect",
-    # "set_objects_layer",
-    # "set_objects_coordinates",
-    # "set_objects_rotations",
-    # "set_objects_scales",
-    # "set_objects_show_names",
-    # "set_objects_visible",
-    # "set_object_property",
-    # "set_objects_property",
-    # "mesh_from_bmesh",
 ]
 
 
@@ -52,44 +20,28 @@ __all__ = [
 # ==============================================================================
 
 
-def delete_all_objects():
+def delete_all_objects(purge_data: bool = True):
     """Delete all mesh and curve scene objects, and the attached mesh and curve data blocks."""
-    for obj in bpy.data.objects:
-        # if obj.type == 'MESH':
-        #     bpy.data.objects.remove(obj)
-        # elif obj.type == 'CURVE':
-        #     bpy.data.objects.remove(obj)
-        bpy.data.objects.remove(obj)
-    for mesh in bpy.data.meshes:
-        bpy.data.meshes.remove(mesh)
-    for curve in bpy.data.curves:
-        bpy.data.curves.remove(curve)
+    bpy.ops.object.select_all(action='SELECT')
+    bpy.ops.object.delete(use_global=True, confirm=False)
+    if purge_data:
+        delete_unused_data()
 
 
-def delete_object(obj: bpy.types.Object):
+def delete_object(obj: bpy.types.Object, purge_data: bool = True):
     """Delete a scene object.
-
-    If the scene object is of type "MESH" or "CURVE",
-    the attached data blocks are also removed.
     """
-    if obj.type == 'MESH':
-        mesh = obj.data
-        bpy.data.objects.remove(obj)
-        if mesh:
-            bpy.data.meshes.remove(mesh)
-    elif obj.type == 'CURVE':
-        curve = obj.data
-        bpy.data.objects.remove(obj)
-        if curve:
-            bpy.data.curves.remove(curve)
-    else:
-        bpy.data.objects.remove(obj)
+    bpy.data.objects.remove(obj)
+    if purge_data:
+        delete_unused_data()
 
 
-def delete_objects(objects: Iterable[bpy.types.Object]):
+def delete_objects(objects: Iterable[bpy.types.Object], purge_data: bool = True):
     """Delete multiple scene objects."""
     for obj in objects:
-        delete_object(obj)
+        delete_object(obj, purge_data=False)
+    if purge_data:
+        delete_unused_data()
 
 
 def delete_object_by_name(name: str):

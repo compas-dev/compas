@@ -2,12 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import compas
+import Rhino
 from compas.geometry import Vector
-from compas_rhino.geometry.point import RhinoPoint
 
-if compas.RHINO:
-    import Rhino
+from .point import RhinoPoint
 
 
 __all__ = ['RhinoVector']

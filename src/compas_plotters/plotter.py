@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 import os
 import shutil
 
@@ -23,8 +19,10 @@ from compas_plotters.core.drawing import draw_xpolygons_xy
 from compas_plotters.core.drawing import draw_xarrows_xy
 
 
-__all__ = ['Plotter',
-           'valuedict']
+__all__ = [
+    'Plotter',
+    'valuedict'
+]
 
 
 def valuedict(keys, value, default):
@@ -56,7 +54,7 @@ def valuedict(keys, value, default):
         return dict.fromkeys(keys, value or default)
 
 
-class Plotter(object):
+class Plotter:
     """Definition of a plotter object based on matplotlib.
 
     Parameters
@@ -84,22 +82,6 @@ class Plotter(object):
     defaults : dict
         Dictionary containing default attributes for vertices and edges.
 
-        * point.radius      : ``0.1``
-        * point.facecolor   : ``'#ffffff'``
-        * point.edgecolor   : ``'#000000'``
-        * point.edgewidth   : ``0.5``
-        * point.textcolor   : ``'#000000'``
-        * point.fontsize    : ``10``
-        * line.width        : ``1.0``
-        * line.color        : ``'#000000'``
-        * line.textcolor    : ``'#000000'``
-        * line.fontsize     : ``10``
-        * polygon.facecolor : ``'#ffffff'``
-        * polygon.edgecolor : ``'#000000'``
-        * polygon.edgewidth : ``0.1``
-        * polygon.textcolor : ``'#000000'``
-        * polygon.fontsize  : ``10``
-
     Notes
     -----
     For more info, see [1]_.
@@ -109,40 +91,6 @@ class Plotter(object):
     .. [1] Hunter, J. D., 2007. *Matplotlib: A 2D graphics environment*.
            Computing In Science & Engineering (9) 3, p.90-95.
            Available at: http://ieeexplore.ieee.org/document/4160265/citations.
-
-    Examples
-    --------
-    .. plot::
-        :include-source:
-
-        import compas
-
-        from compas.datastructures import Mesh
-        from compas_plotters import Plotter
-
-        mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-        plotter = Plotter(figsize=(10, 7))
-
-        points = []
-        for key in mesh.vertices():
-            points.append({
-                'pos'      : mesh.vertex_coordinates(key),
-                'radius'   : 0.1,
-                'facecolor': '#ffffff'
-            })
-
-        lines = []
-        for u, v in mesh.edges():
-            lines.append({
-                'start': mesh.vertex_coordinates(u),
-                'end'  : mesh.vertex_coordinates(v),
-                'width': 1.0
-            })
-
-        plotter.draw_points(points)
-        plotter.draw_lines(lines)
-        plotter.show()
 
     """
 
@@ -408,13 +356,6 @@ class Plotter(object):
             Pattern for the filename of the intermediate frames.
             The pattern should contain a replacement placeholder for the number
             of the frame. Default is ``'image_{}.png'``.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            #
-
         """
         images = []
 
@@ -469,13 +410,6 @@ class Plotter(object):
         --------
         This function assumes ImageMagick is installed on your system, and on
         *convert* being on your system path.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            #
-
         """
         command = ['convert', '-delay', '{}'.format(delay), '-loop', '{}'.format(loop), '-layers', 'optimize']
         subprocess.call(command + images + [filepath])
@@ -505,18 +439,6 @@ class Plotter(object):
         object
             The matplotlib point collection object.
 
-        Notes
-        -----
-        ...
-
-        See Also
-        --------
-        :func:`compas_plotters.core.draw_xpoints_xy`
-
-        Examples
-        --------
-        >>>
-
         """
         return draw_xpoints_xy(points, self.axes)
 
@@ -541,10 +463,6 @@ class Plotter(object):
         -------
         object
             The matplotlib line collection object.
-
-        See Also
-        --------
-        :func:`compas_plotters.core.draw_xlines_xy`
 
         """
         return draw_xlines_xy(lines, self.axes)
@@ -621,10 +539,6 @@ class Plotter(object):
         object
             The matplotlib arrow collection object.
 
-        See Also
-        --------
-        :func:`compas_plotters.core.draw_xarrows_xy`
-
         """
         return draw_xarrows_xy(arrows, self.axes)
 
@@ -700,56 +614,4 @@ class Plotter(object):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    import compas
-
-    from compas.datastructures import Mesh
-    from compas.geometry import smooth_centroid
-
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-
-    fixed = [key for key in mesh.vertices() if mesh.vertex_degree(key) == 2]
-
-    points = []
-    for key in mesh.vertices():
-        points.append({
-            'pos': mesh.vertex_coordinates(key),
-            'radius': 0.1,
-            'facecolor': '#ff0000' if mesh.vertex_degree(key) == 2 else '#ffffff'
-        })
-
-    lines = []
-    for u, v in mesh.edges():
-        lines.append({
-            'start': mesh.vertex_coordinates(u),
-            'end': mesh.vertex_coordinates(v),
-            'width': 1.0
-        })
-
-    plotter = Plotter(figsize=(10, 6))
-
-    pcoll = plotter.draw_points(points)
-    lcoll = plotter.draw_lines(lines)
-
-    def callback(k, args):
-        plotter.update_pointcollection(pcoll, vertices, 0.1)
-
-        segments = []
-        for u, v in mesh.edges():
-            a = vertices[u][0:2]
-            b = vertices[v][0:2]
-            segments.append([a, b])
-
-        plotter.update_linecollection(lcoll, segments)
-        plotter.update(pause=0.001)
-
-    vertices = [mesh.vertex_coordinates(key) for key in mesh.vertices()]
-    adjacency = [mesh.vertex_neighbors(key) for key in mesh.vertices()]
-
-    smooth_centroid(vertices,
-                    adjacency,
-                    fixed=fixed,
-                    kmax=100,
-                    callback=callback)
-
-    plotter.show()
+    pass

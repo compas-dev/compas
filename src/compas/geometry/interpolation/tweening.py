@@ -3,8 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.geometry import add_vectors
+from compas.geometry import subtract_vectors
 from compas.geometry import scale_vector
-from compas.geometry import vector_from_points
 from compas.geometry import distance_point_point
 
 
@@ -45,7 +45,7 @@ def tween_points(points1, points2, num):
     The two point sets should have the same length.
 
     """
-    vectors = [vector_from_points(p1, p2) for p1, p2 in zip(points1, points2)]
+    vectors = [subtract_vectors(p2, p1) for p1, p2 in zip(points1, points2)]
     tweens = []
     for j in range(num):
         tween = []
@@ -85,7 +85,7 @@ def tween_points_distance(points1, points2, dist, index=None):
     scale = float(dist) / d
     tweens = []
     for i in range(len(points1)):
-        tweens.append(add_vectors(points1[i], scale_vector(vector_from_points(points1[i], points2[i]), scale)))
+        tweens.append(add_vectors(points1[i], scale_vector(subtract_vectors(points2[i], points1[i]), scale)))
     return tweens
 
 

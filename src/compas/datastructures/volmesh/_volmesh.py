@@ -5,6 +5,8 @@ from __future__ import print_function
 from compas.datastructures.volmesh.core import BaseVolMesh
 
 from compas.datastructures.volmesh.bbox import volmesh_bounding_box
+from compas.datastructures.volmesh.transformations import volmesh_transform
+from compas.datastructures.volmesh.transformations import volmesh_transformed
 
 
 __all__ = ['VolMesh']
@@ -16,6 +18,8 @@ class VolMesh(BaseVolMesh):
     """
 
     bounding_box = volmesh_bounding_box
+    transform = volmesh_transform
+    transformed = volmesh_transformed
 
 
 # =============================================================================

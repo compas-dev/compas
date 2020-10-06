@@ -40,14 +40,6 @@ def bestfit_plane_numpy(points):
     >>>
 
     """
-    # xyz = asarray(points).reshape((-1, 3))
-    # n = xyz.shape[0]
-    # c = (sum(xyz, axis=0) / n).reshape((-1, 3))
-    # Yt = xyz - c
-    # C = Yt.T.dot(Yt) / (n - 1)
-    # U, S, Vt = svd(C)
-    # w = Vt[2, :]
-    # return c, w
     o, uvw, _ = pca_numpy(points)
     return o, uvw[2]
 

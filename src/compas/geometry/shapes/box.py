@@ -73,6 +73,7 @@ class Box(Shape):
     """
 
     def __init__(self, frame, xsize, ysize, zsize):
+        super(Box, self).__init__()
         self._frame = None
         self._xsize = None
         self._ysize = None
@@ -183,6 +184,10 @@ class Box(Shape):
         return self.xsize * self.ysize * self.zsize
 
     @property
+    def points(self):
+        return self.vertices
+
+    @property
     def vertices(self):
         """list of point: The XYZ coordinates of the vertices of the box."""
         point = self.frame.point
@@ -191,10 +196,10 @@ class Box(Shape):
         zaxis = self.frame.zaxis
         width, depth, height = self.xsize, self.ysize, self.zsize
 
-        a = point - xaxis * 0.5 * width - yaxis * 0.5 * depth - zaxis * 0.5 * height
-        b = point - xaxis * 0.5 * width + yaxis * 0.5 * depth - zaxis * 0.5 * height
-        c = point + xaxis * 0.5 * width + yaxis * 0.5 * depth - zaxis * 0.5 * height
-        d = point + xaxis * 0.5 * width - yaxis * 0.5 * depth - zaxis * 0.5 * height
+        a = point + (xaxis * -0.5 * width - yaxis * 0.5 * depth - zaxis * 0.5 * height)
+        b = point + (xaxis * -0.5 * width + yaxis * 0.5 * depth - zaxis * 0.5 * height)
+        c = point + (xaxis * 0.5 * width + yaxis * 0.5 * depth - zaxis * 0.5 * height)
+        d = point + (xaxis * 0.5 * width - yaxis * 0.5 * depth - zaxis * 0.5 * height)
 
         e = a + zaxis * height
         f = d + zaxis * height

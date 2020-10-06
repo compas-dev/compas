@@ -5,6 +5,7 @@ from __future__ import division
 from random import sample
 from random import choice
 from ast import literal_eval
+from distutils.version import LooseVersion
 
 import compas
 
@@ -53,77 +54,61 @@ class Graph(Datastructure):
     @property
     def DATASCHEMA(self):
         import schema
-        from packaging import version
-        if version.parse(compas.__version__) < version.parse('0.17'):
-            return schema.Schema({
-                "attributes": dict,
-                "node_attributes": dict,
-                "edge_attributes": dict,
-                "node": dict,
-                "edge": dict,
-                "adjacency": dict,
-                "max_int_key": schema.And(int, lambda x: x >= -1)
-            })
-        return schema.Schema({
+        version = LooseVersion(compas.__version__)
+        meta = {
             "compas": str,
             "datatype": str,
-            "data": {
-                "attributes": dict,
-                "node_attributes": dict,
-                "edge_attributes": dict,
-                "node": dict,
-                "edge": dict,
-                "adjacency": dict,
-                "max_int_key": schema.And(int, lambda x: x >= -1)
-            }
-        })
+            "data": None
+        }
+        data = {
+            "attributes": dict,
+            "node_attributes": dict,
+            "edge_attributes": dict,
+            "node": dict,
+            "edge": dict,
+            "adjacency": dict,
+            "max_int_key": schema.And(int, lambda x: x >= -1)
+        }
+        if version < LooseVersion('0.16.5'):
+            return schema.Schema(data)
+        meta["data"] = data
+        return schema.Schema(meta)
 
     @property
     def JSONSCHEMA(self):
-        from packaging import version
-        if version.parse(compas.__version__) < version.parse('0.17'):
-            return {
-                "$schema": "http://json-schema.org/schema",
-                "$id": "https://github.com/compas-dev/compas/schemas/mesh.json",
-                "$compas": compas.__version__,
-
+        version = LooseVersion(compas.__version__)
+        schema = {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "$id": "https://github.com/compas-dev/compas/schemas/graph.json",
+            "$compas": version.vstring.split('-')[0],
+        }
+        data = {
+            "type": "object",
+            "properties": {
+                "attributes":      {"type": "object"},
+                "node_attributes": {"type": "object"},
+                "edge_attributes": {"type": "object"},
+                "node":            {"type": "object"},
+                "edge":            {"type": "object"},
+                "adjacency":       {"type": "object"},
+                "max_int_key":     {"type": "number"}
+            },
+            "required": ["attributes", "node_attributes", "edge_attributes", "node", "edge", "adjacency", "max_int_key"]
+        }
+        if version < LooseVersion('0.16.5'):
+            schema.update(data)
+        else:
+            meta = {
                 "type": "object",
                 "properties": {
-                    "attributes":      {"type": "object"},
-                    "node_attributes": {"type": "object"},
-                    "edge_attributes": {"type": "object"},
-                    "node":            {"type": "object"},
-                    "edge":            {"type": "object"},
-                    "adjacency":       {"type": "object"},
-                    "max_int_key":     {"type": "number"}
+                    "compas": {"type": "string"},
+                    "datatype": {"type": "string"},
+                    "data": data
                 },
-                "required": ["attributes", "node_attributes", "edge_attributes", "node", "edge", "adjacency", "max_int_key"]
+                "required": ["compas", "datatype", "data"]
             }
-        return {
-            "$schema": "http://json-schema.org/schema",
-            "$id": "https://github.com/compas-dev/compas/schemas/graph.json",
-            "$compas": compas.__version__,
-
-            "type": "object",
-            "poperties": {
-                "compas": {"type": "string"},
-                "datatype": {"type": "string"},
-                "data": {
-                    "type": "object",
-                    "properties": {
-                        "attributes":      {"type": "object"},
-                        "node_attributes": {"type": "object"},
-                        "edge_attributes": {"type": "object"},
-                        "node":            {"type": "object"},
-                        "edge":            {"type": "object"},
-                        "adjacency":       {"type": "object"},
-                        "max_int_key":     {"type": "number"}
-                    },
-                    "required": ["attributes", "node_attributes", "edge_attributes", "node", "edge", "adjacency", "max_int_key"]
-                }
-            },
-            "required": ["compas", "datatype", "data"]
-        }
+            schema.update(meta)
+        return schema
 
     def __init__(self):
         super(Graph, self).__init__()
@@ -146,7 +131,7 @@ class Graph(Datastructure):
         Any value assigned to this property will be stored in the attribute dict
         of the data structure instance.
         """
-        return self.attributes.get('name', None)
+        return self.attributes.get('name') or self.__class__.__name__
 
     @name.setter
     def name(self, value):
@@ -160,14 +145,21 @@ class Graph(Datastructure):
     def data(self):
         """Return a data dict of this data structure for serialisation.
         """
-        data = {'attributes': self.attributes,
-                'node_attributes': self.default_node_attributes,
-                'edge_attributes': self.default_edge_attributes,
-                'node': {},
-                'edge': {},
-                'adjacency': {},
-                'max_int_key': self._max_int_key}
-
+        version = LooseVersion(compas.__version__)
+        meta = {
+            "compas": ".".join(version.vstring.split('-')[0]),
+            "datatype": self.dtype,
+            "data": None
+        }
+        data = {
+            'attributes': self.attributes,
+            'node_attributes': self.default_node_attributes,
+            'edge_attributes': self.default_edge_attributes,
+            'node': {},
+            'edge': {},
+            'adjacency': {},
+            'max_int_key': self._max_int_key
+        }
         for key in self.node:
             data['node'][repr(key)] = self.node[key]
 
@@ -185,10 +177,19 @@ class Graph(Datastructure):
                 rv = repr(v)
                 data['adjacency'][ru][rv] = None
 
-        return data
+        if version < LooseVersion('0.16.5'):
+            return data
+        meta['data'] = data
+        return meta
 
     @data.setter
     def data(self, data):
+        if 'compas' in data:
+            version = LooseVersion(compas.__version__)
+            if version < LooseVersion('0.16.5'):
+                raise Exception('The data was generated with an incompatible newer version of COMPAS: {}'.format(version.vstring.split('-')[0]))
+            data = data['data']
+
         attributes = data.get('attributes') or {}
         default_node_attributes = data.get('dna') or {}
         default_edge_attributes = data.get('dea') or {}
@@ -244,7 +245,9 @@ class Graph(Datastructure):
         raise NotImplementedError
 
     def to_networkx(self):
-        raise NotImplementedError
+        import networkx as nx
+        graph = nx.Graph(self.edges())
+        return graph
 
     # --------------------------------------------------------------------------
     # helpers

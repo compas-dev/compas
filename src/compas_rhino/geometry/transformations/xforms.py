@@ -7,8 +7,6 @@ import compas
 if compas.RHINO:
     from Rhino.Geometry import Transform
 
-# TODO: This file should actually move to compas_rhino
-
 __all__ = [
     'xform_from_transformation',
     'xform_from_transformation_matrix',

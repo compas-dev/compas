@@ -58,7 +58,7 @@ class BaseObject(ABC):
     def __init__(self, item, scene=None, name=None, layer=None, visible=True, settings=None):
         super(BaseObject, self).__init__()
         self._item = None
-        self._guid = None
+        self._id = None
         self._scene = None
         self._artist = None
         self.scene = scene
@@ -94,11 +94,12 @@ class BaseObject(ABC):
         return self._artist
 
     @property
-    def guid(self):
-        if not self._guid:
-            self._guid = uuid4()
-        return self._guid
+    def id(self):
+        if not self._id:
+            self._id = uuid4()
+        return self._id
 
+    # this is debatable
     @property
     def name(self):
         return self.item.name
@@ -122,6 +123,10 @@ class BaseObject(ABC):
     @staticmethod
     def register(item_type, object_type):
         _ITEM_OBJECT[item_type] = object_type
+
+    @staticmethod
+    def registered_object_types():
+        return [_ITEM_OBJECT[item_type] for item_type in _ITEM_OBJECT]
 
     @staticmethod
     def build(item, **kwargs):

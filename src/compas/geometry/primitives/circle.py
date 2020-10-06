@@ -49,6 +49,7 @@ class Circle(Primitive):
     __slots__ = ['_plane', '_radius']
 
     def __init__(self, plane, radius):
+        super(Circle, self).__init__()
         self._plane = None
         self._radius = None
         self.plane = plane

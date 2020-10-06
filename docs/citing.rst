@@ -1,8 +1,12 @@
-********************************************************************************
+******
 Citing
-********************************************************************************
+******
 
-If you use the main library of COMPAS in a project, please refer to the GitHub repository.
+.. rst-class:: lead
+
+    The core library of COMPAS is developed by a small team of nerds at ETH Zurich.
+    If you use COMPAS in your work, please acknowledge their many sleepless nights
+    and lack of social life :)
 
 ::
 

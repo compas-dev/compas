@@ -2,14 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+import Rhino
+
 import compas_rhino
-
 from compas.datastructures import Mesh
-from compas_rhino.geometry._geometry import BaseRhinoGeometry
 
-if compas.RHINO:
-    import Rhino
+from ._geometry import BaseRhinoGeometry
 
 
 __all__ = ['RhinoMesh']
@@ -101,8 +99,7 @@ class RhinoMesh(BaseRhinoGeometry):
         :class:`compas.datastructures.Mesh`
             The equivalent COMPAS mesh.
         """
-        if not cls:
-            cls = Mesh
+        cls = cls or Mesh
         faces = []
         for face in self.faces:
             if face[0] == face[-1]:
@@ -111,7 +108,9 @@ class RhinoMesh(BaseRhinoGeometry):
                 faces.append(face[:-1])
             else:
                 faces.append(face)
-        return cls.from_vertices_and_faces(self.vertices, faces)
+        mesh = cls.from_vertices_and_faces(self.vertices, faces)
+        mesh.name = self.name
+        return mesh
 
     def closest_point(self, point, maxdist=0.0):
         """Compute the closest point on the mesh to a given point.

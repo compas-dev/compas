@@ -27,7 +27,7 @@ data
 .. autosummary::
     :toctree: generated/
 
-    delete_all_data
+    delete_unused_data
 
 
 drawing

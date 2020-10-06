@@ -2,25 +2,43 @@ import bpy
 
 
 __all__ = [
-    "delete_all_data",
+    "delete_unused_data",
 ]
 
 
-def delete_all_data():
+def delete_unused_data():
     """Delete all collections, mesh and curve objects, meshes, curves, materials."""
-    for collection in bpy.data.collections:
-        bpy.data.collections.remove(collection)
-    for obj in bpy.data.objects:
-        if obj.type == 'MESH':
-            bpy.data.objects.remove(obj)
-        elif obj.type == 'CURVE':
-            bpy.data.objects.remove(obj)
-    for mesh in bpy.data.meshes:
-        bpy.data.meshes.remove(mesh)
-    for curve in bpy.data.curves:
-        bpy.data.curves.remove(curve)
-    for material in bpy.data.materials:
-        bpy.data.materials.remove(material)
+    for block in bpy.data.meshes:
+        if block.users == 0:
+            bpy.data.meshes.remove(block)
+
+    for block in bpy.data.curves:
+        if block.users == 0:
+            bpy.data.curves.remove(block)
+
+    for block in bpy.data.materials:
+        if block.users == 0:
+            bpy.data.materials.remove(block)
+
+    for block in bpy.data.textures:
+        if block.users == 0:
+            bpy.data.textures.remove(block)
+
+    for block in bpy.data.images:
+        if block.users == 0:
+            bpy.data.images.remove(block)
+
+    # for collection in bpy.context.scene.collection.children:
+    #     bpy.context.scene.collection.children.unlink(collection)
+
+    # for block in bpy.data.collections:
+    #     objects = [o for o in block.objects if o.users]
+    #     while objects:
+    #         bpy.data.objects.remove(objects.pop())
+    #     for collection in block.children:
+    #         block.children.unlink(collection)
+    #     if block.users == 0:
+    #         bpy.data.collections.remove(block)
 
 
 # ==============================================================================

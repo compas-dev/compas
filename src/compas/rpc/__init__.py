@@ -45,13 +45,13 @@ To start a new RPC server use the following command (default port is ``1753``):
 
 ::
 
-    $ compas_rpc start <port>
+    $ compas_rpc start [--port PORT]
 
 Conversely, to stop an existing RPC server:
 
 ::
 
-    $ compas_rpc stop <port>
+    $ compas_rpc stop [--port PORT]
 
 
 .. note::

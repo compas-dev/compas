@@ -18,7 +18,9 @@ compas_rhino
 """
 from __future__ import absolute_import
 
+import io
 import os
+
 import compas
 import compas._os
 
@@ -27,10 +29,12 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '0.16.2'
+__version__ = '0.16.7'
 
 
 PURGE_ON_DELETE = True
+
+INSTALLABLE_PACKAGES = ['compas', 'compas_rhino', 'compas_ghpython']
 
 
 def _check_rhino_version(version):
@@ -153,5 +157,47 @@ def _get_scripts_path_mac(version):
         os.getenv('HOME'), 'Library', 'Application Support', 'McNeel', 'Rhinoceros', '{}'.format(version), 'scripts')
 
 
-__all_plugins__ = ['compas_rhino.geometry.booleans']
+def _get_package_path(package):
+    return os.path.abspath(os.path.dirname(package.__file__))
+
+
+def _get_bootstrapper_path(install_path):
+    return os.path.join(install_path, 'compas_bootstrapper.py')
+
+
+def _get_bootstrapper_data(compas_bootstrapper):
+    data = {}
+
+    if not os.path.exists(compas_bootstrapper):
+        return data
+
+    content = io.open(compas_bootstrapper, encoding='utf8').read()
+    exec(content, data)
+
+    return data
+
+
+def _try_remove_bootstrapper(path):
+    """Try to remove bootstrapper.
+
+    Returns
+    -------
+    bool: ``True`` if the operation did not cause errors, ``False`` otherwise.
+    """
+
+    bootstrapper = _get_bootstrapper_path(path)
+
+    if os.path.exists(bootstrapper):
+        try:
+            os.remove(bootstrapper)
+            return True
+        except:  # noqa: E722
+            return False
+    return True
+
+
 __all__ = [name for name in dir() if not name.startswith('_')]
+__all_plugins__ = [
+    'compas_rhino.geometry.booleans',
+    'compas_rhino.install',
+]

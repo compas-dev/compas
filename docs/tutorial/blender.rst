@@ -1,5 +1,4 @@
-.. _working-in-blender:
+*******
+Blender
+*******
 
-******************
-Working in Blender
-******************
