@@ -39,8 +39,8 @@ def mesh_fast_copy(other):
     # subd.edgedata = deepcopy(other.edgedata)
     subd.facedata = deepcopy(other.facedata)
     subd.halfedge = deepcopy(other.halfedge)
-    subd._max_int_key = other._max_int_key
-    subd._max_int_fkey = other._max_int_fkey
+    subd._max_int_key = other._max_vertex
+    subd._max_int_fkey = other._max_face
     return subd
 
 
@@ -49,6 +49,25 @@ class SubdMesh(Mesh):
     _add_vertex = Mesh.add_vertex
     _add_face = Mesh.add_face
     _insert_vertex = Mesh.insert_vertex
+
+    def __init__(self):
+        super(SubdMesh, self).__init__()
+
+    @property
+    def _max_int_key(self):
+        return self._max_int_key
+
+    _max_int_key.setter
+    def _max_int_key(self, x):
+        self._max_int_key = x
+
+    @property
+    def _max_int_fkey(self):
+        return self._max_face
+
+    _max_int_fkey.setter
+    def _max_int_fkey(self, x):
+        self._max_face = x
 
     def add_vertex(self, x, y, z):
         key = self._max_int_key = self._max_int_key + 1
@@ -751,19 +770,21 @@ if __name__ == "__main__":
     from compas.datastructures import mesh_quads_to_triangles  # noqa: F401
     from compas.datastructures import Mesh
     from compas.geometry import Box  # noqa: F401
-    doctest.testmod(globs=globals())
+    # doctest.testmod(globs=globals())
 
-    # from compas.datastructures import Mesh
-    # from compas.geometry import Box
-    # from compas.utilities import print_profile
-    # from compas_viewers.multimeshviewer import MultiMeshViewer
+    from compas.datastructures import Mesh
+    from compas.geometry import Box
+    from compas.utilities import print_profile
+    from compas_viewers.multimeshviewer import MultiMeshViewer
 
     # subdivide = print_profile(mesh_subdivide_quad)
 
+    mesh = Mesh.from_obj(compas.get('hypar.obj'))
+    subd = mesh_subdivide_tri(mesh, k=1)
     # box = Box.from_width_height_depth(10.0, 10.0, 10.0)
     # mesh = Mesh.from_shape(box)
     # mesh.default_face_attributes.update(path=[])
-    # subd = subdivide(mesh, k=3)
+    # subd = mesh_subdivide_tri(mesh, k=3)
 
     # print(subd.face_attribute(subd.get_any_face(), 'path'))
 
