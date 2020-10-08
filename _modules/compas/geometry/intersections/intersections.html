@@ -89,7 +89,10 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">fabs</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 
+<span class="kn">import</span> <span class="nn">compas</span>
+
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">geometric_key</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">allclose</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
@@ -690,7 +693,6 @@
 <span class="sd">    https://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span> <span class="o">=</span> <span class="n">line</span>
     <span class="n">sp</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="n">sphere</span>
 
@@ -812,6 +814,21 @@
 
 
 <span class="k">def</span> <span class="nf">intersection_line_box_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the intersection between a line and a box in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    line : list of 2 points or :class:`compas.geometry.Line`</span>
+<span class="sd">    box : list of 4 points</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance value for point comparison.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list of at most two intersection points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">box</span> <span class="o">+</span> <span class="n">box</span><span class="p">[:</span><span class="mi">1</span><span class="p">]):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">intersection_line_segment_xy</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
@@ -827,6 +844,35 @@
             <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">intersection_polyline_box_xy</span><span class="p">(</span><span class="n">polyline</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the intersection between a polyline and a box in the XY plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    polyline : list of points or :class:`compas.geometry.Polyline`</span>
+<span class="sd">    box : list of 4 points</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance value for point comparison.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        A list of intersection points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">compas</span><span class="o">.</span><span class="n">PRECISION</span>
+    <span class="n">compas</span><span class="o">.</span><span class="n">set_precision</span><span class="p">(</span><span class="n">tol</span><span class="p">)</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">side</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">box</span> <span class="o">+</span> <span class="n">box</span><span class="p">[:</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">polyline</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">intersection_segment_segment_xy</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">x</span><span class="p">:</span>
+                <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">{</span><span class="n">geometric_key</span><span class="p">(</span><span class="n">point</span><span class="p">):</span> <span class="n">point</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">}</span>
+    <span class="n">compas</span><span class="o">.</span><span class="n">PRECISION</span> <span class="o">=</span> <span class="n">precision</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="intersection_segment_segment_xy"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.intersection_segment_segment_xy.html#compas.geometry.intersection_segment_segment_xy">[docs]</a><span class="k">def</span> <span class="nf">intersection_segment_segment_xy</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">cd</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>

@@ -86,15 +86,16 @@
         
           
           <div class="detail section" id="meshartist-draw-mesh">
-<h1 class="display-4 p-0 mb-5">MeshArtist.draw_mesh</h1>
+<h1>MeshArtist.draw_mesh</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.MeshArtist.draw_mesh">
-<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_mesh</code><span class="sig-paren">(</span><em class="sig-param">color=None</em>, <em class="sig-param">disjoint=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/meshartist.html#MeshArtist.draw_mesh"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">MeshArtist.</code><code class="sig-name descname">draw_mesh</code><span class="sig-paren">(</span><em class="sig-param">color=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">disjoint=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/meshartist.html#MeshArtist.draw_mesh"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw the mesh as a consolidated RhinoMesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<em>3-tuple, optional</em>) – RGB color components in integer format (0-255).</p></li>
+<li><p><strong>color</strong> (<em>tuple, optional</em>) – The color of the mesh.
+Default is black, <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
 <li><p><strong>disjoint</strong> (<em>bool, optional</em>) – Draw the faces of the mesh with disjoint vertices.
 Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
@@ -104,8 +105,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">False</s
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The mesh should be a valid Rhino Mesh object, which means it should have
-only triangular or quadrilateral faces.
+<p>The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
 Faces with more than 4 vertices will be triangulated on-the-fly.</p>
 </dd></dl>
 
@@ -148,6 +148,7 @@ Faces with more than 4 vertices will be triangulated on-the-fly.</p>
 <li class="nav-item"><a class="nav-link reference internal" href="../compas_plotters.html">compas_plotters</a></li>
 </ul>
 </li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
@@ -267,7 +268,7 @@ Faces with more than 4 vertices will be triangulated on-the-fly.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.16.2',
+    VERSION           : '0.16.7',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
