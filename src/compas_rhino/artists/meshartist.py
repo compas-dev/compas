@@ -114,7 +114,21 @@ class MeshArtist(BaseArtist):
     # draw
     # ==========================================================================
 
-    def draw(self, color=(0, 0, 0), disjoint=False):
+    def draw(self):
+        """Draw the mesh using the chosen visualisation settings.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+
+        """
+        guids = self.draw_vertices()
+        guids += self.draw_faces()
+        guids += self.draw_edges()
+        return guids
+
+    def draw_mesh(self, color=(0, 0, 0), disjoint=False):
         """Draw the mesh as a consolidated RhinoMesh.
 
         Parameters
