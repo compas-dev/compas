@@ -39,8 +39,8 @@ def mesh_fast_copy(other):
     # subd.edgedata = deepcopy(other.edgedata)
     subd.facedata = deepcopy(other.facedata)
     subd.halfedge = deepcopy(other.halfedge)
-    subd._max_int_key = other._max_int_key
-    subd._max_int_fkey = other._max_int_fkey
+    subd._max_vertex = other._max_vertex
+    subd._max_face = other._max_face
     return subd
 
 
@@ -51,7 +51,7 @@ class SubdMesh(Mesh):
     _insert_vertex = Mesh.insert_vertex
 
     def add_vertex(self, x, y, z):
-        key = self._max_int_key = self._max_int_key + 1
+        key = self._max_vertex = self._max_vertex + 1
 
         if key not in self.vertex:
             self.vertex[key] = {}
@@ -62,7 +62,7 @@ class SubdMesh(Mesh):
         return key
 
     def add_face(self, vertices):
-        fkey = self._max_int_fkey = self._max_int_fkey + 1
+        fkey = self._max_face = self._max_face + 1
 
         self.face[fkey] = vertices
         self.facedata[fkey] = {}
