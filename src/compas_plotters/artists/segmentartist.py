@@ -19,6 +19,10 @@ class SegmentArtist(Artist):
         self.start_artist = None
         self.end_artist = None
 
+    @property
+    def data(self):
+        return [self.line.start[:2], self.line.end[:2]]
+
     def draw(self):
         line2d = Line2D([self.line.start[0], self.line.end[0]], [self.line.start[1], self.line.end[1]],
                         linewidth=self.width,

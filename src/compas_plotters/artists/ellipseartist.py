@@ -17,6 +17,23 @@ class EllipseArtist(Artist):
         self.edgecolor = kwargs.get('edgecolor', '#000000')
         self.fill = kwargs.get('fill', True)
 
+    @property
+    def data(self):
+        points = [
+            self.ellipse.center[:2],
+            self.ellipse.center[:2],
+            self.ellipse.center[:2],
+            self.ellipse.center[:2]
+        ]
+        points[0][0] -= self.ellipse.major
+        points[1][0] += self.ellipse.major
+        points[2][1] -= self.ellipse.minor
+        points[3][1] += self.ellipse.minor
+        return points
+
+    def update_data(self):
+        self.plotter.axes.update_datalim(self.data)
+
     def draw(self):
         ellipse = EllipsePatch(
             self.ellipse.center[:2],
@@ -59,5 +76,5 @@ if __name__ == '__main__':
     plotter.add(b, edgecolor='#00ff00', fill=False)
     plotter.add(c, edgecolor='#0000ff', fill=False)
 
-    plotter.draw()
+    plotter.zoom_extents()
     plotter.show()

@@ -22,6 +22,10 @@ class VectorArtist(Artist):
         self.mpl_vector = None
         self.point_artist = None
 
+    @property
+    def data(self):
+        return [self.point[:2], (self.point + self.vector)[:2]]
+
     def draw(self):
         style = ArrowStyle("Simple, head_length=.1, head_width=.1, tail_width=.01")
         arrow = FancyArrowPatch(self.point[:2], (self.point + self.vector)[:2],
@@ -65,7 +69,7 @@ if __name__ == '__main__':
 
     plotter.add(vector, point=point, draw_point=True)
     plotter.add(loa)
-    plotter.draw(pause=1.0)
+    plotter.pause(1.0)
 
     for i in range(100):
         point.transform(T)

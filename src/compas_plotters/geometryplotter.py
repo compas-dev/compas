@@ -28,7 +28,7 @@ class GeometryPlotter:
 
     """
 
-    def __init__(self, view=([-10, 10], [-3, 10]), figsize=(8, 5), **kwargs):
+    def __init__(self, view=[(-8, 16), (-5, 10)], figsize=(8, 5), **kwargs):
         self._show_axes = kwargs.get('show_axes', True)
         self._bgcolor = None
         self._viewbox = None
@@ -193,7 +193,21 @@ class GeometryPlotter:
     # Methods
     # =========================================================================
 
+    def pause(self, pause):
+        if pause:
+            plt.pause(pause)
+
     def zoom_extents(self):
+        data = []
+        for artist in self.artists:
+            data += artist.data
+        x, y = zip(* data)
+        xmin = min(x)
+        xmax = max(x)
+        ymin = min(y)
+        ymax = max(y)
+        self.axes.set_xlim(xmin, xmax)
+        self.axes.set_ylim(ymin, ymax)
         self.axes.autoscale_view()
 
     def add(self, item, artist=None, **kwargs):

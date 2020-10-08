@@ -5,7 +5,10 @@ from __future__ import division
 from math import fabs
 from math import sqrt
 
+import compas
+
 from compas.utilities import pairwise
+from compas.utilities import geometric_key
 
 from compas.geometry import allclose
 from compas.geometry import add_vectors
@@ -606,7 +609,6 @@ def intersection_sphere_line(sphere, line):
     https://gamedev.stackexchange.com/questions/75756/sphere-sphere-intersection-and-circle-sphere-intersection
 
     """
-
     l1, l2 = line
     sp, radius = sphere
 
@@ -728,6 +730,21 @@ def intersection_line_segment_xy(line, segment, tol=1e-6):
 
 
 def intersection_line_box_xy(line, box, tol=1e-6):
+    """Compute the intersection between a line and a box in the XY plane.
+
+    Parameters
+    ----------
+    line : list of 2 points or :class:`compas.geometry.Line`
+    box : list of 4 points
+    tol : float, optional
+        A tolerance value for point comparison.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    list
+        A list of at most two intersection points.
+    """
     points = []
     for segment in pairwise(box + box[:1]):
         x = intersection_line_segment_xy(line, segment, tol=tol)
@@ -743,6 +760,35 @@ def intersection_line_box_xy(line, box, tol=1e-6):
             return [a, b]
         return [a, b]
     return [a, c]
+
+
+def intersection_polyline_box_xy(polyline, box, tol=1e-6):
+    """Compute the intersection between a polyline and a box in the XY plane.
+
+    Parameters
+    ----------
+    polyline : list of points or :class:`compas.geometry.Polyline`
+    box : list of 4 points
+    tol : float, optional
+        A tolerance value for point comparison.
+        Default is ``1e-6``.
+
+    Returns
+    -------
+    list
+        A list of intersection points.
+    """
+    precision = compas.PRECISION
+    compas.set_precision(tol)
+    points = []
+    for side in pairwise(box + box[:1]):
+        for segment in pairwise(polyline):
+            x = intersection_segment_segment_xy(side, segment, tol=tol)
+            if x:
+                points.append(x)
+    points = {geometric_key(point): point for point in points}
+    compas.PRECISION = precision
+    return list(points.values())
 
 
 def intersection_segment_segment_xy(ab, cd, tol=1e-6):

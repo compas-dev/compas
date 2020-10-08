@@ -34,6 +34,13 @@ class PointArtist(Artist):
     def size(self, size):
         self._size = size
 
+    @property
+    def data(self):
+        return [self.point[:2]]
+
+    def update_data(self):
+        self.plotter.axes.update_datalim(self.data)
+
     def draw(self):
         circle = Circle(
             [0, 0],
@@ -44,14 +51,14 @@ class PointArtist(Artist):
             zorder=self.zorder
         )
         self._mpl_circle = self.plotter.axes.add_artist(circle)
-        self.plotter.axes.update_datalim([self.point[:2]])
+        self.update_data()
 
     def redraw(self):
         self._mpl_circle.set_radius(self.size)
         self._mpl_circle.set_edgecolor(self.edgecolor)
         self._mpl_circle.set_facecolor(self.facecolor)
         self._mpl_circle.set_transform(self._T)
-        self.plotter.axes.update_datalim([self.point[:2]])
+        self.update_data()
 
 
 # ==============================================================================
@@ -76,7 +83,8 @@ if __name__ == '__main__':
     plotter.add(b, edgecolor='#00ff00')
     plotter.add(c, edgecolor='#0000ff')
 
-    plotter.draw(pause=1.0)
+    plotter.zoom_extents()
+    plotter.pause(1.0)
 
     for i in range(100):
         a.transform(T)

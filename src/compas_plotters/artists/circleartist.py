@@ -18,6 +18,23 @@ class CircleArtist(Artist):
         self.edgecolor = kwargs.get('edgecolor', '#000000')
         self.fill = kwargs.get('fill', True)
 
+    @property
+    def data(self):
+        points = [
+            self.circle.center[:2],
+            self.circle.center[:2],
+            self.circle.center[:2],
+            self.circle.center[:2]
+        ]
+        points[0][0] -= self.circle.radius
+        points[1][0] += self.circle.radius
+        points[2][1] -= self.circle.radius
+        points[3][1] += self.circle.radius
+        return points
+
+    def update_data(self):
+        self.plotter.axes.update_datalim(self.data)
+
     def draw(self):
         circle = CirclePatch(
             self.circle.center[:2],
@@ -28,13 +45,13 @@ class CircleArtist(Artist):
             zorder=self.zorder
         )
         self._mpl_circle = self.plotter.axes.add_artist(circle)
-        self.plotter.axes.update_datalim([self.circle.center[:2]])
+        self.update_data()
 
     def redraw(self):
         self._mpl_circle.set_radius(self.circle.radius)
         self._mpl_circle.set_edgecolor(self.edgecolor)
         self._mpl_circle.set_facecolor(self.facecolor)
-        self.plotter.axes.update_datalim([self.circle.center[:2]])
+        self.update_data()
 
 
 # ==============================================================================
@@ -61,5 +78,5 @@ if __name__ == '__main__':
     plotter.add(b, edgecolor='#00ff00')
     plotter.add(c, edgecolor='#0000ff')
 
-    plotter.draw(pause=1.0)
+    plotter.zoom_extents()
     plotter.show()

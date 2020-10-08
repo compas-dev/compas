@@ -12,7 +12,7 @@ class LineArtist(Artist):
 
     zorder = 1000
 
-    def __init__(self, line, draw_points=False, draw_segment=False, **kwargs):
+    def __init__(self, line, draw_points=False, draw_segment=False, width=1.0, color=(0, 0, 0)):
         super(LineArtist, self).__init__()
         self._mpl_line = None
         self._start_artist = None
@@ -20,10 +20,9 @@ class LineArtist(Artist):
         self._segment_artist = None
         self._draw_points = draw_points
         self._draw_segment = draw_segment
-
         self.line = line
-        self.width = kwargs.get('width', 1.0)
-        self.color = kwargs.get('color', '#000000')
+        self.width = width
+        self.color = color
 
     def clip(self):
         xlim, ylim = self.plotter.viewbox
@@ -31,6 +30,10 @@ class LineArtist(Artist):
         ymin, ymax = ylim
         box = [[xmin, ymin], [xmax, ymin], [xmax, ymax], [xmin, ymax]]
         return intersection_line_box_xy(self.line, box)
+
+    @property
+    def data(self):
+        return [self.line.start[:2], self.line.end[:2]]
 
     def draw(self):
         points = self.clip()
@@ -86,8 +89,7 @@ if __name__ == '__main__':
     R = Rotation.from_axis_and_angle(Vector(0.0, 0.0, 1.0), radians(10), point=line.end)
 
     plotter.add(line, draw_points=True, draw_segment=True)
-
-    plotter.draw(pause=1.0)
+    plotter.redraw(pause=1.0)
 
     for i in range(9):
         line.transform(R)

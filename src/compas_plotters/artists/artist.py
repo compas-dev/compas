@@ -32,7 +32,14 @@ class Artist(object):
         ymin, ymax = ylim
         return [[xmin, ymin], [xmax, ymin], [xmax, ymax], [xmin, ymax]]
 
+    @property
+    def data(self):
+        raise NotImplementedError
+
     def draw(self):
+        raise NotImplementedError
+
+    def update_data(self):
         raise NotImplementedError
 
 
