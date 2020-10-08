@@ -6,7 +6,7 @@ import collections
 import sys
 from math import pi
 
-from compas.datastructures.mesh.core.halfedge import HalfEdge
+from .halfedge import HalfEdge
 
 from compas.files import OBJ
 from compas.files import OFF

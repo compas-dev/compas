@@ -10,10 +10,10 @@ from distutils.version import LooseVersion
 
 import compas
 
-from compas.datastructures.datastructure import Datastructure
-from compas.datastructures.attributes import VertexAttributeView
-from compas.datastructures.attributes import EdgeAttributeView
-from compas.datastructures.attributes import FaceAttributeView
+from ...datastructure import Datastructure
+from ...attributes import VertexAttributeView
+from ...attributes import EdgeAttributeView
+from ...attributes import FaceAttributeView
 
 from compas.utilities import pairwise
 from compas.utilities import window
