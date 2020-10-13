@@ -6,7 +6,6 @@ import itertools
 import json
 
 from compas.base import Base
-from compas.datastructures import Mesh
 from compas.files import URDF
 from compas.files import URDFParser
 from compas.geometry import Frame
