@@ -105,13 +105,14 @@ def oriented_bounding_box_numpy(points):
 
     points = points[:, :3]
 
-    # try:
-    #     hull = ConvexHull(points)
-    # except Exception as e:
-    #     if 'QH6154' in str(e):
-    #         hull = ConvexHull(points, qhull_options='Qb2:0B2:0')
-    #     else:
-    #         raise e
+    try:
+        hull = ConvexHull(points)
+    except Exception:
+        return oabb_numpy(points)
+        # if 'QH6154' in str(e):
+        #     hull = ConvexHull(points, qhull_options='Qb2:0B2:0')
+        # else:
+        #     raise e
 
     hull = ConvexHull(points)
 
