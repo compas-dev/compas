@@ -237,9 +237,10 @@
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">meshes</span><span class="p">):</span>
                     <span class="c1"># create native geometry</span>
                     <span class="n">mesh_type</span> <span class="o">=</span> <span class="s1">&#39;visual&#39;</span> <span class="k">if</span> <span class="n">is_visual</span> <span class="k">else</span> <span class="s1">&#39;collision&#39;</span>
-                    <span class="n">mesh_name_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
-                    <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
-                        <span class="n">mesh_name_components</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+                        <span class="n">mesh_name_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">mesh_name_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
                     <span class="n">mesh_name</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mesh_name_components</span><span class="p">)</span>
                     <span class="n">native_mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_geometry</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">mesh_name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
                     <span class="c1"># transform native geometry based on saved init transform</span>
@@ -531,7 +532,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.16.6',
+    VERSION           : '0.16.7',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
