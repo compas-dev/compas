@@ -579,6 +579,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">name</span>
         <span class="k">return</span> <span class="n">mesh</span></div>
 
 <div class="viewcode-block" id="BaseMesh.from_points"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_points.html#compas.datastructures.BaseMesh.from_points">[docs]</a>    <span class="nd">@classmethod</span>
@@ -1612,7 +1613,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.16.7',
+    VERSION           : '0.16.8',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

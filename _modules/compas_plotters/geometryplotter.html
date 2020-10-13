@@ -112,16 +112,16 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GeometryPlotter.__init__"><a class="viewcode-back" href="../../api/generated/compas_plotters.GeometryPlotter.__init__.html#compas_plotters.GeometryPlotter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="p">[(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_show_axes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show_axes&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<div class="viewcode-block" id="GeometryPlotter.__init__"><a class="viewcode-back" href="../../api/generated/compas_plotters.GeometryPlotter.__init__.html#compas_plotters.GeometryPlotter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="p">[(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)],</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">bgcolor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">show_axes</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_axes</span> <span class="o">=</span> <span class="n">show_axes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bgcolor</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_viewbox</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_axes</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_artists</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">viewbox</span> <span class="o">=</span> <span class="n">view</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figsize</span> <span class="o">=</span> <span class="n">figsize</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dpi</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dpi&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bgcolor</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;bgcolor&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dpi</span> <span class="o">=</span> <span class="n">dpi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bgcolor</span> <span class="o">=</span> <span class="n">bgcolor</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">viewbox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -167,18 +167,31 @@
                 <span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span>
             <span class="n">axes</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
             <span class="n">axes</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
-            <span class="n">axes</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_axes</span><span class="p">:</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">set_frame_on</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="c1"># major_xticks = np.arange(0, 501, 20)</span>
+                <span class="c1"># major_yticks = np.arange(0, 301, 20)</span>
+                <span class="c1"># minor_xticks = np.arange(0, 501, 5)</span>
+                <span class="c1"># minor_yticks = np.arange(0, 301, 5)</span>
+                <span class="c1"># ax.tick_params(axis = &#39;both&#39;, which = &#39;major&#39;, labelsize = 6)</span>
+                <span class="c1"># ax.tick_params(axis = &#39;both&#39;, which = &#39;minor&#39;, labelsize = 0)</span>
+                <span class="c1"># ax.set_xticks(major_xticks)</span>
+                <span class="c1"># ax.set_xticks(minor_yticks, minor = True)</span>
+                <span class="c1"># ax.set_yticks(major_xticks)</span>
+                <span class="c1"># ax.set_yticks(minor_yticks, minor = True)</span>
+                <span class="c1"># axes.tick_params(labelbottom=False, labelleft=False)</span>
+                <span class="c1"># axes.grid(axis=&#39;both&#39;, linestyle=&#39;--&#39;, linewidth=0.5, color=(0.7, 0.7, 0.7))</span>
+                <span class="n">axes</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s1">&#39;zero&#39;</span><span class="p">)</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s1">&#39;zero&#39;</span><span class="p">)</span>
-                <span class="n">axes</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_linestyle</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
-                <span class="n">axes</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_linestyle</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+                <span class="n">axes</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_linestyle</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+                <span class="n">axes</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_linestyle</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
+                <span class="n">axes</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">set_frame_on</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
                 <span class="n">axes</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
@@ -282,6 +295,8 @@
             <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="n">pause</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GeometryPlotter.zoom_extents"><a class="viewcode-back" href="../../api/generated/compas_plotters.GeometryPlotter.zoom_extents.html#compas_plotters.GeometryPlotter.zoom_extents">[docs]</a>    <span class="k">def</span> <span class="nf">zoom_extents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">figsize</span>
+        <span class="n">fig_aspect</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="n">height</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">artists</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">+=</span> <span class="n">artist</span><span class="o">.</span><span class="n">data</span>
@@ -290,8 +305,17 @@
         <span class="n">xmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">ymin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="n">ymax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span> <span class="n">ymax</span><span class="p">)</span>
+        <span class="n">xspan</span> <span class="o">=</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span>
+        <span class="n">yspan</span> <span class="o">=</span> <span class="n">ymax</span> <span class="o">-</span> <span class="n">ymin</span>
+        <span class="n">data_aspect</span> <span class="o">=</span> <span class="n">xspan</span> <span class="o">/</span> <span class="n">yspan</span>
+        <span class="k">if</span> <span class="n">data_aspect</span> <span class="o">&lt;</span> <span class="n">fig_aspect</span><span class="p">:</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">fig_aspect</span> <span class="o">/</span> <span class="n">data_aspect</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">xmin</span> <span class="o">-</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">xspan</span><span class="p">),</span> <span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">xmax</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">xspan</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ymin</span> <span class="o">-</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">yspan</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">yspan</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">data_aspect</span> <span class="o">/</span> <span class="n">fig_aspect</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xmin</span> <span class="o">-</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">xspan</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">xspan</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">ymin</span> <span class="o">-</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">yspan</span><span class="p">),</span> <span class="n">scale</span> <span class="o">*</span> <span class="p">(</span><span class="n">ymax</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">yspan</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">autoscale_view</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="GeometryPlotter.add"><a class="viewcode-back" href="../../api/generated/compas_plotters.GeometryPlotter.add.html#compas_plotters.GeometryPlotter.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">artist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -310,7 +334,9 @@
         <span class="k">return</span> <span class="n">artist</span></div>
 
 <div class="viewcode-block" id="GeometryPlotter.find"><a class="viewcode-back" href="../../api/generated/compas_plotters.GeometryPlotter.find.html#compas_plotters.GeometryPlotter.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_artists</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="n">artist</span><span class="o">.</span><span class="n">item</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">artist</span></div>
 
 <div class="viewcode-block" id="GeometryPlotter.register_listener"><a class="viewcode-back" href="../../api/generated/compas_plotters.GeometryPlotter.register_listener.html#compas_plotters.GeometryPlotter.register_listener">[docs]</a>    <span class="k">def</span> <span class="nf">register_listener</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">listener</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Register a listener for pick events.</span>
@@ -532,7 +558,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.16.7',
+    VERSION           : '0.16.8',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
