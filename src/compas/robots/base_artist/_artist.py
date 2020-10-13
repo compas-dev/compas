@@ -153,9 +153,10 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                 for i, mesh in enumerate(meshes):
                     # create native geometry
                     mesh_type = 'visual' if is_visual else 'collision'
-                    mesh_name_components = [self.model.name, mesh_type, link.name, str(i)]
-                    if name:
-                        mesh_name_components.insert(2, name)
+                    if not name:
+                        mesh_name_components = [self.model.name, mesh_type, link.name, str(i)]
+                    else:
+                        mesh_name_components = [self.model.name, mesh_type, name, link.name, str(i)]
                     mesh_name = '.'.join(mesh_name_components)
                     native_mesh = self.draw_geometry(mesh, name=mesh_name, color=color)
                     # transform native geometry based on saved init transform
