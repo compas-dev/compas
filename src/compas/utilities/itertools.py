@@ -21,7 +21,8 @@ __all__ = [
     'flatten',
     'pairwise',
     'window',
-    'iterable_like'
+    'iterable_like',
+    'grouper'
 ]
 
 
@@ -107,9 +108,9 @@ def linspace(start, stop, num=50):
         yield start + i * step
 
 
-def flatten(listOfLists):
+def flatten(list_of_lists):
     """Flatten one level of nesting"""
-    return chain.from_iterable(listOfLists)
+    return chain.from_iterable(list_of_lists)
 
 
 def pairwise(iterable):
@@ -262,11 +263,11 @@ def padnone(iterable):
     return chain(iterable, repeat(None))
 
 
-# def grouper(iterable, n, fillvalue=None):
-#     """Collect data into fixed-length chunks or blocks"""
-#     # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx"""
-#     args = [iter(iterable)] * n
-#     return zip_longest(*args, fillvalue=fillvalue)
+def grouper(iterable, n, fillvalue=None):
+    """Collect data into fixed-length chunks or blocks.
+    """
+    args = [iter(iterable)] * n
+    return zip_longest(*args, fillvalue=fillvalue)
 
 
 # def random_product(*args, repeat=1):
