@@ -9,13 +9,16 @@ class EllipseArtist(Artist):
 
     zorder = 1000
 
-    def __init__(self, ellipse, **kwargs):
-        super(EllipseArtist, self).__init__()
+    def __init__(self, ellipse, linewidth=1.0, linestyle='solid', facecolor=(1.0, 1.0, 1.0), edgecolor=(0, 0, 0), fill=True, alpha=1.0):
+        super(EllipseArtist, self).__init__(ellipse)
         self._mpl_ellipse = None
         self.ellipse = ellipse
-        self.facecolor = kwargs.get('facecolor', '#ffffff')
-        self.edgecolor = kwargs.get('edgecolor', '#000000')
-        self.fill = kwargs.get('fill', True)
+        self.linewidth = linewidth
+        self.linestyle = linestyle
+        self.facecolor = facecolor
+        self.edgecolor = edgecolor
+        self.fill = fill
+        self.alpha = alpha
 
     @property
     def data(self):
@@ -46,6 +49,7 @@ class EllipseArtist(Artist):
         self._mpl_ellipse = self.plotter.axes.add_artist(ellipse)
 
     def redraw(self):
+        self._mpl_ellipse.center = self.ellipse.center[:2]
         self._mpl_ellipse.set_width(2*self.ellipse.major)
         self._mpl_ellipse.set_height(2*self.ellipse.minor)
         self._mpl_ellipse.set_edgecolor(self.edgecolor)
@@ -62,6 +66,7 @@ if __name__ == '__main__':
     from compas.geometry import Point
     from compas.geometry import Plane
     from compas.geometry import Vector
+    from compas.geometry import Translation
     from compas_plotters import GeometryPlotter
 
     plotter = GeometryPlotter()
@@ -72,9 +77,17 @@ if __name__ == '__main__':
     b = Ellipse(plane, 2.0, 1.0)
     c = Ellipse(plane, 3.0, 1.0)
 
+    T = Translation.from_vector([0.1, 0.0, 0.0])
+
     plotter.add(a, edgecolor='#ff0000', fill=False)
     plotter.add(b, edgecolor='#00ff00', fill=False)
     plotter.add(c, edgecolor='#0000ff', fill=False)
+
+    plotter.pause(1.0)
+
+    for i in range(100):
+        a.transform(T)
+        plotter.redraw(pause=0.01)
 
     plotter.zoom_extents()
     plotter.show()

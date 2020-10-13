@@ -12,15 +12,14 @@ class VectorArtist(Artist):
 
     zorder = 3000
 
-    def __init__(self, vector, point=None, draw_point=False):
-        super(VectorArtist, self).__init__()
+    def __init__(self, vector, point=None, draw_point=False, color=(0, 0, 0)):
+        super(VectorArtist, self).__init__(vector)
         self._draw_point = draw_point
-        self.width = 1.0
-        self.color = '#000000'
+        self._mpl_vector = None
+        self._point_artist = None
         self.point = point or Point(0.0, 0.0, 0.0)
         self.vector = vector
-        self.mpl_vector = None
-        self.point_artist = None
+        self.color = color
 
     @property
     def data(self):
@@ -35,11 +34,11 @@ class VectorArtist(Artist):
                                 zorder=self.zorder,
                                 mutation_scale=100)
         if self._draw_point:
-            self.point_artist = self.plotter.add(self.point)
-        self.mpl_vector = self.plotter.axes.add_patch(arrow)
+            self._point_artist = self.plotter.add(self.point)
+        self._mpl_vector = self.plotter.axes.add_patch(arrow)
 
     def redraw(self):
-        self.mpl_vector.set_positions(self.point[:2], (self.point + self.vector)[:2])
+        self._mpl_vector.set_positions(self.point[:2], (self.point + self.vector)[:2])
 
 
 # ==============================================================================

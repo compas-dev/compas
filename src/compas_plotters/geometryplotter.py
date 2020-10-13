@@ -28,16 +28,16 @@ class GeometryPlotter:
 
     """
 
-    def __init__(self, view=[(-8, 16), (-5, 10)], figsize=(8, 5), **kwargs):
-        self._show_axes = kwargs.get('show_axes', True)
+    def __init__(self, view=[(-8, 16), (-5, 10)], figsize=(8, 5), dpi=100, bgcolor=(1.0, 1.0, 1.0), show_axes=False):
+        self._show_axes = show_axes
         self._bgcolor = None
         self._viewbox = None
         self._axes = None
         self._artists = []
         self.viewbox = view
         self.figsize = figsize
-        self.dpi = kwargs.get('dpi', 100)
-        self.bgcolor = kwargs.get('bgcolor', '#ffffff')
+        self.dpi = dpi
+        self.bgcolor = bgcolor
 
     @property
     def viewbox(self):
@@ -83,18 +83,31 @@ class GeometryPlotter:
                 axes.set_ylim(ymin, ymax)
             axes.set_xscale('linear')
             axes.set_yscale('linear')
-            axes.grid(False)
             if self._show_axes:
                 axes.set_frame_on(True)
+                # major_xticks = np.arange(0, 501, 20)
+                # major_yticks = np.arange(0, 301, 20)
+                # minor_xticks = np.arange(0, 501, 5)
+                # minor_yticks = np.arange(0, 301, 5)
+                # ax.tick_params(axis = 'both', which = 'major', labelsize = 6)
+                # ax.tick_params(axis = 'both', which = 'minor', labelsize = 0)
+                # ax.set_xticks(major_xticks)
+                # ax.set_xticks(minor_yticks, minor = True)
+                # ax.set_yticks(major_xticks)
+                # ax.set_yticks(minor_yticks, minor = True)
+                # axes.tick_params(labelbottom=False, labelleft=False)
+                # axes.grid(axis='both', linestyle='--', linewidth=0.5, color=(0.7, 0.7, 0.7))
+                axes.grid(False)
                 axes.set_xticks([])
                 axes.set_yticks([])
                 axes.spines['top'].set_color('none')
                 axes.spines['right'].set_color('none')
                 axes.spines['left'].set_position('zero')
                 axes.spines['bottom'].set_position('zero')
-                axes.spines['left'].set_linestyle(':')
-                axes.spines['bottom'].set_linestyle(':')
+                axes.spines['left'].set_linestyle('-')
+                axes.spines['bottom'].set_linestyle('-')
             else:
+                axes.grid(False)
                 axes.set_frame_on(False)
                 axes.set_xticks([])
                 axes.set_yticks([])
@@ -198,6 +211,8 @@ class GeometryPlotter:
             plt.pause(pause)
 
     def zoom_extents(self):
+        width, height = self.figsize
+        fig_aspect = width / height
         data = []
         for artist in self.artists:
             data += artist.data
@@ -206,8 +221,17 @@ class GeometryPlotter:
         xmax = max(x)
         ymin = min(y)
         ymax = max(y)
-        self.axes.set_xlim(xmin, xmax)
-        self.axes.set_ylim(ymin, ymax)
+        xspan = xmax - xmin
+        yspan = ymax - ymin
+        data_aspect = xspan / yspan
+        if data_aspect < fig_aspect:
+            scale = fig_aspect / data_aspect
+            self.axes.set_xlim(scale * (xmin - 0.1 * xspan), scale * (xmax + 0.1 * xspan))
+            self.axes.set_ylim(ymin - 0.1 * yspan, ymax + 0.1 * yspan)
+        else:
+            scale = data_aspect / fig_aspect
+            self.axes.set_xlim(xmin - 0.1 * xspan, xmax + 0.1 * xspan)
+            self.axes.set_ylim(scale * (ymin - 0.1 * yspan), scale * (ymax + 0.1 * yspan))
         self.axes.autoscale_view()
 
     def add(self, item, artist=None, **kwargs):
@@ -226,7 +250,9 @@ class GeometryPlotter:
         return artist
 
     def find(self, item):
-        raise NotImplementedError
+        for artist in self._artists:
+            if item is artist.item:
+                return artist
 
     def register_listener(self, listener):
         """Register a listener for pick events.

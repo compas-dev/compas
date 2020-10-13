@@ -7,8 +7,9 @@ _ITEM_ARTIST = {}
 class Artist(object):
     """Base class for all plotter artists."""
 
-    def __init__(self):
+    def __init__(self, item):
         self.plotter = None
+        self.item = item
 
     @staticmethod
     def register(item_type, artist_type):
@@ -37,6 +38,9 @@ class Artist(object):
         raise NotImplementedError
 
     def draw(self):
+        raise NotImplementedError
+
+    def redraw(self):
         raise NotImplementedError
 
     def update_data(self):

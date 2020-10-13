@@ -10,14 +10,14 @@ class PointArtist(Artist):
 
     zorder = 9000
 
-    def __init__(self, point, **kwargs):
-        super(PointArtist, self).__init__()
+    def __init__(self, point, size=5, facecolor=(1.0, 1.0, 1.0), edgecolor=(0, 0, 0)):
+        super(PointArtist, self).__init__(point)
         self._mpl_circle = None
         self._size = None
         self.point = point
-        self.size = kwargs.get('size', 5)
-        self.facecolor = kwargs.get('facecolor', '#ffffff')
-        self.edgecolor = kwargs.get('edgecolor', '#000000')
+        self.size = size
+        self.facecolor = facecolor
+        self.edgecolor = edgecolor
 
     @property
     def _T(self):

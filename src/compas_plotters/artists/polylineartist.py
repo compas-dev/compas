@@ -10,16 +10,13 @@ class PolylineArtist(Artist):
 
     zorder = 1000
 
-    def __init__(self, polyline, draw_points=False, draw_segments=False, width=1.0, color=(0, 0, 0)):
-        super(PolylineArtist, self).__init__()
+    def __init__(self, polyline, draw_points=False, linewidth=1.0, linestyle='solid', color=(0, 0, 0)):
+        super(PolylineArtist, self).__init__(polyline)
         self._mpl_polyline = None
-        # self._start_artist = None
-        # self._end_artist = None
-        # self._segment_artist = None
-        # self._draw_points = draw_points
-        # self._draw_segments = draw_segments
+        self._draw_points = draw_points
         self.polyline = polyline
-        self.width = width
+        self.linewidth = linewidth
+        self.linestyle = linestyle
         self.color = color
 
     @property
@@ -29,8 +26,8 @@ class PolylineArtist(Artist):
     def draw(self):
         x, y, _ = zip(* self.polyline.points)
         line2d = Line2D(x, y,
-                        linewidth=self.width,
-                        linestyle='solid',
+                        linewidth=self.linewidth,
+                        linestyle=self.linestyle,
                         color=self.color,
                         zorder=self.zorder)
         self.mpl_line = self.plotter.axes.add_line(line2d)
