@@ -182,18 +182,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_link_by_name</span><span class="p">(</span><span class="n">tool_model</span><span class="o">.</span><span class="n">link_name</span><span class="p">)</span>
 
-        <span class="c1"># originally, there was only this</span>
         <span class="n">ee_frame</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">parent_joint</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">initial_transformation</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_frame_to_frame</span><span class="p">(</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="n">ee_frame</span><span class="p">)</span>
-        <span class="c1"># but if you attach a tool after applying some update to the robot, then it appears</span>
-        <span class="c1"># disconnected, being displayed at the original location of the end effector frame.</span>
-        <span class="c1"># I feel it shouldn&#39;t matter the order of calling attach_tool(_model) and update</span>
-        <span class="c1"># so I suggest the alternative, but maybe it isn&#39;t safe.</span>
 
-        <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">collision</span><span class="p">:</span>
-            <span class="n">relative_transformation</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">collision</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">current_transformation</span>
+        <span class="n">sample_geometry</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">collision</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">collision</span> <span class="k">else</span> <span class="n">link</span><span class="o">.</span><span class="n">visual</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">visual</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sample_geometry</span><span class="p">,</span> <span class="s1">&#39;current_transformation&#39;</span><span class="p">):</span>
+            <span class="n">relative_transformation</span> <span class="o">=</span> <span class="n">sample_geometry</span><span class="o">.</span><span class="n">current_transformation</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">relative_transformation</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">visual</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">current_transformation</span>
+            <span class="n">relative_transformation</span> <span class="o">=</span> <span class="n">Transformation</span><span class="p">()</span>
 
         <span class="n">transformation</span> <span class="o">=</span> <span class="n">relative_transformation</span><span class="o">.</span><span class="n">concatenated</span><span class="p">(</span><span class="n">initial_transformation</span><span class="p">)</span>
 
@@ -236,7 +233,6 @@
 
                 <span class="n">native_geometry</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">meshes</span><span class="p">):</span>
-                    <span class="c1"># create native geometry</span>
                     <span class="n">mesh_type</span> <span class="o">=</span> <span class="s1">&#39;visual&#39;</span> <span class="k">if</span> <span class="n">is_visual</span> <span class="k">else</span> <span class="s1">&#39;collision&#39;</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">context</span><span class="p">:</span>
                         <span class="n">mesh_name_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
@@ -244,9 +240,9 @@
                         <span class="n">mesh_name_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
                     <span class="n">mesh_name</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mesh_name_components</span><span class="p">)</span>
                     <span class="n">native_mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_geometry</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">mesh_name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
-                    <span class="c1"># transform native geometry based on saved init transform</span>
+
                     <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">native_mesh</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">init_transformation</span><span class="p">)</span>
-                    <span class="c1"># append to list</span>
+
                     <span class="n">native_geometry</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">native_mesh</span><span class="p">)</span>
 
                 <span class="n">item</span><span class="o">.</span><span class="n">native_geometry</span> <span class="o">=</span> <span class="n">native_geometry</span>
