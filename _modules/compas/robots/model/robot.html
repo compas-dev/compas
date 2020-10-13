@@ -90,11 +90,9 @@
 <span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">compas.base</span> <span class="kn">import</span> <span class="n">Base</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
 <span class="kn">from</span> <span class="nn">compas.files</span> <span class="kn">import</span> <span class="n">URDF</span>
 <span class="kn">from</span> <span class="nn">compas.files</span> <span class="kn">import</span> <span class="n">URDFParser</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Shape</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Transformation</span>
 <span class="kn">from</span> <span class="nn">compas.robots.model.geometry</span> <span class="kn">import</span> <span class="n">Color</span>
 <span class="kn">from</span> <span class="nn">compas.robots.model.geometry</span> <span class="kn">import</span> <span class="n">Geometry</span>
@@ -599,27 +597,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">joints</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_configurable_joints</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">joints</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">link</span></div>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_get_item_meshes</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
-        <span class="c1"># NOTE: Currently, shapes assign their meshes to an</span>
-        <span class="c1"># attribute called `geometry`, but this will change soon to `meshes`.</span>
-        <span class="c1"># This code handles the situation in a forward-compatible</span>
-        <span class="c1"># manner. Eventually, this can be simplified to use only `meshes` attr</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s1">&#39;meshes&#39;</span><span class="p">):</span>
-            <span class="n">meshes</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">meshes</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">meshes</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">geometry</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">meshes</span><span class="p">,</span> <span class="n">Shape</span><span class="p">):</span>
-            <span class="n">meshes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Mesh</span><span class="o">.</span><span class="n">from_shape</span><span class="p">(</span><span class="n">meshes</span><span class="p">)]</span>
-
-        <span class="k">if</span> <span class="n">meshes</span><span class="p">:</span>
-            <span class="c1"># Coerce meshes into an iterable (a tuple if not natively iterable)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">meshes</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">):</span>
-                <span class="n">meshes</span> <span class="o">=</span> <span class="p">(</span><span class="n">meshes</span><span class="p">,)</span>
-
-        <span class="k">return</span> <span class="n">meshes</span>
 
 <div class="viewcode-block" id="RobotModel.load_geometry"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.load_geometry.html#compas.robots.RobotModel.load_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">load_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">resource_loaders</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Load external geometry resources, such as meshes.</span>

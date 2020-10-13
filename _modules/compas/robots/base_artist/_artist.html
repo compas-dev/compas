@@ -92,6 +92,7 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Scale</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Transformation</span>
+<span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">Geometry</span>
 
 <span class="n">ABC</span> <span class="o">=</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span><span class="p">(</span><span class="s1">&#39;ABC&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nb">object</span><span class="p">,),</span> <span class="p">{</span><span class="s1">&#39;__slots__&#39;</span><span class="p">:</span> <span class="p">()})</span>
 
@@ -205,7 +206,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attached_tool_model</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Recursive function that triggers the drawing of the robot model&#39;s geometry.</span>
 
 <span class="sd">        This method delegates the geometry drawing to the :meth:`draw_geometry`</span>
@@ -216,8 +217,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        link : :class:`compas.robots.Link`, optional</span>
 <span class="sd">            Link instance to create. Defaults to the robot model&#39;s root.</span>
-<span class="sd">        name : :obj:`str`, optional</span>
-<span class="sd">            Subdomain identifier. # !!! there&#39;s got to be a better explanation.</span>
+<span class="sd">        context : :obj:`str`, optional</span>
+<span class="sd">            Subdomain identifier to insert in the mesh names.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -227,7 +228,7 @@
             <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">root</span>
 
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">visual</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">collision</span><span class="p">):</span>
-            <span class="n">meshes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_get_item_meshes</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>  <span class="c1"># !!! this is weird</span>
+            <span class="n">meshes</span> <span class="o">=</span> <span class="n">Geometry</span><span class="o">.</span><span class="n">_get_item_meshes</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">meshes</span><span class="p">:</span>
                 <span class="n">is_visual</span> <span class="o">=</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s1">&#39;get_color&#39;</span><span class="p">)</span>
@@ -237,10 +238,10 @@
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">meshes</span><span class="p">):</span>
                     <span class="c1"># create native geometry</span>
                     <span class="n">mesh_type</span> <span class="o">=</span> <span class="s1">&#39;visual&#39;</span> <span class="k">if</span> <span class="n">is_visual</span> <span class="k">else</span> <span class="s1">&#39;collision&#39;</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">context</span><span class="p">:</span>
                         <span class="n">mesh_name_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">mesh_name_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+                        <span class="n">mesh_name_components</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mesh_type</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
                     <span class="n">mesh_name</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mesh_name_components</span><span class="p">)</span>
                     <span class="n">native_mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">draw_geometry</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">mesh_name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
                     <span class="c1"># transform native geometry based on saved init transform</span>
