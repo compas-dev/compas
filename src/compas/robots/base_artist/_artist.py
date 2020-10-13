@@ -189,6 +189,12 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
     def scale_link(self, link, transformation):
         """Recursive function to apply the scale transformation on each link.
         """
+        self._scale_link_helper(link, transformation)
+
+        if self.attached_tool_model:
+            self._scale_link_helper(self.attached_tool_model.root, transformation)
+
+    def _scale_link_helper(self, link, transformation):
         for item in itertools.chain(link.visual, link.collision):
             # Some links have only collision geometry, not visual. These meshes
             # have not been loaded.
@@ -197,8 +203,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                     self.transform(geometry, transformation)
 
         for child_joint in link.joints:
-            # Recursive call
-            self.scale_link(child_joint.child_link, transformation)
+            self._scale_link_helper(child_joint.child_link, transformation)
 
     def _apply_transformation_on_transformed_link(self, item, transformation):
         """Applies a transformation on a link that is already transformed.
