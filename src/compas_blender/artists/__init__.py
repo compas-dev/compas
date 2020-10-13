@@ -25,6 +25,7 @@ Classes
 
     NetworkArtist
     MeshArtist
+    RobotModelArtist
 
 """
 
@@ -32,6 +33,7 @@ from ._artist import *  # noqa: F401 F403
 
 from .networkartist import *  # noqa: F401 F403
 from .meshartist import *  # noqa: F401 F403
+from .robotmodelartist import *  # noqa: F401 F403
 # from .volmeshartist import *  # noqa: F401 F403
 
 

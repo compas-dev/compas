@@ -9,6 +9,7 @@ from compas.base import Base
 from compas.datastructures import Mesh
 from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
+from compas.geometry import Shape
 from compas.utilities import hex_to_rgb
 
 __all__ = [
@@ -708,6 +709,27 @@ class Geometry(Base):
             Shape's geometry, usually a mesh implementation.
         """
         return self.shape.geometry
+
+    @staticmethod
+    def _get_item_meshes(item):
+        # NOTE: Currently, shapes assign their meshes to an
+        # attribute called `geometry`, but this will change soon to `meshes`.
+        # This code handles the situation in a forward-compatible
+        # manner. Eventually, this can be simplified to use only `meshes` attr
+        if hasattr(item.geometry.shape, 'meshes'):
+            meshes = item.geometry.shape.meshes
+        else:
+            meshes = item.geometry.shape.geometry
+
+        if isinstance(meshes, Shape):
+            meshes = [Mesh.from_shape(meshes)]
+
+        if meshes:
+            # Coerce meshes into an iterable (a tuple if not natively iterable)
+            if not hasattr(meshes, '__iter__'):
+                meshes = (meshes,)
+
+        return meshes
 
 
 if __name__ == '__main__':
