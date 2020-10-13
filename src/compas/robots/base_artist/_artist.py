@@ -98,18 +98,15 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         else:
             link = self.model.get_link_by_name(tool_model.link_name)
 
-        # originally, there was only this
         ee_frame = link.parent_joint.origin.copy()
         initial_transformation = Transformation.from_frame_to_frame(Frame.worldXY(), ee_frame)
-        # but if you attach a tool after applying some update to the robot, then it appears
-        # disconnected, being displayed at the original location of the end effector frame.
-        # I feel it shouldn't matter the order of calling attach_tool(_model) and update
-        # so I suggest the alternative, but maybe it isn't safe.
 
-        if link.collision:
-            relative_transformation = link.collision[0].current_transformation
+        sample_geometry = link.collision[0] if link.collision else link.visual[0] if link.visual else None
+
+        if hasattr(sample_geometry, 'current_transformation'):
+            relative_transformation = sample_geometry.current_transformation
         else:
-            relative_transformation = link.visual[0].current_transformation
+            relative_transformation = Transformation()
 
         transformation = relative_transformation.concatenated(initial_transformation)
 
@@ -152,7 +149,6 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
 
                 native_geometry = []
                 for i, mesh in enumerate(meshes):
-                    # create native geometry
                     mesh_type = 'visual' if is_visual else 'collision'
                     if not context:
                         mesh_name_components = [self.model.name, mesh_type, link.name, str(i)]
@@ -160,9 +156,9 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                         mesh_name_components = [self.model.name, mesh_type, context, link.name, str(i)]
                     mesh_name = '.'.join(mesh_name_components)
                     native_mesh = self.draw_geometry(mesh, name=mesh_name, color=color)
-                    # transform native geometry based on saved init transform
+
                     self.transform(native_mesh, item.init_transformation)
-                    # append to list
+
                     native_geometry.append(native_mesh)
 
                 item.native_geometry = native_geometry
