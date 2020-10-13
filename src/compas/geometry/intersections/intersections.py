@@ -721,12 +721,9 @@ def intersection_line_line_xy(l1, l2, tol=1e-6):
 def intersection_line_segment_xy(line, segment, tol=1e-6):
     """"""
     x = intersection_line_line_xy(line, segment, tol=tol)
-
-    if not x:
-        return None
-
-    if is_point_on_segment_xy(x, segment, tol=tol):
-        return x
+    if x:
+        if is_point_on_segment_xy(x, segment, tol=tol):
+            return x
 
 
 def intersection_line_box_xy(line, box, tol=1e-6):
