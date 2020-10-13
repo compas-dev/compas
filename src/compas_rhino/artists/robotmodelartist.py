@@ -200,4 +200,4 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
 
     @staticmethod
     def draw_collection(collection):
-        pass
+        raise NotImplementedError

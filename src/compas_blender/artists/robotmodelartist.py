@@ -46,5 +46,5 @@ class RobotModelArtist(BaseRobotModelArtist):
         v, f = geometry.to_vertices_and_faces()
         return compas_blender.draw_mesh(vertices=v, faces=f, name=name, color=color, centroid=False, layer=self.layer)
 
-    def redbpyraw(self, timeout=None):
+    def redraw(self, timeout=None):
         bpy.ops.wm.redraw_timer(type='DRAW_WIN_SWAP', iterations=1)

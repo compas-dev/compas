@@ -8,6 +8,7 @@ import itertools
 from compas.geometry import Frame
 from compas.geometry import Scale
 from compas.geometry import Transformation
+from compas.robots import Geometry
 
 ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
@@ -121,7 +122,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         """
         self.attached_tool_model = None
 
-    def create(self, link=None, name=None):
+    def create(self, link=None, context=None):
         """Recursive function that triggers the drawing of the robot model's geometry.
 
         This method delegates the geometry drawing to the :meth:`draw_geometry`
@@ -132,8 +133,8 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         ----------
         link : :class:`compas.robots.Link`, optional
             Link instance to create. Defaults to the robot model's root.
-        name : :obj:`str`, optional
-            Subdomain identifier. # !!! there's got to be a better explanation.
+        context : :obj:`str`, optional
+            Subdomain identifier to insert in the mesh names.
 
         Returns
         -------
@@ -143,7 +144,7 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             link = self.model.root
 
         for item in itertools.chain(link.visual, link.collision):
-            meshes = self.model._get_item_meshes(item)  # !!! this is weird
+            meshes = Geometry._get_item_meshes(item)
 
             if meshes:
                 is_visual = hasattr(item, 'get_color')
@@ -153,10 +154,10 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
                 for i, mesh in enumerate(meshes):
                     # create native geometry
                     mesh_type = 'visual' if is_visual else 'collision'
-                    if not name:
+                    if not context:
                         mesh_name_components = [self.model.name, mesh_type, link.name, str(i)]
                     else:
-                        mesh_name_components = [self.model.name, mesh_type, name, link.name, str(i)]
+                        mesh_name_components = [self.model.name, mesh_type, context, link.name, str(i)]
                     mesh_name = '.'.join(mesh_name_components)
                     native_mesh = self.draw_geometry(mesh, name=mesh_name, color=color)
                     # transform native geometry based on saved init transform

@@ -10,7 +10,6 @@ from compas.datastructures import Mesh
 from compas.files import URDF
 from compas.files import URDFParser
 from compas.geometry import Frame
-from compas.geometry import Shape
 from compas.geometry import Transformation
 from compas.robots.model.geometry import Color
 from compas.robots.model.geometry import Geometry
@@ -515,27 +514,6 @@ class RobotModel(Base):
         """
         joints = self.get_configurable_joints()
         return joints[0].parent.link
-
-    @staticmethod
-    def _get_item_meshes(item):
-        # NOTE: Currently, shapes assign their meshes to an
-        # attribute called `geometry`, but this will change soon to `meshes`.
-        # This code handles the situation in a forward-compatible
-        # manner. Eventually, this can be simplified to use only `meshes` attr
-        if hasattr(item.geometry.shape, 'meshes'):
-            meshes = item.geometry.shape.meshes
-        else:
-            meshes = item.geometry.shape.geometry
-
-        if isinstance(meshes, Shape):
-            meshes = [Mesh.from_shape(meshes)]
-
-        if meshes:
-            # Coerce meshes into an iterable (a tuple if not natively iterable)
-            if not hasattr(meshes, '__iter__'):
-                meshes = (meshes,)
-
-        return meshes
 
     def load_geometry(self, *resource_loaders, **kwargs):
         """Load external geometry resources, such as meshes.
