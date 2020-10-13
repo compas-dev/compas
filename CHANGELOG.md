@@ -11,11 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `RobotModelArtist` to `compas_rhino`, `compas_ghpython` and `compas_blender`.
 * Added `ToolModel`.
+* Added `compas.geometry.Pointcloud`.
+* Added `compas.utilities.grouper`.
+* Added `PolygonArtist`, `PolylineArtist` to `GeometryPlotter`.
 
 ### Changed
 
+* `Mesh` takes name of `Shape` in `Mesh.from_shape`.
+* Fixed `zoom_extents` of `GeometryPlotter`.
+
 ### Removed
 
+* Removed `SegmentArtist` from `compas_plotters`.
 
 ## [0.16.7] 2020-10-06
 
