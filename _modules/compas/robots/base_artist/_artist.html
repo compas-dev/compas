@@ -273,6 +273,12 @@
     <span class="k">def</span> <span class="nf">scale_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Recursive function to apply the scale transformation on each link.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale_link_helper</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">attached_tool_model</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scale_link_helper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attached_tool_model</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_scale_link_helper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">visual</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">collision</span><span class="p">):</span>
             <span class="c1"># Some links have only collision geometry, not visual. These meshes</span>
             <span class="c1"># have not been loaded.</span>
@@ -281,8 +287,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">child_joint</span> <span class="ow">in</span> <span class="n">link</span><span class="o">.</span><span class="n">joints</span><span class="p">:</span>
-            <span class="c1"># Recursive call</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">scale_link</span><span class="p">(</span><span class="n">child_joint</span><span class="o">.</span><span class="n">child_link</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scale_link_helper</span><span class="p">(</span><span class="n">child_joint</span><span class="o">.</span><span class="n">child_link</span><span class="p">,</span> <span class="n">transformation</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_apply_transformation_on_transformed_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Applies a transformation on a link that is already transformed.</span>
