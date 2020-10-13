@@ -179,9 +179,9 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
         -------
         None
         """
-        self.model.scale(factor)  # scale the model
+        self.model.scale(factor)
 
-        relative_factor = factor / self.scale_factor  # relative scaling factor
+        relative_factor = factor / self.scale_factor
         transformation = Scale.from_factors([relative_factor] * 3)
         self.scale_link(self.model.root, transformation)
         self.scale_factor = factor
