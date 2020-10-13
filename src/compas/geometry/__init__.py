@@ -471,7 +471,7 @@ from .hull import *  # noqa: F401 F403
 from .icp import *  # noqa: F401 F403
 from .interpolation import *  # noqa: F401 F403
 from .offset import *  # noqa: F401 F403
-# from .pointclouds import *  # noqa: F401 F403
+from .pointclouds import *  # noqa: F401 F403
 from .quadmesh import *  # noqa: F401 F403
 from .triangulation import *  # noqa: F401 F403
 from .trimesh import *  # noqa: F401 F403
