@@ -54,6 +54,16 @@ Datastructure Artists
     VolMeshArtist
 
 
+Robot Artist
+============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    RobotModelArtist
+
+
 Base Classes
 ============
 
@@ -85,6 +95,8 @@ from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
 from .volmeshartist import VolMeshArtist  # noqa: F401
 
+from .robotmodelartist import RobotModelArtist
+
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Line
@@ -97,6 +109,8 @@ from compas.geometry import Vector
 from compas.datastructures import Mesh
 from compas.datastructures import Network
 from compas.datastructures import VolMesh
+
+from compas.robots import RobotModel
 
 # this could potentially be accomplished more elegantly with a decorator
 BaseArtist.register(Circle, CircleArtist)
@@ -111,6 +125,8 @@ BaseArtist.register(Vector, VectorArtist)
 BaseArtist.register(Mesh, MeshArtist)
 BaseArtist.register(Network, NetworkArtist)
 BaseArtist.register(VolMesh, VolMeshArtist)
+
+BaseArtist.register(RobotModel, RobotModelArtist)
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

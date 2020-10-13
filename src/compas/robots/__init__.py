@@ -39,6 +39,7 @@ elements connecting the links together.
     RobotModel
     Joint
     Link
+    ToolModel
 
 Geometric description
 =====================

@@ -72,7 +72,7 @@ except Exception:
     pass
 
 
-__all__ = ['WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'GH', 'BLENDER', 'set_precision', 'get']
+__all__ = ['WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'BLENDER', 'set_precision', 'get']
 
 
 def is_windows():
@@ -218,7 +218,7 @@ def get(filename):
     The file name should be specified relative to the **COMPAS** sample data folder.
     This folder is only locally available if you installed **COMPAS** from source,
     or if you are working directly with the source.
-    In all other cases, the function will get the corresponding files direcly from
+    In all other cases, the function will get the corresponding files directly from
     the GitHub repo, at https://raw.githubusercontent.com/compas-dev/compas/master/data
 
     Examples

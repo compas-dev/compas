@@ -56,6 +56,7 @@ class RobotModel(Base):
     """
 
     def __init__(self, name, joints=[], links=[], materials=[], **kwargs):
+        super(RobotModel, self).__init__()
         self.name = name
         self.joints = list(joints)
         self.links = list(links)
@@ -75,6 +76,9 @@ class RobotModel(Base):
         dict
             The RobotModel's data.
         """
+        return self._get_data()
+
+    def _get_data(self):
         return {
             'name': self.name,
             'joints': [joint.data for joint in self.joints],
@@ -86,12 +90,15 @@ class RobotModel(Base):
 
     @data.setter
     def data(self, data):
-        self.name = data['name']
-        self.joints = [Joint.from_data(d) for d in data['joints']]
-        self.links = [Link.from_data(d) for d in data['links']]
-        self.materials = [Material.from_data(d) for d in data['materials']]
-        self.attr = _attr_from_data(data['attr'])
-        self._scale_factor = data['_scale_factor']
+        self._set_data(data)
+
+    def _set_data(self, data):
+        self.name = data.get('name', '')
+        self.joints = [Joint.from_data(d) for d in data.get('joints', [])]
+        self.links = [Link.from_data(d) for d in data.get('links', [])]
+        self.materials = [Material.from_data(d) for d in data.get('materials', [])]
+        self.attr = _attr_from_data(data.get('attr', {}))
+        self._scale_factor = data.get('_scale_factor', 1.)
 
         self._rebuild_tree()
 
@@ -932,7 +939,6 @@ if __name__ == '__main__':
     import doctest
     from compas import HERE
     from compas.geometry import Sphere  # noqa: F401
-    from compas.datastructures import Mesh  # noqa: F401
     from compas.robots import GithubPackageMeshLoader  # noqa: F401
 
     ur5_urdf_file = os.path.join(HERE, '..', '..', 'tests', 'compas', 'robots', 'fixtures', 'ur5.xacro')
