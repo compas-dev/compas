@@ -136,43 +136,46 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_entries.html#compas.geometry.Projection.from_entries" title="compas.geometry.Projection.from_entries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_entries</span></code></a>(perspective_entries)</p></td>
 <td><p>Constructs a perspective transformation by the perspective entries of a matrix.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_frame.html#compas.geometry.Projection.from_frame" title="compas.geometry.Projection.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a>(frame)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_euler_angles.html#compas.geometry.Projection.from_euler_angles" title="compas.geometry.Projection.from_euler_angles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_euler_angles</span></code></a>(euler_angles[, static, …])</p></td>
+<td><p>Construct a transformation from a rotation represented by Euler angles.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_frame.html#compas.geometry.Projection.from_frame" title="compas.geometry.Projection.from_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame</span></code></a>(frame)</p></td>
 <td><p>Computes a transformation from world XY to frame.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_frame_to_frame.html#compas.geometry.Projection.from_frame_to_frame" title="compas.geometry.Projection.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a>(frame_from, frame_to)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_frame_to_frame.html#compas.geometry.Projection.from_frame_to_frame" title="compas.geometry.Projection.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a>(frame_from, frame_to)</p></td>
 <td><p>Computes a transformation between two frames.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_list.html#compas.geometry.Projection.from_list" title="compas.geometry.Projection.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(numbers)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_list.html#compas.geometry.Projection.from_list" title="compas.geometry.Projection.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(numbers)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a list of 16 numbers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_matrix.html#compas.geometry.Projection.from_matrix" title="compas.geometry.Projection.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_matrix.html#compas.geometry.Projection.from_matrix" title="compas.geometry.Projection.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a 4x4 matrix-like object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_plane.html#compas.geometry.Projection.from_plane" title="compas.geometry.Projection.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a>(plane)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_plane.html#compas.geometry.Projection.from_plane" title="compas.geometry.Projection.from_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane</span></code></a>(plane)</p></td>
 <td><p>Returns an orthogonal <code class="docutils literal notranslate"><span class="pre">Projection</span></code> to project onto a plane.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_plane_and_direction.html#compas.geometry.Projection.from_plane_and_direction" title="compas.geometry.Projection.from_plane_and_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_direction</span></code></a>(plane, direction)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_plane_and_direction.html#compas.geometry.Projection.from_plane_and_direction" title="compas.geometry.Projection.from_plane_and_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_direction</span></code></a>(plane, direction)</p></td>
 <td><p>Returns a parallel <code class="docutils literal notranslate"><span class="pre">Projection</span></code> to project onto a plane along a specific direction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.from_plane_and_point.html#compas.geometry.Projection.from_plane_and_point" title="compas.geometry.Projection.from_plane_and_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_point</span></code></a>(plane, center_of_projection)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.from_plane_and_point.html#compas.geometry.Projection.from_plane_and_point" title="compas.geometry.Projection.from_plane_and_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_plane_and_point</span></code></a>(plane, center_of_projection)</p></td>
 <td><p>Returns a perspective <code class="docutils literal notranslate"><span class="pre">Projection</span></code> to project onto a plane along lines that emanate from a single point, called the center of projection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.inverse.html#compas.geometry.Projection.inverse" title="compas.geometry.Projection.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.inverse.html#compas.geometry.Projection.inverse" title="compas.geometry.Projection.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.invert.html#compas.geometry.Projection.invert" title="compas.geometry.Projection.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.invert.html#compas.geometry.Projection.invert" title="compas.geometry.Projection.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
 <td><p>Invert this transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.inverted.html#compas.geometry.Projection.inverted" title="compas.geometry.Projection.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.inverted.html#compas.geometry.Projection.inverted" title="compas.geometry.Projection.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.to_data.html#compas.geometry.Projection.to_data" title="compas.geometry.Projection.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.to_data.html#compas.geometry.Projection.to_data" title="compas.geometry.Projection.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> object to a data dict.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.transpose.html#compas.geometry.Projection.transpose" title="compas.geometry.Projection.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.transpose.html#compas.geometry.Projection.transpose" title="compas.geometry.Projection.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>()</p></td>
 <td><p>Transpose the matrix of this transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Projection.transposed.html#compas.geometry.Projection.transposed" title="compas.geometry.Projection.transposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transposed</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Projection.transposed.html#compas.geometry.Projection.transposed" title="compas.geometry.Projection.transposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transposed</span></code></a>()</p></td>
 <td><p>Create a transposed copy of this transformation.</p></td>
 </tr>
 </tbody>

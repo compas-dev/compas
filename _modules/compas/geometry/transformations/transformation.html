@@ -99,14 +99,15 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">multiply_matrices</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">transpose_matrix</span>
 
-<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">identity_matrix</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">matrix_inverse</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">matrix_determinant</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">matrix_from_frame</span>
-<span class="c1"># from compas.geometry.transformations import matrix_from_euler_angles</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">basis_vectors_from_matrix</span>
-<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">translation_from_matrix</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">decompose_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">identity_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">matrix_determinant</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">matrix_from_euler_angles</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">matrix_from_frame</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">matrix_from_translation</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">matrix_inverse</span>
+<span class="kn">from</span> <span class="nn">compas.geometry.transformations</span> <span class="kn">import</span> <span class="n">translation_from_matrix</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Transformation&#39;</span><span class="p">]</span>
@@ -301,6 +302,36 @@
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
                 <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numbers</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">j</span><span class="p">])</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transformation.from_euler_angles"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Transformation.from_euler_angles.html#compas.geometry.Transformation.from_euler_angles">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_euler_angles</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a transformation from a rotation represented by Euler angles.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        euler_angles : list of float</span>
+<span class="sd">            Three numbers that represent the angles of rotations about the defined axes.</span>
+<span class="sd">        static : bool, optional</span>
+<span class="sd">            If true the rotations are applied to a static frame.</span>
+<span class="sd">            If not, to a rotational.</span>
+<span class="sd">            Defaults to ``True``.</span>
+<span class="sd">        axes : str, optional</span>
+<span class="sd">            A 3 character string specifying the order of the axes.</span>
+<span class="sd">            Defaults to ``&#39;xyz&#39;``.</span>
+<span class="sd">        point : list of float, optional</span>
+<span class="sd">            The point of the frame.</span>
+<span class="sd">            Defaults to ``[0, 0, 0]``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Transformation`</span>
+<span class="sd">            The constructed transformation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">matrix_from_euler_angles</span><span class="p">(</span><span class="n">euler_angles</span><span class="p">,</span> <span class="n">static</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">matrix_from_translation</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">multiply_matrices</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">M</span><span class="p">)</span></div>
 
     <span class="c1"># should not one of the two just have a &quot;to&quot; function</span>
 <div class="viewcode-block" id="Transformation.from_frame"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Transformation.from_frame.html#compas.geometry.Transformation.from_frame">[docs]</a>    <span class="nd">@classmethod</span>

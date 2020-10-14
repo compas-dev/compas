@@ -89,7 +89,7 @@
 <h1>Mesh.to_stl</h1>
 <dl class="method">
 <dt id="compas.datastructures.Mesh.to_stl">
-<code class="sig-prename descclassname">Mesh.</code><code class="sig-name descname">to_stl</code><span class="sig-paren">(</span><em class="sig-param">filepath</em>, <em class="sig-param">precision=None</em>, <em class="sig-param">binary=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">Mesh.</code><code class="sig-name descname">to_stl</code><span class="sig-paren">(</span><em class="sig-param">filepath</em>, <em class="sig-param">precision=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span></dt>
 <dd><p>Write a mesh to an STL file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -97,8 +97,6 @@
 <li><p><strong>filepath</strong> (<em>str</em>) – The path to the file.</p></li>
 <li><p><strong>precision</strong> (<em>str, optional</em>) – Rounding precision for the vertex coordinates.
 Default is <code class="docutils literal notranslate"><span class="pre">&quot;3f&quot;</span></code>.</p></li>
-<li><p><strong>binary</strong> (<em>bool, optional</em>) – When <code class="docutils literal notranslate"><span class="pre">False</span></code>, the file will be written in ASCII encoding,
-when <code class="docutils literal notranslate"><span class="pre">True</span></code>, binary.  Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -107,6 +105,8 @@ when <code class="docutils literal notranslate"><span class="pre">True</span></c
 </dl>
 <p class="rubric">Notes</p>
 <p>STL files only support triangle faces.
+However, the writer does not perform any checks
+and will just treat every face as a triangle.
 It is your responsibility to convert all faces of your mesh to triangles.
 For example, with <a class="reference internal" href="compas.datastructures.mesh_quads_to_triangles.html#compas.datastructures.mesh_quads_to_triangles" title="compas.datastructures.mesh_quads_to_triangles"><code class="xref py py-func docutils literal notranslate"><span class="pre">compas.datastructures.mesh_quads_to_triangles()</span></code></a>.</p>
 </dd></dl>
