@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added constructor `from_euler_angles` to `compas.geometry.Transformation`.
+
 ### Changed
 
 ### Removed
