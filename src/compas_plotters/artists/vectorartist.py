@@ -26,7 +26,7 @@ class VectorArtist(Artist):
         return [self.point[:2], (self.point + self.vector)[:2]]
 
     def draw(self):
-        style = ArrowStyle("Simple, head_length=.1, head_width=.1, tail_width=.01")
+        style = ArrowStyle("Simple, head_length=.1, head_width=.1, tail_width=.02")
         arrow = FancyArrowPatch(self.point[:2], (self.point + self.vector)[:2],
                                 arrowstyle=style,
                                 edgecolor=self.color,

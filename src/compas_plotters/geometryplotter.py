@@ -249,6 +249,13 @@ class GeometryPlotter:
         self._artists.append(artist)
         return artist
 
+    def add_from_list(self, items, **kwargs):
+        artists = []
+        for item in items:
+            artist = self.add(item, **kwargs)
+            artists.append(artist)
+        return artists
+
     def find(self, item):
         for artist in self._artists:
             if item is artist.item:
