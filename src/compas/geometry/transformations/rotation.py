@@ -213,7 +213,7 @@ class Rotation(Transformation):
         return cls.from_axis_and_angle(axis_angle_vector, angle, point)
 
     @classmethod
-    def from_euler_angles(cls, euler_angles, static=True, axes='xyz'):
+    def from_euler_angles(cls, euler_angles, static=True, axes='xyz', **kwargs):
         """Calculates a ``Rotation`` from Euler angles.
 
         In 3D space any orientation can be achieved by composing three
@@ -250,9 +250,7 @@ class Rotation(Transformation):
         >>> R1 == R2
         True
         """
-        R = cls()
-        R.matrix = matrix_from_euler_angles(euler_angles, static, axes)
-        return R
+        return super(Rotation, cls).from_euler_angles(euler_angles, static, axes)
 
     @property
     def quaternion(self):
