@@ -325,7 +325,7 @@
         <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mesh</span></div>
 
-<div class="viewcode-block" id="BaseMesh.to_stl"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_stl.html#compas.datastructures.BaseMesh.to_stl">[docs]</a>    <span class="k">def</span> <span class="nf">to_stl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseMesh.to_stl"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.to_stl.html#compas.datastructures.BaseMesh.to_stl">[docs]</a>    <span class="k">def</span> <span class="nf">to_stl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write a mesh to an STL file.</span>
 
 <span class="sd">        Parameters</span>
@@ -335,6 +335,9 @@
 <span class="sd">        precision : str, optional</span>
 <span class="sd">            Rounding precision for the vertex coordinates.</span>
 <span class="sd">            Default is ``&quot;3f&quot;``.</span>
+<span class="sd">        binary : bool, optional</span>
+<span class="sd">            When ``False``, the file will be written in ASCII encoding,</span>
+<span class="sd">            when ``True``, binary.  Default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -343,13 +346,11 @@
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        STL files only support triangle faces.</span>
-<span class="sd">        However, the writer does not perform any checks</span>
-<span class="sd">        and will just treat every face as a triangle.</span>
 <span class="sd">        It is your responsibility to convert all faces of your mesh to triangles.</span>
 <span class="sd">        For example, with :func:`compas.datastructures.mesh_quads_to_triangles`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">stl</span> <span class="o">=</span> <span class="n">STL</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
-        <span class="n">stl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">stl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="n">binary</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BaseMesh.from_off"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_off.html#compas.datastructures.BaseMesh.from_off">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_off</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
