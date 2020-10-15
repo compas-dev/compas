@@ -44,3 +44,4 @@ def test_binary_read_write_fidelity():
     mesh.to_stl(fp, binary=True)
     mesh_2 = Mesh.from_stl(fp)
     assert mesh.adjacency == mesh_2.adjacency
+    assert mesh.vertex == mesh_2.vertex
