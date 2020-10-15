@@ -15,14 +15,15 @@ import math
 from compas.geometry import multiply_matrices
 from compas.geometry import transpose_matrix
 
-from compas.geometry.transformations import identity_matrix
-from compas.geometry.transformations import matrix_inverse
-from compas.geometry.transformations import matrix_determinant
-from compas.geometry.transformations import matrix_from_frame
-# from compas.geometry.transformations import matrix_from_euler_angles
 from compas.geometry.transformations import basis_vectors_from_matrix
-from compas.geometry.transformations import translation_from_matrix
 from compas.geometry.transformations import decompose_matrix
+from compas.geometry.transformations import identity_matrix
+from compas.geometry.transformations import matrix_determinant
+from compas.geometry.transformations import matrix_from_euler_angles
+from compas.geometry.transformations import matrix_from_frame
+from compas.geometry.transformations import matrix_from_translation
+from compas.geometry.transformations import matrix_inverse
+from compas.geometry.transformations import translation_from_matrix
 
 
 __all__ = ['Transformation']
@@ -217,6 +218,36 @@ class Transformation(object):
             for j in range(4):
                 matrix[i][j] = float(numbers[i * 4 + j])
         return cls(matrix)
+
+    @classmethod
+    def from_euler_angles(cls, euler_angles, static=True,
+                          axes='xyz', point=[0, 0, 0]):
+        """Construct a transformation from a rotation represented by Euler angles.
+
+        Parameters
+        ----------
+        euler_angles : list of float
+            Three numbers that represent the angles of rotations about the defined axes.
+        static : bool, optional
+            If true the rotations are applied to a static frame.
+            If not, to a rotational.
+            Defaults to ``True``.
+        axes : str, optional
+            A 3 character string specifying the order of the axes.
+            Defaults to ``'xyz'``.
+        point : list of float, optional
+            The point of the frame.
+            Defaults to ``[0, 0, 0]``.
+
+        Returns
+        -------
+        :class:`compas.geometry.Transformation`
+            The constructed transformation.
+        """
+        R = matrix_from_euler_angles(euler_angles, static, axes)
+        T = matrix_from_translation(point)
+        M = multiply_matrices(T, R)
+        return cls.from_matrix(M)
 
     # should not one of the two just have a "to" function
     @classmethod
