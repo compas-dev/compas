@@ -91,6 +91,7 @@ from .pointartist import PointArtist
 from .polygonartist import PolygonArtist
 from .polylineartist import PolylineArtist
 from .vectorartist import VectorArtist
+from .boxartist import BoxArtist
 
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
@@ -106,6 +107,7 @@ from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyline
 from compas.geometry import Vector
+from compas.geometry import Box
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network
@@ -113,7 +115,6 @@ from compas.datastructures import VolMesh
 
 from compas.robots import RobotModel
 
-# this could potentially be accomplished more elegantly with a decorator
 BaseArtist.register(Circle, CircleArtist)
 BaseArtist.register(Frame, FrameArtist)
 BaseArtist.register(Line, LineArtist)
@@ -122,6 +123,7 @@ BaseArtist.register(Point, PointArtist)
 BaseArtist.register(Polygon, PolygonArtist)
 BaseArtist.register(Polyline, PolylineArtist)
 BaseArtist.register(Vector, VectorArtist)
+BaseArtist.register(Box, BoxArtist)
 
 BaseArtist.register(Mesh, MeshArtist)
 BaseArtist.register(Network, NetworkArtist)
