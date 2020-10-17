@@ -4,6 +4,8 @@ from __future__ import division
 
 from random import uniform
 from compas.geometry import transform_points
+from compas.geometry import centroid_points
+from compas.geometry import bounding_box
 from compas.geometry import Primitive
 from compas.geometry import Point
 
@@ -142,6 +144,14 @@ class Pointcloud(Primitive):
 
     def __iter__(self):
         return iter(self.points)
+
+    @property
+    def centroid(self):
+        return centroid_points(self.points)
+
+    @property
+    def bounding_box(self):
+        return bounding_box(self.points)
 
     def transform(self, T):
         for index, point in enumerate(transform_points(self.points, T)):
