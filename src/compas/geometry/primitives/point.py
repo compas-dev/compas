@@ -4,6 +4,9 @@ from __future__ import division
 
 from compas import PRECISION
 
+from compas.geometry import centroid_points
+from compas.geometry import normal_polygon
+
 from compas.geometry import distance_point_point
 from compas.geometry import distance_point_line
 from compas.geometry import distance_point_plane
@@ -15,6 +18,8 @@ from compas.geometry import is_point_in_circle
 from compas.geometry import is_polygon_convex_xy
 from compas.geometry import is_point_in_polygon_xy
 from compas.geometry import is_point_in_convex_polygon_xy
+from compas.geometry import is_point_behind_plane
+
 from compas.geometry import transform_points
 
 from compas.geometry.primitives import Primitive
@@ -458,7 +463,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        point : :class:`compas.geometry.Point` or list
+        point : [x, y, z] or :class:`compas.geometry.Point`
             The other point.
 
         Returns
@@ -480,7 +485,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        line : :class:`compas.geometry.Line` or tuple of points.
+        line : [point, point] or :class:`compas.geometry.Line`.
             The line.
 
         Returns
@@ -503,7 +508,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        plane : :class:`compas.geometry.Plane` or tuple of point and normal
+        plane : [point, vector] or :class:`compas.geometry.Plane`
             The plane.
 
         Returns
@@ -522,12 +527,53 @@ class Point(Primitive):
         """
         return distance_point_plane(self, plane)
 
+    # ==========================================================================
+    # 2D predicates
+    # ==========================================================================
+
+    def in_polygon(self, polygon, convex=None):
+        """Determine if the point lies inside the given polygon.
+
+        Parameters
+        ----------
+        polygon : :class:`compas.geometry.Polygon` or list of points.
+            The polygon.
+        convex : {None, True, False}, optional
+            Is the polygon convex.
+            If ``None``, determine if the polygon is convex.
+            If ``False``, use the non-convex algorithm.
+            If ``True``, use the convex algorithm.
+
+        Returns
+        -------
+        bool
+            True, if the point lies in the polygon.
+            False, otherwise.
+
+        Examples
+        --------
+        >>> from compas.geometry import Polygon
+        >>> poly = Polygon([Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0), Point(0.0, 1.0, 0.0)])
+        >>> point = Point(0.5, 0.5, 0.0)
+        >>> point.in_polygon(poly)
+        True
+        """
+        if convex is None:
+            convex = is_polygon_convex_xy(polygon)
+        if convex:
+            return is_point_in_convex_polygon_xy(self, polygon)
+        return is_point_in_polygon_xy(self, polygon)
+
+    # ==========================================================================
+    # 3D predicates
+    # ==========================================================================
+
     def on_line(self, line):
         """Determine if the point lies on the given line.
 
         Parameters
         ----------
-        line : :class:`compas.geometry.Line` or tuple of points.
+        line : [point, point] or :class:`compas.geometry.Line`.
             The line.
 
         Returns
@@ -599,7 +645,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        circle : :class:`compas.geometry.Circle` or tuple of plane and radius.
+        circle : [plane, radius] or :class:`compas.geometry.Circle`.
             The circle.
 
         Returns
@@ -615,7 +661,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        triangle : :class:`compas.geometry.Polygon` or list of three points.
+        triangle : [point, point, point] or :class:`compas.geometry.Polygon`.
             The triangle.
 
         Returns
@@ -634,45 +680,12 @@ class Point(Primitive):
         """
         return is_point_in_triangle(self, triangle)
 
-    def in_polygon(self, polygon, convex=None):
-        """Determine if the point lies inside the given polygon.
-
-        Parameters
-        ----------
-        polygon : :class:`compas.geometry.Polygon` or list of points.
-            The polygon.
-        convex : {None, True, False}, optional
-            Is the polygon convex.
-            If ``None``, determine if the polygon is convex.
-            If ``False``, use the non-convex algorithm.
-            If ``True``, use the convex algorithm.
-
-        Returns
-        -------
-        bool
-            True, if the point lies in the polygon.
-            False, otherwise.
-
-        Examples
-        --------
-        >>> from compas.geometry import Polygon
-        >>> poly = Polygon([Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0), Point(0.0, 1.0, 0.0)])
-        >>> point = Point(0.5, 0.5, 0.0)
-        >>> point.in_polygon(poly)
-        True
-        """
-        if convex is None:
-            convex = is_polygon_convex_xy(polygon)
-        if convex:
-            return is_point_in_convex_polygon_xy(self, polygon)
-        return is_point_in_polygon_xy(self, polygon)
-
     def in_circle(self, circle):
         """Determine if the point lies inside the given circle.
 
         Parameters
         ----------
-        circle : :class:`compas.geometry.Circle` or tuple of plane and radius.
+        circle : [plane, radius] or :class:`compas.geometry.Circle`.
             The circle.
 
         Returns
@@ -698,7 +711,7 @@ class Point(Primitive):
 
         Parameters
         ----------
-        polyhedron : :class:`compas.geometry.Polyhedron` or tuple of vertices and faces.
+        polyhedron : [vertices, faces] or :class:`compas.geometry.Polyhedron`.
             The polyhedron.
 
         Returns
@@ -707,7 +720,14 @@ class Point(Primitive):
             True, if the point lies on the polyline.
             False, otherwise.
         """
-        raise NotImplementedError
+        vertices, faces = polyhedron
+        polygons = [[vertices[index] for index in face] for face in faces]
+        planes = [[centroid_points(polygon), normal_polygon(polygon)] for polygon in polygons]
+        return all(is_point_behind_plane(self, plane) for plane in planes)
+
+    # ==========================================================================
+    # transformations
+    # ==========================================================================
 
     def transform(self, T):
         """Transform this point.
