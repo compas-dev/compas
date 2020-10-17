@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.geometry import centroid_points
+from compas.geometry import Transformation
 from compas.geometry import Frame
 from compas.geometry import Vector
 
@@ -150,6 +151,30 @@ class Box(Shape):
         self._zsize = float(zsize)
 
     @property
+    def xmin(self):
+        return self.frame.point.x - 0.5 * self.xsize
+
+    @property
+    def xmax(self):
+        return self.frame.point.x + 0.5 * self.xsize
+
+    @property
+    def ymin(self):
+        return self.frame.point.y - 0.5 * self.ysize
+
+    @property
+    def ymax(self):
+        return self.frame.point.y + 0.5 * self.ysize
+
+    @property
+    def zmin(self):
+        return self.frame.point.z - 0.5 * self.zsize
+
+    @property
+    def zmax(self):
+        return self.frame.point.z + 0.5 * self.zsize
+
+    @property
     def width(self):
         """float: The width of the box in x direction."""
         return self.xsize
@@ -196,10 +221,10 @@ class Box(Shape):
         zaxis = self.frame.zaxis
         width, depth, height = self.xsize, self.ysize, self.zsize
 
-        a = point + (xaxis * -0.5 * width - yaxis * 0.5 * depth - zaxis * 0.5 * height)
-        b = point + (xaxis * -0.5 * width + yaxis * 0.5 * depth - zaxis * 0.5 * height)
-        c = point + (xaxis * 0.5 * width + yaxis * 0.5 * depth - zaxis * 0.5 * height)
-        d = point + (xaxis * 0.5 * width - yaxis * 0.5 * depth - zaxis * 0.5 * height)
+        a = point + (xaxis * (-0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height))
+        b = point + (xaxis * (-0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height))
+        c = point + (xaxis * (+0.5 * width) + yaxis * (+0.5 * depth) + zaxis * (-0.5 * height))
+        d = point + (xaxis * (+0.5 * width) + yaxis * (-0.5 * depth) + zaxis * (-0.5 * height))
 
         e = a + zaxis * height
         f = d + zaxis * height
@@ -211,12 +236,12 @@ class Box(Shape):
     @property
     def faces(self):
         """list of list: The faces of the box defined as lists of vertex indices."""
-        return [[0, 1, 2, 3],  # bottom
-                [0, 3, 5, 4],  # front
-                [3, 2, 6, 5],  # right
-                [2, 1, 7, 6],  # back
-                [1, 0, 4, 7],  # left
-                [4, 5, 6, 7]]  # top
+        return [self.bottom,
+                self.front,
+                self.right,
+                self.back,
+                self.left,
+                self.top]
 
     @property
     def bottom(self):
@@ -254,22 +279,30 @@ class Box(Shape):
 
     def __getitem__(self, key):
         if key == 0:
-            return self.point
+            return self.frame
         elif key == 1:
-            return self.radius
+            return self.xsize
+        elif key == 2:
+            return self.ysize
+        elif key == 3:
+            return self.zsize
         else:
             raise KeyError
 
     def __setitem__(self, key, value):
         if key == 0:
-            self.point = value
+            self.frame = value
         elif key == 1:
-            self.radius = value
+            self.xsize = value
+        elif key == 2:
+            self.ysize = value
+        elif key == 3:
+            self.zsize = value
         else:
             raise KeyError
 
     def __iter__(self):
-        return iter([self.point, self.radius])
+        return iter([self.frame, self.xsize, self.ysize, self.zsize])
 
     # ==========================================================================
     # constructors
@@ -294,13 +327,13 @@ class Box(Shape):
         >>> data = {'frame': Frame.worldXY().data, 'xsize': 1.0, 'ysize': 1.0, 'zsize': 1.0}
         >>> box = Box.from_data(data)
         """
-        box = cls(Frame.worldXY(), 1, 1, 1)
-        box.data = data
-        return box
+        return cls(Frame.from_data(data['frame']), data['xsize'], data['ysize'], data['zsize'])
 
     @classmethod
     def from_width_height_depth(cls, width, height, depth):
         """Construct a box from its width, height and depth.
+
+        Note that width is along the X-axis, height along Z-axis, and depth along the Y-axis.
 
         Parameters
         ----------
@@ -466,6 +499,10 @@ class Box(Shape):
     # ==========================================================================
     # methods
     # ==========================================================================
+
+    def contains(self, point):
+        box = self.transformed(Transformation.from_frame_to_frame(self.frame, Frame.worldXY()))
+        return box.xmin < point[0] < box.xmax and box.ymin < point[1] < box.ymax and box.zmin < point[2] < box.zmax
 
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
