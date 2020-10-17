@@ -3,11 +3,12 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.geometry import centroid_points
+from compas.geometry import transform_points
 from compas.geometry import Transformation
 from compas.geometry import Frame
 from compas.geometry import Vector
 
-from compas.geometry.shapes import Shape
+from ._shape import Shape
 
 
 __all__ = ['Box']
@@ -267,6 +268,13 @@ class Box(Shape):
     def top(self):
         return [4, 5, 6, 7]
 
+    @property
+    def edges(self):
+        edges = [(0, 1), (1, 2), (2, 3), (3, 0)]
+        edges += [(4, 5), (5, 6), (6, 7), (7, 4)]
+        edges += [(0, 4), (1, 7), (2, 6), (3, 5)]
+        return edges
+
     # ==========================================================================
     # customisation
     # ==========================================================================
@@ -501,8 +509,13 @@ class Box(Shape):
     # ==========================================================================
 
     def contains(self, point):
-        box = self.transformed(Transformation.from_frame_to_frame(self.frame, Frame.worldXY()))
-        return box.xmin < point[0] < box.xmax and box.ymin < point[1] < box.ymax and box.zmin < point[2] < box.zmax
+        T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
+        point = transform_points([point], T)[0]
+        if -0.5 * self.xsize < point[0] < + 0.5 * self.xsize:
+            if -0.5 * self.ysize < point[1] < +0.5 * self.ysize:
+                if -0.5 * self.zsize < point[2] < +0.5 * self.zsize:
+                    return True
+        return False
 
     def to_vertices_and_faces(self, **kwargs):
         """Returns a list of vertices and faces"""
