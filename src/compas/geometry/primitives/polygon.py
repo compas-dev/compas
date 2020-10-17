@@ -16,6 +16,8 @@ from compas.geometry.primitives import Point
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Line
 
+from compas.utilities import pairwise
+
 
 __all__ = ['Polygon']
 
@@ -94,17 +96,21 @@ class Polygon(Primitive):
         if points[-1] == points[0]:
             del points[-1]
         self._points = [Point(*xyz) for xyz in points]
-        self._lines = [Line(self.points[i], self.points[i + 1]) for i in range(-1, len(points) - 1)]
+        self._lines = None
+
+    # consider caching below based on point setter
 
     @property
     def lines(self):
-        """list of :class:`compas.geometry.Line` : The lines of the polyline."""
+        """list of :class:`compas.geometry.Line` : The lines of the polygon."""
+        if not self._lines:
+            self._lines = [Line(a, b) for a, b in pairwise(self.points + self.points[:1])]
         return self._lines
 
     @property
     def length(self):
         """float : The length of the boundary."""
-        return sum([line.length for line in self.lines])
+        return sum(line.length for line in self.lines)
 
     @property
     def centroid(self):
@@ -291,6 +297,9 @@ class Polygon(Primitive):
             self.points[index].x = point[0]
             self.points[index].y = point[1]
             self.points[index].z = point[2]
+
+    def contains(self, point):
+        pass
 
 
 # ==============================================================================
