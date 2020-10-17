@@ -92,31 +92,35 @@
 
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">window</span>
 
-<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
-<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">cross_vectors</span>
-<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">dot_vectors</span>
-<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">normalize_vector</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">subtract_vectors</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">cross_vectors</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">dot_vectors</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">normalize_vector</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">normal_polygon</span>
 
-<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
-<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">distance_point_plane</span>
-<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">distance_point_line</span>
-<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">closest_point_on_segment</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">distance_point_plane</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">distance_point_line</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">closest_point_on_segment</span>
 
-<span class="kn">from</span> <span class="nn">compas.geometry._core</span> <span class="kn">import</span> <span class="n">area_triangle</span>
+<span class="kn">from</span> <span class="nn">.._core</span> <span class="kn">import</span> <span class="n">area_triangle</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;is_colinear&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;is_line_line_colinear&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_colinear_line_line&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_coplanar&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_polygon_convex&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_on_plane&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_infront_plane&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_behind_plane&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_on_line&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_on_segment&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_on_polyline&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_in_triangle&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_in_circle&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_in_polyhedron&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_intersection_line_line&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_intersection_segment_segment&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_intersection_line_triangle&#39;</span><span class="p">,</span>
@@ -131,11 +135,11 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    a : tuple, list, Point</span>
+<span class="sd">    a : [x, y, z] or :class:`compas.geometry.Point`</span>
 <span class="sd">        Point 1.</span>
-<span class="sd">    b : tuple, list, Point</span>
+<span class="sd">    b : [x, y, z] or :class:`compas.geometry.Point`</span>
 <span class="sd">        Point 2.</span>
-<span class="sd">    c : tuple, list, Point</span>
+<span class="sd">    c : [x, y, z] or :class:`compas.geometry.Point`</span>
 <span class="sd">        Point 3.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for membership verification.</span>
@@ -151,14 +155,14 @@
     <span class="k">return</span> <span class="n">area_triangle</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">tol</span></div>
 
 
-<span class="k">def</span> <span class="nf">is_line_line_colinear</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span> <span class="n">line2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">is_colinear_line_line</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span> <span class="n">line2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Determine if two lines are colinear.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    line1 : 2-tuple of points, Line</span>
+<span class="sd">    line1 : [point, point] or :class:`compas.geometry.Line`</span>
 <span class="sd">        Line 1.</span>
-<span class="sd">    line2 : 2-tuple of points, Line</span>
+<span class="sd">    line2 : [point, point] or :class:`compas.geometry.Line`</span>
 <span class="sd">        Line 2.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for colinearity verification.</span>
@@ -176,13 +180,40 @@
     <span class="k">return</span> <span class="n">is_colinear</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_colinear</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">is_parallel_line_line</span><span class="p">(</span><span class="n">line1</span><span class="p">,</span> <span class="n">line2</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if two lines are parallel.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    line1 : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        Line 1.</span>
+<span class="sd">    line2 : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        Line 2.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for colinearity verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the lines are colinear.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">line1</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">line2</span>
+    <span class="n">e1</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+    <span class="n">e2</span> <span class="o">=</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">tol</span>
+
+
 <div class="viewcode-block" id="is_coplanar"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_coplanar.html#compas.geometry.is_coplanar">[docs]</a><span class="k">def</span> <span class="nf">is_coplanar</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Determine if the points are coplanar.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    points : sequence</span>
-<span class="sd">        A sequence of locations in three-dimensional space.</span>
+<span class="sd">    points : list of points</span>
+<span class="sd">        A sequence of point locations.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for planarity validation.</span>
 <span class="sd">        Default is ``0.01``.</span>
@@ -206,6 +237,9 @@
 <span class="sd">    in vector form as (x2 - x0).[(x1 - x0) x (x3 - x2)] = 0.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
     <span class="n">tol2</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">**</span> <span class="mi">2</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
@@ -214,9 +248,6 @@
         <span class="n">v23</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">v02</span><span class="p">,</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">v01</span><span class="p">,</span> <span class="n">v23</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">res</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol2</span>
-
-    <span class="c1"># len(points) &gt; 4</span>
-    <span class="c1"># compare length of cross product vector to tolerance</span>
 
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
@@ -228,10 +259,8 @@
         <span class="n">u</span> <span class="o">=</span> <span class="n">v</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
         <span class="n">wuv</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
-
         <span class="k">if</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">tol2</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">tol2</span> <span class="ow">or</span> <span class="n">wuv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">&gt;</span> <span class="n">tol2</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
-
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
@@ -240,8 +269,8 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    polygon : sequence of sequence of floats</span>
-<span class="sd">        The XYZ coordinates of the corners of the polygon.</span>
+<span class="sd">    polygon : list of points or :class:`compas.geometry.Polygon`</span>
+<span class="sd">        A polygon.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -253,10 +282,6 @@
 <span class="sd">    bool</span>
 <span class="sd">        ``True`` if the polygon is convex.</span>
 <span class="sd">        ``False`` otherwise.</span>
-
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    is_polygon_convex_xy</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -286,10 +311,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    point : sequence of float</span>
-<span class="sd">        XYZ coordinates.</span>
-<span class="sd">    plane : tuple</span>
-<span class="sd">        Base point and normal defining a plane.</span>
+<span class="sd">    point : [x, y, z] or :class:`compas.geometry.Point`</span>
+<span class="sd">        A point.</span>
+<span class="sd">    plane : [point, vector] or :class:`compas.geometry.Plane`</span>
+<span class="sd">        A plane.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for membership verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
@@ -309,10 +334,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    point : sequence of float</span>
-<span class="sd">        XYZ coordinates.</span>
-<span class="sd">    plane : tuple</span>
-<span class="sd">        Base point and normal defining a plane.</span>
+<span class="sd">    point : [x, y, z] or :class:`compas.geometry.Point`</span>
+<span class="sd">        A point.</span>
+<span class="sd">    plane : [point, vector] or :class:`compas.geometry.Plane`</span>
+<span class="sd">        A plane.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for membership verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
@@ -327,15 +352,38 @@
     <span class="k">return</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">tol</span>
 
 
+<span class="k">def</span> <span class="nf">is_point_behind_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if a point lies behind a plane.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : [x, y, z] or :class:`compas.geometry.Point`</span>
+<span class="sd">        A point.</span>
+<span class="sd">    plane : [point,  normal] or :class:`compas.geometry.Plane`</span>
+<span class="sd">        A plane.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        A tolerance for membership verification.</span>
+<span class="sd">        Default is ``1e-6``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        ``True`` if the point is in front of the plane.</span>
+<span class="sd">        ``False`` otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">tol</span>
+
+
 <div class="viewcode-block" id="is_point_on_line"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_on_line.html#compas.geometry.is_point_on_line">[docs]</a><span class="k">def</span> <span class="nf">is_point_on_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Determine if a point lies on a line.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    point : sequence of float</span>
-<span class="sd">        XYZ coordinates.</span>
-<span class="sd">    line : tuple</span>
-<span class="sd">        Two points defining a line.</span>
+<span class="sd">    point : [x, y, z] or :class:`compas.geometry.Point`</span>
+<span class="sd">        A point.</span>
+<span class="sd">    line : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        A line.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for membership verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
@@ -355,10 +403,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    point : sequence of float</span>
-<span class="sd">        XYZ coordinates.</span>
-<span class="sd">    segment : tuple</span>
-<span class="sd">        Two points defining the line segment.</span>
+<span class="sd">    point : [x, y, z] or :class:`compas.geometry.Point`</span>
+<span class="sd">        A point.</span>
+<span class="sd">    segment : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        A line segment.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for membership verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
@@ -372,12 +420,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">segment</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">segment</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
+    <span class="n">d_ab</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">d_ab</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="n">d_ab</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">d_ab</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_point_on_line</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="n">d_pa</span> <span class="o">=</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
@@ -385,7 +432,6 @@
 
     <span class="k">if</span> <span class="n">d_pa</span> <span class="o">+</span> <span class="n">d_pb</span> <span class="o">&lt;=</span> <span class="n">d_ab</span> <span class="o">+</span> <span class="n">tol</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
-
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
@@ -394,10 +440,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    point : sequence of float</span>
-<span class="sd">        XYZ coordinates.</span>
-<span class="sd">    polyline : sequence of sequence of float</span>
-<span class="sd">        XYZ coordinates of the points of the polyline.</span>
+<span class="sd">    point : [x, y, z] or :class:`compas.geometry.Point`</span>
+<span class="sd">        A point.</span>
+<span class="sd">    polyline : list of points or :class:`compas.geometry.Polyline`</span>
+<span class="sd">        A polyline.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        The tolerance for membership verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
@@ -425,10 +471,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    point : sequence of float</span>
-<span class="sd">        XYZ coordinates.</span>
-<span class="sd">    triangle : sequence of sequence of float</span>
-<span class="sd">        XYZ coordinates of the triangle corners.</span>
+<span class="sd">    point : [x, y, z] or :class:`compas.geometry.Point`</span>
+<span class="sd">        A point.</span>
+<span class="sd">    triangle : [point, point, point]</span>
+<span class="sd">        A triangle.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -450,10 +496,8 @@
         <span class="n">v</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
         <span class="n">c1</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
         <span class="n">c2</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
-
         <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
-
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">triangle</span>
@@ -471,10 +515,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    point : sequence of float</span>
-<span class="sd">        XYZ coordinates of a 3D point.</span>
-<span class="sd">    circle : tuple</span>
-<span class="sd">        center, radius, normal</span>
+<span class="sd">    point : [x, y, z] or :class:`compas.geometry.Point`</span>
+<span class="sd">        A point.</span>
+<span class="sd">    circle : [point, float, vector]</span>
+<span class="sd">        A circle.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -494,10 +538,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    l1 : tuple</span>
-<span class="sd">        A sequence of XYZ coordinates of two 3D points representing two points on the line.</span>
-<span class="sd">    l2 : tuple</span>
-<span class="sd">        A sequence of XYZ coordinates of two 3D points representing two points on the line.</span>
+<span class="sd">    l1 : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        A line.</span>
+<span class="sd">    l2 : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        A line.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for intersection verification. Default is ``1e-6``.</span>
 
@@ -518,10 +562,8 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="c1"># check for intersection</span>
-    <span class="n">d_vector</span> <span class="o">=</span> <span class="n">cross_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">d_vector</span><span class="p">,</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">),</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)))</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
-
     <span class="k">return</span> <span class="kc">False</span></div>
 
 
@@ -530,10 +572,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    s1 : tuple</span>
-<span class="sd">        Two 3D points representing the segment.</span>
-<span class="sd">    s2 : tuple</span>
-<span class="sd">        Two 3D points representing the segment.</span>
+<span class="sd">    s1 : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        A line segment.</span>
+<span class="sd">    s2 : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        A line segment.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for intersection verification. Default is ``1e-6``.</span>
 
@@ -551,10 +593,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    line : tuple</span>
-<span class="sd">        Two points defining the line.</span>
-<span class="sd">    triangle : sequence of sequence of float</span>
-<span class="sd">        XYZ coordinates of the triangle corners.</span>
+<span class="sd">    line : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        A line.</span>
+<span class="sd">    triangle : [point, point, point]</span>
+<span class="sd">        A triangle.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for intersection verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
@@ -579,7 +621,7 @@
     <span class="c1"># direction vector and base point of line</span>
     <span class="n">v1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">p1</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="c1"># Find vectors for two edges sharing V1</span>
+    <span class="c1"># Find vectors for two edges sharing triangle vertex 1</span>
     <span class="n">e1</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="n">e2</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
     <span class="c1"># Begin calculating determinant - also used to calculate u parameter</span>
@@ -614,7 +656,6 @@
 
     <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
-
     <span class="c1"># No hit</span>
     <span class="k">return</span> <span class="kc">False</span></div>
 
@@ -624,10 +665,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    line : tuple</span>
-<span class="sd">        Two points defining the line.</span>
-<span class="sd">    plane : tuple</span>
-<span class="sd">        The base point and normal defining the plane.</span>
+<span class="sd">    line : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        A line.</span>
+<span class="sd">    plane : [point, normal] or :class:`compas.geometry.Plane`</span>
+<span class="sd">        A plane.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for intersection verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
@@ -655,10 +696,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    segment : tuple</span>
-<span class="sd">        Two points defining the segment.</span>
-<span class="sd">    plane : tuple</span>
-<span class="sd">        The base point and normal defining the plane.</span>
+<span class="sd">    segment : [point, point] or :class:`compas.geometry.Line`</span>
+<span class="sd">        A line segment.</span>
+<span class="sd">    plane : [point, normal] or :class:`compas.geometry.Plane`</span>
+<span class="sd">        A plane.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for intersection verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
@@ -691,10 +732,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    plane1 : tuple</span>
-<span class="sd">        The base point and normal (normalized) defining the 1st plane.</span>
-<span class="sd">    plane2 : tuple</span>
-<span class="sd">        The base point and normal (normalized) defining the 2nd plane.</span>
+<span class="sd">    plane1 : [point, vector] or :class:`compas.geometry.Plane`</span>
+<span class="sd">        A plane.</span>
+<span class="sd">    plane2 : [point, vector] or :class:`compas.geometry.Plane`</span>
+<span class="sd">        A plane.</span>
 <span class="sd">    tol : float, optional</span>
 <span class="sd">        A tolerance for intersection verification.</span>
 <span class="sd">        Default is ``1e-6``.</span>
@@ -710,6 +751,43 @@
     <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dot_vectors</span><span class="p">(</span><span class="n">plane1</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plane2</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">tol</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="k">def</span> <span class="nf">is_point_in_box</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if the point lies inside the given box.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : (x, y, z) or :class:`compas.geometry.Point`</span>
+<span class="sd">    box : (vertices, faces) or :class:`compas.geometry.Box`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True, if the point lies in the polyhedron.</span>
+<span class="sd">        False, otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+<div class="viewcode-block" id="is_point_in_polyhedron"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.is_point_in_polyhedron.html#compas.geometry.is_point_in_polyhedron">[docs]</a><span class="k">def</span> <span class="nf">is_point_in_polyhedron</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">polyhedron</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine if the point lies inside the given polyhedron.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    point : (x, y, z) or :class:`compas.geometry.Point`</span>
+<span class="sd">    polyhedron : (vertices, faces) or :class:`compas.geometry.Polyhedron`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True, if the point lies in the polyhedron.</span>
+<span class="sd">        False, otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">polyhedron</span>
+    <span class="n">polygons</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+    <span class="n">planes</span> <span class="o">=</span> <span class="p">[[</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">polygon</span><span class="p">),</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">)]</span> <span class="k">for</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="n">polygons</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">is_point_behind_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span> <span class="k">for</span> <span class="n">plane</span> <span class="ow">in</span> <span class="n">planes</span><span class="p">)</span></div>
 
 
 <span class="c1"># ==============================================================================</span>

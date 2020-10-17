@@ -86,6 +86,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
+<span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Primitive</span>
 
 
@@ -98,8 +99,9 @@
 <div class="viewcode-block" id="Shape.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Shape.__init__.html#compas.geometry.Shape.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Shape</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Shape.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Shape.to_vertices_and_faces.html#compas.geometry.Shape.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+<div class="viewcode-block" id="Shape.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Shape.to_vertices_and_faces.html#compas.geometry.Shape.to_vertices_and_faces">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

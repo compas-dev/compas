@@ -88,6 +88,9 @@
 
 <span class="kn">from</span> <span class="nn">compas</span> <span class="kn">import</span> <span class="n">PRECISION</span>
 
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">normal_polygon</span>
+
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_line</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_plane</span>
@@ -99,6 +102,8 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">is_polygon_convex_xy</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">is_point_in_polygon_xy</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">is_point_in_convex_polygon_xy</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">is_point_behind_plane</span>
+
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">transform_points</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry.primitives</span> <span class="kn">import</span> <span class="n">Primitive</span>
@@ -542,7 +547,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        point : :class:`compas.geometry.Point` or list</span>
+<span class="sd">        point : [x, y, z] or :class:`compas.geometry.Point`</span>
 <span class="sd">            The other point.</span>
 
 <span class="sd">        Returns</span>
@@ -564,7 +569,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        line : :class:`compas.geometry.Line` or tuple of points.</span>
+<span class="sd">        line : [point, point] or :class:`compas.geometry.Line`.</span>
 <span class="sd">            The line.</span>
 
 <span class="sd">        Returns</span>
@@ -587,7 +592,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        plane : :class:`compas.geometry.Plane` or tuple of point and normal</span>
+<span class="sd">        plane : [point, vector] or :class:`compas.geometry.Plane`</span>
 <span class="sd">            The plane.</span>
 
 <span class="sd">        Returns</span>
@@ -606,12 +611,53 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">distance_point_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span></div>
 
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># 2D predicates</span>
+    <span class="c1"># ==========================================================================</span>
+
+<div class="viewcode-block" id="Point.in_polygon"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Point.in_polygon.html#compas.geometry.Point.in_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">in_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">,</span> <span class="n">convex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determine if the point lies inside the given polygon.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        polygon : :class:`compas.geometry.Polygon` or list of points.</span>
+<span class="sd">            The polygon.</span>
+<span class="sd">        convex : {None, True, False}, optional</span>
+<span class="sd">            Is the polygon convex.</span>
+<span class="sd">            If ``None``, determine if the polygon is convex.</span>
+<span class="sd">            If ``False``, use the non-convex algorithm.</span>
+<span class="sd">            If ``True``, use the convex algorithm.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True, if the point lies in the polygon.</span>
+<span class="sd">            False, otherwise.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Polygon</span>
+<span class="sd">        &gt;&gt;&gt; poly = Polygon([Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0), Point(0.0, 1.0, 0.0)])</span>
+<span class="sd">        &gt;&gt;&gt; point = Point(0.5, 0.5, 0.0)</span>
+<span class="sd">        &gt;&gt;&gt; point.in_polygon(poly)</span>
+<span class="sd">        True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">convex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">convex</span> <span class="o">=</span> <span class="n">is_polygon_convex_xy</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">convex</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">is_point_in_convex_polygon_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">is_point_in_polygon_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">)</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># 3D predicates</span>
+    <span class="c1"># ==========================================================================</span>
+
 <div class="viewcode-block" id="Point.on_line"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Point.on_line.html#compas.geometry.Point.on_line">[docs]</a>    <span class="k">def</span> <span class="nf">on_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine if the point lies on the given line.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        line : :class:`compas.geometry.Line` or tuple of points.</span>
+<span class="sd">        line : [point, point] or :class:`compas.geometry.Line`.</span>
 <span class="sd">            The line.</span>
 
 <span class="sd">        Returns</span>
@@ -683,7 +729,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        circle : :class:`compas.geometry.Circle` or tuple of plane and radius.</span>
+<span class="sd">        circle : [plane, radius] or :class:`compas.geometry.Circle`.</span>
 <span class="sd">            The circle.</span>
 
 <span class="sd">        Returns</span>
@@ -699,7 +745,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        triangle : :class:`compas.geometry.Polygon` or list of three points.</span>
+<span class="sd">        triangle : [point, point, point] or :class:`compas.geometry.Polygon`.</span>
 <span class="sd">            The triangle.</span>
 
 <span class="sd">        Returns</span>
@@ -718,45 +764,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">is_point_in_triangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triangle</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Point.in_polygon"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Point.in_polygon.html#compas.geometry.Point.in_polygon">[docs]</a>    <span class="k">def</span> <span class="nf">in_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">,</span> <span class="n">convex</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Determine if the point lies inside the given polygon.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        polygon : :class:`compas.geometry.Polygon` or list of points.</span>
-<span class="sd">            The polygon.</span>
-<span class="sd">        convex : {None, True, False}, optional</span>
-<span class="sd">            Is the polygon convex.</span>
-<span class="sd">            If ``None``, determine if the polygon is convex.</span>
-<span class="sd">            If ``False``, use the non-convex algorithm.</span>
-<span class="sd">            If ``True``, use the convex algorithm.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        bool</span>
-<span class="sd">            True, if the point lies in the polygon.</span>
-<span class="sd">            False, otherwise.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; from compas.geometry import Polygon</span>
-<span class="sd">        &gt;&gt;&gt; poly = Polygon([Point(0.0, 0.0, 0.0), Point(1.0, 0.0, 0.0), Point(1.0, 1.0, 0.0), Point(0.0, 1.0, 0.0)])</span>
-<span class="sd">        &gt;&gt;&gt; point = Point(0.5, 0.5, 0.0)</span>
-<span class="sd">        &gt;&gt;&gt; point.in_polygon(poly)</span>
-<span class="sd">        True</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">convex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">convex</span> <span class="o">=</span> <span class="n">is_polygon_convex_xy</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">convex</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">is_point_in_convex_polygon_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">is_point_in_polygon_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygon</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Point.in_circle"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Point.in_circle.html#compas.geometry.Point.in_circle">[docs]</a>    <span class="k">def</span> <span class="nf">in_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">circle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Determine if the point lies inside the given circle.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        circle : :class:`compas.geometry.Circle` or tuple of plane and radius.</span>
+<span class="sd">        circle : [plane, radius] or :class:`compas.geometry.Circle`.</span>
 <span class="sd">            The circle.</span>
 
 <span class="sd">        Returns</span>
@@ -782,7 +795,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        polyhedron : :class:`compas.geometry.Polyhedron` or tuple of vertices and faces.</span>
+<span class="sd">        polyhedron : [vertices, faces] or :class:`compas.geometry.Polyhedron`.</span>
 <span class="sd">            The polyhedron.</span>
 
 <span class="sd">        Returns</span>
@@ -791,7 +804,14 @@
 <span class="sd">            True, if the point lies on the polyline.</span>
 <span class="sd">            False, otherwise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">polyhedron</span>
+        <span class="n">polygons</span> <span class="o">=</span> <span class="p">[[</span><span class="n">vertices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+        <span class="n">planes</span> <span class="o">=</span> <span class="p">[[</span><span class="n">centroid_points</span><span class="p">(</span><span class="n">polygon</span><span class="p">),</span> <span class="n">normal_polygon</span><span class="p">(</span><span class="n">polygon</span><span class="p">)]</span> <span class="k">for</span> <span class="n">polygon</span> <span class="ow">in</span> <span class="n">polygons</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">is_point_behind_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span> <span class="k">for</span> <span class="n">plane</span> <span class="ow">in</span> <span class="n">planes</span><span class="p">)</span></div>
+
+    <span class="c1"># ==========================================================================</span>
+    <span class="c1"># transformations</span>
+    <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Point.transform"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Point.transform.html#compas.geometry.Point.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Transform this point.</span>

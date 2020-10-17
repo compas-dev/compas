@@ -89,9 +89,14 @@
 <h1>Polyhedron</h1>
 <dl class="class">
 <dt id="compas.geometry.Polyhedron">
-<em class="property">class </em><code class="sig-prename descclassname">compas.geometry.</code><code class="sig-name descname">Polyhedron</code><span class="sig-paren">(</span><em class="sig-param">fcount</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/shapes/polyhedron.html#Polyhedron"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas.geometry.</code><code class="sig-name descname">Polyhedron</code><span class="sig-paren">(</span><em class="sig-param">vertices</em>, <em class="sig-param">faces</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/geometry/shapes/polyhedron.html#Polyhedron"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.shapes._shape.Shape</span></code></p>
-<p>Compute the vertices and faces of one of the Platonic solids.</p>
+<p>A polyhedron is defined by its number of faces as one of the platonic solids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>f</strong> (<em>{4, 6, 8, 12, 20}</em>) – The number of faces of the polyhedron.</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>A Platonic solid is a regular, convex polyhedron. It is constructed by
 congruent regular polygonal faces with the same number of faces meeting
@@ -110,7 +115,7 @@ Available at: <a class="reference external" href="https://en.wikipedia.org/wiki/
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.__init__.html#compas.geometry.Polyhedron.__init__" title="compas.geometry.Polyhedron.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(fcount)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.__init__.html#compas.geometry.Polyhedron.__init__" title="compas.geometry.Polyhedron.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(vertices, faces)</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.copy.html#compas.geometry.Polyhedron.copy" title="compas.geometry.Polyhedron.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
@@ -122,25 +127,28 @@ Available at: <a class="reference external" href="https://en.wikipedia.org/wiki/
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.from_json.html#compas.geometry.Polyhedron.from_json" title="compas.geometry.Polyhedron.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
 <td><p>Construct a primitive from structured data contained in a json file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.to_data.html#compas.geometry.Polyhedron.to_data" title="compas.geometry.Polyhedron.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns the data dictionary that represents the primitive.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.to_json.html#compas.geometry.Polyhedron.to_json" title="compas.geometry.Polyhedron.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
-<td><p>Serialise the structured data representing the primitive to json.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.to_vertices_and_faces.html#compas.geometry.Polyhedron.to_vertices_and_faces" title="compas.geometry.Polyhedron.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a>(**kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.from_platonicsolid.html#compas.geometry.Polyhedron.from_platonicsolid" title="compas.geometry.Polyhedron.from_platonicsolid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_platonicsolid</span></code></a>(f)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.transform.html#compas.geometry.Polyhedron.transform" title="compas.geometry.Polyhedron.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
-<td><p>Transform the primitive.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.to_data.html#compas.geometry.Polyhedron.to_data" title="compas.geometry.Polyhedron.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<td><p>Returns the data dictionary that represents the primitive.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.transformed.html#compas.geometry.Polyhedron.transformed" title="compas.geometry.Polyhedron.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.to_json.html#compas.geometry.Polyhedron.to_json" title="compas.geometry.Polyhedron.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<td><p>Serialise the structured data representing the primitive to json.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.to_vertices_and_faces.html#compas.geometry.Polyhedron.to_vertices_and_faces" title="compas.geometry.Polyhedron.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a>(**kwargs)</p></td>
+<td><p>Returns a list of vertices and faces</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.transform.html#compas.geometry.Polyhedron.transform" title="compas.geometry.Polyhedron.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
+<td><p>Transform the polyhedron.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.transformed.html#compas.geometry.Polyhedron.transformed" title="compas.geometry.Polyhedron.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Returns a transformed copy of this primitive.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.validate_data.html#compas.geometry.Polyhedron.validate_data" title="compas.geometry.Polyhedron.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.validate_data.html#compas.geometry.Polyhedron.validate_data" title="compas.geometry.Polyhedron.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.validate_json.html#compas.geometry.Polyhedron.validate_json" title="compas.geometry.Polyhedron.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Polyhedron.validate_json.html#compas.geometry.Polyhedron.validate_json" title="compas.geometry.Polyhedron.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>

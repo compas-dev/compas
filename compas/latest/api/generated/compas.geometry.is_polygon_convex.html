@@ -93,7 +93,7 @@
 <dd><p>Determine if a polygon is convex.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>polygon</strong> (<em>sequence of sequence of floats</em>) – The XYZ coordinates of the corners of the polygon.</p>
+<dd class="field-odd"><p><strong>polygon</strong> (list of points or <a class="reference internal" href="compas.geometry.Polygon.html#compas.geometry.Polygon" title="compas.geometry.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Polygon</span></code></a>) – A polygon.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -105,10 +105,6 @@ If the polygon is in a horizontal plane, use <a class="reference internal" href=
 <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
 </dl>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p><a class="reference internal" href="compas.geometry.is_polygon_convex_xy.html#compas.geometry.is_polygon_convex_xy" title="compas.geometry.is_polygon_convex_xy"><code class="xref py py-func docutils literal notranslate"><span class="pre">is_polygon_convex_xy()</span></code></a></p>
-</div>
 <p class="rubric">Examples</p>
 <div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">is_polygon_convex</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>

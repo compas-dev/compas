@@ -555,7 +555,7 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="n">Polyhedron</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Polyhedron</span><span class="o">.</span><span class="n">from_platonicsolid</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">faces</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BaseMesh.from_shape"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.from_shape.html#compas.datastructures.BaseMesh.from_shape">[docs]</a>    <span class="nd">@classmethod</span>
@@ -1323,6 +1323,21 @@
         <span class="n">max_deviation</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">distance_point_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
         <span class="n">average_distances</span> <span class="o">=</span> <span class="n">vector_average</span><span class="p">([</span><span class="n">distance_point_point</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">centroid</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">max_deviation</span> <span class="o">/</span> <span class="n">average_distances</span></div>
+
+<div class="viewcode-block" id="BaseMesh.face_plane"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.face_plane.html#compas.datastructures.BaseMesh.face_plane">[docs]</a>    <span class="k">def</span> <span class="nf">face_plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A plane defined by the centroid and the normal of the face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        face : int</span>
+<span class="sd">            The face identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            point, vector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">face</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">face</span><span class="p">)</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># boundary</span>
