@@ -241,7 +241,7 @@ class BaseMesh(HalfEdge):
         mesh = cls.from_vertices_and_faces(vertices, faces)
         return mesh
 
-    def to_stl(self, filepath, precision=None, **kwargs):
+    def to_stl(self, filepath, precision=None, binary=False, **kwargs):
         """Write a mesh to an STL file.
 
         Parameters
@@ -251,6 +251,9 @@ class BaseMesh(HalfEdge):
         precision : str, optional
             Rounding precision for the vertex coordinates.
             Default is ``"3f"``.
+        binary : bool, optional
+            When ``False``, the file will be written in ASCII encoding,
+            when ``True``, binary.  Default is ``False``.
 
         Returns
         -------
@@ -259,13 +262,11 @@ class BaseMesh(HalfEdge):
         Notes
         -----
         STL files only support triangle faces.
-        However, the writer does not perform any checks
-        and will just treat every face as a triangle.
         It is your responsibility to convert all faces of your mesh to triangles.
         For example, with :func:`compas.datastructures.mesh_quads_to_triangles`.
         """
         stl = STL(filepath, precision)
-        stl.write(self, **kwargs)
+        stl.write(self, binary=binary, **kwargs)
 
     @classmethod
     def from_off(cls, filepath):

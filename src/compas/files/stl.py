@@ -265,7 +265,7 @@ class STLWriter(object):
     def vertex_xyz(self):
         bbox = self.mesh.bounding_box()
         xmin, ymin, zmin = bbox[0]
-        if xmin < 0 or ymin < 0 or zmin < 0:
+        if not self.binary and (xmin < 0 or ymin < 0 or zmin < 0):
             T = Translation.from_vector([-xmin, -ymin, -zmin])
             mesh = self.mesh.transformed(T)
         else:
@@ -273,13 +273,19 @@ class STLWriter(object):
         return {vertex: mesh.vertex_attributes(vertex, 'xyz') for vertex in mesh.vertices()}
 
     def write(self):
+        if not self.mesh.is_trimesh():
+            raise ValueError('Mesh must be triangular to be encoded in STL.')
         if not self.binary:
             with open(self.filepath, 'w') as self.file:
                 self.write_header()
                 self.write_faces()
                 self.write_footer()
         else:
-            raise NotImplementedError
+            with open(self.filepath, 'wb') as self.file:
+                self.file.seek(0)
+                self.write_binary_header()
+                self.write_binary_num_faces()
+                self.write_binary_faces()
 
     def write_header(self):
         self.file.write("solid {}\n".format(self.solid_name))
@@ -296,6 +302,23 @@ class STLWriter(object):
                 self.file.write("        vertex {0} {1} {2}\n".format(* vertex_xyz[vertex]))
             self.file.write("    endloop\n")
             self.file.write("endfacet\n")
+
+    def write_binary_header(self):
+        self.file.write(b'\0' * 80)
+
+    def write_binary_num_faces(self):
+        try:
+            self.file.write(struct.pack('<L', self.mesh.number_of_faces()))
+        except struct.error:
+            raise ValueError('Mesh must have fewer than 4294967295 faces to be written to binary STL.')
+
+    def write_binary_faces(self):
+        vertex_xyz = self.vertex_xyz
+        for face in self.mesh.faces():
+            self.file.write(struct.pack('<3f', *self.mesh.face_normal(face)))
+            for vertex in self.mesh.face_vertices(face):
+                self.file.write(struct.pack('<3f', *vertex_xyz[vertex]))
+            self.file.write(b'\0\0')
 
 
 # ==============================================================================
