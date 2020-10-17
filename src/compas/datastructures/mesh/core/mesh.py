@@ -470,7 +470,7 @@ class BaseMesh(HalfEdge):
         --------
         >>>
         """
-        p = Polyhedron(f)
+        p = Polyhedron.from_platonicsolid(f)
         return cls.from_vertices_and_faces(p.vertices, p.faces)
 
     @classmethod
@@ -1238,6 +1238,21 @@ class BaseMesh(HalfEdge):
         max_deviation = max([distance_point_plane(point, plane) for point in points])
         average_distances = vector_average([distance_point_point(point, centroid) for point in points])
         return max_deviation / average_distances
+
+    def face_plane(self, face):
+        """A plane defined by the centroid and the normal of the face.
+
+        Parameters
+        ----------
+        face : int
+            The face identifier.
+
+        Returns
+        -------
+        tuple
+            point, vector
+        """
+        return self.face_centroid(face), self.face_normal(face)
 
     # --------------------------------------------------------------------------
     # boundary

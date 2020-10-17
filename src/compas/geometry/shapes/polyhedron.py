@@ -3,14 +3,21 @@ from __future__ import absolute_import
 from __future__ import division
 
 from math import sqrt
+from compas.geometry import transform_points
 
-from compas.geometry.shapes import Shape
+from ._shape import Shape
+
 
 __all__ = ['Polyhedron']
 
 
 class Polyhedron(Shape):
-    """Compute the vertices and faces of one of the Platonic solids.
+    """A polyhedron is defined by its number of faces as one of the platonic solids.
+
+    Parameters
+    ----------
+    f : {4, 6, 8, 12, 20}
+        The number of faces of the polyhedron.
 
     Notes
     -----
@@ -25,28 +32,32 @@ class Polyhedron(Shape):
 
     """
 
-    def __init__(self, fcount):
+    def __init__(self, vertices, faces):
         super(Polyhedron, self).__init__()
-        self.vertices = None
-        self.faces = None
-        if fcount == 4:
-            vertices, faces = tetrahedron()
-        elif fcount == 6:
-            vertices, faces = hexahedron()
-        elif fcount == 8:
-            vertices, faces = octahedron()
-        elif fcount == 12:
-            vertices, faces = dodecahedron()
-        elif fcount == 20:
-            vertices, faces = icosahedron()
-        else:
-            raise ValueError('Unsupported solid type. Supported face count values: 4, 6, 8, 12, 20')
+        self._vertices = None
+        self._faces = None
         self.vertices = vertices
         self.faces = faces
 
     # ==========================================================================
     # descriptors
     # ==========================================================================
+
+    @property
+    def vertices(self):
+        return self._vertices
+
+    @vertices.setter
+    def vertices(self, vertices):
+        self._vertices = vertices
+
+    @property
+    def faces(self):
+        return self._faces
+
+    @faces.setter
+    def faces(self, faces):
+        self._faces = faces
 
     @property
     def data(self):
@@ -68,6 +79,28 @@ class Polyhedron(Shape):
     # ==========================================================================
     # customisation
     # ==========================================================================
+
+    def __repr__(self):
+        return 'Polyhedron({0}, {1})'.format(self.vertices, self.faces)
+
+    def __len__(self):
+        return 2
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.vertices
+        elif key == 1:
+            return self.faces
+        else:
+            raise KeyError
+
+    def __setitem__(self, key, value):
+        if key == 0:
+            self.vertices = value
+        elif key == 1:
+            self.faces = value
+        else:
+            raise KeyError
 
     def __iter__(self):
         return iter([self.vertices, self.faces])
@@ -100,14 +133,38 @@ class Polyhedron(Shape):
         p.data = data
         return p
 
+    @classmethod
+    def from_platonicsolid(cls, f):
+        if f == 4:
+            return cls(* tetrahedron())
+        if f == 6:
+            return cls(* hexahedron())
+        if f == 8:
+            return cls(* octahedron())
+        if f == 12:
+            return cls(* dodecahedron())
+        if f == 20:
+            return cls(* icosahedron())
+        raise ValueError("The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.")
+
     # ==========================================================================
     # methods
     # ==========================================================================
 
+    def to_vertices_and_faces(self, **kwargs):
+        """Returns a list of vertices and faces"""
+        return self.vertices, self.faces
 
-# ==============================================================================
-# Platonic solids
-# ==============================================================================
+    def transform(self, transformation):
+        """Transform the polyhedron.
+
+        Parameters
+        ----------
+        transformation : :class:`Transformation`
+
+        """
+        self.vertices = transform_points(self.vertices, transformation)
+
 
 def tetrahedron():
     faces = [[0, 1, 2], [0, 3, 1], [0, 2, 3], [1, 3, 2]]
