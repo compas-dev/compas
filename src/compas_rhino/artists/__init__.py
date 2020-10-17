@@ -32,6 +32,7 @@ Geometry Artists
     :toctree: generated/
     :nosignatures:
 
+    BoxArtist
     CircleArtist
     FrameArtist
     LineArtist
