@@ -273,8 +273,12 @@ class HalfEdge(Datastructure):
             for fkey, vertices in iter(face.items()):
                 attr = facedata.get(fkey) or {}
                 self.add_face(vertices, fkey=int(fkey), attr_dict=attr)
-            for uv, attr in iter(edgedata.items()):
-                self.edgedata[literal_eval(uv)] = attr or {}
+            for edge, attr in iter(edgedata.items()):
+                key = "-".join(map(str, sorted(literal_eval(edge))))
+                if key not in self.edgedata:
+                    self.edgedata[key] = {}
+                if attr:
+                    self.edgedata[key].update(attr)
             self._max_vertex = max_vertex
             self._max_face = max_face
 
@@ -1478,7 +1482,7 @@ class HalfEdge(Datastructure):
             values.append(value)
         return values
 
-    def edges_attribute(self, name, value=None, edges=None):
+    def edges_attribute(self, name, value=None, keys=None):
         """Get or set an attribute of multiple edges.
 
         Parameters
@@ -1488,7 +1492,7 @@ class HalfEdge(Datastructure):
         value : obj, optional
             The value of the attribute.
             Default is ``None``.
-        edges : list of 2-tuple of int, optional
+        keys : list of edges, optional
             A list of edge identifiers.
 
         Returns
@@ -1502,14 +1506,14 @@ class HalfEdge(Datastructure):
         KeyError
             If any of the edges does not exist.
         """
-        edges = edges or self.edges()
+        edges = keys or self.edges()
         if value is not None:
             for edge in edges:
                 self.edge_attribute(edge, name, value)
             return
         return [self.edge_attribute(edge, name) for edge in edges]
 
-    def edges_attributes(self, names=None, values=None, edges=None):
+    def edges_attributes(self, names=None, values=None, keys=None):
         """Get or set multiple attributes of multiple edges.
 
         Parameters
@@ -1520,7 +1524,7 @@ class HalfEdge(Datastructure):
         values : list of obj, optional
             The values of the attributes.
             Default is ``None``.
-        edges : list of 2-tuple of int, optional
+        keys : list of edges, optional
             A list of edge identifiers.
 
         Returns
@@ -1537,7 +1541,7 @@ class HalfEdge(Datastructure):
         KeyError
             If any of the edges does not exist.
         """
-        edges = edges or self.edges()
+        edges = keys or self.edges()
         if values is not None:
             for edge in edges:
                 self.edge_attributes(edge, names, values)
