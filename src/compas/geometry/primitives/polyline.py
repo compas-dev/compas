@@ -8,6 +8,8 @@ from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Point
 from compas.geometry.primitives import Line
 
+from compas.utilities import pairwise
+
 
 __all__ = ['Polyline']
 
@@ -85,11 +87,15 @@ class Polyline(Primitive):
     @points.setter
     def points(self, points):
         self._points = [Point(*xyz) for xyz in points]
-        self._lines = [Line(self._points[i], self._points[i + 1]) for i in range(0, len(self._points) - 1)]
+        self._lines = None
+
+    # consider caching below based on point setter
 
     @property
     def lines(self):
-        """list of Line: The lines of the polyline."""
+        """list of :class:`compas.geometry.Line` : The lines of the polyline."""
+        if not self._lines:
+            self._lines = [Line(a, b) for a, b in pairwise(self.points)]
         return self._lines
 
     @property
