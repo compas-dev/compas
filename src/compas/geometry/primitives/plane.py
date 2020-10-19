@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from math import sqrt
 from compas.geometry.primitives import Primitive
 from compas.geometry.primitives import Vector
 from compas.geometry.primitives import Point
@@ -85,6 +86,13 @@ class Plane(Primitive):
         a, b, c = self.normal
         x, y, z = self.point
         return - a * x - b * y - c * z
+
+    @property
+    def abcd(self):
+        """list: The coefficients of the plane equation."""
+        a, b, c = self.normal
+        d = self.d
+        return a, b, c, d
 
     # ==========================================================================
     # customization
@@ -207,6 +215,24 @@ class Plane(Primitive):
         Vector(0.000, 0.000, 1.000)
         """
         normal = Vector.cross(u, v)
+        return cls(point, normal)
+
+    def from_abcd(cls, abcd):
+        """Construct a plane from the plane equation coefficients.
+
+        Parameters
+        ----------
+        abcd : list of float
+            The equation coefficients.
+
+        Returns
+        -------
+        :class:`compas.geometry.Plane`
+        """
+        a, b, c, d = abcd
+        x = 1 / sqrt(a**2 + b**2 + c**2)
+        normal = [a, b, c]
+        point = [a * d * x, b * d * x, c * d * x]
         return cls(point, normal)
 
     @classmethod

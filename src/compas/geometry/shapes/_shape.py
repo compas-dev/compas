@@ -16,7 +16,7 @@ class Shape(Primitive):
         super(Shape, self).__init__()
 
     @abc.abstractmethod
-    def to_vertices_and_faces(self, **kwargs):
+    def to_vertices_and_faces(self):
         pass
 
 

@@ -509,6 +509,16 @@ class Box(Shape):
     # ==========================================================================
 
     def contains(self, point):
+        """Verify if the box contains a given point.
+
+        Parameters
+        ----------
+        point : :class:`compas.geometry.Point` or (float, float, float)
+
+        Returns
+        -------
+        bool
+        """
         T = Transformation.from_change_of_basis(Frame.worldXY(), self.frame)
         point = transform_points([point], T)[0]
         if -0.5 * self.xsize < point[0] < + 0.5 * self.xsize:
@@ -517,8 +527,15 @@ class Box(Shape):
                     return True
         return False
 
-    def to_vertices_and_faces(self, **kwargs):
-        """Returns a list of vertices and faces"""
+    def to_vertices_and_faces(self):
+        """Returns a list of vertices and faces.
+
+        Returns
+        -------
+        (vertices, faces)
+            A list of vertex locations and a list of faces,
+            with each face defined as a list of indices into the list of vertices.
+        """
         return self.vertices, self.faces
 
     def transform(self, transformation):
