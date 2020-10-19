@@ -4,6 +4,7 @@ from __future__ import division
 
 from math import sqrt
 from compas.geometry import transform_points
+from compas.utilities import pairwise
 
 from ._shape import Shape
 
@@ -49,6 +50,16 @@ class Polyhedron(Shape):
     @faces.setter
     def faces(self, faces):
         self._faces = faces
+
+    @property
+    def edges(self):
+        seen = set()
+        for face in self.faces:
+            for u, v in pairwise(face + face[:1]):
+                if (u, v) not in seen:
+                    seen.add((u, v))
+                    seen.add((v, u))
+                    yield u, v
 
     @property
     def data(self):
