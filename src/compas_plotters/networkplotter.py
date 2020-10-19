@@ -280,28 +280,4 @@ class NetworkPlotter(Plotter):
 # ==============================================================================
 
 if __name__ == "__main__":
-
-    import compas
-    from compas.datastructures import Network
-
-    network = Network.from_obj(compas.get('grid_irregular.obj'))
-
-    plotter = NetworkPlotter(network, figsize=(10, 8))
-
-    plotter.draw_nodes(radius=0.1, picker=10)
-    plotter.draw_edges()
-
-    default = [plotter.defaults['node.facecolor'] for key in network.nodes()]
-    highlight = '#ff0000'
-
-    def on_pick(event):
-        index = event.ind[0]
-
-        colors = default[:]
-        colors[index] = highlight
-
-        plotter.nodecollection.set_facecolor(colors)
-        plotter.update()
-
-    plotter.register_listener(on_pick)
-    plotter.show()
+    pass
