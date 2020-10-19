@@ -91,7 +91,9 @@ from .pointartist import PointArtist
 from .polygonartist import PolygonArtist
 from .polylineartist import PolylineArtist
 from .vectorartist import VectorArtist
+
 from .boxartist import BoxArtist
+from .capsuleartist import CapsuleArtist
 
 from .meshartist import MeshArtist
 from .networkartist import NetworkArtist
@@ -107,7 +109,9 @@ from compas.geometry import Point
 from compas.geometry import Polygon
 from compas.geometry import Polyline
 from compas.geometry import Vector
+
 from compas.geometry import Box
+from compas.geometry import Capsule
 
 from compas.datastructures import Mesh
 from compas.datastructures import Network
@@ -123,7 +127,9 @@ BaseArtist.register(Point, PointArtist)
 BaseArtist.register(Polygon, PolygonArtist)
 BaseArtist.register(Polyline, PolylineArtist)
 BaseArtist.register(Vector, VectorArtist)
+
 BaseArtist.register(Box, BoxArtist)
+BaseArtist.register(Capsule, CapsuleArtist)
 
 BaseArtist.register(Mesh, MeshArtist)
 BaseArtist.register(Network, NetworkArtist)
