@@ -46,7 +46,7 @@
       <!-- primary -->
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
-        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
         <li class="nav-item"><a class="nav-link" href="/plugins.html">Plugins</a></li>
         <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
         <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
@@ -481,7 +481,8 @@
     <span class="k">while</span> <span class="ow">not</span> <span class="n">best_candidate_heap</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">current</span> <span class="o">=</span> <span class="n">best_candidate_heap</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">current</span> <span class="o">==</span> <span class="n">goal</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">reconstruct_path</span><span class="p">(</span><span class="n">came_from</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
+            <span class="k">break</span>
+
         <span class="n">visited_set</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
         <span class="n">current_coords</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">current</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">current</span><span class="p">):</span>
@@ -501,7 +502,9 @@
             <span class="n">g_score</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="n">tentative_gScore</span>
             <span class="n">new_fscore</span> <span class="o">=</span> <span class="n">g_score</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">+</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">neighbor_coords</span><span class="p">,</span> <span class="n">goal_coords</span><span class="p">)</span>
             <span class="n">f_score</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_fscore</span>
-            <span class="n">best_candidate_heap</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">new_fscore</span><span class="p">,</span> <span class="n">neighbor</span><span class="p">))</span></div>
+            <span class="n">best_candidate_heap</span><span class="o">.</span><span class="n">put</span><span class="p">((</span><span class="n">new_fscore</span><span class="p">,</span> <span class="n">neighbor</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">reconstruct_path</span><span class="p">(</span><span class="n">came_from</span><span class="p">,</span> <span class="n">goal</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="dijkstra_distances"><a class="viewcode-back" href="../../../api/generated/compas.topology.dijkstra_distances.html#compas.topology.dijkstra_distances">[docs]</a><span class="k">def</span> <span class="nf">dijkstra_distances</span><span class="p">(</span><span class="n">adjacency</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>

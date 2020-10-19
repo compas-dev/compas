@@ -46,7 +46,7 @@
       <!-- primary -->
       <ul class="navbar-nav">
         <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
-        <li class="nav-item active"><a class="nav-link" href="/compas/">Docs</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
         <li class="nav-item"><a class="nav-link" href="/plugins.html">Plugins</a></li>
         <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
         <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
@@ -89,6 +89,7 @@
 
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">transform_points</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
 
 <span class="kn">from</span> <span class="nn">._shape</span> <span class="kn">import</span> <span class="n">Shape</span>
 
@@ -134,6 +135,16 @@
     <span class="nd">@faces</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">faces</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_faces</span> <span class="o">=</span> <span class="n">faces</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">face</span> <span class="o">+</span> <span class="n">face</span><span class="p">[:</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                    <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                    <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+                    <span class="k">yield</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
