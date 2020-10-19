@@ -262,11 +262,24 @@
     <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="Capsule.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Capsule.to_vertices_and_faces.html#compas.geometry.Capsule.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Capsule.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Capsule.to_vertices_and_faces.html#compas.geometry.Capsule.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces.</span>
 
-        <span class="n">u</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">10</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;v&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">10</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : int, optional</span>
+<span class="sd">            Number of faces in the &quot;u&quot; direction.</span>
+<span class="sd">            Default is ``10``.</span>
+<span class="sd">        v : int, optional</span>
+<span class="sd">            Number of faces in the &quot;v&quot; direction.</span>
+<span class="sd">            Default is ``10``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (vertices, faces)</span>
+<span class="sd">            A list of vertex locations and a list of faces,</span>
+<span class="sd">            with each face defined as a list of indices into the list of vertices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The value for u should be u &gt; 3.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>

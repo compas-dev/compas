@@ -593,6 +593,16 @@
     <span class="c1"># ==========================================================================</span>
 
 <div class="viewcode-block" id="Box.contains"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.contains.html#compas.geometry.Box.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Verify if the box contains a given point.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point : :class:`compas.geometry.Point` or (float, float, float)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">T</span> <span class="o">=</span> <span class="n">Transformation</span><span class="o">.</span><span class="n">from_change_of_basis</span><span class="p">(</span><span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
         <span class="n">point</span> <span class="o">=</span> <span class="n">transform_points</span><span class="p">([</span><span class="n">point</span><span class="p">],</span> <span class="n">T</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span> <span class="o">&lt;</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsize</span><span class="p">:</span>
@@ -601,8 +611,15 @@
                     <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="Box.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.to_vertices_and_faces.html#compas.geometry.Box.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Box.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.to_vertices_and_faces.html#compas.geometry.Box.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (vertices, faces)</span>
+<span class="sd">            A list of vertex locations and a list of faces,</span>
+<span class="sd">            with each face defined as a list of indices into the list of vertices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span></div>
 
 <div class="viewcode-block" id="Box.transform"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Box.transform.html#compas.geometry.Box.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>

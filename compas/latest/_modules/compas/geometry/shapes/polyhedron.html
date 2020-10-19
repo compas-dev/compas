@@ -96,23 +96,14 @@
 
 
 <div class="viewcode-block" id="Polyhedron"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.html#compas.geometry.Polyhedron">[docs]</a><span class="k">class</span> <span class="nc">Polyhedron</span><span class="p">(</span><span class="n">Shape</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A polyhedron is defined by its number of faces as one of the platonic solids.</span>
+    <span class="sd">&quot;&quot;&quot;A polyhedron is defined by its vertices and faces.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    f : {4, 6, 8, 12, 20}</span>
-<span class="sd">        The number of faces of the polyhedron.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    A Platonic solid is a regular, convex polyhedron. It is constructed by</span>
-<span class="sd">    congruent regular polygonal faces with the same number of faces meeting</span>
-<span class="sd">    at each vertex [1]_.</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] Wikipedia. *Platonic solids*.</span>
-<span class="sd">           Available at: https://en.wikipedia.org/wiki/Platonic_solid.</span>
+<span class="sd">    vertices : list of :class:`compas.geometry.Point` or list of [x, y, z]</span>
+<span class="sd">        The point locations of the vertices of the polyhedron.</span>
+<span class="sd">    faces : list of list of int</span>
+<span class="sd">        The faces as a list of index lists.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -219,6 +210,22 @@
 
 <div class="viewcode-block" id="Polyhedron.from_platonicsolid"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.from_platonicsolid.html#compas.geometry.Polyhedron.from_platonicsolid">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_platonicsolid</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a polyhedron from one of the platonic solids.</span>
+
+<span class="sd">        A Platonic solid is a regular, convex polyhedron. It is constructed by</span>
+<span class="sd">        congruent regular polygonal faces with the same number of faces meeting</span>
+<span class="sd">        at each vertex [1]_.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        f : {4, 6, 8, 12, 20}</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        .. [1] Wikipedia. *Platonic solids*.</span>
+<span class="sd">            Available at: https://en.wikipedia.org/wiki/Platonic_solid.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span> <span class="n">tetrahedron</span><span class="p">())</span>
         <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
@@ -231,12 +238,103 @@
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span> <span class="n">icosahedron</span><span class="p">())</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The number of sides of a platonic solid must be one of: 4, 6, 8, 12, 20.&quot;</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Polyhedron.from_halfspaces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.from_halfspaces.html#compas.geometry.Polyhedron.from_halfspaces">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_halfspaces</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">halfspaces</span><span class="p">,</span> <span class="n">interior_point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a polyhedron from its half-spaces and one interior point.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        halfspaces : array-like</span>
+<span class="sd">            The coefficients of the hgalfspace equations in normal form.</span>
+<span class="sd">        interior_point : array-like</span>
+<span class="sd">            A point on the interior.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Polyhedron`</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Plane</span>
+<span class="sd">        &gt;&gt;&gt; left = Plane([-1, 0, 0], [-1, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; right = Plane([+1, 0, 0], [+1, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; top = Plane([0, 0, +1], [0, 0, +1])</span>
+<span class="sd">        &gt;&gt;&gt; bottom = Plane([0, 0, -1], [0, 0, -1])</span>
+<span class="sd">        &gt;&gt;&gt; front = Plane([0, -1, 0], [0, -1, 0])</span>
+<span class="sd">        &gt;&gt;&gt; back = Plane([0, +1, 0], [0, +1, 0])</span>
+
+<span class="sd">        &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">        &gt;&gt;&gt; halfspaces = np.array([left.abcd, right.abcd, top.abcd, bottom.abcd, front.abcd, back.abcd], dtype=float)</span>
+<span class="sd">        &gt;&gt;&gt; interior = np.array([0, 0, 0], dtype=float)</span>
+
+<span class="sd">        &gt;&gt;&gt; p = Polyhedron.from_halfspaces(halfspaces, interior)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+        <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">asarray</span>
+        <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">HalfspaceIntersection</span><span class="p">,</span> <span class="n">ConvexHull</span>
+        <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span><span class="p">,</span> <span class="n">mesh_merge_faces</span>
+        <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">length_vector</span><span class="p">,</span> <span class="n">dot_vectors</span><span class="p">,</span> <span class="n">cross_vectors</span>
+        <span class="n">halfspaces</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">halfspaces</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">interior_point</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">interior_point</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">hsi</span> <span class="o">=</span> <span class="n">HalfspaceIntersection</span><span class="p">(</span><span class="n">halfspaces</span><span class="p">,</span> <span class="n">interior_point</span><span class="p">)</span>
+        <span class="n">hull</span> <span class="o">=</span> <span class="n">ConvexHull</span><span class="p">(</span><span class="n">hsi</span><span class="o">.</span><span class="n">intersections</span><span class="p">)</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">([</span><span class="n">hsi</span><span class="o">.</span><span class="n">intersections</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">hull</span><span class="o">.</span><span class="n">vertices</span><span class="p">],</span> <span class="n">hull</span><span class="o">.</span><span class="n">simplices</span><span class="p">)</span>
+        <span class="n">mesh</span><span class="o">.</span><span class="n">unify_cycles</span><span class="p">()</span>
+        <span class="n">to_merge</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">(),</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">na</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">nb</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_normal</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">na</span><span class="p">,</span> <span class="n">nb</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">cross_vectors</span><span class="p">(</span><span class="n">na</span><span class="p">,</span> <span class="n">nb</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>
+                    <span class="n">to_merge</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">faces</span> <span class="ow">in</span> <span class="n">to_merge</span><span class="p">:</span>
+            <span class="n">mesh_merge_faces</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+        <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Polyhedron.from_planes"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.from_planes.html#compas.geometry.Polyhedron.from_planes">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_planes</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">planes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a polyhedron from intersecting planes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        planes : list of :class:`compas.geometry.Plane` or list of (point, normal)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Polyhedron`</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Plane</span>
+<span class="sd">        &gt;&gt;&gt; left = Plane([-1, 0, 0], [-1, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; right = Plane([+1, 0, 0], [+1, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; top = Plane([0, 0, +1], [0, 0, +1])</span>
+<span class="sd">        &gt;&gt;&gt; bottom = Plane([0, 0, -1], [0, 0, -1])</span>
+<span class="sd">        &gt;&gt;&gt; front = Plane([0, -1, 0], [0, -1, 0])</span>
+<span class="sd">        &gt;&gt;&gt; back = Plane([0, +1, 0], [0, +1, 0])</span>
+<span class="sd">        &gt;&gt;&gt; p = Polyhedron.from_planes([left, right, top, bottom, front, back])</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Plane</span>
+        <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+        <span class="n">planes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span> <span class="k">for</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span> <span class="ow">in</span> <span class="n">planes</span><span class="p">]</span>
+        <span class="n">interior</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">plane</span><span class="o">.</span><span class="n">point</span> <span class="k">for</span> <span class="n">plane</span> <span class="ow">in</span> <span class="n">planes</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_halfspaces</span><span class="p">([</span><span class="n">plane</span><span class="o">.</span><span class="n">abcd</span> <span class="k">for</span> <span class="n">plane</span> <span class="ow">in</span> <span class="n">planes</span><span class="p">],</span> <span class="n">interior</span><span class="p">)</span></div>
+
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># methods</span>
     <span class="c1"># ==========================================================================</span>
 
-<div class="viewcode-block" id="Polyhedron.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.to_vertices_and_faces.html#compas.geometry.Polyhedron.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Polyhedron.to_vertices_and_faces"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.to_vertices_and_faces.html#compas.geometry.Polyhedron.to_vertices_and_faces">[docs]</a>    <span class="k">def</span> <span class="nf">to_vertices_and_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a list of vertices and faces.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        (vertices, faces)</span>
+<span class="sd">            A list of vertex locations and a list of faces,</span>
+<span class="sd">            with each face defined as a list of indices into the list of vertices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span></div>
 
 <div class="viewcode-block" id="Polyhedron.transform"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.transform.html#compas.geometry.Polyhedron.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transformation</span><span class="p">):</span>

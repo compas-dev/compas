@@ -86,6 +86,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.primitives</span> <span class="kn">import</span> <span class="n">Primitive</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.primitives</span> <span class="kn">import</span> <span class="n">Vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry.primitives</span> <span class="kn">import</span> <span class="n">Point</span>
@@ -169,6 +170,13 @@
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span>
         <span class="k">return</span> <span class="o">-</span> <span class="n">a</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">y</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">z</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">abcd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;list: The coefficients of the plane equation.&quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span>
+        <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span>
 
     <span class="c1"># ==========================================================================</span>
     <span class="c1"># customization</span>
@@ -291,6 +299,24 @@
 <span class="sd">        Vector(0.000, 0.000, 1.000)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">normal</span> <span class="o">=</span> <span class="n">Vector</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Plane.from_abcd"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Plane.from_abcd.html#compas.geometry.Plane.from_abcd">[docs]</a>    <span class="k">def</span> <span class="nf">from_abcd</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">abcd</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a plane from the plane equation coefficients.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        abcd : list of float</span>
+<span class="sd">            The equation coefficients.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`compas.geometry.Plane`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">abcd</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">normal</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">*</span> <span class="n">d</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">b</span> <span class="o">*</span> <span class="n">d</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span> <span class="o">*</span> <span class="n">d</span> <span class="o">*</span> <span class="n">x</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Plane.worldXY"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Plane.worldXY.html#compas.geometry.Plane.worldXY">[docs]</a>    <span class="nd">@classmethod</span>
