@@ -537,19 +537,25 @@ class HalfEdge(Datastructure):
                 del self.facedata[fkey]
         for nbr in nbrs:
             del self.halfedge[nbr][key]
-            if (nbr, key) in self.edgedata:
-                del self.edgedata[nbr, key]
-            if (key, nbr) in self.edgedata:
-                del self.edgedata[key, nbr]
+            edge = "-".join(map(str, sorted([nbr, key])))
+            if edge in self.edgedata:
+                del self.edgedata[edge]
+            # if (nbr, key) in self.edgedata:
+            #     del self.edgedata[nbr, key]
+            # if (key, nbr) in self.edgedata:
+            #     del self.edgedata[key, nbr]
         for nbr in nbrs:
             for n in self.vertex_neighbors(nbr):
                 if self.halfedge[nbr][n] is None and self.halfedge[n][nbr] is None:
                     del self.halfedge[nbr][n]
                     del self.halfedge[n][nbr]
-                    if (nbr, n) in self.edgedata:
-                        del self.edgedata[nbr, n]
-                    if (n, nbr) in self.edgedata:
-                        del self.edgedata[n, nbr]
+                    edge = "-".join(map(str, sorted([nbr, n])))
+                    if edge in self.edgedata:
+                        del self.edgedata[edge]
+                    # if (nbr, n) in self.edgedata:
+                    #     del self.edgedata[nbr, n]
+                    # if (n, nbr) in self.edgedata:
+                    #     del self.edgedata[n, nbr]
         del self.halfedge[key]
         del self.vertex[key]
 
@@ -576,10 +582,9 @@ class HalfEdge(Datastructure):
             if self.halfedge[v][u] is None:
                 del self.halfedge[u][v]
                 del self.halfedge[v][u]
-                if (u, v) in self.edgedata:
-                    del self.edgedata[u, v]
-                if (v, u) in self.edgedata:
-                    del self.edgedata[v, u]
+                edge = "-".join(map(str, sorted([u, v])))
+                if edge in self.edgedata:
+                    del self.edgedata[edge]
         del self.face[fkey]
         if fkey in self.facedata:
             del self.facedata[fkey]
