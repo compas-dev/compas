@@ -396,7 +396,8 @@ def astar_shortest_path(network, root, goal):
     while not best_candidate_heap.empty():
         _, current = best_candidate_heap.get()
         if current == goal:
-            return reconstruct_path(came_from, current)
+            break
+
         visited_set.add(current)
         current_coords = network.vertex_coordinates(current)
         for neighbor in network.vertex_neighbors(current):
@@ -417,6 +418,8 @@ def astar_shortest_path(network, root, goal):
             new_fscore = g_score[neighbor] + distance_point_point(neighbor_coords, goal_coords)
             f_score[neighbor] = new_fscore
             best_candidate_heap.put((new_fscore, neighbor))
+
+    return reconstruct_path(came_from, goal)
 
 
 def dijkstra_distances(adjacency, weight, target):
