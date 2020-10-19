@@ -52,8 +52,9 @@
         <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
       </ul>
       <!-- primary -->
-      <!-- social -->
       <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        
+        <!-- social -->
         <li class="nav-item">
           <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
             <span class="fab fa-github fa-1x"></span>
@@ -69,8 +70,8 @@
             <span class="fab fa-python fa-1x"></span>
           </a>
         </li>
+        <!-- social -->
       </ul>
-      <!-- social -->
     </nav>
   </header>
   <!-- header -->
@@ -511,6 +512,10 @@
 
   hljs.initHighlighting();
   anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
   });
   </script>
 
