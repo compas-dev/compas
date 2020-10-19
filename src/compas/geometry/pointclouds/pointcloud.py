@@ -95,7 +95,7 @@ class Pointcloud(Primitive):
         return cls(list(map(list, zip(x, y, z))))
 
     @classmethod
-    def from_bbox(cls, box, n):
+    def from_box(cls, box, n):
         """Construct a point cloud within a given box.
 
         Parameters
@@ -125,6 +125,10 @@ class Pointcloud(Primitive):
         y = [uniform(ymin, ymax) for i in range(n)]
         z = [uniform(zmin, zmax) for i in range(n)]
         return cls(list(map(list, zip(x, y, z))))
+
+    # @classmethod
+    # def from_shape(cls, shape, n):
+    #     pass
 
     def __repr__(self):
         return 'Pointcloud({})'.format(self.points)
