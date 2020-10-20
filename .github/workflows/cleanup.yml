@@ -23,7 +23,7 @@ jobs:
           PULL_FOLDER: pull_${{ github.event.pull_request.number }}
         run: |
           echo the folder $PULL_FOLDER will be deleted
-          rm -r $PULL_FOLDER
+          if [ -d "$PULL_FOLDER" ]; then rm -Rf $PULL_FOLDER; fi
 
       # force push the deletion to gp-pages
       - name: Deploy docs
