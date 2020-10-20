@@ -1,0 +1,37 @@
+name: cleanup
+
+# triggered whenever a PR submitted to master is merged or closed
+on:
+  pull_request:
+    types: [closed]   
+    branches:
+      - master
+
+jobs:
+  build:
+    name: cleanup
+    runs-on: ubuntu-latest
+    steps:
+      # checkout at gh-pages branch
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+
+      # delete the corresponding pull request doc folder
+      - name: Delete folder
+        env:
+          PULL_FOLDER: pull_${{ github.event.pull_request.number }}
+        run: |
+          echo the folder $PULL_FOLDER will be deleted
+          rm -r $PULL_FOLDER
+
+      # force push the deletion to gp-pages
+      - name: Deploy docs
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: ./
+          keep_history: false  
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
