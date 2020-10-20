@@ -65,6 +65,8 @@ def meshgrid(x, y, indexing='xy'):
     ----------
     .. [1] ``numpy.meshgrid`` Available at https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html
     """
+    x = list(x)
+    y = list(y)
     if indexing == 'xy':
         X = [[x[j] for j in range(len(x))] for i in range(len(y))]
         Y = [[y[i] for j in range(len(x))] for i in range(len(y))]
