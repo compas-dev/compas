@@ -10,6 +10,7 @@ from compas.datastructures.network.complementarity import network_complement
 from compas.datastructures.network.transformations import network_transform
 from compas.datastructures.network.transformations import network_transformed
 from compas.datastructures.network.traversal import network_shortest_path
+from compas.datastructures.network.smoothing import network_smooth_centroid
 
 
 __all__ = ['Network']
@@ -21,6 +22,7 @@ class Network(BaseNetwork):
     is_connected = network_is_connected
     shortest_path = network_shortest_path
     split_edge = network_split_edge
+    smooth = network_smooth_centroid
     transform = network_transform
     transformed = network_transformed
 
