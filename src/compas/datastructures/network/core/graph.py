@@ -467,9 +467,12 @@ class Graph(Datastructure):
         >>>
 
         """
-        del self.edge[key]
-        del self.adjacency[key]
-        del self.node[key]
+        if key in self.edge:
+            del self.edge[key]
+        if key in self.adjacency:
+            del self.adjacency[key]
+        if key in self.node:
+            del self.node[key]
         for u in list(self.edge):
             for v in list(self.edge[u]):
                 if v == key:
@@ -525,8 +528,8 @@ class Graph(Datastructure):
         -------
         str
         """
-        tpl = "\n".join(["Graph summary", "============", "- nodes: {}", "- edges: {}"])
-        return tpl.format(self.number_of_nodes(), self.number_of_edges())
+        tpl = "\n".join(["{} summary", "=" * (len(self.name) + len(" summary")), "- nodes: {}", "- edges: {}"])
+        return tpl.format(self.name, self.number_of_nodes(), self.number_of_edges())
 
     def number_of_nodes(self):
         """Compute the number of nodes of the network.
@@ -567,9 +570,11 @@ class Graph(Datastructure):
         2-tuple
             The next node as a (key, attr) tuple, if ``data`` is ``True``.
         """
-        if data:
-            return iter(self.node.items())
-        return iter(self.node)
+        for key in self.node:
+            if not data:
+                yield key
+            else:
+                yield key, self.node_attributes(key)
 
     def nodes_where(self, conditions, data=False):
         """Get nodes for which a certain condition or set of conditions is true.
