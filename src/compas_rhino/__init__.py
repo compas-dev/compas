@@ -29,7 +29,7 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '0.16.8'
+__version__ = '0.16.9'
 
 
 PURGE_ON_DELETE = True
