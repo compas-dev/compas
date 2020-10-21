@@ -291,58 +291,61 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.shortest_path.html#compas.datastructures.Network.shortest_path" title="compas.datastructures.Network.shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shortest_path</span></code></a>(start, end)</p></td>
 <td><p>Find the shortest path between two nodes of the network.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.split_edge.html#compas.datastructures.Network.split_edge" title="compas.datastructures.Network.split_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code></a>(u, v[, t])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.smooth.html#compas.datastructures.Network.smooth" title="compas.datastructures.Network.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a>([fixed, kmax, damping, callback, …])</p></td>
+<td><p>Smooth a network by moving every free node to the centroid of its neighbors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.split_edge.html#compas.datastructures.Network.split_edge" title="compas.datastructures.Network.split_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code></a>(u, v[, t])</p></td>
 <td><p>Split and edge by inserting a node along its length.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.summary.html#compas.datastructures.Network.summary" title="compas.datastructures.Network.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.summary.html#compas.datastructures.Network.summary" title="compas.datastructures.Network.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>()</p></td>
 <td><p>Print a summary of the graph.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_data.html#compas.datastructures.Network.to_data" title="compas.datastructures.Network.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_data.html#compas.datastructures.Network.to_data" title="compas.datastructures.Network.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Returns a dictionary of structured data representing the data structure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_json.html#compas.datastructures.Network.to_json" title="compas.datastructures.Network.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_json.html#compas.datastructures.Network.to_json" title="compas.datastructures.Network.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialise the structured data representing the datastructure to json.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_lines.html#compas.datastructures.Network.to_lines" title="compas.datastructures.Network.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_lines.html#compas.datastructures.Network.to_lines" title="compas.datastructures.Network.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a>()</p></td>
 <td><p>Return the lines of the network as pairs of start and end point coordinates.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_networkx.html#compas.datastructures.Network.to_networkx" title="compas.datastructures.Network.to_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_networkx</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_networkx.html#compas.datastructures.Network.to_networkx" title="compas.datastructures.Network.to_networkx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_networkx</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_nodes_and_edges.html#compas.datastructures.Network.to_nodes_and_edges" title="compas.datastructures.Network.to_nodes_and_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nodes_and_edges</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_nodes_and_edges.html#compas.datastructures.Network.to_nodes_and_edges" title="compas.datastructures.Network.to_nodes_and_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_nodes_and_edges</span></code></a>()</p></td>
 <td><p>Return the nodes and edges of a network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_obj.html#compas.datastructures.Network.to_obj" title="compas.datastructures.Network.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_obj.html#compas.datastructures.Network.to_obj" title="compas.datastructures.Network.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a>()</p></td>
 <td><p>Write the network to an OBJ file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.to_points.html#compas.datastructures.Network.to_points" title="compas.datastructures.Network.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.to_points.html#compas.datastructures.Network.to_points" title="compas.datastructures.Network.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a>()</p></td>
 <td><p>Return the coordinates of the network.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.transform.html#compas.datastructures.Network.transform" title="compas.datastructures.Network.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.transform.html#compas.datastructures.Network.transform" title="compas.datastructures.Network.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
 <td><p>Transform a network.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.transformed.html#compas.datastructures.Network.transformed" title="compas.datastructures.Network.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.transformed.html#compas.datastructures.Network.transformed" title="compas.datastructures.Network.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
 <td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">network</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.unset_edge_attribute.html#compas.datastructures.Network.unset_edge_attribute" title="compas.datastructures.Network.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a>(key, name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.unset_edge_attribute.html#compas.datastructures.Network.unset_edge_attribute" title="compas.datastructures.Network.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a>(key, name)</p></td>
 <td><p>Unset the attribute of an edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.unset_node_attribute.html#compas.datastructures.Network.unset_node_attribute" title="compas.datastructures.Network.unset_node_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_node_attribute</span></code></a>(key, name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.unset_node_attribute.html#compas.datastructures.Network.unset_node_attribute" title="compas.datastructures.Network.unset_node_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_node_attribute</span></code></a>(key, name)</p></td>
 <td><p>Unset the attribute of a node.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.update_default_edge_attributes.html#compas.datastructures.Network.update_default_edge_attributes" title="compas.datastructures.Network.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a>([attr_dict])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.update_default_edge_attributes.html#compas.datastructures.Network.update_default_edge_attributes" title="compas.datastructures.Network.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a>([attr_dict])</p></td>
 <td><p>Update the default edge attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.update_default_node_attributes.html#compas.datastructures.Network.update_default_node_attributes" title="compas.datastructures.Network.update_default_node_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_node_attributes</span></code></a>([attr_dict])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.update_default_node_attributes.html#compas.datastructures.Network.update_default_node_attributes" title="compas.datastructures.Network.update_default_node_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_node_attributes</span></code></a>([attr_dict])</p></td>
 <td><p>Update the default node attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.uv_index.html#compas.datastructures.Network.uv_index" title="compas.datastructures.Network.uv_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uv_index</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.uv_index.html#compas.datastructures.Network.uv_index" title="compas.datastructures.Network.uv_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uv_index</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps edge keys (i.e.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.validate_data.html#compas.datastructures.Network.validate_data" title="compas.datastructures.Network.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.validate_data.html#compas.datastructures.Network.validate_data" title="compas.datastructures.Network.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Network.validate_json.html#compas.datastructures.Network.validate_json" title="compas.datastructures.Network.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Network.validate_json.html#compas.datastructures.Network.validate_json" title="compas.datastructures.Network.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
@@ -511,7 +514,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.16.8',
+    VERSION           : 'release = &#39;0.16.9&#39;',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

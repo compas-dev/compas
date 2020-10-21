@@ -95,6 +95,7 @@
 <span class="kn">from</span> <span class="nn">compas.datastructures.network.transformations</span> <span class="kn">import</span> <span class="n">network_transform</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.network.transformations</span> <span class="kn">import</span> <span class="n">network_transformed</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.network.traversal</span> <span class="kn">import</span> <span class="n">network_shortest_path</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.network.smoothing</span> <span class="kn">import</span> <span class="n">network_smooth_centroid</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Network&#39;</span><span class="p">]</span>
@@ -106,6 +107,7 @@
     <span class="n">is_connected</span> <span class="o">=</span> <span class="n">network_is_connected</span>
     <span class="n">shortest_path</span> <span class="o">=</span> <span class="n">network_shortest_path</span>
     <span class="n">split_edge</span> <span class="o">=</span> <span class="n">network_split_edge</span>
+    <span class="n">smooth</span> <span class="o">=</span> <span class="n">network_smooth_centroid</span>
     <span class="n">transform</span> <span class="o">=</span> <span class="n">network_transform</span>
     <span class="n">transformed</span> <span class="o">=</span> <span class="n">network_transformed</span></div>
 
@@ -258,7 +260,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.16.8',
+    VERSION           : 'release = &#39;0.16.9&#39;',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
