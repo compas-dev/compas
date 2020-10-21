@@ -1564,8 +1564,8 @@ class HalfEdge(Datastructure):
         -------
         str
         """
-        tpl = "\n".join(["Mesh summary", "============", "- vertices: {}", "- edges: {}", "- faces: {}"])
-        return tpl.format(self.number_of_vertices(), self.number_of_edges(), self.number_of_faces())
+        tpl = "\n".join(["{} summary", "=" * (len(self.name) + len(" summary")), "- vertices: {}", "- edges: {}", "- faces: {}"])
+        return tpl.format(self.name, self.number_of_vertices(), self.number_of_edges(), self.number_of_faces())
 
     def number_of_vertices(self):
         """Count the number of vertices in the mesh."""
