@@ -42,6 +42,8 @@ def mesh_weld(mesh, precision=None, cls=None):
     faces = [[gkey_index[geo(key_xyz[key], precision)] for key in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
     faces[:] = [[u for u, v in pairwise(face + face[:1]) if u != v] for face in faces]
 
+    faces = [f for f in faces if len(f)>2] # make sure no face has less than 3 vertices
+
     return cls.from_vertices_and_faces(vertices, faces)
 
 
