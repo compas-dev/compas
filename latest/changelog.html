@@ -110,10 +110,30 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <ul class="simple">
 <li><p>Added binary STL writer.</p></li>
 <li><p>Added constructor <code class="docutils literal notranslate"><span class="pre">from_euler_angles</span></code> to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Transformation</span></code>.</p></li>
+<li><p>Added method for adding objects from a list to <code class="docutils literal notranslate"><span class="pre">compas_plotters.GeometryPlotter</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.BoxArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.CapsuleArtist</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polyhedron.from_halfspaces</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polyhedron.from_planes</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.geometry.is_point_behind_plane</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.geometry.is_point_in_polyhedron</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">centroid</span></code> and <code class="docutils literal notranslate"><span class="pre">bounding_box</span></code> properties to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Pointcloud</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">edges</span></code> property to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Box</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">edges</span></code> property to <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polyhedron</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.datastructures.network_smooth_centroid</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="id3">
 <h3>Changed</h3>
+<ul class="simple">
+<li><p>Fixed bug in handling of keys in edge attribute functions of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polygon.lines</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.Polyline.lines</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas.geometry.Shape.to_vertices_and_faces</span></code> to <code class="docutils literal notranslate"><span class="pre">abstractmethod</span></code>.</p></li>
+<li><p>Fixed bug in magic methods of <code class="docutils literal notranslate"><span class="pre">compas.geometry.Box</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas.geometry.Box.contains</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">delete_vertex</span></code> and <code class="docutils literal notranslate"><span class="pre">delete_face</span></code> in <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">delete_node</span></code> of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">summary</span></code> method of <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Graph</span></code> and <code class="docutils literal notranslate"><span class="pre">compas.datastructures.Halfedge</span></code>.</p></li>
+</ul>
 </div>
 <div class="section" id="id4">
 <h3>Removed</h3>
