@@ -1393,7 +1393,7 @@ class BaseMesh(HalfEdge):
         vertexgroups = self.vertices_on_boundaries()
         edgegroups = []
         for vertices in vertexgroups:
-            edgegroups.append(list(pairwise(vertices)))
+            edgegroups.append(list(pairwise(vertices + vertices[:1])))
         return edgegroups
 
 

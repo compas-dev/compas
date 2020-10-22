@@ -84,7 +84,10 @@ def mesh_thicken(mesh, thickness=1.0, cls=None):
 
     # close boundaries
     n = thickened_mesh.number_of_vertices() / 2
-    for u, v in list(thickened_mesh.edges_on_boundary()):
+
+    edges_on_boundary = [edge for boundary in list(thickened_mesh.edges_on_boundaries()) for edge in boundary]
+
+    for u, v in edges_on_boundary:
         if u < n and v < n:
             thickened_mesh.add_face([u, v, v + n, u + n])
 

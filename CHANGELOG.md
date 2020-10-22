@@ -354,6 +354,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.datastructures.Mesh.face_attributes`.
 * Fixed bug in `compas.datastructures.Mesh.edges`.
 * Fixed bug in `compas.datastructures.Mesh.faces`.
+* Fixed bug in `compas.datastructures.Mesh.offset`.
 
 ### Removed
 
