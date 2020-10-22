@@ -20,8 +20,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added binary STL writer.
 * Added constructor `from_euler_angles` to `compas.geometry.Transformation`.
+* Added method for adding objects from a list to `compas_plotters.GeometryPlotter`.
+* Added `compas_rhino.artists.BoxArtist`.
+* Added `compas_rhino.artists.CapsuleArtist`.
+* Added `compas.geometry.Polyhedron.from_halfspaces` and `compas.geometry.Polyhedron.from_planes`.
+* Added `compas.geometry.is_point_behind_plane` and `compas.geometry.is_point_in_polyhedron`.
+* Added `centroid` and `bounding_box` properties to `compas.geometry.Pointcloud`.
+* Added `edges` property to `compas.geometry.Box`.
+* Added `edges` property to `compas.geometry.Polyhedron`.
+* Added `compas.datastructures.network_smooth_centroid`.
 
 ### Changed
+
+* Fixed bug in handling of keys in edge attribute functions of `compas.datastructures.Halfedge`.
+* Fixed bug in `compas.geometry.Polygon.lines`.
+* Fixed bug in `compas.geometry.Polyline.lines`.
+* Changed `compas.geometry.Shape.to_vertices_and_faces` to `abstractmethod`.
+* Fixed bug in magic methods of `compas.geometry.Box`.
+* Fixed bug in `compas.geometry.Box.contains`.
+* Fixed bug in `delete_vertex` and `delete_face` in `compas.datastructures.Halfedge`.
+* Fixed bug in `delete_node` of `compas.datastructures.Graph`.
+* Fixed bug in `summary` method of `compas.datastructures.Graph` and `compas.datastructures.Halfedge`.
 
 ### Removed
 
