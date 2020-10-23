@@ -129,27 +129,6 @@ class BoxArtist(ShapeArtist):
         groupname: str
             The name of the group if the collection objects are grouped.
 
-        Examples
-        --------
-        >>> import random
-        >>> from compas.geometry import Pointcloud
-        >>> from compas.geometry import Box
-        >>> from compas.utilities import i_to_rgb
-        >>> from compas_rhino.artists import BoxArtist
-
-        >>> pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-        >>> tpl = Box.from_width_height_depth(0.3, 0.3, 0.3)
-
-        >>> collection = []
-        >>> colors = []
-        >>> for point in pcl.points:
-        ...     box = tpl.copy()
-        ...     box.frame.point = point
-        ...     collection.append(box)
-        ...     colors.append(i_to_rgb(random.random()))
-
-        >>> BoxArtist.draw_collection(collection, colors=colors, layer="Test::BoxArtist", clear=True)
-
         """
         if colors:
             if isinstance(colors[0], (int, float)):
