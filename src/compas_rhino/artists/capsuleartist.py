@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.utilities import pairwise
 import compas_rhino
 from ._shapeartist import ShapeArtist
 
@@ -75,7 +76,15 @@ class CapsuleArtist(ShapeArtist):
             points = [{'pos': point, 'color': self.color} for point in vertices]
             guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         if show_edges:
-            raise NotImplementedError
+            lines = []
+            seen = set()
+            for face in faces:
+                for u, v in pairwise(face + face[:1]):
+                    if (u, v) not in seen:
+                        seen.add((u, v))
+                        seen.add((v, u))
+                        lines.append({'start': vertices[u], 'end': vertices[v], 'color': self.color})
+            guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         if show_faces:
             if join_faces:
                 guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.name, color=self.color, disjoint=True)
