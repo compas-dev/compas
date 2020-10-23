@@ -26,16 +26,18 @@ class BoxArtist(ShapeArtist):
 
     """
 
-    def draw(self, show_vertices=True, show_edges=True, show_faces=True):
+    def draw(self, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the box associated with the artist.
 
         Parameters
         ----------
         show_vertices : bool, optional
-            Default is ``True``.
+            Default is ``False``.
         show_edges : bool, optional
-            Default is ``True``.
+            Default is ``False``.
         show_faces : bool, optional
+            Default is ``True``.
+        join_faces : bool, optional
             Default is ``True``.
 
         Returns
@@ -54,13 +56,22 @@ class BoxArtist(ShapeArtist):
             guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         if show_faces:
             faces = self.shape.faces
-            polygons = [{'points': [vertices[index] for index in face], 'color': self.color, 'name': self.name} for face in faces]
-            guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
+            if join_faces:
+                guid = compas_rhino.draw_mesh(vertices, faces, layer=self.layer, name=self.name, color=self.color, disjoint=True)
+                guids.append(guid)
+            else:
+                polygons = [{'points': [vertices[index] for index in face], 'color': self.color, 'name': self.name} for face in faces]
+                guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
 
     @staticmethod
-    def draw_collection(collection, names=None, colors=None, layer=None, clear=False, add_to_group=False, group_name=None):
+    def draw_collection(collection,
+                        names=None, colors=None,
+                        show_vertices=False, show_edges=False, show_faces=True,
+                        layer=None, clear=False,
+                        add_to_group=False, group_name=None,
+                        join_faces=True):
         """Draw a collection of boxes.
 
         Parameters
@@ -71,6 +82,12 @@ class BoxArtist(ShapeArtist):
             Individual names.
         colors : color or list of color, optional
             A color specification as a single color or a list of individual colors.
+        show_vertices : bool, optional
+            Default is ``False``.
+        show_edges : bool, optional
+            Default is ``False``.
+        show_faces : bool, optional
+            Default is ``True``.
         layer : str, optional
             A layer path.
         clear : bool, optional
@@ -79,6 +96,8 @@ class BoxArtist(ShapeArtist):
             Add the points to a group.
         group_name : str, optional
             Name of the group.
+        join_faces : bool, optional
+            Default is ``True``.
 
         Returns
         -------
@@ -122,21 +141,46 @@ class BoxArtist(ShapeArtist):
                 names = iterable_like(collection, names, names[0])
             names = list(names)
 
-        print(colors[:10])
+        guids = []
 
-        all_polygons = []
-        for i, box in enumerate(collection):
+        for index, box in enumerate(collection):
             vertices = [list(vertex) for vertex in box.vertices]
-            polygons = [{'points': [vertices[index] for index in face]} for face in box.faces]
-            if colors:
-                for polygon in polygons:
-                    polygon['color'] = colors[i]
-            if names:
-                for polygon in polygons:
-                    polygon['name'] = names[i]
-            all_polygons += polygons
 
-        guids = compas_rhino.draw_faces(all_polygons, layer=layer)
+            if show_vertices:
+                points = [{'pos': vertex} for vertex in vertices]
+                if colors:
+                    for point in points:
+                        point['color'] = colors[index]
+                if names:
+                    for point in points:
+                        point['name'] = names[index]
+                guids += compas_rhino.draw_points(points, layer=layer)
+
+            if show_edges:
+                lines = [{'start': vertices[i], 'end': vertices[j]} for i, j in box.edges]
+                if colors:
+                    for line in lines:
+                        line['color'] = colors[index]
+                if names:
+                    for line in lines:
+                        line['name'] = names[index]
+                guids += compas_rhino.draw_lines(lines, layer=layer)
+
+            if show_faces:
+                if join_faces:
+                    name = None if not names else names[index]
+                    color = None if not colors else colors[index]
+                    guid = compas_rhino.draw_mesh(vertices, box.faces, layer=layer, name=name, color=color, disjoint=True)
+                    guids.append(guid)
+                else:
+                    polygons = [{'points': [vertices[i] for i in face]} for face in box.faces]
+                    if colors:
+                        for polygon in polygons:
+                            polygon['color'] = colors[index]
+                    if names:
+                        for polygon in polygons:
+                            polygon['name'] = names[index]
+                    guids += compas_rhino.draw_faces(polygons, layer=layer)
 
         if not add_to_group:
             return guids
