@@ -90,7 +90,7 @@
 <h1>BoxArtist.draw_collection</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.BoxArtist.draw_collection">
-<em class="property">static </em><code class="sig-prename descclassname">BoxArtist.</code><code class="sig-name descname">draw_collection</code><span class="sig-paren">(</span><em class="sig-param">collection</em>, <em class="sig-param">names=None</em>, <em class="sig-param">colors=None</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">clear=False</em>, <em class="sig-param">add_to_group=False</em>, <em class="sig-param">group_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/boxartist.html#BoxArtist.draw_collection"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">static </em><code class="sig-prename descclassname">BoxArtist.</code><code class="sig-name descname">draw_collection</code><span class="sig-paren">(</span><em class="sig-param">collection</em>, <em class="sig-param">names=None</em>, <em class="sig-param">colors=None</em>, <em class="sig-param">show_vertices=False</em>, <em class="sig-param">show_edges=False</em>, <em class="sig-param">show_faces=True</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">clear=False</em>, <em class="sig-param">add_to_group=False</em>, <em class="sig-param">group_name=None</em>, <em class="sig-param">join_faces=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/boxartist.html#BoxArtist.draw_collection"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a collection of boxes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -98,10 +98,14 @@
 <li><p><strong>collection</strong> (list of <a class="reference internal" href="compas.geometry.Box.html#compas.geometry.Box" title="compas.geometry.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Box</span></code></a>) – A collection of boxes.</p></li>
 <li><p><strong>names</strong> (<em>list of str, optional</em>) – Individual names.</p></li>
 <li><p><strong>colors</strong> (<em>color or list of color, optional</em>) – A color specification as a single color or a list of individual colors.</p></li>
+<li><p><strong>show_vertices</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>show_edges</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>show_faces</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><strong>layer</strong> (<em>str, optional</em>) – A layer path.</p></li>
 <li><p><strong>clear</strong> (<em>bool, optional</em>) – Clear the layer before drawing.</p></li>
 <li><p><strong>add_to_group</strong> (<em>bool, optional</em>) – Add the points to a group.</p></li>
 <li><p><strong>group_name</strong> (<em>str, optional</em>) – Name of the group.</p></li>
+<li><p><strong>join_faces</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
