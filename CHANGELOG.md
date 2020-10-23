@@ -13,12 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added option to show/hide vertices and faces in `compas_rhino.artists.CapsuleArtist.draw`.
 * Added option to show/hide vertices and faces in `compas_rhino.artists.ConeArtist.draw`.
 * Added option to show/hide vertices and faces in `compas_rhino.artists.CylinderArtist.draw`.
+* Added option to show/hide vertices and faces in `compas_rhino.artists.PolyhedronArtist.draw`.
 
 ### Changed
 
 * Changed implementation of `compas_rhino.artists.BoxArtist.draw`.
 * Fixed bug in `compas.geometry.Capsule`.
 * Fixed bug in `compas.geometry.Cone`.
+* Changed `compas_rhino.draw_mesh` to support Ngons if available.
+* Fixed bug in polyhedron data.
 
 ### Removed
 

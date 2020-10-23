@@ -41,22 +41,11 @@ class BoxArtist(ShapeArtist):
 
         compas_rhino.clear_layer("Test::BoxArtist")
 
-        for point in pcl.points[:len(pcl) // 2]:
+        for point in pcl.points:
             box = tpl.copy()
             box.frame.point = point
             artist = BoxArtist(box, color=i_to_rgb(random.random()), layer="Test::BoxArtist")
-            artist.draw(show_edges=True, show_faces=False)
-
-        collection = []
-        colors = []
-        for point in pcl.points[len(pcl) // 2:]:
-            box = tpl.copy()
-            box.frame.point = point
-            collection.append(box)
-            colors.append(i_to_rgb(random.random()))
-
-        BoxArtist.draw_collection(collection, colors=colors, layer="Test::BoxArtist", clear=False)
-
+            artist.draw()
     """
 
     def draw(self, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):

@@ -7,6 +7,8 @@ from functools import wraps
 import compas_rhino
 
 from compas.geometry import centroid_polygon
+from compas.geometry import centroid_points
+from compas.utilities import pairwise
 
 from compas_rhino.utilities import create_layers_from_path
 from compas_rhino.utilities import clear_layer
@@ -33,6 +35,12 @@ from Rhino.Geometry import Curve
 from Rhino.Geometry import Sphere
 from Rhino.Geometry import TextDot
 from Rhino.Geometry import Mesh as RhinoMesh
+
+try:
+    from Rhino.Geometry import MeshNgon
+except ImportError:
+    MeshNgon = False
+
 from Rhino.DocObjects.ObjectColorSource import ColorFromObject
 from Rhino.DocObjects.ObjectColorSource import ColorFromLayer
 from Rhino.DocObjects.ObjectDecoration import EndArrowhead
@@ -732,29 +740,55 @@ def draw_mesh(vertices, faces, name=None, color=None, disjoint=False, **kwargs):
     """
     mesh = RhinoMesh()
     if disjoint:
-        P = 0
         for face in faces:
             f = len(face)
-            if f == 3:
-                mesh.Vertices.Add(* vertices[face[0]])
-                mesh.Vertices.Add(* vertices[face[1]])
-                mesh.Vertices.Add(* vertices[face[2]])
-                mesh.Faces.AddFace(P + 0, P + 1, P + 2)
-                P += 3
-            elif f == 4:
-                mesh.Vertices.Add(* vertices[face[0]])
-                mesh.Vertices.Add(* vertices[face[1]])
-                mesh.Vertices.Add(* vertices[face[2]])
-                mesh.Vertices.Add(* vertices[face[3]])
-                mesh.Faces.AddFace(P + 0, P + 1, P + 2, P + 3)
-                P += 4
-            else:
+            if f < 3:
                 continue
+            if f == 3:
+                a = mesh.Vertices.Add(* vertices[face[0]])
+                b = mesh.Vertices.Add(* vertices[face[1]])
+                c = mesh.Vertices.Add(* vertices[face[2]])
+                mesh.Faces.AddFace(a, b, c)
+            elif f == 4:
+                a = mesh.Vertices.Add(* vertices[face[0]])
+                b = mesh.Vertices.Add(* vertices[face[1]])
+                c = mesh.Vertices.Add(* vertices[face[2]])
+                d = mesh.Vertices.Add(* vertices[face[3]])
+                mesh.Faces.AddFace(a, b, c, d)
+            else:
+                if MeshNgon:
+                    points = [vertices[vertex] for vertex in face]
+                    centroid = centroid_points(points)
+                    indices = []
+                    for point in points:
+                        indices.append(mesh.Vertices.Add(* point))
+                    c = mesh.Vertices.Add(* centroid)
+                    facets = []
+                    for i, j in pairwise(indices + indices[:1]):
+                        facets.append(mesh.Faces.AddFace(i, j, c))
+                    ngon = MeshNgon.Create(indices, facets)
+                    mesh.Ngons.AddNgon(ngon)
     else:
         for x, y, z in vertices:
             mesh.Vertices.Add(x, y, z)
         for face in faces:
-            mesh.Faces.AddFace(*face)
+            f = len(face)
+            if f < 3:
+                continue
+            if f == 3:
+                mesh.Faces.AddFace(*face)
+            elif f == 4:
+                mesh.Faces.AddFace(*face)
+            else:
+                if MeshNgon:
+                    centroid = centroid_points([vertices[index] for index in face])
+                    c = mesh.Vertices.Add(* centroid)
+                    facets = []
+                    for i, j in pairwise(face + face[:1]):
+                        facets.append(mesh.Faces.AddFace(i, j, c))
+                    ngon = MeshNgon.Create(face, facets)
+                    mesh.Ngons.AddNgon(ngon)
+
     mesh.Normals.ComputeNormals()
     mesh.Compact()
     guid = add_mesh(mesh)
