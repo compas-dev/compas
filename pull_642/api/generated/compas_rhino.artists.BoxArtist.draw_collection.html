@@ -90,7 +90,7 @@
 <h1>BoxArtist.draw_collection</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.BoxArtist.draw_collection">
-<em class="property">static </em><code class="sig-prename descclassname">BoxArtist.</code><code class="sig-name descname">draw_collection</code><span class="sig-paren">(</span><em class="sig-param">collection</em>, <em class="sig-param">names=None</em>, <em class="sig-param">colors=None</em>, <em class="sig-param">show_vertices=False</em>, <em class="sig-param">show_edges=False</em>, <em class="sig-param">show_faces=True</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">clear=False</em>, <em class="sig-param">add_to_group=False</em>, <em class="sig-param">group_name=None</em>, <em class="sig-param">join_faces=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/boxartist.html#BoxArtist.draw_collection"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">static </em><code class="sig-prename descclassname">BoxArtist.</code><code class="sig-name descname">draw_collection</code><span class="sig-paren">(</span><em class="sig-param">collection</em>, <em class="sig-param">names=None</em>, <em class="sig-param">colors=None</em>, <em class="sig-param">layer=None</em>, <em class="sig-param">clear=False</em>, <em class="sig-param">add_to_group=False</em>, <em class="sig-param">group_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/boxartist.html#BoxArtist.draw_collection"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw a collection of boxes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -98,14 +98,10 @@
 <li><p><strong>collection</strong> (list of <a class="reference internal" href="compas.geometry.Box.html#compas.geometry.Box" title="compas.geometry.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Box</span></code></a>) – A collection of boxes.</p></li>
 <li><p><strong>names</strong> (<em>list of str, optional</em>) – Individual names.</p></li>
 <li><p><strong>colors</strong> (<em>color or list of color, optional</em>) – A color specification as a single color or a list of individual colors.</p></li>
-<li><p><strong>show_vertices</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>show_edges</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>show_faces</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 <li><p><strong>layer</strong> (<em>str, optional</em>) – A layer path.</p></li>
 <li><p><strong>clear</strong> (<em>bool, optional</em>) – Clear the layer before drawing.</p></li>
 <li><p><strong>add_to_group</strong> (<em>bool, optional</em>) – Add the points to a group.</p></li>
 <li><p><strong>group_name</strong> (<em>str, optional</em>) – Name of the group.</p></li>
-<li><p><strong>join_faces</strong> (<em>bool, optional</em>) – Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -116,30 +112,6 @@
 </p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Pointcloud</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">i_to_rgb</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">BoxArtist</span>
-</code></pre></div>
-</div>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pcl</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tpl</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="n">from_width_height_depth</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">box</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="gp">... </span>    <span class="n">box</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
-<span class="gp">... </span>    <span class="n">collection</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_to_rgb</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()))</span>
-</code></pre></div>
-</div>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">BoxArtist</span><span class="o">.</span><span class="n">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;Test::BoxArtist&quot;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </div>
