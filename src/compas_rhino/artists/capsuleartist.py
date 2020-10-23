@@ -37,7 +37,7 @@ class CapsuleArtist(ShapeArtist):
 
         compas_rhino.clear_layer("Test::CapsuleArtist")
 
-        for point in pcl.points[:len(pcl) // 2]:
+        for point in pcl.points:
             capsule = tpl.transformed(Translation.from_vector(point))
             artist = CapsuleArtist(capsule, color=i_to_rgb(random.random()), layer="Test::CapsuleArtist")
             artist.draw()
