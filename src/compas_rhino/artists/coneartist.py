@@ -31,15 +31,17 @@ class ConeArtist(ShapeArtist):
         import compas_rhino
         from compas_rhino.artists import ConeArtist
 
-        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
-        tpl = Cone([[[0, 0, 0], [0, 0, 1]], 0.3], 0.8)
+        pcl = Pointcloud.from_bounds(10, 10, 10, 200)
+        tpl = Cone([[[0, 0, 0], [0, 0, 1]], 0.2], 0.8)
+
+        vertices, faces = tpl.to_vertices_and_faces(4)
 
         compas_rhino.clear_layer("Test::ConeArtist")
 
         for point in pcl.points[:len(pcl) // 2]:
             cone = tpl.transformed(Translation.from_vector(point))
             artist = ConeArtist(cone, color=i_to_rgb(random.random()), layer="Test::ConeArtist")
-            artist.draw()
+            artist.draw(u=16)
 
     """
 
