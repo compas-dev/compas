@@ -12,6 +12,8 @@ jobs:
   build:
     name: build and deploy docs
     runs-on: ubuntu-latest
+    env:
+      GH_PAT: ${{secrets.GH_PAT}}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
@@ -44,7 +46,7 @@ jobs:
           echo "Docs will be deployed to https://compas.dev/compas/$BRANCH_OR_TAG"
           mkdir -p deploy/$BRANCH_OR_TAG && mv -T dist/docs deploy/$BRANCH_OR_TAG/
       - name: Deploy docs
-        if: success()
+        if: success() && env.GH_PAT != ''
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: gh-pages
