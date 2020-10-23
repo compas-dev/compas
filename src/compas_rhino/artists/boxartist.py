@@ -59,7 +59,7 @@ class BoxArtist(ShapeArtist):
 
     """
 
-    def draw(self, show_vertices=False, show_edges=False, show_faces=True, join_edges=True, join_faces=True):
+    def draw(self, show_vertices=False, show_edges=False, show_faces=True, join_faces=True):
         """Draw the box associated with the artist.
 
         Parameters
