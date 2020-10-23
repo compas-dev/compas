@@ -114,21 +114,11 @@
 
 <span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="s2">&quot;Test::BoxArtist&quot;</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="o">.</span><span class="n">points</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">pcl</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]:</span>
+<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
     <span class="n">box</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">box</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
     <span class="n">artist</span> <span class="o">=</span> <span class="n">BoxArtist</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">i_to_rgb</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()),</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;Test::BoxArtist&quot;</span><span class="p">)</span>
-    <span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_faces</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="n">collection</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">pcl</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:]:</span>
-    <span class="n">box</span> <span class="o">=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">box</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">point</span> <span class="o">=</span> <span class="n">point</span>
-    <span class="n">collection</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
-    <span class="n">colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i_to_rgb</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()))</span>
-
-<span class="n">BoxArtist</span><span class="o">.</span><span class="n">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;Test::BoxArtist&quot;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>

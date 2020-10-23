@@ -126,22 +126,11 @@
 
 <span class="sd">        compas_rhino.clear_layer(&quot;Test::BoxArtist&quot;)</span>
 
-<span class="sd">        for point in pcl.points[:len(pcl) // 2]:</span>
+<span class="sd">        for point in pcl.points:</span>
 <span class="sd">            box = tpl.copy()</span>
 <span class="sd">            box.frame.point = point</span>
 <span class="sd">            artist = BoxArtist(box, color=i_to_rgb(random.random()), layer=&quot;Test::BoxArtist&quot;)</span>
-<span class="sd">            artist.draw(show_edges=True, show_faces=False)</span>
-
-<span class="sd">        collection = []</span>
-<span class="sd">        colors = []</span>
-<span class="sd">        for point in pcl.points[len(pcl) // 2:]:</span>
-<span class="sd">            box = tpl.copy()</span>
-<span class="sd">            box.frame.point = point</span>
-<span class="sd">            collection.append(box)</span>
-<span class="sd">            colors.append(i_to_rgb(random.random()))</span>
-
-<span class="sd">        BoxArtist.draw_collection(collection, colors=colors, layer=&quot;Test::BoxArtist&quot;, clear=False)</span>
-
+<span class="sd">            artist.draw()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BoxArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.BoxArtist.draw.html#compas_rhino.artists.BoxArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_vertices</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_faces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">join_faces</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
