@@ -96,7 +96,7 @@ class Cone(Shape):
 
     @circle.setter
     def circle(self, circle):
-        self._circle = circle
+        self._circle = Circle(*circle)
 
     @property
     def radius(self):
