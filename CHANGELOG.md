@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `compas_rhino.artists.BoxArtist.draw_collection`.
+* Added option to show/hide vertices and faces in `compas_rhino.artists.CapsuleArtist.draw`.
 
 ### Changed
 
 * Changed parameters of `compas_rhino.artists.BoxArtist.draw`.
+* Fixed bug in `compas.geometry.Capsule`.
 
 ### Removed
 
