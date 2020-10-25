@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="VectorArtist.draw_collection" href="compas_rhino.artists.VectorArtist.draw_collection.html" />
+    <link rel="next" title="VectorArtist.redraw" href="compas_rhino.artists.VectorArtist.redraw.html" />
   
   
   
@@ -90,11 +90,19 @@
 <h1>VectorArtist.draw</h1>
 <dl class="method">
 <dt id="compas_rhino.artists.VectorArtist.draw">
-<code class="sig-prename descclassname">VectorArtist.</code><code class="sig-name descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/vectorartist.html#VectorArtist.draw"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">VectorArtist.</code><code class="sig-name descname">draw</code><span class="sig-paren">(</span><em class="sig-param">point=None</em>, <em class="sig-param">show_point=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/artists/vectorartist.html#VectorArtist.draw"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Draw the vector.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>list</em> – The GUIDs of the created Rhino objects.</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point</strong> ([float, float, float] or <a class="reference internal" href="compas.geometry.Point.html#compas.geometry.Point" title="compas.geometry.Point"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Point</span></code></a>, optional) – Point of application of the vector.
+Default is <code class="docutils literal notranslate"><span class="pre">Point(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code>.</p></li>
+<li><p><strong>show_points</strong> (<em>bool, optional</em>) – Show the point of application of the vector.
+Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list</em> – The GUIDs of the created Rhino objects.</p>
 </dd>
 </dl>
 </dd></dl>

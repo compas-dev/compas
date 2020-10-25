@@ -931,16 +931,16 @@
             <span class="k">continue</span>
         <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">mfaces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
-        <span class="k">elif</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">mfaces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">mfaces</span> <span class="o">=</span> <span class="n">_face_to_max_quad</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">vertexcolors</span><span class="p">:</span>
-                <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">component</span><span class="p">)</span> <span class="o">/</span> <span class="n">v</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">vertexcolors</span><span class="p">)]</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="mi">255</span><span class="p">))</span>
-                <span class="n">g</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">g</span><span class="p">),</span> <span class="mi">255</span><span class="p">))</span>
-                <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="mi">255</span><span class="p">))</span>
-                <span class="n">vertexcolors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+            <span class="n">mfaces</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">v</span><span class="p">))]</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     mfaces = _face_to_max_quad(points, range(v))</span>
+        <span class="c1">#     if vertexcolors:</span>
+        <span class="c1">#         r, g, b = [sum(component) / v for component in zip(*vertexcolors)]</span>
+        <span class="c1">#         r = int(min(max(0, r), 255))</span>
+        <span class="c1">#         g = int(min(max(0, g), 255))</span>
+        <span class="c1">#         b = int(min(max(0, b), 255))</span>
+        <span class="c1">#         vertexcolors.append((r, g, b))</span>
 
         <span class="n">guid</span> <span class="o">=</span> <span class="n">draw_mesh</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">mfaces</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 

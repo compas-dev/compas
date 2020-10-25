@@ -88,7 +88,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists._primitiveartist</span> <span class="kn">import</span> <span class="n">PrimitiveArtist</span>
+<span class="kn">from</span> <span class="nn">._primitiveartist</span> <span class="kn">import</span> <span class="n">PrimitiveArtist</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PolylineArtist&#39;</span><span class="p">]</span>
@@ -106,17 +106,50 @@
 <span class="sd">    -----</span>
 <span class="sd">    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import random</span>
+<span class="sd">        from compas.geometry import Pointcloud</span>
+<span class="sd">        from compas.geometry import Polyline</span>
+<span class="sd">        from compas.geometry import Translation</span>
+<span class="sd">        from compas.utilities import i_to_rgb</span>
+
+<span class="sd">        import compas_rhino</span>
+<span class="sd">        from compas_rhino.artists import PolylineArtist</span>
+
+<span class="sd">        pcl = Pointcloud.from_bounds(10, 10, 10, 100)</span>
+<span class="sd">        tpl = Polyline(Polygon.from_sides_and_radius_xy(7, 0.8).points)</span>
+
+<span class="sd">        compas_rhino.clear_layer(&quot;Test::PolylineArtist&quot;)</span>
+
+<span class="sd">        for point in pcl.points:</span>
+<span class="sd">            polyline = tpl.transformed(Translation.from_vector(point))</span>
+<span class="sd">            artist = PolylineArtist(polygon, color=i_to_rgb(random.random()), layer=&quot;Test::PolylineArtist&quot;)</span>
+<span class="sd">            artist.draw()</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PolylineArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.PolylineArtist.draw.html#compas_rhino.artists.PolylineArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PolylineArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.PolylineArtist.draw.html#compas_rhino.artists.PolylineArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_points</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the polyline.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        show_points : bool, optional</span>
+<span class="sd">            Default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            The GUIDs of the created Rhino objects.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">polylines</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">points</span><span class="p">),</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}]</span>
+        <span class="n">_points</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">show_points</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">point</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">_points</span><span class="p">]</span>
+            <span class="n">guids</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">polylines</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="n">_points</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}]</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_polylines</span><span class="p">(</span><span class="n">polylines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span> <span class="o">=</span> <span class="n">guids</span>
         <span class="k">return</span> <span class="n">guids</span></div></div>

@@ -100,6 +100,25 @@
 </dl>
 <p class="rubric">Notes</p>
 <p>See <a class="reference internal" href="compas_rhino.artists.PrimitiveArtist.html#compas_rhino.artists.PrimitiveArtist" title="compas_rhino.artists.PrimitiveArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.PrimitiveArtist</span></code></a> for all other parameters.</p>
+<p class="rubric">Examples</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Pointcloud</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">i_to_rgb</span>
+
+<span class="kn">import</span> <span class="nn">compas_rhino</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">VectorArtist</span>
+
+<span class="n">pcl</span> <span class="o">=</span> <span class="n">Pointcloud</span><span class="o">.</span><span class="n">from_bounds</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">compas_rhino</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">(</span><span class="s2">&quot;Test::VectorArtist&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">pcl</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
+    <span class="n">vector</span> <span class="o">=</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">artist</span> <span class="o">=</span> <span class="n">VectorArtist</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">i_to_rgb</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()),</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;Test::VectorArtist&quot;</span><span class="p">)</span>
+    <span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">point</span><span class="o">=</span><span class="n">point</span><span class="p">)</span>
+</code></pre></div>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -119,16 +138,13 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.clear_layer.html#compas_rhino.artists.VectorArtist.clear_layer" title="compas_rhino.artists.VectorArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
 <td><p>Clear the layer containing the artist.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.draw.html#compas_rhino.artists.VectorArtist.draw" title="compas_rhino.artists.VectorArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.draw.html#compas_rhino.artists.VectorArtist.draw" title="compas_rhino.artists.VectorArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([point, show_point])</p></td>
 <td><p>Draw the vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.draw_collection.html#compas_rhino.artists.VectorArtist.draw_collection" title="compas_rhino.artists.VectorArtist.draw_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_collection</span></code></a>(collection)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.redraw.html#compas_rhino.artists.VectorArtist.redraw" title="compas_rhino.artists.VectorArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.redraw.html#compas_rhino.artists.VectorArtist.redraw" title="compas_rhino.artists.VectorArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.register.html#compas_rhino.artists.VectorArtist.register" title="compas_rhino.artists.VectorArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_rhino.artists.VectorArtist.register.html#compas_rhino.artists.VectorArtist.register" title="compas_rhino.artists.VectorArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
 <td><p>Register a virtual subclass of an ABC.</p></td>
 </tr>
 </tbody>
