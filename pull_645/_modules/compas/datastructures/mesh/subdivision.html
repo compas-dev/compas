@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - compas.datastructures.mesh.subdivision</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/plugins.html">Plugins</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <h1>Source code for compas.datastructures.mesh.subdivision</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">cos</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">offset_polygon</span>
+
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">iterable_like</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh._mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.core</span> <span class="kn">import</span> <span class="n">mesh_split_edge</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;mesh_subdivide&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mesh_subdivide_tri&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mesh_subdivide_corner&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mesh_subdivide_quad&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mesh_subdivide_catmullclark&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mesh_subdivide_doosabin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;mesh_subdivide_frames&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;trimesh_subdivide_loop&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">mesh_fast_copy</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+    <span class="n">subd</span> <span class="o">=</span> <span class="n">SubdMesh</span><span class="p">()</span>
+    <span class="c1"># subd.attributes = deepcopy(other.attributes)</span>
+    <span class="c1"># subd.default_vertex_attributes = deepcopy(other.default_vertex_attributes)</span>
+    <span class="c1"># subd.default_face_attributes = deepcopy(other.default_face_attributes)</span>
+    <span class="c1"># subd.default_edge_attributes = deepcopy(other.default_edge_attributes)</span>
+    <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span>
+    <span class="n">subd</span><span class="o">.</span><span class="n">face</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">face</span><span class="p">)</span>
+    <span class="c1"># subd.edgedata = deepcopy(other.edgedata)</span>
+    <span class="n">subd</span><span class="o">.</span><span class="n">facedata</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">facedata</span><span class="p">)</span>
+    <span class="n">subd</span><span class="o">.</span><span class="n">halfedge</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">halfedge</span><span class="p">)</span>
+    <span class="n">subd</span><span class="o">.</span><span class="n">_max_vertex</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_max_vertex</span>
+    <span class="n">subd</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_max_face</span>
+    <span class="k">return</span> <span class="n">subd</span>
+
+
+<span class="k">class</span> <span class="nc">SubdMesh</span><span class="p">(</span><span class="n">Mesh</span><span class="p">):</span>
+
+    <span class="n">_add_vertex</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">add_vertex</span>
+    <span class="n">_add_face</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">add_face</span>
+    <span class="n">_insert_vertex</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">insert_vertex</span>
+
+    <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">key</span>
+
+    <span class="k">def</span> <span class="nf">add_face</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">):</span>
+        <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">fkey</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">fkey</span>
+
+    <span class="k">def</span> <span class="nf">insert_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_center</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">])</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">w</span>
+
+<span class="c1"># distinguish between subd of meshes with and without boundary</span>
+<span class="c1"># closed vs. open</span>
+<span class="c1"># pay attention to extraordinary points</span>
+<span class="c1"># and to special rules on boundaries</span>
+<span class="c1"># interpolation vs. approxmation?!</span>
+<span class="c1"># add numerical versions to compas.datastructures.mesh.(algorithms.)numerical</span>
+<span class="c1"># investigate meaning and definition of limit surface</span>
+<span class="c1"># any subd algorithm should return a new subd mesh, leaving the control mesh intact</span>
+
+
+<div class="viewcode-block" id="mesh_subdivide"><a class="viewcode-back" href="../../../../api/generated/compas.datastructures.mesh_subdivide.html#compas.datastructures.mesh_subdivide">[docs]</a><span class="k">def</span> <span class="nf">mesh_subdivide</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">scheme</span><span class="o">=</span><span class="s1">&#39;catmullclark&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subdivide the input mesh.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        A mesh object.</span>
+<span class="sd">    scheme : {&#39;tri&#39;, &#39;corner&#39;, &#39;catmullclark&#39;, &#39;doosabin&#39;}, optional</span>
+<span class="sd">        The scheme according to which the mesh should be subdivided.</span>
+<span class="sd">        Default is ``&#39;catmullclark&#39;``.</span>
+<span class="sd">    options : dict</span>
+<span class="sd">        Optional additional keyword arguments.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mesh</span>
+<span class="sd">        The subdivided mesh.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    NotImplementedError</span>
+<span class="sd">        If the scheme is not supported.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;tri&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh_subdivide_tri</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;quad&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh_subdivide_quad</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;corner&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh_subdivide_corner</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;catmullclark&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh_subdivide_catmullclark</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;doosabin&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mesh_subdivide_doosabin</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="mesh_subdivide_tri"><a class="viewcode-back" href="../../../../api/generated/compas.datastructures.mesh_subdivide_tri.html#compas.datastructures.mesh_subdivide_tri">[docs]</a><span class="k">def</span> <span class="nf">mesh_subdivide_tri</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subdivide a mesh using simple insertion of vertices.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        The mesh object that will be subdivided.</span>
+<span class="sd">    k : int</span>
+<span class="sd">        Optional. The number of levels of subdivision. Default is ``1``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mesh</span>
+<span class="sd">        A new subdivided mesh.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)</span>
+<span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_shape(box)</span>
+<span class="sd">    &gt;&gt;&gt; k = 2</span>
+<span class="sd">    &gt;&gt;&gt; subd = mesh_subdivide_tri(mesh, k=k)</span>
+<span class="sd">    &gt;&gt;&gt; mesh is subd</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; type(mesh) is type(subd)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; k1 = sum(len(mesh.face_vertices(fkey)) for fkey in mesh.faces())</span>
+<span class="sd">    &gt;&gt;&gt; subd.number_of_faces() == (k1 if k == 1 else k1 * 3 ** (k - 1))</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="n">subd</span> <span class="o">=</span> <span class="n">mesh_fast_copy</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">faces</span><span class="p">()):</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">insert_vertex</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mesh_subdivide_quad"><a class="viewcode-back" href="../../../../api/generated/compas.datastructures.mesh_subdivide_quad.html#compas.datastructures.mesh_subdivide_quad">[docs]</a><span class="k">def</span> <span class="nf">mesh_subdivide_quad</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subdivide a mesh such that all faces are quads.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        The mesh object that will be subdivided.</span>
+<span class="sd">    k : int</span>
+<span class="sd">        Optional. The number of levels of subdivision. Default is ``1``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mesh</span>
+<span class="sd">        A new subdivided mesh.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)</span>
+<span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_shape(box)</span>
+<span class="sd">    &gt;&gt;&gt; k = 2</span>
+<span class="sd">    &gt;&gt;&gt; subd = mesh_subdivide_quad(mesh, k=k)</span>
+<span class="sd">    &gt;&gt;&gt; mesh is subd</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; type(mesh) is type(subd)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; subd.number_of_faces() == mesh.number_of_faces() * 4 ** k</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="n">subd</span> <span class="o">=</span> <span class="n">mesh_fast_copy</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+        <span class="n">subd</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">face</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">{</span><span class="n">face</span><span class="p">:</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)[:]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
+        <span class="n">face_centroid</span> <span class="o">=</span> <span class="p">{</span><span class="n">face</span><span class="p">:</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">edges</span><span class="p">()):</span>
+            <span class="n">mesh_split_edge</span><span class="p">(</span><span class="n">subd</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">face</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">faces</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">descendant</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)}</span>
+            <span class="n">ancestor</span> <span class="o">=</span> <span class="p">{</span><span class="n">j</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)}</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">face_centroid</span><span class="p">[</span><span class="n">face</span><span class="p">]</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">ancestor</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">descendant</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span>
+                <span class="n">newface</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
+                <span class="n">subd</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">newface</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">subd</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">face</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">subd</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">face</span><span class="p">]</span>
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">return</span> <span class="n">subd2</span></div>
+
+
+<div class="viewcode-block" id="mesh_subdivide_corner"><a class="viewcode-back" href="../../../../api/generated/compas.datastructures.mesh_subdivide_corner.html#compas.datastructures.mesh_subdivide_corner">[docs]</a><span class="k">def</span> <span class="nf">mesh_subdivide_corner</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subdivide a mesh by cutting corners.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        The mesh object that will be subdivided.</span>
+<span class="sd">    k : int</span>
+<span class="sd">        Optional. The number of levels of subdivision. Default is ``1``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mesh</span>
+<span class="sd">        A new subdivided mesh.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is essentially the same as Loop subdivision, but applied to general</span>
+<span class="sd">    meshes.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">subd</span> <span class="o">=</span> <span class="n">mesh_fast_copy</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+        <span class="c1"># split every edge</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">edges</span><span class="p">()):</span>
+            <span class="n">mesh_split_edge</span><span class="p">(</span><span class="n">subd</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># create 4 new faces for every old face</span>
+        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+            <span class="n">descendant</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">)}</span>
+            <span class="n">ancestor</span> <span class="o">=</span> <span class="p">{</span><span class="n">j</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">)}</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">):</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">ancestor</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">descendant</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
+                <span class="n">center</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">subd</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">subd</span>
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">return</span> <span class="n">subd2</span></div>
+
+
+<div class="viewcode-block" id="mesh_subdivide_catmullclark"><a class="viewcode-back" href="../../../../api/generated/compas.datastructures.mesh_subdivide_catmullclark.html#compas.datastructures.mesh_subdivide_catmullclark">[docs]</a><span class="k">def</span> <span class="nf">mesh_subdivide_catmullclark</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subdivide a mesh using the Catmull-Clark algorithm.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        The mesh object that will be subdivided.</span>
+<span class="sd">    k : int</span>
+<span class="sd">        Optional. The number of levels of subdivision. Default is ``1``.</span>
+<span class="sd">    fixed : list</span>
+<span class="sd">        Optional. A list of fixed vertices. Default is ``None``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mesh</span>
+<span class="sd">        A new subdivided mesh.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Note that *Catmull-Clark* subdivision is like *Quad* subdivision, but with</span>
+<span class="sd">    smoothing after every level of further subdivision. Smoothing is done</span>
+<span class="sd">    according to the scheme prescribed by the Catmull-Clark algorithm.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)</span>
+<span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_shape(box)</span>
+<span class="sd">    &gt;&gt;&gt; k = 2</span>
+<span class="sd">    &gt;&gt;&gt; subd = mesh_subdivide_catmullclark(mesh, k=k)</span>
+<span class="sd">    &gt;&gt;&gt; mesh is subd</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; type(mesh) is type(subd)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; subd.number_of_faces() == mesh.number_of_faces() * 4 ** k</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fixed</span><span class="p">:</span>
+        <span class="n">fixed</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">subd</span> <span class="o">=</span> <span class="n">mesh_fast_copy</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+        <span class="c1"># keep track of original connectivity and vertex locations</span>
+
+        <span class="n">bkeys</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">())</span>
+        <span class="n">bkey_edgepoints</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bkeys</span><span class="p">}</span>
+
+        <span class="c1"># apply quad meshivision scheme</span>
+        <span class="c1"># keep track of the created edge points that are not on the boundary</span>
+        <span class="c1"># keep track track of the new edge points on the boundary</span>
+        <span class="c1"># and their relation to the previous boundary points</span>
+
+        <span class="c1"># quad subdivision</span>
+        <span class="c1"># ======================================================================</span>
+
+        <span class="n">edgepoints</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+
+            <span class="n">w</span> <span class="o">=</span> <span class="n">mesh_split_edge</span><span class="p">(</span><span class="n">subd</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># document why this is necessary</span>
+            <span class="c1"># everything else in this loop is just quad subdivision</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">bkeys</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">bkeys</span><span class="p">:</span>
+
+                <span class="n">bkey_edgepoints</span><span class="p">[</span><span class="n">u</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+                <span class="n">bkey_edgepoints</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+                <span class="k">continue</span>
+
+            <span class="n">edgepoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+        <span class="n">fkey_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
+
+        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+
+            <span class="n">descendant</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">)}</span>
+            <span class="n">ancestor</span> <span class="o">=</span> <span class="p">{</span><span class="n">j</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">)}</span>
+
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">fkey_xyz</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">):</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">ancestor</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">descendant</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+                <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
+
+            <span class="k">del</span> <span class="n">subd</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+
+        <span class="c1"># update coordinates</span>
+        <span class="c1"># ======================================================================</span>
+
+        <span class="c1"># these are the coordinates before updating</span>
+
+        <span class="n">key_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">subd</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">}</span>
+
+        <span class="c1"># move each edge point to the average of the neighboring centroids and</span>
+        <span class="c1"># the original end points</span>
+
+        <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">edgepoints</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">key_xyz</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">w</span><span class="p">]])</span>
+
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+        <span class="c1"># move each vertex to the weighted average of itself, the neighboring</span>
+        <span class="c1"># centroids and the neighboring mipoints</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">bkeys</span><span class="p">:</span>
+                <span class="n">nbrs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">bkey_edgepoints</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+                <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">key_xyz</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">]</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="mf">0.5</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="mf">0.5</span>
+                <span class="n">E</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span> <span class="o">*</span> <span class="n">e</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)]</span>
+                <span class="n">V</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span> <span class="o">*</span> <span class="n">v</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="n">E</span><span class="p">[</span><span class="n">_</span><span class="p">]</span> <span class="o">+</span> <span class="n">V</span><span class="p">[</span><span class="n">_</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fnbrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="n">fkey</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">key_xyz</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nbrs</span><span class="p">))</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">n</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">/</span> <span class="n">n</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mf">3.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+                <span class="n">F</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">fnbrs</span><span class="p">)</span>
+                <span class="n">E</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span>
+                <span class="n">V</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">E</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span> <span class="o">*</span> <span class="n">V</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">E</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span> <span class="o">*</span> <span class="n">V</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">F</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">E</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span> <span class="o">*</span> <span class="n">V</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">subd</span>
+
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">return</span> <span class="n">subd2</span></div>
+
+
+<div class="viewcode-block" id="mesh_subdivide_doosabin"><a class="viewcode-back" href="../../../../api/generated/compas.datastructures.mesh_subdivide_doosabin.html#compas.datastructures.mesh_subdivide_doosabin">[docs]</a><span class="k">def</span> <span class="nf">mesh_subdivide_doosabin</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subdivide a mesh following the doo-sabin scheme.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        The mesh object that will be subdivided.</span>
+<span class="sd">    k : int</span>
+<span class="sd">        Optional. The number of levels of subdivision. Default is ``1``.</span>
+<span class="sd">    fixed : list</span>
+<span class="sd">        Optional. A list of fixed vertices. Default is ``None``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mesh</span>
+<span class="sd">        A new subdivided mesh.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)</span>
+<span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_shape(box)</span>
+<span class="sd">    &gt;&gt;&gt; k = 2</span>
+<span class="sd">    &gt;&gt;&gt; subd = mesh_subdivide_doosabin(mesh, k=k)</span>
+<span class="sd">    &gt;&gt;&gt; mesh is subd</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; type(mesh) is type(subd)</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fixed</span><span class="p">:</span>
+        <span class="n">fixed</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
+
+    <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">old_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="n">fkey_old_new</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="p">{}</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
+
+        <span class="n">subd</span> <span class="o">=</span> <span class="n">SubdMesh</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+
+            <span class="n">face</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">old</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+                <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cz</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">old_xyz</span><span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">:</span>
+                        <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mf">5.</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">4.</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="mf">3.</span> <span class="o">+</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mf">4.</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+
+                    <span class="n">cx</span> <span class="o">+=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">x</span>
+                    <span class="n">cy</span> <span class="o">+=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">y</span>
+                    <span class="n">cz</span> <span class="o">+=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">z</span>
+
+                <span class="n">new</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">cz</span><span class="p">)</span>
+                <span class="n">fkey_old_new</span><span class="p">[</span><span class="n">fkey</span><span class="p">][</span><span class="n">old</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span>
+
+                <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+
+        <span class="n">boundary</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">face</span> <span class="o">=</span> <span class="p">[</span><span class="n">fkey_old_new</span><span class="p">[</span><span class="n">fkey</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">fkey</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">edges</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">edges</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                <span class="n">edges</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+
+                <span class="n">uv_fkey</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+                <span class="n">vu_fkey</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">uv_fkey</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">vu_fkey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">face</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">fkey_old_new</span><span class="p">[</span><span class="n">uv_fkey</span><span class="p">][</span><span class="n">u</span><span class="p">],</span>
+                    <span class="n">fkey_old_new</span><span class="p">[</span><span class="n">vu_fkey</span><span class="p">][</span><span class="n">u</span><span class="p">],</span>
+                    <span class="n">fkey_old_new</span><span class="p">[</span><span class="n">vu_fkey</span><span class="p">][</span><span class="n">v</span><span class="p">],</span>
+                    <span class="n">fkey_old_new</span><span class="p">[</span><span class="n">uv_fkey</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
+                <span class="p">]</span>
+                <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">subd</span>
+
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">return</span> <span class="n">subd2</span></div>
+
+
+<span class="k">def</span> <span class="nf">mesh_subdivide_frames</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">add_windows</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subdivide a mesh by creating offset frames and windows on its faces.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        The mesh object to be subdivided.</span>
+<span class="sd">    offset : float or dict</span>
+<span class="sd">        The offset distance to create the frames.</span>
+<span class="sd">        A single value will result in a constant offset everywhere.</span>
+<span class="sd">        A dictionary mapping facekey: offset will be processed accordingly.</span>
+<span class="sd">    add_windows : boolean</span>
+<span class="sd">        Optional. Flag to add window face. Default is ``False``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mesh</span>
+<span class="sd">        A new subdivided mesh.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">subd</span> <span class="o">=</span> <span class="n">SubdMesh</span><span class="p">()</span>
+
+    <span class="c1"># 0. pre-compute offset distances</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">(),</span> <span class="p">[</span><span class="n">offset</span><span class="p">],</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">od</span> <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">od</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">(),</span> <span class="n">distances</span><span class="p">)}</span>
+
+    <span class="c1"># 1. add vertices</span>
+    <span class="n">newkeys</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">vkey</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">newkeys</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="o">*</span><span class="n">mesh</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">vkey</span><span class="p">))</span>
+
+    <span class="c1"># 2. add faces</span>
+    <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
+        <span class="n">face</span> <span class="o">=</span> <span class="p">[</span><span class="n">newkeys</span><span class="p">[</span><span class="n">vkey</span><span class="p">]</span> <span class="k">for</span> <span class="n">vkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)]</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+
+        <span class="c1"># 2a. add face and break if no offset is found</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">polygon</span> <span class="o">=</span> <span class="n">offset_polygon</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">),</span> <span class="n">d</span><span class="p">)</span>
+
+        <span class="c1"># 2a. add offset vertices</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">polygon</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">xyz</span>
+            <span class="n">new_vkey</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+            <span class="n">window</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_vkey</span><span class="p">)</span>
+
+        <span class="c1"># 2b. frame faces</span>
+        <span class="n">face</span> <span class="o">=</span> <span class="n">face</span> <span class="o">+</span> <span class="n">face</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">window</span> <span class="o">=</span> <span class="n">window</span> <span class="o">+</span> <span class="n">window</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">sa</span><span class="p">,</span> <span class="n">sb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pairwise</span><span class="p">(</span><span class="n">face</span><span class="p">),</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">window</span><span class="p">)):</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">sa</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sa</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sb</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sb</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+        <span class="c1"># 2c. window face</span>
+        <span class="k">if</span> <span class="n">add_windows</span><span class="p">:</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">subd</span>
+
+
+<span class="k">def</span> <span class="nf">trimesh_subdivide_loop</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subdivide a triangle mesh using the Loop algorithm.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mesh : Mesh</span>
+<span class="sd">        The mesh object that will be subdivided.</span>
+<span class="sd">    k : int</span>
+<span class="sd">        Optional. The number of levels of subdivision. Default is ``1``.</span>
+<span class="sd">    fixed : list</span>
+<span class="sd">        Optional. A list of fixed vertices. Default is ``None``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Mesh</span>
+<span class="sd">        A new subdivided mesh.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Make a low poly mesh from a box shape.</span>
+<span class="sd">    Triangulate the faces.</span>
+<span class="sd">    &gt;&gt;&gt; box = Box.from_corner_corner_height([0.0, 0.0, 0.0], [1.0, 1.0, 0.0], 1.0)</span>
+<span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_shape(box)</span>
+<span class="sd">    &gt;&gt;&gt; mesh_quads_to_triangles(mesh)</span>
+
+<span class="sd">    Subdivide 2 times.</span>
+<span class="sd">    &gt;&gt;&gt; k = 2</span>
+<span class="sd">    &gt;&gt;&gt; subd = trimesh_subdivide_loop(mesh, k=k)</span>
+
+<span class="sd">    Compare low-poly cage with subdivision mesh.</span>
+<span class="sd">    &gt;&gt;&gt; mesh is subd</span>
+<span class="sd">    False</span>
+<span class="sd">    &gt;&gt;&gt; type(mesh) is type(subd)</span>
+<span class="sd">    True</span>
+<span class="sd">    &gt;&gt;&gt; subd.number_of_faces() == mesh.number_of_faces() * (3 + 1) ** k</span>
+<span class="sd">    True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">fixed</span><span class="p">:</span>
+        <span class="n">fixed</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
+
+    <span class="n">subd</span> <span class="o">=</span> <span class="n">mesh_fast_copy</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+        <span class="n">key_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">subd</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="n">fkey_vertices</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)[:]</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
+        <span class="n">uv_w</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_vertex_ancestor</span><span class="p">(</span><span class="n">fkey</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">)}</span>
+        <span class="n">boundary</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">vertices</span><span class="p">():</span>
+            <span class="n">nbrs</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">:</span>
+                <span class="n">xyz</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+                <span class="n">x</span> <span class="o">=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">subd</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">subd</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">xyz</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+
+                        <span class="n">x</span> <span class="o">+=</span> <span class="mf">0.125</span> <span class="o">*</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">y</span> <span class="o">+=</span> <span class="mf">0.125</span> <span class="o">*</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">z</span> <span class="o">+=</span> <span class="mf">0.125</span> <span class="o">*</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">a</span> <span class="o">=</span> <span class="mf">3.</span> <span class="o">/</span> <span class="mf">16.</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">a</span> <span class="o">=</span> <span class="mf">3.</span> <span class="o">/</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span>
+
+                <span class="n">xyz</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+                <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">key_xyz</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">]</span>
+                <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">nbrs</span><span class="p">)]</span>
+
+                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">nbrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">nbrs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">n</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">nbrs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+
+        <span class="n">edgepoints</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># odd vertices</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">edges</span><span class="p">()):</span>
+
+            <span class="n">w</span> <span class="o">=</span> <span class="n">mesh_split_edge</span><span class="p">(</span><span class="n">subd</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">edgepoints</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">w</span>
+            <span class="n">edgepoints</span><span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)]</span> <span class="o">=</span> <span class="n">w</span>
+
+            <span class="n">a</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">uv_w</span> <span class="ow">and</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="ow">in</span> <span class="n">uv_w</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">uv_w</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]]</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">uv_w</span><span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)]]</span>
+                <span class="n">xyz</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">3.0</span> <span class="o">/</span> <span class="mf">8.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">8.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">xyz</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">w</span><span class="p">][</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="c1"># new faces</span>
+        <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">fkey_vertices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">vertices</span>
+
+            <span class="n">uv</span> <span class="o">=</span> <span class="n">edgepoints</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+            <span class="n">vw</span> <span class="o">=</span> <span class="n">edgepoints</span><span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">)]</span>
+            <span class="n">wu</span> <span class="o">=</span> <span class="n">edgepoints</span><span class="p">[(</span><span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">)]</span>
+
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">wu</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">uv</span><span class="p">])</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">uv</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">vw</span><span class="p">])</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">vw</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">wu</span><span class="p">])</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">([</span><span class="n">uv</span><span class="p">,</span> <span class="n">vw</span><span class="p">,</span> <span class="n">wu</span><span class="p">])</span>
+
+            <span class="k">del</span> <span class="n">subd</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
+
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">data</span>
+    <span class="k">return</span> <span class="n">subd2</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="kn">import</span> <span class="nn">compas</span>  <span class="c1"># noqa: F401</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_quads_to_triangles</span>  <span class="c1"># noqa: F401</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
+
+    <span class="c1"># from compas.datastructures import Mesh</span>
+    <span class="c1"># from compas.geometry import Box</span>
+    <span class="c1"># from compas.utilities import print_profile</span>
+    <span class="c1"># from compas_viewers.multimeshviewer import MultiMeshViewer</span>
+
+    <span class="c1"># subdivide = print_profile(mesh_subdivide_quad)</span>
+
+    <span class="c1"># box = Box.from_width_height_depth(10.0, 10.0, 10.0)</span>
+    <span class="c1"># mesh = Mesh.from_shape(box)</span>
+    <span class="c1"># mesh.default_face_attributes.update(path=[])</span>
+    <span class="c1"># subd = subdivide(mesh, k=3)</span>
+
+    <span class="c1"># print(subd.face_attribute(subd.get_any_face(), &#39;path&#39;))</span>
+
+    <span class="c1"># # print(mesh.number_of_faces())</span>
+
+    <span class="c1"># viewer = MultiMeshViewer()</span>
+    <span class="c1"># viewer.meshes = [subd]</span>
+    <span class="c1"># viewer.show()</span>
+</code></pre></div>
+        
+      </main>
+      <!-- main -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+
+  <!-- <footer class="bg-dark py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3 d-flex flex-even my-4 ml-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Core</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_blender</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_ghpython</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_plotters</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_rhino</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Plugins</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_cgal</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_gmsh</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_libigl</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_shapeop</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Extensions</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fab</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fea(2)</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_tia</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_vol</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4 mr-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-3 mb-3 mt-0 footer-title">Resources</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">About</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Collaboration in research</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Transfer to industry</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Open source</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Quality assurance</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : 'release = &#39;0.16.9&#39;',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../../../_static/underscore.js"></script>
+  <script src="../../../../_static/doctools.js"></script>
+  <script src="../../../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
+  });
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>
