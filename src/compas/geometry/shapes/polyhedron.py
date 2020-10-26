@@ -128,12 +128,10 @@ class Polyhedron(Shape):
         Examples
         --------
         >>> from compas.geometry import Polyhedron
-        >>> p = Polyhedron(4)
+        >>> p = Polyhedron.from_platonicsolid(4)
         >>> q = Polyhedron.from_data(p.data)
         """
-        p = cls(len(data.get('faces')))
-        p.data = data
-        return p
+        return cls(data['vertices'], data['faces'])
 
     @classmethod
     def from_platonicsolid(cls, f):

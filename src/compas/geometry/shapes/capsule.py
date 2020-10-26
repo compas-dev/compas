@@ -86,7 +86,7 @@ class Capsule(Shape):
 
     @line.setter
     def line(self, line):
-        self._line = line
+        self._line = Line(*line)
 
     @property
     def start(self):

@@ -9,10 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_rhino.artists.BoxArtist.draw_collection`.
+* Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.CapsuleArtist.draw`.
+* Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.ConeArtist.draw`.
+* Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.CylinderArtist.draw`.
+* Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.PolyhedronArtist.draw`.
+* Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.SphereArtist.draw`.
+* Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.TorusArtist.draw`.
+* Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.PolygonArtist.draw`.
+* Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.PolylineArtist.draw`.
+* Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.VectorArtist.draw`.
+
 ### Changed
+
+* Changed implementation of `compas_rhino.artists.BoxArtist.draw`.
+* Fixed bug in `compas.geometry.Capsule`.
+* Fixed bug in `compas.geometry.Cone`.
+* Changed `compas_rhino.draw_mesh` to support Ngons if available.
+* Fixed bug in polyhedron data.
 
 ### Removed
 
+* Removed `compas_rhino.artists.PointArtist.draw_collection`.
+* Removed `compas_rhino.artists.CircleArtist.draw_collection`.
+* Removed `compas_rhino.artists.LineArtist.draw_collection`.
 
 ## [0.16.9] 2020-10-21
 
