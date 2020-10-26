@@ -4,8 +4,9 @@ from __future__ import division
 
 from math import pi
 
-from compas.geometry.primitives import Primitive
-from compas.geometry.primitives import Plane
+from ._primitive import Primitive
+from .point import Point
+from .vector import Vector
 
 
 __all__ = ['Circle']
@@ -16,21 +17,24 @@ class Circle(Primitive):
 
     Parameters
     ----------
-    plane : :class:`compas.geometry.Plane` or tuple of point and normal
-        The plane of the circle.
+    point : :class:`compas.geometry.Point` or [float, float, float]
+        The center point of the circle.
     radius : float
         The radius of the circle.
+    normal : :class:`compas.geometry.Vector` or [float, float, float], optional
+        The normal of the plane of the circle.
+        Default is ``Vector(0, 0, 1)``.
 
     Attributes
     ----------
-    plane : :class:`compas.geometry.Plane`
-        The plane of the circle.
+    point : :class:`compas.geometry.Point`
+        The center point of the circle.
     radius : float
         The radius.
-    center : :class:`compas.geometry.Point`
-        The base point of the plane and center of the circle.
     normal : :class:`compas.geometry.Vector`
         The normal vector of the plane.
+    center : :class:`compas.geometry.Point`
+        Alias for ``Circle.point``.
     diameter : float, read-only
         The diameter of the circle.
     circumference : float, read-only
@@ -40,39 +44,40 @@ class Circle(Primitive):
 
     Examples
     --------
-    >>> from compas.geometry import Plane
     >>> from compas.geometry import Circle
-    >>> plane = Plane([0, 0, 0], [0, 0, 1])
-    >>> circle = Circle(plane, 5)
+    >>> circle = Circle([0, 0, 0], 5)
     """
 
-    __slots__ = ['_plane', '_radius']
+    __slots__ = ['_point', '_radius', '_normal']
 
-    def __init__(self, plane, radius):
+    def __init__(self, point, radius, normal=None):
         super(Circle, self).__init__()
-        self._plane = None
+        self._point = None
         self._radius = None
-        self.plane = plane
+        self._normal = None
+        self.point = point
         self.radius = radius
+        self.normal = normal
 
     @property
     def data(self):
         """dict : The data dictionary that represents the circle."""
-        return {'plane': [list(self.plane.point), list(self.plane.normal)], 'radius': self.radius}
+        return {'point': self.point, 'radius': self.radius, 'normal': self.normal}
 
     @data.setter
     def data(self, data):
-        self.plane = data['plane']
+        self.point = data['point']
         self.radius = data['radius']
+        self.normal = data['normal']
 
     @property
-    def plane(self):
-        """:class:`compas.geometry.Plane` : The plane of the circle."""
-        return self._plane
+    def point(self):
+        """:class:`compas.geometry.Point` : The center point of the circle."""
+        return self._point
 
-    @plane.setter
-    def plane(self, plane):
-        self._plane = Plane(plane[0], plane[1])
+    @point.setter
+    def point(self, point):
+        self._point = Point(*point)
 
     @property
     def radius(self):
@@ -86,7 +91,13 @@ class Circle(Primitive):
     @property
     def normal(self):
         """:class:`compas.geometry.Vector` : The normal of the circle."""
-        return self.plane.normal
+        return self._normal
+
+    @normal.setter
+    def normal(self, normal):
+        if not normal:
+            normal = [0, 0, 1]
+        self._normal = Vector(*normal)
 
     @property
     def diameter(self):
@@ -96,11 +107,11 @@ class Circle(Primitive):
     @property
     def center(self):
         """:class:`compas.geometry.Point` : The center of the circle."""
-        return self.plane.point
+        return self.point
 
     @center.setter
     def center(self, point):
-        self.plane.point = point
+        self.point = point
 
     @property
     def area(self):
@@ -117,29 +128,33 @@ class Circle(Primitive):
     # ==========================================================================
 
     def __repr__(self):
-        return 'Circle({0}, {1})'.format(self.plane, self.radius)
+        return 'Circle({0}, {1}, {2})'.format(self.point, self.radius, self.normal)
 
     def __len__(self):
         return 2
 
     def __getitem__(self, key):
         if key == 0:
-            return self.plane
+            return self.point
         elif key == 1:
             return self.radius
+        elif key == 2:
+            return self.normal
         else:
             raise KeyError
 
     def __setitem__(self, key, value):
         if key == 0:
-            self.plane = value
+            self.point = value
         elif key == 1:
             self.radius = value
+        elif key == 2:
+            self.normal = value
         else:
             raise KeyError
 
     def __iter__(self):
-        return iter([self.plane, self.radius])
+        return iter([self.point, self.radius, self.normal])
 
     # ==========================================================================
     # constructors
@@ -162,10 +177,10 @@ class Circle(Primitive):
         Examples
         --------
         >>> from compas.geometry import Circle
-        >>> data = {'plane': [[0.0, 0.0, 0.0], [0.0, 0.0, 1.0]], 'radius': 5.}
+        >>> data = {'point': [0.0, 0.0, 0.0], 'radius': 5., 'normal': [0.0, 0.0, 1.0]}
         >>> circle = Circle.from_data(data)
         """
-        return cls(data['plane'], data['radius'])
+        return cls(data['point'], data['radius'], data['normal'])
 
     # ==========================================================================
     # methods
@@ -190,7 +205,8 @@ class Circle(Primitive):
         >>> T = Transformation.from_frame(frame)
         >>> circle.transform(T)
         """
-        self.plane.transform(T)
+        self.point.transform(T)
+        self.normal.transform(T)
 
 
 # ==============================================================================
