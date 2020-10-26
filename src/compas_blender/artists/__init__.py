@@ -6,6 +6,53 @@ artists
 .. currentmodule:: compas_blender.artists
 
 Artists for visualising (painting) COMPAS data structures in Blender.
+Artists convert COMPAS objects to Blender data and objects.
+
+.. code-block:: python
+
+    import compas
+    from compas.datastructures import Mesh
+    from compas_blender.artists import MeshArtist
+
+    mesh = Mesh.from_off(compas.get('tubemesh.off'))
+
+    artist = MeshArtist(mesh)
+    artist.draw()
+
+
+Primitive Artists
+=================
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+
+Shape Artists
+=============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+
+Datastructure Artists
+=====================
+
+.. autosummary::
+    :toctree: generated/
+
+    NetworkArtist
+    MeshArtist
+
+
+Robot Artists
+=============
+
+.. autosummary::
+    :toctree: generated/
+
+    RobotModelArtist
 
 
 Base Classes
@@ -14,22 +61,11 @@ Base Classes
 .. autosummary::
     :toctree: generated/
 
-    BaseArtist
-
-
-Classes
-=======
-
-.. autosummary::
-    :toctree: generated/
-
-    NetworkArtist
-    MeshArtist
-    RobotModelArtist
+    Artist
 
 """
 
-from ._artist import *  # noqa: F401 F403
+from ._artist import Artist  # noqa: F401
 
 from .networkartist import *  # noqa: F401 F403
 from .meshartist import *  # noqa: F401 F403

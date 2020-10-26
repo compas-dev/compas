@@ -1,20 +1,18 @@
 # from __future__ import annotations
 
 import bpy
-import abc
 import compas
 import compas_blender
 
 from typing import Any, Type
 
-
-__all__ = ['BaseArtist']
-
-
-_ITEM_ARTIST = {}
+from compas.scene import BaseArtist
 
 
-class BaseArtist(abc.ABC):
+__all__ = ['Artist']
+
+
+class Artist(BaseArtist):
     """Base class for all Blender artists.
 
     Attributes
@@ -25,6 +23,7 @@ class BaseArtist(abc.ABC):
     """
 
     def __init__(self):
+        super().__init__()
         self.objects = []
 
     @staticmethod
