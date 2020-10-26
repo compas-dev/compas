@@ -89,7 +89,7 @@
 
 <span class="kn">import</span> <span class="nn">compas_blender</span>
 
-<span class="kn">from</span> <span class="nn">compas_blender.artists._artist</span> <span class="kn">import</span> <span class="n">BaseArtist</span>
+<span class="kn">from</span> <span class="nn">._artist</span> <span class="kn">import</span> <span class="n">Artist</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">color_to_colordict</span>
 
 <span class="n">colordict</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">color_to_colordict</span><span class="p">,</span> <span class="n">colorformat</span><span class="o">=</span><span class="s1">&#39;rgb&#39;</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -100,7 +100,7 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="NetworkArtist"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.NetworkArtist.html#compas_blender.artists.NetworkArtist">[docs]</a><span class="k">class</span> <span class="nc">NetworkArtist</span><span class="p">(</span><span class="n">BaseArtist</span><span class="p">):</span>
+<div class="viewcode-block" id="NetworkArtist"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.NetworkArtist.html#compas_blender.artists.NetworkArtist">[docs]</a><span class="k">class</span> <span class="nc">NetworkArtist</span><span class="p">(</span><span class="n">Artist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Artist for COMPAS network objects.</span>
 
 <span class="sd">    Parameters</span>

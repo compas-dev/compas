@@ -96,9 +96,7 @@ Artists convert COMPAS objects to Rhino geometry and data.</p>
 
 <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_off</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.off&#39;</span><span class="p">))</span>
 
-<span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;COMPAS::tubemesh.off&#39;</span><span class="p">)</span>
-
-<span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
+<span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
 <span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </code></pre></div>
 </div>

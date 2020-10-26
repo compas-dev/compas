@@ -86,20 +86,18 @@
 <span></span><span class="c1"># from __future__ import annotations</span>
 
 <span class="kn">import</span> <span class="nn">bpy</span>
-<span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">import</span> <span class="nn">compas_blender</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">from</span> <span class="nn">compas.scene</span> <span class="kn">import</span> <span class="n">BaseArtist</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseArtist&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Artist&#39;</span><span class="p">]</span>
 
 
-<span class="n">_ITEM_ARTIST</span> <span class="o">=</span> <span class="p">{}</span>
-
-
-<div class="viewcode-block" id="BaseArtist"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.BaseArtist.html#compas_blender.artists.BaseArtist">[docs]</a><span class="k">class</span> <span class="nc">BaseArtist</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="Artist"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.Artist.html#compas_blender.artists.Artist">[docs]</a><span class="k">class</span> <span class="nc">Artist</span><span class="p">(</span><span class="n">BaseArtist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Base class for all Blender artists.</span>
 
 <span class="sd">    Attributes</span>
@@ -109,56 +107,20 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BaseArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.BaseArtist.__init__.html#compas_blender.artists.BaseArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Artist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.Artist.__init__.html#compas_blender.artists.Artist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="BaseArtist.register"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.BaseArtist.register.html#compas_blender.artists.BaseArtist.register">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">item_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">compas</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Base</span><span class="p">],</span> <span class="n">artist_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s1">&#39;BaseArtist&#39;</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot;Register a type of COMPAS object with a Blender artist.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        item_type : :class:`compas.base.Base`</span>
-<span class="sd">        artist_type : :class:`compas_blender.artists.BaseArtist`</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">_ITEM_ARTIST</span><span class="p">[</span><span class="n">item_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">artist_type</span></div>
-
-<div class="viewcode-block" id="BaseArtist.build"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.BaseArtist.build.html#compas_blender.artists.BaseArtist.build">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">compas</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Base</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;BaseArtist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Build an artist corresponding to the item type.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        kwargs : dict, optional</span>
-<span class="sd">            The keyword arguments (kwargs) collected in a dict.</span>
-<span class="sd">            For relevant options, see the parameter lists of the matching artist type.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`compas_blender.artists.BaseArtist`</span>
-<span class="sd">            An artist of the type matching the provided item according to an item-artist map.</span>
-<span class="sd">            The map is created by registering item-artist type pairs using ``~BaseArtist.register``.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">artist_type</span> <span class="o">=</span> <span class="n">_ITEM_ARTIST</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)]</span>
-        <span class="n">artist</span> <span class="o">=</span> <span class="n">artist_type</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">artist</span></div>
-
-<div class="viewcode-block" id="BaseArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.BaseArtist.draw.html#compas_blender.artists.BaseArtist.draw">[docs]</a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
-    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Draw the item.&quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
-<div class="viewcode-block" id="BaseArtist.draw_collection"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.BaseArtist.draw_collection.html#compas_blender.artists.BaseArtist.draw_collection">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Artist.draw_collection"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.Artist.draw_collection.html#compas_blender.artists.Artist.draw_collection">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">compas</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Base</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;Draw a collection of items.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="BaseArtist.redraw"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.BaseArtist.redraw.html#compas_blender.artists.BaseArtist.redraw">[docs]</a>    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Artist.redraw"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.Artist.redraw.html#compas_blender.artists.Artist.redraw">[docs]</a>    <span class="k">def</span> <span class="nf">redraw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Trigger a redraw.&quot;&quot;&quot;</span>
         <span class="n">bpy</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">wm</span><span class="o">.</span><span class="n">redraw_timer</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s1">&#39;DRAW_WIN_SWAP&#39;</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseArtist.clear"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.BaseArtist.clear.html#compas_blender.artists.BaseArtist.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Artist.clear"><a class="viewcode-back" href="../../../api/generated/compas_blender.artists.Artist.clear.html#compas_blender.artists.Artist.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete all objects created by the artist.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
             <span class="k">return</span>

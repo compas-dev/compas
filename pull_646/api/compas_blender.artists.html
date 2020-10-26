@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="BaseArtist" href="generated/compas_blender.artists.BaseArtist.html" />
+    <link rel="next" title="NetworkArtist" href="generated/compas_blender.artists.NetworkArtist.html" />
   
   
   
@@ -88,23 +88,42 @@
           
           <span class="target" id="module-compas_blender.artists"></span><div class="section" id="artists">
 <h1>artists</h1>
-<p>Artists for visualising (painting) COMPAS data structures in Blender.</p>
-<div class="section" id="base-classes">
-<h2>Base Classes</h2>
+<p>Artists for visualising (painting) COMPAS data structures in Blender.
+Artists convert COMPAS objects to Blender data and objects.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas_blender.artists</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_off</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tubemesh.off&#39;</span><span class="p">))</span>
+
+<span class="n">artist</span> <span class="o">=</span> <span class="n">MeshArtist</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<div class="section" id="primitive-artists">
+<h2>Primitive Artists</h2>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.BaseArtist.html#compas_blender.artists.BaseArtist" title="compas_blender.artists.BaseArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseArtist</span></code></a>()</p></td>
-<td><p>Base class for all Blender artists.</p></td>
-</tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="classes">
-<h2>Classes</h2>
+<div class="section" id="shape-artists">
+<h2>Shape Artists</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+</div>
+<div class="section" id="datastructure-artists">
+<h2>Datastructure Artists</h2>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -117,8 +136,33 @@
 <tr class="row-even"><td><p><a class="reference internal" href="generated/compas_blender.artists.MeshArtist.html#compas_blender.artists.MeshArtist" title="compas_blender.artists.MeshArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeshArtist</span></code></a>(mesh)</p></td>
 <td><p>A mesh artist defines functionality for visualising COMPAS meshes in Blender.</p></td>
 </tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="robot-artists">
+<h2>Robot Artists</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.RobotModelArtist.html#compas_blender.artists.RobotModelArtist" title="compas_blender.artists.RobotModelArtist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RobotModelArtist</span></code></a>(model[, layer])</p></td>
 <td><p>Visualizer for robot models inside a Blender environment.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="base-classes">
+<h2>Base Classes</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_blender.artists.Artist.html#compas_blender.artists.Artist" title="compas_blender.artists.Artist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Artist</span></code></a>()</p></td>
+<td><p>Base class for all Blender artists.</p></td>
 </tr>
 </tbody>
 </table>
@@ -176,8 +220,11 @@
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">artists</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#primitive-artists">Primitive Artists</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#shape-artists">Shape Artists</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#datastructure-artists">Datastructure Artists</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#robot-artists">Robot Artists</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#base-classes">Base Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
 </ul>
 </li>
 </ul>

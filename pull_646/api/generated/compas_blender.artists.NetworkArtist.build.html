@@ -90,7 +90,7 @@
 <h1>NetworkArtist.build</h1>
 <dl class="method">
 <dt id="compas_blender.artists.NetworkArtist.build">
-<em class="property">static </em><code class="sig-prename descclassname">NetworkArtist.</code><code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param">item: compas.base.Base</em>, <em class="sig-param">**kwargs: Any</em><span class="sig-paren">)</span> &#x2192; compas_blender.artists._artist.BaseArtist</dt>
+<em class="property">static </em><code class="sig-prename descclassname">NetworkArtist.</code><code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param">item</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span></dt>
 <dd><p>Build an artist corresponding to the item type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -98,7 +98,7 @@
 For relevant options, see the parameter lists of the matching artist type.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><a class="reference internal" href="compas_blender.artists.BaseArtist.html#compas_blender.artists.BaseArtist" title="compas_blender.artists.BaseArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_blender.artists.BaseArtist</span></code></a> – An artist of the type matching the provided item according to an item-artist map.
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.BaseArtist</span></code> – An artist of the type matching the provided item according to an item-artist map.
 The map is created by registering item-artist type pairs using <code class="docutils literal notranslate"><span class="pre">~BaseArtist.register</span></code>.</p>
 </dd>
 </dl>
