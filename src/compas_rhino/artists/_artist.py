@@ -6,7 +6,7 @@ import compas_rhino
 from compas.scene import BaseArtist
 
 
-__all__ = ["BaseArtist"]
+__all__ = ["Artist"]
 
 
 class Artist(BaseArtist):

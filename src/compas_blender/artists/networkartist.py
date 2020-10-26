@@ -4,7 +4,7 @@ from functools import partial
 
 import compas_blender
 
-from compas_blender.artists._artist import BaseArtist
+from ._artist import Artist
 from compas.utilities import color_to_colordict
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=True)
@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 
-class NetworkArtist(BaseArtist):
+class NetworkArtist(Artist):
     """Artist for COMPAS network objects.
 
     Parameters
