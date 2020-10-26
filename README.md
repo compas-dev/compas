@@ -38,9 +38,9 @@ python -m compas
 
 ## First Steps
 
-* <https://compas-dev.github.io/main/gettingstarted.html>
-* <https://compas-dev.github.io/main/tutorial.html>
-* <https://compas-dev.github.io/main/api.html>
+* <https://compas.dev/compas/latest/gettingstarted.html>
+* <https://compas.dev/compas/latest/tutorial.html>
+* <https://compas.dev/compas/latest/api.html>
 
 ## Questions and feedback
 
@@ -53,12 +53,12 @@ If you find a bug, please help us solve it by [filing a report](https://github.c
 
 ## Contributing
 
-If you want to contribute, check out the [contribution guidelines](https://compas-dev.github.io/main/devguide.html).
+If you want to contribute, check out the [contribution guidelines](https://compas.dev/compas/latest/devguide.html).
 
 ## Changelog
 
-See changes between releases on the [changelog](https://compas-dev.github.io/main/changelog.html).
+See changes between releases on the [changelog](https://compas.dev/compas/latest/changelog.html).
 
 ## License
 
-The main library of **COMPAS** is [released under the MIT license](https://compas-dev.github.io/main/license.html).
+The main library of **COMPAS** is [released under the MIT license](https://compas.dev/compas/latest/license.html).
