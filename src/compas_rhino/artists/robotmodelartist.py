@@ -16,15 +16,17 @@ from compas.utilities import pairwise
 from compas.robots.base_artist import BaseRobotModelArtist
 
 import compas_rhino
-from compas_rhino.artists import BaseArtist
 from compas_rhino.geometry.transformations import xform_from_transformation
+
+from ._artist import Artist
+
 
 __all__ = [
     'RobotModelArtist',
 ]
 
 
-class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
+class RobotModelArtist(BaseRobotModelArtist, Artist):
     """Visualizer for robots inside a Rhino environment.
 
     Parameters

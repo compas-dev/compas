@@ -3,13 +3,13 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
-from compas_rhino.artists._artist import BaseArtist
+from ._artist import Artist
 
 
 __all__ = ["PrimitiveArtist"]
 
 
-class PrimitiveArtist(BaseArtist):
+class PrimitiveArtist(Artist):
     """Base class for artists for geometry primitives.
 
     Parameters

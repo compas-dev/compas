@@ -5,8 +5,6 @@ from __future__ import division
 from functools import partial
 import compas_rhino
 
-from compas_rhino.artists._artist import BaseArtist
-
 from compas.utilities import color_to_colordict
 from compas.utilities import pairwise
 from compas.geometry import add_vectors
@@ -14,6 +12,7 @@ from compas.geometry import scale_vector
 from compas.geometry import centroid_polygon
 from compas.geometry import centroid_points
 
+from ._artist import Artist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 
@@ -21,7 +20,7 @@ colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 __all__ = ['MeshArtist']
 
 
-class MeshArtist(BaseArtist):
+class MeshArtist(Artist):
     """A mesh artist defines functionality for visualising COMPAS meshes in Rhino.
 
     Parameters
