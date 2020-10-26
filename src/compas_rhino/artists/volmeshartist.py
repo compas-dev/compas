@@ -5,11 +5,10 @@ from __future__ import division
 from functools import partial
 import compas_rhino
 
-from compas_rhino.artists._artist import BaseArtist
-
 from compas.utilities import color_to_colordict
 from compas.geometry import centroid_points
 
+from ._artist import Artist
 
 colordict = partial(color_to_colordict, colorformat='rgb', normalize=False)
 

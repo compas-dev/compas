@@ -86,7 +86,7 @@ Base Classes
     :toctree: generated/
     :nosignatures:
 
-    BaseArtist
+    Artist
     PrimitiveArtist
     ShapeArtist
 
@@ -116,7 +116,7 @@ from compas.datastructures import VolMesh
 
 from compas.robots import RobotModel
 
-from ._artist import BaseArtist  # noqa: F401 F403
+from ._artist import Artist  # noqa: F401 F403
 from ._primitiveartist import PrimitiveArtist  # noqa: F401 F403
 from ._shapeartist import ShapeArtist  # noqa: F401
 
@@ -143,28 +143,28 @@ from .volmeshartist import VolMeshArtist
 
 from .robotmodelartist import RobotModelArtist
 
-BaseArtist.register(Circle, CircleArtist)
-BaseArtist.register(Frame, FrameArtist)
-BaseArtist.register(Line, LineArtist)
-BaseArtist.register(Plane, PlaneArtist)
-BaseArtist.register(Point, PointArtist)
-BaseArtist.register(Polygon, PolygonArtist)
-BaseArtist.register(Polyline, PolylineArtist)
-BaseArtist.register(Vector, VectorArtist)
+Artist.register(Circle, CircleArtist)
+Artist.register(Frame, FrameArtist)
+Artist.register(Line, LineArtist)
+Artist.register(Plane, PlaneArtist)
+Artist.register(Point, PointArtist)
+Artist.register(Polygon, PolygonArtist)
+Artist.register(Polyline, PolylineArtist)
+Artist.register(Vector, VectorArtist)
 
-BaseArtist.register(Box, BoxArtist)
-BaseArtist.register(Capsule, CapsuleArtist)
-BaseArtist.register(Cone, ConeArtist)
-BaseArtist.register(Cylinder, CylinderArtist)
-BaseArtist.register(Polyhedron, PolyhedronArtist)
-BaseArtist.register(Sphere, SphereArtist)
-BaseArtist.register(Torus, TorusArtist)
+Artist.register(Box, BoxArtist)
+Artist.register(Capsule, CapsuleArtist)
+Artist.register(Cone, ConeArtist)
+Artist.register(Cylinder, CylinderArtist)
+Artist.register(Polyhedron, PolyhedronArtist)
+Artist.register(Sphere, SphereArtist)
+Artist.register(Torus, TorusArtist)
 
-BaseArtist.register(Mesh, MeshArtist)
-BaseArtist.register(Network, NetworkArtist)
-BaseArtist.register(VolMesh, VolMeshArtist)
+Artist.register(Mesh, MeshArtist)
+Artist.register(Network, NetworkArtist)
+Artist.register(VolMesh, VolMeshArtist)
 
-BaseArtist.register(RobotModel, RobotModelArtist)
+Artist.register(RobotModel, RobotModelArtist)
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

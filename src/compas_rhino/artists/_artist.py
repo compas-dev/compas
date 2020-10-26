@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas_rhino
+from compas.scene import BaseArtist
 
 
 __all__ = ["BaseArtist"]
@@ -22,6 +23,7 @@ class BaseArtist(object):
     """
 
     def __init__(self):
+        super(Artist, self).__init__()
         self._guids = []
 
     @staticmethod

@@ -4,12 +4,12 @@ from __future__ import division
 
 import compas_rhino
 from compas.datastructures import Mesh
-from compas_rhino.artists._artist import BaseArtist
+from ._artist import Artist
 
 __all__ = ['ShapeArtist']
 
 
-class ShapeArtist(BaseArtist):
+class ShapeArtist(Artist):
     """Base class for artists for geometric shapes.
 
     Parameters
