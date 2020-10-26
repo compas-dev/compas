@@ -176,6 +176,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.PolygonArtist.draw`.
 * Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.PolylineArtist.draw`.
 * Added option to show/hide vertices, edges, and faces in `compas_rhino.artists.VectorArtist.draw`.
+* Added base scene artist in `compas.scene`.
 
 ### Changed
 
@@ -184,6 +185,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.geometry.Cone`.
 * Changed `compas_rhino.draw_mesh` to support Ngons if available.
 * Fixed bug in polyhedron data.
+* Rebased Rhino artists onto `compas.scene.Artist`.
 
 ### Removed
 
