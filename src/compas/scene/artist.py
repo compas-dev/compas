@@ -3,20 +3,21 @@ from __future__ import division
 from __future__ import print_function
 
 import abc
+ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
+
 
 __all__ = ["BaseArtist"]
 
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 _ITEM_ARTIST = {}
 
 
 class BaseArtist(ABC):
-    """Base class for all artists.
+    """Base class for all scene artists.
     """
 
-    def __init__(self):
-        pass
+    # def __init__(self):
+    #     pass
 
     @staticmethod
     def register(item_type, artist_type):
@@ -34,7 +35,7 @@ class BaseArtist(ABC):
 
         Returns
         -------
-        :class:`compas_rhino.artists.BaseArtist`
+        :class:`compas.scene.BaseArtist`
             An artist of the type matching the provided item according to an item-artist map.
             The map is created by registering item-artist type pairs using ``~BaseArtist.register``.
         """

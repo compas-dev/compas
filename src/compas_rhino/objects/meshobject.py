@@ -13,20 +13,21 @@ from compas.geometry import Rotation
 from compas.geometry import subtract_vectors
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
-from compas_rhino.objects._object import BaseObject
-from compas_rhino.objects.modify import mesh_update_attributes
-from compas_rhino.objects.modify import mesh_update_vertex_attributes
-from compas_rhino.objects.modify import mesh_update_face_attributes
-from compas_rhino.objects.modify import mesh_update_edge_attributes
-from compas_rhino.objects.modify import mesh_move_vertex
-from compas_rhino.objects.modify import mesh_move_vertices
-from compas_rhino.objects.modify import mesh_move_face
+
+from ._object import Object
+from .modify import mesh_update_attributes
+from .modify import mesh_update_vertex_attributes
+from .modify import mesh_update_face_attributes
+from .modify import mesh_update_edge_attributes
+from .modify import mesh_move_vertex
+from .modify import mesh_move_vertices
+from .modify import mesh_move_face
 
 
 __all__ = ['MeshObject']
 
 
-class MeshObject(BaseObject):
+class MeshObject(Object):
     """Class for representing COMPAS meshes in Rhino.
 
     Parameters
@@ -67,8 +68,8 @@ class MeshObject(BaseObject):
     modify_faces = mesh_update_face_attributes
     modify_edges = mesh_update_edge_attributes
 
-    def __init__(self, mesh, scene=None, name=None, layer=None, visible=True, settings=None):
-        super(MeshObject, self).__init__(mesh, scene, name, layer, visible)
+    def __init__(self, mesh, scene=None, name=None, visible=True, layer=None, **kwargs):
+        super(MeshObject, self).__init__(mesh, scene, name, visible, layer)
         self._guids = []
         self._guid_vertex = {}
         self._guid_edge = {}
@@ -83,8 +84,7 @@ class MeshObject(BaseObject):
         self._scale = None
         self._rotation = None
         self.settings.update(type(self).SETTINGS)
-        if settings:
-            self.settings.update(settings)
+        self.settings.update(kwargs)
 
     @property
     def mesh(self):
@@ -102,12 +102,6 @@ class MeshObject(BaseObject):
         self._guid_vertexlabel = {}
         self._guid_edgelabel = {}
         self._guid_facelabel = {}
-
-    # def __getstate__(self):
-    #     pass
-
-    # def __setstate__(self, state):
-    #     pass
 
     @property
     def anchor(self):

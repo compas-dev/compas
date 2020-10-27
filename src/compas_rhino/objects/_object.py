@@ -27,8 +27,6 @@ class BaseObject(object):
         The layer for drawing.
     visible : bool, optional
         Toggle for the visibility of the object.
-    settings : dict, optional
-        A dictionary of settings.
 
     Attributes
     ----------
@@ -46,64 +44,17 @@ class BaseObject(object):
         This is an alias for the layer of ``artist``.
     visible : bool
         Toggle for the visibility of the object in the scene.
-    settings : dict
-        A dictionary of settings related to visualisation and interaction.
-        This dict starts from the settings of the ``artist``.
 
     """
 
-    def __init__(self, item, scene=None, name=None, layer=None, visible=True, settings=None):
-        super(BaseObject, self).__init__()
-        self._item = None
-        self._id = None
-        self._scene = None
-        self._artist = None
-        self.scene = scene
-        self.item = item
-        self.name = name
+    def __init__(self, item, scene=None, name=None, visible=True, layer=None, **kwargs):
+        super(Object, self).__init__(item, scene, name, visible)
+        self.settings = {}
         self.layer = layer
-        self.visible = visible
-        self.settings = settings or {}
 
     # ==========================================================================
     # Properties
     # ==========================================================================
-
-    @property
-    def scene(self):
-        return self._scene
-
-    @scene.setter
-    def scene(self, scene):
-        self._scene = scene
-
-    @property
-    def item(self):
-        return self._item
-
-    @item.setter
-    def item(self, item):
-        self._item = item
-        self._artist = BaseArtist.build(item)
-
-    @property
-    def artist(self):
-        return self._artist
-
-    @property
-    def id(self):
-        if not self._id:
-            self._id = uuid4()
-        return self._id
-
-    # this is debatable
-    @property
-    def name(self):
-        return self.item.name
-
-    @name.setter
-    def name(self, name):
-        self.item.name = name
 
     @property
     def layer(self):
