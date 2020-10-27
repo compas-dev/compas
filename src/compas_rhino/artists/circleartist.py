@@ -2,14 +2,9 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
 import compas_rhino
-from compas.utilities import iterable_like
-from compas_rhino.artists._primitiveartist import PrimitiveArtist
+from compas.geometry import add_vectors
+from ._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['CircleArtist']
@@ -27,10 +22,40 @@ class CircleArtist(PrimitiveArtist):
     -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
+    Examples
+    --------
+    .. code-block:: python
+
+        import random
+        from compas.geometry import Pointcloud
+        from compas.geometry import Circle
+        from compas.utilities import i_to_rgb
+
+        import compas_rhino
+        from compas_rhino.artists import CircleArtist
+
+        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
+        tpl = Circle([[0, 0, 0], [0, -1, 0]], 0.7)
+
+        compas_rhino.clear_layer("Test::CircleArtist")
+
+        for point in pcl.points:
+            circle = tpl.copy()
+            circle.plane.point = point
+            artist = CircleArtist(circle, color=i_to_rgb(random.random()), layer="Test::CircleArtist")
+            artist.draw()
+
     """
 
-    def draw(self):
+    def draw(self, show_point=False, show_normal=False):
         """Draw the circle.
+
+        Parameters
+        ----------
+        show_point : bool, optional
+            Default is ``False``.
+        show_normal : bool, optional
+            Default is ``False``.
 
         Returns
         -------
@@ -39,62 +64,19 @@ class CircleArtist(PrimitiveArtist):
         """
         point = list(self.primitive.plane.point)
         normal = list(self.primitive.plane.normal)
+        plane = point, normal
         radius = self.primitive.radius
-        circles = [{'plane': [point, normal], 'radius': radius, 'color': self.color, 'name': self.name}]
-        guids = compas_rhino.draw_circles(circles, layer=self.layer, clear=False, redraw=False)
+        guids = []
+        if show_point:
+            points = [{'pos': point, 'color': self.color, 'name': self.name}]
+            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
+        if show_normal:
+            lines = [{'start': point, 'end': add_vectors(point, normal), 'arrow': 'end', 'color': self.color, 'name': self.name}]
+            guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+        circles = [{'plane': plane, 'radius': radius, 'color': self.color, 'name': self.name}]
+        guids += compas_rhino.draw_circles(circles, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-    @staticmethod
-    def draw_collection(collection, names=None, colors=None, layer=None, clear=False, add_to_group=False, group_name=None):
-        """Draw a collection of circles.
-
-        Parameters
-        ----------
-        collection : list of :class:`compas.geometry.Circle`
-            A collection of circles.
-        names : list of str, optional
-            Individual names for the circles.
-        colors : color or list of color, optional
-            A color specification for the circles as a single color or a list of individual colors.
-        layer : str, optional
-            A layer path.
-        clear : bool, optional
-            Clear the layer before drawing.
-        add_to_group : bool, optional
-            Add the circles to a group.
-        group_name : str, optional
-            Name of the group.
-
-        Returns
-        -------
-        list
-            The GUIDs of the created Rhino objects.
-        """
-        circles = []
-        for circle in collection:
-            circles.append({'plane': [list(circle[0][0]), list(circle[0][1])], 'radius': circle[1]})
-        if colors:
-            if isinstance(colors[0], (int, float)):
-                colors = iterable_like(collection, [colors], colors)
-            else:
-                colors = iterable_like(collection, colors, colors[0])
-            for point, rgb in zip(circles, colors):
-                circle['color'] = rgb
-        if names:
-            if isinstance(names, basestring):
-                names = iterable_like(collection, [names], names)
-            else:
-                names = iterable_like(collection, names, names[0])
-            for circle, name in zip(circles, names):
-                circle['name'] = name
-        guids = compas_rhino.draw_circles(circles, layer=layer, clear=clear)
-        if not add_to_group:
-            return guids
-        group = compas_rhino.rs.AddGroup(group_name)
-        if group:
-            compas_rhino.rs.AddObjectsToGroup(guids, group)
-        return group
 
 
 # ==============================================================================

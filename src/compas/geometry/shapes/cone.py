@@ -7,13 +7,15 @@ from math import pi
 from math import sin
 from math import sqrt
 
+from compas.utilities import pairwise
+
 from compas.geometry import matrix_from_frame
 from compas.geometry import transform_points
 from compas.geometry import Circle
 from compas.geometry import Frame
 from compas.geometry import Plane
 
-from compas.geometry.shapes import Shape
+from ._shape import Shape
 
 
 __all__ = ['Cone']
@@ -96,7 +98,7 @@ class Cone(Shape):
 
     @circle.setter
     def circle(self, circle):
-        self._circle = circle
+        self._circle = Circle(circle[0], circle[1])
 
     @property
     def radius(self):
@@ -228,7 +230,7 @@ class Cone(Shape):
         if u < 3:
             raise ValueError('The value for u should be u > 3.')
 
-        vertices = []
+        vertices = [[0, 0, 0]]
         a = 2 * pi / u
         for i in range(u):
             x = self.circle.radius * cos(i * a)
@@ -236,17 +238,18 @@ class Cone(Shape):
             vertices.append([x, y, 0])
         vertices.append([0, 0, self.height])
 
-        # transform vertices to cylinder's plane
         frame = Frame.from_plane(self.circle.plane)
         M = matrix_from_frame(frame)
         vertices = transform_points(vertices, M)
 
         faces = []
+        first = 0
         last = len(vertices) - 1
-        for i in range(u):
-            faces.append([i, (i + 1) % u, last])
-        faces.append([i for i in range(u)])
-        faces[-1].reverse()
+        for i, j in pairwise(range(1, last)):
+            faces.append([i, j, last])
+            faces.append([j, i, first])
+        faces.append([last - 1, 1, last])
+        faces.append([1, last - 1, first])
 
         return vertices, faces
 

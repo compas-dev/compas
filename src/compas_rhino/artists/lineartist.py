@@ -2,14 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
 import compas_rhino
-from compas.utilities import iterable_like
-from compas_rhino.artists._primitiveartist import PrimitiveArtist
+from ._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['LineArtist']
@@ -27,10 +21,38 @@ class LineArtist(PrimitiveArtist):
     -----
     See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.
 
+    Examples
+    --------
+    .. code-block:: python
+
+        import random
+        from compas.geometry import Pointcloud
+        from compas.geometry import Vector
+        from compas.geometry import Line
+        from compas.utilities import i_to_rgb
+
+        import compas_rhino
+        from compas_rhino.artists import LineArtist
+
+        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
+
+        compas_rhino.clear_layer("Test::LineArtist")
+
+        for point in pcl.points:
+            line = Line(point, point + Vector(1, 0, 0))
+            artist = LineArtist(line, color=i_to_rgb(random.random()), layer="Test::LineArtist")
+            artist.draw()
+
     """
 
-    def draw(self):
+    def draw(self, show_points=False):
         """Draw the line.
+
+        Parameters
+        ----------
+        show_points : bool, optional
+            Show the start and end point.
+            Default is ``False``.
 
         Returns
         -------
@@ -40,62 +62,17 @@ class LineArtist(PrimitiveArtist):
         """
         start = list(self.primitive.start)
         end = list(self.primitive.end)
+        guids = []
+        if show_points:
+            points = [
+                {'pos': start, 'color': self.color, 'name': self.name},
+                {'pos': end, 'color': self.color, 'name': self.name}
+            ]
+            guids += compas_rhino.draw_points(points, layer=self.layer, clear=False, redraw=False)
         lines = [{'start': start, 'end': end, 'color': self.color, 'name': self.name}]
-        guids = compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
+        guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-    @staticmethod
-    def draw_collection(collection, names=None, colors=None, layer=None, clear=False, add_to_group=False, group_name=None):
-        """Draw a collection of lines.
-
-        Parameters
-        ----------
-        collection: list of compas.geometry.Line
-            A collection of ``Line`` objects.
-        names : list of str, optional
-            Individual names for the lines.
-        colors : color or list of color, optional
-            A color specification for the lines as a single color or a list of individual colors.
-        layer : str, optional
-            A layer path.
-        clear : bool, optional
-            Clear the layer before drawing.
-        add_to_group : bool, optional
-            Add the frames to a group.
-        group_name : str, optional
-            Name of the group.
-
-        Returns
-        -------
-        guids: list
-            A list of GUIDs if the collection is not grouped.
-        groupname: str
-            The name of the group if the collection objects are grouped.
-
-        """
-        lines = [{'start': list(line[0]), 'end': list(line[1])} for line in collection]
-        if colors:
-            if isinstance(colors[0], (int, float)):
-                colors = iterable_like(collection, [colors], colors)
-            else:
-                colors = iterable_like(collection, colors, colors[0])
-            for line, rgb in zip(lines, colors):
-                line['color'] = rgb
-        if names:
-            if isinstance(names, basestring):
-                names = iterable_like(collection, [names], names)
-            else:
-                names = iterable_like(collection, names, names[0])
-            for line, name in zip(lines, names):
-                line['name'] = name
-        guids = compas_rhino.draw_lines(lines, layer=layer, clear=clear)
-        if not add_to_group:
-            return guids
-        group = compas_rhino.rs.AddGroup(group_name)
-        if group:
-            compas_rhino.rs.AddObjectsToGroup(guids, group)
-        return group
 
 
 # ==============================================================================

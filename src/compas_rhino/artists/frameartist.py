@@ -2,14 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-try:
-    basestring
-except NameError:
-    basestring = str
-
 import compas_rhino
-# from compas.utilities import iterable_like
-from compas_rhino.artists._primitiveartist import PrimitiveArtist
+from ._primitiveartist import PrimitiveArtist
 
 
 __all__ = ['FrameArtist']
@@ -42,6 +36,27 @@ class FrameArtist(PrimitiveArtist):
         Default is ``(0, 255, 0)``.
     color_zaxis : tuple of 3 int between 0 abd 255
         Default is ``(0, 0, 255)``.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        from compas.geometry import Pointcloud
+        from compas.geometry import Frame
+
+        import compas_rhino
+        from compas_rhino.artists import FrameArtist
+
+        pcl = Pointcloud.from_bounds(10, 10, 10, 100)
+        tpl = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])
+
+        compas_rhino.clear_layer("Test::FrameArtist")
+
+        for point in pcl.points:
+            frame = tpl.copy()
+            frame.point = point
+            artist = FrameArtist(frame, layer="Test::FrameArtist")
+            artist.draw()
 
     """
 
@@ -76,34 +91,6 @@ class FrameArtist(PrimitiveArtist):
         guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
-
-    @staticmethod
-    def draw_collection(collection, names=None, colors=None, layer=None, clear=False, add_to_group=False, group_name=None):
-        """Draw a collection of circles.
-
-        Parameters
-        ----------
-        collection : list of :class:`compas.geometry.Frame`
-            A collection of frames.
-        names : list of str, optional
-            Individual names for the frames.
-        colors : color or list of color, optional
-            A color specification for the frames as a single color or a list of individual colors.
-        layer : str, optional
-            A layer path.
-        clear : bool, optional
-            Clear the layer before drawing.
-        add_to_group : bool, optional
-            Add the frames to a group.
-        group_name : str, optional
-            Name of the group.
-
-        Returns
-        -------
-        list
-            The GUIDs of the created Rhino objects.
-        """
-        raise NotImplementedError
 
 
 # ==============================================================================

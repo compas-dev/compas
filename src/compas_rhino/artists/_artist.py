@@ -55,10 +55,6 @@ class BaseArtist(ABC):
     def draw(self):
         pass
 
-    @staticmethod
-    def draw_collection(collection):
-        raise NotImplementedError
-
     def redraw(self):
         compas_rhino.rs.EnableRedraw(True)
 
