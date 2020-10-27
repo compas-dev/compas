@@ -18,7 +18,7 @@ __all__ = ['VolMeshArtist']
 
 
 class VolMeshArtist(BaseArtist):
-    """A volmesh artist defines functionality for visualising COMPAS volmeshes in Rhino.
+    """Artist for drawing volmesh data structures.
 
     Parameters
     ----------

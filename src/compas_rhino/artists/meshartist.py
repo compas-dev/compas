@@ -22,7 +22,7 @@ __all__ = ['MeshArtist']
 
 
 class MeshArtist(BaseArtist):
-    """A mesh artist defines functionality for visualising COMPAS meshes in Rhino.
+    """Artists for drawing mesh data structures.
 
     Parameters
     ----------

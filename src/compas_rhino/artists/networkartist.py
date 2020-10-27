@@ -16,7 +16,7 @@ __all__ = ['NetworkArtist']
 
 
 class NetworkArtist(BaseArtist):
-    """A network artist defines functionality for visualising COMPAS networks in Rhino.
+    """Artist for drawing network data structures.
 
     Parameters
     ----------
