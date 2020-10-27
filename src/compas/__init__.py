@@ -16,6 +16,7 @@ compas
     compas.plugins
     compas.robots
     compas.rpc
+    compas.scene
     compas.topology
     compas.utilities
 

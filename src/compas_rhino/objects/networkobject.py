@@ -7,17 +7,18 @@ from compas.geometry import Point
 from compas.geometry import Scale
 from compas.geometry import Translation
 from compas.geometry import Rotation
-from compas_rhino.objects._object import BaseObject
-from compas_rhino.objects.modify import network_update_attributes
-from compas_rhino.objects.modify import network_update_node_attributes
-from compas_rhino.objects.modify import network_update_edge_attributes
-from compas_rhino.objects.modify import network_move_node
+
+from ._object import Object
+from .modify import network_update_attributes
+from .modify import network_update_node_attributes
+from .modify import network_update_edge_attributes
+from .modify import network_move_node
 
 
 __all__ = ['NetworkObject']
 
 
-class NetworkObject(BaseObject):
+class NetworkObject(Object):
     """Class for representing COMPAS networkes in Rhino.
 
     Parameters
@@ -50,8 +51,8 @@ class NetworkObject(BaseObject):
     modify_nodes = network_update_node_attributes
     modify_edges = network_update_edge_attributes
 
-    def __init__(self, network, scene=None, name=None, layer=None, visible=True, settings=None):
-        super(NetworkObject, self).__init__(network, scene, name, layer, visible)
+    def __init__(self, network, scene=None, name=None, visible=True, layer=None, **kwargs):
+        super(NetworkObject, self).__init__(network, scene, name, visible, layer)
         self._guid_node = {}
         self._guid_edge = {}
         self._guid_nodelabel = {}
@@ -60,9 +61,8 @@ class NetworkObject(BaseObject):
         self._location = None
         self._scale = None
         self._rotation = None
-        self.settings.update(NetworkObject.SETTINGS)
-        if settings:
-            self.settings.update(settings)
+        self.settings.update(type(self).SETTINGS)
+        self.settings.update(kwargs)
 
     @property
     def network(self):
@@ -76,12 +76,6 @@ class NetworkObject(BaseObject):
         self._guid_edge = {}
         self._guid_nodelabel = {}
         self._guid_edgelabel = {}
-
-    # def __getstate__(self):
-    #     pass
-
-    # def __setstate__(self, state):
-    #     pass
 
     @property
     def anchor(self):

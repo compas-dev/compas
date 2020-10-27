@@ -29,6 +29,7 @@ class Artist(BaseArtist):
 
     def redraw(self):
         compas_rhino.rs.EnableRedraw(True)
+        compas_rhino.rs.Redraw()
 
     def clear(self):
         if not self._guids:
