@@ -87,14 +87,9 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">basestring</span>
-<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
-
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">iterable_like</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists._primitiveartist</span> <span class="kn">import</span> <span class="n">PrimitiveArtist</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
+<span class="kn">from</span> <span class="nn">._primitiveartist</span> <span class="kn">import</span> <span class="n">PrimitiveArtist</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CircleArtist&#39;</span><span class="p">]</span>
@@ -112,10 +107,40 @@
 <span class="sd">    -----</span>
 <span class="sd">    See :class:`compas_rhino.artists.PrimitiveArtist` for all other parameters.</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import random</span>
+<span class="sd">        from compas.geometry import Pointcloud</span>
+<span class="sd">        from compas.geometry import Circle</span>
+<span class="sd">        from compas.utilities import i_to_rgb</span>
+
+<span class="sd">        import compas_rhino</span>
+<span class="sd">        from compas_rhino.artists import CircleArtist</span>
+
+<span class="sd">        pcl = Pointcloud.from_bounds(10, 10, 10, 100)</span>
+<span class="sd">        tpl = Circle([[0, 0, 0], [0, -1, 0]], 0.7)</span>
+
+<span class="sd">        compas_rhino.clear_layer(&quot;Test::CircleArtist&quot;)</span>
+
+<span class="sd">        for point in pcl.points:</span>
+<span class="sd">            circle = tpl.copy()</span>
+<span class="sd">            circle.plane.point = point</span>
+<span class="sd">            artist = CircleArtist(circle, color=i_to_rgb(random.random()), layer=&quot;Test::CircleArtist&quot;)</span>
+<span class="sd">            artist.draw()</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CircleArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.CircleArtist.draw.html#compas_rhino.artists.CircleArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CircleArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.CircleArtist.draw.html#compas_rhino.artists.CircleArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show_point</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_normal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the circle.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        show_point : bool, optional</span>
+<span class="sd">            Default is ``False``.</span>
+<span class="sd">        show_normal : bool, optional</span>
+<span class="sd">            Default is ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -124,62 +149,19 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">point</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">point</span><span class="p">)</span>
         <span class="n">normal</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">plane</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
+        <span class="n">plane</span> <span class="o">=</span> <span class="n">point</span><span class="p">,</span> <span class="n">normal</span>
         <span class="n">radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">radius</span>
-        <span class="n">circles</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;plane&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">],</span> <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}]</span>
-        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_circles</span><span class="p">(</span><span class="n">circles</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">show_point</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">point</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}]</span>
+            <span class="n">guids</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">show_normal</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">point</span><span class="p">,</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">normal</span><span class="p">),</span> <span class="s1">&#39;arrow&#39;</span><span class="p">:</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}]</span>
+            <span class="n">guids</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">circles</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;plane&#39;</span><span class="p">:</span> <span class="n">plane</span><span class="p">,</span> <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}]</span>
+        <span class="n">guids</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_circles</span><span class="p">(</span><span class="n">circles</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span> <span class="o">=</span> <span class="n">guids</span>
-        <span class="k">return</span> <span class="n">guids</span></div>
-
-<div class="viewcode-block" id="CircleArtist.draw_collection"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.CircleArtist.draw_collection.html#compas_rhino.artists.CircleArtist.draw_collection">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_to_group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">group_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Draw a collection of circles.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        collection : list of :class:`compas.geometry.Circle`</span>
-<span class="sd">            A collection of circles.</span>
-<span class="sd">        names : list of str, optional</span>
-<span class="sd">            Individual names for the circles.</span>
-<span class="sd">        colors : color or list of color, optional</span>
-<span class="sd">            A color specification for the circles as a single color or a list of individual colors.</span>
-<span class="sd">        layer : str, optional</span>
-<span class="sd">            A layer path.</span>
-<span class="sd">        clear : bool, optional</span>
-<span class="sd">            Clear the layer before drawing.</span>
-<span class="sd">        add_to_group : bool, optional</span>
-<span class="sd">            Add the circles to a group.</span>
-<span class="sd">        group_name : str, optional</span>
-<span class="sd">            Name of the group.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list</span>
-<span class="sd">            The GUIDs of the created Rhino objects.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">circles</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">circle</span> <span class="ow">in</span> <span class="n">collection</span><span class="p">:</span>
-            <span class="n">circles</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;plane&#39;</span><span class="p">:</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">circle</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">list</span><span class="p">(</span><span class="n">circle</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])],</span> <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">circle</span><span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
-        <span class="k">if</span> <span class="n">colors</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
-                <span class="n">colors</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="p">[</span><span class="n">colors</span><span class="p">],</span> <span class="n">colors</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">colors</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">colors</span><span class="p">,</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">point</span><span class="p">,</span> <span class="n">rgb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">circles</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
-                <span class="n">circle</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb</span>
-        <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
-                <span class="n">names</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="p">[</span><span class="n">names</span><span class="p">],</span> <span class="n">names</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">names</span> <span class="o">=</span> <span class="n">iterable_like</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">circle</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">circles</span><span class="p">,</span> <span class="n">names</span><span class="p">):</span>
-                <span class="n">circle</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_circles</span><span class="p">(</span><span class="n">circles</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">add_to_group</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">guids</span>
-        <span class="n">group</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">AddGroup</span><span class="p">(</span><span class="n">group_name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">group</span><span class="p">:</span>
-            <span class="n">compas_rhino</span><span class="o">.</span><span class="n">rs</span><span class="o">.</span><span class="n">AddObjectsToGroup</span><span class="p">(</span><span class="n">guids</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">group</span></div></div>
+        <span class="k">return</span> <span class="n">guids</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

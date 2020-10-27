@@ -213,12 +213,10 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; from compas.geometry import Polyhedron</span>
-<span class="sd">        &gt;&gt;&gt; p = Polyhedron(4)</span>
+<span class="sd">        &gt;&gt;&gt; p = Polyhedron.from_platonicsolid(4)</span>
 <span class="sd">        &gt;&gt;&gt; q = Polyhedron.from_data(p.data)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces&#39;</span><span class="p">)))</span>
-        <span class="n">p</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
-        <span class="k">return</span> <span class="n">p</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;vertices&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;faces&#39;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Polyhedron.from_platonicsolid"><a class="viewcode-back" href="../../../../api/generated/compas.geometry.Polyhedron.from_platonicsolid.html#compas.geometry.Polyhedron.from_platonicsolid">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_platonicsolid</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>

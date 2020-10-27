@@ -92,6 +92,8 @@
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_polygon</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">centroid_points</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
 
 <span class="kn">from</span> <span class="nn">compas_rhino.utilities</span> <span class="kn">import</span> <span class="n">create_layers_from_path</span>
 <span class="kn">from</span> <span class="nn">compas_rhino.utilities</span> <span class="kn">import</span> <span class="n">clear_layer</span>
@@ -118,6 +120,12 @@
 <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">TextDot</span>
 <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Mesh</span> <span class="k">as</span> <span class="n">RhinoMesh</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">MeshNgon</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">MeshNgon</span> <span class="o">=</span> <span class="kc">False</span>
+
 <span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectColorSource</span> <span class="kn">import</span> <span class="n">ColorFromObject</span>
 <span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectColorSource</span> <span class="kn">import</span> <span class="n">ColorFromLayer</span>
 <span class="kn">from</span> <span class="nn">Rhino.DocObjects.ObjectDecoration</span> <span class="kn">import</span> <span class="n">EndArrowhead</span>
@@ -817,29 +825,55 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mesh</span> <span class="o">=</span> <span class="n">RhinoMesh</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">disjoint</span><span class="p">:</span>
-        <span class="n">P</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
-                <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
-                <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
-                <span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">AddFace</span><span class="p">(</span><span class="n">P</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span> <span class="n">P</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">P</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
-                <span class="n">P</span> <span class="o">+=</span> <span class="mi">3</span>
-            <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
-                <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
-                <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
-                <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
-                <span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">AddFace</span><span class="p">(</span><span class="n">P</span> <span class="o">+</span> <span class="mi">0</span><span class="p">,</span> <span class="n">P</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">P</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">P</span> <span class="o">+</span> <span class="mi">3</span><span class="p">)</span>
-                <span class="n">P</span> <span class="o">+=</span> <span class="mi">4</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+                <span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">AddFace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">vertices</span><span class="p">[</span><span class="n">face</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
+                <span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">AddFace</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">MeshNgon</span><span class="p">:</span>
+                    <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span>
+                    <span class="n">centroid</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+                    <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+                        <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">point</span><span class="p">))</span>
+                    <span class="n">c</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">centroid</span><span class="p">)</span>
+                    <span class="n">facets</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">indices</span> <span class="o">+</span> <span class="n">indices</span><span class="p">[:</span><span class="mi">1</span><span class="p">]):</span>
+                        <span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">AddFace</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+                    <span class="n">ngon</span> <span class="o">=</span> <span class="n">MeshNgon</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">facets</span><span class="p">)</span>
+                    <span class="n">mesh</span><span class="o">.</span><span class="n">Ngons</span><span class="o">.</span><span class="n">AddNgon</span><span class="p">(</span><span class="n">ngon</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
-            <span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">AddFace</span><span class="p">(</span><span class="o">*</span><span class="n">face</span><span class="p">)</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">AddFace</span><span class="p">(</span><span class="o">*</span><span class="n">face</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">AddFace</span><span class="p">(</span><span class="o">*</span><span class="n">face</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">MeshNgon</span><span class="p">:</span>
+                    <span class="n">centroid</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="n">vertices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face</span><span class="p">])</span>
+                    <span class="n">c</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">Vertices</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="o">*</span> <span class="n">centroid</span><span class="p">)</span>
+                    <span class="n">facets</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">face</span> <span class="o">+</span> <span class="n">face</span><span class="p">[:</span><span class="mi">1</span><span class="p">]):</span>
+                        <span class="n">facets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">Faces</span><span class="o">.</span><span class="n">AddFace</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+                    <span class="n">ngon</span> <span class="o">=</span> <span class="n">MeshNgon</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">facets</span><span class="p">)</span>
+                    <span class="n">mesh</span><span class="o">.</span><span class="n">Ngons</span><span class="o">.</span><span class="n">AddNgon</span><span class="p">(</span><span class="n">ngon</span><span class="p">)</span>
+
     <span class="n">mesh</span><span class="o">.</span><span class="n">Normals</span><span class="o">.</span><span class="n">ComputeNormals</span><span class="p">()</span>
     <span class="n">mesh</span><span class="o">.</span><span class="n">Compact</span><span class="p">()</span>
     <span class="n">guid</span> <span class="o">=</span> <span class="n">add_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
@@ -897,16 +931,16 @@
             <span class="k">continue</span>
         <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">mfaces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
-        <span class="k">elif</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">mfaces</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">mfaces</span> <span class="o">=</span> <span class="n">_face_to_max_quad</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">vertexcolors</span><span class="p">:</span>
-                <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">component</span><span class="p">)</span> <span class="o">/</span> <span class="n">v</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">vertexcolors</span><span class="p">)]</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="mi">255</span><span class="p">))</span>
-                <span class="n">g</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">g</span><span class="p">),</span> <span class="mi">255</span><span class="p">))</span>
-                <span class="n">b</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="mi">255</span><span class="p">))</span>
-                <span class="n">vertexcolors</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+            <span class="n">mfaces</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">v</span><span class="p">))]</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     mfaces = _face_to_max_quad(points, range(v))</span>
+        <span class="c1">#     if vertexcolors:</span>
+        <span class="c1">#         r, g, b = [sum(component) / v for component in zip(*vertexcolors)]</span>
+        <span class="c1">#         r = int(min(max(0, r), 255))</span>
+        <span class="c1">#         g = int(min(max(0, g), 255))</span>
+        <span class="c1">#         b = int(min(max(0, b), 255))</span>
+        <span class="c1">#         vertexcolors.append((r, g, b))</span>
 
         <span class="n">guid</span> <span class="o">=</span> <span class="n">draw_mesh</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">mfaces</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 

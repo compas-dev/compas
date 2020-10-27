@@ -88,8 +88,10 @@
           
           <span class="target" id="module-compas.geometry"></span><div class="section" id="geometry">
 <h1>geometry</h1>
+<div class="section" id="primitives">
+<h2>Primitives</h2>
 <div class="section" id="base-classes">
-<h2>Base Classes</h2>
+<h3>Base Classes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -99,14 +101,11 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.Primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Primitive</span></code></a></p></td>
 <td><p>Base class for geometric primitives.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
-<td><p>Base class for geometric shapes.</p></td>
-</tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="primitives">
-<h2>Primitives</h2>
+<div class="section" id="classes">
+<h3>Classes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -145,9 +144,93 @@
 </tr>
 </tbody>
 </table>
+<p>The following representations of primitives can be used
+interchangeably as input in methods and functions.
+The representations using native Python objects also correspond to the required input
+parameters of the default constructor functions of the corresponding COMPAS objects.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 27%" />
+<col style="width: 62%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Object</p></td>
+<td><p>COMPAS</p></td>
+<td><p>Python</p></td>
+</tr>
+<tr class="row-even"><td><p>point</p></td>
+<td><p>Point(float, float, float)</p></td>
+<td><p>[float, float, float]</p></td>
+</tr>
+<tr class="row-odd"><td><p>vector</p></td>
+<td><p>Vector(float, float, float)</p></td>
+<td><p>[float, float, float]</p></td>
+</tr>
+<tr class="row-even"><td><p>line</p></td>
+<td><p>Line(point, point)</p></td>
+<td><p>[[float, float, float], [float, float, float]]</p></td>
+</tr>
+<tr class="row-odd"><td><p>plane</p></td>
+<td><p>Plane(point, vector)</p></td>
+<td><p>[[float, float, float], [float, float, float]]</p></td>
+</tr>
+<tr class="row-even"><td><p>circle</p></td>
+<td><p>Circle(plane, float)</p></td>
+<td><p>[[[float, float, float], [float, float, float]], float]</p></td>
+</tr>
+<tr class="row-odd"><td><p>polygon</p></td>
+<td><p>Polygon(points)</p></td>
+<td><p>[[float, float, float], … [float, float, float]]</p></td>
+</tr>
+<tr class="row-even"><td><p>polyline</p></td>
+<td><p>Polyline(points)</p></td>
+<td><p>[[float, float, float], … [float, float, float]]</p></td>
+</tr>
+<tr class="row-odd"><td><p>ellipse</p></td>
+<td><p>Ellipse(plane, float, float)</p></td>
+<td><p>[[[float, float, float], [float, float, float]], float, float]</p></td>
+</tr>
+<tr class="row-even"><td><p>frame</p></td>
+<td><p>Frame(point, vector,  vector)</p></td>
+<td><p>[[float, float, float], [float, float, float], [float, float, float]]</p></td>
+</tr>
+</tbody>
+</table>
+<p>COMPAS primitives also support indexing, assignment, and iteration according to the above
+equivalency.</p>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">a</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</code></pre></div>
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span> <span class="o">=</span> <span class="n">Plane</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">plane</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">n</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="shapes">
 <h2>Shapes</h2>
+<div class="section" id="id1">
+<h3>Base Classes</h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
+<td><p>Base class for geometric shapes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id2">
+<h3>Classes</h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -177,6 +260,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div class="section" id="predicates-2d">
 <h2>Predicates 2D</h2>
@@ -1059,6 +1143,23 @@
 </tbody>
 </table>
 </div>
+<div class="section" id="id3">
+<h2>Base Classes</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.geometry.Primitive.html#compas.geometry.Primitive" title="compas.geometry.Primitive"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Primitive</span></code></a></p></td>
+<td><p>Base class for geometric primitives.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.geometry.Shape.html#compas.geometry.Shape" title="compas.geometry.Shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Shape</span></code></a></p></td>
+<td><p>Base class for geometric shapes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
         
@@ -1117,9 +1218,16 @@
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">geometry</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#primitives">Primitives</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#base-classes">Base Classes</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#primitives">Primitives</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#shapes">Shapes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#shapes">Shapes</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#id1">Base Classes</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id2">Classes</a></li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="#predicates-2d">Predicates 2D</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#predicates-3d">Predicates 3D</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#transformations">Transformations</a><ul class="nav flex-column">
@@ -1139,6 +1247,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="#triangle-meshes">Triangle meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#quad-meshes">Quad meshes</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#pointclouds">Pointclouds</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#id3">Base Classes</a></li>
 </ul>
 </li>
 </ul>

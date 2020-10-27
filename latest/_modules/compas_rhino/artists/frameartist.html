@@ -87,14 +87,8 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">basestring</span>
-<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
-    <span class="n">basestring</span> <span class="o">=</span> <span class="nb">str</span>
-
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
-<span class="c1"># from compas.utilities import iterable_like</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.artists._primitiveartist</span> <span class="kn">import</span> <span class="n">PrimitiveArtist</span>
+<span class="kn">from</span> <span class="nn">._primitiveartist</span> <span class="kn">import</span> <span class="n">PrimitiveArtist</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FrameArtist&#39;</span><span class="p">]</span>
@@ -128,6 +122,27 @@
 <span class="sd">    color_zaxis : tuple of 3 int between 0 abd 255</span>
 <span class="sd">        Default is ``(0, 0, 255)``.</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from compas.geometry import Pointcloud</span>
+<span class="sd">        from compas.geometry import Frame</span>
+
+<span class="sd">        import compas_rhino</span>
+<span class="sd">        from compas_rhino.artists import FrameArtist</span>
+
+<span class="sd">        pcl = Pointcloud.from_bounds(10, 10, 10, 100)</span>
+<span class="sd">        tpl = Frame([0, 0, 0], [1, 0, 0], [0, 1, 0])</span>
+
+<span class="sd">        compas_rhino.clear_layer(&quot;Test::FrameArtist&quot;)</span>
+
+<span class="sd">        for point in pcl.points:</span>
+<span class="sd">            frame = tpl.copy()</span>
+<span class="sd">            frame.point = point</span>
+<span class="sd">            artist = FrameArtist(frame, layer=&quot;Test::FrameArtist&quot;)</span>
+<span class="sd">            artist.draw()</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="FrameArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.FrameArtist.__init__.html#compas_rhino.artists.FrameArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
@@ -160,35 +175,7 @@
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">guids</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span> <span class="o">=</span> <span class="n">guids</span>
-        <span class="k">return</span> <span class="n">guids</span></div>
-
-<div class="viewcode-block" id="FrameArtist.draw_collection"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.FrameArtist.draw_collection.html#compas_rhino.artists.FrameArtist.draw_collection">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">draw_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">add_to_group</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">group_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Draw a collection of circles.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        collection : list of :class:`compas.geometry.Frame`</span>
-<span class="sd">            A collection of frames.</span>
-<span class="sd">        names : list of str, optional</span>
-<span class="sd">            Individual names for the frames.</span>
-<span class="sd">        colors : color or list of color, optional</span>
-<span class="sd">            A color specification for the frames as a single color or a list of individual colors.</span>
-<span class="sd">        layer : str, optional</span>
-<span class="sd">            A layer path.</span>
-<span class="sd">        clear : bool, optional</span>
-<span class="sd">            Clear the layer before drawing.</span>
-<span class="sd">        add_to_group : bool, optional</span>
-<span class="sd">            Add the frames to a group.</span>
-<span class="sd">        group_name : str, optional</span>
-<span class="sd">            Name of the group.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        list</span>
-<span class="sd">            The GUIDs of the created Rhino objects.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+        <span class="k">return</span> <span class="n">guids</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

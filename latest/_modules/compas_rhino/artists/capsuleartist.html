@@ -87,6 +87,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 <span class="kn">from</span> <span class="nn">._shapeartist</span> <span class="kn">import</span> <span class="n">ShapeArtist</span>
 
@@ -103,9 +104,32 @@
 <span class="sd">    -----</span>
 <span class="sd">    See :class:`compas_rhino.artists.ShapeArtist` for all other parameters.</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import random</span>
+<span class="sd">        from compas.geometry import Pointcloud</span>
+<span class="sd">        from compas.geometry import Capsule</span>
+<span class="sd">        from compas.geometry import Translation</span>
+<span class="sd">        from compas.utilities import i_to_rgb</span>
+
+<span class="sd">        import compas_rhino</span>
+<span class="sd">        from compas_rhino.artists import CapsuleArtist</span>
+
+<span class="sd">        pcl = Pointcloud.from_bounds(10, 10, 10, 100)</span>
+<span class="sd">        tpl = Capsule([[0, 0, 0], [0.8, 0, 0]], 0.15)</span>
+
+<span class="sd">        compas_rhino.clear_layer(&quot;Test::CapsuleArtist&quot;)</span>
+
+<span class="sd">        for point in pcl.points:</span>
+<span class="sd">            capsule = tpl.transformed(Translation.from_vector(point))</span>
+<span class="sd">            artist = CapsuleArtist(capsule, color=i_to_rgb(random.random()), layer=&quot;Test::CapsuleArtist&quot;)</span>
+<span class="sd">            artist.draw()</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="CapsuleArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.CapsuleArtist.draw.html#compas_rhino.artists.CapsuleArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<div class="viewcode-block" id="CapsuleArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_rhino.artists.CapsuleArtist.draw.html#compas_rhino.artists.CapsuleArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">show_vertices</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_faces</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">join_faces</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw the capsule associated with the artist.</span>
 
 <span class="sd">        Parameters</span>
@@ -116,6 +140,14 @@
 <span class="sd">        v : int, optional</span>
 <span class="sd">            Number of faces in the &quot;v&quot; direction.</span>
 <span class="sd">            Default is ``10``.</span>
+<span class="sd">        show_vertices : bool, optional</span>
+<span class="sd">            Default is ``False``.</span>
+<span class="sd">        show_edges : bool, optional</span>
+<span class="sd">            Default is ``False``.</span>
+<span class="sd">        show_faces : bool, optional</span>
+<span class="sd">            Default is ``True``.</span>
+<span class="sd">        join_faces : bool, optional</span>
+<span class="sd">            Default is ``True``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -124,10 +156,27 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">to_vertices_and_faces</span><span class="p">(</span><span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">point</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">}</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
-        <span class="n">polygons</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face</span><span class="p">],</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">}</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
-        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">guids</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">show_vertices</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="n">point</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">}</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">]</span>
+            <span class="n">guids</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">show_edges</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">face</span> <span class="o">+</span> <span class="n">face</span><span class="p">[:</span><span class="mi">1</span><span class="p">]):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+                        <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+                        <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">))</span>
+                        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">vertices</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">vertices</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">})</span>
+            <span class="n">guids</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">show_faces</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">join_faces</span><span class="p">:</span>
+                <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_mesh</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="n">disjoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">guids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">guid</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">polygons</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;points&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">vertices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">face</span><span class="p">],</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">}</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+                <span class="n">guids</span> <span class="o">+=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_guids</span> <span class="o">=</span> <span class="n">guids</span>
         <span class="k">return</span> <span class="n">guids</span></div></div>
 

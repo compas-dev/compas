@@ -92,13 +92,15 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
+
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">matrix_from_frame</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">transform_points</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Circle</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Frame</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Plane</span>
 
-<span class="kn">from</span> <span class="nn">compas.geometry.shapes</span> <span class="kn">import</span> <span class="n">Shape</span>
+<span class="kn">from</span> <span class="nn">._shape</span> <span class="kn">import</span> <span class="n">Shape</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Cone&#39;</span><span class="p">]</span>
@@ -181,7 +183,7 @@
 
     <span class="nd">@circle</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">circle</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_circle</span> <span class="o">=</span> <span class="n">circle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">circle</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">circle</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -313,7 +315,7 @@
         <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The value for u should be u &gt; 3.&#39;</span><span class="p">)</span>
 
-        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
         <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">u</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
             <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
@@ -321,17 +323,18 @@
             <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
         <span class="n">vertices</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">])</span>
 
-        <span class="c1"># transform vertices to cylinder&#39;s plane</span>
         <span class="n">frame</span> <span class="o">=</span> <span class="n">Frame</span><span class="o">.</span><span class="n">from_plane</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">circle</span><span class="o">.</span><span class="n">plane</span><span class="p">)</span>
         <span class="n">M</span> <span class="o">=</span> <span class="n">matrix_from_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="n">transform_points</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
 
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">last</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
-            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">u</span><span class="p">,</span> <span class="n">last</span><span class="p">])</span>
-        <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">u</span><span class="p">)])</span>
-        <span class="n">faces</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">last</span><span class="p">)):</span>
+            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">last</span><span class="p">])</span>
+            <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">first</span><span class="p">])</span>
+        <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">last</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">last</span><span class="p">])</span>
+        <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">last</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">first</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span></div>
 
