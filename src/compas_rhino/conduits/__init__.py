@@ -37,7 +37,6 @@ with less of a performance penalty than with regular geometry objects.
             kmax=100,
             callback=redraw)
 
-----
 
 BaseConduit
 ===========

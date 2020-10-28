@@ -17,7 +17,6 @@ Wrappers for Rhino objects that can be used to convert Rhino geometry and data t
     guid = compas_rhino.select_mesh()
     mesh = RhinoMesh.from_guid(guid).to_compas()
 
-----
 
 BaseRhinoGeometry
 =================

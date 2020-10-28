@@ -23,7 +23,6 @@ objects
     if vertices and meshobject.modify_vertices(vertices):
         meshobject.draw()
 
-----
 
 NetworkObject
 =============
