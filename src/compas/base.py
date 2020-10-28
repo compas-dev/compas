@@ -125,10 +125,11 @@ class Base(ABC):
 
     def __getstate__(self):
         """Return the object data for state state serialisation with older pickle protocols."""
-        return {'dtype': self.dtype, 'data': self.data}
+        return {'__dict__': self.__dict__.copy(), 'dtype': self.dtype, 'data': self.data}
 
     def __setstate__(self, state):
         """Assign an unserialised state to the object data to support older pickle protocols."""
+        self.__dict__.update(state['__dict__'])
         self.data = state['data']
 
     def validate_data(self):
