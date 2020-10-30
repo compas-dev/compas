@@ -32,7 +32,8 @@ class Coeff():
         self.b = 0.5 * (1 + self.a)
 
 
-def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
+def dr_numpy(vertices, edges, fixed, loads, qpre,
+             fpre=None, lpre=None, linit=None, E=None, radius=None,
              callback=None, callback_args=None, **kwargs):
     """Implementation of the dynamic relaxation method for form findong and analysis
     of articulated networks of axial-force members.
@@ -49,15 +50,15 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         XYZ components of the loads on the vertices.
     qpre : list
         Prescribed force densities in the edges.
-    fpre : list
+    fpre : list, optional
         Prescribed forces in the edges.
-    lpre : list
+    lpre : list, optinonal
         Prescribed lengths of the edges.
-    linit : list
+    linit : list, optional
         Initial length of the edges.
-    E : list
+    E : list, optional
         Stiffness of the edges.
-    radius : list
+    radius : list, optional
         Radius of the edges.
     callback : callable, optional
         User-defined function that is called at every iteration.
@@ -112,6 +113,15 @@ def dr_numpy(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     num_v = len(vertices)
     num_e = len(edges)
     free = list(set(range(num_v)) - set(fixed))
+    # --------------------------------------------------------------------------
+    # input processing
+    # --------------------------------------------------------------------------
+    qpre = qpre or [0.0 for _ in range(num_e)]
+    fpre = fpre or [0.0 for _ in range(num_e)]
+    lpre = lpre or [0.0 for _ in range(num_e)]
+    linit = linit or [0.0 for _ in range(num_e)]
+    E = E or [0.0 for _ in range(num_e)]
+    radius = radius or [0.0 for _ in range(num_e)]
     # --------------------------------------------------------------------------
     # attribute arrays
     # --------------------------------------------------------------------------
