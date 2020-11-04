@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in `__getstate__`, `__setstate__` of `compas.base.Base`.
+* Fixed bug in `compas_rhino.artists.MeshArtist` and `compas_rhino.artists.NetworkArtist`.
+* Changed length and force constraints of DR to optional parameters.
 
 ### Removed
 
