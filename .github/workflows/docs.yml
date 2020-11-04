@@ -34,7 +34,7 @@ jobs:
         run: |
           invoke docs
           # Get branch/tag/latest name from git
-          GITHUB_REF_REGEX="tags/([0-9a-zA-Z\.\-]+)|(pull/[0-9]+)|heads/(.+)"
+          GITHUB_REF_REGEX="tags/v([0-9a-zA-Z\.\-]+)|(pull/[0-9]+)|heads/(.+)"
           if [[ $GITHUB_REF =~ $GITHUB_REF_REGEX ]]; then
             if [[ $BASH_REMATCH = pull* ]]; then
               BRANCH_OR_TAG=pull_${BASH_REMATCH##*/}
