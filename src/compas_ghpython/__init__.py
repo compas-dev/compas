@@ -18,7 +18,7 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '0.17.1'
+__version__ = '0.17.2'
 
 
 __all_plugins__ = ['compas_ghpython.install']

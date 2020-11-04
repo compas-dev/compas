@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/schema",
     "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
-    "$compas": "0.17.1",
+    "$compas": "0.17.2",
 
     "type": "object",
     "poperties": {
