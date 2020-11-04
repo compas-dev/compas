@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Fixed bug in `__getstate__`, `__setstate__` of `compas.base.Base`.
+* Removed `ABCMeta` from the list of base clases of several objects in compas.
 
 ### Removed
 
