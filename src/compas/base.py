@@ -21,11 +21,13 @@ from compas.utilities import DataDecoder
 __all__ = [
     'Base',
 ]
-import abc
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
-class Base(ABC):
+# import abc
+# ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
+
+
+class Base(object):
     """Abstract base class for all COMPAS objects.
 
     Attributes
