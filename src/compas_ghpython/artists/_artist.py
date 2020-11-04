@@ -2,24 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import abc
-
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
-
 
 __all__ = ["BaseArtist"]
 
 
-class BaseArtist(ABC):
+class BaseArtist(object):
     """Abstract base class for all GH artists.
     """
 
     def __init__(self):
         pass
 
-    @abc.abstractmethod
     def draw(self):
-        pass
+        raise NotImplementedError
 
     @staticmethod
     def draw_collection(collection):

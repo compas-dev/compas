@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import abc
 import itertools
 
 from compas.geometry import Frame
@@ -10,16 +9,13 @@ from compas.geometry import Scale
 from compas.geometry import Transformation
 from compas.robots import Geometry
 
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
-
 
 __all__ = [
     'BaseRobotModelArtist'
 ]
 
 
-class AbstractRobotModelArtist(ABC):
-    @abc.abstractmethod
+class AbstractRobotModelArtist(object):
     def transform(self, geometry, transformation):
         """Transforms a CAD-specific geometry using a **COMPAS** transformation.
 
@@ -32,7 +28,6 @@ class AbstractRobotModelArtist(ABC):
         """
         raise NotImplementedError
 
-    @abc.abstractmethod
     def draw_geometry(self, geometry, name=None, color=None):
         """Draw a **COMPAS** geometry in the respective CAD environment.
 
