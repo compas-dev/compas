@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import abc
-
 import System
 from System.Windows.Forms import DialogResult
 from System.Windows.Forms import FormBorderStyle
@@ -11,13 +9,10 @@ from System.Windows.Forms import FormBorderStyle
 import Rhino
 
 
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
-
-
 __all__ = ['BaseForm']
 
 
-class BaseForm(System.Windows.Forms.Form, ABC):
+class BaseForm(System.Windows.Forms.Form):
     """Base class for Windows forms."""
 
     def __init__(self, title='Form', width=None, height=None):
@@ -33,9 +28,8 @@ class BaseForm(System.Windows.Forms.Form, ABC):
         self.ResumeLayout()
         self.FormClosed += self.on_form_closed
 
-    @abc.abstractmethod
     def init(self):
-        pass
+        raise NotImplementedError
 
     def show(self):
         """Show the form as a modal dialog.

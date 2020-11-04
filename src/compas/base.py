@@ -1,16 +1,21 @@
+"""
+If you ever feel tempted to use ABCMeta in your code: don't, just DON'T.
+Assigning __metaclass__ = ABCMeta to a class causes a severe memory leak/performance
+degradation on IronPython 2.7.
+
+See these issues for more details:
+ - https://github.com/compas-dev/compas/issues/562
+ - https://github.com/compas-dev/compas/issues/649
+"""
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import abc
 import json
 from uuid import uuid4
 
 from compas.utilities import DataEncoder
 from compas.utilities import DataDecoder
-from compas.utilities import abstractclassmethod
-
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
 __all__ = [
@@ -18,7 +23,11 @@ __all__ = [
 ]
 
 
-class Base(ABC):
+# import abc
+# ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
+
+
+class Base(object):
     """Abstract base class for all COMPAS objects.
 
     Attributes
@@ -73,24 +82,22 @@ class Base(ABC):
         """
         return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
 
-    @abc.abstractproperty
+    @property
     def data(self):
         """dict :
         The representation of the object as native Python data.
         The structure uf the data is described by the data schema.
         """
-        pass
+        raise NotImplementedError
 
     @data.setter
     def data(self, data):
         pass
 
-    @abstractclassmethod
     def from_data(cls, data):
         """Construct an object of this type from the provided data."""
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def to_data(self):
         """Convert an object to its native data representation.
 
@@ -99,9 +106,8 @@ class Base(ABC):
         dict
             The data representation of the object as described by the schema.
         """
-        pass
+        raise NotImplementedError
 
-    @abstractclassmethod
     def from_json(cls, filepath):
         """Construct an object from serialised data contained in a JSON file.
 
@@ -110,9 +116,8 @@ class Base(ABC):
         filepath: str
             The path to the file for serialisation.
         """
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def to_json(self, filepath):
         """Serialize the data representation of an object to a JSON file.
 
@@ -121,7 +126,7 @@ class Base(ABC):
         filepath: str
             The path to the file containing the data.
         """
-        pass
+        raise NotImplementedError
 
     def __getstate__(self):
         """Return the object data for state state serialisation with older pickle protocols."""
