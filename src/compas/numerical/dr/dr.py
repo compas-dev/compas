@@ -90,7 +90,9 @@ def adjacency_from_edges(edges):
     return adj
 
 
-def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
+def dr(vertices, edges, fixed, loads, qpre,
+       fpre=None, lpre=None,
+       linit=None, E=None, radius=None,
        kmax=100, dt=1.0, tol1=1e-3, tol2=1e-6, c=0.1, callback=None, callback_args=None):
     """Implementation of dynamic relaxation with RK integration scheme in pure Python.
 
@@ -106,15 +108,15 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         XYZ components of the loads on the vertices.
     qpre : list
         Prescribed force densities in the edges.
-    fpre : list
+    fpre : list, optional
         Prescribed forces in the edges.
-    lpre : list
+    lpre : list, optional
         Prescribed lengths of the edges.
-    linit : list
+    linit : list, optoional
         Initial length of the edges.
-    E : list
+    E : list, optional
         Stiffness of the edges.
-    radius : list
+    radius : list, optional
         Radius of the edges.
     kmax : int, optional
         Maximum number of iterations.
@@ -128,6 +130,10 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
         Damping factor for viscous damping.
     callback : callable, optional
         A user-defined callback that is called after every iteration.
+        The callback will be called with ``k`` the current iteration,
+        ``X`` the coordinates at iteration ``k``,
+        ``crit1, crit2`` the values of the stoppage criteria at iteration ``k``,
+        and ``callback_args`` the optional additional arguments.
     callback_args : tuple, optional
         Additional arguments to be passed to the callback.
 
@@ -155,6 +161,7 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # preprocess
     # --------------------------------------------------------------------------
     n = len(vertices)
+    e = len(edges)
 
     # i_nbrs = {i: [ij[1] if ij[0] == i else ij[0] for ij in edges if i in ij] for i in range(n)}
 
@@ -172,10 +179,15 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # --------------------------------------------------------------------------
     X = vertices
     P = loads
-    Q = qpre
+    Qpre = qpre or [0.0 for _ in range(e)]
+    Fpre = fpre or [0.0 for _ in range(e)]
+    Lpre = lpre or [0.0 for _ in range(e)]
     # --------------------------------------------------------------------------
     # initial values
     # --------------------------------------------------------------------------
+    Q = [1.0 for _ in range(e)]
+    L = [sum((X[i][axis] - X[j][axis]) ** 2 for axis in (0, 1, 2)) ** 0.5 for i, j in iter(edges)]
+    F = [q * l for q, l in zip(Q, L)]
     M = [sum(0.5 * dt ** 2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
     V = [[0.0, 0.0, 0.0] for _ in range(n)]
     R = [[0.0, 0.0, 0.0] for _ in range(n)]
@@ -234,6 +246,12 @@ def dr(vertices, edges, fixed, loads, qpre, fpre, lpre, linit, E, radius,
     # start iterating
     # --------------------------------------------------------------------------
     for k in range(kmax):
+        Qfpre = [a / b if b else 0 for a, b in zip(Fpre, L)]
+        Qlpre = [a / b if b else 0 for a, b in zip(F, Lpre)]
+
+        Q = [a + b + c for a, b, c in zip(Qpre, Qfpre, Qlpre)]
+        M = [sum(0.5 * dt ** 2 * Q[ij_e[(i, j)]] for j in i_nbrs[i]) for i in range(n)]
+
         X0 = deepcopy(X)
         V0 = [[ca * V[i][axis] for axis in (0, 1, 2)] for i in range(n)]
 
