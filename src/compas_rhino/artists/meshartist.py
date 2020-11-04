@@ -89,7 +89,7 @@ class MeshArtist(BaseArtist):
         The view coordinates default to the actual mesh coordinates.
         """
         if not self._vertex_xyz:
-            self._vertex_xyz = {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
+            return {vertex: self.mesh.vertex_attributes(vertex, 'xyz') for vertex in self.mesh.vertices()}
         return self._vertex_xyz
 
     @vertex_xyz.setter

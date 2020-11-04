@@ -63,7 +63,7 @@ class NetworkArtist(BaseArtist):
         The view coordinates default to the actual node coordinates.
         """
         if not self._node_xyz:
-            self._node_xyz = {node: self.network.node_attributes(node, 'xyz') for node in self.network.nodes()}
+            return {node: self.network.node_attributes(node, 'xyz') for node in self.network.nodes()}
         return self._node_xyz
 
     @node_xyz.setter
