@@ -2,19 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import abc
 import Rhino
 import compas_rhino
 
 from compas.utilities import abstractclassmethod
 
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
-
 
 __all__ = ['BaseRhinoGeometry']
 
 
-class BaseRhinoGeometry(ABC):
+class BaseRhinoGeometry(object):
     """Base class for Rhino geometry objects.
 
     Attributes
@@ -107,9 +104,8 @@ class BaseRhinoGeometry(ABC):
     def from_selection(cls):
         pass
 
-    @abc.abstractmethod
     def to_compas(self, cls=None):
-        pass
+        raise NotImplementedError
 
     def transform(self, T):
         """Transform the Rhino object.

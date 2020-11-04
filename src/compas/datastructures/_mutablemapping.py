@@ -5,7 +5,9 @@ The module contains vendored copies of a couple of classes from collections.abc
  * The Mapping class does not have a __metaclass__ = ABCMeta set
    because this causes performance issues on IronPython 2.7.x
 
-See this issue for more details: https://github.com/compas-dev/compas/issues/562
+See these issues for more details:
+ - https://github.com/compas-dev/compas/issues/562
+ - https://github.com/compas-dev/compas/issues/649
 """
 from __future__ import absolute_import
 from __future__ import division

@@ -2,11 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import abc
 from uuid import uuid4
 from compas_rhino.artists import BaseArtist
-
-ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
 
 
 __all__ = ['BaseObject']
@@ -15,7 +12,7 @@ __all__ = ['BaseObject']
 _ITEM_OBJECT = {}
 
 
-class BaseObject(ABC):
+class BaseObject(object):
     """Abstract base class for COMPAS Rhino objects.
 
     Parameters
@@ -133,38 +130,33 @@ class BaseObject(ABC):
         object_type = _ITEM_OBJECT[type(item)]
         return object_type(item, **kwargs)
 
-    @abc.abstractmethod
     def clear(self):
         """Clear all previously created Rhino objects."""
-        pass
+        raise NotImplementedError
 
     def clear_layer(self):
         """Clear the layer of the object."""
         self.artist.clear_layer()
 
-    @abc.abstractmethod
     def draw(self):
         """Draw the object representing the item."""
-        pass
+        raise NotImplementedError
 
     def redraw(self):
         """Redraw the Rhino scene/view."""
         self.artist.redraw()
 
-    @abc.abstractmethod
     def select(self):
         """Select the object representing the item."""
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def modify(self):
         """Modify the item represented by the object."""
-        pass
+        raise NotImplementedError
 
-    @abc.abstractmethod
     def move(self):
         """Move the item represented by the object."""
-        pass
+        raise NotImplementedError
 
 
 # ============================================================================
