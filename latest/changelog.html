@@ -58,6 +58,23 @@
       <!-- primary -->
       <ul class="navbar-nav d-none d-md-flex ml-md-auto">
         
+        <!-- version -->
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Version
+          </a>
+          <div class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions">
+            
+              <a class="dropdown-item" href="/compas/latest">latest</a>
+            
+              <a class="dropdown-item" href="/compas/0.16.8">0.16.8</a>
+            
+              <a class="dropdown-item" href="/compas/0.16.7">0.16.7</a>
+            
+          </div>
+        </li>
+        <!-- version -->
+        
         <!-- social -->
         <li class="nav-item">
           <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
@@ -100,6 +117,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h3>Changed</h3>
 <ul class="simple">
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">__getstate__</span></code>, <code class="docutils literal notranslate"><span class="pre">__setstate__</span></code> of <code class="docutils literal notranslate"><span class="pre">compas.base.Base</span></code>.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">ABCMeta</span></code> from the list of base clases of several objects in compas.</p></li>
 </ul>
 </div>
 <div class="section" id="removed">
