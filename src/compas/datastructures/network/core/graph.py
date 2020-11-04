@@ -820,6 +820,9 @@ class Graph(Datastructure):
         attr_dict.update(kwattr)
         self.default_edge_attributes.update(attr_dict)
 
+    update_dna = update_default_node_attributes
+    update_dea = update_default_edge_attributes
+
     # --------------------------------------------------------------------------
     # node attributes
     # --------------------------------------------------------------------------
