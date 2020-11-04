@@ -236,9 +236,10 @@ class BaseRobotModelArtist(AbstractRobotModelArtist):
             ``True`` if the collision geometry should be also updated, otherwise ``False``.
             Defaults to ``True``.
         """
-        transformations = self._update(self.model, joint_state, visual, collision)
+        _ = self._update(self.model, joint_state, visual, collision)
         if self.attached_tool_model:
-            self.update_tool(visual=visual, collision=collision, transformation=transformations[self.attached_tool_model.parent_joint_name])
+            frame = self.model.forward_kinematics(joint_state, link_name=self.attached_tool_model.link_name)
+            self.update_tool(visual=visual, collision=collision, transformation=Transformation.from_frame_to_frame(Frame.worldXY(), frame))
 
     def _update(self, model, joint_state, visual=True, collision=True, parent_transformation=None):
         transformations = model.compute_transformations(joint_state, parent_transformation=parent_transformation)
