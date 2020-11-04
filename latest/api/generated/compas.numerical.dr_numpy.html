@@ -67,10 +67,6 @@
             
               <a class="dropdown-item" href="/compas/latest">latest</a>
             
-              <a class="dropdown-item" href="/compas/0.16.8">0.16.8</a>
-            
-              <a class="dropdown-item" href="/compas/0.16.7">0.16.7</a>
-            
           </div>
         </li>
         <!-- version -->
@@ -107,7 +103,7 @@
 <h1>dr_numpy</h1>
 <dl class="function">
 <dt id="compas.numerical.dr_numpy">
-<code class="sig-prename descclassname">compas.numerical.</code><code class="sig-name descname">dr_numpy</code><span class="sig-paren">(</span><em class="sig-param">vertices</em>, <em class="sig-param">edges</em>, <em class="sig-param">fixed</em>, <em class="sig-param">loads</em>, <em class="sig-param">qpre</em>, <em class="sig-param">fpre</em>, <em class="sig-param">lpre</em>, <em class="sig-param">linit</em>, <em class="sig-param">E</em>, <em class="sig-param">radius</em>, <em class="sig-param">callback=None</em>, <em class="sig-param">callback_args=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/numerical/dr/dr_numpy.html#dr_numpy"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">compas.numerical.</code><code class="sig-name descname">dr_numpy</code><span class="sig-paren">(</span><em class="sig-param">vertices</em>, <em class="sig-param">edges</em>, <em class="sig-param">fixed</em>, <em class="sig-param">loads</em>, <em class="sig-param">qpre</em>, <em class="sig-param">fpre=None</em>, <em class="sig-param">lpre=None</em>, <em class="sig-param">linit=None</em>, <em class="sig-param">E=None</em>, <em class="sig-param">radius=None</em>, <em class="sig-param">callback=None</em>, <em class="sig-param">callback_args=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/numerical/dr/dr_numpy.html#dr_numpy"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Implementation of the dynamic relaxation method for form findong and analysis
 of articulated networks of axial-force members.</p>
 <dl class="field-list simple">
@@ -118,11 +114,11 @@ of articulated networks of axial-force members.</p>
 <li><p><strong>fixed</strong> (<em>list</em>) – Indices of the fixed vertices.</p></li>
 <li><p><strong>loads</strong> (<em>list</em>) – XYZ components of the loads on the vertices.</p></li>
 <li><p><strong>qpre</strong> (<em>list</em>) – Prescribed force densities in the edges.</p></li>
-<li><p><strong>fpre</strong> (<em>list</em>) – Prescribed forces in the edges.</p></li>
-<li><p><strong>lpre</strong> (<em>list</em>) – Prescribed lengths of the edges.</p></li>
-<li><p><strong>linit</strong> (<em>list</em>) – Initial length of the edges.</p></li>
-<li><p><strong>E</strong> (<em>list</em>) – Stiffness of the edges.</p></li>
-<li><p><strong>radius</strong> (<em>list</em>) – Radius of the edges.</p></li>
+<li><p><strong>fpre</strong> (<em>list, optional</em>) – Prescribed forces in the edges.</p></li>
+<li><p><strong>lpre</strong> (<em>list, optinonal</em>) – Prescribed lengths of the edges.</p></li>
+<li><p><strong>linit</strong> (<em>list, optional</em>) – Initial length of the edges.</p></li>
+<li><p><strong>E</strong> (<em>list, optional</em>) – Stiffness of the edges.</p></li>
+<li><p><strong>radius</strong> (<em>list, optional</em>) – Radius of the edges.</p></li>
 <li><p><strong>callback</strong> (<em>callable, optional</em>) – User-defined function that is called at every iteration.</p></li>
 <li><p><strong>callback_args</strong> (<em>tuple, optional</em>) – Additional arguments passed to the callback.</p></li>
 </ul>
@@ -316,7 +312,7 @@ Proceedings of Tensinet Symposium 2013,Istanbul, Turkey, 2013.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : 'release = &#39;0.17.1&#39;',
+    VERSION           : 'release = &#39;0.17.2&#39;',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',

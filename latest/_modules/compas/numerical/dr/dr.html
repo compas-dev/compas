@@ -63,10 +63,6 @@
             
               <a class="dropdown-item" href="/compas/latest">latest</a>
             
-              <a class="dropdown-item" href="/compas/0.16.8">0.16.8</a>
-            
-              <a class="dropdown-item" href="/compas/0.16.7">0.16.7</a>
-            
           </div>
         </li>
         <!-- version -->
@@ -192,7 +188,9 @@
     <span class="k">return</span> <span class="n">adj</span>
 
 
-<div class="viewcode-block" id="dr"><a class="viewcode-back" href="../../../../api/generated/compas.numerical.dr.html#compas.numerical.dr">[docs]</a><span class="k">def</span> <span class="nf">dr</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">qpre</span><span class="p">,</span> <span class="n">fpre</span><span class="p">,</span> <span class="n">lpre</span><span class="p">,</span> <span class="n">linit</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span>
+<div class="viewcode-block" id="dr"><a class="viewcode-back" href="../../../../api/generated/compas.numerical.dr.html#compas.numerical.dr">[docs]</a><span class="k">def</span> <span class="nf">dr</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">qpre</span><span class="p">,</span>
+       <span class="n">fpre</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lpre</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+       <span class="n">linit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">E</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
        <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">tol1</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">tol2</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">callback_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Implementation of dynamic relaxation with RK integration scheme in pure Python.</span>
 
@@ -208,15 +206,15 @@
 <span class="sd">        XYZ components of the loads on the vertices.</span>
 <span class="sd">    qpre : list</span>
 <span class="sd">        Prescribed force densities in the edges.</span>
-<span class="sd">    fpre : list</span>
+<span class="sd">    fpre : list, optional</span>
 <span class="sd">        Prescribed forces in the edges.</span>
-<span class="sd">    lpre : list</span>
+<span class="sd">    lpre : list, optional</span>
 <span class="sd">        Prescribed lengths of the edges.</span>
-<span class="sd">    linit : list</span>
+<span class="sd">    linit : list, optoional</span>
 <span class="sd">        Initial length of the edges.</span>
-<span class="sd">    E : list</span>
+<span class="sd">    E : list, optional</span>
 <span class="sd">        Stiffness of the edges.</span>
-<span class="sd">    radius : list</span>
+<span class="sd">    radius : list, optional</span>
 <span class="sd">        Radius of the edges.</span>
 <span class="sd">    kmax : int, optional</span>
 <span class="sd">        Maximum number of iterations.</span>
@@ -230,6 +228,10 @@
 <span class="sd">        Damping factor for viscous damping.</span>
 <span class="sd">    callback : callable, optional</span>
 <span class="sd">        A user-defined callback that is called after every iteration.</span>
+<span class="sd">        The callback will be called with ``k`` the current iteration,</span>
+<span class="sd">        ``X`` the coordinates at iteration ``k``,</span>
+<span class="sd">        ``crit1, crit2`` the values of the stoppage criteria at iteration ``k``,</span>
+<span class="sd">        and ``callback_args`` the optional additional arguments.</span>
 <span class="sd">    callback_args : tuple, optional</span>
 <span class="sd">        Additional arguments to be passed to the callback.</span>
 
@@ -257,6 +259,7 @@
     <span class="c1"># preprocess</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
 
     <span class="c1"># i_nbrs = {i: [ij[1] if ij[0] == i else ij[0] for ij in edges if i in ij] for i in range(n)}</span>
 
@@ -274,10 +277,15 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">vertices</span>
     <span class="n">P</span> <span class="o">=</span> <span class="n">loads</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">qpre</span>
+    <span class="n">Qpre</span> <span class="o">=</span> <span class="n">qpre</span> <span class="ow">or</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
+    <span class="n">Fpre</span> <span class="o">=</span> <span class="n">fpre</span> <span class="ow">or</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
+    <span class="n">Lpre</span> <span class="o">=</span> <span class="n">lpre</span> <span class="ow">or</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># initial values</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">axis</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">**</span> <span class="mf">0.5</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">edges</span><span class="p">)]</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="p">[</span><span class="n">q</span> <span class="o">*</span> <span class="n">l</span> <span class="k">for</span> <span class="n">q</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">L</span><span class="p">)]</span>
     <span class="n">M</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[</span><span class="n">ij_e</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i_nbrs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
     <span class="n">V</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
     <span class="n">R</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
@@ -336,6 +344,12 @@
     <span class="c1"># start iterating</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kmax</span><span class="p">):</span>
+        <span class="n">Qfpre</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">/</span> <span class="n">b</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Fpre</span><span class="p">,</span> <span class="n">L</span><span class="p">)]</span>
+        <span class="n">Qlpre</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">/</span> <span class="n">b</span> <span class="k">if</span> <span class="n">b</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">Lpre</span><span class="p">)]</span>
+
+        <span class="n">Q</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Qpre</span><span class="p">,</span> <span class="n">Qfpre</span><span class="p">,</span> <span class="n">Qlpre</span><span class="p">)]</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[</span><span class="n">ij_e</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)]]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i_nbrs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+
         <span class="n">X0</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">V0</span> <span class="o">=</span> <span class="p">[[</span><span class="n">ca</span> <span class="o">*</span> <span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
 
@@ -520,7 +534,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : 'release = &#39;0.17.1&#39;',
+    VERSION           : 'release = &#39;0.17.2&#39;',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
