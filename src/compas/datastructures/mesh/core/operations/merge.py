@@ -35,12 +35,19 @@ def mesh_merge_faces(mesh, faces):
         vertices += a[j:i+1]
     else:
         vertices += a[j:] + a[:i+1]
-    i = b.index(u)
-    j = b.index(v)
-    if i < j:
-        vertices += b[i:j+1]
+    i = b.index(v)
+    j = b.index(u)
+    if j < i:
+        vertices += b[j+1:i]
     else:
-        vertices += b[i:] + b[:j+1]
+        vertices += b[j+1:] + b[:i]
+    print(vertices)
+    # i = b.index(u)
+    # j = b.index(v)
+    # if i < j:
+    #     vertices += b[i:j+1]
+    # else:
+    #     vertices += b[i:] + b[:j+1]
     mesh.delete_face(faces[0])
     mesh.delete_face(faces[1])
     key = mesh.add_face(vertices)

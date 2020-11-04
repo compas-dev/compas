@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fixed bug in `compas.geometry.is_coplanar`.
+* Fixed bug in `compas.datastructures.mesh_merg_faces`.
+
 ### Removed
 
 

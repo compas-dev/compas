@@ -2,9 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-# from math import pi
 from math import fabs
-from random import sample
 
 from compas.utilities import window
 
@@ -14,6 +12,7 @@ from .._core import dot_vectors
 from .._core import normalize_vector
 from .._core import centroid_points
 from .._core import normal_polygon
+from .._core import length_vector_sqrd
 
 from .._core import distance_point_point
 from .._core import distance_point_plane
@@ -161,21 +160,17 @@ def is_coplanar(points, tol=0.01):
     if len(points) == 4:
         v01 = subtract_vectors(points[1], points[0])
         v02 = subtract_vectors(points[2], points[0])
-        v23 = subtract_vectors(points[3], points[0])
+        v23 = subtract_vectors(points[3], points[2])
         res = dot_vectors(v02, cross_vectors(v01, v23))
         return res**2 < tol2
 
-    a, b, c = sample(points, 3)
-
-    u = subtract_vectors(b, a)
-    v = subtract_vectors(c, a)
-    w = cross_vectors(u, v)
-
-    for i in range(0, len(points) - 2):
-        u = v
-        v = subtract_vectors(points[i + 2], points[i + 1])
-        wuv = cross_vectors(w, cross_vectors(u, v))
-        if wuv[0]**2 > tol2 or wuv[1]**2 > tol2 or wuv[2]**2 > tol2:
+    a, b, c = points[:3]
+    ab = subtract_vectors(b, a)
+    n0 = cross_vectors(ab, subtract_vectors(c, a))
+    points = points[3:]
+    for c in points:
+        n1 = cross_vectors(ab, subtract_vectors(c, a))
+        if length_vector_sqrd(cross_vectors(n0, n1)) > tol:
             return False
     return True
 
