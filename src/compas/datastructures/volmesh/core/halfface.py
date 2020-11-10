@@ -1923,34 +1923,34 @@ class HalfFace(Datastructure):
             return None
         return self._cell[nbr][v][u]
 
-    # def halfface_adjacent_halfface(self, halfface, halfedge):
-    #     """Return the halfface adjacent to the halfface across the halfedge.
+    def halfface_adjacent_halfface(self, halfface, halfedge):
+        """Return the halfface adjacent to the halfface across the halfedge.
 
-    #     Parameters
-    #     ----------
-    #     halfface : int
-    #         The identifier of the halfface.
-    #     halfedge : tuple of int
-    #         The identifier of the halfedge.
+        Parameters
+        ----------
+        halfface : int
+            The identifier of the halfface.
+        halfedge : tuple of int
+            The identifier of the halfedge.
 
-    #     Returns
-    #     -------
-    #     int or None
-    #         The identifier of the halfface.
+        Returns
+        -------
+        int or None
+            The identifier of the halfface.
 
-    #     Notes
-    #     -----
-    #     The adjacent face belongs a to one of the cell neighbors over faces of the initial cell.
-    #     A face and its adjacent face share two common vertices.
-    #     """
-    #     u, v = halfedge
-    #     cell = self.halfface_cell(halfface)
-    #     nbr_halfface = self._cell[cell][v][u]
-    #     w = self.face_vertex_ancestor(nbr_halfface, v)
-    #     nbr_cell = self._plane[u][v][w]
-    #     if nbr_cell is None:
-    #         return None
-    #     return self._cell[nbr_cell][v][u]
+        Notes
+        -----
+        The adjacent face belongs a to one of the cell neighbors over faces of the initial cell.
+        A face and its adjacent face share two common vertices.
+        """
+        u, v = halfedge
+        cell = self.halfface_cell(halfface)
+        nbr_halfface = self._cell[cell][v][u]
+        w = self.face_vertex_ancestor(nbr_halfface, v)
+        nbr_cell = self._plane[u][v][w]
+        if nbr_cell is None:
+            return None
+        return self._cell[nbr_cell][v][u]
 
     def halfface_vertex_ancestor(self, halfface, vertex):
         """Return the vertex before the specified vertex in a specific face.
@@ -2000,7 +2000,7 @@ class HalfFace(Datastructure):
         i = self._halfface[halfface].index(vertex)
         return self._halfface[halfface][i + 1]
 
-    def halfface_neighbors(self, halfface):
+    def halfface_manifold_neighbors(self, halfface):
         nbrs = []
         cell = self.halfface_cell(halfface)
         for u, v in self.halfface_halfedges(halfface):
@@ -2012,8 +2012,31 @@ class HalfFace(Datastructure):
                 nbrs.append(nbr)
         return nbrs
 
-    # def halfface_manifold_neighbors(self, halfface):
-    #     halfface_cell = self.halfface_cell(halfface)
+    def halfface_manifold_neighborhood(self, hfkey, ring=1):
+        """Return the halfface neighborhood of a halfface across their edges.
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the halfface.
+        Returns
+        -------
+        list
+            The list of neighboring halffaces.
+        Notes
+        -----
+        Neighboring halffaces on the same cell are not included.
+        """
+        nbrs = set(self.halfface_manifold_neighbors(hfkey))
+        i = 1
+        while True:
+            if i == ring:
+                break
+            temp = []
+            for nbr_hfkey in nbrs:
+                temp += self.halfface_manifold_neighbors(nbr_hfkey)
+            nbrs.update(temp)
+            i += 1
+        return list(nbrs - set([hfkey]))
 
     def is_halfface_on_boundary(self, halfface):
         """Verify that a face is on the boundary.
