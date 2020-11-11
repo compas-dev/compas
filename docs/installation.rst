@@ -106,3 +106,10 @@ To install the Microsoft Visual C++ Build Tools choose one of the options provid
 here: https://www.scivision.dev/python-windows-visual-c-14-required/
 and just follow the instructions.
 Then run the ``pip`` installation commands again.
+
+
+RuntimeError: The current Numpy installation (...) fails to pass a sanity check
+-------------------------------------------------------------------------------
+
+If you see this error, it means latest Numpy 1.19.4 could not init due to a bug from windows. To avoid it, simply downgrade Numpy by ``pip install numpy==1.19.3``
+See the detail of the bug here: https://github.com/numpy/numpy/issues/17726

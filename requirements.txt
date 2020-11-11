@@ -10,7 +10,7 @@ matplotlib >= 3.1; python_version >= '3.8' and sys_platform == 'win32'
 matplotlib >= 2.2; python_version >= '3.5' and sys_platform != 'win32'
 networkx
 numba
-numpy >= 1.15.4
+numpy >= 1.15.4, <= 1.19.3
 pillow
 planarity
 pycollada
