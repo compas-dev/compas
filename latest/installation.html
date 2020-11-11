@@ -174,6 +174,11 @@ here: <a class="reference external" href="https://www.scivision.dev/python-windo
 and just follow the instructions.
 Then run the <code class="docutils literal notranslate"><span class="pre">pip</span></code> installation commands again.</p>
 </div>
+<div class="section" id="runtimeerror-the-current-numpy-installation-fails-to-pass-a-sanity-check">
+<h3>RuntimeError: The current Numpy installation (…) fails to pass a sanity check</h3>
+<p>If you see this error, it means latest Numpy 1.19.4 could not init due to a bug from windows. To avoid it, simply downgrade Numpy by <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">numpy==1.19.3</span></code>
+See the detail of the bug here: <a class="reference external" href="https://github.com/numpy/numpy/issues/17726">https://github.com/numpy/numpy/issues/17726</a></p>
+</div>
 </div>
 </div>
 
@@ -223,6 +228,7 @@ Then run the <code class="docutils literal notranslate"><span class="pre">pip</s
 <li class="nav-item"><a class="nav-link reference internal" href="#known-issues">Known Issues</a><ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="#installing-planarity">Installing Planarity</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#microsoft-visual-c-build-tools">Microsoft Visual C++ Build Tools</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#runtimeerror-the-current-numpy-installation-fails-to-pass-a-sanity-check">RuntimeError: The current Numpy installation (…) fails to pass a sanity check</a></li>
 </ul>
 </li>
 </ul>
