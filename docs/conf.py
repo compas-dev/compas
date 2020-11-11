@@ -19,7 +19,7 @@ project = "COMPAS"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 
-release = "release = '0.17.2'"
+release = "0.17.2"
 version = ".".join(release.split(".")[0:2])
 
 master_doc = "index"
@@ -262,7 +262,9 @@ html_theme = "compas"
 html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
     "navbar_active": "compas",
-    "package_old_versions": package_docs_versions
+    "package_version": release,
+    "package_docs": "https://compas.dev/compas/",
+    "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt"
 }
 html_context = {}
 html_static_path = []
