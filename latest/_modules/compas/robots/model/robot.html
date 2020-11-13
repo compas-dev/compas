@@ -875,7 +875,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Frame</span><span class="o">.</span><span class="n">worldXY</span><span class="p">()</span>  <span class="c1"># if we ask forward from base link</span></div>
 
-<div class="viewcode-block" id="RobotModel.add_link"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.add_link.html#compas.robots.RobotModel.add_link">[docs]</a>    <span class="k">def</span> <span class="nf">add_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">visual_mesh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visual_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">collision_mesh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_consolidate_meshes</span><span class="p">(</span><span class="n">meshes</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">meshes</span> <span class="o">=</span> <span class="n">meshes</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mesh</span><span class="p">:</span>
+            <span class="n">meshes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">meshes</span>
+
+<div class="viewcode-block" id="RobotModel.add_link"><a class="viewcode-back" href="../../../../api/generated/compas.robots.RobotModel.add_link.html#compas.robots.RobotModel.add_link">[docs]</a>    <span class="k">def</span> <span class="nf">add_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">visual_meshes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visual_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">collision_meshes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Adds a link to the robot model.</span>
 
 <span class="sd">        Provides an easy way to programmatically add a link to the robot model.</span>
@@ -884,11 +892,11 @@
 <span class="sd">        ----------</span>
 <span class="sd">        name : str</span>
 <span class="sd">            The name of the link</span>
-<span class="sd">        visual_mesh : :class:`compas.datastructures.Mesh`, optional</span>
+<span class="sd">        visual_meshes : list of :class:`compas.datastructures.Mesh`, optional</span>
 <span class="sd">            The link&#39;s visual mesh.</span>
 <span class="sd">        visual_color : list of 3 float, optional</span>
 <span class="sd">            The rgb color of the mesh. Defaults to (0.8, 0.8, 0.8)</span>
-<span class="sd">        collision_mesh : :class:`compas.datastructures.Mesh`, optional</span>
+<span class="sd">        collision_meshes : list of :class:`compas.datastructures.Mesh`, optional</span>
 <span class="sd">            The link&#39;s collision mesh.</span>
 
 <span class="sd">        Returns</span>
@@ -908,6 +916,8 @@
 <span class="sd">        &gt;&gt;&gt; robot = RobotModel(&#39;robot&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; link = robot.add_link(&#39;link0&#39;, visual_mesh=mesh)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">visual_meshes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_consolidate_meshes</span><span class="p">(</span><span class="n">visual_meshes</span><span class="p">,</span> <span class="s1">&#39;visual_mesh&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">collision_meshes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_consolidate_meshes</span><span class="p">(</span><span class="n">collision_meshes</span><span class="p">,</span> <span class="s1">&#39;collision_mesh&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="n">all_link_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">]</span>  <span class="c1"># noqa: E741</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_link_names</span><span class="p">:</span>
@@ -916,7 +926,7 @@
         <span class="n">visual</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">collision</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">if</span> <span class="n">visual_mesh</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">visual_mesh</span> <span class="ow">in</span> <span class="n">visual_meshes</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">visual_color</span><span class="p">:</span>
                 <span class="n">visual_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">Visual</span><span class="p">(</span><span class="n">Geometry</span><span class="p">(</span><span class="n">MeshDescriptor</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)))</span>
@@ -924,7 +934,7 @@
             <span class="n">v</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">visual_mesh</span>
             <span class="n">visual</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">collision_mesh</span><span class="p">:</span>  <span class="c1"># use visual_mesh as collision_mesh if none passed?</span>
+        <span class="k">for</span> <span class="n">collision_mesh</span> <span class="ow">in</span> <span class="n">collision_meshes</span><span class="p">:</span>  <span class="c1"># use visual_mesh as collision_mesh if none passed?</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">Collision</span><span class="p">(</span><span class="n">Geometry</span><span class="p">(</span><span class="n">MeshDescriptor</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)))</span>
             <span class="n">c</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">geometry</span> <span class="o">=</span> <span class="n">collision_mesh</span>
             <span class="n">collision</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>

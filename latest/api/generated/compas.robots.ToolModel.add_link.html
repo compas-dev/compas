@@ -101,16 +101,16 @@
 <h1>ToolModel.add_link</h1>
 <dl class="method">
 <dt id="compas.robots.ToolModel.add_link">
-<code class="sig-prename descclassname">ToolModel.</code><code class="sig-name descname">add_link</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">visual_mesh=None</em>, <em class="sig-param">visual_color=None</em>, <em class="sig-param">collision_mesh=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span></dt>
+<code class="sig-prename descclassname">ToolModel.</code><code class="sig-name descname">add_link</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">visual_meshes=None</em>, <em class="sig-param">visual_color=None</em>, <em class="sig-param">collision_meshes=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span></dt>
 <dd><p>Adds a link to the robot model.</p>
 <p>Provides an easy way to programmatically add a link to the robot model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – The name of the link</p></li>
-<li><p><strong>visual_mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional) – The link’s visual mesh.</p></li>
+<li><p><strong>visual_meshes</strong> (list of <a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional) – The link’s visual mesh.</p></li>
 <li><p><strong>visual_color</strong> (<em>list of 3 float, optional</em>) – The rgb color of the mesh. Defaults to (0.8, 0.8, 0.8)</p></li>
-<li><p><strong>collision_mesh</strong> (<a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional) – The link’s collision mesh.</p></li>
+<li><p><strong>collision_meshes</strong> (list of <a class="reference internal" href="compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional) – The link’s collision mesh.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
