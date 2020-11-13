@@ -779,7 +779,15 @@ class RobotModel(Base):
         else:
             return Frame.worldXY()  # if we ask forward from base link
 
-    def add_link(self, name, visual_mesh=None, visual_color=None, collision_mesh=None, **kwargs):
+    @staticmethod
+    def _consolidate_meshes(meshes, key, **kwargs):
+        meshes = meshes or []
+        mesh = kwargs.get(key)
+        if mesh:
+            meshes.append(mesh)
+        return meshes
+
+    def add_link(self, name, visual_meshes=None, visual_color=None, collision_meshes=None, **kwargs):
         """Adds a link to the robot model.
 
         Provides an easy way to programmatically add a link to the robot model.
@@ -788,11 +796,11 @@ class RobotModel(Base):
         ----------
         name : str
             The name of the link
-        visual_mesh : :class:`compas.datastructures.Mesh`, optional
+        visual_meshes : list of :class:`compas.datastructures.Mesh`, optional
             The link's visual mesh.
         visual_color : list of 3 float, optional
             The rgb color of the mesh. Defaults to (0.8, 0.8, 0.8)
-        collision_mesh : :class:`compas.datastructures.Mesh`, optional
+        collision_meshes : list of :class:`compas.datastructures.Mesh`, optional
             The link's collision mesh.
 
         Returns
@@ -812,6 +820,8 @@ class RobotModel(Base):
         >>> robot = RobotModel('robot')
         >>> link = robot.add_link('link0', visual_mesh=mesh)
         """
+        visual_meshes = self._consolidate_meshes(visual_meshes, 'visual_mesh', **kwargs)
+        collision_meshes = self._consolidate_meshes(collision_meshes, 'collision_mesh', **kwargs)
 
         all_link_names = [l.name for l in self.links]  # noqa: E741
         if name in all_link_names:
@@ -820,7 +830,7 @@ class RobotModel(Base):
         visual = []
         collision = []
 
-        if visual_mesh:
+        for visual_mesh in visual_meshes:
             if not visual_color:
                 visual_color = (0.8, 0.8, 0.8)
             v = Visual(Geometry(MeshDescriptor("")))
@@ -828,7 +838,7 @@ class RobotModel(Base):
             v.geometry.shape.geometry = visual_mesh
             visual.append(v)
 
-        if collision_mesh:  # use visual_mesh as collision_mesh if none passed?
+        for collision_mesh in collision_meshes:  # use visual_mesh as collision_mesh if none passed?
             c = Collision(Geometry(MeshDescriptor("")))
             c.geometry.shape.geometry = collision_mesh
             collision.append(c)

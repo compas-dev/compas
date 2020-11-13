@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed bug in `compas.geometry.is_coplanar`.
 * Fixed bug in `compas.datastructures.mesh_merg_faces`.
+* Fixed bug in `compas.robots.RobotModel.add_link`.
 
 ### Removed
 
