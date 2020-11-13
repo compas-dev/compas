@@ -125,10 +125,13 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
 
         self._enter_layer()
 
+        guids = []
         for mesh in visuals:
-            self._add_mesh_to_doc(mesh)
+            guid = self._add_mesh_to_doc(mesh)
+            guids.append(guid)
 
         self._exit_layer()
+        return guids
 
     def draw(self):
         self.draw_visual()
@@ -197,6 +200,7 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
                 attr.Name = name
 
             obj.CommitChanges()
+        return guid
 
     @staticmethod
     def draw_collection(collection):
