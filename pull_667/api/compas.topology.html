@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - topology</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
+
+  
+    <link rel="next" title="adjacency_from_edges" href="generated/compas.topology.adjacency_from_edges.html" />
+  
+  
+  
+    <link rel="prev" title="Proxy.stop_server" href="generated/compas.rpc.Proxy.stop_server.html" />
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/plugins.html">Plugins</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            0.17.2
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        <!-- version -->
+        
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <span class="target" id="module-compas.topology"></span><div class="section" id="topology">
+<h1>topology</h1>
+<div class="section" id="connectivity">
+<h2>connectivity</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.topology.adjacency_from_edges.html#compas.topology.adjacency_from_edges" title="compas.topology.adjacency_from_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacency_from_edges</span></code></a></p></td>
+<td><p>Construct an adjacency dictionary from a set of edges.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="combinatorics">
+<h2>combinatorics</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.topology.vertex_coloring.html#compas.topology.vertex_coloring" title="compas.topology.vertex_coloring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coloring</span></code></a></p></td>
+<td><p>Color the vertices of a network such that no two colors are adjacent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.topology.connected_components.html#compas.topology.connected_components" title="compas.topology.connected_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connected_components</span></code></a></p></td>
+<td><p>Identify the vertices of connected components.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="orientation">
+<h2>orientation</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.topology.face_adjacency.html#compas.topology.face_adjacency" title="compas.topology.face_adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_adjacency</span></code></a></p></td>
+<td><p>Construct an adjacency dictionary of the given faces, assuming that the faces have arbitrary orientation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.topology.face_adjacency_numpy.html#compas.topology.face_adjacency_numpy" title="compas.topology.face_adjacency_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_adjacency_numpy</span></code></a></p></td>
+<td><p>Construct an adjacency dictionary of the given faces, assuming that the faces have arbitrary orientation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.topology.unify_cycles.html#compas.topology.unify_cycles" title="compas.topology.unify_cycles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unify_cycles</span></code></a></p></td>
+<td><p>Unify the cycle directions of the given faces such that adjacent faces share opposite halfedges.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.topology.unify_cycles_numpy.html#compas.topology.unify_cycles_numpy" title="compas.topology.unify_cycles_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unify_cycles_numpy</span></code></a></p></td>
+<td><p>Unify the cycle directions of the given faces such that adjacent faces share opposite halfedges.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="traversal">
+<h2>traversal</h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.topology.astar_shortest_path.html#compas.topology.astar_shortest_path" title="compas.topology.astar_shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">astar_shortest_path</span></code></a></p></td>
+<td><p>Find the shortest path between two vertices of a network using the A* search algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.topology.breadth_first_ordering.html#compas.topology.breadth_first_ordering" title="compas.topology.breadth_first_ordering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">breadth_first_ordering</span></code></a></p></td>
+<td><p>Return a breadth-first ordering of all vertices in an adjacency dictionary reachable from a chosen root vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.topology.breadth_first_traverse.html#compas.topology.breadth_first_traverse" title="compas.topology.breadth_first_traverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">breadth_first_traverse</span></code></a></p></td>
+<td><p>Traverse an adjacency dict in “breadth-first” order.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.topology.breadth_first_paths.html#compas.topology.breadth_first_paths" title="compas.topology.breadth_first_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">breadth_first_paths</span></code></a></p></td>
+<td><p>Return all paths from root to goal.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.topology.depth_first_ordering.html#compas.topology.depth_first_ordering" title="compas.topology.depth_first_ordering"><code class="xref py py-obj docutils literal notranslate"><span class="pre">depth_first_ordering</span></code></a></p></td>
+<td><p>Compute depth-first ordering of connected vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.topology.dijkstra_distances.html#compas.topology.dijkstra_distances" title="compas.topology.dijkstra_distances"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dijkstra_distances</span></code></a></p></td>
+<td><p>Compute Dijkstra distances from all vertices in a connected set to one target vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.topology.dijkstra_path.html#compas.topology.dijkstra_path" title="compas.topology.dijkstra_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dijkstra_path</span></code></a></p></td>
+<td><p>Find the shortest path between two vertices if the edge weights are not all the same.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.topology.shortest_path.html#compas.topology.shortest_path" title="compas.topology.shortest_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shortest_path</span></code></a></p></td>
+<td><p>Find the shortest path between two vertices of a network.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+        
+      </main>
+      <!-- main -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../api.html">API Reference</a><ul class="nav flex-column active">
+<li class="nav-item active"><a class="nav-link reference internal" href="compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas.datastructures.html">datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.files.html">files</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.geometry.html">geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.numerical.html">numerical</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.plugins.html">plugins</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.robots.html">robots</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.rpc.html">rpc</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">topology</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.utilities.html">utilities</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.html">compas_plotters</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">topology</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#connectivity">connectivity</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#combinatorics">combinatorics</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#orientation">orientation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#traversal">traversal</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+
+  <!-- <footer class="bg-dark py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3 d-flex flex-even my-4 ml-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Core</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_blender</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_ghpython</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_plotters</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_rhino</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Plugins</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_cgal</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_gmsh</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_libigl</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_shapeop</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Extensions</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fab</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fea(2)</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_tia</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_vol</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4 mr-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-3 mb-3 mt-0 footer-title">Resources</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">About</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Collaboration in research</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Transfer to industry</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Open source</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Quality assurance</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.17.2',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../_static/underscore.js"></script>
+  <script src="../_static/doctools.js"></script>
+  <script src="../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
+  });
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>
