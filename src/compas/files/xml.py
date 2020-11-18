@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
 
 import compas
 
@@ -23,6 +24,9 @@ class XML(object):
     ----------
     reader : :class:`XMLReader`
         Reader used to process the XML file or string.
+    writer : :class:`XMLWriter`
+        Writer used to process the XML object to a file or string.
+    filepath : str
 
     Examples
     --------
@@ -33,8 +37,66 @@ class XML(object):
 
     """
 
-    def __init__(self, reader):
-        self.reader = reader
+    def __init__(self, filepath=None):
+        self.filepath = filepath
+        self._is_parsed = False
+        self._reader = None
+        self._writer = None
+
+    @property
+    def reader(self):
+        if not self._reader:
+            self.read()
+        return self._reader
+
+    @property
+    def writer(self):
+        if not self._writer:
+            self._writer = XMLWriter(self)
+        return self._writer
+
+    def read(self):
+        """Read XML from a file path or file-like object,
+        stored in the attribute ``filepath``.
+
+        """
+        self._reader = XMLReader.from_file(self.filepath)
+
+    def write(self, pretty=True):
+        """Writes the string representation of this XML instance,
+        including all sub-elements, to the file path in the
+        associated XML object.
+
+        Parameters
+        ----------
+        pretty : bool, optional
+            Whether the string should include whitespace for legibility.
+            Defaults to ``False``.
+
+        Returns
+        -------
+        ``None``
+
+        """
+        self.writer.write(pretty)
+
+    def to_file(self, pretty=True):
+        """Writes the string representation of this XML instance,
+        including all sub-elements, to the file path in the
+        associated XML object.
+
+        Parameters
+        ----------
+        pretty : bool, optional
+            Whether the string should include whitespace for legibility.
+            Defaults to ``False``.
+
+        Returns
+        -------
+        ``None``
+
+        """
+        self.write(pretty)
 
     @property
     def root(self):
@@ -51,7 +113,9 @@ class XML(object):
             File path or file-like object.
 
         """
-        return cls(XMLReader.from_file(source))
+        xml = cls()
+        xml._reader = XMLReader.from_file(source)
+        return xml
 
     @classmethod
     def from_string(cls, text):
@@ -63,9 +127,11 @@ class XML(object):
             XML string.
 
         """
-        return cls(XMLReader.from_string(text))
+        xml = cls()
+        xml._reader = XMLReader.from_string(text)
+        return xml
 
-    def to_string(self, encoding='utf-8'):
+    def to_string(self, encoding='utf-8', pretty=False):
         """Generate a string representation of this XML instance,
         including all sub-elements.
 
@@ -73,6 +139,9 @@ class XML(object):
         ----------
         encoding : str, optional
             Output encoding (the default is 'utf-8')
+        pretty : bool, optional
+            Whether the string should include whitespace for legibility.
+            Defaults to ``False``.
 
         Returns
         -------
@@ -80,7 +149,7 @@ class XML(object):
             String representation of the XML.
 
         """
-        return ET.tostring(self.root, encoding=encoding, method='xml')
+        return self.writer.to_string(encoding=encoding, pretty=pretty)
 
 
 class XMLReader(object):
@@ -107,6 +176,30 @@ class XMLReader(object):
         tree_parser = tree_parser or DefaultXMLTreeParser
         root = ET.fromstring(text, tree_parser())
         return cls(root)
+
+
+class XMLWriter(object):
+    """Writes an XML file from XML object.
+
+    Parameters
+    ----------
+    xml : :class:`compas.files.XML`
+
+    """
+    def __init__(self, xml):
+        self.xml = xml
+
+    def write(self, pretty=True):
+        string = self.to_string(pretty=pretty)
+        with open(self.xml.filepath, 'wb') as f:
+            f.write(string)
+
+    def to_string(self, encoding='utf-8', pretty=False):
+        rough_string = ET.tostring(self.xml.root, encoding=encoding, method='xml')
+        if not pretty:
+            return rough_string
+        reparsed = minidom.parseString(rough_string)
+        return reparsed.toprettyxml(indent="  ", encoding=encoding)
 
 
 if compas.is_ironpython():

@@ -530,7 +530,7 @@ class Joint(Base):
                        'floating', 'planar')
 
     def __init__(self, name, type, parent, child, origin=None, axis=None, calibration=None, dynamics=None, limit=None, safety_controller=None, mimic=None, **kwargs):
-        if type not in (Joint.SUPPORTED_TYPES):
+        if type not in Joint.SUPPORTED_TYPES:
             raise ValueError('Unsupported joint type: %s' % type)
 
         super(Joint, self).__init__()

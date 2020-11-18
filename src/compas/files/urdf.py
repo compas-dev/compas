@@ -49,6 +49,10 @@ class URDF(object):
         self.robot = URDFParser.parse_element(xml.root, xml.root.tag)
 
     @classmethod
+    def from_robot(cls, robot):
+        pass
+
+    @classmethod
     def from_file(cls, source):
         """Parse a URDF file from a file path or file-like object.
 
@@ -80,6 +84,84 @@ class URDF(object):
         """
         return cls(XML.from_string(text))
 
+    @classmethod
+    def read(cls, source):
+        """Parse a URDF file from a file path or file-like object.
+
+        Parameters
+        ----------
+        source : str or file
+            File path or file-like object.
+
+        Examples
+        --------
+        >>> from compas.files import URDF
+        >>> urdf = URDF.read('/urdf/ur5.urdf')
+        """
+        return cls.from_file(source)
+
+    def to_file(self, destination=None, pretty=True):
+        """Writes the string representation of this URDF instance,
+        including all sub-elements, to the ``destination``.
+
+        Parameters
+        ----------
+        destination : str, optional
+            Filepath where the URDF should be written.  Defaults to
+            the filepath of the associated XML object.
+        pretty : bool, optional
+            Whether the string should include whitespace for legibility.
+            Defaults to ``False``.
+
+        Returns
+        -------
+        ``None``
+
+        """
+        if destination:
+            self.xml.filepath = destination
+        self.xml.write(pretty=pretty)
+
+    def to_string(self, encoding='uft-8', pretty=True):
+        """Generate a string representation of this URDF instance,
+        including all sub-elements.
+
+        Parameters
+        ----------
+        encoding : str, optional
+            Output encoding (the default is 'utf-8')
+        pretty : bool, optional
+            Whether the string should include whitespace for legibility.
+            Defaults to ``False``.
+
+        Returns
+        -------
+        str
+            String representation of the URDF.
+
+        """
+        return self.xml.to_string(encoding=encoding, pretty=pretty)
+
+    def write(self, destination=None, pretty=True):
+        """Writes the string representation of this URDF instance,
+        including all sub-elements, to the ``destination``.
+
+        Parameters
+        ----------
+        destination : str, optional
+            Filepath where the URDF should be written.  Defaults to
+            the filepath of the associated XML object.
+        pretty : bool, optional
+            Whether the string should include whitespace for legibility.
+            Defaults to ``False``.
+
+        Returns
+        -------
+        ``None``
+
+        """
+        self.to_file(destination=destination, pretty=pretty)
+
 
 class URDFParser(object):
     """Parse URDF elements into an object graph."""
@@ -107,7 +189,7 @@ class URDFParser(object):
         """Recursively parse URDF element and its children.
 
         If the parser type implements a class method ``from_urdf``,
-        it will use it to parse the elemenet, otherwise
+        it will use it to parse the element, otherwise
         a generic implementation that relies on conventions
         will be used.
 

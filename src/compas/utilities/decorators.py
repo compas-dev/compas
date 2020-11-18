@@ -76,7 +76,7 @@ def memoize(func, *args, **kwargs):
     Returns
     -------
     memoized_func : callable
-        A wrappper for the original function that returns a previously
+        A wrapper for the original function that returns a previously
         computed and cached result when possible.
     """
     cache = func.cache = {}
