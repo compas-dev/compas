@@ -3,14 +3,13 @@ from __future__ import division
 from __future__ import print_function
 
 import xml.etree.ElementTree as ET
-from xml.dom import minidom
 
 import compas
 
-
 __all__ = [
+    'prettify',
     'XML',
-    'XMLReader'
+    'XMLReader',
 ]
 
 
@@ -198,11 +197,24 @@ class XMLWriter(object):
         rough_string = ET.tostring(self.xml.root, encoding=encoding, method='xml')
         if not pretty:
             return rough_string
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ", encoding=encoding)
+        return prettify(rough_string)
 
 
 if compas.is_ironpython():
     from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
+    from compas.files.xml_cli import prettify
 else:
+    from xml.dom import minidom
+
     DefaultXMLTreeParser = ET.XMLParser
+
+    def prettify(rough_string):
+        """Return an XML string with added whitespace for legibility.
+
+        Parameters
+        ----------
+        rough_string : str
+            XML string
+        """
+        reparsed = minidom.parseString(rough_string)
+        return reparsed.toprettyxml(indent="  ", encoding='utf-8')

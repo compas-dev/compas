@@ -45,20 +45,56 @@ if compas.IPY:
     import clr
     clr.AddReference('System.Xml')
 
+    from System.IO import StreamReader
     from System.IO import StringReader
+    from System.IO import MemoryStream
+    from System.Text import Encoding
     from System.Text.RegularExpressions import Regex
     from System.Text.RegularExpressions import RegexOptions
     from System.Xml import DtdProcessing
+    from System.Xml import Formatting
     from System.Xml import ValidationType
+    from System.Xml import XmlDocument
     from System.Xml import XmlNodeType
     from System.Xml import XmlReader
     from System.Xml import XmlReaderSettings
+    from System.Xml import XmlTextWriter
 
     CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
                          RegexOptions.Compiled)
 
 
-__all__ = ['CLRXMLTreeParser']
+__all__ = ['CLRXMLTreeParser', 'prettify']
+
+
+def prettify(rough_string):
+    """Return an XML string with added whitespace for legibility,
+    using .NET infrastructure.
+
+    Parameters
+    ----------
+    rough_string : str
+        XML string
+    """
+    mStream = MemoryStream()
+    writer = XmlTextWriter(mStream, Encoding.UTF8)
+    document = XmlDocument()
+
+    document.LoadXml(rough_string)
+
+    writer.Formatting = Formatting.Indented
+
+    document.WriteContentTo(writer)
+    writer.Flush()
+    mStream.Flush()
+
+    mStream.Position = 0
+
+    sReader = StreamReader(mStream)
+
+    formattedXml = sReader.ReadToEnd()
+
+    return formattedXml
 
 
 class CLRXMLTreeParser(ET.XMLParser):
