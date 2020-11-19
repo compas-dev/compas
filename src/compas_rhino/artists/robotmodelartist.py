@@ -200,7 +200,7 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
                 attr.Name = name
 
             obj.CommitChanges()
-        return guid
+        return [guid]
 
     @staticmethod
     def draw_collection(collection):
