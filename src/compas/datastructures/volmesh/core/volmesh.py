@@ -184,7 +184,7 @@ class BaseVolMesh(HalfFace):
         vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
         cells = []
         for cell in self.cell:
-            faces = [[vertex_index[vertex] for vertex in self._face[face]] for face in self.cell_faces(cell)]
+            faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in self.cell_faces(cell)]
             cells.append(faces)
         return vertices, cells
 
@@ -226,7 +226,7 @@ class BaseVolMesh(HalfFace):
         faces = self.cell_faces(cell)
         vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
         vertices = [self.vertex_coordinates(vertex) for vertex in vertices]
-        faces = [[vertex_index[vertex] for vertex in self._face[face]] for face in faces]
+        faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
         return vertices, faces
 
     # --------------------------------------------------------------------------
