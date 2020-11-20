@@ -286,7 +286,13 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.face_skewness.html#compas.datastructures.Mesh.face_skewness" title="compas.datastructures.Mesh.face_skewness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_skewness</span></code></a>(fkey)</p></td>
 <td><p>Face skewness as the maximum absolute angular deviation from the ideal polygon angle.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.face_vertex_ancestor.html#compas.datastructures.Mesh.face_vertex_ancestor" title="compas.datastructures.Mesh.face_vertex_ancestor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_ancestor</span></code></a>(fkey, key[, n])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.face_vertex_after.html#compas.datastructures.Mesh.face_vertex_after" title="compas.datastructures.Mesh.face_vertex_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_after</span></code></a>(fkey, key[, n])</p></td>
+<td><p>Return the n-th vertex after the specified vertex in a specific face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.face_vertex_ancestor.html#compas.datastructures.Mesh.face_vertex_ancestor" title="compas.datastructures.Mesh.face_vertex_ancestor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_ancestor</span></code></a>(fkey, key[, n])</p></td>
+<td><p>Return the n-th vertex before the specified vertex in a specific face.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.face_vertex_before.html#compas.datastructures.Mesh.face_vertex_before" title="compas.datastructures.Mesh.face_vertex_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_before</span></code></a>(fkey, key[, n])</p></td>
 <td><p>Return the n-th vertex before the specified vertex in a specific face.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.face_vertex_descendant.html#compas.datastructures.Mesh.face_vertex_descendant" title="compas.datastructures.Mesh.face_vertex_descendant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_descendant</span></code></a>(fkey, key[, n])</p></td>
@@ -372,6 +378,12 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.gkey_key.html#compas.datastructures.Mesh.gkey_key" title="compas.datastructures.Mesh.gkey_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code></a>([precision])</p></td>
 <td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_after.html#compas.datastructures.Mesh.halfedge_after" title="compas.datastructures.Mesh.halfedge_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_after</span></code></a>(u, v)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_before.html#compas.datastructures.Mesh.halfedge_before" title="compas.datastructures.Mesh.halfedge_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_before</span></code></a>(u, v)</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.datastructures.Mesh.halfedge_face.html#compas.datastructures.Mesh.halfedge_face" title="compas.datastructures.Mesh.halfedge_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_face</span></code></a>(u, v)</p></td>
 <td><p>Find the face corresponding to a halfedge.</p></td>
