@@ -2529,6 +2529,19 @@ class HalfEdge(Datastructure):
         else:
             return False
 
+    face_vertex_after = face_vertex_descendant
+    face_vertex_before = face_vertex_ancestor
+
+    def halfedge_after(self, u, v):
+        face = self.halfedge_face(u, v)
+        w = self.face_vertex_after(face, v)
+        return v, w
+
+    def halfedge_before(self, u, v):
+        face = self.halfedge_face(u, v)
+        t = self.face_vertex_before(face, u)
+        return t, u
+
     # --------------------------------------------------------------------------
     # boundary
     # --------------------------------------------------------------------------
