@@ -103,17 +103,17 @@ The relationships can be encoded in the form of links or “edges”, and loops 
 </div>
 <div class="section" id="data-structure-types">
 <h2>Data structure types</h2>
-<p>COMPAS provides three base data structures: <code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">VolMesh</span></code>.</p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code> is a “directed edge graph” that encodes the relationships between “nodes” with “edges”.
+<p>COMPAS provides three base data structures: <a class="reference internal" href="../api/generated/compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>, <a class="reference internal" href="../api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>, <a class="reference internal" href="../api/generated/compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">VolMesh</span></code></a>.</p>
+<p><a class="reference internal" href="../api/generated/compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> is a “directed edge graph” that encodes the relationships between “nodes” with “edges”.
 Networks can, for example, be used to keep track of the relationships between the individual elements of a
 Discrete Element Assembly, or to represent the elements of a cable net.</p>
 <p>For more information, see <span class="xref std std-ref">working-with-networks</span>.</p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code> is a “halfedge data structure” that encode relationships between vertices, edges, and faces through
+<p><a class="reference internal" href="../api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a> is a “halfedge data structure” that encode relationships between vertices, edges, and faces through
 “half-edges” (pairs of vertices that in one direction point to the adjacent face, and in the other direction to the opposite, neighbouring face).
 Meshes are ubiquitous in geometry processing, computer graphics, additive manufacturing processes, Finite Element Analysis etc.
 COMPAS meshes can represent manifold, open or closed, polygonal surfaces.</p>
 <p>For more information, see <span class="xref std std-ref">working-with-meshes</span>.</p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">VolMesh</span></code> is a 3D extension of the essentially 2D poygonal mesh.
+<p><a class="reference internal" href="../api/generated/compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">VolMesh</span></code></a> is a 3D extension of the essentially 2D poygonal mesh.
 In the case of a volumetric mesh or “VolMesh”, relationships exist not only between vertices, edges, and faces, but also between cells.
 Relationships between cells are encoded with “half-planes” instead of “half-edges”.</p>
 <p>For more information, see <span class="xref std std-ref">working-with-volmeshes</span>.</p>

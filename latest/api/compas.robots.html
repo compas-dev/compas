@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>COMPAS - &lt;no title&gt;</title>
+  <title>COMPAS - robots</title>
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -17,7 +17,7 @@
   <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="rpc" href="compas.rpc.html" />
+    <link rel="next" title="RobotModel" href="generated/compas.robots.RobotModel.html" />
   
   
   
@@ -97,7 +97,183 @@
       <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
           
-          
+          <span class="target" id="module-compas.robots"></span><div class="section" id="robots">
+<h1>robots</h1>
+<p>This package provides basic structures and data exchange mechanisms that are
+building blocks for robotics support.</p>
+<p>The primary data representation for robot models is based on the Unified Robot Description Format
+(<a class="reference external" href="http://wiki.ros.org/urdf">URDF</a>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A detailed description of the model is available on the <a class="reference external" href="http://wiki.ros.org/urdf/XML/model">URDF Model wiki</a>.
+This package parses URDF v1.0 according to the <a class="reference external" href="https://github.com/ros/urdfdom/blob/master/xsd/urdf.xsd">URDF XSD Schema</a>.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://wiki.ros.org/urdf">URDF</a></p></li>
+<li><p><a class="reference external" href="http://wiki.ros.org/urdf/XML/model">URDF Model wiki</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ros/urdfdom/blob/master/xsd/urdf.xsd">URDF XSD Schema</a></p></li>
+</ul>
+</div>
+<div class="section" id="model">
+<h2>Model</h2>
+<p>The root of the model is the <a class="reference internal" href="generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobotModel</span></code></a> class, which
+describes a robot consisting of a set of link elements, and a set of joint
+elements connecting the links together.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RobotModel</span></code></a></p></td>
+<td><p>RobotModel is the root element of the model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Joint.html#compas.robots.Joint" title="compas.robots.Joint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Joint</span></code></a></p></td>
+<td><p>Representation of the kinematics and dynamics of a joint and its safety limits.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Link.html#compas.robots.Link" title="compas.robots.Link"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Link</span></code></a></p></td>
+<td><p>Link represented as a rigid body with an inertia, visual, and collision features.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.ToolModel.html#compas.robots.ToolModel" title="compas.robots.ToolModel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ToolModel</span></code></a></p></td>
+<td><p>Represents a tool to be attached to the robot’s flange.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="geometric-description">
+<h2>Geometric description</h2>
+<p>The robot itself as well as its links can be geometrically described
+using the following classes.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Origin.html#compas.robots.Origin" title="compas.robots.Origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Origin</span></code></a></p></td>
+<td><p>Reference frame represented by an instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">Frame</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Geometry.html#compas.robots.Geometry" title="compas.robots.Geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Geometry</span></code></a></p></td>
+<td><p>Geometrical description of the shape of a link.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Box.html#compas.robots.Box" title="compas.robots.Box"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Box</span></code></a></p></td>
+<td><p>3D shape primitive representing a box.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Cylinder.html#compas.robots.Cylinder" title="compas.robots.Cylinder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cylinder</span></code></a></p></td>
+<td><p>3D shape primitive representing a cylinder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Sphere.html#compas.robots.Sphere" title="compas.robots.Sphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sphere</span></code></a></p></td>
+<td><p>3D shape primitive representing a sphere.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Capsule.html#compas.robots.Capsule" title="compas.robots.Capsule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Capsule</span></code></a></p></td>
+<td><p>3D shape primitive representing a capsule.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.MeshDescriptor.html#compas.robots.MeshDescriptor" title="compas.robots.MeshDescriptor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MeshDescriptor</span></code></a></p></td>
+<td><p>Description of a mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Material.html#compas.robots.Material" title="compas.robots.Material"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Material</span></code></a></p></td>
+<td><p>Material description.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Texture.html#compas.robots.Texture" title="compas.robots.Texture"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Texture</span></code></a></p></td>
+<td><p>Texture description.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Color.html#compas.robots.Color" title="compas.robots.Color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Color</span></code></a></p></td>
+<td><p>Color represented in RGBA.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="link">
+<h2>Link</h2>
+<p>The link is described as a rigid body with inertial, visual and collision values.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Visual.html#compas.robots.Visual" title="compas.robots.Visual"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Visual</span></code></a></p></td>
+<td><p>Visual description of a link.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Collision.html#compas.robots.Collision" title="compas.robots.Collision"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Collision</span></code></a></p></td>
+<td><p>Collidable description of a link.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Inertial.html#compas.robots.Inertial" title="compas.robots.Inertial"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Inertial</span></code></a></p></td>
+<td><p>Inertial properties of a link.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Mass.html#compas.robots.Mass" title="compas.robots.Mass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mass</span></code></a></p></td>
+<td><p>Represents a value of mass usually related to a link.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Inertia.html#compas.robots.Inertia" title="compas.robots.Inertia"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Inertia</span></code></a></p></td>
+<td><p>Rotational inertia matrix (3x3) represented in the inertia frame.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="joint">
+<h2>Joint</h2>
+<p>The joint describes the kinematics and dynamics of the robot’s joint.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.ParentLink.html#compas.robots.ParentLink" title="compas.robots.ParentLink"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ParentLink</span></code></a></p></td>
+<td><p>Describes a parent relation between a joint its parent link.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.ChildLink.html#compas.robots.ChildLink" title="compas.robots.ChildLink"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ChildLink</span></code></a></p></td>
+<td><p>Describes a child relation between a joint and its child link.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Calibration.html#compas.robots.Calibration" title="compas.robots.Calibration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Calibration</span></code></a></p></td>
+<td><p>Reference positions of the joint, used to calibrate the absolute position.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Dynamics.html#compas.robots.Dynamics" title="compas.robots.Dynamics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dynamics</span></code></a></p></td>
+<td><p>Physical properties of the joint used for simulation of dynamics.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Limit.html#compas.robots.Limit" title="compas.robots.Limit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Limit</span></code></a></p></td>
+<td><p>Joint limit properties.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.Axis.html#compas.robots.Axis" title="compas.robots.Axis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Axis</span></code></a></p></td>
+<td><p>Representation of an axis or vector.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.Mimic.html#compas.robots.Mimic" title="compas.robots.Mimic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mimic</span></code></a></p></td>
+<td><p>Description of joint mimic.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.SafetyController.html#compas.robots.SafetyController" title="compas.robots.SafetyController"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SafetyController</span></code></a></p></td>
+<td><p>Safety controller properties.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="resources">
+<h2>Resources</h2>
+<p>Model descriptions usually do not contain embedded geometry information but only
+descriptions, filenames or URLs for externally hosted resources.
+For that purpose, this package provides various loader classes that help automate
+the processing of these resources.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.AbstractMeshLoader.html#compas.robots.AbstractMeshLoader" title="compas.robots.AbstractMeshLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractMeshLoader</span></code></a></p></td>
+<td><p>Basic contract/interface for all mesh loaders.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.DefaultMeshLoader.html#compas.robots.DefaultMeshLoader" title="compas.robots.DefaultMeshLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DefaultMeshLoader</span></code></a></p></td>
+<td><p>Handles basic mesh loader tasks, mostly from local files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas.robots.GithubPackageMeshLoader.html#compas.robots.GithubPackageMeshLoader" title="compas.robots.GithubPackageMeshLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GithubPackageMeshLoader</span></code></a></p></td>
+<td><p>Loads resources stored in Github.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas.robots.LocalPackageMeshLoader.html#compas.robots.LocalPackageMeshLoader" title="compas.robots.LocalPackageMeshLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LocalPackageMeshLoader</span></code></a></p></td>
+<td><p>Loads suport package resources stored locally.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
         
       </main>
       <!-- main -->
@@ -114,12 +290,30 @@
         
         
         <div id="compas-navigation" class="collapse compas-navigation">
-          <ul class="nav flex-column">
+          <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../index.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../installation.html">Installation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../api.html">API Reference</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../api.html">API Reference</a><ul class="nav flex-column active">
+<li class="nav-item active"><a class="nav-link reference internal" href="compas.html">compas</a><ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="compas.datastructures.html">datastructures</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.files.html">files</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.geometry.html">geometry</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.numerical.html">numerical</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.plugins.html">plugins</a></li>
+<li class="nav-item active"><a class="nav-link active current reference internal" href="#">robots</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.rpc.html">rpc</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.topology.html">topology</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas.utilities.html">utilities</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_rhino.html">compas_rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_blender.html">compas_blender</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_ghpython.html">compas_ghpython</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="compas_plotters.html">compas_plotters</a></li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../plugins.html">Extension points</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../changelog.html">Changelog</a></li>
@@ -134,7 +328,15 @@
       <!-- toc -->
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
-        <ul class="simple">
+        <ul class="nav flex-column" id="compas-toc">
+<li class="nav-item"><a class="nav-link reference internal" href="#">robots</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#model">Model</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#geometric-description">Geometric description</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#link">Link</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#joint">Joint</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#resources">Resources</a></li>
+</ul>
+</li>
 </ul>
 
       </div>
