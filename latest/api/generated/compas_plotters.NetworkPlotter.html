@@ -106,7 +106,7 @@
 <p>Plotter for the visualisation of COMPAS Networks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>network</strong> (<a class="reference internal" href="compas.datastructures.Network.html#compas.datastructures.Network" title="compas.datastructures.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code></a>) – The network to plot.</p>
+<dd class="field-odd"><p><strong>network</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Network</span></code>) – The network to plot.</p>
 </dd>
 <dt class="field-even">Attributes</dt>
 <dd class="field-even"><ul class="simple">
@@ -129,47 +129,20 @@ Available at: <a class="reference external" href="http://ieeexplore.ieee.org/doc
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span> <span class="kn">import</span> <span class="nn">compas</span>
- <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
- <span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">NetworkPlotter</span>
 
- <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lines.obj&#39;</span><span class="p">))</span>
 
- <span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
- <span class="n">plotter</span><span class="o">.</span><span class="n">draw_nodes</span><span class="p">(</span>
-     <span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span>
-     <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()},</span>
-     <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span>
- <span class="p">)</span>
- <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
- <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-
-
-
-
-
-
-
-<span class="o">..</span> <span class="n">figure</span><span class="p">::</span> <span class="o">../../../</span><span class="n">dist</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">plot_directive</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">generated</span><span class="o">/</span><span class="n">compas_plotters</span><span class="o">-</span><span class="n">NetworkPlotter</span><span class="o">-</span><span class="mf">1.</span><span class="n">png</span>
-   <span class="p">:</span><span class="n">class</span><span class="p">:</span> <span class="n">figure</span><span class="o">-</span><span class="n">img</span> <span class="n">img</span><span class="o">-</span><span class="n">fluid</span>
-
-         
-
-
-
-
-
-<span class="o">..</span> <span class="n">figure</span><span class="p">::</span> <span class="o">../../../</span><span class="n">dist</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">plot_directive</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">generated</span><span class="o">/</span><span class="n">compas_plotters</span><span class="o">-</span><span class="n">NetworkPlotter</span><span class="o">-</span><span class="mf">1.</span><span class="n">pdf</span>
-   
-
-         
-
-
-
-
-
-<span class="o">..</span> <span class="n">image</span><span class="p">::</span> <span class="o">../../../</span><span class="n">dist</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">plot_directive</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">generated</span><span class="o">/</span><span class="n">compas_plotters</span><span class="o">-</span><span class="n">NetworkPlotter</span><span class="o">-</span><span class="mf">1.</span><span class="n">png</span>
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">NetworkPlotter</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_nodes</span><span class="p">(</span>
+    <span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">leaves</span><span class="p">()},</span>
+    <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span>
+<span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 </div>
 <p class="rubric">Methods</p>

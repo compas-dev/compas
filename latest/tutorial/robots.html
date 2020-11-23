@@ -216,7 +216,7 @@ are locked.</p></li>
 </div>
 <div class="section" id="building-robots-models">
 <h2>Building robots models</h2>
-<p>Robot models are represented by the <a class="reference internal" href="../api/generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code></a> class.
+<p>Robot models are represented by the <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code> class.
 There are various ways to construct a robot model. The following snippet
 shows how to construct one programmatically:</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.robots</span> <span class="kn">import</span> <span class="n">Joint</span><span class="p">,</span> <span class="n">Link</span><span class="p">,</span> <span class="n">RobotModel</span>
@@ -243,7 +243,7 @@ shows how to construct one programmatically:</p>
 </code></pre></div>
 </div>
 <p>This approach can end up being very verbose, so the methods <code class="docutils literal notranslate"><span class="pre">add_link</span></code>
-and <code class="docutils literal notranslate"><span class="pre">add_joint</span></code> of <a class="reference internal" href="../api/generated/compas.robots.RobotModel.html#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code></a> offer an alternative that
+and <code class="docutils literal notranslate"><span class="pre">add_joint</span></code> of <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.robots.RobotModel</span></code> offer an alternative that
 significantly reduces the amount of code required:</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Frame</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
@@ -314,7 +314,7 @@ The following snippet shows how to load the robot model currently active in ROS:
 <p>Once a robot has been built or loaded, it can be visualized in Blender, Rhino or
 Grasshopper using one of COMPAS’s artists.  The basic procedure is the same in
 any of the CAD software (aside from the import statement), so for simplicity we
-will demonstrate the use of <a class="reference internal" href="../api/generated/compas_rhino.artists.RobotModelArtist.html#compas_rhino.artists.RobotModelArtist" title="compas_rhino.artists.RobotModelArtist"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.RobotModelArtist</span></code></a> in Rhino.  Once
+will demonstrate the use of <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.RobotModelArtist</span></code> in Rhino.  Once
 COMPAS has been installed for Rhino
 (see <span class="xref std std-ref">Getting started with Rhino</span>),
 the following can be run in a Python script editor within Rhino.</p>
