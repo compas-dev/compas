@@ -58,6 +58,8 @@ itertools
     pairwise
     window
     iterable_like
+    normalize_values
+    remap_values
 
 
 maps
@@ -70,7 +72,6 @@ maps
     geometric_key
     reverse_geometric_key
     geometric_key_xy
-    normalize_values
 
 
 """
