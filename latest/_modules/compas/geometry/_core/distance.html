@@ -873,10 +873,9 @@
 <span class="sd">    ----------</span>
 <span class="sd">    point : list</span>
 <span class="sd">        XYZ coordinates of a 2D or 3D point (Z will be ignored).</span>
-<span class="sd">    polygon : sequence</span>
-<span class="sd">        A sequence of XYZ coordinates representing the locations of the corners of a polygon.</span>
-<span class="sd">        The vertices are assumed to be in order. The polygon is assumed to be closed:</span>
-<span class="sd">        the first and last vertex in the sequence should not be the same.</span>
+<span class="sd">    polyline : list of points or :class:`compas.geometry.Polyline`</span>
+<span class="sd">        A sequence of XYZ coordinates representing the locations of the corners of a polyline.</span>
+<span class="sd">        The vertices are assumed to be in order.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -900,11 +899,10 @@
 <span class="sd">    ----------</span>
 <span class="sd">    point : sequence of float</span>
 <span class="sd">        XY(Z) coordinates of a 2D or 3D point (Z will be ignored).</span>
-<span class="sd">    polygon : sequence</span>
-<span class="sd">        A sequence of XY(Z) coordinates of 2D or 3D points</span>
-<span class="sd">        (Z will be ignored) representing the locations of the corners of a polygon.</span>
-<span class="sd">        The vertices are assumed to be in order. The polygon is assumed to be closed:</span>
-<span class="sd">        the first and last vertex in the sequence should not be the same.</span>
+<span class="sd">    polyline : list of points or :class:`compas.geometry.Polyline`</span>
+<span class="sd">        A sequence of XY(Z) coordinates of 2D or 3D points (Z will be ignored)</span>
+<span class="sd">        representing the locations of the corners of a polyline.</span>
+<span class="sd">        The vertices are assumed to be in order.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
