@@ -601,6 +601,9 @@ class BaseMesh(HalfEdge):
         xyz = self.vertex_coordinates
         return {gkey(xyz(key), precision): key for key in self.vertices()}
 
+    vertex_gkey = key_gkey
+    gkey_vertex = gkey_key
+
     # --------------------------------------------------------------------------
     # builders
     # --------------------------------------------------------------------------
