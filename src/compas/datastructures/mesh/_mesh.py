@@ -2,25 +2,26 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from compas.datastructures.mesh.core import BaseMesh
-from compas.datastructures.mesh.core import mesh_collapse_edge
-from compas.datastructures.mesh.core import mesh_split_edge
-from compas.datastructures.mesh.core import mesh_split_face
+from .core import BaseMesh
+from .core import mesh_collapse_edge
+from .core import mesh_split_edge
+from .core import mesh_split_face
 
-from compas.datastructures.mesh.bbox import mesh_bounding_box
-from compas.datastructures.mesh.bbox import mesh_bounding_box_xy
-from compas.datastructures.mesh.combinatorics import mesh_is_connected
-from compas.datastructures.mesh.combinatorics import mesh_connected_components
-from compas.datastructures.mesh.duality import mesh_dual
-from compas.datastructures.mesh.orientation import mesh_face_adjacency
-from compas.datastructures.mesh.orientation import mesh_flip_cycles
-from compas.datastructures.mesh.orientation import mesh_unify_cycles
-from compas.datastructures.mesh.slice import mesh_slice_plane
-from compas.datastructures.mesh.smoothing import mesh_smooth_centroid
-from compas.datastructures.mesh.smoothing import mesh_smooth_area
-from compas.datastructures.mesh.transformations import mesh_transform
-from compas.datastructures.mesh.transformations import mesh_transformed
-from compas.datastructures.mesh.triangulation import mesh_quads_to_triangles
+from .bbox import mesh_bounding_box
+from .bbox import mesh_bounding_box_xy
+from .combinatorics import mesh_is_connected
+from .combinatorics import mesh_connected_components
+from .duality import mesh_dual
+from .orientation import mesh_face_adjacency
+from .orientation import mesh_flip_cycles
+from .orientation import mesh_unify_cycles
+from .slice import mesh_slice_plane
+from .smoothing import mesh_smooth_centroid
+from .smoothing import mesh_smooth_area
+from .subdivision import mesh_subdivide
+from .transformations import mesh_transform
+from .transformations import mesh_transformed
+from .triangulation import mesh_quads_to_triangles
 
 
 __all__ = ['Mesh']
@@ -33,7 +34,6 @@ class Mesh(BaseMesh):
     --------
     >>> mesh = Mesh.from_polyhedron(6)
     """
-
     bounding_box = mesh_bounding_box
     bounding_box_xy = mesh_bounding_box_xy
     collapse_edge = mesh_collapse_edge
@@ -47,6 +47,7 @@ class Mesh(BaseMesh):
     smooth_area = mesh_smooth_area
     split_edge = mesh_split_edge
     split_face = mesh_split_face
+    subdivide = mesh_subdivide
     transform = mesh_transform
     transformed = mesh_transformed
     unify_cycles = mesh_unify_cycles
