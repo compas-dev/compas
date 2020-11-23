@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added `remap_values` to `compas_utilities`.
+* Added `compas.datastructures.mesh_slice_plane`.
 
 ### Changed
 
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Removed `compas.datastructures.mesh_cut_by_plane`.
 
 ## [0.17.3] 2020-11-20
 
