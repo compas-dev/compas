@@ -29,7 +29,7 @@ def volmesh_bounding_box(volmesh):
             The z dimensino of the bounding box.
 
     """
-    xyz = volmesh.vertices_attributes('xyz', keys=list(volmesh.vertices()))
+    xyz = volmesh.vertices_attributes('xyz', vertices=list(volmesh.vertices()))
     return bounding_box(xyz)
 
 
