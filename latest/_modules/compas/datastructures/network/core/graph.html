@@ -59,7 +59,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.17.2
+            0.17.3
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -573,24 +573,10 @@
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
-                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">u</span><span class="p">]):</span>
                 <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
                     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span></div>
-        <span class="c1"># for nbr in self.neighbors(key):</span>
-        <span class="c1">#     del self.adjacency[key][nbr]</span>
-        <span class="c1">#     del self.adjacency[nbr][key]</span>
-        <span class="c1">#     if key in self.edge and nbr in self.edge[key]:</span>
-        <span class="c1">#         del self.edge[key][nbr]</span>
-        <span class="c1">#     else:</span>
-        <span class="c1">#         del self.edge[nbr][key]</span>
-        <span class="c1">#     if nbr == key:</span>
-        <span class="c1">#         del self.edge[nbr]</span>
-        <span class="c1"># del self.node[key]</span>
-        <span class="c1"># del self.adjacency[key]</span>
-        <span class="c1"># del self.edge[key]</span>
 
 <div class="viewcode-block" id="Graph.delete_edge"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.Graph.delete_edge.html#compas.datastructures.Graph.delete_edge">[docs]</a>    <span class="k">def</span> <span class="nf">delete_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Delete an edge from the network.</span>
@@ -610,7 +596,7 @@
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjacency</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span> <span class="ow">and</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -1667,7 +1653,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.17.2',
+    VERSION           : '0.17.3',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
