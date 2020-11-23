@@ -107,7 +107,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;volmesh_from_polysurfaces&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="volmesh_from_polysurfaces"><a class="viewcode-back" href="../../../api/generated/compas_rhino.utilities.volmesh_from_polysurfaces.html#compas_rhino.utilities.volmesh_from_polysurfaces">[docs]</a><span class="k">def</span> <span class="nf">volmesh_from_polysurfaces</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">guids</span><span class="p">):</span>
+<div class="viewcode-block" id="volmesh_from_polysurfaces"><a class="viewcode-back" href="../../../api/generated/compas_rhino.utilities.volmesh_from_polysurfaces.html#compas_rhino.utilities.volmesh_from_polysurfaces">[docs]</a><span class="k">def</span> <span class="nf">volmesh_from_polysurfaces</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">guids</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Construct a volumetric mesh from given polysurfaces.</span>
 
 <span class="sd">    Essentially, this function does the following:</span>
@@ -125,6 +125,8 @@
 <span class="sd">        The class of volmesh.</span>
 <span class="sd">    guids : sequence of str or System.Guid</span>
 <span class="sd">        The *globally unique identifiers* of the polysurfaces.</span>
+<span class="sd">    precision: string</span>
+<span class="sd">        Precision of the polysurface connectivity.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -146,15 +148,15 @@
             <span class="n">face</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">sp</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PointAtStart</span>
             <span class="n">ep</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PointAtEnd</span>
-            <span class="n">sp_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-            <span class="n">ep_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span>
+            <span class="n">sp_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+            <span class="n">ep_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
             <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">sp_gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">sp</span>
             <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">ep_gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ep</span>
             <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sp_gkey</span><span class="p">)</span>
             <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ep_gkey</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="n">ep</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">PointAtEnd</span>
-                <span class="n">ep_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span>
+                <span class="n">ep_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
                 <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ep_gkey</span><span class="p">)</span>
                 <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">ep_gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ep</span>
             <span class="n">cell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>

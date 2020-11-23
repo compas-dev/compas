@@ -546,6 +546,21 @@
     <span class="c1"># face geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
+    <span class="k">def</span> <span class="nf">face_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The vertices of a face.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the face.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            Ordered vertex identifiers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">face_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">face</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the coordinates of the vertices of a face.</span>
 
@@ -683,13 +698,13 @@
         <span class="n">face_edge_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span> <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span> <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="n">face_edge_lengths</span><span class="p">)</span>
 
-    <span class="c1"># face_area = face_area</span>
-    <span class="c1"># face_centroid = face_centroid</span>
-    <span class="c1"># face_center = face_center</span>
-    <span class="c1"># face_coordinates = face_coordinates</span>
-    <span class="c1"># face_flatness = face_flatness</span>
-    <span class="c1"># face_normal = face_normal</span>
-    <span class="c1"># face_aspect_ratio = face_aspect_ratio</span>
+    <span class="n">halfface_area</span> <span class="o">=</span> <span class="n">face_area</span>
+    <span class="n">halfface_centroid</span> <span class="o">=</span> <span class="n">face_centroid</span>
+    <span class="n">halfface_center</span> <span class="o">=</span> <span class="n">face_center</span>
+    <span class="n">halfface_coordinates</span> <span class="o">=</span> <span class="n">face_coordinates</span>
+    <span class="n">halfface_flatness</span> <span class="o">=</span> <span class="n">face_flatness</span>
+    <span class="n">halfface_normal</span> <span class="o">=</span> <span class="n">face_normal</span>
+    <span class="n">halfface_aspect_ratio</span> <span class="o">=</span> <span class="n">face_aspect_ratio</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># cell geometry</span>

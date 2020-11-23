@@ -2019,34 +2019,34 @@
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">nbr</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
 
-    <span class="c1"># def halfface_adjacent_halfface(self, halfface, halfedge):</span>
-    <span class="c1">#     &quot;&quot;&quot;Return the halfface adjacent to the halfface across the halfedge.</span>
+    <span class="k">def</span> <span class="nf">halfface_adjacent_halfface</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">halfedge</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the halfface adjacent to the halfface across the halfedge.</span>
 
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     halfface : int</span>
-    <span class="c1">#         The identifier of the halfface.</span>
-    <span class="c1">#     halfedge : tuple of int</span>
-    <span class="c1">#         The identifier of the halfedge.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        halfface : int</span>
+<span class="sd">            The identifier of the halfface.</span>
+<span class="sd">        halfedge : tuple of int</span>
+<span class="sd">            The identifier of the halfedge.</span>
 
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     int or None</span>
-    <span class="c1">#         The identifier of the halfface.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int or None</span>
+<span class="sd">            The identifier of the halfface.</span>
 
-    <span class="c1">#     Notes</span>
-    <span class="c1">#     -----</span>
-    <span class="c1">#     The adjacent face belongs a to one of the cell neighbors over faces of the initial cell.</span>
-    <span class="c1">#     A face and its adjacent face share two common vertices.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     u, v = halfedge</span>
-    <span class="c1">#     cell = self.halfface_cell(halfface)</span>
-    <span class="c1">#     nbr_halfface = self._cell[cell][v][u]</span>
-    <span class="c1">#     w = self.face_vertex_ancestor(nbr_halfface, v)</span>
-    <span class="c1">#     nbr_cell = self._plane[u][v][w]</span>
-    <span class="c1">#     if nbr_cell is None:</span>
-    <span class="c1">#         return None</span>
-    <span class="c1">#     return self._cell[nbr_cell][v][u]</span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The adjacent face belongs a to one of the cell neighbors over faces of the initial cell.</span>
+<span class="sd">        A face and its adjacent face share two common vertices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">halfedge</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
+        <span class="n">nbr_halfface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertex_ancestor</span><span class="p">(</span><span class="n">nbr_halfface</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="n">nbr_cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">w</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">nbr_cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">nbr_cell</span><span class="p">][</span><span class="n">v</span><span class="p">][</span><span class="n">u</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">halfface_vertex_ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">,</span> <span class="n">vertex</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vertex before the specified vertex in a specific face.</span>
@@ -2096,7 +2096,7 @@
         <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">halfface</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">halfface_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">halfface_manifold_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="n">nbrs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_cell</span><span class="p">(</span><span class="n">halfface</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_halfedges</span><span class="p">(</span><span class="n">halfface</span><span class="p">):</span>
@@ -2108,8 +2108,31 @@
                 <span class="n">nbrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">nbrs</span>
 
-    <span class="c1"># def halfface_manifold_neighbors(self, halfface):</span>
-    <span class="c1">#     halfface_cell = self.halfface_cell(halfface)</span>
+    <span class="k">def</span> <span class="nf">halfface_manifold_neighborhood</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hfkey</span><span class="p">,</span> <span class="n">ring</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the halfface neighborhood of a halfface across their edges.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        key : hashable</span>
+<span class="sd">            The identifier of the halfface.</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The list of neighboring halffaces.</span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Neighboring halffaces on the same cell are not included.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">nbrs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">halfface_manifold_neighbors</span><span class="p">(</span><span class="n">hfkey</span><span class="p">))</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">ring</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">nbr_hfkey</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">:</span>
+                <span class="n">temp</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfface_manifold_neighbors</span><span class="p">(</span><span class="n">nbr_hfkey</span><span class="p">)</span>
+            <span class="n">nbrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">nbrs</span> <span class="o">-</span> <span class="nb">set</span><span class="p">([</span><span class="n">hfkey</span><span class="p">]))</span>
 
     <span class="k">def</span> <span class="nf">is_halfface_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">halfface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Verify that a face is on the boundary.</span>

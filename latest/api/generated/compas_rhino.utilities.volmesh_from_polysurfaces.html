@@ -101,7 +101,7 @@
 <h1>volmesh_from_polysurfaces</h1>
 <dl class="function">
 <dt id="compas_rhino.utilities.volmesh_from_polysurfaces">
-<code class="sig-prename descclassname">compas_rhino.utilities.</code><code class="sig-name descname">volmesh_from_polysurfaces</code><span class="sig-paren">(</span><em class="sig-param">cls</em>, <em class="sig-param">guids</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/utilities/constructors.html#volmesh_from_polysurfaces"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">compas_rhino.utilities.</code><code class="sig-name descname">volmesh_from_polysurfaces</code><span class="sig-paren">(</span><em class="sig-param">cls</em>, <em class="sig-param">guids</em>, <em class="sig-param">precision=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_rhino/utilities/constructors.html#volmesh_from_polysurfaces"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Construct a volumetric mesh from given polysurfaces.</p>
 <p>Essentially, this function does the following:</p>
 <ul class="simple">
@@ -117,6 +117,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cls</strong> (<a class="reference internal" href="compas.datastructures.VolMesh.html#compas.datastructures.VolMesh" title="compas.datastructures.VolMesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.VolMesh</span></code></a>) – The class of volmesh.</p></li>
 <li><p><strong>guids</strong> (<em>sequence of str or System.Guid</em>) – The <em>globally unique identifiers</em> of the polysurfaces.</p></li>
+<li><p><strong>precision</strong> (<em>string</em>) – Precision of the polysurface connectivity.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
