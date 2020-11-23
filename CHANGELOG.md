@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fixed bug in `compas.datastructures.Network.delete_node`.
 * Fixed bug in `compas.datastructures.Network.delete_edge`.
+* Fixed bug in select functions for individual objects in `compas_rhino.utilities`.
 
 ### Removed
 
