@@ -697,6 +697,9 @@
         <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span></div>
 
+    <span class="n">vertex_gkey</span> <span class="o">=</span> <span class="n">key_gkey</span>
+    <span class="n">gkey_vertex</span> <span class="o">=</span> <span class="n">gkey_key</span>
+
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># builders</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -1485,7 +1488,14 @@
         <span class="k">return</span> <span class="n">boundaries</span></div>
 
 <div class="viewcode-block" id="BaseMesh.edges_on_boundaries"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edges_on_boundaries.html#compas.datastructures.BaseMesh.edges_on_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">edges_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Find the edges on all boundaries of the mesh.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of list</span>
+<span class="sd">            A list of edges per boundary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertexgroups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_on_boundaries</span><span class="p">()</span>
         <span class="n">edgegroups</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">vertexgroups</span><span class="p">:</span>
