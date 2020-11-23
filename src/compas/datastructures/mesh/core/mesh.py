@@ -1392,7 +1392,14 @@ class BaseMesh(HalfEdge):
         return boundaries
 
     def edges_on_boundaries(self):
-        """"""
+        """Find the edges on all boundaries of the mesh.
+
+        Returns
+        -------
+        list of list
+            A list of edges per boundary.
+
+        """
         vertexgroups = self.vertices_on_boundaries()
         edgegroups = []
         for vertices in vertexgroups:
