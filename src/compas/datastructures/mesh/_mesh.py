@@ -6,6 +6,7 @@ from .core import BaseMesh
 from .core import mesh_collapse_edge
 from .core import mesh_split_edge
 from .core import mesh_split_face
+from .core import mesh_merge_faces
 
 from .bbox import mesh_bounding_box
 from .bbox import mesh_bounding_box_xy
@@ -38,11 +39,12 @@ class Mesh(BaseMesh):
     bounding_box_xy = mesh_bounding_box_xy
     collapse_edge = mesh_collapse_edge
     connected_components = mesh_connected_components
-    slice_plane = mesh_slice_plane
     dual = mesh_dual
     face_adjacency = mesh_face_adjacency
     flip_cycles = mesh_flip_cycles
     is_connected = mesh_is_connected
+    merge_faces = mesh_merge_faces
+    slice_plane = mesh_slice_plane
     smooth_centroid = mesh_smooth_centroid
     smooth_area = mesh_smooth_area
     split_edge = mesh_split_edge
