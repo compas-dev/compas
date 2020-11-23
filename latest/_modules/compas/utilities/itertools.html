@@ -112,6 +112,8 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;normalize_values&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;remap_values&#39;</span><span class="p">,</span>
     <span class="s1">&#39;meshgrid&#39;</span><span class="p">,</span>
     <span class="s1">&#39;linspace&#39;</span><span class="p">,</span>
     <span class="s1">&#39;flatten&#39;</span><span class="p">,</span>
@@ -120,6 +122,78 @@
     <span class="s1">&#39;iterable_like&#39;</span><span class="p">,</span>
     <span class="s1">&#39;grouper&#39;</span>
 <span class="p">]</span>
+
+
+<div class="viewcode-block" id="normalize_values"><a class="viewcode-back" href="../../../api/generated/compas.utilities.normalize_values.html#compas.utilities.normalize_values">[docs]</a><span class="k">def</span> <span class="nf">normalize_values</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">new_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">new_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Normalize a list of numbers to the range between new_min and new_max.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    values : list of float</span>
+<span class="sd">        The data to be normalized.</span>
+<span class="sd">    new_min : float, optional</span>
+<span class="sd">        The new minimum of the data.</span>
+<span class="sd">        Default is `0.0`.</span>
+<span class="sd">    new_max : float, optional</span>
+<span class="sd">        The new maximum of the data.</span>
+<span class="sd">        Default is `1.0`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of float</span>
+<span class="sd">        A list of floats mapped to the range `new_min`, `new_max`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; data = list(range(5, 15))</span>
+<span class="sd">    &gt;&gt;&gt; data = normalize_values(data)</span>
+<span class="sd">    &gt;&gt;&gt; min(data)</span>
+<span class="sd">    0.0</span>
+<span class="sd">    &gt;&gt;&gt; max(data)</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">old_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">old_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">old_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">old_max</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span>
+    <span class="n">new_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_max</span> <span class="o">-</span> <span class="n">new_min</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(((</span><span class="n">value</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">new_range</span><span class="p">)</span> <span class="o">/</span> <span class="n">old_range</span><span class="p">)</span> <span class="o">+</span> <span class="n">new_min</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="remap_values"><a class="viewcode-back" href="../../../api/generated/compas.utilities.remap_values.html#compas.utilities.remap_values">[docs]</a><span class="k">def</span> <span class="nf">remap_values</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">target_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">target_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">original_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">original_max</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maps a list of numbers from one domain to another.</span>
+<span class="sd">    If you do not specify a target domain 0.0-1.0 will be used.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    values : list of int or float</span>
+<span class="sd">        The value to remap</span>
+<span class="sd">    original_min : int or float</span>
+<span class="sd">        The minimun value of the original domain</span>
+<span class="sd">    original_max : int or float</span>
+<span class="sd">        The maximum value of the original domain</span>
+<span class="sd">    target_min : int or float</span>
+<span class="sd">        The minimun value of the target domain. Default 0.0</span>
+<span class="sd">    target_max : int or float</span>
+<span class="sd">        The maximum value of the target domain. Default 1.0</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        The remaped list of values</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">original_min</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">original_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">original_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">original_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">original_range</span> <span class="o">=</span> <span class="n">original_max</span> <span class="o">-</span> <span class="n">original_min</span>
+    <span class="n">target_range</span> <span class="o">=</span> <span class="n">target_max</span> <span class="o">-</span> <span class="n">target_min</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">target_range</span> <span class="o">/</span> <span class="n">original_range</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">target_min</span> <span class="o">+</span> <span class="p">((</span><span class="n">value</span> <span class="o">-</span> <span class="n">original_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="meshgrid"><a class="viewcode-back" href="../../../api/generated/compas.utilities.meshgrid.html#compas.utilities.meshgrid">[docs]</a><span class="k">def</span> <span class="nf">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;xy&#39;</span><span class="p">):</span>

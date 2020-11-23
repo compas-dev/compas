@@ -106,7 +106,6 @@
     <span class="s1">&#39;geometric_key&#39;</span><span class="p">,</span>
     <span class="s1">&#39;reverse_geometric_key&#39;</span><span class="p">,</span>
     <span class="s1">&#39;geometric_key_xy&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;normalize_values&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -224,85 +223,6 @@
         <span class="k">if</span> <span class="s2">&quot;{0:.</span><span class="si">{1}</span><span class="s2">}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span> <span class="o">==</span> <span class="n">minzero</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="k">return</span> <span class="s1">&#39;{0:.</span><span class="si">{2}</span><span class="s1">},{1:.</span><span class="si">{2}</span><span class="s1">}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="normalize_values"><a class="viewcode-back" href="../../../api/generated/compas.utilities.normalize_values.html#compas.utilities.normalize_values">[docs]</a><span class="k">def</span> <span class="nf">normalize_values</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">new_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">new_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Normalize a list of numbers to the range between new_min and new_max.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    values : list of float</span>
-<span class="sd">        The data to be normalized.</span>
-<span class="sd">    new_min : float, optional</span>
-<span class="sd">        The new minimum of the data.</span>
-<span class="sd">        Default is `0.0`.</span>
-<span class="sd">    new_max : float, optional</span>
-<span class="sd">        The new maximum of the data.</span>
-<span class="sd">        Default is `1.0`.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    list of float</span>
-<span class="sd">        A list of floats mapped to the range `new_min`, `new_max`.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; data = list(range(5, 15))</span>
-<span class="sd">    &gt;&gt;&gt; data = normalize_values(data)</span>
-<span class="sd">    &gt;&gt;&gt; min(data)</span>
-<span class="sd">    0.0</span>
-<span class="sd">    &gt;&gt;&gt; max(data)</span>
-<span class="sd">    1.0</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">old_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">old_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-    <span class="n">old_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">old_max</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span>
-    <span class="n">new_range</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_max</span> <span class="o">-</span> <span class="n">new_min</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[(((</span><span class="n">value</span> <span class="o">-</span> <span class="n">old_min</span><span class="p">)</span> <span class="o">*</span> <span class="n">new_range</span><span class="p">)</span> <span class="o">/</span> <span class="n">old_range</span><span class="p">)</span> <span class="o">+</span> <span class="n">new_min</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span></div>
-
-
-<span class="c1"># def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, original_max=None):</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     Maps a list of numbers from one domain to another.</span>
-<span class="c1">#     If you do not specify a target domain 0.0-1.0 will be used.</span>
-
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     val : list of int, list of long, list of float</span>
-<span class="c1">#         The value to remap</span>
-<span class="c1">#     original_min : int, long, float</span>
-<span class="c1">#         The minimun value of the original domain</span>
-<span class="c1">#     original_max : int, long, float</span>
-<span class="c1">#         The maximum value of the original domain</span>
-<span class="c1">#     target_min : int, long, float</span>
-<span class="c1">#         The minimun value of the target domain. Default 0.0</span>
-<span class="c1">#     target_max : int, long, float</span>
-<span class="c1">#         The maximum value of the target domain. Default 1.0</span>
-
-<span class="c1">#     Returns</span>
-<span class="c1">#     -------</span>
-<span class="c1">#     list</span>
-<span class="c1">#         The remaped list of values</span>
-
-<span class="c1">#     Raises</span>
-<span class="c1">#     ------</span>
-<span class="c1">#     TypeError</span>
-<span class="c1">#         If `values` is not a list.</span>
-
-<span class="c1">#     Examples</span>
-<span class="c1">#     --------</span>
-<span class="c1">#     &gt;&gt;&gt;</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     if not isinstance(values, list):</span>
-<span class="c1">#         raise TypeError(&#39;Parameter val should be of type: list of int, list of float, list of long&#39;)</span>
-<span class="c1">#     if original_min is None:</span>
-<span class="c1">#         original_min = min(values)</span>
-<span class="c1">#     if original_max is None:</span>
-<span class="c1">#         original_max = max(values)</span>
-<span class="c1">#     original_range = original_max - original_min</span>
-<span class="c1">#     target_range = target_max - target_min</span>
-<span class="c1">#     ratio = target_range / original_range</span>
-<span class="c1">#     return [target_min + ((value - original_min) * ratio) for value in values]</span>
 
 
 <span class="c1"># ==============================================================================</span>
