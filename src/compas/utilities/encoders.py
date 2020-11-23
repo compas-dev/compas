@@ -57,7 +57,11 @@ class DataEncoder(json.JSONEncoder):
         else:
             return {
                 'dtype': "{}/{}".format(".".join(o.__class__.__module__.split(".")[:2]), o.__class__.__name__),
-                'value': value}
+                'value': value
+            }
+
+        if hasattr(o, '__next__'):
+            return list(o)
 
         try:
             import numpy as np
