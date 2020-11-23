@@ -777,10 +777,9 @@ def closest_point_on_polyline(point, polyline):
     ----------
     point : list
         XYZ coordinates of a 2D or 3D point (Z will be ignored).
-    polygon : sequence
-        A sequence of XYZ coordinates representing the locations of the corners of a polygon.
-        The vertices are assumed to be in order. The polygon is assumed to be closed:
-        the first and last vertex in the sequence should not be the same.
+    polyline : list of points or :class:`compas.geometry.Polyline`
+        A sequence of XYZ coordinates representing the locations of the corners of a polyline.
+        The vertices are assumed to be in order.
 
     Returns
     -------
@@ -804,11 +803,10 @@ def closest_point_on_polyline_xy(point, polyline):
     ----------
     point : sequence of float
         XY(Z) coordinates of a 2D or 3D point (Z will be ignored).
-    polygon : sequence
-        A sequence of XY(Z) coordinates of 2D or 3D points
-        (Z will be ignored) representing the locations of the corners of a polygon.
-        The vertices are assumed to be in order. The polygon is assumed to be closed:
-        the first and last vertex in the sequence should not be the same.
+    polyline : list of points or :class:`compas.geometry.Polyline`
+        A sequence of XY(Z) coordinates of 2D or 3D points (Z will be ignored)
+        representing the locations of the corners of a polyline.
+        The vertices are assumed to be in order.
 
     Returns
     -------
