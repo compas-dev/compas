@@ -102,6 +102,7 @@
 <span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">mesh_collapse_edge</span>
 <span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">mesh_split_edge</span>
 <span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">mesh_split_face</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">mesh_merge_faces</span>
 
 <span class="kn">from</span> <span class="nn">.bbox</span> <span class="kn">import</span> <span class="n">mesh_bounding_box</span>
 <span class="kn">from</span> <span class="nn">.bbox</span> <span class="kn">import</span> <span class="n">mesh_bounding_box_xy</span>
@@ -134,11 +135,12 @@
     <span class="n">bounding_box_xy</span> <span class="o">=</span> <span class="n">mesh_bounding_box_xy</span>
     <span class="n">collapse_edge</span> <span class="o">=</span> <span class="n">mesh_collapse_edge</span>
     <span class="n">connected_components</span> <span class="o">=</span> <span class="n">mesh_connected_components</span>
-    <span class="n">slice_plane</span> <span class="o">=</span> <span class="n">mesh_slice_plane</span>
     <span class="n">dual</span> <span class="o">=</span> <span class="n">mesh_dual</span>
     <span class="n">face_adjacency</span> <span class="o">=</span> <span class="n">mesh_face_adjacency</span>
     <span class="n">flip_cycles</span> <span class="o">=</span> <span class="n">mesh_flip_cycles</span>
     <span class="n">is_connected</span> <span class="o">=</span> <span class="n">mesh_is_connected</span>
+    <span class="n">merge_faces</span> <span class="o">=</span> <span class="n">mesh_merge_faces</span>
+    <span class="n">slice_plane</span> <span class="o">=</span> <span class="n">mesh_slice_plane</span>
     <span class="n">smooth_centroid</span> <span class="o">=</span> <span class="n">mesh_smooth_centroid</span>
     <span class="n">smooth_area</span> <span class="o">=</span> <span class="n">mesh_smooth_area</span>
     <span class="n">split_edge</span> <span class="o">=</span> <span class="n">mesh_split_edge</span>
