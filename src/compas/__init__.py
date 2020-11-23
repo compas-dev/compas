@@ -28,6 +28,7 @@ import sys
 import decimal
 
 import compas._os
+from compas._json import json_dump, json_dumps, json_load, json_loads
 
 
 __author__ = 'Tom Van Mele and many others (see AUTHORS.md)'
@@ -72,7 +73,11 @@ except Exception:
     pass
 
 
-__all__ = ['WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'BLENDER', 'set_precision', 'get']
+__all__ = [
+    'WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'BLENDER',
+    'set_precision',
+    'get',
+    'json_dump', 'json_load', 'json_dumps', 'json_loads']
 
 
 def is_windows():

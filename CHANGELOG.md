@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `remap_values` to `compas_utilities`.
 * Added `compas.datastructures.mesh_slice_plane`.
+* Added `compas.json_dump`, `compas.json_dumps`, `compas.json_load`, `compas.json_loads`.
 
 ### Changed
 
