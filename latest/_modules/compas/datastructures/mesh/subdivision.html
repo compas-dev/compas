@@ -108,8 +108,7 @@
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">iterable_like</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh._mesh</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.core</span> <span class="kn">import</span> <span class="n">mesh_split_edge</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">BaseMesh</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -126,10 +125,6 @@
 
 <span class="k">def</span> <span class="nf">mesh_fast_copy</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
     <span class="n">subd</span> <span class="o">=</span> <span class="n">SubdMesh</span><span class="p">()</span>
-    <span class="c1"># subd.attributes = deepcopy(other.attributes)</span>
-    <span class="c1"># subd.default_vertex_attributes = deepcopy(other.default_vertex_attributes)</span>
-    <span class="c1"># subd.default_face_attributes = deepcopy(other.default_face_attributes)</span>
-    <span class="c1"># subd.default_edge_attributes = deepcopy(other.default_edge_attributes)</span>
     <span class="n">subd</span><span class="o">.</span><span class="n">vertex</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">vertex</span><span class="p">)</span>
     <span class="n">subd</span><span class="o">.</span><span class="n">face</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">face</span><span class="p">)</span>
     <span class="c1"># subd.edgedata = deepcopy(other.edgedata)</span>
@@ -140,11 +135,15 @@
     <span class="k">return</span> <span class="n">subd</span>
 
 
-<span class="k">class</span> <span class="nc">SubdMesh</span><span class="p">(</span><span class="n">Mesh</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">SubdMesh</span><span class="p">(</span><span class="n">BaseMesh</span><span class="p">):</span>
 
-    <span class="n">_add_vertex</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">add_vertex</span>
-    <span class="n">_add_face</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">add_face</span>
-    <span class="n">_insert_vertex</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">insert_vertex</span>
+    <span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">mesh_split_edge</span>
+
+    <span class="n">_add_vertex</span> <span class="o">=</span> <span class="n">BaseMesh</span><span class="o">.</span><span class="n">add_vertex</span>
+    <span class="n">_add_face</span> <span class="o">=</span> <span class="n">BaseMesh</span><span class="o">.</span><span class="n">add_face</span>
+    <span class="n">_insert_vertex</span> <span class="o">=</span> <span class="n">BaseMesh</span><span class="o">.</span><span class="n">insert_vertex</span>
+
+    <span class="n">split_edge</span> <span class="o">=</span> <span class="n">mesh_split_edge</span>
 
     <span class="k">def</span> <span class="nf">add_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span> <span class="o">+</span> <span class="mi">1</span>
@@ -303,7 +302,7 @@
         <span class="n">faces</span> <span class="o">=</span> <span class="p">{</span><span class="n">face</span><span class="p">:</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)[:]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
         <span class="n">face_centroid</span> <span class="o">=</span> <span class="p">{</span><span class="n">face</span><span class="p">:</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">face</span><span class="p">)</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">edges</span><span class="p">()):</span>
-            <span class="n">mesh_split_edge</span><span class="p">(</span><span class="n">subd</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">split_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">face</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">faces</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">descendant</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)}</span>
             <span class="n">ancestor</span> <span class="o">=</span> <span class="p">{</span><span class="n">j</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">face</span><span class="p">)}</span>
@@ -316,8 +315,7 @@
                 <span class="n">subd</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">newface</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">face</span><span class="p">][</span><span class="s1">&#39;path&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="k">del</span> <span class="n">subd</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">face</span><span class="p">]</span>
             <span class="k">del</span> <span class="n">subd</span><span class="o">.</span><span class="n">facedata</span><span class="p">[</span><span class="n">face</span><span class="p">]</span>
-    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">subd2</span></div>
 
 
@@ -347,7 +345,7 @@
         <span class="n">subd</span> <span class="o">=</span> <span class="n">mesh_fast_copy</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
         <span class="c1"># split every edge</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">edges</span><span class="p">()):</span>
-            <span class="n">mesh_split_edge</span><span class="p">(</span><span class="n">subd</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">subd</span><span class="o">.</span><span class="n">split_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="c1"># create 4 new faces for every old face</span>
         <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">():</span>
             <span class="n">descendant</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">subd</span><span class="o">.</span><span class="n">face_halfedges</span><span class="p">(</span><span class="n">fkey</span><span class="p">)}</span>
@@ -361,8 +359,7 @@
             <span class="n">subd</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
             <span class="k">del</span> <span class="n">subd</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="n">subd</span>
-    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">subd2</span></div>
 
 
@@ -428,7 +425,7 @@
 
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
 
-            <span class="n">w</span> <span class="o">=</span> <span class="n">mesh_split_edge</span><span class="p">(</span><span class="n">subd</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">split_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="c1"># document why this is necessary</span>
             <span class="c1"># everything else in this loop is just quad subdivision</span>
@@ -512,8 +509,7 @@
 
         <span class="n">mesh</span> <span class="o">=</span> <span class="n">subd</span>
 
-    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">subd2</span></div>
 
 
@@ -625,8 +621,7 @@
 
         <span class="n">mesh</span> <span class="o">=</span> <span class="n">subd</span>
 
-    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">subd2</span></div>
 
 
@@ -796,7 +791,7 @@
         <span class="c1"># odd vertices</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">edges</span><span class="p">()):</span>
 
-            <span class="n">w</span> <span class="o">=</span> <span class="n">mesh_split_edge</span><span class="p">(</span><span class="n">subd</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">split_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="n">edgepoints</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">w</span>
             <span class="n">edgepoints</span><span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)]</span> <span class="o">=</span> <span class="n">w</span>
@@ -831,8 +826,7 @@
 
             <span class="k">del</span> <span class="n">subd</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span>
 
-    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
-    <span class="n">subd2</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">subd</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">subd2</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">subd</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">subd2</span>
 
 
@@ -845,7 +839,7 @@
     <span class="kn">import</span> <span class="nn">doctest</span>
     <span class="kn">import</span> <span class="nn">compas</span>  <span class="c1"># noqa: F401</span>
     <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">mesh_quads_to_triangles</span>  <span class="c1"># noqa: F401</span>
-    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>  <span class="c1"># noqa: F401</span>
     <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Box</span>  <span class="c1"># noqa: F401</span>
     <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
 

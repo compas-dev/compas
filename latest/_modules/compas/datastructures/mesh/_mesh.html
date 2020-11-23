@@ -98,25 +98,26 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.core</span> <span class="kn">import</span> <span class="n">BaseMesh</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.core</span> <span class="kn">import</span> <span class="n">mesh_collapse_edge</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.core</span> <span class="kn">import</span> <span class="n">mesh_split_edge</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.core</span> <span class="kn">import</span> <span class="n">mesh_split_face</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">BaseMesh</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">mesh_collapse_edge</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">mesh_split_edge</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">mesh_split_face</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.bbox</span> <span class="kn">import</span> <span class="n">mesh_bounding_box</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.bbox</span> <span class="kn">import</span> <span class="n">mesh_bounding_box_xy</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.combinatorics</span> <span class="kn">import</span> <span class="n">mesh_is_connected</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.combinatorics</span> <span class="kn">import</span> <span class="n">mesh_connected_components</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.duality</span> <span class="kn">import</span> <span class="n">mesh_dual</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.orientation</span> <span class="kn">import</span> <span class="n">mesh_face_adjacency</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.orientation</span> <span class="kn">import</span> <span class="n">mesh_flip_cycles</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.orientation</span> <span class="kn">import</span> <span class="n">mesh_unify_cycles</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.slice</span> <span class="kn">import</span> <span class="n">mesh_slice_plane</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.smoothing</span> <span class="kn">import</span> <span class="n">mesh_smooth_centroid</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.smoothing</span> <span class="kn">import</span> <span class="n">mesh_smooth_area</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.transformations</span> <span class="kn">import</span> <span class="n">mesh_transform</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.transformations</span> <span class="kn">import</span> <span class="n">mesh_transformed</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.triangulation</span> <span class="kn">import</span> <span class="n">mesh_quads_to_triangles</span>
+<span class="kn">from</span> <span class="nn">.bbox</span> <span class="kn">import</span> <span class="n">mesh_bounding_box</span>
+<span class="kn">from</span> <span class="nn">.bbox</span> <span class="kn">import</span> <span class="n">mesh_bounding_box_xy</span>
+<span class="kn">from</span> <span class="nn">.combinatorics</span> <span class="kn">import</span> <span class="n">mesh_is_connected</span>
+<span class="kn">from</span> <span class="nn">.combinatorics</span> <span class="kn">import</span> <span class="n">mesh_connected_components</span>
+<span class="kn">from</span> <span class="nn">.duality</span> <span class="kn">import</span> <span class="n">mesh_dual</span>
+<span class="kn">from</span> <span class="nn">.orientation</span> <span class="kn">import</span> <span class="n">mesh_face_adjacency</span>
+<span class="kn">from</span> <span class="nn">.orientation</span> <span class="kn">import</span> <span class="n">mesh_flip_cycles</span>
+<span class="kn">from</span> <span class="nn">.orientation</span> <span class="kn">import</span> <span class="n">mesh_unify_cycles</span>
+<span class="kn">from</span> <span class="nn">.slice</span> <span class="kn">import</span> <span class="n">mesh_slice_plane</span>
+<span class="kn">from</span> <span class="nn">.smoothing</span> <span class="kn">import</span> <span class="n">mesh_smooth_centroid</span>
+<span class="kn">from</span> <span class="nn">.smoothing</span> <span class="kn">import</span> <span class="n">mesh_smooth_area</span>
+<span class="kn">from</span> <span class="nn">.subdivision</span> <span class="kn">import</span> <span class="n">mesh_subdivide</span>
+<span class="kn">from</span> <span class="nn">.transformations</span> <span class="kn">import</span> <span class="n">mesh_transform</span>
+<span class="kn">from</span> <span class="nn">.transformations</span> <span class="kn">import</span> <span class="n">mesh_transformed</span>
+<span class="kn">from</span> <span class="nn">.triangulation</span> <span class="kn">import</span> <span class="n">mesh_quads_to_triangles</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Mesh&#39;</span><span class="p">]</span>
@@ -129,7 +130,6 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_polyhedron(6)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">bounding_box</span> <span class="o">=</span> <span class="n">mesh_bounding_box</span>
     <span class="n">bounding_box_xy</span> <span class="o">=</span> <span class="n">mesh_bounding_box_xy</span>
     <span class="n">collapse_edge</span> <span class="o">=</span> <span class="n">mesh_collapse_edge</span>
@@ -143,6 +143,7 @@
     <span class="n">smooth_area</span> <span class="o">=</span> <span class="n">mesh_smooth_area</span>
     <span class="n">split_edge</span> <span class="o">=</span> <span class="n">mesh_split_edge</span>
     <span class="n">split_face</span> <span class="o">=</span> <span class="n">mesh_split_face</span>
+    <span class="n">subdivide</span> <span class="o">=</span> <span class="n">mesh_subdivide</span>
     <span class="n">transform</span> <span class="o">=</span> <span class="n">mesh_transform</span>
     <span class="n">transformed</span> <span class="o">=</span> <span class="n">mesh_transformed</span>
     <span class="n">unify_cycles</span> <span class="o">=</span> <span class="n">mesh_unify_cycles</span>
