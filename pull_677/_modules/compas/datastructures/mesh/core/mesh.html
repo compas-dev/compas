@@ -1409,7 +1409,9 @@
         <span class="c1">#         break</span>
         <span class="c1"># return vertices</span>
         <span class="n">boundaries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_on_boundaries</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="k">if</span> <span class="n">boundaries</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">boundaries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="BaseMesh.edges_on_boundary"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseMesh.edges_on_boundary.html#compas.datastructures.BaseMesh.edges_on_boundary">[docs]</a>    <span class="k">def</span> <span class="nf">edges_on_boundary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oriented</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Find the edges on the boundary.</span>
