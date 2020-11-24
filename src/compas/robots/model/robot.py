@@ -27,6 +27,7 @@ from compas.robots.model.link import Visual
 from compas.robots.resources import DefaultMeshLoader
 from compas.topology import shortest_path
 
+
 __all__ = ['RobotModel']
 
 
