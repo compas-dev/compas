@@ -1313,7 +1313,9 @@ class BaseMesh(HalfEdge):
         #         break
         # return vertices
         boundaries = self.vertices_on_boundaries()
-        return boundaries[0]
+        if boundaries:
+            return boundaries[0]
+        return []
 
     def edges_on_boundary(self, oriented=False):
         """Find the edges on the boundary.

@@ -573,9 +573,8 @@ def test_face_curvature():
 
 def test_vertices_on_boundaries():
     mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-    print(mesh.vertices_on_boundaries())
     assert mesh.vertices_on_boundaries() == [
-        [6, 5, 4, 3, 2, 1, 0, 15, 14, 85, 84, 86, 76, 75, 74, 73, 88, 87, 33, 71, 17, 53, 89, 35, 62, 98, 44, 45, 37, 38, 39, 40, 41, 42, 43, 7]]
+        [15, 14, 85, 84, 86, 76, 75, 74, 73, 88, 87, 33, 71, 17, 53, 89, 35, 62, 98, 44, 45, 37, 38, 39, 40, 41, 42, 43, 7, 6, 5, 4, 3, 2, 1, 0]]
 
 
 def test_faces_on_boundary():
