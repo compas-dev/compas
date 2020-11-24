@@ -275,19 +275,5 @@ class Cylinder(Shape):
 
 if __name__ == "__main__":
 
-    # from compas.geometry import Transformation
-
-    # cylinder = Cylinder(Circle(Plane.worldXY(), 5), 7)
-    # frame = Frame([1, 1, 1], [0.68, 0.68, 0.27], [-0.67, 0.73, -0.15])
-    # print(frame.normal)
-    # T = Transformation.from_frame(frame)
-    # cylinder.transform(T)
-    # print(cylinder)
-
-    # print(Plane.worldXY().data)
-    # data = {'circle': Circle(Plane.worldXY(), 5).data, 'height': 7.}
-    # cylinder = Cylinder.from_data(data)
-    # print(cylinder)
-
     import doctest
     doctest.testmod()
