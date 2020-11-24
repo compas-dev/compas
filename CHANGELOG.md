@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+* Fixed bug in `compas.datastructures.Halfface.data(setter)`  in reading json serialized data
 
 ### Removed
 
