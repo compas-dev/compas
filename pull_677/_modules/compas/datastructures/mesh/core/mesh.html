@@ -1484,13 +1484,11 @@
         <span class="n">boundaries</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">if</span> <span class="n">special</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">special</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-                    <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge_face</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="n">special</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+                    <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge_face</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">face</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span><span class="p">]</span>
-                        <span class="n">start</span> <span class="o">=</span> <span class="n">k</span>
-                        <span class="n">key</span> <span class="o">=</span> <span class="n">n</span>
+                        <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">key</span><span class="p">]</span>
                         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                             <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
                                 <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge_face</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">nbr</span><span class="p">)</span>
