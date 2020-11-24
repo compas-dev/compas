@@ -1388,13 +1388,11 @@ class BaseMesh(HalfEdge):
         boundaries = []
 
         if special:
-            for k in special:
-                for n in self.vertex_neighbors(k):
-                    face = self.halfedge_face(k, n)
+            for start in special:
+                for key in self.vertex_neighbors(start):
+                    face = self.halfedge_face(start, key)
                     if face is None:
-                        vertices = [k, n]
-                        start = k
-                        key = n
+                        vertices = [start, key]
                         while True:
                             for nbr in self.vertex_neighbors(key):
                                 face = self.halfedge_face(key, nbr)
