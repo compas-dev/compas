@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>COMPAS - json.decoder</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <meta name="author" content="Tom Van Mele and many others" />
+  <meta name="description" content="A computational framework for research and collaboration in AEFC." />
+
+  <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+  <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+  
+  
+  
+
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <style>
+  .footer-text,
+  .footer-link,
+  .footer-title {
+    color: rgba(255, 255, 255, 0.25);
+  }
+  .footer-link:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  </style>
+</head>
+
+<body data-spy="scroll" data-target="#compas-toc">
+  <!-- header -->
+  <header id="header" class="compas-header d-flex align-items-center">
+    <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
+      <!-- brand -->
+      <a class="navbar-brand" href="/index.html">
+        <img src="../../_static/images/compas_icon_white.png" alt="COMPAS" width="48px" height="48px" />
+      </a>
+      <!-- brand -->
+      <!-- primary -->
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="/index.html">Home</a></li>
+        <li class="nav-item active"><a class="nav-link" href="/compas/latest/">Docs</a></li>
+        <li class="nav-item"><a class="nav-link" href="/plugins.html">Plugins</a></li>
+        <li class="nav-item"><a class="nav-link" href="/extensions.html">Extensions</a></li>
+        <li class="nav-item"><a class="nav-link" href="/examples/">Examples</a></li>
+      </ul>
+      <!-- primary -->
+      <ul class="navbar-nav d-none d-md-flex ml-md-auto">
+        <!-- version -->
+        
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <li class="nav-item nav-versions dropdown">
+          <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            0.17.3
+          </a>
+          <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
+        </li>
+        <!-- version -->
+        
+        <!-- social -->
+        <li class="nav-item">
+          <a class="nav-link" href="http://github.com/compas-dev" target="_blank">
+            <span class="fab fa-github fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://forum.compas-framework.org" target="_blank">
+            <span class="fab fa-discourse fa-1x"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+            <span class="fab fa-python fa-1x"></span>
+          </a>
+        </li>
+        <!-- social -->
+      </ul>
+    </nav>
+  </header>
+  <!-- header -->
+  <!-- main -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- main -->
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
+        
+          
+          <h1>Source code for json.decoder</h1><div class="highlight"><pre><code>
+<span></span><span class="sd">&quot;&quot;&quot;Implementation of JSONDecoder</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">scanner</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">_json</span> <span class="kn">import</span> <span class="n">scanstring</span> <span class="k">as</span> <span class="n">c_scanstring</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">c_scanstring</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;JSONDecoder&#39;</span><span class="p">,</span> <span class="s1">&#39;JSONDecodeError&#39;</span><span class="p">]</span>
+
+<span class="n">FLAGS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span>
+
+<span class="n">NaN</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">)</span>
+<span class="n">PosInf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+<span class="n">NegInf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;-inf&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">JSONDecodeError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Subclass of ValueError with the following additional properties:</span>
+
+<span class="sd">    msg: The unformatted error message</span>
+<span class="sd">    doc: The JSON document being parsed</span>
+<span class="sd">    pos: The start index of doc where parsing failed</span>
+<span class="sd">    lineno: The line corresponding to pos</span>
+<span class="sd">    colno: The column corresponding to pos</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Note that this exception is used from _json</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">doc</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="n">lineno</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">colno</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">doc</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="n">errmsg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">: line </span><span class="si">%d</span><span class="s1"> column </span><span class="si">%d</span><span class="s1"> (char </span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">colno</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="ne">ValueError</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errmsg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lineno</span> <span class="o">=</span> <span class="n">lineno</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colno</span> <span class="o">=</span> <span class="n">colno</span>
+
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
+
+
+<span class="n">_CONSTANTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;-Infinity&#39;</span><span class="p">:</span> <span class="n">NegInf</span><span class="p">,</span>
+    <span class="s1">&#39;Infinity&#39;</span><span class="p">:</span> <span class="n">PosInf</span><span class="p">,</span>
+    <span class="s1">&#39;NaN&#39;</span><span class="p">:</span> <span class="n">NaN</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="n">STRINGCHUNK</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(.*?)([&quot;</span><span class="se">\\</span><span class="s1">\x00-\x1f])&#39;</span><span class="p">,</span> <span class="n">FLAGS</span><span class="p">)</span>
+<span class="n">BACKSLASH</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\b</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">_decode_uXXXX</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+    <span class="n">esc</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">5</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">esc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="n">esc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">&#39;xX&#39;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">esc</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid </span><span class="se">\\</span><span class="s2">uXXXX escape&quot;</span>
+    <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">py_scanstring</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">_b</span><span class="o">=</span><span class="n">BACKSLASH</span><span class="p">,</span> <span class="n">_m</span><span class="o">=</span><span class="n">STRINGCHUNK</span><span class="o">.</span><span class="n">match</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Scan the string s for a JSON string. End is the index of the</span>
+<span class="sd">    character in s after the quote that started the JSON string.</span>
+<span class="sd">    Unescapes all valid JSON string escape sequences and raises ValueError</span>
+<span class="sd">    on attempt to decode an invalid string. If strict is False then literal</span>
+<span class="sd">    control characters are allowed in the string.</span>
+
+<span class="sd">    Returns a tuple of the decoded string and the index of the character in s</span>
+<span class="sd">    after the end quote.&quot;&quot;&quot;</span>
+    <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">_append</span> <span class="o">=</span> <span class="n">chunks</span><span class="o">.</span><span class="n">append</span>
+    <span class="n">begin</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">chunk</span> <span class="o">=</span> <span class="n">_m</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">chunk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Unterminated string starting at&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">begin</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">content</span><span class="p">,</span> <span class="n">terminator</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+        <span class="c1"># Content is contains zero or more unescaped string characters</span>
+        <span class="k">if</span> <span class="n">content</span><span class="p">:</span>
+            <span class="n">_append</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="c1"># Terminator is the end of string, a literal control character,</span>
+        <span class="c1"># or a backslash denoting that an escape sequence follows</span>
+        <span class="k">if</span> <span class="n">terminator</span> <span class="o">==</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">elif</span> <span class="n">terminator</span> <span class="o">!=</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
+                <span class="c1">#msg = &quot;Invalid control character %r at&quot; % (terminator,)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid control character </span><span class="si">{0!r}</span><span class="s2"> at&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">terminator</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_append</span><span class="p">(</span><span class="n">terminator</span><span class="p">)</span>
+                <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">esc</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Unterminated string starting at&quot;</span><span class="p">,</span>
+                                  <span class="n">s</span><span class="p">,</span> <span class="n">begin</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+        <span class="c1"># If not a unicode escape sequence, must be in the lookup table</span>
+        <span class="k">if</span> <span class="n">esc</span> <span class="o">!=</span> <span class="s1">&#39;u&#39;</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">char</span> <span class="o">=</span> <span class="n">_b</span><span class="p">[</span><span class="n">esc</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Invalid </span><span class="se">\\</span><span class="s2">escape: </span><span class="si">{0!r}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">esc</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+            <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">uni</span> <span class="o">=</span> <span class="n">_decode_uXXXX</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+            <span class="n">end</span> <span class="o">+=</span> <span class="mi">5</span>
+            <span class="k">if</span> <span class="mh">0xd800</span> <span class="o">&lt;=</span> <span class="n">uni</span> <span class="o">&lt;=</span> <span class="mh">0xdbff</span> <span class="ow">and</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">u&#39;</span><span class="p">:</span>
+                <span class="n">uni2</span> <span class="o">=</span> <span class="n">_decode_uXXXX</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="mh">0xdc00</span> <span class="o">&lt;=</span> <span class="n">uni2</span> <span class="o">&lt;=</span> <span class="mh">0xdfff</span><span class="p">:</span>
+                    <span class="n">uni</span> <span class="o">=</span> <span class="mh">0x10000</span> <span class="o">+</span> <span class="p">(((</span><span class="n">uni</span> <span class="o">-</span> <span class="mh">0xd800</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">uni2</span> <span class="o">-</span> <span class="mh">0xdc00</span><span class="p">))</span>
+                    <span class="n">end</span> <span class="o">+=</span> <span class="mi">6</span>
+            <span class="n">char</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">uni</span><span class="p">)</span>
+        <span class="n">_append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">chunks</span><span class="p">),</span> <span class="n">end</span>
+
+
+<span class="c1"># Use speedup if available</span>
+<span class="n">scanstring</span> <span class="o">=</span> <span class="n">c_scanstring</span> <span class="ow">or</span> <span class="n">py_scanstring</span>
+
+<span class="n">WHITESPACE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[ \t\n\r]*&#39;</span><span class="p">,</span> <span class="n">FLAGS</span><span class="p">)</span>
+<span class="n">WHITESPACE_STR</span> <span class="o">=</span> <span class="s1">&#39; </span><span class="se">\t\n\r</span><span class="s1">&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">JSONObject</span><span class="p">(</span><span class="n">s_and_end</span><span class="p">,</span> <span class="n">strict</span><span class="p">,</span> <span class="n">scan_once</span><span class="p">,</span> <span class="n">object_hook</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="p">,</span>
+               <span class="n">memo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_w</span><span class="o">=</span><span class="n">WHITESPACE</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="n">_ws</span><span class="o">=</span><span class="n">WHITESPACE_STR</span><span class="p">):</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">s_and_end</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pairs_append</span> <span class="o">=</span> <span class="n">pairs</span><span class="o">.</span><span class="n">append</span>
+    <span class="c1"># Backwards compatibility</span>
+    <span class="k">if</span> <span class="n">memo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">memo</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">memo_get</span> <span class="o">=</span> <span class="n">memo</span><span class="o">.</span><span class="n">setdefault</span>
+    <span class="c1"># Use a slice to prevent IndexError from being raised, the following</span>
+    <span class="c1"># check will raise a more specific ValueError if the string is empty</span>
+    <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Normally we expect nextchar == &#39;&quot;&#39;</span>
+    <span class="k">if</span> <span class="n">nextchar</span> <span class="o">!=</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nextchar</span> <span class="ow">in</span> <span class="n">_ws</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+            <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Trivial empty object</span>
+        <span class="k">if</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;}&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">object_pairs_hook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">object_pairs_hook</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">pairs</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">object_hook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">pairs</span> <span class="o">=</span> <span class="n">object_hook</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">!=</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span>
+                <span class="s2">&quot;Expecting property name enclosed in double quotes&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">scanstring</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">strict</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">memo_get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="c1"># To skip some function call overhead we optimize the fast paths where</span>
+        <span class="c1"># the JSON key separator is &quot;: &quot; or just &quot;:&quot;.</span>
+        <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;:&#39;</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;:&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting &#39;:&#39; delimiter&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">]</span> <span class="ow">in</span> <span class="n">_ws</span><span class="p">:</span>
+                <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">]</span> <span class="ow">in</span> <span class="n">_ws</span><span class="p">:</span>
+                    <span class="n">end</span> <span class="o">=</span> <span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">scan_once</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting value&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+        <span class="n">pairs_append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">nextchar</span> <span class="ow">in</span> <span class="n">_ws</span><span class="p">:</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+                <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">nextchar</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;}&#39;</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">!=</span> <span class="s1">&#39;,&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting &#39;,&#39; delimiter&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">nextchar</span> <span class="o">!=</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span>
+                <span class="s2">&quot;Expecting property name enclosed in double quotes&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">object_pairs_hook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">object_pairs_hook</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">end</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">object_hook</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="n">object_hook</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pairs</span><span class="p">,</span> <span class="n">end</span>
+
+<span class="k">def</span> <span class="nf">JSONArray</span><span class="p">(</span><span class="n">s_and_end</span><span class="p">,</span> <span class="n">scan_once</span><span class="p">,</span> <span class="n">_w</span><span class="o">=</span><span class="n">WHITESPACE</span><span class="o">.</span><span class="n">match</span><span class="p">,</span> <span class="n">_ws</span><span class="o">=</span><span class="n">WHITESPACE_STR</span><span class="p">):</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">s_and_end</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">nextchar</span> <span class="ow">in</span> <span class="n">_ws</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Look-ahead for trivial empty array</span>
+    <span class="k">if</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;]&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">_append</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">append</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">scan_once</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting value&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+        <span class="n">_append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">nextchar</span> <span class="ow">in</span> <span class="n">_ws</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+            <span class="n">nextchar</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">nextchar</span> <span class="o">==</span> <span class="s1">&#39;]&#39;</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">elif</span> <span class="n">nextchar</span> <span class="o">!=</span> <span class="s1">&#39;,&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting &#39;,&#39; delimiter&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">]</span> <span class="ow">in</span> <span class="n">_ws</span><span class="p">:</span>
+                <span class="n">end</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">end</span><span class="p">]</span> <span class="ow">in</span> <span class="n">_ws</span><span class="p">:</span>
+                    <span class="n">end</span> <span class="o">=</span> <span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">values</span><span class="p">,</span> <span class="n">end</span>
+
+
+<span class="k">class</span> <span class="nc">JSONDecoder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simple JSON &lt;http://json.org&gt; decoder</span>
+
+<span class="sd">    Performs the following translations in decoding by default:</span>
+
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | JSON          | Python            |</span>
+<span class="sd">    +===============+===================+</span>
+<span class="sd">    | object        | dict              |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | array         | list              |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | string        | str               |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | number (int)  | int               |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | number (real) | float             |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | true          | True              |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | false         | False             |</span>
+<span class="sd">    +---------------+-------------------+</span>
+<span class="sd">    | null          | None              |</span>
+<span class="sd">    +---------------+-------------------+</span>
+
+<span class="sd">    It also understands ``NaN``, ``Infinity``, and ``-Infinity`` as</span>
+<span class="sd">    their corresponding ``float`` values, which is outside the JSON spec.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_float</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">parse_int</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">object_pairs_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;``object_hook``, if specified, will be called with the result</span>
+<span class="sd">        of every JSON object decoded and its return value will be used in</span>
+<span class="sd">        place of the given ``dict``.  This can be used to provide custom</span>
+<span class="sd">        deserializations (e.g. to support JSON-RPC class hinting).</span>
+
+<span class="sd">        ``object_pairs_hook``, if specified will be called with the result of</span>
+<span class="sd">        every JSON object decoded with an ordered list of pairs.  The return</span>
+<span class="sd">        value of ``object_pairs_hook`` will be used instead of the ``dict``.</span>
+<span class="sd">        This feature can be used to implement custom decoders.</span>
+<span class="sd">        If ``object_hook`` is also defined, the ``object_pairs_hook`` takes</span>
+<span class="sd">        priority.</span>
+
+<span class="sd">        ``parse_float``, if specified, will be called with the string</span>
+<span class="sd">        of every JSON float to be decoded. By default this is equivalent to</span>
+<span class="sd">        float(num_str). This can be used to use another datatype or parser</span>
+<span class="sd">        for JSON floats (e.g. decimal.Decimal).</span>
+
+<span class="sd">        ``parse_int``, if specified, will be called with the string</span>
+<span class="sd">        of every JSON int to be decoded. By default this is equivalent to</span>
+<span class="sd">        int(num_str). This can be used to use another datatype or parser</span>
+<span class="sd">        for JSON integers (e.g. float).</span>
+
+<span class="sd">        ``parse_constant``, if specified, will be called with one of the</span>
+<span class="sd">        following strings: -Infinity, Infinity, NaN.</span>
+<span class="sd">        This can be used to raise an exception if invalid JSON numbers</span>
+<span class="sd">        are encountered.</span>
+
+<span class="sd">        If ``strict`` is false (true is the default), then control</span>
+<span class="sd">        characters will be allowed inside strings.  Control characters in</span>
+<span class="sd">        this context are those with character codes in the 0-31 range,</span>
+<span class="sd">        including ``&#39;\\t&#39;`` (tab), ``&#39;\\n&#39;``, ``&#39;\\r&#39;`` and ``&#39;\\0&#39;``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_hook</span> <span class="o">=</span> <span class="n">object_hook</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_float</span> <span class="o">=</span> <span class="n">parse_float</span> <span class="ow">or</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_int</span> <span class="o">=</span> <span class="n">parse_int</span> <span class="ow">or</span> <span class="nb">int</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_constant</span> <span class="o">=</span> <span class="n">parse_constant</span> <span class="ow">or</span> <span class="n">_CONSTANTS</span><span class="o">.</span><span class="fm">__getitem__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict</span> <span class="o">=</span> <span class="n">strict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_pairs_hook</span> <span class="o">=</span> <span class="n">object_pairs_hook</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_object</span> <span class="o">=</span> <span class="n">JSONObject</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_array</span> <span class="o">=</span> <span class="n">JSONArray</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_string</span> <span class="o">=</span> <span class="n">scanstring</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memo</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scan_once</span> <span class="o">=</span> <span class="n">scanner</span><span class="o">.</span><span class="n">make_scanner</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">_w</span><span class="o">=</span><span class="n">WHITESPACE</span><span class="o">.</span><span class="n">match</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the Python representation of ``s`` (a ``str`` instance</span>
+<span class="sd">        containing a JSON document).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">obj</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_decode</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">())</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Extra data&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="nf">raw_decode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decode a JSON document from ``s`` (a ``str`` beginning with</span>
+<span class="sd">        a JSON document) and return a 2-tuple of the Python</span>
+<span class="sd">        representation and the index in ``s`` where the document ended.</span>
+
+<span class="sd">        This can be used to decode a JSON document from a string that may</span>
+<span class="sd">        have extraneous data at the end.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">obj</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_once</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">JSONDecodeError</span><span class="p">(</span><span class="s2">&quot;Expecting value&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="kn">from</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="p">,</span> <span class="n">end</span>
+</code></pre></div>
+        
+      </main>
+      <!-- main -->
+      <!-- sidebar -->
+      <div class="col-12 col-md-3 compas-sidebar" role="navigation"> 
+        <form id="search" class="d-flex align-items-center compas-searchbox" action="../../search.html" method="get">
+          <input class="form-control" type="text" name="q" placeholder="Search docs" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+          <button class="navbar-toggler d-md-none" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </form>
+        
+        
+        <div id="compas-navigation" class="collapse compas-navigation">
+          <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../index.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../installation.html">Installation</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../plugins.html">Extension points</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
+</ul>
+
+        </div>
+        
+      </div>
+      <!-- sidebar -->
+      <!-- toc -->
+      <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+        
+        
+      </div>
+      <!-- toc -->
+    </div>
+  </div>
+
+  <!-- <footer class="bg-dark py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3 d-flex flex-even my-4 ml-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Core</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_blender</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_ghpython</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_plotters</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_rhino</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Plugins</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_cgal</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_gmsh</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_libigl</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_shapeop</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-2 mb-3 mt-0 footer-title">Extensions</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fab</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_fea(2)</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_tia</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">compas_vol</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 d-flex flex-even my-4 mr-auto">
+          <div class="card w-100 border-0">
+            <div class="card-body" style="background-color: #23272b;">
+              <h4 class="pb-3 mb-3 mt-0 footer-title">Resources</h4>
+              <nav class="nav flex-column">
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">About</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Collaboration in research</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Transfer to industry</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Open source</a>
+                <a class="nav-link px-0 py-0 pb-1 footer-link" href="#">Quality assurance</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer> -->
+
+  <div class="below py-5" style="background-color: #23272b;">
+    <div class="container">
+      <div class="row flex-column">
+        <div class="col-12 col-md-6 mx-md-auto text-center">
+          <h4 class="mb-4 mt-0 footer-text">COMPAS</h4>
+          <p class="footer-text">
+            A computational framework for collaboration and research
+            in Architecture, Engineering, Fabrication, and Construction.
+          </p>
+          <nav class="nav justify-content-center my-4">
+            <a href="https://compas-dev.github.io/main/devguide.html" class="nav-link btn btn-light mx-2" target="_blank">Contribute</a>
+          </nav>
+          <nav class="nav justify-content-center pb-3">
+            <a class="nav-link mx-2 px-0 footer-link" href="http://github.com/compas-dev" target="_blank">
+              <span class="fab fa-github fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="http://forum.compas-framework.org" target="_blank">
+              <span class="fab fa-discourse fa-1x"></span>
+            </a>
+            <a class="nav-link mx-2 px-0 footer-link" href="https://pypi.org/project/COMPAS/" target="_blank">
+              <span class="fab fa-python fa-1x"></span>
+            </a>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p class="p-0 m-0 footer-text">Copyright &copy; 2017-2020 compas-dev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.17.3',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+  };
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https:////cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+  <script src="../../_static/underscore.js"></script>
+  <script src="../../_static/doctools.js"></script>
+  <script src="../../_static/js/searchtools_.js"></script>
+
+  <script>
+  $(document).ready(function() {
+  $(".language-default code").addClass("python");
+  $(".language-python code").addClass("python");
+  $(".language-bash code").addClass("bash");
+  $(".language-cpp code").addClass("cpp");
+  $(".language-json code").addClass("json");
+  $(".language-none code").addClass("plaintext");
+
+  hljs.initHighlighting();
+  anchors.add();
+
+  $('.nav-versions .dropdown-item').filter(function(i, ver) {
+      return window.location.href.startsWith(ver.href);
+  }).addClass("active");
+  });
+
+  var url = $("#doc_versions").data("url");
+  var docs_site = $("#doc_versions").data("docs");
+
+  if (url) {
+    $.get(url, res=>{
+      var lines = res.match(/[^\r\n]+/g);
+      lines.forEach(version => {
+        $("#doc_version_list").append("<a class=\"dropdown-item\" href=\""+ docs_site + version + "/\">" + version + "</a>");
+      });
+    })
+  }
+  </script>
+
+  <script>
+  // var prevScrollpos = window.pageYOffset;
+  // window.onscroll = function() {
+  // var currentScrollPos = window.pageYOffset;
+  // if (prevScrollpos > currentScrollPos) {
+  //     document.getElementById("header").style.top = "0";
+  // } else {
+  //     document.getElementById("header").style.top = "-58px";
+  // }
+  // prevScrollpos = currentScrollPos;
+  // }
+  </script>
+
+  
+  
+</body>
+</html>
