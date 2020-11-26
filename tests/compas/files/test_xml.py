@@ -30,10 +30,10 @@ def test_xml_from_string(sample_xml):
 def test_xml_to_string(sample_xml):
     xml = XML.from_string(sample_xml)
     strxml = xml.to_string('utf-8')
-    assert strxml.startswith('<Tests>')
+    assert strxml.startswith(b'<Tests>')
 
 
 def test_xml_to_pretty_string(sample_xml):
     xml = XML.from_string(sample_xml)
     prettyxml = xml.to_string('utf-8', prettify=True)
-    assert prettyxml == "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Tests>\n  <Test id=\"1\"/>\n</Tests>\n"
+    assert prettyxml == b"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Tests>\n  <Test id=\"1\"/>\n</Tests>\n"

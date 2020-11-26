@@ -5,7 +5,8 @@ from __future__ import print_function
 import json
 
 from compas.base import Base
-from compas.files import URDFParser, URDFElement
+from compas.files import URDFElement
+from compas.files import URDFParser
 from compas.geometry import Vector
 from compas.geometry import transform_vectors
 from compas.geometry import Rotation

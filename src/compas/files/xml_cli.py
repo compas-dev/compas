@@ -94,7 +94,7 @@ def prettify_string(rough_string):
 
     formattedXml = sReader.ReadToEnd()
 
-    return formattedXml.decode("utf-8")
+    return formattedXml
 
 
 class CLRXMLTreeParser(ET.XMLParser):

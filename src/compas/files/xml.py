@@ -204,7 +204,7 @@ class XMLWriter(object):
     def to_string(self, encoding='utf-8', prettify=False):
         rough_string = ET.tostring(self.xml.root, encoding=encoding, method='xml')
         if not prettify:
-            return rough_string.decode("utf-8")
+            return rough_string
         return prettify_string(rough_string)
 
 
@@ -244,4 +244,4 @@ else:
             XML string
         """
         reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ", encoding='utf-8').decode("utf-8")
+        return reparsed.toprettyxml(indent="  ", encoding='utf-8')

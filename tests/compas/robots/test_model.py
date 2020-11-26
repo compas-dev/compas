@@ -101,7 +101,7 @@ def test_root_urdf_attributes_to_string():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"></robot>""")
     urdf = URDF.from_robot(r)
-    assert urdf.to_string(prettify=True) == """<?xml version="1.0" encoding="utf-8"?>\n<robot name="panda"/>\n"""
+    assert urdf.to_string(prettify=True) == b"""<?xml version="1.0" encoding="utf-8"?>\n<robot name="panda"/>\n"""
     # Note: the Processing Instruction 'xmlns:xacro="http://www.ros.org/wiki/xacro"'
     # is lost on `from_urdf_string` due to limitations of `xml.etree.ElementTree`
 
@@ -469,7 +469,7 @@ def test_unknown_axis_attribute(urdf_with_unknown_attr):
 def test_unknown_axis_attribute_to_string(urdf_with_unknown_attr):
     r_original = RobotModel.from_urdf_file(urdf_with_unknown_attr)
     urdf = URDF.from_robot(r_original)
-    urdf_string = urdf.to_string()
+    urdf_string = urdf.to_string().decode('utf-8')
     r = RobotModel.from_urdf_string(urdf_string)
     assert r.joints[0].axis.attr['rpy'] == '0 0 0'
     assert """<random name="random_tag">""" in urdf_string
