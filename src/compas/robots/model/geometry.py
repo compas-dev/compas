@@ -7,6 +7,7 @@ import json
 import compas.geometry
 from compas.base import Base
 from compas.datastructures import Mesh
+from compas.files.urdf import URDFElement
 from compas.files.urdf import URDFGenericElement
 from compas.geometry import Frame
 from compas.geometry import Shape
@@ -89,6 +90,13 @@ class Origin(Frame):
 
     def __init__(self, point, xaxis, yaxis):
         super(Origin, self).__init__(point, xaxis, yaxis)
+
+    def get_urdf_element(self):
+        attributes = {
+            'xyz': "{} {} {}".format(self.point.x, self.point.y, self.point.z),
+            'rpy': "{} {} {}".format(*self.euler_angles())
+        }
+        return URDFElement('origin', attributes)
 
     @classmethod
     def from_urdf(cls, attributes, elements, text):
@@ -204,6 +212,10 @@ class Box(BaseShape):
         self.size = _parse_floats(size)
         self.geometry = compas.geometry.Box(Frame.worldXY(), *self.size)
 
+    def get_urdf_element(self):
+        attributes = {'size': '{} {} {}'.format(*self.size)}
+        return URDFElement('box', attributes)
+
     @property
     def data(self):
         return {
@@ -258,6 +270,10 @@ class Cylinder(BaseShape):
         circle = compas.geometry.Circle(plane, self.radius)
         self.geometry = compas.geometry.Cylinder(circle, self.length)
 
+    def get_urdf_element(self):
+        attributes = {'radius': self.radius, 'length': self.length}
+        return URDFElement('cylinder', attributes)
+
     @property
     def data(self):
         return {
@@ -307,6 +323,10 @@ class Sphere(BaseShape):
         self.radius = float(radius)
         self.geometry = compas.geometry.Sphere((0, 0, 0), radius)
 
+    def get_urdf_element(self):
+        attributes = {'radius': self.radius}
+        return URDFElement('sphere', attributes)
+
     @property
     def data(self):
         return {
@@ -353,6 +373,10 @@ class Capsule(BaseShape):
         super(Capsule, self).__init__()
         self.radius = float(radius)
         self.length = float(length)
+
+    def get_urdf_element(self):
+        attributes = {'radius': self.radius, 'length': self.length}
+        return URDFElement('capsule', attributes)
 
     @property
     def data(self):
@@ -403,6 +427,12 @@ class MeshDescriptor(BaseShape):
         self.filename = filename
         self.scale = _parse_floats(scale)
 
+    def get_urdf_element(self):
+        attributes = {'filename': self.filename}
+        if self.scale != [1.0, 1.0, 1.0]:
+            attributes['scale'] = "{} {} {}".format(*self.scale)
+        return URDFElement('mesh', attributes)
+
     @property
     def data(self):
         return {
@@ -448,6 +478,10 @@ class Color(Base):
     def __init__(self, rgba):
         super(Color, self).__init__()
         self.rgba = _parse_floats(rgba)
+
+    def get_urdf_element(self):
+        attributes = {'rgba': "{} {} {} {}".format(*self.rgba)}
+        return URDFElement('color', attributes)
 
     @property
     def data(self):
@@ -500,6 +534,10 @@ class Texture(Base):
     def __init__(self, filename):
         super(Texture, self).__init__()
         self.filename = filename
+
+    def get_urdf_element(self):
+        attributes = {'filename': self.filename}
+        return URDFElement('texture', attributes)
 
     @property
     def data(self):
@@ -556,6 +594,11 @@ class Material(Base):
         self.name = name
         self.color = color
         self.texture = texture
+
+    def get_urdf_element(self):
+        attributes = {'name': self.name}
+        elements = [self.color, self.texture]
+        return URDFElement('material', attributes, elements)
 
     @property
     def data(self):
@@ -665,6 +708,11 @@ class Geometry(Base):
 
         if 'geometry' not in dir(self.shape):
             raise TypeError('Shape implementation does not define a geometry accessor')
+
+    def get_urdf_element(self):
+        attributes = self.attr.copy()
+        elements = [self.shape]
+        return URDFElement('geometry', attributes, elements)
 
     @property
     def data(self):

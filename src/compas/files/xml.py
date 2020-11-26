@@ -7,9 +7,10 @@ import xml.etree.ElementTree as ET
 import compas
 
 __all__ = [
-    'prettify',
+    'prettify_string',
     'XML',
     'XMLReader',
+    'XMLElement',
 ]
 
 
@@ -41,6 +42,7 @@ class XML(object):
         self._is_parsed = False
         self._reader = None
         self._writer = None
+        self._root = None
 
     @property
     def reader(self):
@@ -61,15 +63,15 @@ class XML(object):
         """
         self._reader = XMLReader.from_file(self.filepath)
 
-    def write(self, pretty=True):
+    def write(self, prettify=False):
         """Writes the string representation of this XML instance,
         including all sub-elements, to the file path in the
         associated XML object.
 
         Parameters
         ----------
-        pretty : bool, optional
-            Whether the string should include whitespace for legibility.
+        prettify : bool, optional
+            Whether the string should add whitespace for legibility.
             Defaults to ``False``.
 
         Returns
@@ -77,17 +79,17 @@ class XML(object):
         ``None``
 
         """
-        self.writer.write(pretty)
+        self.writer.write(prettify)
 
-    def to_file(self, pretty=True):
+    def to_file(self, prettify=False):
         """Writes the string representation of this XML instance,
         including all sub-elements, to the file path in the
         associated XML object.
 
         Parameters
         ----------
-        pretty : bool, optional
-            Whether the string should include whitespace for legibility.
+        prettify : bool, optional
+            Whether the string should add whitespace for legibility.
             Defaults to ``False``.
 
         Returns
@@ -95,12 +97,18 @@ class XML(object):
         ``None``
 
         """
-        self.write(pretty)
+        self.write(prettify)
 
     @property
     def root(self):
         """Root element of the XML tree."""
-        return self.reader.root
+        if self._root is None:
+            self._root = self.reader.root
+        return self._root
+
+    @root.setter
+    def root(self, value):
+        self._root = value
 
     @classmethod
     def from_file(cls, source):
@@ -112,7 +120,7 @@ class XML(object):
             File path or file-like object.
 
         """
-        xml = cls()
+        xml = cls(source)
         xml._reader = XMLReader.from_file(source)
         return xml
 
@@ -130,7 +138,7 @@ class XML(object):
         xml._reader = XMLReader.from_string(text)
         return xml
 
-    def to_string(self, encoding='utf-8', pretty=False):
+    def to_string(self, encoding='utf-8', prettify=False):
         """Generate a string representation of this XML instance,
         including all sub-elements.
 
@@ -138,8 +146,8 @@ class XML(object):
         ----------
         encoding : str, optional
             Output encoding (the default is 'utf-8')
-        pretty : bool, optional
-            Whether the string should include whitespace for legibility.
+        prettify : bool, optional
+            Whether the string should add whitespace for legibility.
             Defaults to ``False``.
 
         Returns
@@ -148,7 +156,7 @@ class XML(object):
             String representation of the XML.
 
         """
-        return self.writer.to_string(encoding=encoding, pretty=pretty)
+        return self.writer.to_string(encoding=encoding, prettify=prettify)
 
 
 class XMLReader(object):
@@ -188,27 +196,46 @@ class XMLWriter(object):
     def __init__(self, xml):
         self.xml = xml
 
-    def write(self, pretty=True):
-        string = self.to_string(pretty=pretty)
+    def write(self, prettify=False):
+        string = self.to_string(prettify=prettify)
         with open(self.xml.filepath, 'wb') as f:
             f.write(string)
 
-    def to_string(self, encoding='utf-8', pretty=False):
+    def to_string(self, encoding='utf-8', prettify=False):
         rough_string = ET.tostring(self.xml.root, encoding=encoding, method='xml')
-        if not pretty:
-            return rough_string
-        return prettify(rough_string)
+        if not prettify:
+            return rough_string.decode("utf-8")
+        return prettify_string(rough_string)
+
+
+class XMLElement(object):
+    def __init__(self, tag, attributes=None, elements=None, text=None):
+        self.tag = tag
+        self.attributes = attributes or {}
+        self.elements = elements or []
+        self.text = text
+
+    def get_root(self):
+        root = ET.Element(self.tag, self.attributes)
+        root.text = self.text
+        return root
+
+    def add_children(self, element):
+        for child in self.elements:
+            subelement = ET.SubElement(element, child.tag, child.attributes)
+            subelement.text = child.text
+            child.add_children(subelement)
 
 
 if compas.is_ironpython():
     from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
-    from compas.files.xml_cli import prettify
+    from compas.files.xml_cli import prettify_string
 else:
     from xml.dom import minidom
 
     DefaultXMLTreeParser = ET.XMLParser
 
-    def prettify(rough_string):
+    def prettify_string(rough_string):
         """Return an XML string with added whitespace for legibility.
 
         Parameters
@@ -217,4 +244,4 @@ else:
             XML string
         """
         reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ", encoding='utf-8')
+        return reparsed.toprettyxml(indent="  ", encoding='utf-8').decode("utf-8")

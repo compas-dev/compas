@@ -8,6 +8,7 @@ import json
 from compas.base import Base
 from compas.files import URDF
 from compas.files import URDFParser
+from compas.files import URDFElement
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.robots.model.geometry import Color
@@ -26,6 +27,7 @@ from compas.robots.model.link import Link
 from compas.robots.model.link import Visual
 from compas.robots.resources import DefaultMeshLoader
 from compas.topology import shortest_path
+
 
 __all__ = ['RobotModel']
 
@@ -66,6 +68,12 @@ class RobotModel(Base):
         self._rebuild_tree()
         self._create(self.root, Transformation())
         self._scale_factor = 1.
+
+    def get_urdf_element(self):
+        attributes = {'name': self.name}
+        attributes.update(self.attr)
+        elements = self.links + self.joints + self.materials
+        return URDFElement('robot', attributes, elements)
 
     @property
     def data(self):

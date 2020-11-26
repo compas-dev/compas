@@ -64,10 +64,10 @@ if compas.IPY:
                          RegexOptions.Compiled)
 
 
-__all__ = ['CLRXMLTreeParser', 'prettify']
+__all__ = ['CLRXMLTreeParser', 'prettify_string']
 
 
-def prettify(rough_string):
+def prettify_string(rough_string):
     """Return an XML string with added whitespace for legibility,
     using .NET infrastructure.
 
@@ -94,7 +94,7 @@ def prettify(rough_string):
 
     formattedXml = sReader.ReadToEnd()
 
-    return formattedXml
+    return formattedXml.decode("utf-8")
 
 
 class CLRXMLTreeParser(ET.XMLParser):

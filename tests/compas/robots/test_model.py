@@ -2,6 +2,7 @@ import os
 
 import pytest
 
+from compas.files import URDF
 from compas.robots import Box
 from compas.robots import Cylinder
 from compas.robots import Joint
@@ -64,10 +65,21 @@ def test_programmatic_robot_model():
     link2 = robot.add_link("link2")
     robot.add_joint("joint2", Joint.CONTINUOUS, link1, link2)
     assert(['link0', 'joint1', 'link1', 'joint2', 'link2'] == list(robot.iter_chain()))
+    urdf = URDF.from_robot(robot)
+    robot_reincarnated = RobotModel.from_urdf_string(urdf.to_string())
+    assert(['link0', 'joint1', 'link1', 'joint2', 'link2'] == list(robot_reincarnated.iter_chain()))
 
 
 def test_ur5_urdf(ur5_file):
     r = RobotModel.from_urdf_file(ur5_file)
+    assert r.name == 'ur5'
+    assert len(list(filter(lambda i: i.type == Joint.REVOLUTE, r.joints))) == 6
+
+
+def test_ur5_urdf_to_string(ur5_file):
+    r_original = RobotModel.from_urdf_file(ur5_file)
+    urdf = URDF.from_robot(r_original)
+    r = RobotModel.from_urdf_string(urdf.to_string())
     assert r.name == 'ur5'
     assert len(list(filter(lambda i: i.type == Joint.REVOLUTE, r.joints))) == 6
 
@@ -83,6 +95,15 @@ def test_root_urdf_attributes():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"></robot>""")
     assert r.name == 'panda'
+
+
+def test_root_urdf_attributes_to_string():
+    r = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"></robot>""")
+    urdf = URDF.from_robot(r)
+    assert urdf.to_string(prettify=True) == """<?xml version="1.0" encoding="utf-8"?>\n<robot name="panda"/>\n"""
+    # Note: the Processing Instruction 'xmlns:xacro="http://www.ros.org/wiki/xacro"'
+    # is lost on `from_urdf_string` due to limitations of `xml.etree.ElementTree`
 
 
 def test_programmatic_model(ur5):
@@ -106,6 +127,13 @@ def test_programmatic_model(ur5):
     assert ur5.name == 'ur5'
     assert chain == expected_chain
 
+    urdf = URDF.from_robot(ur5)
+    ur5_reincarnated = RobotModel.from_urdf_string(urdf.to_string())
+    chain = list(ur5_reincarnated.iter_chain('base_link', 'wrist_3_link'))
+
+    assert ur5_reincarnated.name == 'ur5'
+    assert chain == expected_chain
+
 
 def test_robot_material_attributes():
     r = RobotModel.from_urdf_string(
@@ -113,10 +141,26 @@ def test_robot_material_attributes():
     assert r.materials[0].color.rgba == [0.7, 0.7, 0.7, 1.0]
 
 
+def test_robot_material_attributes_to_string():
+    r_original = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot name="panda"><material name="LightGrey"><color rgba="0.7 0.7 0.7 1.0"/></material></robot>""")
+    urdf = URDF.from_robot(r_original)
+    r = RobotModel.from_urdf_string(urdf.to_string())
+    assert r.materials[0].color.rgba == [0.7, 0.7, 0.7, 1.0]
+
+
 def test_unknown_urdf_attributes():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot name="panda" some_random_attr="1337"></robot>""")
     assert r.name == 'panda'
+    assert r.attr['some_random_attr'] == '1337'
+
+
+def test_unknown_urdf_attributes_to_string():
+    r_original = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot name="panda" some_random_attr="1337"></robot>""")
+    urdf = URDF.from_robot(r_original)
+    r = RobotModel.from_urdf_string(urdf.to_string())
     assert r.attr['some_random_attr'] == '1337'
 
 
@@ -149,6 +193,16 @@ def test_inertial_parser(urdf_file):
     assert r.links[0].inertial.inertia.izz == 100.0
 
 
+def test_inertial_parser_to_string(urdf_file):
+    r_original = RobotModel.from_urdf_file(urdf_file)
+    urdf = URDF.from_robot(r_original)
+    r = RobotModel.from_urdf_string(urdf.to_string())
+    assert r.links[0].inertial.origin is not None
+    assert r.links[0].inertial.origin.point == [0.0, 0.0, 0.5]
+    assert r.links[0].inertial.mass.value == 1.0
+    assert r.links[0].inertial.inertia.izz == 100.0
+
+
 def test_inertial_parser_data(urdf_file):
     r_original = RobotModel.from_urdf_file(urdf_file)
     r = RobotModel.from_data(r_original.data)
@@ -160,6 +214,20 @@ def test_inertial_parser_data(urdf_file):
 
 def test_link_parser(urdf_file):
     r = RobotModel.from_urdf_file(urdf_file)
+
+    assert r.links[0].name == 'panda_link0'
+    assert r.links[1].name == 'panda_link1'
+    assert r.links[2].name == 'panda_link2'
+
+    assert r.links[0].type == 'test_type'
+
+    assert len(r.links) == 12
+
+
+def test_link_parser_to_string(urdf_file):
+    r_original = RobotModel.from_urdf_file(urdf_file)
+    urdf = URDF.from_robot(r_original)
+    r = RobotModel.from_urdf_string(urdf.to_string())
 
     assert r.links[0].name == 'panda_link0'
     assert r.links[1].name == 'panda_link1'
@@ -185,6 +253,25 @@ def test_link_parser_data(urdf_file):
 
 def test_geometry_parser(urdf_file_with_shapes):
     r = RobotModel.from_urdf_file(urdf_file_with_shapes)
+
+    assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
+    assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
+
+    assert type(r.links[0].collision[0].geometry.shape) == Sphere
+    assert r.links[0].collision[0].geometry.shape.radius == 0.2
+
+    assert type(r.links[1].visual[0].geometry.shape) == Box
+    assert r.links[1].visual[0].geometry.shape.size == [0.6, 0.1, 0.2]
+
+    assert type(r.links[1].collision[0].geometry.shape) == Cylinder
+    assert r.links[1].collision[0].geometry.shape.length == 0.6
+    assert r.links[1].collision[0].geometry.shape.radius == 0.2
+
+
+def test_geometry_parser_to_string(urdf_file_with_shapes):
+    r_original = RobotModel.from_urdf_file(urdf_file_with_shapes)
+    urdf = URDF.from_robot(r_original)
+    r = RobotModel.from_urdf_string(urdf.to_string())
 
     assert r.links[0].visual[0].geometry.shape.filename == 'package://franka_description/meshes/visual/link0.dae'
     assert r.links[0].visual[0].geometry.shape.scale == [1.0, 1.0, 1.0]
@@ -379,6 +466,16 @@ def test_unknown_axis_attribute(urdf_with_unknown_attr):
     assert r.joints[0].axis.attr['rpy'] == '0 0 0'
 
 
+def test_unknown_axis_attribute_to_string(urdf_with_unknown_attr):
+    r_original = RobotModel.from_urdf_file(urdf_with_unknown_attr)
+    urdf = URDF.from_robot(r_original)
+    urdf_string = urdf.to_string()
+    r = RobotModel.from_urdf_string(urdf_string)
+    assert r.joints[0].axis.attr['rpy'] == '0 0 0'
+    assert """<random name="random_tag">""" in urdf_string
+    assert """<random_other>TEXT</random_other>""" in urdf_string
+
+
 def test_unknown_axis_attribute_data(urdf_with_unknown_attr):
     r_original = RobotModel.from_urdf_file(urdf_with_unknown_attr)
     r = RobotModel.from_data(r_original.data)
@@ -408,10 +505,12 @@ if __name__ == '__main__':
 
     for f in zipfile.namelist():
         if f.endswith('.urdf') or f.endswith('.xacro'):
-            with zipfile.open(f) as urdfile:
+            with zipfile.open(f) as urdffile:
                 try:
                     all_files.append(f)
-                    r = RobotModel.from_urdf_file(urdfile)
+                    r = RobotModel.from_urdf_file(urdffile)
+                    urdf = URDF.from_robot(r)
+                    r2 = RobotModel.from_urdf_string(urdf.to_string())
                 except Exception as e:
                     errors.append((f, e))
 
