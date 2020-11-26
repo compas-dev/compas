@@ -46,7 +46,7 @@ class PolygonArtist(PrimitiveArtist):
 
     """
 
-    def draw(self, show_points=False, show_edges=False):
+    def draw(self, show_points=False, show_edges=False, show_face=True):
         """Draw the polygon.
 
         Parameters
@@ -55,6 +55,8 @@ class PolygonArtist(PrimitiveArtist):
             Default is ``False``.
         show_edges : bool, optional
             Default is ``False``.
+        show_face : bool, optional
+            Default is ``True``.
 
         Returns
         -------
@@ -69,8 +71,9 @@ class PolygonArtist(PrimitiveArtist):
         if show_edges:
             lines = [{'start': list(a), 'end': list(b), 'color': self.color, 'name': self.name} for a, b in self.primitive.lines]
             guids += compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
-        polygons = [{'points': _points, 'color': self.color, 'name': self.name}]
-        guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
+        if show_face:
+            polygons = [{'points': _points, 'color': self.color, 'name': self.name}]
+            guids += compas_rhino.draw_faces(polygons, layer=self.layer, clear=False, redraw=False)
         self._guids = guids
         return guids
 

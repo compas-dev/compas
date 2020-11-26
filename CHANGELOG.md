@@ -11,9 +11,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+### Removed
+
+
+## [0.18.0] 2020-11-24
+
+### Added
+
+* Added `remap_values` to `compas_utilities`.
+* Added `compas.datastructures.mesh_slice_plane`.
+
+### Changed
+
+* Fixed bug in `compas.datastructures.Network.delete_node`.
+* Fixed bug in `compas.datastructures.Network.delete_edge`.
+* Fixed bug in select functions for individual objects in `compas_rhino.utilities`.
+* Fixed bug in `compas.datastructures.mesh_merge_faces`.
+
+### Removed
+
+* Removed `compas.datastructures.mesh_cut_by_plane`.
+
+## [0.17.3] 2020-11-20
+
+### Added
+
+### Changed
+
 * Fixed bug in `compas.geometry.is_coplanar`.
 * Fixed bug in `compas.datastructures.mesh_merg_faces`.
 * Fixed bug in `compas.robots.RobotModel.add_link`.
+* Fixed bug in `compas.datastructures.Volmesh.cell_to_mesh`.
 
 ### Removed
 

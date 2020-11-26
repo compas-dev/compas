@@ -4,11 +4,11 @@ from compas.geometry import subtract_vectors
 from compas.geometry import dot_vectors
 
 
-__all__ = ['mesh_cut_by_plane']
+__all__ = ['mesh_slice_plane']
 
 
-def mesh_cut_by_plane(mesh, plane):
-    """Cut a mesh with a plane and construct the resulting submeshes.
+def mesh_slice_plane(mesh, plane):
+    """Slice a mesh with a plane and construct the resulting submeshes.
 
     Parameters
     ----------
@@ -19,7 +19,7 @@ def mesh_cut_by_plane(mesh, plane):
 
     Returns
     -------
-    None or tuple of compas.datastructures.Mesh
+    None or tuple of :class:`compas.datastructures.Mesh`
         If the mesh and plane do not intersect,
         or if the intersection is degenerate (point or line),
         the function returns ``None``.
@@ -33,7 +33,7 @@ def mesh_cut_by_plane(mesh, plane):
     >>> plane = Plane((0, 0, 0), (1, 0, 0))
     >>> box = Box.from_width_height_depth(1, 1, 1)
     >>> mesh = Mesh.from_shape(box)
-    >>> result = mesh_cut_by_plane(mesh, plane)
+    >>> result = mesh_slice_plane(mesh, plane)
     >>> len(result) == 2
     True
     """

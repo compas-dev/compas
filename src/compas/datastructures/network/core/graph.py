@@ -477,24 +477,10 @@ class Graph(Datastructure):
             for v in list(self.edge[u]):
                 if v == key:
                     del self.edge[u][v]
-            if not self.edge[u]:
-                del self.edge[u]
         for u in self.adjacency:
             for v in list(self.adjacency[u]):
                 if v == key:
                     del self.adjacency[u][v]
-        # for nbr in self.neighbors(key):
-        #     del self.adjacency[key][nbr]
-        #     del self.adjacency[nbr][key]
-        #     if key in self.edge and nbr in self.edge[key]:
-        #         del self.edge[key][nbr]
-        #     else:
-        #         del self.edge[nbr][key]
-        #     if nbr == key:
-        #         del self.edge[nbr]
-        # del self.node[key]
-        # del self.adjacency[key]
-        # del self.edge[key]
 
     def delete_edge(self, u, v):
         """Delete an edge from the network.
@@ -514,7 +500,7 @@ class Graph(Datastructure):
         del self.adjacency[v][u]
         if u in self.edge and v in self.edge[u]:
             del self.edge[u][v]
-        else:
+        if v in self.edge and u in self.edge[v]:
             del self.edge[v][u]
 
     # --------------------------------------------------------------------------

@@ -43,7 +43,6 @@ Algorithms
     mesh_bounding_box_xy
     mesh_connected_components
     mesh_contours_numpy
-    mesh_cut_by_plane
     mesh_delete_duplicate_vertices
     mesh_dual
     mesh_explode
@@ -52,11 +51,13 @@ Algorithms
     mesh_geodesic_distances_numpy
     mesh_is_connected
     mesh_isolines_numpy
+    mesh_merge_faces
     mesh_offset
     mesh_oriented_bounding_box_numpy
     mesh_oriented_bounding_box_xy_numpy
     mesh_planarize_faces
     mesh_quads_to_triangles
+    mesh_slice_plane
     mesh_smooth_centroid
     mesh_smooth_area
     mesh_subdivide
@@ -65,6 +66,7 @@ Algorithms
     mesh_subdivide_quad
     mesh_subdivide_catmullclark
     mesh_subdivide_doosabin
+    mesh_thicken
     mesh_transform
     mesh_transformed
     mesh_transform_numpy
@@ -77,6 +79,7 @@ Algorithms
     :nosignatures:
 
     meshes_join
+    meshes_join_and_weld
 
 
 Matrices

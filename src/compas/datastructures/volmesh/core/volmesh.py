@@ -184,7 +184,7 @@ class BaseVolMesh(HalfFace):
         vertices = [self.vertex_coordinates(vertex) for vertex in self.vertices()]
         cells = []
         for cell in self.cell:
-            faces = [[vertex_index[vertex] for vertex in self._face[face]] for face in self.cell_faces(cell)]
+            faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in self.cell_faces(cell)]
             cells.append(faces)
         return vertices, cells
 
@@ -226,7 +226,7 @@ class BaseVolMesh(HalfFace):
         faces = self.cell_faces(cell)
         vertex_index = dict((vertex, index) for index, vertex in enumerate(vertices))
         vertices = [self.vertex_coordinates(vertex) for vertex in vertices]
-        faces = [[vertex_index[vertex] for vertex in self._face[face]] for face in faces]
+        faces = [[vertex_index[vertex] for vertex in self.halfface_vertices(face)] for face in faces]
         return vertices, faces
 
     # --------------------------------------------------------------------------
@@ -450,6 +450,21 @@ class BaseVolMesh(HalfFace):
     # face geometry
     # --------------------------------------------------------------------------
 
+    def face_vertices(self, face):
+        """The vertices of a face.
+
+        Parameters
+        ----------
+        halfface : int
+            The identifier of the face.
+
+        Returns
+        -------
+        list
+            Ordered vertex identifiers.
+        """
+        return self.halfface_vertices(face)
+
     def face_coordinates(self, face):
         """Compute the coordinates of the vertices of a face.
 
@@ -587,13 +602,13 @@ class BaseVolMesh(HalfFace):
         face_edge_lengths = [self.edge_length(edge) for edge in self.face_halfedges(face)]
         return max(face_edge_lengths) / min(face_edge_lengths)
 
-    # face_area = face_area
-    # face_centroid = face_centroid
-    # face_center = face_center
-    # face_coordinates = face_coordinates
-    # face_flatness = face_flatness
-    # face_normal = face_normal
-    # face_aspect_ratio = face_aspect_ratio
+    halfface_area = face_area
+    halfface_centroid = face_centroid
+    halfface_center = face_center
+    halfface_coordinates = face_coordinates
+    halfface_flatness = face_flatness
+    halfface_normal = face_normal
+    halfface_aspect_ratio = face_aspect_ratio
 
     # --------------------------------------------------------------------------
     # cell geometry

@@ -601,6 +601,9 @@ class BaseMesh(HalfEdge):
         xyz = self.vertex_coordinates
         return {gkey(xyz(key), precision): key for key in self.vertices()}
 
+    vertex_gkey = key_gkey
+    gkey_vertex = gkey_key
+
     # --------------------------------------------------------------------------
     # builders
     # --------------------------------------------------------------------------
@@ -1389,7 +1392,14 @@ class BaseMesh(HalfEdge):
         return boundaries
 
     def edges_on_boundaries(self):
-        """"""
+        """Find the edges on all boundaries of the mesh.
+
+        Returns
+        -------
+        list of list
+            A list of edges per boundary.
+
+        """
         vertexgroups = self.vertices_on_boundaries()
         edgegroups = []
         for vertices in vertexgroups:
