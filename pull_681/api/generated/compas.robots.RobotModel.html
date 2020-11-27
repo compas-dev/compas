@@ -214,16 +214,19 @@ this model, ruling out all parallel robots.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_json.html#compas.robots.RobotModel.to_json" title="compas.robots.RobotModel.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.transformed_axes.html#compas.robots.RobotModel.transformed_axes" title="compas.robots.RobotModel.transformed_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_axes</span></code></a>(joint_state)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_urdf_file.html#compas.robots.RobotModel.to_urdf_file" title="compas.robots.RobotModel.to_urdf_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_urdf_file</span></code></a>(file[, prettify])</p></td>
+<td><p>Construct a URDF file model description from a robot model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.transformed_axes.html#compas.robots.RobotModel.transformed_axes" title="compas.robots.RobotModel.transformed_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_axes</span></code></a>(joint_state)</p></td>
 <td><p>Returns the transformed axes based on the joint_state.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.transformed_frames.html#compas.robots.RobotModel.transformed_frames" title="compas.robots.RobotModel.transformed_frames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_frames</span></code></a>(joint_state)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.transformed_frames.html#compas.robots.RobotModel.transformed_frames" title="compas.robots.RobotModel.transformed_frames"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_frames</span></code></a>(joint_state)</p></td>
 <td><p>Returns the transformed frames based on the joint_state.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_data.html#compas.robots.RobotModel.validate_data" title="compas.robots.RobotModel.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_data.html#compas.robots.RobotModel.validate_data" title="compas.robots.RobotModel.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
 <td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_json.html#compas.robots.RobotModel.validate_json" title="compas.robots.RobotModel.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.validate_json.html#compas.robots.RobotModel.validate_json" title="compas.robots.RobotModel.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
 <td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
