@@ -98,7 +98,8 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span><span class="p">,</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
@@ -274,22 +275,16 @@
         <span class="n">tree_parser</span> <span class="o">=</span> <span class="n">tree_parser</span> <span class="ow">or</span> <span class="n">DefaultXMLTreeParser</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">tree_parser</span><span class="p">())</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">attach_namespaces</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="n">attach_namespaces</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="XMLReader.from_string"><a class="viewcode-back" href="../../../api/generated/compas.files.XMLReader.from_string.html#compas.files.XMLReader.from_string">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">tree_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tree_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">tree_parser</span> <span class="o">=</span> <span class="n">tree_parser</span> <span class="ow">or</span> <span class="n">DefaultXMLTreeParser</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tree_parser</span><span class="p">())</span>
         <span class="n">source</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">attach_namespaces</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">root</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="XMLReader.attach_namespaces"><a class="viewcode-back" href="../../../api/generated/compas.files.XMLReader.attach_namespaces.html#compas.files.XMLReader.attach_namespaces">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">attach_namespaces</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-        <span class="n">namespaces</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ET</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;start-ns&#39;</span><span class="p">])]</span>
-        <span class="n">attrib</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;xmlns:&#39;</span> <span class="o">+</span> <span class="n">ns</span><span class="p">:</span> <span class="n">uri</span> <span class="k">for</span> <span class="n">ns</span><span class="p">,</span> <span class="n">uri</span> <span class="ow">in</span> <span class="n">namespaces</span><span class="p">}</span>
-        <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attrib</span><span class="p">)</span></div></div>
+        <span class="n">attach_namespaces</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">root</span><span class="p">)</span></div></div>
 
 
 <span class="k">class</span> <span class="nc">XMLWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -337,6 +332,7 @@
 <span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">is_ironpython</span><span class="p">():</span>
     <span class="kn">from</span> <span class="nn">compas.files.xml_cli</span> <span class="kn">import</span> <span class="n">CLRXMLTreeParser</span> <span class="k">as</span> <span class="n">DefaultXMLTreeParser</span>
     <span class="kn">from</span> <span class="nn">compas.files.xml_cli</span> <span class="kn">import</span> <span class="n">prettify_string</span>
+    <span class="kn">from</span> <span class="nn">compas.files.xml_cli</span> <span class="kn">import</span> <span class="n">attach_namespaces</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">xml.dom</span> <span class="kn">import</span> <span class="n">minidom</span>
 
@@ -352,6 +348,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">reparsed</span> <span class="o">=</span> <span class="n">minidom</span><span class="o">.</span><span class="n">parseString</span><span class="p">(</span><span class="n">rough_string</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">reparsed</span><span class="o">.</span><span class="n">toprettyxml</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">attach_namespaces</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse and find the namespaces declared, and add them to the root&#39;s attributes.&quot;&quot;&quot;</span>
+        <span class="n">namespaces</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ET</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;start-ns&#39;</span><span class="p">])]</span>
+        <span class="n">attrib</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;xmlns:&#39;</span> <span class="o">+</span> <span class="n">ns</span><span class="p">:</span> <span class="n">uri</span> <span class="k">for</span> <span class="n">ns</span><span class="p">,</span> <span class="n">uri</span> <span class="ow">in</span> <span class="n">namespaces</span><span class="p">}</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attrib</span><span class="p">)</span>
 </code></pre></div>
         
       </main>
