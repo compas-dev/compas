@@ -83,8 +83,8 @@ def prettify_string(rough_string):
     document.LoadXml(rough_string)
 
     writer.Formatting = Formatting.Indented
-    writer.WriteStartDocument()
 
+    writer.WriteStartDocument()
     document.WriteContentTo(writer)
     writer.Flush()
     mStream.Flush()
@@ -183,11 +183,11 @@ class CLRXMLTreeParser(ET.XMLParser):
     def _start_element(self, reader):
         """Notify the tree builder that a start element has been
         encountered."""
-        name = reader.LocalName
+        name = reader.Name
         attributes = {}
 
         while reader.MoveToNextAttribute():
-            attributes[reader.Name] = reader.Value
+            attributes[name] = reader.Value
 
         reader.MoveToElement()
         self._target.start(name, attributes)

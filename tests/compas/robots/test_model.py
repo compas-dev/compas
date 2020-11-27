@@ -100,10 +100,19 @@ def test_root_urdf_attributes():
 def test_root_urdf_attributes_to_string():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"></robot>""")
-    urdf = URDF.from_robot(r)
-    assert urdf.to_string(prettify=True) == b"""<?xml version="1.0" encoding="utf-8"?>\n<robot name="panda"/>\n"""
-    # Note: the Processing Instruction 'xmlns:xacro="http://www.ros.org/wiki/xacro"'
-    # is lost on `from_urdf_string` due to limitations of `xml.etree.ElementTree`
+    urdf_string = URDF.from_robot(r).to_string(prettify=True)
+    assert b'name="panda"' in urdf_string
+
+
+def test_robot_urdf_namespaces_to_string():
+    r = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"><xacro:bamboo/></robot>""")
+    urdf_string = URDF.from_robot(r).to_string(prettify=True)
+    assert b'xmlns:xacro="http://www.ros.org/wiki/xacro"' in urdf_string
+    assert b'<xacro:bamboo' in urdf_string or b'<ns0:bamboo'
+    # Note: Minidom does some funny things to namespaces.  First, if a namespace isn't used, it will be stripped out.
+    # Second, it will include the original namespace declaration, but also repeat that declaration with another name,
+    # and replace all references to the original with the new.
 
 
 def test_programmatic_model(ur5):

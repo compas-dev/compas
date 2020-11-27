@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from io import StringIO, BytesIO
 import xml.etree.ElementTree as ET
 
 import compas
@@ -176,13 +177,23 @@ class XMLReader(object):
     def from_file(cls, source, tree_parser=None):
         tree_parser = tree_parser or DefaultXMLTreeParser
         tree = ET.parse(source, tree_parser())
+        root = tree.getroot()
+        cls.attach_namespaces(root, source)
         return cls(tree.getroot())
 
     @classmethod
-    def from_string(cls, text, tree_parser=None):
+    def from_string(cls, text, encoding='utf-8', tree_parser=None):
         tree_parser = tree_parser or DefaultXMLTreeParser
         root = ET.fromstring(text, tree_parser())
+        source = StringIO(text) if isinstance(text, str) else BytesIO(text)
+        cls.attach_namespaces(root, source)
         return cls(root)
+
+    @staticmethod
+    def attach_namespaces(root, source):
+        namespaces = [node for _, node in ET.iterparse(source, events=['start-ns'])]
+        attrib = {'xmlns:' + ns: uri for ns, uri in namespaces}
+        root.attrib.update(attrib)
 
 
 class XMLWriter(object):

@@ -2,6 +2,7 @@ import os
 
 import pytest
 
+import compas
 from compas.files import XML
 
 BASE_FOLDER = os.path.dirname(__file__)
@@ -36,4 +37,6 @@ def test_xml_to_string(sample_xml):
 def test_xml_to_pretty_string(sample_xml):
     xml = XML.from_string(sample_xml)
     prettyxml = xml.to_string('utf-8', prettify=True)
-    assert prettyxml == b"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Tests>\n  <Test id=\"1\"/>\n</Tests>\n"
+    spacing = " " if compas.IPY else ""
+    xml_string = """<?xml version="1.0" encoding="utf-8"?>\n<Tests>\n  <Test id="1"{}/>\n</Tests>\n""".format(spacing)
+    assert prettyxml == bytes(xml_string, encoding='utf-8')
