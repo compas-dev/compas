@@ -64,7 +64,11 @@ if compas.IPY:
                          RegexOptions.Compiled)
 
 
-__all__ = ['CLRXMLTreeParser', 'prettify_string']
+__all__ = [
+    'CLRXMLTreeParser',
+    'attach_namespaces',
+    'prettify_string',
+]
 
 
 def prettify_string(rough_string):
@@ -96,6 +100,12 @@ def prettify_string(rough_string):
     formattedXml = sReader.ReadToEnd()
 
     return formattedXml
+
+
+def attach_namespaces(root, source):
+    """Parse and find the namespaces declared, and add them to the root's attributes."""
+    # Don't need too, already done by parser
+    pass
 
 
 class CLRXMLTreeParser(ET.XMLParser):

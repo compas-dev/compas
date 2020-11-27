@@ -2,7 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from io import StringIO, BytesIO
+from io import BytesIO
+from io import StringIO
 import xml.etree.ElementTree as ET
 
 import compas
@@ -178,22 +179,16 @@ class XMLReader(object):
         tree_parser = tree_parser or DefaultXMLTreeParser
         tree = ET.parse(source, tree_parser())
         root = tree.getroot()
-        cls.attach_namespaces(root, source)
+        attach_namespaces(root, source)
         return cls(tree.getroot())
 
     @classmethod
-    def from_string(cls, text, encoding='utf-8', tree_parser=None):
+    def from_string(cls, text, tree_parser=None):
         tree_parser = tree_parser or DefaultXMLTreeParser
         root = ET.fromstring(text, tree_parser())
         source = StringIO(text) if isinstance(text, str) else BytesIO(text)
-        cls.attach_namespaces(root, source)
+        attach_namespaces(root, source)
         return cls(root)
-
-    @staticmethod
-    def attach_namespaces(root, source):
-        namespaces = [node for _, node in ET.iterparse(source, events=['start-ns'])]
-        attrib = {'xmlns:' + ns: uri for ns, uri in namespaces}
-        root.attrib.update(attrib)
 
 
 class XMLWriter(object):
@@ -241,6 +236,7 @@ class XMLElement(object):
 if compas.is_ironpython():
     from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
     from compas.files.xml_cli import prettify_string
+    from compas.files.xml_cli import attach_namespaces
 else:
     from xml.dom import minidom
 
@@ -256,3 +252,9 @@ else:
         """
         reparsed = minidom.parseString(rough_string)
         return reparsed.toprettyxml(indent="  ", encoding='utf-8')
+
+    def attach_namespaces(root, source):
+        """Parse and find the namespaces declared, and add them to the root's attributes."""
+        namespaces = [node for _, node in ET.iterparse(source, events=['start-ns'])]
+        attrib = {'xmlns:' + ns: uri for ns, uri in namespaces}
+        root.attrib.update(attrib)
