@@ -31,13 +31,20 @@ class RhinoSurface(BaseRhinoGeometry):
         guid = compas_rhino.select_surface()
         return cls.from_guid(guid)
 
-    def to_compas(self, cls=None):
+    def to_compas(self, cls=None, facefilter=None, cleanup=True):
         """Convert the surface b-rep loops to a COMPAS mesh.
 
         Parameters
         ----------
         cls : :class:`compas.datastructures.Mesh`, optional
             The type of COMPAS mesh.
+        facefilter : callable, optional
+            A filter for selection which Brep faces to include.
+            Default is ``None``.
+        cleanup : bool, optional
+            Flag indicating to clean up the result.
+            Cleaning up means to remove isolated faces and unused vertices.
+            Default is ``True``.
 
         Returns
         -------
@@ -48,9 +55,14 @@ class RhinoSurface(BaseRhinoGeometry):
         if not self.geometry.HasBrepForm:
             return
         brep = Rhino.Geometry.Brep.TryConvertBrep(self.geometry)
+        if facefilter and callable(facefilter):
+            brepfaces = [face for face in brep.Faces if facefilter(face)]
+        else:
+            brepfaces = brep.Faces
         gkey_xyz = {}
         faces = []
-        for loop in brep.Loops:
+        for face in brepfaces:
+            loop = face.OuterLoop
             curve = loop.To3dCurve()
             segments = curve.Explode()
             face = []
@@ -81,6 +93,11 @@ class RhinoSurface(BaseRhinoGeometry):
         cls = cls or Mesh
         mesh = cls.from_vertices_and_faces(vertices, polygons)
         mesh.name = self.name
+        if cleanup:
+            for face in list(mesh.faces()):
+                if not mesh.face_neighbors(face):
+                    mesh.delete_face(face)
+            mesh.remove_unused_vertices()
         return mesh
 
     # def uv_to_compas(self, cls=None, density=(10, 10)):
