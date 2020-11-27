@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Added URDF and XML writers.
+* Added `compas.robots.RobotModel.to_urdf_file`.
 * Added `compas.files.URDF.from_robot`.
 
 ### Changed

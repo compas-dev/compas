@@ -185,6 +185,21 @@ class RobotModel(Base):
         urdf = URDF.from_file(file)
         return urdf.robot
 
+    def to_urdf_file(self, file, prettify=False):
+        """Construct a URDF file model description from a robot model.
+
+        Parameters
+        ----------
+        file:
+            file name or file object.
+
+        Returns
+        -------
+        ``None``
+        """
+        urdf = URDF.from_robot(self)
+        urdf.to_file(file, prettify)
+
     @classmethod
     def from_urdf_string(cls, text):
         """Construct a robot model from a URDF description as string.
