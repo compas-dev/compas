@@ -193,11 +193,11 @@ class CLRXMLTreeParser(ET.XMLParser):
     def _start_element(self, reader):
         """Notify the tree builder that a start element has been
         encountered."""
-        name = reader.Name
+        name = reader.LocalName
         attributes = {}
 
         while reader.MoveToNextAttribute():
-            attributes[name] = reader.Value
+            attributes[reader.Name] = reader.Value
 
         reader.MoveToElement()
         self._target.start(name, attributes)
