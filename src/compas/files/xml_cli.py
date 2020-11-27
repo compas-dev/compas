@@ -83,6 +83,7 @@ def prettify_string(rough_string):
     document.LoadXml(rough_string)
 
     writer.Formatting = Formatting.Indented
+    writer.WriteStartDocument()
 
     document.WriteContentTo(writer)
     writer.Flush()
