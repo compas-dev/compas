@@ -1441,6 +1441,58 @@ class BaseMesh(HalfEdge):
             edgegroups.append(list(pairwise(vertices + vertices[:1])))
         return edgegroups
 
+    def faces_on_boundaries(self):
+        """Find the faces on all boundaries of the mesh.
+
+        Returns
+        -------
+        list of list
+            Lists of faces, grouped and sorted per boundary.
+        """
+        faces = []
+        for u, v in self.edges():
+            f1, f2 = self.edge_faces(u, v)
+            if f1 is None:
+                faces.append(f2)
+            elif f2 is None:
+                faces.append(f1)
+
+        faces = list(set(faces))
+        if not faces:
+            return []
+
+        return faces
+
+        facegroups = []
+
+        while faces:
+            start = face = faces.pop()
+            group = [start]
+
+            if self.face_neighbors(face):
+                # find a starting edge
+                edge = None
+                for u, v in self.face_halfedges(face):
+                    if self.is_edge_on_boundary(u, v):
+                        edge = u, v
+                        break
+                u, v = edge
+
+                while True:
+                    # find the next boundary neighbour
+                    u, v = self.halfedge_after(u, v)
+                    nbr = self.halfedge_face(v, u)
+                    if nbr == start:
+                        break
+                    if nbr in faces:
+                        group.append(nbr)
+                        u, v = v, u
+
+            facegroups.append(group)
+            faces = [face for face in faces if face not in group]
+
+        return facegroups
+
 
 # ==============================================================================
 # Main
