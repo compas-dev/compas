@@ -155,30 +155,31 @@
             <span class="n">brepfaces</span> <span class="o">=</span> <span class="p">[</span><span class="n">face</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">brep</span><span class="o">.</span><span class="n">Faces</span> <span class="k">if</span> <span class="n">facefilter</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">brepfaces</span> <span class="o">=</span> <span class="n">brep</span><span class="o">.</span><span class="n">Faces</span>
+        <span class="c1"># vertex maps and face lists</span>
         <span class="n">gkey_xyz</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">brepfaces</span><span class="p">:</span>
             <span class="n">loop</span> <span class="o">=</span> <span class="n">face</span><span class="o">.</span><span class="n">OuterLoop</span>
             <span class="n">curve</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">To3dCurve</span><span class="p">()</span>
             <span class="n">segments</span> <span class="o">=</span> <span class="n">curve</span><span class="o">.</span><span class="n">Explode</span><span class="p">()</span>
-            <span class="n">face</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">sp</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PointAtStart</span>
-            <span class="n">ep</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PointAtEnd</span>
-            <span class="n">sp_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
-            <span class="n">ep_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span>
-            <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">sp_gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">sp</span>
-            <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">ep_gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ep</span>
-            <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sp_gkey</span><span class="p">)</span>
-            <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ep_gkey</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PointAtStart</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">PointAtEnd</span>
+            <span class="n">_a_</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">_b_</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+            <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">_a_</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
+            <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">_b_</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
+            <span class="n">face</span> <span class="o">=</span> <span class="p">[</span><span class="n">_a_</span><span class="p">,</span> <span class="n">_b_</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">segments</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">ep</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">PointAtEnd</span>
-                <span class="n">ep_gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">ep</span><span class="p">)</span>
-                <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ep_gkey</span><span class="p">)</span>
-                <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">ep_gkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">ep</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">PointAtEnd</span>
+                <span class="n">_b_</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+                <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_b_</span><span class="p">)</span>
+                <span class="n">gkey_xyz</span><span class="p">[</span><span class="n">_b_</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
             <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        <span class="c1"># vertices and faces</span>
         <span class="n">gkey_index</span> <span class="o">=</span> <span class="p">{</span><span class="n">gkey</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gkey_xyz</span><span class="p">)}</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">for</span> <span class="n">gkey</span><span class="p">,</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">gkey_xyz</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
-        <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">gkey_index</span><span class="p">[</span><span class="n">gkey</span><span class="p">]</span> <span class="k">for</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="n">f</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+        <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">gkey_index</span><span class="p">[</span><span class="n">gkey</span><span class="p">]</span> <span class="k">for</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="n">face</span><span class="p">]</span> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">]</span>
+        <span class="c1"># remove duplicates from vertexlist</span>
         <span class="n">polygons</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">temp</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
             <span class="n">face</span> <span class="o">=</span> <span class="p">[]</span>
@@ -186,9 +187,12 @@
                 <span class="k">if</span> <span class="n">vertex</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">face</span><span class="p">:</span>
                     <span class="n">face</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
             <span class="n">polygons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">face</span><span class="p">)</span>
+        <span class="c1"># define mesh type</span>
         <span class="bp">cls</span> <span class="o">=</span> <span class="bp">cls</span> <span class="ow">or</span> <span class="n">Mesh</span>
+        <span class="c1"># create mesh</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">polygons</span><span class="p">)</span>
         <span class="n">mesh</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="c1"># remove isolated faces</span>
         <span class="k">if</span> <span class="n">cleanup</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">faces</span><span class="p">()):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face_neighbors</span><span class="p">(</span><span class="n">face</span><span class="p">):</span>
