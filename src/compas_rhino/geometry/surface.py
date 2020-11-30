@@ -68,16 +68,16 @@ class RhinoSurface(BaseRhinoGeometry):
             segments = curve.Explode()
             a = segments[0].PointAtStart
             b = segments[0].PointAtEnd
-            _a_ = geometric_key(a)
-            _b_ = geometric_key(b)
-            gkey_xyz[_a_] = a
-            gkey_xyz[_b_] = b
-            face = [_a_, _b_]
+            a_gkey = geometric_key(a)
+            b_gkey = geometric_key(b)
+            gkey_xyz[a_gkey] = a
+            gkey_xyz[b_gkey] = b
+            face = [a_gkey, b_gkey]
             for segment in segments[1:-1]:
                 b = segment.PointAtEnd
-                _b_ = geometric_key(b)
-                face.append(_b_)
-                gkey_xyz[_b_] = b
+                b_gkey = geometric_key(b)
+                face.append(b_gkey)
+                gkey_xyz[b_gkey] = b
             faces.append(face)
         # vertices and faces
         gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}

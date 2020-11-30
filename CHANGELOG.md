@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed surface to mesh conversion to include cleanup and filter functions, and use the outer loop of all brep faces.
+
 ### Removed
 
 
