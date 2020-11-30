@@ -20,8 +20,9 @@ def json_dump(data, fp):
 
     Parameters
     ----------
-    data : list of :class:`compas.base.Base`
-        A list of COMPAS objects.
+    data : any
+        Any JSON serializable object.
+        This includes any (combination of) COMPAS object(s).
     fp : file-like object or path
         A writeable file-like object or the path to a file.
 
@@ -50,8 +51,9 @@ def json_dumps(data):
 
     Parameters
     ----------
-    data : list of :class:`compas.base.Base`
-        A list of COMPAS objects.
+    data : any
+        Any JSON serializable object.
+        This includes any (combination of) COMPAS object(s).
 
     Returns
     -------
