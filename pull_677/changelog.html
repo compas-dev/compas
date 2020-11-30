@@ -109,6 +109,14 @@ and this project adheres to <a class="reference external" href="https://semver.o
 </div>
 <div class="section" id="changed">
 <h3>Changed</h3>
+<ul class="simple">
+<li><p>Changed implementation of <code class="docutils literal notranslate"><span class="pre">Mesh.vertices_on_boundaries</span></code> to account for special cases.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">Mesh.edges_on_boundaries</span></code> corresponding to <code class="docutils literal notranslate"><span class="pre">Mesh.vertices_on_boundaries</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">Mesh.faces_on_boundaries</span></code> corresponding to <code class="docutils literal notranslate"><span class="pre">Mesh.vertices_on_boundaries</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">Mesh.vertices_on_boundary</span></code> to return vertices of longest boundary.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">Mesh.edges_on_boundary</span></code> to return edges of longest boundary.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">Mesh.faces_on_boundary</span></code> to return faces of longest boundary.</p></li>
+</ul>
 </div>
 <div class="section" id="removed">
 <h3>Removed</h3>
