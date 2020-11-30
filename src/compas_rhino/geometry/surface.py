@@ -40,9 +40,9 @@ class RhinoSurface(BaseRhinoGeometry):
             The type of COMPAS mesh.
         facefilter : callable, optional
             A filter for selection which Brep faces to include.
-            Default is ``None`` in which case all faces are included.
-            If provided, the filter should return ``True``/``False`` per faces.
-            A simple filter that includes all faces is ``def facefilter(face): return True``.
+            If provided, the filter should return ``True`` or ``False`` per face.
+            A very simple filter that includes all faces is ``def facefilter(face): return True``.
+            Default parameter value is ``None`` in which case all faces are included.
         cleanup : bool, optional
             Flag indicating to clean up the result.
             Cleaning up means to remove isolated faces and unused vertices.
