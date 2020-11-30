@@ -1,3 +1,5 @@
+from distutils.version import LooseVersion
+
 import numpy as np
 import compas
 
@@ -46,8 +48,11 @@ def test_dumps_xform():
 def test_dumps_mesh():
     d = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
     s = compas.json_dumps(d)
-    _s = '{"dtype": "compas.datastructures/Mesh", '
-    _s += '"value": {"compas": "0.17.3", "datatype": "compas.datastructures/Mesh", '
+    _s = ''
+    _s += '{"dtype": "compas.datastructures/Mesh", '
+    _s += '"value": {"compas": "'
+    _s += LooseVersion(compas.__version__).vstring.split('-')[0]
+    _s += '", "datatype": "compas.datastructures/Mesh", '
     _s += '"data": {"attributes": {"name": "Mesh"}, "dva": {"x": 0.0, "y": 0.0, "z": 0.0}, "dea": {}, "dfa": {}, '
     _s += '"vertex": {"0": {"x": 0, "y": 0, "z": 0}, "1": {"x": 1, "y": 0, "z": 0}, "2": {"x": 1, "y": 1, "z": 0}, "3": {"x": 0, "y": 1, "z": 0}}, '
     _s += '"face": {"0": [0, 1, 2, 3]}, "facedata": {"0": {}}, "edgedata": {}, "max_vertex": 3, "max_face": 0}}}'
