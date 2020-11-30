@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+
 from io import BytesIO
 from io import StringIO
 import xml.etree.ElementTree as ET
@@ -9,10 +10,12 @@ import xml.etree.ElementTree as ET
 import compas
 
 if compas.is_ironpython():
+    from urllib import addinfourl as ResponseType
     from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
     from compas.files.xml_cli import prettify_string
     from compas.files.xml_cli import attach_namespaces
 else:
+    from http.client import HTTPResponse as ResponseType
     from xml.dom import minidom
 
     DefaultXMLTreeParser = ET.XMLParser
@@ -30,6 +33,8 @@ else:
 
     def attach_namespaces(root, source):
         """Parse and find the namespaces declared, and add them to the root's attributes."""
+        if hasattr(source, 'seek'):
+            source.seek(0)
         namespaces = [node for _, node in ET.iterparse(source, events=['start-ns'])]
         attrib = {'xmlns:' + ns: uri for ns, uri in namespaces}
         root.attrib.update(attrib)
@@ -204,6 +209,10 @@ class XMLReader(object):
     @classmethod
     def from_file(cls, source, tree_parser=None):
         tree_parser = tree_parser or DefaultXMLTreeParser
+        # If the source is an `HTTPResponse` (or `addinfourl` in ipy),
+        # it cannot be read twice, so we first read the response into a byte stream.
+        if isinstance(source, ResponseType):
+            source = BytesIO(source.read())
         tree = ET.parse(source, tree_parser())
         root = tree.getroot()
         attach_namespaces(root, source)
