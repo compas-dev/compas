@@ -12,6 +12,8 @@ Ippoliti for providing code and documentation.
 """
 import math
 
+from compas.base import Base
+
 from compas.geometry import multiply_matrices
 from compas.geometry import transpose_matrix
 
@@ -29,7 +31,7 @@ from compas.geometry.transformations import translation_from_matrix
 __all__ = ['Transformation']
 
 
-class Transformation(object):
+class Transformation(Base):
     """The ``Transformation`` represents a 4x4 transformation matrix.
 
     It is the base class for transformations like :class:`Rotation`,
@@ -60,6 +62,8 @@ class Transformation(object):
     def __init__(self, matrix=None):
         """Construct a transformation from a 4x4 transformation matrix.
         """
+        super(Transformation, self).__init__()
+
         if not matrix:
             matrix = identity_matrix(4)
         self.matrix = matrix
