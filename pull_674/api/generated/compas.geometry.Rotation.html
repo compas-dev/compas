@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="Reflection.transposed" href="compas.geometry.Reflection.transposed.html" />
+    <link rel="prev" title="Reflection.validate_json" href="compas.geometry.Reflection.validate_json.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -63,7 +63,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            0.17.3
+            0.18.0
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -178,32 +178,44 @@ representations, Euler angles, quaternion and basis vectors.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.from_frame_to_frame.html#compas.geometry.Rotation.from_frame_to_frame" title="compas.geometry.Rotation.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a>(frame_from, frame_to)</p></td>
 <td><p>Computes a transformation between two frames.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.from_list.html#compas.geometry.Rotation.from_list" title="compas.geometry.Rotation.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(numbers)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.from_json.html#compas.geometry.Rotation.from_json" title="compas.geometry.Rotation.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<td><p>Construct an object from serialised data contained in a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.from_list.html#compas.geometry.Rotation.from_list" title="compas.geometry.Rotation.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(numbers)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a list of 16 numbers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.from_matrix.html#compas.geometry.Rotation.from_matrix" title="compas.geometry.Rotation.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.from_matrix.html#compas.geometry.Rotation.from_matrix" title="compas.geometry.Rotation.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a 4x4 matrix-like object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.from_quaternion.html#compas.geometry.Rotation.from_quaternion" title="compas.geometry.Rotation.from_quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_quaternion</span></code></a>(quaternion)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.from_quaternion.html#compas.geometry.Rotation.from_quaternion" title="compas.geometry.Rotation.from_quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_quaternion</span></code></a>(quaternion)</p></td>
 <td><p>Calculates a <code class="docutils literal notranslate"><span class="pre">Rotation</span></code> from quaternion coefficients.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.inverse.html#compas.geometry.Rotation.inverse" title="compas.geometry.Rotation.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.inverse.html#compas.geometry.Rotation.inverse" title="compas.geometry.Rotation.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.invert.html#compas.geometry.Rotation.invert" title="compas.geometry.Rotation.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.invert.html#compas.geometry.Rotation.invert" title="compas.geometry.Rotation.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
 <td><p>Invert this transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.inverted.html#compas.geometry.Rotation.inverted" title="compas.geometry.Rotation.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.inverted.html#compas.geometry.Rotation.inverted" title="compas.geometry.Rotation.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.to_data.html#compas.geometry.Rotation.to_data" title="compas.geometry.Rotation.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.to_data.html#compas.geometry.Rotation.to_data" title="compas.geometry.Rotation.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> object to a data dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.to_json.html#compas.geometry.Rotation.to_json" title="compas.geometry.Rotation.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.transpose.html#compas.geometry.Rotation.transpose" title="compas.geometry.Rotation.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>()</p></td>
 <td><p>Transpose the matrix of this transformation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.transposed.html#compas.geometry.Rotation.transposed" title="compas.geometry.Rotation.transposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transposed</span></code></a>()</p></td>
 <td><p>Create a transposed copy of this transformation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Rotation.validate_data.html#compas.geometry.Rotation.validate_data" title="compas.geometry.Rotation.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Rotation.validate_json.html#compas.geometry.Rotation.validate_json" title="compas.geometry.Rotation.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
 </table>
@@ -371,7 +383,7 @@ representations, Euler angles, quaternion and basis vectors.</p>
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
     URL_ROOT          : '',
-    VERSION           : '0.17.3',
+    VERSION           : '0.18.0',
     COLLAPSE_INDEX    : false,
     FILE_SUFFIX       : '.html',
     HAS_SOURCE        : 'false',
