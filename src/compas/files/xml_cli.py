@@ -178,7 +178,7 @@ class CLRXMLTreeParser(ET.XMLParser):
             elif reader.NodeType in [XmlNodeType.Text, XmlNodeType.CDATA]:
                 self._target.data(reader.Value.decode(self._document_encoding))
             elif reader.NodeType == XmlNodeType.EndElement:
-                self._target.end(reader.LocalName)
+                self._target.end(reader.Name)
             elif reader.NodeType == XmlNodeType.XmlDeclaration:
                 self._parse_xml_declaration(reader.Value)
         return self._target.close()
@@ -193,7 +193,7 @@ class CLRXMLTreeParser(ET.XMLParser):
     def _start_element(self, reader):
         """Notify the tree builder that a start element has been
         encountered."""
-        name = reader.LocalName
+        name = reader.Name
         attributes = {}
 
         while reader.MoveToNextAttribute():
