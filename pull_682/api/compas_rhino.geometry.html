@@ -563,7 +563,9 @@ Setting this to <code class="docutils literal notranslate"><span class="pre">Non
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cls</strong> (<a class="reference internal" href="generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="compas.datastructures.Mesh"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, optional) – The type of COMPAS mesh.</p></li>
 <li><p><strong>facefilter</strong> (<em>callable, optional</em>) – A filter for selection which Brep faces to include.
-Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code> in which case all faces are included.
+If provided, the filter should return <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code> per faces.
+A simple filter that includes all faces is <code class="docutils literal notranslate"><span class="pre">def</span> <span class="pre">facefilter(face):</span> <span class="pre">return</span> <span class="pre">True</span></code>.</p></li>
 <li><p><strong>cleanup</strong> (<em>bool, optional</em>) – Flag indicating to clean up the result.
 Cleaning up means to remove isolated faces and unused vertices.
 Default is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
