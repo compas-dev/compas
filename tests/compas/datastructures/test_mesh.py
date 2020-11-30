@@ -2,38 +2,72 @@
 import os
 import compas
 import json
+import pytest
 
 from compas.datastructures import Mesh
+from compas.datastructures import meshes_join_and_weld
+from compas.geometry import Polygon
+from compas.geometry import Translation
+
+
+@pytest.fixture
+def cube():
+    return Mesh.from_polyhedron(6)
+
+
+@pytest.fixture
+def hexagon():
+    polygon = Polygon.from_sides_and_radius_xy(6, 1)
+    vertices = polygon.points
+    vertices.append(polygon.centroid)
+    faces = [[0, 1, 6], [1, 2, 6], [2, 3, 6], [3, 4, 6], [4, 5, 6], [5, 0, 6]]
+    return Mesh.from_vertices_and_faces(vertices, faces)
+
+
+@pytest.fixture
+def hexagongrid():
+    polygon = Polygon.from_sides_and_radius_xy(6, 1)
+    vertices = polygon.points
+    vertices.append(polygon.centroid)
+    x, y, z = zip(* vertices)
+    xmin = min(x)
+    xmax = max(x)
+    ymin = min(y)
+    ymax = max(y)
+    faces = [[0, 1, 6], [1, 2, 6], [2, 3, 6], [3, 4, 6], [4, 5, 6], [5, 0, 6]]
+    mesh = Mesh.from_vertices_and_faces(vertices, faces)
+    meshes = []
+    for i in range(2):
+        T = Translation.from_vector([i * (xmax - xmin), 0, 0])
+        meshes.append(mesh.transformed(T))
+    for i in range(2):
+        T = Translation.from_vector([i * (xmax - xmin), ymax - ymin, 0])
+        meshes.append(mesh.transformed(T))
+    mesh = meshes_join_and_weld(meshes)
+    return mesh
+
+
+@pytest.fixture
+def biohazard():
+    polygon = Polygon.from_sides_and_radius_xy(6, 1)
+    vertices = polygon.points
+    vertices.append(polygon.centroid)
+    faces = [[0, 1, 6], [2, 3, 6], [4, 5, 6]]
+    return Mesh.from_vertices_and_faces(vertices, faces)
+
+
+@pytest.fixture
+def triangleboundarychain():
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    faces = mesh.faces_on_boundaries()[0]
+    for face in faces:
+        mesh.insert_vertex(face)
+    return mesh
+
 
 # --------------------------------------------------------------------------
 # constructors
 # --------------------------------------------------------------------------
-
-
-# @pytest.fixture
-# def polylines():
-#     boundary_polylines = [
-#         [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0]],
-#         [[1.0, 0.0, 0.0], [2.0, 0.0, 0.0]],
-#         [[2.0, 0.0, 0.0], [2.0, 1.0, 0.0]],
-#         [[2.0, 1.0, 0.0], [1.0, 1.0, 0.0]],
-#         [[1.0, 1.0, 0.0], [0.0, 1.0, 0.0]],
-#         [[0.0, 1.0, 0.0], [0.0, 0.0, 0.0]],
-#     ]
-#     other_polylines = [
-#         [[1.0, 0.0, 0.0], [1.0, 0.25, 0.0], [1.0, 0.5, 0.0], [1.0, 0.75, 0.0], [1.0, 1.0, 0.0]]
-#     ]
-
-#     return boundary_polylines, other_polylines
-
-
-# def test_from_polylines(polylines):
-#     boundary_polylines, other_polylines = polylines
-#     mesh = Mesh.from_polylines(boundary_polylines, other_polylines)
-#     assert mesh.number_of_vertices() == 6
-#     assert mesh.number_of_faces() == 2
-#     assert mesh.number_of_edges() == 7
-
 
 def test_from_obj():
     mesh = Mesh.from_obj(compas.get('faces.obj'))
@@ -75,11 +109,6 @@ def test_from_lines():
     assert mesh.number_of_faces() == 10
     assert mesh.number_of_vertices() == 32
     assert mesh.number_of_edges() == 40
-
-
-def test_from_vertices_and_faces():
-    # tested through other functions
-    pass
 
 
 def test_from_polyhedron():
@@ -235,16 +264,10 @@ def test_is_regular():
 
 def test_is_manifold():
     pass
-    # TODO: this test needs to be passed!
-    # mesh = Mesh.from_off(compas.get('cube.off'))
-    # assert mesh.is_manifold()
-
-    # mesh.add_face([0, 1, 3])
-    # assert not mesh.is_manifold()
 
 
 def test_is_orientable():
-    pass  # the function is not working yet
+    pass
 
 
 def test_is_trimesh():
@@ -563,28 +586,52 @@ def test_face_curvature():
 # boundary
 # --------------------------------------------------------------------------
 
-# def test_vertices_on_boundary():
-#     mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-#     assert mesh.vertices_on_boundary() == [0, 1, 2, 3, 4, 5, 6, 7, 14, 15, 17, 33, 35, 37, 38, 39, 40, 41, 42, 43, 44, 45, 53, 62, 71, 73, 74, 75, 76, 84, 85, 86, 87, 88, 89, 98]
-
-#     mesh = Mesh.from_obj(compas.get('boxes.obj'))
-#     assert mesh.vertices_on_boundary() == []
+def test_vertices_on_boundaries_cube(cube):
+    assert cube.vertices_on_boundaries() == []
 
 
-def test_vertices_on_boundaries():
-    mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-    assert mesh.vertices_on_boundaries() == [
-        [15, 14, 85, 84, 86, 76, 75, 74, 73, 88, 87, 33, 71, 17, 53, 89, 35, 62, 98, 44, 45, 37, 38, 39, 40, 41, 42, 43, 7, 6, 5, 4, 3, 2, 1, 0]]
+def test_vertices_on_boundaries_hexagon(hexagon):
+    assert len(hexagon.vertices_on_boundaries()) == 1
+    assert len(hexagon.vertices_on_boundaries()[0]) == 7
 
 
-def test_faces_on_boundary():
-    mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-    assert len(mesh.faces_on_boundary()) == 32
+def test_vertices_on_boundaries_hexagongrid(hexagongrid):
+    assert len(hexagongrid.vertices_on_boundaries()) == 4
+    assert len(hexagongrid.vertices_on_boundaries()[0]) == 9
 
 
-def test_edges_on_boundary():
-    mesh = Mesh.from_obj(compas.get('quadmesh.obj'))
-    assert len(mesh.edges_on_boundary()) == 36
+def test_vertices_on_boundaries_biohazard(biohazard):
+    assert len(biohazard.vertices_on_boundaries()) == 3
+    assert len(biohazard.vertices_on_boundaries()[0]) == 4
+
+
+def test_vertices_on_boundaries_triangleboundarychain(triangleboundarychain):
+    assert len(triangleboundarychain.vertices_on_boundaries()) == 1
+    assert len(triangleboundarychain.vertices_on_boundaries()[0]) == 21
+
+
+def test_faces_on_boundaries_cube(cube):
+    assert cube.faces_on_boundaries() == []
+
+
+def test_faces_on_boundaries_hexagon(hexagon):
+    assert len(hexagon.faces_on_boundaries()) == 1
+    assert len(hexagon.faces_on_boundaries()[0]) == 6
+
+
+def test_faces_on_boundaries_hexagongrid(hexagongrid):
+    assert len(hexagongrid.faces_on_boundaries()) == 4
+    assert len(hexagongrid.faces_on_boundaries()[0]) == 8
+
+
+def test_faces_on_boundaries_biohazard(biohazard):
+    assert len(biohazard.faces_on_boundaries()) == 3
+    assert len(biohazard.faces_on_boundaries()[0]) == 1
+
+
+def test_faces_on_boundaries_triangleboundarychain(triangleboundarychain):
+    assert len(triangleboundarychain.faces_on_boundaries()) == 1
+    assert len(triangleboundarychain.faces_on_boundaries()[0]) == 20
 
 
 # --------------------------------------------------------------------------
