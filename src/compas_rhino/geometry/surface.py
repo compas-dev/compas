@@ -59,30 +59,31 @@ class RhinoSurface(BaseRhinoGeometry):
             brepfaces = [face for face in brep.Faces if facefilter(face)]
         else:
             brepfaces = brep.Faces
+        # vertex maps and face lists
         gkey_xyz = {}
         faces = []
         for face in brepfaces:
             loop = face.OuterLoop
             curve = loop.To3dCurve()
             segments = curve.Explode()
-            face = []
-            sp = segments[0].PointAtStart
-            ep = segments[0].PointAtEnd
-            sp_gkey = geometric_key(sp)
-            ep_gkey = geometric_key(ep)
-            gkey_xyz[sp_gkey] = sp
-            gkey_xyz[ep_gkey] = ep
-            face.append(sp_gkey)
-            face.append(ep_gkey)
+            a = segments[0].PointAtStart
+            b = segments[0].PointAtEnd
+            _a_ = geometric_key(a)
+            _b_ = geometric_key(b)
+            gkey_xyz[_a_] = a
+            gkey_xyz[_b_] = b
+            face = [_a_, _b_]
             for segment in segments[1:-1]:
-                ep = segment.PointAtEnd
-                ep_gkey = geometric_key(ep)
-                face.append(ep_gkey)
-                gkey_xyz[ep_gkey] = ep
+                b = segment.PointAtEnd
+                _b_ = geometric_key(b)
+                face.append(_b_)
+                gkey_xyz[_b_] = b
             faces.append(face)
+        # vertices and faces
         gkey_index = {gkey: index for index, gkey in enumerate(gkey_xyz)}
         vertices = [list(xyz) for gkey, xyz in gkey_xyz.items()]
-        faces = [[gkey_index[gkey] for gkey in f] for f in faces]
+        faces = [[gkey_index[gkey] for gkey in face] for face in faces]
+        # remove duplicates from vertexlist
         polygons = []
         for temp in faces:
             face = []
@@ -90,9 +91,12 @@ class RhinoSurface(BaseRhinoGeometry):
                 if vertex not in face:
                     face.append(vertex)
             polygons.append(face)
+        # define mesh type
         cls = cls or Mesh
+        # create mesh
         mesh = cls.from_vertices_and_faces(vertices, polygons)
         mesh.name = self.name
+        # remove isolated faces
         if cleanup:
             for face in list(mesh.faces()):
                 if not mesh.face_neighbors(face):
