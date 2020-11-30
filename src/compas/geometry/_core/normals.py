@@ -9,6 +9,7 @@ from compas.geometry._core import cross_vectors_xy
 from compas.geometry._core import length_vector
 from compas.geometry._core import length_vector_xy
 from compas.geometry._core import normalize_vector
+from compas.geometry._core import scale_vector
 
 from compas.geometry._core import centroid_points
 
@@ -59,7 +60,7 @@ def normal_polygon(polygon, unitized=True):
     for i in range(p):
         b = polygon[i]
         ob = subtract_vectors(b, o)
-        n = cross_vectors(oa, ob)
+        n = scale_vector(cross_vectors(oa, ob), 0.5)
         oa = ob
 
         nx += n[0]
