@@ -136,9 +136,9 @@
 <span class="sd">            The type of COMPAS mesh.</span>
 <span class="sd">        facefilter : callable, optional</span>
 <span class="sd">            A filter for selection which Brep faces to include.</span>
-<span class="sd">            Default is ``None`` in which case all faces are included.</span>
-<span class="sd">            If provided, the filter should return ``True``/``False`` per faces.</span>
-<span class="sd">            A simple filter that includes all faces is ``def facefilter(face): return True``.</span>
+<span class="sd">            If provided, the filter should return ``True`` or ``False`` per face.</span>
+<span class="sd">            A very simple filter that includes all faces is ``def facefilter(face): return True``.</span>
+<span class="sd">            Default parameter value is ``None`` in which case all faces are included.</span>
 <span class="sd">        cleanup : bool, optional</span>
 <span class="sd">            Flag indicating to clean up the result.</span>
 <span class="sd">            Cleaning up means to remove isolated faces and unused vertices.</span>
