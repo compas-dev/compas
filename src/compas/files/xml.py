@@ -8,6 +8,33 @@ import xml.etree.ElementTree as ET
 
 import compas
 
+if compas.is_ironpython():
+    from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
+    from compas.files.xml_cli import prettify_string
+    from compas.files.xml_cli import attach_namespaces
+else:
+    from xml.dom import minidom
+
+    DefaultXMLTreeParser = ET.XMLParser
+
+    def prettify_string(rough_string):
+        """Return an XML string with added whitespace for legibility.
+
+        Parameters
+        ----------
+        rough_string : str
+            XML string
+        """
+        reparsed = minidom.parseString(rough_string)
+        return reparsed.toprettyxml(indent="  ", encoding='utf-8')
+
+    def attach_namespaces(root, source):
+        """Parse and find the namespaces declared, and add them to the root's attributes."""
+        namespaces = [node for _, node in ET.iterparse(source, events=['start-ns'])]
+        attrib = {'xmlns:' + ns: uri for ns, uri in namespaces}
+        root.attrib.update(attrib)
+
+
 __all__ = [
     'prettify_string',
     'XML',
@@ -231,30 +258,3 @@ class XMLElement(object):
             subelement = ET.SubElement(element, child.tag, child.attributes)
             subelement.text = child.text
             child.add_children(subelement)
-
-
-if compas.is_ironpython():
-    from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
-    from compas.files.xml_cli import prettify_string
-    from compas.files.xml_cli import attach_namespaces
-else:
-    from xml.dom import minidom
-
-    DefaultXMLTreeParser = ET.XMLParser
-
-    def prettify_string(rough_string):
-        """Return an XML string with added whitespace for legibility.
-
-        Parameters
-        ----------
-        rough_string : str
-            XML string
-        """
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ", encoding='utf-8')
-
-    def attach_namespaces(root, source):
-        """Parse and find the namespaces declared, and add them to the root's attributes."""
-        namespaces = [node for _, node in ET.iterparse(source, events=['start-ns'])]
-        attrib = {'xmlns:' + ns: uri for ns, uri in namespaces}
-        root.attrib.update(attrib)
