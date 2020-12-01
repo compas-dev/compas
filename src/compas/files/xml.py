@@ -3,8 +3,7 @@ from __future__ import division
 from __future__ import print_function
 
 
-from io import BytesIO
-from io import StringIO
+import io
 import xml.etree.ElementTree as ET
 
 import compas
@@ -212,7 +211,7 @@ class XMLReader(object):
         # If the source is an `HTTPResponse` (or `addinfourl` in ipy),
         # it cannot be read twice, so we first read the response into a byte stream.
         if isinstance(source, ResponseType):
-            source = BytesIO(source.read())
+            source = io.BytesIO(source.read())
         tree = ET.parse(source, tree_parser())
         root = tree.getroot()
         attach_namespaces(root, source)
@@ -222,7 +221,7 @@ class XMLReader(object):
     def from_string(cls, text, tree_parser=None):
         tree_parser = tree_parser or DefaultXMLTreeParser
         root = ET.fromstring(text, tree_parser())
-        source = StringIO(text) if isinstance(text, str) else BytesIO(text)
+        source = io.StringIO(text) if isinstance(text, str) else io.BytesIO(text)
         attach_namespaces(root, source)
         return cls(root)
 

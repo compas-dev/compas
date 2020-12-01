@@ -429,6 +429,10 @@ class MeshDescriptor(BaseShape):
 
     def get_urdf_element(self):
         attributes = {'filename': self.filename}
+        # There is no need to record default values.  Usually these
+        # coincide with some form of 0 and are filtered out with
+        # `attributes = dict(filter(lambda x: x[1], attributes.items()))`,
+        # but here we must be explicit.
         if self.scale != [1.0, 1.0, 1.0]:
             attributes['scale'] = "{} {} {}".format(*self.scale)
         return URDFElement('mesh', attributes)

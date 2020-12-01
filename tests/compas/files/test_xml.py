@@ -37,7 +37,7 @@ def test_xml_to_string(sample_xml):
 def test_xml_to_pretty_string(sample_xml):
     xml = XML.from_string(sample_xml)
     prettyxml = xml.to_string(prettify=True)
-    print(b"\n  " in prettyxml)
+    assert b"\n  " in prettyxml
 
 
 def test_namespaces_to_string():
