@@ -1262,91 +1262,39 @@ class BaseMesh(HalfEdge):
     # boundary
     # --------------------------------------------------------------------------
 
-    def vertices_on_boundary(self, ordered=False):
-        """Find the vertices on the boundary.
-
-        Parameters
-        ----------
-        ordered : bool, optional
-            If ``True``, Return the vertices in the same order as they are found on the boundary.
-            Default is ``False``.
+    def vertices_on_boundary(self):
+        """Find the vertices on the longest boundary.
 
         Returns
         -------
         list
-            The vertices of the boundary.
-
-        Warnings
-        --------
-        If the vertices are requested in order, and the mesh has multiple borders,
-        currently only the vertices of one of the borders will be returned.
-
-        Examples
-        --------
-        >>>
+            The vertices of the longest boundary.
 
         """
-        vertices_set = set()
-        for key, nbrs in iter(self.halfedge.items()):
-            for nbr, face in iter(nbrs.items()):
-                if face is None:
-                    vertices_set.add(key)
-                    vertices_set.add(nbr)
-        vertices = list(vertices_set)
-
-        if not vertices:
-            return vertices
-        if not ordered:
-            return vertices
-
-        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices], key=lambda x: (x[1][1], x[1][0]))[0][0]
-
-        vertices = []
-        start = key
-        while 1:
-            for nbr, fkey in iter(self.halfedge[key].items()):
-                if fkey is None:
-                    vertices.append(nbr)
-                    key = nbr
-                    break
-            if key == start:
-                break
-        return vertices
+        boundaries = self.vertices_on_boundaries()
+        return boundaries[0] if boundaries else []
 
     def edges_on_boundary(self, oriented=False):
-        """Find the edges on the boundary.
-
-        Parameters
-        ----------
-        oriented : bool, optional
-            If ``False`` (default) the edges are aligned head-to-tail along the boundary.
-            If ``True`` the edges have the same orientation as in the mesh.
+        """Find the edges on the longest boundary.
 
         Returns
         -------
         edges : list
-            The boundary edges.
+            The edges of the longest boundary.
         """
-        vertices = self.vertices_on_boundary(ordered=True)
-        edges = list(pairwise(vertices + vertices[:1]))
-        if not oriented:
-            return edges
-        return [(u, v) if self.has_edge((u, v)) is None else (v, u) for u, v in edges]
+        boundaries = self.edges_on_boundaries()
+        return boundaries[0] if boundaries else []
 
     def faces_on_boundary(self):
-        """Find the faces on the boundary.
+        """Find the faces on the longest boundary.
 
         Returns
         -------
         list
-            The faces on the boundary.
+            The faces on the longest boundary.
         """
-        faces = []
-        for u, v in self.edges_on_boundary():
-            fkey = self.halfedge[v][u]
-            if fkey not in faces:
-                faces.append(fkey)
-        return faces
+        boundaries = self.faces_on_boundaries()
+        return boundaries[0] if boundaries else []
 
     def vertices_on_boundaries(self):
         """Find the vertices on all boundaries of the mesh.
@@ -1360,6 +1308,7 @@ class BaseMesh(HalfEdge):
         --------
         >>>
         """
+        # all boundary vertices
         vertices_set = set()
         for key, nbrs in iter(self.halfedge.items()):
             for nbr, face in iter(nbrs.items()):
@@ -1368,28 +1317,90 @@ class BaseMesh(HalfEdge):
                     vertices_set.add(nbr)
         vertices_all = list(vertices_set)
 
+        # return an empty list if there are no boundary vertices
         if not vertices_all:
-            return vertices_all
+            return []
 
-        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
-
+        # init container for boundary groups
         boundaries = []
-        while vertices_all:
-            vertices = []
-            start = key
-            while 1:
-                for nbr, fkey in iter(self.halfedge[key].items()):
-                    if fkey is None:
-                        vertices.append(nbr)
-                        key = nbr
+
+        # identify *special* vertices
+        # these vertices are non-manifold
+        # and should be processed differently
+        special = []
+        for key in vertices_all:
+            count = 0
+            for nbr in self.vertex_neighbors(key):
+                face = self.halfedge_face(key, nbr)
+                if face is None:
+                    count += 1
+                    if count > 1:
+                        if key not in special:
+                            special.append(key)
+
+        superspecial = special[:]
+
+        # process the special vertices first
+        while special:
+            start = special.pop()
+            nbrs = []
+            # find all neighbors of the current spacial vertex
+            # that are on the mesh boundary
+            for nbr in self.vertex_neighbors(start):
+                face = self.halfedge_face(start, nbr)
+                if face is None:
+                    nbrs.append(nbr)
+            # for normal mesh vertices
+            # there should be only 1 boundary neighbor
+            # for special vertices there are more and they all have to be processed
+            while nbrs:
+                vertex = nbrs.pop()
+                vertices = [start, vertex]
+                while True:
+                    # this is a *super* special case
+                    if vertex in superspecial:
+                        boundaries.append(vertices)
                         break
-                if key == start:
-                    boundaries.append(vertices)
-                    vertices_all = [x for x in vertices_all if x not in vertices]
-                    break
-            if vertices_all:
-                key = vertices_all[0]
-        return boundaries
+                    # find the boundary loop for the current starting halfedge
+                    for nbr in self.vertex_neighbors(vertex):
+                        if nbr == vertices[-2]:
+                            continue
+                        face = self.halfedge_face(vertex, nbr)
+                        if face is None:
+                            vertices.append(nbr)
+                            vertex = nbr
+                            break
+                    if vertex == start:
+                        boundaries.append(vertices)
+                        break
+                # remove any neighbors that might be part of an already identified boundary
+                nbrs = [vertex for vertex in nbrs if vertex not in vertices]
+
+        # remove all boundary vertices that were already identified
+        vertices_all = [vertex for vertex in vertices_all if all(vertex not in vertices for vertices in boundaries)]
+
+        # process the remaining boundary vertices if any
+        if vertices_all:
+            key = vertices_all[0]
+            while vertices_all:
+                vertices = [key]
+                start = key
+                while True:
+                    for nbr in self.vertex_neighbors(key):
+                        face = self.halfedge_face(key, nbr)
+                        if face is None:
+                            vertices.append(nbr)
+                            key = nbr
+                            break
+                    if key == start:
+                        boundaries.append(vertices)
+                        vertices_all = [x for x in vertices_all if x not in vertices]
+                        break
+                if vertices_all:
+                    key = vertices_all[0]
+
+        # return the boundary groups in order of the length of the group
+        return sorted(boundaries, key=lambda vertices: len(vertices))[::-1]
 
     def edges_on_boundaries(self):
         """Find the edges on all boundaries of the mesh.
@@ -1403,8 +1414,30 @@ class BaseMesh(HalfEdge):
         vertexgroups = self.vertices_on_boundaries()
         edgegroups = []
         for vertices in vertexgroups:
-            edgegroups.append(list(pairwise(vertices + vertices[:1])))
+            edgegroups.append(list(pairwise(vertices)))
         return edgegroups
+
+    def faces_on_boundaries(self):
+        """Find the faces on all boundaries of the mesh.
+
+        Returns
+        -------
+        list of list
+            Lists of faces, grouped and sorted per boundary.
+        """
+        vertexgroups = self.vertices_on_boundaries()
+        facegroups = []
+        for vertices in vertexgroups:
+            temp = [self.halfedge_face(v, u) for u, v in pairwise(vertices)]
+            faces = []
+            for face in temp:
+                if face is None:
+                    continue
+                if face not in faces and all(face not in group for group in facegroups):
+                    faces.append(face)
+            if faces:
+                facegroups.append(faces)
+        return facegroups
 
 
 # ==============================================================================

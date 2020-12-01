@@ -24,6 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed implementation of `Mesh.vertices_on_boundaries` to account for special cases.
+* Changed `Mesh.edges_on_boundaries` corresponding to `Mesh.vertices_on_boundaries`.
+* Changed `Mesh.faces_on_boundaries` corresponding to `Mesh.vertices_on_boundaries`.
+* Changed `Mesh.vertices_on_boundary` to return vertices of longest boundary.
+* Changed `Mesh.edges_on_boundary` to return edges of longest boundary.
+* Changed `Mesh.faces_on_boundary` to return faces of longest boundary.
 * Fixed default value for `compas.robots.Axis`.
 * Changed surface to mesh conversion to include cleanup and filter functions, and use the outer loop of all brep faces.
 
