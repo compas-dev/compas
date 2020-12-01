@@ -52,8 +52,12 @@ class DataEncoder(json.JSONEncoder):
     def default(self, o):
         if hasattr(o, 'to_data'):
             value = o.to_data()
+            if hasattr(o, 'dtype'):
+                dtype = o.dtype
+            else:
+                dtype = "{}/{}".format(".".join(o.__class__.__module__.split(".")[:-1]), o.__class__.__name__)
             return {
-                'dtype': "{}/{}".format(".".join(o.__class__.__module__.split(".")[:-1]), o.__class__.__name__),
+                'dtype': dtype,
                 'value': value
             }
 

@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `remap_values` to `compas_utilities`.
 * Added `compas.datastructures.mesh_slice_plane`.
+* Added `compas.json_dump`, `compas.json_dumps`, `compas.json_load`, `compas.json_loads`.
 
 ### Changed
 
@@ -34,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.datastructures.Network.delete_edge`.
 * Fixed bug in select functions for individual objects in `compas_rhino.utilities`.
 * Fixed bug in `compas.datastructures.mesh_merge_faces`.
+* changed base of `compas.geometry.Transformation` to `compas.base.Base`.
 
 ### Removed
 
