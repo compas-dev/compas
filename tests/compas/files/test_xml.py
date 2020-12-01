@@ -49,3 +49,12 @@ def test_namespaces_to_string():
     # Note: Minidom does some funny things to namespaces.  First, if a namespace isn't used, it will be stripped out.
     # Second, it will include the original namespace declaration, but also repeat that declaration with another name,
     # and replace all references to the original with the new.
+
+def test_default_namespace_to_string():
+    xml = XML.from_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot xmlns="https://default.org/namespace" xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"><xacro:bamboo/></robot>"""
+    )
+    xml_string = xml.to_string(prettify=True)
+    assert b'xmlns="https://default.org/namespace"' in xml_string
+    assert b'<xacro:bamboo' in xml_string or b'<ns1:bamboo' in xml_string
+    assert b'<robot' in xml_string or b'<ns0:robot' in xml_string

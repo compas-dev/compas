@@ -35,7 +35,7 @@ else:
         if hasattr(source, 'seek'):
             source.seek(0)
         namespaces = [node for _, node in ET.iterparse(source, events=['start-ns'])]
-        attrib = {'xmlns:' + ns: uri for ns, uri in namespaces}
+        attrib = {'xmlns:' + ns if ns else 'xmlns': uri for ns, uri in namespaces}
         root.attrib.update(attrib)
 
 
