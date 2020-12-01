@@ -14,8 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `compas.files.URDF.from_robot`.
 
 ### Changed
-* Fixed default value for `compas.robots.Axis`.
 
+* Fixed default value for `compas.robots.Axis`.
 * Changed surface to mesh conversion to include cleanup and filter functions, and use the outer loop of all brep faces.
 
 ### Removed
