@@ -9,7 +9,6 @@ from compas.geometry._core import cross_vectors_xy
 from compas.geometry._core import length_vector
 from compas.geometry._core import length_vector_xy
 from compas.geometry._core import normalize_vector
-from compas.geometry._core import scale_vector
 
 from compas.geometry._core import centroid_points
 
