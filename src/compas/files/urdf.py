@@ -8,11 +8,13 @@ import sys
 
 from compas.base import Base
 from compas.files.xml import XML
+from compas.files.xml import XMLElement
 from compas.utilities import memoize
 
 __all__ = [
     'URDF',
-    'URDFParser'
+    'URDFElement',
+    'URDFParser',
 ]
 
 
@@ -44,9 +46,30 @@ class URDF(object):
 
     """
 
-    def __init__(self, xml):
+    def __init__(self, xml=None):
         self.xml = xml
-        self.robot = URDFParser.parse_element(xml.root, xml.root.tag)
+        self._robot = None
+
+    @property
+    def robot(self):
+        if self._robot is None:
+            self._robot = URDFParser.parse_element(self.xml.root, self.xml.root.tag)
+        return self._robot
+
+    @robot.setter
+    def robot(self, robot):
+        robot_element = robot.get_urdf_element()
+        root = robot_element.get_root()
+        robot_element.add_children(root)
+        self.xml = XML()
+        self.xml.root = root
+        self._robot = robot
+
+    @classmethod
+    def from_robot(cls, robot):
+        urdf = cls()
+        urdf.robot = robot
+        return urdf
 
     @classmethod
     def from_file(cls, source):
@@ -80,6 +103,84 @@ class URDF(object):
         """
         return cls(XML.from_string(text))
 
+    @classmethod
+    def read(cls, source):
+        """Parse a URDF file from a file path or file-like object.
+
+        Parameters
+        ----------
+        source : str or file
+            File path or file-like object.
+
+        Examples
+        --------
+        >>> from compas.files import URDF
+        >>> urdf = URDF.read('/urdf/ur5.urdf')
+        """
+        return cls.from_file(source)
+
+    def to_file(self, destination=None, prettify=False):
+        """Writes the string representation of this URDF instance,
+        including all sub-elements, to the ``destination``.
+
+        Parameters
+        ----------
+        destination : str, optional
+            Filepath where the URDF should be written.  Defaults to
+            the filepath of the associated XML object.
+        prettify : bool, optional
+            Whether the string should add whitespace for legibility.
+            Defaults to ``False``.
+
+        Returns
+        -------
+        ``None``
+
+        """
+        if destination:
+            self.xml.filepath = destination
+        self.xml.write(prettify=prettify)
+
+    def to_string(self, encoding='utf-8', prettify=False):
+        """Generate a string representation of this URDF instance,
+        including all sub-elements.
+
+        Parameters
+        ----------
+        encoding : str, optional
+            Output encoding (the default is 'utf-8')
+        prettify : bool, optional
+            Whether the string should add whitespace for legibility.
+            Defaults to ``False``.
+
+        Returns
+        -------
+        str
+            String representation of the URDF.
+
+        """
+        return self.xml.to_string(encoding=encoding, prettify=prettify)
+
+    def write(self, destination=None, prettify=False):
+        """Writes the string representation of this URDF instance,
+        including all sub-elements, to the ``destination``.
+
+        Parameters
+        ----------
+        destination : str, optional
+            Filepath where the URDF should be written.  Defaults to
+            the filepath of the associated XML object.
+        prettify : bool, optional
+            Whether the string should add whitespace for legibility.
+            Defaults to ``False``.
+
+        Returns
+        -------
+        ``None``
+
+        """
+        self.to_file(destination=destination, prettify=prettify)
+
 
 class URDFParser(object):
     """Parse URDF elements into an object graph."""
@@ -107,7 +208,7 @@ class URDFParser(object):
         """Recursively parse URDF element and its children.
 
         If the parser type implements a class method ``from_urdf``,
-        it will use it to parse the elemenet, otherwise
+        it will use it to parse the element, otherwise
         a generic implementation that relies on conventions
         will be used.
 
@@ -202,6 +303,12 @@ class URDFGenericElement(Base):
     """Generic representation for all URDF elements that
     are not explicitly supported."""
 
+    def get_urdf_element(self):
+        if not (hasattr(self, '_urdf_source') or hasattr(self, 'tag')):
+            raise Exception('No tag found for element {}'.format(self))
+        tag = self.tag if hasattr(self, 'tag') else self._urdf_source.tag
+        return URDFElement(tag, self.attr, self.elements, self.text)
+
     @classmethod
     def from_urdf(cls, attributes, elements, text):
         el = cls()
@@ -244,6 +351,22 @@ class URDFGenericElement(Base):
     def to_json(self, filepath):
         with open(filepath, 'w+') as f:
             json.dump(self.data, f)
+
+
+class URDFElement(XMLElement):
+    def __init__(self, tag, attributes=None, elements=None, text=None):
+        elements = [e.get_urdf_element() for e in elements or [] if e is not None]
+        super(URDFElement, self).__init__(tag, attributes, elements, text)
+        self.redistribute_elements()
+
+    def redistribute_elements(self):
+        attributes = {}
+        for key, value in self.attributes.items():
+            if hasattr(value, 'get_urdf_element'):
+                self.elements.append(value.get_urdf_element())
+            else:
+                attributes[key] = str(value)
+        self.attributes = attributes
 
 
 @memoize
