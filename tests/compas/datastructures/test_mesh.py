@@ -271,7 +271,7 @@ def test_is_manifold(cube, biohazard):
     assert not biohazard.is_manifold()
 
 
-@pytest.mark.skip(reason="no way of currently testing this")
+@pytest.mark.skip(reason="euh")
 def test_is_orientable():
     pass
 
