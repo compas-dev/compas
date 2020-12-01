@@ -308,15 +308,24 @@ def test_genus():
 # --------------------------------------------------------------------------
 
 def test_vertices(cube):
-    assert hasattr(cube.vertices(), '__next__')
+    if compas.PY3:
+        assert hasattr(cube.vertices(), '__next__')
+    else:
+        assert hasattr(cube.vertices(), '__iter__')
 
 
 def test_faces(cube):
-    assert hasattr(cube.faces(), '__next__')
+    if compas.PY3:
+        assert hasattr(cube.faces(), '__next__')
+    else:
+        assert hasattr(cube.faces(), '__iter__')
 
 
 def test_edges(cube):
-    assert hasattr(cube.edges(), '__next__')
+    if compas.PY3:
+        assert hasattr(cube.edges(), '__next__')
+    else:
+        assert hasattr(cube.edges(), '__iter__')
 
 
 # --------------------------------------------------------------------------
