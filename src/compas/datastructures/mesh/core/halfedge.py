@@ -2,7 +2,6 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-# from collections import OrderedDict
 from ast import literal_eval
 from random import sample
 from random import choice
@@ -2541,49 +2540,6 @@ class HalfEdge(Datastructure):
         face = self.halfedge_face(u, v)
         t = self.face_vertex_before(face, u)
         return t, u
-
-    # --------------------------------------------------------------------------
-    # boundary
-    # --------------------------------------------------------------------------
-
-    # def faces_on_boundary(self):
-    #     """Find the faces on the boundary.
-
-    #     Returns
-    #     -------
-    #     list
-    #         The faces on the boundary.
-
-    #     """
-    #     faces = OrderedDict()
-    #     for key, nbrs in iter(self.halfedge.items()):
-    #         for nbr, fkey in iter(nbrs.items()):
-    #             if fkey is None:
-    #                 faces[self.halfedge[nbr][key]] = 1
-    #     return faces.keys()
-
-    # def edges_on_boundary(self, chained=False):
-    #     """Find the edges on the boundary.
-
-    #     Parameters
-    #     ----------
-    #     chained : bool (``False``)
-    #         Indicate whether the boundary edges should be chained head to tail.
-    #         Note that chaining the edges will essentially return half-edges that
-    #         point outwards to the space outside.
-
-    #     Returns
-    #     -------
-    #     boundary_edges : list
-    #         The boundary edges.
-
-    #     """
-    #     boundary_edges = [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]
-    #     if not chained:
-    #         return boundary_edges
-    #     # this is not "chained"
-    #     # it is "oriented"
-    #     return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]
 
 
 # ==============================================================================
