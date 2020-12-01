@@ -9,8 +9,7 @@ from compas.datastructures import Mesh
 
 def test_json_native():
     before = [[], (), {}, '', 1, 1.0, True, None]
-    s = compas.json_dumps(before)
-    after = compas.json_loads(s)
+    after = compas.json_loads(compas.json_dumps(before))
     assert after == [[], [], {}, '', 1, 1.0, True, None]
 
 
@@ -19,43 +18,38 @@ if not compas.IPY:
 
     def test_json_numpy():
         before = [np.array([1, 2, 3]), np.array([1.0, 2.0, 3.0]), np.float64(1.0), np.int32(1)]
-        s = compas.json_dumps(before)
-        after = compas.json_loads(s)
+        after = compas.json_loads(compas.json_dumps(before))
         assert after == [[1, 2, 3], [1.0, 2.0, 3.0], 1.0, 1]
 
 
 def test_json_primitive():
     before = Point(0, 0, 0)
-    s = compas.json_dumps(before)
-    after = compas.json_loads(s)
-    assert before.__class__ == after.__class__
+    after = compas.json_loads(compas.json_dumps(before))
+    assert isinstance(after, before.__class__)
     assert before.dtype == after.dtype
     assert all(a == b for a, b in zip(before, after))
 
 
 def test_json_shape():
     before = Box(Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), 1, 1, 1)
-    s = compas.json_dumps(before)
-    after = compas.json_loads(s)
-    assert before.__class__ == after.__class__
+    after = compas.json_loads(compas.json_dumps(before))
+    assert isinstance(after, before.__class__)
     assert before.dtype == after.dtype
     assert all(a == b for a, b in zip(before.vertices, after.vertices))
 
 
 def test_json_xform():
     before = Transformation.from_frame_to_frame(Frame.worldXY(), Frame.worldXY())
-    s = compas.json_dumps(before)
-    after = compas.json_loads(s)
-    assert before.__class__ == after.__class__
+    after = compas.json_loads(compas.json_dumps(before))
+    assert isinstance(after, before.__class__)
     assert before.dtype == after.dtype
     assert all(a == b for a, b in zip(before, after))
 
 
 def test_json_mesh():
     before = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
-    s = compas.json_dumps(before)
-    after = compas.json_loads(s)
-    assert before.__class__ == after.__class__
+    after = compas.json_loads(compas.json_dumps(before))
+    assert isinstance(after, before.__class__)
     assert before.dtype == after.dtype
     assert all(before.has_vertex(vertex) for vertex in after.vertices())
     assert all(after.has_vertex(vertex) for vertex in before.vertices())
