@@ -50,6 +50,7 @@ def test_namespaces_to_string():
     # Second, it will include the original namespace declaration, but also repeat that declaration with another name,
     # and replace all references to the original with the new.
 
+
 def test_default_namespace_to_string():
     xml = XML.from_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot xmlns="https://default.org/namespace" xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"><xacro:bamboo/></robot>"""
