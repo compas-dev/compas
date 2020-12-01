@@ -1,6 +1,5 @@
 from distutils.version import LooseVersion
 
-import numpy as np
 import compas
 
 from compas.geometry import Point, Vector, Frame
@@ -16,19 +15,19 @@ def test_dumps_native():
     assert s == '[[], [], {}, "", 1, 1.0, true, null, Infinity]'
 
 
-def test_dumps_numpy():
-    data = [np.array([1, 2, 3]), np.array([1.0, 2.0, 3.0]), np.float64(1.0), np.int32(1), np.nan, np.inf]
-    s = compas.json_dumps(data)
-    assert s == '[[1, 2, 3], [1.0, 2.0, 3.0], 1.0, 1, NaN, Infinity]'
+if not compas.IPY:
+    import numpy as np
+
+    def test_dumps_numpy():
+        data = [np.array([1, 2, 3]), np.array([1.0, 2.0, 3.0]), np.float64(1.0), np.int32(1), np.nan, np.inf]
+        s = compas.json_dumps(data)
+        assert s == '[[1, 2, 3], [1.0, 2.0, 3.0], 1.0, 1, NaN, Infinity]'
 
 
 def test_dumps_primitive():
-    d1 = Point(0, 0, 0)
-    s1 = compas.json_dumps(d1)
-    d2 = Point(np.float64(0.0), np.float64(0.0), np.float64(0.0))
-    s2 = compas.json_dumps(d2)
-    assert s1 == '{"dtype": "compas.geometry/Point", "value": [0.0, 0.0, 0.0]}'
-    assert s2 == '{"dtype": "compas.geometry/Point", "value": [0.0, 0.0, 0.0]}'
+    d = Point(0, 0, 0)
+    s = compas.json_dumps(d)
+    assert s == '{"dtype": "compas.geometry/Point", "value": [0.0, 0.0, 0.0]}'
 
 
 def test_dumps_shape():
