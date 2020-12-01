@@ -124,7 +124,6 @@ def test_from_points():
     assert mesh.number_of_faces() == 3
     assert mesh.number_of_vertices() == 5
     assert mesh.number_of_edges() == 7
-    # TODO: add test for boundary and holes
 
 
 def test_from_ploygons():
@@ -182,18 +181,18 @@ def test_clear():
 
 def test_add_vertex():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
-    n = mesh.number_of_vertices()
+    v = mesh.number_of_vertices()
     key = mesh.add_vertex(x=0, y=1, z=2)
-    assert mesh.vertex[key] == {'x': 0, 'y': 1, 'z': 2}
-    assert mesh.number_of_vertices() == n+1
+    assert mesh.vertex_attributes(key, 'xyz') == [0, 1, 2]
+    assert mesh.number_of_vertices() == v + 1
 
 
 def test_add_face():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
-    n = mesh.number_of_faces()
+    v = mesh.number_of_faces()
     key = mesh.add_face([0, 1, 2])
-    assert mesh.face[key] == [0, 1, 2]
-    assert mesh.number_of_faces() == n+1
+    assert mesh.face_vertices(key) == [0, 1, 2]
+    assert mesh.number_of_faces() == v + 1
 
 
 # --------------------------------------------------------------------------
@@ -202,39 +201,39 @@ def test_add_face():
 
 def test_delete_vertex():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
-    n = mesh.number_of_vertices()
-    fn = mesh.number_of_faces()
-    en = mesh.number_of_edges()
+    v = mesh.number_of_vertices()
+    f = mesh.number_of_faces()
+    e = mesh.number_of_edges()
     mesh.delete_vertex(0)
-    assert mesh.number_of_vertices() == n-1
-    assert mesh.number_of_faces() == fn-4
-    assert mesh.number_of_edges() == en-4
+    assert mesh.number_of_vertices() == v - 1
+    assert mesh.number_of_faces() == f - 4
+    assert mesh.number_of_edges() == e - 4
 
 
 def test_insert_vertex():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
-    n = mesh.number_of_vertices()
-    fn = mesh.number_of_faces()
-    en = mesh.number_of_edges()
+    v = mesh.number_of_vertices()
+    f = mesh.number_of_faces()
+    e = mesh.number_of_edges()
     mesh.insert_vertex(0)
-    assert mesh.number_of_vertices() == n + 1
-    assert mesh.number_of_faces() == fn + 2
-    assert mesh.number_of_edges() == en + 3
+    assert mesh.number_of_vertices() == v + 1
+    assert mesh.number_of_faces() == f + 2
+    assert mesh.number_of_edges() == e + 3
 
 
 def test_delete_face():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
-    fn = mesh.number_of_faces()
+    f = mesh.number_of_faces()
     mesh.delete_face(0)
-    assert mesh.number_of_faces() == fn-1
+    assert mesh.number_of_faces() == f - 1
 
 
 def test_cull_vertices():
     mesh = Mesh.from_stl(compas.get('cube_binary.stl'))
     mesh.add_vertex()
-    n = mesh.number_of_vertices()
+    v = mesh.number_of_vertices()
     mesh.cull_vertices()
-    assert mesh.number_of_vertices() == n - 1
+    assert mesh.number_of_vertices() == v - 1
 
 
 # --------------------------------------------------------------------------
