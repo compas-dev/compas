@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="XMLReader" href="compas.files.XMLReader.html" />
+    <link rel="next" title="XML.write" href="compas.files.XML.write.html" />
   
   
   
-    <link rel="prev" title="XML.from_string" href="compas.files.XML.from_string.html" />
+    <link rel="prev" title="XML.to_file" href="compas.files.XML.to_file.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -101,12 +101,16 @@
 <h1>XML.to_string</h1>
 <dl class="method">
 <dt id="compas.files.XML.to_string">
-<code class="sig-prename descclassname">XML.</code><code class="sig-name descname">to_string</code><span class="sig-paren">(</span><em class="sig-param">encoding='utf-8'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/files/xml.html#XML.to_string"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">XML.</code><code class="sig-name descname">to_string</code><span class="sig-paren">(</span><em class="sig-param">encoding='utf-8'</em>, <em class="sig-param">prettify=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/files/xml.html#XML.to_string"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Generate a string representation of this XML instance,
 including all sub-elements.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>encoding</strong> (<em>str, optional</em>) – Output encoding (the default is ‘utf-8’)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>encoding</strong> (<em>str, optional</em>) – Output encoding (the default is ‘utf-8’)</p></li>
+<li><p><strong>prettify</strong> (<em>bool, optional</em>) – Whether the string should add whitespace for legibility.
+Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>str</em> – String representation of the XML.</p>

@@ -101,6 +101,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">compas.base</span> <span class="kn">import</span> <span class="n">Base</span>
+<span class="kn">from</span> <span class="nn">compas.files</span> <span class="kn">import</span> <span class="n">URDFElement</span>
 <span class="kn">from</span> <span class="nn">compas.files</span> <span class="kn">import</span> <span class="n">URDFParser</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">transform_vectors</span>
@@ -136,6 +137,9 @@
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ParentLink.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.ParentLink.get_urdf_element.html#compas.robots.ParentLink.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;parent&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;link&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">})</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -175,6 +179,9 @@
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">)</span>
 
+<div class="viewcode-block" id="ChildLink.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.ChildLink.get_urdf_element.html#compas.robots.ChildLink.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;child&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;link&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">link</span><span class="p">})</span></div>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
@@ -211,6 +218,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rising</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">rising</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">falling</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">falling</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reference_position</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">reference_position</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Calibration.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Calibration.get_urdf_element.html#compas.robots.Calibration.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;rising&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rising</span><span class="p">,</span>
+            <span class="s1">&#39;falling&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">falling</span><span class="p">,</span>
+            <span class="s1">&#39;reference_position&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_position</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;calibration&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -253,6 +269,14 @@
         <span class="nb">super</span><span class="p">(</span><span class="n">Dynamics</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">damping</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">friction</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">friction</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Dynamics.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Dynamics.get_urdf_element.html#compas.robots.Dynamics.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;damping&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span>
+            <span class="s1">&#39;friction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">friction</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;dynamics&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -307,6 +331,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">velocity</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lower</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">lower</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upper</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">upper</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Limit.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Limit.get_urdf_element.html#compas.robots.Limit.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;lower&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span>
+            <span class="s1">&#39;upper&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;effort&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">effort</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;limit&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -368,6 +402,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">multiplier</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Mimic.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Mimic.get_urdf_element.html#compas.robots.Mimic.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;joint&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">joint</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;multiplier&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;offset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;mimic&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
@@ -414,6 +456,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">k_position</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">k_position</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">soft_lower_limit</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">soft_lower_limit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">soft_upper_limit</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">soft_upper_limit</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SafetyController.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.SafetyController.get_urdf_element.html#compas.robots.SafetyController.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;k_position&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_position</span><span class="p">,</span>
+            <span class="s1">&#39;soft_lower_limit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">soft_lower_limit</span><span class="p">,</span>
+            <span class="s1">&#39;soft_upper_limit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">soft_upper_limit</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+        <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;k_velocity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_velocity</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;safety_controller&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -466,7 +518,7 @@
 <span class="sd">        Additional axis attributes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Axis.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Axis.__init__.html#compas.robots.Axis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="s1">&#39;0 0 0&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Axis.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Axis.__init__.html#compas.robots.Axis.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="s1">&#39;1 0 0&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># We are not using Vector here because we</span>
         <span class="c1"># cannot attach _urdf_source to it due to __slots__</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Axis</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -475,6 +527,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">kwargs</span></div>
+
+<div class="viewcode-block" id="Axis.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Axis.get_urdf_element.html#compas.robots.Axis.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;xyz&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)}</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -626,7 +683,7 @@
                        <span class="s1">&#39;floating&#39;</span><span class="p">,</span> <span class="s1">&#39;planar&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Joint.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Joint.__init__.html#compas.robots.Joint.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">calibration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dynamics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">safety_controller</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mimic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Joint</span><span class="o">.</span><span class="n">SUPPORTED_TYPES</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Joint</span><span class="o">.</span><span class="n">SUPPORTED_TYPES</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unsupported joint type: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="nb">type</span><span class="p">)</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">Joint</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -644,6 +701,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">child_link</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Joint.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Joint.get_urdf_element.html#compas.robots.Joint.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">SUPPORTED_TYPES</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">calibration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">limit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">safety_controller</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mimic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;joint&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
