@@ -25,7 +25,6 @@ if not compas.IPY:
 def test_json_primitive():
     before = Point(0, 0, 0)
     after = compas.json_loads(compas.json_dumps(before))
-    assert isinstance(after, before.__class__)
     assert before.dtype == after.dtype
     assert all(a == b for a, b in zip(before, after))
 
@@ -33,7 +32,6 @@ def test_json_primitive():
 def test_json_shape():
     before = Box(Frame(Point(0, 0, 0), Vector(1, 0, 0), Vector(0, 1, 0)), 1, 1, 1)
     after = compas.json_loads(compas.json_dumps(before))
-    assert isinstance(after, before.__class__)
     assert before.dtype == after.dtype
     assert all(a == b for a, b in zip(before.vertices, after.vertices))
 
@@ -41,7 +39,6 @@ def test_json_shape():
 def test_json_xform():
     before = Transformation.from_frame_to_frame(Frame.worldXY(), Frame.worldXY())
     after = compas.json_loads(compas.json_dumps(before))
-    assert isinstance(after, before.__class__)
     assert before.dtype == after.dtype
     assert all(a == b for a, b in zip(before, after))
 
@@ -49,7 +46,6 @@ def test_json_xform():
 def test_json_mesh():
     before = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
     after = compas.json_loads(compas.json_dumps(before))
-    assert isinstance(after, before.__class__)
     assert before.dtype == after.dtype
     assert all(before.has_vertex(vertex) for vertex in after.vertices())
     assert all(after.has_vertex(vertex) for vertex in before.vertices())
