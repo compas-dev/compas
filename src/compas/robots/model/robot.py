@@ -8,6 +8,7 @@ import json
 from compas.base import Base
 from compas.files import URDF
 from compas.files import URDFParser
+from compas.files import URDFElement
 from compas.geometry import Frame
 from compas.geometry import Transformation
 from compas.robots.model.geometry import Color
@@ -67,6 +68,12 @@ class RobotModel(Base):
         self._rebuild_tree()
         self._create(self.root, Transformation())
         self._scale_factor = 1.
+
+    def get_urdf_element(self):
+        attributes = {'name': self.name}
+        attributes.update(self.attr)
+        elements = self.links + self.joints + self.materials
+        return URDFElement('robot', attributes, elements)
 
     @property
     def data(self):
@@ -177,6 +184,21 @@ class RobotModel(Base):
         """
         urdf = URDF.from_file(file)
         return urdf.robot
+
+    def to_urdf_file(self, file, prettify=False):
+        """Construct a URDF file model description from a robot model.
+
+        Parameters
+        ----------
+        file:
+            file name or file object.
+
+        Returns
+        -------
+        ``None``
+        """
+        urdf = URDF.from_robot(self)
+        urdf.to_file(file, prettify)
 
     @classmethod
     def from_urdf_string(cls, text):

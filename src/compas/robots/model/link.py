@@ -5,6 +5,7 @@ from __future__ import print_function
 import json
 
 from compas.base import Base
+from compas.files import URDFElement
 from compas.files import URDFParser
 from compas.geometry import Transformation
 
@@ -33,6 +34,10 @@ class Mass(Base):
 
     def __str__(self):
         return str(self.value)
+
+    def get_urdf_element(self):
+        attributes = {'value': self.value}
+        return URDFElement('mass', attributes)
 
     @property
     def data(self):
@@ -76,6 +81,17 @@ class Inertia(Base):
         self.iyy = float(iyy)
         self.iyz = float(iyz)
         self.izz = float(izz)
+
+    def get_urdf_element(self):
+        attributes = {
+            'ixx': self.ixx,
+            'ixy': self.ixy,
+            'ixz': self.ixz,
+            'iyy': self.iyy,
+            'iyz': self.iyz,
+            'izz': self.izz,
+        }
+        return URDFElement('inertia', attributes)
 
     @property
     def data(self):
@@ -135,6 +151,10 @@ class Inertial(Base):
         self.origin = origin
         self.mass = mass
         self.inertia = inertia
+
+    def get_urdf_element(self):
+        elements = [self.origin, self.mass, self.inertia]
+        return URDFElement('inertial', elements=elements)
 
     @property
     def data(self):
@@ -200,6 +220,23 @@ class Visual(Base):
         self.init_transformation = None  # to store the init transformation
         self.current_transformation = None  # to store the current transformation
         self.native_geometry = None  # to store the link's CAD native geometry
+
+    def get_urdf_element(self):
+        attributes = {}
+        if self.name is not None:
+            attributes['name'] = self.name
+        attributes.update(self.attr)
+        elements = [self.origin, self.geometry, self.material]
+        return URDFElement('visual', attributes, elements)
+
+    # Overriding the default name property, because sometimes the name really is `None`.
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
 
     @property
     def data(self):
@@ -286,6 +323,23 @@ class Collision(Base):
         self.current_transformation = None  # to store the current transformation
         self.native_geometry = None  # to store the link's CAD native geometry
 
+    def get_urdf_element(self):
+        attributes = {}
+        if self.name is not None:
+            attributes['name'] = self.name
+        attributes.update(self.attr)
+        elements = [self.origin, self.geometry]
+        return URDFElement('collision', attributes, elements)
+
+    # Overriding the default name property, because sometimes the name really is `None`.
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        self._name = name
+
     @property
     def data(self):
         return {
@@ -361,6 +415,14 @@ class Link(Base):
         self.attr = kwargs
         self.joints = []
         self.parent_joint = None
+
+    def get_urdf_element(self):
+        attributes = {'name': self.name}
+        if self.type is not None:
+            attributes['type'] = self.type
+        attributes.update(self.attr)
+        elements = self.visual + self.collision + [self.inertial]
+        return URDFElement('link', attributes, elements)
 
     @property
     def data(self):
