@@ -45,20 +45,67 @@ if compas.IPY:
     import clr
     clr.AddReference('System.Xml')
 
+    from System.IO import StreamReader
     from System.IO import StringReader
+    from System.IO import MemoryStream
+    from System.Text import Encoding
     from System.Text.RegularExpressions import Regex
     from System.Text.RegularExpressions import RegexOptions
     from System.Xml import DtdProcessing
+    from System.Xml import Formatting
     from System.Xml import ValidationType
+    from System.Xml import XmlDocument
     from System.Xml import XmlNodeType
     from System.Xml import XmlReader
     from System.Xml import XmlReaderSettings
+    from System.Xml import XmlTextWriter
 
     CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
                          RegexOptions.Compiled)
 
 
-__all__ = ['CLRXMLTreeParser']
+__all__ = [
+    'CLRXMLTreeParser',
+    'attach_namespaces',
+    'prettify_string',
+]
+
+
+def prettify_string(rough_string):
+    """Return an XML string with added whitespace for legibility,
+    using .NET infrastructure.
+
+    Parameters
+    ----------
+    rough_string : str
+        XML string
+    """
+    mStream = MemoryStream()
+    writer = XmlTextWriter(mStream, Encoding.UTF8)
+    document = XmlDocument()
+
+    document.LoadXml(rough_string)
+
+    writer.Formatting = Formatting.Indented
+
+    writer.WriteStartDocument()
+    document.WriteContentTo(writer)
+    writer.Flush()
+    mStream.Flush()
+
+    mStream.Position = 0
+
+    sReader = StreamReader(mStream)
+
+    formattedXml = sReader.ReadToEnd()
+
+    return formattedXml
+
+
+def attach_namespaces(root, source):
+    """Parse and find the namespaces declared, and add them to the root's attributes."""
+    # Don't need too, already done by parser
+    pass
 
 
 class CLRXMLTreeParser(ET.XMLParser):
@@ -131,7 +178,7 @@ class CLRXMLTreeParser(ET.XMLParser):
             elif reader.NodeType in [XmlNodeType.Text, XmlNodeType.CDATA]:
                 self._target.data(reader.Value.decode(self._document_encoding))
             elif reader.NodeType == XmlNodeType.EndElement:
-                self._target.end(reader.LocalName)
+                self._target.end(reader.Name)
             elif reader.NodeType == XmlNodeType.XmlDeclaration:
                 self._parse_xml_declaration(reader.Value)
         return self._target.close()
@@ -146,14 +193,13 @@ class CLRXMLTreeParser(ET.XMLParser):
     def _start_element(self, reader):
         """Notify the tree builder that a start element has been
         encountered."""
-        name = reader.LocalName
         attributes = {}
 
         while reader.MoveToNextAttribute():
             attributes[reader.Name] = reader.Value
 
         reader.MoveToElement()
-        self._target.start(name, attributes)
+        self._target.start(reader.Name, attributes)
 
-        if (reader.IsEmptyElement):
-            self._target.end(name)
+        if reader.IsEmptyElement:
+            self._target.end(reader.Name)

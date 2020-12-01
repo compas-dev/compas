@@ -36,4 +36,8 @@
       <axis rpy="0 0 0" xyz="0 0 1" />
       <limit effort="87" lower="-2.9671" upper="2.9671" velocity="2.3925" />
    </joint>
+   <random name="random_tag">
+      <random_other type="random_type"/>
+      <random_other>TEXT</random_other>
+   </random>
 </robot>

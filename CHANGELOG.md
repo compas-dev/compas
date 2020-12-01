@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added URDF and XML writers.
+* Added `compas.robots.RobotModel.to_urdf_file`.
+* Added `compas.files.URDF.from_robot`.
+
 ### Changed
 
 * Changed implementation of `Mesh.vertices_on_boundaries` to account for special cases.
@@ -17,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `Mesh.vertices_on_boundary` to return vertices of longest boundary.
 * Changed `Mesh.edges_on_boundary` to return edges of longest boundary.
 * Changed `Mesh.faces_on_boundary` to return faces of longest boundary.
+* Fixed default value for `compas.robots.Axis`.
+* Changed surface to mesh conversion to include cleanup and filter functions, and use the outer loop of all brep faces.
 
 ### Removed
 
@@ -27,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added `remap_values` to `compas_utilities`.
 * Added `compas.datastructures.mesh_slice_plane`.
+* Added `compas.json_dump`, `compas.json_dumps`, `compas.json_load`, `compas.json_loads`.
 
 ### Changed
 
@@ -34,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `compas.datastructures.Network.delete_edge`.
 * Fixed bug in select functions for individual objects in `compas_rhino.utilities`.
 * Fixed bug in `compas.datastructures.mesh_merge_faces`.
+* changed base of `compas.geometry.Transformation` to `compas.base.Base`.
 
 ### Removed
 
@@ -62,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `__getstate__`, `__setstate__` of `compas.base.Base`.
 * Fixed bug in `compas_rhino.artists.MeshArtist` and `compas_rhino.artists.NetworkArtist`.
 * Changed length and force constraints of DR to optional parameters.
-* Removed `ABCMeta` from the list of base clases of several objects in compas.
+* Removed `ABCMeta` from the list of base classes of several objects in compas.
 
 ### Removed
 
