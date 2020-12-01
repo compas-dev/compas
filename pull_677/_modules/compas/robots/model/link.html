@@ -101,6 +101,7 @@
 <span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">compas.base</span> <span class="kn">import</span> <span class="n">Base</span>
+<span class="kn">from</span> <span class="nn">compas.files</span> <span class="kn">import</span> <span class="n">URDFElement</span>
 <span class="kn">from</span> <span class="nn">compas.files</span> <span class="kn">import</span> <span class="n">URDFParser</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">Transformation</span>
 
@@ -129,6 +130,10 @@
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Mass.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Mass.get_urdf_element.html#compas.robots.Mass.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;mass&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -172,6 +177,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">iyy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">iyy</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">iyz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">iyz</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">izz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">izz</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Inertia.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Inertia.get_urdf_element.html#compas.robots.Inertia.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;ixx&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ixx</span><span class="p">,</span>
+            <span class="s1">&#39;ixy&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ixy</span><span class="p">,</span>
+            <span class="s1">&#39;ixz&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ixz</span><span class="p">,</span>
+            <span class="s1">&#39;iyy&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">iyy</span><span class="p">,</span>
+            <span class="s1">&#39;iyz&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">iyz</span><span class="p">,</span>
+            <span class="s1">&#39;izz&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">izz</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;inertia&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -231,6 +247,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mass</span> <span class="o">=</span> <span class="n">mass</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inertia</span> <span class="o">=</span> <span class="n">inertia</span></div>
+
+<div class="viewcode-block" id="Inertial.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Inertial.get_urdf_element.html#compas.robots.Inertial.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inertia</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;inertial&#39;</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -296,6 +316,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">init_transformation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the init transformation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_transformation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the current transformation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">native_geometry</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the link&#39;s CAD native geometry</span></div>
+
+<div class="viewcode-block" id="Visual.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Visual.get_urdf_element.html#compas.robots.Visual.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;visual&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span></div>
+
+    <span class="c1"># Overriding the default name property, because sometimes the name really is `None`.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -382,6 +419,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">current_transformation</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the current transformation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">native_geometry</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># to store the link&#39;s CAD native geometry</span></div>
 
+<div class="viewcode-block" id="Collision.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Collision.get_urdf_element.html#compas.robots.Collision.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;collision&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span></div>
+
+    <span class="c1"># Overriding the default name property, because sometimes the name really is `None`.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">{</span>
@@ -457,6 +511,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">kwargs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">joints</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent_joint</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Link.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Link.get_urdf_element.html#compas.robots.Link.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visual</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">collision</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">inertial</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;link&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

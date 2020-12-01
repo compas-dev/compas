@@ -104,11 +104,13 @@
 
 <span class="kn">from</span> <span class="nn">compas.base</span> <span class="kn">import</span> <span class="n">Base</span>
 <span class="kn">from</span> <span class="nn">compas.files.xml</span> <span class="kn">import</span> <span class="n">XML</span>
+<span class="kn">from</span> <span class="nn">compas.files.xml</span> <span class="kn">import</span> <span class="n">XMLElement</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">memoize</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;URDF&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;URDFParser&#39;</span>
+    <span class="s1">&#39;URDFElement&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;URDFParser&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -140,9 +142,30 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="URDF.__init__"><a class="viewcode-back" href="../../../api/generated/compas.files.URDF.__init__.html#compas.files.URDF.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml</span><span class="p">):</span>
+<div class="viewcode-block" id="URDF.__init__"><a class="viewcode-back" href="../../../api/generated/compas.files.URDF.__init__.html#compas.files.URDF.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xml</span> <span class="o">=</span> <span class="n">xml</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">URDFParser</span><span class="o">.</span><span class="n">parse_element</span><span class="p">(</span><span class="n">xml</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">xml</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_robot</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">robot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_robot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_robot</span> <span class="o">=</span> <span class="n">URDFParser</span><span class="o">.</span><span class="n">parse_element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_robot</span>
+
+    <span class="nd">@robot</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">robot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
+        <span class="n">robot_element</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">get_urdf_element</span><span class="p">()</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">robot_element</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+        <span class="n">robot_element</span><span class="o">.</span><span class="n">add_children</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xml</span> <span class="o">=</span> <span class="n">XML</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_robot</span> <span class="o">=</span> <span class="n">robot</span>
+
+<div class="viewcode-block" id="URDF.from_robot"><a class="viewcode-back" href="../../../api/generated/compas.files.URDF.from_robot.html#compas.files.URDF.from_robot">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_robot</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
+        <span class="n">urdf</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">urdf</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">robot</span>
+        <span class="k">return</span> <span class="n">urdf</span></div>
 
 <div class="viewcode-block" id="URDF.from_file"><a class="viewcode-back" href="../../../api/generated/compas.files.URDF.from_file.html#compas.files.URDF.from_file">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
@@ -174,7 +197,85 @@
 <span class="sd">        &gt;&gt;&gt; from compas.files import URDF</span>
 <span class="sd">        &gt;&gt;&gt; urdf = URDF.from_string(&#39;&lt;robot name=&quot;panda&quot;/&gt;&#39;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">XML</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">text</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">XML</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">text</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="URDF.read"><a class="viewcode-back" href="../../../api/generated/compas.files.URDF.read.html#compas.files.URDF.read">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse a URDF file from a file path or file-like object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        source : str or file</span>
+<span class="sd">            File path or file-like object.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.files import URDF</span>
+<span class="sd">        &gt;&gt;&gt; urdf = URDF.read(&#39;/urdf/ur5.urdf&#39;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">source</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="URDF.to_file"><a class="viewcode-back" href="../../../api/generated/compas.files.URDF.to_file.html#compas.files.URDF.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Writes the string representation of this URDF instance,</span>
+<span class="sd">        including all sub-elements, to the ``destination``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        destination : str, optional</span>
+<span class="sd">            Filepath where the URDF should be written.  Defaults to</span>
+<span class="sd">            the filepath of the associated XML object.</span>
+<span class="sd">        prettify : bool, optional</span>
+<span class="sd">            Whether the string should add whitespace for legibility.</span>
+<span class="sd">            Defaults to ``False``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ``None``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">destination</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">destination</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">prettify</span><span class="o">=</span><span class="n">prettify</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="URDF.to_string"><a class="viewcode-back" href="../../../api/generated/compas.files.URDF.to_string.html#compas.files.URDF.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a string representation of this URDF instance,</span>
+<span class="sd">        including all sub-elements.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        encoding : str, optional</span>
+<span class="sd">            Output encoding (the default is &#39;utf-8&#39;)</span>
+<span class="sd">        prettify : bool, optional</span>
+<span class="sd">            Whether the string should add whitespace for legibility.</span>
+<span class="sd">            Defaults to ``False``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            String representation of the URDF.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="n">prettify</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="URDF.write"><a class="viewcode-back" href="../../../api/generated/compas.files.URDF.write.html#compas.files.URDF.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Writes the string representation of this URDF instance,</span>
+<span class="sd">        including all sub-elements, to the ``destination``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        destination : str, optional</span>
+<span class="sd">            Filepath where the URDF should be written.  Defaults to</span>
+<span class="sd">            the filepath of the associated XML object.</span>
+<span class="sd">        prettify : bool, optional</span>
+<span class="sd">            Whether the string should add whitespace for legibility.</span>
+<span class="sd">            Defaults to ``False``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ``None``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">destination</span><span class="o">=</span><span class="n">destination</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="n">prettify</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="URDFParser"><a class="viewcode-back" href="../../../api/generated/compas.files.URDFParser.html#compas.files.URDFParser">[docs]</a><span class="k">class</span> <span class="nc">URDFParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -203,7 +304,7 @@
         <span class="sd">&quot;&quot;&quot;Recursively parse URDF element and its children.</span>
 
 <span class="sd">        If the parser type implements a class method ``from_urdf``,</span>
-<span class="sd">        it will use it to parse the elemenet, otherwise</span>
+<span class="sd">        it will use it to parse the element, otherwise</span>
 <span class="sd">        a generic implementation that relies on conventions</span>
 <span class="sd">        will be used.</span>
 
@@ -298,6 +399,12 @@
     <span class="sd">&quot;&quot;&quot;Generic representation for all URDF elements that</span>
 <span class="sd">    are not explicitly supported.&quot;&quot;&quot;</span>
 
+    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_urdf_source&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;No tag found for element </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;tag&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_urdf_source</span><span class="o">.</span><span class="n">tag</span>
+        <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_urdf</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="n">el</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
@@ -340,6 +447,22 @@
     <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">URDFElement</span><span class="p">(</span><span class="n">XMLElement</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">get_urdf_element</span><span class="p">()</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span> <span class="ow">or</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">URDFElement</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">elements</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redistribute_elements</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">redistribute_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;get_urdf_element&#39;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">get_urdf_element</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">attributes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">attributes</span>
 
 
 <span class="nd">@memoize</span>

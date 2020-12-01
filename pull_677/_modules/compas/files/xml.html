@@ -98,14 +98,48 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
+
+<span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
 
+<span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">is_ironpython</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">addinfourl</span> <span class="k">as</span> <span class="n">ResponseType</span>
+    <span class="kn">from</span> <span class="nn">compas.files.xml_cli</span> <span class="kn">import</span> <span class="n">CLRXMLTreeParser</span> <span class="k">as</span> <span class="n">DefaultXMLTreeParser</span>
+    <span class="kn">from</span> <span class="nn">compas.files.xml_cli</span> <span class="kn">import</span> <span class="n">prettify_string</span>
+    <span class="kn">from</span> <span class="nn">compas.files.xml_cli</span> <span class="kn">import</span> <span class="n">attach_namespaces</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">http.client</span> <span class="kn">import</span> <span class="n">HTTPResponse</span> <span class="k">as</span> <span class="n">ResponseType</span>
+    <span class="kn">from</span> <span class="nn">xml.dom</span> <span class="kn">import</span> <span class="n">minidom</span>
+
+    <span class="n">DefaultXMLTreeParser</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">XMLParser</span>
+
+    <span class="k">def</span> <span class="nf">prettify_string</span><span class="p">(</span><span class="n">rough_string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return an XML string with added whitespace for legibility.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        rough_string : str</span>
+<span class="sd">            XML string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">reparsed</span> <span class="o">=</span> <span class="n">minidom</span><span class="o">.</span><span class="n">parseString</span><span class="p">(</span><span class="n">rough_string</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">reparsed</span><span class="o">.</span><span class="n">toprettyxml</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">attach_namespaces</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Parse and find the namespaces declared, and add them to the root&#39;s attributes.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="s1">&#39;seek&#39;</span><span class="p">):</span>
+            <span class="n">source</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">namespaces</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ET</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;start-ns&#39;</span><span class="p">])]</span>
+        <span class="n">attrib</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;xmlns:&#39;</span> <span class="o">+</span> <span class="n">ns</span> <span class="k">if</span> <span class="n">ns</span> <span class="k">else</span> <span class="s1">&#39;xmlns&#39;</span><span class="p">:</span> <span class="n">uri</span> <span class="k">for</span> <span class="n">ns</span><span class="p">,</span> <span class="n">uri</span> <span class="ow">in</span> <span class="n">namespaces</span><span class="p">}</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attrib</span><span class="p">)</span>
+
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;prettify_string&#39;</span><span class="p">,</span>
     <span class="s1">&#39;XML&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;XMLReader&#39;</span>
+    <span class="s1">&#39;XMLReader&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;XMLElement&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -119,6 +153,9 @@
 <span class="sd">    ----------</span>
 <span class="sd">    reader : :class:`XMLReader`</span>
 <span class="sd">        Reader used to process the XML file or string.</span>
+<span class="sd">    writer : :class:`XMLWriter`</span>
+<span class="sd">        Writer used to process the XML object to a file or string.</span>
+<span class="sd">    filepath : str</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -129,13 +166,78 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="XML.__init__"><a class="viewcode-back" href="../../../api/generated/compas.files.XML.__init__.html#compas.files.XML.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">reader</span></div>
+<div class="viewcode-block" id="XML.__init__"><a class="viewcode-back" href="../../../api/generated/compas.files.XML.__init__.html#compas.files.XML.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filepath</span> <span class="o">=</span> <span class="n">filepath</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_parsed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">writer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="n">XMLWriter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span>
+
+<div class="viewcode-block" id="XML.read"><a class="viewcode-back" href="../../../api/generated/compas.files.XML.read.html#compas.files.XML.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Read XML from a file path or file-like object,</span>
+<span class="sd">        stored in the attribute ``filepath``.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="n">XMLReader</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XML.write"><a class="viewcode-back" href="../../../api/generated/compas.files.XML.write.html#compas.files.XML.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Writes the string representation of this XML instance,</span>
+<span class="sd">        including all sub-elements, to the file path in the</span>
+<span class="sd">        associated XML object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prettify : bool, optional</span>
+<span class="sd">            Whether the string should add whitespace for legibility.</span>
+<span class="sd">            Defaults to ``False``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ``None``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">prettify</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XML.to_file"><a class="viewcode-back" href="../../../api/generated/compas.files.XML.to_file.html#compas.files.XML.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Writes the string representation of this XML instance,</span>
+<span class="sd">        including all sub-elements, to the file path in the</span>
+<span class="sd">        associated XML object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prettify : bool, optional</span>
+<span class="sd">            Whether the string should add whitespace for legibility.</span>
+<span class="sd">            Defaults to ``False``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ``None``</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">prettify</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Root element of the XML tree.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">root</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">root</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_root</span>
+
+    <span class="nd">@root</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_root</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="XML.from_file"><a class="viewcode-back" href="../../../api/generated/compas.files.XML.from_file.html#compas.files.XML.from_file">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
@@ -147,7 +249,9 @@
 <span class="sd">            File path or file-like object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">XMLReader</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">source</span><span class="p">))</span></div>
+        <span class="n">xml</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">xml</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="n">XMLReader</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xml</span></div>
 
 <div class="viewcode-block" id="XML.from_string"><a class="viewcode-back" href="../../../api/generated/compas.files.XML.from_string.html#compas.files.XML.from_string">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
@@ -159,9 +263,11 @@
 <span class="sd">            XML string.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">XMLReader</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">text</span><span class="p">))</span></div>
+        <span class="n">xml</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">xml</span><span class="o">.</span><span class="n">_reader</span> <span class="o">=</span> <span class="n">XMLReader</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xml</span></div>
 
-<div class="viewcode-block" id="XML.to_string"><a class="viewcode-back" href="../../../api/generated/compas.files.XML.to_string.html#compas.files.XML.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="XML.to_string"><a class="viewcode-back" href="../../../api/generated/compas.files.XML.to_string.html#compas.files.XML.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate a string representation of this XML instance,</span>
 <span class="sd">        including all sub-elements.</span>
 
@@ -169,6 +275,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        encoding : str, optional</span>
 <span class="sd">            Output encoding (the default is &#39;utf-8&#39;)</span>
+<span class="sd">        prettify : bool, optional</span>
+<span class="sd">            Whether the string should add whitespace for legibility.</span>
+<span class="sd">            Defaults to ``False``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -176,7 +285,7 @@
 <span class="sd">            String representation of the XML.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">ET</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="n">prettify</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="XMLReader"><a class="viewcode-back" href="../../../api/generated/compas.files.XMLReader.html#compas.files.XMLReader">[docs]</a><span class="k">class</span> <span class="nc">XMLReader</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -195,20 +304,64 @@
 <div class="viewcode-block" id="XMLReader.from_file"><a class="viewcode-back" href="../../../api/generated/compas.files.XMLReader.from_file.html#compas.files.XMLReader.from_file">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">tree_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">tree_parser</span> <span class="o">=</span> <span class="n">tree_parser</span> <span class="ow">or</span> <span class="n">DefaultXMLTreeParser</span>
+        <span class="c1"># If the source is an `HTTPResponse` (or `addinfourl` in ipy),</span>
+        <span class="c1"># it cannot be read twice, so we first read the response into a byte stream.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">ResponseType</span><span class="p">):</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">tree_parser</span><span class="p">())</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="n">attach_namespaces</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="XMLReader.from_string"><a class="viewcode-back" href="../../../api/generated/compas.files.XMLReader.from_string.html#compas.files.XMLReader.from_string">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tree_parser</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">tree_parser</span> <span class="o">=</span> <span class="n">tree_parser</span> <span class="ow">or</span> <span class="n">DefaultXMLTreeParser</span>
         <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">tree_parser</span><span class="p">())</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">attach_namespaces</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">root</span><span class="p">)</span></div></div>
 
 
-<span class="k">if</span> <span class="n">compas</span><span class="o">.</span><span class="n">is_ironpython</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">compas.files.xml_cli</span> <span class="kn">import</span> <span class="n">CLRXMLTreeParser</span> <span class="k">as</span> <span class="n">DefaultXMLTreeParser</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">DefaultXMLTreeParser</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">XMLParser</span>
+<span class="k">class</span> <span class="nc">XMLWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Writes an XML file from XML object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xml : :class:`compas.files.XML`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xml</span> <span class="o">=</span> <span class="n">xml</span>
+
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">prettify</span><span class="o">=</span><span class="n">prettify</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">prettify</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">rough_string</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xml</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;xml&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">prettify</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rough_string</span>
+        <span class="k">return</span> <span class="n">prettify_string</span><span class="p">(</span><span class="n">rough_string</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">XMLElement</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">tag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="n">attributes</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">elements</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">get_root</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">return</span> <span class="n">root</span>
+
+    <span class="k">def</span> <span class="nf">add_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="n">subelement</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span><span class="p">,</span> <span class="n">child</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+            <span class="n">subelement</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">add_children</span><span class="p">(</span><span class="n">subelement</span><span class="p">)</span>
 </code></pre></div>
         
       </main>

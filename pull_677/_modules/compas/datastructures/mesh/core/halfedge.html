@@ -98,7 +98,6 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
-<span class="c1"># from collections import OrderedDict</span>
 <span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">sample</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
@@ -2637,49 +2636,6 @@
         <span class="n">face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge_face</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertex_before</span><span class="p">(</span><span class="n">face</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">t</span><span class="p">,</span> <span class="n">u</span></div></div>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># boundary</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-    <span class="c1"># def faces_on_boundary(self):</span>
-    <span class="c1">#     &quot;&quot;&quot;Find the faces on the boundary.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     list</span>
-    <span class="c1">#         The faces on the boundary.</span>
-
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     faces = OrderedDict()</span>
-    <span class="c1">#     for key, nbrs in iter(self.halfedge.items()):</span>
-    <span class="c1">#         for nbr, fkey in iter(nbrs.items()):</span>
-    <span class="c1">#             if fkey is None:</span>
-    <span class="c1">#                 faces[self.halfedge[nbr][key]] = 1</span>
-    <span class="c1">#     return faces.keys()</span>
-
-    <span class="c1"># def edges_on_boundary(self, chained=False):</span>
-    <span class="c1">#     &quot;&quot;&quot;Find the edges on the boundary.</span>
-
-    <span class="c1">#     Parameters</span>
-    <span class="c1">#     ----------</span>
-    <span class="c1">#     chained : bool (``False``)</span>
-    <span class="c1">#         Indicate whether the boundary edges should be chained head to tail.</span>
-    <span class="c1">#         Note that chaining the edges will essentially return half-edges that</span>
-    <span class="c1">#         point outwards to the space outside.</span>
-
-    <span class="c1">#     Returns</span>
-    <span class="c1">#     -------</span>
-    <span class="c1">#     boundary_edges : list</span>
-    <span class="c1">#         The boundary edges.</span>
-
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     boundary_edges = [(u, v) for u, v in self.edges() if self.is_edge_on_boundary(u, v)]</span>
-    <span class="c1">#     if not chained:</span>
-    <span class="c1">#         return boundary_edges</span>
-    <span class="c1">#     # this is not &quot;chained&quot;</span>
-    <span class="c1">#     # it is &quot;oriented&quot;</span>
-    <span class="c1">#     return [(u, v) if self.halfedge[u][v] is None else (v, u) for u, v in boundary_edges]</span>
 
 
 <span class="c1"># ==============================================================================</span>

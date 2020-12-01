@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="Transformation.transposed" href="compas.geometry.Transformation.transposed.html" />
+    <link rel="prev" title="Transformation.validate_json" href="compas.geometry.Transformation.validate_json.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -179,32 +179,44 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.from_frame_to_frame.html#compas.geometry.Translation.from_frame_to_frame" title="compas.geometry.Translation.from_frame_to_frame"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_frame_to_frame</span></code></a>(frame_from, frame_to)</p></td>
 <td><p>Computes a transformation between two frames.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.from_list.html#compas.geometry.Translation.from_list" title="compas.geometry.Translation.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(numbers)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.from_json.html#compas.geometry.Translation.from_json" title="compas.geometry.Translation.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
+<td><p>Construct an object from serialised data contained in a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.from_list.html#compas.geometry.Translation.from_list" title="compas.geometry.Translation.from_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_list</span></code></a>(numbers)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a list of 16 numbers.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.from_matrix.html#compas.geometry.Translation.from_matrix" title="compas.geometry.Translation.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.from_matrix.html#compas.geometry.Translation.from_matrix" title="compas.geometry.Translation.from_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_matrix</span></code></a>(matrix)</p></td>
 <td><p>Creates a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> from a 4x4 matrix-like object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.from_vector.html#compas.geometry.Translation.from_vector" title="compas.geometry.Translation.from_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vector</span></code></a>(vector)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.from_vector.html#compas.geometry.Translation.from_vector" title="compas.geometry.Translation.from_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_vector</span></code></a>(vector)</p></td>
 <td><p>Create a translation transformation from a translation vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.inverse.html#compas.geometry.Translation.inverse" title="compas.geometry.Translation.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.inverse.html#compas.geometry.Translation.inverse" title="compas.geometry.Translation.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.invert.html#compas.geometry.Translation.invert" title="compas.geometry.Translation.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.invert.html#compas.geometry.Translation.invert" title="compas.geometry.Translation.invert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">invert</span></code></a>()</p></td>
 <td><p>Invert this transformation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.inverted.html#compas.geometry.Translation.inverted" title="compas.geometry.Translation.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.inverted.html#compas.geometry.Translation.inverted" title="compas.geometry.Translation.inverted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverted</span></code></a>()</p></td>
 <td><p>Returns the inverse transformation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.to_data.html#compas.geometry.Translation.to_data" title="compas.geometry.Translation.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.to_data.html#compas.geometry.Translation.to_data" title="compas.geometry.Translation.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert a <code class="docutils literal notranslate"><span class="pre">Transformation</span></code> object to a data dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.to_json.html#compas.geometry.Translation.to_json" title="compas.geometry.Translation.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.transpose.html#compas.geometry.Translation.transpose" title="compas.geometry.Translation.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>()</p></td>
 <td><p>Transpose the matrix of this transformation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.transposed.html#compas.geometry.Translation.transposed" title="compas.geometry.Translation.transposed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transposed</span></code></a>()</p></td>
 <td><p>Create a transposed copy of this transformation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.geometry.Translation.validate_data.html#compas.geometry.Translation.validate_data" title="compas.geometry.Translation.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.geometry.Translation.validate_json.html#compas.geometry.Translation.validate_json" title="compas.geometry.Translation.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<td><p>Validate the data loaded from a JSON representation of the data of this object against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
 </tr>
 </tbody>
 </table>
