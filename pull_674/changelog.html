@@ -106,10 +106,16 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h2>Unreleased</h2>
 <div class="section" id="added">
 <h3>Added</h3>
+<ul class="simple">
+<li><p>Added URDF and XML writers.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.robots.RobotModel.to_urdf_file</span></code>.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">compas.files.URDF.from_robot</span></code>.</p></li>
+</ul>
 </div>
 <div class="section" id="changed">
 <h3>Changed</h3>
 <ul class="simple">
+<li><p>Fixed default value for <code class="docutils literal notranslate"><span class="pre">compas.robots.Axis</span></code>.</p></li>
 <li><p>Changed surface to mesh conversion to include cleanup and filter functions, and use the outer loop of all brep faces.</p></li>
 </ul>
 </div>
@@ -173,7 +179,7 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">__getstate__</span></code>, <code class="docutils literal notranslate"><span class="pre">__setstate__</span></code> of <code class="docutils literal notranslate"><span class="pre">compas.base.Base</span></code>.</p></li>
 <li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist</span></code> and <code class="docutils literal notranslate"><span class="pre">compas_rhino.artists.NetworkArtist</span></code>.</p></li>
 <li><p>Changed length and force constraints of DR to optional parameters.</p></li>
-<li><p>Removed <code class="docutils literal notranslate"><span class="pre">ABCMeta</span></code> from the list of base clases of several objects in compas.</p></li>
+<li><p>Removed <code class="docutils literal notranslate"><span class="pre">ABCMeta</span></code> from the list of base classes of several objects in compas.</p></li>
 </ul>
 </div>
 <div class="section" id="id12">

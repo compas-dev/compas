@@ -101,7 +101,7 @@
 <h1>URDF</h1>
 <dl class="class">
 <dt id="compas.files.URDF">
-<em class="property">class </em><code class="sig-prename descclassname">compas.files.</code><code class="sig-name descname">URDF</code><span class="sig-paren">(</span><em class="sig-param">xml</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/files/urdf.html#URDF"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">compas.files.</code><code class="sig-name descname">URDF</code><span class="sig-paren">(</span><em class="sig-param">xml=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas/files/urdf.html#URDF"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Parse URDF files.</p>
 <p>This class abstracts away the underlying XML of the Unified Robot
@@ -129,14 +129,29 @@ This package parses URDF v1.0 according to the <a class="reference external" hre
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDF.__init__.html#compas.files.URDF.__init__" title="compas.files.URDF.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(xml)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDF.__init__.html#compas.files.URDF.__init__" title="compas.files.URDF.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([xml])</p></td>
 <td><p>Initialize self.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDF.from_file.html#compas.files.URDF.from_file" title="compas.files.URDF.from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_file</span></code></a>(source)</p></td>
 <td><p>Parse a URDF file from a file path or file-like object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDF.from_string.html#compas.files.URDF.from_string" title="compas.files.URDF.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDF.from_robot.html#compas.files.URDF.from_robot" title="compas.files.URDF.from_robot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_robot</span></code></a>(robot)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDF.from_string.html#compas.files.URDF.from_string" title="compas.files.URDF.from_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_string</span></code></a>(text)</p></td>
 <td><p>Parse URDF from a string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDF.read.html#compas.files.URDF.read" title="compas.files.URDF.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(source)</p></td>
+<td><p>Parse a URDF file from a file path or file-like object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDF.to_file.html#compas.files.URDF.to_file" title="compas.files.URDF.to_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_file</span></code></a>([destination, prettify])</p></td>
+<td><p>Writes the string representation of this URDF instance, including all sub-elements, to the <code class="docutils literal notranslate"><span class="pre">destination</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.files.URDF.to_string.html#compas.files.URDF.to_string" title="compas.files.URDF.to_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_string</span></code></a>([encoding, prettify])</p></td>
+<td><p>Generate a string representation of this URDF instance, including all sub-elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.files.URDF.write.html#compas.files.URDF.write" title="compas.files.URDF.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>([destination, prettify])</p></td>
+<td><p>Writes the string representation of this URDF instance, including all sub-elements, to the <code class="docutils literal notranslate"><span class="pre">destination</span></code>.</p></td>
 </tr>
 </tbody>
 </table>

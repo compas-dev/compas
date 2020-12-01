@@ -184,32 +184,38 @@ this model, ruling out all parallel robots.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_link_by_name.html#compas.robots.RobotModel.get_link_by_name" title="compas.robots.RobotModel.get_link_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_link_by_name</span></code></a>(name)</p></td>
 <td><p>Get a link in a robot model matching by its name.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_chain.html#compas.robots.RobotModel.iter_chain" title="compas.robots.RobotModel.iter_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_chain</span></code></a>([start, end])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.get_urdf_element.html#compas.robots.RobotModel.get_urdf_element" title="compas.robots.RobotModel.get_urdf_element"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_urdf_element</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_chain.html#compas.robots.RobotModel.iter_chain" title="compas.robots.RobotModel.iter_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_chain</span></code></a>([start, end])</p></td>
 <td><p>Iterator over the chain of all elements between a pair of start and end elements.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joint_chain.html#compas.robots.RobotModel.iter_joint_chain" title="compas.robots.RobotModel.iter_joint_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joint_chain</span></code></a>([link_start_name, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joint_chain.html#compas.robots.RobotModel.iter_joint_chain" title="compas.robots.RobotModel.iter_joint_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joint_chain</span></code></a>([link_start_name, …])</p></td>
 <td><p>Iterator over the chain of joints between a pair of start and end links.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joints.html#compas.robots.RobotModel.iter_joints" title="compas.robots.RobotModel.iter_joints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joints</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_joints.html#compas.robots.RobotModel.iter_joints" title="compas.robots.RobotModel.iter_joints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_joints</span></code></a>()</p></td>
 <td><p>Iterator over the joints that starts with the root link’s children joints.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_link_chain.html#compas.robots.RobotModel.iter_link_chain" title="compas.robots.RobotModel.iter_link_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_link_chain</span></code></a>([link_start_name, link_end_name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_link_chain.html#compas.robots.RobotModel.iter_link_chain" title="compas.robots.RobotModel.iter_link_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_link_chain</span></code></a>([link_start_name, link_end_name])</p></td>
 <td><p>Iterator over the chain of links between a pair of start and end links.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_links.html#compas.robots.RobotModel.iter_links" title="compas.robots.RobotModel.iter_links"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_links</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.iter_links.html#compas.robots.RobotModel.iter_links" title="compas.robots.RobotModel.iter_links"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter_links</span></code></a>()</p></td>
 <td><p>Iterator over the links that starts with the root link.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.load_geometry.html#compas.robots.RobotModel.load_geometry" title="compas.robots.RobotModel.load_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_geometry</span></code></a>(*resource_loaders, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.load_geometry.html#compas.robots.RobotModel.load_geometry" title="compas.robots.RobotModel.load_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_geometry</span></code></a>(*resource_loaders, **kwargs)</p></td>
 <td><p>Load external geometry resources, such as meshes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.scale.html#compas.robots.RobotModel.scale" title="compas.robots.RobotModel.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(factor[, link])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.scale.html#compas.robots.RobotModel.scale" title="compas.robots.RobotModel.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(factor[, link])</p></td>
 <td><p>Scales the robot by factor (absolute).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_data.html#compas.robots.RobotModel.to_data" title="compas.robots.RobotModel.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_data.html#compas.robots.RobotModel.to_data" title="compas.robots.RobotModel.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Returns the data dictionary that represents the <a class="reference internal" href="#compas.robots.RobotModel" title="compas.robots.RobotModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">RobotModel</span></code></a>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_json.html#compas.robots.RobotModel.to_json" title="compas.robots.RobotModel.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_json.html#compas.robots.RobotModel.to_json" title="compas.robots.RobotModel.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas.robots.RobotModel.to_urdf_file.html#compas.robots.RobotModel.to_urdf_file" title="compas.robots.RobotModel.to_urdf_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_urdf_file</span></code></a>(file[, prettify])</p></td>
+<td><p>Construct a URDF file model description from a robot model.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas.robots.RobotModel.transformed_axes.html#compas.robots.RobotModel.transformed_axes" title="compas.robots.RobotModel.transformed_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed_axes</span></code></a>(joint_state)</p></td>
 <td><p>Returns the transformed axes based on the joint_state.</p></td>
