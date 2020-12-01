@@ -264,12 +264,15 @@ class HalfFace(Datastructure):
 
         for c in cell:
             attr = cell_data.get(c) or {}
-            faces = []
+            fkeys = set()
             for u in cell[c]:
                 for v in cell[c][u]:
                     f = cell[c][u][v]
-                    faces.append(self._halfface[f])
-            self.add_cell(faces, ckey=int(c), attr_dict=attr)
+                    fkeys.add(f)
+            fkeys = list(fkeys)
+            faces = [self._halfface[fkey] for fkey in fkeys]
+
+            self.add_cell(faces, ckey=int(c), attr_dict=attr, fkeys=fkeys)
 
         for e in edge_data:
             self._edge_data[literal_eval(e)] = edge_data[e] or {}
@@ -476,7 +479,7 @@ class HalfFace(Datastructure):
                 self._plane[w][v][u] = None
         return fkey
 
-    def add_cell(self, faces, ckey=None, attr_dict=None, **kwattr):
+    def add_cell(self, faces, ckey=None, attr_dict=None, fkeys=None, **kwattr):
         """Add a cell to the volmesh object.
 
         Parameters
@@ -525,9 +528,13 @@ class HalfFace(Datastructure):
         self._cell[ckey] = {}
         for name, value in attr.items():
             self.cell_attribute(ckey, name, value)
-        for vertices in faces:
-            fkey = self.add_halfface(vertices)
-            vertices = self.halfface_vertices(fkey)
+
+        for fkey_index, vertices in enumerate(faces):
+            if fkeys:
+                fkey = fkeys[fkey_index]
+            else:
+                fkey = self.add_halfface(vertices)
+                vertices = self.halfface_vertices(fkey)
             for i in range(-2, len(vertices) - 2):
                 u = vertices[i]
                 v = vertices[i + 1]
