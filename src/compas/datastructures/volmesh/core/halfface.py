@@ -268,10 +268,7 @@ class HalfFace(Datastructure):
             for u in cell[c]:
                 for v in cell[c][u]:
                     f = cell[c][u][v]
-                    if f in halfface:
-                        faces.append(halfface[f])
-                    else:
-                        faces.append(halfface[str(f)])
+                    faces.append(self._halfface[f])
             self.add_cell(faces, ckey=int(c), attr_dict=attr)
 
         for e in edge_data:
