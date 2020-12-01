@@ -108,7 +108,7 @@ def test_robot_urdf_namespaces_to_string():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda"><xacro:bamboo/></robot>""")
     urdf_string = URDF.from_robot(r).to_string(prettify=True)
-    assert r.__class__ == RobotModel
+    assert isinstance(r, RobotModel)
     assert b'xmlns:xacro="http://www.ros.org/wiki/xacro"' in urdf_string
     assert b'<xacro:bamboo' in urdf_string or b'<ns0:bamboo' in urdf_string
     # Note: Minidom does some funny things to namespaces.  First, if a namespace isn't used, it will be stripped out.
@@ -120,7 +120,7 @@ def test_robot_urdf_namespaces_to_string():
 def test_robot_default_namespace(reason="Default parser namespace issues"):
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot xmlns="https://drake.mit.edu" name="Acrobot"><frame/></robot>""")
-    assert r.__class__ == RobotModel
+    assert isinstance(r, RobotModel)
     assert r.name == 'Acrobot'
 
 
