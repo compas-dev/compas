@@ -525,6 +525,10 @@
 
 <div class="viewcode-block" id="MeshDescriptor.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.MeshDescriptor.get_urdf_element.html#compas.robots.MeshDescriptor.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;filename&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">}</span>
+        <span class="c1"># There is no need to record default values.  Usually these</span>
+        <span class="c1"># coincide with some form of 0 and are filtered out with</span>
+        <span class="c1"># `attributes = dict(filter(lambda x: x[1], attributes.items()))`,</span>
+        <span class="c1"># but here we must be explicit.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">!=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]:</span>
             <span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;mesh&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
