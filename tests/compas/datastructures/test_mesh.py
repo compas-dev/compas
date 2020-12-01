@@ -11,6 +11,11 @@ from compas.geometry import Translation
 
 
 @pytest.fixture
+def tet():
+    return Mesh.from_polyhedron(4)
+
+
+@pytest.fixture
 def cube():
     return Mesh.from_polyhedron(6)
 
@@ -261,30 +266,39 @@ def test_is_regular():
     assert not mesh.is_regular()
 
 
-def test_is_manifold():
-    pass
+def test_is_manifold(cube, biohazard):
+    assert cube.is_manifold()
+    assert not biohazard.is_manifold()
 
 
+@pytest.mark.skip(reason="no way of currently testing this")
 def test_is_orientable():
     pass
 
 
-def test_is_trimesh():
-    pass
+def test_is_trimesh(tet, cube):
+    assert tet.is_trimesh()
+    assert not cube.is_trimesh()
 
 
-def test_is_quadmesh():
-    pass
+def test_is_quadmesh(tet, cube):
+    assert not tet.is_quadmesh()
+    assert cube.is_quadmesh()
 
 
 def test_is_empty():
-    pass
+    mesh = Mesh()
+    assert mesh.is_empty()
+    mesh.add_vertex()
+    assert not mesh.is_empty()
 
 
+@pytest.mark.skip(reason="euh")
 def test_euler():
     pass
 
 
+@pytest.mark.skip(reason="euh")
 def test_genus():
     pass
 
@@ -293,16 +307,16 @@ def test_genus():
 # accessors
 # --------------------------------------------------------------------------
 
-def test_vertices():
-    pass
+def test_vertices(cube):
+    assert hasattr(cube.vertices(), '__next__')
 
 
-def test_faces():
-    pass
+def test_faces(cube):
+    assert hasattr(cube.faces(), '__next__')
 
 
-def test_edges():
-    pass
+def test_edges(cube):
+    assert hasattr(cube.edges(), '__next__')
 
 
 # --------------------------------------------------------------------------
@@ -313,8 +327,9 @@ def test_edges():
 # vertex topology
 # --------------------------------------------------------------------------
 
-def test_has_vertex():
-    pass
+def test_has_vertex(cube):
+    assert cube.has_vertex(next(cube.vertices()))
+    assert not cube.has_vertex(-1)
 
 
 def test_is_vertex_connected():
@@ -340,36 +355,43 @@ def test_vertex_neighborhood():
     assert mesh.vertex_neighborhood(0) == {1, 6}
 
 
+@pytest.mark.skip(reason="euh")
 def test_vertex_degree():
     pass
 
 
 def test_vertex_min_degree():
-    pass
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    assert mesh.vertex_min_degree() == 2
 
 
 def test_vertex_max_degree():
-    pass
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    assert mesh.vertex_max_degree() == 4
 
 
 def test_vertex_faces():
     mesh = Mesh.from_obj(compas.get('faces.obj'))
-    assert mesh.vertex_faces(0) == [0]
-
-    # TODO: need to unify start face with python2 and 3
-    # assert mesh.vertex_faces(15, True) == [8, 7, 12, 13]
+    corners = list(mesh.vertices_where({'vertex_degree': 2}))
+    boundary = list(mesh.vertices_where({'vertex_degree': 3}))
+    internal = list(mesh.vertices_where({'vertex_degree': 4}))
+    assert len(mesh.vertex_faces(corners[0])) == 1
+    assert len(mesh.vertex_faces(boundary[0])) == 2
+    assert len(mesh.vertex_faces(internal[0])) == 4
 
 
 # --------------------------------------------------------------------------
 # edge topology
 # --------------------------------------------------------------------------
 
-def test_has_edge():
-    pass
+def test_has_edge(cube):
+    assert cube.has_edge(next(cube.edges()))
+    assert not cube.has_edge((-1, 0))
 
 
-def test_edge_faces():
-    pass
+def test_edge_faces(cube):
+    u, v = next(cube.edges())
+    assert len(cube.edge_faces(u, v)) == 2
 
 
 def test_is_edge_on_boundary():
@@ -379,26 +401,20 @@ def test_is_edge_on_boundary():
 
 
 # --------------------------------------------------------------------------
-# polyedge topology
-# --------------------------------------------------------------------------
-
-# def test_boundaries():
-#     mesh = Mesh.from_obj(compas.get('faces.obj'))
-#     assert mesh.boundaries() == [[34, 35, 29, 23, 17, 11, 5, 4, 3, 2, 1, 0, 6, 12, 18, 24, 30, 31, 32, 33]]
-
-
-# --------------------------------------------------------------------------
 # face topology
 # --------------------------------------------------------------------------
 
+@pytest.mark.skip(reason="euh")
 def test_face_vertices():
     pass
 
 
+@pytest.mark.skip(reason="euh")
 def test_face_halfedges():
     pass
 
 
+@pytest.mark.skip(reason="euh")
 def test_face_corners():
     pass
 
@@ -409,22 +425,27 @@ def test_face_neighbors():
     assert mesh.face_neighborhood(0, 2) == [0, 1, 2, 5, 6, 10]
 
 
+@pytest.mark.skip(reason="euh")
 def test_face_degree():
     pass
 
 
+@pytest.mark.skip(reason="euh")
 def test_face_min_degree():
     pass
 
 
+@pytest.mark.skip(reason="euh")
 def test_face_max_degree():
     pass
 
 
+@pytest.mark.skip(reason="euh")
 def test_face_vertex_ancestor():
     pass
 
 
+@pytest.mark.skip(reason="euh")
 def test_face_vertex_descendant():
     pass
 
