@@ -60,7 +60,7 @@ def normal_polygon(polygon, unitized=True):
     for i in range(p):
         b = polygon[i]
         ob = subtract_vectors(b, o)
-        n = scale_vector(cross_vectors(oa, ob), 0.5)
+        n = cross_vectors(oa, ob)
         oa = ob
 
         nx += n[0]
@@ -68,7 +68,7 @@ def normal_polygon(polygon, unitized=True):
         nz += n[2]
 
     if not unitized:
-        return nx, ny, nz
+        return 0.5 * nx, 0.5 * ny, 0.5 * nz
 
     return normalize_vector([nx, ny, nz])
 
