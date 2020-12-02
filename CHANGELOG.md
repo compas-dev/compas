@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Fix default namespace handling in URDF documents
 * Allow custom/unknown attributes in URDF `Dynamics` element
+
 ### Removed
 
 
