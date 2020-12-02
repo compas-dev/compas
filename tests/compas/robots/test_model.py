@@ -116,13 +116,30 @@ def test_robot_urdf_namespaces_to_string():
     # and replace all references to the original with the new.
 
 
-@pytest.mark.skip
-def test_robot_default_namespace(reason="Default parser namespace issues"):
+def test_robot_default_namespace():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0" encoding="UTF-8"?><robot xmlns="https://drake.mit.edu" name="Acrobot"><frame/></robot>""")
     assert isinstance(r, RobotModel)
     assert r.name == 'Acrobot'
 
+
+def test_robot_link_nameless_is_allowed_with_custom_namespace():
+    r = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot xmlns:namelesslinks="https://somewhere.over.the.rainbow" name="NamelessLinkRobot"><namelesslinks:link/></robot>""")
+    assert isinstance(r, RobotModel)
+    assert r.name == 'NamelessLinkRobot'
+
+def test_link_nameless_raises_if_no_custom_namespace():
+    with pytest.raises(Exception):
+        r = RobotModel.from_urdf_string(
+            """<?xml version="1.0" encoding="UTF-8"?><robot name="NamelessLinkRobot"><link/></robot>""")
+
+def test_robot_default_default_create_shape_based_on_tagname():
+    r = RobotModel.from_urdf_string(
+        """<?xml version="1.0"?><robot xmlns="https://drake.mit.edu" name="Acrobot"><link name="base_link"><visual><geometry><box size="0.2 0.2 0.2"/></geometry></visual></link></robot>""")
+    assert r.name == 'Acrobot'
+    assert r.links[0].name == 'base_link'
+    assert isinstance(r.links[0].visual[0].geometry.shape, Box)
 
 def test_robot_default_namespace_to_string():
     r = RobotModel.from_urdf_string(
