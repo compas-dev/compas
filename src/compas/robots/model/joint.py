@@ -169,16 +169,18 @@ class Calibration(Base):
 class Dynamics(Base):
     """Physical properties of the joint used for simulation of dynamics."""
 
-    def __init__(self, damping=0.0, friction=0.0):
+    def __init__(self, damping=0.0, friction=0.0, **kwargs):
         super(Dynamics, self).__init__()
         self.damping = float(damping)
         self.friction = float(friction)
+        self.attr = kwargs
 
     def get_urdf_element(self):
         attributes = {
             'damping': self.damping,
             'friction': self.friction,
         }
+        attributes.update(self.attr)
         attributes = dict(filter(lambda x: x[1], attributes.items()))
         return URDFElement('dynamics', attributes)
 
@@ -187,12 +189,14 @@ class Dynamics(Base):
         return {
             'damping': self.damping,
             'friction': self.friction,
+            'attr': _attr_to_data(self.attr),
         }
 
     @data.setter
     def data(self, data):
         self.damping = data['damping']
         self.friction = data['friction']
+        self.attr = _attr_from_data(data['attr'])
 
     @classmethod
     def from_data(cls, data):
