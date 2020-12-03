@@ -183,6 +183,7 @@ class XML(object):
         """
         return self.writer.to_string(encoding=encoding, prettify=prettify)
 
+
 class TreeBuilderWithNamespaces(ET.TreeBuilder):
     def start(self, tag, attrs):
         if hasattr(self, '_current_namespaces') and len(self._current_namespaces):
@@ -201,6 +202,7 @@ class TreeBuilderWithNamespaces(ET.TreeBuilder):
 
         ns_prefix = 'xmlns:' + prefix if prefix else 'xmlns'
         self._current_namespaces[ns_prefix] = uri
+
 
 class XMLReader(object):
     """Reads XML files and strings.
