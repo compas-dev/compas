@@ -59,3 +59,61 @@ def test_default_namespace_to_string():
     assert b'xmlns="https://default.org/namespace"' in xml_string
     assert b'<xacro:bamboo' in xml_string or b'<ns1:bamboo' in xml_string
     assert b'<robot' in xml_string or b'<ns0:robot' in xml_string
+
+
+def test_nested_default_namespaces():
+    xml = XML.from_string(
+        """<?xml version="1.0"?>
+        <main xmlns="https://ita.arch.ethz.ch/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="test-xml">
+            <item name="item1"><subitem /></item>
+            <item xmlns="https://ethz.ch" name="item2"><subitem /></item>
+        </main>"""
+    )
+
+    assert xml.root.attrib['xmlns'] == 'https://ita.arch.ethz.ch/'
+    assert xml.root.attrib['xmlns:xsi'] == 'http://www.w3.org/2001/XMLSchema-instance'
+
+    # first element redefines default namespace
+    assert list(xml.root)[1].attrib['xmlns'] == 'https://ethz.ch'
+    assert list(xml.root)[1].attrib['name'] == 'item2'
+
+
+def test_no_root_default_namespace():
+    xml = XML.from_string(
+        """<?xml version="1.0"?>
+        <main name="test-xml">
+            <item name="item1"><subitem /></item>
+            <item xmlns="https://ethz.ch" name="item2"><subitem /></item>
+        </main>"""
+    )
+
+    assert not xml.root.attrib.get('xmlns')
+    assert list(xml.root)[1].attrib['xmlns'] == 'https://ethz.ch'
+    assert list(xml.root)[1].attrib['name'] == 'item2'
+
+
+def test_no_default_namespace():
+    xml = XML.from_string(
+        """<?xml version="1.0"?><main name="test-xml"></main>"""
+    )
+
+    assert not xml.root.attrib.get('xmlns')
+    assert xml.root.attrib['name'] == 'test-xml'
+
+
+def test_namespace_expansion():
+    xml = XML.from_string(
+        """<?xml version="1.0"?>
+        <main xmlns="https://ethz.ch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="test-xml">
+            <item>
+                <subitem xmlns:magic="https://sub.ethz.ch">
+                    <magic:cat />
+                </subitem>
+            </item>
+        </main>"""
+    )
+
+    assert xml.root.tag == '{https://ethz.ch}main'
+    assert list(xml.root)[0].tag == '{https://ethz.ch}item'
+    assert list(list(xml.root)[0])[0].tag == '{https://ethz.ch}subitem'
+    assert list(list(list(xml.root)[0])[0])[0].tag == '{https://sub.ethz.ch}cat'

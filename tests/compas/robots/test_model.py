@@ -1,3 +1,4 @@
+import re
 import os
 
 import pytest
@@ -148,6 +149,29 @@ def test_robot_default_namespace_to_string():
     assert b'xmlns="https://drake.mit.edu"' in urdf_string
     assert b'<frame' in urdf_string or b'<ns0:frame' in urdf_string
 
+def test_robot_with_default_nested_namespaces():
+    r = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot xmlns="https://ethz.ch" name="Acrobot"><link xmlns="https://ita.ethz.ch" name="test"/></robot>""")
+
+    urdf = URDF.from_robot(r)
+    assert urdf.robot.attr['xmlns'] == 'https://ethz.ch'
+    assert urdf.robot.links[0].attr['xmlns'] == 'https://ita.ethz.ch'
+
+def test_robot_with_default_nested_namespaces_to_string():
+    r = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot xmlns="https://ethz.ch" name="Acrobot"><link xmlns="https://ita.ethz.ch" name="test"><visual><geometry><box size="0.2 0.2 0.2"/></geometry></visual></link></robot>""")
+    urdf_string = URDF.from_robot(r).to_string(prettify=False)
+    assert re.search(b'<robot(.*?)(xmlns="https://ethz.ch")(.*?)>', urdf_string)
+    assert re.search(b'<link(.*?)(xmlns="https://ita.ethz.ch")(.*?)>', urdf_string)
+
+
+def test_robot_with_prefixed_nested_namespaces_to_string():
+    r = RobotModel.from_urdf_string(
+        """<?xml version="1.0" encoding="UTF-8"?><robot xmlns="https://ethz.ch" name="Acrobot"><link xmlns:custom="https://ita.ethz.ch" name="test"><custom:visual/></link></robot>""")
+    urdf_string = URDF.from_robot(r).to_string(prettify=False)
+    assert b'xmlns="https://ethz.ch"' in urdf_string
+    assert b'xmlns:ns0="https://ita.ethz.ch"' in urdf_string
+    assert b'<ns0:visual' in urdf_string
 
 def test_programmatic_model(ur5):
     chain = list(ur5.iter_chain('base_link', 'wrist_3_link'))

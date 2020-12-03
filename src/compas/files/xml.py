@@ -12,7 +12,6 @@ if compas.is_ironpython():
     from urllib import addinfourl as ResponseType
     from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
     from compas.files.xml_cli import prettify_string
-    from compas.files.xml_cli import attach_namespaces
 else:
     from http.client import HTTPResponse as ResponseType
     from xml.dom import minidom
@@ -30,19 +29,12 @@ else:
         reparsed = minidom.parseString(rough_string)
         return reparsed.toprettyxml(indent="  ", encoding='utf-8')
 
-    def attach_namespaces(root, source):
-        """Parse and find the namespaces declared, and add them to the root's attributes."""
-        if hasattr(source, 'seek'):
-            source.seek(0)
-        namespaces = [node for _, node in ET.iterparse(source, events=['start-ns'])]
-        attrib = {'xmlns:' + ns if ns else 'xmlns': uri for ns, uri in namespaces}
-        root.attrib.update(attrib)
-
 
 __all__ = [
     'prettify_string',
     'XML',
     'XMLReader',
+    'XMLWriter',
     'XMLElement',
 ]
 
@@ -191,6 +183,24 @@ class XML(object):
         """
         return self.writer.to_string(encoding=encoding, prettify=prettify)
 
+class TreeBuilderWithNamespaces(ET.TreeBuilder):
+    def start(self, tag, attrs):
+        if hasattr(self, '_current_namespaces') and len(self._current_namespaces):
+            attrs.update(self._current_namespaces)
+
+        element = super(TreeBuilderWithNamespaces, self).start(tag, attrs)
+
+        # reset current namespaces
+        self._current_namespaces = {}
+
+        return element
+
+    def start_ns(self, prefix, uri):
+        if not hasattr(self, '_current_namespaces'):
+            self._current_namespaces = {}
+
+        ns_prefix = 'xmlns:' + prefix if prefix else 'xmlns'
+        self._current_namespaces[ns_prefix] = uri
 
 class XMLReader(object):
     """Reads XML files and strings.
@@ -208,21 +218,19 @@ class XMLReader(object):
     @classmethod
     def from_file(cls, source, tree_parser=None):
         tree_parser = tree_parser or DefaultXMLTreeParser
+        target = TreeBuilderWithNamespaces()
         # If the source is an `HTTPResponse` (or `addinfourl` in ipy),
         # it cannot be read twice, so we first read the response into a byte stream.
         if isinstance(source, ResponseType):
             source = io.BytesIO(source.read())
-        tree = ET.parse(source, tree_parser())
-        root = tree.getroot()
-        attach_namespaces(root, source)
+        tree = ET.parse(source, tree_parser(target=target))
         return cls(tree.getroot())
 
     @classmethod
     def from_string(cls, text, tree_parser=None):
         tree_parser = tree_parser or DefaultXMLTreeParser
-        root = ET.fromstring(text, tree_parser())
-        source = io.StringIO(text) if isinstance(text, str) else io.BytesIO(text)
-        attach_namespaces(root, source)
+        target = TreeBuilderWithNamespaces()
+        root = ET.fromstring(text, tree_parser(target=target))
         return cls(root)
 
 

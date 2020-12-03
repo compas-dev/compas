@@ -217,7 +217,7 @@ class URDFParser(object):
             cls._parsers[tag] = parser_type
 
     @classmethod
-    def parse_element(cls, element, path='', default_namespace=None):
+    def parse_element(cls, element, path='', element_default_namespace=None):
         """Recursively parse URDF element and its children.
 
         If the parser type implements a class method ``from_urdf``,
@@ -231,8 +231,8 @@ class URDFParser(object):
             XML Element node.
         path : str
             Full path to the element.
-        default_namespace : str
-            Default namespace of the current document.
+        element_default_namespace : str
+            Default namespace at the current level current document.
 
         Returns
         -------
@@ -240,7 +240,15 @@ class URDFParser(object):
             An instance of the model object represented by the given element.
 
         """
-        children = [cls.parse_element(child, '/'.join([path, _tag_without_namespace(child, default_namespace)]), default_namespace) for child in element]
+        default_ns = element.attrib.get('xmlns') or element_default_namespace
+        children = []
+
+        for child in element:
+            default_ns = child.attrib.get('xmlns') or element_default_namespace
+            child_name = _tag_without_namespace(child, default_ns)
+            child_path = '/'.join([path, child_name])
+            children.append(cls.parse_element(child, child_path, default_ns))
+
         parser_type = cls._parsers.get(path, None) or URDFGenericElement
 
         metadata = get_metadata(parser_type)
@@ -253,7 +261,7 @@ class URDFParser(object):
                 obj = metadata['from_urdf'](attributes, children, text)
             else:
                 obj = cls.from_generic_urdf(
-                    parser_type, attributes, children, text, default_namespace)
+                    parser_type, attributes, children, text, default_ns)
         except Exception as e:
             raise TypeError('Cannot create instance of %s. Message=%s' % (parser_type, e))
 
