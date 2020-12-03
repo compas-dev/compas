@@ -134,7 +134,7 @@ def test_link_nameless_raises_if_no_custom_namespace():
         r = RobotModel.from_urdf_string(
             """<?xml version="1.0" encoding="UTF-8"?><robot name="NamelessLinkRobot"><link/></robot>""")
 
-def test_robot_default_default_create_shape_based_on_tagname():
+def test_robot_default_namespace_creates_box_shape_based_on_tagname():
     r = RobotModel.from_urdf_string(
         """<?xml version="1.0"?><robot xmlns="https://drake.mit.edu" name="Acrobot"><link name="base_link"><visual><geometry><box size="0.2 0.2 0.2"/></geometry></visual></link></robot>""")
     assert r.name == 'Acrobot'
