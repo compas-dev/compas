@@ -313,7 +313,7 @@
             <span class="bp">cls</span><span class="o">.</span><span class="n">_parsers</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">parser_type</span></div>
 
 <div class="viewcode-block" id="URDFParser.parse_element"><a class="viewcode-back" href="../../../api/generated/compas.files.URDFParser.parse_element.html#compas.files.URDFParser.parse_element">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">parse_element</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">default_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">parse_element</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">element</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">element_default_namespace</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Recursively parse URDF element and its children.</span>
 
 <span class="sd">        If the parser type implements a class method ``from_urdf``,</span>
@@ -327,8 +327,8 @@
 <span class="sd">            XML Element node.</span>
 <span class="sd">        path : str</span>
 <span class="sd">            Full path to the element.</span>
-<span class="sd">        default_namespace : str</span>
-<span class="sd">            Default namespace of the current document.</span>
+<span class="sd">        element_default_namespace : str</span>
+<span class="sd">            Default namespace at the current level current document.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -336,7 +336,15 @@
 <span class="sd">            An instance of the model object represented by the given element.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">parse_element</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">path</span><span class="p">,</span> <span class="n">_tag_without_namespace</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">default_namespace</span><span class="p">)]),</span> <span class="n">default_namespace</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">element</span><span class="p">]</span>
+        <span class="n">default_ns</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xmlns&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">element_default_namespace</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">element</span><span class="p">:</span>
+            <span class="n">default_ns</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;xmlns&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">element_default_namespace</span>
+            <span class="n">child_name</span> <span class="o">=</span> <span class="n">_tag_without_namespace</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">default_ns</span><span class="p">)</span>
+            <span class="n">child_path</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">path</span><span class="p">,</span> <span class="n">child_name</span><span class="p">])</span>
+            <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">parse_element</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">child_path</span><span class="p">,</span> <span class="n">default_ns</span><span class="p">))</span>
+
         <span class="n">parser_type</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_parsers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">URDFGenericElement</span>
 
         <span class="n">metadata</span> <span class="o">=</span> <span class="n">get_metadata</span><span class="p">(</span><span class="n">parser_type</span><span class="p">)</span>
@@ -349,7 +357,7 @@
                 <span class="n">obj</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;from_urdf&#39;</span><span class="p">](</span><span class="n">attributes</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">obj</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_generic_urdf</span><span class="p">(</span>
-                    <span class="n">parser_type</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">default_namespace</span><span class="p">)</span>
+                    <span class="n">parser_type</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">default_ns</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Cannot create instance of </span><span class="si">%s</span><span class="s1">. Message=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">parser_type</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
 
