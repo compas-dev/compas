@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 
 import compas
 
-if compas.is_ironpython():
+if compas.IPY:
     from urllib import addinfourl as ResponseType
     from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
     from compas.files.xml_cli import prettify_string
