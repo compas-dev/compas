@@ -9,38 +9,43 @@ BASE_FOLDER = os.path.dirname(__file__)
 
 
 @pytest.fixture
-def sample_file():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'sample.xml')
-
-
-@pytest.fixture
-def sample_xml():
+def basic_xml():
     return "<Tests><Test id=\"1\"></Test></Tests>"
 
 
 @pytest.fixture
-def sample_with_nested_default_ns():
-    return os.path.join(BASE_FOLDER, 'fixtures', 'sample_with_nested_default_ns.xml')
+def basic_file():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'xml', 'basic.xml')
 
 
-def test_xml_from_file(sample_file):
-    xml = XML.from_file(sample_file)
+@pytest.fixture
+def default_nested_namespace_file():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'xml', 'default_nested_namespace.xml')
+
+
+@pytest.fixture
+def namespaces_file():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'xml', 'namespaces.xml')
+
+
+def test_xml_from_file(basic_file):
+    xml = XML.from_file(basic_file)
     assert xml.root.tag == 'Tests'
 
 
-def test_xml_from_string(sample_xml):
-    xml = XML.from_string(sample_xml)
+def test_xml_from_string(basic_xml):
+    xml = XML.from_string(basic_xml)
     assert xml.root.tag == 'Tests'
 
 
-def test_xml_to_string(sample_xml):
-    xml = XML.from_string(sample_xml)
+def test_xml_to_string(basic_xml):
+    xml = XML.from_string(basic_xml)
     strxml = xml.to_string('utf-8')
     assert strxml.startswith(b'<Tests>')
 
 
-def test_xml_to_pretty_string(sample_xml):
-    xml = XML.from_string(sample_xml)
+def test_xml_to_pretty_string(basic_xml):
+    xml = XML.from_string(basic_xml)
     prettyxml = xml.to_string(prettify=True)
     assert b"\n  " in prettyxml
 
@@ -84,8 +89,8 @@ def test_nested_default_namespaces():
 
 
 # This is the same test as above, but the code paths of loading from file vs from string are different on pre-3.8 cpython
-def test_nested_default_namespaces_from_file(sample_with_nested_default_ns):
-    xml = XML.from_file(sample_with_nested_default_ns)
+def test_nested_default_namespaces_from_file(default_nested_namespace_file):
+    xml = XML.from_file(default_nested_namespace_file)
 
     assert xml.root.attrib['xmlns'] == 'https://ita.arch.ethz.ch/'
     assert xml.root.attrib['xmlns:xsi'] == 'http://www.w3.org/2001/XMLSchema-instance'
@@ -129,6 +134,15 @@ def test_namespace_expansion():
             </item>
         </main>"""
     )
+
+    assert xml.root.tag == '{https://ethz.ch}main'
+    assert list(xml.root)[0].tag == '{https://ethz.ch}item'
+    assert list(list(xml.root)[0])[0].tag == '{https://ethz.ch}subitem'
+    assert list(list(list(xml.root)[0])[0])[0].tag == '{https://sub.ethz.ch}cat'
+
+
+def test_namespace_expansion_from_file(namespaces_file):
+    xml = XML.from_file(namespaces_file)
 
     assert xml.root.tag == '{https://ethz.ch}main'
     assert list(xml.root)[0].tag == '{https://ethz.ch}item'
