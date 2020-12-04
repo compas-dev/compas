@@ -265,16 +265,18 @@
 <div class="viewcode-block" id="Dynamics"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Dynamics.html#compas.robots.Dynamics">[docs]</a><span class="k">class</span> <span class="nc">Dynamics</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Physical properties of the joint used for simulation of dynamics.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Dynamics.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Dynamics.__init__.html#compas.robots.Dynamics.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">friction</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<div class="viewcode-block" id="Dynamics.__init__"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Dynamics.__init__.html#compas.robots.Dynamics.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">friction</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Dynamics</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">damping</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">friction</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">friction</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">friction</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">friction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">kwargs</span></div>
 
 <div class="viewcode-block" id="Dynamics.get_urdf_element"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Dynamics.get_urdf_element.html#compas.robots.Dynamics.get_urdf_element">[docs]</a>    <span class="k">def</span> <span class="nf">get_urdf_element</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;damping&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span>
             <span class="s1">&#39;friction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">friction</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">)</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
         <span class="k">return</span> <span class="n">URDFElement</span><span class="p">(</span><span class="s1">&#39;dynamics&#39;</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span></div>
 
@@ -283,12 +285,14 @@
         <span class="k">return</span> <span class="p">{</span>
             <span class="s1">&#39;damping&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span>
             <span class="s1">&#39;friction&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">friction</span><span class="p">,</span>
+            <span class="s1">&#39;attr&#39;</span><span class="p">:</span> <span class="n">_attr_to_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attr</span><span class="p">),</span>
         <span class="p">}</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;damping&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">friction</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;friction&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attr</span> <span class="o">=</span> <span class="n">_attr_from_data</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;attr&#39;</span><span class="p">])</span>
 
 <div class="viewcode-block" id="Dynamics.from_data"><a class="viewcode-back" href="../../../../api/generated/compas.robots.Dynamics.from_data.html#compas.robots.Dynamics.from_data">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
