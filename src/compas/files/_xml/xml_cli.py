@@ -33,21 +33,32 @@ parser to parse an XML document.
 ElementTree does not exist is most releases.
 """
 
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import xml.etree.ElementTree as ET
+from urllib import addinfourl
 
 import compas
+
+from .xml_shared import shared_xml_from_file
+from .xml_shared import shared_xml_from_string
+
+__all__ = [
+    'xml_from_file',
+    'xml_from_string',
+    'prettify_string',
+]
+
 
 if compas.IPY:
     import clr
     clr.AddReference('System.Xml')
 
+    from System.IO import MemoryStream
     from System.IO import StreamReader
     from System.IO import StringReader
-    from System.IO import MemoryStream
     from System.Text import Encoding
     from System.Text.RegularExpressions import Regex
     from System.Text.RegularExpressions import RegexOptions
@@ -63,11 +74,6 @@ if compas.IPY:
     CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
                          RegexOptions.Compiled)
 
-
-__all__ = [
-    'CLRXMLTreeParser',
-    'prettify_string',
-]
 
 
 def prettify_string(rough_string):
@@ -99,6 +105,16 @@ def prettify_string(rough_string):
     formattedXml = sReader.ReadToEnd()
 
     return formattedXml
+
+
+def xml_from_file(source, tree_parser=None):
+    tree_parser = tree_parser or CLRXMLTreeParser
+    return shared_xml_from_file(source, tree_parser, addinfourl)
+
+
+def xml_from_string(text, tree_parser=None):
+    tree_parser = tree_parser or CLRXMLTreeParser
+    return shared_xml_from_string(text, tree_parser)
 
 
 class CLRXMLTreeParser(ET.XMLParser):

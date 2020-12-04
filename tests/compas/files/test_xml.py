@@ -18,6 +18,11 @@ def sample_xml():
     return "<Tests><Test id=\"1\"></Test></Tests>"
 
 
+@pytest.fixture
+def sample_with_nested_default_ns():
+    return os.path.join(BASE_FOLDER, 'fixtures', 'sample_with_nested_default_ns.xml')
+
+
 def test_xml_from_file(sample_file):
     xml = XML.from_file(sample_file)
     assert xml.root.tag == 'Tests'
@@ -69,6 +74,18 @@ def test_nested_default_namespaces():
             <item xmlns="https://ethz.ch" name="item2"><subitem /></item>
         </main>"""
     )
+
+    assert xml.root.attrib['xmlns'] == 'https://ita.arch.ethz.ch/'
+    assert xml.root.attrib['xmlns:xsi'] == 'http://www.w3.org/2001/XMLSchema-instance'
+
+    # first element redefines default namespace
+    assert list(xml.root)[1].attrib['xmlns'] == 'https://ethz.ch'
+    assert list(xml.root)[1].attrib['name'] == 'item2'
+
+
+# This is the same test as above, but the code paths of loading from file vs from string are different on pre-3.8 cpython
+def test_nested_default_namespaces_from_file(sample_with_nested_default_ns):
+    xml = XML.from_file(sample_with_nested_default_ns)
 
     assert xml.root.attrib['xmlns'] == 'https://ita.arch.ethz.ch/'
     assert xml.root.attrib['xmlns:xsi'] == 'http://www.w3.org/2001/XMLSchema-instance'

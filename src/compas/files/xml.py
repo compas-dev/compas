@@ -2,33 +2,18 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
-import io
+import sys
 import xml.etree.ElementTree as ET
 
 import compas
 
-if compas.is_ironpython():
-    from urllib import addinfourl as ResponseType
-    from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
-    from compas.files.xml_cli import prettify_string
+if not compas.is_ironpython():
+    if sys.version_info[0] >= 3 and sys.version_info[1] >= 8:
+        from ._xml import xml_cpython as xml_impl
+    else:
+        from ._xml import xml_pre_38 as xml_impl
 else:
-    from http.client import HTTPResponse as ResponseType
-    from xml.dom import minidom
-
-    DefaultXMLTreeParser = ET.XMLParser
-
-    def prettify_string(rough_string):
-        """Return an XML string with added whitespace for legibility.
-
-        Parameters
-        ----------
-        rough_string : str
-            XML string
-        """
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ", encoding='utf-8')
-
+    from ._xml import xml_cli as xml_impl
 
 __all__ = [
     'prettify_string',
@@ -37,6 +22,8 @@ __all__ = [
     'XMLWriter',
     'XMLElement',
 ]
+
+prettify_string = xml_impl.prettify_string
 
 
 class XML(object):
@@ -184,26 +171,6 @@ class XML(object):
         return self.writer.to_string(encoding=encoding, prettify=prettify)
 
 
-class TreeBuilderWithNamespaces(ET.TreeBuilder):
-    def start(self, tag, attrs):
-        if hasattr(self, '_current_namespaces') and len(self._current_namespaces):
-            attrs.update(self._current_namespaces)
-
-        element = super(TreeBuilderWithNamespaces, self).start(tag, attrs)
-
-        # reset current namespaces
-        self._current_namespaces = {}
-
-        return element
-
-    def start_ns(self, prefix, uri):
-        if not hasattr(self, '_current_namespaces'):
-            self._current_namespaces = {}
-
-        ns_prefix = 'xmlns:' + prefix if prefix else 'xmlns'
-        self._current_namespaces[ns_prefix] = uri
-
-
 class XMLReader(object):
     """Reads XML files and strings.
 
@@ -219,21 +186,12 @@ class XMLReader(object):
 
     @classmethod
     def from_file(cls, source, tree_parser=None):
-        tree_parser = tree_parser or DefaultXMLTreeParser
-        target = TreeBuilderWithNamespaces()
-        # If the source is an `HTTPResponse` (or `addinfourl` in ipy),
-        # it cannot be read twice, so we first read the response into a byte stream.
-        if isinstance(source, ResponseType):
-            source = io.BytesIO(source.read())
-        tree = ET.parse(source, tree_parser(target=target))
-        return cls(tree.getroot())
+        return cls(xml_impl.xml_from_file(source, tree_parser))
 
     @classmethod
     def from_string(cls, text, tree_parser=None):
-        tree_parser = tree_parser or DefaultXMLTreeParser
-        target = TreeBuilderWithNamespaces()
-        root = ET.fromstring(text, tree_parser(target=target))
-        return cls(root)
+        return cls(xml_impl.xml_from_string(text, tree_parser))
+
 
 
 class XMLWriter(object):
@@ -244,6 +202,7 @@ class XMLWriter(object):
     xml : :class:`compas.files.XML`
 
     """
+
     def __init__(self, xml):
         self.xml = xml
 
@@ -256,7 +215,7 @@ class XMLWriter(object):
         rough_string = ET.tostring(self.xml.root, encoding=encoding, method='xml')
         if not prettify:
             return rough_string
-        return prettify_string(rough_string)
+        return xml_impl.prettify_string(rough_string)
 
 
 class XMLElement(object):
