@@ -123,17 +123,44 @@
 <p>This is a basic example using the default settings for all visualisation options.
 For more detailed examples, see the documentation of the various drawing methods
 listed below…</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span> <span class="kn">import</span> <span class="nn">compas</span>
+ <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
+ <span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
+ <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
 
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+ <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+ <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+ <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
+ <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+ <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+
+
+
+
+
+
+<span class="o">..</span> <span class="n">figure</span><span class="p">::</span> <span class="o">../../../</span><span class="n">dist</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">plot_directive</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">generated</span><span class="o">/</span><span class="n">compas_plotters</span><span class="o">-</span><span class="n">MeshPlotter</span><span class="o">-</span><span class="mf">1.</span><span class="n">png</span>
+   <span class="p">:</span><span class="n">class</span><span class="p">:</span> <span class="n">figure</span><span class="o">-</span><span class="n">img</span> <span class="n">img</span><span class="o">-</span><span class="n">fluid</span>
+
+         
+
+
+
+
+
+<span class="o">..</span> <span class="n">figure</span><span class="p">::</span> <span class="o">../../../</span><span class="n">dist</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">plot_directive</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">generated</span><span class="o">/</span><span class="n">compas_plotters</span><span class="o">-</span><span class="n">MeshPlotter</span><span class="o">-</span><span class="mf">1.</span><span class="n">pdf</span>
+   
+
+         
+
+
+
+
+
+<span class="o">..</span> <span class="n">image</span><span class="p">::</span> <span class="o">../../../</span><span class="n">dist</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">plot_directive</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">generated</span><span class="o">/</span><span class="n">compas_plotters</span><span class="o">-</span><span class="n">MeshPlotter</span><span class="o">-</span><span class="mf">1.</span><span class="n">png</span>
 </code></pre></div>
 </div>
 <p class="rubric">Notes</p>
