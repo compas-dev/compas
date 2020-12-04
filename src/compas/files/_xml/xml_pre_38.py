@@ -19,7 +19,7 @@ def xml_from_file(source, tree_parser=None):
         raise NotSupportedErr('XML parsing on CPython 3.7 and older does not support a custom tree parser')
 
     tree_parser = ET.XMLPullParser
-    parser = tree_parser(events=('start', 'end', 'start-ns', 'end-ns'))
+    parser = tree_parser(events=('start', 'start-ns'))
 
     close_source = False
     if not hasattr(source, 'read'):
