@@ -193,7 +193,6 @@ class XMLReader(object):
         return cls(xml_impl.xml_from_string(text, tree_parser))
 
 
-
 class XMLWriter(object):
     """Writes an XML file from XML object.
 

@@ -75,7 +75,6 @@ if compas.IPY:
                          RegexOptions.Compiled)
 
 
-
 def prettify_string(rough_string):
     """Return an XML string with added whitespace for legibility,
     using .NET infrastructure.
