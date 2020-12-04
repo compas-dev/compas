@@ -15,9 +15,80 @@ except NameError:
         pass
 
 PY3 = sys.version_info[0] == 3
-system = sys.platform
 
-if os.name == 'nt':
+system = sys.platform
+# IronPython support (OMG)
+if 'ironpython' in sys.version.lower() and os.name == 'nt':
+    system = 'win32'
+
+
+def is_windows():
+    """Check if the operating system is Windows.
+
+    Returns
+    -------
+    bool
+        True if the OS is Windows. False otherwise
+
+    """
+    return os.name == 'nt'
+
+
+def is_linux():
+    """Check if the operating system is Linux.
+
+    Returns
+    -------
+    bool
+        True if the OS is Linux. False otherwise
+
+    """
+    return os.name == 'posix'
+
+
+def is_mono():
+    """Check if the operating system is running on Mono.
+
+    Returns
+    -------
+    bool
+        True if the OS is running on Mono. False otherwise
+
+    """
+    return 'mono' in sys.version.lower()
+
+
+def is_ironpython():
+    """Check if the Python implementation is IronPython.
+
+    Returns
+    -------
+    bool
+        True if the implementation is IronPython. False otherwise
+
+    """
+    return 'ironpython' in sys.version.lower()
+
+
+def is_rhino():
+    try:
+        import Rhino  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
+
+
+def is_blender():
+    try:
+        import bpy  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
+
+
+if is_windows():
     import subprocess
     import ctypes
     import ctypes.wintypes
@@ -50,9 +121,6 @@ if os.name == 'nt':
     SEE_MASK_NO_CONSOLE = 0x00008000
     INFINITE = -1
 
-# IronPython support (OMG)
-if 'ironpython' in sys.version.lower() and os.name == 'nt':
-    system = 'win32'
 
 try:
     from compas_bootstrapper import PYTHON_DIRECTORY

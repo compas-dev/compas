@@ -20,11 +20,9 @@ compas
     compas.utilities
 
 """
-
 from __future__ import print_function
 
 import os
-import sys
 import decimal
 
 import compas._os
@@ -39,8 +37,6 @@ __email__ = 'vanmelet@ethz.ch'
 __version__ = '0.18.1'
 
 
-PY3 = sys.version_info[0] == 3
-
 HERE = os.path.dirname(__file__)
 HOME = compas._os.absjoin(HERE, '../..')
 DATA = compas._os.absjoin(HERE, '../../data')
@@ -50,6 +46,14 @@ APPDATA = compas._os.user_data_dir('COMPAS', 'compas-dev', roaming=True)
 APPTEMP = compas._os.absjoin(APPDATA, 'temp')
 
 PRECISION = '3f'
+
+PY3 = compas._os.PY3
+WINDOWS = compas._os.is_windows()
+LINUX = compas._os.is_linux()
+MONO = compas._os.is_mono()
+IPY = compas._os.is_ironpython()
+RHINO = compas._os.is_rhino()
+BLENDER = compas._os.is_blender()
 
 # Check if COMPAS is installed from git
 # If that's the case, try to append the current head's hash to __version__
@@ -78,90 +82,6 @@ __all__ = [
     'set_precision',
     'get',
     'json_dump', 'json_load', 'json_dumps', 'json_loads']
-
-
-def is_windows():
-    """Check if the operating system is Windows.
-
-    Returns
-    -------
-    bool
-        True if the OS is Windows. False otherwise
-
-    """
-    return os.name == 'nt'
-
-
-WINDOWS = is_windows()
-
-
-def is_linux():
-    """Check if the operating system is Linux.
-
-    Returns
-    -------
-    bool
-        True if the OS is Linux. False otherwise
-
-    """
-    return os.name == 'posix'
-
-
-LINUX = is_linux()
-
-
-def is_mono():
-    """Check if the operating system is running on Mono.
-
-    Returns
-    -------
-    bool
-        True if the OS is running on Mono. False otherwise
-
-    """
-    return 'mono' in sys.version.lower()
-
-
-MONO = is_mono()
-
-
-def is_ironpython():
-    """Check if the Python implementation is IronPython.
-
-    Returns
-    -------
-    bool
-        True if the implementation is IronPython. False otherwise
-
-    """
-    return 'ironpython' in sys.version.lower()
-
-
-IPY = is_ironpython()
-
-
-def is_rhino():
-    try:
-        import Rhino  # noqa : F401
-    except ImportError:
-        return False
-    else:
-        return True
-
-
-RHINO = is_rhino()
-
-
-def is_blender():
-    try:
-        import bpy  # noqa : F401
-    except ImportError:
-        return False
-    else:
-        return True
-
-
-BLENDER = is_blender()
 
 
 def set_precision(precision):
