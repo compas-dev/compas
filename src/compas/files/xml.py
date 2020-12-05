@@ -2,49 +2,28 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-
-import io
+import sys
 import xml.etree.ElementTree as ET
 
 import compas
 
-if compas.is_ironpython():
-    from urllib import addinfourl as ResponseType
-    from compas.files.xml_cli import CLRXMLTreeParser as DefaultXMLTreeParser
-    from compas.files.xml_cli import prettify_string
-    from compas.files.xml_cli import attach_namespaces
+if not compas.is_ironpython():
+    if sys.version_info[0] >= 3 and sys.version_info[1] >= 8:
+        from ._xml import xml_cpython as xml_impl
+    else:
+        from ._xml import xml_pre_38 as xml_impl
 else:
-    from http.client import HTTPResponse as ResponseType
-    from xml.dom import minidom
-
-    DefaultXMLTreeParser = ET.XMLParser
-
-    def prettify_string(rough_string):
-        """Return an XML string with added whitespace for legibility.
-
-        Parameters
-        ----------
-        rough_string : str
-            XML string
-        """
-        reparsed = minidom.parseString(rough_string)
-        return reparsed.toprettyxml(indent="  ", encoding='utf-8')
-
-    def attach_namespaces(root, source):
-        """Parse and find the namespaces declared, and add them to the root's attributes."""
-        if hasattr(source, 'seek'):
-            source.seek(0)
-        namespaces = [node for _, node in ET.iterparse(source, events=['start-ns'])]
-        attrib = {'xmlns:' + ns if ns else 'xmlns': uri for ns, uri in namespaces}
-        root.attrib.update(attrib)
-
+    from ._xml import xml_cli as xml_impl
 
 __all__ = [
     'prettify_string',
     'XML',
     'XMLReader',
+    'XMLWriter',
     'XMLElement',
 ]
+
+prettify_string = xml_impl.prettify_string
 
 
 class XML(object):
@@ -207,23 +186,11 @@ class XMLReader(object):
 
     @classmethod
     def from_file(cls, source, tree_parser=None):
-        tree_parser = tree_parser or DefaultXMLTreeParser
-        # If the source is an `HTTPResponse` (or `addinfourl` in ipy),
-        # it cannot be read twice, so we first read the response into a byte stream.
-        if isinstance(source, ResponseType):
-            source = io.BytesIO(source.read())
-        tree = ET.parse(source, tree_parser())
-        root = tree.getroot()
-        attach_namespaces(root, source)
-        return cls(tree.getroot())
+        return cls(xml_impl.xml_from_file(source, tree_parser))
 
     @classmethod
     def from_string(cls, text, tree_parser=None):
-        tree_parser = tree_parser or DefaultXMLTreeParser
-        root = ET.fromstring(text, tree_parser())
-        source = io.StringIO(text) if isinstance(text, str) else io.BytesIO(text)
-        attach_namespaces(root, source)
-        return cls(root)
+        return cls(xml_impl.xml_from_string(text, tree_parser))
 
 
 class XMLWriter(object):
@@ -234,6 +201,7 @@ class XMLWriter(object):
     xml : :class:`compas.files.XML`
 
     """
+
     def __init__(self, xml):
         self.xml = xml
 
@@ -246,7 +214,7 @@ class XMLWriter(object):
         rough_string = ET.tostring(self.xml.root, encoding=encoding, method='xml')
         if not prettify:
             return rough_string
-        return prettify_string(rough_string)
+        return xml_impl.prettify_string(rough_string)
 
 
 class XMLElement(object):

@@ -92,6 +92,8 @@ XML
 
     XML
     XMLReader
+    XMLWriter
+    XMLElement
 
 
 """
