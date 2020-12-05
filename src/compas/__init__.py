@@ -26,7 +26,7 @@ import os
 import decimal
 
 import compas._os
-from compas._os import is_windows, is_linux, is_mono, is_ironpython, is_rhino, is_blender
+from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender
 from compas._json import json_dump, json_dumps, json_load, json_loads
 
 
@@ -51,6 +51,7 @@ PRECISION = '3f'
 PY3 = compas._os.PY3
 WINDOWS = is_windows()
 LINUX = is_linux()
+OSX = is_osx()
 MONO = is_mono()
 IPY = is_ironpython()
 RHINO = is_rhino()
@@ -79,8 +80,8 @@ except Exception:
 
 
 __all__ = [
-    'WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'BLENDER',
-    'is_windows', 'is_linux', 'is_mono', 'is_ironpython', 'is_rhino', 'is_blender',
+    'WINDOWS', 'LINUX', 'OSX', 'MONO', 'IPY', 'RHINO', 'BLENDER',
+    'is_windows', 'is_linux', 'is_osx', 'is_mono', 'is_ironpython', 'is_rhino', 'is_blender',
     'set_precision',
     'get',
     'json_dump', 'json_load', 'json_dumps', 'json_loads'
