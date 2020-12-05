@@ -16,11 +16,28 @@ except NameError:
 
 PY3 = sys.version_info[0] == 3
 
-# system = sys.platform
 
-# # IronPython support (OMG)
-# if 'ironpython' in sys.version.lower() and os.name == 'nt':
-#     system = 'win32'
+__all__ = [
+    'absjoin',
+    'create_symlink',
+    'create_symlinks',
+    'remove_symlink',
+    'remove_symlinks',
+    'copy',
+    'remove',
+    'rename',
+    'user_data_dir',
+    'select_python',
+    'prepare_environment',
+    'is_admin',
+    'is_windows',
+    'is_linux',
+    'is_osx',
+    'is_mono',
+    'is_ironpython',
+    'is_rhino',
+    'is_blender'
+]
 
 
 def is_windows():
@@ -655,19 +672,3 @@ if is_windows():
             _get_win_folder = _get_win_folder_with_ctypes
         except ImportError:
             _get_win_folder = _get_win_folder_from_registry
-
-
-__all__ = [
-    'absjoin',
-    'create_symlink',
-    'create_symlinks',
-    'remove_symlink',
-    'remove_symlinks',
-    'copy',
-    'remove',
-    'rename',
-    'user_data_dir',
-    'select_python',
-    'prepare_environment',
-    'is_admin'
-]
