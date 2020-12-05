@@ -112,7 +112,7 @@ def create_axes_xy(figsize=(8.0, 6.0),
     # mpl.rcParams['figure.dpi'] = dpi
     # mpl.rcParams['savefig.dpi'] = dpi
     fig = plt.figure(facecolor=bgcolor, figsize=figsize, dpi=dpi)
-    axes = fig.add_subplot('111', aspect='equal')
+    axes = fig.add_subplot(111, aspect='equal')
     axes.grid(b=grid)
     axes.set_frame_on(False)
     if xlabel:
@@ -192,7 +192,7 @@ def create_axes_3d(size=(10, 7),
 
     """
     fig = plt.figure(facecolor='white', figsize=size)
-    axes = fig.add_subplot('111', projection='3d', aspect='equal')
+    axes = fig.add_subplot(111, projection='3d', aspect='equal')
     # axes.w_xaxis.set_pane_color((1, 1, 1, 1))
     # axes.w_yaxis.set_pane_color((1, 1, 1, 1))
     # axes.w_zaxis.set_pane_color((1, 1, 1, 1))
