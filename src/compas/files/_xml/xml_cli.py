@@ -33,21 +33,32 @@ parser to parse an XML document.
 ElementTree does not exist is most releases.
 """
 
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 import xml.etree.ElementTree as ET
+from urllib import addinfourl
 
 import compas
+
+from .xml_shared import shared_xml_from_file
+from .xml_shared import shared_xml_from_string
+
+__all__ = [
+    'xml_from_file',
+    'xml_from_string',
+    'prettify_string',
+]
+
 
 if compas.IPY:
     import clr
     clr.AddReference('System.Xml')
 
+    from System.IO import MemoryStream
     from System.IO import StreamReader
     from System.IO import StringReader
-    from System.IO import MemoryStream
     from System.Text import Encoding
     from System.Text.RegularExpressions import Regex
     from System.Text.RegularExpressions import RegexOptions
@@ -62,13 +73,6 @@ if compas.IPY:
 
     CRE_ENCODING = Regex("encoding=['\"](?<enc_name>.*?)['\"]",
                          RegexOptions.Compiled)
-
-
-__all__ = [
-    'CLRXMLTreeParser',
-    'attach_namespaces',
-    'prettify_string',
-]
 
 
 def prettify_string(rough_string):
@@ -102,10 +106,14 @@ def prettify_string(rough_string):
     return formattedXml
 
 
-def attach_namespaces(root, source):
-    """Parse and find the namespaces declared, and add them to the root's attributes."""
-    # Don't need too, already done by parser
-    pass
+def xml_from_file(source, tree_parser=None):
+    tree_parser = tree_parser or CLRXMLTreeParser
+    return shared_xml_from_file(source, tree_parser, addinfourl)
+
+
+def xml_from_string(text, tree_parser=None):
+    tree_parser = tree_parser or CLRXMLTreeParser
+    return shared_xml_from_string(text, tree_parser)
 
 
 class CLRXMLTreeParser(ET.XMLParser):
@@ -139,7 +147,7 @@ class CLRXMLTreeParser(ET.XMLParser):
             settings.DtdProcessing = DtdProcessing.Parse
             settings.ValidationType = ValidationType.DTD
         self.settings = settings
-        self._target = (target if (target is not None) else ET.TreeBuilder())
+        self._target = target or ET.TreeBuilder()
         self._buffer = []
         self._document_encoding = 'UTF-8'  # default
 
@@ -178,10 +186,17 @@ class CLRXMLTreeParser(ET.XMLParser):
             elif reader.NodeType in [XmlNodeType.Text, XmlNodeType.CDATA]:
                 self._target.data(reader.Value.decode(self._document_encoding))
             elif reader.NodeType == XmlNodeType.EndElement:
-                self._target.end(reader.Name)
+                self._target.end(self._get_expanded_tag(reader))
             elif reader.NodeType == XmlNodeType.XmlDeclaration:
                 self._parse_xml_declaration(reader.Value)
         return self._target.close()
+
+    def _get_expanded_tag(self, reader):
+        """Expand tag name to include namespace URIs if needed"""
+        if not reader.NamespaceURI:
+            return reader.LocalName
+
+        return '{{{}}}{}'.format(reader.NamespaceURI, reader.LocalName)
 
     def _parse_xml_declaration(self, xml_decl):
         """Parse the document encoding from XML declaration."""
@@ -194,12 +209,13 @@ class CLRXMLTreeParser(ET.XMLParser):
         """Notify the tree builder that a start element has been
         encountered."""
         attributes = {}
+        name = self._get_expanded_tag(reader)
 
         while reader.MoveToNextAttribute():
             attributes[reader.Name] = reader.Value
 
         reader.MoveToElement()
-        self._target.start(reader.Name, attributes)
+        self._target.start(name, attributes)
 
         if reader.IsEmptyElement:
-            self._target.end(reader.Name)
+            self._target.end(name)

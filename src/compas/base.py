@@ -94,6 +94,7 @@ class Base(object):
     def data(self, data):
         pass
 
+    @classmethod
     def from_data(cls, data):
         """Construct an object of this type from the provided data."""
         raise NotImplementedError
@@ -108,6 +109,7 @@ class Base(object):
         """
         raise NotImplementedError
 
+    @classmethod
     def from_json(cls, filepath):
         """Construct an object from serialised data contained in a JSON file.
 

@@ -18,6 +18,18 @@ __all__ = [
 ]
 
 
+def _tag_without_namespace(element, default_namespace):
+    if not default_namespace:
+        return element.tag
+
+    default_namespace_prefix = '{{{}}}'.format(default_namespace)
+    prefix, namespace, postfix = element.tag.partition(default_namespace_prefix)
+    has_default_namespace = namespace == default_namespace_prefix
+
+    tagname = postfix if has_default_namespace else prefix
+    return tagname
+
+
 class URDF(object):
     """Parse URDF files.
 
@@ -53,7 +65,8 @@ class URDF(object):
     @property
     def robot(self):
         if self._robot is None:
-            self._robot = URDFParser.parse_element(self.xml.root, self.xml.root.tag)
+            default_namespace = self.xml.root.attrib.get('xmlns')
+            self._robot = URDFParser.parse_element(self.xml.root, _tag_without_namespace(self.xml.root, default_namespace), default_namespace)
         return self._robot
 
     @robot.setter
@@ -204,7 +217,7 @@ class URDFParser(object):
             cls._parsers[tag] = parser_type
 
     @classmethod
-    def parse_element(cls, element, path=''):
+    def parse_element(cls, element, path='', element_default_namespace=None):
         """Recursively parse URDF element and its children.
 
         If the parser type implements a class method ``from_urdf``,
@@ -218,6 +231,8 @@ class URDFParser(object):
             XML Element node.
         path : str
             Full path to the element.
+        element_default_namespace : str
+            Default namespace at the current level current document.
 
         Returns
         -------
@@ -225,7 +240,15 @@ class URDFParser(object):
             An instance of the model object represented by the given element.
 
         """
-        children = [cls.parse_element(child, '/'.join([path, child.tag])) for child in element]
+        default_ns = element.attrib.get('xmlns') or element_default_namespace
+        children = []
+
+        for child in element:
+            default_ns = child.attrib.get('xmlns') or element_default_namespace
+            child_name = _tag_without_namespace(child, default_ns)
+            child_path = '/'.join([path, child_name])
+            children.append(cls.parse_element(child, child_path, default_ns))
+
         parser_type = cls._parsers.get(path, None) or URDFGenericElement
 
         metadata = get_metadata(parser_type)
@@ -238,7 +261,7 @@ class URDFParser(object):
                 obj = metadata['from_urdf'](attributes, children, text)
             else:
                 obj = cls.from_generic_urdf(
-                    parser_type, attributes, children, text)
+                    parser_type, attributes, children, text, default_ns)
         except Exception as e:
             raise TypeError('Cannot create instance of %s. Message=%s' % (parser_type, e))
 
@@ -247,9 +270,9 @@ class URDFParser(object):
         return obj
 
     @classmethod
-    def from_generic_urdf(cls, parser_type, attributes=None, children=None, text=None):
+    def from_generic_urdf(cls, parser_type, attributes=None, children=None, text=None, default_namespace=None):
         kwargs = attributes
-        kwargs.update(cls.build_kwargs_by_type(children, parser_type))
+        kwargs.update(cls.build_kwargs_by_type(children, parser_type, default_namespace))
 
         return parser_type(**kwargs)
 
@@ -258,11 +281,11 @@ class URDFParser(object):
         return filter(lambda i: isinstance(i, type), elements)
 
     @classmethod
-    def _argname_from_element(cls, element, metadata):
+    def _argname_from_element(cls, element, metadata, default_namespace):
         init_args = metadata['init_args']
 
         # Match URDF tag to an argument name in the constructor
-        urdf_tag = element._urdf_source.tag
+        urdf_tag = _tag_without_namespace(element._urdf_source, default_namespace)
         if urdf_tag in init_args:
             return urdf_tag
 
@@ -282,12 +305,12 @@ class URDFParser(object):
         raise ValueError('Cannot find a matching argument for %s' % urdf_tag)
 
     @classmethod
-    def build_kwargs_by_type(cls, elements, parser_type):
+    def build_kwargs_by_type(cls, elements, parser_type, default_namespace):
         result = dict()
         metadata = get_metadata(parser_type)
 
         for child in elements:
-            key = cls._argname_from_element(child, metadata)
+            key = cls._argname_from_element(child, metadata, default_namespace)
 
             if key in metadata['init_args'] and metadata['init_args'][key]['sequence']:
                 itemlist = result.get(key, [])
