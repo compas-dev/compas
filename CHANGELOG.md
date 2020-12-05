@@ -9,10 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `is_osx`.
+
 ### Changed
 
-* Fix default namespace handling in URDF documents
-* Allow custom/unknown attributes in URDF `Dynamics` element
+* Fix default namespace handling in URDF documents.
+* Allow custom/unknown attributes in URDF `Dynamics` element.
+* Moved os functions from `compas` to `compas._os`.
+* Fixed bug in `is_linux`.
+* Changed `is_windows` to work for CPython and IronPython.
+* Changed `compas._os` functions to use `is_windows`, `is_mono`, `is_osx`.
+* Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
 
 ### Removed
 

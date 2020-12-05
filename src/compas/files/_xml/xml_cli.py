@@ -133,7 +133,7 @@ class CLRXMLTreeParser(ET.XMLParser):
     """
 
     def __init__(self, target=None, validating=False):
-        if not compas.is_ironpython():
+        if not compas.IPY:
             raise Exception('CLRXMLTreeParser can only be used from IronPython')
 
         settings = XmlReaderSettings()

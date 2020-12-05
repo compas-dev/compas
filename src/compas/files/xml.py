@@ -7,13 +7,14 @@ import xml.etree.ElementTree as ET
 
 import compas
 
-if not compas.is_ironpython():
+if not compas.IPY:
     if sys.version_info[0] >= 3 and sys.version_info[1] >= 8:
         from ._xml import xml_cpython as xml_impl
     else:
         from ._xml import xml_pre_38 as xml_impl
 else:
     from ._xml import xml_cli as xml_impl
+
 
 __all__ = [
     'prettify_string',
