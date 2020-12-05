@@ -106,12 +106,20 @@ and this project adheres to <a class="reference external" href="https://semver.o
 <h2>Unreleased</h2>
 <div class="section" id="added">
 <h3>Added</h3>
+<ul class="simple">
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">is_osx</span></code>.</p></li>
+</ul>
 </div>
 <div class="section" id="changed">
 <h3>Changed</h3>
 <ul class="simple">
-<li><p>Fix default namespace handling in URDF documents</p></li>
-<li><p>Allow custom/unknown attributes in URDF <code class="docutils literal notranslate"><span class="pre">Dynamics</span></code> element</p></li>
+<li><p>Fix default namespace handling in URDF documents.</p></li>
+<li><p>Allow custom/unknown attributes in URDF <code class="docutils literal notranslate"><span class="pre">Dynamics</span></code> element.</p></li>
+<li><p>Moved os functions from <code class="docutils literal notranslate"><span class="pre">compas</span></code> to <code class="docutils literal notranslate"><span class="pre">compas._os</span></code>.</p></li>
+<li><p>Fixed bug in <code class="docutils literal notranslate"><span class="pre">is_linux</span></code>.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">is_windows</span></code> to work for CPython and IronPython.</p></li>
+<li><p>Changed <code class="docutils literal notranslate"><span class="pre">compas._os</span></code> functions to use <code class="docutils literal notranslate"><span class="pre">is_windows</span></code>, <code class="docutils literal notranslate"><span class="pre">is_mono</span></code>, <code class="docutils literal notranslate"><span class="pre">is_osx</span></code>.</p></li>
+<li><p>Changed IronPython checks to <code class="docutils literal notranslate"><span class="pre">compas.IPY</span></code> instead of <code class="docutils literal notranslate"><span class="pre">compas.is_ironpython</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="removed">
