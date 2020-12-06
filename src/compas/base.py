@@ -65,7 +65,7 @@ class Base(object):
     @property
     def name(self):
         """str : The name of the object.
-        
+
         This name is not necessarily unique and can be set by the user.
         """
         if not self._name:
@@ -84,7 +84,7 @@ class Base(object):
     @property
     def data(self):
         """dict : The representation of the object as native Python data.
-        
+
         The structure of the data is described by the data schema.
         """
         raise NotImplementedError
