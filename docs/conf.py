@@ -251,20 +251,13 @@ intersphinx_mapping = {
 
 # -- Options for HTML output ----------------------------------------------
 
-package_docs_root = "/compas/"
-
-with open(os.path.join(os.path.dirname(__file__), "docversions.txt"), "r") as f:
-    version_names = [version.strip() for version in f.readlines()]
-    package_docs_versions = [(version, "{}{}".format(package_docs_root, version))
-                             for version in version_names if version]
-
 html_theme = "compas"
 html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
     "navbar_active": "compas",
     "package_version": release,
     "package_docs": "https://compas.dev/compas/",
-    "package_old_versions_txt": "https://compas.dev/compas/docversions.txt"
+    "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt"
 }
 html_context = {}
 html_static_path = []
