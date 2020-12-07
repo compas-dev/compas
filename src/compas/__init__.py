@@ -20,14 +20,14 @@ compas
     compas.utilities
 
 """
-
 from __future__ import print_function
 
 import os
-import sys
 import decimal
 
 import compas._os
+from compas._os import is_windows, is_linux, is_osx, is_mono, is_ironpython, is_rhino, is_blender
+from compas._json import json_dump, json_dumps, json_load, json_loads
 
 
 __author__ = 'Tom Van Mele and many others (see AUTHORS.md)'
@@ -35,10 +35,8 @@ __copyright__ = 'Copyright 2014-2019 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '0.17.2'
+__version__ = '0.18.1'
 
-
-PY3 = sys.version_info[0] == 3
 
 HERE = os.path.dirname(__file__)
 HOME = compas._os.absjoin(HERE, '../..')
@@ -49,6 +47,15 @@ APPDATA = compas._os.user_data_dir('COMPAS', 'compas-dev', roaming=True)
 APPTEMP = compas._os.absjoin(APPDATA, 'temp')
 
 PRECISION = '3f'
+
+PY3 = compas._os.PY3
+WINDOWS = is_windows()
+LINUX = is_linux()
+OSX = is_osx()
+MONO = is_mono()
+IPY = is_ironpython()
+RHINO = is_rhino()
+BLENDER = is_blender()
 
 # Check if COMPAS is installed from git
 # If that's the case, try to append the current head's hash to __version__
@@ -72,91 +79,13 @@ except Exception:
     pass
 
 
-__all__ = ['WINDOWS', 'LINUX', 'MONO', 'IPY', 'RHINO', 'BLENDER', 'set_precision', 'get']
-
-
-def is_windows():
-    """Check if the operating system is Windows.
-
-    Returns
-    -------
-    bool
-        True if the OS is Windows. False otherwise
-
-    """
-    return os.name == 'nt'
-
-
-WINDOWS = is_windows()
-
-
-def is_linux():
-    """Check if the operating system is Linux.
-
-    Returns
-    -------
-    bool
-        True if the OS is Linux. False otherwise
-
-    """
-    return os.name == 'posix'
-
-
-LINUX = is_linux()
-
-
-def is_mono():
-    """Check if the operating system is running on Mono.
-
-    Returns
-    -------
-    bool
-        True if the OS is running on Mono. False otherwise
-
-    """
-    return 'mono' in sys.version.lower()
-
-
-MONO = is_mono()
-
-
-def is_ironpython():
-    """Check if the Python implementation is IronPython.
-
-    Returns
-    -------
-    bool
-        True if the implementation is IronPython. False otherwise
-
-    """
-    return 'ironpython' in sys.version.lower()
-
-
-IPY = is_ironpython()
-
-
-def is_rhino():
-    try:
-        import Rhino  # noqa : F401
-    except ImportError:
-        return False
-    else:
-        return True
-
-
-RHINO = is_rhino()
-
-
-def is_blender():
-    try:
-        import bpy  # noqa : F401
-    except ImportError:
-        return False
-    else:
-        return True
-
-
-BLENDER = is_blender()
+__all__ = [
+    'WINDOWS', 'LINUX', 'OSX', 'MONO', 'IPY', 'RHINO', 'BLENDER',
+    'is_windows', 'is_linux', 'is_osx', 'is_mono', 'is_ironpython', 'is_rhino', 'is_blender',
+    'set_precision',
+    'get',
+    'json_dump', 'json_load', 'json_dumps', 'json_loads'
+]
 
 
 def set_precision(precision):

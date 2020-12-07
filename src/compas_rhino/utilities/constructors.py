@@ -11,7 +11,7 @@ import scriptcontext as sc
 __all__ = ['volmesh_from_polysurfaces']
 
 
-def volmesh_from_polysurfaces(cls, guids):
+def volmesh_from_polysurfaces(cls, guids, precision=None):
     """Construct a volumetric mesh from given polysurfaces.
 
     Essentially, this function does the following:
@@ -29,6 +29,8 @@ def volmesh_from_polysurfaces(cls, guids):
         The class of volmesh.
     guids : sequence of str or System.Guid
         The *globally unique identifiers* of the polysurfaces.
+    precision: string
+        Precision of the polysurface connectivity.
 
     Returns
     -------
@@ -50,15 +52,15 @@ def volmesh_from_polysurfaces(cls, guids):
             face = []
             sp = segments[0].PointAtStart
             ep = segments[0].PointAtEnd
-            sp_gkey = geometric_key(sp)
-            ep_gkey = geometric_key(ep)
+            sp_gkey = geometric_key(sp, precision)
+            ep_gkey = geometric_key(ep, precision)
             gkey_xyz[sp_gkey] = sp
             gkey_xyz[ep_gkey] = ep
             face.append(sp_gkey)
             face.append(ep_gkey)
             for segment in segments[1:-1]:
                 ep = segment.PointAtEnd
-                ep_gkey = geometric_key(ep)
+                ep_gkey = geometric_key(ep, precision)
                 face.append(ep_gkey)
                 gkey_xyz[ep_gkey] = ep
             cell.append(face)

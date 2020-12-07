@@ -165,7 +165,7 @@ def _update_bootstrapper(install_path, packages):
 def _filter_installable_packages(version, packages):
     ghpython_incompatible = False
 
-    if compas._os.system == 'darwin' and version == 5.0:
+    if compas.OSX and version == 5.0:
         ghpython_incompatible = True
 
     if not packages:

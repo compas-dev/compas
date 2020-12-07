@@ -15,9 +15,104 @@ except NameError:
         pass
 
 PY3 = sys.version_info[0] == 3
-system = sys.platform
 
-if os.name == 'nt':
+
+__all__ = [
+    'absjoin',
+    'create_symlink',
+    'create_symlinks',
+    'remove_symlink',
+    'remove_symlinks',
+    'copy',
+    'remove',
+    'rename',
+    'user_data_dir',
+    'select_python',
+    'prepare_environment',
+    'is_admin',
+    'is_windows',
+    'is_linux',
+    'is_osx',
+    'is_mono',
+    'is_ironpython',
+    'is_rhino',
+    'is_blender'
+]
+
+
+def is_windows():
+    """Check if the operating system is Windows.
+
+    Returns
+    -------
+    bool
+        True if the OS is Windows. False otherwise
+
+    """
+    if is_ironpython():
+        return os.name == 'nt'
+    return sys.platform == 'win32'
+
+
+def is_linux():
+    """Check if the operating system is Linux.
+
+    Returns
+    -------
+    bool
+        True if the OS is Linux. False otherwise
+
+    """
+    return sys.platform in ('linux', 'linux2')
+
+
+def is_osx():
+    return sys.platform == 'darwin'
+
+
+def is_mono():
+    """Check if the operating system is running on Mono.
+
+    Returns
+    -------
+    bool
+        True if the OS is running on Mono. False otherwise
+
+    """
+    return 'mono' in sys.version.lower()
+
+
+def is_ironpython():
+    """Check if the Python implementation is IronPython.
+
+    Returns
+    -------
+    bool
+        True if the implementation is IronPython. False otherwise
+
+    """
+    return 'ironpython' in sys.version.lower()
+
+
+def is_rhino():
+    try:
+        import Rhino  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
+
+
+def is_blender():
+    try:
+        import bpy  # noqa : F401
+    except ImportError:
+        return False
+    else:
+        return True
+
+
+if is_windows():
     import subprocess
     import ctypes
     import ctypes.wintypes
@@ -50,9 +145,6 @@ if os.name == 'nt':
     SEE_MASK_NO_CONSOLE = 0x00008000
     INFINITE = -1
 
-# IronPython support (OMG)
-if 'ironpython' in sys.version.lower() and os.name == 'nt':
-    system = 'win32'
 
 try:
     from compas_bootstrapper import PYTHON_DIRECTORY
@@ -209,7 +301,7 @@ def _get_symlink_function():
         if getattr(os, 'symlink', None):
             _os_symlink = _native_symlinks
 
-        if os.name == 'nt':
+        if is_windows():
             if not callable(_os_symlink):
                 _os_symlink = _polyfill_symlinks
             else:
@@ -274,7 +366,7 @@ def remove_symlink(symlink):
         except NotADirectoryError:
             os.unlink(symlink)
         except PermissionError:
-            if os.name != 'nt':
+            if not is_windows():
                 raise
 
             _run_command_as_admin('rmdir', [symlink])
@@ -319,7 +411,7 @@ def rename(src, dst):
     try:
         os.rename(src, dst)
     except (PermissionError, OSError):
-        if os.name != 'nt':
+        if not is_windows():
             raise
 
         _run_command_as_admin('move', [src, dst])
@@ -330,7 +422,7 @@ def remove(path):
     try:
         os.remove(path)
     except (PermissionError, OSError):
-        if os.name != 'nt':
+        if not is_windows():
             raise
 
         _run_command_as_admin('del', [path])
@@ -341,7 +433,7 @@ def copy(src, dst):
     try:
         shutil.copy(src, dst)
     except (PermissionError, OSError):
-        if os.name != 'nt':
+        if not is_windows():
             raise
 
         _run_command_as_admin('copy', [src, dst])
@@ -355,7 +447,7 @@ def is_admin():
     bool
         True if the user is administrator, otherwise False.
     """
-    if os.name != 'nt':
+    if not is_windows():
         return os.getuid() == 0
 
     try:
@@ -397,7 +489,7 @@ def _run_as_admin(command):
         Exit code of the process.
     """
 
-    if os.name != 'nt':
+    if not is_windows():
         raise RuntimeError('Only supported on Windows')
 
     command_file, command_args = command[0], command[1:]
@@ -461,7 +553,7 @@ def user_data_dir(appname=None, appauthor=None, version=None, roaming=False):
     str
         Full path to the user-specific data dir.
     """
-    if system == 'win32':
+    if is_windows():
         if appauthor is None:
             appauthor = appname
         const = "CSIDL_APPDATA" if roaming else "CSIDL_LOCAL_APPDATA"
@@ -471,15 +563,19 @@ def user_data_dir(appname=None, appauthor=None, version=None, roaming=False):
                 path = os.path.join(path, appauthor, appname)
             else:
                 path = os.path.join(path, appname)
-    elif system == 'darwin':
+
+    elif is_osx():
         path = os.path.expanduser('~/Library/Application Support/')
         if appname:
             path = os.path.join(path, appname)
-    elif 'mono' in sys.version.lower():
+
+    elif is_mono():
         path = os.path.expanduser('~/Library/Application Support/')
         if appname:
             path = os.path.join(path, appname)
+
     else:
+        # is_linux()
         path = os.getenv('XDG_DATA_HOME', os.path.expanduser("~/.local/share"))
         if appname:
             path = os.path.join(path, appname)
@@ -566,7 +662,7 @@ def _get_win_folder_with_ctypes(csidl_name):
     return buf.value
 
 
-if system == "win32":
+if is_windows():
     try:
         import win32com.shell  # noqa: F401
         _get_win_folder = _get_win_folder_with_pywin32
@@ -576,20 +672,3 @@ if system == "win32":
             _get_win_folder = _get_win_folder_with_ctypes
         except ImportError:
             _get_win_folder = _get_win_folder_from_registry
-
-
-__all__ = [
-    'absjoin',
-    'system',
-    'create_symlink',
-    'create_symlinks',
-    'remove_symlink',
-    'remove_symlinks',
-    'copy',
-    'remove',
-    'rename',
-    'user_data_dir',
-    'select_python',
-    'prepare_environment',
-    'is_admin'
-]

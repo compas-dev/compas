@@ -16,6 +16,8 @@ except ImportError:
 
 
 __all__ = [
+    'normalize_values',
+    'remap_values',
     'meshgrid',
     'linspace',
     'flatten',
@@ -24,6 +26,78 @@ __all__ = [
     'iterable_like',
     'grouper'
 ]
+
+
+def normalize_values(values, new_min=0.0, new_max=1.0):
+    """Normalize a list of numbers to the range between new_min and new_max.
+
+    Parameters
+    ----------
+    values : list of float
+        The data to be normalized.
+    new_min : float, optional
+        The new minimum of the data.
+        Default is `0.0`.
+    new_max : float, optional
+        The new maximum of the data.
+        Default is `1.0`.
+
+    Returns
+    -------
+    list of float
+        A list of floats mapped to the range `new_min`, `new_max`.
+
+    Examples
+    --------
+    >>> data = list(range(5, 15))
+    >>> data = normalize_values(data)
+    >>> min(data)
+    0.0
+    >>> max(data)
+    1.0
+    """
+    old_max = max(values)
+    old_min = min(values)
+    old_range = (old_max - old_min)
+    new_range = (new_max - new_min)
+    return [(((value - old_min) * new_range) / old_range) + new_min for value in values]
+
+
+def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, original_max=None):
+    """
+    Maps a list of numbers from one domain to another.
+    If you do not specify a target domain 0.0-1.0 will be used.
+
+    Parameters
+    ----------
+    values : list of int or float
+        The value to remap
+    original_min : int or float
+        The minimun value of the original domain
+    original_max : int or float
+        The maximum value of the original domain
+    target_min : int or float
+        The minimun value of the target domain. Default 0.0
+    target_max : int or float
+        The maximum value of the target domain. Default 1.0
+
+    Returns
+    -------
+    list
+        The remaped list of values
+
+    Examples
+    --------
+    >>>
+    """
+    if original_min is None:
+        original_min = min(values)
+    if original_max is None:
+        original_max = max(values)
+    original_range = original_max - original_min
+    target_range = target_max - target_min
+    ratio = target_range / original_range
+    return [target_min + ((value - original_min) * ratio) for value in values]
 
 
 def meshgrid(x, y, indexing='xy'):

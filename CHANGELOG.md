@@ -9,11 +9,73 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `is_osx`.
+
+### Changed
+
+* Fix default namespace handling in URDF documents.
+* Allow custom/unknown attributes in URDF `Dynamics` element.
+* Moved os functions from `compas` to `compas._os`.
+* Fixed bug in `is_linux`.
+* Changed `is_windows` to work for CPython and IronPython.
+* Changed `compas._os` functions to use `is_windows`, `is_mono`, `is_osx`.
+* Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
+
+### Removed
+
+
+## [0.18.1] 2020-12-01
+
+### Added
+
+* Added URDF and XML writers.
+* Added `compas.robots.RobotModel.to_urdf_file`.
+* Added `compas.files.URDF.from_robot`.
+
+### Changed
+
+* Changed implementation of `Mesh.vertices_on_boundaries` to account for special cases.
+* Changed `Mesh.edges_on_boundaries` corresponding to `Mesh.vertices_on_boundaries`.
+* Changed `Mesh.faces_on_boundaries` corresponding to `Mesh.vertices_on_boundaries`.
+* Changed `Mesh.vertices_on_boundary` to return vertices of longest boundary.
+* Changed `Mesh.edges_on_boundary` to return edges of longest boundary.
+* Changed `Mesh.faces_on_boundary` to return faces of longest boundary.
+* Fixed default value for `compas.robots.Axis`.
+* Changed surface to mesh conversion to include cleanup and filter functions, and use the outer loop of all brep faces.
+
+### Removed
+
+
+## [0.18.0] 2020-11-24
+
+### Added
+
+* Added `remap_values` to `compas_utilities`.
+* Added `compas.datastructures.mesh_slice_plane`.
+* Added `compas.json_dump`, `compas.json_dumps`, `compas.json_load`, `compas.json_loads`.
+
+### Changed
+
+* Fixed bug in `compas.datastructures.Network.delete_node`.
+* Fixed bug in `compas.datastructures.Network.delete_edge`.
+* Fixed bug in select functions for individual objects in `compas_rhino.utilities`.
+* Fixed bug in `compas.datastructures.mesh_merge_faces`.
+* changed base of `compas.geometry.Transformation` to `compas.base.Base`.
+
+### Removed
+
+* Removed `compas.datastructures.mesh_cut_by_plane`.
+
+## [0.17.3] 2020-11-20
+
+### Added
+
 ### Changed
 
 * Fixed bug in `compas.geometry.is_coplanar`.
 * Fixed bug in `compas.datastructures.mesh_merg_faces`.
 * Fixed bug in `compas.robots.RobotModel.add_link`.
+* Fixed bug in `compas.datastructures.Volmesh.cell_to_mesh`.
 
 ### Removed
 
@@ -27,7 +89,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Fixed bug in `__getstate__`, `__setstate__` of `compas.base.Base`.
 * Fixed bug in `compas_rhino.artists.MeshArtist` and `compas_rhino.artists.NetworkArtist`.
 * Changed length and force constraints of DR to optional parameters.
-* Removed `ABCMeta` from the list of base clases of several objects in compas.
+* Removed `ABCMeta` from the list of base classes of several objects in compas.
 
 ### Removed
 

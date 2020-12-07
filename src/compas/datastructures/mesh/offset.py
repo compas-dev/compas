@@ -5,8 +5,8 @@ from __future__ import print_function
 from compas.geometry import add_vectors
 from compas.geometry import scale_vector
 
-from compas.datastructures.mesh.orientation import mesh_flip_cycles
-from compas.datastructures.mesh.join import meshes_join
+from .orientation import mesh_flip_cycles
+from .join import meshes_join
 
 __all__ = [
     'mesh_offset',
@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 
-def mesh_offset(mesh, distance=1.0, cls=None):
+def mesh_offset(mesh, distance=1.0,):
     """Offset a mesh.
 
     Parameters
@@ -30,20 +30,6 @@ def mesh_offset(mesh, distance=1.0, cls=None):
         The offset mesh.
 
     """
-    # if cls is None:
-    #     cls = type(mesh)
-
-    # # new coordinates of vertex keys
-    # vertex_map = {}
-    # for i, vkey in enumerate(mesh.vertices()):
-    #     if len(mesh.vertex_neighbors(vkey)) == 0:
-    #         vertex_map[vkey] = i, [0, 0, 0]
-    #     else:
-    #         vertex_map[vkey] = i, add_vectors(mesh.vertex_coordinates(vkey), scale_vector(mesh.vertex_normal(vkey), offset))
-
-    # vertices = [xyz for i, xyz in vertex_map.values()]
-    # faces = [[vertex_map[vkey][0] for vkey in mesh.face_vertices(fkey)] for fkey in mesh.faces()]
-
     offset = mesh.copy()
 
     for key in offset.vertices():
@@ -54,7 +40,7 @@ def mesh_offset(mesh, distance=1.0, cls=None):
     return offset
 
 
-def mesh_thicken(mesh, thickness=1.0, cls=None):
+def mesh_thicken(mesh, thickness=1.0):
     """Thicken a mesh.
 
     Parameters
@@ -70,17 +56,15 @@ def mesh_thicken(mesh, thickness=1.0, cls=None):
         The thickened mesh.
 
     """
-    if cls is None:
-        cls = type(mesh)
-
     # offset in both directions
-    mesh_top, mesh_bottom = map(lambda eps: mesh_offset(mesh, eps * thickness / 2., cls), [+1, -1])
+    mesh_top = mesh_offset(mesh, +0.5 * thickness)
+    mesh_bottom = mesh_offset(mesh, -0.5 * thickness)
 
     # flip bottom part
     mesh_flip_cycles(mesh_bottom)
 
     # join parts
-    thickened_mesh = meshes_join([mesh_top, mesh_bottom], cls)
+    thickened_mesh = meshes_join([mesh_top, mesh_bottom])
 
     # close boundaries
     n = thickened_mesh.number_of_vertices() / 2

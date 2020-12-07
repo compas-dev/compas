@@ -258,6 +258,9 @@ class BaseNetwork(Graph):
         xyz = self.node_coordinates
         return {gkey(xyz(key), precision): key for key in self.nodes()}
 
+    node_gkey = key_gkey
+    gkey_node = gkey_key
+
     # --------------------------------------------------------------------------
     # builders
     # --------------------------------------------------------------------------

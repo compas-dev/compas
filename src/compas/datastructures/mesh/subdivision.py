@@ -12,8 +12,7 @@ from compas.geometry import offset_polygon
 from compas.utilities import iterable_like
 from compas.utilities import pairwise
 
-from compas.datastructures.mesh._mesh import Mesh
-from compas.datastructures.mesh.core import mesh_split_edge
+from .core import BaseMesh
 
 
 __all__ = [
@@ -30,10 +29,6 @@ __all__ = [
 
 def mesh_fast_copy(other):
     subd = SubdMesh()
-    # subd.attributes = deepcopy(other.attributes)
-    # subd.default_vertex_attributes = deepcopy(other.default_vertex_attributes)
-    # subd.default_face_attributes = deepcopy(other.default_face_attributes)
-    # subd.default_edge_attributes = deepcopy(other.default_edge_attributes)
     subd.vertex = deepcopy(other.vertex)
     subd.face = deepcopy(other.face)
     # subd.edgedata = deepcopy(other.edgedata)
@@ -44,11 +39,15 @@ def mesh_fast_copy(other):
     return subd
 
 
-class SubdMesh(Mesh):
+class SubdMesh(BaseMesh):
 
-    _add_vertex = Mesh.add_vertex
-    _add_face = Mesh.add_face
-    _insert_vertex = Mesh.insert_vertex
+    from .core import mesh_split_edge
+
+    _add_vertex = BaseMesh.add_vertex
+    _add_face = BaseMesh.add_face
+    _insert_vertex = BaseMesh.insert_vertex
+
+    split_edge = mesh_split_edge
 
     def add_vertex(self, x, y, z):
         key = self._max_vertex = self._max_vertex + 1
@@ -207,7 +206,7 @@ def mesh_subdivide_quad(mesh, k=1):
         faces = {face: subd.face_vertices(face)[:] for face in subd.faces()}
         face_centroid = {face: subd.face_centroid(face) for face in subd.faces()}
         for u, v in list(subd.edges()):
-            mesh_split_edge(subd, u, v, allow_boundary=True)
+            subd.split_edge(u, v, allow_boundary=True)
         for face, vertices in faces.items():
             descendant = {i: j for i, j in subd.face_halfedges(face)}
             ancestor = {j: i for i, j in subd.face_halfedges(face)}
@@ -220,8 +219,7 @@ def mesh_subdivide_quad(mesh, k=1):
                 subd.facedata[newface]['path'] = subd.facedata[face]['path'] + [i]
             del subd.face[face]
             del subd.facedata[face]
-    subd2 = cls()
-    subd2.data = subd.data
+    subd2 = cls.from_data(subd.data)
     return subd2
 
 
@@ -251,7 +249,7 @@ def mesh_subdivide_corner(mesh, k=1):
         subd = mesh_fast_copy(mesh)
         # split every edge
         for u, v in list(subd.edges()):
-            mesh_split_edge(subd, u, v, allow_boundary=True)
+            subd.split_edge(u, v, allow_boundary=True)
         # create 4 new faces for every old face
         for fkey in mesh.faces():
             descendant = {i: j for i, j in subd.face_halfedges(fkey)}
@@ -265,8 +263,7 @@ def mesh_subdivide_corner(mesh, k=1):
             subd.add_face(center)
             del subd.face[fkey]
         mesh = subd
-    subd2 = cls()
-    subd2.data = mesh.data
+    subd2 = cls.from_data(mesh.data)
     return subd2
 
 
@@ -332,7 +329,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         for u, v in mesh.edges():
 
-            w = mesh_split_edge(subd, u, v, allow_boundary=True)
+            w = subd.split_edge(u, v, allow_boundary=True)
 
             # document why this is necessary
             # everything else in this loop is just quad subdivision
@@ -416,8 +413,7 @@ def mesh_subdivide_catmullclark(mesh, k=1, fixed=None):
 
         mesh = subd
 
-    subd2 = cls()
-    subd2.data = mesh.data
+    subd2 = cls.from_data(mesh.data)
     return subd2
 
 
@@ -529,8 +525,7 @@ def mesh_subdivide_doosabin(mesh, k=1, fixed=None):
 
         mesh = subd
 
-    subd2 = cls()
-    subd2.data = mesh.data
+    subd2 = cls.from_data(mesh.data)
     return subd2
 
 
@@ -700,7 +695,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
         # odd vertices
         for u, v in list(subd.edges()):
 
-            w = mesh_split_edge(subd, u, v, allow_boundary=True)
+            w = subd.split_edge(u, v, allow_boundary=True)
 
             edgepoints[(u, v)] = w
             edgepoints[(v, u)] = w
@@ -735,8 +730,7 @@ def trimesh_subdivide_loop(mesh, k=1, fixed=None):
 
             del subd.face[fkey]
 
-    subd2 = cls()
-    subd2.data = subd.data
+    subd2 = cls.from_data(subd.data)
     return subd2
 
 
@@ -749,7 +743,7 @@ if __name__ == "__main__":
     import doctest
     import compas  # noqa: F401
     from compas.datastructures import mesh_quads_to_triangles  # noqa: F401
-    from compas.datastructures import Mesh
+    from compas.datastructures import Mesh  # noqa: F401
     from compas.geometry import Box  # noqa: F401
     doctest.testmod(globs=globals())
 

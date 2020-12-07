@@ -29,7 +29,7 @@ if compas.RHINO:
     from .utilities import *  # noqa: F401 F403
 
 
-__version__ = '0.17.2'
+__version__ = '0.18.1'
 
 
 PURGE_ON_DELETE = True
@@ -57,10 +57,12 @@ def _check_rhino_version(version):
 def _get_ironpython_lib_path(version):
     version = _check_rhino_version(version)
 
-    if compas._os.system == 'win32':
+    if compas.WINDOWS:
         ironpython_lib_path = _get_ironpython_lib_path_win32(version)
-    elif compas._os.system == 'darwin':
+
+    elif compas.OSX:
         ironpython_lib_path = _get_ironpython_lib_path_mac(version)
+
     else:
         raise Exception('Unsupported platform')
 
@@ -94,10 +96,12 @@ def _get_ironpython_lib_path_mac(version):
 def _get_python_plugins_path(version):
     version = _check_rhino_version(version)
 
-    if compas._os.system == 'win32':
+    if compas.WINDOWS:
         python_plugins_path = _get_python_plugins_path_win32(version)
-    elif compas._os.system == 'darwin':
+
+    elif compas.OSX:
         python_plugins_path = _get_python_plugins_path_mac(version)
+
     else:
         raise Exception('Unsupported platform')
 
@@ -139,10 +143,12 @@ def _get_python_plugins_path_mac(version):
 def _get_scripts_path(version):
     version = _check_rhino_version(version)
 
-    if compas._os.system == 'win32':
+    if compas.WINDOWS:
         scripts_path = _get_scripts_path_win32(version)
-    elif compas._os.system == 'darwin':
+
+    elif compas.OSX:
         scripts_path = _get_scripts_path_mac(version)
+
     else:
         raise Exception('Unsupported platform')
 

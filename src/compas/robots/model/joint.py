@@ -5,6 +5,7 @@ from __future__ import print_function
 import json
 
 from compas.base import Base
+from compas.files import URDFElement
 from compas.files import URDFParser
 from compas.geometry import Vector
 from compas.geometry import transform_vectors
@@ -40,6 +41,9 @@ class ParentLink(Base):
 
     def __str__(self):
         return str(self.link)
+
+    def get_urdf_element(self):
+        return URDFElement('parent', {'link': self.link})
 
     @property
     def data(self):
@@ -79,6 +83,9 @@ class ChildLink(Base):
     def __str__(self):
         return str(self.link)
 
+    def get_urdf_element(self):
+        return URDFElement('child', {'link': self.link})
+
     @property
     def data(self):
         return {
@@ -115,6 +122,15 @@ class Calibration(Base):
         self.rising = float(rising)
         self.falling = float(falling)
         self.reference_position = float(reference_position)
+
+    def get_urdf_element(self):
+        attributes = {
+            'rising': self.rising,
+            'falling': self.falling,
+            'reference_position': self.reference_position,
+        }
+        attributes = dict(filter(lambda x: x[1], attributes.items()))
+        return URDFElement('calibration', attributes)
 
     @property
     def data(self):
@@ -153,22 +169,34 @@ class Calibration(Base):
 class Dynamics(Base):
     """Physical properties of the joint used for simulation of dynamics."""
 
-    def __init__(self, damping=0.0, friction=0.0):
+    def __init__(self, damping=0.0, friction=0.0, **kwargs):
         super(Dynamics, self).__init__()
         self.damping = float(damping)
         self.friction = float(friction)
+        self.attr = kwargs
+
+    def get_urdf_element(self):
+        attributes = {
+            'damping': self.damping,
+            'friction': self.friction,
+        }
+        attributes.update(self.attr)
+        attributes = dict(filter(lambda x: x[1], attributes.items()))
+        return URDFElement('dynamics', attributes)
 
     @property
     def data(self):
         return {
             'damping': self.damping,
             'friction': self.friction,
+            'attr': _attr_to_data(self.attr),
         }
 
     @data.setter
     def data(self, data):
         self.damping = data['damping']
         self.friction = data['friction']
+        self.attr = _attr_from_data(data['attr'])
 
     @classmethod
     def from_data(cls, data):
@@ -211,6 +239,16 @@ class Limit(Base):
         self.velocity = float(velocity)
         self.lower = float(lower)
         self.upper = float(upper)
+
+    def get_urdf_element(self):
+        attributes = {
+            'lower': self.lower,
+            'upper': self.upper,
+        }
+        attributes = dict(filter(lambda x: x[1], attributes.items()))
+        attributes['effort'] = self.effort
+        attributes['velocity'] = self.velocity
+        return URDFElement('limit', attributes)
 
     @property
     def data(self):
@@ -272,6 +310,14 @@ class Mimic(Base):
         self.multiplier = float(multiplier)
         self.offset = float(offset)
 
+    def get_urdf_element(self):
+        attributes = {'joint': self.joint}
+        if self.multiplier != 1.0:
+            attributes['multiplier'] = self.multiplier
+        if self.offset != 0.0:
+            attributes['offset'] = self.offset
+        return URDFElement('mimic', attributes)
+
     @property
     def data(self):
         return {
@@ -318,6 +364,16 @@ class SafetyController(Base):
         self.k_position = float(k_position)
         self.soft_lower_limit = float(soft_lower_limit)
         self.soft_upper_limit = float(soft_upper_limit)
+
+    def get_urdf_element(self):
+        attributes = {
+            'k_position': self.k_position,
+            'soft_lower_limit': self.soft_lower_limit,
+            'soft_upper_limit': self.soft_upper_limit,
+        }
+        attributes = dict(filter(lambda x: x[1], attributes.items()))
+        attributes['k_velocity'] = self.k_velocity
+        return URDFElement('safety_controller', attributes)
 
     @property
     def data(self):
@@ -370,7 +426,7 @@ class Axis(Base):
         Additional axis attributes.
     """
 
-    def __init__(self, xyz='0 0 0', **kwargs):
+    def __init__(self, xyz='1 0 0', **kwargs):
         # We are not using Vector here because we
         # cannot attach _urdf_source to it due to __slots__
         super(Axis, self).__init__()
@@ -379,6 +435,11 @@ class Axis(Base):
         self.y = xyz[1]
         self.z = xyz[2]
         self.attr = kwargs
+
+    def get_urdf_element(self):
+        attributes = {'xyz': "{} {} {}".format(self.x, self.y, self.z)}
+        attributes.update(self.attr)
+        return URDFElement('axis', attributes)
 
     @property
     def data(self):
@@ -530,7 +591,7 @@ class Joint(Base):
                        'floating', 'planar')
 
     def __init__(self, name, type, parent, child, origin=None, axis=None, calibration=None, dynamics=None, limit=None, safety_controller=None, mimic=None, **kwargs):
-        if type not in (Joint.SUPPORTED_TYPES):
+        if type not in Joint.SUPPORTED_TYPES:
             raise ValueError('Unsupported joint type: %s' % type)
 
         super(Joint, self).__init__()
@@ -548,6 +609,16 @@ class Joint(Base):
         self.attr = kwargs
         self.child_link = None
         self.position = 0
+
+    def get_urdf_element(self):
+        attributes = {
+            'name': self.name,
+            'type': self.SUPPORTED_TYPES[self.type]
+        }
+        attributes.update(self.attr)
+        elements = [self.parent, self.child, self.axis, self.calibration, self.dynamics,
+                    self.limit, self.safety_controller, self.mimic, self.origin]
+        return URDFElement('joint', attributes, elements)
 
     @property
     def data(self):

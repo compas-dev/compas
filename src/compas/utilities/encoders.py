@@ -50,14 +50,19 @@ class DataEncoder(json.JSONEncoder):
     """
 
     def default(self, o):
-        try:
+        if hasattr(o, 'to_data'):
             value = o.to_data()
-        except AttributeError:
-            pass
-        else:
+            if hasattr(o, 'dtype'):
+                dtype = o.dtype
+            else:
+                dtype = "{}/{}".format(".".join(o.__class__.__module__.split(".")[:-1]), o.__class__.__name__)
             return {
-                'dtype': "{}/{}".format(".".join(o.__class__.__module__.split(".")[:2]), o.__class__.__name__),
-                'value': value}
+                'dtype': dtype,
+                'value': value
+            }
+
+        if hasattr(o, '__next__'):
+            return list(o)
 
         try:
             import numpy as np

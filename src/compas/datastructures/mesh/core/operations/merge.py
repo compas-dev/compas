@@ -17,6 +17,17 @@ def mesh_merge_faces(mesh, faces):
     Returns
     -------
     int
+
+    Examples
+    --------
+    >>> from compas.datastructures import Mesh
+    >>> mesh = Mesh.from_vertices_and_faces([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], [[0, 1, 2, 3]])
+    >>> mesh = mesh.subdivide(scheme='quad')
+    >>> mesh_merge_faces(mesh, [1, 2])
+    >>> mesh_merge_faces(mesh, [3, 5])
+    >>> mesh_merge_faces(mesh, [4, 6])
+    >>> mesh.face_vertices(7)
+    [3, 5, 0, 4, 1, 6, 2, 7]
     """
     u, v = None, None
     for i, j in mesh.face_halfedges(faces[0]):
@@ -25,6 +36,7 @@ def mesh_merge_faces(mesh, faces):
             v = j
             break
     if u is None or v is None:
+        # the faces do not share an edge
         return
     a = mesh.face_vertices(faces[0])
     b = mesh.face_vertices(faces[1])
@@ -41,14 +53,34 @@ def mesh_merge_faces(mesh, faces):
         vertices += b[j+1:i]
     else:
         vertices += b[j+1:] + b[:i]
-    print(vertices)
-    # i = b.index(u)
-    # j = b.index(v)
-    # if i < j:
-    #     vertices += b[i:j+1]
-    # else:
-    #     vertices += b[i:] + b[:j+1]
     mesh.delete_face(faces[0])
     mesh.delete_face(faces[1])
     key = mesh.add_face(vertices)
+    # remove internal edges
+    remove = []
+    for u, v in mesh.face_halfedges(key):
+        f1, f2 = mesh.edge_faces(u, v)
+        if f1 == f2:
+            # an internal edge has the same face on both sides
+            remove.append((u, v))
+    for u, v in remove:
+        if u in mesh.halfedge and v in mesh.halfedge[u]:
+            del mesh.halfedge[u][v]
+        if v in mesh.halfedge and u in mesh.halfedge[v]:
+            del mesh.halfedge[v][u]
+    # remove unused vertices
+    for vertex in mesh.face_vertices(key):
+        if len(mesh.vertex_neighbors(vertex)) < 2:
+            mesh.delete_vertex(vertex)
+            mesh.face[key].remove(vertex)
+    # remove degenerate edges
+    for u, v in mesh.face_halfedges(key):
+        if u == v:
+            mesh.face[key].remove(v)
     return key
+
+
+if __name__ == '__main__':
+
+    import doctest
+    doctest.testmod(globs=globals())
