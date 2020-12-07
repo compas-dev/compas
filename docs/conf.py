@@ -264,7 +264,7 @@ html_theme_options = {
     "navbar_active": "compas",
     "package_version": release,
     "package_docs": "https://compas.dev/compas/",
-    "package_old_versions_txt": "https://compas.dev/compas/doc_versions.txt"
+    "package_old_versions_txt": "https://compas.dev/compas/docversions.txt"
 }
 html_context = {}
 html_static_path = []

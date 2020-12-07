@@ -266,7 +266,8 @@ def get_object_attributes_from_name(guids, prefix=None):
     prefix : str, optional
         A prefix that should be removed before the name is JSON parsable.
         For example, in Rhino 6 and above, names can't start with curly braces ("{").
-        To make the string representation of a dict a valid name it has to be prefixed with something like "COMPAS_".
+        Therefore, to make the string representation of a dict a valid name it has to be prefixed with something.
+        This prefix can be stripped automatically using this parameter.
 
     Results
     -------

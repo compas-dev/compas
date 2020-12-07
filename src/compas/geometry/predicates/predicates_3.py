@@ -30,6 +30,7 @@ __all__ = [
     'is_point_on_plane',
     'is_point_infront_plane',
     'is_point_behind_plane',
+    'is_point_in_halfspace',
     'is_point_on_line',
     'is_point_on_segment',
     'is_point_on_polyline',
@@ -261,6 +262,9 @@ def is_point_infront_plane(point, plane, tol=1e-6):
 
     """
     return dot_vectors(subtract_vectors(point, plane[0]), plane[1]) > tol
+
+
+is_point_in_halfspace = is_point_infront_plane
 
 
 def is_point_behind_plane(point, plane, tol=1e-6):

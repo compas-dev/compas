@@ -103,7 +103,7 @@ def remap_values(values, target_min=0.0, target_max=1.0, original_min=None, orig
 def meshgrid(x, y, indexing='xy'):
     """Construct coordinate matrices from two coordinate vectors.
 
-    This function mimicks the functionality of ``numpy.meshgrid`` [1], but in a simpler form.
+    This function mimicks the functionality of ``numpy.meshgrid`` [1]_, but in a simpler form.
 
     Parameters
     ----------
@@ -153,7 +153,7 @@ def meshgrid(x, y, indexing='xy'):
 def linspace(start, stop, num=50):
     """Generate a sequence of evenly spaced numbers over a specified interval.
 
-    This function mimicks the functionality of ``numpy.linspace`` [1], but in a simpler form.
+    This function mimicks the functionality of ``numpy.linspace`` [1]_, but in a simpler form.
 
     Parameters
     ----------

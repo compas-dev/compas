@@ -2,7 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-from ast import literal_eval
+# from ast import literal_eval
 from random import choice
 
 import compas
@@ -70,9 +70,7 @@ class HalfFace(Datastructure):
                 "dfa": dict,
                 "dca": dict,
                 "vertex": dict,
-                "halfface": dict,
                 "cell": dict,
-                "plane": dict,
                 "edge_data": dict,
                 "face_data": dict,
                 "cell_data": dict,
@@ -90,9 +88,7 @@ class HalfFace(Datastructure):
                 "dfa": dict,
                 "dca": dict,
                 "vertex": dict,
-                "halfface": dict,
                 "cell": dict,
-                "plane": dict,
                 "edge_data": dict,
                 "face_data": dict,
                 "cell_data": dict,
@@ -132,7 +128,7 @@ class HalfFace(Datastructure):
                 "required": [
                     "attributes",
                     "dva", "dea", "dfa", "dca",
-                    "vertex", "halfface", "cell", "plane",
+                    "vertex", "cell",
                     "face_data", "edge_data", "cell_data",
                     "max_vertex", "max_face", "max_cell"
                 ]
@@ -168,7 +164,7 @@ class HalfFace(Datastructure):
                     "required": [
                         "attributes",
                         "dva", "dea", "dfa", "dca",
-                        "vertex", "halfface", "cell", "plane",
+                        "vertex", "cell",
                         "face_data", "edge_data", "cell_data",
                         "max_vertex", "max_face", "max_cell"
                     ]
@@ -198,9 +194,16 @@ class HalfFace(Datastructure):
     def data(self):
         """dict: A data dict representing the volmesh data structure for serialisation.
         """
-        edge_data = {}
-        for e in self._edge_data:
-            edge_data[repr(e)] = self._edge_data[e]
+        # edge_data = {}
+        # for e in self._edge_data:
+        #     edge_data[repr(e)] = self._edge_data[e]
+        cell = {}
+        for c in self._cell:
+            cell[c] = {}
+            for u in self._cell[c]:
+                cell[c].setdefault(u, {})
+                for v in self._cell[c][u]:
+                    cell[c][u][v] = self._halfface[self._cell[c][u][v]]
         data = {
             'attributes': self.attributes,
             'dva': self.default_vertex_attributes,
@@ -208,10 +211,10 @@ class HalfFace(Datastructure):
             'dfa': self.default_face_attributes,
             'dca': self.default_cell_attributes,
             'vertex': self._vertex,
-            'halfface': self._halfface,
-            'cell': self._cell,
-            'plane': self._plane,
-            'edge_data': edge_data,
+            # 'halfface': self._halfface,
+            'cell': cell,
+            # 'plane': self._plane,
+            'edge_data': self._edge_data,
             'face_data': self._face_data,
             'cell_data': self._cell_data,
             'max_vertex': self._max_vertex,
@@ -227,9 +230,9 @@ class HalfFace(Datastructure):
         dfa = data.get('dfa') or {}
         dca = data.get('dca') or {}
         vertex = data.get('vertex') or {}
-        halfface = data.get('halfface') or {}
+        # halfface = data.get('halfface') or {}
         cell = data.get('cell') or {}
-        plane = data.get('plane') or {}
+        # plane = data.get('plane') or {}
         edge_data = data.get('edge_data') or {}
         face_data = data.get('face_data') or {}
         cell_data = data.get('cell_data') or {}
@@ -237,7 +240,7 @@ class HalfFace(Datastructure):
         max_face = data.get('max_face', -1)
         max_cell = data.get('max_cell', -1)
 
-        if not vertex or not plane or not halfface or not cell:
+        if not vertex or not cell:
             return
 
         self.attributes.update(attributes)
@@ -258,22 +261,26 @@ class HalfFace(Datastructure):
             attr = vertex[v] or {}
             self.add_vertex(int(v), attr_dict=attr)
 
-        for f in halfface:
-            attr = face_data.get(f) or {}
-            self.add_halfface(halfface[f], fkey=int(f), attr_dict=attr)
+        # for f in halfface:
+        #     attr = face_data.get(f) or {}
+        #     self.add_halfface(halfface[f], fkey=int(f), attr_dict=attr)
 
         for c in cell:
             attr = cell_data.get(c) or {}
             faces = []
             for u in cell[c]:
                 for v in cell[c][u]:
-                    f = cell[c][u][v]
-                    faces.append(halfface[f])
+                    faces.append(cell[c][u][v])
             self.add_cell(faces, ckey=int(c), attr_dict=attr)
 
         for e in edge_data:
-            self._edge_data[literal_eval(e)] = edge_data[e] or {}
+            self._edge_data[e] = edge_data[e] or {}
 
+        for f in face_data:
+            self._face_data[f] = face_data[f] or {}
+
+        # self._edge_data = edge_data
+        # self._face_data = face_data
         self._max_vertex = max_vertex
         self._max_face = max_face
         self._max_cell = max_cell
@@ -453,6 +460,7 @@ class HalfFace(Datastructure):
             fkey = self._max_face = self._max_face + 1
         if fkey > self._max_face:
             self._max_face = fkey
+        fkey = int(fkey)
         attr = attr_dict or {}
         attr.update(kwattr)
         self._halfface[fkey] = vertices

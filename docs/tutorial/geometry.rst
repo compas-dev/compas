@@ -422,4 +422,3 @@ Serialization
 All geometry objects (primitives, shapes, transformations) can be serialised to JSON format,
 and unserialised from such a representation to reconstruct an equivalent object without loss
 of information. The serialisation mechanism relies on the underlying data model.
-See `Object data model`_ for more information.

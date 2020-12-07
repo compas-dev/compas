@@ -134,7 +134,6 @@ Predicates 3D
     is_coplanar
     is_point_in_halfspace
     is_point_in_polyhedron
-    is_point_in_sphere
     is_point_on_line
     is_point_on_plane
     is_point_on_polyline

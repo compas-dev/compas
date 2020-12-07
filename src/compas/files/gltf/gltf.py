@@ -11,6 +11,7 @@ from compas.files.gltf.gltf_reader import GLTFReader
 
 class GLTF(object):
     """Read and create files in glTF format.
+
     Caution: Extensions and most other application specific data are unsupported,
     and their data may be lost upon import.
 

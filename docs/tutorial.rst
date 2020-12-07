@@ -13,4 +13,3 @@ Tutorial
     tutorial/geomaps
     tutorial/rhino
     tutorial/blender
-    tutorial/grasshopper
