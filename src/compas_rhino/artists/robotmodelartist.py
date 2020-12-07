@@ -114,10 +114,13 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
 
         self._enter_layer()
 
+        new_guids = []
         for mesh in collisions:
-            self._add_mesh_to_doc(mesh)
+            guids = self._add_mesh_to_doc(mesh)
+            new_guids.extend(guids)
 
         self._exit_layer()
+        return new_guids
 
     def draw_visual(self):
         visuals = super(RobotModelArtist, self).draw_visual()
@@ -125,13 +128,13 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
 
         self._enter_layer()
 
-        guids = []
+        new_guids = []
         for mesh in visuals:
-            guid = self._add_mesh_to_doc(mesh)
-            guids.append(guid)
+            guids = self._add_mesh_to_doc(mesh)
+            new_guids.extend(guids)
 
         self._exit_layer()
-        return guids
+        return new_guids
 
     def draw(self):
         self.draw_visual()
