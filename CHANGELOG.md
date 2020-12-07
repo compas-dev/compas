@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `is_windows` to work for CPython and IronPython.
 * Changed `compas._os` functions to use `is_windows`, `is_mono`, `is_osx`.
 * Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
+* `compas_rhino.artist.RobotModelArtist` function `draw_visual` and `draw_collision` now returns list of newly created Rhino object guids.
 
 ### Removed
 

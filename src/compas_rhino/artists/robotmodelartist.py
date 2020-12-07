@@ -109,6 +109,7 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         self.redraw()
 
     def draw_collision(self):
+        """Draws all collision geometry of the robot model. Return list of newly created Rhino object's GUID."""
         collisions = super(RobotModelArtist, self).draw_collision()
         collisions = list(collisions)
 
@@ -123,6 +124,7 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         return new_guids
 
     def draw_visual(self):
+        """Draws all visual geometry of the robot model. Return list of newly created Rhino object's GUID."""
         visuals = super(RobotModelArtist, self).draw_visual()
         visuals = list(visuals)
 
@@ -137,6 +139,7 @@ class RobotModelArtist(BaseRobotModelArtist, BaseArtist):
         return new_guids
 
     def draw(self):
+        """Same as draw_visual."""
         self.draw_visual()
 
     def redraw(self, timeout=None):
