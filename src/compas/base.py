@@ -64,9 +64,10 @@ class Base(object):
 
     @property
     def name(self):
-        """str :
-        The name of the object.
-        This name is not necessarily unique and can be set by the user."""
+        """str : The name of the object.
+
+        This name is not necessarily unique and can be set by the user.
+        """
         if not self._name:
             self._name = self.__class__.__name__
         return self._name
@@ -77,16 +78,14 @@ class Base(object):
 
     @property
     def dtype(self):
-        """str :
-        The type of the object in the form of a "2-level" import and a class name.
-        """
+        """str : The type of the object in the form of a "2-level" import and a class name."""
         return "{}/{}".format(".".join(self.__class__.__module__.split(".")[:2]), self.__class__.__name__)
 
     @property
     def data(self):
-        """dict :
-        The representation of the object as native Python data.
-        The structure uf the data is described by the data schema.
+        """dict : The representation of the object as native Python data.
+
+        The structure of the data is described by the data schema.
         """
         raise NotImplementedError
 
@@ -115,7 +114,7 @@ class Base(object):
 
         Parameters
         ----------
-        filepath: str
+        filepath : str
             The path to the file for serialisation.
         """
         raise NotImplementedError
@@ -125,7 +124,7 @@ class Base(object):
 
         Parameters
         ----------
-        filepath: str
+        filepath : str
             The path to the file containing the data.
         """
         raise NotImplementedError
