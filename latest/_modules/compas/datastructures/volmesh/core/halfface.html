@@ -55,7 +55,7 @@
       <ul class="navbar-nav d-none d-md-flex ml-md-auto">
         <!-- version -->
         
-        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <meta id="doc_versions" data-url="https://compas.dev/compas/docversions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -98,7 +98,7 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 
-<span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span>
+<span class="c1"># from ast import literal_eval</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
@@ -166,9 +166,7 @@
                 <span class="s2">&quot;dfa&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;dca&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;vertex&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;halfface&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;cell&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;plane&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;edge_data&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;face_data&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;cell_data&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
@@ -186,9 +184,7 @@
                 <span class="s2">&quot;dfa&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;dca&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;vertex&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;halfface&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;cell&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                <span class="s2">&quot;plane&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;edge_data&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;face_data&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                 <span class="s2">&quot;cell_data&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
@@ -228,7 +224,7 @@
                 <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span>
                     <span class="s2">&quot;attributes&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;dva&quot;</span><span class="p">,</span> <span class="s2">&quot;dea&quot;</span><span class="p">,</span> <span class="s2">&quot;dfa&quot;</span><span class="p">,</span> <span class="s2">&quot;dca&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;vertex&quot;</span><span class="p">,</span> <span class="s2">&quot;halfface&quot;</span><span class="p">,</span> <span class="s2">&quot;cell&quot;</span><span class="p">,</span> <span class="s2">&quot;plane&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;vertex&quot;</span><span class="p">,</span> <span class="s2">&quot;cell&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;face_data&quot;</span><span class="p">,</span> <span class="s2">&quot;edge_data&quot;</span><span class="p">,</span> <span class="s2">&quot;cell_data&quot;</span><span class="p">,</span>
                     <span class="s2">&quot;max_vertex&quot;</span><span class="p">,</span> <span class="s2">&quot;max_face&quot;</span><span class="p">,</span> <span class="s2">&quot;max_cell&quot;</span>
                 <span class="p">]</span>
@@ -264,7 +260,7 @@
                     <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="p">[</span>
                         <span class="s2">&quot;attributes&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;dva&quot;</span><span class="p">,</span> <span class="s2">&quot;dea&quot;</span><span class="p">,</span> <span class="s2">&quot;dfa&quot;</span><span class="p">,</span> <span class="s2">&quot;dca&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;vertex&quot;</span><span class="p">,</span> <span class="s2">&quot;halfface&quot;</span><span class="p">,</span> <span class="s2">&quot;cell&quot;</span><span class="p">,</span> <span class="s2">&quot;plane&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;vertex&quot;</span><span class="p">,</span> <span class="s2">&quot;cell&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;face_data&quot;</span><span class="p">,</span> <span class="s2">&quot;edge_data&quot;</span><span class="p">,</span> <span class="s2">&quot;cell_data&quot;</span><span class="p">,</span>
                         <span class="s2">&quot;max_vertex&quot;</span><span class="p">,</span> <span class="s2">&quot;max_face&quot;</span><span class="p">,</span> <span class="s2">&quot;max_cell&quot;</span>
                     <span class="p">]</span>
@@ -294,9 +290,16 @@
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;dict: A data dict representing the volmesh data structure for serialisation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">edge_data</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">:</span>
-            <span class="n">edge_data</span><span class="p">[</span><span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+        <span class="c1"># edge_data = {}</span>
+        <span class="c1"># for e in self._edge_data:</span>
+        <span class="c1">#     edge_data[repr(e)] = self._edge_data[e]</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">:</span>
+            <span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">c</span><span class="p">]:</span>
+                <span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">u</span><span class="p">]:</span>
+                    <span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]]</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span>
             <span class="s1">&#39;dva&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">,</span>
@@ -304,10 +307,10 @@
             <span class="s1">&#39;dfa&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">,</span>
             <span class="s1">&#39;dca&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_cell_attributes</span><span class="p">,</span>
             <span class="s1">&#39;vertex&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vertex</span><span class="p">,</span>
-            <span class="s1">&#39;halfface&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">,</span>
-            <span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell</span><span class="p">,</span>
-            <span class="s1">&#39;plane&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plane</span><span class="p">,</span>
-            <span class="s1">&#39;edge_data&#39;</span><span class="p">:</span> <span class="n">edge_data</span><span class="p">,</span>
+            <span class="c1"># &#39;halfface&#39;: self._halfface,</span>
+            <span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="n">cell</span><span class="p">,</span>
+            <span class="c1"># &#39;plane&#39;: self._plane,</span>
+            <span class="s1">&#39;edge_data&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">,</span>
             <span class="s1">&#39;face_data&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">,</span>
             <span class="s1">&#39;cell_data&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cell_data</span><span class="p">,</span>
             <span class="s1">&#39;max_vertex&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span><span class="p">,</span>
@@ -323,9 +326,9 @@
         <span class="n">dfa</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dfa&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">dca</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;dca&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">vertex</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;vertex&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">halfface</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;halfface&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="c1"># halfface = data.get(&#39;halfface&#39;) or {}</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">plane</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;plane&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="c1"># plane = data.get(&#39;plane&#39;) or {}</span>
         <span class="n">edge_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;edge_data&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">face_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;face_data&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">cell_data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cell_data&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -333,7 +336,7 @@
         <span class="n">max_face</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_face&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">max_cell</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;max_cell&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">vertex</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">plane</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">halfface</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">cell</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">vertex</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">cell</span><span class="p">:</span>
             <span class="k">return</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
@@ -354,22 +357,26 @@
             <span class="n">attr</span> <span class="o">=</span> <span class="n">vertex</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{}</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">halfface</span><span class="p">:</span>
-            <span class="n">attr</span> <span class="o">=</span> <span class="n">face_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_halfface</span><span class="p">(</span><span class="n">halfface</span><span class="p">[</span><span class="n">f</span><span class="p">],</span> <span class="n">fkey</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+        <span class="c1"># for f in halfface:</span>
+        <span class="c1">#     attr = face_data.get(f) or {}</span>
+        <span class="c1">#     self.add_halfface(halfface[f], fkey=int(f), attr_dict=attr)</span>
 
         <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">:</span>
             <span class="n">attr</span> <span class="o">=</span> <span class="n">cell_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
             <span class="n">faces</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">]:</span>
                 <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">u</span><span class="p">]:</span>
-                    <span class="n">f</span> <span class="o">=</span> <span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>
-                    <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">halfface</span><span class="p">[</span><span class="n">f</span><span class="p">])</span>
+                    <span class="n">faces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="p">[</span><span class="n">c</span><span class="p">][</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">])</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">add_cell</span><span class="p">(</span><span class="n">faces</span><span class="p">,</span> <span class="n">ckey</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">edge_data</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">[</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span> <span class="o">=</span> <span class="n">edge_data</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_edge_data</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge_data</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{}</span>
 
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">face_data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_face_data</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">=</span> <span class="n">face_data</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{}</span>
+
+        <span class="c1"># self._edge_data = edge_data</span>
+        <span class="c1"># self._face_data = face_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_vertex</span> <span class="o">=</span> <span class="n">max_vertex</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">=</span> <span class="n">max_face</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_cell</span> <span class="o">=</span> <span class="n">max_cell</span>
@@ -549,6 +556,7 @@
             <span class="n">fkey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">fkey</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_max_face</span> <span class="o">=</span> <span class="n">fkey</span>
+        <span class="n">fkey</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
         <span class="n">attr</span> <span class="o">=</span> <span class="n">attr_dict</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="n">attr</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwattr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_halfface</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="o">=</span> <span class="n">vertices</span>

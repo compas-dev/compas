@@ -55,7 +55,7 @@
       <ul class="navbar-nav d-none d-md-flex ml-md-auto">
         <!-- version -->
         
-        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <meta id="doc_versions" data-url="https://compas.dev/compas/docversions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -126,6 +126,7 @@
     <span class="s1">&#39;is_point_on_plane&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_infront_plane&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_behind_plane&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;is_point_in_halfspace&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_on_line&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_on_segment&#39;</span><span class="p">,</span>
     <span class="s1">&#39;is_point_on_polyline&#39;</span><span class="p">,</span>
@@ -357,6 +358,9 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">dot_vectors</span><span class="p">(</span><span class="n">subtract_vectors</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">plane</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">tol</span>
+
+
+<span class="n">is_point_in_halfspace</span> <span class="o">=</span> <span class="n">is_point_infront_plane</span>
 
 
 <span class="k">def</span> <span class="nf">is_point_behind_plane</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>

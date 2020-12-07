@@ -59,7 +59,7 @@
       <ul class="navbar-nav d-none d-md-flex ml-md-auto">
         <!-- version -->
         
-        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
+        <meta id="doc_versions" data-url="https://compas.dev/compas/docversions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -109,7 +109,8 @@
 <li><p><strong>guids</strong> (<em>list of GUID</em>)</p></li>
 <li><p><strong>prefix</strong> (<em>str, optional</em>) – A prefix that should be removed before the name is JSON parsable.
 For example, in Rhino 6 and above, names can’t start with curly braces (“{“).
-To make the string representation of a dict a valid name it has to be prefixed with something like “<a href="#id1"><span class="problematic" id="id2">COMPAS_</span></a>”.</p></li>
+Therefore, to make the string representation of a dict a valid name it has to be prefixed with something.
+This prefix can be stripped automatically using this parameter.</p></li>
 <li><p><strong>Results</strong></p></li>
 <li><p><strong>——-</strong></p></li>
 <li><p><strong>list of dict</strong> – The attribute dicts of the objects.</p></li>
