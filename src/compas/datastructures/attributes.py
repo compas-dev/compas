@@ -29,7 +29,7 @@ class AttributeView(MutableMapping):
         return "{" + ", ".join(s) + "}"
 
     def __len__(self):
-        return len(self.defaults)
+        return len(set(self.defaults).union(self.attr))
 
     def __getitem__(self, name):
         if name not in self.attr:
