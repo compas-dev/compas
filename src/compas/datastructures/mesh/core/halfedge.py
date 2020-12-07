@@ -539,10 +539,6 @@ class HalfEdge(Datastructure):
             edge = "-".join(map(str, sorted([nbr, key])))
             if edge in self.edgedata:
                 del self.edgedata[edge]
-            # if (nbr, key) in self.edgedata:
-            #     del self.edgedata[nbr, key]
-            # if (key, nbr) in self.edgedata:
-            #     del self.edgedata[key, nbr]
         for nbr in nbrs:
             for n in self.vertex_neighbors(nbr):
                 if self.halfedge[nbr][n] is None and self.halfedge[n][nbr] is None:
@@ -551,10 +547,6 @@ class HalfEdge(Datastructure):
                     edge = "-".join(map(str, sorted([nbr, n])))
                     if edge in self.edgedata:
                         del self.edgedata[edge]
-                    # if (nbr, n) in self.edgedata:
-                    #     del self.edgedata[nbr, n]
-                    # if (n, nbr) in self.edgedata:
-                    #     del self.edgedata[n, nbr]
         del self.halfedge[key]
         del self.vertex[key]
 
