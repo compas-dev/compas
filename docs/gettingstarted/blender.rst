@@ -115,7 +115,7 @@ rename the folder so that blender can find it:
 
 .. code-block:: bash
 
-    ln -s <env folder> <blender_folder/2.91/>
+    mv <blender_folder/2.81/<env>> <blender_folder/2.91/python>
 
 Note that the blender verison ``2.91`` might be different from the one you have installed. Check your version of Blender and change the path accordingly.
 
