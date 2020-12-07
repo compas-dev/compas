@@ -13,8 +13,8 @@ __all__ = [
 ]
 
 
-class AttributeView(object):
-    """Mixin for attribute dict views."""
+class AttributeView(MutableMapping):
+    """Base class for attribute dict views."""
 
     def __init__(self, defaults, attr, custom_only=False):
         super(AttributeView, self).__init__()
@@ -48,11 +48,12 @@ class AttributeView(object):
             for name in self.attr:
                 yield name
         else:
-            for name in self.defaults:
+            names = set(self.defaults).union(self.attr)
+            for name in names:
                 yield name
 
 
-class NodeAttributeView(AttributeView, MutableMapping):
+class NodeAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of a node
     combined with the default attributes of all nodes."""
 
@@ -60,7 +61,7 @@ class NodeAttributeView(AttributeView, MutableMapping):
         super(NodeAttributeView, self).__init__(defaults, attr, custom_only)
 
 
-class VertexAttributeView(AttributeView, MutableMapping):
+class VertexAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of a vertex
     combined with the default attributes of all vertices."""
 
@@ -68,7 +69,7 @@ class VertexAttributeView(AttributeView, MutableMapping):
         super(VertexAttributeView, self).__init__(defaults, attr, custom_only)
 
 
-class EdgeAttributeView(AttributeView, MutableMapping):
+class EdgeAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of an edge
     combined with the default attributes of all edges."""
 
@@ -76,7 +77,7 @@ class EdgeAttributeView(AttributeView, MutableMapping):
         super(EdgeAttributeView, self).__init__(defaults, attr, custom_only)
 
 
-class FaceAttributeView(AttributeView, MutableMapping):
+class FaceAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of a face
     combined with the default attributes of all faces."""
 
@@ -84,7 +85,7 @@ class FaceAttributeView(AttributeView, MutableMapping):
         super(FaceAttributeView, self).__init__(defaults, attr, custom_only)
 
 
-class CellAttributeView(AttributeView, MutableMapping):
+class CellAttributeView(AttributeView):
     """Mutable Mapping that provides a read/write view of the custom attributes of a cell
     combined with the default attributes of all faces."""
 
