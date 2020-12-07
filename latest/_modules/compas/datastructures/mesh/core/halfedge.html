@@ -55,7 +55,7 @@
       <ul class="navbar-nav d-none d-md-flex ml-md-auto">
         <!-- version -->
         
-        <meta id="doc_versions" data-url="https://compas.dev/compas/docversions.txt" data-docs="https://compas.dev/compas/">
+        <meta id="doc_versions" data-url="https://compas.dev/compas/doc_versions.txt" data-docs="https://compas.dev/compas/">
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
@@ -635,10 +635,6 @@
             <span class="n">edge</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">nbr</span><span class="p">,</span> <span class="n">key</span><span class="p">])))</span>
             <span class="k">if</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgedata</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgedata</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span>
-            <span class="c1"># if (nbr, key) in self.edgedata:</span>
-            <span class="c1">#     del self.edgedata[nbr, key]</span>
-            <span class="c1"># if (key, nbr) in self.edgedata:</span>
-            <span class="c1">#     del self.edgedata[key, nbr]</span>
         <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">nbr</span><span class="p">):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">nbr</span><span class="p">][</span><span class="n">n</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">nbr</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -647,10 +643,6 @@
                     <span class="n">edge</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">nbr</span><span class="p">,</span> <span class="n">n</span><span class="p">])))</span>
                     <span class="k">if</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgedata</span><span class="p">:</span>
                         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgedata</span><span class="p">[</span><span class="n">edge</span><span class="p">]</span>
-                    <span class="c1"># if (nbr, n) in self.edgedata:</span>
-                    <span class="c1">#     del self.edgedata[nbr, n]</span>
-                    <span class="c1"># if (n, nbr) in self.edgedata:</span>
-                    <span class="c1">#     del self.edgedata[n, nbr]</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
