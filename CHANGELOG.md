@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed IronPython checks to `compas.IPY` instead of `compas.is_ironpython`.
 
 ### Removed
+* Removed all implementations of `draw_collection`.
 
 
 ## [0.18.1] 2020-12-01
