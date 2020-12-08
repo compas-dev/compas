@@ -28,7 +28,7 @@ source_suffix = {
     ".md": "markdown",
 }
 templates_path = ["_templates", ]
-exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks"]
+exclude_patterns = ["_build", "**.ipynb_checkpoints", "_notebooks", "**/__temp"]
 
 pygments_style = "sphinx"
 show_authors = True
@@ -48,6 +48,8 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
     "sphinx.ext.coverage",
+    "sphinx.ext.inheritance_diagram",
+    # "sphinx.ext.graphviz",
     "matplotlib.sphinxext.plot_directive",
     "m2r",
     "nbsphinx",
@@ -92,6 +94,11 @@ autosummary_mock_imports = [
     "bmesh",
     "mathutils"
 ]
+
+# graph options
+
+inheritance_graph_attrs = dict(rankdir="TB", size='"16.0, 16.0"', ratio="auto")
+inheritance_node_attrs = dict(fontsize=14)
 
 # napoleon options
 
