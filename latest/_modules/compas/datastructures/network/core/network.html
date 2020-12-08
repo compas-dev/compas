@@ -118,7 +118,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BaseNetwork&#39;</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">BaseNetwork</span><span class="p">(</span><span class="n">Graph</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.html#compas.datastructures.BaseNetwork">[docs]</a><span class="k">class</span> <span class="nc">BaseNetwork</span><span class="p">(</span><span class="n">Graph</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Geometric implementation of a basic edge graph.</span>
 
 <span class="sd">    Examples</span>
@@ -126,11 +126,11 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.__init__"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.__init__.html#compas.datastructures.BaseNetwork.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BaseNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Network&#39;</span><span class="p">})</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_node_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">})</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># customisation</span>
@@ -144,7 +144,7 @@
     <span class="c1"># constructors</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseNetwork.from_obj"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.from_obj.html#compas.datastructures.BaseNetwork.from_obj">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_obj</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a network from the data contained in an OBJ file.</span>
 
@@ -173,9 +173,9 @@
             <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
             <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">network</span>
+        <span class="k">return</span> <span class="n">network</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseNetwork.from_lines"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.from_lines.html#compas.datastructures.BaseNetwork.from_lines">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_lines</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a network from a set of lines represented by their start and end point coordinates.</span>
 
@@ -214,9 +214,9 @@
             <span class="n">i</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>
             <span class="n">j</span> <span class="o">=</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
             <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">network</span>
+        <span class="k">return</span> <span class="n">network</span></div>
 
-    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BaseNetwork.from_nodes_and_edges"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.from_nodes_and_edges.html#compas.datastructures.BaseNetwork.from_nodes_and_edges">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_nodes_and_edges</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a network from nodes and edges.</span>
 
@@ -252,13 +252,13 @@
         <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
             <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">network</span>
+        <span class="k">return</span> <span class="n">network</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># converters</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.to_obj"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.to_obj.html#compas.datastructures.BaseNetwork.to_obj">[docs]</a>    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write the network to an OBJ file.</span>
 
 <span class="sd">        Parameters</span>
@@ -270,27 +270,27 @@
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-    <span class="k">def</span> <span class="nf">to_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.to_points"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.to_points.html#compas.datastructures.BaseNetwork.to_points">[docs]</a>    <span class="k">def</span> <span class="nf">to_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinates of the network.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()]</span></div>
 
-    <span class="k">def</span> <span class="nf">to_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.to_lines"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.to_lines.html#compas.datastructures.BaseNetwork.to_lines">[docs]</a>    <span class="k">def</span> <span class="nf">to_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the lines of the network as pairs of start and end point coordinates.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span></div>
 
-    <span class="k">def</span> <span class="nf">to_nodes_and_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.to_nodes_and_edges"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.to_nodes_and_edges.html#compas.datastructures.BaseNetwork.to_nodes_and_edges">[docs]</a>    <span class="k">def</span> <span class="nf">to_nodes_and_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the nodes and edges of a network.</span>
 
 <span class="sd">        Returns</span>
@@ -310,13 +310,13 @@
         <span class="n">key_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()))</span>
         <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()]</span>
         <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key_index</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">key_index</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()]</span>
-        <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span>
+        <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">edges</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># helpers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">key_gkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.key_gkey"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.key_gkey.html#compas.datastructures.BaseNetwork.key_gkey">[docs]</a>    <span class="k">def</span> <span class="nf">key_gkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps node dictionary keys to the corresponding</span>
 <span class="sd">        *geometric key* up to a certain precision.</span>
 
@@ -333,9 +333,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span></div>
 
-    <span class="k">def</span> <span class="nf">gkey_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.gkey_key"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.gkey_key.html#compas.datastructures.BaseNetwork.gkey_key">[docs]</a>    <span class="k">def</span> <span class="nf">gkey_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps *geometric keys* of a certain precision</span>
 <span class="sd">        to the keys of the corresponding nodes.</span>
 
@@ -352,7 +352,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span>
-        <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">()}</span></div>
 
     <span class="n">node_gkey</span> <span class="o">=</span> <span class="n">key_gkey</span>
     <span class="n">gkey_node</span> <span class="o">=</span> <span class="n">gkey_key</span>
@@ -361,7 +361,7 @@
     <span class="c1"># builders</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.add_node"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.add_node.html#compas.datastructures.BaseNetwork.add_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">try</span><span class="p">:</span>
@@ -369,7 +369,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_max_int_key</span> <span class="o">=</span> <span class="n">key</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
             <span class="k">pass</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BaseNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BaseNetwork</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwattr</span><span class="p">)</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># modifiers</span>
@@ -432,7 +432,7 @@
     <span class="c1"># node geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">node_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.node_coordinates"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.node_coordinates.html#compas.datastructures.BaseNetwork.node_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">node_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinates of a node.</span>
 
 <span class="sd">        Parameters</span>
@@ -448,9 +448,9 @@
 <span class="sd">        list</span>
 <span class="sd">            The coordniates of the node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">axis</span><span class="p">]</span> <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">node_laplacian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.node_laplacian"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.node_laplacian.html#compas.datastructures.BaseNetwork.node_laplacian">[docs]</a>    <span class="k">def</span> <span class="nf">node_laplacian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vector from the node to the centroid of its 1-ring neighborhood.</span>
 
 <span class="sd">        Parameters</span>
@@ -465,9 +465,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
         <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">node_neighborhood_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.node_neighborhood_centroid"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.node_neighborhood_centroid.html#compas.datastructures.BaseNetwork.node_neighborhood_centroid">[docs]</a>    <span class="k">def</span> <span class="nf">node_neighborhood_centroid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the centroid of the neighboring nodes.</span>
 
 <span class="sd">        Parameters</span>
@@ -480,13 +480,13 @@
 <span class="sd">        list</span>
 <span class="sd">            The coordinates of the centroid.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">centroid_points</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">nbr</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">)])</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># edge geometry</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.edge_coordinates"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.edge_coordinates.html#compas.datastructures.BaseNetwork.edge_coordinates">[docs]</a>    <span class="k">def</span> <span class="nf">edge_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the coordinates of the start and end point of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -503,9 +503,9 @@
 <span class="sd">        tuple</span>
 <span class="sd">            The coordinates of the start point and the coordinates of the end point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_coordinates</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.edge_length"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.edge_length.html#compas.datastructures.BaseNetwork.edge_length">[docs]</a>    <span class="k">def</span> <span class="nf">edge_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the length of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -521,9 +521,9 @@
 <span class="sd">            The length of the edge.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.edge_vector"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.edge_vector.html#compas.datastructures.BaseNetwork.edge_vector">[docs]</a>    <span class="k">def</span> <span class="nf">edge_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the vector of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -540,9 +540,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ab</span>
+        <span class="k">return</span> <span class="n">ab</span></div>
 
-    <span class="k">def</span> <span class="nf">edge_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.edge_point"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.edge_point.html#compas.datastructures.BaseNetwork.edge_point">[docs]</a>    <span class="k">def</span> <span class="nf">edge_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the location of a point along an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -563,9 +563,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
         <span class="n">ab</span> <span class="o">=</span> <span class="n">subtract_vectors</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">edge_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.edge_midpoint"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.edge_midpoint.html#compas.datastructures.BaseNetwork.edge_midpoint">[docs]</a>    <span class="k">def</span> <span class="nf">edge_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the location of the midpoint of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -581,9 +581,9 @@
 <span class="sd">            The XYZ coordinates of the midpoint.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">midpoint_line</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">midpoint_line</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseNetwork.edge_direction"><a class="viewcode-back" href="../../../../../api/generated/compas.datastructures.BaseNetwork.edge_direction.html#compas.datastructures.BaseNetwork.edge_direction">[docs]</a>    <span class="k">def</span> <span class="nf">edge_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the direction vector of an edge.</span>
 
 <span class="sd">        Parameters</span>
@@ -598,7 +598,7 @@
 <span class="sd">        list</span>
 <span class="sd">            The direction vector of the edge.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">normalize_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edge_vector</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

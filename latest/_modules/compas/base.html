@@ -95,13 +95,21 @@
           
           <h1>Source code for compas.base</h1><div class="highlight"><pre><code>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">If you ever feel tempted to use ABCMeta in your code: don&#39;t, just DON&#39;T.</span>
-<span class="sd">Assigning __metaclass__ = ABCMeta to a class causes a severe memory leak/performance</span>
-<span class="sd">degradation on IronPython 2.7.</span>
+<span class="sd">********************************************************************************</span>
+<span class="sd">base</span>
+<span class="sd">********************************************************************************</span>
 
-<span class="sd">See these issues for more details:</span>
-<span class="sd"> - https://github.com/compas-dev/compas/issues/562</span>
-<span class="sd"> - https://github.com/compas-dev/compas/issues/649</span>
+<span class="sd">.. currentmodule:: compas.base</span>
+
+<span class="sd">Classes</span>
+<span class="sd">=======</span>
+
+<span class="sd">.. autosummary::</span>
+<span class="sd">    :toctree: generated/</span>
+<span class="sd">    :nosignatures:</span>
+
+<span class="sd">    Base</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
@@ -118,6 +126,16 @@
     <span class="s1">&#39;Base&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># If you ever feel tempted to use ABCMeta in your code: don&#39;t, just DON&#39;T.</span>
+<span class="c1"># Assigning __metaclass__ = ABCMeta to a class causes a severe memory leak/performance</span>
+<span class="c1"># degradation on IronPython 2.7.</span>
+
+<span class="c1"># See these issues for more details:</span>
+<span class="c1"># - https://github.com/compas-dev/compas/issues/562</span>
+<span class="c1"># - https://github.com/compas-dev/compas/issues/649</span>
+
+<span class="c1"># ==============================================================================</span>
 
 <span class="c1"># import abc</span>
 <span class="c1"># ABC = abc.ABCMeta(&#39;ABC&#39;, (object,), {&#39;__slots__&#39;: ()})</span>

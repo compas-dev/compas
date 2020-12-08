@@ -99,26 +99,14 @@
           
           <span class="target" id="module-compas.rpc"></span><div class="section" id="rpc">
 <h1>rpc</h1>
-<p><strong>COMPAS</strong> runs in many different environments, but some environments
-limit the availablity of libraries, for example, when running <strong>COMPAS</strong> from
-an IronPython environment like Rhino/Grasshopper, plenty of the CPython libraries
-such as <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">scipy</span></code>, etc are not usable.</p>
-<p>To workaround this limitation, <strong>COMPAS</strong> provides two mechanisms to access the
-CPython environment seemlessly from any other Python environment. One of them is
-called <code class="docutils literal notranslate"><span class="pre">XFunc</span></code> (<code class="xref py py-class docutils literal notranslate"><span class="pre">compas.utilities.XFunc</span></code>) and it works very effectively to
-make single, but expensive calls that execute long-running bits of code. The other
-one is called <code class="docutils literal notranslate"><span class="pre">RPC</span></code>, which stands for <cite>Remote Procedure Call`</cite> and it allows to
-create a transparent proxy/connection between our environment and the one where
-all the fast libraries and dependencies of <strong>COMPAS</strong> are installed. It also allows
-to re-use the same process for many small calls, making it much more effective for
-the cases in which the required functionality  is not easily isolated in one
-long-running function.</p>
-<div class="section" id="proxy">
-<h2>Proxy</h2>
-<p>In order to use the RPC communication package, we create an instance of the
-<code class="docutils literal notranslate"><span class="pre">Proxy</span></code> class to one specific package that we want to have access to.
-After the proxy is created, it behaves as a regular Python on which the functions
-of the proxied package are available as if they were directly present in our environment.</p>
+<p>COMPAS runs in many different environments, but in some environments the availablity of libraries is limited.
+For example, when running COMPAS in an IronPython-based environment like Rhino/Grasshopper,
+plenty of CPython libraries such as <code class="docutils literal notranslate"><span class="pre">numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">scipy</span></code> are not available.</p>
+<p>To workaround this limitation, COMPAS provides a mechanisms to access the
+functionality of a CPython environment seemlessly from any other Python environment
+through a <code class="docutils literal notranslate"><span class="pre">Remote</span> <span class="pre">Procedure</span> <span class="pre">Call</span></code> or RPC.</p>
+<div class="section" id="classes">
+<h2>Classes</h2>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -130,24 +118,6 @@ of the proxied package are available as if they were directly present in our env
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="rpc-command-line-utility">
-<h2>RPC Command-line utility</h2>
-<p>Besides the API of the RPC module, there is a command-line utility
-provided to start and stop the RPC server easily from the terminal.</p>
-<p>To start a new RPC server use the following command (default port is <code class="docutils literal notranslate"><span class="pre">1753</span></code>):</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>$ compas_rpc start [--port PORT]
-</code></pre></div>
-</div>
-<p>Conversely, to stop an existing RPC server:</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>$ compas_rpc stop [--port PORT]
-</code></pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If COMPAS is installed in a virtual environment, make sure it is activated
-before trying to use this command-line utility.</p>
-</div>
 </div>
 </div>
 
@@ -207,8 +177,7 @@ before trying to use this command-line utility.</p>
         
         <ul class="nav flex-column" id="compas-toc">
 <li class="nav-item"><a class="nav-link reference internal" href="#">rpc</a><ul class="nav flex-column">
-<li class="nav-item"><a class="nav-link reference internal" href="#proxy">Proxy</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#rpc-command-line-utility">RPC Command-line utility</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#classes">Classes</a></li>
 </ul>
 </li>
 </ul>
