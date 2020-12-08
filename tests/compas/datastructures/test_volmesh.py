@@ -1,15 +1,18 @@
 import compas
+import os
 from compas.datastructures import VolMesh
 
 
 def test_data():
 
+    os.makedirs("temp", exist_ok=True)
+
     vmesh1 = VolMesh.from_obj(compas.get('boxes.obj'))
 
     data1 = vmesh1.to_data()
 
-    vmesh1.to_json('vmesh1.json')
-    vmesh1.from_json('vmesh1.json')
+    vmesh1.to_json('temp/vmesh1.json')
+    vmesh1.from_json('temp/vmesh1.json')
 
     vmesh1.validate_data()
     vmesh1.validate_json()
@@ -25,8 +28,8 @@ def test_data():
 
     data2 = vmesh2.to_data()
 
-    vmesh2.to_json('vmesh2.json')
-    vmesh2.from_json('vmesh2.json')
+    vmesh2.to_json('temp/vmesh2.json')
+    vmesh2.from_json('temp/vmesh2.json')
 
     data2_ = vmesh2.to_data()
 
