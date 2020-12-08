@@ -5,10 +5,11 @@ compas
 
 .. currentmodule:: compas
 
-
 .. toctree::
     :maxdepth: 1
+    :titlesonly:
 
+    compas.base
     compas.datastructures
     compas.files
     compas.geometry
