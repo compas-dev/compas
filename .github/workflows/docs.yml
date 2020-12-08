@@ -31,11 +31,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install cython --install-option="--no-cython-compile"
-          conda install graphviz
 
       - name: Install
         run: |
+          conda install graphviz
           python -m pip install --no-cache-dir -r requirements-dev.txt
+
       - name: Generate docs
         if: ${{ success() }}
         run: |
@@ -56,6 +57,7 @@ jobs:
           fi;
           echo "Docs will be deployed to https://compas.dev/compas/$FOLDER_NAME"
           mkdir -p deploy/$BRANCH_OR_TAG && mv -T dist/docs deploy/$FOLDER_NAME/
+          
       - name: Deploy docs
         if: success() && env.GH_PAT != ''
         uses: crazy-max/ghaction-github-pages@v2
