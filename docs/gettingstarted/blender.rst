@@ -50,9 +50,9 @@ Now configure Blender to use the newly installed environment or any environment 
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender 2.91\2.91"
+    python -m compas_blender.install "%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91"
 
-Note that the path ``%PROGRAMFILES%\Blender Foundation\Blender 2.91\2.91`` might be different
+Note that the path ``%PROGRAMFILES%\\Blender Foundation\\Blender 2.91\\2.91`` might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.
 
@@ -97,28 +97,11 @@ First, backup the original python:
 
 .. code-block:: bash
 
-    mv <blender_folder/2.81/python/> <blender_folder/2.81/original_python>
-
-Activate the conda environment and find the location of the python interpreter:
-
-.. code-block:: bash
-
     conda activate blender
-    which python
+    python -m compas_blender.install ~/Blender/2.91
 
-create a symbolic link between the folders:
-
-.. code-block:: bash
-
-    ln -s <env folder> <blender_folder/2.91/>
-
-rename the folder so that blender can find it:
-
-.. code-block:: bash
-
-    mv <blender_folder/2.81/<env>> <blender_folder/2.91/python>
-
-Note that the blender verison ``2.91`` might be different from the one you have installed. Check your version of Blender and change the path accordingly.
+Note that the path ``~/Blender/2.91`` might be different for your setup.
+Check your version of Blender and change the path accordingly.
 
 .. raw:: html
 
