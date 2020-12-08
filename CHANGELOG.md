@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Fix bug in `Halfface`'s data getter/setter for json serializing.
 * Fix default namespace handling in URDF documents.
 * Allow custom/unknown attributes in URDF `Dynamics` element.
 * Moved os functions from `compas` to `compas._os`.
