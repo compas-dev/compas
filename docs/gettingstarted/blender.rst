@@ -1,3 +1,4 @@
+.. _gs-blender:
 
 *******************************************************************************
 Blender
@@ -46,9 +47,9 @@ Now configure Blender to use the newly installed environment or any environment 
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender 2.83\2.83"
+    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender 2.91\2.91"
 
-Note that the path ``%PROGRAMFILES%\Blender Foundation\Blender 2.83\2.83`` might be different
+Note that the path ``%PROGRAMFILES%\Blender Foundation\Blender 2.91\2.91`` might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.
 
@@ -69,9 +70,9 @@ Now configure Blender to use the newly installed environment or any environment 
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.83
+    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.91
 
-Note that the path ``/Applications/blender.app/Contents/Resources/2.83`` might be different
+Note that the path ``/Applications/blender.app/Contents/Resources/2.91`` might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.
 
