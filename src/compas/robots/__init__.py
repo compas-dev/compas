@@ -20,6 +20,7 @@ The primary data representation for robot models is based on the Unified Robot D
     * `URDF Model wiki`_
     * `URDF XSD Schema`_
 
+
 .. _URDF: http://wiki.ros.org/urdf
 .. _URDF Model wiki: http://wiki.ros.org/urdf/XML/model
 .. _URDF XSD Schema: https://github.com/ros/urdfdom/blob/master/xsd/urdf.xsd
@@ -40,6 +41,7 @@ elements connecting the links together.
     Joint
     Link
     ToolModel
+
 
 Geometric description
 =====================
@@ -62,6 +64,7 @@ using the following classes.
     Texture
     Color
 
+
 Link
 ====
 
@@ -76,6 +79,7 @@ The link is described as a rigid body with inertial, visual and collision values
     Inertial
     Mass
     Inertia
+
 
 Joint
 =====
@@ -94,6 +98,7 @@ The joint describes the kinematics and dynamics of the robot's joint.
     Axis
     Mimic
     SafetyController
+
 
 Resources
 =========

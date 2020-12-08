@@ -9,14 +9,8 @@ geometry
 Primitives
 ==========
 
-Base Classes
-------------
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Primitive
+.. inheritance-diagram:: Circle Ellipse Frame Line Plane Point Polygon Polyline Quaternion Vector
+    :parts: 1
 
 Classes
 -------
@@ -37,46 +31,6 @@ Classes
     Vector
 
 
-The following representations of primitives can be used
-interchangeably as input in methods and functions.
-The representations using native Python objects also correspond to the required input
-parameters of the default constructor functions of the corresponding COMPAS objects.
-
-============  ==============================   ============
-Object        COMPAS                           Python
-------------  ------------------------------   ------------
-point         Point(float, float, float)       [float, float, float]
-vector        Vector(float, float, float)      [float, float, float]
-line          Line(point, point)               [[float, float, float], [float, float, float]]
-plane         Plane(point, vector)             [[float, float, float], [float, float, float]]
-circle        Circle(plane, float)             [[[float, float, float], [float, float, float]], float]
-polygon       Polygon(points)                  [[float, float, float], ... [float, float, float]]
-polyline      Polyline(points)                 [[float, float, float], ... [float, float, float]]
-ellipse       Ellipse(plane, float, float)     [[[float, float, float], [float, float, float]], float, float]
-frame         Frame(point, vector,  vector)    [[float, float, float], [float, float, float], [float, float, float]]
-============  ==============================   ============
-
-COMPAS primitives also support indexing, assignment, and iteration according to the above
-equivalency.
-
-::
-
-    >>> a = Point(0, 0, 0)
-    >>> x, y, z = a
-    >>> x = a[0]
-    >>> a[0] = 0
-
-::
-
-    >>> plane = Plane(Point(0, 0, 0), Vector(0, 0, 1))
-    >>> a, n = plane
-    >>> x, y, z = n
-    >>> plane[0] = Point(1, 0, 0)
-
-
-Shapes
-======
-
 Base Classes
 ------------
 
@@ -84,8 +38,14 @@ Base Classes
     :toctree: generated/
     :nosignatures:
 
-    Shape
+    Primitive
 
+
+Shapes
+======
+
+.. inheritance-diagram:: Box Capsule Cone Cylinder Polyhedron Torus
+    :parts: 1
 
 Classes
 -------
@@ -103,8 +63,44 @@ Classes
     Torus
 
 
+Base Classes
+------------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Shape
+
+
+Transformations
+===============
+
+.. inheritance-diagram:: Projection Reflection Rotation Scale Shear Transformation Translation
+    :parts: 1
+
+
+Classes
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    Projection
+    Reflection
+    Rotation
+    Scale
+    Shear
+    Transformation
+    Translation
+
+
+Functions
+=========
+
 Predicates 2D
-=============
+-------------
 
 .. autosummary::
     :toctree: generated/
@@ -124,7 +120,7 @@ Predicates 2D
 
 
 Predicates 3D
-=============
+-------------
 
 .. autosummary::
     :toctree: generated/
@@ -142,23 +138,7 @@ Predicates 3D
 
 
 Transformations
-===============
-
-**Classes**
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Projection
-    Reflection
-    Rotation
-    Scale
-    Shear
-    Transformation
-    Translation
-
-**Functions**
+---------------
 
 .. autosummary::
     :toctree: generated/
@@ -225,7 +205,7 @@ Transformations
 
 
 Linear algebra
-==============
+--------------
 
 .. autosummary::
     :toctree: generated/
@@ -274,7 +254,7 @@ Linear algebra
 
 
 Points, Vectors, Lines, Planes
-==============================
+------------------------------
 
 .. autosummary::
     :toctree: generated/
@@ -310,7 +290,7 @@ Points, Vectors, Lines, Planes
 
 
 Polygons & Polyhedrons
-======================
+----------------------
 
 .. autosummary::
     :toctree: generated/
@@ -334,7 +314,7 @@ Polygons & Polyhedrons
 
 
 Point Sets
-==========
+----------
 
 .. autosummary::
     :toctree: generated/
@@ -351,7 +331,7 @@ Point Sets
 
 
 Distance
-========
+--------
 
 .. autosummary::
     :toctree: generated/
@@ -369,7 +349,7 @@ Distance
 
 
 Intersections
-=============
+-------------
 
 .. autosummary::
     :toctree: generated/
@@ -398,7 +378,7 @@ Intersections
 
 
 Offsets
-=======
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -410,7 +390,7 @@ Offsets
 
 
 Interpolation
-=============
+-------------
 
 .. autosummary::
     :toctree: generated/
@@ -423,7 +403,7 @@ Interpolation
 
 
 Fitting
-=======
+-------
 
 .. autosummary::
     :toctree: generated/
@@ -435,7 +415,7 @@ Fitting
 
 
 Boolean operations
-==================
+------------------
 
 .. autosummary::
     :toctree: generated/
@@ -447,7 +427,7 @@ Boolean operations
 
 
 Triangulation
-=============
+-------------
 
 .. autosummary::
     :toctree: generated/
@@ -462,7 +442,7 @@ Triangulation
 
 
 Triangle meshes
-===============
+---------------
 
 .. autosummary::
     :toctree: generated/
@@ -481,7 +461,7 @@ Triangle meshes
 
 
 Quad meshes
-===========
+-----------
 
 .. autosummary::
     :toctree: generated/
@@ -491,24 +471,13 @@ Quad meshes
 
 
 Pointclouds
-===========
+-----------
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     icp_numpy
-
-
-Base Classes
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Primitive
-    Shape
 
 """
 from __future__ import absolute_import
