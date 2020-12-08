@@ -5,7 +5,7 @@ import abc
 import compas
 import compas_blender
 
-from typing import Any, Type, List
+from typing import Any, Type
 
 
 __all__ = ['BaseArtist']
@@ -63,11 +63,6 @@ class BaseArtist(abc.ABC):
     def draw(self):
         """Draw the item."""
         pass
-
-    @staticmethod
-    def draw_collection(collection: List[compas.base.Base]):
-        """Draw a collection of items."""
-        raise NotImplementedError
 
     def redraw(self):
         """Trigger a redraw."""
