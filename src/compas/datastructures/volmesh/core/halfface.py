@@ -103,7 +103,7 @@ class HalfFace(Datastructure):
         from packaging import version
         if version.parse(compas.__version__) < version.parse('0.17'):
             return {
-                "$schema": "http://json-schema.org/schema",
+                "$schema": "http://json-schema.org/draft-07/schema#",
                 "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
                 "$compas": compas.__version__,
 
@@ -115,9 +115,7 @@ class HalfFace(Datastructure):
                     "dfa":          {"type": "object"},
                     "dca":          {"type": "object"},
                     "vertex":       {"type": "object"},
-                    "halfface":     {"type": "object"},
                     "cell":         {"type": "object"},
-                    "plane":        {"type": "object"},
                     "face_data":    {"type": "object"},
                     "edge_data":    {"type": "object"},
                     "cell_data":    {"type": "object"},
@@ -134,7 +132,7 @@ class HalfFace(Datastructure):
                 ]
             }
         return {
-            "$schema": "http://json-schema.org/schema",
+            "$schema": "http://json-schema.org/draft-07/schema#",
             "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
             "$compas": compas.__version__,
 
@@ -151,9 +149,7 @@ class HalfFace(Datastructure):
                         "dfa":          {"type": "object"},
                         "dca":          {"type": "object"},
                         "vertex":       {"type": "object"},
-                        "halfface":     {"type": "object"},
                         "cell":         {"type": "object"},
-                        "plane":        {"type": "object"},
                         "face_data":    {"type": "object"},
                         "edge_data":    {"type": "object"},
                         "cell_data":    {"type": "object"},
@@ -194,9 +190,6 @@ class HalfFace(Datastructure):
     def data(self):
         """dict: A data dict representing the volmesh data structure for serialisation.
         """
-        # edge_data = {}
-        # for e in self._edge_data:
-        #     edge_data[repr(e)] = self._edge_data[e]
         cell = {}
         for c in self._cell:
             cell[c] = {}
@@ -211,9 +204,7 @@ class HalfFace(Datastructure):
             'dfa': self.default_face_attributes,
             'dca': self.default_cell_attributes,
             'vertex': self._vertex,
-            # 'halfface': self._halfface,
             'cell': cell,
-            # 'plane': self._plane,
             'edge_data': self._edge_data,
             'face_data': self._face_data,
             'cell_data': self._cell_data,
@@ -230,9 +221,7 @@ class HalfFace(Datastructure):
         dfa = data.get('dfa') or {}
         dca = data.get('dca') or {}
         vertex = data.get('vertex') or {}
-        # halfface = data.get('halfface') or {}
         cell = data.get('cell') or {}
-        # plane = data.get('plane') or {}
         edge_data = data.get('edge_data') or {}
         face_data = data.get('face_data') or {}
         cell_data = data.get('cell_data') or {}
@@ -261,10 +250,6 @@ class HalfFace(Datastructure):
             attr = vertex[v] or {}
             self.add_vertex(int(v), attr_dict=attr)
 
-        # for f in halfface:
-        #     attr = face_data.get(f) or {}
-        #     self.add_halfface(halfface[f], fkey=int(f), attr_dict=attr)
-
         for c in cell:
             attr = cell_data.get(c) or {}
             faces = []
@@ -279,8 +264,6 @@ class HalfFace(Datastructure):
         for f in face_data:
             self._face_data[f] = face_data[f] or {}
 
-        # self._edge_data = edge_data
-        # self._face_data = face_data
         self._max_vertex = max_vertex
         self._max_face = max_face
         self._max_cell = max_cell

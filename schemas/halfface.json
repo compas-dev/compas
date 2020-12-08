@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/schema",
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "https://github.com/compas-dev/compas/schemas/halfface.json",
     "$compas": "0.18.1",
 
@@ -16,9 +16,7 @@
                 "dfa":          {"type": "object"},
                 "dca":          {"type": "object"},
                 "vertex":       {"type": "object"},
-                "halfface":     {"type": "object"},
                 "cell":         {"type": "object"},
-                "plane":        {"type": "object"},
                 "face_data":    {"type": "object"},
                 "edge_data":    {"type": "object"},
                 "cell_data":    {"type": "object"},
@@ -29,7 +27,7 @@
             "required": [
                 "attributes",
                 "dva", "dea", "dfa", "dca",
-                "vertex", "halfface", "cell", "plane",
+                "vertex", "cell",
                 "face_data", "edge_data", "cell_data",
                 "max_vertex", "max_face", "max_cell"
             ]
