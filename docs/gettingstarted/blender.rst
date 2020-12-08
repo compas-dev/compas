@@ -8,7 +8,7 @@ Blender ships with its own embedded version of Python. Therefore, the simplest
 Python by the Python of a `conda` environment that already has COMPAS installed.
 
 It is important that the version of Python installed in the `conda` environment matches
-the version of Python that was originally shipped with Blender. For Blender 2.8x
+the version of Python that was originally shipped with Blender. For Blender 2.9x
 this is Python 3.7x.
 
 Installation
@@ -24,6 +24,9 @@ Installation
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#replace_python_osx">OSX</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#replace_python_linux">Linux</a>
                 </li>
             </ul>
         </div>
@@ -46,9 +49,9 @@ Now configure Blender to use the newly installed environment or any environment 
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender 2.83\2.83"
+    python -m compas_blender.install "%PROGRAMFILES%\Blender Foundation\Blender 2.91\2.91"
 
-Note that the path ``%PROGRAMFILES%\Blender Foundation\Blender 2.83\2.83`` might be different
+Note that the path ``%PROGRAMFILES%\Blender Foundation\Blender 2.91\2.91`` might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.
 
@@ -69,11 +72,52 @@ Now configure Blender to use the newly installed environment or any environment 
 .. code-block:: bash
 
     conda activate blender
-    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.83
+    python -m compas_blender.install /Applications/blender.app/Contents/Resources/2.91
 
-Note that the path ``/Applications/blender.app/Contents/Resources/2.83`` might be different
+Note that the path ``/Applications/blender.app/Contents/Resources/2.91`` might be different
 if you have another version of Blender intalled.
 Check your version of Blender and change the path accordingly.
+
+.. raw:: html
+
+    </div>
+    <div class="tab-pane" id="replace_python_linux">
+
+If you wish to install a new python environment with COMPAS, open the Terminal and type the following:
+
+.. code-block:: bash
+
+    conda config --add channels conda-forge
+    conda create -n blender python=3.7 COMPAS
+
+Now configure Blender to use the newly installed environment or any environment in which you have COMPAS.
+
+First, backup the original python:
+
+.. code-block:: bash
+
+    mv <blender_folder/2.81/python/> <blender_folder/2.81/original_python>
+
+Activate the conda environment and find the location of the python interpreter:
+
+.. code-block:: bash
+
+    conda activate blender
+    which python
+
+create a symbolic link between the folders:
+
+.. code-block:: bash
+
+    ln -s <env folder> <blender_folder/2.91/>
+
+rename the folder so that blender can find it:
+
+.. code-block:: bash
+
+    mv <blender_folder/2.81/<env>> <blender_folder/2.91/python>
+
+Note that the blender verison ``2.91`` might be different from the one you have installed. Check your version of Blender and change the path accordingly.
 
 .. raw:: html
 
